@@ -84,7 +84,7 @@ TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType);
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
-void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, TunnelType type);
+void paintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, TunnelType type);
 
 inline void PaintUtilPushTunnelLeft(
     PaintSession& session, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
@@ -98,10 +98,10 @@ inline void PaintUtilPushTunnelRight(
     PaintUtilPushTunnelRight(session, height, GetTunnelType(tunnelGroup, tunnelSubType));
 }
 
-inline void PaintUtilPushTunnelRotated(
+inline void paintUtilPushTunnelRotated(
     PaintSession& session, uint8_t direction, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
 {
-    PaintUtilPushTunnelRotated(session, direction, height, GetTunnelType(tunnelGroup, tunnelSubType));
+    paintUtilPushTunnelRotated(session, direction, height, GetTunnelType(tunnelGroup, tunnelSubType));
 }
 
 void TrackPaintUtilRightQuarterTurn5TilesTunnel(

@@ -21,5 +21,5 @@ void PaintExplosionCloud(PaintSession& session, const ExplosionCloud& explosionC
     PROFILED_FUNCTION();
 
     uint32_t imageId = SPR_EXPLOSION_CLOUD + (explosionCloud.frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, explosionCloud.z }, { 1, 1, 0 });
+    paintAddImageAsParent(session, ImageId(imageId), { 0, 0, explosionCloud.z }, { 1, 1, 0 });
 }

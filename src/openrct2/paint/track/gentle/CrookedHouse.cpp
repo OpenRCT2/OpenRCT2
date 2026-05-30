@@ -55,7 +55,7 @@ static void PaintCrookedHouseStructure(
     PaintSession& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height,
     ImageId stationColour)
 {
-    const auto* tileElement = session.CurrentlyDrawnTileElement;
+    const auto* tileElement = session.currentlyDrawnTileElement;
     if (tileElement == nullptr)
         return;
 
@@ -72,19 +72,19 @@ static void PaintCrookedHouseStructure(
         auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::entity;
-            session.CurrentlyDrawnEntity = vehicle;
+            session.interactionType = ViewportInteractionItem::entity;
+            session.currentlyDrawnEntity = vehicle;
         }
     }
 
     const auto& boundBox = kCrookedHouseData[segment];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
-    PaintAddImageAsParent(
+    paintAddImageAsParent(
         session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
         { { boundBox.offset, height + 3 }, { boundBox.length, 127 } });
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintCrookedHouse(
@@ -100,11 +100,11 @@ static void PaintCrookedHouse(
         GetStationColourScheme(session, trackElement));
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-        kFenceSpritesRope, session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
+        kFenceSpritesRope, session.currentRotation);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
@@ -141,9 +141,9 @@ static void PaintCrookedHouse(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128);
+    paintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 TrackPaintFunction GetTrackPaintFunctionCrookedHouse(TrackElemType trackType)

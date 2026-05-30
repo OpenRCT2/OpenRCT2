@@ -28,12 +28,12 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D5B48
      */
-    void VehicleVisualVirginiaReel(
+    void vehicleVisualVirginiaReel(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
         imageDirection = Entity::Yaw::YawTo32(imageDirection);
-        const uint8_t rotation = session.CurrentRotation;
+        const uint8_t rotation = session.currentRotation;
         int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
         int32_t baseImage_id = [&] {
             switch (vehicle->pitch)
@@ -52,8 +52,8 @@ namespace OpenRCT2
         }();
         baseImage_id += ecx & 7;
         const auto& vehicleBb = _virginiaReelBoundbox[baseImage_id >> 3];
-        auto bb = BoundBoxXYZ{ { vehicleBb.offset_x, vehicleBb.offset_y, vehicleBb.offset_z + z },
-                               { vehicleBb.length_x, vehicleBb.length_y, vehicleBb.length_z } };
+        auto bb = BoundBoxXYZ{ { vehicleBb.offsetX, vehicleBb.offsetY, vehicleBb.offsetZ + z },
+                               { vehicleBb.lengthX, vehicleBb.lengthY, vehicleBb.lengthZ } };
 
         baseImage_id += carEntry->base_image_id;
         auto image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
@@ -61,7 +61,7 @@ namespace OpenRCT2
         {
             image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
         }
-        PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
+        paintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
         if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
@@ -77,7 +77,7 @@ namespace OpenRCT2
                 if (riding_peep_sprites[i] != Drawing::kColourNull)
                 {
                     image_id = ImageId(baseImage_id + ((i + 1) * 72), riding_peep_sprites[i]);
-                    PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
+                    paintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
                 }
             }
         }

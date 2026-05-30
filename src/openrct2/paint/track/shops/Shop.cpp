@@ -41,26 +41,26 @@ static void PaintShop(
     CoordsXYZ offset(0, 0, height);
     BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, trackElement.getClearanceZ() - trackElement.getBaseZ() - 3 } };
 
-    auto imageFlags = session.TrackColours.WithoutSecondary();
+    auto imageFlags = session.trackColours.WithoutSecondary();
     auto imageIndex = firstCarEntry->base_image_id + direction;
     if (hasSupports)
     {
         auto foundationImageTemplate = GetShopSupportColourScheme(session, trackElement);
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
-        PaintAddImageAsParent(session, foundationImageId, offset, bb);
-        PaintAddImageAsChild(session, imageFlags.WithIndex(imageIndex), offset, bb);
+        paintAddImageAsParent(session, foundationImageId, offset, bb);
+        paintAddImageAsChild(session, imageFlags.WithIndex(imageIndex), offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, imageFlags.WithIndex(imageIndex), offset, bb);
+        paintAddImageAsParent(session, imageFlags.WithIndex(imageIndex), offset, bb);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 }
 
 TrackPaintFunction GetTrackPaintFunctionShop(TrackElemType trackType)

@@ -33,6 +33,6 @@ namespace OpenRCT2
 
         uint32_t imageId = kVehicleCrashParticleSprites[particle.crashed_sprite_base] + particle.frame / 256;
         auto image = ImageId(imageId, particle.colour[0], particle.colour[1]);
-        PaintAddImageAsParent(session, image, { 0, 0, particle.z }, { 1, 1, 0 });
+        paintAddImageAsParent(session, image, { 0, 0, particle.z }, { 1, 1, 0 });
     }
 } // namespace OpenRCT2

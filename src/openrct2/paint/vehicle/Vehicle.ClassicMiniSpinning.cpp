@@ -50,7 +50,7 @@ namespace OpenRCT2
         return pitchInfo;
     }();
 
-    void VehicleVisualClassicMiniSpinning(
+    void vehicleVisualClassicMiniSpinning(
         PaintSession& session, const int32_t x, const int32_t imageDirection, const int32_t y, const int32_t z,
         const Vehicle* const vehicle, const CarEntry* const carEntry)
     {
@@ -81,9 +81,8 @@ namespace OpenRCT2
         const uint32_t boundingBoxIndex = pitchInfo.boundingBoxIndex
             + (rotatedImageDirection >> pitchInfo.boundingBoxPrecisionShift);
         const VehicleBoundBox& bb = VehicleBoundboxes[carEntry->draw_order][boundingBoxIndex];
-        const BoundBoxXYZ boundingBox = { { bb.offset_x, bb.offset_y, bb.offset_z + z },
-                                          { bb.length_x, bb.length_y, bb.length_z } };
-        PaintAddImageAsParent(session, imageId, { 0, 0, z }, boundingBox);
+        const BoundBoxXYZ boundingBox = { { bb.offsetX, bb.offsetY, bb.offsetZ + z }, { bb.lengthX, bb.lengthY, bb.lengthZ } };
+        paintAddImageAsParent(session, imageId, { 0, 0, z }, boundingBox);
 
         if (session.rt.zoom_level < ZoomLevel{ 2 })
         {
@@ -91,7 +90,7 @@ namespace OpenRCT2
             {
                 const int32_t seatRotation = i * spriteRotationPrecision;
                 const int32_t guestRotationPrecision = rotationPrecision / 2;
-                const int32_t rotation = spin + (session.CurrentRotation * 4) + seatRotation;
+                const int32_t rotation = spin + (session.currentRotation * 4) + seatRotation;
                 const int32_t guestRotation = rotation & (guestRotationPrecision - 1);
                 const ImageIndex guestImageIndexOffset = guestRotation >= 4 ? spriteCount * 2 : spriteCount;
 
@@ -103,7 +102,7 @@ namespace OpenRCT2
 
                 const ImageId guestImageId = vehicle->isGhost() ? ConstructionMarker.WithIndex(guestImageIndex)
                                                                 : ImageId(guestImageIndex, guestColour0, guestColour1);
-                PaintAddImageAsChild(session, guestImageId, { 0, 0, z }, boundingBox);
+                paintAddImageAsChild(session, guestImageId, { 0, 0, z }, boundingBox);
             }
         }
     }

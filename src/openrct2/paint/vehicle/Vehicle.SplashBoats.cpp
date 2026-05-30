@@ -24,7 +24,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D4295
      */
-    void VehicleVisualSplashBoatsOrWaterCoaster(
+    void vehicleVisualSplashBoatsOrWaterCoaster(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
@@ -38,10 +38,10 @@ namespace OpenRCT2
             return;
         }
 
-        session.CurrentlyDrawnEntity = vehicleToPaint;
-        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->orientation);
-        session.SpritePosition.x = vehicleToPaint->x;
-        session.SpritePosition.y = vehicleToPaint->y;
+        session.currentlyDrawnEntity = vehicleToPaint;
+        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.currentRotation), vehicleToPaint->orientation);
+        session.spritePosition.x = vehicleToPaint->x;
+        session.spritePosition.y = vehicleToPaint->y;
         PaintVehicle(session, *vehicleToPaint, imageDirection);
     }
 } // namespace OpenRCT2

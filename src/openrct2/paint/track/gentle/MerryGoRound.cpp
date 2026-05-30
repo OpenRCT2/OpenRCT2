@@ -50,7 +50,7 @@ static void PaintRiders(
 
         auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + imageOffset;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[peep], vehicle.peep_tshirt_colours[peep + 1]);
-        PaintAddImageAsChild(session, imageId, offset, bb);
+        paintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
@@ -67,8 +67,8 @@ static void PaintCarousel(
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = vehicle;
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = vehicle;
 
         if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
             && ride.breakdownReasonPending == Breakdown::controlFailure && ride.breakdownSoundModifier >= 128)
@@ -80,7 +80,7 @@ static void PaintCarousel(
     auto rotationOffset = 0;
     if (vehicle != nullptr)
     {
-        auto rotation = ((vehicle->orientation >> 3) + session.CurrentRotation) << 5;
+        auto rotation = ((vehicle->orientation >> 3) + session.currentRotation) << 5;
         rotationOffset = (vehicle->flatRideAnimationFrame + rotation) % 128;
     }
 
@@ -94,15 +94,15 @@ static void PaintCarousel(
     }
     auto imageOffset = rotationOffset & 0x1F;
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
-    PaintAddImageAsParent(session, imageId, offset, bb);
+    paintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr && vehicle->num_peeps > 0)
     {
         PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bb);
     }
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintMerryGoRound(
@@ -119,11 +119,11 @@ static void PaintMerryGoRound(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-        kFenceSpritesRope, session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
+        kFenceSpritesRope, session.currentRotation);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
@@ -169,9 +169,9 @@ static void PaintMerryGoRound(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    paintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 TrackPaintFunction GetTrackPaintFunctionMerryGoRound(TrackElemType trackType)

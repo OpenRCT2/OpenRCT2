@@ -45,8 +45,8 @@ static void PaintSpaceRingsStructure(
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr || (ride.numStations != 0 && vehicleIndex >= ride.numTrains))
     {
-        session.CurrentlyDrawnEntity = nullptr;
-        session.InteractionType = ViewportInteractionItem::ride;
+        session.currentlyDrawnEntity = nullptr;
+        session.interactionType = ViewportInteractionItem::ride;
         return;
     }
 
@@ -55,8 +55,8 @@ static void PaintSpaceRingsStructure(
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = vehicle;
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = vehicle;
         frameNum += static_cast<int8_t>(vehicle->flatRideAnimationFrame) * 4;
     }
 
@@ -71,7 +71,7 @@ static void PaintSpaceRingsStructure(
     }
 
     auto imageId = stationColour.WithIndex(baseImageId + frameNum);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
 
     if (vehicle != nullptr && vehicle->num_peeps > 0)
     {
@@ -80,12 +80,12 @@ static void PaintSpaceRingsStructure(
         {
             stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
             imageId = stationColour.WithIndex(baseImageId + 352 + frameNum);
-            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
+            paintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
         }
     }
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 /** rct2: 0x00767C40 */
@@ -96,7 +96,7 @@ static void PaintSpaceRings(
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
     int32_t edges = kEdges3x3[trackSequence];
-    CoordsXY position = session.MapPosition;
+    CoordsXY position = session.mapPosition;
 
     ImageId imageId;
 
@@ -105,26 +105,26 @@ static void PaintSpaceRings(
         session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     switch (trackSequence)
     {
         case 7:
-            if (TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(edgeSW, position, trackElement, ride, session.currentRotation))
             {
                 imageId = stationColour.WithIndex(SprSpaceRingsFenceSw);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 28, 7 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 28, 7 } });
             }
-            if (TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
+            if (TrackPaintUtilHasFence(edgeSE, position, trackElement, ride, session.currentRotation))
             {
                 imageId = stationColour.WithIndex(SprSpaceRingsFenceSe);
-                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 28, 1, 7 } });
+                paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 28, 1, 7 } });
             }
             break;
         default:
             TrackPaintUtilPaintFences(
                 session, edges, position, trackElement, ride, stationColour, height, kSpaceRingsFenceSprites,
-                session.CurrentRotation);
+                session.currentRotation);
             break;
     }
 
@@ -181,9 +181,9 @@ static void PaintSpaceRings(
             cornerSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /**

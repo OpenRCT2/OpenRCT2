@@ -37,7 +37,7 @@ static void PaintObservationTowerBase(
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
     int32_t edges = kEdges3x3[trackSequence];
-    CoordsXY position = session.MapPosition;
+    CoordsXY position = session.mapPosition;
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
@@ -45,27 +45,27 @@ static void PaintObservationTowerBase(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesTileDiamond, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.supportColours, height, kFloorSpritesTileDiamond, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, position, trackElement, ride, session.TrackColours, height, kFenceSpritesPicketDuplicate,
-        session.CurrentRotation);
+        session, edges, position, trackElement, ride, session.trackColours, height, kFenceSpritesPicketDuplicate,
+        session.currentRotation);
 
     if (trackSequence == 0)
     {
-        auto imageId = session.TrackColours.WithIndex(SprObservationTowerSegmentBase);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
+        auto imageId = session.trackColours.WithIndex(SprObservationTowerSegmentBase);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
 
-        imageId = session.TrackColours.WithIndex(SprObservationTowerSegment);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height + 32 }, { { 8, 8, height + 32 }, { 2, 2, 30 } });
+        imageId = session.trackColours.WithIndex(SprObservationTowerSegment);
+        paintAddImageAsParent(session, imageId, { 0, 0, height + 32 }, { { 8, 8, height + 32 }, { 2, 2, 30 } });
 
-        imageId = session.TrackColours.WithIndex(SprObservationTowerSegment);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { { 8, 8, height + 64 }, { 2, 2, 30 } });
+        imageId = session.trackColours.WithIndex(SprObservationTowerSegment);
+        paintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { { 8, 8, height + 64 }, { 2, 2, 30 } });
 
         PaintUtilSetVerticalTunnel(session, height + 96);
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
-        PaintUtilSetGeneralSupportHeight(session, height + 96);
+        paintUtilSetGeneralSupportHeight(session, height + 96);
 
         return;
     }
@@ -104,9 +104,9 @@ static void PaintObservationTowerBase(
             blockedSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~blockedSegments, height + 2, 0x20);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~blockedSegments, height + 2, 0x20);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x0070DD7C */
@@ -119,20 +119,20 @@ static void PaintObservationTowerSection(
         return;
     }
 
-    auto imageId = session.TrackColours.WithIndex(SprObservationTowerSegment);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
+    auto imageId = session.trackColours.WithIndex(SprObservationTowerSegment);
+    paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.isLastForTile() || trackElement.getClearanceZ() != nextTileElement->getBaseZ())
     {
-        imageId = session.TrackColours.WithIndex(SprObservationTowerSegmentTop);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
+        imageId = session.trackColours.WithIndex(SprObservationTowerSegmentTop);
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
     PaintUtilSetVerticalTunnel(session, height + 32);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

@@ -173,26 +173,26 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
     }
 
     session->rt = rt;
-    session->ViewFlags = viewFlags;
-    session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
-    session->QuadrantFrontIndex = 0;
-    session->Flags = 0;
-    session->CurrentRotation = rotation;
+    session->viewFlags = viewFlags;
+    session->quadrantBackIndex = std::numeric_limits<uint32_t>::max();
+    session->quadrantFrontIndex = 0;
+    session->flags = 0;
+    session->currentRotation = rotation;
 
-    std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
-    session->PaintHead = nullptr;
-    session->LastPS = nullptr;
-    session->LastAttachedPS = nullptr;
-    session->PSStringHead = nullptr;
-    session->LastPSString = nullptr;
-    session->WoodenSupportsPrependTo = nullptr;
-    session->CurrentlyDrawnEntity = nullptr;
-    session->CurrentlyDrawnTileElement = nullptr;
-    session->Surface = nullptr;
-    session->SelectedElement = TileInspector::GetSelectedElement();
-    session->InteractionType = ViewportInteractionItem::none;
-    session->PathElementOnSameHeight = nullptr;
-    session->TrackElementOnSameHeight = nullptr;
+    std::fill(std::begin(session->quadrants), std::end(session->quadrants), nullptr);
+    session->paintHead = nullptr;
+    session->lastPS = nullptr;
+    session->lastAttachedPS = nullptr;
+    session->psStringHead = nullptr;
+    session->lastPSString = nullptr;
+    session->woodenSupportsPrependTo = nullptr;
+    session->currentlyDrawnEntity = nullptr;
+    session->currentlyDrawnTileElement = nullptr;
+    session->surface = nullptr;
+    session->selectedElement = TileInspector::GetSelectedElement();
+    session->interactionType = ViewportInteractionItem::none;
+    session->pathElementOnSameHeight = nullptr;
+    session->trackElementOnSameHeight = nullptr;
 
     return session;
 }

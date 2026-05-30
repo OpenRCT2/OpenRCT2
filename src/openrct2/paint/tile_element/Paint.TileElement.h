@@ -20,14 +20,14 @@ struct PaintSession;
 
 enum edge_t
 {
-    EDGE_NE = (1 << 0),
-    EDGE_SE = (1 << 1),
-    EDGE_SW = (1 << 2),
-    EDGE_NW = (1 << 3),
-    EDGE_BOTTOMLEFT = EDGE_SW,
-    EDGE_BOTTOMRIGHT = EDGE_SE,
-    EDGE_TOPLEFT = EDGE_NW,
-    EDGE_TOPRIGHT = EDGE_NE
+    edgeNE = (1 << 0),
+    edgeSE = (1 << 1),
+    edgeSW = (1 << 2),
+    edgeNW = (1 << 3),
+    edgeBottomLeft = edgeSW,
+    edgeBottomRight = edgeSE,
+    edgeTopLeft = edgeNW,
+    edgeTopRight = edgeNE
 };
 
 extern const uint16_t kSegmentOffsets[9];
@@ -38,11 +38,11 @@ extern const CoordsXY kBannerBoundBoxes[][2];
 
 extern const uint8_t kPathSlopeToLandSlope[4];
 
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height);
-void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
-void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope);
-uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);
+void paintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height);
+void paintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
+void paintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope);
+uint16_t paintUtilRotateSegments(uint16_t segments, uint8_t rotation);
 
-void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
+void tileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
 
-bool PaintShouldShowHeightMarkers(const PaintSession& session, uint32_t viewportFlag);
+bool paintShouldShowHeightMarkers(const PaintSession& session, uint32_t viewportFlag);

@@ -176,25 +176,25 @@ static void PaintRiverRapidsTrackFlat(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours.WithIndex((direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
+        imageId = session.trackColours.WithIndex((direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
     }
     else
     {
-        imageId = session.TrackColours.WithIndex((direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
+        imageId = session.trackColours.WithIndex((direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
 
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction & 1)
     {
@@ -205,8 +205,8 @@ static void PaintRiverRapidsTrackFlat(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x007576C0 */
@@ -216,7 +216,7 @@ static void PaintRiverRapidsStation(
 {
     PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement, supportType);
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement, StationBaseType::none, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void PaintRiverRapidsTrack25Deg(
@@ -224,25 +224,25 @@ static void PaintRiverRapidsTrack25Deg(
 {
     bool isStart = direction == 0 || direction == 3;
 
-    ImageId imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-    PaintStruct* ps = PaintAddImageAsParentRotated(
+    ImageId imageId = session.trackColours.WithIndex(sprites[direction][0]);
+    PaintStruct* ps = paintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
     if (!isStart)
     {
-        session.WoodenSupportsPrependTo = ps;
+        session.woodenSupportsPrependTo = ps;
     }
 
-    imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 34 } });
+    imageId = session.trackColours.WithIndex(sprites[direction][1]);
+    paintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 34 } });
 
-    DrawSupportForSequenceA<TrackElemType::up25>(session, supportType.wooden, 0, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::up25>(session, supportType.wooden, 0, direction, height, session.supportColours);
 
     int8_t tunnelHeightOffset = isStart ? -8 : 8;
     auto tunnelSubType = isStart ? TunnelSubType::SlopeStart : TunnelSubType::SlopeEnd;
-    PaintUtilPushTunnelRotated(session, direction, height + tunnelHeightOffset, kTunnelGroup, tunnelSubType);
+    paintUtilPushTunnelRotated(session, direction, height + tunnelHeightOffset, kTunnelGroup, tunnelSubType);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 static void PaintRiverRapidsTrack25DegToFlatA(
@@ -255,49 +255,49 @@ static void PaintRiverRapidsTrack25DegToFlatA(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 18 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 18 } });
             break;
 
         case 1:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
-            session.WoodenSupportsPrependTo = ps;
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
+            session.woodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
             break;
 
         case 2:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
-            session.WoodenSupportsPrependTo = ps;
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
+            session.woodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
 
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 18 } });
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 18 } });
             break;
 
         case 3:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
             break;
     }
     DrawSupportForSequenceA<TrackElemType::up25ToFlat>(
-        session, supportType.wooden, 0, direction, height, session.SupportColours);
+        session, supportType.wooden, 0, direction, height, session.supportColours);
 
     int8_t heightOffset = isStart ? -8 : 8;
     auto tunnelSubType = isStart ? TunnelSubType::Flat : TunnelSubType::FlatTo25Deg;
-    PaintUtilPushTunnelRotated(session, direction, height + heightOffset, kTunnelGroup, tunnelSubType);
+    paintUtilPushTunnelRotated(session, direction, height + heightOffset, kTunnelGroup, tunnelSubType);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 40);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 static void PaintRiverRapidsTrack25DegToFlatB(
@@ -309,47 +309,47 @@ static void PaintRiverRapidsTrack25DegToFlatB(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 26 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 26 } });
             break;
 
         case 1:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
-            session.WoodenSupportsPrependTo = ps;
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
+            session.woodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
             break;
 
         case 2:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
-            session.WoodenSupportsPrependTo = ps;
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            ps = paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
+            session.woodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 26 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 26 } });
             break;
 
         case 3:
-            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][0]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
+            imageId = session.trackColours.WithIndex(sprites[direction][1]);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
             break;
     }
     DrawSupportForSequenceA<TrackElemType::flatToUp25>(
-        session, supportType.wooden, 0, direction, height, session.SupportColours);
+        session, supportType.wooden, 0, direction, height, session.supportColours);
 
     const auto tunnelType = direction == 0 || direction == 3 ? TunnelSubType::Flat : TunnelSubType::SlopeEnd;
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, tunnelType);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, tunnelType);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00757660 */
@@ -411,42 +411,42 @@ static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SW_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 2, height }, { 28, 26, 11 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SW_NW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 2, height }, { 28, 26, 11 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SW_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 27, height }, { 2, 1, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SW_NW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 27, height }, { 2, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
 
         case 1:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 25, 25, 5 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 25, 25, 5 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 1, height }, { 1, 30, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 1, height }, { 1, 30, 7 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 27, height }, { 30, 1, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 27, height }, { 30, 1, 7 } });
             break;
 
         case 2:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 4, height }, { 26, 28, 11 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NE_SE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 4, height }, { 26, 28, 11 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
 
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
 
         case 3:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 4, height }, { 28, 28, 11 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SE_SW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 4, height }, { 28, 28, 11 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SE_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 1, 1, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SE_SW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 1, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
@@ -454,9 +454,9 @@ static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757700 */
@@ -469,52 +469,52 @@ static void PaintRiverRapidsTrackRightQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 4, height }, { 28, 28, 11 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SW_SE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 4, height }, { 28, 28, 11 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 2 }, { 1, 1, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SW_SE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 2 }, { 1, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
 
         case 1:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SE_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 2, height }, { 28, 26, 11 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SE_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 2, height }, { 28, 26, 11 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SE_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 27, height }, { 2, 1, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SE_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 27, height }, { 2, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
 
         case 2:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NE_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 28, 28, 11 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NE_NW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 28, 28, 11 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 1, height }, { 1, 22, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 1, height }, { 1, 22, 7 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 27, height }, { 22, 1, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 27, height }, { 22, 1, 7 } });
             break;
 
         case 3:
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NW_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 4, height }, { 26, 28, 11 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NW_SW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 4, height }, { 26, 28, 11 } });
 
-            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_NW_SW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 2, height }, { 1, 28, 7 } });
+            imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_NW_SW);
+            paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 2, height }, { 1, 28, 7 } });
 
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+        session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.supportColours);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757710 */
@@ -528,52 +528,52 @@ static void PaintRiverRapidsTrackWaterfall(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_WATERFALL_NW_SE : SPR_RIVER_RAPIDS_WATERFALL_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NE_FRAME_0 + frameNum));
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NE_FRAME_0 + frameNum));
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 + frameNum));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height + 17 }, { 1, 32, 27 } });
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 + frameNum));
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height + 17 }, { 1, 32, 27 } });
 
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_WATERFALL_FRONT_NW_SE : SPR_RIVER_RAPIDS_WATERFALL_FRONT_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 27 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 27 } });
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 + frameNum));
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 27 } });
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 + frameNum));
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 27 } });
     }
     else
     {
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_WATERFALL_SW_NE : SPR_RIVER_RAPIDS_WATERFALL_NE_SW));
 
         auto bb = BoundBoxXYZ{ { 0, 4, height }, { 32, 24, 11 } };
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NW_FRAME_0 + frameNum));
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NW_FRAME_0 + frameNum));
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 0, 4, height + 17 };
         bb.length = { 32, 1, 27 };
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 + frameNum));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 + frameNum));
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 0, 27, height + 17 };
 
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_WATERFALL_FRONT_SW_NE : SPR_RIVER_RAPIDS_WATERFALL_FRONT_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum));
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum));
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
     }
 
     DrawSupportForSequenceA<TrackElemType::waterfall>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction & 1)
     {
@@ -584,8 +584,8 @@ static void PaintRiverRapidsTrackWaterfall(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x00757720 */
@@ -599,23 +599,23 @@ static void PaintRiverRapidsTrackRapids(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 + frameNum));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 + frameNum));
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 11 } });
+        imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 11 } });
     }
     else
     {
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_SW_NE_FRAME_0 + frameNum));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_SW_NE_FRAME_0 + frameNum));
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
 
-        imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 17 }, { 32, 1, 11 } });
+        imageId = session.trackColours.WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 17 }, { 32, 1, 11 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::rapids>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction & 1)
     {
@@ -626,8 +626,8 @@ static void PaintRiverRapidsTrackRapids(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x00757740 */
@@ -637,7 +637,7 @@ static void PaintRiverRapidsTrackOnRidePhoto(
 {
     PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement, supportType);
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 13, trackElement);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x */
@@ -651,41 +651,41 @@ static void PaintRiverRapidsTrackWhirlpool(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours.WithIndex((direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
+        imageId = session.trackColours.WithIndex((direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
 
         auto bb = BoundBoxXYZ{ { 4, 0, height }, { 24, 32, 11 } };
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 10, 10, height };
         bb.length = { 1, 2, 5 };
 
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
     }
     else
     {
-        imageId = session.TrackColours.WithIndex((direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
+        imageId = session.trackColours.WithIndex((direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
 
         auto bb = BoundBoxXYZ{ { 0, 4, height }, { 32, 24, 11 } };
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
+        imageId = session.trackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 10, 10, height };
         bb.length = { 1, 2, 5 };
 
-        imageId = session.TrackColours.WithIndex(
+        imageId = session.trackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
     }
 
     DrawSupportForSequenceA<TrackElemType::whirlpool>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.supportColours);
 
     if (direction & 1)
     {
@@ -696,8 +696,8 @@ static void PaintRiverRapidsTrackWhirlpool(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /**

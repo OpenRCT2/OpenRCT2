@@ -28,5 +28,5 @@ void PaintBalloon(PaintSession& session, const Balloon& balloon, int32_t imageDi
     }
 
     auto image = ImageId(imageId, balloon.colour);
-    PaintAddImageAsParent(session, image, { 0, 0, balloon.z }, { 1, 1, 0 });
+    paintAddImageAsParent(session, image, { 0, 0, balloon.z }, { 1, 1, 0 });
 }

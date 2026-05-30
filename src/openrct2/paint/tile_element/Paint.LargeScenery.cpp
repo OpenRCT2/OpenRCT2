@@ -84,13 +84,13 @@ static void PaintLargeScenerySupports(
     int32_t clearanceHeight = Numerics::ceil2(tileElement.getClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
     }
     else
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     }
-    PaintUtilSetGeneralSupportHeight(session, clearanceHeight);
+    paintUtilSetGeneralSupportHeight(session, clearanceHeight);
 }
 
 static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText& text, std::string_view s, bool height)
@@ -165,15 +165,15 @@ static void PaintLargeScenery3DTextLine(
         auto imageId = imageTemplate.WithIndex(imageIndex);
         if (direction == 3)
         {
-            PaintAttachToPreviousPS(session, imageId, offsetX, -DivToMinusInfinity(acc, 2));
+            paintAttachToPreviousPS(session, imageId, offsetX, -DivToMinusInfinity(acc, 2));
         }
         else if (text.flags.has(LargeSceneryTextFlag::isVertical))
         {
-            PaintAttachToPreviousPS(session, imageId, offsetX, DivToMinusInfinity(acc, 2));
+            paintAttachToPreviousPS(session, imageId, offsetX, DivToMinusInfinity(acc, 2));
         }
         else
         {
-            PaintAttachToPreviousAttach(session, imageId, offsetX, DivToMinusInfinity(acc, 2));
+            paintAttachToPreviousAttach(session, imageId, offsetX, DivToMinusInfinity(acc, 2));
         }
         offsetX += glyph.width;
         acc += glyph.width;
@@ -321,14 +321,14 @@ static void PaintLargeSceneryScrollingText(
     auto bannerText = banner->getText();
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
     auto imageId = ScrollingText::setup(session, bannerText, scrollMode, textPaletteIndex);
-    PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
+    paintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
 void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
 {
     PROFILED_FUNCTION();
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session.viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         return;
 
     auto sequenceNum = tileElement.GetSequenceIndex();
@@ -342,7 +342,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     auto& tile = sceneryEntry->tiles[sequenceNum];
 
-    session.InteractionType = ViewportInteractionItem::largeScenery;
+    session.interactionType = ViewportInteractionItem::largeScenery;
 
     auto isGhost = false;
     ImageId imageTemplate;
@@ -353,11 +353,11 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     }
     else if (tileElement.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::none;
+        session.interactionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
-    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))
+    else if (session.selectedElement == reinterpret_cast<const TileElement*>(&tileElement))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
@@ -393,7 +393,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
 
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { bbOffset, bbLength });
+    paintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { bbOffset, bbLength });
 
     if (sceneryEntry->scrolling_mode != kScrollingModeNone && direction != 1 && direction != 2)
     {

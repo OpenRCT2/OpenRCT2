@@ -62,14 +62,14 @@ static void CompactInvertedRCTrackFlat(
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26557), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26557), { 0, 0, height + 29 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26558), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26558), { 0, 0, height + 29 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
         }
@@ -80,28 +80,28 @@ static void CompactInvertedRCTrackFlat(
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26555), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26555), { 0, 0, height + 29 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26556), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26556), { 0, 0, height + 29 },
                     { { 0, 6, height + 29 }, { 32, 20, 3 } });
                 break;
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE950, 0x008AE960, 0x008AE970 */
@@ -117,19 +117,19 @@ static void CompactInvertedRCTrackStation(
     };
     const bool stationDrawn = TrackPaintUtilDrawStationInverted(
         session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height + 29 },
+    paintAddImageAsParentRotated(
+        session, direction, session.trackColours.WithIndex(imageIds[direction][0]), { 0, 0, height + 29 },
         { { 0, 6, height + 29 }, { 32, 20, 3 } });
     if (stationDrawn)
     {
-        PaintAddImageAsChildRotated(
-            session, direction, session.SupportColours.WithIndex(imageIds[direction][1]), { 0, 6, height + 29 },
+        paintAddImageAsChildRotated(
+            session, direction, session.supportColours.WithIndex(imageIds[direction][1]), { 0, 6, height + 29 },
             { { 0, 6, height + 29 }, { 32, 20, 3 } });
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+        DrawSupportsSideBySide(session, direction, height, session.supportColours, supportType.metal);
     }
     TrackPaintUtilDrawStationTunnelTall(session, direction, height);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE6F0 */
@@ -142,23 +142,23 @@ static void CompactInvertedRCTrack25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26621), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26621), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26622), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26622), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26623), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26623), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26624), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26624), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
         }
@@ -168,61 +168,61 @@ static void CompactInvertedRCTrack25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26569), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26569), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26570), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26570), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26571), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26571), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26572), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26572), { 0, 0, height + 29 },
                     { { 0, 6, height + 45 }, { 32, 20, 3 } });
                 break;
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 56, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 56, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 56, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 56, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 56, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 56, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 56, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 56, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AE700 */
@@ -235,23 +235,23 @@ static void CompactInvertedRCTrack60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26637), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26637), { 0, 0, height + 29 },
                     { { 0, 6, height + 93 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26638), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26638), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 81 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26639), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26639), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 81 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26640), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26640), { 0, 0, height + 29 },
                     { { 0, 6, height + 93 }, { 32, 20, 3 } });
                 break;
         }
@@ -261,37 +261,37 @@ static void CompactInvertedRCTrack60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26585), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26585), { 0, 0, height + 29 },
                     { { 0, 6, height + 93 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26586), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26586), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 81 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26587), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26587), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 81 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26588), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26588), { 0, 0, height + 29 },
                     { { 0, 6, height + 93 }, { 32, 20, 3 } });
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 120);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 120);
 }
 
 /** rct2: 0x008AE710 */
@@ -304,23 +304,23 @@ static void CompactInvertedRCTrackFlatTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26613), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26613), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26614), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26614), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26615), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26615), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26616), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26616), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
         }
@@ -330,61 +330,61 @@ static void CompactInvertedRCTrackFlatTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26561), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26561), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26562), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26562), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26563), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26563), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26564), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26564), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 48, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 48, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 48, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 48, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 48, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    paintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008AE720 */
@@ -397,29 +397,29 @@ static void CompactInvertedRCTrack25DegUpTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26625), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26625), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26629), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26629), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26626), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26626), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26630), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26630), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26627), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26627), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26628), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26628), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
         }
@@ -429,43 +429,43 @@ static void CompactInvertedRCTrack25DegUpTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26573), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26573), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26577), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26577), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26574), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26574), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26578), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26578), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26575), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26575), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26576), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26576), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 88);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 88);
 }
 
 /** rct2: 0x008AE730 */
@@ -478,29 +478,29 @@ static void CompactInvertedRCTrack60DegUpTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26631), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26631), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26635), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26635), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26632), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26632), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26636), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26636), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26633), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26633), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26634), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26634), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
         }
@@ -510,67 +510,67 @@ static void CompactInvertedRCTrack60DegUpTo25DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26579), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26579), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26583), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26583), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26580), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26580), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26584), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26584), { 0, 0, height + 29 },
                     { { 0, 10, height + 11 }, { 32, 10, 49 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26581), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26581), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 49 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26582), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26582), { 0, 0, height + 29 },
                     { { 0, 6, height + 61 }, { 32, 20, 3 } });
                 break;
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 70, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 70, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 70, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 70, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 70, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 70, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 70, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 70, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 88);
+    paintUtilSetGeneralSupportHeight(session, height + 88);
 }
 
 /** rct2: 0x008AE740 */
@@ -583,23 +583,23 @@ static void CompactInvertedRCTrack25DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26617), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26617), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26618), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26618), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26619), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26619), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26620), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26620), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
         }
@@ -609,61 +609,61 @@ static void CompactInvertedRCTrack25DegUpToFlat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26565), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26565), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26566), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26566), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26567), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26567), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26568), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26568), { 0, 0, height + 29 },
                     { { 0, 6, height + 37 }, { 32, 20, 3 } });
                 break;
         }
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        paintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE750 */
@@ -727,180 +727,180 @@ static void CompactInvertedRCTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26694), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26694), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26699), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26699), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26704), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26704), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26689), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26689), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26693), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26693), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26698), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26698), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26703), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26703), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26688), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26688), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26692), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26692), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26697), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26697), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26702), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26702), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26687), { 0, 0, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26687), { 0, 0, height + 29 }, { 16, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26691), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26691), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26696), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26696), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26701), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26701), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26686), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26686), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26690), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26690), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26695), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26695), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26700), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26700), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26685), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26685), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             switch (direction)
             {
@@ -911,7 +911,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -934,43 +934,43 @@ static void CompactInvertedRCTrackFlatToLeftBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26657), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26657), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26658), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26658), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26659), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26659), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26660), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26660), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                 PaintSegment::bottomLeft, PaintSegment::bottomRight),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE7E0 */
@@ -981,43 +981,43 @@ static void CompactInvertedRCTrackFlatToRightBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26661), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26661), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26662), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26662), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26663), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26663), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26664), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26664), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                 PaintSegment::bottomLeft),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE7F0 */
@@ -1028,43 +1028,43 @@ static void CompactInvertedRCTrackLeftBankToFlat(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26663), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26663), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26664), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26664), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26661), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26661), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26662), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26662), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                 PaintSegment::bottomLeft, PaintSegment::bottomRight),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE800 */
@@ -1075,43 +1075,43 @@ static void CompactInvertedRCTrackRightBankToFlat(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26659), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26659), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26660), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26660), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26657), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26657), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26658), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26658), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                 PaintSegment::bottomLeft),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE810 */
@@ -1125,180 +1125,180 @@ static void CompactInvertedRCTrackBankedLeftQuarterTurn5(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26738), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26738), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26743), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26743), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26748), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26748), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26733), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26733), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26737), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26737), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26742), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26742), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26747), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26747), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26732), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26732), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26736), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26736), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26741), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26741), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26746), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26746), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26731), { 0, 0, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26731), { 0, 0, height + 29 }, { 16, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26735), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26735), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26740), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26740), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26745), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26745), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26730), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26730), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26734), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26734), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26739), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26739), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26744), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26744), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26729), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26729), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             switch (direction)
             {
@@ -1309,7 +1309,7 @@ static void CompactInvertedRCTrackBankedLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -1332,67 +1332,67 @@ static void CompactInvertedRCTrackLeftBankTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26665), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26665), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26666), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26666), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26667), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26667), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26668), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26668), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                 PaintSegment::bottomLeft, PaintSegment::bottomRight),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    paintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008AE840 */
@@ -1403,67 +1403,67 @@ static void CompactInvertedRCTrackRightBankTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26669), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26669), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26670), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26670), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26671), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26671), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26672), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26672), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                 PaintSegment::bottomLeft),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    paintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
 /** rct2: 0x008AE850 */
@@ -1474,67 +1474,67 @@ static void CompactInvertedRCTrack25DegUpToLeftBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26673), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26673), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26674), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26674), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26675), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26675), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26676), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26676), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                 PaintSegment::bottomLeft, PaintSegment::bottomRight),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        paintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE860 */
@@ -1545,67 +1545,67 @@ static void CompactInvertedRCTrack25DegUpToRightBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26677), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26677), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26678), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26678), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26679), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26679), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26680), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26680), { 0, 0, height + 29 },
                 { { 0, 6, height + 37 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                 PaintSegment::bottomLeft),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         switch (direction)
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 46, session.supportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 46, session.supportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 46, session.supportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 46, session.supportColours);
                 break;
         }
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+        paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+        paintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    paintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AE870 */
@@ -1652,43 +1652,43 @@ static void CompactInvertedRCTrackLeftBank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26681), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26681), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26682), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26682), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26683), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26683), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26684), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26684), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(
+    paintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
+        paintUtilRotateSegments(
             EnumsToFlags(
                 PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                 PaintSegment::bottomLeft, PaintSegment::bottomRight),
             direction),
         0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AE8C0 */
@@ -1710,165 +1710,165 @@ static void CompactInvertedRCTrackLeftQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26949), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26949), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26954), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26954), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26959), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26959), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26964), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26964), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26950), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26950), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26955), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26955), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26960), { 0, 16, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26960), { 0, 16, height + 29 }, { 32, 16, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26965), { 0, 16, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26965), { 0, 16, height + 29 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26951), { 0, 16, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26951), { 0, 16, height + 29 }, { 16, 16, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26956), { 16, 16, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26956), { 16, 16, height + 29 }, { 16, 16, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26961), { 16, 0, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26961), { 16, 0, height + 29 }, { 16, 16, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26966), { 0, 0, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26966), { 0, 0, height + 29 }, { 16, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26952), { 16, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26952), { 16, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26957), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26957), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26962), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26962), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26967), { 16, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26967), { 16, 0, height + 29 }, { 16, 32, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26953), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26953), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26958), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26958), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26963), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26963), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26968), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26968), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.supportColours);
 
             switch (direction)
             {
@@ -1879,7 +1879,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -1895,165 +1895,165 @@ static void CompactInvertedRCTrackRightQuarterTurn525DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26929), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26929), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26934), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26934), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26939), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26939), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26944), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26944), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26930), { 0, 16, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26930), { 0, 16, height + 29 }, { 32, 16, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26935), { 0, 16, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26935), { 0, 16, height + 29 }, { 32, 16, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26940), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26940), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26945), { 0, 0, height + 29 }, { 32, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26945), { 0, 0, height + 29 }, { 32, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26931), { 0, 0, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26931), { 0, 0, height + 29 }, { 16, 16, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26936), { 16, 0, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26936), { 16, 0, height + 29 }, { 16, 16, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26941), { 16, 16, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26941), { 16, 16, height + 29 }, { 16, 16, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26946), { 0, 16, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26946), { 0, 16, height + 29 }, { 16, 16, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            paintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26932), { 16, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26932), { 16, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26937), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26937), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26942), { 0, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26942), { 0, 0, height + 29 }, { 16, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26947), { 16, 0, height + 29 }, { 16, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26947), { 16, 0, height + 29 }, { 16, 32, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26933), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26933), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26938), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26938), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26943), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26943), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26948), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26948), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 48, session.supportColours);
 
             switch (direction)
             {
@@ -2064,7 +2064,7 @@ static void CompactInvertedRCTrackRightQuarterTurn525DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -2100,30 +2100,30 @@ static void CompactInvertedRCTrackSBendLeft(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26641), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26641), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26645), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26645), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26644), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26644), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26648), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26648), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -2131,36 +2131,36 @@ static void CompactInvertedRCTrackSBendLeft(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26642), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26642), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26646), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26646), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26643), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26643), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26647), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26647), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
@@ -2168,34 +2168,34 @@ static void CompactInvertedRCTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26643), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26643), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26647), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26647), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26642), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26642), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26646), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26646), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -2203,36 +2203,36 @@ static void CompactInvertedRCTrackSBendLeft(
                 0xFFFF, 0);
             DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26644), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26644), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26648), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26648), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26641), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26641), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26645), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26645), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -2247,7 +2247,7 @@ static void CompactInvertedRCTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -2263,30 +2263,30 @@ static void CompactInvertedRCTrackSBendRight(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26649), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26649), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26653), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26653), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26652), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26652), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26656), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26656), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -2294,36 +2294,36 @@ static void CompactInvertedRCTrackSBendRight(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26650), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26650), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26654), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26654), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26651), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26651), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26655), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26655), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -2331,34 +2331,34 @@ static void CompactInvertedRCTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26651), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26651), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26655), { 0, 0, height + 29 }, { 32, 26, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26655), { 0, 0, height + 29 }, { 32, 26, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26650), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26650), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26654), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26654), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 26, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
@@ -2366,36 +2366,36 @@ static void CompactInvertedRCTrackSBendRight(
                 0xFFFF, 0);
             DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + kSupportHeight, 0, 0);
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26652), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26652), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26656), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26656), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26649), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26649), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26653), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26653), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -2410,7 +2410,7 @@ static void CompactInvertedRCTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -2426,30 +2426,30 @@ static void CompactInvertedRCTrackLeftVerticalLoop(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27017), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27017), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27025), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27025), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27024), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27024), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27032), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27032), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 10, 7 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -2459,248 +2459,248 @@ static void CompactInvertedRCTrackLeftVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.supportColours);
                     break;
             }
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27018), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27018), { 0, 0, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27026), { 0, 14, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27026), { 0, 14, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 63 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27023), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27023), { 0, 6, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27031), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27031), { 0, 6, height + 29 },
                         { { 29, 20, height + 29 }, { 2, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27019), { 16, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27019), { 16, 0, height + 2 },
                         { { 16, 29, height + 2 }, { 5, 2, 119 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27027), { 12, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27027), { 12, 0, height + 2 },
                         { { 0, -6, height + 2 }, { 32, 2, 119 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27022), { 10, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27022), { 10, 16, height + 2 },
                         { { 10, 0, height + 2 }, { 4, 2, 119 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27030), { 16, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27030), { 16, 16, height + 2 },
                         { { 29, 29, height + 2 }, { 2, 2, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27020), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27020), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27028), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27028), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27021), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27021), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27029), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27029), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27021), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27021), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27029), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27029), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27020), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27020), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27028), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27028), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 7:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27022), { 10, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27022), { 10, 16, height + 2 },
                         { { 10, 0, height + 2 }, { 4, 2, 119 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27030), { 16, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27030), { 16, 16, height + 2 },
                         { { 29, 29, height + 2 }, { 2, 2, 119 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27019), { 16, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27019), { 16, 0, height + 2 },
                         { { 16, 29, height + 2 }, { 5, 2, 119 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27027), { 12, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27027), { 12, 0, height + 2 },
                         { { 0, -6, height + 2 }, { 32, 2, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27023), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27023), { 0, 6, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27031), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27031), { 0, 6, height + 29 },
                         { { 29, 20, height + 29 }, { 2, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27018), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27018), { 0, 0, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27026), { 0, 14, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27026), { 0, 14, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 63 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 9:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27024), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27024), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27032), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27032), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 10, 7 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27017), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27017), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27025), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27025), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -2710,19 +2710,19 @@ static void CompactInvertedRCTrackLeftVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.supportColours);
                     break;
             }
 
@@ -2735,7 +2735,7 @@ static void CompactInvertedRCTrackLeftVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -2751,30 +2751,30 @@ static void CompactInvertedRCTrackRightVerticalLoop(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27048), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27048), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 10, 7 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27040), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27040), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27041), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27041), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27033), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27033), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -2784,249 +2784,249 @@ static void CompactInvertedRCTrackRightVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.supportColours);
                     break;
             }
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27047), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27047), { 0, 6, height + 29 },
                         { { 29, 20, height + 29 }, { 2, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27039), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27039), { 0, 6, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27042), { 0, 14, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27042), { 0, 14, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 63 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27034), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27034), { 0, 0, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27046), { 16, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27046), { 16, 16, height + 2 },
                         { { 29, 29, height + 2 }, { 2, 2, 119 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27038), { 10, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27038), { 10, 16, height + 2 },
                         { { 10, 0, height + 2 }, { 4, 2, 119 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27043), { 12, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27043), { 12, 0, height + 2 },
                         { { 0, -6, height + 2 }, { 32, 2, 119 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27035), { 16, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27035), { 16, 0, height + 2 },
                         { { 16, 29, height + 2 }, { 5, 2, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27045), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27045), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27037), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27037), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27044), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27044), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27036), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27036), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 5:
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27044), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27044), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27036), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27036), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27045), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27045), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27037), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27037), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 7:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27043), { 12, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27043), { 12, 0, height + 2 },
                         { { 0, -6, height + 2 }, { 32, 2, 119 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27035), { 16, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27035), { 16, 0, height + 2 },
                         { { 16, 29, height + 2 }, { 5, 2, 119 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27046), { 16, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27046), { 16, 16, height + 2 },
                         { { 29, 29, height + 2 }, { 2, 2, 119 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27038), { 10, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27038), { 10, 16, height + 2 },
                         { { 10, 0, height + 2 }, { 4, 2, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 8:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27042), { 0, 14, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27042), { 0, 14, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 63 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27034), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27034), { 0, 0, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27047), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27047), { 0, 6, height + 29 },
                         { { 29, 20, height + 29 }, { 2, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27039), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27039), { 0, 6, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 9:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27041), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27041), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27033), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27033), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27048), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27048), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 10, 7 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27040), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27040), { 0, 6, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -3036,19 +3036,19 @@ static void CompactInvertedRCTrackRightVerticalLoop(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 49, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 49, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 49, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 49, session.supportColours);
                     break;
             }
 
@@ -3061,7 +3061,7 @@ static void CompactInvertedRCTrackRightVerticalLoop(
                     PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -3077,113 +3077,113 @@ static void CompactInvertedRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26710), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26710), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26713), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26713), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26716), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26716), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26707), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26707), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26709), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26709), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26712), { 0, 0, height + 29 }, { 16, 16, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26712), { 0, 0, height + 29 }, { 16, 16, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26715), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26715), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26706), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26706), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26708), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26708), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26711), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26711), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26714), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26714), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26705), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26705), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             switch (direction)
             {
@@ -3194,7 +3194,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3220,114 +3220,114 @@ static void CompactInvertedRCTrackLeftQuarterTurn3Bank(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26722), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26722), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26725), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26725), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26728), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26728), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26719), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26719), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26721), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26721), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26724), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26724), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26727), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26727), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26718), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26718), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26720), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26720), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26723), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26723), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26726), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26726), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26717), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26717), { 0, 0, height + 29 },
                         { { 6, 0, height + 29 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             switch (direction)
             {
@@ -3338,7 +3338,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn3Bank(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3364,77 +3364,77 @@ static void CompactInvertedRCTrackLeftQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26924), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26924), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26926), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26926), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26928), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26928), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26922), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26922), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26923), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26923), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26925), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26925), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26927), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26927), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26921), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26921), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.supportColours);
 
             switch (direction)
             {
@@ -3445,7 +3445,7 @@ static void CompactInvertedRCTrackLeftQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -3461,77 +3461,77 @@ static void CompactInvertedRCTrackRightQuarterTurn325DegUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26913), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26913), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26915), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26915), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26917), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26917), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26919), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26919), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26914), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26914), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26916), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26916), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26918), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26918), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26920), { 6, 0, height + 29 }, { 20, 32, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26920), { 6, 0, height + 29 }, { 20, 32, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.supportColours);
 
             switch (direction)
             {
@@ -3542,7 +3542,7 @@ static void CompactInvertedRCTrackRightQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -3578,91 +3578,91 @@ static void CompactInvertedRCTrackLeftTwistDownToUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26993), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26993), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26999), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26999), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26998), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26998), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27004), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27004), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26994), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26994), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27000), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27000), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26997), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26997), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27003), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27003), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26995), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26995), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27001), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27001), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26996), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26996), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27002), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27002), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
             switch (direction)
             {
                 case 1:
@@ -3672,15 +3672,15 @@ static void CompactInvertedRCTrackLeftTwistDownToUp(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3696,91 +3696,91 @@ static void CompactInvertedRCTrackRightTwistDownToUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27005), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27005), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27011), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27011), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27010), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27010), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27016), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27016), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27006), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27006), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27012), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27012), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27009), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27009), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27015), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27015), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27007), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27007), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27013), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27013), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27008), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27008), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27014), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27014), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
             switch (direction)
             {
                 case 1:
@@ -3790,15 +3790,15 @@ static void CompactInvertedRCTrackRightTwistDownToUp(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3814,98 +3814,98 @@ static void CompactInvertedRCTrackLeftTwistUpToDown(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26996), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26996), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27002), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27002), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26995), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26995), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27001), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27001), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26997), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26997), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27003), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27003), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26994), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26994), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27000), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27000), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26998), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26998), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27004), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27004), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26993), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26993), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26999), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26999), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             switch (direction)
             {
@@ -3916,7 +3916,7 @@ static void CompactInvertedRCTrackLeftTwistUpToDown(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -3932,98 +3932,98 @@ static void CompactInvertedRCTrackRightTwistUpToDown(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27008), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27008), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27014), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27014), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27007), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27007), { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27013), { 0, 6, height }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27013), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.supportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27009), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27009), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27015), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27015), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27006), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27006), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27012), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27012), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27010), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27010), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27016), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27016), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27005), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27005), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27011), { 0, 6, height + 29 }, { 32, 20, 3 });
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27011), { 0, 6, height + 29 }, { 32, 20, 3 });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             switch (direction)
             {
@@ -4034,7 +4034,7 @@ static void CompactInvertedRCTrackRightTwistUpToDown(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -4050,147 +4050,147 @@ static void CompactInvertedRCTrackHalfLoopUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27073), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27073), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27081), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27081), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27080), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27080), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27088), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27088), { 0, 6, height + 29 },
                         { { 0, 6, height + 45 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             switch (direction)
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 56, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 56, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 56, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 56, session.supportColours);
                     break;
             }
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27074), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27074), { 0, 0, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27082), { 0, 14, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27082), { 0, 14, height + 29 },
                         { { 0, 29, height + 29 }, { 32, 2, 63 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27079), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27079), { 0, 6, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27087), { 0, 6, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27087), { 0, 6, height + 29 },
                         { { 29, 20, height + 29 }, { 2, 2, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27075), { 16, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27075), { 16, 0, height + 2 },
                         { { 16, 29, height + 2 }, { 5, 2, 119 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27083), { 12, 0, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27083), { 12, 0, height + 2 },
                         { { 0, -6, height + 2 }, { 32, 2, 119 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27078), { 10, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27078), { 10, 16, height + 2 },
                         { { 10, 0, height + 2 }, { 4, 2, 119 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27086), { 16, 16, height + 2 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27086), { 16, 16, height + 2 },
                         { { 29, 29, height + 2 }, { 2, 2, 119 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            paintUtilSetGeneralSupportHeight(session, height + 168);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27076), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27076), { 0, 0, height + 34 },
                         { { 0, 6, height + 34 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27084), { 0, 0, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27084), { 0, 0, height + 34 },
                         { { 0, 0, height - 6 }, { 2, 2, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27077), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27077), { 0, 16, height + 34 },
                         { { 0, 0, height - 6 }, { 32, 2, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27085), { 0, 16, height + 34 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27085), { 0, 16, height + 34 },
                         { { 0, 6, height + 34 }, { 32, 20, 3 } });
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -4214,97 +4214,97 @@ static void CompactInvertedRCTrackLeftCorkscrewUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27049), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27049), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27052), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27052), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27055), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27055), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27058), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27058), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27050), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27050), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27053), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27053), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27056), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27056), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27059), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27059), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27051), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27051), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27054), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27054), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27057), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27057), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27060), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27060), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 28, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 28, session.supportColours);
             switch (direction)
             {
                 case 2:
@@ -4314,15 +4314,15 @@ static void CompactInvertedRCTrackLeftCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 40, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
                         PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -4338,97 +4338,97 @@ static void CompactInvertedRCTrackRightCorkscrewUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27061), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27061), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27064), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27064), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27067), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27067), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27070), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27070), { 0, 0, height + 29 },
                         { { 0, 6, height + 33 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27062), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27062), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27065), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27065), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27068), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27068), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27071), { 0, 0, height + 14 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27071), { 0, 0, height + 14 },
                         { { 6, 6, height + 24 }, { 20, 20, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27063), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27063), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27066), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27066), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27069), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27069), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27072), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27072), { 0, 0, height + 29 },
                         { { 6, 0, height + 39 }, { 20, 32, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 28, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 28, session.supportColours);
             switch (direction)
             {
                 case 0:
@@ -4438,15 +4438,15 @@ static void CompactInvertedRCTrackRightCorkscrewUp(
                     PaintUtilPushTunnelLeft(session, height + 40, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -4477,42 +4477,42 @@ static void CompactInvertedRCTrackLeftQuarterTurn160DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26910), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26910), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26906), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26906), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26911), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26911), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26907), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26907), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26912), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26912), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26908), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26908), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26909), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26909), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26905), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26905), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008AEAB0 */
@@ -4523,42 +4523,42 @@ static void CompactInvertedRCTrackRightQuarterTurn160DegUp(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26901), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26901), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26897), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26897), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26902), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26902), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26898), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26898), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26903), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26903), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26899), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26899), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26904), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26904), { 0, 0, height + 5 },
                 { { 2, 2, height + 5 }, { 28, 28, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26900), { 0, 0, height + 5 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26900), { 0, 0, height + 5 },
                 { { 2, 2, height + 104 }, { 28, 28, 1 } });
             break;
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 104);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008AEAC0 */
@@ -4588,27 +4588,27 @@ static void CompactInvertedRCTrackBrakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26559), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26559), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26560), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26560), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AEAF0 */
@@ -4622,185 +4622,185 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27118), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27118), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27123), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27123), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27128), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27128), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27113), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27113), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27117), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27117), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27122), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27122), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27127), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27127), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27112), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27112), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27116), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27116), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27121), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27121), { 0, 0, height + 29 },
                         { { 16, 16, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27126), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27126), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27111), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27111), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27115), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27115), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27120), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27120), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27125), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27125), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27110), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27110), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27114), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27114), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27119), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27119), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27124), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27124), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27109), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27109), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.supportColours);
 
             switch (direction)
             {
@@ -4811,7 +4811,7 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeUp(
                     PaintUtilPushTunnelLeft(session, height + 16, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -4827,185 +4827,185 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeUp(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27089), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27089), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27094), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27094), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27099), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27099), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27104), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27104), { 0, 0, height + 29 },
                         { { 0, 6, height + 35 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27090), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27090), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27095), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27095), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27100), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27100), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27105), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27105), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27091), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27091), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27096), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27096), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27101), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27101), { 0, 0, height + 29 },
                         { { 16, 16, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27106), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27106), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27092), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27092), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27097), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27097), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27102), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27102), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27107), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27107), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27093), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27093), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27098), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27098), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27103), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27103), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27108), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27108), { 0, 0, height + 29 },
                         { { 6, 0, height + 43 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.supportColours);
 
             switch (direction)
             {
@@ -5016,7 +5016,7 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeUp(
                     PaintUtilPushTunnelLeft(session, height + 16, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5032,185 +5032,185 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeDown(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27098), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27098), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27103), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27103), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27108), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27108), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27093), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27093), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27097), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27097), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27102), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27102), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27107), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27107), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27092), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27092), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27096), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27096), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27101), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27101), { 0, 0, height + 29 },
                         { { 16, 16, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27106), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27106), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27091), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27091), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27095), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27095), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27100), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27100), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27105), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27105), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27090), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27090), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27094), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27094), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27099), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27099), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27104), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27104), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27089), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27089), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.supportColours);
 
             switch (direction)
             {
@@ -5221,7 +5221,7 @@ static void CompactInvertedRCTrackLeftQuarterBankedHelixLargeDown(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5237,185 +5237,185 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeDown(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27109), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27109), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27114), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27114), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27119), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27119), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27124), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27124), { 0, 0, height + 29 },
                         { { 0, 6, height + 43 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 56, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27110), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27110), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27115), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27115), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27120), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27120), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27125), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27125), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27111), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27111), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27116), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27116), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27121), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27121), { 0, 0, height + 29 },
                         { { 16, 16, height + 43 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27126), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27126), { 0, 0, height + 29 },
                         { { 0, 16, height + 43 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27112), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27112), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27117), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27117), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27122), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27122), { 0, 0, height + 29 },
                         { { 0, 0, height + 43 }, { 16, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27127), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27127), { 0, 0, height + 29 },
                         { { 16, 0, height + 43 }, { 16, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 6:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27113), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27113), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27118), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27118), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27123), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27123), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(27128), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(27128), { 0, 0, height + 29 },
                         { { 6, 0, height + 35 }, { 20, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.supportColours);
 
             switch (direction)
             {
@@ -5426,7 +5426,7 @@ static void CompactInvertedRCTrackRightQuarterBankedHelixLargeDown(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5441,23 +5441,23 @@ static void CompactInvertedRCTrackOnRidePhoto(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26555), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26555), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26556), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26556), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26555), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26555), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26556), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26556), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
@@ -5478,23 +5478,23 @@ static void CompactInvertedRCTrack90DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26609), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26609), { 0, 0, height + 29 },
                             { { 0, 6, height + 61 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26610), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26610), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 31 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26611), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26611), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 31 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26612), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26612), { 0, 0, height + 29 },
                             { { 0, 6, height + 61 }, { 32, 20, 3 } });
                         break;
                 }
@@ -5504,31 +5504,31 @@ static void CompactInvertedRCTrack90DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26605), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26605), { 0, 0, height + 29 },
                             { { 0, 6, height + 61 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26606), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26606), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 31 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26607), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26607), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 31 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26608), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26608), { 0, 0, height + 29 },
                             { { 0, 6, height + 61 }, { 32, 20, 3 } });
                         break;
                 }
             }
             PaintUtilSetVerticalTunnel(session, height + 32);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             break;
@@ -5556,23 +5556,23 @@ static void CompactInvertedRCTrack60DegUpTo90DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26597), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26597), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26598), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26598), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26599), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26599), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26600), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26600), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                 }
@@ -5582,35 +5582,35 @@ static void CompactInvertedRCTrack60DegUpTo90DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26589), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26589), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26590), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26590), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26591), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26591), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26592), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26592), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                 }
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+                paintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetVerticalTunnel(session, height + 56);
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             break;
@@ -5636,23 +5636,23 @@ static void CompactInvertedRCTrack90DegUpTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26601), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26601), { 0, 0, height + 29 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26602), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26602), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 55 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26603), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26603), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 55 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26604), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26604), { 0, 0, height + 29 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
         }
@@ -5662,23 +5662,23 @@ static void CompactInvertedRCTrack90DegUpTo60DegUp(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26593), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26593), { 0, 0, height + 29 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
             case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26594), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26594), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 55 } });
                 break;
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26595), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26595), { 0, 0, height + 29 },
                     { { 0, 4, height + 11 }, { 32, 2, 55 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(26596), { 0, 0, height + 29 },
+                paintAddImageAsParentRotated(
+                    session, direction, session.trackColours.WithIndex(26596), { 0, 0, height + 29 },
                     { { 0, 6, height + 85 }, { 32, 20, 3 } });
                 break;
         }
@@ -5692,8 +5692,8 @@ static void CompactInvertedRCTrack90DegUpTo60DegUp(
             PaintUtilPushTunnelLeft(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 96);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 96);
 }
 
 /** rct2: 0x008AEDA0 */
@@ -5709,23 +5709,23 @@ static void CompactInvertedRCTrack60DegDownTo90DegDown(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26603), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26603), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26604), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26604), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26601), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26601), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26602), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26602), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                 }
@@ -5735,34 +5735,34 @@ static void CompactInvertedRCTrack60DegDownTo90DegDown(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26595), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26595), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26596), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26596), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26593), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26593), { 0, 0, height + 29 },
                             { { 0, 6, height + 85 }, { 32, 20, 3 } });
                         break;
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26594), { 0, 0, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26594), { 0, 0, height + 29 },
                             { { 0, 4, height + 11 }, { 32, 2, 55 } });
                         break;
                 }
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
+                paintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetGeneralSupportHeight(session, height + 96);
             break;
         case 1:
             break;
@@ -5780,143 +5780,143 @@ static void CompactInvertedRCTrackLeftEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26765), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26765), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26769), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26769), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26773), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26773), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26777), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26777), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26766), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26766), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26770), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26770), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 34, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26774), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26774), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26778), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26778), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26767), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26767), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26771), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26771), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26775), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26775), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26779), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26779), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26768), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26768), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26772), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26772), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 18, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26776), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26776), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26780), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26780), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -5927,26 +5927,26 @@ static void CompactInvertedRCTrackLeftEighthToDiag(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -5962,144 +5962,144 @@ static void CompactInvertedRCTrackRightEighthToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26749), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26749), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26753), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26753), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26757), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26757), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26761), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26761), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            paintUtilSetSegmentSupportHeight(
+                session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26750), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26750), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26754), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26754), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26758), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26758), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 34, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26762), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26762), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26751), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26751), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26755), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26755), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26759), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26759), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26763), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26763), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26752), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26752), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26756), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26756), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26760), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26760), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 18, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26764), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26764), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -6110,26 +6110,26 @@ static void CompactInvertedRCTrackRightEighthToDiag(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6165,148 +6165,148 @@ static void CompactInvertedRCTrackLeftEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26853), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26853), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26857), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26857), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26861), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26861), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26865), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26865), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26854), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26854), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26858), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26858), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 34, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26862), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26862), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26866), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26866), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26855), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26855), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26859), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26859), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26863), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26863), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26867), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26867), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26856), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26856), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26860), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26860), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 18, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26864), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26864), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26868), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26868), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -6317,26 +6317,26 @@ static void CompactInvertedRCTrackLeftEighthBankToDiag(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6352,148 +6352,148 @@ static void CompactInvertedRCTrackRightEighthBankToDiag(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26837), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26837), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26841), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26841), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26845), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26845), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26849), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26849), { 0, 0, height + 29 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26838), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26838), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26842), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26842), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 32, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26846), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26846), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 34, 16, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26850), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26850), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 32, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
                         PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26839), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26839), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26843), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26843), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26847), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26847), { 0, 0, height + 29 },
                         { { 4, 4, height + 29 }, { 28, 28, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26851), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26851), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 4:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26840), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26840), { 0, 0, height + 29 },
                         { { 16, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26844), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26844), { 0, 0, height + 29 },
                         { { 0, 0, height + 29 }, { 16, 16, 3 } });
                     break;
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26848), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26848), { 0, 0, height + 29 },
                         { { 0, 16, height + 29 }, { 16, 18, 3 } });
                     break;
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26852), { 0, 0, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26852), { 0, 0, height + 29 },
                         { { 16, 16, height + 29 }, { 16, 16, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
@@ -6504,26 +6504,26 @@ static void CompactInvertedRCTrackRightEighthBankToDiag(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -6556,14 +6556,14 @@ inline void CompactInvertedRCTrackDiagFlatBase(
         session, 3, height + 29, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, kDiagSupportPlacement[direction], 0, height + kSupportHeight, session.supportColours);
     }
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AEB80 */
@@ -6603,8 +6603,8 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26824), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26824), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6614,19 +6614,19 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26796), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26796), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6634,8 +6634,8 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26821), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26821), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6645,19 +6645,19 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26793), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26793), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6665,8 +6665,8 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26823), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26823), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6676,20 +6676,20 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26795), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26795), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6697,8 +6697,8 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26822), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26822), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6708,16 +6708,16 @@ static void CompactInvertedRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26794), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26794), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -6725,23 +6725,23 @@ static void CompactInvertedRCTrackDiag25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 50, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 50, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 50, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 50, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -6757,67 +6757,67 @@ static void CompactInvertedRCTrackDiag60DegUp(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26808), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26808), { -16, -16, height + 29 },
                         { { -16, -16, height + 93 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26805), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26805), { -16, -16, height + 29 },
                         { { -16, -16, height + 93 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26807), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26807), { -16, -16, height + 29 },
                         { { -16, -16, height + 93 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26806), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26806), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -6826,26 +6826,26 @@ static void CompactInvertedRCTrackDiag60DegUp(
                 case 0:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 32, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 36, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 32, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 36, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
     }
 }
@@ -6863,8 +6863,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26816), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26816), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6874,19 +6874,19 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26788), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26788), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -6894,8 +6894,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26813), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26813), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6905,19 +6905,19 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26785), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26785), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -6925,8 +6925,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26815), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26815), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6936,20 +6936,20 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26787), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26787), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -6957,8 +6957,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26814), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26814), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -6968,16 +6968,16 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26786), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26786), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -6985,23 +6985,23 @@ static void CompactInvertedRCTrackDiagFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -7017,67 +7017,67 @@ static void CompactInvertedRCTrackDiag25DegUpTo60DegUp(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26800), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26800), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26797), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26797), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26799), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26799), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26798), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26798), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7086,26 +7086,26 @@ static void CompactInvertedRCTrackDiag25DegUpTo60DegUp(
                 case 0:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 16, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 16, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 16, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 16, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -7121,67 +7121,67 @@ static void CompactInvertedRCTrackDiag60DegUpTo25DegUp(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26804), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26804), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26801), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26801), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26803), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26803), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26802), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26802), { -16, -16, height + 29 },
                         { { 0, 0, height + 61 }, { 16, 16, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7190,26 +7190,26 @@ static void CompactInvertedRCTrackDiag60DegUpTo25DegUp(
                 case 0:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 21, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 21, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 21, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 21, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -7227,8 +7227,8 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26820), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26820), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7238,19 +7238,19 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26792), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26792), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7258,8 +7258,8 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26817), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26817), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7269,19 +7269,19 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26789), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26789), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7289,8 +7289,8 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26819), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26819), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7300,20 +7300,20 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26791), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26791), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7321,8 +7321,8 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26818), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26818), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7332,16 +7332,16 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26790), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26790), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7349,23 +7349,23 @@ static void CompactInvertedRCTrackDiag25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7383,8 +7383,8 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26822), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26822), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7394,19 +7394,19 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26794), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26794), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -7414,8 +7414,8 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26823), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26823), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7425,19 +7425,19 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26795), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26795), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -7445,8 +7445,8 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26821), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26821), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7456,20 +7456,20 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26793), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26793), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -7477,8 +7477,8 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26824), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26824), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7488,16 +7488,16 @@ static void CompactInvertedRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26796), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26796), { -16, -16, height + 29 },
                             { { -16, -16, height + 45 }, { 32, 32, 3 } });
                         break;
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7505,23 +7505,23 @@ static void CompactInvertedRCTrackDiag25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 50, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 50, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 50, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 50, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -7537,67 +7537,67 @@ static void CompactInvertedRCTrackDiag60DegDown(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26806), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26806), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26807), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26807), { -16, -16, height + 29 },
                         { { -16, -16, height + 93 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26805), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26805), { -16, -16, height + 29 },
                         { { -16, -16, height + 93 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26808), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26808), { -16, -16, height + 29 },
                         { { -16, -16, height + 93 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7606,26 +7606,26 @@ static void CompactInvertedRCTrackDiag60DegDown(
                 case 0:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 24, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 28, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 24, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 28, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 120);
+            paintUtilSetGeneralSupportHeight(session, height + 120);
             break;
     }
 }
@@ -7643,8 +7643,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26818), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26818), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7654,15 +7654,15 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26790), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26790), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
@@ -7673,8 +7673,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26819), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26819), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7684,15 +7684,15 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26791), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26791), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
@@ -7703,8 +7703,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26817), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26817), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7714,15 +7714,15 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26789), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26789), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -7734,8 +7734,8 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26820), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26820), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -7745,16 +7745,16 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26792), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26792), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7762,25 +7762,25 @@ static void CompactInvertedRCTrackDiagFlatTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.supportColours);
                     break;
             }
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AEC20 */
@@ -7794,67 +7794,67 @@ static void CompactInvertedRCTrackDiag25DegDownTo60DegDown(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26802), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26802), { -16, -16, height + 29 },
                         { { 0, 0, height + 61 }, { 16, 16, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26803), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26803), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26801), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26801), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26804), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26804), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7863,26 +7863,26 @@ static void CompactInvertedRCTrackDiag25DegDownTo60DegDown(
                 case 0:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 17, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 17, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 17, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 17, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -7898,67 +7898,67 @@ static void CompactInvertedRCTrackDiag60DegDownTo25DegDown(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26798), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26798), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26799), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26799), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26797), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26797), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26800), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26800), { -16, -16, height + 29 },
                         { { -16, -16, height + 61 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -7967,26 +7967,26 @@ static void CompactInvertedRCTrackDiag60DegDownTo25DegDown(
                 case 0:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 8, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 8, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 8, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 8, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            paintUtilSetGeneralSupportHeight(session, height + 88);
             break;
     }
 }
@@ -8004,8 +8004,8 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26814), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26814), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -8015,19 +8015,19 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 3:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26786), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26786), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             if (trackElement.HasChain())
@@ -8035,8 +8035,8 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26815), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26815), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -8046,19 +8046,19 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 0:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26787), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26787), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -8066,8 +8066,8 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26813), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26813), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -8077,20 +8077,20 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 2:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26785), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26785), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -8098,8 +8098,8 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26816), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26816), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
@@ -8109,16 +8109,16 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 1:
-                        PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours.WithIndex(26788), { -16, -16, height + 29 },
+                        paintAddImageAsParentRotated(
+                            session, direction, session.trackColours.WithIndex(26788), { -16, -16, height + 29 },
                             { { -16, -16, height + 37 }, { 32, 32, 3 } });
                         break;
                 }
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -8126,23 +8126,23 @@ static void CompactInvertedRCTrackDiag25DegDownToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8158,67 +8158,67 @@ static void CompactInvertedRCTrackDiagFlatToLeftBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26876), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26876), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26873), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26873), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26875), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26875), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26874), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26874), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft),
@@ -8229,26 +8229,26 @@ static void CompactInvertedRCTrackDiagFlatToLeftBank(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8264,67 +8264,67 @@ static void CompactInvertedRCTrackDiagFlatToRightBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26880), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26880), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26877), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26877), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26879), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26879), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26878), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26878), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft),
@@ -8335,26 +8335,26 @@ static void CompactInvertedRCTrackDiagFlatToRightBank(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8370,67 +8370,67 @@ static void CompactInvertedRCTrackDiagLeftBankToFlat(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26878), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26878), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26879), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26879), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26877), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26877), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26880), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26880), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft),
@@ -8441,26 +8441,26 @@ static void CompactInvertedRCTrackDiagLeftBankToFlat(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8476,67 +8476,67 @@ static void CompactInvertedRCTrackDiagRightBankToFlat(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26874), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26874), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26875), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26875), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26873), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26873), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26876), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26876), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft),
@@ -8547,26 +8547,26 @@ static void CompactInvertedRCTrackDiagRightBankToFlat(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -8582,67 +8582,67 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegUp(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26892), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26892), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26889), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26889), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26891), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26891), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26890), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26890), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -8650,23 +8650,23 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8682,67 +8682,67 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegUp(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26896), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26896), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26893), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26893), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26895), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26895), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26894), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26894), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -8750,23 +8750,23 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -8782,67 +8782,67 @@ static void CompactInvertedRCTrackDiag25DegUpToLeftBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26884), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26884), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26881), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26881), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26883), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26883), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26882), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26882), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -8850,23 +8850,23 @@ static void CompactInvertedRCTrackDiag25DegUpToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8882,67 +8882,67 @@ static void CompactInvertedRCTrackDiag25DegUpToRightBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26888), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26888), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26885), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26885), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26887), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26887), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26886), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26886), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -8950,23 +8950,23 @@ static void CompactInvertedRCTrackDiag25DegUpToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            paintUtilSetGeneralSupportHeight(session, height + 72);
             break;
     }
 }
@@ -8982,14 +8982,14 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegDown(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26886), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26886), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
@@ -8998,14 +8998,14 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegDown(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26887), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26887), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
@@ -9014,14 +9014,14 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegDown(
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26885), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26885), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -9031,15 +9031,15 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegDown(
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26888), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26888), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -9047,25 +9047,25 @@ static void CompactInvertedRCTrackDiagLeftBankTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.supportColours);
                     break;
             }
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AED00 */
@@ -9079,14 +9079,14 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegDown(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26882), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26882), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
@@ -9095,14 +9095,14 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegDown(
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26883), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26883), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
@@ -9111,14 +9111,14 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegDown(
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26881), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26881), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
@@ -9128,15 +9128,15 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegDown(
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26884), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26884), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -9144,25 +9144,25 @@ static void CompactInvertedRCTrackDiagRightBankTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.supportColours);
                     break;
             }
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 72);
+    paintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AED10 */
@@ -9176,67 +9176,67 @@ static void CompactInvertedRCTrackDiag25DegDownToLeftBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26894), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26894), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26895), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26895), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26893), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26893), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26896), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26896), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -9244,23 +9244,23 @@ static void CompactInvertedRCTrackDiag25DegDownToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -9276,67 +9276,67 @@ static void CompactInvertedRCTrackDiag25DegDownToRightBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26890), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26890), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26891), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26891), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26889), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26889), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26892), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26892), { -16, -16, height + 29 },
                         { { -16, -16, height + 37 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
@@ -9344,23 +9344,23 @@ static void CompactInvertedRCTrackDiag25DegDownToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            paintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
 }
@@ -9376,67 +9376,67 @@ static void CompactInvertedRCTrackDiagLeftBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26872), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26872), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26869), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26869), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26871), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26871), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26870), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26870), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft),
@@ -9447,26 +9447,26 @@ static void CompactInvertedRCTrackDiagLeftBank(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9482,67 +9482,67 @@ static void CompactInvertedRCTrackDiagRightBank(
             switch (direction)
             {
                 case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26870), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26870), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26871), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26871), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
             switch (direction)
             {
                 case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26869), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26869), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
             switch (direction)
             {
                 case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(26872), { -16, -16, height + 29 },
+                    paintAddImageAsParentRotated(
+                        session, direction, session.trackColours.WithIndex(26872), { -16, -16, height + 29 },
                         { { -16, -16, height + 29 }, { 32, 32, 3 } });
                     break;
             }
 
-            PaintUtilSetSegmentSupportHeight(
+            paintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
+                paintUtilRotateSegments(
                     EnumsToFlags(
                         PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
                         PaintSegment::bottomLeft),
@@ -9553,26 +9553,26 @@ static void CompactInvertedRCTrackDiagRightBank(
                 case 0:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
+                        session.supportColours);
                     break;
             }
 
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            paintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
@@ -9586,27 +9586,27 @@ static void CompactInvertedRCTrackBlockBrakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26559), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26559), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(26560), { 0, 0, height + 29 },
+            paintAddImageAsParentRotated(
+                session, direction, session.trackColours.WithIndex(26560), { 0, 0, height + 29 },
                 { { 0, 6, height + 29 }, { 32, 20, 3 } });
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    paintUtilSetSegmentSupportHeight(session, paintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    if (TrackPaintUtilShouldPaintSupports(session.mapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight, session.supportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    paintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    paintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 TrackPaintFunction GetTrackPaintFunctionCompactInvertedRC(TrackElemType trackType)

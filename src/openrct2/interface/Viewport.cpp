@@ -70,10 +70,10 @@ namespace OpenRCT2
     static std::vector<PaintSession*> _paintColumns;
 
     InteractionInfo::InteractionInfo(const PaintStruct* ps)
-        : Loc(ps->MapPos)
-        , Element(ps->Element)
-        , Entity(ps->Entity)
-        , interactionType(ps->InteractionItem)
+        : Loc(ps->mapPos)
+        , Element(ps->element)
+        , Entity(ps->entity)
+        , interactionType(ps->interactionItem)
     {
     }
 
@@ -838,38 +838,38 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        PaintSessionGenerate(session);
-        PaintSessionArrange(session);
+        paintSessionGenerate(session);
+        paintSessionArrange(session);
     }
 
     static void ViewportPaintColumn(PaintSession& session)
     {
         PROFILED_FUNCTION();
 
-        if (session.ViewFlags
+        if (session.viewFlags
                 & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE
                    | VIEWPORT_FLAG_CLIP_VIEW)
-            && (~session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
+            && (~session.viewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
         {
             PaletteIndex colour = PaletteIndex::pi10;
-            if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
+            if (session.viewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
             {
                 colour = PaletteIndex::transparent;
             }
             GfxClear(session.rt, colour);
         }
 
-        PaintDrawStructs(session);
+        paintDrawStructs(session);
 
         if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
-            && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES) && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+            && !(session.viewFlags & VIEWPORT_FLAG_HIDE_ENTITIES) && !(session.viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             ViewportPaintWeatherGloom(session.rt);
         }
 
-        if (session.PSStringHead != nullptr)
+        if (session.psStringHead != nullptr)
         {
-            PaintDrawMoneyStructs(session.rt, session.PSStringHead);
+            paintDrawMoneyStructs(session.rt, session.psStringHead);
         }
     }
 
@@ -929,7 +929,7 @@ namespace OpenRCT2
         // Generate and sort columns.
         for (int32_t x = alignedX; x < rightBorder; x += columnWidth)
         {
-            PaintSession* session = PaintSessionAlloc(worldRT, viewport->flags, viewport->rotation);
+            PaintSession* session = paintSessionAlloc(worldRT, viewport->flags, viewport->rotation);
             _paintColumns.push_back(session);
 
             RenderTarget& columnRT = session->rt;
@@ -995,7 +995,7 @@ namespace OpenRCT2
         // Release resources.
         for (auto* session : _paintColumns)
         {
-            PaintSessionFree(session);
+            paintSessionFree(session);
         }
     }
 
@@ -1351,19 +1351,19 @@ namespace OpenRCT2
             && (viewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
 
         // the element is above the cut-off height
-        auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
-            && ps->Entity->getLocation().z > (gClipHeight * kCoordsZStep);
+        auto clipped = cutAwayViewWithTransparency && ps->element == nullptr && ps->entity != nullptr
+            && ps->entity->getLocation().z > (gClipHeight * kCoordsZStep);
 
         // the entity is above the cut-off height
-        clipped |= cutAwayViewWithTransparency && ps->Element != nullptr
-            && (ps->Element->getBaseZ() > gClipHeight * kCoordsZStep);
+        clipped |= cutAwayViewWithTransparency && ps->element != nullptr
+            && (ps->element->getBaseZ() > gClipHeight * kCoordsZStep);
 
-        switch (ps->InteractionItem)
+        switch (ps->interactionItem)
         {
             case ViewportInteractionItem::entity:
-                if (ps->Entity != nullptr)
+                if (ps->entity != nullptr)
                 {
-                    switch (ps->Entity->type)
+                    switch (ps->entity->type)
                     {
                         case EntityType::vehicle:
                         {
@@ -1376,7 +1376,7 @@ namespace OpenRCT2
                             // these should be hidden if 'hide rides' is enabled
                             if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || clipped)
                             {
-                                auto vehicle = ps->Entity->as<Vehicle>();
+                                auto vehicle = ps->entity->as<Vehicle>();
                                 if (vehicle == nullptr)
                                     break;
 
@@ -1435,9 +1435,9 @@ namespace OpenRCT2
             case ViewportInteractionItem::scenery:
             case ViewportInteractionItem::largeScenery:
             case ViewportInteractionItem::wall:
-                if (ps->Element != nullptr)
+                if (ps->element != nullptr)
                 {
-                    if (IsTileElementVegetation(ps->Element))
+                    if (IsTileElementVegetation(ps->element))
                     {
                         if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION || clipped)
                         {
@@ -1454,7 +1454,7 @@ namespace OpenRCT2
                         }
                     }
                 }
-                if (ps->InteractionItem == ViewportInteractionItem::wall
+                if (ps->interactionItem == ViewportInteractionItem::wall
                     && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE || clipped))
                 {
                     return VisibilityKind::partial;
@@ -1475,10 +1475,10 @@ namespace OpenRCT2
      */
     static bool PSInteractionTypeIsInFilter(PaintStruct* ps, uint16_t filter)
     {
-        if (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
-            && ps->InteractionItem <= ViewportInteractionItem::banner)
+        if (ps->interactionItem != ViewportInteractionItem::none && ps->interactionItem != ViewportInteractionItem::label
+            && ps->interactionItem <= ViewportInteractionItem::banner)
         {
-            auto mask = EnumToFlag(ps->InteractionItem);
+            auto mask = EnumToFlag(ps->interactionItem);
             if (filter & mask)
             {
                 return true;
@@ -1653,7 +1653,7 @@ namespace OpenRCT2
 
         InteractionInfo info{};
 
-        PaintStruct* ps = session->PaintHead;
+        PaintStruct* ps = session->paintHead;
         while (ps != nullptr)
         {
             PaintStruct* old_ps = ps;
@@ -1661,7 +1661,7 @@ namespace OpenRCT2
             while (next_ps != nullptr)
             {
                 ps = next_ps;
-                if (IsSpriteInteractedWith(session->rt, ps->image_id, ps->ScreenPos))
+                if (IsSpriteInteractedWith(session->rt, ps->imageId, ps->screenPos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
                         && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)
@@ -1669,14 +1669,14 @@ namespace OpenRCT2
                         info = { ps };
                     }
                 }
-                next_ps = ps->Children;
+                next_ps = ps->children;
             }
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
-            for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
+            for (AttachedPaintStruct* attached_ps = ps->attached; attached_ps != nullptr; attached_ps = attached_ps->nextEntry)
             {
-                if (IsSpriteInteractedWith(session->rt, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
+                if (IsSpriteInteractedWith(session->rt, attached_ps->imageId, ps->screenPos + attached_ps->relativePos))
                 {
                     if (PSInteractionTypeIsInFilter(ps, filter)
                         && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::visible)
@@ -1687,7 +1687,7 @@ namespace OpenRCT2
             }
 #pragma GCC diagnostic pop
 
-            ps = old_ps->NextQuadrantEntry;
+            ps = old_ps->nextQuadrantEntry;
         }
         return info;
     }
@@ -1744,11 +1744,11 @@ namespace OpenRCT2
             rt.cullingWidth = rt.width;
             rt.cullingHeight = rt.height;
 
-            PaintSession* session = PaintSessionAlloc(rt, viewport->flags, viewport->rotation);
-            PaintSessionGenerate(*session);
-            PaintSessionArrange(*session);
+            PaintSession* session = paintSessionAlloc(rt, viewport->flags, viewport->rotation);
+            paintSessionGenerate(*session);
+            paintSessionArrange(*session);
             info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags & 0xFFFF);
-            PaintSessionFree(session);
+            paintSessionFree(session);
         }
         return info;
     }

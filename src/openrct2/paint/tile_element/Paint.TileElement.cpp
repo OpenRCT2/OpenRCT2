@@ -43,29 +43,29 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y);
-static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
+static void blankTilesPaint(PaintSession& session, int32_t x, int32_t y);
+static void paintTileElementBase(PaintSession& session, const CoordsXY& origCoords);
 
 /**
  *
  *  rct2: 0x0068B35F
  */
-void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
+void tileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
     PROFILED_FUNCTION();
 
     if (!MapIsEdge(mapCoords))
     {
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilForceSetGeneralSupportHeight(session, -1, 0);
-        session.Flags = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
-        session.WaterHeight = 0xFFFF;
+        paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+        paintUtilForceSetGeneralSupportHeight(session, -1, 0);
+        session.flags = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
+        session.waterHeight = 0xFFFF;
 
-        PaintTileElementBase(session, mapCoords);
+        paintTileElementBase(session, mapCoords);
     }
-    else if (!(session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
+    else if (!(session.viewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
-        BlankTilesPaint(session, mapCoords.x, mapCoords.y);
+        blankTilesPaint(session, mapCoords.x, mapCoords.y);
     }
 }
 
@@ -73,10 +73,10 @@ void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, boo
  *
  *  rct2: 0x0068B60E
  */
-static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
+static void blankTilesPaint(PaintSession& session, int32_t x, int32_t y)
 {
     int32_t dx = 0;
-    switch (session.CurrentRotation)
+    switch (session.currentRotation)
     {
         case 0:
             dx = x + y;
@@ -106,10 +106,10 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     if (dx >= session.rt.WorldY())
         return;
 
-    session.SpritePosition.x = x;
-    session.SpritePosition.y = y;
-    session.InteractionType = ViewportInteractionItem::none;
-    PaintAddImageAsParent(session, ImageId(SPR_BLANK_TILE), { 0, 0, 16 }, { 32, 32, -1 });
+    session.spritePosition.x = x;
+    session.spritePosition.y = y;
+    session.interactionType = ViewportInteractionItem::none;
+    paintAddImageAsParent(session, ImageId(SPR_BLANK_TILE), { 0, 0, 16 }, { 32, 32, -1 });
 }
 
 bool gShowSupportSegmentHeights = false;
@@ -118,13 +118,13 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoords)
+static void paintTileElementBase(PaintSession& session, const CoordsXY& origCoords)
 {
     PROFILED_FUNCTION();
 
     CoordsXY coords = origCoords;
 
-    if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
+    if ((session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
         if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
             return;
@@ -132,22 +132,22 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             return;
     }
 
-    session.LeftTunnels.clear();
-    session.RightTunnels.clear();
-    session.VerticalTunnelHeight = 0xFF;
-    session.MapPosition.x = coords.x;
-    session.MapPosition.y = coords.y;
+    session.leftTunnels.clear();
+    session.rightTunnels.clear();
+    session.verticalTunnelHeight = 0xFF;
+    session.mapPosition.x = coords.x;
+    session.mapPosition.y = coords.y;
 
-    auto* tile_element = MapGetFirstElementAt(session.MapPosition);
+    auto* tile_element = MapGetFirstElementAt(session.mapPosition);
     if (tile_element == nullptr)
         return;
-    uint8_t rotation = session.CurrentRotation;
+    uint8_t rotation = session.currentRotation;
 
     bool partOfVirtualFloor = false;
 
     if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off)
     {
-        partOfVirtualFloor = VirtualFloorTileIsFloor(session.MapPosition);
+        partOfVirtualFloor = VirtualFloorTileIsFloor(session.mapPosition);
     }
 
     switch (rotation)
@@ -169,8 +169,8 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     int32_t screenMinY = Translate3DTo2DWithZ(rotation, { coords, 0 }).y;
 
     // Display little yellow arrow when building footpaths?
-    if (gMapSelectFlags.has(MapSelectFlag::enableArrow) && session.MapPosition.x == gMapSelectArrowPosition.x
-        && session.MapPosition.y == gMapSelectArrowPosition.y)
+    if (gMapSelectFlags.has(MapSelectFlag::enableArrow) && session.mapPosition.x == gMapSelectArrowPosition.x
+        && session.mapPosition.y == gMapSelectArrowPosition.y)
     {
         uint8_t arrowRotation = (rotation + (gMapSelectArrowDirection & 3)) & 3;
 
@@ -178,11 +178,11 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         ImageId imageId = ImageId(imageIndex, OpenRCT2::Drawing::Colour::yellow);
         int32_t arrowZ = gMapSelectArrowPosition.z;
 
-        session.SpritePosition.x = coords.x;
-        session.SpritePosition.y = coords.y;
-        session.InteractionType = ViewportInteractionItem::none;
+        session.spritePosition.x = coords.x;
+        session.spritePosition.y = coords.y;
+        session.interactionType = ViewportInteractionItem::none;
 
-        PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
 
     if (screenMinY + 52 <= session.rt.WorldY())
@@ -210,9 +210,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     if (screenMinY - (maxHeight + 32) >= session.rt.WorldY() + session.rt.WorldHeight())
         return;
 
-    session.SpritePosition.x = coords.x;
-    session.SpritePosition.y = coords.y;
-    session.Flags &= ~PaintSessionFlags::PassedSurface;
+    session.spritePosition.x = coords.x;
+    session.spritePosition.y = coords.y;
+    session.flags &= ~PaintSessionFlags::PassedSurface;
 
     int32_t previousBaseZ = 0;
     do
@@ -223,12 +223,12 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         }
 
         // Only paint tile_elements below the clip height.
-        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->getBaseZ() > gClipHeight * kCoordsZStep))
+        if ((session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->getBaseZ() > gClipHeight * kCoordsZStep))
         {
             // see-through off: don't paint this tile_element at all
             // see-through on: paint this tile_element as partial or hidden later on
             // note: surface elements are not painted even with see-through turned on
-            if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0
+            if ((session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0
                 || tile_element->getType() == TileElementType::Surface)
             {
                 continue;
@@ -243,8 +243,8 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         if (baseZ != previousBaseZ)
         {
             previousBaseZ = baseZ;
-            session.PathElementOnSameHeight = nullptr;
-            session.TrackElementOnSameHeight = nullptr;
+            session.pathElementOnSameHeight = nullptr;
+            session.trackElementOnSameHeight = nullptr;
             const TileElement* tile_element_sub_iterator = tile_element;
             while (!(tile_element_sub_iterator++)->isLastForTile())
             {
@@ -259,14 +259,14 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
                 }
                 auto type = tile_element_sub_iterator->getType();
                 if (type == TileElementType::Path)
-                    session.PathElementOnSameHeight = tile_element_sub_iterator;
+                    session.pathElementOnSameHeight = tile_element_sub_iterator;
                 else if (type == TileElementType::Track)
-                    session.TrackElementOnSameHeight = tile_element_sub_iterator;
+                    session.trackElementOnSameHeight = tile_element_sub_iterator;
             }
         }
 
-        CoordsXY mapPosition = session.MapPosition;
-        session.CurrentlyDrawnTileElement = tile_element;
+        CoordsXY mapPosition = session.mapPosition;
+        session.currentlyDrawnTileElement = tile_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->getType())
         {
@@ -295,7 +295,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
                 PaintBanner(session, direction, baseZ, *(tile_element->asBanner()));
                 break;
         }
-        session.MapPosition = mapPosition;
+        session.mapPosition = mapPosition;
     } while (!(tile_element++)->isLastForTile());
 
     if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::Off && partOfVirtualFloor)
@@ -323,43 +323,43 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     {
         for (std::size_t sx = 0; sx < std::size(segmentPositions[sy]); sx++)
         {
-            uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
+            uint16_t segmentHeight = session.supportSegments[segmentPositions[sy][sx]].height;
             auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::paletteGlassBlack);
             if (segmentHeight == 0xFFFF)
             {
-                segmentHeight = session.Support.height;
+                segmentHeight = session.support.height;
                 // white: 0b101101
                 imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1)
                                        .WithTransparency(FilterPaletteID::paletteTranslucentBordeauxRedHighlight);
             }
 
             // Only draw supports below the clipping height.
-            if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (segmentHeight > gClipHeight))
+            if ((session.viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (segmentHeight > gClipHeight))
                 continue;
 
             int32_t xOffset = static_cast<int32_t>(sy) * 10;
             int32_t yOffset = -22 + static_cast<int32_t>(sx) * 10;
-            PaintAddImageAsParent(
+            paintAddImageAsParent(
                 session, imageColourFlats, { xOffset, yOffset, segmentHeight },
                 { { xOffset + 1, yOffset + 16, segmentHeight }, { 10, 10, 1 } });
         }
     }
 }
 
-void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
+void paintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height)
 {
-    if (session.Support.height >= height)
+    if (session.support.height >= height)
     {
         return;
     }
 
-    PaintUtilForceSetGeneralSupportHeight(session, height, kTileSlopeAboveTrackOrScenery);
+    paintUtilForceSetGeneralSupportHeight(session, height, kTileSlopeAboveTrackOrScenery);
 }
 
-void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
+void paintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope)
 {
-    session.Support.height = height;
-    session.Support.slope = slope;
+    session.support.height = height;
+    session.support.slope = slope;
 }
 
 const uint16_t kSegmentOffsets[9] = {
@@ -368,9 +368,9 @@ const uint16_t kSegmentOffsets[9] = {
     EnumToFlag(PaintSegment::topRight), EnumToFlag(PaintSegment::bottomLeft), EnumToFlag(PaintSegment::bottomRight),
 };
 
-void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
+void paintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
-    SupportHeight* supportSegments = session.SupportSegments;
+    SupportHeight* supportSegments = session.supportSegments;
     for (std::size_t s = 0; s < std::size(kSegmentOffsets); s++)
     {
         if (segments & kSegmentOffsets[s])
@@ -384,7 +384,7 @@ void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, u
     }
 }
 
-uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
+uint16_t paintUtilRotateSegments(uint16_t segments, uint8_t rotation)
 {
     // Only the value representing PaintSegment::centre falls beyond 0xFF, so this will be kept in place.
     uint8_t temp = segments & 0xFF;
@@ -393,8 +393,8 @@ uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
     return (segments & 0xFF00) | temp;
 }
 
-bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
+bool paintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
 {
     auto rt = &session.rt;
-    return (session.ViewFlags & viewportFlag) && (rt->zoom_level <= ZoomLevel{ 0 });
+    return (session.viewFlags & viewportFlag) && (rt->zoom_level <= ZoomLevel{ 0 });
 }

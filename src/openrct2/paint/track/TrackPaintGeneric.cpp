@@ -13,10 +13,10 @@ namespace OpenRCT2
 {
     ImageId getPrimaryTrackColourWithSecondarySupportColour(const PaintSession& session)
     {
-        if (session.TrackColours == ConstructionMarker)
-            return session.TrackColours;
+        if (session.trackColours == ConstructionMarker)
+            return session.trackColours;
         else
-            return session.TrackColours.WithSecondary(session.SupportColours.GetPrimary());
+            return session.trackColours.WithSecondary(session.supportColours.GetPrimary());
     }
 
     void paintTrackSprite(
@@ -30,7 +30,7 @@ namespace OpenRCT2
         if (spriteMap & sequenceIndexBit)
         {
             const ImageIndex imageIndexOffset = std::popcount(spriteMap & (sequenceIndexBit - 1));
-            PaintAddImageAsParentHeight(
+            paintAddImageAsParentHeight(
                 session, imageId.WithIndexOffset(imageIndexOffset), height, { 0, 0, 0 }, boundingBoxes[sequenceIndex]);
         }
     }

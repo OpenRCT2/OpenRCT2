@@ -21,5 +21,5 @@ void PaintExplosionFlare(PaintSession& session, const ExplosionFlare& explosionF
     PROFILED_FUNCTION();
 
     uint32_t imageId = SPR_EXPLOSION_FLARE + (explosionFare.frame / 256);
-    PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, explosionFare.z }, { 1, 1, 0 });
+    paintAddImageAsParent(session, ImageId(imageId), { 0, 0, explosionFare.z }, { 1, 1, 0 });
 }

@@ -24,17 +24,17 @@
 using namespace OpenRCT2;
 
 static constexpr uint8_t kEdges1X4NeSw[] = {
-    EDGE_NW | EDGE_SE,
-    EDGE_NW | EDGE_SE | EDGE_NE,
-    EDGE_NW | EDGE_SE,
-    EDGE_NW | EDGE_SE | EDGE_SW,
+    edgeNW | edgeSE,
+    edgeNW | edgeSE | edgeNE,
+    edgeNW | edgeSE,
+    edgeNW | edgeSE | edgeSW,
 };
 
 static constexpr uint8_t kEdges1X4NwSe[] = {
-    EDGE_NE | EDGE_SW,
-    EDGE_NE | EDGE_SW | EDGE_NW,
-    EDGE_NE | EDGE_SW,
-    EDGE_NE | EDGE_SW | EDGE_SE,
+    edgeNE | edgeSW,
+    edgeNE | edgeSW | edgeNW,
+    edgeNE | edgeSW,
+    edgeNE | edgeSW | edgeSE,
 };
 
 /** rct2: 0x008A8CA8 */
@@ -58,7 +58,7 @@ static void PaintFerrisWheelRiders(
         auto frameNum = (vehicle.flatRideAnimationFrame + i * 4) % 128;
         auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + direction * 128 + frameNum;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[i], vehicle.peep_tshirt_colours[i + 1]);
-        PaintAddImageAsChild(session, imageId, offset, bb);
+        paintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
@@ -72,15 +72,15 @@ static void PaintFerrisWheelStructure(
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = vehicle;
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = vehicle;
     }
 
     auto boundBox = kFerrisWheelData[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { boundBox.offset, height + 7 }, { boundBox.length, 127 } };
 
-    auto supportsImageTemplate = session.TrackColours;
+    auto supportsImageTemplate = session.trackColours;
     auto wheelImageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
@@ -92,16 +92,16 @@ static void PaintFerrisWheelStructure(
     auto wheelImageId = wheelImageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction * 8 + imageOffset);
     auto rightSupportImageId = leftSupportImageId.WithIndexOffset(1);
 
-    PaintAddImageAsParent(session, leftSupportImageId, offset, bb);
-    PaintAddImageAsChild(session, wheelImageId, offset, bb);
+    paintAddImageAsParent(session, leftSupportImageId, offset, bb);
+    paintAddImageAsChild(session, wheelImageId, offset, bb);
     if (vehicle != nullptr)
     {
         PaintFerrisWheelRiders(session, *rideEntry, *vehicle, direction, offset, bb);
     }
-    PaintAddImageAsChild(session, rightSupportImageId, offset, bb);
+    paintAddImageAsChild(session, rightSupportImageId, offset, bb);
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintFerrisWheel(
@@ -126,31 +126,31 @@ static void PaintFerrisWheel(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     ImageId imageId;
-    uint8_t rotation = session.CurrentRotation;
+    uint8_t rotation = session.currentRotation;
 
-    if (edges & EDGE_NW && TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, rotation))
+    if (edges & edgeNW && TrackPaintUtilHasFence(edgeNW, session.mapPosition, trackElement, ride, rotation))
     {
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_NW);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    if (edges & EDGE_NE && TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, rotation))
+    if (edges & edgeNE && TrackPaintUtilHasFence(edgeNE, session.mapPosition, trackElement, ride, rotation))
     {
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_NE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
+        paintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    if (edges & EDGE_SE && TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, rotation))
+    if (edges & edgeSE && TrackPaintUtilHasFence(edgeSE, session.mapPosition, trackElement, ride, rotation))
     {
         // Bound box is slightly different from TrackPaintUtilPaintFences
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
     }
-    if (edges & EDGE_SW && TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, rotation))
+    if (edges & edgeSW && TrackPaintUtilHasFence(edgeSW, session.mapPosition, trackElement, ride, rotation))
     {
         imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
+        paintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
     }
 
     switch (relativeTrackSequence)
@@ -169,8 +169,8 @@ static void PaintFerrisWheel(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 176);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
 TrackPaintFunction GetTrackPaintFunctionFerrisWheel(TrackElemType trackType)

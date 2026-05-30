@@ -42,7 +42,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D44D5
      */
-    void VehicleVisualSubmarine(
+    void vehicleVisualSubmarine(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
@@ -56,12 +56,11 @@ namespace OpenRCT2
         }
 
         const auto& bb = VehicleBoundboxes[carEntry->draw_order][Entity::Yaw::YawTo16(imageDirection)];
-        PaintAddImageAsParent(
+        paintAddImageAsParent(
             session, imageId0, { 0, 0, z },
-            { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
-        PaintAddImageAsParent(
-            session, imageId1, { 0, 0, z },
-            { { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 }, { bb.length_x, bb.length_y, 2 } });
+            { { bb.offsetX, bb.offsetY, bb.offsetZ + z }, { bb.lengthX, bb.lengthY, bb.lengthZ } });
+        paintAddImageAsParent(
+            session, imageId1, { 0, 0, z }, { { bb.offsetX, bb.offsetY, bb.offsetZ + z - 10 }, { bb.lengthX, bb.lengthY, 2 } });
         assert(carEntry->effect_visual == 1);
     }
 } // namespace OpenRCT2

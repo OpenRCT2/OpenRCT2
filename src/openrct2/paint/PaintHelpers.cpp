@@ -12,31 +12,30 @@
 #include "../ride/TrackPaint.h"
 #include "Paint.h"
 
-PaintStruct* PaintAddImageAsParentRotated(
+PaintStruct* paintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     if (direction & 1)
     {
-        return PaintAddImageAsParent(
+        return paintAddImageAsParent(
             session, imageId, { offset.y, offset.x, offset.z },
             { { boundBox.offset.y, boundBox.offset.x, boundBox.offset.z },
               { boundBox.length.y, boundBox.length.x, boundBox.length.z } });
     }
 
-    return PaintAddImageAsParent(session, imageId, offset, boundBox);
+    return paintAddImageAsParent(session, imageId, offset, boundBox);
 }
 
-PaintStruct* PaintAddImageAsChildRotated(
-    PaintSession& session, const uint8_t direction, const ImageId image_id, const CoordsXYZ& offset,
-    const BoundBoxXYZ& boundBox)
+PaintStruct* paintAddImageAsChildRotated(
+    PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
 {
     if (direction & 1)
     {
-        return PaintAddImageAsChild(
-            session, image_id, { offset.y, offset.x, offset.z },
+        return paintAddImageAsChild(
+            session, imageId, { offset.y, offset.x, offset.z },
             { { boundBox.offset.y, boundBox.offset.x, boundBox.offset.z },
               { boundBox.length.y, boundBox.length.x, boundBox.length.z } });
     }
 
-    return PaintAddImageAsChild(session, image_id, offset, boundBox);
+    return paintAddImageAsChild(session, imageId, offset, boundBox);
 }

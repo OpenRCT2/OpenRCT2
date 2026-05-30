@@ -28,7 +28,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D5889
      */
-    void VehicleVisualRiverRapids(
+    void vehicleVisualRiverRapids(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
@@ -36,7 +36,7 @@ namespace OpenRCT2
 
         ImageId image_id;
         int32_t baseImage_id = imageDirection;
-        uint32_t rotation = session.CurrentRotation;
+        uint32_t rotation = session.currentRotation;
         int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
         int32_t j = 0;
         if (vehicle->pitch == VehiclePitch::flat)
@@ -75,14 +75,14 @@ namespace OpenRCT2
         baseImage_id += carEntry->base_image_id;
 
         const auto& riverRapidsBb = _riverRapidsBoundbox[j];
-        auto bb = BoundBoxXYZ{ { riverRapidsBb.offset_x, riverRapidsBb.offset_y, riverRapidsBb.offset_z + z },
-                               { riverRapidsBb.length_x, riverRapidsBb.length_y, riverRapidsBb.length_z } };
+        auto bb = BoundBoxXYZ{ { riverRapidsBb.offsetX, riverRapidsBb.offsetY, riverRapidsBb.offsetZ + z },
+                               { riverRapidsBb.lengthX, riverRapidsBb.lengthY, riverRapidsBb.lengthZ } };
         image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
         if (vehicle->isGhost())
         {
             image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
         }
-        PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
+        paintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
         if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
@@ -91,30 +91,30 @@ namespace OpenRCT2
             int32_t peeps = ((ecx / 8) + 0) & 3;
             image_id = ImageId(
                 baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
-            PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
+            paintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
             if (vehicle->num_peeps > 2)
             {
                 peeps = ((ecx / 8) + 2) & 3;
                 image_id = ImageId(
                     baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
-                PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
+                paintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
             }
             if (vehicle->num_peeps > 4)
             {
                 peeps = ((ecx / 8) + 1) & 3;
                 image_id = ImageId(
                     baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
-                PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
+                paintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
             }
             if (vehicle->num_peeps > 6)
             {
                 peeps = ((ecx / 8) + 3) & 3;
                 image_id = ImageId(
                     baseImage_id + ((peeps + 1) * 72), vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
-                PaintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
+                paintAddImageAsChild(session, image_id, { 0, 0, z }, bb);
             }
         }
 
-        VehicleVisualSplashEffect(session, z, vehicle, carEntry);
+        vehicleVisualSplashEffect(session, z, vehicle, carEntry);
     }
 } // namespace OpenRCT2

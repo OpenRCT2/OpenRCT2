@@ -41,8 +41,8 @@ static void PaintHauntedHouseStructure(
     auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
-        session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = vehicle;
+        session.interactionType = ViewportInteractionItem::entity;
+        session.currentlyDrawnEntity = vehicle;
         frameNum = vehicle->flatRideAnimationFrame;
     }
 
@@ -51,18 +51,18 @@ static void PaintHauntedHouseStructure(
     auto imageIndex = baseImageIndex + direction;
 
     auto bb = BoundBoxXYZ{ { boundBox.offset, height }, { boundBox.length, 127 } };
-    PaintAddImageAsParent(session, stationColour.WithIndex(imageIndex), { xOffset, yOffset, height }, bb);
+    paintAddImageAsParent(session, stationColour.WithIndex(imageIndex), { xOffset, yOffset, height }, bb);
 
     if (session.rt.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
     {
         imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
-        PaintAddImageAsChild(
+        paintAddImageAsChild(
             session, stationColour.WithIndex(imageIndex), { xOffset, yOffset, height },
             { { boundBox.offset, height }, { boundBox.length, 127 } });
     }
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintHauntedHouse(
@@ -78,11 +78,11 @@ static void PaintHauntedHouse(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
-        kFenceSpritesRope, session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
+        kFenceSpritesRope, session.currentRotation);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
@@ -119,9 +119,9 @@ static void PaintHauntedHouse(
             break;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 128);
+    paintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
 TrackPaintFunction GetTrackPaintFunctionHauntedHouse(TrackElemType trackType)

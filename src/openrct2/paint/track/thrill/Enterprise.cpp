@@ -43,7 +43,7 @@ static void PaintEnterpriseRiders(
         auto frameOffset2 = floor2(imageOffset, 4) * 4;
         auto imageTemplate = ImageId(0, vehicle.peep_tshirt_colours[i]);
         auto imageId = imageTemplate.WithIndex(baseImageIndex + 196 + frameOffset1 + frameOffset2);
-        PaintAddImageAsChild(session, imageId, offset, bb);
+        paintAddImageAsChild(session, imageId, offset, bb);
     }
 }
 
@@ -60,18 +60,18 @@ static void PaintEnterpriseStructure(
         vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::entity;
-            session.CurrentlyDrawnEntity = vehicle;
+            session.interactionType = ViewportInteractionItem::entity;
+            session.currentlyDrawnEntity = vehicle;
         }
     }
 
     CoordsXYZ offset(xOffset, yOffset, height + 7);
     BoundBoxXYZ bb = { { 0, 0, height + 7 }, { 24, 24, 48 } };
 
-    uint32_t imageOffset = trackElement.getDirectionWithOffset(session.CurrentRotation);
+    uint32_t imageOffset = trackElement.getDirectionWithOffset(session.currentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->flatRideAnimationFrame << 2) + (((vehicle->orientation >> 3) + session.CurrentRotation) % 4);
+        imageOffset = (vehicle->flatRideAnimationFrame << 2) + (((vehicle->orientation >> 3) + session.currentRotation) % 4);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
@@ -81,15 +81,15 @@ static void PaintEnterpriseStructure(
         imageTemplate = imageFlags;
     }
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
-    PaintAddImageAsParent(session, imageId, offset, bb);
+    paintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr)
     {
         PaintEnterpriseRiders(session, *rideEntry, *vehicle, imageOffset, offset, bb);
     }
 
-    session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::ride;
+    session.currentlyDrawnEntity = nullptr;
+    session.interactionType = ViewportInteractionItem::ride;
 }
 
 static void PaintEnterprise(
@@ -105,11 +105,11 @@ static void PaintEnterprise(
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.trackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesRope,
-        session.CurrentRotation);
+        session, edges, session.mapPosition, trackElement, ride, session.trackColours, height, kFenceSpritesRope,
+        session.currentRotation);
 
     switch (trackSequence)
     {
@@ -169,9 +169,9 @@ static void PaintEnterprise(
             cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
-    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 160);
+    paintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    paintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    paintUtilSetGeneralSupportHeight(session, height + 160);
 }
 
 TrackPaintFunction GetTrackPaintFunctionEnterprise(TrackElemType trackType)
