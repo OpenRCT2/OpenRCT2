@@ -9,6 +9,7 @@
 
 #include "GameState.h"
 
+#include "Editor.h"
 #include "Game.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
@@ -337,7 +338,7 @@ namespace OpenRCT2
         VehicleSoundsUpdate();
         PeepUpdateCrowdNoise();
         Weather::updateSound();
-        EditorOpenWindowsForCurrentStep();
+        Editor::OpenWindowsForCurrentStep();
 
         // Update windows
         // WindowDispatchUpdateAll();

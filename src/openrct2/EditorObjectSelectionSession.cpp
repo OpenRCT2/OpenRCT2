@@ -533,7 +533,7 @@ void FinishObjectSelection()
             gameState.lastEntranceStyle = 0;
         }
 
-        gameState.editorStep = EditorStep::rollerCoasterDesigner;
+        gameState.editorStep = Editor::Step::rollerCoasterDesigner;
         GfxInvalidateScreen();
     }
     else
@@ -543,7 +543,7 @@ void FinishObjectSelection()
         auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
         ContextBroadcastIntent(&intent);
 
-        gameState.editorStep = EditorStep::landscapeEditor;
+        gameState.editorStep = Editor::Step::landscapeEditor;
         GfxInvalidateScreen();
     }
 }
