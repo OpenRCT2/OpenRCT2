@@ -297,7 +297,7 @@ static void RideRaceInitVehicleSpeeds(const Ride& ride)
             // Easter egg names should only work on guests
             if (guest != nullptr)
             {
-                switch (guest->GetEasterEggNameId())
+                switch (guest->getEasterEggNameId())
                 {
                     case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
                         vehicle->speed += 35;

@@ -372,7 +372,7 @@ namespace OpenRCT2::GameActions
                                  { 0, kPeepMaxNausea } };
                     case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                                 { EnumValue(PeepNauseaTolerance::None), EnumValue(PeepNauseaTolerance::High) } };
+                                 { EnumValue(PeepNauseaTolerance::none), EnumValue(PeepNauseaTolerance::high) } };
                     case GUEST_PARAMETER_TOILET:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                                  { 0, kPeepMaxToilet } };
@@ -645,13 +645,13 @@ namespace OpenRCT2::GameActions
             switch (parameter)
             {
                 case GUEST_PARAMETER_HAPPINESS:
-                    peep->Happiness = value;
-                    peep->HappinessTarget = value;
+                    peep->happiness = value;
+                    peep->happinessTarget = value;
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)
                     {
                         peep->PeepFlags &= ~PEEP_FLAGS_ANGRY;
-                        peep->Angriness = 0;
+                        peep->angriness = 0;
                     }
                     break;
                 case GUEST_PARAMETER_ENERGY:
@@ -659,26 +659,26 @@ namespace OpenRCT2::GameActions
                     peep->EnergyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
-                    peep->Hunger = value;
+                    peep->hunger = value;
                     break;
                 case GUEST_PARAMETER_THIRST:
-                    peep->Thirst = value;
+                    peep->thirst = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA:
-                    peep->Nausea = value;
-                    peep->NauseaTarget = value;
+                    peep->nausea = value;
+                    peep->nauseaTarget = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
-                    peep->NauseaTolerance = static_cast<PeepNauseaTolerance>(value);
+                    peep->nauseaTolerance = static_cast<PeepNauseaTolerance>(value);
                     break;
                 case GUEST_PARAMETER_TOILET:
-                    peep->Toilet = value;
+                    peep->toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
-                    peep->Intensity = IntensityRange(value, 15);
+                    peep->intensity = IntensityRange(value, 15);
                     break;
             }
-            peep->UpdateAnimationGroup();
+            peep->updateAnimationGroup();
         }
     }
 
@@ -689,20 +689,20 @@ namespace OpenRCT2::GameActions
             switch (object)
             {
                 case OBJECT_MONEY:
-                    peep->CashInPocket = 1000.00_GBP;
+                    peep->cashInPocket = 1000.00_GBP;
                     break;
                 case OBJECT_PARK_MAP:
-                    peep->GiveItem(ShopItem::map);
+                    peep->giveItem(ShopItem::map);
                     break;
                 case OBJECT_BALLOON:
-                    peep->GiveItem(ShopItem::balloon);
-                    peep->BalloonColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
-                    peep->UpdateAnimationGroup();
+                    peep->giveItem(ShopItem::balloon);
+                    peep->balloonColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
+                    peep->updateAnimationGroup();
                     break;
                 case OBJECT_UMBRELLA:
-                    peep->GiveItem(ShopItem::umbrella);
-                    peep->UmbrellaColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
-                    peep->UpdateAnimationGroup();
+                    peep->giveItem(ShopItem::umbrella);
+                    peep->umbrellaColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
+                    peep->updateAnimationGroup();
                     break;
             }
         }

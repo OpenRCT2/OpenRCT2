@@ -2926,64 +2926,64 @@ namespace OpenRCT2::RCT1
         auto* src = static_cast<const Peep*>(&srcBase);
         ImportPeep(dst, src);
 
-        dst->OutsideOfPark = static_cast<bool>(src->OutsideOfPark);
-        dst->TimeToConsume = src->TimeToConsume;
-        dst->VandalismSeen = src->VandalismSeen;
+        dst->outsideOfPark = static_cast<bool>(src->OutsideOfPark);
+        dst->timeToConsume = src->TimeToConsume;
+        dst->vandalismSeen = src->VandalismSeen;
 
         // Balloons were always blue in RCT1 without AA/LL, umbrellas always red
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->UmbrellaColour = Drawing::Colour::brightRed;
-            dst->BalloonColour = Drawing::Colour::lightBlue;
+            dst->umbrellaColour = Drawing::Colour::brightRed;
+            dst->balloonColour = Drawing::Colour::lightBlue;
         }
         else
         {
-            dst->UmbrellaColour = GetColour(src->UmbrellaColour);
-            dst->BalloonColour = GetColour(src->BalloonColour);
+            dst->umbrellaColour = GetColour(src->UmbrellaColour);
+            dst->balloonColour = GetColour(src->BalloonColour);
         }
-        dst->HatColour = GetColour(src->HatColour);
+        dst->hatColour = GetColour(src->HatColour);
 
-        dst->Happiness = src->Happiness;
-        dst->HappinessTarget = src->HappinessTarget;
-        dst->Nausea = src->Nausea;
-        dst->NauseaTarget = src->NauseaTarget;
-        dst->Hunger = src->Hunger;
-        dst->Thirst = src->Thirst;
-        dst->Toilet = src->Toilet;
-        dst->LitterCount = src->LitterCount;
-        dst->DisgustingCount = src->DisgustingCount;
-        dst->Intensity = static_cast<IntensityRange>(src->Intensity);
-        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->NauseaTolerance);
-        dst->GuestTimeOnRide = src->TimeOnRide;
-        dst->DaysInQueue = src->DaysInQueue;
-        dst->CashInPocket = src->CashInPocket;
-        dst->CashSpent = src->CashSpent;
-        dst->ParkEntryTime = src->ParkEntryTime;
-        dst->GuestNumRides = src->NumRides;
-        dst->AmountOfDrinks = src->NumDrinks;
-        dst->AmountOfFood = src->NumFood;
-        dst->AmountOfSouvenirs = src->NumSouvenirs;
-        dst->PaidToEnter = src->PaidToEnter;
-        dst->PaidOnRides = src->PaidOnRides;
-        dst->PaidOnDrink = src->PaidOnDrink;
-        dst->PaidOnFood = src->PaidOnFood;
-        dst->PaidOnSouvenirs = src->PaidOnSouvenirs;
-        dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->VoucherArguments);
-        dst->VoucherType = src->VoucherType;
-        dst->SurroundingsThoughtTimeout = src->SurroundingsThoughtTimeout;
-        dst->Angriness = src->Angriness;
-        dst->TimeLost = src->TimeLost;
+        dst->happiness = src->Happiness;
+        dst->happinessTarget = src->HappinessTarget;
+        dst->nausea = src->Nausea;
+        dst->nauseaTarget = src->NauseaTarget;
+        dst->hunger = src->Hunger;
+        dst->thirst = src->Thirst;
+        dst->toilet = src->Toilet;
+        dst->litterCount = src->LitterCount;
+        dst->disgustingCount = src->DisgustingCount;
+        dst->intensity = static_cast<IntensityRange>(src->Intensity);
+        dst->nauseaTolerance = static_cast<PeepNauseaTolerance>(src->NauseaTolerance);
+        dst->guestTimeOnRide = src->TimeOnRide;
+        dst->daysInQueue = src->DaysInQueue;
+        dst->cashInPocket = src->CashInPocket;
+        dst->cashSpent = src->CashSpent;
+        dst->parkEntryTime = src->ParkEntryTime;
+        dst->guestNumRides = src->NumRides;
+        dst->amountOfDrinks = src->NumDrinks;
+        dst->amountOfFood = src->NumFood;
+        dst->amountOfSouvenirs = src->NumSouvenirs;
+        dst->paidToEnter = src->PaidToEnter;
+        dst->paidOnRides = src->PaidOnRides;
+        dst->paidOnDrink = src->PaidOnDrink;
+        dst->paidOnFood = src->PaidOnFood;
+        dst->paidOnSouvenirs = src->PaidOnSouvenirs;
+        dst->voucherRideId = RCT12RideIdToOpenRCT2RideId(src->VoucherArguments);
+        dst->voucherType = src->VoucherType;
+        dst->surroundingsThoughtTimeout = src->SurroundingsThoughtTimeout;
+        dst->angriness = src->Angriness;
+        dst->timeLost = src->TimeLost;
 
         RideUse::GetHistory().Set(dst->id, RCT12GetRidesBeenOn(src));
         RideUse::GetTypeHistory().Set(dst->id, RCT12GetRideTypesBeenOn(src));
 
-        dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
+        dst->photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
         dst->PeepFlags = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);
 
         for (size_t i = 0; i < std::size(src->Thoughts); i++)
         {
             auto srcThought = &src->Thoughts[i];
-            auto dstThought = &dst->Thoughts[i];
+            auto dstThought = &dst->thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->Type);
             if (srcThought->Item == kRCT12PeepThoughtItemNone)
                 dstThought->item = kPeepThoughtItemNone;
@@ -2993,25 +2993,25 @@ namespace OpenRCT2::RCT1
             dstThought->fresh_timeout = srcThought->FreshTimeout;
         }
 
-        dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->PreviousRide);
-        dst->PreviousRideTimeOut = src->PreviousRideTimeOut;
-        dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->GuestHeadingToRideID);
-        dst->GuestIsLostCountdown = src->PeepIsLostCountdown;
-        dst->GuestNextInQueue = EntityId::FromUnderlying(src->NextInQueue);
+        dst->previousRide = RCT12RideIdToOpenRCT2RideId(src->PreviousRide);
+        dst->previousRideTimeOut = src->PreviousRideTimeOut;
+        dst->guestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->GuestHeadingToRideID);
+        dst->guestIsLostCountdown = src->PeepIsLostCountdown;
+        dst->guestNextInQueue = EntityId::FromUnderlying(src->NextInQueue);
         // Guests' favourite ride was only saved in LL.
         // Set it to N/A if the save comes from the original or AA.
         if (_gameVersion == FILE_VERSION_RCT1_LL)
         {
-            dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->FavouriteRide);
-            dst->FavouriteRideRating = src->FavouriteRideRating;
+            dst->favouriteRide = RCT12RideIdToOpenRCT2RideId(src->FavouriteRide);
+            dst->favouriteRideRating = src->FavouriteRideRating;
         }
         else
         {
-            dst->FavouriteRide = RideId::GetNull();
-            dst->FavouriteRideRating = 0;
+            dst->favouriteRide = RideId::GetNull();
+            dst->favouriteRideRating = 0;
         }
 
-        dst->SetItemFlags(src->GetItemFlags(_gameVersion == FILE_VERSION_RCT1));
+        dst->setItemFlags(src->GetItemFlags(_gameVersion == FILE_VERSION_RCT1));
     }
 
     template<>

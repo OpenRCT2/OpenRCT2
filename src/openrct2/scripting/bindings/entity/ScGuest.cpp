@@ -24,131 +24,131 @@ namespace OpenRCT2::Scripting
 {
     static const EnumMap<PeepThoughtType> ThoughtTypeMap(
         {
-            { "cant_afford_ride", PeepThoughtType::CantAffordRide },
-            { "spent_money", PeepThoughtType::SpentMoney },
-            { "sick", PeepThoughtType::Sick },
-            { "very_sick", PeepThoughtType::VerySick },
-            { "more_thrilling", PeepThoughtType::MoreThrilling },
-            { "intense", PeepThoughtType::Intense },
-            { "havent_finished", PeepThoughtType::HaventFinished },
-            { "sickening", PeepThoughtType::Sickening },
-            { "bad_value", PeepThoughtType::BadValue },
-            { "go_home", PeepThoughtType::GoHome },
-            { "good_value", PeepThoughtType::GoodValue },
-            { "already_got", PeepThoughtType::AlreadyGot },
-            { "cant_afford_item", PeepThoughtType::CantAffordItem },
-            { "not_hungry", PeepThoughtType::NotHungry },
-            { "not_thirsty", PeepThoughtType::NotThirsty },
-            { "drowning", PeepThoughtType::Drowning },
-            { "lost", PeepThoughtType::Lost },
-            { "was_great", PeepThoughtType::WasGreat },
-            { "queuing_ages", PeepThoughtType::QueuingAges },
-            { "tired", PeepThoughtType::Tired },
-            { "hungry", PeepThoughtType::Hungry },
-            { "thirsty", PeepThoughtType::Thirsty },
-            { "toilet", PeepThoughtType::Toilet },
-            { "cant_find", PeepThoughtType::CantFind },
-            { "not_paying", PeepThoughtType::NotPaying },
-            { "not_while_raining", PeepThoughtType::NotWhileRaining },
-            { "bad_litter", PeepThoughtType::BadLitter },
-            { "cant_find_exit", PeepThoughtType::CantFindExit },
-            { "get_off", PeepThoughtType::GetOff },
-            { "get_out", PeepThoughtType::GetOut },
-            { "not_safe", PeepThoughtType::NotSafe },
-            { "path_disgusting", PeepThoughtType::PathDisgusting },
-            { "crowded", PeepThoughtType::Crowded },
-            { "vandalism", PeepThoughtType::Vandalism },
-            { "scenery", PeepThoughtType::Scenery },
-            { "very_clean", PeepThoughtType::VeryClean },
-            { "fountains", PeepThoughtType::Fountains },
-            { "music", PeepThoughtType::Music },
-            { "balloon", PeepThoughtType::Balloon },
-            { "toy", PeepThoughtType::Toy },
-            { "map", PeepThoughtType::Map },
-            { "photo", PeepThoughtType::Photo },
-            { "umbrella", PeepThoughtType::Umbrella },
-            { "drink", PeepThoughtType::Drink },
-            { "burger", PeepThoughtType::Burger },
-            { "chips", PeepThoughtType::Chips },
-            { "ice_cream", PeepThoughtType::IceCream },
-            { "candyfloss", PeepThoughtType::Candyfloss },
-            { "pizza", PeepThoughtType::Pizza },
-            { "popcorn", PeepThoughtType::Popcorn },
-            { "hot_dog", PeepThoughtType::HotDog },
-            { "tentacle", PeepThoughtType::Tentacle },
-            { "hat", PeepThoughtType::Hat },
-            { "toffee_apple", PeepThoughtType::ToffeeApple },
-            { "tshirt", PeepThoughtType::Tshirt },
-            { "doughnut", PeepThoughtType::Doughnut },
-            { "coffee", PeepThoughtType::Coffee },
-            { "chicken", PeepThoughtType::Chicken },
-            { "lemonade", PeepThoughtType::Lemonade },
-            { "wow", PeepThoughtType::Wow },
-            { "wow2", PeepThoughtType::Wow2 },
-            { "watched", PeepThoughtType::Watched },
-            { "balloon_much", PeepThoughtType::BalloonMuch },
-            { "toy_much", PeepThoughtType::ToyMuch },
-            { "map_much", PeepThoughtType::MapMuch },
-            { "photo_much", PeepThoughtType::PhotoMuch },
-            { "umbrella_much", PeepThoughtType::UmbrellaMuch },
-            { "drink_much", PeepThoughtType::DrinkMuch },
-            { "burger_much", PeepThoughtType::BurgerMuch },
-            { "chips_much", PeepThoughtType::ChipsMuch },
-            { "ice_cream_much", PeepThoughtType::IceCreamMuch },
-            { "candyfloss_much", PeepThoughtType::CandyflossMuch },
-            { "pizza_much", PeepThoughtType::PizzaMuch },
-            { "popcorn_much", PeepThoughtType::PopcornMuch },
-            { "hot_dog_much", PeepThoughtType::HotDogMuch },
-            { "tentacle_much", PeepThoughtType::TentacleMuch },
-            { "hat_much", PeepThoughtType::HatMuch },
-            { "toffee_apple_much", PeepThoughtType::ToffeeAppleMuch },
-            { "tshirt_much", PeepThoughtType::TshirtMuch },
-            { "doughnut_much", PeepThoughtType::DoughnutMuch },
-            { "coffee_much", PeepThoughtType::CoffeeMuch },
-            { "chicken_much", PeepThoughtType::ChickenMuch },
-            { "lemonade_much", PeepThoughtType::LemonadeMuch },
-            { "photo2", PeepThoughtType::Photo2 },
-            { "photo3", PeepThoughtType::Photo3 },
-            { "photo4", PeepThoughtType::Photo4 },
-            { "pretzel", PeepThoughtType::Pretzel },
-            { "hot_chocolate", PeepThoughtType::HotChocolate },
-            { "iced_tea", PeepThoughtType::IcedTea },
-            { "funnel_cake", PeepThoughtType::FunnelCake },
-            { "sunglasses", PeepThoughtType::Sunglasses },
-            { "beef_noodles", PeepThoughtType::BeefNoodles },
-            { "fried_rice_noodles", PeepThoughtType::FriedRiceNoodles },
-            { "wonton_soup", PeepThoughtType::WontonSoup },
-            { "meatball_soup", PeepThoughtType::MeatballSoup },
-            { "fruit_juice", PeepThoughtType::FruitJuice },
-            { "soybean_milk", PeepThoughtType::SoybeanMilk },
-            { "sujongkwa", PeepThoughtType::Sujongkwa },
-            { "sub_sandwich", PeepThoughtType::SubSandwich },
-            { "cookie", PeepThoughtType::Cookie },
-            { "roast_sausage", PeepThoughtType::RoastSausage },
-            { "photo2_much", PeepThoughtType::Photo2Much },
-            { "photo3_much", PeepThoughtType::Photo3Much },
-            { "photo4_much", PeepThoughtType::Photo4Much },
-            { "pretzel_much", PeepThoughtType::PretzelMuch },
-            { "hot_chocolate_much", PeepThoughtType::HotChocolateMuch },
-            { "iced_tea_much", PeepThoughtType::IcedTeaMuch },
-            { "funnel_cake_much", PeepThoughtType::FunnelCakeMuch },
-            { "sunglasses_much", PeepThoughtType::SunglassesMuch },
-            { "beef_noodles_much", PeepThoughtType::BeefNoodlesMuch },
-            { "fried_rice_noodles_much", PeepThoughtType::FriedRiceNoodlesMuch },
-            { "wonton_soup_much", PeepThoughtType::WontonSoupMuch },
-            { "meatball_soup_much", PeepThoughtType::MeatballSoupMuch },
-            { "fruit_juice_much", PeepThoughtType::FruitJuiceMuch },
-            { "soybean_milk_much", PeepThoughtType::SoybeanMilkMuch },
-            { "sujongkwa_much", PeepThoughtType::SujongkwaMuch },
-            { "sub_sandwich_much", PeepThoughtType::SubSandwichMuch },
-            { "cookie_much", PeepThoughtType::CookieMuch },
-            { "roast_sausage_much", PeepThoughtType::RoastSausageMuch },
-            { "help", PeepThoughtType::Help },
-            { "running_out", PeepThoughtType::RunningOut },
-            { "new_ride", PeepThoughtType::NewRide },
-            { "nice_ride_deprecated", PeepThoughtType::NiceRideDeprecated },
-            { "excited_deprecated", PeepThoughtType::ExcitedDeprecated },
-            { "here_we_are", PeepThoughtType::HereWeAre },
+            { "cant_afford_ride", PeepThoughtType::cantAffordRide },
+            { "spent_money", PeepThoughtType::spentMoney },
+            { "sick", PeepThoughtType::sick },
+            { "very_sick", PeepThoughtType::verySick },
+            { "more_thrilling", PeepThoughtType::moreThrilling },
+            { "intense", PeepThoughtType::intense },
+            { "havent_finished", PeepThoughtType::haventFinished },
+            { "sickening", PeepThoughtType::sickening },
+            { "bad_value", PeepThoughtType::badValue },
+            { "go_home", PeepThoughtType::goHome },
+            { "good_value", PeepThoughtType::goodValue },
+            { "already_got", PeepThoughtType::alreadyGot },
+            { "cant_afford_item", PeepThoughtType::cantAffordItem },
+            { "not_hungry", PeepThoughtType::notHungry },
+            { "not_thirsty", PeepThoughtType::notThirsty },
+            { "drowning", PeepThoughtType::drowning },
+            { "lost", PeepThoughtType::lost },
+            { "was_great", PeepThoughtType::wasGreat },
+            { "queuing_ages", PeepThoughtType::queuingAges },
+            { "tired", PeepThoughtType::tired },
+            { "hungry", PeepThoughtType::hungry },
+            { "thirsty", PeepThoughtType::thirsty },
+            { "toilet", PeepThoughtType::toilet },
+            { "cant_find", PeepThoughtType::cantFind },
+            { "not_paying", PeepThoughtType::notPaying },
+            { "not_while_raining", PeepThoughtType::notWhileRaining },
+            { "bad_litter", PeepThoughtType::badLitter },
+            { "cant_find_exit", PeepThoughtType::cantFindExit },
+            { "get_off", PeepThoughtType::getOff },
+            { "get_out", PeepThoughtType::getOut },
+            { "not_safe", PeepThoughtType::notSafe },
+            { "path_disgusting", PeepThoughtType::pathDisgusting },
+            { "crowded", PeepThoughtType::crowded },
+            { "vandalism", PeepThoughtType::vandalism },
+            { "scenery", PeepThoughtType::scenery },
+            { "very_clean", PeepThoughtType::veryClean },
+            { "fountains", PeepThoughtType::fountains },
+            { "music", PeepThoughtType::music },
+            { "balloon", PeepThoughtType::balloon },
+            { "toy", PeepThoughtType::toy },
+            { "map", PeepThoughtType::map },
+            { "photo", PeepThoughtType::photo },
+            { "umbrella", PeepThoughtType::umbrella },
+            { "drink", PeepThoughtType::drink },
+            { "burger", PeepThoughtType::burger },
+            { "chips", PeepThoughtType::chips },
+            { "ice_cream", PeepThoughtType::iceCream },
+            { "candyfloss", PeepThoughtType::candyfloss },
+            { "pizza", PeepThoughtType::pizza },
+            { "popcorn", PeepThoughtType::popcorn },
+            { "hot_dog", PeepThoughtType::hotDog },
+            { "tentacle", PeepThoughtType::tentacle },
+            { "hat", PeepThoughtType::hat },
+            { "toffee_apple", PeepThoughtType::toffeeApple },
+            { "tshirt", PeepThoughtType::tshirt },
+            { "doughnut", PeepThoughtType::doughnut },
+            { "coffee", PeepThoughtType::coffee },
+            { "chicken", PeepThoughtType::chicken },
+            { "lemonade", PeepThoughtType::lemonade },
+            { "wow", PeepThoughtType::wow },
+            { "wow2", PeepThoughtType::wow2 },
+            { "watched", PeepThoughtType::watched },
+            { "balloon_much", PeepThoughtType::balloonMuch },
+            { "toy_much", PeepThoughtType::toyMuch },
+            { "map_much", PeepThoughtType::mapMuch },
+            { "photo_much", PeepThoughtType::photoMuch },
+            { "umbrella_much", PeepThoughtType::umbrellaMuch },
+            { "drink_much", PeepThoughtType::drinkMuch },
+            { "burger_much", PeepThoughtType::burgerMuch },
+            { "chips_much", PeepThoughtType::chipsMuch },
+            { "ice_cream_much", PeepThoughtType::iceCreamMuch },
+            { "candyfloss_much", PeepThoughtType::candyflossMuch },
+            { "pizza_much", PeepThoughtType::pizzaMuch },
+            { "popcorn_much", PeepThoughtType::popcornMuch },
+            { "hot_dog_much", PeepThoughtType::hotDogMuch },
+            { "tentacle_much", PeepThoughtType::tentacleMuch },
+            { "hat_much", PeepThoughtType::hatMuch },
+            { "toffee_apple_much", PeepThoughtType::toffeeAppleMuch },
+            { "tshirt_much", PeepThoughtType::tshirtMuch },
+            { "doughnut_much", PeepThoughtType::doughnutMuch },
+            { "coffee_much", PeepThoughtType::coffeeMuch },
+            { "chicken_much", PeepThoughtType::chickenMuch },
+            { "lemonade_much", PeepThoughtType::lemonadeMuch },
+            { "photo2", PeepThoughtType::photo2 },
+            { "photo3", PeepThoughtType::photo3 },
+            { "photo4", PeepThoughtType::photo4 },
+            { "pretzel", PeepThoughtType::pretzel },
+            { "hot_chocolate", PeepThoughtType::hotChocolate },
+            { "iced_tea", PeepThoughtType::icedTea },
+            { "funnel_cake", PeepThoughtType::funnelCake },
+            { "sunglasses", PeepThoughtType::sunglasses },
+            { "beef_noodles", PeepThoughtType::beefNoodles },
+            { "fried_rice_noodles", PeepThoughtType::friedRiceNoodles },
+            { "wonton_soup", PeepThoughtType::wontonSoup },
+            { "meatball_soup", PeepThoughtType::meatballSoup },
+            { "fruit_juice", PeepThoughtType::fruitJuice },
+            { "soybean_milk", PeepThoughtType::soybeanMilk },
+            { "sujongkwa", PeepThoughtType::sujongkwa },
+            { "sub_sandwich", PeepThoughtType::subSandwich },
+            { "cookie", PeepThoughtType::cookie },
+            { "roast_sausage", PeepThoughtType::roastSausage },
+            { "photo2_much", PeepThoughtType::photo2Much },
+            { "photo3_much", PeepThoughtType::photo3Much },
+            { "photo4_much", PeepThoughtType::photo4Much },
+            { "pretzel_much", PeepThoughtType::pretzelMuch },
+            { "hot_chocolate_much", PeepThoughtType::hotChocolateMuch },
+            { "iced_tea_much", PeepThoughtType::icedTeaMuch },
+            { "funnel_cake_much", PeepThoughtType::funnelCakeMuch },
+            { "sunglasses_much", PeepThoughtType::sunglassesMuch },
+            { "beef_noodles_much", PeepThoughtType::beefNoodlesMuch },
+            { "fried_rice_noodles_much", PeepThoughtType::friedRiceNoodlesMuch },
+            { "wonton_soup_much", PeepThoughtType::wontonSoupMuch },
+            { "meatball_soup_much", PeepThoughtType::meatballSoupMuch },
+            { "fruit_juice_much", PeepThoughtType::fruitJuiceMuch },
+            { "soybean_milk_much", PeepThoughtType::soybeanMilkMuch },
+            { "sujongkwa_much", PeepThoughtType::sujongkwaMuch },
+            { "sub_sandwich_much", PeepThoughtType::subSandwichMuch },
+            { "cookie_much", PeepThoughtType::cookieMuch },
+            { "roast_sausage_much", PeepThoughtType::roastSausageMuch },
+            { "help", PeepThoughtType::help },
+            { "running_out", PeepThoughtType::runningOut },
+            { "new_ride", PeepThoughtType::newRide },
+            { "nice_ride_deprecated", PeepThoughtType::niceRideDeprecated },
+            { "excited_deprecated", PeepThoughtType::excitedDeprecated },
+            { "here_we_are", PeepThoughtType::hereWeAre },
         });
 
     ScGuest gScGuest;
@@ -242,7 +242,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::balloonColour_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->BalloonColour) : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->balloonColour) : 0);
     }
     JSValue ScGuest::balloonColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -251,7 +251,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->BalloonColour = static_cast<Drawing::Colour>(value);
+            peep->balloonColour = static_cast<Drawing::Colour>(value);
             peep->invalidate();
         }
         return JS_UNDEFINED;
@@ -260,7 +260,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::hatColour_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->HatColour) : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->hatColour) : 0);
     }
     JSValue ScGuest::hatColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -269,7 +269,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->HatColour = static_cast<Drawing::Colour>(value);
+            peep->hatColour = static_cast<Drawing::Colour>(value);
             peep->invalidate();
         }
         return JS_UNDEFINED;
@@ -278,7 +278,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::umbrellaColour_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->UmbrellaColour) : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->umbrellaColour) : 0);
     }
     JSValue ScGuest::umbrellaColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -287,7 +287,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->UmbrellaColour = static_cast<Drawing::Colour>(value);
+            peep->umbrellaColour = static_cast<Drawing::Colour>(value);
             peep->invalidate();
         }
         return JS_UNDEFINED;
@@ -296,7 +296,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::happiness_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Happiness : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->happiness : 0);
     }
     JSValue ScGuest::happiness_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -305,7 +305,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Happiness = value;
+            peep->happiness = value;
         }
         return JS_UNDEFINED;
     }
@@ -313,7 +313,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::happinessTarget_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->HappinessTarget : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->happinessTarget : 0);
     }
     JSValue ScGuest::happinessTarget_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -322,7 +322,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->HappinessTarget = value;
+            peep->happinessTarget = value;
         }
         return JS_UNDEFINED;
     }
@@ -330,7 +330,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::nausea_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Nausea : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->nausea : 0);
     }
     JSValue ScGuest::nausea_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -339,7 +339,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Nausea = value;
+            peep->nausea = value;
         }
         return JS_UNDEFINED;
     }
@@ -347,7 +347,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::nauseaTarget_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->NauseaTarget : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->nauseaTarget : 0);
     }
     JSValue ScGuest::nauseaTarget_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -356,7 +356,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->NauseaTarget = value;
+            peep->nauseaTarget = value;
         }
         return JS_UNDEFINED;
     }
@@ -364,7 +364,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::hunger_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Hunger : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->hunger : 0);
     }
     JSValue ScGuest::hunger_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -373,7 +373,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Hunger = value;
+            peep->hunger = value;
         }
         return JS_UNDEFINED;
     }
@@ -381,7 +381,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::thirst_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Thirst : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->thirst : 0);
     }
     JSValue ScGuest::thirst_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -390,7 +390,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Thirst = value;
+            peep->thirst = value;
         }
         return JS_UNDEFINED;
     }
@@ -398,7 +398,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::toilet_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Toilet : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->toilet : 0);
     }
     JSValue ScGuest::toilet_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -407,7 +407,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Toilet = value;
+            peep->toilet = value;
         }
         return JS_UNDEFINED;
     }
@@ -432,7 +432,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::minIntensity_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Intensity.GetMinimum() : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->intensity.GetMinimum() : 0);
     }
     JSValue ScGuest::minIntensity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -441,7 +441,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Intensity = peep->Intensity.WithMinimum(value);
+            peep->intensity = peep->intensity.WithMinimum(value);
         }
         return JS_UNDEFINED;
     }
@@ -449,7 +449,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::maxIntensity_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Intensity.GetMaximum() : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->intensity.GetMaximum() : 0);
     }
     JSValue ScGuest::maxIntensity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -458,7 +458,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Intensity = peep->Intensity.WithMaximum(value);
+            peep->intensity = peep->intensity.WithMaximum(value);
         }
         return JS_UNDEFINED;
     }
@@ -466,7 +466,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::nauseaTolerance_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->NauseaTolerance) : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->nauseaTolerance) : 0);
     }
     JSValue ScGuest::nauseaTolerance_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -475,7 +475,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->NauseaTolerance = static_cast<PeepNauseaTolerance>(std::min<uint8_t>(value, 3));
+            peep->nauseaTolerance = static_cast<PeepNauseaTolerance>(std::min<uint8_t>(value, 3));
         }
         return JS_UNDEFINED;
     }
@@ -483,7 +483,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::cash_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewInt32(ctx, peep != nullptr ? peep->CashInPocket : 0);
+        return JS_NewInt32(ctx, peep != nullptr ? peep->cashInPocket : 0);
     }
     JSValue ScGuest::cash_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -492,7 +492,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->CashInPocket = std::max(0, value);
+            peep->cashInPocket = std::max(0, value);
         }
         return JS_UNDEFINED;
     }
@@ -500,19 +500,19 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::isInPark_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewBool(ctx, peep != nullptr && !peep->OutsideOfPark);
+        return JS_NewBool(ctx, peep != nullptr && !peep->outsideOfPark);
     }
 
     JSValue ScGuest::isLost_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewBool(ctx, peep != nullptr && peep->GuestIsLostCountdown < 90);
+        return JS_NewBool(ctx, peep != nullptr && peep->guestIsLostCountdown < 90);
     }
 
     JSValue ScGuest::lostCountdown_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->GuestIsLostCountdown : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->guestIsLostCountdown : 0);
     }
     JSValue ScGuest::lostCountdown_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -521,7 +521,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->GuestIsLostCountdown = value;
+            peep->guestIsLostCountdown = value;
         }
         return JS_UNDEFINED;
     }
@@ -531,9 +531,9 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            if (peep->FavouriteRide != RideId::GetNull())
+            if (peep->favouriteRide != RideId::GetNull())
             {
-                return JS_NewUint32(ctx, peep->FavouriteRide.ToUnderlying());
+                return JS_NewUint32(ctx, peep->favouriteRide.ToUnderlying());
             }
         }
         return JS_NULL;
@@ -548,14 +548,14 @@ namespace OpenRCT2::Scripting
             auto& gameState = getGameState();
             if (JS_IsNull(jsValue))
             {
-                peep->FavouriteRide = RideId::GetNull();
+                peep->favouriteRide = RideId::GetNull();
             }
             else if (JS_IsNumber(jsValue))
             {
                 JS_UNPACK_UINT32(rideId, ctx, jsValue);
                 if (rideId < gameState.rides.size() && gameState.rides[rideId].type != kRideTypeNull)
                 {
-                    peep->FavouriteRide = RideId::FromUnderlying(rideId);
+                    peep->favouriteRide = RideId::FromUnderlying(rideId);
                 }
             }
         }
@@ -570,9 +570,9 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             auto index = 0;
-            for (const auto& thought : peep->Thoughts)
+            for (const auto& thought : peep->thoughts)
             {
-                if (thought.type == PeepThoughtType::None)
+                if (thought.type == PeepThoughtType::none)
                     break;
                 if (thought.freshness == 0)
                     continue;
@@ -595,7 +595,7 @@ namespace OpenRCT2::Scripting
             for (const auto& itemEnumPair : ShopItemMap)
             {
                 auto shopItem = itemEnumPair.second;
-                if (!peep->HasItem(shopItem))
+                if (!peep->hasItem(shopItem))
                 {
                     continue;
                 }
@@ -607,19 +607,19 @@ namespace OpenRCT2::Scripting
                 if (shopItem == ShopItem::voucher)
                 {
                     // Voucher
-                    auto voucherType = VoucherTypeMap[peep->VoucherType];
+                    auto voucherType = VoucherTypeMap[peep->voucherType];
                     if (!voucherType.empty())
                     {
                         JS_SetPropertyStr(ctx, obj, "voucherType", JSFromStdString(ctx, voucherType));
-                        if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE)
+                        if (peep->voucherType == VOUCHER_TYPE_RIDE_FREE)
                         {
                             // RideVoucher
-                            JS_SetPropertyStr(ctx, obj, "rideId", JS_NewUint32(ctx, peep->VoucherRideId.ToUnderlying()));
+                            JS_SetPropertyStr(ctx, obj, "rideId", JS_NewUint32(ctx, peep->voucherRideId.ToUnderlying()));
                         }
-                        else if (peep->VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+                        else if (peep->voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
                         {
                             // FoodDrinkVoucher
-                            auto voucherItem = ShopItemMap[peep->VoucherShopItem];
+                            auto voucherItem = ShopItemMap[peep->voucherShopItem];
                             if (!voucherItem.empty())
                             {
                                 JS_SetPropertyStr(ctx, obj, "item", JSFromStdString(ctx, voucherItem));
@@ -634,16 +634,16 @@ namespace OpenRCT2::Scripting
                     switch (shopItem)
                     {
                         case ShopItem::photo:
-                            rideId = peep->Photo1RideRef;
+                            rideId = peep->photo1RideRef;
                             break;
                         case ShopItem::photo2:
-                            rideId = peep->Photo2RideRef;
+                            rideId = peep->photo2RideRef;
                             break;
                         case ShopItem::photo3:
-                            rideId = peep->Photo3RideRef;
+                            rideId = peep->photo3RideRef;
                             break;
                         case ShopItem::photo4:
-                            rideId = peep->Photo4RideRef;
+                            rideId = peep->photo4RideRef;
                             break;
                         default:
                             // This should not be possible
@@ -677,7 +677,7 @@ namespace OpenRCT2::Scripting
 
         // GuestItem
         auto shopItem = ShopItemMap.TryGet(type.value());
-        if (!shopItem || !peep->HasItem(*shopItem))
+        if (!shopItem || !peep->hasItem(*shopItem))
         {
             return false;
         }
@@ -689,7 +689,7 @@ namespace OpenRCT2::Scripting
             {
                 // Voucher
                 auto voucher = VoucherTypeMap.TryGet(voucherType.value());
-                if (!voucher || *voucher != peep->VoucherType)
+                if (!voucher || *voucher != peep->voucherType)
                 {
                     return false;
                 }
@@ -700,7 +700,7 @@ namespace OpenRCT2::Scripting
                     if (rideId.has_value())
                     {
                         // RideVoucher
-                        if (rideId.value() != peep->VoucherRideId.ToUnderlying())
+                        if (rideId.value() != peep->voucherRideId.ToUnderlying())
                         {
                             return false;
                         }
@@ -713,7 +713,7 @@ namespace OpenRCT2::Scripting
                     {
                         // FoodDrinkVoucher
                         auto voucherItem = ShopItemMap.TryGet(foodItem.value());
-                        if (!voucherItem || *voucherItem != peep->VoucherShopItem)
+                        if (!voucherItem || *voucherItem != peep->voucherShopItem)
                         {
                             return false;
                         }
@@ -730,25 +730,25 @@ namespace OpenRCT2::Scripting
                 switch (*shopItem)
                 {
                     case ShopItem::photo:
-                        if (rideId.value() != peep->Photo1RideRef.ToUnderlying())
+                        if (rideId.value() != peep->photo1RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
                     case ShopItem::photo2:
-                        if (rideId.value() != peep->Photo2RideRef.ToUnderlying())
+                        if (rideId.value() != peep->photo2RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
                     case ShopItem::photo3:
-                        if (rideId.value() != peep->Photo3RideRef.ToUnderlying())
+                        if (rideId.value() != peep->photo3RideRef.ToUnderlying())
                         {
                             return false;
                         }
                         break;
                     case ShopItem::photo4:
-                        if (rideId.value() != peep->Photo4RideRef.ToUnderlying())
+                        if (rideId.value() != peep->photo4RideRef.ToUnderlying())
                         {
                             return false;
                         }
@@ -821,7 +821,7 @@ namespace OpenRCT2::Scripting
                     return JS_EXCEPTION;
                 }
 
-                peep->VoucherRideId = RideId::FromUnderlying(rideId.value());
+                peep->voucherRideId = RideId::FromUnderlying(rideId.value());
             }
             else if (*voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
             {
@@ -840,10 +840,10 @@ namespace OpenRCT2::Scripting
                     return JS_EXCEPTION;
                 }
 
-                peep->VoucherShopItem = *voucherItem;
+                peep->voucherShopItem = *voucherItem;
             }
 
-            peep->VoucherType = *voucherType;
+            peep->voucherType = *voucherType;
         }
         else if (GetShopItemDescriptor(*shopItem).IsPhoto())
         {
@@ -858,24 +858,24 @@ namespace OpenRCT2::Scripting
             switch (*shopItem)
             {
                 case ShopItem::photo:
-                    peep->Photo1RideRef = RideId::FromUnderlying(rideId.value());
+                    peep->photo1RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 case ShopItem::photo2:
-                    peep->Photo2RideRef = RideId::FromUnderlying(rideId.value());
+                    peep->photo2RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 case ShopItem::photo3:
-                    peep->Photo3RideRef = RideId::FromUnderlying(rideId.value());
+                    peep->photo3RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 case ShopItem::photo4:
-                    peep->Photo4RideRef = RideId::FromUnderlying(rideId.value());
+                    peep->photo4RideRef = RideId::FromUnderlying(rideId.value());
                     break;
                 default:
                     return JS_UNDEFINED;
             }
         }
 
-        peep->GiveItem(*shopItem);
-        peep->UpdateAnimationGroup();
+        peep->giveItem(*shopItem);
+        peep->updateAnimationGroup();
         return JS_UNDEFINED;
     }
 
@@ -889,8 +889,8 @@ namespace OpenRCT2::Scripting
 
             // Since guests can only have one item of a type and this item matches, remove it.
             auto peep = GetGuest(thisVal);
-            peep->RemoveItem(ShopItemMap[type]);
-            peep->UpdateAnimationGroup();
+            peep->removeItem(ShopItemMap[type]);
+            peep->updateAnimationGroup();
         }
         return JS_UNDEFINED;
     }
@@ -901,8 +901,8 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->RemoveAllItems();
-            peep->UpdateAnimationGroup();
+            peep->removeAllItems();
+            peep->updateAnimationGroup();
         }
         return JS_UNDEFINED;
     }

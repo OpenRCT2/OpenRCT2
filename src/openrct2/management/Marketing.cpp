@@ -157,30 +157,30 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
     switch (campaign->type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_FREE;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_PARK_ENTRY_FREE;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_RIDE_FREE;
-            peep->VoucherRideId = campaign->rideId;
-            peep->GuestHeadingToRideId = campaign->rideId;
-            peep->GuestIsLostCountdown = 240;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_RIDE_FREE;
+            peep->voucherRideId = campaign->rideId;
+            peep->guestHeadingToRideId = campaign->rideId;
+            peep->guestIsLostCountdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
             break;
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
-            peep->VoucherShopItem = campaign->shopItemType;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
+            peep->voucherShopItem = campaign->shopItemType;
             break;
         case ADVERTISING_CAMPAIGN_PARK:
             break;
         case ADVERTISING_CAMPAIGN_RIDE:
-            peep->GuestHeadingToRideId = campaign->rideId;
-            peep->GuestIsLostCountdown = 240;
+            peep->guestHeadingToRideId = campaign->rideId;
+            peep->guestIsLostCountdown = 240;
             break;
     }
 }

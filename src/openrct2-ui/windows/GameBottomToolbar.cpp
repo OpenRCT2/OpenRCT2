@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                     if (guest->AnimationGroup == PeepAnimationGroup::hat)
                     {
                         auto itemOffset = kPeepSpriteHatItemStart + 1;
-                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
+                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->hatColour);
                         GfxDrawSprite(clippedRT, imageId, clipCoords);
                         return;
                     }
@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
                     if (guest->AnimationGroup == PeepAnimationGroup::balloon)
                     {
                         auto itemOffset = kPeepSpriteBalloonItemStart + 1;
-                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
+                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->balloonColour);
                         GfxDrawSprite(clippedRT, imageId, clipCoords);
                         return;
                     }
@@ -328,7 +328,7 @@ namespace OpenRCT2::Ui::Windows
                     if (guest->AnimationGroup == PeepAnimationGroup::umbrella)
                     {
                         auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
-                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);
+                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->umbrellaColour);
                         GfxDrawSprite(clippedRT, imageId, clipCoords);
                         return;
                     }

@@ -493,7 +493,7 @@ void Ride::removePeeps()
 
             PeepDecrementNumRiders(peep);
             if (peep->State == PeepState::queuingFront && peep->RideSubState == PeepRideSubState::atEntrance)
-                peep->RemoveFromQueue();
+                peep->removeFromQueue();
 
             if (exitPosition.direction == kInvalidDirection)
             {
@@ -512,8 +512,8 @@ void Ride::removePeeps()
             peep->State = PeepState::falling;
             peep->SwitchToSpecialSprite(0);
 
-            peep->Happiness = std::min(peep->Happiness, peep->HappinessTarget) / 2;
-            peep->HappinessTarget = peep->Happiness;
+            peep->happiness = std::min(peep->happiness, peep->happinessTarget) / 2;
+            peep->happinessTarget = peep->happiness;
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }

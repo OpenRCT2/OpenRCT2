@@ -342,7 +342,7 @@ void Vehicle::KillPassengers(const Ride& curRide)
         if (curPeep == nullptr)
             continue;
 
-        if (!curPeep->OutsideOfPark)
+        if (!curPeep->outsideOfPark)
         {
             DecrementGuestsInPark();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

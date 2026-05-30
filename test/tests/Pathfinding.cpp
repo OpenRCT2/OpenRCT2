@@ -71,17 +71,17 @@ protected:
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
         // Add 16 so the peep spawns in the centre of the tile.
-        auto* peep = Guest::Generate(pos->ToCoordsXYZ().ToTileCentre());
+        auto* peep = Guest::generate(pos->ToCoordsXYZ().ToTileCentre());
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
-        peep->OutsideOfPark = false;
+        peep->outsideOfPark = false;
 
         // An earlier iteration of this code just gave peeps a target position to walk to, but it turns out
         // that with no actual ride to head towards, when a peep reaches a junction they use the 'aimless'
         // pathfinder instead of pursuing their original pathfinding target. So, we always need to give them
         // an actual ride to walk to the entrance of.
-        peep->GuestHeadingToRideId = targetRideID;
+        peep->guestHeadingToRideId = targetRideID;
 
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.

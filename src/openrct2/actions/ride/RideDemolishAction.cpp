@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
         RideUse::GetHistory().RemoveValue(ride.id);
         for (auto peep : EntityList<Guest>())
         {
-            peep->RemoveRideFromMemory(ride.id);
+            peep->removeRideFromMemory(ride.id);
         }
 
         MarketingCancelCampaignsForRide(_rideIndex);

@@ -359,7 +359,7 @@ Guest* Ride::getQueueHeadGuest(StationIndex stationIndex) const
     auto spriteIndex = getStation(stationIndex).LastPeepInQueue;
     while ((peep = getGameState().entities.TryGetEntity<Guest>(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->GuestNextInQueue;
+        spriteIndex = peep->guestNextInQueue;
         result = peep;
     }
     return result;
@@ -373,7 +373,7 @@ void Ride::updateQueueLength(StationIndex stationIndex)
     auto spriteIndex = station.LastPeepInQueue;
     while ((peep = getGameState().entities.TryGetEntity<Guest>(spriteIndex)) != nullptr)
     {
-        spriteIndex = peep->GuestNextInQueue;
+        spriteIndex = peep->guestNextInQueue;
         count++;
     }
     station.QueueLength = count;
@@ -384,7 +384,7 @@ void Ride::queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
     assert(stationIndex.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
     assert(peep != nullptr);
 
-    peep->GuestNextInQueue = EntityId::GetNull();
+    peep->guestNextInQueue = EntityId::GetNull();
     auto* queueHeadGuest = getQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
@@ -392,7 +392,7 @@ void Ride::queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
     }
     else
     {
-        queueHeadGuest->GuestNextInQueue = peep->id;
+        queueHeadGuest->guestNextInQueue = peep->id;
     }
     updateQueueLength(peep->CurrentRideStation);
 }
@@ -409,9 +409,9 @@ void RideUpdateFavouritedStat()
 
     for (auto peep : EntityList<Guest>())
     {
-        if (!peep->FavouriteRide.IsNull())
+        if (!peep->favouriteRide.IsNull())
         {
-            auto ride = GetRide(peep->FavouriteRide);
+            auto ride = GetRide(peep->favouriteRide);
             if (ride != nullptr)
             {
                 ride->guestsFavourite = AddClamp(ride->guestsFavourite, 1u);
@@ -3976,7 +3976,7 @@ void Ride::stopGuestsQueuing()
         if (peep->CurrentRide != id)
             continue;
 
-        peep->RemoveFromQueue();
+        peep->removeFromQueue();
         peep->SetState(PeepState::falling);
     }
 }

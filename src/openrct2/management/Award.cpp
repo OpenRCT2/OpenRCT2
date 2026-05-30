@@ -96,15 +96,15 @@ static bool AwardIsDeservedMostUntidy(GameState_t& gameState, Park::ParkData& pa
     uint32_t negativeCount = 0;
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
-        const auto& thought = std::get<0>(peep->Thoughts);
+        const auto& thought = std::get<0>(peep->thoughts);
         if (thought.freshness > 5)
             continue;
 
-        if (thought.type == PeepThoughtType::BadLitter || thought.type == PeepThoughtType::PathDisgusting
-            || thought.type == PeepThoughtType::Vandalism)
+        if (thought.type == PeepThoughtType::badLitter || thought.type == PeepThoughtType::pathDisgusting
+            || thought.type == PeepThoughtType::vandalism)
         {
             negativeCount++;
         }
@@ -125,18 +125,18 @@ static bool AwardIsDeservedMostTidy(GameState_t& gameState, Park::ParkData& park
     uint32_t negativeCount = 0;
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
-        const auto& thought = std::get<0>(peep->Thoughts);
+        const auto& thought = std::get<0>(peep->thoughts);
         if (thought.freshness > 5)
             continue;
 
-        if (thought.type == PeepThoughtType::VeryClean)
+        if (thought.type == PeepThoughtType::veryClean)
             positiveCount++;
 
-        if (thought.type == PeepThoughtType::BadLitter || thought.type == PeepThoughtType::PathDisgusting
-            || thought.type == PeepThoughtType::Vandalism)
+        if (thought.type == PeepThoughtType::badLitter || thought.type == PeepThoughtType::pathDisgusting
+            || thought.type == PeepThoughtType::vandalism)
         {
             negativeCount++;
         }
@@ -207,18 +207,18 @@ static bool AwardIsDeservedMostBeautiful(GameState_t& gameState, Park::ParkData&
     auto list = EntityList<Guest>();
     for (auto peep : list)
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
-        const auto& thought = std::get<0>(peep->Thoughts);
+        const auto& thought = std::get<0>(peep->thoughts);
         if (thought.freshness > 5)
             continue;
 
-        if (thought.type == PeepThoughtType::Scenery)
+        if (thought.type == PeepThoughtType::scenery)
             positiveCount++;
 
-        if (thought.type == PeepThoughtType::BadLitter || thought.type == PeepThoughtType::PathDisgusting
-            || thought.type == PeepThoughtType::Vandalism)
+        if (thought.type == PeepThoughtType::badLitter || thought.type == PeepThoughtType::pathDisgusting
+            || thought.type == PeepThoughtType::vandalism)
         {
             negativeCount++;
         }
@@ -249,11 +249,11 @@ static bool AwardIsDeservedSafest(GameState_t& gameState, Park::ParkData& park, 
     auto peepsWhoDislikeVandalism = 0;
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
-        const auto& thought = std::get<0>(peep->Thoughts);
-        if (thought.freshness <= 5 && thought.type == PeepThoughtType::Vandalism)
+        const auto& thought = std::get<0>(peep->thoughts);
+        if (thought.freshness <= 5 && thought.type == PeepThoughtType::vandalism)
             peepsWhoDislikeVandalism++;
     }
 
@@ -319,11 +319,11 @@ static bool AwardIsDeservedBestFood(GameState_t& gameState, Park::ParkData& park
     auto hungryPeeps = 0;
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
-        const auto& thought = std::get<0>(peep->Thoughts);
-        if (thought.freshness <= 5 && thought.type == PeepThoughtType::Hungry)
+        const auto& thought = std::get<0>(peep->thoughts);
+        if (thought.freshness <= 5 && thought.type == PeepThoughtType::hungry)
             hungryPeeps++;
     }
     return (hungryPeeps <= 12);
@@ -364,11 +364,11 @@ static bool AwardIsDeservedWorstFood(GameState_t& gameState, Park::ParkData& par
     auto hungryPeeps = 0;
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
-        const auto& thought = std::get<0>(peep->Thoughts);
-        if (thought.freshness <= 5 && thought.type == PeepThoughtType::Hungry)
+        const auto& thought = std::get<0>(peep->thoughts);
+        if (thought.freshness <= 5 && thought.type == PeepThoughtType::hungry)
             hungryPeeps++;
     }
     return (hungryPeeps > 15);
@@ -396,11 +396,11 @@ static bool AwardIsDeservedBestToilets(GameState_t& gameState, Park::ParkData& p
     auto guestsWhoNeedToilet = 0;
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
-        const auto& thought = std::get<0>(peep->Thoughts);
-        if (thought.freshness <= 5 && thought.type == PeepThoughtType::Toilet)
+        const auto& thought = std::get<0>(peep->thoughts);
+        if (thought.freshness <= 5 && thought.type == PeepThoughtType::toilet)
             guestsWhoNeedToilet++;
     }
     return (guestsWhoNeedToilet <= 16);
@@ -530,12 +530,12 @@ static bool AwardIsDeservedMostConfusingLayout(
     uint32_t peepsLost = 0;
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark)
+        if (peep->outsideOfPark)
             continue;
 
         peepsCounted++;
-        const auto& thought = std::get<0>(peep->Thoughts);
-        if (thought.freshness <= 5 && (thought.type == PeepThoughtType::Lost || thought.type == PeepThoughtType::CantFind))
+        const auto& thought = std::get<0>(peep->thoughts);
+        if (thought.freshness <= 5 && (thought.type == PeepThoughtType::lost || thought.type == PeepThoughtType::cantFind))
             peepsLost++;
     }
 

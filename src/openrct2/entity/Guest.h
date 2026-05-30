@@ -39,154 +39,154 @@ namespace OpenRCT2
 
     enum class PeepThoughtType : uint8_t
     {
-        CantAffordRide = 0,   // "I can't afford"
-        SpentMoney = 1,       // "I've spent all my money"
-        Sick = 2,             // "I feel sick"
-        VerySick = 3,         // "I feel very sick"
-        MoreThrilling = 4,    // "I want to go on something more thrilling than X"
-        Intense = 5,          // "X looks too intense for me"
-        HaventFinished = 6,   // "I haven't finished my X yet"
-        Sickening = 7,        // "Just looking at X makes me feel sick"
-        BadValue = 8,         // "I'm not paying that much to go on X"
-        GoHome = 9,           // "I want to go home"
-        GoodValue = 10,       // "X is really good value"
-        AlreadyGot = 11,      // "I've already got"
-        CantAffordItem = 12,  // "I can't afford"
-        NotHungry = 13,       // "I'm not hungry"
-        NotThirsty = 14,      // "I'm not thirsty"
-        Drowning = 15,        // "Help! I'm drowning!"
-        Lost = 16,            // "I'm lost!"
-        WasGreat = 17,        // "X was great"
-        QueuingAges = 18,     // "I've been queuing for X for ages"
-        Tired = 19,           // "I'm tired"
-        Hungry = 20,          // "I'm hungry"
-        Thirsty = 21,         // "I'm thirsty"
-        Toilet = 22,          // "I need to go to the toilet"
-        CantFind = 23,        // "I can't find X"
-        NotPaying = 24,       // "I'm not paying that much to use X"
-        NotWhileRaining = 25, // "I'm not going on X while it's raining"
-        BadLitter = 26,       // "The litter here is really bad"
-        CantFindExit = 27,    // "I can't find the exit"
-        GetOff = 28,          // "I want to get off X"
-        GetOut = 29,          // "I want to get out of X"
-        NotSafe = 30,         // "I'm not going on X - it isn't safe"
-        PathDisgusting = 31,  // "This path is disgusting"
-        Crowded = 32,         // "It's too crowded here"
-        Vandalism = 33,       // "The vandalism here is really bad"
-        Scenery = 34,         // "Great scenery!"
-        VeryClean = 35,       // "This park is very clean and tidy"
-        Fountains = 36,       // "The jumping fountains are great"
-        Music = 37,           // "The music is nice here"
-        Balloon = 38,         // "This balloon from X is really good value"
-        Toy = 39,             // "This cuddly toy from X is really good value"
-        Map = 40,
-        Photo = 41, // "This on ride photo from X is really good value"
-        Umbrella = 42,
-        Drink = 43,
-        Burger = 44,
-        Chips = 45,
-        IceCream = 46,
-        Candyfloss = 47,
+        cantAffordRide = 0,   // "I can't afford"
+        spentMoney = 1,       // "I've spent all my money"
+        sick = 2,             // "I feel sick"
+        verySick = 3,         // "I feel very sick"
+        moreThrilling = 4,    // "I want to go on something more thrilling than X"
+        intense = 5,          // "X looks too intense for me"
+        haventFinished = 6,   // "I haven't finished my X yet"
+        sickening = 7,        // "Just looking at X makes me feel sick"
+        badValue = 8,         // "I'm not paying that much to go on X"
+        goHome = 9,           // "I want to go home"
+        goodValue = 10,       // "X is really good value"
+        alreadyGot = 11,      // "I've already got"
+        cantAffordItem = 12,  // "I can't afford"
+        notHungry = 13,       // "I'm not hungry"
+        notThirsty = 14,      // "I'm not thirsty"
+        drowning = 15,        // "Help! I'm drowning!"
+        lost = 16,            // "I'm lost!"
+        wasGreat = 17,        // "X was great"
+        queuingAges = 18,     // "I've been queuing for X for ages"
+        tired = 19,           // "I'm tired"
+        hungry = 20,          // "I'm hungry"
+        thirsty = 21,         // "I'm thirsty"
+        toilet = 22,          // "I need to go to the toilet"
+        cantFind = 23,        // "I can't find X"
+        notPaying = 24,       // "I'm not paying that much to use X"
+        notWhileRaining = 25, // "I'm not going on X while it's raining"
+        badLitter = 26,       // "The litter here is really bad"
+        cantFindExit = 27,    // "I can't find the exit"
+        getOff = 28,          // "I want to get off X"
+        getOut = 29,          // "I want to get out of X"
+        notSafe = 30,         // "I'm not going on X - it isn't safe"
+        pathDisgusting = 31,  // "This path is disgusting"
+        crowded = 32,         // "It's too crowded here"
+        vandalism = 33,       // "The vandalism here is really bad"
+        scenery = 34,         // "Great scenery!"
+        veryClean = 35,       // "This park is very clean and tidy"
+        fountains = 36,       // "The jumping fountains are great"
+        music = 37,           // "The music is nice here"
+        balloon = 38,         // "This balloon from X is really good value"
+        toy = 39,             // "This cuddly toy from X is really good value"
+        map = 40,
+        photo = 41, // "This on ride photo from X is really good value"
+        umbrella = 42,
+        drink = 43,
+        burger = 44,
+        chips = 45,
+        iceCream = 46,
+        candyfloss = 47,
 
-        Pizza = 51,
+        pizza = 51,
 
-        Popcorn = 53,
-        HotDog = 54,
-        Tentacle = 55,
-        Hat = 56,
-        ToffeeApple = 57,
-        Tshirt = 58,
-        Doughnut = 59,
-        Coffee = 60,
+        popcorn = 53,
+        hotDog = 54,
+        tentacle = 55,
+        hat = 56,
+        toffeeApple = 57,
+        tshirt = 58,
+        doughnut = 59,
+        coffee = 60,
 
-        Chicken = 62,
-        Lemonade = 63,
+        chicken = 62,
+        lemonade = 63,
 
-        Wow = 67, // "Wow!"
+        wow = 67, // "Wow!"
 
-        Wow2 = 70,        // "Wow!"
-        Watched = 71,     // "I have the strangest feeling someone is watching me"
-        BalloonMuch = 72, // "I'm not paying that much to get a balloon from X"
-        ToyMuch = 73,
-        MapMuch = 74,
-        PhotoMuch = 75,
-        UmbrellaMuch = 76,
-        DrinkMuch = 77,
-        BurgerMuch = 78,
-        ChipsMuch = 79,
-        IceCreamMuch = 80,
-        CandyflossMuch = 81,
+        wow2 = 70,        // "Wow!"
+        watched = 71,     // "I have the strangest feeling someone is watching me"
+        balloonMuch = 72, // "I'm not paying that much to get a balloon from X"
+        toyMuch = 73,
+        mapMuch = 74,
+        photoMuch = 75,
+        umbrellaMuch = 76,
+        drinkMuch = 77,
+        burgerMuch = 78,
+        chipsMuch = 79,
+        iceCreamMuch = 80,
+        candyflossMuch = 81,
 
-        PizzaMuch = 85,
+        pizzaMuch = 85,
 
-        PopcornMuch = 87,
-        HotDogMuch = 88,
-        TentacleMuch = 89,
-        HatMuch = 90,
-        ToffeeAppleMuch = 91,
-        TshirtMuch = 92,
-        DoughnutMuch = 93,
-        CoffeeMuch = 94,
+        popcornMuch = 87,
+        hotDogMuch = 88,
+        tentacleMuch = 89,
+        hatMuch = 90,
+        toffeeAppleMuch = 91,
+        tshirtMuch = 92,
+        doughnutMuch = 93,
+        coffeeMuch = 94,
 
-        ChickenMuch = 96,
-        LemonadeMuch = 97,
+        chickenMuch = 96,
+        lemonadeMuch = 97,
 
-        Photo2 = 104, // "This on-ride photo from X is really good value"
-        Photo3 = 105,
-        Photo4 = 106,
-        Pretzel = 107,
-        HotChocolate = 108,
-        IcedTea = 109,
-        FunnelCake = 110,
-        Sunglasses = 111,
-        BeefNoodles = 112,
-        FriedRiceNoodles = 113,
-        WontonSoup = 114,
-        MeatballSoup = 115,
-        FruitJuice = 116,
-        SoybeanMilk = 117,
-        Sujongkwa = 118,
-        SubSandwich = 119,
-        Cookie = 120,
+        photo2 = 104, // "This on-ride photo from X is really good value"
+        photo3 = 105,
+        photo4 = 106,
+        pretzel = 107,
+        hotChocolate = 108,
+        icedTea = 109,
+        funnelCake = 110,
+        sunglasses = 111,
+        beefNoodles = 112,
+        friedRiceNoodles = 113,
+        wontonSoup = 114,
+        meatballSoup = 115,
+        fruitJuice = 116,
+        soybeanMilk = 117,
+        sujongkwa = 118,
+        subSandwich = 119,
+        cookie = 120,
 
-        RoastSausage = 124,
+        roastSausage = 124,
 
-        Photo2Much = 136,
-        Photo3Much = 137,
-        Photo4Much = 138,
-        PretzelMuch = 139,
-        HotChocolateMuch = 140,
-        IcedTeaMuch = 141,
-        FunnelCakeMuch = 142,
-        SunglassesMuch = 143,
-        BeefNoodlesMuch = 144,
-        FriedRiceNoodlesMuch = 145,
-        WontonSoupMuch = 146,
-        MeatballSoupMuch = 147,
-        FruitJuiceMuch = 148,
-        SoybeanMilkMuch = 149,
-        SujongkwaMuch = 150,
-        SubSandwichMuch = 151,
-        CookieMuch = 152,
+        photo2Much = 136,
+        photo3Much = 137,
+        photo4Much = 138,
+        pretzelMuch = 139,
+        hotChocolateMuch = 140,
+        icedTeaMuch = 141,
+        funnelCakeMuch = 142,
+        sunglassesMuch = 143,
+        beefNoodlesMuch = 144,
+        friedRiceNoodlesMuch = 145,
+        wontonSoupMuch = 146,
+        meatballSoupMuch = 147,
+        fruitJuiceMuch = 148,
+        soybeanMilkMuch = 149,
+        sujongkwaMuch = 150,
+        subSandwichMuch = 151,
+        cookieMuch = 152,
 
-        RoastSausageMuch = 156,
+        roastSausageMuch = 156,
 
-        Help = 168,               // "Help! Put me down!"
-        RunningOut = 169,         // "I'm running out of cash!"
-        NewRide = 170,            // "Wow! A new ride being built!"
-        NiceRideDeprecated = 171, // "Nice ride! But not as good as the Phoenix..."
-        ExcitedDeprecated = 172,  // "I'm so excited - It's an Intamin ride!"
-        HereWeAre = 173,          // "...and here we are on X!"
+        help = 168,               // "Help! Put me down!"
+        runningOut = 169,         // "I'm running out of cash!"
+        newRide = 170,            // "Wow! A new ride being built!"
+        niceRideDeprecated = 171, // "Nice ride! But not as good as the Phoenix..."
+        excitedDeprecated = 172,  // "I'm so excited - It's an Intamin ride!"
+        hereWeAre = 173,          // "...and here we are on X!"
 
-        None = 255
+        none = 255
     };
 
     enum class PeepNauseaTolerance : uint8_t
     {
-        None,
-        Low,
-        Average,
-        High
+        none,
+        low,
+        average,
+        high
     };
 
     static constexpr uint16_t kPeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
@@ -264,165 +264,165 @@ namespace OpenRCT2
         static constexpr auto cEntityType = EntityType::guest;
 
     public:
-        uint8_t GuestNumRides;
-        EntityId GuestNextInQueue;
-        int32_t ParkEntryTime;
-        RideId GuestHeadingToRideId;
-        uint8_t GuestIsLostCountdown;
-        uint8_t GuestTimeOnRide;
-        money64 PaidToEnter;
-        money64 PaidOnRides;
-        money64 PaidOnFood;
-        money64 PaidOnDrink;
-        money64 PaidOnSouvenirs;
-        bool OutsideOfPark;
-        uint8_t Happiness;
-        uint8_t HappinessTarget;
-        uint8_t Nausea;
-        uint8_t NauseaTarget;
-        uint8_t Hunger;
-        uint8_t Thirst;
-        uint8_t Toilet;
-        uint8_t TimeToConsume;
-        IntensityRange Intensity{ 0 };
-        PeepNauseaTolerance NauseaTolerance;
-        uint16_t TimeInQueue;
-        money64 CashInPocket;
-        money64 CashSpent;
-        RideId Photo1RideRef;
-        RideId Photo2RideRef;
-        RideId Photo3RideRef;
-        RideId Photo4RideRef;
+        uint8_t guestNumRides;
+        EntityId guestNextInQueue;
+        int32_t parkEntryTime;
+        RideId guestHeadingToRideId;
+        uint8_t guestIsLostCountdown;
+        uint8_t guestTimeOnRide;
+        money64 paidToEnter;
+        money64 paidOnRides;
+        money64 paidOnFood;
+        money64 paidOnDrink;
+        money64 paidOnSouvenirs;
+        bool outsideOfPark;
+        uint8_t happiness;
+        uint8_t happinessTarget;
+        uint8_t nausea;
+        uint8_t nauseaTarget;
+        uint8_t hunger;
+        uint8_t thirst;
+        uint8_t toilet;
+        uint8_t timeToConsume;
+        IntensityRange intensity{ 0 };
+        PeepNauseaTolerance nauseaTolerance;
+        uint16_t timeInQueue;
+        money64 cashInPocket;
+        money64 cashSpent;
+        RideId photo1RideRef;
+        RideId photo2RideRef;
+        RideId photo3RideRef;
+        RideId photo4RideRef;
 
-        int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
-        RideId PreviousRide;
-        uint16_t PreviousRideTimeOut;
-        std::array<PeepThought, kPeepMaxThoughts> Thoughts;
+        int8_t rejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
+        RideId previousRide;
+        uint16_t previousRideTimeOut;
+        std::array<PeepThought, kPeepMaxThoughts> thoughts;
         // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-        uint8_t LitterCount;
+        uint8_t litterCount;
         // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-        uint8_t DisgustingCount;
-        uint8_t AmountOfFood;
-        uint8_t AmountOfDrinks;
-        uint8_t AmountOfSouvenirs;
-        uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
-        uint8_t VoucherType;
+        uint8_t disgustingCount;
+        uint8_t amountOfFood;
+        uint8_t amountOfDrinks;
+        uint8_t amountOfSouvenirs;
+        uint8_t vandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
+        uint8_t voucherType;
         union
         {
-            RideId VoucherRideId;
-            ShopItemIndex VoucherShopItem;
+            RideId voucherRideId;
+            ShopItemIndex voucherShopItem;
         };
-        uint8_t SurroundingsThoughtTimeout;
-        uint8_t Angriness;
-        uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
-        uint8_t DaysInQueue;
-        Drawing::Colour BalloonColour;
-        Drawing::Colour UmbrellaColour;
-        Drawing::Colour HatColour;
-        RideId FavouriteRide;
-        uint8_t FavouriteRideRating;
-        uint64_t ItemFlags;
+        uint8_t surroundingsThoughtTimeout;
+        uint8_t angriness;
+        uint8_t timeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
+        uint8_t daysInQueue;
+        Drawing::Colour balloonColour;
+        Drawing::Colour umbrellaColour;
+        Drawing::Colour hatColour;
+        RideId favouriteRide;
+        uint8_t favouriteRideRating;
+        uint64_t itemFlags;
 
-        void Update();
-        void Tick128UpdateGuest(uint32_t index);
-        uint64_t GetFoodOrDrinkFlags() const;
-        uint64_t GetEmptyContainerFlags() const;
-        bool HasDrink() const;
-        bool HasFoodOrDrink() const;
-        bool HasEmptyContainer() const;
-        void UpdateAnimationGroup();
-        bool HeadingForRideOrParkExit() const;
-        void ReadMap();
-        bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
-        void SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
-        void SpendMoney(money64 amount, ExpenditureType type);
-        void SetHasRidden(const Ride& ride);
-        bool HasRidden(const Ride& ride) const;
-        void SetHasRiddenRideType(ride_type_t rideType);
-        bool HasRiddenRideType(ride_type_t rideType) const;
-        void SetParkEntryTime(int32_t entryTime);
-        int32_t GetParkEntryTime() const;
-        void CheckIfLost();
-        void CheckCantFindRide();
-        void CheckCantFindExit();
-        void SetAnimationGroup(PeepAnimationGroup new_sprite_type);
-        int32_t GetEasterEggNameId() const;
-        void UpdateEasterEggInteractions();
-        void InsertNewThought(PeepThoughtType thought_type);
-        void InsertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
-        void InsertNewThought(PeepThoughtType thought_type, RideId rideId);
-        void InsertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
-        static Guest* Generate(const CoordsXYZ& coords);
-        bool UpdateQueuePosition(PeepActionType previous_action);
-        void RemoveFromQueue();
+        void update();
+        void tick128UpdateGuest(uint32_t index);
+        uint64_t getFoodOrDrinkFlags() const;
+        uint64_t getEmptyContainerFlags() const;
+        bool hasDrink() const;
+        bool hasFoodOrDrink() const;
+        bool hasEmptyContainer() const;
+        void updateAnimationGroup();
+        bool headingForRideOrParkExit() const;
+        void readMap();
+        bool shouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
+        void spendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
+        void spendMoney(money64 amount, ExpenditureType type);
+        void setHasRidden(const Ride& ride);
+        bool hasRidden(const Ride& ride) const;
+        void setHasRiddenRideType(ride_type_t rideType);
+        bool hasRiddenRideType(ride_type_t rideType) const;
+        void setParkEntryTime(int32_t entryTime);
+        int32_t getParkEntryTime() const;
+        void checkIfLost();
+        void checkCantFindRide();
+        void checkCantFindExit();
+        void setAnimationGroup(PeepAnimationGroup new_sprite_type);
+        int32_t getEasterEggNameId() const;
+        void updateEasterEggInteractions();
+        void insertNewThought(PeepThoughtType thought_type);
+        void insertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
+        void insertNewThought(PeepThoughtType thought_type, RideId rideId);
+        void insertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
+        static Guest* generate(const CoordsXYZ& coords);
+        bool updateQueuePosition(PeepActionType previous_action);
+        void removeFromQueue();
 
-        uint64_t GetItemFlags() const;
-        void SetItemFlags(uint64_t itemFlags);
-        void RemoveAllItems();
-        void RemoveItem(ShopItem item);
-        void GiveItem(ShopItem item);
-        bool HasItem(ShopItem peepItem) const;
+        uint64_t getItemFlags() const;
+        void setItemFlags(uint64_t value);
+        void removeAllItems();
+        void removeItem(ShopItem item);
+        void giveItem(ShopItem item);
+        bool hasItem(ShopItem peepItem) const;
         void serialise(DataSerialiser& stream);
 
         // Removes the ride from the guests memory, this includes
         // the history, thoughts, etc.
-        void RemoveRideFromMemory(RideId rideId);
-        void HandleEasterEggName();
-        void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
-        void OnEnterRide(Ride& ride);
-        void OnExitRide(Ride& ride);
-        void ThrowUp();
+        void removeRideFromMemory(RideId rideId);
+        void handleEasterEggName();
+        void choseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
+        void onEnterRide(Ride& ride);
+        void onExitRide(Ride& ride);
+        void throwUp();
 
     private:
-        bool ShouldFindBench();
-        bool UpdateWalkingFindBin();
-        bool UpdateWalkingFindBench();
-        void UpdateRide();
-        void UpdateOnRide() {}; // TODO
-        void UpdateWalking();
-        void UpdateQueuing();
-        void UpdateSitting();
-        void UpdateEnteringPark();
-        void UpdateLeavingPark();
-        void UpdateBuying();
-        void UpdateWatching();
-        void UpdateUsingBin();
-        void UpdateRideAtEntrance();
-        void UpdateRideAdvanceThroughEntrance();
-        void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
-        uint8_t GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const;
-        void UpdateRideFreeVehicleCheck();
-        void UpdateRideFreeVehicleEnterRide(Ride& ride);
-        void UpdateRideApproachVehicle();
-        void UpdateRideEnterVehicle();
-        void UpdateRideLeaveVehicle();
-        void UpdateRideApproachExit();
-        void UpdateRideInExit();
+        bool shouldFindBench();
+        bool updateWalkingFindBin();
+        bool updateWalkingFindBench();
+        void updateRide();
+        void updateOnRide() {}; // TODO
+        void updateWalking();
+        void updateQueuing();
+        void updateSitting();
+        void updateEnteringPark();
+        void updateLeavingPark();
+        void updateBuying();
+        void updateWatching();
+        void updateUsingBin();
+        void updateRideAtEntrance();
+        void updateRideAdvanceThroughEntrance();
+        void updateRideLeaveEntranceWaypoints(const Ride& ride);
+        uint8_t getWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const;
+        void updateRideFreeVehicleCheck();
+        void updateRideFreeVehicleEnterRide(Ride& ride);
+        void updateRideApproachVehicle();
+        void updateRideEnterVehicle();
+        void updateRideLeaveVehicle();
+        void updateRideApproachExit();
+        void updateRideInExit();
 
-        void UpdateRideApproachVehicleWaypoints();
+        void updateRideApproachVehicleWaypoints();
 
-        void UpdateRideApproachExitWaypoints();
-        void UpdateRideApproachSpiralSlide();
-        void UpdateRideOnSpiralSlide();
-        void UpdateRideLeaveSpiralSlide();
-        void UpdateRideMazePathfinding();
-        void UpdateRideLeaveExit();
-        void UpdateRideShopApproach();
-        void UpdateRideShopInteract();
-        void UpdateRideShopLeave();
-        void UpdateRidePrepareForExit();
-        void UpdateMotivesIdle();
-        void UpdateConsumptionMotives();
-        int32_t CheckEasterEggName(int32_t index) const;
-        void GivePassingGuestPurpleClothes(Guest& passingPeep);
-        void GivePassingGuestPizza(Guest& passingPeep);
-        void MakePassingGuestSick(Guest& passingPeep);
-        void GivePassingPeepsIceCream(Guest& passingPeep);
-        void GoToRideEntrance(const Ride& ride);
+        void updateRideApproachExitWaypoints();
+        void updateRideApproachSpiralSlide();
+        void updateRideOnSpiralSlide();
+        void updateRideLeaveSpiralSlide();
+        void updateRideMazePathfinding();
+        void updateRideLeaveExit();
+        void updateRideShopApproach();
+        void updateRideShopInteract();
+        void updateRideShopLeave();
+        void updateRidePrepareForExit();
+        void updateMotivesIdle();
+        void updateConsumptionMotives();
+        int32_t checkEasterEggName(int32_t index) const;
+        void givePassingGuestPurpleClothes(Guest& passingPeep);
+        void givePassingGuestPizza(Guest& passingPeep);
+        void makePassingGuestSick(Guest& passingPeep);
+        void givePassingPeepsIceCream(Guest& passingPeep);
+        void goToRideEntrance(const Ride& ride);
     };
 
-    void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
-    void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
+    void updateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
+    void updateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
 
     static_assert(sizeof(Guest) <= 512);
 
