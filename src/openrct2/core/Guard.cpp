@@ -107,7 +107,7 @@ namespace OpenRCT2::Guard
             _lastAssertMessage = std::make_optional(formattedMessage);
         }
 
-#ifdef DEBUG
+#if DEBUG > 0
         Debug::Break();
 #endif
 
