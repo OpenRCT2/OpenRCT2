@@ -198,7 +198,7 @@ namespace OpenRCT2
     };
 
     /** rct2: 009823AC */
-    static constexpr PeepThoughtType kCrowdedthoughts[] = {
+    static constexpr PeepThoughtType kCrowdedThoughts[] = {
         PeepThoughtType::lost,
         PeepThoughtType::tired,
         PeepThoughtType::badLitter,
@@ -937,7 +937,7 @@ namespace OpenRCT2
          * is executed to once every four calls. */
         if (PeepFlags & PEEP_FLAGS_CROWDED)
         {
-            PeepThoughtType thought_type = kCrowdedthoughts[ScenarioRand() & 0xF];
+            PeepThoughtType thought_type = kCrowdedThoughts[ScenarioRand() & 0xF];
             if (thought_type != PeepThoughtType::none)
             {
                 insertNewThought(thought_type);
