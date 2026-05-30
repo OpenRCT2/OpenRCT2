@@ -84,11 +84,6 @@ namespace OpenRCT2::GameActions
         res.position.x += 16;
         res.position.y += 16;
 
-        if (_loc.z == 0)
-        {
-            res.position.z = TileElementHeight(res.position);
-        }
-
         if (!LocationValid(_loc))
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
@@ -141,6 +136,7 @@ namespace OpenRCT2::GameActions
                 edgeSlope &= ~EDGE_SLOPE_ELEVATED;
             }
         }
+        res.position.z = targetHeight;
 
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
@@ -286,11 +282,6 @@ namespace OpenRCT2::GameActions
         res.position.x += 16;
         res.position.y += 16;
 
-        if (res.position.z == 0)
-        {
-            res.position.z = TileElementHeight(res.position);
-        }
-
         uint8_t edgeSlope = 0;
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
@@ -311,6 +302,7 @@ namespace OpenRCT2::GameActions
                 edgeSlope &= ~EDGE_SLOPE_ELEVATED;
             }
         }
+        res.position.z = targetHeight;
         auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
         auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_wallType);
