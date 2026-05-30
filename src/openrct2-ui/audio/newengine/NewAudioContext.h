@@ -101,11 +101,19 @@ namespace OpenRCT2::Audio
 
         void removeReleasedSources();
 
+        struct RetiredAudioData
+        {
+            std::unique_ptr<Float32AudioData> data;
+            uint64_t safeEpoch = 0;
+        };
+        void reclaimRetiredData();
+
         std::unique_ptr<AudioEngine> _engine;
         std::unique_ptr<AudioPlatformSDL2> _platform;
 
         std::vector<std::unique_ptr<Float32AudioData>> _audioData;
         std::vector<std::unique_ptr<Float32AudioSource>> _sources;
+        std::vector<RetiredAudioData> _retiredData;
     };
 
 } // namespace OpenRCT2::Audio

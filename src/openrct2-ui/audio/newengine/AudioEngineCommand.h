@@ -87,6 +87,7 @@ namespace OpenRCT2::Audio
         fadeOut,
         setOffset,
         setResamplerQuality,
+        retireBuffer,
     };
 
     // pcmData pointers are NOT owned, caller keeps them alive during playback
@@ -176,6 +177,11 @@ namespace OpenRCT2::Audio
             {
                 bool highQuality;
             } setResamplerQuality;
+
+            struct
+            {
+                const float* pcmData;
+            } retireBuffer;
         } data;
     };
 

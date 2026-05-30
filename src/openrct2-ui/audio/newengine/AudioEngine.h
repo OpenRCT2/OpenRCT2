@@ -77,6 +77,9 @@ namespace OpenRCT2::Audio
 
         void setResamplerQuality(bool highQuality);
 
+        bool retireBuffer(const float* pcmData);
+        [[nodiscard]] uint64_t getRenderEpoch() const;
+
         // Called from the audio thread (the SDL callback). Drains the
         // command buffer, mixes active voices, and writes interleaved
         // float32 stereo into outputBuffer
@@ -106,6 +109,7 @@ namespace OpenRCT2::Audio
         void processFadeOut(const AudioCommand& cmd);
         void processSetOffset(const AudioCommand& cmd);
         void processSetResamplerQuality(const AudioCommand& cmd);
+        void processRetireBuffer(const AudioCommand& cmd);
 
         Voice* resolveVoice(AudioHandle handle);
 
@@ -129,6 +133,9 @@ namespace OpenRCT2::Audio
         std::atomic<uint32_t> _statVoiceLimit{ 128 };
         std::atomic<float> _statCallbackUs{ 0.0f };
         std::atomic<float> _statBudgetPercent{ 0.0f };
+
+        std::atomic<uint64_t> _renderEpoch{ 0 };
+
         uint32_t _outputSampleRate = 48000;
 
         // Adaptive quality governor. Measures how much of the audio

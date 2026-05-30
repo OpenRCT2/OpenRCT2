@@ -87,11 +87,13 @@ namespace OpenRCT2::Audio
 
     NewAudioContext::~NewAudioContext()
     {
+        // Closing the device stops the callback so all buffers are safe to free
         if (_platform)
             _platform->close();
 
         _sources.clear();
         _audioData.clear();
+        _retiredData.clear();
 
         SDL_QuitSubSystem(SDL_INIT_AUDIO);
     }
@@ -423,8 +425,36 @@ namespace OpenRCT2::Audio
         }
     }
 
+    void NewAudioContext::reclaimRetiredData()
+    {
+        if (_retiredData.empty())
+            return;
+
+        if (_engine == nullptr)
+        {
+            _retiredData.clear();
+            return;
+        }
+
+        uint64_t epoch = _engine->getRenderEpoch();
+        for (size_t i = 0; i < _retiredData.size();)
+        {
+            if (epoch >= _retiredData[i].safeEpoch)
+            {
+                _retiredData[i] = std::move(_retiredData.back());
+                _retiredData.pop_back();
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
+
     void NewAudioContext::removeReleasedSources()
     {
+        reclaimRetiredData();
+
         for (size_t i = 0; i < _sources.size();)
         {
             if (_sources[i] && _sources[i]->IsReleased())
@@ -449,15 +479,35 @@ namespace OpenRCT2::Audio
                     break;
                 }
             }
-            if (!referenced)
+
+            if (referenced)
+            {
+                i++;
+                continue;
+            }
+
+            const float* pcm = _audioData[i]->samples.data();
+
+            if (_engine == nullptr || pcm == nullptr || _audioData[i]->samples.empty())
             {
                 _audioData[i] = std::move(_audioData.back());
                 _audioData.pop_back();
+                continue;
             }
-            else
+
+            if (!_engine->retireBuffer(pcm))
             {
                 i++;
+                continue;
             }
+
+            RetiredAudioData retired;
+            retired.safeEpoch = _engine->getRenderEpoch() + 1;
+            retired.data = std::move(_audioData[i]);
+            _retiredData.push_back(std::move(retired));
+
+            _audioData[i] = std::move(_audioData.back());
+            _audioData.pop_back();
         }
     }
 

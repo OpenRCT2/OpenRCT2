@@ -179,6 +179,22 @@ namespace OpenRCT2::Audio
         submitCommand(cmd);
     }
 
+    bool AudioEngine::retireBuffer(const float* pcmData)
+    {
+        if (pcmData == nullptr)
+            return true;
+
+        AudioCommand cmd{};
+        cmd.type = AudioCommandType::retireBuffer;
+        cmd.data.retireBuffer.pcmData = pcmData;
+        return submitCommand(cmd);
+    }
+
+    uint64_t AudioEngine::getRenderEpoch() const
+    {
+        return _renderEpoch.load(std::memory_order_acquire);
+    }
+
     void AudioEngine::fadeOut(AudioHandle handle, float durationMs)
     {
         AudioCommand cmd{};
@@ -260,6 +276,9 @@ namespace OpenRCT2::Audio
         _statCulledVoices.store(static_cast<uint32_t>(culled), std::memory_order_relaxed);
         _statVoiceLimit.store(static_cast<uint32_t>(_voicePool.getVoiceLimit()), std::memory_order_relaxed);
         _statCallbackUs.store(durationUs, std::memory_order_relaxed);
+
+        // release pairs with getRenderEpoch()'s acquire load
+        _renderEpoch.fetch_add(1, std::memory_order_release);
     }
 
     void AudioEngine::processCommands()
@@ -321,6 +340,9 @@ namespace OpenRCT2::Audio
                     break;
                 case AudioCommandType::setResamplerQuality:
                     processSetResamplerQuality(cmd);
+                    break;
+                case AudioCommandType::retireBuffer:
+                    processRetireBuffer(cmd);
                     break;
             }
         }
@@ -492,6 +514,25 @@ namespace OpenRCT2::Audio
     void AudioEngine::processSetResamplerQuality(const AudioCommand& cmd)
     {
         _useSincResampler = cmd.data.setResamplerQuality.highQuality;
+    }
+
+    void AudioEngine::processRetireBuffer(const AudioCommand& cmd)
+    {
+        const float* pcmData = cmd.data.retireBuffer.pcmData;
+        if (pcmData == nullptr)
+            return;
+
+        for (size_t i = 0; i < kMaxVoices; i++)
+        {
+            auto& voice = _voicePool.getByIndex(i);
+            if (voice.state != VoiceState::idle && voice.pcmData == pcmData)
+            {
+                voice.state = VoiceState::idle;
+                voice.pcmData = nullptr;
+                if (voice.gameHandle.isValid())
+                    markSlotInactive(i);
+            }
+        }
     }
 
     void AudioEngine::processFadeOut(const AudioCommand& cmd)
