@@ -15,6 +15,7 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
+#include "../../audio/AudioContext.h"
 
 using namespace OpenRCT2;
 
@@ -23,6 +24,9 @@ void GameScene::Load()
     LOG_VERBOSE("GameScene::Load()");
 
     gLegacyScene = LegacyScene::playing;
+
+    auto& audioContext = GetContext().GetAudioContext();
+    audioContext.SyncVolumeSettings();
 
     LOG_VERBOSE("GameScene::Load() finished");
 }

@@ -178,6 +178,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MASTER_VOLUME,
         WIDX_SOUND_VOLUME,
         WIDX_MUSIC_VOLUME,
+        WIDX_AUDIO_ENGINE_LABEL,
+        WIDX_AUDIO_ENGINE,
+        WIDX_AUDIO_ENGINE_DROPDOWN,
 
         // Interface
         WIDX_THEMES_GROUP = WIDX_PAGE_START,
@@ -364,7 +367,10 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({288, 130}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
         makeWidget({155,  72}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Master volume
         makeWidget({155,  87}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
-        makeWidget({155, 102}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             )  // Music volume
+        makeWidget({155, 102}, {145, 13}, WidgetType::scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Music volume
+        makeWidget({ 10, 148}, {145, 12}, WidgetType::label,        WindowColour::secondary, STR_AUDIO_ENGINE_LABEL,  STR_AUDIO_ENGINE_TIP ),
+        makeWidget({155, 147}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                ),
+        makeWidget({288, 148}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_ENGINE_TIP )
     );
 
     constexpr int32_t kControlsGroupStart = 53;
@@ -1453,6 +1459,16 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[checkedIndex].setChecked(true);
                     break;
                 }
+                case WIDX_AUDIO_ENGINE_DROPDOWN:
+                {
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_AUDIO_ENGINE_LEGACY);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_AUDIO_ENGINE_NEW);
+                    ShowDropdown(widget, 2);
+
+                    auto checkedIdx = EnumValue(Config::Get().sound.audioEngineType);
+                    gDropdown.items[checkedIdx].setChecked(true);
+                    break;
+                }
             }
         }
 
@@ -1503,6 +1519,21 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
+                case WIDX_AUDIO_ENGINE_DROPDOWN:
+                {
+                    if (dropdownIndex >= 0 && dropdownIndex <= 1)
+                    {
+                        auto newType = static_cast<AudioEngineType>(dropdownIndex);
+                        if (newType != Config::Get().sound.audioEngineType)
+                        {
+                            Config::Get().sound.audioEngineType = newType;
+                            Config::Save();
+                            GetContext()->GetAudioContext().SwitchAudioEngine();
+                        }
+                        invalidate();
+                    }
+                    break;
+                }
             }
         }
 
@@ -1537,6 +1568,10 @@ namespace OpenRCT2::Ui::Windows
                 Config::Save();
                 invalidateWidget(WIDX_MUSIC_VOLUME);
             }
+
+            auto& audioContext = GetContext()->GetAudioContext();
+            if (audioContext.IsNewEngine())
+                audioContext.SyncVolumeSettings();
         }
 
         void ControlsUpdate()
@@ -1608,6 +1643,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SOUND].setString(_dropdownCaption.c_str());
 
             widgets[WIDX_TITLE_MUSIC].text = GetTitleMusicName();
+
+            widgets[WIDX_AUDIO_ENGINE].text = Config::Get().sound.audioEngineType == AudioEngineType::newEngine
+                ? STR_AUDIO_ENGINE_NEW
+                : STR_AUDIO_ENGINE_LEGACY;
 
             setCheckboxValue(WIDX_SOUND_CHECKBOX, Config::Get().sound.soundEnabled);
             setCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, Config::Get().sound.masterSoundEnabled);
