@@ -12,23 +12,23 @@
 #include "../../Context.h"
 #include "../../GameState.h"
 #include "../../object/ObjectManager.h"
-#include "../../util/Util.h"
 #include "../Map.h"
-#include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
-#include "HeightMap.hpp"
+#include "BaseMap.hpp"
+#include "Noise.h"
+#include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
-#include "SimplexNoise.h"
 #include "SurfaceSelection.h"
 #include "TreePlacement.h"
 
-#include <vector>
+#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
     static void generateBlankMap(Settings* settings);
 
-    static void addBeaches(Settings* settings);
+    static void applyTexturesFromRules(Settings* settings);
+    static void placeSceneryFromRules(Settings* settings);
 
     void generate(Settings* settings)
     {
@@ -43,14 +43,17 @@ namespace OpenRCT2::World::MapGenerator
                 generateSimplexMap(settings);
                 break;
 
+            case Algorithm::warpedNoise:
+                generateWarpedMap(settings);
+                break;
+
             case Algorithm::heightmapImage:
                 GenerateFromHeightmapImage(settings);
                 break;
         }
 
-        // Add beaches?
-        if (settings->beaches)
-            addBeaches(settings);
+        applyTexturesFromRules(settings);
+        placeSceneryFromRules(settings);
 
         // Place trees?
         if (settings->trees)
@@ -87,24 +90,26 @@ namespace OpenRCT2::World::MapGenerator
         setWaterLevel(settings->waterLevel);
     }
 
-    static void addBeaches(Settings* settings)
+    static void applyTexturesFromRules(Settings* settings)
     {
-        auto beachTextureId = generateBeachTextureId();
-        if (beachTextureId == kObjectEntryIndexNull)
-            return;
+        auto& defaultRule = settings->textureRules[0];
+        assert(defaultRule.isDefault);
+        auto& defaultTextures = defaultRule.result;
 
-        // Add sandy beaches
-        auto& gameState = getGameState();
-        for (auto y = 1; y < gameState.mapSize.y - 1; y++)
-        {
-            for (auto x = 1; x < gameState.mapSize.x - 1; x++)
-            {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+        Rule::Callback<Rule::TextureResult> callback =
+            [defaultTextures](TileCoordsXY& coords, SurfaceElement& element, std::optional<Rule::TextureResult>& result) {
+                auto actual = result.value_or(defaultTextures);
 
-                if (surfaceElement != nullptr && surfaceElement->baseHeight < settings->waterLevel + 6)
-                    surfaceElement->SetSurfaceObjectIndex(beachTextureId);
-            }
-        }
+                element.SetSurfaceObjectIndex(actual.applyLandTexture ? actual.landTexture : defaultTextures.landTexture);
+                element.SetEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
+            };
+
+        Rule::evaluateRules<Rule::TextureResult>(*settings, settings->textureRules, callback);
+    }
+
+    static void placeSceneryFromRules(Settings* settings)
+    {
+        // TODO
     }
 
     /**
@@ -129,43 +134,26 @@ namespace OpenRCT2::World::MapGenerator
      */
     void setMapHeight(Settings* settings, const HeightMap& heightMap)
     {
-        for (auto y = 1; y < heightMap.height / heightMap.density - 1; y++)
+        for (auto y = 1; y < heightMap.height - 1; y++)
         {
-            for (auto x = 1; x < heightMap.width / heightMap.density - 1; x++)
+            for (auto x = 1; x < heightMap.width - 1; x++)
             {
-                auto heightX = x * heightMap.density;
-                auto heightY = y * heightMap.density;
+                TileCoordsXY pos{ x, y };
 
-                uint8_t q00 = heightMap[{ heightX + 0, heightY + 0 }];
-                uint8_t q01 = heightMap[{ heightX + 0, heightY + 1 }];
-                uint8_t q10 = heightMap[{ heightX + 1, heightY + 0 }];
-                uint8_t q11 = heightMap[{ heightX + 1, heightY + 1 }];
-
-                uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
-
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+                auto surfaceElement = MapGetSurfaceElementAt(pos);
                 if (surfaceElement == nullptr)
                     continue;
-                surfaceElement->baseHeight = std::max(2, baseHeight * 2);
+
+                // Ensure height is within [2, 254] and a multiple of 2
+                auto adjustedHeight = std::round(std::clamp(heightMap[pos], 2.0f, 254.0f) * 0.5f) * 2.0f;
+                surfaceElement->baseHeight = static_cast<uint8_t>(adjustedHeight);
 
                 // If base height is below water level, lower it to create more natural shorelines
-                if (surfaceElement->baseHeight >= 4 && surfaceElement->baseHeight <= settings->waterLevel)
+                if (!settings->simulate_erosion && surfaceElement->baseHeight >= 4
+                    && surfaceElement->baseHeight <= settings->waterLevel)
                     surfaceElement->baseHeight -= 2;
 
                 surfaceElement->clearanceHeight = surfaceElement->baseHeight;
-
-                uint8_t currentSlope = surfaceElement->GetSlope();
-
-                if (q00 > baseHeight)
-                    currentSlope |= kTileSlopeSCornerUp;
-                if (q01 > baseHeight)
-                    currentSlope |= kTileSlopeWCornerUp;
-                if (q10 > baseHeight)
-                    currentSlope |= kTileSlopeECornerUp;
-                if (q11 > baseHeight)
-                    currentSlope |= kTileSlopeNCornerUp;
-
-                surfaceElement->SetSlope(currentSlope);
             }
         }
     }
