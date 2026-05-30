@@ -78,6 +78,10 @@ namespace OpenRCT2::GameActions
                 park.samePriceThroughoutPark = _value;
                 windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
+            case ParkParameter::sameColourInPark:
+                park.sameColourThroughoutPark = _value;
+                windowMgr->InvalidateByClass(WindowClass::ride);
+                break;
             default:
                 LOG_ERROR("Invalid park parameter %d", _parameter);
                 return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);

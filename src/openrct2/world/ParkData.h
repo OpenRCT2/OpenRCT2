@@ -118,6 +118,7 @@ namespace OpenRCT2::Park
         uint8_t bankLoanInterestRate;
 
         uint64_t samePriceThroughoutPark{};
+        uint64_t sameColourThroughoutPark{};
 
         Drawing::Colour staffHandymanColour;
         Drawing::Colour staffMechanicColour;
