@@ -1760,6 +1760,25 @@ declare global {
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
 
+        /**
+         * Gets a {@link PathNavigator} for the given footpath element. This can be used
+         * to explore the footpath network as a graph for pathfinding.
+         * @param location The tile coordinates.
+         * @param elementIndex The index of the footpath element on the tile.
+         * @param options Optional traversal rules; persist for the lifetime of the navigator
+         *                and apply to {@link PathNavigator.getConnectedPaths},
+         *                {@link PathNavigator.moveTo}, and {@link PathNavigator.permittedEdges}.
+         */
+        getPathNavigator(location: CoordsXY, elementIndex: number, options?: PathNavigationOptions): PathNavigator | null;
+
+        /**
+         * Gets a {@link PathNavigator} for the footpath at the given world coordinates.
+         * This is a convenience method for A* pathfinding where the element index is not known.
+         * @param position The world coordinates (x, y, z) of the footpath.
+         * @param options Optional traversal rules; see the other overload for details.
+         */
+        getPathNavigator(position: CoordsXYZ, options?: PathNavigationOptions): PathNavigator | null;
+
     }
 
     type TileElementType =
@@ -2806,6 +2825,90 @@ declare global {
          * @returns true if there is a next segment, otherwise false.
          */
         next(): boolean;
+    }
+
+    /**
+     * Describes a footpath tile, either the {@link PathNavigator}'s current
+     * position or an adjacent reachable neighbor returned by
+     * {@link PathNavigator.getConnectedPaths}.
+     */
+    interface PathConnection {
+        /** World coordinates of the path tile. */
+        readonly position: CoordsXYZ;
+        /** The index of the footpath element on the tile. */
+        readonly elementIndex: number;
+        /**
+         * The cardinal direction (0-3) of entry into this tile, or null if
+         * this represents a navigator's starting position.
+         */
+        readonly direction: Direction | null;
+        /** Whether the path is sloped. */
+        readonly isSloped: boolean;
+        /** The slope direction, if sloped. */
+        readonly slopeDirection: Direction | null;
+        /** Whether the path is a queue line. */
+        readonly isQueue: boolean;
+        /** Whether the path is wide. */
+        readonly isWide: boolean;
+        /** The ride index if this is a queue path, otherwise null. */
+        readonly ride: number | null;
+        /** The station index if this is a queue path, otherwise null. */
+        readonly station: number | null;
+    }
+
+    /**
+     * Traversal rules for a {@link PathNavigator}. By default the navigator only
+     * traverses regular paths. Set any option to `true` to include that kind of path.
+     * All fields are optional and default to `false`.
+     */
+    interface PathNavigationOptions {
+        /** If true, no-entry signs (banners) block traversal. Default: false. */
+        respectBanners?: boolean;
+
+        /** If true, ghost (preview / not-yet-built) path elements are included. Default: false. */
+        includeGhosts?: boolean;
+
+        /** If true, queue paths are included during traversal. Default: false. */
+        includeQueues?: boolean;
+
+        /** If true, wide paths are included during traversal. Default: false. */
+        includeWidePaths?: boolean;
+    }
+
+    /**
+     * Allows exploring the footpath network as a graph.
+     * Unlike {@link TrackIterator} which follows a linear circuit,
+     * PathNavigator sits on a path tile and lets you discover all
+     * connected neighbors for graph traversal (e.g. A* pathfinding).
+     *
+     * Traversal behavior is controlled by the {@link PathNavigationOptions}
+     * passed to {@link Map.getPathNavigator}.
+     */
+    interface PathNavigator {
+        /** The current path tile as a {@link PathConnection}. */
+        readonly current: PathConnection;
+        /** The raw edge connection bitmask (lower 4 bits, directions 0-3). */
+        readonly edges: number;
+        /**
+         * Edge bitmask after applying the navigator's banner rules.
+         * If `respectBanners` is false (the default), this returns the raw edges.
+         */
+        readonly permittedEdges: number;
+
+        /**
+         * Returns all reachable neighboring path tiles from the current position.
+         * Takes into account edge connections, slopes, height differences,
+         * and the {@link PathNavigationOptions} the navigator was created with.
+         */
+        getConnectedPaths(): PathConnection[];
+
+        /**
+         * Moves the navigator to the connected path in the given direction.
+         * Honours the navigator's {@link PathNavigationOptions}.
+         * @param direction The cardinal direction (0-3) to move.
+         * @returns true if the move was successful, false otherwise.
+         */
+        moveTo(direction: Direction): boolean;
     }
 
     type EntityType =
