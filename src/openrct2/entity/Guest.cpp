@@ -2129,7 +2129,7 @@ namespace OpenRCT2
                         {
                             if (!gameState.cheats.ignoreRideIntensity)
                             {
-                                // intensity calculations. Even though the max intensity can go up to 15, it's capped
+                                // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                                 // at 10.0 (before happiness calculations). A full happiness bar will increase the max
                                 // intensity and decrease the min intensity by about 2.5.
                                 RideRating_t maxIntensity = std::min(intensity.GetMaximum() * 100, 1000) + happiness;
@@ -3314,7 +3314,7 @@ namespace OpenRCT2
      *  rct2: 0x00699FE3
      * Stops peeps that are having thoughts
      * such as "I'm hungry" after visiting a food shop.
-     * Works for thirst/Hungry/Low Money/toilet
+     * Works for Thirst/Hungry/Low Money/Toilet
      */
     static void GuestStopPurchaseThought(Guest& guest, ride_type_t rideType)
     {
@@ -5243,7 +5243,7 @@ namespace OpenRCT2
     /* From peep_update */
     static void GuestUpdatethoughts(Guest& guest)
     {
-        // thoughts must always have a gap of at least
+        // Thoughts must always have a gap of at least
         // 220 ticks in age between them. In order to
         // allow this when a thought is new it enters
         // a holding zone. Before it becomes fresh.
