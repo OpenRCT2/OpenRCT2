@@ -21,12 +21,20 @@ namespace OpenRCT2::World::MapGenerator
     class HeightMap
     {
     private:
-        std::vector<uint8_t> _height;
+        std::vector<float> _height;
 
     public:
         uint16_t width{};
         uint16_t height{};
         uint8_t density{};
+
+        HeightMap(TileCoordsXY mapSize)
+            : _height(mapSize.x * mapSize.y)
+            , width(mapSize.x)
+            , height(mapSize.y)
+            , density(1)
+        {
+        }
 
         HeightMap(int32_t targetWidth, int32_t targetHeight)
             : _height(targetWidth * targetHeight)
@@ -46,13 +54,13 @@ namespace OpenRCT2::World::MapGenerator
 
         HeightMap() = default;
 
-        uint8_t& operator[](TileCoordsXY pos)
+        float& operator[](TileCoordsXY pos)
         {
             assert(pos.x >= 0 || pos.y >= 0 || pos.x < width || pos.y < height);
             return _height[pos.y * width + pos.x];
         }
 
-        const uint8_t& operator[](TileCoordsXY pos) const
+        const float& operator[](TileCoordsXY pos) const
         {
             assert(pos.x >= 0 || pos.y >= 0 || pos.x < width || pos.y < height);
             return _height[pos.y * width + pos.x];
@@ -63,12 +71,12 @@ namespace OpenRCT2::World::MapGenerator
             _height.clear();
         }
 
-        uint8_t* data()
+        float* data()
         {
             return _height.data();
         }
 
-        const uint8_t* data() const
+        const float* data() const
         {
             return _height.data();
         }
