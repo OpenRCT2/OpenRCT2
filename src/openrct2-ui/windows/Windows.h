@@ -160,8 +160,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MazeConstructionOpen();
     void WindowMazeConstructionUpdatePressedWidgets();
 
-    // Multiplatyer
+    // Multiplayer
     WindowBase* MultiplayerOpen();
+    void MultiplayerRefreshList();
 
     // NewCampaign
     WindowBase* NewCampaignOpen(int16_t campaignType);

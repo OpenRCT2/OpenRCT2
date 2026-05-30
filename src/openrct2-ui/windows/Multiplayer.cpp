@@ -519,6 +519,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
             setWidgetPressed(WIDX_TAB1 + page, true);
 
+            refreshList();
             onResize();
             onPrepareDraw();
             initScrollWidgets();
@@ -610,8 +611,6 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
                 {
                     WindowSetResize(*this, { 420, 124 }, { 500, 450 });
-
-                    numListItems = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
 
                     widgets[WIDX_HEADER_PING].right = width - 5;
 
@@ -898,6 +897,14 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
+
+        void refreshList()
+        {
+            if (page == WINDOW_MULTIPLAYER_PAGE_PLAYERS)
+            {
+                numListItems = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
+            }
+        }
     };
 
     WindowBase* MultiplayerOpen()
@@ -913,5 +920,15 @@ namespace OpenRCT2::Ui::Windows
         }
 
         return window;
+    }
+
+    void MultiplayerRefreshList()
+    {
+        auto* windowMgr = GetWindowManager();
+        auto w = static_cast<MultiplayerWindow*>(windowMgr->FindByClass(WindowClass::multiplayer));
+        if (w != nullptr)
+        {
+            w->refreshList();
+        }
     }
 } // namespace OpenRCT2::Ui::Windows
