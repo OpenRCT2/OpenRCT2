@@ -1089,11 +1089,11 @@ namespace OpenRCT2
                     if (String::sizeOf(gOpenRCT2StartupActionPath) == 0)
                     {
                         Editor::Load();
-                        nextScene = _sceneManager->getGameScene();
+                        nextScene = _sceneManager->getEditorScene();
                     }
                     else if (Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        nextScene = _sceneManager->getGameScene();
+                        nextScene = _sceneManager->getEditorScene();
                     }
                     else
                     {

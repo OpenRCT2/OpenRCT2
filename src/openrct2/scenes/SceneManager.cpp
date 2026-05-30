@@ -10,6 +10,7 @@
 #include "SceneManager.h"
 
 #include "../Context.h"
+#include "editor/EditorScene.h"
 #include "game/GameScene.h"
 #include "intro/IntroScene.h"
 #include "preloader/PreloaderScene.h"
@@ -22,6 +23,7 @@ namespace OpenRCT2
     private:
         IScene* _activeScene = nullptr;
         IContext* _sceneContext = nullptr;
+        std::unique_ptr<EditorScene> _editorScene;
         std::unique_ptr<GameScene> _gameScene;
         std::unique_ptr<IntroScene> _introScene;
         std::unique_ptr<PreloaderScene> _preloaderScene;
@@ -40,8 +42,11 @@ namespace OpenRCT2
 
         IScene* getEditorScene() override
         {
-            // TODO: Implement me.
-            return nullptr;
+            if (auto* scene = _editorScene.get())
+                return scene;
+
+            _editorScene = std::make_unique<EditorScene>(*_sceneContext);
+            return _editorScene.get();
         }
 
         IScene* getGameScene() override

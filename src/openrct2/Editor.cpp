@@ -68,7 +68,7 @@ namespace OpenRCT2::Editor
     static void FinaliseMainView();
     static void ClearMapForEditing(bool fromSave);
 
-    static void ObjectListLoad()
+    void ObjectListLoad()
     {
         auto* context = GetContext();
         context->OpenProgress(STR_LOADING_GENERIC);
@@ -94,7 +94,7 @@ namespace OpenRCT2::Editor
         context->CloseProgress();
     }
 
-    static WindowBase* OpenEditorWindows()
+    WindowBase* OpenEditorWindows()
     {
         auto* main = ContextOpenWindow(WindowClass::mainWindow);
         ContextOpenWindow(WindowClass::topToolbar);
@@ -108,27 +108,8 @@ namespace OpenRCT2::Editor
      */
     void Load()
     {
-        // TODO: replace with dedicated scene
         auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getGameScene());
-
-        auto& gameState = getGameState();
-        Audio::StopAll();
-        gameStateInitAll(gameState, kDefaultMapSize);
-        gLegacyScene = LegacyScene::scenarioEditor;
-        gameState.editorStep = Editor::Step::objectSelection;
-        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gameState.scenarioOptions.category = Scenario::Category::other;
-        ObjectListLoad();
-        ContextResetSubsystems();
-        WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
-        LoadPalette();
-        gScreenAge = 0;
-        gameState.scenarioOptions.name = LanguageGetString(STR_MY_NEW_SCENARIO);
-
-        GameLoadScripts();
-        GameNotifyMapChanged();
+        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
     }
 
     /**
@@ -148,11 +129,6 @@ namespace OpenRCT2::Editor
     static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
     {
         if (result != ModalResult::ok)
-        {
-            return;
-        }
-
-        if (!GetContext()->LoadParkFromFile(path))
         {
             return;
         }
@@ -186,7 +162,7 @@ namespace OpenRCT2::Editor
     {
         // TODO: replace with dedicated scene
         auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getGameScene());
+        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
 
         Audio::StopAll();
         gLegacyScene = LegacyScene::trackDesigner;
@@ -214,7 +190,7 @@ namespace OpenRCT2::Editor
     {
         // TODO: replace with dedicated scene
         auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getGameScene());
+        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
 
         Audio::StopAll();
         gLegacyScene = LegacyScene::trackDesignsManager;
@@ -260,7 +236,7 @@ namespace OpenRCT2::Editor
 
         // TODO: replace with dedicated scene
         auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getGameScene());
+        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
 
         getGameState().editorStep = Editor::Step::landscapeEditor;
         gScreenAge = 0;

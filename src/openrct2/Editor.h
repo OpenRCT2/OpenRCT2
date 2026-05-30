@@ -15,6 +15,11 @@
 
 struct ResultWithMessage;
 
+namespace OpenRCT2
+{
+    struct WindowBase;
+}
+
 namespace OpenRCT2::Editor
 {
     void Load();
@@ -23,9 +28,11 @@ namespace OpenRCT2::Editor
     void LoadTrackManager();
     bool LoadLandscape(const utf8* path);
 
+    void ObjectListLoad();
     ResultWithMessage CheckPark();
     std::pair<ObjectType, StringId> CheckObjectSelection();
 
+    WindowBase* OpenEditorWindows();
     void OpenWindowsForCurrentStep();
 
     uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
