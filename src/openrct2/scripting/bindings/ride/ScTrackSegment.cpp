@@ -13,7 +13,9 @@
 
     #include "../../../Context.h"
     #include "../../../core/EnumMap.hpp"
+    #include "../../../ride/Ride.h"
     #include "../../../ride/TrackData.h"
+    #include "../../../ride/TrackPieceSelection.h"
     #include "../../../ride/Vehicle.h"
     #include "../../../ride/ted/TrackElementDescriptor.h"
     #include "../../ScriptEngine.h"
@@ -73,6 +75,7 @@ void ScTrackSegment::Register(JSContext* ctx)
         JS_CGETSET_DEF("countsAsInversion", ScTrackSegment::getTrackFlag<TrackElementFlag::normalToInversion>, nullptr),
         JS_CFUNC_DEF("getSubpositionLength", 2, ScTrackSegment::getSubpositionLength),
         JS_CFUNC_DEF("getSubpositions", 2, ScTrackSegment::getSubpositions),
+        JS_CFUNC_DEF("getNextValidSegments", 1, ScTrackSegment::getNextValidSegments),
     };
     RegisterBase(ctx, "TrackSegment", Finalize, funcs);
 }
@@ -233,6 +236,23 @@ JSValue ScTrackSegment::getSubpositions(JSContext* ctx, JSValue thisVal, int arg
         JS_SetPropertyInt64(ctx, result, idx, subposition);
     }
 
+    return result;
+}
+
+JSValue ScTrackSegment::getNextValidSegments(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+{
+    JS_UNPACK_INT32(rideId, ctx, argv[0]);
+    JSValue result = JS_NewArray(ctx);
+
+    auto ride = GetRide(RideId::FromUnderlying(rideId));
+    if (ride == nullptr)
+        return result;
+
+    const auto* data = GetTrackSegmentData(thisVal);
+    auto pieces = OpenRCT2::GetNextValidTrackSegments(ride->getRideTypeDescriptor(), data->_type);
+    int64_t i = 0;
+    for (auto type : pieces)
+        JS_SetPropertyInt64(ctx, result, i++, gScTrackSegment.New(ctx, type));
     return result;
 }
 
