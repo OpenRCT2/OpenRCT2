@@ -15,6 +15,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/Endianness.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/EnumMapTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/FormattingTests.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/helpers/GameInit.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/ImageImporterTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/IniReaderTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/IniWriterTest.cpp"
@@ -38,6 +39,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/tests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TileElements.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TileElementsView.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/TrackPaintingTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/WidgetStateTests.cpp")
 
 add_executable(OpenRCT2Tests ${test_files})
