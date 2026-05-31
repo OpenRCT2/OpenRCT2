@@ -502,7 +502,8 @@ namespace OpenRCT2::Audio
             }
 
             RetiredAudioData retired;
-            retired.safeEpoch = _engine->getRenderEpoch() + 1;
+            // +2 epochs, an inflight render plus the one that processes the retire
+            retired.safeEpoch = _engine->getRenderEpoch() + 2;
             retired.data = std::move(_audioData[i]);
             _retiredData.push_back(std::move(retired));
 
