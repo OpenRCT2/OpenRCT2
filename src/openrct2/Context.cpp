@@ -839,6 +839,19 @@ namespace OpenRCT2
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = ::getGameState();
                 parkImporter->Import(gameState);
+
+                // .park files serialise scenarioFileName inside the file itself, so the stored value
+                // drifts if the file is renamed, re-downloaded under a different name, or saved empty
+                // by the scenario editor. That stale name makes ScenarioRepositoryTryRecordHighscore's
+                // GetByFilename lookup miss, so winning a .park scenario is never recorded and never
+                // prompts for a name (issues #17281, #19243, #24833). When loading a .park as a
+                // scenario, correct scenarioFileName to the real on-disk filename. Savegames are left
+                // untouched: their own filename is arbitrary, so the stored value is the only link back
+                // to the originating scenario and must be preserved.
+                if (asScenario && info.Type == FileType::park)
+                {
+                    gameState.scenarioFileName = Path::GetFileName(path);
+                }
                 SetProgress(100, 100, STR_STRING_M_PERCENT);
 
                 // Reset viewport rendering inhibition
