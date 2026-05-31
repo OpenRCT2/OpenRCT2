@@ -3062,7 +3062,7 @@ namespace OpenRCT2::Ui::Windows
                 resizeFrame();
             }
 
-            const int32_t spinnerTop = widgets[WIDX_PAGE_BACKGROUND].bottom - 14;
+            const int32_t spinnerTop = widgets[WIDX_PAGE_BACKGROUND].bottom - 21;
             const int32_t gap = 12;
             const int32_t spinnerWidth = std::max(40, (contentWidth - gap) / 2);
             const int32_t rightSpinnerLeft = contentLeft + spinnerWidth + gap;
