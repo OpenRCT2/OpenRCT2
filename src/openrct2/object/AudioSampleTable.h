@@ -26,7 +26,7 @@ namespace OpenRCT2
     private:
         struct Entry
         {
-            Audio::IAudioSource* Source{};
+            mutable Audio::IAudioSource* Source{};
             std::optional<ObjectAsset> Asset;
             std::optional<uint32_t> PathIndex;
             int32_t Modifier{};

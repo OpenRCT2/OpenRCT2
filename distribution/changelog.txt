@@ -1,5 +1,6 @@
 0.5.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#26617] Add new lock-free audio engine with runtime switching (opt-in via Options).
 - Improved: [#26566] Improve the performance of sorting sprites.
 - Fix: [#26565] Game crashes when switching to another tab in the guest window.
 - Fix: [#26583] The default tab is not highlighted when opening a ride window.

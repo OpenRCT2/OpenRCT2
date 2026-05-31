@@ -66,6 +66,8 @@ namespace OpenRCT2::Audio
             if (ov_open_callbacks(_rw, &*_file, NULL, 0, callbacks) < 0)
             {
                 LOG_VERBOSE("Could not open OGG/Vorbis stream");
+                _file.reset();
+                _rw = nullptr;
                 return false;
             }
 
@@ -73,6 +75,7 @@ namespace OpenRCT2::Audio
             if (vi == nullptr)
             {
                 LOG_VERBOSE("Failed to get OGG/Vorbis info");
+                _rw = nullptr;
                 return false;
             }
 
