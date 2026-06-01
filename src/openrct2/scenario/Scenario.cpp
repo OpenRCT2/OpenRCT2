@@ -354,7 +354,7 @@ static void ScenarioUpdateDayNightCycle()
 
     if (gLegacyScene == LegacyScene::playing && Config::Get().general.dayNightCycle)
     {
-        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
+        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kMonthTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
