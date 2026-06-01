@@ -18246,7 +18246,12 @@ static void InvertedRCTrackDiagRightBankedFlatToRightBankedUp25(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
-
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
+                    direction),
+                0xFFFF, 0);
             switch (direction)
             {
                 case 0:
@@ -18269,12 +18274,7 @@ static void InvertedRCTrackDiagRightBankedFlatToRightBankedUp25(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 52, session.SupportColours);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
+
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
