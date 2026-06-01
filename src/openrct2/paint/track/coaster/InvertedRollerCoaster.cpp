@@ -16787,7 +16787,7 @@ static void InvertedRCTrackLeftEighthBankToDiagUp25(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_BM_INVERT_GENTLE_LARGE_CURVE_BANKED + 0)),
                         { 0, 0, height + kInvertedSpriteOffset },
-                        { { 0, 6, height + kInvertedSpriteOffset + 8 }, { 32, 16, 3 } });
+                        { { 0, 6, height + kInvertedSpriteOffset + 8 }, { 32, 20, 3 } });
 
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::centre, 0, height + kSupportHeight + 10,
