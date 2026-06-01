@@ -10224,18 +10224,24 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_0_2.png",
-        "x": -32,
+        "x": -28,
         "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_0_3.png",
         "x": -32,
-        "y": -41,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_0_4.png",
+        "x": -32,
+        "y": -41,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/large_corkscrew_left_0_5.png",
         "x": -24,
         "y": -19,
         "palette": "keep"
@@ -10248,25 +10254,31 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_1_1.png",
+        "x": -16,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/large_corkscrew_left_1_2.png",
         "x": -32,
         "y": -12,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/large_corkscrew_left_1_2.png",
+        "path": "track/bm_invert/large_corkscrew_left_1_3.png",
         "x": -27,
         "y": -45,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/large_corkscrew_left_1_3.png",
+        "path": "track/bm_invert/large_corkscrew_left_1_4.png",
         "x": -19,
-        "y": -49,
+        "y": -42,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/large_corkscrew_left_1_4.png",
-        "x": -13,
+        "path": "track/bm_invert/large_corkscrew_left_1_5.png",
+        "x": -22,
         "y": -20,
         "palette": "keep"
     },
@@ -10278,24 +10290,30 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_2_1.png",
-        "x": -12,
+        "x": 0,
         "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_2_2.png",
         "x": 19,
-        "y": -16,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_2_3.png",
-        "x": -8,
-        "y": -25,
+        "x": 20,
+        "y": -5,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_2_4.png",
+        "x": 0,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/large_corkscrew_left_2_5.png",
         "x": -16,
         "y": -17,
         "palette": "keep"
@@ -10308,8 +10326,8 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_3_1.png",
-        "x": -27,
-        "y": -22,
+        "x": -20,
+        "y": -13,
         "palette": "keep"
     },
     {
@@ -10320,14 +10338,14 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_3_3.png",
-        "x": 0,
+        "x": -17,
         "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_left_3_4.png",
         "x": -24,
-        "y": -10,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -10339,12 +10357,12 @@
     {
         "path": "track/bm_invert/large_corkscrew_right_0_1.png",
         "x": -25,
-        "y": -22,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_0_2.png",
-        "x": -22,
+        "x": -29,
         "y": -6,
         "palette": "keep"
     },
@@ -10356,8 +10374,8 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_0_4.png",
-        "x": -32,
-        "y": -9,
+        "x": -15,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -10374,18 +10392,24 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_1_2.png",
-        "x": -24,
-        "y": -16,
+        "x": -32,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_1_3.png",
+        "x": -32,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/large_corkscrew_right_1_4.png",
         "x": -16,
         "y": -26,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/large_corkscrew_right_1_4.png",
+        "path": "track/bm_invert/large_corkscrew_right_1_5.png",
         "x": -24,
         "y": -18,
         "palette": "keep"
@@ -10399,23 +10423,29 @@
     {
         "path": "track/bm_invert/large_corkscrew_right_2_1.png",
         "x": -16,
-        "y": -12,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_2_2.png",
+        "x": -8,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/large_corkscrew_right_2_3.png",
         "x": -30,
         "y": -44,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/large_corkscrew_right_2_3.png",
+        "path": "track/bm_invert/large_corkscrew_right_2_4.png",
         "x": -26,
-        "y": -48,
+        "y": -41,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/large_corkscrew_right_2_4.png",
+        "path": "track/bm_invert/large_corkscrew_right_2_5.png",
         "x": -24,
         "y": -19,
         "palette": "keep"
@@ -10434,18 +10464,24 @@
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_3_2.png",
-        "x": 19,
+        "x": 20,
         "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/large_corkscrew_right_3_3.png",
+        "x": 19,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm_invert/large_corkscrew_right_3_4.png",
         "x": -9,
         "y": -41,
         "palette": "keep"
     },
     {
-        "path": "track/bm_invert/large_corkscrew_right_3_4.png",
+        "path": "track/bm_invert/large_corkscrew_right_3_5.png",
         "x": -15,
         "y": -20,
         "palette": "keep"
