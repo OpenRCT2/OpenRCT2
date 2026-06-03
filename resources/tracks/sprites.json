@@ -10525,12 +10525,12 @@
     {
         "path": "track/bm_invert/medium_half_loop_left_1_1.png",
         "x": -16,
-        "y": -39,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/medium_half_loop_left_1_2.png",
-        "x": 0,
+        "x": -16,
         "y": -80,
         "palette": "keep"
     },
@@ -10561,31 +10561,31 @@
     {
         "path": "track/bm_invert/medium_half_loop_left_2_2.png",
         "x": -3,
-        "y": -53,
+        "y": -84,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/medium_half_loop_left_2_3.png",
-        "x": -32,
-        "y": -144,
+        "x": -20,
+        "y": -136,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/medium_half_loop_left_2_4.png",
-        "x": -14,
+        "x": -24,
         "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/medium_half_loop_left_3_0.png",
-        "x": -24,
-        "y": -14,
+        "x": -30,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/medium_half_loop_left_3_1.png",
-        "x": -26,
-        "y": -21,
+        "x": -32,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -10609,18 +10609,18 @@
     {
         "path": "track/bm_invert/medium_half_loop_right_0_0.png",
         "x": -24,
-        "y": -15,
-        "palette": "keep"
-    },
-    {
-        "path": "track/bm_invert/medium_half_loop_right_0_1.png",
-        "x": -23,
         "y": -21,
         "palette": "keep"
     },
     {
+        "path": "track/bm_invert/medium_half_loop_right_0_1.png",
+        "x": -17,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
         "path": "track/bm_invert/medium_half_loop_right_0_2.png",
-        "x": -20,
+        "x": -13,
         "y": -25,
         "palette": "keep"
     },
@@ -10651,13 +10651,13 @@
     {
         "path": "track/bm_invert/medium_half_loop_right_1_2.png",
         "x": -32,
-        "y": -52,
+        "y": -84,
         "palette": "keep"
     },
     {
         "path": "track/bm_invert/medium_half_loop_right_1_3.png",
-        "x": -29,
-        "y": -143,
+        "x": -23,
+        "y": -136,
         "palette": "keep"
     },
     {
@@ -10674,8 +10674,8 @@
     },
     {
         "path": "track/bm_invert/medium_half_loop_right_2_1.png",
-        "x": -32,
-        "y": -39,
+        "x": -16,
+        "y": -25,
         "palette": "keep"
     },
     {

@@ -11749,22 +11749,22 @@ static void InvertedRCTrackLeftMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 0),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 30, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 5),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 30, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 10),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 30, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 15),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 30, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
                     break;
             }
 
@@ -11782,22 +11782,22 @@ static void InvertedRCTrackLeftMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 1),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 8, 0, height + 70 }, { 24, 16, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 6),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 0, height + 40 }, { 24, 1, 24 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 11),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 8, 0, height + 70 }, { 24, 16, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 16),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 8, 0, height + 70 }, { 24, 16, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
             }
 
@@ -11818,27 +11818,23 @@ static void InvertedRCTrackLeftMediumHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 2),
                         { 0, 0, height + kInvertedSpriteOffset },
-                        { { 30, 1, height + kInvertedSpriteOffset + 50 }, { 1, 30, 50 } });
-
+                        { { 28, 0, height + kInvertedSpriteOffset + 50 }, { 1, 26, 50 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 7),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { -16, -16, height + 40 }, { 30, 1, 50 } });
-
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, -16, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 12),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 16, height + 20 }, { 30, 1, 70 } });
-
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 17),
                         { 0, 0, height + kInvertedSpriteOffset },
-                        { { 30, 1, height + kInvertedSpriteOffset + 50 }, { 1, 30, 50 } });
-
+                        { { 28, 0, height + kInvertedSpriteOffset + 50 }, { 1, 26, 50 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11855,22 +11851,22 @@ static void InvertedRCTrackLeftMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 3),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 20, 1, height + 120 }, { 1, 30, 30 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 28, 6, height + 120 }, { 1, 20, 30 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 8),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 1, height + 100 }, { 30, 1, 50 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 13),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { -16, -16, height + 100 }, { 30, 1, 50 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 0, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 18),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 15, 1, height + 100 }, { 15, 30, 1 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 25, height + 8 }, { 32, 1, 140 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11937,7 +11933,7 @@ static void InvertedRCTrackRightMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 20),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 30, 20, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -11970,22 +11966,22 @@ static void InvertedRCTrackRightMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 21),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 8, 0, height + 70 }, { 24, 16, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 26),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 0, height + 40 }, { 24, 1, 24 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 31),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 8, 0, height + 70 }, { 24, 16, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 36),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 8, 0, height + 70 }, { 24, 16, 3 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 80 }, { 32, 20, 3 } });
                     break;
             }
 
@@ -12006,27 +12002,23 @@ static void InvertedRCTrackRightMediumHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 22),
                         { 0, 0, height + kInvertedSpriteOffset },
-                        { { 30, 1, height + kInvertedSpriteOffset + 50 }, { 1, 30, 50 } });
-
+                        { { 28, 0, height + kInvertedSpriteOffset + 50 }, { 1, 26, 50 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 27),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { -16, -16, height + 40 }, { 30, 1, 50 } });
-
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 32),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { -16, -16, height + 40 }, { 30, 1, 50 } });
-
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, -16, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 37),
                         { 0, 0, height + kInvertedSpriteOffset },
-                        { { 30, 1, height + kInvertedSpriteOffset + 50 }, { 1, 30, 50 } });
-
+                        { { 28, 0, height + kInvertedSpriteOffset + 50 }, { 1, 26, 50 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12044,22 +12036,22 @@ static void InvertedRCTrackRightMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 23),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 20, 1, height + 120 }, { 1, 30, 30 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 25, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 28),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 15, 1, height + 100 }, { 30, 1, 50 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 0, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 33),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 1, 1, height + 100 }, { 30, 1, 50 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 0, 6, height + 8 }, { 32, 1, 140 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BM_INVERT_MEDIUM_HALF_LOOP + 38),
-                        { 0, 0, height + kInvertedSpriteOffset }, { { 15, 1, height + 100 }, { 15, 30, 1 } });
+                        { 0, 0, height + kInvertedSpriteOffset }, { { 28, 6, height + 120 }, { 1, 20, 30 } });
                     break;
             }
 
