@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/world/map_generator/MapHelpers.h"
+
 #include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
@@ -91,10 +93,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_GROUP,
         WIDX_HEIGHTMAP_BROWSE,
         WIDX_HEIGHTMAP_NORMALIZE,
-        WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP,
-        WIDX_HEIGHTMAP_STRENGTH,
-        WIDX_HEIGHTMAP_STRENGTH_UP,
-        WIDX_HEIGHTMAP_STRENGTH_DOWN,
 
         WIDX_BIAS_GROUP,
         WIDX_BIAS_TYPE,
@@ -109,11 +107,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_HIGH,
         WIDX_HEIGHTMAP_HIGH_UP,
         WIDX_HEIGHTMAP_HIGH_DOWN,
-        WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
+
+        WIDX_HEIGHTMAP_EROSION_GROUP,
         WIDX_HEIGHTMAP_EROSION,
         WIDX_HEIGHTMAP_EROSION_PPT,
         WIDX_HEIGHTMAP_EROSION_PPT_UP,
         WIDX_HEIGHTMAP_EROSION_PPT_DOWN,
+
+        WIDX_HEIGHTMAP_SMOOTH_GROUP,
+        WIDX_HEIGHTMAP_SMOOTH_TYPE,
+        WIDX_HEIGHTMAP_SMOOTH_DROPDOWN,
+        WIDX_HEIGHTMAP_SMOOTH_STRENGTH,
+        WIDX_HEIGHTMAP_SMOOTH_STRENGTH_UP,
+        WIDX_HEIGHTMAP_SMOOTH_STRENGTH_DOWN,
+
+        WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_GROUP,
+        WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_TYPE,
+        WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_DROPDOWN,
 
         WIDX_WATER_LEVEL = TAB_BEGIN,
         WIDX_WATER_LEVEL_UP,
@@ -180,9 +190,9 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kBaseWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
-        makeHoldableSpinnerWidgets({165,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({165,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
         makeWidget                ({216,  52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-        makeHoldableSpinnerWidgets({238,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                          ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({238,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
 
         makeWidget                ({  5,  70}, {290, 41}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SEED       ), // WIDX_SEED_GROUP
         makeWidget                ({ 10,  90}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_SEED_RANDOM), // WIDX_SEED_RANDOM
@@ -197,21 +207,25 @@ namespace OpenRCT2::Ui::Windows
         makeWidget                ({  5, 134}, {290, 86}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
         makeWidget                ({223, 151}, { 65, 14}, WidgetType::button,       WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
         makeWidget                ({ 10, 169}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        makeWidget                ({ 10, 185}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        makeHoldableSpinnerWidgets({179, 201}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                             ),  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
 
-        makeWidget                ({  5, 194}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_BIAS     ), // WIDX_BIAS_GROUP
+        makeWidget                ({  5, 194}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_BIAS          ), // WIDX_BIAS_GROUP
         makeDropdownWidgets       ({179, 210}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_BIAS_TYPE_NONE), // WIDX_BIAS_TYPE(_DROPDOWN)
-        makeHoldableSpinnerWidgets({179, 230}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            )  // WIDX_BIAS_STRENGTH{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179, 230}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                           )  // WIDX_BIAS_STRENGTH{,_UP,_DOWN}
     );
 
     static constexpr auto kTerrainWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
-        makeHoldableSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        makeHoldableSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-        makeWidget                ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  ), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
-        makeWidget                ({ 10, 138}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_EROSION                             ), // WIDX_HEIGHTMAP_EROSION
-        makeHoldableSpinnerWidgets({179, 154}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          )  // WIDX_HEIGHTMAP_EROSION_PARTICLES
+        makeHoldableSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+
+        makeWidget                ({  5, 134}, {109, 12}, WidgetType::groupbox,     WindowColour::secondary, STR_EROSION                             ), // WIDX_HEIGHTMAP_EROSION_GROUP
+        makeWidget                ({ 10, 138}, {255, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_EROSION                             ), // WIDX_HEIGHTMAP_EROSION
+        makeHoldableSpinnerWidgets({179, 154}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_EROSION_PARTICLES
+
+        makeWidget                ({  5, 134}, {109, 12}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP             ), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP_GROUP
+        makeDropdownWidgets       ({ 10, 138}, {255, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_SMOOTH_BOX                   ), // WIDX_HEIGHTMAP_SMOOTH_FILTER(_DROPDOWN)
+        makeHoldableSpinnerWidgets({179, 154}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_SMOOTH_STRENGTH
+        makeDropdownWidgets       ({ 10, 138}, {255, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE_EDGES_WEAK       )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
     );
 
     static constexpr auto kWaterWidgets = makeWidgets(
@@ -633,10 +647,6 @@ namespace OpenRCT2::Ui::Windows
             // Enable heightmap widgets if one is loaded
             const bool heightmapEnabled = isHeightMapImage && _heightmapLoaded;
             setWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, heightmapEnabled);
-            setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, heightmapEnabled);
-            setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, heightmapEnabled && _settings.smooth_height_map);
-            setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, heightmapEnabled && _settings.smooth_height_map);
-            setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, heightmapEnabled && _settings.smooth_height_map);
 
             auto isNoneBias = _settings.bias == MapGenerator::Bias::none;
             setWidgetDisabled(WIDX_BIAS_STRENGTH, isNoneBias);
@@ -738,10 +748,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_HEIGHTMAP_GROUP].setVisible(state);
             widgets[WIDX_HEIGHTMAP_BROWSE].setVisible(state);
             widgets[WIDX_HEIGHTMAP_NORMALIZE].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_STRENGTH].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].setVisible(state);
         }
 
         void BaseDraw(RenderTarget& rt)
@@ -1580,7 +1586,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(1000);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_SIMPLEX_BASE_FREQUENCY, STR_ENTER_BASE_FREQUENCY, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.simplex_base_freq, 4);
+                        _settings.noiseBaseFreq, 4);
                     break;
                 }
 
@@ -1591,7 +1597,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(10);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_SIMPLEX_OCTAVES, STR_ENTER_OCTAVES, ft, STR_FORMAT_INTEGER,
-                        _settings.simplex_octaves, 10);
+                        _settings.noiseOctaves, 10);
                     break;
                 }
             }
@@ -1602,19 +1608,19 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ_UP:
-                    _settings.simplex_base_freq = std::min<int32_t>(_settings.simplex_base_freq + 5, 1000);
+                    _settings.noiseBaseFreq = std::min<int32_t>(_settings.noiseBaseFreq + 5, 1000);
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_BASE_FREQ_DOWN:
-                    _settings.simplex_base_freq = std::max<int32_t>(_settings.simplex_base_freq - 5, 0);
+                    _settings.noiseBaseFreq = std::max<int32_t>(_settings.noiseBaseFreq - 5, 0);
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_UP:
-                    _settings.simplex_octaves = std::min(_settings.simplex_octaves + 1, 10);
+                    _settings.noiseOctaves = std::min(_settings.noiseOctaves + 1, 10);
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_DOWN:
-                    _settings.simplex_octaves = std::max(_settings.simplex_octaves - 1, 1);
+                    _settings.noiseOctaves = std::max(_settings.noiseOctaves - 1, 1);
                     invalidate();
                     break;
             }
@@ -1632,14 +1638,14 @@ namespace OpenRCT2::Ui::Windows
                 {}, { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(_settings.simplex_base_freq);
+            ft.Add<uint16_t>(_settings.noiseBaseFreq);
             drawText(
                 rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_settings.simplex_octaves);
+            ft.Add<uint16_t>(_settings.noiseOctaves);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
                 STR_COMMA16, ft, { textColour });
@@ -1650,11 +1656,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ:
-                    _settings.simplex_base_freq = std::clamp(value, 0, 1000);
+                    _settings.noiseBaseFreq = std::clamp(value, 0, 1000);
                     break;
 
                 case WIDX_SIMPLEX_OCTAVES:
-                    _settings.simplex_octaves = std::clamp(value, 1, 10);
+                    _settings.noiseOctaves = std::clamp(value, 1, 10);
                     break;
             }
         }
@@ -1674,7 +1680,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(100);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_MAPGEN_BIAS_STRENGTH, STR_ENTER_BIAS_STRENGTH, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.bias_strength, 4);
+                        _settings.biasStrength, 4);
                     break;
                 }
             }
@@ -1685,11 +1691,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH_UP:
-                    _settings.bias_strength = std::min(_settings.bias_strength + 5, 100);
+                    _settings.biasStrength = std::min(_settings.biasStrength + 5, 100);
                     invalidate();
                     break;
                 case WIDX_BIAS_STRENGTH_DOWN:
-                    _settings.bias_strength = std::max(_settings.bias_strength - 5, 0);
+                    _settings.biasStrength = std::max(_settings.biasStrength - 5, 0);
                     invalidate();
                     break;
                 case WIDX_BIAS_TYPE_DROPDOWN:
@@ -1738,7 +1744,7 @@ namespace OpenRCT2::Ui::Windows
                 { strengthColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(_settings.bias_strength);
+            ft.Add<uint16_t>(_settings.biasStrength);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_BIAS_STRENGTH].left + 1, widgets[WIDX_BIAS_STRENGTH].top + 1 },
                 STR_COMMA2DP32, ft, { strengthColour });
@@ -1749,7 +1755,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH:
-                    _settings.bias_strength = std::clamp(value, 0, 100);
+                    _settings.biasStrength = std::clamp(value, 0, 100);
                     break;
             }
         }
@@ -1760,17 +1766,6 @@ namespace OpenRCT2::Ui::Windows
 
         void HeightmapMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
-            switch (widgetIndex)
-            {
-                case WIDX_HEIGHTMAP_STRENGTH_UP:
-                    _settings.smooth_strength = std::min<uint32_t>(_settings.smooth_strength + 1, 20);
-                    invalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
-                    break;
-                case WIDX_HEIGHTMAP_STRENGTH_DOWN:
-                    _settings.smooth_strength = std::max<uint32_t>(_settings.smooth_strength - 1, 1);
-                    invalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
-                    break;
-            }
         }
 
         void HeightmapMouseUp(WidgetIndex widgetIndex)
@@ -1787,39 +1782,18 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenIntent(&intent);
                     return;
                 }
-                case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
-                    _settings.smooth_height_map = !_settings.smooth_height_map;
-                    setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
-                    setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
-                    setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
-                    setWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
-                    invalidateWidget(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
-                    invalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
-                    break;
 
                 case WIDX_HEIGHTMAP_NORMALIZE:
-                    _settings.normalize_height = !_settings.normalize_height;
-                    setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
+                    _settings.normalizeHeight = !_settings.normalizeHeight;
+                    setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalizeHeight);
                     invalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
-
-                case WIDX_HEIGHTMAP_STRENGTH:
-                {
-                    Formatter ft;
-                    ft.Add<int16_t>(1);
-                    ft.Add<int16_t>(20);
-                    WindowTextInputOpen(
-                        this, widgetIndex, STR_SMOOTH_STRENGTH, STR_ENTER_SMOOTH_STRENGTH, ft, STR_FORMAT_INTEGER,
-                        _settings.smooth_strength, 2);
-                    break;
-                }
             }
         }
 
         void HeightmapPrepareDraw()
         {
-            setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
-            setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
+            setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalizeHeight);
         }
 
         void HeightmapDraw(RenderTarget& rt)
@@ -1827,41 +1801,20 @@ namespace OpenRCT2::Ui::Windows
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
-            // Smooth strength label and value
-            const bool strengthDisabled = isWidgetDisabled(WIDX_HEIGHTMAP_STRENGTH) || !_settings.smooth_height_map;
-            const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
-
-            // Smooth strength label
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH,
-                { strengthColour });
-
-            // Smooth strength value
-            auto ft = Formatter();
-            ft.Add<uint16_t>(_settings.smooth_strength);
-            auto pos = ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 };
-            drawText(rt, windowPos + pos, STR_COMMA16, ft, { strengthColour });
-
             // Current heightmap image filename
-            ft = Formatter();
+            auto ft = Formatter();
             if (!_heightmapLoaded)
                 ft.Add<char*>(LanguageGetString(STR_MAPGEN_NONE_SELECTED));
             else
                 ft.Add<char*>(_heightmapFilename.c_str());
 
-            pos = ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_BROWSE].top + 1 };
+            auto pos = ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_BROWSE].top + 1 };
             auto textWidth = widgets[WIDX_HEIGHTMAP_BROWSE].left - 11;
             drawTextEllipsised(rt, windowPos + pos, textWidth, STR_MAPGEN_CURRENT_HEIGHTMAP_FILE, ft);
         }
 
         void HeightmapTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            switch (widgetIndex)
-            {
-                case WIDX_HEIGHTMAP_STRENGTH:
-                    _settings.smooth_strength = std::clamp(value, 1, 20);
-                    break;
-            }
         }
 
 #pragma endregion
@@ -1903,8 +1856,8 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_HEIGHTMAP_EROSION:
-                    _settings.simulate_erosion = !_settings.simulate_erosion;
-                    setCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulate_erosion);
+                    _settings.simulateErosion = !_settings.simulateErosion;
+                    setCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulateErosion);
                     invalidateWidget(WIDX_HEIGHTMAP_EROSION);
                     break;
 
@@ -1914,8 +1867,10 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::kMaxParticlesPerTile);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_EROSION_PPT, STR_ENTER_EROSION_PPT, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.particles_per_tile, 4);
+                        _settings.particlesPerTile, 4);
                     break;
+
+                    case WIDX_HEIGHTMAP_SMOOTH
             }
         }
 
@@ -1942,13 +1897,13 @@ namespace OpenRCT2::Ui::Windows
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_EROSION_PPT_DOWN:
-                    _settings.particles_per_tile = std::max<int32_t>(
-                        _settings.particles_per_tile - 5, MapGenerator::kMinParticlesPerTile);
+                    _settings.particlesPerTile = std::max<int32_t>(
+                        _settings.particlesPerTile - 5, MapGenerator::kMinParticlesPerTile);
                     invalidateWidget(WIDX_HEIGHTMAP_EROSION_PPT);
                     break;
                 case WIDX_HEIGHTMAP_EROSION_PPT_UP:
-                    _settings.particles_per_tile = std::min<int32_t>(
-                        _settings.particles_per_tile + 5, MapGenerator::kMaxParticlesPerTile);
+                    _settings.particlesPerTile = std::min<int32_t>(
+                        _settings.particlesPerTile + 5, MapGenerator::kMaxParticlesPerTile);
                     invalidateWidget(WIDX_HEIGHTMAP_EROSION_PPT);
                     break;
             }
@@ -1976,7 +1931,7 @@ namespace OpenRCT2::Ui::Windows
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh);
                     break;
                 case WIDX_HEIGHTMAP_EROSION_PPT:
-                    _settings.particles_per_tile = std::clamp(
+                    _settings.particlesPerTile = std::clamp(
                         value, MapGenerator::kMinParticlesPerTile, MapGenerator::kMaxParticlesPerTile);
                     break;
             }
@@ -2043,7 +1998,7 @@ namespace OpenRCT2::Ui::Windows
             bool isNotFlatland = _settings.algorithm != MapGenerator::Algorithm::blank;
 
             setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
-            setCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulate_erosion);
+            setCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulateErosion);
 
             // Max land height option is irrelevant for flatland
             setWidgetEnabled(WIDX_HEIGHTMAP_HIGH, isNotFlatland);
@@ -2053,7 +2008,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Erosion can't be used with flatland
             setWidgetEnabled(WIDX_HEIGHTMAP_EROSION, isNotFlatland);
-            setWidgetEnabled(WIDX_HEIGHTMAP_EROSION_PPT, _settings.simulate_erosion && isNotFlatland);
+            setWidgetEnabled(WIDX_HEIGHTMAP_EROSION_PPT, _settings.simulateErosion && isNotFlatland);
         }
 
         void TerrainDraw(RenderTarget& rt)
@@ -2089,7 +2044,7 @@ namespace OpenRCT2::Ui::Windows
                 STR_RIDE_LENGTH_ENTRY, ft, { maxLandColour });
 
             // Erosion particle count label and value
-            const auto particleColour = isWidgetDisabled(WIDX_HEIGHTMAP_EROSION) || !_settings.simulate_erosion ? disabledColour
+            const auto particleColour = isWidgetDisabled(WIDX_HEIGHTMAP_EROSION) || !_settings.simulateErosion ? disabledColour
                                                                                                                 : enabledColour;
 
             drawText(
@@ -2097,7 +2052,7 @@ namespace OpenRCT2::Ui::Windows
                 { particleColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.particles_per_tile);
+            ft.Add<int32_t>(_settings.particlesPerTile);
             drawText(
                 rt,
                 windowPos

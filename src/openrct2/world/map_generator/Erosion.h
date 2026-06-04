@@ -12,32 +12,9 @@
 #include "BaseMap.hpp"
 #include "MapGen.h"
 
-#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
-    constexpr int32_t kMinParticlesPerTile = 5;
-    constexpr int32_t kMaxParticlesPerTile = 1000;
-
-    struct ErosionSettings
-    {
-        ErosionSettings(const Settings& settings)
-        {
-            particles = static_cast<uint32_t>(settings.particlesPerTile * settings.mapSize.x * settings.mapSize.y) / 100;
-            seed = settings.seed;
-        }
-
-        int32_t particles = 200000;
-        uint32_t seed = std::random_device{}();
-
-        float density = 2.0f;
-        float evaporationRate = 0.001f;
-        float depositionRate = 0.1f;
-        float minVolume = 0.01f;
-        float friction = 0.05f;
-        float dt = 1.2f;
-    };
-
-    void simulateErosion(const ErosionSettings& settings, HeightMap& heightMap);
+    void simulateErosion(HeightMap& heightMap, const Settings& settings);
 
 } // namespace OpenRCT2::World::MapGenerator

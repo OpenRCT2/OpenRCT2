@@ -102,10 +102,10 @@ namespace OpenRCT2::World::MapGenerator
         _heightMapData.clear();
     }
 
-    void GenerateFromHeightmapImage(Settings* settings)
+    void GenerateFromHeightmapImage(Settings& settings)
     {
         Guard::Assert(!_heightMapData.empty(), "No height map loaded");
-        Guard::Assert(settings->heightmapHigh != settings->heightmapLow, "Low and high setting cannot be the same");
+        Guard::Assert(settings.heightmapHigh != settings.heightmapLow, "Low and high setting cannot be the same");
 
         // Make a copy of the original height map that we can edit
         HeightMap dest = _heightMapData;
@@ -117,18 +117,12 @@ namespace OpenRCT2::World::MapGenerator
         // The x and y axis are flipped in the world, so this uses y for x and x for y.
         TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
 
-        applyHeightMapSmooth(settings, dest);
-
-        if (settings->simulateErosion)
-        {
-            auto erosionSettings = ErosionSettings(*settings);
-            simulateErosion(erosionSettings, dest);
-        }
+        applyHeightMapTransform(dest, settings);
 
         uint8_t maxValue = 255;
         uint8_t minValue = 0;
 
-        if (settings->normalizeHeight)
+        if (settings.normalizeHeight)
         {
             // Get highest and lowest pixel value
             maxValue = 0;
@@ -151,13 +145,13 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         Guard::Assert(maxValue > minValue, "Input range is invalid");
-        Guard::Assert(settings->heightmapHigh > settings->heightmapLow, "Output range is invalid");
+        Guard::Assert(settings.heightmapHigh > settings.heightmapLow, "Output range is invalid");
 
         const auto surfaceTextureId = generateSurfaceTextureId(settings);
         const auto edgeTextureId = generateEdgeTextureId(settings, surfaceTextureId);
 
         const uint8_t rangeIn = maxValue - minValue;
-        const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
+        const uint8_t rangeOut = (settings.heightmapHigh - settings.heightmapLow) * 2;
 
         MapInit(flippedMapSize);
         for (auto y = 0; y < dest.height; y++)
@@ -172,7 +166,7 @@ namespace OpenRCT2::World::MapGenerator
                 // Read value from bitmap, and convert its range
                 uint8_t value = dest[{ x, y }];
                 value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut)
-                    + (settings->heightmapLow * 2);
+                    + (settings.heightmapLow * 2);
                 surfaceElement->baseHeight = value;
 
                 // Floor to even number
@@ -185,9 +179,9 @@ namespace OpenRCT2::World::MapGenerator
                 surfaceElement->setEdgeObjectIndex(edgeTextureId);
 
                 // Set water level
-                if (surfaceElement->baseHeight < settings->waterLevel)
+                if (surfaceElement->baseHeight < settings.waterLevel)
                 {
-                    surfaceElement->setWaterHeight(settings->waterLevel * kCoordsZStep);
+                    surfaceElement->setWaterHeight(settings.waterLevel * kCoordsZStep);
                 }
             }
         }

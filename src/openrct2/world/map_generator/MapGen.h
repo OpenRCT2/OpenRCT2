@@ -41,15 +41,16 @@ namespace OpenRCT2::World::MapGenerator
         cliff
     };
 
-    enum class SmoothFilter : uint8_t
+    enum class HeightMapTransform : uint8_t
     {
         none,
         box,
         gaussian,
-        bilateral
+        bilateral,
+        erosion
     };
 
-    enum class SlopeFunction : uint8_t
+    enum class SlopeSmooth : uint8_t
     {
         none,
         weak,
@@ -80,19 +81,15 @@ namespace OpenRCT2::World::MapGenerator
         // Height map settings
         bool normalizeHeight = true;
 
-        // Erosion settings
-        bool simulateErosion = false;
-        int32_t particlesPerTile = 300;
-
-        // Smooth settings
-        SmoothFilter smoothFilter = SmoothFilter::none;
-        uint32_t smoothStrength = 1;
-        SlopeFunction slopeFunction = SlopeFunction::weak;
+        // Transform settings
+        HeightMapTransform heightmapTransform = HeightMapTransform::none;
+        uint32_t transformStrength = 1;
+        SlopeSmooth slopeSmooth = SlopeSmooth::weak;
     };
 
-    void generate(Settings* settings);
-    void resetSurfaces(Settings* settings);
+    void generate(Settings& settings);
+    void resetSurfaces(Settings& settings);
     void setWaterLevel(int32_t waterLevel);
-    void setMapHeight(Settings* settings, const HeightMap& heightMap);
+    void setMapHeight(const Settings& settings, const HeightMap& heightMap);
 
 } // namespace OpenRCT2::World::MapGenerator

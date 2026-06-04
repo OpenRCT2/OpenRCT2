@@ -38,6 +38,6 @@ namespace OpenRCT2::World::MapGenerator
     void smoothBox(HeightMap& heightMap, int32_t iterations);
     void smoothGaussian(HeightMap& heightMap, float sigma);
 
-    void applyHeightMapSmooth(Settings* settings, HeightMap& heightMap);
-    void applyTileSlopeSmooth(const Settings* settings);
+    void applyHeightMapTransform(HeightMap& heightMap, const Settings& settings);
+    void applyTileSlopeSmooth(const Settings& settings);
 } // namespace OpenRCT2::World::MapGenerator

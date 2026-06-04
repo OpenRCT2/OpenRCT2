@@ -15,10 +15,30 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    constexpr uint32_t UPDATE_EVERY_N_PARTICLES = 1000;
+    constexpr uint32_t kUpdateEveryNParticles = 1000;
 
-    constexpr float WEIGHT_CARDINAL = 0.18f;
-    constexpr float WEIGHT_ORDINAL = 0.05f;
+    constexpr float kWeightCardinal = 0.18f;
+    constexpr float kWeightOrdinal = 0.05f;
+
+    struct ErosionSettings
+    {
+        ErosionSettings(const Settings& settings)
+        {
+            particles = settings.transformStrength * settings.mapSize.x * settings.mapSize.y;
+            seed = settings.seed;
+        }
+
+        int32_t particles = 200000;
+        uint32_t seed = std::random_device{}();
+
+        float density = 2.0f;
+        float evaporationRate = 0.001f;
+        float depositionRate = 0.1f;
+        float minVolume = 0.01f;
+        float friction = 0.05f;
+        float dt = 1.2f;
+    };
+
 
     struct Particle
     {
@@ -44,20 +64,20 @@ namespace OpenRCT2::World::MapGenerator
         auto deltaE = heightMap[pos] - heightMap[pos + TileCoordsXY{ 0, 1 }];
         auto deltaW = heightMap[pos] - heightMap[pos + TileCoordsXY{ 0, -1 }];
 
-        normal += VecXYZ(deltaN, 0.0f, 1.0f).Normalize() * WEIGHT_CARDINAL;
-        normal += VecXYZ(-deltaS, 0.0f, 1.0f).Normalize() * WEIGHT_CARDINAL;
-        normal += VecXYZ(0.0f, deltaE, 1.0f).Normalize() * WEIGHT_CARDINAL;
-        normal += VecXYZ(0.0f, -deltaW, 1.0f).Normalize() * WEIGHT_CARDINAL;
+        normal += VecXYZ(deltaN, 0.0f, 1.0f).Normalize() * kWeightCardinal;
+        normal += VecXYZ(-deltaS, 0.0f, 1.0f).Normalize() * kWeightCardinal;
+        normal += VecXYZ(0.0f, deltaE, 1.0f).Normalize() * kWeightCardinal;
+        normal += VecXYZ(0.0f, -deltaW, 1.0f).Normalize() * kWeightCardinal;
 
         auto deltaNE = heightMap[pos] - heightMap[pos + TileCoordsXY{ 1, 1 }];
         auto deltaNW = heightMap[pos] - heightMap[pos + TileCoordsXY{ 1, -1 }];
         auto deltaSE = heightMap[pos] - heightMap[pos + TileCoordsXY{ -1, 1 }];
         auto deltaSW = heightMap[pos] - heightMap[pos + TileCoordsXY{ -1, -1 }];
 
-        normal += VecXYZ(deltaNE, deltaNE, 1.0f).Normalize() * WEIGHT_ORDINAL;
-        normal += VecXYZ(deltaNW, -deltaNW, 1.0f).Normalize() * WEIGHT_ORDINAL;
-        normal += VecXYZ(-deltaSE, deltaSE, 1.0f).Normalize() * WEIGHT_ORDINAL;
-        normal += VecXYZ(-deltaSW, -deltaSW, 1.0f).Normalize() * WEIGHT_ORDINAL;
+        normal += VecXYZ(deltaNE, deltaNE, 1.0f).Normalize() * kWeightOrdinal;
+        normal += VecXYZ(deltaNW, -deltaNW, 1.0f).Normalize() * kWeightOrdinal;
+        normal += VecXYZ(-deltaSE, deltaSE, 1.0f).Normalize() * kWeightOrdinal;
+        normal += VecXYZ(-deltaSW, -deltaSW, 1.0f).Normalize() * kWeightOrdinal;
 
         return normal.Normalize();
     }
@@ -67,7 +87,7 @@ namespace OpenRCT2::World::MapGenerator
      *
      * Based on https://nickmcd.me/2020/04/10/simple-particle-based-hydraulic-erosion (https://github.com/weigert/SimpleErosion)
      */
-    void simulateErosion(const ErosionSettings& settings, HeightMap& heightMap)
+    static void simulateErosion(const ErosionSettings& settings, HeightMap& heightMap)
     {
         GetContext()->OpenProgress(STR_EROSION_PROGRESS);
 
@@ -79,7 +99,7 @@ namespace OpenRCT2::World::MapGenerator
 
         for (auto i = 0; i < settings.particles; ++i)
         {
-            if (i % UPDATE_EVERY_N_PARTICLES == 0)
+            if (i % kUpdateEveryNParticles == 0)
             {
                 GetContext()->SetProgress(i, settings.particles);
             }
@@ -125,5 +145,11 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         GetContext()->CloseProgress();
+    }
+
+    void simulateErosion(HeightMap& heightMap, const Settings& settings)
+    {
+        const ErosionSettings erosionSettings(settings);
+        simulateErosion(erosionSettings, heightMap);
     }
 } // namespace OpenRCT2::World::MapGenerator

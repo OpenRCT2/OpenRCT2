@@ -27,11 +27,11 @@ namespace OpenRCT2::World::MapGenerator
         "rct2.terrain_surface.dirt",  "rct2.terrain_surface.ice",
     };
 
-    ObjectEntryIndex generateSurfaceTextureId(Settings* settings)
+    ObjectEntryIndex generateSurfaceTextureId(const Settings& settings)
     {
         auto& objectManager = GetContext()->GetObjectManager();
 
-        auto& defaultRule = settings->textureRules[0];
+        auto& defaultRule = settings.textureRules[0];
         assert(defaultRule.isDefault);
 
         const auto selectedFloor = TerrainSurfaceObject::GetById(defaultRule.effect.landTexture);
@@ -51,7 +51,7 @@ namespace OpenRCT2::World::MapGenerator
             }
             else
             {
-                std::mt19937 prng(settings->seed);
+                std::mt19937 prng(settings.seed);
                 std::uniform_int_distribution<size_t> dist(0, availableTerrains.size() - 1);
                 surfaceTexture = availableTerrains[dist(prng)];
             }
@@ -61,11 +61,11 @@ namespace OpenRCT2::World::MapGenerator
         return surfaceTextureId;
     }
 
-    ObjectEntryIndex generateEdgeTextureId(Settings* settings, ObjectEntryIndex surfaceTextureId)
+    ObjectEntryIndex generateEdgeTextureId(const Settings& settings, ObjectEntryIndex surfaceTextureId)
     {
         auto& objectManager = GetContext()->GetObjectManager();
 
-        auto& defaultRule = settings->textureRules[0];
+        auto& defaultRule = settings.textureRules[0];
         assert(defaultRule.isDefault);
 
         const auto selectedEdge = TerrainEdgeObject::GetById(defaultRule.effect.edgeTexture);

@@ -22,15 +22,15 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static void generateBlankMap(Settings* settings);
+    static void generateBlankMap(Settings& settings);
 
-    static void applyTexturesFromRules(Settings* settings);
-    static void placeSceneryFromRules(Settings* settings);
+    static void applyTexturesFromRules(const Settings& settings);
+    static void placeSceneryFromRules(const Settings& settings);
 
-    void generate(Settings* settings)
+    void generate(Settings& settings)
     {
         // First, generate the height map
-        switch (settings->algorithm)
+        switch (settings.algorithm)
         {
             case Algorithm::blank:
                 generateBlankMap(settings);
@@ -53,39 +53,39 @@ namespace OpenRCT2::World::MapGenerator
         placeSceneryFromRules(settings);
     }
 
-    void resetSurfaces(Settings* settings)
+    void resetSurfaces(Settings& settings)
     {
         MapClearAllElements();
-        MapInit(settings->mapSize);
+        MapInit(settings.mapSize);
 
         const auto surfaceTextureId = generateSurfaceTextureId(settings);
         const auto edgeTextureId = generateEdgeTextureId(settings, surfaceTextureId);
 
-        for (auto y = 1; y < settings->mapSize.y - 1; y++)
+        for (auto y = 1; y < settings.mapSize.y - 1; y++)
         {
-            for (auto x = 1; x < settings->mapSize.x - 1; x++)
+            for (auto x = 1; x < settings.mapSize.x - 1; x++)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->setSurfaceObjectIndex(surfaceTextureId);
                     surfaceElement->setEdgeObjectIndex(edgeTextureId);
-                    surfaceElement->baseHeight = settings->heightmapLow;
-                    surfaceElement->clearanceHeight = settings->heightmapLow;
+                    surfaceElement->baseHeight = settings.heightmapLow;
+                    surfaceElement->clearanceHeight = settings.heightmapLow;
                 }
             }
         }
     }
 
-    static void generateBlankMap(Settings* settings)
+    static void generateBlankMap(Settings& settings)
     {
         resetSurfaces(settings);
-        setWaterLevel(settings->waterLevel);
+        setWaterLevel(settings.waterLevel);
     }
 
-    static void applyTexturesFromRules(Settings* settings)
+    static void applyTexturesFromRules(const Settings& settings)
     {
-        auto& defaultRule = settings->textureRules[0];
+        auto& defaultRule = settings.textureRules[0];
         assert(defaultRule.isDefault);
         auto defaultTextures = defaultRule.effect;
 
@@ -103,10 +103,10 @@ namespace OpenRCT2::World::MapGenerator
                 element->SetEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
         };
 
-        Rule::evaluateTextureRules(*settings, callback);
+        Rule::evaluateTextureRules(settings, callback);
     }
 
-    static void placeSceneryFromRules(Settings* settings)
+    static void placeSceneryFromRules(const Settings& settings)
     {
         Rule::Callback<Rule::SceneryResult> callback = [](const TileCoordsXY& coords,
                                                           const std::optional<Rule::SceneryResult>& result) {
@@ -116,7 +116,7 @@ namespace OpenRCT2::World::MapGenerator
             }
         };
 
-        Rule::evaluateSceneryRules(*settings, callback);
+        Rule::evaluateSceneryRules(settings, callback);
     }
 
     /**
@@ -139,7 +139,7 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Sets the height of the actual game map tiles to the height map.
      */
-    void setMapHeight(Settings* settings, const HeightMap& heightMap)
+    void setMapHeight(const Settings& settings, const HeightMap& heightMap)
     {
         for (auto y = 1; y < heightMap.height - 1; y++)
         {
@@ -156,8 +156,8 @@ namespace OpenRCT2::World::MapGenerator
                 surfaceElement->baseHeight = static_cast<uint8_t>(adjustedHeight);
 
                 // If base height is below water level, lower it to create more natural shorelines
-                if (!settings->simulateErosion && surfaceElement->baseHeight >= 4
-                    && surfaceElement->baseHeight <= settings->waterLevel)
+                if (surfaceElement->baseHeight >= 4
+                    && surfaceElement->baseHeight <= settings.waterLevel)
                     surfaceElement->baseHeight -= 2;
 
                 surfaceElement->clearanceHeight = surfaceElement->baseHeight;

@@ -13,6 +13,7 @@
 #include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
+#include "Erosion.h"
 
 #include <algorithm>
 
@@ -315,20 +316,20 @@ namespace OpenRCT2::World::MapGenerator
         return 1;
     }
 
-    void applyTileSlopeSmooth(const Settings* settings)
+    void applyTileSlopeSmooth(const Settings& settings)
     {
-        const auto mapSize = settings->mapSize;
+        const auto mapSize = settings.mapSize;
 
         SmoothFunction smoothFunc;
 
-        switch (settings->slopeFunction)
+        switch (settings.slopeSmooth)
         {
-            case SlopeFunction::none:
+            case SlopeSmooth::none:
                 return;
-            case SlopeFunction::weak:
+            case SlopeSmooth::weak:
                 smoothFunc = smoothTileSlopeWeak;
                 break;
-            case SlopeFunction::strong:
+            case SlopeSmooth::strong:
                 smoothFunc = smoothTileSlopeStrong;
                 break;
         }
@@ -353,59 +354,6 @@ namespace OpenRCT2::World::MapGenerator
     static float gaussian(float delta, float sigma)
     {
         return std::exp(-0.5f * std::pow(delta / sigma, 2.0f));
-    }
-
-    /**
-     * Based on https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
-     */
-    void smoothBilateral(HeightMap& heightMap, float sigmaSpace, float sigmaIntensity)
-    {
-        HeightMap temp(heightMap.width, heightMap.height, heightMap.density);
-        HeightMap norm(heightMap.width, heightMap.height, heightMap.density);
-
-        temp.fill(0.0f);
-        norm.fill(1.0f);
-
-        const uint16_t d = static_cast<uint16_t>(2.0f * sigmaSpace + 1.0f);
-        const uint16_t dHalf = d / 2;
-
-        for (auto y = 0; y < heightMap.height; y++)
-        {
-            for (auto x = 0; x < heightMap.width; x++)
-            {
-                const TileCoordsXY pos = {x, y};
-
-                for (auto dy = -dHalf; dy <= dHalf; dy++)
-                {
-                    for (auto dx = -dHalf; dx <= dHalf; dx++)
-                    {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
-
-                        if (deltaPos.x < 0 || deltaPos.x >= heightMap.width || deltaPos.y < 0 || deltaPos.y >= heightMap.height)
-                        {
-                            deltaPos = pos;
-                        }
-
-                        const float closeness = gaussian(dx*dx + dy*dy, sigmaSpace);
-                        const float similarity = gaussian(std::pow(heightMap[pos] - heightMap[deltaPos], 2.0f) / kMaxTileElementHeight, sigmaIntensity);
-
-                        const float weight = closeness * similarity;
-
-                        temp[pos] += weight * heightMap[deltaPos];
-                        norm[pos] += weight;
-                    }
-                }
-            }
-        }
-
-        for (auto y = 0; y < heightMap.height; y++)
-        {
-            for (auto x = 0; x < heightMap.width; x++)
-            {
-                const TileCoordsXY pos = {x, y};
-                heightMap[pos] = temp[pos] / norm[pos];
-            }
-        }
     }
 
     void smoothBox(HeightMap& heightMap, int32_t iterations)
@@ -484,20 +432,76 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void applyHeightMapSmooth(Settings* settings, HeightMap& heightMap)
+    /**
+ * Based on https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
+ */
+    void smoothBilateral(HeightMap& heightMap, float sigmaSpace, float sigmaIntensity)
     {
-        switch (settings->smoothFilter)
+        HeightMap temp(heightMap.width, heightMap.height, heightMap.density);
+        HeightMap norm(heightMap.width, heightMap.height, heightMap.density);
+
+        temp.fill(0.0f);
+        norm.fill(1.0f);
+
+        const uint16_t d = static_cast<uint16_t>(2.0f * sigmaSpace + 1.0f);
+        const uint16_t dHalf = d / 2;
+
+        for (auto y = 0; y < heightMap.height; y++)
         {
-            case SmoothFilter::none:
+            for (auto x = 0; x < heightMap.width; x++)
+            {
+                const TileCoordsXY pos = {x, y};
+
+                for (auto dy = -dHalf; dy <= dHalf; dy++)
+                {
+                    for (auto dx = -dHalf; dx <= dHalf; dx++)
+                    {
+                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
+
+                        if (deltaPos.x < 0 || deltaPos.x >= heightMap.width || deltaPos.y < 0 || deltaPos.y >= heightMap.height)
+                        {
+                            deltaPos = pos;
+                        }
+
+                        const float closeness = gaussian(dx*dx + dy*dy, sigmaSpace);
+                        const float similarity = gaussian(std::pow(heightMap[pos] - heightMap[deltaPos], 2.0f) / kMaxTileElementHeight, sigmaIntensity);
+
+                        const float weight = closeness * similarity;
+
+                        temp[pos] += weight * heightMap[deltaPos];
+                        norm[pos] += weight;
+                    }
+                }
+            }
+        }
+
+        for (auto y = 0; y < heightMap.height; y++)
+        {
+            for (auto x = 0; x < heightMap.width; x++)
+            {
+                const TileCoordsXY pos = {x, y};
+                heightMap[pos] = temp[pos] / norm[pos];
+            }
+        }
+    }
+
+    void applyHeightMapTransform(HeightMap& heightMap, const Settings& settings)
+    {
+        switch (settings.heightmapTransform)
+        {
+            case HeightMapTransform::none:
                 break;
-            case SmoothFilter::box:
-                smoothBox(heightMap, settings->smoothStrength);
+            case HeightMapTransform::box:
+                smoothBox(heightMap, settings.transformStrength);
                 break;
-            case SmoothFilter::gaussian:
-                smoothGaussian(heightMap, settings->smoothStrength);
+            case HeightMapTransform::gaussian:
+                smoothGaussian(heightMap, settings.transformStrength);
                 break;
-            case SmoothFilter::bilateral:
-                smoothBilateral(heightMap, 5.0f, 0.1f * settings->smoothStrength);
+            case HeightMapTransform::bilateral:
+                smoothBilateral(heightMap, 5.0f, 0.1f * settings.transformStrength);
+                break;
+            case HeightMapTransform::erosion:
+                simulateErosion(heightMap, settings);
                 break;
         }
     }
