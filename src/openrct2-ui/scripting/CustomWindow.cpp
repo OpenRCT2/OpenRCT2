@@ -929,7 +929,7 @@ namespace OpenRCT2::Ui::Windows
                     listView.SetScrollbars(widgetDesc.Scrollbars, true);
                     listView.SetColumns(widgetDesc.ListViewColumns, true);
                     listView.SetItems(widgetDesc.ListViewItems, true);
-                    listView.SelectedCell = widgetDesc.SelectedCell;
+                    listView.SetSelectedCell(widgetDesc.SelectedCell, true);
                     listView.ShowColumnHeaders = widgetDesc.ShowColumnHeaders;
                     listView.IsStriped = widgetDesc.IsStriped;
                     listView.OnClick = widgetDesc.OnClick;

@@ -955,9 +955,13 @@ namespace OpenRCT2::Scripting
         static JSValue selectedCell_get(JSContext* ctx, JSValue thisVal)
         {
             auto listView = GetListView(thisVal);
-            if (listView != nullptr && listView->SelectedCell.has_value())
+            if (listView != nullptr)
             {
-                return RowColumnToJS(ctx, listView->SelectedCell.value());
+                auto selectedCell = listView->GetSelectedCell();
+                if (selectedCell.has_value())
+                {
+                    return RowColumnToJS(ctx, selectedCell.value());
+                }
             }
             return JS_NULL;
         }
@@ -967,7 +971,7 @@ namespace OpenRCT2::Scripting
             auto listView = GetListView(thisVal);
             if (listView != nullptr)
             {
-                listView->SelectedCell = RowColumnFromJS(ctx, value);
+                listView->SetSelectedCell(RowColumnFromJS(ctx, value));
             }
             return JS_UNDEFINED;
         }

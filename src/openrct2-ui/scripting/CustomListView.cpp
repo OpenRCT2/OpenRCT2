@@ -283,6 +283,20 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     }
 }
 
+std::optional<RowColumn> CustomListView::GetSelectedCell() const
+{
+    return SelectedCell;
+}
+
+void CustomListView::SetSelectedCell(const std::optional<RowColumn>& value, bool initialising)
+{
+    SelectedCell = value;
+    if (!initialising)
+    {
+        Invalidate();
+    }
+}
+
 bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
 {
     const auto& cellA = Items[indexA].Cells[column];
@@ -495,8 +509,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
         {
             if (CanSelect)
             {
-                SelectedCell = hitResult;
-                Invalidate();
+                SetSelectedCell(hitResult);
             }
 
             auto ctx = OnClick.context;

@@ -100,13 +100,13 @@ namespace OpenRCT2::Ui::Windows
         std::vector<ListViewColumn> Columns;
         std::vector<ListViewItem> Items;
         ScrollbarType Scrollbars = ScrollbarType::Vertical;
+        std::optional<RowColumn> SelectedCell;
 
     public:
         std::shared_ptr<Plugin> Owner;
         std::vector<size_t> SortedItems;
         std::optional<RowColumn> HighlightedCell;
         std::optional<RowColumn> LastHighlightedCell;
-        std::optional<RowColumn> SelectedCell;
         std::optional<int32_t> ColumnHeaderPressed;
         bool ColumnHeaderPressedCurrentState{};
         bool ShowColumnHeaders{};
@@ -129,6 +129,8 @@ namespace OpenRCT2::Ui::Windows
         const std::vector<ListViewItem>& GetItems() const;
         void SetItems(const std::vector<ListViewItem>& items, bool initialising = false);
         void SetItems(std::vector<ListViewItem>&& items, bool initialising = false);
+        std::optional<RowColumn> GetSelectedCell() const;
+        void SetSelectedCell(const std::optional<RowColumn>& value, bool initialising = false);
         bool SortItem(size_t indexA, size_t indexB, int32_t column);
         void SortItems(int32_t column);
         void SortItems(int32_t column, ColumnSortOrder order);
