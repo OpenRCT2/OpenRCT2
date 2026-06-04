@@ -389,24 +389,23 @@ namespace OpenRCT2
 
     static bool isHandymanAlreadyServicingTile(const CoordsXY& tile, PeepState state)
     {
-        // Watering handymen stand adjacent to the plant, not on its tile — use isPlantBeingWatered instead.
-        assert(state != PeepState::watering);
-        for (auto* staff : EntityTileList<Staff>(tile))
+        if (state == PeepState::watering)
         {
-            if (staff->State == state)
-                return true;
+            for (auto* staff : EntityList<Staff>())
+            {
+                if (staff->State == PeepState::watering
+                    && CoordsXY{ staff->NextLoc } + CoordsDirectionDelta[staff->Var37] == tile)
+                    return true;
+            }
+            return false;
         }
-        return false;
-    }
-
-    static bool isPlantBeingWatered(const CoordsXY& plantTile)
-    {
-        for (auto* staff : EntityList<Staff>())
+        else
         {
-            if (staff->State != PeepState::watering)
-                continue;
-            if (CoordsXY{ staff->NextLoc } + CoordsDirectionDelta[staff->Var37] == plantTile)
-                return true;
+            for (auto* staff : EntityTileList<Staff>(tile))
+            {
+                if (staff->State == state)
+                    return true;
+            }
         }
         return false;
     }
@@ -1532,7 +1531,7 @@ namespace OpenRCT2
                     }
                 }
 
-                if (isPlantBeingWatered(chosenLoc))
+                if (isHandymanAlreadyServicingTile(chosenLoc, PeepState::watering))
                     continue;
 
                 SetState(PeepState::watering);
