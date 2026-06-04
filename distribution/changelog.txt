@@ -5,6 +5,7 @@
 - Improved: [#26747] Exporting a sprite file now also outputs a JSON file, allowing for round-trip conversions.
 - Improved: [#26763] The ride colour/appearance tab now visually separates fields using group boxes.
 - Improved: [#26765] The ride operations tab now visually separates fields using group boxes.
+- Fix: [#26639] Handymen now check if a tile is already being serviced by another handyman before starting their task.
 - Fix: [#26756] Guests cannot puke or litter on sloped path.
 - Fix: [#26758] [Plugin] IPv6 addresses are reported incorrectly.
 - Fix: [#26775] Maze gets wrong intensity boost from size (0.02 per tile instead of 0.01 per 2 tiles).
