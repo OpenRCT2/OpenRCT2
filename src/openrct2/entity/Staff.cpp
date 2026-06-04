@@ -387,11 +387,11 @@ namespace OpenRCT2
         return nextDirection;
     }
 
-    static bool isTileBeingMowed(const CoordsXYZ& tile)
+    static bool isTileBeingMowed(const CoordsXY& tile)
     {
-        for (auto* staff : EntityList<Staff>())
+        for (auto* staff : EntityTileList<Staff>(tile))
         {
-            if (staff->State == PeepState::mowing && staff->NextLoc == tile)
+            if (staff->State == PeepState::mowing)
                 return true;
         }
         return false;
@@ -443,9 +443,7 @@ namespace OpenRCT2
                 {
                     if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                     {
-                        // Only mow if the tile is not being mowed by another handyman
-                        CoordsXYZ tileWithZ{ chosenTile, surfaceElement->getBaseZ() };
-                        if (!isTileBeingMowed(tileWithZ))
+                        if (!isTileBeingMowed(chosenTile))
                             return chosenDirection;
                     }
                 }
@@ -1615,8 +1613,7 @@ namespace OpenRCT2
         auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
-            // Only start mowing if the grass is long enough and the tile is not being mowed by another handyman
-            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1 && isTileBeingMowed(NextLoc))
+            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1 && !isTileBeingMowed(CoordsXY{ NextLoc }))
             {
                 SetState(PeepState::mowing);
                 Var37 = 0;
