@@ -9,6 +9,10 @@
 
 #pragma once
 
+#include "../Location.hpp"
+#include "BaseMap.hpp"
+#include "MapGen.h"
+
 #include <cstdint>
 #include <functional>
 
@@ -27,8 +31,13 @@ namespace OpenRCT2::World::MapGenerator
     // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(TileCoordsXY)>;
 
-    int32_t smoothTileStrong(TileCoordsXY tileCoords);
-    int32_t smoothTileWeak(TileCoordsXY tileCoords);
+    int32_t smoothTileSlopeStrong(TileCoordsXY tileCoords);
+    int32_t smoothTileSlopeWeak(TileCoordsXY tileCoords);
 
-    void smoothMap(TileCoordsXY mapSize, SmoothFunction smoothFunc);
+    void smoothBilateral(HeightMap& heightMap, float sigmaScale, float sigmaIntensity);
+    void smoothBox(HeightMap& heightMap, int32_t iterations);
+    void smoothGaussian(HeightMap& heightMap, float sigma);
+
+    void applyHeightMapSmooth(Settings* settings, HeightMap& heightMap);
+    void applyTileSlopeSmooth(const Settings* settings);
 } // namespace OpenRCT2::World::MapGenerator

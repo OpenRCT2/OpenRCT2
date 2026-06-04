@@ -156,7 +156,7 @@ namespace OpenRCT2::World::MapGenerator
                 surfaceElement->baseHeight = static_cast<uint8_t>(adjustedHeight);
 
                 // If base height is below water level, lower it to create more natural shorelines
-                if (!settings->simulate_erosion && surfaceElement->baseHeight >= 4
+                if (!settings->simulateErosion && surfaceElement->baseHeight >= 4
                     && surfaceElement->baseHeight <= settings->waterLevel)
                     surfaceElement->baseHeight -= 2;
 

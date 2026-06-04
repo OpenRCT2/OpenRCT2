@@ -68,6 +68,11 @@ namespace OpenRCT2::World::MapGenerator
             return _value[pos.y * width + pos.x];
         }
 
+        void fill(const T& value)
+        {
+            std::fill(_value.begin(), _value.end(), value);
+        }
+
         void clear()
         {
             _value.clear();

@@ -102,53 +102,6 @@ namespace OpenRCT2::World::MapGenerator
         _heightMapData.clear();
     }
 
-    /**
-     * Applies box blur to the surface N times
-     * TODO deduplicate smoothing functions
-     */
-    static void SmoothHeightmap(HeightMap& src, int32_t strength)
-    {
-        // Create buffer to store one channel
-        HeightMap temp{ src.width, src.height };
-
-        for (int32_t i = 0; i < strength; i++)
-        {
-            // Calculate box blur value to all pixels of the surface
-            for (auto y = 0; y < temp.height; y++)
-            {
-                for (auto x = 0; x < temp.width; x++)
-                {
-                    uint32_t heightSum = 0;
-
-                    // Loop over neighbour pixels, all of them have the same weight
-                    for (int8_t offsetX = -1; offsetX <= 1; offsetX++)
-                    {
-                        for (int8_t offsetY = -1; offsetY <= 1; offsetY++)
-                        {
-                            // Clamp x and y so they stay within the image
-                            // This assumes the height map is not tiled, and increases the weight of the edges
-                            const auto readX = std::clamp<int32_t>(x + offsetX, 0, temp.width - 1);
-                            const auto readY = std::clamp<int32_t>(y + offsetY, 0, temp.height - 1);
-                            heightSum += src[{ readX, readY }];
-                        }
-                    }
-
-                    // Take average
-                    temp[{ x, y }] = heightSum / 9;
-                }
-            }
-
-            // Now copy the blur to the source pixels
-            for (auto y = 0; y < temp.height; y++)
-            {
-                for (auto x = 0; x < temp.width; x++)
-                {
-                    src[{ x, y }] = temp[{ x, y }];
-                }
-            }
-        }
-    }
-
     void GenerateFromHeightmapImage(Settings* settings)
     {
         Guard::Assert(!_heightMapData.empty(), "No height map loaded");
@@ -164,12 +117,9 @@ namespace OpenRCT2::World::MapGenerator
         // The x and y axis are flipped in the world, so this uses y for x and x for y.
         TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
 
-        if (settings->smooth_height_map)
-        {
-            SmoothHeightmap(dest, settings->smooth_strength);
-        }
+        applyHeightMapSmooth(settings, dest);
 
-        if (settings->simulate_erosion)
+        if (settings->simulateErosion)
         {
             auto erosionSettings = ErosionSettings(*settings);
             simulateErosion(erosionSettings, dest);
@@ -178,7 +128,7 @@ namespace OpenRCT2::World::MapGenerator
         uint8_t maxValue = 255;
         uint8_t minValue = 0;
 
-        if (settings->normalize_height)
+        if (settings->normalizeHeight)
         {
             // Get highest and lowest pixel value
             maxValue = 0;
@@ -242,11 +192,6 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        // Smooth tile edges
-        if (settings->smoothTileEdges)
-        {
-            // Set the tile slopes so that there are no cliffs
-            smoothMap(flippedMapSize, smoothTileWeak);
-        }
+        applyTileSlopeSmooth(settings);
     }
 } // namespace OpenRCT2::World::MapGenerator

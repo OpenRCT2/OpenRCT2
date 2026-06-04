@@ -22,39 +22,6 @@ namespace OpenRCT2::World::MapGenerator
 {
     using BiasData = std::variant<std::unique_ptr<Noise>, VecXY>;
 
-    /**
-     * Smooths the height map.
-     * TODO deduplicate smoothing functions
-     */
-    static void smoothHeightMap(int32_t iterations, HeightMap& heightMap)
-    {
-        for (auto i = 0; i < iterations; i++)
-        {
-            auto copyHeight = heightMap;
-            for (auto y = 0; y < heightMap.height; y++)
-            {
-                for (auto x = 0; x < heightMap.width; x++)
-                {
-                    auto avg = 0;
-                    for (auto yy = -1; yy <= 1; yy++)
-                    {
-                        for (auto xx = -1; xx <= 1; xx++)
-                        {
-                            auto dx = x + xx;
-                            auto dy = y + yy;
-
-                            // Use tile height if OOB
-                            auto oob = dy < 0 || dx < 0 || dy >= heightMap.width || dx >= heightMap.height;
-                            avg += oob ? copyHeight[{ x, y }] : copyHeight[{ dx, dy }];
-                        }
-                    }
-                    avg /= 9.0f;
-                    heightMap[{ x, y }] = avg;
-                }
-            }
-        }
-    }
-
     static BiasData prepareBias(Settings* settings)
     {
         BiasData ctx;
@@ -89,7 +56,7 @@ namespace OpenRCT2::World::MapGenerator
 
     static float applyBias(Settings* settings, BiasData& ctx, VecXY pos, float noise)
     {
-        float biasStrength = static_cast<float>(settings->bias_strength) / 100.0f;
+        float biasStrength = static_cast<float>(settings->biasStrength) / 100.0f;
 
         float nx = 2.0f * pos.x / settings->mapSize.x - 1.0f;
         float ny = 2.0f * pos.y / settings->mapSize.y - 1.0f;
@@ -187,27 +154,19 @@ namespace OpenRCT2::World::MapGenerator
 
     static void generateCommon(Settings* settings, HeightMap& heightMap)
     {
-        if (settings->simulate_erosion)
+        if (settings->simulateErosion)
         {
             auto erosionSettings = ErosionSettings(*settings);
             simulateErosion(erosionSettings, heightMap);
         }
-        else
-        {
-            std::mt19937 prng(settings->seed);
-            std::uniform_int_distribution<int32_t> dist(0, 5);
-            smoothHeightMap(2 + dist(prng), heightMap);
-        }
+
+        applyHeightMapSmooth(settings, heightMap);
 
         // Set the game map to the height map
         resetSurfaces(settings);
         setMapHeight(settings, heightMap);
 
-        if (settings->smoothTileEdges)
-        {
-            // Set the tile slopes so that there are no cliffs, use the weak version with erosion.
-            smoothMap(settings->mapSize, settings->simulate_erosion ? smoothTileWeak : smoothTileStrong);
-        }
+        applyTileSlopeSmooth(settings);
 
         // Add the water
         setWaterLevel(settings->waterLevel);
@@ -218,10 +177,10 @@ namespace OpenRCT2::World::MapGenerator
         auto heightMap = HeightMap(settings->mapSize);
 
         // TODO should freq really be influenced by map width?
-        float freq = settings->simplex_base_freq / 100.0f * (1.0f / heightMap.width);
+        float freq = settings->noiseBaseFreq / 100.0f * (1.0f / heightMap.width);
 
         BaseSettings baseSettings = { BaseType::Simplex, settings->seed, freq };
-        FractalSettings fractalSettings = { FractalType::Fbm, settings->simplex_octaves, 2.0f, 0.65f, 0.0f };
+        FractalSettings fractalSettings = { FractalType::Fbm, settings->noiseOctaves, 2.0f, 0.65f, 0.0f };
 
         auto simplexFbmNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
 
@@ -233,10 +192,10 @@ namespace OpenRCT2::World::MapGenerator
     {
         auto heightMap = HeightMap(settings->mapSize);
 
-        auto freq = settings->simplex_base_freq / std::pow(2.0f, 15.0f);
+        auto freq = settings->noiseBaseFreq / std::pow(2.0f, 15.0f);
 
         BaseSettings baseSettings = { BaseType::Simplex, settings->seed, freq };
-        FractalSettings fractalSettings = { FractalType::Fbm, settings->simplex_octaves, 2.0f, 0.5f, 0.0f };
+        FractalSettings fractalSettings = { FractalType::Fbm, settings->noiseOctaves, 2.0f, 0.5f, 0.0f };
         WarpSettings warpSettings = {WarpFractalType::Independent, 666, settings->seed, freq,  4, 2.0f, 0.5f };
 
         auto warpedNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);

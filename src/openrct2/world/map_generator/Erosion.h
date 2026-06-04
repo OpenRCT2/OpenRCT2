@@ -23,7 +23,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         ErosionSettings(const Settings& settings)
         {
-            particles = static_cast<uint32_t>(settings.particles_per_tile * settings.mapSize.x * settings.mapSize.y) / 100;
+            particles = static_cast<uint32_t>(settings.particlesPerTile * settings.mapSize.x * settings.mapSize.y) / 100;
             seed = settings.seed;
         }
 

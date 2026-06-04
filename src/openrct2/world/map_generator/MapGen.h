@@ -41,6 +41,21 @@ namespace OpenRCT2::World::MapGenerator
         cliff
     };
 
+    enum class SmoothFilter : uint8_t
+    {
+        none,
+        box,
+        gaussian,
+        bilateral
+    };
+
+    enum class SlopeFunction : uint8_t
+    {
+        none,
+        weak,
+        strong
+    };
+
     struct Settings
     {
         // Base
@@ -50,27 +65,29 @@ namespace OpenRCT2::World::MapGenerator
         int32_t waterLevel = 6;
         int32_t heightmapLow = 14;
         int32_t heightmapHigh = 60;
-        bool smoothTileEdges = true;
 
         Rule::TextureRuleList textureRules{};
         Rule::SceneryRuleList sceneryRules{};
 
-        // Simplex Noise Parameters
-        int32_t simplex_base_freq = 175;
-        int32_t simplex_octaves = 6;
+        // Noise Parameters
+        int32_t noiseBaseFreq = 175;
+        int32_t noiseOctaves = 6;
 
         // Bias settings
         Bias bias = Bias::none;
-        int32_t bias_strength = 75;
+        int32_t biasStrength = 75;
 
         // Height map settings
-        bool smooth_height_map = true;
-        uint32_t smooth_strength = 1;
-        bool normalize_height = true;
+        bool normalizeHeight = true;
 
         // Erosion settings
-        bool simulate_erosion = false;
-        int32_t particles_per_tile = 300;
+        bool simulateErosion = false;
+        int32_t particlesPerTile = 300;
+
+        // Smooth settings
+        SmoothFilter smoothFilter = SmoothFilter::none;
+        uint32_t smoothStrength = 1;
+        SlopeFunction slopeFunction = SlopeFunction::weak;
     };
 
     void generate(Settings* settings);
