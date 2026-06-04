@@ -26,6 +26,8 @@ namespace OpenRCT2::World::MapGenerator
         blank,
         simplexNoise,
         warpedNoise,
+        ridgedNoise,
+        voronoiNoise,
         heightmapImage,
     };
 
@@ -83,7 +85,7 @@ namespace OpenRCT2::World::MapGenerator
 
         // Transform settings
         HeightMapTransform heightmapTransform = HeightMapTransform::none;
-        uint32_t transformStrength = 1;
+        int32_t transformStrength = 1;
         SlopeSmooth slopeSmooth = SlopeSmooth::weak;
     };
 

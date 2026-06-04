@@ -22,7 +22,7 @@ namespace OpenRCT2::World::MapGenerator
 {
     using BiasData = std::variant<std::unique_ptr<Noise>, VecXY>;
 
-    static BiasData prepareBias(Settings& settings)
+    static BiasData prepareBias(const Settings& settings)
     {
         BiasData ctx;
         if (settings.bias == Bias::coastal || settings.bias == Bias::river)
@@ -54,7 +54,7 @@ namespace OpenRCT2::World::MapGenerator
         return ctx;
     }
 
-    static float applyBias(Settings& settings, BiasData& ctx, VecXY pos, float noise)
+    static float applyBias(const Settings& settings, BiasData& ctx, VecXY pos, float noise)
     {
         float biasStrength = static_cast<float>(settings.biasStrength) / 100.0f;
 
@@ -150,19 +150,18 @@ namespace OpenRCT2::World::MapGenerator
                 heightMap[{ x, y }] = low + biasedNoiseValue * high;
             }
         }
-    }
 
-    static void generateCommon(Settings& settings, HeightMap& heightMap)
-    {
+        // apply smooth/erosion
         applyHeightMapTransform(heightMap, settings);
 
-        // Set the game map to the height map
+        // set the game map to the height map
         resetSurfaces(settings);
         setMapHeight(settings, heightMap);
 
+        // slope smooth functions operate on the game map
         applyTileSlopeSmooth(settings);
 
-        // Add the water
+        // set the game map water lvl
         setWaterLevel(settings.waterLevel);
     }
 
@@ -179,7 +178,6 @@ namespace OpenRCT2::World::MapGenerator
         auto simplexFbmNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
 
         generateMap(settings, heightMap, simplexFbmNoise);
-        generateCommon(settings, heightMap);
     }
 
     void generateWarpedMap(Settings& settings)
@@ -190,11 +188,38 @@ namespace OpenRCT2::World::MapGenerator
 
         BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
         FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
-        WarpSettings warpSettings = {WarpFractalType::Independent, 666, settings.seed, freq,  4, 2.0f, 0.5f };
+        WarpSettings warpSettings = {WarpFractalType::Independent, 666, settings.seed, freq, 4, 2.0f, 0.5f };
 
         auto warpedNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
         generateMap(settings, heightMap, warpedNoise);
-        generateCommon(settings, heightMap);
+    }
+
+    void generateRidgedMap(Settings& settings)
+    {
+        auto heightMap = HeightMap(settings.mapSize);
+
+        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
+
+        BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
+        FractalSettings fractalSettings = { FractalType::Ridge, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
+
+        auto ridgedNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
+
+        generateMap(settings, heightMap, ridgedNoise);
+    }
+
+    void generateVoronoiMap(Settings& settings)
+    {
+        auto heightMap = HeightMap(settings.mapSize);
+
+        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 14.0f);
+
+        BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq };
+        FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
+
+        auto voronoiNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
+
+        generateMap(settings, heightMap, voronoiNoise);
     }
 } // namespace OpenRCT2::World::MapGenerator

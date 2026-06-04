@@ -3838,9 +3838,6 @@ STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Can’t change land height here…
-STR_7051    :Simulate erosion
-STR_7052    :Particles per tile:
-STR_7053    :Enter particles per tile between {COMMA2DP32} and {COMMA2DP32}
 STR_7054    :Simulating erosion
 STR_7055    :Warped noise
 STR_7056    :None
@@ -3934,3 +3931,16 @@ STR_7160    :Broad-leaved
 STR_7161    :Mixed
 STR_7162    :Cypresses and pines
 STR_7163    :Mediterranean
+STR_7170    :Ridged noise
+STR_7171    :Voronoi noise
+STR_7172    :Transform
+STR_7173    :Type:
+STR_7174    :None
+STR_7175    :Box blur
+STR_7176    :Gaussian blur
+STR_7177    :Bilateral filter
+STR_7178    :Simulate erosion
+STR_7179    :Strength:
+STR_7180    :None
+STR_7181    :Weak
+STR_7182    :Strong

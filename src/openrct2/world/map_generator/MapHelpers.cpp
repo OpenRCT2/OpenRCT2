@@ -498,7 +498,7 @@ namespace OpenRCT2::World::MapGenerator
                 smoothGaussian(heightMap, settings.transformStrength);
                 break;
             case HeightMapTransform::bilateral:
-                smoothBilateral(heightMap, 5.0f, 0.1f * settings.transformStrength);
+                smoothBilateral(heightMap, settings.transformStrength, settings.transformStrength);
                 break;
             case HeightMapTransform::erosion:
                 simulateErosion(heightMap, settings);

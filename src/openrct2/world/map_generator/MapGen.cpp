@@ -10,11 +10,9 @@
 #include "MapGen.h"
 
 #include "../../GameState.h"
-#include "../../object/ObjectManager.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
-#include "Noise.h"
 #include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
 #include "SceneryPlacement.h"
@@ -29,7 +27,6 @@ namespace OpenRCT2::World::MapGenerator
 
     void generate(Settings& settings)
     {
-        // First, generate the height map
         switch (settings.algorithm)
         {
             case Algorithm::blank:
@@ -42,6 +39,14 @@ namespace OpenRCT2::World::MapGenerator
 
             case Algorithm::warpedNoise:
                 generateWarpedMap(settings);
+                break;
+
+            case Algorithm::ridgedNoise:
+                generateRidgedMap(settings);
+                break;
+
+            case Algorithm::voronoiNoise:
+                generateVoronoiMap(settings);
                 break;
 
             case Algorithm::heightmapImage:
@@ -155,8 +160,9 @@ namespace OpenRCT2::World::MapGenerator
                 auto adjustedHeight = std::round(std::clamp(heightMap[pos], 2.0f, 254.0f) * 0.5f) * 2.0f;
                 surfaceElement->baseHeight = static_cast<uint8_t>(adjustedHeight);
 
+                // TODO is this special case really needed?
                 // If base height is below water level, lower it to create more natural shorelines
-                if (surfaceElement->baseHeight >= 4
+                if (settings.slopeSmooth == SlopeSmooth::strong && surfaceElement->baseHeight >= 4
                     && surfaceElement->baseHeight <= settings.waterLevel)
                     surfaceElement->baseHeight -= 2;
 
