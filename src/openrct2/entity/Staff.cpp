@@ -397,7 +397,6 @@ namespace OpenRCT2
                     && CoordsXY{ staff->NextLoc } + CoordsDirectionDelta[staff->Var37] == tile)
                     return true;
             }
-            return false;
         }
         else
         {
