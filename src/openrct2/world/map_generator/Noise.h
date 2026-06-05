@@ -55,6 +55,12 @@ namespace OpenRCT2::World::MapGenerator
         float rotateDeg;
     };
 
+    enum class WarpType
+    {
+        Simplex,
+        Grid
+    };
+
     enum class WarpFractalType
     {
         // None?,
@@ -64,7 +70,8 @@ namespace OpenRCT2::World::MapGenerator
 
     struct WarpSettings
     {
-        WarpFractalType type;
+        WarpType type;
+        WarpFractalType fractalType;
         float amplitude;
         uint32_t seed;
         float frequency;

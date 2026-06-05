@@ -1900,8 +1900,9 @@ namespace OpenRCT2::Ui::Windows
                             ToggleOption(0, STR_MAPGEN_TRANSFORM_TYPE_NONE),
                             ToggleOption(1, STR_MAPGEN_TRANSFORM_TYPE_BOX),
                             ToggleOption(2, STR_MAPGEN_TRANSFORM_TYPE_GAUSSIAN),
-                            ToggleOption(3, STR_MAPGEN_TRANSFORM_TYPE_BILATERAL),
-                            ToggleOption(4, STR_MAPGEN_TRANSFORM_TYPE_EROSION),
+                            ToggleOption(3, STR_MAPGEN_TRANSFORM_TYPE_SHARPEN),
+                            ToggleOption(4, STR_MAPGEN_TRANSFORM_TYPE_BILATERAL),
+                            ToggleOption(5, STR_MAPGEN_TRANSFORM_TYPE_EROSION),
                         };
 
                         SetItems(items);
@@ -1968,6 +1969,9 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
+            if (dropdownIndex == -1)
+                return;
+
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_TRANSFORM_TYPE_DROPDOWN:
@@ -2056,6 +2060,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case MapGenerator::HeightMapTransform::gaussian:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_GAUSSIAN;
+                    break;
+                case MapGenerator::HeightMapTransform::sharpen:
+                    widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_SHARPEN;
                     break;
                 case MapGenerator::HeightMapTransform::bilateral:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_BILATERAL;

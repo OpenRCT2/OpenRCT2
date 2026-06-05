@@ -42,7 +42,9 @@ namespace OpenRCT2::World::MapGenerator
         {
             BaseSettings baseSettings = { BaseType::Simplex, settings.seed + 1, 1.0f / 768.0f };
             FractalSettings fractalSettings = { FractalType::Ridge, 7, 2.5f, 0.5f, 0.0f };
-            ctx = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
+            TransformSettings transformSettings = { { 256, 256 }, 0.0f };
+
+            ctx = std::make_unique<Noise>(baseSettings, fractalSettings, transformSettings, std::nullopt );
         }
         else if (settings.bias == Bias::cliff)
         {
@@ -188,7 +190,7 @@ namespace OpenRCT2::World::MapGenerator
 
         BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
         FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
-        WarpSettings warpSettings = {WarpFractalType::Independent, 666, settings.seed, freq, 4, 2.0f, 0.5f };
+        WarpSettings warpSettings = {WarpType::Simplex, WarpFractalType::Independent, 256, settings.seed, freq / 2, 4, 2.0f, 0.5f };
 
         auto warpedNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
@@ -203,8 +205,9 @@ namespace OpenRCT2::World::MapGenerator
 
         BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
         FractalSettings fractalSettings = { FractalType::Ridge, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
+        TransformSettings transformSettings = { { 64, 64 }, 0.0f };
 
-        auto ridgedNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
+        auto ridgedNoise = Noise(baseSettings, fractalSettings, transformSettings, std::nullopt);
 
         generateMap(settings, heightMap, ridgedNoise);
     }
@@ -213,12 +216,13 @@ namespace OpenRCT2::World::MapGenerator
     {
         auto heightMap = HeightMap(settings.mapSize);
 
-        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 14.0f);
+        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
         BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq };
-        FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
+        FractalSettings fractalSettings = { FractalType::Ridge, settings.noiseOctaves, 2.0f, 0.65f, 0.0f };
+        WarpSettings warpSettings = {WarpType::Grid, WarpFractalType::Independent, 64, settings.seed, freq / 2, 4, 2.0f, 0.5f };
 
-        auto voronoiNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
+        auto voronoiNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
         generateMap(settings, heightMap, voronoiNoise);
     }

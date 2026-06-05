@@ -485,6 +485,25 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
+    void sharpen(HeightMap& heightMap, int32_t iterations)
+    {
+        for (auto i = 0; i < iterations; i++)
+        {
+            HeightMap blurCopy = heightMap;
+            smoothGaussian(blurCopy, 7);
+
+            for (auto y = 0; y < heightMap.height; y++)
+            {
+                for (auto x = 0; x < heightMap.width; x++)
+                {
+                    const TileCoordsXY pos = {x, y};
+                    auto delta = heightMap[pos] - blurCopy[pos];
+                    heightMap[pos] = heightMap[pos] + delta;
+                }
+            }
+        }
+    }
+
     void applyHeightMapTransform(HeightMap& heightMap, const Settings& settings)
     {
         switch (settings.heightmapTransform)
@@ -497,8 +516,11 @@ namespace OpenRCT2::World::MapGenerator
             case HeightMapTransform::gaussian:
                 smoothGaussian(heightMap, settings.transformStrength);
                 break;
+            case HeightMapTransform::sharpen:
+                sharpen(heightMap, settings.transformStrength);
+                break;
             case HeightMapTransform::bilateral:
-                smoothBilateral(heightMap, settings.transformStrength, settings.transformStrength);
+                smoothBilateral(heightMap, settings.transformStrength, 0.1f * settings.transformStrength);
                 break;
             case HeightMapTransform::erosion:
                 simulateErosion(heightMap, settings);

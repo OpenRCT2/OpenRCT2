@@ -34,9 +34,10 @@ namespace OpenRCT2::World::MapGenerator
     int32_t smoothTileSlopeStrong(TileCoordsXY tileCoords);
     int32_t smoothTileSlopeWeak(TileCoordsXY tileCoords);
 
-    void smoothBilateral(HeightMap& heightMap, float sigmaScale, float sigmaIntensity);
     void smoothBox(HeightMap& heightMap, int32_t iterations);
     void smoothGaussian(HeightMap& heightMap, float sigma);
+    void sharpen(HeightMap& heightMap, int32_t iterations);
+    void smoothBilateral(HeightMap& heightMap, float sigmaScale, float sigmaIntensity);
 
     void applyHeightMapTransform(HeightMap& heightMap, const Settings& settings);
     void applyTileSlopeSmooth(const Settings& settings);

@@ -63,12 +63,21 @@ namespace OpenRCT2::World::MapGenerator
             warp.SetSeed(warpSettingsValue.seed);
             warp.SetFrequency(warpSettingsValue.frequency);
             warp.SetDomainWarpAmp(warpSettingsValue.amplitude);
-            warp.SetDomainWarpType(FastNoiseLite::DomainWarpType_OpenSimplex2);
             warp.SetFractalOctaves(warpSettingsValue.octaves);
             warp.SetFractalLacunarity(warpSettingsValue.lacunarity);
             warp.SetFractalGain(warpSettingsValue.persistence);
 
             switch (warpSettingsValue.type)
+            {
+                case WarpType::Simplex:
+                    warp.SetDomainWarpType(FastNoiseLite::DomainWarpType_OpenSimplex2);
+                    break;
+                case WarpType::Grid:
+                    warp.SetDomainWarpType(FastNoiseLite::DomainWarpType_BasicGrid);
+                    break;
+            }
+
+            switch (warpSettingsValue.fractalType)
             {
                 case WarpFractalType::Independent:
                     warp.SetFractalType(FastNoiseLite::FractalType_DomainWarpIndependent);

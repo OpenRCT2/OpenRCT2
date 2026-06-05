@@ -48,6 +48,7 @@ namespace OpenRCT2::World::MapGenerator
         none,
         box,
         gaussian,
+        sharpen,
         bilateral,
         erosion
     };

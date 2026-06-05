@@ -3944,3 +3944,4 @@ STR_7179    :Strength:
 STR_7180    :None
 STR_7181    :Weak
 STR_7182    :Strong
+STR_7183    :Sharpen
