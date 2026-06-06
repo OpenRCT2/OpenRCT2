@@ -873,6 +873,7 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->CanSelect = valueBool;
+                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -895,6 +896,7 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->IsStriped = valueBool;
+                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -938,6 +940,8 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->ShowColumnHeaders = valueBool;
+                WindowUpdateScrollWidgets(*GetWindow(thisVal));
+                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -968,6 +972,7 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->SelectedCell = RowColumnFromJS(ctx, value);
+                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
