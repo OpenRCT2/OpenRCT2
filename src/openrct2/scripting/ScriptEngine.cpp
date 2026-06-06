@@ -535,6 +535,8 @@ ScTile Scripting::gScTile;
 ScTileElement Scripting::gScTileElement;
 ScTrackIterator Scripting::gScTrackIterator;
 ScTrackSegment Scripting::gScTrackSegment;
+ScPathConnection Scripting::gScPathConnection;
+ScPathNavigator Scripting::gScPathNavigator;
 ScEntity Scripting::gScEntity;
 ScThought Scripting::gScThought;
     #ifndef DISABLE_NETWORK
@@ -576,6 +578,8 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScTileElement.Register(ctx);
     gScTrackIterator.Register(ctx);
     gScTrackSegment.Register(ctx);
+    gScPathConnection.registerClass(ctx);
+    gScPathNavigator.registerClass(ctx);
     gScEntity.Register(ctx);
     gScPeep.Register(ctx);
     gScGuest.Register(ctx);
@@ -629,6 +633,8 @@ void ScriptEngine::UnregisterClasses()
     gScTileElement.Unregister();
     gScTrackIterator.Unregister();
     gScTrackSegment.Unregister();
+    gScPathConnection.Unregister();
+    gScPathNavigator.Unregister();
     gScEntity.Unregister();
     gScPeep.Unregister();
     gScGuest.Unregister();

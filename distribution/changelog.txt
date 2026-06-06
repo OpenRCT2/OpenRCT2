@@ -1,5 +1,6 @@
 0.5.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
 - Improved: [#26566] Improve the performance of sorting sprites.
 - Fix: [#26350] ListViews altered by plugins post their creation are not invalidated.
 - Fix: [#26565] Game crashes when switching to another tab in the guest window.
