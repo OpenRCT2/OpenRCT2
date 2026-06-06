@@ -1,5 +1,6 @@
 0.5.2 (in development)
 ------------------------------------------------------------------------
+- Improved: [#26322] Add footpath flags to FootpathSurfaceObject in the plugin API.
 - Improved: [#26566] Improve the performance of sorting sprites.
 - Fix: [#26350] ListViews altered by plugins post their creation are not invalidated.
 - Fix: [#26565] Game crashes when switching to another tab in the guest window.
