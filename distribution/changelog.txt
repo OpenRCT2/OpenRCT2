@@ -1,4 +1,4 @@
-0.5.2 (in development)
+0.5.2 (2026-06-07)
 ------------------------------------------------------------------------
 - Improved: [#26322] [Plugin] Add footpath flags to FootpathSurfaceObject in the plugin API.
 - Improved: [#26566] Improve the performance of sorting sprites.
