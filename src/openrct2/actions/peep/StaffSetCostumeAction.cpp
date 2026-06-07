@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
 
-        auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staff->AssignedStaffType) + 1);
+        auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staff->assignedStaffType) + 1);
         if (animObj->GetPeepType() != animPeepType)
         {
             LOG_ERROR("Invalid entertainer costume %u", _costume);
@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
 
         staff->AnimationFrameNum = 0;
         staff->UpdateCurrentAnimationType();
-        staff->Invalidate();
+        staff->invalidate();
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::peep, _spriteIndex);
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         auto res = Result();
-        res.position = staff->GetLocation();
+        res.position = staff->getLocation();
 
         return res;
     }

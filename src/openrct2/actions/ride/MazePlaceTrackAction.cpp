@@ -94,7 +94,7 @@ namespace OpenRCT2::GameActions
         auto baseHeight = _loc.z;
         auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
-        auto heightDifference = clearanceHeight - surfaceElement->GetBaseZ();
+        auto heightDifference = clearanceHeight - surfaceElement->getBaseZ();
         if (heightDifference >= 0 && !gameState.cheats.disableSupportLimits)
         {
             heightDifference /= kCoordsZPerTinyZ;
@@ -190,17 +190,17 @@ namespace OpenRCT2::GameActions
         auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
         Guard::Assert(trackElement != nullptr);
 
-        trackElement->SetClearanceZ(clearanceHeight);
+        trackElement->setClearanceZ(clearanceHeight);
         trackElement->SetTrackType(TrackElemType::maze);
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(_mazeEntry);
-        trackElement->SetGhost(flags.has(CommandFlag::ghost));
+        trackElement->setGhost(flags.has(CommandFlag::ghost));
 
         MapInvalidateTileFull(startLoc);
 
         ride->mazeTiles++;
-        ride->getStation().SetBaseZ(trackElement->GetBaseZ());
+        ride->getStation().SetBaseZ(trackElement->getBaseZ());
         ride->getStation().Start = { 0, 0 };
 
         if (ride->mazeTiles == 1)

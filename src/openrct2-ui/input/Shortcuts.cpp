@@ -199,7 +199,7 @@ static void ShortcutAdjustLand()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -213,7 +213,7 @@ static void ShortcutAdjustWater()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -227,7 +227,7 @@ static void ShortcutBuildScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -241,7 +241,7 @@ static void ShortcutBuildPaths()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -343,7 +343,7 @@ static void ShortcutShowMap()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::LandscapeEditor)
+    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::landscapeEditor)
         if (!(isInTrackDesignerOrManager()))
             ContextOpenWindow(WindowClass::map);
 }
@@ -400,7 +400,7 @@ static void ShortcutClearScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -431,7 +431,7 @@ static void ShortcutLoadGame()
 {
     if (!(isInTrackDesignerOrManager()))
     {
-        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
+        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::openSavePrompt);
         GameActions::Execute(&loadOrQuitAction, getGameState());
     }
 }
@@ -440,7 +440,7 @@ static void ShortcutOpenSceneryPicker()
 {
     if ((gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
          || gLegacyScene == LegacyScene::trackDesignsManager)
-        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor))
+        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor))
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -509,23 +509,23 @@ static void ShortcutToggleWallSlope()
     const TileElement* tileElement = TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
-    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
+    if (tileElement == nullptr || tileElement->getType() != TileElementType::Wall)
     {
         return;
     }
 
     // Ensure a wall can be built on a slope
-    if (tileElement->AsWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+    if (tileElement->asWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
         return;
     }
 
-    int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
+    int32_t currSlopeValue = tileElement->asWall()->GetSlope();
     int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;
     auto modifyTile = GameActions::TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex,
+        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
         newSlopeValue);
     GameActions::Execute(&modifyTile, getGameState());
 }
@@ -762,7 +762,7 @@ void ShortcutManager::registerDefaultShortcuts()
         {
             windowMgr->CloseAll();
         }
-        else if (getGameState().editorStep == EditorStep::LandscapeEditor)
+        else if (getGameState().editorStep == EditorStep::landscapeEditor)
         {
             windowMgr->CloseTop();
         }

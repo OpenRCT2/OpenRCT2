@@ -271,7 +271,7 @@ STR_0892    :Capture d’écran sauvegardée en tant que {SMALLFONT}{STRINGID}{M
 STR_0893    :Échec de la capture d’écran !
 STR_0894    :Zone de données du paysage pleine !
 STR_0895    :Impossible de construire à la fois au-dessus et en-dessous du sol
-STR_0896    :{STRINGID} Construction
+STR_0896    :{STRING} Construction
 STR_0897    :Direction
 STR_0898    :Virage à gauche
 STR_0899    :Virage à droite
@@ -3824,3 +3824,4 @@ STR_7025    :Rendre visible
 STR_7026    :Rend toute l’attraction visible
 STR_7028    :Quart d’hélice montante
 STR_7029    :Quart d’hélice descendante
+STR_7030    :{WINDOW_COLOUR_2}Visiteurs divertis : {BLACK}{COMMA32}

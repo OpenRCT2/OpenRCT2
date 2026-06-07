@@ -61,27 +61,27 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case RideSetAppearanceType::TrackColourMain:
-            case RideSetAppearanceType::TrackColourAdditional:
-            case RideSetAppearanceType::TrackColourSupports:
+            case RideSetAppearanceType::trackColourMain:
+            case RideSetAppearanceType::trackColourAdditional:
+            case RideSetAppearanceType::trackColourSupports:
                 if (_index >= std::size(ride->trackColours))
                 {
                     LOG_ERROR("Invalid track colour %u", _index);
                     return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
                 }
                 break;
-            case RideSetAppearanceType::VehicleColourBody:
-            case RideSetAppearanceType::VehicleColourTrim:
-            case RideSetAppearanceType::VehicleColourTertiary:
+            case RideSetAppearanceType::vehicleColourBody:
+            case RideSetAppearanceType::vehicleColourTrim:
+            case RideSetAppearanceType::vehicleColourTertiary:
                 if (_index >= std::size(ride->vehicleColours))
                 {
                     LOG_ERROR("Invalid vehicle colour %u", _index);
                     return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_INVALID_COLOUR);
                 }
                 break;
-            case RideSetAppearanceType::VehicleColourScheme:
-            case RideSetAppearanceType::EntranceStyle:
-            case RideSetAppearanceType::SellingItemColourIsRandom:
+            case RideSetAppearanceType::vehicleColourScheme:
+            case RideSetAppearanceType::entranceStyle:
+            case RideSetAppearanceType::sellingItemColourIsRandom:
                 break;
             default:
                 LOG_ERROR("Invalid ride appearance type %u", _type);
@@ -102,31 +102,31 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case RideSetAppearanceType::TrackColourMain:
+            case RideSetAppearanceType::trackColourMain:
                 ride->trackColours[_index].main = static_cast<Drawing::Colour>(_value);
                 GfxInvalidateScreen();
                 break;
-            case RideSetAppearanceType::TrackColourAdditional:
+            case RideSetAppearanceType::trackColourAdditional:
                 ride->trackColours[_index].additional = static_cast<Drawing::Colour>(_value);
                 GfxInvalidateScreen();
                 break;
-            case RideSetAppearanceType::TrackColourSupports:
+            case RideSetAppearanceType::trackColourSupports:
                 ride->trackColours[_index].supports = static_cast<Drawing::Colour>(_value);
                 GfxInvalidateScreen();
                 break;
-            case RideSetAppearanceType::VehicleColourBody:
+            case RideSetAppearanceType::vehicleColourBody:
                 ride->vehicleColours[_index].Body = static_cast<Drawing::Colour>(_value);
                 RideUpdateVehicleColours(*ride);
                 break;
-            case RideSetAppearanceType::VehicleColourTrim:
+            case RideSetAppearanceType::vehicleColourTrim:
                 ride->vehicleColours[_index].Trim = static_cast<Drawing::Colour>(_value);
                 RideUpdateVehicleColours(*ride);
                 break;
-            case RideSetAppearanceType::VehicleColourTertiary:
+            case RideSetAppearanceType::vehicleColourTertiary:
                 ride->vehicleColours[_index].Tertiary = static_cast<Drawing::Colour>(_value);
                 RideUpdateVehicleColours(*ride);
                 break;
-            case RideSetAppearanceType::VehicleColourScheme:
+            case RideSetAppearanceType::vehicleColourScheme:
                 ride->vehicleColourSettings = static_cast<VehicleColourSettings>(_value);
                 for (uint32_t i = 1; i < std::size(ride->vehicleColours); i++)
                 {
@@ -134,11 +134,11 @@ namespace OpenRCT2::GameActions
                 }
                 RideUpdateVehicleColours(*ride);
                 break;
-            case RideSetAppearanceType::EntranceStyle:
+            case RideSetAppearanceType::entranceStyle:
                 ride->entranceStyle = _value;
                 GfxInvalidateScreen();
                 break;
-            case RideSetAppearanceType::SellingItemColourIsRandom:
+            case RideSetAppearanceType::sellingItemColourIsRandom:
                 ride->flags.set(RideFlag::randomShopColours, static_cast<bool>(_value));
                 break;
         }

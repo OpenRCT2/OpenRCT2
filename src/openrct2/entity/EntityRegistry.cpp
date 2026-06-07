@@ -30,7 +30,7 @@
 #include "Balloon.h"
 #include "Duck.h"
 #include "EntityTweener.h"
-#include "Fountain.h"
+#include "JumpingFountain.h"
 #include "MoneyEffect.h"
 #include "Particle.h"
 
@@ -61,7 +61,7 @@ namespace OpenRCT2
 
     static constexpr uint32_t GetSpatialIndex(EntityBase& entity)
     {
-        return entity.SpatialIndex & ~kSpatialIndexDirtyMask;
+        return entity.spatialIndex & ~kSpatialIndexDirtyMask;
     }
 
     static constexpr bool EntityTypeIsMiscEntity(const EntityType type)
@@ -174,8 +174,8 @@ namespace OpenRCT2
             {
                 continue;
             }
-            spr->Type = EntityType::null;
-            spr->Id = EntityId::FromUnderlying(i);
+            spr->type = EntityType::null;
+            spr->id = EntityId::FromUnderlying(i);
 
             _entityFlashingList[i] = false;
         }
@@ -199,7 +199,7 @@ namespace OpenRCT2
         for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
         {
             auto* entity = GetEntity(EntityId::FromUnderlying(i));
-            if (entity != nullptr && entity->Type != EntityType::null)
+            if (entity != nullptr && entity->type != EntityType::null)
             {
                 EntitySpatialInsert(*entity, { entity->x, entity->y });
             }
@@ -227,22 +227,22 @@ namespace OpenRCT2
     void EntityRegistry::EntityReset(EntityBase& entity)
     {
         // Need to retain how the sprite is linked in lists
-        auto entityIndex = entity.Id;
+        auto entityIndex = entity.id;
         _entityFlashingList[entityIndex.ToUnderlying()] = false;
 
         Entity_t* tempEntity = reinterpret_cast<Entity_t*>(&entity);
         *tempEntity = Entity_t();
 
-        entity.Id = entityIndex;
-        entity.Type = EntityType::null;
+        entity.id = entityIndex;
+        entity.type = EntityType::null;
     }
 
     void EntityRegistry::AddToEntityList(EntityBase& entity)
     {
-        auto& list = gEntityLists[EnumValue(entity.Type)];
+        auto& list = gEntityLists[EnumValue(entity.type)];
 
-        // Entity list is sorted by Id to prevent desyncs.
-        Algorithm::sortedInsert(list, entity.Id);
+        // Entity list is sorted by id to prevent desyncs.
+        Algorithm::sortedInsert(list, entity.id);
     }
 
     void EntityRegistry::AddToFreeList(EntityId index)
@@ -253,8 +253,8 @@ namespace OpenRCT2
 
     void EntityRegistry::RemoveFromEntityList(EntityBase& entity)
     {
-        auto& list = gEntityLists[EnumValue(entity.Type)];
-        auto ptr = Algorithm::binaryFind(std::begin(list), std::end(list), entity.Id);
+        auto& list = gEntityLists[EnumValue(entity.type)];
+        auto ptr = Algorithm::binaryFind(std::begin(list), std::end(list), entity.id);
         if (ptr != std::end(list))
         {
             list.erase(ptr);
@@ -279,17 +279,17 @@ namespace OpenRCT2
         // may contain garbage and cause a desync later on.
         EntityReset(base);
 
-        base.Type = type;
+        base.type = type;
         AddToEntityList(base);
 
         base.x = kLocationNull;
         base.y = kLocationNull;
         base.z = 0;
-        base.SpriteData.Width = 0x10;
-        base.SpriteData.HeightMin = 0x14;
-        base.SpriteData.HeightMax = 0x8;
-        base.SpriteData.SpriteRect = {};
-        base.SpatialIndex = kInvalidSpatialIndex;
+        base.spriteData.width = 0x10;
+        base.spriteData.heightMin = 0x14;
+        base.spriteData.heightMax = 0x8;
+        base.spriteData.spriteRect = {};
+        base.spatialIndex = kInvalidSpatialIndex;
 
         EntitySpatialInsert(base, { kLocationNull, 0 });
     }
@@ -374,9 +374,9 @@ namespace OpenRCT2
 
         auto& spatialVector = gEntitySpatialIndex[newIndex];
 
-        Algorithm::sortedInsert(spatialVector, entity.Id);
+        Algorithm::sortedInsert(spatialVector, entity.id);
 
-        entity.SpatialIndex = newIndex;
+        entity.spatialIndex = newIndex;
     }
 
     void EntityRegistry::EntitySpatialRemove(EntityBase& entity)
@@ -384,7 +384,7 @@ namespace OpenRCT2
         const auto currentIndex = GetSpatialIndex(entity);
 
         auto& spatialVector = gEntitySpatialIndex[currentIndex];
-        auto index = Algorithm::binaryFind(std::begin(spatialVector), std::end(spatialVector), entity.Id);
+        auto index = Algorithm::binaryFind(std::begin(spatialVector), std::end(spatialVector), entity.id);
         if (index != std::end(spatialVector))
         {
             spatialVector.erase(index, index + 1);
@@ -395,14 +395,14 @@ namespace OpenRCT2
             ResetEntitySpatialIndices();
         }
 
-        entity.SpatialIndex = kInvalidSpatialIndex;
+        entity.spatialIndex = kInvalidSpatialIndex;
     }
 
     void EntityRegistry::UpdateEntitySpatialIndex(EntityBase& entity)
     {
-        if (entity.SpatialIndex & kSpatialIndexDirtyMask)
+        if (entity.spatialIndex & kSpatialIndexDirtyMask)
         {
-            if (entity.SpatialIndex != kInvalidSpatialIndex)
+            if (entity.spatialIndex != kInvalidSpatialIndex)
             {
                 EntitySpatialRemove(entity);
             }
@@ -417,7 +417,7 @@ namespace OpenRCT2
             for (auto& entityId : entityList)
             {
                 auto* entity = TryGetEntity(entityId);
-                if (entity != nullptr && entity->Type != EntityType::null)
+                if (entity != nullptr && entity->type != EntityType::null)
                 {
                     UpdateEntitySpatialIndex(*entity);
                 }
@@ -430,20 +430,20 @@ namespace OpenRCT2
      */
     void EntityRegistry::FreeEntity(EntityBase& entity)
     {
-        auto* guest = entity.As<Guest>();
-        auto* staff = entity.As<Staff>();
+        auto* guest = entity.as<Guest>();
+        auto* staff = entity.as<Staff>();
         if (staff != nullptr)
         {
             staff->SetName({});
-            staff->ClearPatrolArea();
+            staff->clearPatrolArea();
         }
         else if (guest != nullptr)
         {
             guest->SetName({});
-            guest->GuestNextInQueue = EntityId::GetNull();
+            guest->guestNextInQueue = EntityId::GetNull();
 
-            RideUse::GetHistory().RemoveHandle(guest->Id);
-            RideUse::GetTypeHistory().RemoveHandle(guest->Id);
+            RideUse::GetHistory().RemoveHandle(guest->id);
+            RideUse::GetTypeHistory().RemoveHandle(guest->id);
         }
     }
 
@@ -457,7 +457,7 @@ namespace OpenRCT2
 
         EntityTweener::Get().RemoveEntity(entity);
         RemoveFromEntityList(*entity); // remove from existing list
-        AddToFreeList(entity->Id);
+        AddToFreeList(entity->id);
 
         EntitySpatialRemove(*entity);
         EntityReset(*entity);
@@ -493,27 +493,27 @@ namespace OpenRCT2
 
     void EntityRegistry::EntitySetFlashing(EntityBase* entity, bool flashing)
     {
-        assert(entity->Id.ToUnderlying() < kMaxEntities);
-        _entityFlashingList[entity->Id.ToUnderlying()] = flashing;
+        assert(entity->id.ToUnderlying() < kMaxEntities);
+        _entityFlashingList[entity->id.ToUnderlying()] = flashing;
     }
 
     bool EntityRegistry::EntityGetFlashing(EntityBase* entity)
     {
-        assert(entity->Id.ToUnderlying() < kMaxEntities);
-        return _entityFlashingList[entity->Id.ToUnderlying()];
+        assert(entity->id.ToUnderlying() < kMaxEntities);
+        return _entityFlashingList[entity->id.ToUnderlying()];
     }
 } // namespace OpenRCT2
 
 using namespace OpenRCT2;
 
-CoordsXYZ EntityBase::GetLocation() const
+CoordsXYZ EntityBase::getLocation() const
 {
     return { x, y, z };
 }
 
-void EntityBase::SetLocation(const CoordsXYZ& newLocation)
+void EntityBase::setLocation(const CoordsXYZ& newLocation)
 {
-    if (GetLocation() == newLocation)
+    if (getLocation() == newLocation)
     {
         // No change, this can happen quite often when the entity is interpolated.
         return;
@@ -523,7 +523,7 @@ void EntityBase::SetLocation(const CoordsXYZ& newLocation)
     y = newLocation.y;
     z = newLocation.z;
 
-    if (SpatialIndex & kSpatialIndexDirtyMask)
+    if (spatialIndex & kSpatialIndexDirtyMask)
     {
         // Already marked as dirty.
         return;
@@ -536,25 +536,25 @@ void EntityBase::SetLocation(const CoordsXYZ& newLocation)
         return;
     }
 
-    SpatialIndex |= kSpatialIndexDirtyMask;
+    spatialIndex |= kSpatialIndexDirtyMask;
 }
 
 static void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
     auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
 
-    entity->SpriteData.SpriteRect = ScreenRect(
-        screenCoords - ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMin },
-        screenCoords + ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMax });
-    entity->SetLocation(entityPos);
+    entity->spriteData.spriteRect = ScreenRect(
+        screenCoords - ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMin },
+        screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
+    entity->setLocation(entityPos);
 }
 
-void EntityBase::MoveTo(const CoordsXYZ& newLocation)
+void EntityBase::moveTo(const CoordsXYZ& newLocation)
 {
     if (x != kLocationNull)
     {
         // Invalidate old position.
-        Invalidate();
+        invalidate();
     }
 
     auto loc = newLocation;
@@ -565,18 +565,18 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
     if (loc.x == kLocationNull)
     {
-        SetLocation(loc);
+        setLocation(loc);
     }
     else
     {
         EntitySetCoordinates(loc, this);
-        Invalidate(); // Invalidate new position.
+        invalidate(); // Invalidate new position.
     }
 }
 
-void EntityBase::MoveToAndUpdateSpatialIndex(const CoordsXYZ& newLocation)
+void EntityBase::moveToAndUpdateSpatialIndex(const CoordsXYZ& newLocation)
 {
-    MoveTo(newLocation);
+    moveTo(newLocation);
 
     // TODO: pass as param instead of relying on global game state
     auto& gameState = getGameState();

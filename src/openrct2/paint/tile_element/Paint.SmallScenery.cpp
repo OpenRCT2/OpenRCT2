@@ -350,7 +350,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
             imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
         }
     }
-    if (sceneryElement.IsGhost())
+    if (sceneryElement.isGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);

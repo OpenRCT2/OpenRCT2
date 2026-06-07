@@ -152,7 +152,7 @@ namespace OpenRCT2::Audio
         params.pan = 0;
 
         auto element = MapGetSurfaceElementAt(location);
-        if (element != nullptr && (element->GetBaseZ()) - 5 > location.z)
+        if (element != nullptr && (element->getBaseZ()) - 5 > location.z)
         {
             volumeDown = 10;
         }
@@ -277,7 +277,7 @@ namespace OpenRCT2::Audio
     {
         auto musicMap = GetAvailableMusicMap();
         auto it = musicMap.find(musicKind);
-        if (musicKind == TitleMusicKind::Random)
+        if (musicKind == TitleMusicKind::random)
         {
             it = std::next(musicMap.begin(), UtilRand() % musicMap.size());
         }
@@ -287,7 +287,7 @@ namespace OpenRCT2::Audio
             return ObjectEntryDescriptor(ObjectType::audio, it->second);
         }
 
-        // No music descriptor for the current setting, intentional for TitleMusicKind::None
+        // No music descriptor for the current setting, intentional for TitleMusicKind::none
         return {};
     }
 

@@ -215,19 +215,19 @@ namespace OpenRCT2::World::MapGenerator
                 uint8_t value = dest[{ x, y }];
                 value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut)
                     + (settings->heightmapLow * 2);
-                surfaceElement->BaseHeight = value;
+                surfaceElement->baseHeight = value;
 
                 // Floor to even number
-                surfaceElement->BaseHeight /= 2;
-                surfaceElement->BaseHeight *= 2;
-                surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
+                surfaceElement->baseHeight /= 2;
+                surfaceElement->baseHeight *= 2;
+                surfaceElement->clearanceHeight = surfaceElement->baseHeight;
 
                 // Set textures
                 surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
                 surfaceElement->SetEdgeObjectIndex(edgeTextureId);
 
                 // Set water level
-                if (surfaceElement->BaseHeight < settings->waterLevel)
+                if (surfaceElement->baseHeight < settings->waterLevel)
                 {
                     surfaceElement->SetWaterHeight(settings->waterLevel * kCoordsZStep);
                 }

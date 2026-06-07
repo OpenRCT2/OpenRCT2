@@ -268,7 +268,7 @@ STR_0892    :Schermata salvata su disco come “{STRINGID}”
 STR_0893    :Cattura della schermata fallita!
 STR_0894    :Area dati per i paesaggi piena!
 STR_0895    :Non si può costruire contemporaneamente sopra e sotto il livello del terreno
-STR_0896    :{STRINGID} Costruzione
+STR_0896    :{STRING} Costruzione
 STR_0897    :Direzione
 STR_0898    :Curva a sinistra
 STR_0899    :Curva a destra
@@ -829,10 +829,10 @@ STR_1460    :tracciato aperto a U
 STR_1461    :tracciato chiuso a O
 STR_1462    :Troppo ripido per il traino in salita
 STR_1463    :Visitatori
-STR_1464    :Elica in su (piccola)
-STR_1465    :Elica in su (grande)
-STR_1466    :Elica in giù (piccola)
-STR_1467    :Elica in giù (grande)
+STR_1464    :Mezza elica in su (piccola)
+STR_1465    :Mezza elica in su (grande)
+STR_1466    :Mezza elica in giù (piccola)
+STR_1467    :Mezza elica in giù (grande)
 STR_1468    :Personale
 STR_1469    :L’attrazione deve iniziare e terminare con delle stazioni
 STR_1470    :La stazione non è abbastanza lunga
@@ -846,18 +846,18 @@ STR_1477    :{WINDOW_COLOUR_2}Livello d’intensità: {OUTLINE}{RED}{COMMA2DP32}
 STR_1478    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}Non disponibile
 STR_1480    :“Non posso permettermi {STRINGID}”
-STR_1481    :“Ho speso tutti i miei soldi”
+STR_1481    :“Ho già speso tutti i miei soldi”
 STR_1482    :“Mi sento male”
 STR_1483    :“Mi sento molto male”
-STR_1484    :“Voglio provare qualcosa di più eccitante {STRINGID}”
-STR_1485    :“{STRINGID}sembra troppo intenso per me”
-STR_1486    :“Non ho ancora finito {STRINGID}”
-STR_1487    :“Solo guardando {STRINGID} mi sento male”
+STR_1484    :“Voglio provare qualcosa di più eccitante di {STRINGID}”
+STR_1485    :“{STRINGID} sembra troppo estremo per me”
+STR_1486    :“Devo ancora finire {STRINGID}”
+STR_1487    :“Anche solo guardare {STRINGID} mi fa stare male”
 STR_1488    :“Non pagherò così tanto per andare su {STRINGID}”
 STR_1489    :“Voglio tornare a casa”
-STR_1490    :“{STRINGID} è a buon mercato”
-STR_1491    :“Ho già: {STRINGID}”
-STR_1492    :“Non posso permettermi: {STRINGID}”
+STR_1490    :“{STRINGID} costa davvero poco”
+STR_1491    :“Ho già {STRINGID}”
+STR_1492    :“Non posso permettermi {STRINGID}”
 STR_1493    :“Non ho fame”
 STR_1494    :“Non ho sete”
 STR_1495    :“Aiuto!!! Sto annegando!”
@@ -868,21 +868,21 @@ STR_1499    :“Sono stanco”
 STR_1500    :“Ho fame”
 STR_1501    :“Ho sete”
 STR_1502    :“Devo andare in bagno”
-STR_1503    :“Non riesco a trovare: {STRINGID}”
-STR_1504    :“Non pagherò così tanto per usare: {STRINGID}”
+STR_1503    :“Non riesco a trovare {STRINGID}”
+STR_1504    :“Non pagherò così tanto per usare {STRINGID}”
 STR_1505    :“Non andrò su {STRINGID} durante un temporale”
 STR_1506    :“C’è troppa spazzatura in giro”
 STR_1507    :“Non riesco a trovare l’uscita del parco”
 STR_1508    :“Voglio scendere da {STRINGID}”
 STR_1509    :“Voglio uscire da {STRINGID}”
-STR_1510    :“Non andrò su {STRINGID} - Non è sicuro”
-STR_1511    :“Questo percorso è disgustoso”
+STR_1510    :“Non andrò su {STRINGID}: non è sicuro”
+STR_1511    :“Questo sentiero è disgustoso”
 STR_1512    :“È troppo affollato qui”
 STR_1513    :“Ci sono troppi vandalismi”
-STR_1514    :“Bello scenario!”
+STR_1514    :“Belle decorazioni!”
 STR_1515    :“Questo parco è davvero pulito e ordinato”
 STR_1516    :“Le fontane zampillanti sono fantastiche”
-STR_1517    :“La musica qui è gradevole”
+STR_1517    :“Qui c’è una musica gradevole”
 STR_1518    :“Questo palloncino comprato da {STRINGID} costa davvero poco”
 STR_1519    :“Questo peluche comprato da {STRINGID} costa davvero poco”
 STR_1520    :“Questa mappa del parco comprata da {STRINGID} costa davvero poco”
@@ -899,8 +899,8 @@ STR_1530    :
 STR_1531    :“Questa pizza comprata da {STRINGID} costa davvero poco”
 STR_1532    :
 STR_1533    :“Questi pop-corn comprati da {STRINGID} costano davvero poco”
-STR_1534    :“Questo hot dog comprato da {STRINGID} costa davvero poco”
-STR_1535    :“Questo tentacolo comprato da {STRINGID} costa davvero poco”
+STR_1534    :“Questo hot-dog comprato da {STRINGID} costa davvero poco”
+STR_1535    :“Questo polpo comprato da {STRINGID} costa davvero poco”
 STR_1536    :“Questo cappellino comprato da {STRINGID} costa davvero poco”
 STR_1537    :“Questa mela caramellata comprata da {STRINGID} costa davvero poco”
 STR_1538    :“Questa maglietta comprata da {STRINGID} costa davvero poco”
@@ -934,7 +934,7 @@ STR_1565    :“Non ho intenzione di pagare così tanto per una pizza da {STRING
 STR_1566    :
 STR_1567    :“Non ho intenzione di pagare così tanto dei pop-corn da {STRINGID}”
 STR_1568    :“Non ho intenzione di pagare così tanto un hot dog da {STRINGID}”
-STR_1569    :“Non ho intenzione di pagare così tanto un tentacolo da {STRINGID}”
+STR_1569    :“Non ho intenzione di pagare così tanto un polpo da {STRINGID}”
 STR_1570    :“Non ho intenzione di pagare così tanto un cappellino da {STRINGID}”
 STR_1571    :“Non ho intenzione di pagare così tanto una mela caramellata da {STRINGID}”
 STR_1572    :“Non ho intenzione di pagare così tanto una maglietta da {STRINGID}”
@@ -1041,10 +1041,10 @@ STR_1674    :Velocità freno
 STR_1676    :Fissa un limite di velocità per i freni
 STR_1677    :{WINDOW_COLOUR_2}Popolarità: {BLACK}Ignota
 STR_1678    :{WINDOW_COLOUR_2}Popolarità: {BLACK}{COMMA16}%
-STR_1679    :Elica in su (Sx)
-STR_1680    :Elica in su (Dx)
-STR_1681    :Elica in giù (Sx)
-STR_1682    :Elica in giù (Dx)
+STR_1679    :Quarto di elica in su (sin.)
+STR_1680    :Quarto di elica in su (destr.)
+STR_1681    :Quarto di elica in giù (sin.)
+STR_1682    :Quarto di elica in giù (destr.)
 STR_1683    :Dimens. alla base 2 x 2
 STR_1684    :Dimens. alla base 4 x 4
 STR_1685    :Dimens. alla base 2 x 4
@@ -1056,7 +1056,7 @@ STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Costo: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Costo: {BLACK}da {CURRENCY}
 STR_1693    :Visitatori
-STR_1694    :Personale
+STR_1694    :Dipendenti
 STR_1695    :Entrate e uscite
 STR_1696    :Informazioni per i clienti
 STR_1697    :Impossibile collocarli su un’area di attesa
@@ -1066,7 +1066,7 @@ STR_1700    :Assumi un tuttofare
 STR_1701    :Assumi un meccanico
 STR_1702    :Assumi un vigilante
 STR_1703    :Assumi un intrattenitore
-STR_1704    :Impossibile assumere dell’altro personale…
+STR_1704    :Impossibile assumere nuovi dipendenti…
 STR_1705    :Licenzia questo dipendente
 STR_1706    :Sposta questa persona in un altro luogo
 STR_1707    :Troppi dipendenti nella partita
@@ -1307,7 +1307,7 @@ STR_1973    :{WINDOW_COLOUR_2}Prezzo delle pizze:
 STR_1974    :{WINDOW_COLOUR_2}
 STR_1975    :{WINDOW_COLOUR_2}Prezzo dei pop-corn:
 STR_1976    :{WINDOW_COLOUR_2}Prezzo degli hot dog:
-STR_1977    :{WINDOW_COLOUR_2}Prezzo dei tentacoli:
+STR_1977    :{WINDOW_COLOUR_2}Prezzo dei polpi:
 STR_1978    :{WINDOW_COLOUR_2}Prezzo dei cappellini:
 STR_1979    :{WINDOW_COLOUR_2}Prezzo delle mele caram.:
 STR_1980    :{WINDOW_COLOUR_2}Prezzo delle magliette:
@@ -1335,7 +1335,7 @@ STR_2001    :Pizza
 STR_2002    :Buono-sconto
 STR_2003    :Pop-corn
 STR_2004    :Hot dog
-STR_2005    :Tentacolo
+STR_2005    :Polpo
 STR_2006    :Cappellino
 STR_2007    :Mela caramellata
 STR_2008    :Maglietta
@@ -1363,7 +1363,7 @@ STR_2029    :Pizze
 STR_2030    :Buoni-sconto
 STR_2031    :Pop-corn
 STR_2032    :Hot dog
-STR_2033    :Tentacoli
+STR_2033    :Polpi
 STR_2034    :Cappellini
 STR_2035    :Mele caramellate
 STR_2036    :Magliette
@@ -1391,7 +1391,7 @@ STR_2057    :una pizza
 STR_2058    :un buono-sconto
 STR_2059    :dei pop-corn
 STR_2060    :un hot dog
-STR_2061    :un tentacolo
+STR_2061    :un polpo
 STR_2062    :un cappellino
 STR_2063    :una mela caramellata
 STR_2064    :una maglietta
@@ -1419,7 +1419,7 @@ STR_2085    :Pizza
 STR_2086    :Buono-sconto per {STRINGID}
 STR_2087    :Pop-corn
 STR_2088    :Hot dog
-STR_2089    :Tentacolo
+STR_2089    :Polpo
 STR_2090    :“{STRINGID}” Cappellino
 STR_2091    :Mela caramellata
 STR_2092    :“{STRINGID}” Maglietta
@@ -3599,7 +3599,7 @@ STR_6597    :Parametro non valido
 STR_6598    :Valore fuori scala
 STR_6599    :Elemento fantasma non trovato
 STR_6600    :Palloncino non trovato
-STR_6601    :Membro dello staff non trovato
+STR_6601    :Dipendente non trovato
 STR_6602    :Attrazione non trovata
 STR_6603    :Elemento oggetto dell'attrazione non trovata
 STR_6604    :Giocatore non trovato
@@ -3614,7 +3614,7 @@ STR_6612    :Elemento cartello non trovato
 STR_6613    :Ricarica oggetto
 STR_6614    :Non è possibile modificare il prezzo di ingresso
 STR_6615    :Il tracciato su questa cella necessita acqua
-STR_6616    :Azione non valida per quel tipo di staff
+STR_6616    :Azione non valida per quel tipo di dipendente
 STR_6617    :Non è possibile scambiare l’elemento della cella con sé stesso
 STR_6618    :Impossibile cambiare la limitazione dell’oggetto…
 STR_6619    :Il tipo di oggetto non può essere sottoposto a limitazione!
@@ -3783,4 +3783,50 @@ STR_6781    :Schermate
 STR_6782    :Notifiche parco
 STR_6783    :Notifiche attrazioni
 STR_6784    :Notifiche visitatori
+STR_6785    :Gamepad
+STR_6786    :Zona morta:
+STR_6787    :Zona morta dello stick analogico (movimento minimo richiesto)
+STR_6788    :Sensitività:
+STR_6789    :Moltiplicatore della sensitività dello stick analogico
+STR_6790    :Zona morta: {COMMA32}%
+STR_6791    :Sensitività: {COMMA32}%
+STR_6792    :Edifici di entrata
+STR_6793    :Visitatori e dipendenti
+STR_6794    :Arredo e temi
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Nessuna anteprima
+STR_6798    :Schermata
+STR_6799    :Minimappa
+STR_7000    :o
+STR_7001    :Nome attrazione
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Il file audio ‘{STRING}’ è troncato. Ci si aspettava il sample {INT32}, ma ce ne sono solo {INT32} disponibili. Reinstallare RCT2.
+STR_7004    :Forza ridisegno
+STR_7005    :Trascina un’area di sentiero
+STR_7006    :Disegna bordo intorno ai pulsanti con immagine
+STR_7007    :Tipo attrazione
+STR_7008    :Tipo attrazione sconosciuto ({INT32})
+STR_7009    :Ricezione script…
+STR_7010    :Impossibile iniziare il replay, il file ‘{STRING}’ non esiste o non è valido
+STR_7011    :Impossibile iniziare il replay
+STR_7012    :Złoty polacco (PLN)
+STR_7013    :Trascina aree di sentieri
+STR_7014    :Possiedo il gioco su Steam, ma non l’ho ancora installato.
+STR_7015    :Se è aperto, chiudere Steam e poi fare clic su “OK”.
+STR_7016    :OpenRCT2 ha provato a iniziare un download su Steam. Aprire Steam e permettere lo scaricamento del gioco. Al termine, fare clic su “OK”.
+STR_7017    :Chiudi
+STR_7018    :{SPRITE}{MOVE_X}{17}{STRINGID}
+STR_7019    :{SPRITE}{MOVE_X}{27}{STRINGID}
+STR_7020    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{36}{STRINGID}
+STR_7021    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}»{MOVE_X}{36}{STRINGID}
+STR_7022    :{STRING} - - 
+STR_7023    :Rendi invisibile
+STR_7024    :Rende l’intera attrazione invisibile
+STR_7025    :Rendi visibile
+STR_7026    :Rende l’intera attrazione invisibile
+STR_7027    :{MOVE_X}{29}{STRINGID}
+STR_7028    :Quarto di elica in su
+STR_7029    :Quarto di elica in giù
+STR_7030    :{WINDOW_COLOUR_2}Visitatori intrattenuti: {BLACK}{COMMA32}
 

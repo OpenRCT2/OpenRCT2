@@ -113,7 +113,7 @@ namespace OpenRCT2
     static constexpr SpritePrecision PrecisionFromNumFrames(uint32_t numRotationFrames)
     {
         if (numRotationFrames == 0)
-            return SpritePrecision::None;
+            return SpritePrecision::none;
         else
             return static_cast<SpritePrecision>(bitScanForward(numRotationFrames) + 1);
     }
@@ -594,7 +594,7 @@ namespace OpenRCT2
                 // Standard car info for a shop
                 auto& car = _legacyType.Cars[0];
                 car.spacing = 544;
-                car.SpriteGroups[EnumValue(SpriteGroupType::SlopeFlat)].spritePrecision = SpritePrecision::Sprites4;
+                car.SpriteGroups[EnumValue(SpriteGroupType::SlopeFlat)].spritePrecision = SpritePrecision::sprites4;
                 car.spriteWidth = 1;
                 car.spriteHeightNegative = 1;
                 car.spriteHeightPositive = 1;
@@ -1096,11 +1096,11 @@ namespace OpenRCT2
     // Converts legacy sprite groups into OpenRCT2 sprite groups
     void ReadLegacySpriteGroups(CarEntry& car, CarSpriteFlags carSpriteFlags)
     {
-        auto baseSpritePrecision = SpritePrecision::Sprites32;
+        auto baseSpritePrecision = SpritePrecision::sprites32;
         if (car.flags.has(CarEntryFlag::use16RotationFrames))
-            baseSpritePrecision = SpritePrecision::Sprites16;
+            baseSpritePrecision = SpritePrecision::sprites16;
         if (carSpriteFlags.has(CarSpriteFlag::has4RotationFrames))
-            baseSpritePrecision = SpritePrecision::Sprites4;
+            baseSpritePrecision = SpritePrecision::sprites4;
 
         if (carSpriteFlags.has(CarSpriteFlag::flat))
         {
@@ -1108,39 +1108,39 @@ namespace OpenRCT2
         }
         if (carSpriteFlags.has(CarSpriteFlag::gentleSlopes))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes12)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes12)].spritePrecision = SpritePrecision::sprites4;
             car.SpriteGroups[EnumValue(SpriteGroupType::Slopes25)].spritePrecision = baseSpritePrecision;
             if (car.flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning))
-                car.SpriteGroups[EnumValue(SpriteGroupType::Slopes25)].spritePrecision = SpritePrecision::Sprites4;
+                car.SpriteGroups[EnumValue(SpriteGroupType::Slopes25)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::steepSlopes))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes42)].spritePrecision = SpritePrecision::Sprites8;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes42)].spritePrecision = SpritePrecision::sprites8;
             car.SpriteGroups[EnumValue(SpriteGroupType::Slopes60)].spritePrecision = baseSpritePrecision;
         }
         if (carSpriteFlags.has(CarSpriteFlag::verticalSlopes))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes75)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes75)].spritePrecision = SpritePrecision::sprites4;
             car.SpriteGroups[EnumValue(SpriteGroupType::Slopes90)].spritePrecision = baseSpritePrecision;
-            car.SpriteGroups[EnumValue(SpriteGroupType::SlopesLoop)].spritePrecision = SpritePrecision::Sprites4;
-            car.SpriteGroups[EnumValue(SpriteGroupType::SlopeInverted)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::SlopesLoop)].spritePrecision = SpritePrecision::sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::SlopeInverted)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::diagonalSlopes))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes8)].spritePrecision = SpritePrecision::Sprites4;
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes16)].spritePrecision = SpritePrecision::Sprites4;
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes50)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes8)].spritePrecision = SpritePrecision::sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes16)].spritePrecision = SpritePrecision::sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes50)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::flatBanked))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::FlatBanked22)].spritePrecision = SpritePrecision::Sprites8;
+            car.SpriteGroups[EnumValue(SpriteGroupType::FlatBanked22)].spritePrecision = SpritePrecision::sprites8;
             car.SpriteGroups[EnumValue(SpriteGroupType::FlatBanked45)].spritePrecision = baseSpritePrecision;
         }
         if (carSpriteFlags.has(CarSpriteFlag::inlineTwists))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::FlatBanked67)].spritePrecision = SpritePrecision::Sprites4;
-            car.SpriteGroups[EnumValue(SpriteGroupType::FlatBanked90)].spritePrecision = SpritePrecision::Sprites4;
-            car.SpriteGroups[EnumValue(SpriteGroupType::InlineTwists)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::FlatBanked67)].spritePrecision = SpritePrecision::sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::FlatBanked90)].spritePrecision = SpritePrecision::sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::InlineTwists)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::flatToGentleSlopeBankedTransitions))
         {
@@ -1148,11 +1148,11 @@ namespace OpenRCT2
         }
         if (carSpriteFlags.has(CarSpriteFlag::diagonalGentleSlopeBankedTransitions))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes8Banked22)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes8Banked22)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::gentleSlopeBankedTransitions))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes25Banked22)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes25Banked22)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::gentleSlopeBankedTurns))
         {
@@ -1160,15 +1160,15 @@ namespace OpenRCT2
         }
         if (carSpriteFlags.has(CarSpriteFlag::flatToGentleSlopeWhileBankedTransitions))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes12Banked45)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Slopes12Banked45)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::corkscrews))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::Corkscrews)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::Corkscrews)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::restraintAnimation))
         {
-            car.SpriteGroups[EnumValue(SpriteGroupType::RestraintAnimation)].spritePrecision = SpritePrecision::Sprites4;
+            car.SpriteGroups[EnumValue(SpriteGroupType::RestraintAnimation)].spritePrecision = SpritePrecision::sprites4;
         }
         if (carSpriteFlags.has(CarSpriteFlag::curvedLiftHill))
         {

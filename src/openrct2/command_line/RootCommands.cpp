@@ -177,7 +177,7 @@ namespace OpenRCT2
         {
             if (_verbose)
             {
-                _log_levels[EnumValue(DiagnosticLevel::Verbose)] = true;
+                _log_levels[EnumValue(DiagnosticLevel::verbose)] = true;
                 PrintLaunchInformation();
             }
 
@@ -246,7 +246,7 @@ namespace OpenRCT2
         if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
         {
             String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
-            gOpenRCT2StartupAction = StartupAction::Open;
+            gOpenRCT2StartupAction = StartupAction::open;
         }
 
         return EXITCODE_CONTINUE;
@@ -268,7 +268,7 @@ namespace OpenRCT2
         }
         String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-        gOpenRCT2StartupAction = StartupAction::Edit;
+        gOpenRCT2StartupAction = StartupAction::edit;
         return EXITCODE_CONTINUE;
     }
 
@@ -280,7 +280,7 @@ namespace OpenRCT2
             return result;
         }
 
-        gOpenRCT2StartupAction = StartupAction::Intro;
+        gOpenRCT2StartupAction = StartupAction::intro;
         return EXITCODE_CONTINUE;
     }
 
@@ -301,7 +301,7 @@ namespace OpenRCT2
             return EXITCODE_FAIL;
         }
 
-        gOpenRCT2StartupAction = StartupAction::Open;
+        gOpenRCT2StartupAction = StartupAction::open;
         String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
         gNetworkStart = Network::Mode::server;

@@ -153,13 +153,13 @@ static void AnimateLandscapeDoor(
 
 static const SurfaceElement* GetSurfaceElementAfterElement(const TileElement* tileElement)
 {
-    while (tileElement->GetType() != TileElementType::Surface)
+    while (tileElement->getType() != TileElementType::Surface)
     {
-        if (tileElement->IsLastForTile())
+        if (tileElement->isLastForTile())
             return nullptr;
         tileElement++;
     }
-    return tileElement->AsSurface();
+    return tileElement->asSurface();
 }
 
 void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
@@ -176,13 +176,13 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
     if (previousTrackElement != nullptr && currentTrackElement == nullptr)
     {
         const auto* const surfaceElement = GetSurfaceElementAfterElement(previousTrackElement);
-        if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > previousTrackLocation.z)
+        if (surfaceElement != nullptr && surfaceElement->getBaseZ() > previousTrackLocation.z)
         {
             const auto* const edgeObject = surfaceElement->GetEdgeObject();
             if (edgeObject != nullptr && edgeObject->HasDoors)
             {
                 AnimateLandscapeDoor<false>(
-                    previousTrackLocation, *previousTrackElement->AsTrack(), next_vehicle_on_train.IsNull(),
+                    previousTrackLocation, *previousTrackElement->asTrack(), next_vehicle_on_train.IsNull(),
                     edgeObject->doorSound, TrackLocation);
             }
         }
@@ -190,13 +190,13 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
     else if (previousTrackElement == nullptr && currentTrackElement != nullptr)
     {
         const auto* const surfaceElement = GetSurfaceElementAfterElement(currentTrackElement);
-        if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > TrackLocation.z)
+        if (surfaceElement != nullptr && surfaceElement->getBaseZ() > TrackLocation.z)
         {
             const auto* const edgeObject = surfaceElement->GetEdgeObject();
             if (edgeObject != nullptr && edgeObject->HasDoors)
             {
                 AnimateLandscapeDoor<true>(
-                    TrackLocation, *currentTrackElement->AsTrack(), next_vehicle_on_train.IsNull(), edgeObject->doorSound,
+                    TrackLocation, *currentTrackElement->asTrack(), next_vehicle_on_train.IsNull(), edgeObject->doorSound,
                     previousTrackLocation);
             }
         }

@@ -1050,7 +1050,7 @@ public:
 
         if (gLegacyScene == LegacyScene::scenarioEditor)
         {
-            if (getGameState().editorStep != EditorStep::LandscapeEditor)
+            if (getGameState().editorStep != EditorStep::landscapeEditor)
                 return;
         }
 

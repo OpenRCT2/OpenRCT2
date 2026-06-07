@@ -258,7 +258,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget                ({158, 172}, {                      210, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,            STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         makeWidget                ({356, 173}, {                       11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         makeWidget                ({  9, 191}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_ENTRY_PRICE_LABEL                                       ),
-        makeSpinnerWidgets        ({298, 190}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({298, 190}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
         makeWidget                ({ 10, 208}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_FORBID_MARKETING,     STR_FORBID_MARKETING_TIP          )
     );
 
@@ -522,8 +522,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto step = getGameState().editorStep;
-            bool isObjectiveSelection = step == EditorStep::ObjectiveSelection;
-            bool isScenarioDetails = step == EditorStep::ScenarioDetails;
+            bool isObjectiveSelection = step == EditorStep::objectiveSelection;
+            bool isScenarioDetails = step == EditorStep::scenarioDetails;
             bool isOtherTab = !isObjectiveSelection && !isScenarioDetails;
 
             // Disable tabs based on current editor step
@@ -935,7 +935,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& gameState = getGameState();
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
+                        GameActions::ScenarioSetSetting::parkRatingHigherDifficultyLevel,
                         gameState.park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
@@ -1355,7 +1355,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto newMoneySetting = (gameState.park.flags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::NoMoney, newMoneySetting);
+                        GameActions::ScenarioSetSetting::noMoney, newMoneySetting);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -1363,7 +1363,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FORBID_MARKETING:
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::ForbidMarketingCampaigns,
+                        GameActions::ScenarioSetSetting::forbidMarketingCampaigns,
                         gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
@@ -1372,7 +1372,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_RCT1_INTEREST:
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::UseRCT1Interest,
+                        GameActions::ScenarioSetSetting::useRCT1Interest,
                         gameState.park.flags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
@@ -1395,7 +1395,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.scenarioOptions.initialCash < 1000000.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::InitialCash, gameState.scenarioOptions.initialCash + 500.00_GBP);
+                            GameActions::ScenarioSetSetting::initialCash, gameState.scenarioOptions.initialCash + 500.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1408,7 +1408,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.scenarioOptions.initialCash > 0.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::InitialCash, gameState.scenarioOptions.initialCash - 500.00_GBP);
+                            GameActions::ScenarioSetSetting::initialCash, gameState.scenarioOptions.initialCash - 500.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1421,7 +1421,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.park.bankLoan < 5000000.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::InitialLoan, gameState.park.bankLoan + 1000.00_GBP);
+                            GameActions::ScenarioSetSetting::initialLoan, gameState.park.bankLoan + 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1434,7 +1434,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.park.bankLoan > 0.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::InitialLoan, gameState.park.bankLoan - 1000.00_GBP);
+                            GameActions::ScenarioSetSetting::initialLoan, gameState.park.bankLoan - 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1447,7 +1447,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.park.maxBankLoan < 5000000.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::MaximumLoanSize, gameState.park.maxBankLoan + 1000.00_GBP);
+                            GameActions::ScenarioSetSetting::maximumLoanSize, gameState.park.maxBankLoan + 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1460,7 +1460,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.park.maxBankLoan > 0.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::MaximumLoanSize, gameState.park.maxBankLoan - 1000.00_GBP);
+                            GameActions::ScenarioSetSetting::maximumLoanSize, gameState.park.maxBankLoan - 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1473,7 +1473,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.park.bankLoanInterestRate < kMaxBankLoanInterestRate)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::AnnualInterestRate, gameState.park.bankLoanInterestRate + 1);
+                            GameActions::ScenarioSetSetting::annualInterestRate, gameState.park.bankLoanInterestRate + 1);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1487,7 +1487,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto interest = std::min<uint8_t>(kMaxBankLoanInterestRate, gameState.park.bankLoanInterestRate - 1);
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::AnnualInterestRate, interest);
+                            GameActions::ScenarioSetSetting::annualInterestRate, interest);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1500,7 +1500,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.park.entranceFee < kMaxEntranceFee)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::ParkChargeEntryFee, gameState.park.entranceFee + 1.00_GBP);
+                            GameActions::ScenarioSetSetting::parkChargeEntryFee, gameState.park.entranceFee + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1513,7 +1513,7 @@ namespace OpenRCT2::Ui::Windows
                     if (gameState.park.entranceFee > 0.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::ParkChargeEntryFee, gameState.park.entranceFee - 1.00_GBP);
+                            GameActions::ScenarioSetSetting::parkChargeEntryFee, gameState.park.entranceFee - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1565,7 +1565,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::ParkChargeMethod, dropdownIndex);
+                        GameActions::ScenarioSetSetting::parkChargeMethod, dropdownIndex);
                     GameActions::Execute(&scenarioSetSetting, getGameState());
                     invalidate();
                     break;
@@ -1760,7 +1760,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialCash < 1000.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::AverageCashPerGuest, scenarioOptions.guestInitialCash + 1.00_GBP);
+                            GameActions::ScenarioSetSetting::averageCashPerGuest, scenarioOptions.guestInitialCash + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1773,7 +1773,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialCash > 0.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::AverageCashPerGuest, scenarioOptions.guestInitialCash - 1.00_GBP);
+                            GameActions::ScenarioSetSetting::averageCashPerGuest, scenarioOptions.guestInitialCash - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1786,7 +1786,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialHappiness < 250)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialHappiness, scenarioOptions.guestInitialHappiness + 4);
+                            GameActions::ScenarioSetSetting::guestInitialHappiness, scenarioOptions.guestInitialHappiness + 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1799,7 +1799,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialHappiness > 40)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialHappiness, scenarioOptions.guestInitialHappiness - 4);
+                            GameActions::ScenarioSetSetting::guestInitialHappiness, scenarioOptions.guestInitialHappiness - 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1812,7 +1812,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialHunger > 40)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialHunger, scenarioOptions.guestInitialHunger - 4);
+                            GameActions::ScenarioSetSetting::guestInitialHunger, scenarioOptions.guestInitialHunger - 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1825,7 +1825,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialHunger < 250)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialHunger, scenarioOptions.guestInitialHunger + 4);
+                            GameActions::ScenarioSetSetting::guestInitialHunger, scenarioOptions.guestInitialHunger + 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1838,7 +1838,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialThirst > 40)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialThirst, scenarioOptions.guestInitialThirst - 4);
+                            GameActions::ScenarioSetSetting::guestInitialThirst, scenarioOptions.guestInitialThirst - 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1851,7 +1851,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.guestInitialThirst < 250)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::GuestInitialThirst, scenarioOptions.guestInitialThirst + 4);
+                            GameActions::ScenarioSetSetting::guestInitialThirst, scenarioOptions.guestInitialThirst + 4);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -1891,7 +1891,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_HARD_GUEST_GENERATION:
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
+                        GameActions::ScenarioSetSetting::guestGenerationHigherDifficultyLevel,
                         gameState.park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
@@ -1911,11 +1911,11 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
 
             auto scenarioSetLessSetting = GameActions::ScenarioSetSettingAction(
-                GameActions::ScenarioSetSetting::GuestsPreferLessIntenseRides, preferLess);
+                GameActions::ScenarioSetSetting::guestsPreferLessIntenseRides, preferLess);
             GameActions::Execute(&scenarioSetLessSetting, gameState);
 
             auto scenarioSetMoreSetting = GameActions::ScenarioSetSettingAction(
-                GameActions::ScenarioSetSetting::GuestsPreferMoreIntenseRides, preferMore);
+                GameActions::ScenarioSetSetting::guestsPreferMoreIntenseRides, preferMore);
             GameActions::Execute(&scenarioSetMoreSetting, gameState);
         }
 
@@ -2020,7 +2020,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FORBID_TREE_REMOVAL:
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::ForbidTreeRemoval,
+                        GameActions::ScenarioSetSetting::forbidTreeRemoval,
                         gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
@@ -2029,7 +2029,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FORBID_LANDSCAPE_CHANGES:
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::ForbidLandscapeChanges,
+                        GameActions::ScenarioSetSetting::forbidLandscapeChanges,
                         gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
@@ -2038,7 +2038,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FORBID_HIGH_CONSTRUCTION:
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                        GameActions::ScenarioSetSetting::ForbidHighConstruction,
+                        GameActions::ScenarioSetSetting::forbidHighConstruction,
                         gameState.park.flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
@@ -2063,7 +2063,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.landPrice < 200.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::CostToBuyLand, scenarioOptions.landPrice + 1.00_GBP);
+                            GameActions::ScenarioSetSetting::costToBuyLand, scenarioOptions.landPrice + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -2076,7 +2076,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.landPrice > 5.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::CostToBuyLand, scenarioOptions.landPrice - 1.00_GBP);
+                            GameActions::ScenarioSetSetting::costToBuyLand, scenarioOptions.landPrice - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
                     else
@@ -2089,7 +2089,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.constructionRightsPrice < 200.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::CostToBuyConstructionRights,
+                            GameActions::ScenarioSetSetting::costToBuyConstructionRights,
                             scenarioOptions.constructionRightsPrice + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }
@@ -2103,7 +2103,7 @@ namespace OpenRCT2::Ui::Windows
                     if (scenarioOptions.constructionRightsPrice > 5.00_GBP)
                     {
                         auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::CostToBuyConstructionRights,
+                            GameActions::ScenarioSetSetting::costToBuyConstructionRights,
                             scenarioOptions.constructionRightsPrice - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting, gameState);
                     }

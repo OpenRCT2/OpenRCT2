@@ -1344,10 +1344,10 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = kStringIdNone;
                 switch (Config::Get().general.measurementFormat)
                 {
-                    case MeasurementFormat::Imperial:
+                    case MeasurementFormat::imperial:
                         stringId = STR_IMPERIAL;
                         break;
-                    case MeasurementFormat::Metric:
+                    case MeasurementFormat::metric:
                         stringId = STR_METRIC;
                         break;
                     case MeasurementFormat::SI:
@@ -1361,7 +1361,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DATE_FORMAT].text = DateFormatStringIDs[Config::Get().general.dateFormat];
 
             // Temperature: celsius/fahrenheit
-            widgets[WIDX_TEMPERATURE].text = Config::Get().general.temperatureFormat == TemperatureUnit::Fahrenheit
+            widgets[WIDX_TEMPERATURE].text = Config::Get().general.temperatureFormat == TemperatureUnit::fahrenheit
                 ? STR_FAHRENHEIT
                 : STR_CELSIUS;
 
@@ -1497,7 +1497,7 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
 
                     StopTitleMusic();
-                    if (Config::Get().sound.titleMusic != TitleMusicKind::None)
+                    if (Config::Get().sound.titleMusic != TitleMusicKind::none)
                     {
                         PlayTitleMusic();
                     }
@@ -1518,7 +1518,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidateWidget(WIDX_MASTER_VOLUME);
             }
 
-            const auto& soundVolumeWidget = widgets[WIDX_MASTER_VOLUME];
+            const auto& soundVolumeWidget = widgets[WIDX_SOUND_VOLUME];
             const auto& soundVolumeScroll = scrolls[1];
             uint8_t soundVolume = GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
             if (soundVolume != Config::Get().sound.soundVolume)
@@ -1528,7 +1528,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidateWidget(WIDX_SOUND_VOLUME);
             }
 
-            const auto& musicVolumeWidget = widgets[WIDX_MASTER_VOLUME];
+            const auto& musicVolumeWidget = widgets[WIDX_MUSIC_VOLUME];
             const auto& musicVolumeScroll = scrolls[2];
             uint8_t rideMusicVolume = GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
             if (rideMusicVolume != Config::Get().sound.rideMusicVolume)
@@ -1859,7 +1859,7 @@ namespace OpenRCT2::Ui::Windows
                     if (Network::GetMode() == Network::Mode::server)
                     {
                         auto setAllowEarlyCompletionAction = GameActions::ScenarioSetSettingAction(
-                            GameActions::ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.allowEarlyCompletion);
+                            GameActions::ScenarioSetSetting::allowEarlyCompletion, Config::Get().general.allowEarlyCompletion);
                         GameActions::Execute(&setAllowEarlyCompletionAction, getGameState());
                     }
                     Config::Save();
@@ -2355,11 +2355,11 @@ namespace OpenRCT2::Ui::Windows
             TitleMusicKind Kind;
             StringId Name;
         } TitleThemeOptions[] = {
-            { TitleMusicKind::None, STR_OPTIONS_MUSIC_VALUE_NONE },
+            { TitleMusicKind::none, STR_OPTIONS_MUSIC_VALUE_NONE },
             { TitleMusicKind::OpenRCT2, STR_OPENRCT2_DROPDOWN },
             { TitleMusicKind::RCT1, STR_ROLLERCOASTER_TYCOON_1_DROPDOWN },
             { TitleMusicKind::RCT2, STR_ROLLERCOASTER_TYCOON_2_DROPDOWN },
-            { TitleMusicKind::Random, STR_OPTIONS_MUSIC_VALUE_RANDOM },
+            { TitleMusicKind::random, STR_OPTIONS_MUSIC_VALUE_RANDOM },
         };
 
         static constexpr StringId FullscreenModeNames[] = {

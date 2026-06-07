@@ -111,7 +111,7 @@ namespace OpenRCT2::GameActions
 
     Result LandBuyRightsAction::MapBuyLandRightsForTile(GameState_t& gameState, const CoordsXY& loc, bool isExecuting) const
     {
-        if (_setting >= LandBuyRightSetting::Count)
+        if (_setting >= LandBuyRightSetting::count)
         {
             LOG_ERROR("Invalid land buying setting %u", _setting);
             return Result(Status::invalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         switch (_setting)
         {
-            case LandBuyRightSetting::BuyLand: // 0
+            case LandBuyRightSetting::buyLand: // 0
                 if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) != 0)
                 { // If the land is already owned
                     return res;
@@ -145,7 +145,7 @@ namespace OpenRCT2::GameActions
                 res.cost = gameState.scenarioOptions.landPrice;
                 return res;
 
-            case LandBuyRightSetting::BuyConstructionRights: // 2
+            case LandBuyRightSetting::buyConstructionRights: // 2
                 if ((surfaceElement->GetOwnership() & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
                 { // If the land or construction rights are already owned
                     return res;
@@ -160,7 +160,7 @@ namespace OpenRCT2::GameActions
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 res.cost = gameState.scenarioOptions.constructionRightsPrice;

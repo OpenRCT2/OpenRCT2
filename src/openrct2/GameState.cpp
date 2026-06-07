@@ -195,7 +195,7 @@ namespace OpenRCT2
             gameStateUpdateLogic();
             if (gGameSpeed == 1)
             {
-                if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
+                if (InputGetState() == InputState::reset || InputGetState() == InputState::normal)
                 {
                     if (gInputFlags.has(InputFlag::viewportScrolling))
                     {

@@ -15,11 +15,11 @@ namespace OpenRCT2::GameActions
 {
     enum class RideSetVehicleType : uint8_t
     {
-        NumTrains,
-        NumCarsPerTrain,
-        RideEntry,
-        TrainsReversed,
-        Count,
+        numTrains,
+        numCarsPerTrain,
+        rideEntry,
+        trainsReversed,
+        count,
     };
 
     class RideSetVehicleAction final : public GameActionBase<GameCommand::SetRideVehicles>

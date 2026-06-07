@@ -204,7 +204,7 @@ namespace OpenRCT2::Park
         for (const auto& award : park.currentAwards)
         {
             // +/- 0.25% of the probability
-            if (AwardIsPositive(award.Type))
+            if (AwardIsPositive(award.type))
             {
                 probability += probability / 4;
             }
@@ -233,11 +233,11 @@ namespace OpenRCT2::Park
         for (const auto& campaign : park.marketingCampaigns)
         {
             // Random chance of guest generation
-            auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.Type);
+            auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.type);
             auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
             if (random < probability)
             {
-                generateGuestFromCampaign(campaign.Type);
+                generateGuestFromCampaign(campaign.type);
             }
         }
     }
@@ -360,9 +360,9 @@ namespace OpenRCT2::Park
         TileElementIteratorBegin(&it);
         do
         {
-            if (it.element->GetType() == TileElementType::Surface)
+            if (it.element->getType() == TileElementType::Surface)
             {
-                if (it.element->AsSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
+                if (it.element->asSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
                 {
                     tiles++;
                 }
@@ -395,13 +395,13 @@ namespace OpenRCT2::Park
             uint32_t lostGuestCount = 0;
             for (auto peep : EntityList<Guest>())
             {
-                if (!peep->OutsideOfPark)
+                if (!peep->outsideOfPark)
                 {
-                    if (peep->Happiness > 128)
+                    if (peep->happiness > 128)
                     {
                         happyGuestCount++;
                     }
-                    if ((peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK) && (peep->GuestIsLostCountdown < 90))
+                    if ((peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK) && (peep->guestIsLostCountdown < 90))
                     {
                         lostGuestCount++;
                     }
@@ -478,7 +478,7 @@ namespace OpenRCT2::Park
             // Counts the amount of litter whose age is min. 7680 ticks (5~ min) old.
             const auto litterList = EntityList<Litter>();
             const auto litterCount = std::count_if(
-                litterList.begin(), litterList.end(), [](auto* litter) { return litter->GetAge() >= 7680; });
+                litterList.begin(), litterList.end(), [](auto* litter) { return litter->getAge() >= 7680; });
 
             result -= 600 - (4 * (150 - std::min<int32_t>(150, litterCount)));
         }
@@ -541,12 +541,12 @@ namespace OpenRCT2::Park
         if (spawn != nullptr)
         {
             auto direction = DirectionReverse(spawn->direction);
-            peep = Guest::Generate({ spawn->x, spawn->y, spawn->z });
+            peep = Guest::generate({ spawn->x, spawn->y, spawn->z });
             if (peep != nullptr)
             {
-                peep->Orientation = direction << 3;
+                peep->orientation = direction << 3;
 
-                auto destination = peep->GetLocation().ToTileCentre();
+                auto destination = peep->getLocation().ToTileCentre();
                 peep->SetDestination(destination, 5);
                 peep->PeepDirection = direction;
                 peep->Var37 = 0;
@@ -627,7 +627,7 @@ namespace OpenRCT2::Park
     void SetOpen(const ParkData& park, bool open)
     {
         auto parkSetParameter = GameActions::ParkSetParameterAction(
-            open ? GameActions::ParkParameter::Open : GameActions::ParkParameter::Close);
+            open ? GameActions::ParkParameter::open : GameActions::ParkParameter::close);
         GameActions::Execute(&parkSetParameter, getGameState());
     }
 
@@ -655,18 +655,18 @@ namespace OpenRCT2::Park
             // If an entrance element do not place flags around surface
             do
             {
-                if (tileElement->GetType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::Entrance)
                     continue;
 
-                if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
-                if (!(tileElement->IsGhost()))
+                if (!(tileElement->isGhost()))
                 {
                     fenceRequired = false;
                     break;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             if (fenceRequired)
             {
@@ -694,7 +694,7 @@ namespace OpenRCT2::Park
 
         if (surfaceElement->GetParkFences() != newFences)
         {
-            int32_t baseZ = surfaceElement->GetBaseZ();
+            int32_t baseZ = surfaceElement->getBaseZ();
             int32_t clearZ = baseZ + 16;
             MapInvalidateTile({ coords, baseZ, clearZ });
             surfaceElement->SetParkFences(newFences);

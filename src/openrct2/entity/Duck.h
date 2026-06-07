@@ -41,8 +41,7 @@ namespace OpenRCT2
         uint32_t GetFrameImage(int32_t direction) const;
         bool IsFlying();
         void Remove();
-        void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
+        void serialise(DataSerialiser& stream);
 
     private:
         void UpdateFlyToWater();

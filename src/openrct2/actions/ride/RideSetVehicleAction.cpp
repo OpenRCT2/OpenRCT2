@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
 
     Result RideSetVehicleAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (_type >= RideSetVehicleType::Count)
+        if (_type >= RideSetVehicleType::count)
         {
             LOG_ERROR("Invalid ride vehicle type %d", _type);
         }
@@ -88,11 +88,11 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case RideSetVehicleType::NumTrains:
-            case RideSetVehicleType::NumCarsPerTrain:
-            case RideSetVehicleType::TrainsReversed:
+            case RideSetVehicleType::numTrains:
+            case RideSetVehicleType::numCarsPerTrain:
+            case RideSetVehicleType::trainsReversed:
                 break;
-            case RideSetVehicleType::RideEntry:
+            case RideSetVehicleType::rideEntry:
             {
                 if (!RideIsVehicleTypeValid(gameState, *ride))
                 {
@@ -136,14 +136,14 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case RideSetVehicleType::NumTrains:
+            case RideSetVehicleType::numTrains:
                 RideClearForConstruction(*ride);
                 ride->removePeeps();
                 ride->vehicleChangeTimeout = 100;
 
                 ride->proposedNumTrains = _value;
                 break;
-            case RideSetVehicleType::NumCarsPerTrain:
+            case RideSetVehicleType::numCarsPerTrain:
             {
                 RideClearForConstruction(*ride);
                 ride->removePeeps();
@@ -165,7 +165,7 @@ namespace OpenRCT2::GameActions
                 ride->proposedNumCarsPerTrain = clampValue;
                 break;
             }
-            case RideSetVehicleType::RideEntry:
+            case RideSetVehicleType::rideEntry:
             {
                 RideClearForConstruction(*ride);
                 ride->removePeeps();
@@ -188,7 +188,7 @@ namespace OpenRCT2::GameActions
                 }
                 break;
             }
-            case RideSetVehicleType::TrainsReversed:
+            case RideSetVehicleType::trainsReversed:
             {
                 RideClearForConstruction(*ride);
                 ride->removePeeps();

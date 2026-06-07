@@ -120,7 +120,7 @@ void FinancePayWages()
 
     for (auto peep : EntityList<Staff>())
     {
-        FinancePayment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::wages);
+        FinancePayment(GetStaffWage(peep->assignedStaffType) / 4, ExpenditureType::wages);
     }
 }
 
@@ -274,7 +274,7 @@ void FinanceUpdateDailyProfit()
         // Staff costs
         for (auto peep : EntityList<Staff>())
         {
-            current_profit -= GetStaffWage(peep->AssignedStaffType);
+            current_profit -= GetStaffWage(peep->assignedStaffType);
         }
 
         // Research costs

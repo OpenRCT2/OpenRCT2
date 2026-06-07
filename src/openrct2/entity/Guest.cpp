@@ -199,22 +199,22 @@ namespace OpenRCT2
 
     /** rct2: 009823AC */
     static constexpr PeepThoughtType kCrowdedThoughts[] = {
-        PeepThoughtType::Lost,
-        PeepThoughtType::Tired,
-        PeepThoughtType::BadLitter,
-        PeepThoughtType::Hungry,
-        PeepThoughtType::Thirsty,
-        PeepThoughtType::VeryClean,
-        PeepThoughtType::Crowded,
-        PeepThoughtType::Scenery,
-        PeepThoughtType::VeryClean,
-        PeepThoughtType::Music,
-        PeepThoughtType::Watched,
-        PeepThoughtType::NotHungry,
-        PeepThoughtType::NotThirsty,
-        PeepThoughtType::Toilet,
-        PeepThoughtType::None,
-        PeepThoughtType::None,
+        PeepThoughtType::lost,
+        PeepThoughtType::tired,
+        PeepThoughtType::badLitter,
+        PeepThoughtType::hungry,
+        PeepThoughtType::thirsty,
+        PeepThoughtType::veryClean,
+        PeepThoughtType::crowded,
+        PeepThoughtType::scenery,
+        PeepThoughtType::veryClean,
+        PeepThoughtType::music,
+        PeepThoughtType::watched,
+        PeepThoughtType::notHungry,
+        PeepThoughtType::notThirsty,
+        PeepThoughtType::toilet,
+        PeepThoughtType::none,
+        PeepThoughtType::none,
     };
 
     static constexpr const char *gPeepEasterEggNames[] = {
@@ -471,9 +471,9 @@ namespace OpenRCT2
     static Ride* GuestFindBestRideToGoOn(Guest& guest);
 
     template<>
-    bool EntityBase::Is<Guest>() const
+    bool EntityBase::is<Guest>() const
     {
-        return Type == EntityType::guest;
+        return type == EntityType::guest;
     }
 
     static bool IsValidLocation(const CoordsXYZ& coords)
@@ -492,7 +492,7 @@ namespace OpenRCT2
     template<void (Guest::*EasterEggFunc)(Guest&), bool applyToSelf>
     static void ApplyEasterEggToNearbyGuests(Guest& guest)
     {
-        const auto guestLoc = guest.GetLocation();
+        const auto guestLoc = guest.getLocation();
         if (!IsValidLocation(guestLoc))
             return;
 
@@ -514,22 +514,22 @@ namespace OpenRCT2
         }
     }
 
-    void Guest::GivePassingGuestPurpleClothes(Guest& passingPeep)
+    void Guest::givePassingGuestPurpleClothes(Guest& passingPeep)
     {
         passingPeep.TshirtColour = Drawing::Colour::brightPurple;
         passingPeep.TrousersColour = Drawing::Colour::brightPurple;
-        passingPeep.Invalidate();
+        passingPeep.invalidate();
     }
 
-    void Guest::GivePassingGuestPizza(Guest& passingPeep)
+    void Guest::givePassingGuestPizza(Guest& passingPeep)
     {
-        if (passingPeep.HasItem(ShopItem::pizza))
+        if (passingPeep.hasItem(ShopItem::pizza))
             return;
 
-        passingPeep.GiveItem(ShopItem::pizza);
+        passingPeep.giveItem(ShopItem::pizza);
 
-        int32_t peepDirection = (Orientation >> 3) ^ 2;
-        int32_t otherPeepOppositeDirection = passingPeep.Orientation >> 3;
+        int32_t peepDirection = (orientation >> 3) ^ 2;
+        int32_t otherPeepOppositeDirection = passingPeep.orientation >> 3;
         if (peepDirection == otherPeepOppositeDirection)
         {
             if (passingPeep.IsActionInterruptableSafely())
@@ -542,7 +542,7 @@ namespace OpenRCT2
         }
     }
 
-    void Guest::MakePassingGuestSick(Guest& passingPeep)
+    void Guest::makePassingGuestSick(Guest& passingPeep)
     {
         if (passingPeep.State != PeepState::walking)
             return;
@@ -556,39 +556,39 @@ namespace OpenRCT2
         }
     }
 
-    void Guest::GivePassingPeepsIceCream(Guest& passingPeep)
+    void Guest::givePassingPeepsIceCream(Guest& passingPeep)
     {
-        if (passingPeep.HasItem(ShopItem::iceCream))
+        if (passingPeep.hasItem(ShopItem::iceCream))
             return;
 
-        passingPeep.GiveItem(ShopItem::iceCream);
-        passingPeep.UpdateAnimationGroup();
+        passingPeep.giveItem(ShopItem::iceCream);
+        passingPeep.updateAnimationGroup();
     }
 
     /**
      *
      *  rct2: 0x0068FD3A
      */
-    void Guest::UpdateEasterEggInteractions()
+    void Guest::updateEasterEggInteractions()
     {
         if (PeepFlags & PEEP_FLAGS_PURPLE)
         {
-            ApplyEasterEggToNearbyGuests<&Guest::GivePassingGuestPurpleClothes, true>(*this);
+            ApplyEasterEggToNearbyGuests<&Guest::givePassingGuestPurpleClothes, true>(*this);
         }
 
         if (PeepFlags & PEEP_FLAGS_PIZZA)
         {
-            ApplyEasterEggToNearbyGuests<&Guest::GivePassingGuestPizza, true>(*this);
+            ApplyEasterEggToNearbyGuests<&Guest::givePassingGuestPizza, true>(*this);
         }
 
         if (PeepFlags & PEEP_FLAGS_CONTAGIOUS)
         {
-            ApplyEasterEggToNearbyGuests<&Guest::MakePassingGuestSick, false>(*this);
+            ApplyEasterEggToNearbyGuests<&Guest::makePassingGuestSick, false>(*this);
         }
 
         if (PeepFlags & PEEP_FLAGS_ICE_CREAM)
         {
-            ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsIceCream, false>(*this);
+            ApplyEasterEggToNearbyGuests<&Guest::givePassingPeepsIceCream, false>(*this);
         }
 
         if (PeepFlags & PEEP_FLAGS_JOY)
@@ -606,7 +606,7 @@ namespace OpenRCT2
         }
     }
 
-    int32_t Guest::GetEasterEggNameId() const
+    int32_t Guest::getEasterEggNameId() const
     {
         char buffer[256]{};
 
@@ -623,128 +623,128 @@ namespace OpenRCT2
         return -1;
     }
 
-    void Guest::HandleEasterEggName()
+    void Guest::handleEasterEggName()
     {
         PeepFlags &= ~PEEP_FLAGS_WAVING;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW))
         {
             PeepFlags |= PEEP_FLAGS_WAVING;
         }
 
         PeepFlags &= ~PEEP_FLAGS_PHOTO;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_CHRIS_SAWYER))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_CHRIS_SAWYER))
         {
             PeepFlags |= PEEP_FLAGS_PHOTO;
         }
 
         PeepFlags &= ~PEEP_FLAGS_PAINTING;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_SIMON_FOSTER))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_SIMON_FOSTER))
         {
             PeepFlags |= PEEP_FLAGS_PAINTING;
         }
 
         PeepFlags &= ~PEEP_FLAGS_WOW;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_JOHN_WARDLEY))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_JOHN_WARDLEY))
         {
             PeepFlags |= PEEP_FLAGS_WOW;
         }
 
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_MELANIE_WARN))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_MELANIE_WARN))
         {
-            Happiness = 250;
-            HappinessTarget = 250;
+            happiness = 250;
+            happinessTarget = 250;
             Energy = 127;
             EnergyTarget = 127;
-            Nausea = 0;
-            NauseaTarget = 0;
+            nausea = 0;
+            nauseaTarget = 0;
         }
 
         PeepFlags &= ~PEEP_FLAGS_LITTER;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_LISA_STIRLING))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_LISA_STIRLING))
         {
             PeepFlags |= PEEP_FLAGS_LITTER;
         }
 
         PeepFlags &= ~PEEP_FLAGS_LOST;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_DONALD_MACRAE))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_DONALD_MACRAE))
         {
             PeepFlags |= PEEP_FLAGS_LOST;
         }
 
         PeepFlags &= ~PEEP_FLAGS_HUNGER;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN))
         {
             PeepFlags |= PEEP_FLAGS_HUNGER;
         }
 
         PeepFlags &= ~PEEP_FLAGS_TOILET;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN))
         {
             PeepFlags |= PEEP_FLAGS_TOILET;
         }
 
         PeepFlags &= ~PEEP_FLAGS_CROWDED;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_CORINA_MASSOURA))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_CORINA_MASSOURA))
         {
             PeepFlags |= PEEP_FLAGS_CROWDED;
         }
 
         PeepFlags &= ~PEEP_FLAGS_HAPPINESS;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_CAROL_YOUNG))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_CAROL_YOUNG))
         {
             PeepFlags |= PEEP_FLAGS_HAPPINESS;
         }
 
         PeepFlags &= ~PEEP_FLAGS_NAUSEA;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_MIA_SHERIDAN))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_MIA_SHERIDAN))
         {
             PeepFlags |= PEEP_FLAGS_NAUSEA;
         }
 
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATIE_RODGER))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_RODGER))
         {
             PeepFlags |= PEEP_FLAGS_LEAVING_PARK;
             PeepFlags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
         }
 
         PeepFlags &= ~PEEP_FLAGS_PURPLE;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_EMMA_GARRELL))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_EMMA_GARRELL))
         {
             PeepFlags |= PEEP_FLAGS_PURPLE;
         }
 
         PeepFlags &= ~PEEP_FLAGS_PIZZA;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_JOANNE_BARTON))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_JOANNE_BARTON))
         {
             PeepFlags |= PEEP_FLAGS_PIZZA;
         }
 
         PeepFlags &= ~PEEP_FLAGS_CONTAGIOUS;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON))
         {
             PeepFlags |= PEEP_FLAGS_CONTAGIOUS;
         }
 
         PeepFlags &= ~PEEP_FLAGS_JOY;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATIE_SMITH))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_SMITH))
         {
             PeepFlags |= PEEP_FLAGS_JOY;
         }
 
         PeepFlags &= ~PEEP_FLAGS_ANGRY;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_EILIDH_BELL))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_EILIDH_BELL))
         {
             PeepFlags |= PEEP_FLAGS_ANGRY;
         }
 
         PeepFlags &= ~PEEP_FLAGS_ICE_CREAM;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON))
         {
             PeepFlags |= PEEP_FLAGS_ICE_CREAM;
         }
 
         PeepFlags &= ~PEEP_FLAGS_HERE_WE_ARE;
-        if (CheckEasterEggName(EASTEREGG_PEEP_NAME_DAVID_ELLIS))
+        if (checkEasterEggName(EASTEREGG_PEEP_NAME_DAVID_ELLIS))
         {
             PeepFlags |= PEEP_FLAGS_HERE_WE_ARE;
         }
@@ -755,7 +755,7 @@ namespace OpenRCT2
      *  rct2: 0x0069A5A0
      * tests if a peep's name matches a cheat code, normally returns using a register flag
      */
-    int32_t Guest::CheckEasterEggName(int32_t index) const
+    int32_t Guest::checkEasterEggName(int32_t index) const
     {
         char buffer[256]{};
 
@@ -766,39 +766,39 @@ namespace OpenRCT2
         return String::iequals(buffer, gPeepEasterEggNames[index]);
     }
 
-    void Guest::UpdateMotivesIdle()
+    void Guest::updateMotivesIdle()
     {
         // Idle peep happiness tends towards 127 (50%).
-        if (HappinessTarget >= 128)
-            HappinessTarget--;
+        if (happinessTarget >= 128)
+            happinessTarget--;
         else
-            HappinessTarget++;
+            happinessTarget++;
 
-        NauseaTarget = std::max(NauseaTarget - 2, 0);
+        nauseaTarget = std::max(nauseaTarget - 2, 0);
 
         if (Energy <= 50)
         {
-            HappinessTarget = std::max(HappinessTarget - 2, 0);
+            happinessTarget = std::max(happinessTarget - 2, 0);
         }
 
-        if (Hunger < 10)
+        if (hunger < 10)
         {
-            HappinessTarget = std::max(HappinessTarget - 1, 0);
+            happinessTarget = std::max(happinessTarget - 1, 0);
         }
 
-        if (Thirst < 10)
+        if (thirst < 10)
         {
-            HappinessTarget = std::max(HappinessTarget - 1, 0);
+            happinessTarget = std::max(happinessTarget - 1, 0);
         }
 
-        if (Toilet >= 195)
+        if (toilet >= 195)
         {
-            HappinessTarget = std::max(HappinessTarget - 1, 0);
+            happinessTarget = std::max(happinessTarget - 1, 0);
         }
 
-        if (State == PeepState::walking && NauseaTarget >= 128)
+        if (State == PeepState::walking && nauseaTarget >= 128)
         {
-            if ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
+            if ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((nausea - 128) / 2))
             {
                 if (IsActionInterruptableSafely())
                 {
@@ -812,44 +812,44 @@ namespace OpenRCT2
     }
 
     /* rct2: 0x0068FA89*/
-    void Guest::UpdateConsumptionMotives()
+    void Guest::updateConsumptionMotives()
     {
-        if (TimeToConsume == 0 && HasFoodOrDrink())
+        if (timeToConsume == 0 && hasFoodOrDrink())
         {
-            TimeToConsume += 3;
+            timeToConsume += 3;
         }
 
-        if (TimeToConsume != 0 && State != PeepState::onRide)
+        if (timeToConsume != 0 && State != PeepState::onRide)
         {
-            TimeToConsume = std::max(TimeToConsume - 3, 0);
+            timeToConsume = std::max(timeToConsume - 3, 0);
 
-            if (HasDrink())
+            if (hasDrink())
             {
-                Thirst = std::min(Thirst + 7, 255);
+                thirst = std::min(thirst + 7, 255);
             }
             else
             {
-                Hunger = std::min(Hunger + 7, 255);
-                Thirst = std::max(Thirst - 3, 0);
-                Toilet = std::min(Toilet + 2, 255);
+                hunger = std::min(hunger + 7, 255);
+                thirst = std::max(thirst - 3, 0);
+                toilet = std::min(toilet + 2, 255);
             }
 
-            if (TimeToConsume == 0)
+            if (timeToConsume == 0)
             {
-                int32_t chosen_food = Numerics::bitScanForward(GetFoodOrDrinkFlags());
+                int32_t chosen_food = Numerics::bitScanForward(getFoodOrDrinkFlags());
                 if (chosen_food != -1)
                 {
                     ShopItem food = ShopItem(chosen_food);
-                    RemoveItem(food);
+                    removeItem(food);
 
                     auto discardContainer = GetShopItemDescriptor(food).DiscardContainer;
                     if (discardContainer != ShopItem::none)
                     {
-                        GiveItem(discardContainer);
+                        giveItem(discardContainer);
                     }
 
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                    UpdateAnimationGroup();
+                    updateAnimationGroup();
                 }
             }
         }
@@ -878,8 +878,8 @@ namespace OpenRCT2
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
         }
 
-        uint8_t newHappiness = Happiness;
-        uint8_t newHappinessGrowth = HappinessTarget;
+        uint8_t newHappiness = happiness;
+        uint8_t newHappinessGrowth = happinessTarget;
         if (newHappiness >= newHappinessGrowth)
         {
             newHappiness = std::max(newHappiness - 4, 0);
@@ -893,14 +893,14 @@ namespace OpenRCT2
                 newHappiness = newHappinessGrowth;
         }
 
-        if (newHappiness != Happiness)
+        if (newHappiness != happiness)
         {
-            Happiness = newHappiness;
+            happiness = newHappiness;
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
         }
 
-        uint8_t newNausea = Nausea;
-        uint8_t newNauseaGrowth = NauseaTarget;
+        uint8_t newNausea = nausea;
+        uint8_t newNauseaGrowth = nauseaTarget;
         if (newNausea >= newNauseaGrowth)
         {
             newNausea = std::max(newNausea - 4, 0);
@@ -914,20 +914,20 @@ namespace OpenRCT2
                 newNausea = newNauseaGrowth;
         }
 
-        if (newNausea != Nausea)
+        if (newNausea != nausea)
         {
-            Nausea = newNausea;
+            nausea = newNausea;
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
         }
     }
 
-    void Guest::Tick128UpdateGuest(uint32_t index)
+    void Guest::tick128UpdateGuest(uint32_t index)
     {
         const auto currentTicks = getGameState().currentTicks;
         const bool ticksMatchIndex = (index & 0x1FF) != (currentTicks & 0x1FF);
         if (ticksMatchIndex && !(PeepFlags & PEEP_FLAGS_POSITION_FROZEN))
         {
-            UpdateConsumptionMotives();
+            updateConsumptionMotives();
             return;
         }
 
@@ -938,9 +938,9 @@ namespace OpenRCT2
         if (PeepFlags & PEEP_FLAGS_CROWDED)
         {
             PeepThoughtType thought_type = kCrowdedThoughts[ScenarioRand() & 0xF];
-            if (thought_type != PeepThoughtType::None)
+            if (thought_type != PeepThoughtType::none)
             {
-                InsertNewThought(thought_type);
+                insertNewThought(thought_type);
             }
         }
 
@@ -948,7 +948,7 @@ namespace OpenRCT2
         {
             if (State == PeepState::walking || State == PeepState::sitting)
             {
-                Audio::Play3D(Audio::SoundId::crash, GetLocation());
+                Audio::Play3D(Audio::SoundId::crash, getLocation());
 
                 ExplosionCloud::Create({ x, y, z + 16 });
                 ExplosionFlare::Create({ x, y, z + 16 });
@@ -962,45 +962,45 @@ namespace OpenRCT2
 
         if (PeepFlags & PEEP_FLAGS_HUNGER)
         {
-            if (Hunger >= 15)
-                Hunger -= 15;
+            if (hunger >= 15)
+                hunger -= 15;
         }
 
         if (PeepFlags & PEEP_FLAGS_TOILET)
         {
-            if (Toilet <= 180)
-                Toilet += 50;
+            if (toilet <= 180)
+                toilet += 50;
         }
 
         if (PeepFlags & PEEP_FLAGS_HAPPINESS)
         {
-            HappinessTarget = 5;
+            happinessTarget = 5;
         }
 
         if (PeepFlags & PEEP_FLAGS_NAUSEA)
         {
-            NauseaTarget = 200;
-            if (Nausea <= 130)
-                Nausea = 130;
+            nauseaTarget = 200;
+            if (nausea <= 130)
+                nausea = 130;
         }
 
-        if (Angriness != 0)
-            Angriness--;
+        if (angriness != 0)
+            angriness--;
 
         if (State == PeepState::walking || State == PeepState::sitting)
         {
-            SurroundingsThoughtTimeout++;
-            if (SurroundingsThoughtTimeout >= 18)
+            surroundingsThoughtTimeout++;
+            if (surroundingsThoughtTimeout >= 18)
             {
-                SurroundingsThoughtTimeout = 0;
+                surroundingsThoughtTimeout = 0;
                 if (x != kLocationNull)
                 {
                     PeepThoughtType thought_type = GuestAssessSurroundings(x & 0xFFE0, y & 0xFFE0, z);
 
-                    if (thought_type != PeepThoughtType::None)
+                    if (thought_type != PeepThoughtType::none)
                     {
-                        InsertNewThought(thought_type);
-                        HappinessTarget = std::min(kPeepMaxHappiness, HappinessTarget + 45);
+                        insertNewThought(thought_type);
+                        happinessTarget = std::min(kPeepMaxHappiness, happinessTarget + 45);
                     }
                 }
             }
@@ -1008,32 +1008,32 @@ namespace OpenRCT2
 
         if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
         {
-            UpdateAnimationGroup();
+            updateAnimationGroup();
         }
 
         if (State == PeepState::onRide || State == PeepState::enteringRide)
         {
-            GuestTimeOnRide = AddClamp<uint8_t>(GuestTimeOnRide, 1);
+            guestTimeOnRide = AddClamp<uint8_t>(guestTimeOnRide, 1);
 
             if (PeepFlags & PEEP_FLAGS_WOW)
             {
-                InsertNewThought(PeepThoughtType::Wow2);
+                insertNewThought(PeepThoughtType::wow2);
             }
 
-            if (GuestTimeOnRide > 15)
+            if (guestTimeOnRide > 15)
             {
-                HappinessTarget = std::max(0, HappinessTarget - 5);
+                happinessTarget = std::max(0, happinessTarget - 5);
 
-                if (GuestTimeOnRide > 22)
+                if (guestTimeOnRide > 22)
                 {
                     auto ride = GetRide(CurrentRide);
                     if (ride != nullptr)
                     {
                         PeepThoughtType thought_type = ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside)
-                            ? PeepThoughtType::GetOut
-                            : PeepThoughtType::GetOff;
+                            ? PeepThoughtType::getOut
+                            : PeepThoughtType::getOff;
 
-                        InsertNewThought(thought_type, CurrentRide);
+                        insertNewThought(thought_type, CurrentRide);
                     }
                 }
             }
@@ -1044,29 +1044,29 @@ namespace OpenRCT2
             return;
         }
 
-        if (State == PeepState::walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
-            && GuestHeadingToRideId.IsNull())
+        if (State == PeepState::walking && !outsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && guestNumRides == 0
+            && guestHeadingToRideId.IsNull())
         {
-            uint32_t time_duration = currentTicks - ParkEntryTime;
+            uint32_t time_duration = currentTicks - parkEntryTime;
             time_duration /= 2048;
 
             if (time_duration >= 5)
             {
                 GuestPickRideToGoOn(*this);
 
-                if (GuestHeadingToRideId.IsNull())
+                if (guestHeadingToRideId.IsNull())
                 {
-                    HappinessTarget = std::max(HappinessTarget - 128, 0);
+                    happinessTarget = std::max(happinessTarget - 128, 0);
                     GuestLeavePark(*this);
                     GuestUpdateHunger(*this);
-                    UpdateMotivesIdle();
-                    UpdateConsumptionMotives();
+                    updateMotivesIdle();
+                    updateConsumptionMotives();
                     return;
                 }
             }
         }
 
-        if ((ScenarioRand() & 0xFFFF) <= ((HasItem(ShopItem::map)) ? 8192u : 2184u))
+        if ((ScenarioRand() & 0xFFFF) <= ((hasItem(ShopItem::map)) ? 8192u : 2184u))
         {
             GuestPickRideToGoOn(*this);
         }
@@ -1079,38 +1079,38 @@ namespace OpenRCT2
              * is executed to once every second time the encompassing
              * conditional executes. */
 
-            if (!OutsideOfPark && (State == PeepState::walking || State == PeepState::sitting))
+            if (!outsideOfPark && (State == PeepState::walking || State == PeepState::sitting))
             {
                 uint8_t num_thoughts = 0;
                 PeepThoughtType possible_thoughts[5];
 
                 if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
                 {
-                    possible_thoughts[num_thoughts++] = PeepThoughtType::GoHome;
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::goHome;
                 }
                 else
                 {
-                    if (Energy <= 70 && Happiness < 128)
+                    if (Energy <= 70 && happiness < 128)
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::tired;
                     }
 
-                    if (Hunger <= 10 && !HasFoodOrDrink())
+                    if (hunger <= 10 && !hasFoodOrDrink())
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::hungry;
                     }
 
-                    if (Thirst <= 25 && !HasFoodOrDrink())
+                    if (thirst <= 25 && !hasFoodOrDrink())
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::thirsty;
                     }
 
-                    if (Toilet >= 160)
+                    if (toilet >= 160)
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::toilet;
                     }
 
-                    if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105
+                    if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY) && cashInPocket <= 9.00_GBP && happiness >= 105
                         && Energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
@@ -1120,7 +1120,7 @@ namespace OpenRCT2
                          * 70 is also the threshold for tired thoughts (see above) and
                          * it makes sense that a tired peep might not think about getting
                          * more money. */
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::RunningOut;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::runningOut;
                     }
                 }
 
@@ -1128,20 +1128,20 @@ namespace OpenRCT2
                 {
                     PeepThoughtType chosen_thought = possible_thoughts[ScenarioRand() % num_thoughts];
 
-                    InsertNewThought(chosen_thought);
+                    insertNewThought(chosen_thought);
 
                     switch (chosen_thought)
                     {
-                        case PeepThoughtType::Hungry:
+                        case PeepThoughtType::hungry:
                             GuestHeadForNearestRideWithFlag(*this, false, RtdFlag::sellsFood);
                             break;
-                        case PeepThoughtType::Thirsty:
+                        case PeepThoughtType::thirsty:
                             GuestHeadForNearestRideWithFlag(*this, false, RtdFlag::sellsDrinks);
                             break;
-                        case PeepThoughtType::Toilet:
+                        case PeepThoughtType::toilet:
                             GuestHeadForNearestRideWithSpecialType(*this, false, RtdSpecialType::toilet);
                             break;
-                        case PeepThoughtType::RunningOut:
+                        case PeepThoughtType::runningOut:
                             GuestHeadForNearestRideWithSpecialType(*this, false, RtdSpecialType::cashMachine);
                             break;
                         default:
@@ -1156,15 +1156,15 @@ namespace OpenRCT2
              * remaining times the encompassing conditional is
              * executed (which is also every second time, but
              * the alternate time to the true branch). */
-            if (Nausea >= 140)
+            if (nausea >= 140)
             {
-                PeepThoughtType thought_type = PeepThoughtType::Sick;
-                if (Nausea >= 200)
+                PeepThoughtType thought_type = PeepThoughtType::sick;
+                if (nausea >= 200)
                 {
-                    thought_type = PeepThoughtType::VerySick;
+                    thought_type = PeepThoughtType::verySick;
                     GuestHeadForNearestRideWithSpecialType(*this, true, RtdSpecialType::firstAid);
                 }
-                InsertNewThought(thought_type);
+                insertNewThought(thought_type);
             }
         }
 
@@ -1181,14 +1181,14 @@ namespace OpenRCT2
                 if (EnergyTarget <= 135)
                     EnergyTarget += 5;
 
-                if (Thirst >= 5)
+                if (thirst >= 5)
                 {
-                    Thirst -= 4;
-                    Toilet = std::min(255, Toilet + 3);
+                    thirst -= 4;
+                    toilet = std::min(255, toilet + 3);
                 }
 
-                if (NauseaTarget >= 50)
-                    NauseaTarget -= 6;
+                if (nauseaTarget >= 50)
+                    nauseaTarget -= 6;
 
                 // In the original this branched differently
                 // but it would mean setting the peep happiness from
@@ -1197,14 +1197,14 @@ namespace OpenRCT2
                 break;
 
             case PeepState::queuing:
-                if (TimeInQueue >= 2000)
+                if (timeInQueue >= 2000)
                 {
                     /* Peep happiness is affected once the peep has been waiting
                      * too long in a queue. */
                     bool found = false;
                     for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
                     {
-                        if (pathElement->GetBaseZ() != NextLoc.z)
+                        if (pathElement->getBaseZ() != NextLoc.z)
                             continue;
 
                         // Check if the footpath has a queue line TV monitor on it
@@ -1225,19 +1225,19 @@ namespace OpenRCT2
                          * slowly happier, up to a certain level. */
                         /* Why don't queue line TV monitors start affecting the peeps
                          * as soon as they join the queue?? */
-                        if (HappinessTarget < 90)
-                            HappinessTarget = 90;
+                        if (happinessTarget < 90)
+                            happinessTarget = 90;
 
                         // This is +2 as UpdateMotivesIdle (that is called later in the function)
                         // will -1. We want to gradually increase happiness to 165
-                        if (HappinessTarget < 165)
-                            HappinessTarget += 2;
+                        if (happinessTarget < 165)
+                            happinessTarget += 2;
                     }
                     else
                     {
                         /* Without a queue line TV monitor peeps waiting too long
                          * in a queue get less happy. */
-                        HappinessTarget = std::max(HappinessTarget - 4, 0);
+                        happinessTarget = std::max(happinessTarget - 4, 0);
                     }
                 }
                 GuestUpdateHunger(*this);
@@ -1253,8 +1253,8 @@ namespace OpenRCT2
                 break;
         }
 
-        UpdateMotivesIdle();
-        UpdateConsumptionMotives();
+        updateMotivesIdle();
+        updateConsumptionMotives();
     }
 
     /**
@@ -1264,7 +1264,7 @@ namespace OpenRCT2
     static void GuestTryGetUpFromSitting(Guest& guest)
     {
         // Eats all food first
-        if (guest.HasFoodOrDrink())
+        if (guest.hasFoodOrDrink())
             return;
 
         guest.TimeToSitdown--;
@@ -1274,7 +1274,7 @@ namespace OpenRCT2
         guest.SetState(PeepState::walking);
 
         // Set destination to the centre of the tile.
-        const auto destination = guest.GetLocation().ToTileCentre();
+        const auto destination = guest.getLocation().ToTileCentre();
         guest.SetDestination(destination, 5);
         guest.UpdateCurrentAnimationType();
     }
@@ -1283,7 +1283,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069152B
      */
-    void Guest::UpdateSitting()
+    void Guest::updateSitting()
     {
         if (SittingSubState == PeepSittingSubState::tryingToSit)
         {
@@ -1295,11 +1295,11 @@ namespace OpenRCT2
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            auto loc = GetLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets[Var37 & 0x7], 0 };
+            auto loc = getLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets[Var37 & 0x7], 0 };
 
-            MoveTo(loc);
+            moveTo(loc);
 
-            Orientation = ((Var37 + 2) & 3) * 8;
+            orientation = ((Var37 + 2) & 3) * 8;
             Action = PeepActionType::idle;
             NextAnimationType = PeepAnimationType::sittingIdle;
             SwitchNextAnimationType();
@@ -1327,7 +1327,7 @@ namespace OpenRCT2
                 SetState(PeepState::walking);
 
                 // Set destination to the centre of the tile
-                auto destination = GetLocation().ToTileCentre();
+                auto destination = getLocation().ToTileCentre();
                 SetDestination(destination, 5);
                 UpdateCurrentAnimationType();
                 return;
@@ -1339,7 +1339,7 @@ namespace OpenRCT2
                 return;
             }
 
-            if (HasFoodOrDrink())
+            if (hasFoodOrDrink())
             {
                 if ((ScenarioRand() & 0xFFFFu) > 1310u)
                 {
@@ -1385,33 +1385,33 @@ namespace OpenRCT2
      * To simplify check of 0x36BA3E0 and 0x11FF78
      * returns false on no food.
      */
-    uint64_t Guest::GetFoodOrDrinkFlags() const
+    uint64_t Guest::getFoodOrDrinkFlags() const
     {
-        return GetItemFlags() & (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
+        return getItemFlags() & (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
     }
 
-    uint64_t Guest::GetEmptyContainerFlags() const
+    uint64_t Guest::getEmptyContainerFlags() const
     {
-        return GetItemFlags() & ShopItemsGetAllContainers();
+        return getItemFlags() & ShopItemsGetAllContainers();
     }
 
-    bool Guest::HasFoodOrDrink() const
+    bool Guest::hasFoodOrDrink() const
     {
-        return GetFoodOrDrinkFlags() != 0;
+        return getFoodOrDrinkFlags() != 0;
     }
 
     /**
      * To simplify check of NOT(0x12BA3C0 and 0x118F48)
      * returns 0 on no food.
      */
-    bool Guest::HasDrink() const
+    bool Guest::hasDrink() const
     {
-        return GetItemFlags() & ShopItemsGetAllDrinks();
+        return getItemFlags() & ShopItemsGetAllDrinks();
     }
 
-    bool Guest::HasEmptyContainer() const
+    bool Guest::hasEmptyContainer() const
     {
-        return GetEmptyContainerFlags() != 0;
+        return getEmptyContainerFlags() != 0;
     }
 
     /**
@@ -1419,7 +1419,7 @@ namespace OpenRCT2
      *  rct2: 0x69C308
      * Check if lost.
      */
-    void Guest::CheckIfLost()
+    void Guest::checkIfLost()
     {
         if (!(PeepFlags & PEEP_FLAGS_LOST))
         {
@@ -1430,14 +1430,14 @@ namespace OpenRCT2
             if (!(PeepFlags & PEEP_FLAGS_21))
                 return;
 
-            TimeLost++;
-            if (TimeLost != 254)
+            timeLost++;
+            if (timeLost != 254)
                 return;
-            TimeLost = 230;
+            timeLost = 230;
         }
-        InsertNewThought(PeepThoughtType::Lost);
+        insertNewThought(PeepThoughtType::lost);
 
-        HappinessTarget = std::max(HappinessTarget - 30, 0);
+        happinessTarget = std::max(happinessTarget - 30, 0);
     }
 
     /**
@@ -1445,33 +1445,33 @@ namespace OpenRCT2
      *  rct2: 0x69C26B
      * Check if can't find ride.
      */
-    void Guest::CheckCantFindRide()
+    void Guest::checkCantFindRide()
     {
-        if (GuestHeadingToRideId.IsNull())
+        if (guestHeadingToRideId.IsNull())
             return;
 
         // Peeps will think "I can't find ride X" twice before giving up completely.
-        if (GuestIsLostCountdown == 30 || GuestIsLostCountdown == 60)
+        if (guestIsLostCountdown == 30 || guestIsLostCountdown == 60)
         {
-            InsertNewThought(PeepThoughtType::CantFind, GuestHeadingToRideId);
-            HappinessTarget = std::max(HappinessTarget - 30, 0);
+            insertNewThought(PeepThoughtType::cantFind, guestHeadingToRideId);
+            happinessTarget = std::max(happinessTarget - 30, 0);
         }
 
-        GuestIsLostCountdown--;
-        if (GuestIsLostCountdown != 0)
+        guestIsLostCountdown--;
+        if (guestIsLostCountdown != 0)
             return;
 
-        GuestHeadingToRideId = RideId::GetNull();
+        guestHeadingToRideId = RideId::GetNull();
 
         auto* windowMgr = Ui::GetWindowManager();
-        WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, Id);
+        WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, id);
 
         if (w != nullptr)
         {
             w->onPrepareDraw();
         }
 
-        windowMgr->InvalidateByNumber(WindowClass::peep, Id);
+        windowMgr->InvalidateByNumber(WindowClass::peep, id);
     }
 
     /**
@@ -1479,20 +1479,20 @@ namespace OpenRCT2
      *  rct2: 0x69C2D0
      * Check if can't find exit.
      */
-    void Guest::CheckCantFindExit()
+    void Guest::checkCantFindExit()
     {
         if (!(PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             return;
 
         // Peeps who can't find the park exit will continue to get less happy until they find it.
-        if (GuestIsLostCountdown == 1)
+        if (guestIsLostCountdown == 1)
         {
-            InsertNewThought(PeepThoughtType::CantFindExit);
-            HappinessTarget = std::max(HappinessTarget - 30, 0);
+            insertNewThought(PeepThoughtType::cantFindExit);
+            happinessTarget = std::max(happinessTarget - 30, 0);
         }
 
-        if (--GuestIsLostCountdown == 0)
-            GuestIsLostCountdown = 90;
+        if (--guestIsLostCountdown == 0)
+            guestIsLostCountdown = 90;
     }
 
     static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
@@ -1532,29 +1532,29 @@ namespace OpenRCT2
         const bool isPrecipitatingAndUmbrella = isPrecipitating && (shopItem == ShopItem::umbrella);
 
         bool hasVoucher = false;
-        if ((guest.HasItem(ShopItem::voucher)) && (guest.VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
-            && (guest.VoucherShopItem == shopItem))
+        if ((guest.hasItem(ShopItem::voucher)) && (guest.voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+            && (guest.voucherShopItem == shopItem))
         {
             hasVoucher = true;
         }
 
-        if (guest.HasItem(shopItem))
+        if (guest.hasItem(shopItem))
         {
-            guest.InsertNewThought(PeepThoughtType::AlreadyGot, shopItem);
+            guest.insertNewThought(PeepThoughtType::alreadyGot, shopItem);
             return false;
         }
 
         const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
         if (shopItemDescriptor.IsFoodOrDrink())
         {
-            int32_t food = Numerics::bitScanForward(guest.GetFoodOrDrinkFlags());
+            int32_t food = Numerics::bitScanForward(guest.getFoodOrDrinkFlags());
             if (food != -1)
             {
-                guest.InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
+                guest.insertNewThought(PeepThoughtType::haventFinished, static_cast<ShopItem>(food));
                 return false;
             }
 
-            if (guest.Nausea >= 145)
+            if (guest.nausea >= 145)
                 return false;
         }
 
@@ -1571,21 +1571,21 @@ namespace OpenRCT2
             return false;
         }
 
-        if (shopItemDescriptor.IsFood() && (guest.Hunger > 75))
+        if (shopItemDescriptor.IsFood() && (guest.hunger > 75))
         {
-            guest.InsertNewThought(PeepThoughtType::NotHungry);
+            guest.insertNewThought(PeepThoughtType::notHungry);
             return false;
         }
 
-        if (shopItemDescriptor.IsDrink() && (guest.Thirst > 75))
+        if (shopItemDescriptor.IsDrink() && (guest.thirst > 75))
         {
-            guest.InsertNewThought(PeepThoughtType::NotThirsty);
+            guest.insertNewThought(PeepThoughtType::notThirsty);
             return false;
         }
 
         if (!isPrecipitatingAndUmbrella && (shopItem != ShopItem::map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
         {
-            if (((ScenarioRand() & 0x7F) + 0x73) > guest.Happiness || guest.GuestNumRides < 3)
+            if (((ScenarioRand() & 0x7F) + 0x73) > guest.happiness || guest.guestNumRides < 3)
                 return false;
         }
 
@@ -1593,14 +1593,14 @@ namespace OpenRCT2
         {
             if (price != 0 && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
             {
-                if (guest.CashInPocket == 0)
+                if (guest.cashInPocket == 0)
                 {
-                    guest.InsertNewThought(PeepThoughtType::SpentMoney);
+                    guest.insertNewThought(PeepThoughtType::spentMoney);
                     return false;
                 }
-                if (price > guest.CashInPocket)
+                if (price > guest.cashInPocket)
                 {
-                    guest.InsertNewThought(PeepThoughtType::CantAffordItem, shopItem);
+                    guest.insertNewThought(PeepThoughtType::cantAffordItem, shopItem);
                     return false;
                 }
             }
@@ -1613,16 +1613,16 @@ namespace OpenRCT2
                 if (!isPrecipitatingAndUmbrella)
                 {
                     itemValue = -itemValue;
-                    if (guest.Happiness >= 128)
+                    if (guest.happiness >= 128)
                     {
                         itemValue /= 2;
-                        if (guest.Happiness >= 180)
+                        if (guest.happiness >= 180)
                             itemValue /= 2;
                     }
                     if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(gameState.cheats.ignorePrice))
                     {
                         // "I'm not paying that much for x"
-                        guest.InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
+                        guest.insertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
                         return false;
                     }
                 }
@@ -1637,13 +1637,13 @@ namespace OpenRCT2
                     if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                     {
                         // "This x is a really good value"
-                        guest.InsertNewThought(shopItemDescriptor.GoodValueThought, ride.id);
+                        guest.insertNewThought(shopItemDescriptor.GoodValueThought, ride.id);
                     }
                 }
 
                 int32_t happinessGrowth = itemValue * 4;
-                guest.HappinessTarget = std::min((guest.HappinessTarget + happinessGrowth), kPeepMaxHappiness);
-                guest.Happiness = std::min((guest.Happiness + happinessGrowth), kPeepMaxHappiness);
+                guest.happinessTarget = std::min((guest.happinessTarget + happinessGrowth), kPeepMaxHappiness);
+                guest.happiness = std::min((guest.happiness + happinessGrowth), kPeepMaxHappiness);
             }
 
             // reset itemValue for satisfaction calculation
@@ -1665,7 +1665,7 @@ namespace OpenRCT2
 
         // The peep has now decided to buy the item (or, specifically, has not been
         // dissuaded so far).
-        guest.GiveItem(shopItem);
+        guest.giveItem(shopItem);
         const auto hasRandomShopColour = ride.flags.has(RideFlag::randomShopColours);
 
         switch (shopItem)
@@ -1676,16 +1676,16 @@ namespace OpenRCT2
                     : ride.trackColours[0].main;
                 break;
             case ShopItem::hat:
-                guest.HatColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
+                guest.hatColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
                                                       : ride.trackColours[0].main;
                 break;
             case ShopItem::balloon:
-                guest.BalloonColour = hasRandomShopColour
+                guest.balloonColour = hasRandomShopColour
                     ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
                     : ride.trackColours[0].main;
                 break;
             case ShopItem::umbrella:
-                guest.UmbrellaColour = hasRandomShopColour
+                guest.umbrellaColour = hasRandomShopColour
                     ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
                     : ride.trackColours[0].main;
                 break;
@@ -1693,23 +1693,23 @@ namespace OpenRCT2
                 guest.ResetPathfindGoal();
                 break;
             case ShopItem::photo:
-                guest.Photo1RideRef = ride.id;
+                guest.photo1RideRef = ride.id;
                 break;
             case ShopItem::photo2:
-                guest.Photo2RideRef = ride.id;
+                guest.photo2RideRef = ride.id;
                 break;
             case ShopItem::photo3:
-                guest.Photo3RideRef = ride.id;
+                guest.photo3RideRef = ride.id;
                 break;
             case ShopItem::photo4:
-                guest.Photo4RideRef = ride.id;
+                guest.photo4RideRef = ride.id;
                 break;
             default:
                 break;
         }
 
         guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-        guest.UpdateAnimationGroup();
+        guest.updateAnimationGroup();
         if (guest.PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter();
@@ -1717,28 +1717,28 @@ namespace OpenRCT2
             ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
             if (Config::Get().notifications.guestBoughtItem)
             {
-                News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.Id, ft);
+                News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.id, ft);
             }
         }
 
-        money64* expend_type = &guest.PaidOnSouvenirs;
+        money64* expend_type = &guest.paidOnSouvenirs;
         ExpenditureType expenditure = ExpenditureType::shopStock;
 
         if (shopItemDescriptor.IsFood())
         {
-            guest.AmountOfFood++;
-            expend_type = &guest.PaidOnFood;
+            guest.amountOfFood++;
+            expend_type = &guest.paidOnFood;
             expenditure = ExpenditureType::foodDrinkStock;
         }
         else if (shopItemDescriptor.IsDrink())
         {
-            guest.AmountOfDrinks++;
-            expend_type = &guest.PaidOnDrink;
+            guest.amountOfDrinks++;
+            expend_type = &guest.paidOnDrink;
             expenditure = ExpenditureType::foodDrinkStock;
         }
         else if (shopItemDescriptor.IsSouvenir())
         {
-            guest.AmountOfSouvenirs++;
+            guest.amountOfSouvenirs++;
         }
 
         if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
@@ -1748,12 +1748,12 @@ namespace OpenRCT2
         expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
         if (hasVoucher)
         {
-            guest.RemoveItem(ShopItem::voucher);
+            guest.removeItem(ShopItem::voucher);
             guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
         {
-            guest.SpendMoney(*expend_type, price, expenditure);
+            guest.spendMoney(*expend_type, price, expenditure);
         }
         ride.totalProfit = AddClamp(ride.totalProfit, price - shopItemDescriptor.Cost);
         ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
@@ -1769,7 +1769,7 @@ namespace OpenRCT2
      * ride's satisfaction value.
      *  rct2: 0x0069545B
      */
-    void Guest::OnEnterRide(Ride& ride)
+    void Guest::onEnterRide(Ride& ride)
     {
         // Calculate how satisfying the ride is for the peep. Can range from -140 to +105.
         int16_t satisfaction = GuestCalculateRideSatisfaction(*this, ride);
@@ -1786,12 +1786,12 @@ namespace OpenRCT2
         ride.updateSatisfaction(rideSatisfaction);
 
         // Update various peep stats.
-        if (GuestNumRides < 255)
-            GuestNumRides++;
+        if (guestNumRides < 255)
+            guestNumRides++;
 
-        SetHasRidden(ride);
+        setHasRidden(ride);
         GuestUpdateFavouriteRide(*this, ride, satisfaction);
-        HappinessTarget = std::clamp(HappinessTarget + satisfaction, 0, kPeepMaxHappiness);
+        happinessTarget = std::clamp(happinessTarget + satisfaction, 0, kPeepMaxHappiness);
         GuestUpdateRideNauseaGrowth(*this, ride);
     }
 
@@ -1799,17 +1799,17 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069576E
      */
-    void Guest::OnExitRide(Ride& ride)
+    void Guest::onExitRide(Ride& ride)
     {
         if (PeepFlags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE)
         {
             PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-            FavouriteRide = ride.id;
+            favouriteRide = ride.id;
             // TODO fix this flag name or add another one
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
-        Happiness = HappinessTarget;
-        Nausea = NauseaTarget;
+        happiness = happinessTarget;
+        nausea = nauseaTarget;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
 
         if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -1817,23 +1817,23 @@ namespace OpenRCT2
 
         if (GuestShouldGoOnRideAgain(*this, ride))
         {
-            GuestHeadingToRideId = ride.id;
-            GuestIsLostCountdown = 200;
+            guestHeadingToRideId = ride.id;
+            guestIsLostCountdown = 200;
             ResetPathfindGoal();
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
         }
 
         if (GuestShouldPreferredIntensityIncrease(*this))
         {
-            if (Intensity.GetMaximum() < 15)
+            if (intensity.GetMaximum() < 15)
             {
-                Intensity = Intensity.WithMaximum(Intensity.GetMaximum() + 1);
+                intensity = intensity.WithMaximum(intensity.GetMaximum() + 1);
             }
         }
 
         if (GuestReallyLikedRide(*this, ride))
         {
-            InsertNewThought(PeepThoughtType::WasGreat, ride.id);
+            insertNewThought(PeepThoughtType::wasGreat, ride.id);
 
             static constexpr Audio::SoundId laughs[3] = {
                 Audio::SoundId::laugh1,
@@ -1843,7 +1843,7 @@ namespace OpenRCT2
             int32_t laughType = ScenarioRand() & 7;
             if (laughType < 3)
             {
-                Audio::Play3D(laughs[laughType], GetLocation());
+                Audio::Play3D(laughs[laughType], getLocation());
             }
         }
 
@@ -1859,11 +1859,11 @@ namespace OpenRCT2
     {
         if (guest.State != PeepState::walking)
             return;
-        if (!guest.GuestHeadingToRideId.IsNull())
+        if (!guest.guestHeadingToRideId.IsNull())
             return;
         if (guest.PeepFlags & PEEP_FLAGS_LEAVING_PARK)
             return;
-        if (guest.HasFoodOrDrink())
+        if (guest.hasFoodOrDrink())
             return;
         if (guest.x == kLocationNull)
             return;
@@ -1872,15 +1872,15 @@ namespace OpenRCT2
         if (ride != nullptr)
         {
             // Head to that ride
-            guest.GuestHeadingToRideId = ride->id;
-            guest.GuestIsLostCountdown = 200;
+            guest.guestHeadingToRideId = ride->id;
+            guest.guestIsLostCountdown = 200;
             guest.ResetPathfindGoal();
             guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
             // Make peep look at their map if they have one
-            if (guest.HasItem(ShopItem::map))
+            if (guest.hasItem(ShopItem::map))
             {
-                guest.ReadMap();
+                guest.readMap();
             }
         }
     }
@@ -1892,7 +1892,7 @@ namespace OpenRCT2
         // FIX  Originally checked for a toy, likely a mistake and should be a map,
         //      but then again this seems to only allow the peep to go on
         //      rides they haven't been on before.
-        if (guest.HasItem(ShopItem::map))
+        if (guest.hasItem(ShopItem::map))
         {
             // Consider rides that peep hasn't been on yet
             auto& gameState = getGameState();
@@ -1949,7 +1949,7 @@ namespace OpenRCT2
         auto& gameState = getGameState();
         for (auto& ride : RideManager(gameState))
         {
-            if (guest.HasRidden(ride))
+            if (guest.hasRidden(ride))
             {
                 continue;
             }
@@ -1958,7 +1958,7 @@ namespace OpenRCT2
             {
                 if (!ride.flags.has(RideFlag::queueFull))
                 {
-                    if (guest.ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, true) && RideHasRatings(ride))
+                    if (guest.shouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, true) && RideHasRatings(ride))
                     {
                         if (mostExcitingRide == nullptr || ride.ratings.excitement > mostExcitingRide->ratings.excitement)
                         {
@@ -1977,7 +1977,7 @@ namespace OpenRCT2
      * ride/shop, or they may just be thinking about it.
      *  rct2: 0x006960AB
      */
-    bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking)
+    bool Guest::shouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking)
     {
         // Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
         bool peepAtRide = !thinking;
@@ -1991,7 +1991,7 @@ namespace OpenRCT2
             {
                 if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
                 {
-                    ChoseNotToGoOnRide(ride, peepAtRide, false);
+                    choseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
                 }
             }
@@ -2035,7 +2035,7 @@ namespace OpenRCT2
                         }
 
                         // This checks if there's a peep standing still at the very end of the queue.
-                        if (maxD <= 13 && lastPeepInQueue->TimeInQueue > 10)
+                        if (maxD <= 13 && lastPeepInQueue->timeInQueue > 10)
                         {
                             GuestTriedToEnterFullQueue(*this, ride);
                             return false;
@@ -2050,9 +2050,9 @@ namespace OpenRCT2
             if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
                 || ridePrice != 0)
             {
-                if (PreviousRide == ride.id)
+                if (previousRide == ride.id)
                 {
-                    ChoseNotToGoOnRide(ride, peepAtRide, false);
+                    choseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
                 }
 
@@ -2060,37 +2060,37 @@ namespace OpenRCT2
                 // Basic price checks
                 if (ridePrice != 0 && !GuestHasVoucherForFreeRide(*this, ride) && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
                 {
-                    if (ridePrice > CashInPocket)
+                    if (ridePrice > cashInPocket)
                     {
                         if (peepAtRide)
                         {
-                            if (CashInPocket <= 0)
+                            if (cashInPocket <= 0)
                             {
-                                InsertNewThought(PeepThoughtType::SpentMoney);
+                                insertNewThought(PeepThoughtType::spentMoney);
                             }
                             else
                             {
-                                InsertNewThought(PeepThoughtType::CantAffordRide, ride.id);
+                                insertNewThought(PeepThoughtType::cantAffordRide, ride.id);
                             }
                         }
-                        ChoseNotToGoOnRide(ride, peepAtRide, true);
+                        choseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
                 }
 
                 // If happy enough, peeps will ignore the fact that a ride has recently crashed.
-                if (ride.lastCrashType != RIDE_CRASH_TYPE_NONE && Happiness < 225)
+                if (ride.lastCrashType != RIDE_CRASH_TYPE_NONE && happiness < 225)
                 {
                     if (peepAtRide)
                     {
-                        InsertNewThought(PeepThoughtType::NotSafe, ride.id);
-                        if (HappinessTarget >= 64)
+                        insertNewThought(PeepThoughtType::notSafe, ride.id);
+                        if (happinessTarget >= 64)
                         {
-                            HappinessTarget -= 8;
+                            happinessTarget -= 8;
                         }
                         ride.updatePopularity(0);
                     }
-                    ChoseNotToGoOnRide(ride, peepAtRide, true);
+                    choseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
 
@@ -2098,7 +2098,7 @@ namespace OpenRCT2
                 {
                     // If a peep has already decided that they're going to go on a ride, they'll skip the weather and
                     // excitement check and will only do a basic intensity check when they arrive at the ride itself.
-                    if (ride.id == GuestHeadingToRideId)
+                    if (ride.id == guestHeadingToRideId)
                     {
                         if (ride.ratings.intensity > RideRating::make(10, 00) && !gameState.cheats.ignoreRideIntensity)
                         {
@@ -2113,14 +2113,14 @@ namespace OpenRCT2
                         {
                             if (peepAtRide)
                             {
-                                InsertNewThought(PeepThoughtType::NotWhileRaining, ride.id);
-                                if (HappinessTarget >= 64)
+                                insertNewThought(PeepThoughtType::notWhileRaining, ride.id);
+                                if (happinessTarget >= 64)
                                 {
-                                    HappinessTarget -= 8;
+                                    happinessTarget -= 8;
                                 }
                                 ride.updatePopularity(0);
                             }
-                            ChoseNotToGoOnRide(ride, peepAtRide, true);
+                            choseNotToGoOnRide(ride, peepAtRide, true);
                             return false;
                         }
                         // If it is raining and the ride provides shelter skip the
@@ -2132,20 +2132,20 @@ namespace OpenRCT2
                                 // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                                 // at 10.0 (before happiness calculations). A full happiness bar will increase the max
                                 // intensity and decrease the min intensity by about 2.5.
-                                RideRating_t maxIntensity = std::min(Intensity.GetMaximum() * 100, 1000) + Happiness;
-                                RideRating_t minIntensity = (Intensity.GetMinimum() * 100) - Happiness;
+                                RideRating_t maxIntensity = std::min(intensity.GetMaximum() * 100, 1000) + happiness;
+                                RideRating_t minIntensity = (intensity.GetMinimum() * 100) - happiness;
                                 if (ride.ratings.intensity < minIntensity)
                                 {
                                     if (peepAtRide)
                                     {
-                                        InsertNewThought(PeepThoughtType::MoreThrilling, ride.id);
-                                        if (HappinessTarget >= 64)
+                                        insertNewThought(PeepThoughtType::moreThrilling, ride.id);
+                                        if (happinessTarget >= 64)
                                         {
-                                            HappinessTarget -= 8;
+                                            happinessTarget -= 8;
                                         }
                                         ride.updatePopularity(0);
                                     }
-                                    ChoseNotToGoOnRide(ride, peepAtRide, true);
+                                    choseNotToGoOnRide(ride, peepAtRide, true);
                                     return false;
                                 }
                                 if (ride.ratings.intensity > maxIntensity)
@@ -2154,28 +2154,28 @@ namespace OpenRCT2
                                     return false;
                                 }
 
-                                // Nausea calculations.
-                                RideRating_t maxNausea = NauseaMaximumThresholds[(EnumValue(NauseaTolerance) & 3)] + Happiness;
+                                // nausea calculations.
+                                RideRating_t maxNausea = NauseaMaximumThresholds[(EnumValue(nauseaTolerance) & 3)] + happiness;
 
                                 if (ride.ratings.nausea > maxNausea)
                                 {
                                     if (peepAtRide)
                                     {
-                                        InsertNewThought(PeepThoughtType::Sickening, ride.id);
-                                        if (HappinessTarget >= 64)
+                                        insertNewThought(PeepThoughtType::sickening, ride.id);
+                                        if (happinessTarget >= 64)
                                         {
-                                            HappinessTarget -= 8;
+                                            happinessTarget -= 8;
                                         }
                                         ride.updatePopularity(0);
                                     }
-                                    ChoseNotToGoOnRide(ride, peepAtRide, true);
+                                    choseNotToGoOnRide(ride, peepAtRide, true);
                                     return false;
                                 }
 
                                 // Very nauseous peeps will only go on very gentle rides.
-                                if (ride.ratings.nausea >= RideRating::make(1, 40) && Nausea > 160)
+                                if (ride.ratings.nausea >= RideRating::make(1, 40) && nausea > 160)
                                 {
-                                    ChoseNotToGoOnRide(ride, peepAtRide, false);
+                                    choseNotToGoOnRide(ride, peepAtRide, false);
                                     return false;
                                 }
                             }
@@ -2189,7 +2189,7 @@ namespace OpenRCT2
                 {
                     if ((ScenarioRand() & 0xFFFF) > 0x1999u)
                     {
-                        ChoseNotToGoOnRide(ride, peepAtRide, false);
+                        choseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
                     }
 
@@ -2198,7 +2198,7 @@ namespace OpenRCT2
                         if (ride.maxPositiveVerticalG > MakeFixed16_2dp(5, 00)
                             || ride.maxNegativeVerticalG < MakeFixed16_2dp(-4, 00) || ride.maxLateralG > MakeFixed16_2dp(4, 00))
                         {
-                            ChoseNotToGoOnRide(ride, peepAtRide, false);
+                            choseNotToGoOnRide(ride, peepAtRide, false);
                             return false;
                         }
                     }
@@ -2220,14 +2220,14 @@ namespace OpenRCT2
                     {
                         if (peepAtRide)
                         {
-                            InsertNewThought(PeepThoughtType::BadValue, ride.id);
-                            if (HappinessTarget >= 60)
+                            insertNewThought(PeepThoughtType::badValue, ride.id);
+                            if (happinessTarget >= 60)
                             {
-                                HappinessTarget -= 16;
+                                happinessTarget -= 16;
                             }
                             ride.updatePopularity(0);
                         }
-                        ChoseNotToGoOnRide(ride, peepAtRide, true);
+                        choseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
 
@@ -2239,7 +2239,7 @@ namespace OpenRCT2
                         {
                             if (!(PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY))
                             {
-                                InsertNewThought(PeepThoughtType::GoodValue, ride.id);
+                                insertNewThought(PeepThoughtType::goodValue, ride.id);
                             }
                         }
                     }
@@ -2252,7 +2252,7 @@ namespace OpenRCT2
                 ride.updatePopularity(1);
             }
 
-            if (ride.id == GuestHeadingToRideId)
+            if (ride.id == guestHeadingToRideId)
             {
                 GuestResetRideHeading(*this);
             }
@@ -2261,78 +2261,78 @@ namespace OpenRCT2
             return true;
         }
 
-        ChoseNotToGoOnRide(ride, peepAtRide, false);
+        choseNotToGoOnRide(ride, peepAtRide, false);
         return false;
     }
 
     static bool GuestShouldGoToShop(Guest& guest, Ride& ride, bool peepAtShop)
     {
         // Peeps won't go to the same shop twice in a row.
-        if (ride.id == guest.PreviousRide)
+        if (ride.id == guest.previousRide)
         {
-            guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
+            guest.choseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
 
         const auto& rtd = ride.getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::toilet)
         {
-            if (guest.Toilet < 70)
+            if (guest.toilet < 70)
             {
-                guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
+                guest.choseNotToGoOnRide(ride, peepAtShop, true);
                 return false;
             }
 
             // The amount that peeps are willing to pay to use the Toilets scales with their toilet stat.
             // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-            if ((RideGetPrice(ride) * 40 > guest.Toilet) && !getGameState().cheats.ignorePrice)
+            if ((RideGetPrice(ride) * 40 > guest.toilet) && !getGameState().cheats.ignorePrice)
             {
                 if (peepAtShop)
                 {
-                    guest.InsertNewThought(PeepThoughtType::NotPaying, ride.id);
-                    if (guest.HappinessTarget >= 60)
+                    guest.insertNewThought(PeepThoughtType::notPaying, ride.id);
+                    if (guest.happinessTarget >= 60)
                     {
-                        guest.HappinessTarget -= 16;
+                        guest.happinessTarget -= 16;
                     }
                     ride.updatePopularity(0);
                 }
-                guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
+                guest.choseNotToGoOnRide(ride, peepAtShop, true);
                 return false;
             }
         }
 
         if (rtd.specialType == RtdSpecialType::firstAid)
         {
-            if (guest.Nausea < 128)
+            if (guest.nausea < 128)
             {
-                guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
+                guest.choseNotToGoOnRide(ride, peepAtShop, true);
                 return false;
             }
         }
 
         // Basic price checks
         auto ridePrice = RideGetPrice(ride);
-        if (ridePrice != 0 && ridePrice > guest.CashInPocket)
+        if (ridePrice != 0 && ridePrice > guest.cashInPocket)
         {
             if (peepAtShop)
             {
-                if (guest.CashInPocket <= 0)
+                if (guest.cashInPocket <= 0)
                 {
-                    guest.InsertNewThought(PeepThoughtType::SpentMoney);
+                    guest.insertNewThought(PeepThoughtType::spentMoney);
                 }
                 else
                 {
-                    guest.InsertNewThought(PeepThoughtType::CantAffordRide, ride.id);
+                    guest.insertNewThought(PeepThoughtType::cantAffordRide, ride.id);
                 }
             }
-            guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
+            guest.choseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
 
         if (peepAtShop)
         {
             ride.updatePopularity(1);
-            if (ride.id == guest.GuestHeadingToRideId)
+            if (ride.id == guest.guestHeadingToRideId)
             {
                 GuestResetRideHeading(guest);
             }
@@ -2341,10 +2341,10 @@ namespace OpenRCT2
     }
 
     // Used when no logging to an expend type required
-    void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
+    void Guest::spendMoney(money64 amount, ExpenditureType expenditure)
     {
         money64 unused;
-        SpendMoney(unused, amount, expenditure);
+        spendMoney(unused, amount, expenditure);
     }
 
     /**
@@ -2352,55 +2352,55 @@ namespace OpenRCT2
      *  rct2: 0x0069926C
      * Expend type was previously an offset saved in 0x00F1AEC0
      */
-    void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
+    void Guest::spendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
     {
         assert(!(getGameState().park.flags & PARK_FLAGS_NO_MONEY));
 
-        CashInPocket = std::max(0.00_GBP, CashInPocket - amount);
-        CashSpent = AddClamp(CashSpent, amount);
+        cashInPocket = std::max(0.00_GBP, cashInPocket - amount);
+        cashSpent = AddClamp(cashSpent, amount);
 
         peep_expend_type = AddClamp(peep_expend_type, amount);
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByNumber(WindowClass::peep, Id);
+        windowMgr->InvalidateByNumber(WindowClass::peep, id);
 
         FinancePayment(-amount, expenditure);
 
-        MoneyEffect::CreateAt(amount, GetLocation(), true);
+        MoneyEffect::CreateAt(amount, getLocation(), true);
 
-        Audio::Play3D(Audio::SoundId::purchase, GetLocation());
+        Audio::Play3D(Audio::SoundId::purchase, getLocation());
     }
 
-    void Guest::SetHasRidden(const Ride& ride)
+    void Guest::setHasRidden(const Ride& ride)
     {
-        RideUse::GetHistory().Add(Id, ride.id);
+        RideUse::GetHistory().Add(id, ride.id);
 
-        SetHasRiddenRideType(ride.type);
+        setHasRiddenRideType(ride.type);
     }
 
-    bool Guest::HasRidden(const Ride& ride) const
+    bool Guest::hasRidden(const Ride& ride) const
     {
-        return RideUse::GetHistory().Contains(Id, ride.id);
+        return RideUse::GetHistory().Contains(id, ride.id);
     }
 
-    void Guest::SetHasRiddenRideType(ride_type_t rideType)
+    void Guest::setHasRiddenRideType(ride_type_t rideType)
     {
-        RideUse::GetTypeHistory().Add(Id, rideType);
+        RideUse::GetTypeHistory().Add(id, rideType);
     }
 
-    bool Guest::HasRiddenRideType(ride_type_t rideType) const
+    bool Guest::hasRiddenRideType(ride_type_t rideType) const
     {
-        return RideUse::GetTypeHistory().Contains(Id, rideType);
+        return RideUse::GetTypeHistory().Contains(id, rideType);
     }
 
-    void Guest::SetParkEntryTime(int32_t entryTime)
+    void Guest::setParkEntryTime(int32_t entryTime)
     {
-        ParkEntryTime = entryTime;
+        parkEntryTime = entryTime;
     }
 
-    int32_t Guest::GetParkEntryTime() const
+    int32_t Guest::getParkEntryTime() const
     {
-        return ParkEntryTime;
+        return parkEntryTime;
     }
 
     static bool GuestShouldRideWhileRaining(Guest& guest, const Ride& ride)
@@ -2413,7 +2413,7 @@ namespace OpenRCT2
         }
 
         // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
-        if (guest.HasItem(ShopItem::umbrella) && ride.getRideTypeDescriptor().flags.has(RtdFlag::guestsCanUseUmbrella)
+        if (guest.hasItem(ShopItem::umbrella) && ride.getRideTypeDescriptor().flags.has(RtdFlag::guestsCanUseUmbrella)
             && (ScenarioRand() & 2) == 0)
         {
             return true;
@@ -2422,21 +2422,21 @@ namespace OpenRCT2
         return false;
     }
 
-    void Guest::ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide)
+    void Guest::choseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide)
     {
         if (peepAtRide && updateLastRide)
         {
-            PreviousRide = ride.id;
-            PreviousRideTimeOut = 0;
+            previousRide = ride.id;
+            previousRideTimeOut = 0;
         }
 
-        if (ride.id == GuestHeadingToRideId)
+        if (ride.id == guestHeadingToRideId)
         {
             GuestResetRideHeading(*this);
         }
     }
 
-    void Guest::ReadMap()
+    void Guest::readMap()
     {
         if (IsActionInterruptableSafely())
         {
@@ -2449,8 +2449,8 @@ namespace OpenRCT2
 
     static bool GuestHasVoucherForFreeRide(Guest& guest, const Ride& ride)
     {
-        return guest.HasItem(ShopItem::voucher) && guest.VoucherType == VOUCHER_TYPE_RIDE_FREE
-            && guest.VoucherRideId == ride.id;
+        return guest.hasItem(ShopItem::voucher) && guest.voucherType == VOUCHER_TYPE_RIDE_FREE
+            && guest.voucherRideId == ride.id;
     }
 
     /**
@@ -2461,10 +2461,10 @@ namespace OpenRCT2
     static void GuestTriedToEnterFullQueue(Guest& guest, Ride& ride)
     {
         ride.flags.set(RideFlag::queueFull);
-        guest.PreviousRide = ride.id;
-        guest.PreviousRideTimeOut = 0;
+        guest.previousRide = ride.id;
+        guest.previousRideTimeOut = 0;
         // Change status "Heading to" to "Walking" if queue is full
-        if (ride.id == guest.GuestHeadingToRideId)
+        if (ride.id == guest.guestHeadingToRideId)
         {
             GuestResetRideHeading(guest);
         }
@@ -2472,7 +2472,7 @@ namespace OpenRCT2
 
     static void GuestResetRideHeading(Guest& guest)
     {
-        guest.GuestHeadingToRideId = RideId::GetNull();
+        guest.guestHeadingToRideId = RideId::GetNull();
         guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
     }
 
@@ -2480,14 +2480,14 @@ namespace OpenRCT2
     {
         if (peepAtRide)
         {
-            guest.InsertNewThought(PeepThoughtType::Intense, ride.id);
-            if (guest.HappinessTarget >= 64)
+            guest.insertNewThought(PeepThoughtType::intense, ride.id);
+            if (guest.happinessTarget >= 64)
             {
-                guest.HappinessTarget -= 8;
+                guest.happinessTarget -= 8;
             }
             ride.updatePopularity(0);
         }
-        guest.ChoseNotToGoOnRide(ride, peepAtRide, true);
+        guest.choseNotToGoOnRide(ride, peepAtRide, true);
     }
 
     /**
@@ -2539,7 +2539,7 @@ namespace OpenRCT2
         guest->CurrentSeat = chosen_seat;
         vehicle->next_free_seat++;
 
-        vehicle->peep[guest->CurrentSeat] = guest->Id;
+        vehicle->peep[guest->CurrentSeat] = guest->id;
         vehicle->peep_tshirt_colours[guest->CurrentSeat] = guest->TshirtColour;
     }
 
@@ -2547,12 +2547,12 @@ namespace OpenRCT2
      *
      *  rct2: 0x00691D27
      */
-    void Guest::GoToRideEntrance(const Ride& ride)
+    void Guest::goToRideEntrance(const Ride& ride)
     {
         const auto& station = ride.getStation(CurrentRideStation);
         if (station.Entrance.IsNull())
         {
-            RemoveFromQueue();
+            removeFromQueue();
             return;
         }
 
@@ -2581,10 +2581,10 @@ namespace OpenRCT2
         SetState(PeepState::enteringRide);
         RideSubState = PeepRideSubState::inEntrance;
 
-        RejoinQueueTimeout = 0;
-        GuestTimeOnRide = 0;
+        rejoinQueueTimeout = 0;
+        guestTimeOnRide = 0;
 
-        RemoveFromQueue();
+        removeFromQueue();
     }
 
     static bool FindVehicleToEnter(
@@ -2661,32 +2661,32 @@ namespace OpenRCT2
         // entered entrance
         if (guest.DestinationTolerance == 0)
         {
-            guest.RemoveFromQueue();
+            guest.removeFromQueue();
             guest.SetState(PeepState::falling);
         }
     }
 
     static bool PeepCheckRidePriceAtEntrance(Guest& guest, const Ride& ride, money64 ridePrice)
     {
-        if ((guest.HasItem(ShopItem::voucher)) && guest.VoucherType == VOUCHER_TYPE_RIDE_FREE
-            && guest.VoucherRideId == guest.CurrentRide)
+        if ((guest.hasItem(ShopItem::voucher)) && guest.voucherType == VOUCHER_TYPE_RIDE_FREE
+            && guest.voucherRideId == guest.CurrentRide)
             return true;
 
-        if (guest.CashInPocket <= 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+        if (guest.cashInPocket <= 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
         {
-            guest.InsertNewThought(PeepThoughtType::SpentMoney);
+            guest.insertNewThought(PeepThoughtType::spentMoney);
             PeepUpdateRideAtEntranceTryLeave(guest);
             return false;
         }
 
-        if (ridePrice > guest.CashInPocket)
+        if (ridePrice > guest.cashInPocket)
         {
             // Prevent looping of same thought / animation since Destination Tolerance
             // is only 0 exactly at entrance and will immediately change as guest
             // tries to leave hereafter
             if (guest.DestinationTolerance == 0)
             {
-                guest.InsertNewThought(PeepThoughtType::CantAffordRide, guest.CurrentRide);
+                guest.insertNewThought(PeepThoughtType::cantAffordRide, guest.CurrentRide);
             }
             PeepUpdateRideAtEntranceTryLeave(guest);
             return false;
@@ -2697,7 +2697,7 @@ namespace OpenRCT2
         {
             if (((value * 2) < ridePrice) && !(getGameState().cheats.ignorePrice))
             {
-                guest.InsertNewThought(PeepThoughtType::BadValue, guest.CurrentRide);
+                guest.insertNewThought(PeepThoughtType::badValue, guest.CurrentRide);
                 PeepUpdateRideAtEntranceTryLeave(guest);
                 return false;
             }
@@ -2721,19 +2721,19 @@ namespace OpenRCT2
         // Calculate satisfaction based on how long the peep has been in the queue for.
         // (For comparison: peeps start thinking "I've been queueing for a long time" at 3500 and
         // start leaving the queue at 4300.)
-        if (guest.TimeInQueue >= 4500)
+        if (guest.timeInQueue >= 4500)
             satisfaction -= 35;
-        else if (guest.TimeInQueue >= 2250)
+        else if (guest.timeInQueue >= 2250)
             satisfaction -= 10;
-        else if (guest.TimeInQueue <= 750)
+        else if (guest.timeInQueue <= 750)
             satisfaction += 10;
 
         // Peeps get a small boost in satisfaction if they've been on a ride of the same type before,
         // and this boost is doubled if they've already been on this particular ride.
-        if (guest.HasRiddenRideType(ride.type))
+        if (guest.hasRiddenRideType(ride.type))
             satisfaction += 10;
 
-        if (guest.HasRidden(*GetRide(guest.CurrentRide)))
+        if (guest.hasRidden(*GetRide(guest.CurrentRide)))
             satisfaction += 10;
 
         return satisfaction;
@@ -2753,11 +2753,11 @@ namespace OpenRCT2
     {
         guest.PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
         uint8_t peepRideRating = std::clamp((ride.ratings.excitement / 4) + satisfaction, 0, kPeepMaxHappiness);
-        if (peepRideRating >= guest.FavouriteRideRating)
+        if (peepRideRating >= guest.favouriteRideRating)
         {
-            if (guest.Happiness >= 160 && guest.HappinessTarget >= 160)
+            if (guest.happiness >= 160 && guest.happinessTarget >= 160)
             {
-                guest.FavouriteRideRating = peepRideRating;
+                guest.favouriteRideRating = peepRideRating;
                 guest.PeepFlags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
             }
         }
@@ -2782,7 +2782,7 @@ namespace OpenRCT2
             return -5;
         }
 
-        if ((ride.value + ((ride.value * guest.Happiness) / 256)) >= ridePrice)
+        if ((ride.value + ((ride.value * guest.happiness) / 256)) >= ridePrice)
         {
             return -30;
         }
@@ -2805,20 +2805,20 @@ namespace OpenRCT2
 
         uint8_t intensitySatisfaction = 3;
         uint8_t nauseaSatisfaction = 3;
-        RideRating_t maxIntensity = guest.Intensity.GetMaximum() * 100;
-        RideRating_t minIntensity = guest.Intensity.GetMinimum() * 100;
+        RideRating_t maxIntensity = guest.intensity.GetMaximum() * 100;
+        RideRating_t minIntensity = guest.intensity.GetMinimum() * 100;
         if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
         {
             intensitySatisfaction--;
         }
-        minIntensity -= guest.Happiness * 2;
-        maxIntensity += guest.Happiness;
+        minIntensity -= guest.happiness * 2;
+        maxIntensity += guest.happiness;
         if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
         {
             intensitySatisfaction--;
         }
-        minIntensity -= guest.Happiness * 2;
-        maxIntensity += guest.Happiness;
+        minIntensity -= guest.happiness * 2;
+        maxIntensity += guest.happiness;
         if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
         {
             intensitySatisfaction--;
@@ -2826,20 +2826,20 @@ namespace OpenRCT2
 
         // Although it's not shown in the interface, a peep with Average or High nausea tolerance
         // has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
-        RideRating_t minNausea = kNauseaMinimumThresholds[(EnumValue(guest.NauseaTolerance) & 3)];
-        RideRating_t maxNausea = NauseaMaximumThresholds[(EnumValue(guest.NauseaTolerance) & 3)];
+        RideRating_t minNausea = kNauseaMinimumThresholds[(EnumValue(guest.nauseaTolerance) & 3)];
+        RideRating_t maxNausea = NauseaMaximumThresholds[(EnumValue(guest.nauseaTolerance) & 3)];
         if (minNausea <= ride.ratings.nausea && maxNausea >= ride.ratings.nausea)
         {
             nauseaSatisfaction--;
         }
-        minNausea -= guest.Happiness * 2;
-        maxNausea += guest.Happiness;
+        minNausea -= guest.happiness * 2;
+        maxNausea += guest.happiness;
         if (minNausea <= ride.ratings.nausea && maxNausea >= ride.ratings.nausea)
         {
             nauseaSatisfaction--;
         }
-        minNausea -= guest.Happiness * 2;
-        maxNausea += guest.Happiness;
+        minNausea -= guest.happiness * 2;
+        maxNausea += guest.happiness;
         if (minNausea <= ride.ratings.nausea && maxNausea >= ride.ratings.nausea)
         {
             nauseaSatisfaction--;
@@ -2898,11 +2898,11 @@ namespace OpenRCT2
      */
     static void GuestUpdateRideNauseaGrowth(Guest& guest, const Ride& ride)
     {
-        const auto nauseaMultiplier = std::clamp(256 - guest.HappinessTarget, 64, 200);
+        const auto nauseaMultiplier = std::clamp(256 - guest.happinessTarget, 64, 200);
         const auto rideGeneratedNausea = (ride.ratings.nausea * nauseaMultiplier) / 512;
-        const auto hungerAdjustedNausea = ((rideGeneratedNausea * std::max<uint8_t>(128, guest.Hunger)) / 128) * 2;
-        const auto nauseaGrowthRateChange = hungerAdjustedNausea >> (EnumValue(guest.NauseaTolerance) & 3);
-        guest.NauseaTarget = static_cast<uint8_t>(std::min<int32_t>(guest.NauseaTarget + nauseaGrowthRateChange, 255));
+        const auto hungerAdjustedNausea = ((rideGeneratedNausea * std::max<uint8_t>(128, guest.hunger)) / 128) * 2;
+        const auto nauseaGrowthRateChange = hungerAdjustedNausea >> (EnumValue(guest.nauseaTolerance) & 3);
+        guest.nauseaTarget = static_cast<uint8_t>(std::min<int32_t>(guest.nauseaTarget + nauseaGrowthRateChange, 255));
     }
 
     static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride)
@@ -2913,23 +2913,23 @@ namespace OpenRCT2
             return false;
         if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
             return false;
-        if (guest.Happiness < 180)
+        if (guest.happiness < 180)
             return false;
         if (guest.Energy < 100)
             return false;
-        if (guest.Nausea > 160)
+        if (guest.nausea > 160)
             return false;
-        if (guest.Hunger < 30)
+        if (guest.hunger < 30)
             return false;
-        if (guest.Thirst < 20)
+        if (guest.thirst < 20)
             return false;
-        if (guest.Toilet > 170)
+        if (guest.toilet > 170)
             return false;
 
         uint8_t r = (ScenarioRand() & 0xFF);
         if (r <= 128)
         {
-            if (guest.GuestNumRides > 7)
+            if (guest.guestNumRides > 7)
                 return false;
             if (r > 64)
                 return false;
@@ -2942,17 +2942,17 @@ namespace OpenRCT2
     {
         if (getGameState().park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
             return false;
-        if (guest.Happiness < 200)
+        if (guest.happiness < 200)
             return false;
 
-        return (ScenarioRand() & 0xFF) >= static_cast<uint8_t>(guest.Intensity);
+        return (ScenarioRand() & 0xFF) >= static_cast<uint8_t>(guest.intensity);
     }
 
     static bool GuestReallyLikedRide(Guest& guest, const Ride& ride)
     {
-        if (guest.Happiness < 215)
+        if (guest.happiness < 215)
             return false;
-        if (guest.Nausea > 120)
+        if (guest.nausea > 120)
             return false;
         if (!RideHasRatings(ride))
             return false;
@@ -2968,7 +2968,7 @@ namespace OpenRCT2
     static PeepThoughtType GuestAssessSurroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
     {
         if ((TileElementHeight({ centre_x, centre_y })) > centre_z)
-            return PeepThoughtType::None;
+            return PeepThoughtType::none;
 
         uint16_t num_scenery = 0;
         uint16_t num_fountains = 0;
@@ -2987,24 +2987,24 @@ namespace OpenRCT2
             {
                 for (auto* tileElement : TileElementsView(CoordsXY{ x, y }))
                 {
-                    if (tileElement->IsGhost())
+                    if (tileElement->isGhost())
                     {
                         continue;
                     }
 
-                    switch (tileElement->GetType())
+                    switch (tileElement->getType())
                     {
                         case TileElementType::Path:
                         {
-                            if (!tileElement->AsPath()->HasAddition())
+                            if (!tileElement->asPath()->HasAddition())
                                 break;
 
-                            auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                            auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
                             if (pathAddEntry == nullptr)
                             {
-                                return PeepThoughtType::None;
+                                return PeepThoughtType::none;
                             }
-                            if (tileElement->AsPath()->AdditionIsGhost())
+                            if (tileElement->asPath()->AdditionIsGhost())
                                 break;
 
                             if (pathAddEntry->flags
@@ -3013,7 +3013,7 @@ namespace OpenRCT2
                                 num_fountains++;
                                 break;
                             }
-                            if (tileElement->AsPath()->IsBroken())
+                            if (tileElement->asPath()->IsBroken())
                             {
                                 num_rubbish++;
                             }
@@ -3025,7 +3025,7 @@ namespace OpenRCT2
                             break;
                         case TileElementType::Track:
                         {
-                            auto* ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+                            auto* ride = GetRide(tileElement->asTrack()->GetRideIndex());
                             if (ride == nullptr)
                                 break;
 
@@ -3067,19 +3067,19 @@ namespace OpenRCT2
         }
 
         if (num_fountains >= 5 && num_rubbish < 20)
-            return PeepThoughtType::Fountains;
+            return PeepThoughtType::fountains;
 
         if (num_scenery >= 40 && num_rubbish < 8)
-            return PeepThoughtType::Scenery;
+            return PeepThoughtType::scenery;
 
         if (nearby_music == 1 && num_rubbish < 20)
-            return PeepThoughtType::Music;
+            return PeepThoughtType::music;
 
         if (num_rubbish < 2 && !getGameState().cheats.disableLittering)
             // if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
-            return PeepThoughtType::VeryClean;
+            return PeepThoughtType::veryClean;
 
-        return PeepThoughtType::None;
+        return PeepThoughtType::none;
     }
 
     /**
@@ -3088,12 +3088,12 @@ namespace OpenRCT2
      */
     static void GuestUpdateHunger(Guest& guest)
     {
-        if (guest.Hunger >= 3)
+        if (guest.hunger >= 3)
         {
-            guest.Hunger -= 2;
+            guest.hunger -= 2;
 
             guest.EnergyTarget = std::min<uint16_t>(guest.EnergyTarget + 2, kPeepMaxEnergyTarget);
-            guest.Toilet = std::min(guest.Toilet + 1, 255);
+            guest.toilet = std::min(guest.toilet + 1, 255);
         }
     }
 
@@ -3110,12 +3110,12 @@ namespace OpenRCT2
             guest.EnergyTarget -= 2;
         }
 
-        if (getGameState().weatherCurrent.temperature >= 21 && guest.Thirst >= 5)
+        if (getGameState().weatherCurrent.temperature >= 21 && guest.thirst >= 5)
         {
-            guest.Thirst--;
+            guest.thirst--;
         }
 
-        if (guest.OutsideOfPark)
+        if (guest.outsideOfPark)
         {
             return;
         }
@@ -3127,14 +3127,14 @@ namespace OpenRCT2
         {
             if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
             {
-                if (guest.Energy >= 70 && guest.Happiness >= 60)
+                if (guest.Energy >= 70 && guest.happiness >= 60)
                 {
                     return;
                 }
             }
             else
             {
-                if (guest.Energy >= 55 && guest.Happiness >= 45 && guest.CashInPocket >= 5.00_GBP)
+                if (guest.Energy >= 55 && guest.happiness >= 45 && guest.cashInPocket >= 5.00_GBP)
                 {
                     return;
                 }
@@ -3157,28 +3157,28 @@ namespace OpenRCT2
      */
     static void GuestLeavePark(Guest& guest)
     {
-        guest.GuestHeadingToRideId = RideId::GetNull();
+        guest.guestHeadingToRideId = RideId::GetNull();
         if (guest.PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         {
-            if (guest.GuestIsLostCountdown < 60)
+            if (guest.guestIsLostCountdown < 60)
             {
                 return;
             }
         }
         else
         {
-            guest.GuestIsLostCountdown = 254;
+            guest.guestIsLostCountdown = 254;
             guest.PeepFlags |= PEEP_FLAGS_LEAVING_PARK;
             guest.PeepFlags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
         }
 
-        guest.InsertNewThought(PeepThoughtType::GoHome);
+        guest.insertNewThought(PeepThoughtType::goHome);
 
         auto* windowMgr = Ui::GetWindowManager();
-        WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, guest.Id);
+        WindowBase* w = windowMgr->FindByNumber(WindowClass::peep, guest.id);
         if (w != nullptr)
             w->onPrepareDraw();
-        windowMgr->InvalidateByNumber(WindowClass::peep, guest.Id);
+        windowMgr->InvalidateByNumber(WindowClass::peep, guest.id);
     }
 
     template<typename T>
@@ -3192,9 +3192,9 @@ namespace OpenRCT2
             return;
         if (guest.x == kLocationNull)
             return;
-        if (!guest.GuestHeadingToRideId.IsNull())
+        if (!guest.guestHeadingToRideId.IsNull())
         {
-            auto ride = GetRide(guest.GuestHeadingToRideId);
+            auto ride = GetRide(guest.guestHeadingToRideId);
             if (ride != nullptr && predicate(*ride))
             {
                 return;
@@ -3202,7 +3202,7 @@ namespace OpenRCT2
         }
 
         OpenRCT2::BitSet<Limits::kMaxRidesInPark> rideConsideration;
-        if (!considerOnlyCloseRides && (guest.HasItem(ShopItem::map)))
+        if (!considerOnlyCloseRides && (guest.hasItem(ShopItem::map)))
         {
             // Consider all rides in the park
             auto& gameState = getGameState();
@@ -3255,7 +3255,7 @@ namespace OpenRCT2
             {
                 if (!ride.flags.has(RideFlag::queueFull))
                 {
-                    if (guest.ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, true))
+                    if (guest.shouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, true))
                     {
                         potentialRides[numPotentialRides++] = ride.id;
                     }
@@ -3283,11 +3283,11 @@ namespace OpenRCT2
         if (closestRide != nullptr)
         {
             // Head to that ride
-            guest.GuestHeadingToRideId = closestRide->id;
-            guest.GuestIsLostCountdown = 200;
+            guest.guestHeadingToRideId = closestRide->id;
+            guest.guestIsLostCountdown = 200;
             guest.ResetPathfindGoal();
             guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
-            guest.TimeLost = 0;
+            guest.timeLost = 0;
         }
     }
 
@@ -3300,7 +3300,7 @@ namespace OpenRCT2
 
     static void GuestHeadForNearestRideWithSpecialType(Guest& guest, bool considerOnlyCloseRides, RtdSpecialType specialType)
     {
-        if ((specialType == RtdSpecialType::toilet) && guest.HasFoodOrDrink())
+        if ((specialType == RtdSpecialType::toilet) && guest.hasFoodOrDrink())
         {
             return;
         }
@@ -3318,18 +3318,18 @@ namespace OpenRCT2
      */
     static void GuestStopPurchaseThought(Guest& guest, ride_type_t rideType)
     {
-        auto thoughtType = PeepThoughtType::Hungry;
+        auto thoughtType = PeepThoughtType::hungry;
 
         const auto& rtd = GetRideTypeDescriptor(rideType);
         if (!rtd.flags.has(RtdFlag::sellsFood))
         {
-            thoughtType = PeepThoughtType::Thirsty;
+            thoughtType = PeepThoughtType::thirsty;
             if (!rtd.flags.has(RtdFlag::sellsDrinks))
             {
-                thoughtType = PeepThoughtType::RunningOut;
+                thoughtType = PeepThoughtType::runningOut;
                 if (rtd.specialType != RtdSpecialType::cashMachine)
                 {
-                    thoughtType = PeepThoughtType::Toilet;
+                    thoughtType = PeepThoughtType::toilet;
                     if (rtd.specialType != RtdSpecialType::toilet)
                     {
                         return;
@@ -3341,9 +3341,9 @@ namespace OpenRCT2
         // Remove the related thought
         for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
         {
-            PeepThought* thought = &guest.Thoughts[i];
+            PeepThought* thought = &guest.thoughts[i];
 
-            if (thought->type == PeepThoughtType::None)
+            if (thought->type == PeepThoughtType::none)
                 break;
 
             if (thought->type != thoughtType)
@@ -3354,7 +3354,7 @@ namespace OpenRCT2
                 memmove(thought, thought + 1, sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
             }
 
-            guest.Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
+            guest.thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::none;
 
             guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
             i--;
@@ -3371,9 +3371,9 @@ namespace OpenRCT2
             return false;
         if (guest.PeepFlags & PEEP_FLAGS_LEAVING_PARK)
             return false;
-        if (guest.CashInPocket > 20.00_GBP)
+        if (guest.cashInPocket > 20.00_GBP)
             return false;
-        if (115 + (ScenarioRand() % 128) > guest.Happiness)
+        if (115 + (ScenarioRand() % 128) > guest.happiness)
             return false;
         if (guest.Energy < 80)
             return false;
@@ -3381,7 +3381,7 @@ namespace OpenRCT2
         auto ride = GetRide(rideIndex);
         if (ride != nullptr)
         {
-            ride->updateSatisfaction(guest.Happiness >> 6);
+            ride->updateSatisfaction(guest.happiness >> 6);
             ride->curNumCustomers++;
             ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
             ride->windowInvalidateFlags.set(RideInvalidateFlag::customers);
@@ -3393,7 +3393,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006912A3
      */
-    void Guest::UpdateBuying()
+    void Guest::updateBuying()
     {
         if (!CheckForPath())
             return;
@@ -3410,21 +3410,21 @@ namespace OpenRCT2
             if (!IsActionWalking())
             {
                 UpdateAction();
-                Invalidate();
+                invalidate();
                 return;
             }
 
             const auto& rtd = GetRideTypeDescriptor(ride->type);
             if (rtd.specialType == RtdSpecialType::cashMachine)
             {
-                if (CurrentRide != PreviousRide)
+                if (CurrentRide != previousRide)
                 {
-                    CashInPocket += 50.00_GBP;
+                    cashInPocket += 50.00_GBP;
                 }
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByNumber(WindowClass::peep, Id);
+                windowMgr->InvalidateByNumber(WindowClass::peep, id);
             }
-            Orientation ^= 0x10;
+            orientation ^= 0x10;
 
             auto destination = CoordsXY{ 16, 16 } + NextLoc;
             SetDestination(destination);
@@ -3436,7 +3436,7 @@ namespace OpenRCT2
 
         bool item_bought = false;
 
-        if (CurrentRide != PreviousRide)
+        if (CurrentRide != previousRide)
         {
             const auto& rtd = GetRideTypeDescriptor(ride->type);
             if (rtd.specialType == RtdSpecialType::cashMachine)
@@ -3444,8 +3444,8 @@ namespace OpenRCT2
                 item_bought = PeepShouldUseCashMachine(*this, CurrentRide);
                 if (!item_bought)
                 {
-                    PreviousRide = CurrentRide;
-                    PreviousRideTimeOut = 0;
+                    previousRide = CurrentRide;
+                    previousRideTimeOut = 0;
                 }
                 else
                 {
@@ -3506,7 +3506,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x00691A3B
      */
-    void Guest::UpdateRideAtEntrance()
+    void Guest::updateRideAtEntrance()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -3530,13 +3530,13 @@ namespace OpenRCT2
                     auto entrance = station.Entrance.ToCoordsXYZ();
                     actionZ = entrance.z + 2;
                 }
-                MoveTo({ loc.value(), actionZ });
+                moveTo({ loc.value(), actionZ });
             }
             else
             {
                 DestinationTolerance = 0;
-                Orientation ^= (1 << 4);
-                Invalidate();
+                orientation ^= (1 << 4);
+                invalidate();
             }
         }
 
@@ -3574,7 +3574,7 @@ namespace OpenRCT2
             Vehicle* vehicle = PeepChooseCarFromRide(*this, *ride, carArray);
             PeepChooseSeatFromCar(this, *ride, vehicle);
         }
-        GoToRideEntrance(*ride);
+        goToRideEntrance(*ride);
     }
 
     /** rct2: 0x00981FD4, 0x00981FD6 */
@@ -3610,7 +3610,7 @@ namespace OpenRCT2
         guest.SetDestination(entrance_loc, 3);
 
         ride.curNumCustomers++;
-        guest.OnEnterRide(ride);
+        guest.onEnterRide(ride);
         guest.RideSubState = PeepRideSubState::mazePathfinding;
     }
 
@@ -3620,7 +3620,7 @@ namespace OpenRCT2
 
         TileElement* tile_element = RideGetStationStartTrackElement(ride, guest.CurrentRideStation);
 
-        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->getDirection());
 
         guest.Var37 = (entrance_loc.direction << 2) | (direction_track << 4);
 
@@ -3630,7 +3630,7 @@ namespace OpenRCT2
         guest.timesSlidDown = 0;
 
         ride.curNumCustomers++;
-        guest.OnEnterRide(ride);
+        guest.onEnterRide(ride);
         guest.RideSubState = PeepRideSubState::approachSpiralSlide;
     }
 
@@ -3655,7 +3655,7 @@ namespace OpenRCT2
         }
     }
 
-    uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const
+    uint8_t Guest::getWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const
     {
         // The seatlocation can be split into segments around the ride base
         // to decide the segment first split off the segmentable seat location
@@ -3680,7 +3680,7 @@ namespace OpenRCT2
         return seatLocationSegment + seatLocationFixed;
     }
 
-    void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
+    void Guest::updateRideLeaveEntranceWaypoints(const Ride& ride)
     {
         const auto& station = ride.getStation(CurrentRideStation);
         if (station.Entrance.IsNull())
@@ -3691,7 +3691,7 @@ namespace OpenRCT2
 
         TileElement* tile_element = RideGetStationStartTrackElement(ride, CurrentRideStation);
 
-        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+        uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->getDirection());
 
         auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
         if (vehicle == nullptr)
@@ -3702,7 +3702,7 @@ namespace OpenRCT2
         const auto* rideEntry = vehicle->GetRideEntry();
         const auto* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
-        Var37 = (direction_entrance | GetWaypointedSeatLocation(ride, carEntry, direction_track) * 4) * 4;
+        Var37 = (direction_entrance | getWaypointedSeatLocation(ride, carEntry, direction_track) * 4) * 4;
 
         const auto& rtd = ride.getRideTypeDescriptor();
         CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
@@ -3723,7 +3723,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006921D3
      */
-    void Guest::UpdateRideAdvanceThroughEntrance()
+    void Guest::updateRideAdvanceThroughEntrance()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -3759,7 +3759,7 @@ namespace OpenRCT2
                 actionZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
             }
 
-            MoveTo({ loc.value(), actionZ });
+            moveTo({ loc.value(), actionZ });
             return;
         }
 
@@ -3805,13 +3805,13 @@ namespace OpenRCT2
 
         if (vehicle_type->flags.has(CarEntryFlag::loadingWaypoints))
         {
-            UpdateRideLeaveEntranceWaypoints(*ride);
+            updateRideLeaveEntranceWaypoints(*ride);
             return;
         }
 
         if (vehicle_type->flags.has(CarEntryFlag::useDodgemCarPlacement))
         {
-            SetDestination(vehicle->GetLocation(), 15);
+            SetDestination(vehicle->getLocation(), 15);
             RideSubState = PeepRideSubState::approachVehicle;
             return;
         }
@@ -3831,7 +3831,7 @@ namespace OpenRCT2
 
         auto destination = GetDestination();
         auto loadPositionWithReversal = (vehicle->flags.has(VehicleFlag::carIsReversed)) ? -load_position : load_position;
-        switch (vehicle->Orientation / 8)
+        switch (vehicle->orientation / 8)
         {
             case 0:
                 destination.x = vehicle->x - loadPositionWithReversal;
@@ -3859,7 +3859,7 @@ namespace OpenRCT2
     {
         z += ride.getRideTypeDescriptor().Heights.PlatformHeight;
 
-        guest.MoveTo({ x, y, z });
+        guest.moveTo({ x, y, z });
 
         Guard::Assert(guest.CurrentRideStation.ToUnderlying() < Limits::kMaxStationsPerRide);
         auto exit = ride.getStation(guest.CurrentRideStation).Exit;
@@ -3901,7 +3901,7 @@ namespace OpenRCT2
 
         guest.SetDestination({ x, y }, 2);
 
-        guest.Orientation = exit_direction * 8;
+        guest.orientation = exit_direction * 8;
         guest.RideSubState = PeepRideSubState::approachExit;
     }
 
@@ -3909,26 +3909,26 @@ namespace OpenRCT2
      *
      *  rct2: 0x006920B4
      */
-    void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
+    void Guest::updateRideFreeVehicleEnterRide(Ride& ride)
     {
         auto ridePrice = RideGetPrice(ride);
         if (ridePrice != 0)
         {
-            if ((HasItem(ShopItem::voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE) && (VoucherRideId == CurrentRide))
+            if ((hasItem(ShopItem::voucher)) && (voucherType == VOUCHER_TYPE_RIDE_FREE) && (voucherRideId == CurrentRide))
             {
-                RemoveItem(ShopItem::voucher);
+                removeItem(ShopItem::voucher);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             }
             else
             {
                 ride.totalProfit = AddClamp<money64>(ride.totalProfit, ridePrice);
                 ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
-                SpendMoney(PaidOnRides, ridePrice, ExpenditureType::parkRideTickets);
+                spendMoney(paidOnRides, ridePrice, ExpenditureType::parkRideTickets);
             }
         }
 
         RideSubState = PeepRideSubState::leaveEntrance;
-        uint8_t queueTime = DaysInQueue;
+        uint8_t queueTime = daysInQueue;
         if (queueTime < 253)
             queueTime += 3;
 
@@ -3955,7 +3955,7 @@ namespace OpenRCT2
 
             if (Config::Get().notifications.guestOnRide)
             {
-                News::AddItemToQueue(News::ItemType::peepOnRide, msg_string, Id, ft);
+                News::AddItemToQueue(News::ItemType::peepOnRide, msg_string, id, ft);
             }
         }
 
@@ -3965,7 +3965,7 @@ namespace OpenRCT2
             SwitchToSpecialSprite(1);
         }
 
-        UpdateRideAdvanceThroughEntrance();
+        updateRideAdvanceThroughEntrance();
     }
 
     /**
@@ -4000,7 +4000,7 @@ namespace OpenRCT2
      * branch it out to 1 and 3. Now uses
      * separate functions.
      */
-    void Guest::UpdateRideFreeVehicleCheck()
+    void Guest::updateRideFreeVehicleCheck()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -4008,13 +4008,13 @@ namespace OpenRCT2
 
         if (ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
         {
-            if (ride->status != RideStatus::open || ride->vehicleChangeTimeout != 0 || (++RejoinQueueTimeout) == 0)
+            if (ride->status != RideStatus::open || ride->vehicleChangeTimeout != 0 || (++rejoinQueueTimeout) == 0)
             {
                 PeepUpdateRideNoFreeVehicleRejoinQueue(*this, *ride);
                 return;
             }
 
-            UpdateRideFreeVehicleEnterRide(*ride);
+            updateRideFreeVehicleEnterRide(*ride);
             return;
         }
 
@@ -4061,7 +4061,7 @@ namespace OpenRCT2
 
         if (!vehicle->IsUsedInPairs())
         {
-            UpdateRideFreeVehicleEnterRide(*ride);
+            updateRideFreeVehicleEnterRide(*ride);
             return;
         }
 
@@ -4069,7 +4069,7 @@ namespace OpenRCT2
         {
             if (CurrentSeat & 1 || !(vehicle->next_free_seat & 1))
             {
-                UpdateRideFreeVehicleEnterRide(*ride);
+                updateRideFreeVehicleEnterRide(*ride);
                 return;
             }
         }
@@ -4078,7 +4078,7 @@ namespace OpenRCT2
             uint8_t seat = CurrentSeat | 1;
             if (seat < vehicle->next_free_seat)
             {
-                UpdateRideFreeVehicleEnterRide(*ride);
+                updateRideFreeVehicleEnterRide(*ride);
                 return;
             }
         }
@@ -4088,7 +4088,7 @@ namespace OpenRCT2
         {
             return;
         }
-        if (ride->status == RideStatus::open && ++RejoinQueueTimeout != 0
+        if (ride->status == RideStatus::open && ++rejoinQueueTimeout != 0
             && !currentTrain->flags.has(VehicleFlag::readyToDepart))
         {
             return;
@@ -4106,17 +4106,17 @@ namespace OpenRCT2
         PeepUpdateRideNoFreeVehicleRejoinQueue(*this, *ride);
     }
 
-    void Guest::UpdateRideApproachVehicle()
+    void Guest::updateRideApproachVehicle()
     {
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
         RideSubState = PeepRideSubState::enterVehicle;
     }
 
-    void Guest::UpdateRideEnterVehicle()
+    void Guest::updateRideEnterVehicle()
     {
         auto& gameState = getGameState();
         auto* ride = GetRide(CurrentRide);
@@ -4149,11 +4149,11 @@ namespace OpenRCT2
                         ride->curNumCustomers++;
 
                         vehicle->ApplyMass(seatedGuest->Mass);
-                        seatedGuest->MoveTo({ kLocationNull, 0, 0 });
+                        seatedGuest->moveTo({ kLocationNull, 0, 0 });
                         seatedGuest->SetState(PeepState::onRide);
-                        seatedGuest->GuestTimeOnRide = 0;
+                        seatedGuest->guestTimeOnRide = 0;
                         seatedGuest->RideSubState = PeepRideSubState::onRide;
-                        seatedGuest->OnEnterRide(*ride);
+                        seatedGuest->onEnterRide(*ride);
                     }
                 }
 
@@ -4161,15 +4161,15 @@ namespace OpenRCT2
                 ride->curNumCustomers++;
 
                 vehicle->ApplyMass(Mass);
-                vehicle->Invalidate();
+                vehicle->invalidate();
 
-                MoveTo({ kLocationNull, 0, 0 });
+                moveTo({ kLocationNull, 0, 0 });
 
                 SetState(PeepState::onRide);
 
-                GuestTimeOnRide = 0;
+                guestTimeOnRide = 0;
                 RideSubState = PeepRideSubState::onRide;
-                OnEnterRide(*ride);
+                onEnterRide(*ride);
             }
         }
     }
@@ -4178,7 +4178,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x00693028
      */
-    void Guest::UpdateRideLeaveVehicle()
+    void Guest::updateRideLeaveVehicle()
     {
         auto& gameState = getGameState();
         auto ride = GetRide(CurrentRide);
@@ -4211,7 +4211,7 @@ namespace OpenRCT2
 
         vehicle->num_peeps--;
         vehicle->ApplyMass(-Mass);
-        vehicle->Invalidate();
+        vehicle->invalidate();
 
         if (ride_station.ToUnderlying() >= Limits::kMaxStationsPerRide)
         {
@@ -4255,7 +4255,7 @@ namespace OpenRCT2
                     bool foundStation = false;
                     for (auto* trackElement : TileElementsView<TrackElement>(vehicle->TrackLocation))
                     {
-                        if (trackElement->GetBaseZ() != vehicle->TrackLocation.z)
+                        if (trackElement->getBaseZ() != vehicle->TrackLocation.z)
                             continue;
 
                         if (trackElement->GetStationIndex() != CurrentRideStation)
@@ -4289,7 +4289,7 @@ namespace OpenRCT2
 
                     if (carEntry->flags.hasAny(CarEntryFlag::isChairlift, CarEntryFlag::isGoKart))
                     {
-                        specialDirection = ((vehicle->Orientation + 3) / 8) + 1;
+                        specialDirection = ((vehicle->orientation + 3) / 8) + 1;
                         specialDirection &= 3;
 
                         if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
@@ -4324,7 +4324,7 @@ namespace OpenRCT2
             {
                 int8_t loadPosition = carEntry->peep_loading_positions[CurrentSeat];
 
-                switch (vehicle->Orientation / 8)
+                switch (vehicle->orientation / 8)
                 {
                     case 0:
                         platformLocation.x -= loadPosition;
@@ -4362,7 +4362,7 @@ namespace OpenRCT2
 
         TileElement* trackElement = RideGetStationStartTrackElement(*ride, CurrentRideStation);
 
-        Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
+        Direction station_direction = (trackElement == nullptr ? 0 : trackElement->getDirection());
 
         vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle == nullptr)
@@ -4379,7 +4379,7 @@ namespace OpenRCT2
         if (carEntry == nullptr)
             return;
 
-        Var37 = ((exitLocation.direction | GetWaypointedSeatLocation(*ride, carEntry, station_direction) * 4) * 4) | 1;
+        Var37 = ((exitLocation.direction | getWaypointedSeatLocation(*ride, carEntry, station_direction) * 4) * 4) | 1;
 
         CoordsXYZ exitWaypointLoc = waypointLoc;
 
@@ -4393,7 +4393,7 @@ namespace OpenRCT2
         if (ride->getRideTypeDescriptor().specialType == RtdSpecialType::motionSimulator)
             exitWaypointLoc.z += 15;
 
-        MoveTo(exitWaypointLoc);
+        moveTo(exitWaypointLoc);
 
         if (waypointIndex < carEntry->peep_loading_waypoints.size())
         {
@@ -4409,7 +4409,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069376A
      */
-    void Guest::UpdateRidePrepareForExit()
+    void Guest::updateRidePrepareForExit()
     {
         const auto* ride = GetRide(CurrentRide);
         if (ride == nullptr || CurrentRideStation.ToUnderlying() >= std::size(ride->getStations()))
@@ -4455,22 +4455,22 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069374F
      */
-    void Guest::UpdateRideApproachExit()
+    void Guest::updateRideApproachExit()
     {
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
 
-        UpdateRidePrepareForExit();
+        updateRidePrepareForExit();
     }
 
     /**
      *
      *  rct2: 0x0069382E
      */
-    void Guest::UpdateRideInExit()
+    void Guest::updateRideInExit()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -4485,12 +4485,12 @@ namespace OpenRCT2
                 int16_t actionZ = ride->getStation(CurrentRideStation).GetBaseZ();
 
                 actionZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
-                MoveTo({ loc.value(), actionZ });
+                moveTo({ loc.value(), actionZ });
                 return;
             }
 
             SwitchToSpecialSprite(0);
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
         }
 
         if (ride->flags.has(RideFlag::onRidePhoto))
@@ -4520,7 +4520,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006926AD
      */
-    void Guest::UpdateRideApproachVehicleWaypoints()
+    void Guest::updateRideApproachVehicleWaypoints()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -4572,7 +4572,7 @@ namespace OpenRCT2
         SetDestination(targetLoc);
     }
 
-    void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+    void updateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
     {
         auto ride = GetRide(guest.CurrentRide);
         // Motion simulators have steps. This moves the peeps up the steps.
@@ -4590,19 +4590,19 @@ namespace OpenRCT2
                 actionZ += 15 - xy_distance;
             }
         }
-        guest.MoveTo({ loc, actionZ });
+        guest.moveTo({ loc, actionZ });
     }
 
-    void UpdateRideApproachVehicleWaypointsDefault(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+    void updateRideApproachVehicleWaypointsDefault(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
     {
-        guest.MoveTo({ loc, guest.z });
+        guest.moveTo({ loc, guest.z });
     }
 
     /**
      *
      *  rct2: 0x0069357D
      */
-    void Guest::UpdateRideApproachExitWaypoints()
+    void Guest::updateRideApproachExitWaypoints()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -4630,7 +4630,7 @@ namespace OpenRCT2
             {
                 actionZ = z;
             }
-            MoveTo({ loc.value(), actionZ });
+            moveTo({ loc.value(), actionZ });
             return;
         }
 
@@ -4638,7 +4638,7 @@ namespace OpenRCT2
         {
             if ((Var37 & 3) == 3)
             {
-                UpdateRidePrepareForExit();
+                updateRidePrepareForExit();
                 return;
             }
 
@@ -4706,7 +4706,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006927B3
      */
-    void Guest::UpdateRideApproachSpiralSlide()
+    void Guest::updateRideApproachSpiralSlide()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -4714,7 +4714,7 @@ namespace OpenRCT2
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
 
@@ -4726,7 +4726,7 @@ namespace OpenRCT2
             spiralSlideSubstate = PeepSpiralSlideSubState::goingUp;
             spiralSlideGoingUpTimer = 0;
             Var37 = (Var37 / 4) & 0xC;
-            MoveTo({ kLocationNull, y, z });
+            moveTo({ kLocationNull, y, z });
             return;
         }
 
@@ -4802,7 +4802,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x00692D83
      */
-    void Guest::UpdateRideOnSpiralSlide()
+    void Guest::updateRideOnSpiralSlide()
     {
         auto ride = GetRide(CurrentRide);
 
@@ -4828,7 +4828,7 @@ namespace OpenRCT2
                         return;
 
                     ride->slideInUse = 1;
-                    ride->slidePeep = Id;
+                    ride->slidePeep = id;
                     ride->slidePeepTShirtColour = TshirtColour;
                     ride->spiralSlideProgress = 0;
                     spiralSlideSubstate = PeepSpiralSlideSubState::slidingDown;
@@ -4847,9 +4847,9 @@ namespace OpenRCT2
                     newLocation.x += kSpiralSlideEnd[dir].x;
                     newLocation.y += kSpiralSlideEnd[dir].y;
 
-                    MoveTo({ newLocation, z });
+                    moveTo({ newLocation, z });
 
-                    Orientation = (Var37 & 0xC) * 2;
+                    orientation = (Var37 & 0xC) * 2;
 
                     Var37++;
                     return;
@@ -4862,7 +4862,7 @@ namespace OpenRCT2
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
 
@@ -4881,13 +4881,13 @@ namespace OpenRCT2
      *
      *  rct2: 0x00692C6B
      */
-    void Guest::UpdateRideLeaveSpiralSlide()
+    void Guest::updateRideLeaveSpiralSlide()
     {
         // Iterates through the spiral slide waypoints until it reaches
         // waypoint 0. Then it readies to leave the ride by the entrance.
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
 
@@ -4901,7 +4901,7 @@ namespace OpenRCT2
         {
             if (waypoint == 3)
             {
-                UpdateRidePrepareForExit();
+                updateRidePrepareForExit();
                 return;
             }
 
@@ -4957,11 +4957,11 @@ namespace OpenRCT2
      *
      *  rct2: 0x00692A83
      */
-    void Guest::UpdateRideMazePathfinding()
+    void Guest::updateRideMazePathfinding()
     {
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
 
@@ -4971,7 +4971,7 @@ namespace OpenRCT2
 
         if (Var37 == 16)
         {
-            UpdateRidePrepareForExit();
+            updateRidePrepareForExit();
             return;
         }
 
@@ -5038,22 +5038,22 @@ namespace OpenRCT2
             return;
         do
         {
-            if (stationBaseZ != tileElement->GetBaseZ())
+            if (stationBaseZ != tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 mazeType = maze_type::hedge;
                 break;
             }
 
-            if (tileElement->GetType() == TileElementType::Entrance
-                && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+            if (tileElement->getType() == TileElementType::Entrance
+                && tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
             {
                 mazeType = maze_type::entrance_or_exit;
                 break;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         switch (mazeType)
         {
@@ -5084,7 +5084,7 @@ namespace OpenRCT2
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
         }
     }
 
@@ -5092,7 +5092,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006938D2
      */
-    void Guest::UpdateRideLeaveExit()
+    void Guest::updateRideLeaveExit()
     {
         auto ride = GetRide(CurrentRide);
 
@@ -5100,14 +5100,14 @@ namespace OpenRCT2
         {
             if (ride != nullptr)
             {
-                MoveTo({ loc.value(), ride->getStation(CurrentRideStation).GetBaseZ() });
+                moveTo({ loc.value(), ride->getStation(CurrentRideStation).GetBaseZ() });
             }
             return;
         }
 
         if (ride != nullptr)
         {
-            OnExitRide(*ride);
+            onExitRide(*ride);
 
             if (PeepFlags & PEEP_FLAGS_TRACKING)
             {
@@ -5117,7 +5117,7 @@ namespace OpenRCT2
 
                 if (Config::Get().notifications.guestLeftRide)
                 {
-                    News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
+                    News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, id, ft);
                 }
             }
         }
@@ -5131,13 +5131,13 @@ namespace OpenRCT2
         for (auto* pathElement : TileElementsView<PathElement>(targetLoc))
         {
             int16_t height = MapHeightFromSlope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
-            height += pathElement->GetBaseZ();
+            height += pathElement->getBaseZ();
 
             int16_t z_diff = z - height;
             if (z_diff > 0 || z_diff < -16)
                 continue;
 
-            MoveTo({ x, y, height });
+            moveTo({ x, y, height });
             return;
         }
     }
@@ -5146,11 +5146,11 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069299C
      */
-    void Guest::UpdateRideShopApproach()
+    void Guest::updateRideShopApproach()
     {
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
 
@@ -5161,7 +5161,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006929BB
      */
-    void Guest::UpdateRideShopInteract()
+    void Guest::updateRideShopInteract()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -5173,40 +5173,40 @@ namespace OpenRCT2
         const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::firstAid)
         {
-            if (Nausea <= 35)
+            if (nausea <= 35)
             {
                 RideSubState = PeepRideSubState::leaveShop;
 
                 SetDestination({ tileCentreX, tileCentreY }, 3);
-                HappinessTarget = std::min(HappinessTarget + 30, kPeepMaxHappiness);
-                Happiness = HappinessTarget;
+                happinessTarget = std::min(happinessTarget + 30, kPeepMaxHappiness);
+                happiness = happinessTarget;
             }
             else
             {
-                Nausea--;
-                NauseaTarget = Nausea;
+                nausea--;
+                nauseaTarget = nausea;
             }
             return;
         }
 
-        if (Toilet != 0)
+        if (toilet != 0)
         {
-            Toilet--;
+            toilet--;
             return;
         }
 
         // Do not play toilet flush sound on title screen as it's considered loud and annoying
         if (gLegacyScene != LegacyScene::titleSequence)
         {
-            Audio::Play3D(Audio::SoundId::toiletFlush, GetLocation());
+            Audio::Play3D(Audio::SoundId::toiletFlush, getLocation());
         }
 
         RideSubState = PeepRideSubState::leaveShop;
 
         SetDestination({ tileCentreX, tileCentreY }, 3);
 
-        HappinessTarget = std::min(HappinessTarget + 30, kPeepMaxHappiness);
-        Happiness = HappinessTarget;
+        happinessTarget = std::min(happinessTarget + 30, kPeepMaxHappiness);
+        happiness = happinessTarget;
         GuestStopPurchaseThought(*this, ride->type);
     }
 
@@ -5214,14 +5214,14 @@ namespace OpenRCT2
      *
      *  rct2: 0x00692935
      */
-    void Guest::UpdateRideShopLeave()
+    void Guest::updateRideShopLeave()
     {
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            const auto curLoc = GetLocation();
-            MoveTo({ loc.value(), curLoc.z });
+            const auto curLoc = getLocation();
+            moveTo({ loc.value(), curLoc.z });
 
-            const auto newLoc = GetLocation().ToTileStart();
+            const auto newLoc = getLocation().ToTileStart();
             if (newLoc.x != NextLoc.x)
                 return;
             if (newLoc.y != NextLoc.y)
@@ -5236,12 +5236,12 @@ namespace OpenRCT2
         {
             ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
             ride->windowInvalidateFlags.set(RideInvalidateFlag::customers);
-            ride->updateSatisfaction(Happiness / 64);
+            ride->updateSatisfaction(happiness / 64);
         }
     }
 
     /* From peep_update */
-    static void GuestUpdateThoughts(Guest& guest)
+    static void GuestUpdatethoughts(Guest& guest)
     {
         // Thoughts must always have a gap of at least
         // 220 ticks in age between them. In order to
@@ -5251,28 +5251,28 @@ namespace OpenRCT2
         int32_t fresh_thought = -1;
         for (int32_t i = 0; i < kPeepMaxThoughts; i++)
         {
-            if (guest.Thoughts[i].type == PeepThoughtType::None)
+            if (guest.thoughts[i].type == PeepThoughtType::none)
                 break;
 
-            if (guest.Thoughts[i].freshness == 1)
+            if (guest.thoughts[i].freshness == 1)
             {
                 add_fresh = 0;
                 // If thought is fresh we wait 220 ticks
                 // before allowing a new thought to become fresh.
-                if (++guest.Thoughts[i].fresh_timeout >= 220)
+                if (++guest.thoughts[i].fresh_timeout >= 220)
                 {
-                    guest.Thoughts[i].fresh_timeout = 0;
+                    guest.thoughts[i].fresh_timeout = 0;
                     // Thought is no longer fresh
-                    guest.Thoughts[i].freshness++;
+                    guest.thoughts[i].freshness++;
                     add_fresh = 1;
                 }
             }
-            else if (guest.Thoughts[i].freshness > 1)
+            else if (guest.thoughts[i].freshness > 1)
             {
-                if (++guest.Thoughts[i].fresh_timeout == 0)
+                if (++guest.thoughts[i].fresh_timeout == 0)
                 {
                     // When thought is older than ~6900 ticks remove it
-                    if (++guest.Thoughts[i].freshness >= 28)
+                    if (++guest.thoughts[i].freshness >= 28)
                     {
                         guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 
@@ -5280,9 +5280,9 @@ namespace OpenRCT2
                         if (i < kPeepMaxThoughts - 2)
                         {
                             memmove(
-                                &guest.Thoughts[i], &guest.Thoughts[i + 1], sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
+                                &guest.thoughts[i], &guest.thoughts[i + 1], sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
                         }
-                        guest.Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
+                        guest.thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::none;
                     }
                 }
             }
@@ -5296,12 +5296,12 @@ namespace OpenRCT2
         // fresh.
         if (add_fresh && fresh_thought != -1)
         {
-            guest.Thoughts[fresh_thought].freshness = 1;
+            guest.thoughts[fresh_thought].freshness = 1;
             guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         }
     }
 
-    void Guest::Update()
+    void Guest::update()
     {
         if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
         {
@@ -5314,7 +5314,7 @@ namespace OpenRCT2
                         UpdateWalkingAnimation();
                     else
                         UpdateActionAnimation();
-                    Invalidate();
+                    invalidate();
                 }
             }
             return;
@@ -5327,15 +5327,15 @@ namespace OpenRCT2
             PeepFlags &= ~PEEP_FLAGS_ANIMATION_FROZEN;
         }
 
-        if (!PreviousRide.IsNull())
+        if (!previousRide.IsNull())
         {
-            if (++PreviousRideTimeOut >= 720)
+            if (++previousRideTimeOut >= 720)
             {
-                PreviousRide = RideId::GetNull();
+                previousRide = RideId::GetNull();
             }
         }
 
-        GuestUpdateThoughts(*this);
+        GuestUpdatethoughts(*this);
 
         // Walking speed logic
         const auto stepsToTake = GetStepsToTake();
@@ -5344,7 +5344,7 @@ namespace OpenRCT2
 
         if (carryCheck <= 255)
         {
-            UpdateEasterEggInteractions();
+            updateEasterEggInteractions();
         }
         else
         {
@@ -5364,37 +5364,37 @@ namespace OpenRCT2
                     UpdatePicked();
                     break;
                 case PeepState::queuingFront:
-                    UpdateRide();
+                    updateRide();
                     break;
                 case PeepState::leavingRide:
-                    UpdateRide();
+                    updateRide();
                     break;
                 case PeepState::walking:
-                    UpdateWalking();
+                    updateWalking();
                     break;
                 case PeepState::queuing:
-                    UpdateQueuing();
+                    updateQueuing();
                     break;
                 case PeepState::enteringRide:
-                    UpdateRide();
+                    updateRide();
                     break;
                 case PeepState::sitting:
-                    UpdateSitting();
+                    updateSitting();
                     break;
                 case PeepState::enteringPark:
-                    UpdateEnteringPark();
+                    updateEnteringPark();
                     break;
                 case PeepState::leavingPark:
-                    UpdateLeavingPark();
+                    updateLeavingPark();
                     break;
                 case PeepState::buying:
-                    UpdateBuying();
+                    updateBuying();
                     break;
                 case PeepState::watching:
-                    UpdateWatching();
+                    updateWatching();
                     break;
                 case PeepState::usingBin:
-                    UpdateUsingBin();
+                    updateUsingBin();
                     break;
                 default:
                     // TODO reset to default state
@@ -5408,71 +5408,71 @@ namespace OpenRCT2
      *
      *  rct2: 0x691A30
      * Used by entering_ride and queueing_front */
-    void Guest::UpdateRide()
+    void Guest::updateRide()
     {
         NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
 
         switch (RideSubState)
         {
             case PeepRideSubState::atEntrance:
-                UpdateRideAtEntrance();
+                updateRideAtEntrance();
                 break;
             case PeepRideSubState::inEntrance:
-                UpdateRideAdvanceThroughEntrance();
+                updateRideAdvanceThroughEntrance();
                 break;
             case PeepRideSubState::freeVehicleCheck:
-                UpdateRideFreeVehicleCheck();
+                updateRideFreeVehicleCheck();
                 break;
             case PeepRideSubState::leaveEntrance:
-                UpdateRideAdvanceThroughEntrance();
+                updateRideAdvanceThroughEntrance();
                 break;
             case PeepRideSubState::approachVehicle:
-                UpdateRideApproachVehicle();
+                updateRideApproachVehicle();
                 break;
             case PeepRideSubState::enterVehicle:
-                UpdateRideEnterVehicle();
+                updateRideEnterVehicle();
                 break;
             case PeepRideSubState::onRide:
                 // No action, on ride.
                 break;
             case PeepRideSubState::leaveVehicle:
-                UpdateRideLeaveVehicle();
+                updateRideLeaveVehicle();
                 break;
             case PeepRideSubState::approachExit:
-                UpdateRideApproachExit();
+                updateRideApproachExit();
                 break;
             case PeepRideSubState::inExit:
-                UpdateRideInExit();
+                updateRideInExit();
                 break;
             case PeepRideSubState::approachVehicleWaypoints:
-                UpdateRideApproachVehicleWaypoints();
+                updateRideApproachVehicleWaypoints();
                 break;
             case PeepRideSubState::approachExitWaypoints:
-                UpdateRideApproachExitWaypoints();
+                updateRideApproachExitWaypoints();
                 break;
             case PeepRideSubState::approachSpiralSlide:
-                UpdateRideApproachSpiralSlide();
+                updateRideApproachSpiralSlide();
                 break;
             case PeepRideSubState::onSpiralSlide:
-                UpdateRideOnSpiralSlide();
+                updateRideOnSpiralSlide();
                 break;
             case PeepRideSubState::leaveSpiralSlide:
-                UpdateRideLeaveSpiralSlide();
+                updateRideLeaveSpiralSlide();
                 break;
             case PeepRideSubState::mazePathfinding:
-                UpdateRideMazePathfinding();
+                updateRideMazePathfinding();
                 break;
             case PeepRideSubState::leaveExit:
-                UpdateRideLeaveExit();
+                updateRideLeaveExit();
                 break;
             case PeepRideSubState::approachShop:
-                UpdateRideShopApproach();
+                updateRideShopApproach();
                 break;
             case PeepRideSubState::interactShop:
-                UpdateRideShopInteract();
+                updateRideShopInteract();
                 break;
             case PeepRideSubState::leaveShop:
-                UpdateRideShopLeave();
+                updateRideShopLeave();
                 break;
             default:
                 // Invalid peep sub-state
@@ -5485,7 +5485,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069030A
      */
-    void Guest::UpdateWalking()
+    void Guest::updateWalking()
     {
         if (!CheckForPath())
             return;
@@ -5525,7 +5525,7 @@ namespace OpenRCT2
                         Litter::Type::emptyCup,
                     };
                     auto litterType = litter_types[ScenarioRand() & 0x3];
-                    const auto loc = GetLocation();
+                    const auto loc = getLocation();
                     int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
                     int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
                     Direction litterDirection = (ScenarioRand() & 0x3);
@@ -5534,25 +5534,25 @@ namespace OpenRCT2
                 }
             }
         }
-        else if (HasEmptyContainer())
+        else if (hasEmptyContainer())
         {
-            if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
+            if ((!GetNextIsSurface()) && (static_cast<uint32_t>(id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
                 && ((0xFFFF & ScenarioRand()) <= 4096))
             {
-                int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
+                int32_t container = Numerics::bitScanForward(getEmptyContainerFlags());
                 auto litterType = Litter::Type::vomit;
 
                 if (container != -1)
                 {
                     auto item = static_cast<ShopItem>(container);
-                    RemoveItem(item);
+                    removeItem(item);
                     litterType = Litter::Type(GetShopItemDescriptor(item).Type);
                 }
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                UpdateAnimationGroup();
+                updateAnimationGroup();
 
-                const auto loc = GetLocation();
+                const auto loc = getLocation();
                 int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
                 int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
                 Direction litterDirection = (ScenarioRand() & 0x3);
@@ -5582,21 +5582,21 @@ namespace OpenRCT2
                 int32_t water_height = surfaceElement->GetWaterHeight();
                 if (water_height > 0)
                 {
-                    MoveTo({ x, y, water_height });
+                    moveTo({ x, y, water_height });
                     SetState(PeepState::falling);
                     return;
                 }
             }
         }
 
-        CheckIfLost();
-        CheckCantFindRide();
-        CheckCantFindExit();
+        checkIfLost();
+        checkCantFindRide();
+        checkCantFindExit();
 
-        if (UpdateWalkingFindBench())
+        if (updateWalkingFindBench())
             return;
 
-        if (UpdateWalkingFindBin())
+        if (updateWalkingFindBin())
             return;
 
         GuestUpdateWalkingBreakScenery(*this);
@@ -5607,16 +5607,16 @@ namespace OpenRCT2
         if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
             return;
 
-        if (Nausea > 140)
+        if (nausea > 140)
             return;
 
-        if (Happiness < 120)
+        if (happiness < 120)
             return;
 
-        if (Toilet > 140)
+        if (toilet > 140)
             return;
 
-        uint16_t chance = HasFoodOrDrink() ? 13107 : 2849;
+        uint16_t chance = hasFoodOrDrink() ? 13107 : 2849;
 
         if ((ScenarioRand() & 0xFFFF) > chance)
             return;
@@ -5630,12 +5630,12 @@ namespace OpenRCT2
 
         for (;; tileElement++)
         {
-            if (tileElement->GetType() == TileElementType::Path)
+            if (tileElement->getType() == TileElementType::Path)
             {
-                if (NextLoc.z == tileElement->GetBaseZ())
+                if (NextLoc.z == tileElement->getBaseZ())
                     break;
             }
-            if (tileElement->IsLastForTile())
+            if (tileElement->isLastForTile())
             {
                 return;
             }
@@ -5643,11 +5643,11 @@ namespace OpenRCT2
 
         int32_t positions_free = 15;
 
-        if (tileElement->AsPath()->HasAddition())
+        if (tileElement->asPath()->HasAddition())
         {
-            if (!tileElement->AsPath()->AdditionIsGhost())
+            if (!tileElement->asPath()->AdditionIsGhost())
             {
-                auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
                 if (pathAddEntry == nullptr)
                 {
                     return;
@@ -5658,7 +5658,7 @@ namespace OpenRCT2
             }
         }
 
-        int32_t edges = (tileElement->AsPath()->GetEdges()) ^ 0xF;
+        int32_t edges = (tileElement->asPath()->GetEdges()) ^ 0xF;
         if (edges == 0)
             return;
 
@@ -5709,11 +5709,11 @@ namespace OpenRCT2
 
         if (CurrentSeat & 1)
         {
-            InsertNewThought(PeepThoughtType::NewRide);
+            insertNewThought(PeepThoughtType::newRide);
         }
         if (CurrentRide.IsNull())
         {
-            InsertNewThought(PeepThoughtType::Scenery);
+            insertNewThought(PeepThoughtType::scenery);
         }
     }
 
@@ -5721,17 +5721,17 @@ namespace OpenRCT2
      *
      *  rct2: 0x69185D
      */
-    void Guest::UpdateQueuing()
+    void Guest::updateQueuing()
     {
         if (!CheckForPath())
         {
-            RemoveFromQueue();
+            removeFromQueue();
             return;
         }
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr || ride->status != RideStatus::open)
         {
-            RemoveFromQueue();
+            removeFromQueue();
             SetState(PeepState::one);
             return;
         }
@@ -5740,12 +5740,12 @@ namespace OpenRCT2
         if (RideSubState != PeepRideSubState::inQueue)
         {
             bool is_front = true;
-            // Fix #4819: Occasionally the peep->GuestNextInQueue is incorrectly set
+            // Fix #4819: Occasionally the peep->guestNextInQueue is incorrectly set
             // to prevent this from causing the peeps to enter a loop
             // first check if the next in queue is actually nearby
             // if they are not then it's safe to assume that this is
             // the front of the queue.
-            Peep* nextGuest = getGameState().entities.GetEntity<Guest>(GuestNextInQueue);
+            Peep* nextGuest = getGameState().entities.GetEntity<Guest>(guestNextInQueue);
             if (nextGuest != nullptr)
             {
                 if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
@@ -5770,7 +5770,7 @@ namespace OpenRCT2
             return;
         if (AnimationGroup == PeepAnimationGroup::normal)
         {
-            if (TimeInQueue >= 2000 && (0xFFFF & ScenarioRand()) <= 119)
+            if (timeInQueue >= 2000 && (0xFFFF & ScenarioRand()) <= 119)
             {
                 // Eat Food/Look at watch
                 Action = PeepActionType::eatFood;
@@ -5778,15 +5778,15 @@ namespace OpenRCT2
                 AnimationImageIdOffset = 0;
                 UpdateCurrentAnimationType();
             }
-            if (TimeInQueue >= 3500 && (0xFFFF & ScenarioRand()) <= 93)
+            if (timeInQueue >= 3500 && (0xFFFF & ScenarioRand()) <= 93)
             {
                 // Create the I have been waiting in line ages thought
-                InsertNewThought(PeepThoughtType::QueuingAges, CurrentRide);
+                insertNewThought(PeepThoughtType::queuingAges, CurrentRide);
             }
         }
         else
         {
-            if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextAnimationType == PeepAnimationType::watchRide)
+            if (!(timeInQueue & 0x3F) && IsActionIdle() && NextAnimationType == PeepAnimationType::watchRide)
             {
                 switch (AnimationGroup)
                 {
@@ -5823,15 +5823,15 @@ namespace OpenRCT2
                 }
             }
         }
-        if (TimeInQueue < 4300)
+        if (timeInQueue < 4300)
             return;
 
-        if (Happiness <= 65 && (0xFFFF & ScenarioRand()) < 2184)
+        if (happiness <= 65 && (0xFFFF & ScenarioRand()) < 2184)
         {
             // Give up queueing for the ride
-            Orientation ^= (1 << 4);
-            Invalidate();
-            RemoveFromQueue();
+            orientation ^= (1 << 4);
+            invalidate();
+            removeFromQueue();
             SetState(PeepState::one);
         }
     }
@@ -5839,7 +5839,7 @@ namespace OpenRCT2
     /**
      * rct2: 0x691451
      */
-    void Guest::UpdateEnteringPark()
+    void Guest::updateEnteringPark()
     {
         if (Var37 != 1)
         {
@@ -5853,13 +5853,13 @@ namespace OpenRCT2
         }
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
         SetState(PeepState::falling);
 
-        OutsideOfPark = false;
-        ParkEntryTime = getGameState().currentTicks;
+        outsideOfPark = false;
+        parkEntryTime = getGameState().currentTicks;
         IncrementGuestsInPark();
         DecrementGuestsHeadingForPark();
         auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
@@ -5870,7 +5870,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x6914CD
      */
-    void Guest::UpdateLeavingPark()
+    void Guest::updateLeavingPark()
     {
         if (Var37 != 0)
         {
@@ -5883,11 +5883,11 @@ namespace OpenRCT2
 
         if (auto loc = UpdateAction(); loc.has_value())
         {
-            MoveTo({ loc.value(), z });
+            moveTo({ loc.value(), z });
             return;
         }
 
-        OutsideOfPark = true;
+        outsideOfPark = true;
         DestinationTolerance = 5;
         DecrementGuestsInPark();
         auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
@@ -5907,7 +5907,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x6916D6
      */
-    void Guest::UpdateWatching()
+    void Guest::updateWatching()
     {
         if (SubState == 0)
         {
@@ -5918,9 +5918,9 @@ namespace OpenRCT2
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            SetDestination(GetLocation());
+            SetDestination(getLocation());
 
-            Orientation = (Var37 & 3) * 8;
+            orientation = (Var37 & 3) * 8;
 
             Action = PeepActionType::idle;
             NextAnimationType = PeepAnimationType::watchRide;
@@ -5930,7 +5930,7 @@ namespace OpenRCT2
             SubState++;
 
             TimeToStand = std::clamp(((129 - Energy) * 16 + 50) / 2, 0, 255);
-            UpdateAnimationGroup();
+            updateAnimationGroup();
         }
         else if (SubState == 1)
         {
@@ -5938,14 +5938,14 @@ namespace OpenRCT2
             {
                 // 6917F6
                 UpdateAction();
-                Invalidate();
+                invalidate();
                 if (!IsActionWalking())
                     return;
                 Action = PeepActionType::idle;
             }
             else
             {
-                if (HasFoodOrDrink())
+                if (hasFoodOrDrink())
                 {
                     if ((ScenarioRand() & 0xFFFF) <= 1310)
                     {
@@ -5988,10 +5988,10 @@ namespace OpenRCT2
                 return;
 
             SetState(PeepState::walking);
-            UpdateAnimationGroup();
+            updateAnimationGroup();
             // Send peep to the centre of current tile.
 
-            auto destination = GetLocation().ToTileCentre();
+            auto destination = getLocation().ToTileCentre();
             SetDestination(destination, 5);
             UpdateCurrentAnimationType();
         }
@@ -6001,7 +6001,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x00691089
      */
-    void Guest::UpdateUsingBin()
+    void Guest::updateUsingBin()
     {
         switch (UsingBinSubState)
         {
@@ -6022,14 +6022,14 @@ namespace OpenRCT2
                 if (!IsActionWalking())
                 {
                     UpdateAction();
-                    Invalidate();
+                    invalidate();
                     return;
                 }
 
                 PathElement* foundElement = nullptr;
                 for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
                 {
-                    if (pathElement->GetBaseZ() != NextLoc.z)
+                    if (pathElement->getBaseZ() != NextLoc.z)
                         continue;
 
                     if (!pathElement->HasAddition())
@@ -6060,7 +6060,7 @@ namespace OpenRCT2
 
                 // This counts down 2 = No rubbish, 0 = full
                 uint8_t spaceLeftInBin = 0x3 & (foundElement->GetAdditionStatus() >> selectedBin);
-                uint64_t emptyContainers = GetEmptyContainerFlags();
+                uint64_t emptyContainers = getEmptyContainerFlags();
 
                 for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
                 {
@@ -6075,9 +6075,9 @@ namespace OpenRCT2
                         // switched to scenario_rand as it is more reliable
                         if ((ScenarioRand() & 7) == 0)
                             spaceLeftInBin--;
-                        RemoveItem(item);
+                        removeItem(item);
                         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                        UpdateAnimationGroup();
+                        updateAnimationGroup();
                         continue;
                     }
 
@@ -6087,10 +6087,10 @@ namespace OpenRCT2
                     int32_t litterY = y + (ScenarioRand() & 7) - 3;
 
                     Litter::Create({ litterX, litterY, z, static_cast<Direction>(ScenarioRand() & 3) }, litterType);
-                    RemoveItem(item);
+                    removeItem(item);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
-                    UpdateAnimationGroup();
+                    updateAnimationGroup();
                 }
 
                 uint8_t additionStatus = foundElement->GetAdditionStatus();
@@ -6100,7 +6100,7 @@ namespace OpenRCT2
                 additionStatus |= spaceLeftInBin << selectedBin;
                 foundElement->SetAdditionStatus(additionStatus);
 
-                MapInvalidateTileZoom0({ NextLoc, foundElement->GetBaseZ(), foundElement->GetClearanceZ() });
+                MapInvalidateTileZoom0({ NextLoc, foundElement->getBaseZ(), foundElement->getClearanceZ() });
                 StateReset();
                 break;
             }
@@ -6111,16 +6111,16 @@ namespace OpenRCT2
     }
 
     /* Simplifies 0x690582. Returns true if should find bench*/
-    bool Guest::ShouldFindBench()
+    bool Guest::shouldFindBench()
     {
         if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         {
             return false;
         }
 
-        if (HasFoodOrDrink())
+        if (hasFoodOrDrink())
         {
-            if (Hunger < 128 || Happiness < 128)
+            if (hunger < 128 || happiness < 128)
             {
                 if (!GetNextIsSurface() && !GetNextIsSloped())
                 {
@@ -6129,7 +6129,7 @@ namespace OpenRCT2
             }
         }
 
-        if (Nausea <= 170 && Energy > 50)
+        if (nausea <= 170 && Energy > 50)
         {
             return false;
         }
@@ -6141,7 +6141,7 @@ namespace OpenRCT2
     {
         for (auto* pathElement : TileElementsView<PathElement>(loc))
         {
-            if (pathElement->GetBaseZ() != loc.z)
+            if (pathElement->getBaseZ() != loc.z)
                 continue;
 
             if (!pathElement->HasAddition())
@@ -6168,9 +6168,9 @@ namespace OpenRCT2
      *  rct2: 0x00690582
      * Returns true when the guest wants to sit down and has found a bench to sit on
      */
-    bool Guest::UpdateWalkingFindBench()
+    bool Guest::updateWalkingFindBench()
     {
-        if (!ShouldFindBench())
+        if (!shouldFindBench())
             return false;
 
         auto* pathElement = FindBench(NextLoc);
@@ -6230,7 +6230,7 @@ namespace OpenRCT2
     {
         for (auto* pathElement : TileElementsView<PathElement>(loc))
         {
-            if (pathElement->GetBaseZ() != loc.z)
+            if (pathElement->getBaseZ() != loc.z)
                 continue;
 
             if (!pathElement->HasAddition())
@@ -6252,10 +6252,10 @@ namespace OpenRCT2
         return nullptr;
     }
 
-    bool Guest::UpdateWalkingFindBin()
+    bool Guest::updateWalkingFindBin()
     {
         auto peep = this;
-        if (!peep->HasEmptyContainer())
+        if (!peep->hasEmptyContainer())
             return false;
 
         if (peep->GetNextIsSurface())
@@ -6308,7 +6308,7 @@ namespace OpenRCT2
     {
         for (auto* pathElement : TileElementsView<PathElement>(loc))
         {
-            if (pathElement->GetBaseZ() != loc.z)
+            if (pathElement->getBaseZ() != loc.z)
                 continue;
 
             if (!pathElement->HasAddition())
@@ -6341,14 +6341,14 @@ namespace OpenRCT2
 
         if (!(guest.PeepFlags & PEEP_FLAGS_ANGRY))
         {
-            if (guest.Happiness >= 48)
+            if (guest.happiness >= 48)
                 return;
             if (guest.Energy < 85)
                 return;
             if (guest.State != PeepState::walking)
                 return;
 
-            if ((guest.LitterCount & 0xC0) != 0xC0 && (guest.DisgustingCount & 0xC0) != 0xC0)
+            if ((guest.litterCount & 0xC0) != 0xC0 && (guest.disgustingCount & 0xC0) != 0xC0)
                 return;
 
             if ((ScenarioRand() & 0xFFFF) > 3276)
@@ -6379,7 +6379,7 @@ namespace OpenRCT2
 
         for (auto innerPeep : EntityList<Staff>())
         {
-            if (innerPeep->AssignedStaffType != StaffType::security || innerPeep->x == kLocationNull)
+            if (innerPeep->assignedStaffType != StaffType::security || innerPeep->x == kLocationNull)
                 continue;
 
             int32_t xDist = abs(innerPeep->x - guest.x);
@@ -6387,7 +6387,7 @@ namespace OpenRCT2
 
             if (std::max(xDist, yDist) < 224)
             {
-                innerPeep->StaffVandalsStopped = AddClamp(innerPeep->StaffVandalsStopped, 1u);
+                innerPeep->staffVandalsStopped = AddClamp(innerPeep->staffVandalsStopped, 1u);
                 innerPeep->WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                 return;
             }
@@ -6395,9 +6395,9 @@ namespace OpenRCT2
 
         tileElement->SetIsBroken(true);
 
-        MapInvalidateTileZoom1({ guest.NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
+        MapInvalidateTileZoom1({ guest.NextLoc, tileElement->getBaseZ(), tileElement->getBaseZ() + 32 });
 
-        guest.Angriness = 16;
+        guest.angriness = 16;
     }
 
     /**
@@ -6411,11 +6411,11 @@ namespace OpenRCT2
         // as that may lead to a desync.
         if (Network::GetMode() != Network::Mode::none)
         {
-            if (tileElement->IsGhost())
+            if (tileElement->isGhost())
                 return false;
         }
 
-        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
         if (ride == nullptr || !ride->isRide())
         {
             return false;
@@ -6461,7 +6461,7 @@ namespace OpenRCT2
 
     bool Loc690FD0(Guest& guest, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
     {
-        auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+        auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
         if (ride == nullptr)
             return false;
 
@@ -6471,7 +6471,7 @@ namespace OpenRCT2
             *rideSeatToView = 1;
             if (ride->status != RideStatus::open)
             {
-                if (tileElement->GetClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView |= (1 << 1);
                 }
@@ -6484,7 +6484,7 @@ namespace OpenRCT2
             *rideSeatToView = 0;
             if (ride->status == RideStatus::open && !ride->flags.has(RideFlag::brokenDown))
             {
-                if (tileElement->GetClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() > guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6521,23 +6521,23 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (tileElement->GetDirection() != edge)
+            if (tileElement->getDirection() != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         uint16_t x = guest.NextLoc.x + CoordsDirectionDelta[edge].x;
         uint16_t y = guest.NextLoc.y + CoordsDirectionDelta[edge].y;
@@ -6560,24 +6560,24 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (DirectionReverse(tileElement->GetDirection()) != edge)
+            if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
             // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
-            if (guest.NextLoc.z + (4 * kCoordsZStep) >= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (4 * kCoordsZStep) >= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop B
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6587,16 +6587,16 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
 
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 if (PeepShouldWatchRide(tileElement))
                 {
@@ -6604,16 +6604,16 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->GetType() == TileElementType::LargeScenery)
+            if (tileElement->getType() == TileElementType::LargeScenery)
             {
-                const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
                 {
                     continue;
                 }
 
                 *rideSeatToView = 0;
-                if (tileElement->GetClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6622,7 +6622,7 @@ namespace OpenRCT2
 
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop C
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6632,21 +6632,21 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (6 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
-            if (tileElement->GetType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::Surface)
                 continue;
-            if (tileElement->GetType() == TileElementType::Path)
+            if (tileElement->getType() == TileElementType::Path)
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Wall)
+            if (tileElement->getType() == TileElementType::Wall)
             {
-                auto wallEntry = tileElement->AsWall()->GetEntry();
+                auto wallEntry = tileElement->asWall()->GetEntry();
                 if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 {
                     continue;
@@ -6654,7 +6654,7 @@ namespace OpenRCT2
             }
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         x += CoordsDirectionDelta[edge].x;
         y += CoordsDirectionDelta[edge].y;
@@ -6679,23 +6679,23 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (DirectionReverse(tileElement->GetDirection()) != edge)
+            if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            if (guest.NextLoc.z + (6 * kCoordsZStep) <= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (6 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop B
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6705,15 +6705,15 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 if (PeepShouldWatchRide(tileElement))
                 {
@@ -6721,16 +6721,16 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->GetType() == TileElementType::LargeScenery)
+            if (tileElement->getType() == TileElementType::LargeScenery)
             {
-                auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+                auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
                 if (!(sceneryEntry == nullptr || sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic)))
                 {
                     continue;
                 }
 
                 *rideSeatToView = 0;
-                if (tileElement->GetClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6739,7 +6739,7 @@ namespace OpenRCT2
 
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop C
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6749,21 +6749,21 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (8 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
-            if (tileElement->GetType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::Surface)
                 continue;
-            if (tileElement->GetType() == TileElementType::Path)
+            if (tileElement->getType() == TileElementType::Path)
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Wall)
+            if (tileElement->getType() == TileElementType::Wall)
             {
-                auto wallEntry = tileElement->AsWall()->GetEntry();
+                auto wallEntry = tileElement->asWall()->GetEntry();
                 if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 {
                     continue;
@@ -6771,7 +6771,7 @@ namespace OpenRCT2
             }
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         x += CoordsDirectionDelta[edge].x;
         y += CoordsDirectionDelta[edge].y;
@@ -6795,23 +6795,23 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
-            if (DirectionReverse(tileElement->GetDirection()) != edge)
+            if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
-            auto wallEntry = tileElement->AsWall()->GetEntry();
+            auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            if (guest.NextLoc.z + (8 * kCoordsZStep) <= tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (8 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
-            if (guest.NextLoc.z >= tileElement->GetClearanceZ())
+            if (guest.NextLoc.z >= tileElement->getClearanceZ())
                 continue;
 
             return false;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         // TODO: Extract loop B
         tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6821,15 +6821,15 @@ namespace OpenRCT2
             // as that may lead to a desync.
             if (Network::GetMode() != Network::Mode::none)
             {
-                if (tileElement->IsGhost())
+                if (tileElement->isGhost())
                     continue;
             }
-            if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
+            if (tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.NextLoc.z)
                 continue;
-            if (guest.NextLoc.z + (10 * kCoordsZStep) < tileElement->GetBaseZ())
+            if (guest.NextLoc.z + (10 * kCoordsZStep) < tileElement->getBaseZ())
                 continue;
 
-            if (tileElement->GetType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::Track)
             {
                 if (PeepShouldWatchRide(tileElement))
                 {
@@ -6837,16 +6837,16 @@ namespace OpenRCT2
                 }
             }
 
-            if (tileElement->GetType() == TileElementType::LargeScenery)
+            if (tileElement->getType() == TileElementType::LargeScenery)
             {
-                const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
                 {
                     continue;
                 }
 
                 *rideSeatToView = 0;
-                if (tileElement->GetClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
+                if (tileElement->getClearanceZ() >= guest.NextLoc.z + (8 * kCoordsZStep))
                 {
                     *rideSeatToView = 0x02;
                 }
@@ -6855,13 +6855,13 @@ namespace OpenRCT2
 
                 return true;
             }
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         return false;
     }
 
     /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-    void Guest::SetAnimationGroup(PeepAnimationGroup new_sprite_type)
+    void Guest::setAnimationGroup(PeepAnimationGroup new_sprite_type)
     {
         if (AnimationGroup == new_sprite_type)
             return;
@@ -6945,7 +6945,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069B8CC
      */
-    void Guest::UpdateAnimationGroup()
+    void Guest::updateAnimationGroup()
     {
         if (AnimationGroup == PeepAnimationGroup::balloon && (ScenarioRand() & 0xFFFF) <= 327)
         {
@@ -6957,13 +6957,13 @@ namespace OpenRCT2
                     isBalloonPopped = true;
                     Audio::Play3D(Audio::SoundId::balloonPop, { x, y, z });
                 }
-                Balloon::Create({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
+                Balloon::Create({ x, y, z + 9 }, balloonColour, isBalloonPopped);
             }
-            RemoveItem(ShopItem::balloon);
+            removeItem(ShopItem::balloon);
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
 
-        if (Weather::isPrecipitating() && (HasItem(ShopItem::umbrella)) && x != kLocationNull)
+        if (Weather::isPrecipitating() && (hasItem(ShopItem::umbrella)) && x != kLocationNull)
         {
             CoordsXY loc = { x, y };
             if (MapIsLocationValid(loc.ToTileStart()))
@@ -6973,12 +6973,12 @@ namespace OpenRCT2
                 {
                     if (tileElement == nullptr)
                         break;
-                    if (z < tileElement->GetBaseZ())
+                    if (z < tileElement->getBaseZ())
                         break;
 
-                    if (tileElement->IsLastForTile())
+                    if (tileElement->isLastForTile())
                     {
-                        SetAnimationGroup(PeepAnimationGroup::umbrella);
+                        setAnimationGroup(PeepAnimationGroup::umbrella);
                         return;
                     }
                     tileElement++;
@@ -6988,55 +6988,55 @@ namespace OpenRCT2
 
         for (auto& itemPref : item_order_preference)
         {
-            if (HasItem(itemPref.item))
+            if (hasItem(itemPref.item))
             {
-                SetAnimationGroup(itemPref.sprite_type);
+                setAnimationGroup(itemPref.sprite_type);
                 return;
             }
         }
 
         if (State == PeepState::watching && StandingFlags & (1 << 1))
         {
-            SetAnimationGroup(PeepAnimationGroup::watching);
+            setAnimationGroup(PeepAnimationGroup::watching);
             return;
         }
 
-        if (Nausea > 170)
+        if (nausea > 170)
         {
-            SetAnimationGroup(PeepAnimationGroup::veryNauseous);
+            setAnimationGroup(PeepAnimationGroup::veryNauseous);
             return;
         }
 
-        if (Nausea > 140)
+        if (nausea > 140)
         {
-            SetAnimationGroup(PeepAnimationGroup::nauseous);
+            setAnimationGroup(PeepAnimationGroup::nauseous);
             return;
         }
 
-        if (Energy <= 64 && Happiness < 128)
+        if (Energy <= 64 && happiness < 128)
         {
-            SetAnimationGroup(PeepAnimationGroup::headDown);
+            setAnimationGroup(PeepAnimationGroup::headDown);
             return;
         }
 
-        if (Energy <= 80 && Happiness < 128)
+        if (Energy <= 80 && happiness < 128)
         {
-            SetAnimationGroup(PeepAnimationGroup::armsCrossed);
+            setAnimationGroup(PeepAnimationGroup::armsCrossed);
             return;
         }
 
-        if (Toilet > 220)
+        if (toilet > 220)
         {
-            SetAnimationGroup(PeepAnimationGroup::requireToilet);
+            setAnimationGroup(PeepAnimationGroup::requireToilet);
             return;
         }
 
-        SetAnimationGroup(PeepAnimationGroup::normal);
+        setAnimationGroup(PeepAnimationGroup::normal);
     }
 
-    bool Guest::HeadingForRideOrParkExit() const
+    bool Guest::headingForRideOrParkExit() const
     {
-        return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || !GuestHeadingToRideId.IsNull();
+        return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || !guestHeadingToRideId.IsNull();
     }
 
     /**
@@ -7073,19 +7073,19 @@ namespace OpenRCT2
         }
     }
 
-    void Guest::InsertNewThought(PeepThoughtType thought_type)
+    void Guest::insertNewThought(PeepThoughtType thought_type)
     {
-        InsertNewThought(thought_type, kPeepThoughtItemNone);
+        insertNewThought(thought_type, kPeepThoughtItemNone);
     }
 
-    void Guest::InsertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
+    void Guest::insertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
     {
-        InsertNewThought(thought_type, static_cast<uint16_t>(shopItem));
+        insertNewThought(thought_type, static_cast<uint16_t>(shopItem));
     }
 
-    void Guest::InsertNewThought(PeepThoughtType thought_type, RideId rideId)
+    void Guest::insertNewThought(PeepThoughtType thought_type, RideId rideId)
     {
-        InsertNewThought(thought_type, rideId.ToUnderlying());
+        insertNewThought(thought_type, rideId.ToUnderlying());
     }
     /**
      *
@@ -7094,7 +7094,7 @@ namespace OpenRCT2
      * ah:thoughtArguments
      * esi: peep
      */
-    void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArguments)
+    void Guest::insertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArguments)
     {
         PeepActionType newAction = PeepThoughtToActionMap[EnumValue(thoughtType)].action;
         if (newAction != PeepActionType::walking && IsActionInterruptableSafely())
@@ -7107,9 +7107,9 @@ namespace OpenRCT2
 
         for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
         {
-            PeepThought* thought = &Thoughts[i];
+            PeepThought* thought = &thoughts[i];
             // Remove the oldest thought by setting it to NONE.
-            if (thought->type == PeepThoughtType::None)
+            if (thought->type == PeepThoughtType::none)
                 break;
 
             if (thought->type == thoughtType && thought->item == thoughtArguments)
@@ -7125,9 +7125,9 @@ namespace OpenRCT2
             }
         }
 
-        memmove(&std::get<1>(Thoughts), &std::get<0>(Thoughts), sizeof(PeepThought) * (kPeepMaxThoughts - 1));
+        memmove(&std::get<1>(thoughts), &std::get<0>(thoughts), sizeof(PeepThought) * (kPeepMaxThoughts - 1));
 
-        auto& thought = std::get<0>(Thoughts);
+        auto& thought = std::get<0>(thoughts);
         thought.type = thoughtType;
         thought.item = thoughtArguments;
         thought.freshness = 0;
@@ -7139,10 +7139,10 @@ namespace OpenRCT2
     // clang-format off
     /** rct2: 0x009823A0 */
     static constexpr PeepNauseaTolerance nausea_tolerance_distribution[] = {
-        PeepNauseaTolerance::None,
-        PeepNauseaTolerance::Low, PeepNauseaTolerance::Low,
-        PeepNauseaTolerance::Average, PeepNauseaTolerance::Average, PeepNauseaTolerance::Average,
-        PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High,
+        PeepNauseaTolerance::none,
+        PeepNauseaTolerance::low, PeepNauseaTolerance::low,
+        PeepNauseaTolerance::average, PeepNauseaTolerance::average, PeepNauseaTolerance::average,
+        PeepNauseaTolerance::high, PeepNauseaTolerance::high, PeepNauseaTolerance::high, PeepNauseaTolerance::high, PeepNauseaTolerance::high, PeepNauseaTolerance::high,
     };
 
     /** rct2: 0x009823BC */
@@ -7242,7 +7242,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0069A05D
      */
-    Guest* Guest::Generate(const CoordsXYZ& coords)
+    Guest* Guest::generate(const CoordsXYZ& coords)
     {
         auto& gameState = getGameState();
         if (gameState.entities.GetNumFreeEntities() < 400)
@@ -7252,7 +7252,7 @@ namespace OpenRCT2
 
         peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::guest);
         peep->AnimationGroup = PeepAnimationGroup::normal;
-        peep->OutsideOfPark = true;
+        peep->outsideOfPark = true;
         peep->State = PeepState::falling;
         peep->Action = PeepActionType::walking;
         peep->SpecialSprite = 0;
@@ -7260,24 +7260,24 @@ namespace OpenRCT2
         peep->WalkingAnimationFrameNum = 0;
         peep->AnimationType = PeepAnimationType::walking;
         peep->PeepFlags = 0;
-        peep->FavouriteRide = RideId::GetNull();
-        peep->FavouriteRideRating = 0;
+        peep->favouriteRide = RideId::GetNull();
+        peep->favouriteRideRating = 0;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
         const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-        peep->SpriteData.Width = spriteBounds.spriteWidth;
-        peep->SpriteData.HeightMin = spriteBounds.spriteHeightNegative;
-        peep->SpriteData.HeightMax = spriteBounds.spriteHeightPositive;
-        peep->Orientation = 0;
+        peep->spriteData.width = spriteBounds.spriteWidth;
+        peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+        peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
+        peep->orientation = 0;
 
-        peep->MoveTo(coords);
+        peep->moveTo(coords);
         peep->Mass = (ScenarioRand() & 0x1F) + 45;
         peep->PathCheckOptimisation = 0;
         peep->InteractionRideIndex = RideId::GetNull();
-        peep->PreviousRide = RideId::GetNull();
-        std::get<0>(peep->Thoughts).type = PeepThoughtType::None;
+        peep->previousRide = RideId::GetNull();
+        std::get<0>(peep->thoughts).type = PeepThoughtType::none;
         peep->WindowInvalidateFlags = 0;
 
         uint8_t intensityHighest = (ScenarioRand() & 0x7) + 3;
@@ -7307,7 +7307,7 @@ namespace OpenRCT2
             intensityHighest = 15;
         }
 
-        peep->Intensity = IntensityRange(intensityLowest, intensityHighest);
+        peep->intensity = IntensityRange(intensityLowest, intensityHighest);
 
         uint8_t nauseaTolerance = ScenarioRand() & 0x7;
         if (gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
@@ -7315,46 +7315,46 @@ namespace OpenRCT2
             nauseaTolerance += 4;
         }
 
-        peep->NauseaTolerance = nausea_tolerance_distribution[nauseaTolerance];
+        peep->nauseaTolerance = nausea_tolerance_distribution[nauseaTolerance];
 
         /* Scenario editor limits initial guest happiness to between 37..253.
          * To be on the safe side, assume the value could have been hacked
          * to any value 0..255. */
-        peep->Happiness = gameState.scenarioOptions.guestInitialHappiness;
+        peep->happiness = gameState.scenarioOptions.guestInitialHappiness;
         /* Assume a default initial happiness of 0 is wrong and set
          * to 128 (50%) instead. */
         if (gameState.scenarioOptions.guestInitialHappiness == 0)
-            peep->Happiness = 128;
+            peep->happiness = 128;
         /* Initial value will vary by -15..16 */
         int8_t happinessDelta = (ScenarioRand() & 0x1F) - 15;
         /* Adjust by the delta, clamping at min=0 and max=255. */
-        peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, kPeepMaxHappiness);
-        peep->HappinessTarget = peep->Happiness;
-        peep->Nausea = 0;
-        peep->NauseaTarget = 0;
+        peep->happiness = std::clamp(peep->happiness + happinessDelta, 0, kPeepMaxHappiness);
+        peep->happinessTarget = peep->happiness;
+        peep->nausea = 0;
+        peep->nauseaTarget = 0;
 
         /* Scenario editor limits initial guest hunger to between 37..253.
          * To be on the safe side, assume the value could have been hacked
          * to any value 0..255. */
-        peep->Hunger = gameState.scenarioOptions.guestInitialHunger;
+        peep->hunger = gameState.scenarioOptions.guestInitialHunger;
         /* Initial value will vary by -15..16 */
         int8_t hungerDelta = (ScenarioRand() & 0x1F) - 15;
         /* Adjust by the delta, clamping at min=0 and max=255. */
-        peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, kPeepMaxHunger);
+        peep->hunger = std::clamp(peep->hunger + hungerDelta, 0, kPeepMaxHunger);
 
         /* Scenario editor limits initial guest thirst to between 37..253.
          * To be on the safe side, assume the value could have been hacked
          * to any value 0..255. */
-        peep->Thirst = gameState.scenarioOptions.guestInitialThirst;
+        peep->thirst = gameState.scenarioOptions.guestInitialThirst;
         /* Initial value will vary by -15..16 */
         int8_t thirstDelta = (ScenarioRand() & 0x1F) - 15;
         /* Adjust by the delta, clamping at min=0 and max=255. */
-        peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, kPeepMaxThirst);
+        peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, kPeepMaxThirst);
 
-        peep->Toilet = 0;
-        peep->TimeToConsume = 0;
+        peep->toilet = 0;
+        peep->timeToConsume = 0;
 
-        peep->GuestNumRides = 0;
+        peep->guestNumRides = 0;
         peep->PeepId = gameState.nextGuestNumber++;
         peep->Name = nullptr;
 
@@ -7377,27 +7377,27 @@ namespace OpenRCT2
             cash = 0;
         }
 
-        peep->CashInPocket = cash;
-        peep->CashSpent = 0;
-        peep->ParkEntryTime = -1;
+        peep->cashInPocket = cash;
+        peep->cashSpent = 0;
+        peep->parkEntryTime = -1;
         peep->ResetPathfindGoal();
-        peep->RemoveAllItems();
-        peep->GuestHeadingToRideId = RideId::GetNull();
-        peep->GuestNextInQueue = EntityId::GetNull();
-        peep->LitterCount = 0;
-        peep->DisgustingCount = 0;
-        peep->VandalismSeen = 0;
-        peep->PaidToEnter = 0;
-        peep->PaidOnRides = 0;
-        peep->PaidOnFood = 0;
-        peep->PaidOnDrink = 0;
-        peep->PaidOnSouvenirs = 0;
-        peep->AmountOfFood = 0;
-        peep->AmountOfDrinks = 0;
-        peep->AmountOfSouvenirs = 0;
-        peep->SurroundingsThoughtTimeout = 0;
-        peep->Angriness = 0;
-        peep->TimeLost = 0;
+        peep->removeAllItems();
+        peep->guestHeadingToRideId = RideId::GetNull();
+        peep->guestNextInQueue = EntityId::GetNull();
+        peep->litterCount = 0;
+        peep->disgustingCount = 0;
+        peep->vandalismSeen = 0;
+        peep->paidToEnter = 0;
+        peep->paidOnRides = 0;
+        peep->paidOnFood = 0;
+        peep->paidOnDrink = 0;
+        peep->paidOnSouvenirs = 0;
+        peep->amountOfFood = 0;
+        peep->amountOfDrinks = 0;
+        peep->amountOfSouvenirs = 0;
+        peep->surroundingsThoughtTimeout = 0;
+        peep->angriness = 0;
+        peep->timeLost = 0;
 
         uint8_t tshirtColour = static_cast<uint8_t>(ScenarioRand() % std::size(kTshirtColours));
         peep->TshirtColour = kTshirtColours[tshirtColour];
@@ -7417,7 +7417,7 @@ namespace OpenRCT2
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(Scripting::HookType::guestGeneration))
         {
-            hookEngine.Call(Scripting::HookType::guestGeneration, { { "id", peep->Id.ToUnderlying() } }, true);
+            hookEngine.Call(Scripting::HookType::guestGeneration, { { "id", peep->id.ToUnderlying() } }, true);
         }
 #endif
 
@@ -7476,19 +7476,19 @@ namespace OpenRCT2
     static int32_t GetFaceSpriteOffset(Guest* peep)
     {
         // ANGRY
-        if (peep->Angriness > 0)
+        if (peep->angriness > 0)
             return PEEP_FACE_OFFSET_ANGRY;
 
         // VERY_VERY_SICK
-        if (peep->Nausea > 200)
+        if (peep->nausea > 200)
             return PEEP_FACE_OFFSET_VERY_VERY_SICK;
 
         // VERY_SICK
-        if (peep->Nausea > 170)
+        if (peep->nausea > 170)
             return PEEP_FACE_OFFSET_VERY_SICK;
 
         // SICK
-        if (peep->Nausea > 140)
+        if (peep->nausea > 140)
             return PEEP_FACE_OFFSET_SICK;
 
         // VERY_TIRED
@@ -7501,7 +7501,7 @@ namespace OpenRCT2
 
         int32_t offset = PEEP_FACE_OFFSET_VERY_VERY_UNHAPPY;
         // There are 7 different happiness based faces
-        for (int32_t i = 37; peep->Happiness >= i; i += 37)
+        for (int32_t i = 37; peep->happiness >= i; i += 37)
         {
             offset++;
         }
@@ -7531,11 +7531,11 @@ namespace OpenRCT2
      *
      *  rct2: 0x00693CBB
      */
-    bool Guest::UpdateQueuePosition(PeepActionType previous_action)
+    bool Guest::updateQueuePosition(PeepActionType previous_action)
     {
-        TimeInQueue = AddClamp<uint16_t>(TimeInQueue, 1);
+        timeInQueue = AddClamp<uint16_t>(timeInQueue, 1);
 
-        auto* guestNext = getGameState().entities.GetEntity<Guest>(GuestNextInQueue);
+        auto* guestNext = getGameState().entities.GetEntity<Guest>(guestNextInQueue);
         if (guestNext == nullptr)
         {
             return false;
@@ -7597,7 +7597,7 @@ namespace OpenRCT2
         Action = PeepActionType::idle;
         NextAnimationType = PeepAnimationType::watchRide;
         if (previous_action != PeepActionType::idle)
-            Invalidate();
+            invalidate();
         return true;
     }
 
@@ -7605,7 +7605,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006966A9
      */
-    void Guest::RemoveFromQueue()
+    void Guest::removeFromQueue()
     {
         auto ride = GetRide(CurrentRide);
         if (ride == nullptr)
@@ -7619,9 +7619,9 @@ namespace OpenRCT2
             station.QueueLength--;
         }
 
-        if (Id == station.LastPeepInQueue)
+        if (id == station.LastPeepInQueue)
         {
-            station.LastPeepInQueue = GuestNextInQueue;
+            station.LastPeepInQueue = guestNextInQueue;
             return;
         }
 
@@ -7632,59 +7632,59 @@ namespace OpenRCT2
             LOG_ERROR("Invalid Guest Queue list!");
             return;
         }
-        for (; otherGuest != nullptr; otherGuest = gameState.entities.GetEntity<Guest>(otherGuest->GuestNextInQueue))
+        for (; otherGuest != nullptr; otherGuest = gameState.entities.GetEntity<Guest>(otherGuest->guestNextInQueue))
         {
-            if (Id == otherGuest->GuestNextInQueue)
+            if (id == otherGuest->guestNextInQueue)
             {
-                otherGuest->GuestNextInQueue = GuestNextInQueue;
+                otherGuest->guestNextInQueue = guestNextInQueue;
                 return;
             }
         }
     }
 
-    uint64_t Guest::GetItemFlags() const
+    uint64_t Guest::getItemFlags() const
     {
-        return ItemFlags;
+        return itemFlags;
     }
 
-    void Guest::SetItemFlags(uint64_t itemFlags)
+    void Guest::setItemFlags(uint64_t value)
     {
-        ItemFlags = itemFlags;
+        itemFlags = value;
     }
 
-    void Guest::RemoveAllItems()
+    void Guest::removeAllItems()
     {
-        ItemFlags = 0;
-        TimeToConsume = 0;
+        itemFlags = 0;
+        timeToConsume = 0;
     }
 
-    void Guest::RemoveItem(ShopItem item)
+    void Guest::removeItem(ShopItem item)
     {
-        ItemFlags &= ~EnumToFlag(item);
-        TimeToConsume = 0;
+        itemFlags &= ~EnumToFlag(item);
+        timeToConsume = 0;
     }
 
-    void Guest::GiveItem(ShopItem item)
+    void Guest::giveItem(ShopItem item)
     {
-        ItemFlags |= EnumToFlag(item);
+        itemFlags |= EnumToFlag(item);
 
         const auto& shopItemDescriptor = GetShopItemDescriptor(item);
         uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
-        TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
+        timeToConsume = std::min((timeToConsume + consumptionTime), 255);
     }
 
-    bool Guest::HasItem(ShopItem peepItem) const
+    bool Guest::hasItem(ShopItem peepItem) const
     {
-        return GetItemFlags() & EnumToFlag(peepItem);
+        return getItemFlags() & EnumToFlag(peepItem);
     }
 
     static bool IsThoughtShopItemRelated(const PeepThoughtType type)
     {
         switch (type)
         {
-            case PeepThoughtType::AlreadyGot:
-            case PeepThoughtType::HaventFinished:
-            case PeepThoughtType::CantAffordItem:
+            case PeepThoughtType::alreadyGot:
+            case PeepThoughtType::haventFinished:
+            case PeepThoughtType::cantAffordItem:
                 return true;
             default:
                 break;
@@ -7692,7 +7692,7 @@ namespace OpenRCT2
         return false;
     }
 
-    void Guest::RemoveRideFromMemory(RideId rideId)
+    void Guest::removeRideFromMemory(RideId rideId)
     {
         if (State == PeepState::watching)
         {
@@ -7708,58 +7708,58 @@ namespace OpenRCT2
         }
 
         // remove any free voucher for this ride from peep
-        if (HasItem(ShopItem::voucher))
+        if (hasItem(ShopItem::voucher))
         {
-            if (VoucherType == VOUCHER_TYPE_RIDE_FREE && VoucherRideId == rideId)
+            if (voucherType == VOUCHER_TYPE_RIDE_FREE && voucherRideId == rideId)
             {
-                RemoveItem(ShopItem::voucher);
+                removeItem(ShopItem::voucher);
             }
         }
 
         // remove any photos of this ride from peep
-        if (HasItem(ShopItem::photo))
+        if (hasItem(ShopItem::photo))
         {
-            if (Photo1RideRef == rideId)
+            if (photo1RideRef == rideId)
             {
-                RemoveItem(ShopItem::photo);
+                removeItem(ShopItem::photo);
             }
         }
-        if (HasItem(ShopItem::photo2))
+        if (hasItem(ShopItem::photo2))
         {
-            if (Photo2RideRef == rideId)
+            if (photo2RideRef == rideId)
             {
-                RemoveItem(ShopItem::photo2);
+                removeItem(ShopItem::photo2);
             }
         }
-        if (HasItem(ShopItem::photo3))
+        if (hasItem(ShopItem::photo3))
         {
-            if (Photo3RideRef == rideId)
+            if (photo3RideRef == rideId)
             {
-                RemoveItem(ShopItem::photo3);
+                removeItem(ShopItem::photo3);
             }
         }
-        if (HasItem(ShopItem::photo4))
+        if (hasItem(ShopItem::photo4))
         {
-            if (Photo4RideRef == rideId)
+            if (photo4RideRef == rideId)
             {
-                RemoveItem(ShopItem::photo4);
+                removeItem(ShopItem::photo4);
             }
         }
 
-        if (GuestHeadingToRideId == rideId)
+        if (guestHeadingToRideId == rideId)
         {
-            GuestHeadingToRideId = RideId::GetNull();
+            guestHeadingToRideId = RideId::GetNull();
         }
-        if (FavouriteRide == rideId)
+        if (favouriteRide == rideId)
         {
-            FavouriteRide = RideId::GetNull();
+            favouriteRide = RideId::GetNull();
         }
 
         // Erase all thoughts that contain the ride.
-        for (auto it = std::begin(Thoughts); it != std::end(Thoughts);)
+        for (auto it = std::begin(thoughts); it != std::end(thoughts);)
         {
             const auto& entry = *it;
-            if (entry.type == PeepThoughtType::None)
+            if (entry.type == PeepThoughtType::none)
                 break;
 
             // Ride ids and shop item ids might have the same value, look only for ride thoughts.
@@ -7769,33 +7769,33 @@ namespace OpenRCT2
                 continue;
             }
 
-            if (auto itNext = std::next(it); itNext != std::end(Thoughts))
+            if (auto itNext = std::next(it); itNext != std::end(thoughts))
             {
                 // Overwrite this entry by shifting all entries that follow.
-                std::rotate(it, itNext, std::end(Thoughts));
+                std::rotate(it, itNext, std::end(thoughts));
             }
 
             // Last slot is now free.
-            auto& lastEntry = Thoughts.back();
-            lastEntry.type = PeepThoughtType::None;
+            auto& lastEntry = thoughts.back();
+            lastEntry.type = PeepThoughtType::none;
             lastEntry.item = kPeepThoughtItemNone;
         }
     }
 
-    void Guest::ThrowUp()
+    void Guest::throwUp()
     {
-        Hunger /= 2;
-        NauseaTarget /= 2;
+        hunger /= 2;
+        nauseaTarget /= 2;
 
-        if (Nausea < 30)
-            Nausea = 0;
+        if (nausea < 30)
+            nausea = 0;
         else
-            Nausea -= 30;
+            nausea -= 30;
 
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
-        const auto curLoc = GetLocation();
-        Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::vomitAlt : Litter::Type::vomit);
+        const auto curLoc = getLocation();
+        Litter::Create({ curLoc, orientation }, (id.ToUnderlying() & 1) ? Litter::Type::vomitAlt : Litter::Type::vomit);
 
         static constexpr Audio::SoundId coughs[4] = {
             Audio::SoundId::cough1,
@@ -7807,59 +7807,59 @@ namespace OpenRCT2
         Audio::Play3D(soundId, curLoc);
     }
 
-    void Guest::Serialise(DataSerialiser& stream)
+    void Guest::serialise(DataSerialiser& stream)
     {
-        Peep::Serialise(stream);
-        stream << GuestNumRides;
-        stream << GuestNextInQueue;
-        stream << ParkEntryTime;
-        stream << GuestHeadingToRideId;
-        stream << GuestIsLostCountdown;
-        stream << GuestTimeOnRide;
-        stream << PaidToEnter;
-        stream << PaidOnRides;
-        stream << PaidOnFood;
-        stream << PaidOnDrink;
-        stream << PaidOnSouvenirs;
-        stream << OutsideOfPark;
-        stream << Happiness;
-        stream << HappinessTarget;
-        stream << Nausea;
-        stream << NauseaTarget;
-        stream << Hunger;
-        stream << Thirst;
-        stream << Toilet;
-        stream << TimeToConsume;
-        stream << Intensity;
-        stream << NauseaTolerance;
-        stream << TimeInQueue;
-        stream << CashInPocket;
-        stream << CashSpent;
-        stream << Photo1RideRef;
-        stream << Photo2RideRef;
-        stream << Photo3RideRef;
-        stream << Photo4RideRef;
-        stream << RejoinQueueTimeout;
-        stream << PreviousRide;
-        stream << PreviousRideTimeOut;
-        stream << Thoughts;
-        stream << LitterCount;
-        stream << DisgustingCount;
-        stream << AmountOfFood;
-        stream << AmountOfDrinks;
-        stream << AmountOfSouvenirs;
-        stream << VandalismSeen;
-        stream << VoucherType;
-        stream << VoucherRideId;
-        stream << SurroundingsThoughtTimeout;
-        stream << Angriness;
-        stream << TimeLost;
-        stream << DaysInQueue;
-        stream << BalloonColour;
-        stream << UmbrellaColour;
-        stream << HatColour;
-        stream << FavouriteRide;
-        stream << FavouriteRideRating;
-        stream << ItemFlags;
+        Peep::serialise(stream);
+        stream << guestNumRides;
+        stream << guestNextInQueue;
+        stream << parkEntryTime;
+        stream << guestHeadingToRideId;
+        stream << guestIsLostCountdown;
+        stream << guestTimeOnRide;
+        stream << paidToEnter;
+        stream << paidOnRides;
+        stream << paidOnFood;
+        stream << paidOnDrink;
+        stream << paidOnSouvenirs;
+        stream << outsideOfPark;
+        stream << happiness;
+        stream << happinessTarget;
+        stream << nausea;
+        stream << nauseaTarget;
+        stream << hunger;
+        stream << thirst;
+        stream << toilet;
+        stream << timeToConsume;
+        stream << intensity;
+        stream << nauseaTolerance;
+        stream << timeInQueue;
+        stream << cashInPocket;
+        stream << cashSpent;
+        stream << photo1RideRef;
+        stream << photo2RideRef;
+        stream << photo3RideRef;
+        stream << photo4RideRef;
+        stream << rejoinQueueTimeout;
+        stream << previousRide;
+        stream << previousRideTimeOut;
+        stream << thoughts;
+        stream << litterCount;
+        stream << disgustingCount;
+        stream << amountOfFood;
+        stream << amountOfDrinks;
+        stream << amountOfSouvenirs;
+        stream << vandalismSeen;
+        stream << voucherType;
+        stream << voucherRideId;
+        stream << surroundingsThoughtTimeout;
+        stream << angriness;
+        stream << timeLost;
+        stream << daysInQueue;
+        stream << balloonColour;
+        stream << umbrellaColour;
+        stream << hatColour;
+        stream << favouriteRide;
+        stream << favouriteRideRating;
+        stream << itemFlags;
     }
 } // namespace OpenRCT2

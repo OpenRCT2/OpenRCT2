@@ -102,7 +102,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     auto& gameState = getGameState();
 
     // Open park for free but charging for rides
-    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
+    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::open);
     execute<GameActions::ParkSetEntranceFeeAction>(0);
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
@@ -122,7 +122,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     // Insert a rich guest
     auto richGuest = Park::GenerateGuest();
-    richGuest->CashInPocket = 3000;
+    richGuest->cashInPocket = 3000;
 
     // Wait for rich guest to get in queue
     bool matched = updateUntil(1000, [&]() { return richGuest->State == PeepState::queuing; });
@@ -130,7 +130,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     // Insert poor guest
     auto poorGuest = Park::GenerateGuest();
-    poorGuest->CashInPocket = 5;
+    poorGuest->cashInPocket = 5;
 
     // Wait for poor guest to get in queue
     matched = updateUntil(1000, [&]() { return poorGuest->State == PeepState::queuing; });
@@ -162,7 +162,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     auto& gameState = getGameState();
 
     // Open park for free but charging for rides
-    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
+    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::open);
     execute<GameActions::ParkSetEntranceFeeAction>(0);
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 

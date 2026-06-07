@@ -71,9 +71,9 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case PeepPickupType::Pickup:
+            case PeepPickupType::pickup:
             {
-                res.position = peep->GetLocation();
+                res.position = peep->getLocation();
                 if (!peep->CanBePickedUp())
                 {
                     return Result(Status::disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
                 {
                     // already picking up a peep
                     PeepPickupAction existingPickupAction{
-                        PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
+                        PeepPickupType::cancel, existing->id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
                     auto result = QueryNested(&existingPickupAction, gameState);
 
@@ -94,10 +94,10 @@ namespace OpenRCT2::GameActions
                 }
             }
             break;
-            case PeepPickupType::Cancel:
-                res.position = peep->GetLocation();
+            case PeepPickupType::cancel:
+                res.position = peep->getLocation();
                 break;
-            case PeepPickupType::Place:
+            case PeepPickupType::place:
                 res.position = _loc;
                 if (Network::GetPickupPeep(_owner) != peep)
                 {
@@ -129,16 +129,16 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case PeepPickupType::Pickup:
+            case PeepPickupType::pickup:
             {
-                res.position = peep->GetLocation();
+                res.position = peep->getLocation();
 
                 Peep* existing = Network::GetPickupPeep(_owner);
                 if (existing != nullptr)
                 {
                     // already picking up a peep
                     PeepPickupAction existingPickupAction{
-                        PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
+                        PeepPickupType::cancel, existing->id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
                     auto result = ExecuteNested(&existingPickupAction, gameState);
 
@@ -158,9 +158,9 @@ namespace OpenRCT2::GameActions
                 peep->Pickup();
             }
             break;
-            case PeepPickupType::Cancel:
+            case PeepPickupType::cancel:
             {
-                res.position = peep->GetLocation();
+                res.position = peep->getLocation();
 
                 Peep* const pickedUpPeep = Network::GetPickupPeep(_owner);
                 if (pickedUpPeep != nullptr)
@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
                 Network::SetPickupPeep(_owner, nullptr);
             }
             break;
-            case PeepPickupType::Place:
+            case PeepPickupType::place:
                 res.position = _loc;
                 if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2.error != Status::ok)
                 {

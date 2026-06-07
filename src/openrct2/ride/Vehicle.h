@@ -280,7 +280,7 @@ struct Vehicle : OpenRCT2::EntityBase
     const Vehicle* GetHead() const;
     Vehicle* GetCar(size_t carIndex) const;
     void SetState(Status vehicleStatus, uint8_t subState = 0);
-    bool IsGhost() const;
+    bool isGhost() const;
     std::optional<EntityId> DodgemsCarWouldCollideAt(const CoordsXY& coords) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
     int32_t CableLiftUpdateTrackMotion();
@@ -322,8 +322,7 @@ struct Vehicle : OpenRCT2::EntityBase
         TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
     }
     void ApplyMass(int16_t appliedMass);
-    void Serialise(OpenRCT2::DataSerialiser& stream);
-    void Paint(PaintSession& session, int32_t imageDirection) const;
+    void serialise(OpenRCT2::DataSerialiser& stream);
     bool IsCableLift() const;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);

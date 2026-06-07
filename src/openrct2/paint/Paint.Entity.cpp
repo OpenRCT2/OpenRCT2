@@ -13,8 +13,7 @@
 #include "../drawing/LightFX.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
-#include "../entity/Fountain.h"
-#include "../entity/Litter.h"
+#include "../entity/JumpingFountain.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
 #include "../entity/Staff.h"
@@ -26,10 +25,19 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Weather.h"
-#include "Paint.h"
 #include "entity/Paint.Balloon.h"
+#include "entity/Paint.CrashSplashParticle.h"
+#include "entity/Paint.Duck.h"
+#include "entity/Paint.ExplosionCloud.h"
+#include "entity/Paint.ExplosionFlare.h"
 #include "entity/Paint.Guest.h"
+#include "entity/Paint.JumpingFountain.h"
+#include "entity/Paint.Litter.h"
+#include "entity/Paint.MoneyEffect.h"
 #include "entity/Paint.Staff.h"
+#include "entity/Paint.SteamParticle.h"
+#include "entity/Paint.Vehicle.h"
+#include "entity/Paint.VehicleCrashParticle.h"
 #include "vehicle/VehiclePaint.h"
 
 #include <cassert>
@@ -65,21 +73,21 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
     {
         if (highlightPathIssues)
         {
-            const auto staff = entity->As<Staff>();
+            const auto staff = entity->as<Staff>();
             if (staff != nullptr)
             {
-                if (staff->AssignedStaffType != StaffType::handyman)
+                if (staff->assignedStaffType != StaffType::handyman)
                 {
                     continue;
                 }
             }
-            else if (entity->Type != EntityType::litter)
+            else if (entity->type != EntityType::litter)
             {
                 continue;
             }
         }
 
-        const auto entityPos = entity->GetLocation();
+        const auto entityPos = entity->getLocation();
 
         // Only paint sprites that are below the clip height and inside the clip selection.
         // Here converting from land/path/etc height scale to pixel height scale.
@@ -106,10 +114,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             }
         }
 
-        auto screenCoords = Translate3DTo2DWithZ(session.CurrentRotation, entity->GetLocation());
+        auto screenCoords = Translate3DTo2DWithZ(session.CurrentRotation, entity->getLocation());
         auto spriteRect = ScreenRect(
-            screenCoords - ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMin },
-            screenCoords + ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMax });
+            screenCoords - ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMin },
+            screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
 
         const ZoomLevel zoom = session.rt.zoom_level;
         if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
@@ -122,7 +130,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 
         int32_t image_direction = session.CurrentRotation;
         image_direction <<= 3;
-        image_direction += entity->Orientation;
+        image_direction += entity->orientation;
         image_direction &= 0x1F;
 
         session.CurrentlyDrawnEntity = entity;
@@ -130,10 +138,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         session.SpritePosition.y = entityPos.y;
         session.InteractionType = ViewportInteractionItem::entity;
 
-        switch (entity->Type)
+        switch (entity->type)
         {
             case EntityType::vehicle:
-                entity->cast<Vehicle>()->Paint(session, image_direction);
+                PaintVehicle(session, *entity->cast<Vehicle>(), image_direction);
                 if (LightFx::ForVehiclesIsAvailable())
                 {
                     LightFx::AddLightsMagicVehicle(entity->cast<Vehicle>());
@@ -146,34 +154,34 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
                 PaintStaff(session, *entity->cast<Staff>(), image_direction);
                 break;
             case EntityType::steamParticle:
-                entity->cast<SteamParticle>()->Paint(session, image_direction);
+                PaintSteamParticle(session, *entity->cast<SteamParticle>());
                 break;
             case EntityType::moneyEffect:
-                entity->cast<MoneyEffect>()->Paint(session, image_direction);
+                PaintMoneyEffect(session, *entity->cast<MoneyEffect>());
                 break;
             case EntityType::crashedVehicleParticle:
-                entity->cast<VehicleCrashParticle>()->Paint(session, image_direction);
+                PaintVehicleCrashParticle(session, *entity->cast<VehicleCrashParticle>());
                 break;
             case EntityType::explosionCloud:
-                entity->cast<ExplosionCloud>()->Paint(session, image_direction);
+                PaintExplosionCloud(session, *entity->cast<ExplosionCloud>());
                 break;
             case EntityType::crashSplash:
-                entity->cast<CrashSplashParticle>()->Paint(session, image_direction);
+                PaintCrashSplashParticle(session, *entity->cast<CrashSplashParticle>());
                 break;
             case EntityType::explosionFlare:
-                entity->cast<ExplosionFlare>()->Paint(session, image_direction);
+                PaintExplosionFlare(session, *entity->cast<ExplosionFlare>());
                 break;
             case EntityType::jumpingFountain:
-                entity->cast<JumpingFountain>()->Paint(session, image_direction);
+                PaintJumpingFountain(session, *entity->cast<JumpingFountain>(), image_direction);
                 break;
             case EntityType::balloon:
                 PaintBalloon(session, *entity->cast<Balloon>(), image_direction);
                 break;
             case EntityType::duck:
-                entity->cast<Duck>()->Paint(session, image_direction);
+                PaintDuck(session, *entity->cast<Duck>(), image_direction);
                 break;
             case EntityType::litter:
-                entity->cast<Litter>()->Paint(session, image_direction);
+                PaintLitter(session, *entity->cast<Litter>(), image_direction);
                 break;
             default:
                 assert(false);

@@ -39,7 +39,7 @@ namespace OpenRCT2::Scripting
     JSValue ScMoneyEffect::value_get(JSContext* ctx, JSValue thisVal)
     {
         auto moneyEffect = GetMoneyEffect(thisVal);
-        return JS_NewInt64(ctx, moneyEffect == nullptr ? 0 : moneyEffect->Value);
+        return JS_NewInt64(ctx, moneyEffect == nullptr ? 0 : moneyEffect->value);
     }
 
     JSValue ScMoneyEffect::value_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)

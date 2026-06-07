@@ -553,14 +553,14 @@ namespace OpenRCT2::Ui::Windows
                         case WIDX_ADD_GROUP:
                         {
                             auto networkModifyGroup = GameActions::NetworkModifyGroupAction(
-                                GameActions::ModifyGroupType::AddGroup);
+                                GameActions::ModifyGroupType::addGroup);
                             GameActions::Execute(&networkModifyGroup, gameState);
                             break;
                         }
                         case WIDX_REMOVE_GROUP:
                         {
                             auto networkModifyGroup = GameActions::NetworkModifyGroupAction(
-                                GameActions::ModifyGroupType::RemoveGroup, _selectedGroup);
+                                GameActions::ModifyGroupType::removeGroup, _selectedGroup);
                             GameActions::Execute(&networkModifyGroup, gameState);
                             break;
                         }
@@ -729,7 +729,7 @@ namespace OpenRCT2::Ui::Windows
                         case WIDX_DEFAULT_GROUP_DROPDOWN:
                         {
                             auto networkModifyGroup = GameActions::NetworkModifyGroupAction(
-                                GameActions::ModifyGroupType::SetDefault, Network::GetGroupID(selectedIndex));
+                                GameActions::ModifyGroupType::setDefault, Network::GetGroupID(selectedIndex));
                             GameActions::Execute(&networkModifyGroup, getGameState());
                             break;
                         }
@@ -758,7 +758,7 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     auto networkModifyGroup = GameActions::NetworkModifyGroupAction(
-                        GameActions::ModifyGroupType::SetName, _selectedGroup, std::string(text));
+                        GameActions::ModifyGroupType::setName, _selectedGroup, std::string(text));
                     GameActions::Execute(&networkModifyGroup, getGameState());
                     break;
                 }
@@ -859,8 +859,8 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
 
                     auto networkModifyGroup = GameActions::NetworkModifyGroupAction(
-                        GameActions::ModifyGroupType::SetPermissions, _selectedGroup, "", index,
-                        GameActions::PermissionState::Toggle);
+                        GameActions::ModifyGroupType::setPermissions, _selectedGroup, "", index,
+                        GameActions::PermissionState::toggle);
                     GameActions::Execute(&networkModifyGroup, getGameState());
                     break;
                 }

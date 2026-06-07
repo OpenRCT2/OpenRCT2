@@ -15,16 +15,16 @@ namespace OpenRCT2::GameActions
 {
     enum class LandBuyRightSetting : uint8_t
     {
-        BuyLand,
-        BuyConstructionRights,
-        Count
+        buyLand,
+        buyConstructionRights,
+        count
     };
 
     class LandBuyRightsAction final : public GameActionBase<GameCommand::BuyLandRights>
     {
     private:
         MapRange _range;
-        LandBuyRightSetting _setting{ LandBuyRightSetting::Count };
+        LandBuyRightSetting _setting{ LandBuyRightSetting::count };
 
         constexpr static StringId kErrorTitles[] = {
             STR_CANT_BUY_LAND,

@@ -15,13 +15,13 @@
 
 enum class ConsoleInput : uint8_t
 {
-    None,
-    LineClear,
-    LineExecute,
-    HistoryPrevious,
-    HistoryNext,
-    ScrollPrevious,
-    ScrollNext,
+    none,
+    lineClear,
+    lineExecute,
+    historyPrevious,
+    historyNext,
+    scrollPrevious,
+    scrollNext,
 };
 
 namespace OpenRCT2

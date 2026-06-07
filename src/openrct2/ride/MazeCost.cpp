@@ -28,7 +28,7 @@ namespace OpenRCT2
         money64 price = (ride.getRideTypeDescriptor().BuildCosts.TrackPrice * ted.priceModifier) >> 16;
 
         auto surfaceElement = MapGetSurfaceElementAt(loc);
-        auto heightDifference = (loc.z - surfaceElement->GetBaseZ()) / kCoordsZPerTinyZ;
+        auto heightDifference = (loc.z - surfaceElement->getBaseZ()) / kCoordsZPerTinyZ;
         money64 supportCost = heightDifference * ride.getRideTypeDescriptor().BuildCosts.SupportPrice;
 
         return constructionCost + price + supportCost;

@@ -13,8 +13,6 @@
 #include "../world/Location.hpp"
 #include "EntityBase.h"
 
-struct PaintSession;
-
 namespace OpenRCT2
 {
     class DataSerialiser;
@@ -51,8 +49,7 @@ namespace OpenRCT2
         uint16_t Iteration;
         void Update();
         static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
-        void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
+        void serialise(DataSerialiser& stream);
 
     private:
         JumpingFountainType GetType() const;

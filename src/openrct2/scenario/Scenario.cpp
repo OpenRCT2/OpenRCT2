@@ -140,7 +140,7 @@ void ScenarioReset(GameState_t& gameState)
     Duck::RemoveAll();
     Park::UpdateSize(park);
     MapCountRemainingLandRights();
-    Staff::ResetStats();
+    Staff::resetStats();
 
     gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
     if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
@@ -558,13 +558,13 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
     TileElementIteratorBegin(&it);
     do
     {
-        if (it.element->GetType() == TileElementType::Track)
+        if (it.element->getType() == TileElementType::Track)
         {
             markTrackAsIndestructible = false;
 
             if (isFiveCoasterObjective)
             {
-                auto ride = GetRide(it.element->AsTrack()->GetRideIndex());
+                auto ride = GetRide(it.element->asTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->flags.has(RideFlag::indestructibleTrack))
@@ -573,7 +573,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
                 }
             }
 
-            it.element->AsTrack()->SetIsIndestructible(markTrackAsIndestructible);
+            it.element->asTrack()->SetIsIndestructible(markTrackAsIndestructible);
         }
     } while (TileElementIteratorNext(&it));
 

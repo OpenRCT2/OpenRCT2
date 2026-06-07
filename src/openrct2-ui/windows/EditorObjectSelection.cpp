@@ -1610,7 +1610,7 @@ namespace OpenRCT2::Ui::Windows
             SetEveryRideTypeInvented();
             SetEveryRideEntryInvented();
 
-            getGameState().editorStep = EditorStep::DesignsManager;
+            getGameState().editorStep = EditorStep::designsManager;
 
             int32_t entry_index = 0;
             for (; ObjectEntryGetChunk(ObjectType::ride, entry_index) == nullptr; entry_index++)

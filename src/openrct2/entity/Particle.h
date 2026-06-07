@@ -88,7 +88,7 @@ namespace OpenRCT2
 
         static void Create(const CoordsXYZ& coords);
         void Update();
-        void Serialise(DataSerialiser& stream);
+        void serialise(DataSerialiser& stream);
         void Paint(PaintSession& session, int32_t imageDirection) const;
     };
 } // namespace OpenRCT2

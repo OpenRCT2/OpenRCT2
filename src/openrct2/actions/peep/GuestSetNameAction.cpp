@@ -94,7 +94,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Easter egg functions are for guests only
-        guest->HandleEasterEggName();
+        guest->handleEasterEggName();
 
         GfxInvalidateScreen();
 
@@ -102,7 +102,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         auto res = Result();
-        res.position = guest->GetLocation();
+        res.position = guest->getLocation();
 
         return res;
     }

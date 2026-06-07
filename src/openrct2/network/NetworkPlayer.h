@@ -29,29 +29,29 @@ namespace OpenRCT2::Network
     class Player final
     {
     public:
-        uint8_t Id = 0;
-        std::string Name;
-        uint16_t Ping = 0;
-        uint8_t Flags = 0;
-        uint8_t Group = 0;
-        money64 MoneySpent = 0.00_GBP;
-        uint32_t CommandsRan = 0;
-        int32_t LastAction = -999;
-        uint32_t LastActionTime = 0;
-        CoordsXYZ LastActionCoord = {};
-        Peep* PickupPeep = nullptr;
-        int32_t PickupPeepOldX = kLocationNull;
-        std::string KeyHash;
-        uint32_t LastDemolishRideTime = 0;
-        uint32_t LastPlaceSceneryTime = 0;
-        std::unordered_map<GameCommand, int32_t> CooldownTime;
+        uint8_t id = 0;
+        std::string name;
+        uint16_t ping = 0;
+        uint8_t flags = 0;
+        uint8_t group = 0;
+        money64 moneySpent = 0.00_GBP;
+        uint32_t commandsRan = 0;
+        int32_t lastAction = -999;
+        uint32_t lastActionTime = 0;
+        CoordsXYZ lastActionCoord = {};
+        Peep* pickupPeep = nullptr;
+        int32_t pickupPeepOldX = kLocationNull;
+        std::string keyHash;
+        uint32_t lastDemolishRideTime = 0;
+        uint32_t lastPlaceSceneryTime = 0;
+        std::unordered_map<GameCommand, int32_t> cooldownTime;
         Player() noexcept = default;
 
-        void SetName(std::string_view name);
+        void setName(std::string_view name);
 
-        void Read(Packet& packet);
-        void Write(Packet& packet);
-        void IncrementNumCommands();
-        void AddMoneySpent(money64 cost);
+        void read(Packet& packet);
+        void write(Packet& packet);
+        void incrementNumCommands();
+        void addMoneySpent(money64 cost);
     };
 } // namespace OpenRCT2::Network

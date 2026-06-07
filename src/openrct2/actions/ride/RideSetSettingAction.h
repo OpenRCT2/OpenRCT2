@@ -15,17 +15,17 @@ namespace OpenRCT2::GameActions
 {
     enum class RideSetSetting : uint8_t
     {
-        Mode,
-        Departure,
-        MinWaitingTime,
-        MaxWaitingTime,
-        Operation,
-        InspectionInterval,
-        Music,
-        MusicType,
-        LiftHillSpeed,
-        NumCircuits,
-        RideType,
+        mode,
+        departure,
+        minWaitingTime,
+        maxWaitingTime,
+        operation,
+        inspectionInterval,
+        music,
+        musicType,
+        liftHillSpeed,
+        numCircuits,
+        rideType,
     };
 
     class RideSetSettingAction final : public GameActionBase<GameCommand::SetRideSetting>

@@ -50,11 +50,11 @@ namespace OpenRCT2::GameActions
         auto mode = static_cast<LoadOrQuitModes>(_mode);
         switch (mode)
         {
-            case LoadOrQuitModes::OpenSavePrompt:
+            case LoadOrQuitModes::openSavePrompt:
                 gSavePromptMode = _savePromptMode;
                 ContextOpenWindow(WindowClass::savePrompt);
                 break;
-            case LoadOrQuitModes::CloseSavePrompt:
+            case LoadOrQuitModes::closeSavePrompt:
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->CloseByClass(WindowClass::savePrompt);

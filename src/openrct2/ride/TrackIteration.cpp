@@ -159,25 +159,25 @@ namespace OpenRCT2
                 slowLocation.x = slowTrackBeginEnd.end_x;
                 slowLocation.y = slowTrackBeginEnd.end_y;
                 slowTileElement = *(slowTrackBeginEnd.begin_element);
-                if (slowLocation == location && slowTileElement.GetBaseZ() == tileElement->GetBaseZ()
-                    && slowTileElement.GetType() == tileElement->GetType()
-                    && slowTileElement.GetDirection() == tileElement->GetDirection())
+                if (slowLocation == location && slowTileElement.getBaseZ() == tileElement->getBaseZ()
+                    && slowTileElement.getType() == tileElement->getType()
+                    && slowTileElement.getDirection() == tileElement->getDirection())
                 {
                     return nullptr;
                 }
             }
-        } while (!(trackBeginEnd.begin_element->AsTrack()->IsBlockStart()));
+        } while (!(trackBeginEnd.begin_element->asTrack()->IsBlockStart()));
 
         // Get the start of the track block instead of the end
         location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         auto trackOrigin = OpenRCT2::MapGetTrackElementAtOfTypeSeq(
-            location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0);
+            location, trackBeginEnd.begin_element->asTrack()->GetTrackType(), 0);
         if (trackOrigin == nullptr)
         {
             return nullptr;
         }
 
-        return trackOrigin->AsTrack();
+        return trackOrigin->asTrack();
     }
 
     /**
@@ -209,7 +209,7 @@ namespace OpenRCT2
 
         do
         {
-            const auto* trackElement = tileElement->AsTrack();
+            const auto* trackElement = tileElement->asTrack();
             if (trackElement == nullptr)
                 continue;
 
@@ -219,7 +219,7 @@ namespace OpenRCT2
             if (trackElement->GetSequenceIndex() != 0)
                 continue;
 
-            if (tileElement->IsGhost() != isGhost)
+            if (tileElement->isGhost() != isGhost)
                 continue;
 
             const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->GetTrackType());
@@ -227,23 +227,23 @@ namespace OpenRCT2
                 continue;
 
             const auto& nextTrackCoordinate = ted.coordinates;
-            uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
+            uint8_t nextRotation = tileElement->getDirectionWithOffset(nextTrackCoordinate.rotationBegin)
                 | (nextTrackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
 
             if (nextRotation != direction_start)
                 continue;
 
-            int16_t nextZ = nextTrackCoordinate.zBegin - ted.sequenceData.sequences[0].clearance.z + tileElement->GetBaseZ();
+            int16_t nextZ = nextTrackCoordinate.zBegin - ted.sequenceData.sequences[0].clearance.z + tileElement->getBaseZ();
             if (nextZ != trackPos.z)
                 continue;
 
             if (z != nullptr)
-                *z = tileElement->GetBaseZ();
+                *z = tileElement->getBaseZ();
             if (direction != nullptr)
                 *direction = nextRotation;
             *output = { trackPos, tileElement };
             return true;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         if (direction != nullptr)
             *direction = direction_start;
@@ -262,7 +262,7 @@ namespace OpenRCT2
         if (input == nullptr || input->element == nullptr)
             return false;
 
-        const auto* inputElement = input->element->AsTrack();
+        const auto* inputElement = input->element->asTrack();
         if (inputElement == nullptr)
             return false;
 
@@ -281,9 +281,9 @@ namespace OpenRCT2
 
         int32_t x = input->x;
         int32_t y = input->y;
-        int32_t OriginZ = inputElement->GetBaseZ();
+        int32_t OriginZ = inputElement->getBaseZ();
 
-        uint8_t rotation = inputElement->GetDirection();
+        uint8_t rotation = inputElement->getDirection();
 
         CoordsXY coords = { x, y };
         CoordsXY trackCoordOffset = { trackCoordinate.x, trackCoordinate.y };
@@ -332,7 +332,7 @@ namespace OpenRCT2
 
         do
         {
-            const auto* trackElement = tileElement->AsTrack();
+            const auto* trackElement = tileElement->asTrack();
             if (trackElement == nullptr)
                 continue;
 
@@ -350,17 +350,17 @@ namespace OpenRCT2
             const auto& currentBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
 
             const auto& nextTrackCoordinate = ted.coordinates;
-            uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationEnd)
+            uint8_t nextRotation = tileElement->getDirectionWithOffset(nextTrackCoordinate.rotationEnd)
                 | (nextTrackCoordinate.rotationEnd & kTrackDirectionDiagonalMask);
 
             if (nextRotation != directionStart)
                 continue;
 
-            int16_t nextZ = nextTrackCoordinate.zEnd - currentBlock.z + tileElement->GetBaseZ();
+            int16_t nextZ = nextTrackCoordinate.zEnd - currentBlock.z + tileElement->getBaseZ();
             if (nextZ != trackPos.z)
                 continue;
 
-            nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
+            nextRotation = tileElement->getDirectionWithOffset(nextTrackCoordinate.rotationBegin)
                 | (nextTrackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
             outTrackBeginEnd->begin_element = tileElement;
             outTrackBeginEnd->begin_x = trackPos.x;
@@ -374,14 +374,14 @@ namespace OpenRCT2
             outTrackBeginEnd->begin_x = coords.x;
             outTrackBeginEnd->begin_y = coords.y;
 
-            outTrackBeginEnd->begin_z = tileElement->GetBaseZ();
+            outTrackBeginEnd->begin_z = tileElement->getBaseZ();
 
             const auto& firstBlock = ted.sequenceData.sequences[0].clearance;
             outTrackBeginEnd->begin_z += firstBlock.z - currentBlock.z;
             outTrackBeginEnd->begin_direction = nextRotation;
             outTrackBeginEnd->end_direction = DirectionReverse(directionStart);
             return true;
-        } while (!(tileElement++)->IsLastForTile());
+        } while (!(tileElement++)->isLastForTile());
 
         outTrackBeginEnd->end_x = trackPos.x;
         outTrackBeginEnd->end_y = trackPos.y;
@@ -404,7 +404,7 @@ namespace OpenRCT2
         if (trackPos.element == nullptr)
             return false;
 
-        auto trackElement = trackPos.element->AsTrack();
+        auto trackElement = trackPos.element->asTrack();
         if (trackElement == nullptr)
             return false;
 
@@ -422,9 +422,9 @@ namespace OpenRCT2
         const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
         auto trackCoordinate = ted.coordinates;
 
-        int32_t z = trackElement->GetBaseZ();
+        int32_t z = trackElement->getBaseZ();
 
-        uint8_t rotation = trackElement->GetDirection();
+        uint8_t rotation = trackElement->getDirection();
         CoordsXY coords = CoordsXY{ trackPos };
         CoordsXY offsets = { trackBlock.x, trackBlock.y };
         coords += offsets.Rotate(DirectionReverse(rotation));
@@ -448,7 +448,7 @@ namespace OpenRCT2
      */
     bool findTrackGap(const Ride& ride, const CoordsXYE& input, CoordsXYE* output)
     {
-        if (input.element == nullptr || input.element->GetType() != TileElementType::Track)
+        if (input.element == nullptr || input.element->getType() != TileElementType::Track)
             return false;
 
         const auto& rtd = ride.getRideTypeDescriptor();

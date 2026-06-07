@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
         RideUse::GetHistory().RemoveValue(ride.id);
         for (auto peep : EntityList<Guest>())
         {
-            peep->RemoveRideFromMemory(ride.id);
+            peep->removeRideFromMemory(ride.id);
         }
 
         MarketingCancelCampaignsForRide(_rideIndex);
@@ -214,15 +214,15 @@ namespace OpenRCT2::GameActions
                     if (tileElement == nullptr)
                         break;
 
-                    lastForTileReached = tileElement->IsLastForTile();
-                    if (tileElement->GetType() != TileElementType::Track)
+                    lastForTileReached = tileElement->isLastForTile();
+                    if (tileElement->getType() != TileElementType::Track)
                         continue;
 
-                    auto* trackElement = tileElement->AsTrack();
+                    auto* trackElement = tileElement->asTrack();
                     if (trackElement->GetRideIndex() != _rideIndex)
                         continue;
 
-                    const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
+                    const auto location = CoordsXYZD(tileCoords, trackElement->getBaseZ(), trackElement->getDirection());
                     const auto type = trackElement->GetTrackType();
 
                     if (type != TrackElemType::maze)

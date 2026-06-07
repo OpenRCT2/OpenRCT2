@@ -1437,7 +1437,10 @@ declare global {
 
     interface StaffSetCostumeArgs extends GameActionArgs {
         id: number;
-        /** @see `EntertainerCostume` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/entity/Staff.h} */
+
+        /**
+         * The costume (peep animation) object index.
+         */
         costume: number;
     }
 
@@ -1488,7 +1491,7 @@ declare global {
     }
 
     /**
-     * @todo Does not support `TileModifyType::AnyPaste`
+     * @todo Does not support `TileModifyType::anyPaste`
      */
     interface TileModifyArgs extends GameActionArgs {
         x: number;
@@ -2258,6 +2261,10 @@ declare global {
 
     interface WallObject extends SceneryObject {
 
+    }
+
+    interface FootpathSurfaceObject extends LoadedImageObject {
+        readonly flags: number;
     }
 
     interface FootpathAdditionObject extends SceneryObject {
@@ -5772,6 +5779,7 @@ declare global {
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
         getObject(type: "large_scenery", index: number): LargeSceneryObject;
         getObject(type: "wall", index: number): WallObject;
+        getObject(type: "footpath_surface", index: number): FootpathSurfaceObject;
         getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
         getObject(type: "banner", index: number): BannerObject;
         getObject(type: "scenery_group", index: number): SceneryGroupObject;
@@ -5785,6 +5793,7 @@ declare global {
         getAllObjects(type: "small_scenery"): SmallSceneryObject[];
         getAllObjects(type: "large_scenery"): LargeSceneryObject[];
         getAllObjects(type: "wall"): WallObject[];
+        getAllObjects(type: "footpath_surface"): FootpathSurfaceObject[];
         getAllObjects(type: "footpath_addition"): FootpathAdditionObject[];
         getAllObjects(type: "banner"): BannerObject[];
         getAllObjects(type: "scenery_group"): SceneryGroupObject[];

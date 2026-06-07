@@ -80,22 +80,22 @@ static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t hei
     {
         if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
-            LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::Lantern3);
+            LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::lantern3);
         }
 
-        switch (entranceEl.GetDirection())
+        switch (entranceEl.getDirection())
         {
             case 0:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 16, LightType::lantern2);
                 break;
             case 1:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 16, LightType::lantern2);
                 break;
             case 2:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 16, LightType::lantern2);
                 break;
             case 3:
-                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 16, LightType::lantern2);
                 break;
         }
     }
@@ -137,7 +137,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         glassImageTemplate = ImageId().WithTransparency(colourPrimary);
     }
 
-    if (entranceEl.IsGhost())
+    if (entranceEl.isGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
@@ -196,11 +196,11 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
-    if (!entranceEl.IsGhost())
+    if (!entranceEl.isGhost())
         PaintRideEntranceExitScrollingText(session, entranceEl, *stationObj, direction, height);
 
     auto supportsImageTemplate = imageTemplate;
-    if (!entranceEl.IsGhost())
+    if (!entranceEl.isGhost())
     {
         supportsImageTemplate = ImageId().WithPrimary(OpenRCT2::Drawing::Colour::saturatedBrown);
     }
@@ -247,7 +247,7 @@ static void PaintParkEntranceLightEffects(PaintSession& session)
 
     if (LightFx::IsAvailable())
     {
-        LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
+        LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, 155, LightType::lantern3);
     }
 }
 
@@ -263,7 +263,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     session.InteractionType = ViewportInteractionItem::parkEntrance;
 
     ImageId imageTemplate;
-    if (entranceEl.IsGhost())
+    if (entranceEl.isGhost())
     {
         session.InteractionType = ViewportInteractionItem::none;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
@@ -296,7 +296,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
                 PaintAddImageAsParent(
                     session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height + 32 }, { 28, 28, 47 } });
 
-                if (!entranceEl.IsGhost())
+                if (!entranceEl.isGhost())
                     PaintParkEntranceScrollingText(session, *entrance, direction, height);
             }
             break;
@@ -313,7 +313,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     }
 
     auto supportsImageTemplate = imageTemplate;
-    if (!entranceEl.IsGhost())
+    if (!entranceEl.isGhost())
     {
         supportsImageTemplate = ImageId().WithPrimary(OpenRCT2::Drawing::Colour::saturatedBrown);
     }
@@ -332,7 +332,7 @@ static void PaintHeightMarkers(PaintSession& session, const EntranceElement& ent
     {
         if (entranceEl.GetDirections() & 0xF)
         {
-            auto heightMarkerBaseZ = entranceEl.GetBaseZ() + 3;
+            auto heightMarkerBaseZ = entranceEl.getBaseZ() + 3;
             ImageIndex baseImageIndex = SPR_HEIGHT_MARKER_BASE;
             baseImageIndex += heightMarkerBaseZ / 16;
             baseImageIndex += GetHeightMarkerOffset();

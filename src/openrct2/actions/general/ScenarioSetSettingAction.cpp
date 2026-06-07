@@ -35,7 +35,7 @@ namespace OpenRCT2::GameActions
 
     Result ScenarioSetSettingAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (_setting >= ScenarioSetSetting::Count)
+        if (_setting >= ScenarioSetSetting::count)
         {
             LOG_ERROR("Invalid scenario setting: %u", _setting);
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -50,7 +50,7 @@ namespace OpenRCT2::GameActions
 
         switch (_setting)
         {
-            case ScenarioSetSetting::NoMoney:
+            case ScenarioSetSetting::noMoney:
                 if (gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     if (_value != 0)
@@ -81,27 +81,27 @@ namespace OpenRCT2::GameActions
                     windowMgr->InvalidateByClass(WindowClass::topToolbar);
                 }
                 break;
-            case ScenarioSetSetting::InitialCash:
+            case ScenarioSetSetting::initialCash:
                 gameState.scenarioOptions.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
                 park.cash = gameState.scenarioOptions.initialCash;
                 windowMgr->InvalidateByClass(WindowClass::finances);
                 windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
                 break;
-            case ScenarioSetSetting::InitialLoan:
+            case ScenarioSetSetting::initialLoan:
                 park.bankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
                 park.maxBankLoan = std::max(park.bankLoan, park.maxBankLoan);
                 windowMgr->InvalidateByClass(WindowClass::finances);
                 break;
-            case ScenarioSetSetting::MaximumLoanSize:
+            case ScenarioSetSetting::maximumLoanSize:
                 park.maxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
                 park.bankLoan = std::min(park.bankLoan, park.maxBankLoan);
                 windowMgr->InvalidateByClass(WindowClass::finances);
                 break;
-            case ScenarioSetSetting::AnnualInterestRate:
+            case ScenarioSetSetting::annualInterestRate:
                 park.bankLoanInterestRate = std::clamp<uint8_t>(_value, 0, kMaxBankLoanInterestRate);
                 windowMgr->InvalidateByClass(WindowClass::finances);
                 break;
-            case ScenarioSetSetting::ForbidMarketingCampaigns:
+            case ScenarioSetSetting::forbidMarketingCampaigns:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
@@ -111,19 +111,19 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
                 }
                 break;
-            case ScenarioSetSetting::AverageCashPerGuest:
+            case ScenarioSetSetting::averageCashPerGuest:
                 gameState.scenarioOptions.guestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
                 break;
-            case ScenarioSetSetting::GuestInitialHappiness:
+            case ScenarioSetSetting::guestInitialHappiness:
                 gameState.scenarioOptions.guestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
                 break;
-            case ScenarioSetSetting::GuestInitialHunger:
+            case ScenarioSetSetting::guestInitialHunger:
                 gameState.scenarioOptions.guestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
                 break;
-            case ScenarioSetSetting::GuestInitialThirst:
+            case ScenarioSetSetting::guestInitialThirst:
                 gameState.scenarioOptions.guestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
                 break;
-            case ScenarioSetSetting::GuestsPreferLessIntenseRides:
+            case ScenarioSetSetting::guestsPreferLessIntenseRides:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
@@ -133,7 +133,7 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
                 }
                 break;
-            case ScenarioSetSetting::GuestsPreferMoreIntenseRides:
+            case ScenarioSetSetting::guestsPreferMoreIntenseRides:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
@@ -143,13 +143,13 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
                 }
                 break;
-            case ScenarioSetSetting::CostToBuyLand:
+            case ScenarioSetSetting::costToBuyLand:
                 gameState.scenarioOptions.landPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
                 break;
-            case ScenarioSetSetting::CostToBuyConstructionRights:
+            case ScenarioSetSetting::costToBuyConstructionRights:
                 gameState.scenarioOptions.constructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
                 break;
-            case ScenarioSetSetting::ParkChargeMethod:
+            case ScenarioSetSetting::parkChargeMethod:
                 if (gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     if (_value == 0)
@@ -192,11 +192,11 @@ namespace OpenRCT2::GameActions
                     windowMgr->InvalidateByClass(WindowClass::ride);
                 }
                 break;
-            case ScenarioSetSetting::ParkChargeEntryFee:
+            case ScenarioSetSetting::parkChargeEntryFee:
                 park.entranceFee = std::clamp<money64>(_value, 0.00_GBP, kMaxEntranceFee);
                 windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 break;
-            case ScenarioSetSetting::ForbidTreeRemoval:
+            case ScenarioSetSetting::forbidTreeRemoval:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
@@ -206,7 +206,7 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
                 }
                 break;
-            case ScenarioSetSetting::ForbidLandscapeChanges:
+            case ScenarioSetSetting::forbidLandscapeChanges:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
@@ -216,7 +216,7 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
                 }
                 break;
-            case ScenarioSetSetting::ForbidHighConstruction:
+            case ScenarioSetSetting::forbidHighConstruction:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
@@ -226,7 +226,7 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
                 }
                 break;
-            case ScenarioSetSetting::ParkRatingHigherDifficultyLevel:
+            case ScenarioSetSetting::parkRatingHigherDifficultyLevel:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
@@ -236,7 +236,7 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
                 }
                 break;
-            case ScenarioSetSetting::GuestGenerationHigherDifficultyLevel:
+            case ScenarioSetSetting::guestGenerationHigherDifficultyLevel:
                 if (_value != 0)
                 {
                     park.flags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
@@ -246,10 +246,10 @@ namespace OpenRCT2::GameActions
                     park.flags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
                 }
                 break;
-            case ScenarioSetSetting::AllowEarlyCompletion:
+            case ScenarioSetSetting::allowEarlyCompletion:
                 gAllowEarlyCompletionInNetworkPlay = _value;
                 break;
-            case ScenarioSetSetting::UseRCT1Interest:
+            case ScenarioSetSetting::useRCT1Interest:
             {
                 if (_value != 0)
                 {

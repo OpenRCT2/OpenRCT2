@@ -161,7 +161,7 @@ namespace OpenRCT2::Ui::Windows
         gTooltipCursor = screenCoords;
         gTooltipCloseTimeout = 0;
         gTooltipWidget.windowClassification = WindowClass::null;
-        InputSetState(InputState::Normal);
+        InputSetState(InputState::normal);
         gInputFlags.unset(InputFlag::leftMousePressed);
     }
 

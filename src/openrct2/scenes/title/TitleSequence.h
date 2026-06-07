@@ -48,8 +48,8 @@ namespace OpenRCT2::Title
         std::unique_ptr<IStream> Stream;
     };
 
-    constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";
-    constexpr uint8_t SAVE_INDEX_INVALID = UINT8_MAX;
+    constexpr const utf8* kTitleSequenceExtension = ".parkseq";
+    constexpr uint8_t kSaveIndexInvalid = UINT8_MAX;
 
     [[nodiscard]] std::unique_ptr<TitleSequence> CreateTitleSequence();
     [[nodiscard]] std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path);

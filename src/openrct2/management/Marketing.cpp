@@ -60,8 +60,8 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
     auto& park = getGameState().park;
 
     // Lower probability of guest generation if price was already low
-    auto probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->Type];
-    switch (campaign->Type)
+    auto probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->type];
+    switch (campaign->type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
             if (Park::GetEntranceFee(park) < 4.00_GBP)
@@ -73,7 +73,7 @@ uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaignType)
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
         {
-            auto ride = GetRide(campaign->RideId);
+            auto ride = GetRide(campaign->rideId);
             if (ride == nullptr || ride->price[0] < 0.30_GBP)
                 probability /= 8;
             break;
@@ -89,20 +89,20 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
     {
         Formatter ft;
         // This sets the string parameters for the marketing types that have an argument.
-        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        if (campaign.type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.type == ADVERTISING_CAMPAIGN_RIDE)
         {
-            auto ride = GetRide(campaign.RideId);
+            auto ride = GetRide(campaign.rideId);
             if (ride != nullptr)
             {
                 ride->formatNameTo(ft);
             }
         }
-        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        else if (campaign.type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            ft.Add<StringId>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
+            ft.Add<StringId>(GetShopItemDescriptor(campaign.shopItemType).Naming.Plural);
         }
 
-        News::AddItemToQueue(News::ItemType::campaign, kMarketingCampaignNames[campaign.Type][2], 0, ft);
+        News::AddItemToQueue(News::ItemType::campaign, kMarketingCampaignNames[campaign.type][2], 0, ft);
     }
 }
 
@@ -128,12 +128,12 @@ void MarketingUpdate()
             // middle of a week.
             campaign.flags.unset(MarketingCampaignFlag::firstWeek);
         }
-        else if (campaign.WeeksLeft > 0)
+        else if (campaign.weeksLeft > 0)
         {
-            campaign.WeeksLeft--;
+            campaign.weeksLeft--;
         }
 
-        if (campaign.WeeksLeft == 0)
+        if (campaign.weeksLeft == 0)
         {
             MarketingRaiseFinishedNotification(campaign);
             it = gameState.park.marketingCampaigns.erase(it);
@@ -154,33 +154,33 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
     if (campaign == nullptr)
         return;
 
-    switch (campaign->Type)
+    switch (campaign->type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_FREE;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_PARK_ENTRY_FREE;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_RIDE_FREE;
-            peep->VoucherRideId = campaign->RideId;
-            peep->GuestHeadingToRideId = campaign->RideId;
-            peep->GuestIsLostCountdown = 240;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_RIDE_FREE;
+            peep->voucherRideId = campaign->rideId;
+            peep->guestHeadingToRideId = campaign->rideId;
+            peep->guestIsLostCountdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
             break;
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-            peep->GiveItem(ShopItem::voucher);
-            peep->VoucherType = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
-            peep->VoucherShopItem = campaign->ShopItemType;
+            peep->giveItem(ShopItem::voucher);
+            peep->voucherType = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
+            peep->voucherShopItem = campaign->shopItemType;
             break;
         case ADVERTISING_CAMPAIGN_PARK:
             break;
         case ADVERTISING_CAMPAIGN_RIDE:
-            peep->GuestHeadingToRideId = campaign->RideId;
-            peep->GuestIsLostCountdown = 240;
+            peep->guestHeadingToRideId = campaign->rideId;
+            peep->guestIsLostCountdown = 240;
             break;
     }
 }
@@ -243,7 +243,7 @@ MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 {
     for (auto& campaign : getGameState().park.marketingCampaigns)
     {
-        if (campaign.Type == campaignType)
+        if (campaign.type == campaignType)
         {
             return &campaign;
         }
@@ -254,7 +254,7 @@ MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 void MarketingNewCampaign(const MarketingCampaign& campaign)
 {
     // Do not allow the same campaign twice, just overwrite
-    auto currentCampaign = MarketingGetCampaign(campaign.Type);
+    auto currentCampaign = MarketingGetCampaign(campaign.type);
     if (currentCampaign != nullptr)
     {
         *currentCampaign = campaign;
@@ -268,9 +268,9 @@ void MarketingNewCampaign(const MarketingCampaign& campaign)
 void MarketingCancelCampaignsForRide(const RideId rideId)
 {
     auto isCampaignForRideFn = [&rideId](MarketingCampaign& campaign) {
-        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        if (campaign.type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.type == ADVERTISING_CAMPAIGN_RIDE)
         {
-            return campaign.RideId == rideId;
+            return campaign.rideId == rideId;
         }
         return false;
     };

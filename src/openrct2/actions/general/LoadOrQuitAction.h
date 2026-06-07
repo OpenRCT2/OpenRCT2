@@ -16,8 +16,8 @@ namespace OpenRCT2::GameActions
 {
     enum class LoadOrQuitModes : uint8_t
     {
-        OpenSavePrompt,
-        CloseSavePrompt
+        openSavePrompt,
+        closeSavePrompt
     };
 
     class LoadOrQuitAction final : public GameActionBase<GameCommand::LoadOrQuit>

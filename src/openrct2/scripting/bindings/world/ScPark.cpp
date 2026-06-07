@@ -161,7 +161,7 @@ namespace OpenRCT2::Scripting
     {
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto guest = Park::GenerateGuest();
-        return ScGuest::New(ctx, guest->Id);
+        return ScGuest::New(ctx, guest->id);
     }
 
     JSValue ScPark::guestInitialCash_get(JSContext* ctx, JSValue thisVal)
@@ -360,11 +360,11 @@ namespace OpenRCT2::Scripting
         JSValue result = JS_NewArray(ctx);
         int64_t resultIdx = 0;
         auto& gameState = getGameState();
-        for (size_t i = 0, newsSize = gameState.newsItems.GetRecent().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = gameState.newsItems.getRecent().size(); i < newsSize; i++)
         {
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, i));
         }
-        for (size_t i = 0, newsSize = gameState.newsItems.GetArchived().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = gameState.newsItems.getArchived().size(); i < newsSize; i++)
         {
             auto offset = i + News::ItemHistoryStart;
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, offset));

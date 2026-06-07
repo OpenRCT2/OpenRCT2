@@ -132,8 +132,8 @@ TEST_F(NetworkTests, MapRequestWithoutPlayerDisconnectsAndDoesNotCrash)
 
     Connection connection;
     auto mockSocket = std::make_unique<MockTcpSocket>();
-    connection.Socket = std::move(mockSocket);
-    connection.AuthStatus = Auth::none;
+    connection.socket = std::move(mockSocket);
+    connection.authStatus = Auth::none;
     connection.player = nullptr;
 
     Packet packet(Command::mapRequest);
@@ -143,5 +143,5 @@ TEST_F(NetworkTests, MapRequestWithoutPlayerDisconnectsAndDoesNotCrash)
     // After the fix, it should detect connection.player == nullptr and disconnect.
     network.ServerHandleMapRequest(connection, packet);
 
-    EXPECT_TRUE(connection.ShouldDisconnect);
+    EXPECT_TRUE(connection.shouldDisconnect);
 }

@@ -922,7 +922,7 @@ namespace OpenRCT2::Ui
         if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
             return true;
 
-        if (InputGetState() == InputState::WidgetPressed || InputGetState() == InputState::DropdownActive)
+        if (InputGetState() == InputState::widgetPressed || InputGetState() == InputState::dropdownActive)
         {
             if (!gInputFlags.has(InputFlag::widgetPressed))
                 return false;

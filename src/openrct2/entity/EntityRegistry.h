@@ -82,7 +82,7 @@ namespace OpenRCT2
             }
             else
             {
-                return ent->As<T>();
+                return ent->as<T>();
             }
         }
 
@@ -102,7 +102,7 @@ namespace OpenRCT2
             }
             else
             {
-                return ent->As<T>();
+                return ent->as<T>();
             }
         }
 
@@ -138,7 +138,7 @@ namespace OpenRCT2
         {
             for (auto* ent : EntityList<T>())
             {
-                ent->Serialise(ds);
+                ent->serialise(ds);
             }
         }
 

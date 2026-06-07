@@ -365,7 +365,7 @@ namespace OpenRCT2::String
             return u8string(buffer, buffer + len);
         }
 
-        LOG_WARNING("Encoding error occured");
+        LOG_WARNING("Encoding error occurred");
         return u8string{};
     }
 

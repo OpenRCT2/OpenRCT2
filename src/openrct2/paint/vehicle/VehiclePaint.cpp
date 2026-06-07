@@ -11,7 +11,6 @@
 
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../SpriteIds.h"
 #include "../../core/Speed.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/LightFX.h"
@@ -19,7 +18,6 @@
 #include "../../entity/Yaw.hpp"
 #include "../../interface/Viewport.h"
 #include "../../ride/CarEntry.h"
-#include "../../ride/RideData.h"
 #include "../../ride/Vehicle.h"
 #include "../Paint.h"
 
@@ -1089,7 +1087,7 @@ static void PaintVehicleRiders(
             auto peepColour0 = vehicle->peep_tshirt_colours[i * 2];
             auto peepColour1 = vehicle->peep_tshirt_colours[(i * 2) + 1];
             auto imageId = ImageId(offsetImageId, peepColour0, peepColour1);
-            if (vehicle->IsGhost())
+            if (vehicle->isGhost())
             {
                 imageId = ImageId(offsetImageId).WithRemap(FilterPaletteID::paletteGhost);
             }
@@ -1123,7 +1121,7 @@ static void vehicle_sprite_paint(
     }
 
     auto imageId = ImageId(baseImageId, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
-    if (vehicle->IsGhost())
+    if (vehicle->isGhost())
     {
         imageId = ImageId(baseImageId).WithRemap(FilterPaletteID::paletteGhost);
     }
@@ -3648,7 +3646,7 @@ static void VehiclePitchUp8BankedLeft45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes8Banked45, imageDirection, 0);
@@ -3665,7 +3663,7 @@ static void VehiclePitchUp8BankedRight45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : (YawTo16(imageDirection) ^ 8) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes8Banked45, imageDirection, 1);
@@ -3769,7 +3767,7 @@ static void VehiclePitchUp16BankedLeft45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 0);
@@ -3786,7 +3784,7 @@ static void VehiclePitchUp16BankedRight45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : (YawTo16(imageDirection) ^ 8) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 1);
@@ -4048,7 +4046,7 @@ static void VehiclePitchDown8BankedLeft45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes8Banked45, imageDirection, 2);
@@ -4065,7 +4063,7 @@ static void VehiclePitchDown8BankedRight45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : (YawTo16(imageDirection) ^ 8) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes8Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes8Banked45, imageDirection, 3);
@@ -4169,7 +4167,7 @@ static void VehiclePitchDown16BankedLeft45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 2);
@@ -4186,7 +4184,7 @@ static void VehiclePitchDown16BankedRight45(
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo16(imageDirection) + kBoundBoxIndexFlat;
+                                                                   : (YawTo16(imageDirection) ^ 8) + kBoundBoxIndexFlatBanked45;
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes16Banked45))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Slopes16Banked45, imageDirection, 3);
@@ -4552,7 +4550,7 @@ static void vehicle_visual_splash1_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->Orientation / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->orientation / 8) + session.CurrentRotation) & 3) * 8)
         + ((getGameState().currentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 0, 0, 0 } });
 }
@@ -4563,7 +4561,7 @@ static void vehicle_visual_splash1_effect(PaintSession& session, const int32_t z
  */
 static void vehicle_visual_splash2_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->Orientation & 7)
+    if (vehicle->orientation & 7)
     {
         return;
     }
@@ -4575,7 +4573,7 @@ static void vehicle_visual_splash2_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    int32_t image_id = SPR_SPLASH_EFFECT_3_NE_0 + ((((vehicle->Orientation / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_3_NE_0 + ((((vehicle->orientation / 8) + session.CurrentRotation) & 3) * 8)
         + ((getGameState().currentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 0, 0, 0 } });
 }
@@ -4586,7 +4584,7 @@ static void vehicle_visual_splash2_effect(PaintSession& session, const int32_t z
  */
 static void vehicle_visual_splash3_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->Orientation & 7)
+    if (vehicle->orientation & 7)
     {
         return;
     }
@@ -4598,7 +4596,7 @@ static void vehicle_visual_splash3_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->Orientation / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_1_NE_0 + ((((vehicle->orientation / 8) + session.CurrentRotation) & 3) * 8)
         + ((getGameState().currentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 0, 0, 0 } });
 }
@@ -4618,7 +4616,7 @@ static void vehicle_visual_splash4_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->Orientation & 7)
+    if (vehicle->orientation & 7)
     {
         return;
     }
@@ -4626,7 +4624,7 @@ static void vehicle_visual_splash4_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->Orientation / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->orientation / 8) + session.CurrentRotation) & 3) * 8)
         + ((getGameState().currentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 1, 1, 0 } });
 }
@@ -4646,7 +4644,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->Orientation & 7)
+    if (vehicle->orientation & 7)
     {
         return;
     }
@@ -4658,7 +4656,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->Orientation / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_SPLASH_EFFECT_5_NE_0 + ((((vehicle->orientation / 8) + session.CurrentRotation) & 3) * 8)
         + ((getGameState().currentTicks / 2) & 7);
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 1, 1, 0 } });
 }
@@ -4707,84 +4705,5 @@ void VehicleVisualDefault(
             PaintFunctionsByPitch[EnumValue(vehicle->pitch)](
                 session, vehicle, imageDirection, z, carEntry, kBoundBoxIndexUndefined);
         }
-    }
-}
-
-void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
-{
-    const CarEntry* carEntry;
-
-    if (flags.has(VehicleFlag::crashed))
-    {
-        PaintAddImageAsParent(
-            session, ImageId(SPR_WATER_PARTICLES_DENSE_0 + animation_frame), { 0, 0, z }, { { 0, 0, z + 2 }, { 1, 1, 0 } });
-        return;
-    }
-
-    int32_t zOffset = 0;
-    if (IsCableLift())
-    {
-        carEntry = &kCableLiftVehicle;
-    }
-    else
-    {
-        auto rideEntry = GetRideEntry();
-        if (rideEntry == nullptr)
-        {
-            return;
-        }
-
-        auto carEntryIndex = vehicle_type;
-        if (flags.has(VehicleFlag::carIsInverted))
-        {
-            carEntryIndex++;
-            zOffset += 16;
-        }
-
-        if (carEntryIndex >= std::size(rideEntry->Cars))
-        {
-            return;
-        }
-        carEntry = &rideEntry->Cars[carEntryIndex];
-    }
-
-    switch (carEntry->PaintStyle)
-    {
-        case VEHICLE_VISUAL_DEFAULT:
-            VehicleVisualDefault(session, imageDirection, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_LAUNCHED_FREEFALL:
-            VehicleVisualLaunchedFreefall(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_OBSERVATION_TOWER:
-            VehicleVisualObservationTower(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_RIVER_RAPIDS:
-            VehicleVisualRiverRapids(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_MINI_GOLF_PLAYER:
-            VehicleVisualMiniGolfPlayer(session, x, imageDirection, y, z + zOffset, this);
-            break;
-        case VEHICLE_VISUAL_MINI_GOLF_BALL:
-            VehicleVisualMiniGolfBall(session, x, imageDirection, y, z + zOffset, this);
-            break;
-        case VEHICLE_VISUAL_REVERSER:
-            VehicleVisualReverser(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:
-            VehicleVisualSplashBoatsOrWaterCoaster(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_ROTO_DROP:
-            VehicleVisualRotoDrop(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_VIRGINIA_REEL:
-            VehicleVisualVirginiaReel(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_SUBMARINE:
-            VehicleVisualSubmarine(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
-        case VEHICLE_VISUAL_SPINNING_CARS:
-            VehicleVisualClassicMiniSpinning(session, x, imageDirection, y, z + zOffset, this, carEntry);
-            break;
     }
 }

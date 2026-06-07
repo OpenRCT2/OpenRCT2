@@ -192,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
                 for (auto peep : EntityList<Staff>())
                 {
                     getGameState().entities.EntitySetFlashing(peep, false);
-                    if (peep->AssignedStaffType == GetSelectedStaffType())
+                    if (peep->assignedStaffType == GetSelectedStaffType())
                     {
                         getGameState().entities.EntitySetFlashing(peep, true);
                     }
@@ -421,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
                     drawTextEllipsised(rt, { actionOffset, y }, actionColumnSize, format, ft);
 
                     // True if a patrol path is set for the worker
-                    if (peep->HasPatrolArea())
+                    if (peep->hasPatrolArea())
                     {
                         GfxDrawSprite(rt, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                     }
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
                     auto staffOrderIcon_x = nameColumnSize + 20;
                     if (!peep->isEntertainer())
                     {
-                        auto staffOrders = peep->StaffOrders;
+                        auto staffOrders = peep->staffOrders;
                         auto staffOrderSprite = GetStaffOrderBaseSprite(GetSelectedStaffType());
 
                         while (staffOrders != 0)
@@ -493,12 +493,12 @@ namespace OpenRCT2::Ui::Windows
             for (auto* peep : EntityList<Staff>())
             {
                 getGameState().entities.EntitySetFlashing(peep, false);
-                if (peep->AssignedStaffType == GetSelectedStaffType())
+                if (peep->assignedStaffType == GetSelectedStaffType())
                 {
                     getGameState().entities.EntitySetFlashing(peep, true);
 
                     StaffEntry entry;
-                    entry.Id = peep->Id;
+                    entry.Id = peep->id;
                     entry.Name = peep->GetName();
 
                     _staffList.push_back(std::move(entry));
@@ -562,10 +562,10 @@ namespace OpenRCT2::Ui::Windows
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
 
-                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->Id, nullLoc,
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup, staff->id, nullLoc,
                                                                 Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
-                        [staffId = staff->Id](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                        [staffId = staff->id](const GameActions::GameAction* ga, const GameActions::Result* result) {
                             if (result->error != GameActions::Status::ok)
                                 return;
 
@@ -666,16 +666,16 @@ namespace OpenRCT2::Ui::Windows
             auto closestPeepDistance = std::numeric_limits<int32_t>::max();
             for (auto peep : EntityList<Staff>())
             {
-                if (peep->AssignedStaffType != GetSelectedStaffType())
+                if (peep->assignedStaffType != GetSelectedStaffType())
                     continue;
 
                 if (isPatrolAreaSet)
                 {
-                    if (!peep->HasPatrolArea())
+                    if (!peep->hasPatrolArea())
                     {
                         continue;
                     }
-                    if (!peep->IsLocationInPatrol(footpathCoords))
+                    if (!peep->isLocationInPatrol(footpathCoords))
                     {
                         continue;
                     }

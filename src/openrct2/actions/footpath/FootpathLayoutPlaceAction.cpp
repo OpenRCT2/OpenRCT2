@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
             return Result(
                 Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
-        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        int32_t supportHeight = zLow - surfaceElement->getBaseZ();
         res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
         // Prevent the place sound from being spammed
@@ -244,7 +244,7 @@ namespace OpenRCT2::GameActions
             return Result(
                 Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
-        int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
+        int32_t supportHeight = zLow - surfaceElement->getBaseZ();
         res.cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
         if (entrancePath)
@@ -267,7 +267,7 @@ namespace OpenRCT2::GameActions
             auto* pathElement = TileElementInsert<PathElement>(_loc, 0b1111);
             Guard::Assert(pathElement != nullptr);
 
-            pathElement->SetClearanceZ(zHigh);
+            pathElement->setClearanceZ(zHigh);
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
                 pathElement->SetLegacyPathEntryIndex(_type);
@@ -286,7 +286,7 @@ namespace OpenRCT2::GameActions
             pathElement->SetIsBroken(false);
             pathElement->SetEdges(_edges);
             pathElement->SetCorners(0);
-            pathElement->SetGhost(GetFlags().has(CommandFlag::ghost));
+            pathElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             MapInvalidateTileFull(_loc);
         }

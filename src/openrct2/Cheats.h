@@ -13,9 +13,9 @@
 
 enum class StaffSpeedCheat
 {
-    None,
-    Frozen,
-    Fast,
+    none,
+    frozen,
+    fast,
 };
 
 struct CheatsState

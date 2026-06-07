@@ -74,9 +74,9 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
     };
 
     template<>
-    bool EntityBase::Is<Duck>() const
+    bool EntityBase::is<Duck>() const
     {
-        return Type == EntityType::duck;
+        return type == EntityType::duck;
     }
 
     bool Duck::IsFlying()
@@ -86,7 +86,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 
     void Duck::Remove()
     {
-        Invalidate();
+        invalidate();
         getGameState().entities.EntityRemove(this);
     }
 
@@ -103,9 +103,9 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             frame = 0;
         }
 
-        Invalidate();
+        invalidate();
         int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
-        int32_t direction = Orientation >> 3;
+        int32_t direction = orientation >> 3;
         auto destination = CoordsXYZ{ CoordsXY{ x, y } + kDuckMoveOffset[direction], 0 };
         int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
@@ -135,7 +135,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                 {
                     destination.z = z;
                 }
-                MoveTo(destination);
+                moveTo(destination);
             }
             else
             {
@@ -158,7 +158,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
     {
         const auto currentTicks = getGameState().currentTicks;
 
-        if (((currentTicks + Id.ToUnderlying()) & 3) != 0)
+        if (((currentTicks + id.ToUnderlying()) & 3) != 0)
             return;
 
         uint32_t randomNumber = ScenarioRand();
@@ -187,7 +187,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             }
             else
             {
-                Invalidate();
+                invalidate();
                 int16_t landZ = TileElementHeight({ x, y });
                 int16_t waterZ = TileElementWaterHeight({ x, y });
 
@@ -203,10 +203,10 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                     if ((randomNumber & 0xFFFF) <= 0xAAA)
                     {
                         randomNumber >>= 16;
-                        Orientation = randomNumber & 0x18;
+                        orientation = randomNumber & 0x18;
                     }
 
-                    int32_t direction = Orientation >> 3;
+                    int32_t direction = orientation >> 3;
                     auto destination = CoordsXYZ{ CoordsXY{ x, y } + kDuckMoveOffset[direction], 0 };
                     landZ = TileElementHeight(destination);
                     waterZ = TileElementWaterHeight(destination);
@@ -214,8 +214,8 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                     if (z > landZ && z == waterZ)
                     {
                         destination.z = waterZ;
-                        MoveTo(destination);
-                        Invalidate();
+                        moveTo(destination);
+                        invalidate();
                     }
                 }
             }
@@ -233,7 +233,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
         else
         {
-            Invalidate();
+            invalidate();
         }
     }
 
@@ -248,7 +248,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
         else
         {
-            Invalidate();
+            invalidate();
         }
     }
 
@@ -262,14 +262,14 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                 frame = 0;
             }
 
-            Invalidate();
+            invalidate();
 
-            int32_t direction = Orientation >> 3;
+            int32_t direction = orientation >> 3;
             auto destination = CoordsXYZ{ x + (kDuckMoveOffset[direction].x * 2), y + (kDuckMoveOffset[direction].y * 2),
                                           std::min<int32_t>(z + 2, 496) };
             if (MapIsLocationValid(destination))
             {
-                MoveTo(destination);
+                moveTo(destination);
             }
             else
             {
@@ -302,9 +302,9 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         targetPos.x += offsetXY;
         targetPos.y += offsetXY;
 
-        duck->SpriteData.Width = 9;
-        duck->SpriteData.HeightMin = 12;
-        duck->SpriteData.HeightMax = 9;
+        duck->spriteData.width = 9;
+        duck->spriteData.heightMin = 12;
+        duck->spriteData.heightMax = 9;
         duck->target_x = targetPos.x;
         duck->target_y = targetPos.y;
         uint8_t direction = ScenarioRand() & 3;
@@ -323,8 +323,8 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                 targetPos.y = GetMapSizeMaxXY().y - (ScenarioRand() & 0x3F);
                 break;
         }
-        duck->Orientation = direction << 3;
-        duck->MoveTo({ targetPos.x, targetPos.y, 496 });
+        duck->orientation = direction << 3;
+        duck->moveTo({ targetPos.x, targetPos.y, 496 });
         duck->state = DuckState::FlyToWater;
         duck->frame = 0;
     }
@@ -364,27 +364,12 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
     }
 
-    void Duck::Serialise(DataSerialiser& stream)
+    void Duck::serialise(DataSerialiser& stream)
     {
-        EntityBase::Serialise(stream);
+        EntityBase::serialise(stream);
         stream << frame;
         stream << target_x;
         stream << target_y;
         stream << state;
-    }
-
-    void Duck::Paint(PaintSession& session, int32_t imageDirection) const
-    {
-        PROFILED_FUNCTION();
-
-        auto& rt = session.rt;
-        if (rt.zoom_level > ZoomLevel{ 1 })
-            return;
-
-        uint32_t imageId = GetFrameImage(imageDirection);
-        if (imageId != 0)
-        {
-            PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
-        }
     }
 } // namespace OpenRCT2

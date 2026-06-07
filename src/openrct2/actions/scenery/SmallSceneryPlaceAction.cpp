@@ -218,7 +218,7 @@ namespace OpenRCT2::GameActions
             {
                 if (surfaceElement != nullptr)
                 {
-                    if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->GetBaseZ()) != targetHeight)
+                    if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->getBaseZ()) != targetHeight)
                     {
                         return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
                     }
@@ -427,15 +427,15 @@ namespace OpenRCT2::GameActions
             return Result(Status::noFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
-        sceneryElement->SetDirection(_loc.direction);
+        sceneryElement->setDirection(_loc.direction);
         sceneryElement->SetSceneryQuadrant(quadrant);
         sceneryElement->SetEntryIndex(_sceneryType);
         sceneryElement->SetAge(0);
         sceneryElement->SetPrimaryColour(_primaryColour);
         sceneryElement->SetSecondaryColour(_secondaryColour);
         sceneryElement->SetTertiaryColour(_tertiaryColour);
-        sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->height + 7);
-        sceneryElement->SetGhost(GetFlags().has(CommandFlag::ghost));
+        sceneryElement->setClearanceZ(sceneryElement->getBaseZ() + sceneryEntry->height + 7);
+        sceneryElement->setGhost(GetFlags().has(CommandFlag::ghost));
         if (supportsRequired)
         {
             sceneryElement->SetNeedsSupports();
@@ -444,7 +444,7 @@ namespace OpenRCT2::GameActions
         const auto clearanceData = canBuild.getData<ConstructClearResult>();
         const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         res.setData(
-            SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
+            SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->getBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
         MapInvalidateTileFull(_loc);
         if (sceneryEntry->flags.has(SmallSceneryFlag::isClock))

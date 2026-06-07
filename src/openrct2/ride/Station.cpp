@@ -66,11 +66,11 @@ static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex)
     auto& station = ride.getStation(stationIndex);
 
     if ((ride.status == RideStatus::closed && ride.numRiders == 0)
-        || (tileElement != nullptr && tileElement->AsTrack()->IsBrakeClosed()))
+        || (tileElement != nullptr && tileElement->asTrack()->IsBrakeClosed()))
     {
         station.Depart &= ~kStationDepartFlag;
 
-        if ((station.Depart & kStationDepartFlag) || (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight()))
+        if ((station.Depart & kStationDepartFlag) || (tileElement != nullptr && tileElement->asTrack()->HasGreenLight()))
             RideInvalidateStationStart(ride, stationIndex, false);
     }
     else
@@ -80,7 +80,7 @@ static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex)
             station.Depart |= kStationDepartFlag;
             RideInvalidateStationStart(ride, stationIndex, true);
         }
-        else if (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight())
+        else if (tileElement != nullptr && tileElement->asTrack()->HasGreenLight())
         {
             RideInvalidateStationStart(ride, stationIndex, true);
         }
@@ -219,7 +219,7 @@ static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
                     auto* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
                     if (peep != nullptr)
                     {
-                        ride.raceWinner = peep->Id;
+                        ride.raceWinner = peep->id;
                         ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
                     }
                 }
@@ -297,7 +297,7 @@ static void RideRaceInitVehicleSpeeds(const Ride& ride)
             // Easter egg names should only work on guests
             if (guest != nullptr)
             {
-                switch (guest->GetEasterEggNameId())
+                switch (guest->getEasterEggNameId())
                 {
                     case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
                         vehicle->speed += 35;
@@ -333,11 +333,11 @@ static void RideInvalidateStationStart(Ride& ride, StationIndex stationIndex, bo
     if (tileElement == nullptr)
         return;
 
-    TrackElement* const trackElement = tileElement->AsTrack();
+    TrackElement* const trackElement = tileElement->asTrack();
     if (trackElement->HasGreenLight() != greenLight)
     {
         trackElement->SetHasGreenLight(greenLight);
-        MapInvalidateTileZoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        MapInvalidateTileZoom1({ startPos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
     }
 }
 
@@ -351,10 +351,10 @@ TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stat
         return nullptr;
     do
     {
-        if (tileElement->GetType() == TileElementType::Track && stationStart.z == tileElement->GetBaseZ())
+        if (tileElement->getType() == TileElementType::Track && stationStart.z == tileElement->getBaseZ())
             return tileElement;
 
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     return nullptr;
 }
@@ -369,9 +369,9 @@ TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos)
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetType() == TileElementType::Entrance && elementPos.z == tileElement->GetBaseZ())
+        if (tileElement->getType() == TileElementType::Entrance && elementPos.z == tileElement->getBaseZ())
             return tileElement;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     return nullptr;
 }

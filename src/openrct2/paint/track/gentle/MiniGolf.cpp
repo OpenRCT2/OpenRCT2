@@ -476,7 +476,7 @@ static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackE
     }
 
     const SurfaceElement* surfaceElement = session.Surface;
-    if (surfaceElement->BaseHeight != trackElement.BaseHeight)
+    if (surfaceElement->baseHeight != trackElement.baseHeight)
     {
         return true;
     }

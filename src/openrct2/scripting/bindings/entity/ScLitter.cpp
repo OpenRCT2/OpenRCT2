@@ -59,7 +59,7 @@ namespace OpenRCT2::Scripting
         auto* litter = GetLitter(thisVal);
         if (litter != nullptr)
         {
-            auto it = LitterTypeMap.find(litter->SubType);
+            auto it = LitterTypeMap.find(litter->subType);
             if (it != LitterTypeMap.end())
             {
                 return JSFromStdString(ctx, it->first);
@@ -77,8 +77,8 @@ namespace OpenRCT2::Scripting
         if (it != LitterTypeMap.end())
         {
             auto* litter = GetLitter(thisVal);
-            litter->SubType = it->second;
-            litter->Invalidate();
+            litter->subType = it->second;
+            litter->invalidate();
         }
         return JS_UNDEFINED;
     }

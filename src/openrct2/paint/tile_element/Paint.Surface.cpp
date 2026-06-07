@@ -434,7 +434,7 @@ static bool TileIsInsideClipView(const TileDescriptor& tile)
     if (tile.tile_element == nullptr)
         return false;
 
-    if (tile.tile_element->GetBaseZ() > gClipHeight * kCoordsZStep)
+    if (tile.tile_element->getBaseZ() > gClipHeight * kCoordsZStep)
         return false;
 
     auto coords = tile.tile_coords.ToCoordsXY();
@@ -504,7 +504,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     if (isWater && neighbour.tile_element != nullptr)
     {
-        auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (kCoordsZStep * 2);
+        auto waterHeight = neighbour.tile_element->asSurface()->GetWaterHeight() / (kCoordsZStep * 2);
         if (waterHeight == height && !neighbourIsClippedAway)
         {
             // Don't draw the edge when the neighbour's water level is the same
@@ -690,7 +690,7 @@ static void ViewportSurfaceDrawTileSideTop(
     {
         if (isWater)
         {
-            auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (kCoordsZStep * 2);
+            auto waterHeight = neighbour.tile_element->asSurface()->GetWaterHeight() / (kCoordsZStep * 2);
             if (height == waterHeight)
             {
                 return;
@@ -825,11 +825,11 @@ std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY&
         auto* staff = getGameState().entities.GetEntity<Staff>(staffId);
         if (staff != nullptr)
         {
-            if (staff->IsPatrolAreaSet(pos))
+            if (staff->isPatrolAreaSet(pos))
             {
                 return selected ? OpenRCT2::Drawing::Colour::icyBlue : OpenRCT2::Drawing::Colour::lightBlue;
             }
-            else if (IsPatrolAreaSetForStaffType(staff->AssignedStaffType, pos))
+            else if (IsPatrolAreaSetForStaffType(staff->assignedStaffType, pos))
             {
                 return selected ? OpenRCT2::Drawing::Colour::white : OpenRCT2::Drawing::Colour::grey;
             }
@@ -979,7 +979,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
 
         const uint32_t surfaceSlope = ViewportSurfacePaintSetupGetRelativeSlope(*surfaceElement, rotation);
-        const uint8_t baseHeight = surfaceElement->GetBaseZ() / 16;
+        const uint8_t baseHeight = surfaceElement->getBaseZ() / 16;
         const auto ch = GetSlopeRelativeCornerHeights(surfaceSlope);
 
         descriptor.tile_coords = TileCoordsXY{ position };

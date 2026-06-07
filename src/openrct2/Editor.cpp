@@ -115,7 +115,7 @@ namespace OpenRCT2::Editor
         Audio::StopAll();
         gameStateInitAll(gameState, kDefaultMapSize);
         gLegacyScene = LegacyScene::scenarioEditor;
-        gameState.editorStep = EditorStep::ObjectSelection;
+        gameState.editorStep = EditorStep::objectSelection;
         gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioOptions.category = Scenario::Category::other;
         ObjectListLoad();
@@ -160,7 +160,7 @@ namespace OpenRCT2::Editor
         ScenarioReset(gameState);
 
         gLegacyScene = LegacyScene::scenarioEditor;
-        gameState.editorStep = EditorStep::OptionsSelection;
+        gameState.editorStep = EditorStep::optionsSelection;
         gameState.scenarioOptions.category = Scenario::Category::other;
         ContextResetSubsystems();
         OpenEditorWindows();
@@ -193,7 +193,7 @@ namespace OpenRCT2::Editor
 
         auto& gameState = getGameState();
         gameStateInitAll(gameState, kDefaultMapSize);
-        gameState.editorStep = EditorStep::ObjectSelection;
+        gameState.editorStep = EditorStep::objectSelection;
         SetAllLandOwned();
         ObjectListLoad();
         ContextResetSubsystems();
@@ -222,7 +222,7 @@ namespace OpenRCT2::Editor
         auto& gameState = getGameState();
         gameStateInitAll(gameState, kDefaultMapSize);
         SetAllLandOwned();
-        gameState.editorStep = EditorStep::ObjectSelection;
+        gameState.editorStep = EditorStep::objectSelection;
         ObjectListLoad();
         ContextResetSubsystems();
         WindowBase* mainWindow = OpenEditorWindows();
@@ -244,11 +244,11 @@ namespace OpenRCT2::Editor
         MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.mapSize.x - 3) * kCoordsXYStep,
                            (gameState.mapSize.y - 3) * kCoordsXYStep };
 
-        auto landSetRightsAction = GameActions::LandSetRightsAction(range, GameActions::LandSetRightSetting::SetForSale);
+        auto landSetRightsAction = GameActions::LandSetRightsAction(range, GameActions::LandSetRightSetting::setForSale);
         landSetRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landSetRightsAction, gameState);
 
-        auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::BuyLand);
+        auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::buyLand);
         landBuyRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landBuyRightsAction, gameState);
     }
@@ -261,7 +261,7 @@ namespace OpenRCT2::Editor
         auto* context = GetContext();
         context->SetActiveScene(context->GetGameScene());
 
-        getGameState().editorStep = EditorStep::LandscapeEditor;
+        getGameState().editorStep = EditorStep::landscapeEditor;
         gScreenAge = 0;
         gLegacyScene = LegacyScene::scenarioEditor;
         ContextResetSubsystems();
@@ -361,7 +361,7 @@ namespace OpenRCT2::Editor
 
         switch (getGameState().editorStep)
         {
-            case EditorStep::ObjectSelection:
+            case EditorStep::objectSelection:
                 if (windowMgr->FindByClass(WindowClass::editorObjectSelection) != nullptr)
                 {
                     return;
@@ -379,7 +379,7 @@ namespace OpenRCT2::Editor
 
                 ContextOpenWindow(WindowClass::editorObjectSelection);
                 break;
-            case EditorStep::InventionsListSetUp:
+            case EditorStep::inventionsListSetUp:
                 if (windowMgr->FindByClass(WindowClass::editorInventionList) != nullptr)
                 {
                     return;
@@ -387,9 +387,9 @@ namespace OpenRCT2::Editor
 
                 ContextOpenWindow(WindowClass::editorInventionList);
                 break;
-            case EditorStep::OptionsSelection:
-            case EditorStep::ObjectiveSelection:
-            case EditorStep::ScenarioDetails:
+            case EditorStep::optionsSelection:
+            case EditorStep::objectiveSelection:
+            case EditorStep::scenarioDetails:
                 if (windowMgr->FindByClass(WindowClass::editorScenarioOptions) != nullptr)
                 {
                     return;
@@ -397,11 +397,11 @@ namespace OpenRCT2::Editor
 
                 ContextOpenWindow(WindowClass::editorScenarioOptions);
                 break;
-            case EditorStep::LandscapeEditor:
-            case EditorStep::SaveScenario:
-            case EditorStep::RollercoasterDesigner:
-            case EditorStep::DesignsManager:
-            case EditorStep::Invalid:
+            case EditorStep::landscapeEditor:
+            case EditorStep::saveScenario:
+            case EditorStep::rollerCoasterDesigner:
+            case EditorStep::designsManager:
+            case EditorStep::invalid:
                 break;
         }
     }

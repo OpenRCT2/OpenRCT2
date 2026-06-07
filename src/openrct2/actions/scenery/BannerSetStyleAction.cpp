@@ -51,7 +51,7 @@ namespace OpenRCT2::GameActions
     Result BannerSetStyleAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
         StringId errorTitle = STR_CANT_REPAINT_THIS;
-        if (_type == BannerSetStyleType::NoEntry)
+        if (_type == BannerSetStyleType::noEntry)
         {
             errorTitle = STR_CANT_RENAME_BANNER;
         }
@@ -77,8 +77,8 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        BannerElement* bannerElement = tileElement->AsBanner();
-        CoordsXYZ loc = { banner->position.ToCoordsXY(), bannerElement->GetBaseZ() };
+        BannerElement* bannerElement = tileElement->asBanner();
+        CoordsXYZ loc = { banner->position.ToCoordsXY(), bannerElement->getBaseZ() };
 
         if (!LocationValid(loc))
         {
@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case BannerSetStyleType::PrimaryColour:
+            case BannerSetStyleType::primaryColour:
                 if (_parameter > Drawing::kColourNumTotal)
                 {
                     LOG_ERROR("Invalid primary colour %u", _parameter);
@@ -99,15 +99,15 @@ namespace OpenRCT2::GameActions
                 }
                 break;
 
-            case BannerSetStyleType::TextColour:
+            case BannerSetStyleType::textColour:
                 if (_parameter > 13)
                 {
                     LOG_ERROR("Invalid text colour %u", _parameter);
                     return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
                 }
                 break;
-            case BannerSetStyleType::NoEntry:
-                if (tileElement->AsBanner() == nullptr)
+            case BannerSetStyleType::noEntry:
+                if (tileElement->asBanner() == nullptr)
                 {
                     LOG_ERROR("Tile element was not a banner.");
                     return Result(Status::unknown, STR_CANT_RENAME_BANNER, kStringIdNone);
@@ -145,15 +145,15 @@ namespace OpenRCT2::GameActions
 
         switch (_type)
         {
-            case BannerSetStyleType::PrimaryColour:
+            case BannerSetStyleType::primaryColour:
                 banner->colour = static_cast<Drawing::Colour>(_parameter);
                 break;
-            case BannerSetStyleType::TextColour:
+            case BannerSetStyleType::textColour:
                 banner->textColour = static_cast<Drawing::TextColour>(_parameter);
                 break;
-            case BannerSetStyleType::NoEntry:
+            case BannerSetStyleType::noEntry:
             {
-                BannerElement* bannerElement = tileElement->AsBanner();
+                BannerElement* bannerElement = tileElement->asBanner();
                 if (bannerElement == nullptr)
                 {
                     LOG_ERROR("Tile element was not a banner.");

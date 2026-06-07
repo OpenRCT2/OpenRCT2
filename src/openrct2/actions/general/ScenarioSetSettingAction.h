@@ -15,36 +15,36 @@ namespace OpenRCT2::GameActions
 {
     enum class ScenarioSetSetting : uint8_t
     {
-        NoMoney,
-        InitialCash,
-        InitialLoan,
-        MaximumLoanSize,
-        AnnualInterestRate,
-        ForbidMarketingCampaigns,
-        AverageCashPerGuest,
-        GuestInitialHappiness,
-        GuestInitialHunger,
-        GuestInitialThirst,
-        GuestsPreferLessIntenseRides,
-        GuestsPreferMoreIntenseRides,
-        CostToBuyLand,
-        CostToBuyConstructionRights,
-        ParkChargeMethod,
-        ParkChargeEntryFee,
-        ForbidTreeRemoval,
-        ForbidLandscapeChanges,
-        ForbidHighConstruction,
-        ParkRatingHigherDifficultyLevel,
-        GuestGenerationHigherDifficultyLevel,
-        AllowEarlyCompletion,
-        UseRCT1Interest,
-        Count
+        noMoney,
+        initialCash,
+        initialLoan,
+        maximumLoanSize,
+        annualInterestRate,
+        forbidMarketingCampaigns,
+        averageCashPerGuest,
+        guestInitialHappiness,
+        guestInitialHunger,
+        guestInitialThirst,
+        guestsPreferLessIntenseRides,
+        guestsPreferMoreIntenseRides,
+        costToBuyLand,
+        costToBuyConstructionRights,
+        parkChargeMethod,
+        parkChargeEntryFee,
+        forbidTreeRemoval,
+        forbidLandscapeChanges,
+        forbidHighConstruction,
+        parkRatingHigherDifficultyLevel,
+        guestGenerationHigherDifficultyLevel,
+        allowEarlyCompletion,
+        useRCT1Interest,
+        count
     };
 
     class ScenarioSetSettingAction final : public GameActionBase<GameCommand::EditScenarioOptions>
     {
     private:
-        ScenarioSetSetting _setting{ ScenarioSetSetting::Count };
+        ScenarioSetSetting _setting{ ScenarioSetSetting::count };
         uint32_t _value{};
 
     public:

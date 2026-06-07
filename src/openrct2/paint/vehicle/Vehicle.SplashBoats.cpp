@@ -13,6 +13,7 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../ride/Ride.h"
 #include "../Paint.h"
+#include "../entity/Paint.Vehicle.h"
 #include "VehiclePaint.h"
 
 #include <cstdint>
@@ -38,9 +39,9 @@ namespace OpenRCT2
         }
 
         session.CurrentlyDrawnEntity = vehicleToPaint;
-        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->Orientation);
+        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->orientation);
         session.SpritePosition.x = vehicleToPaint->x;
         session.SpritePosition.y = vehicleToPaint->y;
-        vehicleToPaint->Paint(session, imageDirection);
+        PaintVehicle(session, *vehicleToPaint, imageDirection);
     }
 } // namespace OpenRCT2

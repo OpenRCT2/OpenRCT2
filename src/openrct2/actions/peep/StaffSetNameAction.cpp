@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         auto res = Result();
-        res.position = staff->GetLocation();
+        res.position = staff->getLocation();
 
         return res;
     }

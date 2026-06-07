@@ -91,7 +91,7 @@ void Vehicle::UpdateCollisionSetup()
     if (!curRide->flags.has(RideFlag::crashed))
     {
         auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
+        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->id);
         if (!trainIndex.has_value())
         {
             return;
@@ -112,7 +112,7 @@ void Vehicle::UpdateCollisionSetup()
     KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
-    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(Id); train != nullptr;
+    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(id); train != nullptr;
          train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
     {
         lastVehicle = train;
@@ -120,9 +120,9 @@ void Vehicle::UpdateCollisionSetup()
         train->sub_state = 2;
 
 #ifdef ENABLE_SCRIPTING
-        InvokeVehicleCrashHook(train->Id, "another_vehicle");
+        InvokeVehicleCrashHook(train->id, "another_vehicle");
 #endif
-        const auto trainLoc = train->GetLocation();
+        const auto trainLoc = train->getLocation();
 
         Play3D(SoundId::crash, trainLoc);
 
@@ -137,11 +137,11 @@ void Vehicle::UpdateCollisionSetup()
         train->animationState = ScenarioRand() & 0xFFFF;
 
         train->animation_frame = ScenarioRand() & 0x7;
-        train->SpriteData.Width = 13;
-        train->SpriteData.HeightMin = 45;
-        train->SpriteData.HeightMax = 5;
+        train->spriteData.width = 13;
+        train->spriteData.heightMin = 45;
+        train->spriteData.heightMax = 5;
 
-        train->MoveTo(trainLoc);
+        train->moveTo(trainLoc);
 
         train->SwingSpeed = 0;
     }
@@ -178,13 +178,13 @@ void Vehicle::UpdateCrashSetup()
 
     if (NumPeepsUntilTrainTail() != 0)
     {
-        Play3D(SoundId::hauntedHouseScream2, GetLocation());
+        Play3D(SoundId::hauntedHouseScream2, getLocation());
     }
 
     int32_t edx = velocity >> 10;
 
     Vehicle* lastVehicle = this;
-    auto spriteId = Id;
+    auto spriteId = id;
     for (Vehicle* trainVehicle; !spriteId.IsNull(); spriteId = trainVehicle->next_vehicle_on_train)
     {
         trainVehicle = getGameState().entities.GetEntity<Vehicle>(spriteId);
@@ -195,7 +195,7 @@ void Vehicle::UpdateCrashSetup()
         lastVehicle = trainVehicle;
 
         trainVehicle->sub_state = 0;
-        auto crashDirection = Geometry::getCrashDirectionComponents(trainVehicle->Orientation);
+        auto crashDirection = Geometry::getCrashDirectionComponents(trainVehicle->orientation);
         int32_t trainX = crashDirection.x;
         int32_t trainY = crashDirection.y;
 
@@ -268,15 +268,15 @@ static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
 
     do
     {
-        if (vehiclePosition.z < tileElement->GetBaseZ())
+        if (vehiclePosition.z < tileElement->getBaseZ())
             continue;
 
-        if (vehiclePosition.z >= tileElement->GetClearanceZ())
+        if (vehiclePosition.z >= tileElement->getClearanceZ())
             continue;
 
-        if (tileElement->GetOccupiedQuadrants() & quadrant)
+        if (tileElement->getOccupiedQuadrants() & quadrant)
             return tileElement;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     return nullptr;
 }
@@ -321,7 +321,7 @@ void Vehicle::KillAllPassengersInTrain()
 
     ride_train_crash(*curRide, NumPeepsUntilTrainTail());
 
-    for (Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(Id); trainCar != nullptr;
+    for (Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(id); trainCar != nullptr;
          trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
     {
         trainCar->KillPassengers(*curRide);
@@ -342,7 +342,7 @@ void Vehicle::KillPassengers(const Ride& curRide)
         if (curPeep == nullptr)
             continue;
 
-        if (!curPeep->OutsideOfPark)
+        if (!curPeep->outsideOfPark)
         {
             DecrementGuestsInPark();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
@@ -369,13 +369,13 @@ void Vehicle::CrashOnLand()
     SetState(Status::crashed, sub_state);
 
 #ifdef ENABLE_SCRIPTING
-    InvokeVehicleCrashHook(Id, "land");
+    InvokeVehicleCrashHook(id, "land");
 #endif
 
     if (!curRide->flags.has(RideFlag::crashed))
     {
         auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
+        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->id);
         if (!trainIndex.has_value())
         {
             return;
@@ -400,13 +400,13 @@ void Vehicle::CrashOnLand()
 
     sub_state = 2;
 
-    const auto curLoc = GetLocation();
+    const auto curLoc = getLocation();
     Play3D(SoundId::crash, curLoc);
 
     ExplosionCloud::Create(curLoc);
     ExplosionFlare::Create(curLoc);
 
-    uint8_t numParticles = std::min(SpriteData.Width, static_cast<uint8_t>(7));
+    uint8_t numParticles = std::min(spriteData.width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
         VehicleCrashParticle::Create(colours, curLoc);
@@ -414,11 +414,11 @@ void Vehicle::CrashOnLand()
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
     animationState = 0;
-    SpriteData.Width = 13;
-    SpriteData.HeightMin = 45;
-    SpriteData.HeightMax = 5;
+    spriteData.width = 13;
+    spriteData.heightMin = 45;
+    spriteData.heightMax = 5;
 
-    MoveTo(curLoc);
+    moveTo(curLoc);
 
     crash_z = 0;
 }
@@ -437,13 +437,13 @@ void Vehicle::CrashOnWater()
     SetState(Status::crashed, sub_state);
 
 #ifdef ENABLE_SCRIPTING
-    InvokeVehicleCrashHook(Id, "water");
+    InvokeVehicleCrashHook(id, "water");
 #endif
 
     if (!curRide->flags.has(RideFlag::crashed))
     {
         auto frontVehicle = GetHead();
-        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->Id);
+        auto trainIndex = ride_get_train_index_from_vehicle(*curRide, frontVehicle->id);
         if (!trainIndex.has_value())
         {
             return;
@@ -468,7 +468,7 @@ void Vehicle::CrashOnWater()
 
     sub_state = 2;
 
-    const auto curLoc = GetLocation();
+    const auto curLoc = getLocation();
     Play3D(SoundId::water1, curLoc);
 
     CrashSplashParticle::Create(curLoc);
@@ -483,11 +483,11 @@ void Vehicle::CrashOnWater()
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
     animationState = 0;
-    SpriteData.Width = 13;
-    SpriteData.HeightMin = 45;
-    SpriteData.HeightMax = 5;
+    spriteData.width = 13;
+    spriteData.heightMin = 45;
+    spriteData.heightMax = 5;
 
-    MoveTo(curLoc);
+    moveTo(curLoc);
 
     crash_z = -1;
 }
@@ -498,10 +498,10 @@ void Vehicle::CrashOnWater()
  */
 void Vehicle::UpdateCrash()
 {
-    for (Vehicle* curVehicle = getGameState().entities.GetEntity<Vehicle>(Id); curVehicle != nullptr;
+    for (Vehicle* curVehicle = getGameState().entities.GetEntity<Vehicle>(id); curVehicle != nullptr;
          curVehicle = getGameState().entities.GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
     {
-        CoordsXYZ curPos = curVehicle->GetLocation();
+        CoordsXYZ curPos = curVehicle->getLocation();
 
         if (curVehicle->sub_state > 1)
         {
@@ -526,7 +526,7 @@ void Vehicle::UpdateCrash()
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
-                curVehicle->Invalidate();
+                curVehicle->invalidate();
             }
             continue;
         }
@@ -562,7 +562,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        curVehicle->Invalidate();
+        curVehicle->invalidate();
 
         curPos.x += static_cast<int8_t>(curVehicle->crash_x >> 8);
         curPos.y += static_cast<int8_t>(curVehicle->crash_y >> 8);
@@ -575,7 +575,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        curVehicle->MoveTo(curPos);
+        curVehicle->moveTo(curPos);
 
         if (curVehicle->sub_state == 1)
         {

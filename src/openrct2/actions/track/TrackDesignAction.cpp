@@ -225,27 +225,27 @@ namespace OpenRCT2::GameActions
         if (entryIndex != kObjectEntryIndexNull)
         {
             auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
-            auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
+            auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::rideEntry, entryIndex, colour);
             ExecuteNested(&rideSetVehicleAction, gameState);
         }
 
-        SetOperatingSettingNested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.operation.rideMode), flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::mode, static_cast<uint8_t>(_td.operation.rideMode), flags);
         auto rideSetVehicleAction2 = RideSetVehicleAction(
-            ride->id, RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
+            ride->id, RideSetVehicleType::numTrains, _td.trackAndVehicle.numberOfTrains);
         ExecuteNested(&rideSetVehicleAction2, gameState);
 
         auto rideSetVehicleAction3 = RideSetVehicleAction(
-            ride->id, RideSetVehicleType::NumCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
+            ride->id, RideSetVehicleType::numCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
         ExecuteNested(&rideSetVehicleAction3, gameState);
 
-        SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.operation.departFlags, flags);
-        SetOperatingSettingNested(ride->id, RideSetSetting::MinWaitingTime, _td.operation.minWaitingTime, flags);
-        SetOperatingSettingNested(ride->id, RideSetSetting::MaxWaitingTime, _td.operation.maxWaitingTime, flags);
-        SetOperatingSettingNested(ride->id, RideSetSetting::Operation, _td.operation.operationSetting, flags);
-        SetOperatingSettingNested(ride->id, RideSetSetting::LiftHillSpeed, _td.operation.liftHillSpeed, flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::departure, _td.operation.departFlags, flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::minWaitingTime, _td.operation.minWaitingTime, flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::maxWaitingTime, _td.operation.maxWaitingTime, flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::operation, _td.operation.operationSetting, flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::liftHillSpeed, _td.operation.liftHillSpeed, flags);
 
         auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
-        SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, flags);
+        SetOperatingSettingNested(ride->id, RideSetSetting::numCircuits, numCircuits, flags);
 
         ride->flags.set(RideFlag::notCustomDesign);
         ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;

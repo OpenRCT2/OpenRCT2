@@ -175,7 +175,7 @@ namespace OpenRCT2
      */
     static void InputScrollDragBegin(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex)
     {
-        _inputState = InputState::ScrollRight;
+        _inputState = InputState::scrollRight;
         gInputDragLast = screenCoords;
         _dragWidget.windowClassification = w->classification;
         _dragWidget.windowNumber = w->number;
@@ -244,7 +244,7 @@ namespace OpenRCT2
         if (w == nullptr)
         {
             ContextShowCursor();
-            _inputState = InputState::Reset;
+            _inputState = InputState::reset;
             return;
         }
 
@@ -258,7 +258,7 @@ namespace OpenRCT2
                 }
                 break;
             case MouseState::rightRelease:
-                _inputState = InputState::Reset;
+                _inputState = InputState::reset;
                 ContextShowCursor();
                 break;
             case MouseState::leftPress:
@@ -288,10 +288,10 @@ namespace OpenRCT2
 
         switch (_inputState)
         {
-            case InputState::Reset:
+            case InputState::reset:
                 WindowTooltipReset(screenCoords);
                 [[fallthrough]];
-            case InputState::Normal:
+            case InputState::normal:
                 switch (state)
                 {
                     case MouseState::released:
@@ -333,14 +333,14 @@ namespace OpenRCT2
                         break;
                 }
                 break;
-            case InputState::WidgetPressed:
+            case InputState::widgetPressed:
                 InputStateWidgetPressed(screenCoords, state, widgetIndex, w, widget);
                 break;
-            case InputState::PositioningWindow:
+            case InputState::positioningWindow:
                 w = windowMgr->FindByNumber(_dragWidget.windowClassification, _dragWidget.windowNumber);
                 if (w == nullptr)
                 {
-                    _inputState = InputState::Reset;
+                    _inputState = InputState::reset;
                 }
                 else
                 {
@@ -351,7 +351,7 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case InputState::ViewportRight:
+            case InputState::viewportRight:
                 if (state == MouseState::released)
                 {
                     InputViewportDragContinue();
@@ -366,14 +366,14 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case InputState::DropdownActive:
+            case InputState::dropdownActive:
                 InputStateWidgetPressed(screenCoords, state, widgetIndex, w, widget);
                 break;
-            case InputState::ViewportLeft:
+            case InputState::viewportLeft:
                 w = windowMgr->FindByNumber(_dragWidget.windowClassification, _dragWidget.windowNumber);
                 if (w == nullptr)
                 {
-                    _inputState = InputState::Reset;
+                    _inputState = InputState::reset;
                     break;
                 }
 
@@ -382,7 +382,7 @@ namespace OpenRCT2
                     case MouseState::released:
                         if (w->viewport == nullptr)
                         {
-                            _inputState = InputState::Reset;
+                            _inputState = InputState::reset;
                             break;
                         }
 
@@ -404,7 +404,7 @@ namespace OpenRCT2
                         w->onToolDrag(gCurrentToolWidget.widgetIndex, screenCoords);
                         break;
                     case MouseState::leftRelease:
-                        _inputState = InputState::Reset;
+                        _inputState = InputState::reset;
                         if (_dragWidget.windowNumber == w->number)
                         {
                             if (gInputFlags.has(InputFlag::toolActive))
@@ -429,7 +429,7 @@ namespace OpenRCT2
                         break;
                 }
                 break;
-            case InputState::ScrollLeft:
+            case InputState::scrollLeft:
                 switch (state)
                 {
                     case MouseState::released:
@@ -445,11 +445,11 @@ namespace OpenRCT2
                         break;
                 }
                 break;
-            case InputState::Resizing:
+            case InputState::resizing:
                 w = windowMgr->FindByNumber(_dragWidget.windowClassification, _dragWidget.windowNumber);
                 if (w == nullptr)
                 {
-                    _inputState = InputState::Reset;
+                    _inputState = InputState::reset;
                 }
                 else
                 {
@@ -463,7 +463,7 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case InputState::ScrollRight:
+            case InputState::scrollRight:
                 InputScrollRight(screenCoords, state);
                 break;
         }
@@ -473,7 +473,7 @@ namespace OpenRCT2
 
     void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
-        _inputState = InputState::PositioningWindow;
+        _inputState = InputState::positioningWindow;
         gInputDragLast = screenCoords - w.windowPos;
         _dragWidget.windowClassification = w.classification;
         _dragWidget.windowNumber = w.number;
@@ -489,7 +489,7 @@ namespace OpenRCT2
 
     static void InputWindowPositionEnd(WindowBase& w, const ScreenCoordsXY& screenCoords)
     {
-        _inputState = InputState::Normal;
+        _inputState = InputState::normal;
         gTooltipCloseTimeout = 0;
         gTooltipWidget = _dragWidget;
         w.onMoved(screenCoords);
@@ -497,7 +497,7 @@ namespace OpenRCT2
 
     static void InputWindowResizeBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
-        _inputState = InputState::Resizing;
+        _inputState = InputState::resizing;
         gInputDragLast = screenCoords;
         _dragWidget.windowClassification = w.classification;
         _dragWidget.windowNumber = w.number;
@@ -520,7 +520,7 @@ namespace OpenRCT2
 
     static void InputWindowResizeEnd()
     {
-        _inputState = InputState::Normal;
+        _inputState = InputState::normal;
         gTooltipCloseTimeout = 0;
         gTooltipWidget = _dragWidget;
     }
@@ -532,7 +532,7 @@ namespace OpenRCT2
     static void InputViewportDragBegin(WindowBase& w)
     {
         w.flags.unset(WindowFlag::scrollingToLocation);
-        _inputState = InputState::ViewportRight;
+        _inputState = InputState::viewportRight;
         _dragWidget.windowClassification = w.classification;
         _dragWidget.windowNumber = w.number;
         _ticksSinceDragStart = gCurrentRealTimeTicks;
@@ -578,7 +578,7 @@ namespace OpenRCT2
         if (viewport == nullptr)
         {
             ContextShowCursor();
-            _inputState = InputState::Reset;
+            _inputState = InputState::reset;
         }
         else if (differentialCoords.x != 0 || differentialCoords.y != 0)
         {
@@ -627,7 +627,7 @@ namespace OpenRCT2
 
     static void InputViewportDragEnd()
     {
-        _inputState = InputState::Reset;
+        _inputState = InputState::reset;
         ContextShowCursor();
     }
 
@@ -639,7 +639,7 @@ namespace OpenRCT2
     {
         const auto& widget = w.widgets[widgetIndex];
 
-        _inputState = InputState::ScrollLeft;
+        _inputState = InputState::scrollLeft;
         gPressedWidget.windowClassification = w.classification;
         gPressedWidget.windowNumber = w.number;
         gPressedWidget.widgetIndex = widgetIndex;
@@ -766,7 +766,7 @@ namespace OpenRCT2
 
     static void InputScrollEnd()
     {
-        _inputState = InputState::Reset;
+        _inputState = InputState::reset;
         InvalidateScroll();
     }
 
@@ -1072,7 +1072,7 @@ namespace OpenRCT2
                     InputWindowResizeBegin(*w, widgetIndex, screenCoords);
                 break;
             case WidgetType::viewport:
-                _inputState = InputState::ViewportLeft;
+                _inputState = InputState::viewportLeft;
                 gInputDragLast = screenCoords;
                 _dragWidget.windowClassification = windowClass;
                 _dragWidget.windowNumber = windowNumber;
@@ -1124,7 +1124,7 @@ namespace OpenRCT2
                     gPressedWidget.windowNumber = windowNumber;
                     gPressedWidget.widgetIndex = widgetIndex;
                     gInputFlags.set(InputFlag::widgetPressed);
-                    _inputState = InputState::WidgetPressed;
+                    _inputState = InputState::widgetPressed;
                     _clickRepeatTicks = gCurrentRealTimeTicks;
 
                     windowMgr->InvalidateWidgetByNumber(windowClass, windowNumber, widgetIndex);
@@ -1225,7 +1225,7 @@ namespace OpenRCT2
 
             if (w == nullptr)
                 ToolCancel();
-            else if (InputGetState() != InputState::ViewportRight)
+            else if (InputGetState() != InputState::viewportRight)
                 w->onToolUpdate(gCurrentToolWidget.widgetIndex, screenCoords);
         }
     }
@@ -1247,7 +1247,7 @@ namespace OpenRCT2
         WindowBase* cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
         if (cursor_w == nullptr)
         {
-            _inputState = InputState::Reset;
+            _inputState = InputState::reset;
             return;
         }
 
@@ -1309,7 +1309,7 @@ namespace OpenRCT2
 
                 if (gInputFlags.has(InputFlag::widgetPressed))
                 {
-                    if (_inputState == InputState::DropdownActive)
+                    if (_inputState == InputState::dropdownActive)
                     {
                         gDropdown.highlightedIndex = gDropdown.defaultIndex;
                         windowMgr->InvalidateByClass(WindowClass::dropdown);
@@ -1322,7 +1322,7 @@ namespace OpenRCT2
                 return;
             case MouseState::leftRelease:
             case MouseState::rightPress:
-                if (_inputState == InputState::DropdownActive)
+                if (_inputState == InputState::dropdownActive)
                 {
                     if (w != nullptr)
                     {
@@ -1376,7 +1376,7 @@ namespace OpenRCT2
                                 windowMgr->InvalidateWidgetByNumber(cursor_w_class, cursor_w_number, cursor_widgetIndex);
                             }
 
-                            _inputState = InputState::Normal;
+                            _inputState = InputState::normal;
                             gTooltipCloseTimeout = 0;
                             gTooltipWidget.widgetIndex = cursor_widgetIndex;
                             gTooltipWidget.windowClassification = cursor_w_class;
@@ -1394,7 +1394,7 @@ namespace OpenRCT2
                     }
                 }
 
-                _inputState = InputState::Normal;
+                _inputState = InputState::normal;
 
                 if (state == MouseState::rightPress)
                 {
@@ -1429,7 +1429,7 @@ namespace OpenRCT2
         }
 
         _clickRepeatTicks = std::nullopt;
-        if (_inputState != InputState::DropdownActive)
+        if (_inputState != InputState::dropdownActive)
         {
             // Hold down widget and drag outside of area??
             if (gInputFlags.has(InputFlag::widgetPressed))
@@ -1543,7 +1543,7 @@ namespace OpenRCT2
     void SetCursor(CursorID cursor_id)
     {
         assert(cursor_id != CursorID::Undefined);
-        if (_inputState == InputState::Resizing)
+        if (_inputState == InputState::resizing)
         {
             cursor_id = CursorID::DiagonalArrows;
         }

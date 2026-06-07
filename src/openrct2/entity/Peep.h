@@ -300,7 +300,7 @@ namespace OpenRCT2
         PEEP_INVALIDATE_PEEP_2 = 1 << 2,
         PEEP_INVALIDATE_PEEP_INVENTORY = 1 << 3,
         PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
-        PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when GuestHeadingToRideId is changed
+        PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when guestHeadingToRideId is changed
     };
 
     struct Guest;
@@ -418,7 +418,7 @@ namespace OpenRCT2
         void SetDestination(const CoordsXY& coords, int32_t tolerance);
         [[nodiscard]] CoordsXY GetDestination() const;
 
-        void Serialise(class DataSerialiser& stream);
+        void serialise(class DataSerialiser& stream);
 
         // TODO: Make these private again when done refactoring
     public: // Peep

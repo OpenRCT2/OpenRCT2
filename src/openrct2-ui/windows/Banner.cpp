@@ -61,10 +61,10 @@ namespace OpenRCT2::Ui::Windows
         STR_TEXT_COLOUR_CELADON,      // TextColour::celadon
         STR_TEXT_COLOUR_BABYBLUE,     // TextColour::babyBlue
         STR_TEXT_COLOUR_PALELAVENDER, // TextColour::paleLavender
-        STR_TEXT_COLOUR_PALEGOLD,     // TextColour::paleGold 
-        STR_TEXT_COLOUR_LIGHTPINK,    // TextColour::lightPink 
-        STR_TEXT_COLOUR_PEARLAQUA,    // TextColour::pearlAqua 
-        STR_TEXT_COLOUR_PALESILVER,   // TextColour::paleSilver 
+        STR_TEXT_COLOUR_PALEGOLD,     // TextColour::paleGold
+        STR_TEXT_COLOUR_LIGHTPINK,    // TextColour::lightPink
+        STR_TEXT_COLOUR_PEARLAQUA,    // TextColour::pearlAqua
+        STR_TEXT_COLOUR_PALESILVER,   // TextColour::paleSilver
     };
 
     static constexpr auto window_banner_widgets = makeWidgets(
@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
 
             do
             {
-                auto* bannerElement = tileElement->AsBanner();
+                auto* bannerElement = tileElement->asBanner();
                 if (bannerElement == nullptr)
                 {
                     continue;
@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return bannerElement;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
 
             return nullptr;
         }
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
             if (bannerElement == nullptr)
                 return;
 
-            _bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), bannerElement->GetBaseZ() };
+            _bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), bannerElement->getBaseZ() };
             createViewport();
         }
 
@@ -208,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                        { banner->position.ToCoordsXY(), bannerElement->GetBaseZ(), bannerElement->GetPosition() });
+                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->GetPosition() });
                     GameActions::Execute(&bannerRemoveAction, gameState);
                     break;
                 }
@@ -220,7 +220,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     TextinputCancel();
                     auto bannerSetStyle = GameActions::BannerSetStyleAction(
-                        GameActions::BannerSetStyleType::NoEntry, GetBannerIndex(), !banner->flags.has(BannerFlag::noEntry));
+                        GameActions::BannerSetStyleType::noEntry, GetBannerIndex(), !banner->flags.has(BannerFlag::noEntry));
                     GameActions::Execute(&bannerSetStyle, gameState);
                     break;
                 }
@@ -238,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     auto bannerSetStyle = GameActions::BannerSetStyleAction(
-                        GameActions::BannerSetStyleType::PrimaryColour, GetBannerIndex(),
+                        GameActions::BannerSetStyleType::primaryColour, GetBannerIndex(),
                         EnumValue(ColourDropDownIndexToColour(dropdownIndex)));
                     GameActions::Execute(&bannerSetStyle, gameState);
                     break;
@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         break;
                     auto bannerSetStyle = GameActions::BannerSetStyleAction(
-                        GameActions::BannerSetStyleType::TextColour, GetBannerIndex(), dropdownIndex + 1);
+                        GameActions::BannerSetStyleType::textColour, GetBannerIndex(), dropdownIndex + 1);
                     GameActions::Execute(&bannerSetStyle, gameState);
                     break;
                 }

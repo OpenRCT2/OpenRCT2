@@ -85,7 +85,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        int32_t zHigh = surfaceElement->GetBaseZ();
+        int32_t zHigh = surfaceElement->getBaseZ();
         int32_t zLow = _height * kCoordsZStep;
         if (surfaceElement->GetWaterHeight() > 0)
         {
@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        if (_height > surfaceElement->BaseHeight)
+        if (_height > surfaceElement->baseHeight)
         {
             surfaceElement->SetWaterHeight(_height * kCoordsZStep);
         }

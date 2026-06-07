@@ -338,7 +338,7 @@ namespace OpenRCT2::GameActions
                         Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
                 waterHeight -= kLandHeightStep;
-                if (waterHeight == surfaceElement->GetBaseZ())
+                if (waterHeight == surfaceElement->getBaseZ())
                 {
                     uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
                     if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
@@ -371,7 +371,7 @@ namespace OpenRCT2::GameActions
 
             if (!gameState.cheats.disableSupportLimits)
             {
-                int32_t ride_height = clearanceZ - surfaceElement->GetBaseZ();
+                int32_t ride_height = clearanceZ - surfaceElement->getBaseZ();
                 if (ride_height >= 0)
                 {
                     uint16_t maxHeight;
@@ -394,7 +394,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
+            int32_t supportHeight = baseZ - surfaceElement->getBaseZ();
             if (supportHeight < 0)
             {
                 supportHeight = (10 * kCoordsZStep);
@@ -539,7 +539,7 @@ namespace OpenRCT2::GameActions
                     Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
             }
 
-            int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
+            int32_t supportHeight = baseZ - surfaceElement->getBaseZ();
             if (supportHeight < 0)
             {
                 supportHeight = (10 * kCoordsZStep);
@@ -569,14 +569,14 @@ namespace OpenRCT2::GameActions
                     Status::noFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
             }
 
-            trackElement->SetClearanceZ(clearanceZ);
-            trackElement->SetDirection(_origin.direction);
+            trackElement->setClearanceZ(clearanceZ);
+            trackElement->setDirection(_origin.direction);
             trackElement->SetHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
             trackElement->SetSequenceIndex(blockIndex);
             trackElement->SetRideIndex(_rideIndex);
             trackElement->SetTrackType(_trackType);
             trackElement->SetRideType(_rideType);
-            trackElement->SetGhost(GetFlags().has(CommandFlag::ghost));
+            trackElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             switch (_trackType)
             {
@@ -696,7 +696,7 @@ namespace OpenRCT2::GameActions
                         {
                             ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);
                             auto rideSetSetting = RideSetSettingAction(
-                                ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                                ride->id, RideSetSetting::mode, static_cast<uint8_t>(newMode));
                             ExecuteNested(&rideSetSetting, gameState);
                         }
                     }
