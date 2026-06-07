@@ -1,6 +1,8 @@
 0.5.3 (in development)
 ------------------------------------------------------------------------
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
+- Fix: [#24613] Incorrect sprites drawn for path elements without a valid object.
+- Fix: [#26578] Crash when drawing path elements without a valid object.
 
 0.5.2 (2026-06-07)
 ------------------------------------------------------------------------
