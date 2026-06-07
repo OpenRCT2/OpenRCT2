@@ -219,8 +219,8 @@ namespace OpenRCT2::World::MapGenerator
         auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
         BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq };
-        FractalSettings fractalSettings = { FractalType::Ridge, settings.noiseOctaves, 2.0f, 0.65f, 0.0f };
-        WarpSettings warpSettings = {WarpType::Grid, WarpFractalType::Independent, 64, settings.seed, freq / 2, 4, 2.0f, 0.5f };
+        FractalSettings fractalSettings = { FractalType::PingPong, settings.noiseOctaves, 2.0f, 0.75f, 0.0f };
+        WarpSettings warpSettings = {WarpType::Grid, WarpFractalType::Independent, 32, settings.seed, freq / 2, 4, 2.0f, 0.5f };
 
         auto voronoiNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
