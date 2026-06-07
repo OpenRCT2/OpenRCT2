@@ -261,12 +261,10 @@ namespace OpenRCT2
         }
 
         const char* parkUri;
-        if (!enumerator->TryPopString(&parkUri))
+        if (enumerator->TryPopString(&parkUri))
         {
-            Console::Error::WriteLine("Expected path or URL to a saved park.");
-            return EXITCODE_FAIL;
+            String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
         }
-        String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
         gOpenRCT2StartupAction = StartupAction::edit;
         return EXITCODE_CONTINUE;
