@@ -18,6 +18,7 @@ namespace OpenRCT2::GameActions
         close,
         open,
         samePriceInPark,
+        sameColourInPark,
         count
     };
 

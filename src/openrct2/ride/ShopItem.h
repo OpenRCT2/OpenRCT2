@@ -10,7 +10,11 @@
 #pragma once
 
 #include "../core/Money.hpp"
+#include "../drawing/Drawing.h"
 #include "../entity/Litter.h"
+
+#include <optional>
+#include <utility>
 
 struct Ride;
 
@@ -133,5 +137,8 @@ enum
 
 money64 ShopItemGetCommonPrice(Ride* forRide, ShopItem shopItem);
 bool ShopItemHasCommonPrice(ShopItem shopItem);
+
+std::optional<std::pair<OpenRCT2::Drawing::Colour, bool>> ShopItemGetCommonColour(Ride* forRide, const ShopItem shopItem);
+bool ShopItemHasCommonColour(const ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

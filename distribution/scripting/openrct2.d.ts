@@ -1141,10 +1141,11 @@ declare global {
          * - `0`: Close park
          * - `1`: Open park
          * - `2`: Set same price in park
+         * - `3`: Set same colour in park
          */
         parameter: number;
         /**
-         * Only used if {@link ParkSetParameterArgs.parameter} === 2 (set same price in park). Bitmask.
+         * Used if {@link ParkSetParameterArgs.parameter} === 2 (set same price in park) or 3 (set same colour in park). Bitmask.
          *
          * @see `ShopItem` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/ride/ShopItem.h}
          */

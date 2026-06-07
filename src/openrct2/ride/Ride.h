@@ -523,7 +523,7 @@ public:
     const OpenRCT2::StationObject* getStationObject() const;
     const OpenRCT2::MusicObject* getMusicObject() const;
 
-    bool hasRecolourableShopItems() const;
+    std::optional<ShopItem> getRecolourableShopItem() const;
     bool hasStation() const;
 
     // TO-DO: those friend functions are temporary, find a way to not access the private fields
