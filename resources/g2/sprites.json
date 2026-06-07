@@ -651,5 +651,10 @@
         "path": "tool/path_drag_tool.png",
         "x": 1,
         "y": 2
+    },
+    {
+        "path": "mask/mapgen_texture_rule_scroll_mask.png",
+        "palette": "keep",
+        "format": "raw"
     }
 ]

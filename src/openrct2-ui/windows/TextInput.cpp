@@ -320,6 +320,16 @@ namespace OpenRCT2::Ui::Windows
             return kWindowSize.height + textHeight + getTitleBarDiffNormal();
         }
 
+        bool WasCalledFrom(const WindowBase* call_w, const WidgetIndex call_widget) const
+        {
+            if (call_w == nullptr)
+            {
+                return false;
+            }
+            return _parentWidget.window.classification == call_w->classification
+                && _parentWidget.window.number == call_w->number && _parentWidget.widgetIndex == call_widget;
+        }
+
     private:
         static void IMEComposition(int32_t cursorX, int32_t cursorY)
         {
@@ -412,6 +422,18 @@ namespace OpenRCT2::Ui::Windows
     {
         auto existingText = FormatStringIDLegacy(existing_text, &existing_args);
         WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
+    }
+
+    void WindowTextInputCloseByCalling(WindowBase* call_w, WidgetIndex call_widget)
+    {
+        auto* windowMgr = GetWindowManager();
+        auto* w = reinterpret_cast<TextInputWindow*>(windowMgr->FindByClass(WindowClass::textinput));
+        if (w == nullptr || !w->WasCalledFrom(call_w, call_widget))
+        {
+            return;
+        }
+
+        w->close();
     }
 
     void WindowTextInputKey(WindowBase* w, uint32_t keycode)

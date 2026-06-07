@@ -1723,6 +1723,7 @@ enum : StringId
     STR_LOADING_SCENARIO = 6649,
     STR_LOADING_SAVED_GAME = 6650,
     STR_STRING_M_PERCENT = 6651,
+    STR_EROSION_PROGRESS = 7054,
 
     STR_CHEAT_IGNORE_PRICE = 6659,
 
@@ -1764,6 +1765,16 @@ enum : StringId
 
     STR_QUARTER_HELIX_UP = 7028,
     STR_QUARTER_HELIX_DOWN = 7029,
+
+    // Mapgen
+    STR_MAPGEN_RULE_DEFAULT = 7079,
+    STR_MAPGEN_RULE_TEMPLATE_NEW = 7089,
+    STR_MAPGEN_RULE_BEACHES_WATER_BODIES = 6677,
+    STR_MAPGEN_RULE_ROCKY_MOUNTAIN_PEAKS = 7111,
+    STR_MAPGEN_RULE_SNOWY_MOUNTAIN_PEAKS = 7112,
+    STR_MAPGEN_RULE_SMALL_ROCK_PATCHES = 7107,
+    STR_MAPGEN_RULE_MEDIUM_DIRT_PATCHES = 7108,
+    STR_MAPGEN_RULE_LARGE_GRASS_CLUMP_PATCHES = 7109,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

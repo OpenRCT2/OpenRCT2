@@ -101,7 +101,7 @@ public:
             case WindowClass::map:
                 return MapOpen();
             case WindowClass::mapgen:
-                return MapgenOpen();
+                return MapGenOpen();
             case WindowClass::multiplayer:
                 return MultiplayerOpen();
             case WindowClass::constructRide:
