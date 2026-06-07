@@ -46,19 +46,30 @@ namespace OpenRCT2::World::MapGenerator
 
             ctx = std::make_unique<Noise>(baseSettings, fractalSettings, transformSettings, std::nullopt );
         }
-        else if (settings.bias == Bias::cliff)
-        {
-            BaseSettings baseSettings = { BaseType::Simplex, settings.seed + 1, 1.0f / 512.0f };
-            FractalSettings fractalSettings = { FractalType::Fbm, 6, 2.25f, 0.5f, 0.0f };
-            ctx = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
-        }
 
         return ctx;
+    }
+
+    static float cliffBias(const float height, const int32_t cliffs, const float noise)
+    {
+        const float n = static_cast<float>(cliffs);
+        return (1 - n * height) * noise + height * std::floor((n + 1) * noise);
+    }
+
+    static float terraceBias(const float width, const int32_t terraces, const float noise)
+    {
+        const float n = static_cast<float>(terraces);
+        const float u = n * noise;
+        const float k = std::floor(u);
+        const float t = u - k;
+        const float g = (std::min((1.0f - width) / 2.0f, t) + std::max(0.0f, t - (1.0f + width) / 2.0f)) / (1.0f - width);
+        return (k + g) / n;
     }
 
     static float applyBias(const Settings& settings, BiasData& ctx, VecXY pos, float noise)
     {
         float biasStrength = static_cast<float>(settings.biasStrength) / 100.0f;
+        float biasSteps = settings.biasSteps;
 
         float nx = 2.0f * pos.x / settings.mapSize.x - 1.0f;
         float ny = 2.0f * pos.y / settings.mapSize.y - 1.0f;
@@ -122,8 +133,13 @@ namespace OpenRCT2::World::MapGenerator
             }
             case Bias::cliff:
             {
-                auto cliffBias = std::get<std::unique_ptr<Noise>>(ctx)->generate(pos) > 0.2f ? 1.0f : 0.0f;
-                return noise * (1 - biasStrength) + cliffBias * biasStrength;
+                // TODO improve height and strength scaling
+                return noise * (1 - biasStrength) + cliffBias(biasStrength * 0.48f, biasSteps, noise) * biasStrength;
+            }
+            case Bias::terrace:
+            {
+                // TODO improve width and strength scaling
+                return noise * (1 - biasStrength) + terraceBias(biasStrength * 0.48f, biasSteps, noise) * biasStrength;
             }
             default:
             {

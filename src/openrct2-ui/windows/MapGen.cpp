@@ -354,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             removeViewport();
 
             setWidgets(PageWidgets[newPage]);
-            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4 }, WIDX_TAB_1 + newPage);
+            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5 }, WIDX_TAB_1 + newPage);
 
             initScrollWidgets();
             invalidate();
@@ -729,6 +729,9 @@ namespace OpenRCT2::Ui::Windows
                 case MapGenerator::Bias::cliff:
                     widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_CLIFF;
                     break;
+                case MapGenerator::Bias::terrace:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_TERRACE;
+                    break;
             }
         }
 
@@ -1001,7 +1004,7 @@ namespace OpenRCT2::Ui::Windows
             // Tab animation
             if (++currentFrame >= TabAnimationLoops[page])
                 currentFrame = 0;
-            invalidateWidget(WIDX_TAB_4);
+            invalidateWidget(WIDX_TAB_5);
 
             // Check if the mouse is hovering over the list
             if (!widgetIsHighlighted(*this, WIDX_RULE_SC_SCROLL))
@@ -1726,6 +1729,7 @@ namespace OpenRCT2::Ui::Windows
                         ToggleOption(5, STR_MAPGEN_BIAS_TYPE_CANYON),
                         ToggleOption(7, STR_MAPGEN_BIAS_TYPE_MOUNTAIN),
                         ToggleOption(8, STR_MAPGEN_BIAS_TYPE_CLIFF),
+                        ToggleOption(9, STR_MAPGEN_BIAS_TYPE_TERRACE),
                         //clang-format on
                     };
 

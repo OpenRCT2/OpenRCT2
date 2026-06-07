@@ -3945,3 +3945,4 @@ STR_7180    :None
 STR_7181    :Weak
 STR_7182    :Strong
 STR_7183    :Sharpen
+STR_7184    :Terrace

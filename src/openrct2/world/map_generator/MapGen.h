@@ -40,7 +40,8 @@ namespace OpenRCT2::World::MapGenerator
         river,
         canyon,
         mountain,
-        cliff
+        cliff,
+        terrace
     };
 
     enum class HeightMapTransform : uint8_t
@@ -80,6 +81,7 @@ namespace OpenRCT2::World::MapGenerator
         // Bias settings
         Bias bias = Bias::none;
         int32_t biasStrength = 75;
+        int32_t biasSteps = 1;
 
         // Height map settings
         bool normalizeHeight = true;
