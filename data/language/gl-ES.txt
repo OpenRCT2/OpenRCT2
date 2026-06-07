@@ -270,7 +270,7 @@ STR_0892    :Captura de pantalla gardada como "{STRINGID}"
 STR_0893    :Non se puido facer a captura de pantalla!
 STR_0894    :Datos de paisaxe cheos!
 STR_0895    :Non podes construír unha parte enriba e outra baixo terra
-STR_0896    :Construción de {STRINGID}
+STR_0896    :Construción de {STRING}
 STR_0897    :Sentido
 STR_0898    :Curva á esquerda
 STR_0899    :Curva á dereita
@@ -3818,3 +3818,4 @@ STR_7025    :Facer visible
 STR_7026    :Fai toda a atracción visible
 STR_7028    :Cuarto de hélice ascendente
 STR_7029    :Cuarto de hélice descendente
+STR_7030    :{WINDOW_COLOUR_2}Convidados entretidos: {BLACK}{COMMA32}

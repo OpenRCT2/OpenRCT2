@@ -270,7 +270,7 @@ STR_0892    :Ảnh chụp màn hình đã lưu vào đĩa dưới dạng ‘{STR
 STR_0893    :Ảnh chụp màn hình thất bại!
 STR_0894    :Vùng dữ liệu cảnh quan đầy!
 STR_0895    :Không thể xây dựng một phần trên và một phần dưới lòng đất
-STR_0896    :{STRINGID} Xây dựng
+STR_0896    :{STRING} Xây dựng
 STR_0897    :Hướng
 STR_0898    :Đường cong trái
 STR_0899    :Đường cong phải
