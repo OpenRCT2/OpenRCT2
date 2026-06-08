@@ -14,6 +14,8 @@
 #include "Erosion.h"
 #include "MapHelpers.h"
 #include "Noise.h"
+#include "River.h"
+#include "../Map.h"
 
 #include <memory>
 #include <variant>
@@ -181,6 +183,28 @@ namespace OpenRCT2::World::MapGenerator
 
         // set the game map water lvl
         setWaterLevel(settings.waterLevel);
+
+        if (settings.generateRivers)
+        {
+            HeightMap catchment = genCatchment(heightMap);
+
+            for (auto y = 1; y < heightMap.height - 1; y++)
+            {
+                for (auto x = 1; x < heightMap.width - 1; x++)
+                {
+                    TileCoordsXY pos{ x, y };
+
+                    if (catchment[pos] < settings.catchmentThreshold)
+                    {
+                        continue;
+                    }
+
+                    auto surfaceElement = MapGetSurfaceElementAt(pos);
+                    if (surfaceElement != nullptr )
+                        surfaceElement->SetWaterHeight((heightMap[pos] + 4.0f) * kCoordsZStep);
+                }
+            }
+        }
     }
 
     void generateSimplexMap(Settings& settings)

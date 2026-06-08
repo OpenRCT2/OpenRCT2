@@ -58,13 +58,13 @@ namespace OpenRCT2::World::MapGenerator
 
         T& operator[](TileCoordsXY pos)
         {
-            assert(pos.x >= 0 || pos.y >= 0 || pos.x < width || pos.y < height);
+            assert(contains(pos));
             return _value[pos.y * width + pos.x];
         }
 
         const T& operator[](TileCoordsXY pos) const
         {
-            assert(pos.x >= 0 || pos.y >= 0 || pos.x < width || pos.y < height);
+            assert(contains(pos));
             return _value[pos.y * width + pos.x];
         }
 
@@ -96,6 +96,11 @@ namespace OpenRCT2::World::MapGenerator
         size_t size() const
         {
             return _value.size();
+        }
+
+        bool contains(const TileCoordsXY& pos) const
+        {
+            return pos.x >= 0 && pos.y >= 0 && pos.x < width && pos.y < height;
         }
     };
 

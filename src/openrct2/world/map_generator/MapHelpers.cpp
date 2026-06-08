@@ -14,6 +14,7 @@
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
 #include "Erosion.h"
+#include "River.h"
 
 #include <algorithm>
 
@@ -525,6 +526,11 @@ namespace OpenRCT2::World::MapGenerator
             case HeightMapTransform::erosion:
                 simulateErosion(heightMap, settings);
                 break;
+        }
+
+        if (settings.generateRivers)
+        {
+            floodFill(heightMap);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

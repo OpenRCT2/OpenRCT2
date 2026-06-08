@@ -90,6 +90,10 @@ namespace OpenRCT2::World::MapGenerator
         HeightMapTransform heightmapTransform = HeightMapTransform::none;
         int32_t transformStrength = 1;
         SlopeSmooth slopeSmooth = SlopeSmooth::weak;
+
+        // River settings
+        bool generateRivers = true;
+        int32_t catchmentThreshold = 128;
     };
 
     void generate(Settings& settings);
