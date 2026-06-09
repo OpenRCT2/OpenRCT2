@@ -1294,17 +1294,10 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
     if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         int32_t excitementModifier;
-        uint16_t totalAirTime = ride.totalAirTime;
+        int32_t totalAirTime = ride.totalAirTime;
         if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
-            if (totalAirTime <= 96)
-            {
-                totalAirTime = 0;
-            }
-            else
-            {
-                totalAirTime -= 96;
-            }
+            totalAirTime = std::max(0, totalAirTime - 96);
             excitementModifier = -1 * (std::min<uint16_t>(totalAirTime, 200) / 8);
         }
         else
