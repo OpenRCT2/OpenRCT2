@@ -294,7 +294,7 @@ static constexpr auto window_cheats_staff_widgets = makeWidgets(
     makeWidget                ({126, 371-309}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary                                                                  ), // Staff speed
     makeWidget                ({225, 372-309}, { 11,  12},       WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ), // Staff speed
 
-    makeWidget                ({  5, 257-168}, {238,  116},       WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                     ), // Maintenance group
+    makeWidget                ({  5, 257-168}, {238,  116},      WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                     ), // Maintenance group
     makeWidget                ({ 11, 271-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_REMOVE_LITTER                                         ), // Remove litter
     makeWidget                ({127, 271-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_FIX_VANDALISM                                         ), // Fix vandalism
     makeWidget                ({ 11, 292-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_CLEAR_GRASS                                           ), // Clear grass
