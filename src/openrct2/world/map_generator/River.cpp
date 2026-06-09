@@ -10,40 +10,26 @@
 #include "River.h"
 
 #include "../../Context.h"
-#include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../Vec.hpp"
 
 #include <numbers>
 #include <unistd.h>
 
 namespace OpenRCT2::World::MapGenerator
 {
+    static constexpr float kP = 1.1f;
 
-    enum state_t
-    {
-        open,
-        closed
-    };
+    static constexpr TileCoordsXY kNeighborOffsets[] = { TileCoordsXY{ -1, 0 }, TileCoordsXY{ 1, 0 },  TileCoordsXY{ 0, -1 },
+                                                         TileCoordsXY{ 0, 1 },  TileCoordsXY{ 1, 1 },  TileCoordsXY{ 1, -1 },
+                                                         TileCoordsXY{ -1, 1 }, TileCoordsXY{ -1, -1 } };
 
-    static constexpr TileCoordsXY kNeighborOffsets[] = {
-        TileCoordsXY{ -1, 0 },
-        TileCoordsXY{ 1, 0 },
-        TileCoordsXY{ 0, -1 },
-        TileCoordsXY{ 0, 1 },
-        TileCoordsXY{ 1, 1 },
-        TileCoordsXY{ 1, -1 },
-        TileCoordsXY{ -1, 1 },
-        TileCoordsXY{ -1, -1 }
-    };
-
-    struct tile_t
+    struct QueueTile
     {
         TileCoordsXY pos;
         float height;
         uint32_t orderIdx;
 
-        friend bool operator<(const tile_t& lhs, const tile_t& rhs)
+        friend bool operator<(const QueueTile& lhs, const QueueTile& rhs)
         {
             if (lhs.height < rhs.height)
                 return true;
@@ -51,129 +37,220 @@ namespace OpenRCT2::World::MapGenerator
                 return false;
             return lhs.orderIdx < rhs.orderIdx;
         }
-        friend bool operator<=(const tile_t& lhs, const tile_t& rhs)
+        friend bool operator<=(const QueueTile& lhs, const QueueTile& rhs)
         {
             return !(rhs < lhs);
         }
-        friend bool operator>(const tile_t& lhs, const tile_t& rhs)
+        friend bool operator>(const QueueTile& lhs, const QueueTile& rhs)
         {
             return rhs < lhs;
         }
-        friend bool operator>=(const tile_t& lhs, const tile_t& rhs)
+        friend bool operator>=(const QueueTile& lhs, const QueueTile& rhs)
         {
             return !(lhs < rhs);
         }
     };
 
-    static constexpr float kP = 1.1f;
-
-    void floodFill(HeightMap& heightMap)
+    struct TileState
     {
-        std::priority_queue<tile_t, std::vector<tile_t>, std::greater<tile_t>> open;
-        std::queue<tile_t> pit;
-        BaseMap<state_t> state(heightMap.width, heightMap.height, heightMap.density);
+        std::optional<TileCoordsXY> backlink = std::nullopt;
+        bool processed = false;
+        bool pit = false;
+    };
 
-        state.fill(state_t::open);
+    /**
+     * based on
+     *
+     * Lindsay, J.B., 2016. Efficient hybrid breaching-filling sink removal methods for flow path enforcement in digital
+     * elevation models: Efficient Hybrid Sink Removal Methods for Flow Path Enforcement. Hydrological Processes 30, 846--857.
+     *
+     */
+    void floodFill(HeightMap& heightMap, const Settings& settings)
+    {
+        BaseMap<TileState> state(heightMap.height, heightMap.width);
+        std::priority_queue<QueueTile, std::vector<QueueTile>, std::greater<QueueTile>> priorityQueue;
+        std::queue<TileCoordsXY> tilesToFlood;
 
         uint32_t orderIdx = 0;
-        int32_t pitCellExceeds = 0;
-        std::optional<float> pitTop = std::nullopt;
 
-        for (int32_t y = 0; y < heightMap.height; y++)
+        // Add edge tiles to queue and mark pits
+        for (int y = 0; y < heightMap.height; y++)
         {
-            // x == 0
-            auto pos = TileCoordsXY{ 0, y };
-            open.emplace(pos, heightMap[pos], orderIdx++);
-            state[pos] = state_t::closed;
-
-            // x == width - 1
-            auto pos2 = TileCoordsXY{ heightMap.width - 1, y };
-            open.emplace(pos2, heightMap[pos2], orderIdx++);
-            state[pos2] = state_t::closed;
-        }
-
-        for (int32_t x = 1; x < heightMap.width - 1; x++)
-        {
-            // y == 0
-            auto pos = TileCoordsXY{ x, 0 };
-            open.emplace(pos, heightMap[pos], orderIdx++);
-            state[pos] = state_t::closed;
-
-            // y == height - 1
-            auto pos2 = TileCoordsXY{ x, heightMap.height - 1 };
-            open.emplace(pos2, heightMap[pos2], orderIdx++);
-            state[pos2] = state_t::closed;
-        }
-
-        while (!open.empty() || !pit.empty())
-        {
-            tile_t tile;
-
-            if (!open.empty() && !pit.empty() && open.top().height == pit.front().height)
+            for (int x = 0; x < heightMap.width; x++)
             {
-                tile = open.top();
-                open.pop();
-                pitTop = std::nullopt;
-            }
-            else if (!pit.empty())
-            {
-                tile = pit.front();
-                pit.pop();
-                if (!pitTop.has_value())
+                TileCoordsXY pos{ x, y };
+
+                if (x == 0 || y == 0 || x == heightMap.width - 1 || y == heightMap.height - 1)
                 {
-                    pitTop = std::make_optional(heightMap[tile.pos]);
+                    priorityQueue.emplace(pos, heightMap[pos], orderIdx++);
+                    state[pos].processed = true;
+                    continue;
+                }
+
+                float minNeighbor = std::numeric_limits<float>::max();
+
+                for (const auto& offset : kNeighborOffsets)
+                {
+                    const TileCoordsXY nPos{ pos + offset };
+                    // no contains check needed per if-clause above
+                    minNeighbor = std::min(heightMap[nPos], minNeighbor);
+                }
+
+                if (heightMap[pos] < minNeighbor)
+                {
+                    heightMap[pos] = std::nextafter(minNeighbor, std::numeric_limits<float>::lowest());
+                    state[pos].pit = true;
                 }
             }
-            else
+        }
+
+        // process tiles from queue
+        while (!priorityQueue.empty())
+        {
+            const QueueTile c = priorityQueue.top();
+            priorityQueue.pop();
+
+            // handle neighbors
+            for (const auto& offset : kNeighborOffsets)
             {
-                tile = open.top();
-                open.pop();
-                pitTop = std::nullopt;
+                const TileCoordsXY nPos{ c.pos + offset };
+
+                if (!heightMap.contains(nPos) || !state[nPos].processed)
+                {
+                    continue;
+                }
+
+                priorityQueue.emplace(nPos, heightMap[nPos], orderIdx++);
+                tilesToFlood.push(nPos);
+                state[nPos].processed = true;
+                state[nPos].backlink = std::make_optional(c.pos);
+
+                // check if there is a valid path to breach out of the pit
+                if (state[nPos].pit)
+                {
+                    float pathLength = 0.0f;
+                    float pathDepth = std::numeric_limits<float>::lowest();
+
+                    std::optional<TileCoordsXY> currentTile = std::make_optional(nPos);
+                    float targetHeight = heightMap[nPos];
+
+                    // trace path to lower tile along backlinks to get length and depth
+                    while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
+                    {
+                        pathDepth = std::max(pathDepth, heightMap[currentTile.value()] - targetHeight);
+                        pathLength++;
+
+                        targetHeight = std::nextafter(targetHeight, std::numeric_limits<float>::lowest());
+                        currentTile = state[currentTile.value()].backlink;
+                    }
+
+                    currentTile = std::make_optional(nPos);
+                    targetHeight = heightMap[nPos];
+
+                    // if the path limits are not exceeded, adjust height along path
+                    if (pathLength <= settings.breachMaxLength && pathDepth <= settings.breachMaxDepth)
+                    {
+                        while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
+                        {
+                            heightMap[currentTile.value()] = targetHeight;
+
+                            targetHeight = std::nextafter(targetHeight, std::numeric_limits<float>::lowest());
+                            currentTile = state[currentTile.value()].backlink;
+                        }
+                    }
+                }
             }
+        }
+
+        // fill depressions
+        while (!tilesToFlood.empty())
+        {
+            const TileCoordsXY& toFlood = tilesToFlood.front();
+            if (state[toFlood].backlink.has_value())
+            {
+                auto parent = state[toFlood].backlink.value();
+                if (heightMap[toFlood] <= heightMap[parent])
+                {
+                    heightMap[toFlood] = std::nextafter(heightMap[parent], std::numeric_limits<float>::infinity());
+                }
+            }
+            tilesToFlood.pop();
+        }
+    }
+
+    static void postProcessTile(
+        HeightMap& catchment, const Settings& settings, std::queue<TileCoordsXY>& open, BaseMap<int8_t>& mask,
+        const TileCoordsXY& pos)
+    {
+        if (catchment[pos] >= settings.catchmentThreshold)
+        {
+            open.push(pos);
+            mask[pos] = 1;
+        }
+    }
+
+    /**
+     * remove orphans from catchment and 
+     */
+    static void postProcessCatchment(HeightMap& catchment, const Settings& settings)
+    {
+        std::queue<TileCoordsXY> open;
+        BaseMap<int8_t> mask(catchment.width, catchment.height);
+
+        for (int32_t y = 0; y < catchment.height; y++)
+        {
+            const TileCoordsXY left{ 0, y };
+            postProcessTile(catchment, settings, open, mask, left);
+
+            const TileCoordsXY right{ catchment.width - 1, y };
+            postProcessTile(catchment, settings, open, mask, right);
+        }
+
+        for (int32_t x = 1; x < catchment.width - 1; x++)
+        {
+            const TileCoordsXY top{ x, 0 };
+            postProcessTile(catchment, settings, open, mask, top);
+
+            const TileCoordsXY bottom{ x, catchment.height - 1 };
+            postProcessTile(catchment, settings, open, mask, bottom);
+        }
+
+        while (!open.empty())
+        {
+            const TileCoordsXY& pos = open.front();
 
             for (const auto& offset : kNeighborOffsets)
             {
-                TileCoordsXY neighborPos = tile.pos + offset;
+                const TileCoordsXY nPos{ pos + offset };
 
-                if (!heightMap.contains(neighborPos))
+                if (mask[nPos] > 0)
                 {
                     continue;
                 }
 
-                if (state[neighborPos] == state_t::closed)
-                {
-                    continue;
-                }
-
-                state[neighborPos] = state_t::closed;
-
-                const float nextAfter = std::nextafter(heightMap[tile.pos], std::numeric_limits<float>::infinity());
-
-                if (heightMap[neighborPos] <= nextAfter)
-                {
-                    if (pitTop.has_value() && pitTop.value() < heightMap[neighborPos] && nextAfter >= heightMap[neighborPos])
-                    {
-                        ++pitCellExceeds;
-                    }
-
-                    heightMap[neighborPos] = nextAfter;
-                    pit.emplace(neighborPos, heightMap[neighborPos], orderIdx++);
-                }
-                else
-                {
-                    open.emplace(neighborPos, heightMap[neighborPos], orderIdx++);
-                }
+                postProcessTile(catchment, settings, open, mask, nPos);
             }
+
+            open.pop();
         }
 
-        if (pitCellExceeds > 0)
+        for (int y = 0; y < catchment.height; y++)
         {
-            LOG_WARNING("The inside of a pit exceeded the terrain surrounding it (n=%d)", pitCellExceeds);
+            for (int x = 0; x < catchment.width; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+
+                if (mask[pos] == 0 || catchment[pos] < settings.catchmentThreshold)
+                {
+                    catchment[pos] = 0;
+                }
+            }
         }
     }
 
     static double downSlope(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
     {
+        // TODO double -> float
         int32_t deltaX = from.x - to.x;
         int32_t deltaY = from.y - to.y;
 
@@ -230,9 +307,15 @@ namespace OpenRCT2::World::MapGenerator
         return catchment[pos];
     }
 
-    HeightMap genCatchment(const HeightMap& heightMap)
+    /**
+     * based on
+     *
+     * Freeman, T.G., 1991. Calculating catchment area with divergent flow based on a regular grid. Computers & geosciences,
+     * 17(3), pp.413-422.
+     */
+    HeightMap genCatchment(const HeightMap& heightMap, const Settings& settings)
     {
-        HeightMap catchment(heightMap.width, heightMap.height, heightMap.density);
+        HeightMap catchment(heightMap.width, heightMap.height);
         catchment.fill(0.0f);
 
         for (auto y = 0; y < heightMap.height; y++)
@@ -243,6 +326,8 @@ namespace OpenRCT2::World::MapGenerator
                 checkNeighbor(heightMap, catchment, pos);
             }
         }
+
+        postProcessCatchment(catchment, settings);
 
         return catchment;
     }

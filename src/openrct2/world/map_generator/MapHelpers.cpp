@@ -530,7 +530,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (settings.generateRivers)
         {
-            floodFill(heightMap);
+            floodFill(heightMap, settings);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

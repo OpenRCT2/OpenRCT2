@@ -186,7 +186,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (settings.generateRivers)
         {
-            HeightMap catchment = genCatchment(heightMap);
+            HeightMap catchment = genCatchment(heightMap, settings);
 
             for (auto y = 1; y < heightMap.height - 1; y++)
             {
@@ -194,14 +194,22 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     TileCoordsXY pos{ x, y };
 
-                    if (catchment[pos] < settings.catchmentThreshold)
+                    if (catchment[pos] <= 0)
                     {
                         continue;
                     }
 
                     auto surfaceElement = MapGetSurfaceElementAt(pos);
                     if (surfaceElement != nullptr )
-                        surfaceElement->SetWaterHeight((heightMap[pos] + 4.0f) * kCoordsZStep);
+                    {
+                        auto adjustedHeight =
+                            static_cast<uint8_t>(std::round(std::clamp(heightMap[pos], 2.0f, 254.0f) * 0.5f) * 2.0f);
+
+                        surfaceElement->SetWaterHeight(adjustedHeight * kCoordsZStep);
+                        surfaceElement->baseHeight = adjustedHeight - 2;
+                        surfaceElement->clearanceHeight = surfaceElement->baseHeight;
+
+                    }
                 }
             }
         }

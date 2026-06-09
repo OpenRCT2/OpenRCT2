@@ -15,8 +15,6 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-
-    void floodFill(HeightMap& heightMap);
-    HeightMap genCatchment(const HeightMap& heightMap);
-
+    void floodFill(HeightMap& heightMap, const Settings& settings);
+    HeightMap genCatchment(const HeightMap& heightMap, const Settings& settings);
 } // namespace OpenRCT2::World::MapGenerator
