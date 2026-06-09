@@ -195,6 +195,9 @@ namespace OpenRCT2::GameActions
             case CheatType::disablePlantAging:
                 gameState.cheats.disablePlantAging = _param1 != 0;
                 break;
+            case CheatType::disableGrassGrowing:
+                gameState.cheats.disableGrassGrowing = _param1 != 0;
+                break;
             case CheatType::setStaffSpeed:
                 SetStaffSpeed(_param1);
                 break;
@@ -323,6 +326,8 @@ namespace OpenRCT2::GameActions
             case CheatType::noMoney:
                 [[fallthrough]];
             case CheatType::disablePlantAging:
+                [[fallthrough]];
+            case CheatType::disableGrassGrowing:
                 [[fallthrough]];
             case CheatType::freezeWeather:
                 [[fallthrough]];
