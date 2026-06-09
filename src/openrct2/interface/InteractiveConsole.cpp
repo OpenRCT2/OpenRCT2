@@ -1489,6 +1489,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
     catch (const std::exception& e)
     {
         console.WriteLine(e.what());
+        console.WriteFormatLine("Error: Could not start replay '{0}'.\n", name);
         return;
     }
 
