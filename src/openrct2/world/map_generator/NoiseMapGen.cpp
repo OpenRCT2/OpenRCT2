@@ -14,7 +14,6 @@
 #include "Erosion.h"
 #include "MapHelpers.h"
 #include "Noise.h"
-#include "River.h"
 #include "../Map.h"
 
 #include <memory>
@@ -167,12 +166,12 @@ namespace OpenRCT2::World::MapGenerator
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
                 float biasedNoiseValue = applyBias(settings, ctx, pos, normalisedNoiseValue);
 
-                heightMap[{ x, y }] = low + biasedNoiseValue * high;
+                heightMap[pos.AsTileCoordsXY()] = low + biasedNoiseValue * high;
             }
         }
 
         // apply smooth/erosion
-        applyHeightMapTransform(heightMap, settings);
+        std::optional<HeightMap> maybeWaterHeights = applyHeightMapTransform(heightMap, settings);
 
         // set the game map to the height map
         resetSurfaces(settings);
@@ -184,17 +183,16 @@ namespace OpenRCT2::World::MapGenerator
         // set the game map water lvl
         setWaterLevel(settings.waterLevel);
 
-        if (settings.generateRivers)
+        if (settings.generateRivers && maybeWaterHeights.has_value())
         {
-            HeightMap catchment = genCatchment(heightMap, settings);
-
+            HeightMap waterHeights = maybeWaterHeights.value();
             for (auto y = 1; y < heightMap.height - 1; y++)
             {
                 for (auto x = 1; x < heightMap.width - 1; x++)
                 {
                     TileCoordsXY pos{ x, y };
 
-                    if (catchment[pos] <= 0)
+                    if (waterHeights[pos] <= 0)
                     {
                         continue;
                     }
@@ -202,13 +200,10 @@ namespace OpenRCT2::World::MapGenerator
                     auto surfaceElement = MapGetSurfaceElementAt(pos);
                     if (surfaceElement != nullptr )
                     {
-                        auto adjustedHeight =
-                            static_cast<uint8_t>(std::round(std::clamp(heightMap[pos], 2.0f, 254.0f) * 0.5f) * 2.0f);
+                        const auto adjustedHeight =
+                            static_cast<uint8_t>(std::round(std::clamp(waterHeights[pos], 2.0f, 254.0f) * 0.5f) * 2.0f);
 
                         surfaceElement->SetWaterHeight(adjustedHeight * kCoordsZStep);
-                        surfaceElement->baseHeight = adjustedHeight - 2;
-                        surfaceElement->clearanceHeight = surfaceElement->baseHeight;
-
                     }
                 }
             }

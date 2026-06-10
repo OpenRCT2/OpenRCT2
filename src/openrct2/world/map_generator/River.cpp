@@ -74,9 +74,9 @@ namespace OpenRCT2::World::MapGenerator
         uint32_t orderIdx = 0;
 
         // Add edge tiles to queue and mark pits
-        for (int y = 0; y < heightMap.height; y++)
+        for (int32_t y = 0; y < heightMap.height; y++)
         {
-            for (int x = 0; x < heightMap.width; x++)
+            for (int32_t x = 0; x < heightMap.width; x++)
             {
                 TileCoordsXY pos{ x, y };
 
@@ -115,7 +115,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ c.pos + offset };
 
-                if (!heightMap.contains(nPos) || !state[nPos].processed)
+                if (!heightMap.contains(nPos) || state[nPos].processed)
                 {
                     continue;
                 }
@@ -179,95 +179,98 @@ namespace OpenRCT2::World::MapGenerator
     }
 
     static void postProcessTile(
-        HeightMap& catchment, const Settings& settings, std::queue<TileCoordsXY>& open, BaseMap<int8_t>& mask,
+        HeightMap& catchment, const Settings& settings, std::queue<TileCoordsXY>& queue, BaseMap<int8_t>& visited,
         const TileCoordsXY& pos)
     {
         if (catchment[pos] >= settings.catchmentThreshold)
         {
-            open.push(pos);
-            mask[pos] = 1;
+            queue.push(pos);
+            visited[pos] = 1;
         }
     }
 
     /**
-     * remove orphans from catchment and 
+     * remove orphans from catchment, make sure
      */
     static void postProcessCatchment(HeightMap& catchment, const Settings& settings)
     {
-        std::queue<TileCoordsXY> open;
-        BaseMap<int8_t> mask(catchment.width, catchment.height);
+        std::queue<TileCoordsXY> queue;
+        BaseMap<int8_t> visited(catchment.width, catchment.height);
 
         for (int32_t y = 0; y < catchment.height; y++)
         {
             const TileCoordsXY left{ 0, y };
-            postProcessTile(catchment, settings, open, mask, left);
+            postProcessTile(catchment, settings, queue, visited, left);
 
             const TileCoordsXY right{ catchment.width - 1, y };
-            postProcessTile(catchment, settings, open, mask, right);
+            postProcessTile(catchment, settings, queue, visited, right);
         }
 
         for (int32_t x = 1; x < catchment.width - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            postProcessTile(catchment, settings, open, mask, top);
+            postProcessTile(catchment, settings, queue, visited, top);
 
             const TileCoordsXY bottom{ x, catchment.height - 1 };
-            postProcessTile(catchment, settings, open, mask, bottom);
+            postProcessTile(catchment, settings, queue, visited, bottom);
         }
 
-        while (!open.empty())
+        while (!queue.empty())
         {
-            const TileCoordsXY& pos = open.front();
+            const TileCoordsXY& pos = queue.front();
 
             for (const auto& offset : kNeighborOffsets)
             {
                 const TileCoordsXY nPos{ pos + offset };
 
-                if (mask[nPos] > 0)
+                if (!catchment.contains(nPos) || visited[nPos] > 0)
                 {
                     continue;
                 }
 
-                postProcessTile(catchment, settings, open, mask, nPos);
+                postProcessTile(catchment, settings, queue, visited, nPos);
             }
 
-            open.pop();
+            queue.pop();
         }
 
-        for (int y = 0; y < catchment.height; y++)
+        for (int32_t y = 0; y < catchment.height; y++)
         {
-            for (int x = 0; x < catchment.width; x++)
+            for (int32_t x = 0; x < catchment.width; x++)
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (mask[pos] == 0 || catchment[pos] < settings.catchmentThreshold)
+                if (visited[pos] == 0 || catchment[pos] < settings.catchmentThreshold)
                 {
                     catchment[pos] = 0;
                 }
             }
         }
+
+        
     }
 
-    static double downSlope(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
+    static float downSlope(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
     {
-        // TODO double -> float
-        int32_t deltaX = from.x - to.x;
-        int32_t deltaY = from.y - to.y;
+        const int32_t deltaX = from.x - to.x;
+        const int32_t deltaY = from.y - to.y;
 
-        double distance = abs(deltaX) + abs(deltaY) > 1 ? std::numbers::sqrt2 : 1.0;
-        double heightFrom = heightMap[from];
-        double heightTo = heightMap[to];
-        double delta = (heightFrom - heightTo) / distance;
-        return std::max(0.0, std::pow(delta, kP));
+        const float distance = abs(deltaX) + abs(deltaY) > 1.0f ? std::numbers::sqrt2 : 1.0f;
+        const float heightFrom = heightMap[from];
+        const float heightTo = heightMap[to];
+        const float delta = (heightFrom - heightTo) / distance;
+
+        return std::max(0.0f, std::pow(delta, kP));
     }
 
     static float fractionalFlow(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
     {
-        double sum = 0.0;
+        float sum = 0.0f;
 
         for (const auto& offset : kNeighborOffsets)
         {
             TileCoordsXY nPos{ from + offset };
+
             if (!heightMap.contains(nPos))
             {
                 continue;
@@ -276,9 +279,7 @@ namespace OpenRCT2::World::MapGenerator
             sum += downSlope(heightMap, from, nPos);
         }
 
-        const double fraction = downSlope(heightMap, from, to) / sum;
-
-        return static_cast<float>(fraction);
+        return downSlope(heightMap, from, to) / sum;
     }
 
     static float checkNeighbor(const HeightMap& heightMap, HeightMap& catchment, const TileCoordsXY& pos)
@@ -318,9 +319,9 @@ namespace OpenRCT2::World::MapGenerator
         HeightMap catchment(heightMap.width, heightMap.height);
         catchment.fill(0.0f);
 
-        for (auto y = 0; y < heightMap.height; y++)
+        for (int32_t y = 0; y < heightMap.height; y++)
         {
-            for (auto x = 0; x < heightMap.width; x++)
+            for (int32_t x = 0; x < heightMap.width; x++)
             {
                 TileCoordsXY pos{ x, y };
                 checkNeighbor(heightMap, catchment, pos);

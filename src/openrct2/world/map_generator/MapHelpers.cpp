@@ -505,7 +505,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void applyHeightMapTransform(HeightMap& heightMap, const Settings& settings)
+    std::optional<HeightMap> applyHeightMapTransform(HeightMap& heightMap, const Settings& settings)
     {
         switch (settings.heightmapTransform)
         {
@@ -531,6 +531,56 @@ namespace OpenRCT2::World::MapGenerator
         if (settings.generateRivers)
         {
             floodFill(heightMap, settings);
+            HeightMap catchment = genCatchment(heightMap, settings);
+            HeightMap waterHeight = heightMap;
+            HeightMap sourceCopy = heightMap;
+
+            for (int32_t y = 0; y < heightMap.height; y++)
+            {
+                for (int32_t x = 0; x < heightMap.width; x++)
+                {
+                    const TileCoordsXY pos{ x, y };
+
+                    if (catchment[pos] <= 0)
+                    {
+                        waterHeight[pos] = 0;
+                        continue;
+                    }
+
+                    waterHeight[pos] = waterHeight[pos] - 2.0f;
+
+                    float deltaHeight = sourceCopy[pos] - 4.0f;
+                    if (deltaHeight < heightMap[pos])
+                    {
+                        heightMap[pos] = deltaHeight;
+                    }
+
+                    const float radius = std::log2(catchment[pos] / (0.5f * settings.catchmentThreshold));
+
+                    for (int32_t dy = -radius; dy <= radius; dy++)
+                    {
+                        for (int32_t dx = -radius; dx <= radius; dx++)
+                        {
+                            TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
+
+                            if (!catchment.contains(deltaPos) || dx*dx + dy*dy > radius * radius)
+                            {
+                                continue;
+                            }
+
+                            deltaHeight = sourceCopy[deltaPos] - 2.0f;
+                            if (deltaHeight < heightMap[deltaPos])
+                            {
+                                heightMap[deltaPos] = deltaHeight;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return std::make_optional(waterHeight);
         }
+
+        return std::nullopt;
     }
 } // namespace OpenRCT2::World::MapGenerator
