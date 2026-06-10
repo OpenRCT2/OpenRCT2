@@ -6554,6 +6554,7 @@ namespace OpenRCT2
             return false;
         }
 
+        // TODO: Extract loop A
         do
         {
             // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6570,8 +6571,7 @@ namespace OpenRCT2
             auto wallEntry = tileElement->asWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
                 continue;
-            // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
-            if (guest.NextLoc.z + (4 * kCoordsZStep) >= tileElement->getBaseZ())
+            if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
             if (guest.NextLoc.z + (1 * kCoordsZStep) >= tileElement->getClearanceZ())
                 continue;
