@@ -532,6 +532,7 @@ namespace OpenRCT2::World::MapGenerator
         {
             floodFill(heightMap, settings);
             HeightMap catchment = genCatchment(heightMap, settings);
+
             HeightMap waterHeight = heightMap;
             HeightMap sourceCopy = heightMap;
 
