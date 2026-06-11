@@ -21,6 +21,7 @@
 ------------------------------------------------------------------------
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Feature: [#24879] [Plugin] Add methods for showing and hiding gridlines.
+- Feature: [#25840] [Plugin] Add `TrackSegment.getNextValidSegments(rideId)` API to query valid track connections.
 - Feature: [#26327] Add ‘guests entertained’ statistic to entertainers.
 - Improved: [#26374] Add higher resolution app icons for Android.
 - Improved: [#26386] Initial window scale and toolbar options on fresh Android installations.

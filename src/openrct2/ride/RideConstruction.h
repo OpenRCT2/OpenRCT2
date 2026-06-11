@@ -157,10 +157,6 @@ void RideConstructionStart(Ride& ride);
 
 TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& rtd);
 TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd);
-OpenRCT2::TrackElemType GetTrackTypeFromCurve(
-    OpenRCT2::TrackMetadata::TrackCurve curve, bool startsDiagonal, OpenRCT2::TrackMetadata::TrackPitch startSlope,
-    OpenRCT2::TrackMetadata::TrackPitch endSlope, OpenRCT2::TrackMetadata::TrackRoll startBank,
-    OpenRCT2::TrackMetadata::TrackRoll endBank);
 
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, OpenRCT2::TileElement** output_element,
