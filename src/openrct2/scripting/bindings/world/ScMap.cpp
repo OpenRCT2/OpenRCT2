@@ -25,6 +25,12 @@
     #include "../../../ride/RideManager.hpp"
     #include "../../../ride/TrainManager.h"
     #include "../../../ride/Vehicle.h"
+    #include "../../../world/Map.h"
+    #include "../../../world/tile_element/EntranceElement.h"
+    #include "../../../world/tile_element/PathElement.h"
+    #include "../../../world/tile_element/TileElement.h"
+    #include "../../../world/tile_element/TrackElement.h"
+    #include "../../ScriptUtil.hpp"
     #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"
     #include "../entity/ScGuest.hpp"
@@ -39,6 +45,27 @@
 
 namespace OpenRCT2::Scripting
 {
+
+    static std::optional<std::tuple<int32_t, int32_t, int32_t, int32_t>> ParseMapBounds(JSContext* ctx, JSValue boundsVal)
+    {
+        if (!JS_IsObject(boundsVal))
+        {
+            return std::nullopt;
+        }
+        auto minX = JSToOptionalInt(ctx, boundsVal, "minX");
+        auto minY = JSToOptionalInt(ctx, boundsVal, "minY");
+        auto maxX = JSToOptionalInt(ctx, boundsVal, "maxX");
+        auto maxY = JSToOptionalInt(ctx, boundsVal, "maxY");
+        if (!minX || !minY || !maxX || !maxY)
+        {
+            return std::nullopt;
+        }
+        if (*minX > *maxX || *minY > *maxY)
+        {
+            return std::nullopt;
+        }
+        return std::make_tuple(*minX, *minY, *maxX, *maxY);
+    }
 
     JSValue ScMap::size_get(JSContext* ctx, JSValue thisVal)
     {
@@ -449,6 +476,133 @@ namespace OpenRCT2::Scripting
         return ScTrackIterator::FromElement(ctx, position, elementIndex);
     }
 
+    JSValue ScMap::getElementsInRect(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+    {
+        JS_UNPACK_STR(type, ctx, argv[0]);
+        auto bounds = ParseMapBounds(ctx, argv[1]);
+        if (!bounds)
+        {
+            JS_ThrowPlainError(ctx, "Invalid bounds.");
+            return JS_EXCEPTION;
+        }
+
+        auto [minX, minY, maxX, maxY] = *bounds;
+        const auto& mapSize = getGameState().mapSize;
+        minX = std::clamp(minX, 0, mapSize.x - 1);
+        minY = std::clamp(minY, 0, mapSize.y - 1);
+        maxX = std::clamp(maxX, 0, mapSize.x - 1);
+        maxY = std::clamp(maxY, 0, mapSize.y - 1);
+
+        JSValue result = JS_NewArray(ctx);
+        int64_t idx = 0;
+
+        const bool wantFootpath = type == "footpath";
+        const bool wantTrack = type == "track";
+        const bool wantEntrance = type == "entrance";
+        if (!wantFootpath && !wantTrack && !wantEntrance)
+        {
+            JS_FreeValue(ctx, result);
+            JS_ThrowPlainError(ctx, "Invalid element type.");
+            return JS_EXCEPTION;
+        }
+
+        for (int32_t x = minX; x <= maxX; ++x)
+        {
+            for (int32_t y = minY; y <= maxY; ++y)
+            {
+                const auto coords = TileCoordsXY(x, y).ToCoordsXY();
+                for (auto* element = MapGetFirstElementAt(coords); element != nullptr; element += 1)
+                {
+                    const auto elementType = element->getType();
+                    if (wantFootpath && elementType == TileElementType::Path)
+                    {
+                        auto* path = element->asPath();
+                        JSValue obj = JS_NewObject(ctx);
+                        JS_SetPropertyStr(ctx, obj, "tileX", JS_NewInt32(ctx, x));
+                        JS_SetPropertyStr(ctx, obj, "tileY", JS_NewInt32(ctx, y));
+                        JS_SetPropertyStr(ctx, obj, "baseZ", JS_NewInt32(ctx, path->getBaseZ()));
+                        JS_SetPropertyStr(ctx, obj, "isQueue", JS_NewBool(ctx, path->IsQueue()));
+                        if (path->HasAddition())
+                        {
+                            const auto status = path->GetAdditionStatus();
+                            JS_SetPropertyStr(ctx, obj, "additionStatus", JS_NewUint32(ctx, status));
+                            JS_SetPropertyStr(ctx, obj, "isAdditionBroken", JS_NewBool(ctx, path->IsBroken()));
+                            JS_SetPropertyStr(ctx, obj, "isAdditionFull", JS_NewBool(ctx, status < 255));
+                        }
+                        JS_SetPropertyInt64(ctx, result, idx++, obj);
+                    }
+                    else if (wantTrack && elementType == TileElementType::Track)
+                    {
+                        auto* track = element->asTrack();
+                        JSValue obj = JS_NewObject(ctx);
+                        JS_SetPropertyStr(ctx, obj, "tileX", JS_NewInt32(ctx, x));
+                        JS_SetPropertyStr(ctx, obj, "tileY", JS_NewInt32(ctx, y));
+                        JS_SetPropertyStr(ctx, obj, "baseZ", JS_NewInt32(ctx, track->getBaseZ()));
+                        JS_SetPropertyStr(ctx, obj, "trackType", JS_NewInt32(ctx, EnumValue(track->GetTrackType())));
+                        JS_SetPropertyStr(ctx, obj, "ride", JS_NewInt32(ctx, track->GetRideIndex().ToUnderlying()));
+                        JS_SetPropertyStr(ctx, obj, "sequenceIndex", JS_NewUint32(ctx, track->GetSequenceIndex()));
+                        JS_SetPropertyInt64(ctx, result, idx++, obj);
+                    }
+                    else if (wantEntrance && elementType == TileElementType::Entrance)
+                    {
+                        auto* entrance = element->asEntrance();
+                        JSValue obj = JS_NewObject(ctx);
+                        JS_SetPropertyStr(ctx, obj, "tileX", JS_NewInt32(ctx, x));
+                        JS_SetPropertyStr(ctx, obj, "tileY", JS_NewInt32(ctx, y));
+                        JS_SetPropertyStr(ctx, obj, "baseZ", JS_NewInt32(ctx, entrance->getBaseZ()));
+                        JS_SetPropertyStr(ctx, obj, "ride", JS_NewInt32(ctx, entrance->GetRideIndex().ToUnderlying()));
+                        JS_SetPropertyStr(ctx, obj, "station", JS_NewInt32(ctx, entrance->GetStationIndex().ToUnderlying()));
+                        JS_SetPropertyStr(
+                            ctx, obj, "isExit",
+                            JS_NewBool(ctx, entrance->GetEntranceType() == OpenRCT2::ENTRANCE_TYPE_RIDE_EXIT));
+                        JS_SetPropertyInt64(ctx, result, idx++, obj);
+                    }
+
+                    if (element->isLastForTile())
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    JSValue ScMap::getGuestsInRect(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+    {
+        auto bounds = ParseMapBounds(ctx, argv[0]);
+        if (!bounds)
+        {
+            JS_ThrowPlainError(ctx, "Invalid bounds.");
+            return JS_EXCEPTION;
+        }
+
+        auto [minX, minY, maxX, maxY] = *bounds;
+        const auto& mapSize = getGameState().mapSize;
+        minX = std::clamp(minX, 0, mapSize.x - 1);
+        minY = std::clamp(minY, 0, mapSize.y - 1);
+        maxX = std::clamp(maxX, 0, mapSize.x - 1);
+        maxY = std::clamp(maxY, 0, mapSize.y - 1);
+
+        JSValue result = JS_NewArray(ctx);
+        int64_t idx = 0;
+
+        for (int32_t x = minX; x <= maxX; ++x)
+        {
+            for (int32_t y = minY; y <= maxY; ++y)
+            {
+                const auto coords = TileCoordsXY(x, y).ToCoordsXY();
+                for (auto* guest : EntityTileList<Guest>(coords))
+                {
+                    JS_SetPropertyInt64(ctx, result, idx++, ScGuest::New(ctx, guest->id));
+                }
+            }
+        }
+
+        return result;
+    }
+
     void ScMap::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
@@ -463,6 +617,8 @@ namespace OpenRCT2::Scripting
             JS_CFUNC_DEF("getAllEntitiesOnTile", 2, ScMap::getAllEntitiesOnTile),
             JS_CFUNC_DEF("createEntity", 2, ScMap::createEntity),
             JS_CFUNC_DEF("getTrackIterator", 2, ScMap::getTrackIterator),
+            JS_CFUNC_DEF("getElementsInRect", 2, ScMap::getElementsInRect),
+            JS_CFUNC_DEF("getGuestsInRect", 1, ScMap::getGuestsInRect),
         };
         RegisterBase(ctx, "Map", nullptr, funcs);
     }

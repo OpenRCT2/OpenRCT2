@@ -2,6 +2,11 @@
 ------------------------------------------------------------------------
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
+- Feature: [#26675] [Plugin] Expose ride reliability, guest count, income metrics, and station queue time to the plugin API.
+- Feature: [#26675] [Plugin] Add readonly context.gameSpeed getter.
+- Feature: [#26675] [Plugin] Add riderefurbish game action alias.
+- Feature: [#26675] [Plugin] Add map.getElementsInRect and map.getGuestsInRect bulk queries.
+- Feature: [#26675] [Plugin] Add FootpathElement.isAdditionFull getter.
 - Fix: [#26494] The limits for where walls on the path side of the first tile block the view of rides/scenery are wrong (original bug).
 - Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
 
@@ -29,7 +34,7 @@
 - Fix: [#25581] Chart drawing issue on some platforms due to compiler optimisation.
 - Fix: [#26019] Inverted and Inverted Flying Roller Coaster large half loops glitch with the train and don‘t draw in tunnels at some angles (original bug).
 - Fix: [#26183] The ride stat graph placeholder text is not drawn in the expected position.
-- Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard. 
+- Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard.
 - Fix: [#26299] Single Rail S-Bend sprites don’t fully connect to the next track piece at certain angles.
 - Fix: [#26352] Large scenery items are incorrectly labelled as ‘banners’ in the tile inspector.
 - Fix: [#26352] The label for path additions is using the wrong text colour in the tile inspector.
@@ -567,7 +572,7 @@
 - Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
 - Fix: [#1479] Incorrect values provided by the in game console “get location” command.
 - Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
-- Fix: [#23221] Track designs are saved with an incorrect ‘air’ time statistic. 
+- Fix: [#23221] Track designs are saved with an incorrect ‘air’ time statistic.
 - Fix: [#23368] Incorrect refund amount when deleting track pieces at or above 96m.
 - Fix: [#23508] Simultaneous virtual floors shown for ride and footpath.
 - Fix: [#23512] Holding brakes are skipped if they’re too close together.
