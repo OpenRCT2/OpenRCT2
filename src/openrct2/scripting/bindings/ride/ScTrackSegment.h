@@ -58,7 +58,6 @@ namespace OpenRCT2::Scripting
         static JSValue elements_get(JSContext* ctx, JSValue thisVal);
         static JSValue getSubpositionLength(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
         static JSValue getSubpositions(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-        static JSValue getNextValidSegments(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
         static JSValue nextCurveElement_get(JSContext* ctx, JSValue thisVal);
         static JSValue previousCurveElement_get(JSContext* ctx, JSValue thisVal);
         static JSValue getMirrorElement(JSContext* ctx, JSValue thisVal);

@@ -4,7 +4,6 @@
 - Feature: [#26442] Add cheat to disable grass growing.
 - Feature: [#26675] [Plugin] Expose ride reliability, guest count, income metrics, and station queue time to the plugin API.
 - Feature: [#26675] [Plugin] Add readonly context.gameSpeed getter.
-- Feature: [#26675] [Plugin] Add TrackSegment.getNextValidSegments() for programmatic coaster building.
 - Feature: [#26675] [Plugin] Add riderefurbish game action alias.
 - Feature: [#26675] [Plugin] Add map.getElementsInRect and map.getGuestsInRect bulk queries.
 - Feature: [#26675] [Plugin] Add FootpathElement.isAdditionFull getter.

@@ -2824,11 +2824,6 @@ declare global {
          * pathing of vehicles when moving along the track.
          */
         getSubpositions(subpositionType: number, direction: Direction): TrackSubposition[];
-
-        /**
-         * Returns track segments that can follow this segment for the given ride.
-         */
-        getNextValidSegments(rideId: number): TrackSegment[];
     }
 
     enum TrackSlope {

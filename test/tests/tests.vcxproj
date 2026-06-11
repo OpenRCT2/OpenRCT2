@@ -106,7 +106,6 @@
     <ClCompile Include="ScenarioPatcherTests.cpp" />
     <ClCompile Include="ScriptingTests.cpp" />
     <ClCompile Include="TestData.cpp" />
-    <ClCompile Include="TrackPieceSelectionTests.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
     <ClCompile Include="tests_pch.cpp" Condition="'$(UsePCH)'=='true'">
