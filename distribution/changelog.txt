@@ -1,11 +1,11 @@
 0.5.3 (in development)
 ------------------------------------------------------------------------
-- Feature: [Plugin] Expose ride reliability, guest count, income metrics, and station queue time to the plugin API.
-- Feature: [Plugin] Add readonly context.gameSpeed getter.
-- Feature: [Plugin] Add TrackSegment.getNextValidSegments() for programmatic coaster building.
-- Feature: [Plugin] Add riderefurbish game action alias.
-- Feature: [Plugin] Add map.getElementsInRect and map.getGuestsInRect bulk queries.
-- Feature: [Plugin] Add FootpathElement.isAdditionFull getter.
+- Feature: [#26675] [Plugin] Expose ride reliability, guest count, income metrics, and station queue time to the plugin API.
+- Feature: [#26675] [Plugin] Add readonly context.gameSpeed getter.
+- Feature: [#26675] [Plugin] Add TrackSegment.getNextValidSegments() for programmatic coaster building.
+- Feature: [#26675] [Plugin] Add riderefurbish game action alias.
+- Feature: [#26675] [Plugin] Add map.getElementsInRect and map.getGuestsInRect bulk queries.
+- Feature: [#26675] [Plugin] Add FootpathElement.isAdditionFull getter.
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
 - Fix: [#26494] The limits for where walls on the path side of the first tile block the view of rides/scenery are wrong (original bug).
