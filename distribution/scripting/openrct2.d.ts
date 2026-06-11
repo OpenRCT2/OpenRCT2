@@ -224,6 +224,11 @@ declare global {
         readonly mode: GameMode;
 
         /**
+         * Current game speed (0=normal, 1=fast, 2=turbo, 3=super fast, 4=hyper). Matches gamesetspeed action.
+         */
+        readonly gameSpeed: number;
+
+        /**
          * Whether the game is currently paused or not. Readonly in network mode.
          */
         paused: boolean;
@@ -369,6 +374,7 @@ declare global {
         queryAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         queryAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "riderefurbish", args: RideRefurbishArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
@@ -460,6 +466,7 @@ declare global {
         executeAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         executeAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "riderefurbish", args: RideRefurbishArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
@@ -712,6 +719,7 @@ declare global {
         "playersetgroup" |
         "ridecreate" |
         "ridedemolish" |
+        "riderefurbish" |
         "rideentranceexitplace" |
         "rideentranceexitremove" |
         "ridefreezerating" |
@@ -1219,6 +1227,10 @@ declare global {
         colour1: number;
         colour2: number;
         inspectionInterval: number;
+    }
+
+    interface RideRefurbishArgs extends GameActionArgs {
+        ride: number;
     }
 
     interface RideDemolishArgs extends GameActionArgs {
@@ -1760,7 +1772,50 @@ declare global {
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
 
+        /**
+         * Bulk-export footpath, track, or entrance elements within a map region.
+         */
+        getElementsInRect(
+            type: "footpath" | "track" | "entrance",
+            bounds: { minX: number; minY: number; maxX: number; maxY: number },
+        ): MapElementSummary[];
+
+        /**
+         * Returns all guests whose sprite occupies a tile within the given bounds.
+         */
+        getGuestsInRect(bounds: { minX: number; minY: number; maxX: number; maxY: number }): Guest[];
+
     }
+
+    interface MapFootpathSummary {
+        tileX: number;
+        tileY: number;
+        baseZ: number;
+        isQueue: boolean;
+        additionStatus?: number;
+        isAdditionBroken?: boolean;
+        isAdditionFull?: boolean;
+    }
+
+    interface MapTrackSummary {
+        tileX: number;
+        tileY: number;
+        baseZ: number;
+        trackType: number;
+        ride: number;
+        sequenceIndex: number;
+    }
+
+    interface MapEntranceSummary {
+        tileX: number;
+        tileY: number;
+        baseZ: number;
+        ride: number;
+        station: number;
+        isExit: boolean;
+    }
+
+    type MapElementSummary = MapFootpathSummary | MapTrackSummary | MapEntranceSummary;
 
     type TileElementType =
         "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
@@ -1825,8 +1880,14 @@ declare global {
         station: number | null;
 
         addition: number | null;
+        /**
+         * Edge status bits for path additions (e.g. litter bins). Each bin uses 2 bits; 3 means empty.
+         * 255 means all slots empty; values below 255 indicate at least one full bin.
+         */
         additionStatus: number | null;
         isAdditionBroken: boolean | null;
+        /** True when a litter bin addition has at least one full slot. */
+        readonly isAdditionFull: boolean | null;
         isAdditionGhost: boolean | null;
     }
 
@@ -2447,6 +2508,25 @@ declare global {
         readonly downtime: number;
 
         /**
+         * Reliability percentage shown on the Maintenance tab (0–100).
+         */
+        readonly reliability: number;
+
+        /**
+         * Number of guests currently on the ride (vehicles and queue cars).
+         */
+        readonly guestCount: number;
+
+        /** True when no guests are currently on the ride. */
+        readonly isEmpty: boolean;
+
+        /** Current hourly income shown on the ride Finance tab. */
+        readonly incomePerHour: number;
+
+        /** Current hourly profit shown on the ride Finance tab. */
+        readonly profit: number;
+
+        /**
          * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert speed values to a localised value/unit string. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
          */
         liftHillSpeed: number;
@@ -2567,6 +2647,8 @@ declare global {
         length: number;
         entrance: CoordsXYZD;
         exit: CoordsXYZD;
+        /** Queue wait time in minutes for this station. */
+        readonly queueTime: number;
     }
 
     interface TrackSegment {
@@ -2742,6 +2824,11 @@ declare global {
          * pathing of vehicles when moving along the track.
          */
         getSubpositions(subpositionType: number, direction: Direction): TrackSubposition[];
+
+        /**
+         * Returns track segments that can follow this segment for the given ride.
+         */
+        getNextValidSegments(rideId: number): TrackSegment[];
     }
 
     enum TrackSlope {
