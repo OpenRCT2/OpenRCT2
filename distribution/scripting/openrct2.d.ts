@@ -1645,11 +1645,11 @@ declare global {
         cancel: boolean;
     }
 
-	interface RideBreakdownArgs {
-		readonly rideId: number;
-		breakdownReason: string;
-	}
- 
+    interface RideBreakdownArgs {
+        readonly rideId: number;
+        breakdownReason: string;
+    }
+
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
         excitement: number;
@@ -2520,6 +2520,26 @@ declare global {
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
+
+        /**
+         * Number of inversions.
+         */
+        readonly numInversions: number;
+
+        /**
+         * Number of holes. Only applicable to the mini-golf.
+         */
+        readonly numHoles: number;
+
+        /**
+         * Total length of the ride that is sheltered.
+         */
+        readonly shelteredLength: number;
+
+        /**
+         * Whether the ride has a water splash element or not.
+         */
+        readonly hasWaterSplash: boolean;
 
         /**
         * The current breakdown of the ride.
