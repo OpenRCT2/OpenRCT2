@@ -26,10 +26,21 @@ namespace OpenRCT2::World::MapGenerator
         return surfaceElement != nullptr ? surfaceElement->baseHeight : 0;
     }
 
+    static bool isRiverTile(const TileCoordsXY& tileCoords, std::optional<RiverMap>& catchment)
+    {
+        return catchment.has_value() && catchment.value()[tileCoords] > 0.0f;
+    }
+
+    [[maybe_unused]]
+    static bool riverConsents(const TileCoordsXY& tile, const TileCoordsXY& neighbour, std::optional<RiverMap>& catchment)
+    {
+        return isRiverTile(tile, catchment) && isRiverTile(neighbour, catchment);
+    }
+
     /**
      * Not perfect, this still leaves some particular tiles unsmoothed.
      */
-    int32_t smoothTileSlopeStrong(const TileCoordsXY tileCoords)
+    int32_t smoothTileSlopeStrong(const TileCoordsXY tileCoords, std::optional<RiverMap>& catchment)
     {
         auto surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
@@ -205,7 +216,7 @@ namespace OpenRCT2::World::MapGenerator
      * This does not change the base height, unless all corners have been raised.
      * @returns 0 if no edits were made, 1 otherwise
      */
-    int32_t smoothTileSlopeWeak(const TileCoordsXY tileCoords)
+    int32_t smoothTileSlopeWeak(const TileCoordsXY tileCoords, std::optional<RiverMap>& catchment)
     {
         auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
@@ -238,6 +249,24 @@ namespace OpenRCT2::World::MapGenerator
             };
         } neighbourHeightOffset = {};
 
+        union
+        {
+            bool river[8];
+            struct
+            {
+                bool N;
+                bool NW;
+                bool W;
+                bool NE;
+                bool SW;
+                bool E;
+                bool SE;
+                bool S;
+            };
+        } r = {};
+
+        const bool riverTile = isRiverTile(tileCoords, catchment);
+
         // Find the neighbour base heights
         for (int32_t index = 0, y_offset = -1; y_offset <= 1; y_offset++)
         {
@@ -247,14 +276,17 @@ namespace OpenRCT2::World::MapGenerator
                 if (y_offset == 0 && x_offset == 0)
                     continue;
 
+                auto neighbourCoords = tileCoords + TileCoordsXY{ x_offset, y_offset };
                 // Get neighbour height. If the element is not valid (outside of map) assume the same height
-                auto* neighbourSurfaceElement = MapGetSurfaceElementAt(tileCoords + TileCoordsXY{ x_offset, y_offset });
+                auto* neighbourSurfaceElement = MapGetSurfaceElementAt(neighbourCoords);
                 neighbourHeightOffset.baseheight[index] = neighbourSurfaceElement != nullptr
                     ? neighbourSurfaceElement->baseHeight
                     : surfaceElement->baseHeight;
 
                 // Make the height relative to the current surface element
                 neighbourHeightOffset.baseheight[index] -= surfaceElement->baseHeight;
+                // Isn't there someone you forgot to ask
+                r.river[index] = isRiverTile(neighbourCoords, catchment);
 
                 index++;
             }
@@ -270,11 +302,17 @@ namespace OpenRCT2::World::MapGenerator
         int8_t thresholdS = std::clamp(neighbourHeightOffset.SE, 0, 1) + std::clamp(neighbourHeightOffset.S, 0, 1)
             + std::clamp(neighbourHeightOffset.SW, 0, 1);
 
+        // Make sure the corner doesn't block a river
+        const bool riverW = !riverTile || (!(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW) && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW));
+        const bool riverN = !riverTile || (!(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW) && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE));
+        const bool riverE = !riverTile || (!(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE) && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE));
+        const bool riverS = !riverTile || (!(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE) && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW));
+
         uint8_t slope = kTileSlopeFlat;
-        slope |= (thresholdW >= 1) ? SLOPE_W_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdN >= 1) ? SLOPE_N_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdE >= 1) ? SLOPE_E_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdS >= 1) ? SLOPE_S_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdW >= 1 && riverW) ? SLOPE_W_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdN >= 1 && riverN) ? SLOPE_N_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdE >= 1 && riverE) ? SLOPE_E_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdS >= 1 && riverS) ? SLOPE_S_THRESHOLD_FLAGS : 0;
 
         // Set diagonal when three corners (one corner down) have been raised, and the middle one can be raised one more
         if ((slope == kTileSlopeWCornerDown && neighbourHeightOffset.W >= 4)
@@ -317,7 +355,7 @@ namespace OpenRCT2::World::MapGenerator
         return 1;
     }
 
-    void applyTileSlopeSmooth(const Settings& settings)
+    void applyTileSlopeSmooth(const Settings& settings, std::optional<RiverMap>& catchment)
     {
         const auto mapSize = settings.mapSize;
 
@@ -343,7 +381,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 for (auto x = 1; x < mapSize.x - 1; x++)
                 {
-                    numTilesChanged += smoothFunc({ x, y });
+                    numTilesChanged += smoothFunc({ x, y }, catchment);
                 }
             }
 

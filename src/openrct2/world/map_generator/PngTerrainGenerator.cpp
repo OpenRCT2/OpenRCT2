@@ -186,6 +186,7 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        applyTileSlopeSmooth(settings);
+        std::optional<RiverMap> noMap = std::nullopt;
+        applyTileSlopeSmooth(settings, noMap);
     }
 } // namespace OpenRCT2::World::MapGenerator

@@ -15,6 +15,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <optional>
 
 struct TileCoordsXY;
 
@@ -29,10 +30,10 @@ namespace OpenRCT2::World::MapGenerator
     };
 
     // TODO deduplicate smoothing functions
-    using SmoothFunction = std::function<int32_t(TileCoordsXY)>;
+    using SmoothFunction = std::function<int32_t(TileCoordsXY, std::optional<RiverMap>&)>;
 
-    int32_t smoothTileSlopeStrong(TileCoordsXY tileCoords);
-    int32_t smoothTileSlopeWeak(TileCoordsXY tileCoords);
+    int32_t smoothTileSlopeStrong(TileCoordsXY tileCoords, std::optional<RiverMap>& catchment);
+    int32_t smoothTileSlopeWeak(TileCoordsXY tileCoords, std::optional<RiverMap>& catchment);
 
     void smoothBox(HeightMap& heightMap, int32_t iterations);
     void smoothGaussian(HeightMap& heightMap, float sigma);
@@ -40,5 +41,5 @@ namespace OpenRCT2::World::MapGenerator
     void smoothBilateral(HeightMap& heightMap, float sigmaScale, float sigmaIntensity);
 
     std::optional<HeightMap> applyHeightMapTransform(HeightMap& heightMap, const Settings& settings);
-    void applyTileSlopeSmooth(const Settings& settings);
+    void applyTileSlopeSmooth(const Settings& settings, std::optional<RiverMap>& catchment);
 } // namespace OpenRCT2::World::MapGenerator

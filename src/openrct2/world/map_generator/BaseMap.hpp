@@ -105,5 +105,6 @@ namespace OpenRCT2::World::MapGenerator
     };
 
     using HeightMap = BaseMap<float>;
+    using RiverMap = BaseMap<float>;
     using NormalMap = BaseMap<VecXYZ>;
 } // namespace OpenRCT2::World::MapGenerator

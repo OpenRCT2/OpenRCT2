@@ -20,8 +20,9 @@ namespace OpenRCT2::World::MapGenerator
     static constexpr float kP = 1.1f;
 
     template<class... Arrays>
-    consteval auto concat(Arrays... arrays) {
-        return std::apply([](auto... args){ return std::array{args...}; }, std::tuple_cat(arrays...));
+    consteval auto concat(Arrays... arrays)
+    {
+        return std::apply([](auto... args) { return std::array{ args... }; }, std::tuple_cat(arrays...));
     }
 
     static constexpr std::array kNeighborOffsetsCardinal = {
@@ -77,7 +78,7 @@ namespace OpenRCT2::World::MapGenerator
     public:
         void push() = delete;
 
-        template <class... Args>
+        template<class... Args>
         void emplace(Args... args)
         {
             StableTileQueueBase::emplace(std::forward<Args>(args)..., insertIdx++);
@@ -211,7 +212,7 @@ namespace OpenRCT2::World::MapGenerator
     }
 
     static void postProcessTile(
-        HeightMap& catchment, const Settings& settings, std::queue<TileCoordsXY>& queue, BaseMap<int8_t>& visited,
+        RiverMap& catchment, const Settings& settings, std::queue<TileCoordsXY>& queue, BaseMap<int8_t>& visited,
         const TileCoordsXY& pos)
     {
         if (catchment[pos] >= settings.catchmentThreshold)
@@ -221,7 +222,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void removeOrphans(HeightMap& catchment, const Settings& settings)
+    static void removeOrphans(RiverMap& catchment, const Settings& settings)
     {
         std::queue<TileCoordsXY> queue;
         BaseMap<int8_t> visited(catchment.width, catchment.height);
@@ -277,7 +278,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void ensureCardinalNeighbors(HeightMap& heightMap, HeightMap& catchment, const Settings& settings)
+    static void ensureCardinalNeighbors(HeightMap& heightMap, RiverMap& catchment, const Settings& settings)
     {
         StableTileQueue queue;
         BaseMap<int8_t> visited(catchment.width, catchment.height);
@@ -338,7 +339,7 @@ namespace OpenRCT2::World::MapGenerator
                     TileCoordsXY{ offset.x, 0 },
                 };
 
-                std::optional<std::pair<TileCoordsXY, float>> floodCandidate;
+                bool hasCardinalNeighbor = false;
 
                 for (const TileCoordsXY& scnOffset : sharedCardinalNeighbours)
                 {
@@ -346,29 +347,23 @@ namespace OpenRCT2::World::MapGenerator
 
                     if (catchment[scnPos] > 0)
                     {
-                        floodCandidate = std::nullopt;
+                        hasCardinalNeighbor = true;
                         break;
                     }
-
-                    float scnHeight = heightMap[scnPos];
-
-                    if (floodCandidate.has_value() && scnHeight > floodCandidate.value().second)
-                    {
-                        continue;
-                    }
-
-                    floodCandidate = std::make_optional(std::make_pair(scnPos, scnHeight));
                 }
 
-                if (!floodCandidate.has_value())
+                if (hasCardinalNeighbor)
                 {
                     continue;
                 }
 
-                const TileCoordsXY& scnPos = floodCandidate.value().first;
-                heightMap[scnPos] = heightMap[tile.pos];
-                catchment[scnPos] = catchment[tile.pos];
-                visited[scnPos] = 1;
+                for (const TileCoordsXY& scnOffset : sharedCardinalNeighbours)
+                {
+                    const TileCoordsXY scnPos{ tile.pos + scnOffset };
+                    heightMap[scnPos] = heightMap[tile.pos];
+                    catchment[scnPos] = catchment[tile.pos];
+                    visited[scnPos] = 1;
+                }
             }
 
             for (const auto& offset : kNeighborOffsetsCardinal)
@@ -386,7 +381,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void postProcessCatchment(HeightMap& heightMap, HeightMap& catchment, const Settings& settings)
+    static void postProcessCatchment(HeightMap& heightMap, RiverMap& catchment, const Settings& settings)
     {
         removeOrphans(catchment, settings);
         ensureCardinalNeighbors(heightMap, catchment, settings);
@@ -424,7 +419,7 @@ namespace OpenRCT2::World::MapGenerator
         return downSlope(heightMap, from, to) / sum;
     }
 
-    static float checkNeighbor(const HeightMap& heightMap, HeightMap& catchment, const TileCoordsXY& pos)
+    static float checkNeighbor(const HeightMap& heightMap, RiverMap& catchment, const TileCoordsXY& pos)
     {
         if (catchment[pos] <= 0.0f)
         {
@@ -456,9 +451,9 @@ namespace OpenRCT2::World::MapGenerator
      * Freeman, T.G., 1991. Calculating catchment area with divergent flow based on a regular grid. Computers & geosciences,
      * 17(3), pp.413-422.
      */
-    HeightMap genCatchment(HeightMap& heightMap, const Settings& settings)
+    RiverMap genCatchment(HeightMap& heightMap, const Settings& settings)
     {
-        HeightMap catchment(heightMap.width, heightMap.height);
+        RiverMap catchment(heightMap.width, heightMap.height);
         catchment.fill(0.0f);
 
         for (int32_t y = 0; y < heightMap.height; y++)

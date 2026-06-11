@@ -171,21 +171,21 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         // apply smooth/erosion
-        std::optional<HeightMap> maybeWaterHeights = applyHeightMapTransform(heightMap, settings);
+        std::optional<RiverMap> maybeRiverMap = applyHeightMapTransform(heightMap, settings);
 
         // set the game map to the height map
         resetSurfaces(settings);
         setMapHeight(settings, heightMap);
 
         // slope smooth functions operate on the game map
-        applyTileSlopeSmooth(settings);
+        applyTileSlopeSmooth(settings, maybeRiverMap);
 
         // set the game map water lvl
         setWaterLevel(settings.waterLevel);
 
-        if (settings.generateRivers && maybeWaterHeights.has_value())
+        if (settings.generateRivers && maybeRiverMap.has_value())
         {
-            HeightMap waterHeights = maybeWaterHeights.value();
+            HeightMap waterHeights = maybeRiverMap.value();
             for (auto y = 1; y < heightMap.height - 1; y++)
             {
                 for (auto x = 1; x < heightMap.width - 1; x++)
