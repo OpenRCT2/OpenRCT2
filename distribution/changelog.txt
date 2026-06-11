@@ -2791,4 +2791,3 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Feature: The ‘have fun’ objective can now be selected in the scenario editor.
 - Feature: Twitch integration.
 - Fix: Litter bins now get full and require emptying by handymen.
-
