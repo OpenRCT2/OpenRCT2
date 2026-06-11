@@ -1828,8 +1828,7 @@ std::pair<std::unique_ptr<GameActions::GameAction>, bool> ScriptEngine::CreateGa
         paramArgs = JS_DupValue(ctx, args);
         freeParamArgs = true;
         JS_SetPropertyStr(
-            ctx, paramArgs, "modifyType",
-            JS_NewInt32(ctx, static_cast<int32_t>(GameActions::RideModifyType::renew)));
+            ctx, paramArgs, "modifyType", JS_NewInt32(ctx, static_cast<int32_t>(GameActions::RideModifyType::renew)));
     }
 
     auto action = CreateGameActionFromActionId(actionid);

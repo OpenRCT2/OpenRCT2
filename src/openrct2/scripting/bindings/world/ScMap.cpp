@@ -30,6 +30,7 @@
     #include "../../../world/tile_element/PathElement.h"
     #include "../../../world/tile_element/TileElement.h"
     #include "../../../world/tile_element/TrackElement.h"
+    #include "../../ScriptUtil.hpp"
     #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"
     #include "../entity/ScGuest.hpp"
@@ -41,7 +42,6 @@
     #include "../ride/ScRide.hpp"
     #include "../ride/ScTrackIterator.h"
     #include "../world/ScTile.hpp"
-    #include "../../ScriptUtil.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -551,8 +551,7 @@ namespace OpenRCT2::Scripting
                         JS_SetPropertyStr(ctx, obj, "tileY", JS_NewInt32(ctx, y));
                         JS_SetPropertyStr(ctx, obj, "baseZ", JS_NewInt32(ctx, entrance->getBaseZ()));
                         JS_SetPropertyStr(ctx, obj, "ride", JS_NewInt32(ctx, entrance->GetRideIndex().ToUnderlying()));
-                        JS_SetPropertyStr(
-                            ctx, obj, "station", JS_NewInt32(ctx, entrance->GetStationIndex().ToUnderlying()));
+                        JS_SetPropertyStr(ctx, obj, "station", JS_NewInt32(ctx, entrance->GetStationIndex().ToUnderlying()));
                         JS_SetPropertyStr(
                             ctx, obj, "isExit",
                             JS_NewBool(ctx, entrance->GetEntranceType() == OpenRCT2::ENTRANCE_TYPE_RIDE_EXIT));
