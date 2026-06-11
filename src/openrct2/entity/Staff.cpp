@@ -387,6 +387,28 @@ namespace OpenRCT2
         return nextDirection;
     }
 
+    static bool isHandymanAlreadyServicingTile(const CoordsXY& tile, PeepState state)
+    {
+        if (state == PeepState::watering)
+        {
+            for (auto* staff : EntityList<Staff>())
+            {
+                if (staff->State == PeepState::watering
+                    && CoordsXY{ staff->NextLoc } + CoordsDirectionDelta[staff->Var37] == tile)
+                    return true;
+            }
+        }
+        else
+        {
+            for (auto* staff : EntityTileList<Staff>(tile))
+            {
+                if (staff->State == state)
+                    return true;
+            }
+        }
+        return false;
+    }
+
     /**
      *
      *  rct2: 0x006BF931
@@ -433,7 +455,8 @@ namespace OpenRCT2
                 {
                     if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                     {
-                        return chosenDirection;
+                        if (!isHandymanAlreadyServicingTile(chosenTile, PeepState::mowing))
+                            return chosenDirection;
                     }
                 }
             }
@@ -1507,6 +1530,9 @@ namespace OpenRCT2
                     }
                 }
 
+                if (isHandymanAlreadyServicingTile(chosenLoc, PeepState::watering))
+                    continue;
+
                 SetState(PeepState::watering);
                 Var37 = chosen_position;
 
@@ -1575,6 +1601,9 @@ namespace OpenRCT2
         if (chosen_position == 4)
             return false;
 
+        if (isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::emptyingBin))
+            return false;
+
         Var37 = chosen_position;
         SetState(PeepState::emptyingBin);
 
@@ -1602,7 +1631,8 @@ namespace OpenRCT2
         auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
-            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
+            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1
+                && !isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::mowing))
             {
                 SetState(PeepState::mowing);
                 Var37 = 0;
@@ -1630,6 +1660,9 @@ namespace OpenRCT2
             uint16_t z_diff = abs(z - litter->z);
 
             if (z_diff >= 16)
+                continue;
+
+            if (isHandymanAlreadyServicingTile(litter->getLocation(), PeepState::sweeping))
                 continue;
 
             SetState(PeepState::sweeping);
