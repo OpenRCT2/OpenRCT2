@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({  7,  50}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                          ),
         makeWidget        ({297,  51}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
         makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
-        makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                          ),
+        makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, SCROLL_BOTH                                             ),
         makeHoldableSpinnerWidgets({  7, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT,    STR_MAX_VEHICLES_TIP         ),
         makeHoldableSpinnerWidgets({164, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty,            STR_MAX_CARS_PER_TRAIN_TIP   )
     );
@@ -645,6 +645,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
         bool _lastAllowArbitraryRideTypeChanges = false;
+        bool _vehiclePreviewScrollToFirstCarPending = false;
 
         u8string _windowTitle{};
         // Num trains, Tweak mode, track colour scheme, primary price
@@ -1064,6 +1065,8 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (page)
             {
+                case WINDOW_RIDE_PAGE_VEHICLE:
+                    return VehicleScrollGetSize(scrollIndex);
                 case WINDOW_RIDE_PAGE_GRAPHS:
                     return GraphsScrollGetSize(scrollIndex);
                 case WINDOW_RIDE_PAGE_MUSIC:
@@ -1170,6 +1173,11 @@ namespace OpenRCT2::Ui::Windows
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (page == newPage && !widgets.empty())
                 return;
+
+            if (newPage == WINDOW_RIDE_PAGE_VEHICLE)
+            {
+                _vehiclePreviewScrollToFirstCarPending = true;
+            }
 
             page = newPage;
             currentFrame = 0;
@@ -1372,9 +1380,10 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = ride->getRideTypeDescriptor();
             const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
             const bool noRideEntry = rideEntry == nullptr;
+            const bool allowArbitraryRideTypeChanges = getGameState().cheats.allowArbitraryRideTypeChanges;
 
             const bool disableTab2 = noRideEntry || rtd.specialType == RtdSpecialType::miniGolf
-                || rtd.flags.has(RtdFlag::noVehicles);
+                || (rtd.flags.has(RtdFlag::noVehicles) && !allowArbitraryRideTypeChanges);
             const bool disableTab3 = noRideEntry || rtd.specialType == RtdSpecialType::miniGolf
                 || rtd.flags.has(RtdFlag::isShopOrFacility);
             const bool disableTab4 = noRideEntry || rtd.specialType == RtdSpecialType::miniGolf
@@ -2686,6 +2695,49 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Vehicle
 
+        static constexpr int32_t kVehiclePreviewPadding = 4;
+        static constexpr int32_t kVehiclePreviewGapAboveSpinners = 7;
+        static constexpr int32_t kVehiclePreviewMinimumHeight = 60;
+
+        struct VehiclePreviewBounds
+        {
+            int32_t minX{};
+            int32_t minY{};
+            int32_t maxX{};
+            int32_t maxY{};
+            bool hasImages{};
+        };
+
+        static ScreenSize getVehiclePreviewVisibleSize(const Widget& widget, const ScrollArea& scroll)
+        {
+            int32_t visibleWidth = widget.width() - 1;
+            int32_t visibleHeight = widget.height() - 1;
+
+            // If a horizontal scrollbar is required it consumes vertical space
+            bool hScrollNeeded = (scroll.flags & HSCROLLBAR_VISIBLE) && scroll.contentWidth > visibleWidth;
+            if (hScrollNeeded)
+            {
+                visibleHeight -= (kScrollBarWidth + 1);
+            }
+
+            // If a vertical scrollbar is required it consumes horizontal space
+            bool vScrollNeeded = (scroll.flags & VSCROLLBAR_VISIBLE) && scroll.contentHeight > visibleHeight;
+            if (vScrollNeeded)
+            {
+                visibleWidth -= (kScrollBarWidth + 1);
+            }
+
+            // Adding a horizontal scrollbar reduces available height, which can make the vertical scrollbar necessary. Adding a
+            // vertical scrollbar reduces available width, which can make the horizontal scrollbar necessary again. Re-check
+            // whether adding the vertical scrollbar caused the horizontal scrollbar to be needed
+            if (!hScrollNeeded && (scroll.flags & HSCROLLBAR_VISIBLE) && scroll.contentWidth > visibleWidth)
+            {
+                visibleHeight -= (kScrollBarWidth + 1);
+            }
+
+            return ScreenSize(visibleWidth, visibleHeight);
+        }
+
         void VehicleOnMouseUp(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
@@ -2710,8 +2762,8 @@ namespace OpenRCT2::Ui::Windows
 
         void VehicleResize()
         {
-            auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6 - getTitleBarDiffNormal();
-            WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
+            flags |= WindowFlag::resizable;
+            WindowSetResize(*this, { kMinimumWindowWidth, 250 }, { 500, 450 });
         }
 
         void VehicleOnMouseDown(WidgetIndex widgetIndex)
@@ -2727,20 +2779,25 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX:
                     ride->setReversedTrains(!ride->flags.has(RideFlag::reversedTrains));
+                    _vehiclePreviewScrollToFirstCarPending = true;
                     break;
                 case WIDX_VEHICLE_TRAINS_INCREASE:
+                    _vehiclePreviewScrollToFirstCarPending = true;
                     if (ride->numTrains < Limits::kMaxTrainsPerRide)
                         ride->setNumTrains(ride->numTrains + 1);
                     break;
                 case WIDX_VEHICLE_TRAINS_DECREASE:
+                    _vehiclePreviewScrollToFirstCarPending = true;
                     if (ride->numTrains > 1)
                         ride->setNumTrains(ride->numTrains - 1);
                     break;
                 case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
+                    _vehiclePreviewScrollToFirstCarPending = true;
                     if (ride->numCarsPerTrain < Limits::kMaxCarsPerTrain)
                         ride->setNumCarsPerTrain(ride->numCarsPerTrain + 1);
                     break;
                 case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
+                    _vehiclePreviewScrollToFirstCarPending = true;
                     if (ride->numCarsPerTrain > 1)
                         ride->setNumCarsPerTrain(ride->numCarsPerTrain - 1);
                     break;
@@ -2762,6 +2819,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto newRideType = _vehicleDropdownData[dropdownIndex].SubTypeId;
                             ride->setRideEntry(newRideType);
+                            _vehiclePreviewScrollToFirstCarPending = true;
                         }
                     }
                     break;
@@ -2773,6 +2831,77 @@ namespace OpenRCT2::Ui::Windows
             currentFrame++;
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_2);
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            const auto* rideEntry = ride->getRideEntry();
+            if (rideEntry == nullptr)
+                return;
+
+            auto refreshPreviewScroll = [&]() {
+                widgetScrollUpdateThumbs(*this, WIDX_VEHICLE_TRAINS_PREVIEW);
+                invalidateWidget(WIDX_VEHICLE_TRAINS_PREVIEW);
+            };
+            const auto& widget = widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
+            auto& scroll = scrolls[0];
+            auto getPreviewMaxOffsets = [&]() -> std::pair<int32_t, int32_t> {
+                const auto visibleSize = getVehiclePreviewVisibleSize(widget, scroll);
+                return {
+                    std::max(0, scroll.contentWidth - visibleSize.width),
+                    std::max(0, scroll.contentHeight - visibleSize.height),
+                };
+            };
+
+            if (_vehiclePreviewScrollToFirstCarPending)
+            {
+                _vehiclePreviewScrollToFirstCarPending = false;
+
+                // Only auto-scroll tracked rides with train cars.
+                // Flat rides should keep their default centered preview alignment.
+                if (rideEntry->cars_per_flat_ride != kNoFlatRideCars)
+                {
+                    scroll.contentOffsetX = 0;
+                    scroll.contentOffsetY = 0;
+                    refreshPreviewScroll();
+                    return;
+                }
+
+                // Vehicle type changes can alter preview extents; refresh scroll content before repositioning.
+                WindowUpdateScrollWidgets(*this);
+
+                const auto [maxOffsetX, maxOffsetY] = getPreviewMaxOffsets();
+
+                // For wide previews (many cars), default to left-bottom so cars are immediately visible.
+                // Otherwise, keep the preview visually centered (e.g. ferris wheel).
+                if (maxOffsetX > 0)
+                {
+                    scroll.contentOffsetX = 0;
+                    scroll.contentOffsetY = maxOffsetY;
+                }
+                else
+                {
+                    scroll.contentOffsetX = maxOffsetX / 2;
+                    scroll.contentOffsetY = maxOffsetY / 2;
+                }
+                refreshPreviewScroll();
+                return;
+            }
+
+            // Keep the lower edge sticky for car previews by clamping offsets to current bounds.
+            if (rideEntry->cars_per_flat_ride != kNoFlatRideCars)
+                return;
+
+            const auto [maxOffsetX, maxOffsetY] = getPreviewMaxOffsets();
+            const int32_t clampedOffsetX = std::clamp(scroll.contentOffsetX, 0, maxOffsetX);
+            const int32_t clampedOffsetY = std::clamp(scroll.contentOffsetY, 0, maxOffsetY);
+            if (clampedOffsetX != scroll.contentOffsetX || clampedOffsetY != scroll.contentOffsetY)
+            {
+                scroll.contentOffsetX = clampedOffsetX;
+                scroll.contentOffsetY = clampedOffsetY;
+                refreshPreviewScroll();
+            }
         }
 
         StringWithArgs VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
@@ -2889,6 +3018,70 @@ namespace OpenRCT2::Ui::Windows
             _windowTitle = ride->getName();
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
+            const int32_t right = width - 8;
+            widgets[WIDX_VEHICLE_TYPE].right = right;
+            widgets[WIDX_VEHICLE_TYPE_DROPDOWN].left = right - 11;
+            widgets[WIDX_VEHICLE_TYPE_DROPDOWN].right = right;
+            widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].right = right;
+
+            const int32_t contentLeft = 7;
+            const int32_t contentWidth = std::max(1, right - contentLeft + 1);
+            const int32_t textWidth = std::max(1, contentWidth - 2);
+
+            auto description = FormatStringID(rideEntry->naming.Description);
+            u8string wrappedDescription;
+            int32_t numLines = 0;
+            wrapString(description, textWidth, FontStyle::medium, &wrappedDescription, &numLines);
+
+            int32_t minimumPreviewStart = widgets[WIDX_VEHICLE_TYPE_DROPDOWN].bottom + 5;
+            minimumPreviewStart += std::max(1, numLines) * FontGetLineHeight(FontStyle::medium);
+            minimumPreviewStart += 2;
+            if (rideEntry->excitement_multiplier != 0)
+            {
+                minimumPreviewStart += kListRowHeight;
+            }
+            if (rideEntry->intensity_multiplier != 0)
+            {
+                minimumPreviewStart += kListRowHeight;
+            }
+            if (rideEntry->nausea_multiplier != 0)
+            {
+                minimumPreviewStart += kListRowHeight;
+            }
+            minimumPreviewStart += kListRowHeight + 7;
+
+            if (widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type != WidgetType::empty)
+            {
+                minimumPreviewStart = std::max(minimumPreviewStart, widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].bottom + 5);
+            }
+
+            auto requiredHeight = minimumPreviewStart + kVehiclePreviewMinimumHeight + 11;
+            if (height < requiredHeight)
+            {
+                height = std::min(450, requiredHeight);
+                resizeFrame();
+            }
+
+            const int32_t spinnerTop = widgets[WIDX_PAGE_BACKGROUND].bottom - 21;
+            const int32_t gap = 12;
+            const int32_t spinnerWidth = std::max(40, (contentWidth - gap) / 2);
+            const int32_t rightSpinnerLeft = contentLeft + spinnerWidth + gap;
+            const int32_t rightSpinnerWidth = std::max(40, right - rightSpinnerLeft + 1);
+
+            resizeSpinner(WIDX_VEHICLE_TRAINS, { contentLeft, spinnerTop }, { spinnerWidth, 14 });
+            resizeSpinner(WIDX_VEHICLE_CARS_PER_TRAIN, { rightSpinnerLeft, spinnerTop }, { rightSpinnerWidth, 14 });
+
+            widgets[WIDX_VEHICLE_TRAINS_PREVIEW].left = contentLeft;
+            widgets[WIDX_VEHICLE_TRAINS_PREVIEW].right = right;
+            widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top = minimumPreviewStart;
+            widgets[WIDX_VEHICLE_TRAINS_PREVIEW].bottom = spinnerTop - kVehiclePreviewGapAboveSpinners;
+
+            if (widgets[WIDX_VEHICLE_TRAINS_PREVIEW].height() < kVehiclePreviewMinimumHeight)
+            {
+                widgets[WIDX_VEHICLE_TRAINS_PREVIEW].bottom = widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top
+                    + kVehiclePreviewMinimumHeight - 1;
+            }
+
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
             auto carsPerTrainStringId = abs(carsPerTrain) == 1 ? STR_1_CAR_PER_TRAIN : STR_X_CARS_PER_TRAIN;
@@ -2910,10 +3103,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_VEHICLE_TYPE_DROPDOWN].bottom + 5 };
+            const int32_t textWidth = std::max(1, widgets[WIDX_VEHICLE_TRAINS_PREVIEW].width() - 2);
             // Description
             auto ft = Formatter();
             ft.Add<StringId>(rideEntry->naming.Description);
-            screenCoords.y += drawTextWrapped(rt, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::left });
+            screenCoords.y += drawTextWrapped(rt, screenCoords, textWidth, STR_BLACK_STRING, ft, { TextAlignment::left });
             screenCoords.y += 2;
 
             // Capacity
@@ -2960,19 +3154,6 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
                 StringId stringId = rideEntry->nausea_multiplier > 0 ? STR_NAUSEA_FACTOR : STR_NAUSEA_FACTOR_NEGATIVE;
                 drawText(rt, screenCoords, stringId, ft);
-            }
-
-            const auto minimumPreviewStart = screenCoords.y - windowPos.y + kListRowHeight + 5;
-            if (minimumPreviewStart > widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top)
-            {
-                auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
-                height += heightIncrease;
-                resizeFrame();
-
-                for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
-                {
-                    widgets[i].moveDown(heightIncrease);
-                }
             }
         }
 
@@ -3054,6 +3235,94 @@ namespace OpenRCT2::Ui::Windows
             return count;
         }
 
+        static int32_t getVehiclePreviewFirstCarTabHeight(const Ride& ride, const RideObjectEntry& rideEntry, bool isReversed)
+        {
+            const int32_t firstCarIndex = isReversed ? ride.numCarsPerTrain - 1 : 0;
+            const auto& firstCarEntry = rideEntry.Cars[RideEntryGetVehicleAtPosition(
+                ride.subtype, ride.numCarsPerTrain, firstCarIndex)];
+            return firstCarEntry.tab_height;
+        }
+
+        static VehiclePreviewBounds getVehiclePreviewBounds(
+            const Ride& ride, const RideObjectEntry& rideEntry, bool isReversed, int32_t startX, int32_t startY)
+        {
+            VehiclePreviewBounds bounds{};
+
+            for (int32_t i = 0; i < ride.numTrains; i++)
+            {
+                VehicleDrawInfo trainCarImages[Limits::kMaxCarsPerTrain];
+                std::span images(trainCarImages);
+                auto count = prepareTrainCarImages(ride, rideEntry, i, isReversed, startX, startY, images);
+
+                for (const auto& image : images.first(count))
+                {
+                    auto* g1 = GfxGetG1Element(image.imageId.GetIndex());
+
+                    int32_t left = image.x;
+                    int32_t top = image.y;
+                    int32_t right = image.x;
+                    int32_t bottom = image.y;
+
+                    if (g1 != nullptr)
+                    {
+                        left = image.x + g1->xOffset;
+                        top = image.y + g1->yOffset;
+                        right = left + g1->width - 1;
+                        bottom = top + g1->height - 1;
+                    }
+
+                    if (!bounds.hasImages)
+                    {
+                        bounds.minX = left;
+                        bounds.maxX = right;
+                        bounds.minY = top;
+                        bounds.maxY = bottom;
+                        bounds.hasImages = true;
+                    }
+                    else
+                    {
+                        bounds.minX = std::min(bounds.minX, left);
+                        bounds.maxX = std::max(bounds.maxX, right);
+                        bounds.minY = std::min(bounds.minY, top);
+                        bounds.maxY = std::max(bounds.maxY, bottom);
+                    }
+                }
+
+                startX += 36;
+            }
+
+            return bounds;
+        }
+
+        ScreenSize VehicleScrollGetSize([[maybe_unused]] int32_t scrollIndex)
+        {
+            ScreenSize size{};
+            const Widget& widget = widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
+            size.width = std::max(1, widget.width() - 2);
+            size.height = std::max(1, widget.height() - 2);
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return size;
+
+            const auto* rideEntry = ride->getRideEntry();
+            if (rideEntry == nullptr)
+                return size;
+
+            const bool isReversed = ride->flags.has(RideFlag::reversedTrains);
+            const int32_t tabHeight = getVehiclePreviewFirstCarTabHeight(*ride, *rideEntry, isReversed);
+            const auto bounds = getVehiclePreviewBounds(*ride, *rideEntry, isReversed, 0, tabHeight);
+            if (!bounds.hasImages)
+                return size;
+
+            const int32_t contentWidth = bounds.maxX - bounds.minX + 1 + (kVehiclePreviewPadding * 2);
+            const int32_t contentHeight = bounds.maxY - bounds.minY + 1 + (kVehiclePreviewPadding * 2);
+
+            size.width = std::max(size.width, contentWidth);
+            size.height = std::max(size.height, contentHeight);
+            return size;
+        }
+
         void VehicleOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
@@ -3061,19 +3330,35 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             const auto* rideEntry = ride->getRideEntry();
+            if (rideEntry == nullptr)
+                return;
 
             // Background
             Rectangle::fill(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
 
             const Widget& widget = widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
-            int32_t startX = std::max(2, (widget.width() - 1 - ((ride->numTrains - 1) * 36)) / 2 - 25);
-            int32_t startY = widget.height() - 5;
-
+            const auto& scroll = scrolls[scrollIndex];
             bool isReversed = ride->flags.has(RideFlag::reversedTrains);
-            const int32_t firstCarIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
-            const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
-                ride->subtype, ride->numCarsPerTrain, firstCarIndex)];
-            startY += firstCarEntry.tab_height;
+            const int32_t firstCarTabHeight = getVehiclePreviewFirstCarTabHeight(*ride, *rideEntry, isReversed);
+            const auto bounds = getVehiclePreviewBounds(*ride, *rideEntry, isReversed, 0, firstCarTabHeight);
+            if (!bounds.hasImages)
+                return;
+
+            const int32_t contentWidth = bounds.maxX - bounds.minX + 1 + (kVehiclePreviewPadding * 2);
+            const int32_t contentHeight = bounds.maxY - bounds.minY + 1 + (kVehiclePreviewPadding * 2);
+
+            const auto visibleSize = getVehiclePreviewVisibleSize(widget, scroll);
+            int32_t startX = kVehiclePreviewPadding - bounds.minX;
+            int32_t startY = kVehiclePreviewPadding + firstCarTabHeight - bounds.minY;
+
+            if (contentWidth <= visibleSize.width)
+            {
+                startX += (visibleSize.width - contentWidth) / 2;
+            }
+            if (contentHeight <= visibleSize.height)
+            {
+                startY += (visibleSize.height - contentHeight) / 2;
+            }
 
             // Prepare and draw each train
             for (int32_t i = 0; i < ride->numTrains; i++)
