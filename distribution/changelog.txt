@@ -1,13 +1,8 @@
 0.5.3 (in development)
 ------------------------------------------------------------------------
-- Feature: [#26675] [Plugin] Expose ride reliability, guest count, income metrics, and station queue time to the plugin API.
-- Feature: [#26675] [Plugin] Add readonly context.gameSpeed getter.
-- Feature: [#26675] [Plugin] Add TrackSegment.getNextValidSegments() for programmatic coaster building.
-- Feature: [#26675] [Plugin] Add riderefurbish game action alias.
-- Feature: [#26675] [Plugin] Add map.getElementsInRect and map.getGuestsInRect bulk queries.
-- Feature: [#26675] [Plugin] Add FootpathElement.isAdditionFull getter.
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
+- Feature: [#26675] [Plugin] Add automation APIs: ride reliability, guest count and income metrics, station queue time, readonly `context.gameSpeed`, `riderefurbish` game action, `map.getElementsInRect`, `map.getGuestsInRect`, and `FootpathElement.isAdditionFull`.
 - Improved: [#26325] Changing the train type, length, or direction no longer resets the number of laps if there is just one train.
 - Improved: [objects#437] Re-order St. Basil’s Cathedral pieces to be more consistent.
 - Change: [#26689] A clear scenario editor can now be opened directly from the command line.
@@ -587,7 +582,7 @@
 - Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
 - Fix: [#1479] Incorrect values provided by the in game console “get location” command.
 - Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
-- Fix: [#23221] Track designs are saved with an incorrect ‘air’ time statistic. 
+- Fix: [#23221] Track designs are saved with an incorrect ‘air’ time statistic.
 - Fix: [#23368] Incorrect refund amount when deleting track pieces at or above 96m.
 - Fix: [#23508] Simultaneous virtual floors shown for ride and footpath.
 - Fix: [#23512] Holding brakes are skipped if they’re too close together.
@@ -2806,3 +2801,4 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Feature: The ‘have fun’ objective can now be selected in the scenario editor.
 - Feature: Twitch integration.
 - Fix: Litter bins now get full and require emptying by handymen.
+
