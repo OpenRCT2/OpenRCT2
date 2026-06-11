@@ -302,11 +302,14 @@ namespace OpenRCT2::World::MapGenerator
         int8_t thresholdS = std::clamp(neighbourHeightOffset.SE, 0, 1) + std::clamp(neighbourHeightOffset.S, 0, 1)
             + std::clamp(neighbourHeightOffset.SW, 0, 1);
 
-        // Make sure the corner doesn't block a river
-        const bool riverW = !riverTile || (!(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW) && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW));
-        const bool riverN = !riverTile || (!(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW) && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE));
-        const bool riverE = !riverTile || (!(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE) && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE));
-        const bool riverS = !riverTile || (!(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE) && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW));
+        // Make sure raising the tile corner doesn't block a river.
+        // The first clause covers waterfalls and the other eight situations where one of the two edges connected to this corner
+        // is a one tile wide channel.
+        // TODO might be possible to reduce?
+        const bool riverW = !riverTile || (!(r.W && r.NW && r.SW) && !(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW) && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW) && !(!r.SW && !r.NE && r.NW) && !(!r.SE && !r.NW && r.SW));
+        const bool riverN = !riverTile || (!(r.N && r.NW && r.NE) && !(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW) && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE) && !(!r.NW && !r.SE && r.NE) && !(!r.SW && !r.NE && r.NW));
+        const bool riverE = !riverTile || (!(r.E && r.NE && r.SE) && !(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE) && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE) && !(!r.NE && !r.SW && r.SE) && !(!r.NW && !r.SE && r.NE));
+        const bool riverS = !riverTile || (!(r.S && r.SW && r.SE) && !(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE) && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW) && !(!r.SE && !r.NW && r.SW) && !(!r.NE && !r.SW && r.SE));
 
         uint8_t slope = kTileSlopeFlat;
         slope |= (thresholdW >= 1 && riverW) ? SLOPE_W_THRESHOLD_FLAGS : 0;
