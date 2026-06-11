@@ -3818,3 +3818,5 @@ STR_7026    :Az egész játékot láthatóvá teszi
 STR_7028    :Negyed spirál felfelé
 STR_7029    :Negyed spirál lefelé
 STR_7030    :{WINDOW_COLOUR_2}Szórakoztatott vendégek: {BLACK}{COMMA32}
+STR_7031    :Fű növekedésének kikapcsolása
+STR_7032    :Fű öregedésének kikapcsolása, hogy ne növekedjen tovább.

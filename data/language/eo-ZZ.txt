@@ -3818,3 +3818,5 @@ STR_7026    :Videbligas la tutan atrakcion
 STR_7028    :Kvarona kreska helico
 STR_7029    :Kvarona malkreska helico
 STR_7030    :{WINDOW_COLOUR_2}Gastoj amuzitaj: {BLACK}{COMMA32}
+STR_7031    :Malŝalti kreskadon de herbo
+STR_7032    :Malŝalti maljuniĝon de herbo, por ke ĝi ne kresku.
