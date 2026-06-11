@@ -141,6 +141,10 @@ namespace OpenRCT2::GameActions
                 ride->removePeeps();
                 ride->vehicleChangeTimeout = 100;
 
+                if (ride->numCircuits > 1)
+                {
+                    InvalidateTestResults(*ride);
+                }
                 ride->proposedNumTrains = _value;
                 break;
             case RideSetVehicleType::numCarsPerTrain:
@@ -203,8 +207,11 @@ namespace OpenRCT2::GameActions
                 return Result(Status::invalidParameters, errTitle, kStringIdNone);
         }
 
-        ride->numCircuits = 1;
         ride->updateMaxVehicles();
+        if (ride->numTrains > 1)
+        {
+            ride->numCircuits = 1;
+        }
 
         auto res = Result();
         if (!ride->overallView.IsNull())

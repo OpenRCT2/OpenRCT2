@@ -25,12 +25,14 @@
 - Feature: [#26327] Add ‘guests entertained’ statistic to entertainers.
 - Improved: [#26374] Add higher resolution app icons for Android.
 - Improved: [#26386] Initial window scale and toolbar options on fresh Android installations.
+- Change: [#26325] Changing the train type, length, or direction no longer resets the number of laps if there is just one train.
 - Change: [#26476] Limit creation of new station styles to prepare for more flexibility with ride stations and entrances.
 - Fix: [#25581] Chart drawing issue on some platforms due to compiler optimisation.
 - Fix: [#26019] Inverted and Inverted Flying Roller Coaster large half loops glitch with the train and don‘t draw in tunnels at some angles (original bug).
 - Fix: [#26183] The ride stat graph placeholder text is not drawn in the expected position.
-- Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard. 
+- Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard.
 - Fix: [#26299] Single Rail S-Bend sprites don’t fully connect to the next track piece at certain angles.
+- Fix: [#26323] Make ride stats reset when changing the number of trains changes the number of laps.
 - Fix: [#26352] Large scenery items are incorrectly labelled as ‘banners’ in the tile inspector.
 - Fix: [#26352] The label for path additions is using the wrong text colour in the tile inspector.
 - Fix: [#26360] Inverted Lay-down Roller Coaster helices are invisible when loading old saves.
