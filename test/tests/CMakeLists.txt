@@ -38,6 +38,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/tests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TileElements.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TileElementsView.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/TrackPieceSelectionTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/WidgetStateTests.cpp")
 
 add_executable(OpenRCT2Tests ${test_files})

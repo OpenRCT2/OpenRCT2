@@ -97,6 +97,11 @@ namespace OpenRCT2::Scripting
             return JSFromStdString(ctx, "normal");
         }
 
+        static JSValue gameSpeed_get(JSContext* ctx, JSValue thisVal)
+        {
+            return JS_NewUint32(ctx, gGameSpeed);
+        }
+
         static JSValue paused_get(JSContext* ctx, JSValue thisVal)
         {
             return JS_NewBool(ctx, GameIsPaused());
@@ -427,6 +432,7 @@ namespace OpenRCT2::Scripting
                 JS_CGETSET_DEF("sharedStorage", ScContext::sharedStorage_get, nullptr),
                 JS_CFUNC_DEF("getParkStorage", 1, ScContext::getParkStorage),
                 JS_CGETSET_DEF("mode", ScContext::mode_get, nullptr),
+                JS_CGETSET_DEF("gameSpeed", ScContext::gameSpeed_get, nullptr),
                 JS_CGETSET_DEF("paused", ScContext::paused_get, &ScContext::paused_set),
                 JS_CFUNC_DEF("captureImage", 1, ScContext::captureImage),
                 JS_CFUNC_DEF("getObject", 2, ScContext::getObject),

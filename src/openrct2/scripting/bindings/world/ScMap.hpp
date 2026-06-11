@@ -46,6 +46,10 @@ namespace OpenRCT2::Scripting
 
         static JSValue getTrackIterator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
+        static JSValue getElementsInRect(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getGuestsInRect(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
         static JSValue GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite);
 
     public:
