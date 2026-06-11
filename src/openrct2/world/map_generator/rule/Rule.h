@@ -26,6 +26,7 @@ namespace OpenRCT2::World::MapGenerator
 {
     class Noise;
     struct Settings;
+    struct MapGenCtx;
 } // namespace OpenRCT2::World::MapGenerator
 
 namespace OpenRCT2::World::MapGenerator::Rule
@@ -99,12 +100,16 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::unordered_map<int32_t, std::discrete_distribution<int32_t>> ruleItemDists;
         std::unordered_map<int32_t, std::mt19937> rulePrngs;
 
-        // global
+        // const
         std::uniform_real_distribution<float> prngDist{ 0.0f, 1.0f };
         std::uniform_int_distribution<int32_t> directionDist{ 0, 3 };
         std::uniform_int_distribution<int32_t> colourDist{ 0, Drawing::kColourNumTotal - 2 }; // no invis, void
-        NormalMap normalMap;
+
+        // global
         std::mt19937 quadPrng;
+        NormalMap normalMap;
+        RiverMap riverMap;
+        DistanceMap distanceToWater;
 
         // per tile
         ObjectEntryIndex landTexture;
@@ -128,6 +133,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         HeightAbsolute,
         HeightRelativeToWater,
         DistanceToWater,
+        RiverMask,
         Noise,
         NormalAngle,
         Random,
@@ -193,8 +199,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::unordered_set<ObjectEntryIndex> styles;
     };
 
+    struct NoData{};
+
     using ConditionData = std::variant<
-        HeightData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, LandStyleData>;
+        HeightData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, LandStyleData, NoData>;
 
     struct Condition
     {
@@ -265,8 +273,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     template<typename R>
     using Callback = std::function<void(const TileCoordsXY&, const std::optional<R>&)>;
 
-    void evaluateTextureRules(const Settings& settings, const Callback<TextureResult>& callback);
-    void evaluateSceneryRules(const Settings& settings, const Callback<SceneryResult>& callback);
+    void evaluateTextureRules(const MapGenCtx& settings, const Callback<TextureResult>& callback);
+    void evaluateSceneryRules(const MapGenCtx& settings, const Callback<SceneryResult>& callback);
 
     void createDefaultTextureRules(Settings& settings);
     void createNewTextureRule(Settings& settings);

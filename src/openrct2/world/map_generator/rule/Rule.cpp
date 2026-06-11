@@ -196,41 +196,15 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return result;
     }
 
-    static float distanceToWater(const VecXY& coords, const float distance)
+    static void computeNormalMap(const MapGenCtx& genCtx, NormalMap& normalMap)
     {
-        const auto& gameState = getGameState();
+        // TODO actually compute the normal
+        normalMap.fill({0.0f, 0.0f, 1.0f});
+    }
 
-        const auto minX = std::max<float>(1, coords.x - distance);
-        const auto maxX = std::max<float>(coords.x + distance, gameState.mapSize.x - 2);
-        const auto minY = std::max<float>(1, coords.y - distance);
-        const auto maxY = std::max<float>(coords.y + distance, gameState.mapSize.y - 2);
-
-        auto minDistance = distance + 1;
-        const auto distanceSquared = std::pow(distance, 2);
-
-        for (int y = minY; y <= maxY; ++y)
-        {
-            for (int x = minX; x <= maxX; ++x)
-            {
-                const auto candidateDistanceSquared = std::pow(coords.x - x, 2) + std::pow(coords.y - y, 2);
-                if (candidateDistanceSquared > distanceSquared)
-                {
-                    continue;
-                }
-
-                const auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
-                if (surfaceElement == nullptr)
-                {
-                    continue;
-                }
-
-                if (surfaceElement->GetWaterHeight() > surfaceElement->getBaseZ())
-                {
-                    minDistance = std::min<int32_t>(minDistance, std::sqrt(candidateDistanceSquared));
-                }
-            }
-        }
-        return minDistance;
+    static void computeWaterDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap)
+    {
+        // TODO actually compute the distance map
     }
 
     template<typename T>
@@ -288,9 +262,23 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case Type::DistanceToWater:
             {
                 auto distanceCondition = std::get<DistanceData>(condition.data).distance;
-                auto distanceActual = distanceToWater(ctx.quadCoords, distanceCondition);
+                auto distanceActual = ctx.distanceToWater[ctx.coords];
                 auto limit = static_cast<float>(distanceCondition);
                 return evaluatePredicate(distanceActual, condition.predicate, limit);
+            }
+            case Type::RiverMask:
+            {
+                auto contained = ctx.riverMap[ctx.coords] > 0.0f;
+                // using = as include, != as exclude
+                if (condition.predicate == Predicate::Equal)
+                {
+                    return contained;
+                }
+                if (condition.predicate == Predicate::NotEqual)
+                {
+                    return !contained;
+                }
+                throw std::invalid_argument("unsupported predicate");
             }
             case Type::Noise:
             {
@@ -477,52 +465,48 @@ namespace OpenRCT2::World::MapGenerator::Rule
     }
 
     static void initializeEvaluationContextForCondition(
-        const Settings& settings, EvaluationContext& ctx, const ConditionKey& key, const Condition& condition)
+        const MapGenCtx& genCtx, EvaluationContext& evalCtx, const ConditionKey& key, const Condition& condition)
     {
         if (condition.type == Type::Noise)
         {
             auto& noiseData = std::get<NoiseData>(condition.data);
 
-            BaseSettings baseSettings = {BaseType::Simplex, settings.seed + noiseData.seedOffset, noiseData.frequency * NOISE_SCALE};
+            BaseSettings baseSettings = {BaseType::Simplex, genCtx.settings.seed + noiseData.seedOffset, noiseData.frequency * NOISE_SCALE};
             FractalSettings fractalSettings = {FractalType::Fbm, noiseData.octaves, 2.0f, 0.5f, 0.0f };
 
             auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
-            ctx.conditionNoiseFns[key] = std::move(noise);
+            evalCtx.conditionNoiseFns[key] = std::move(noise);
         }
         else if (condition.type == Type::Random)
         {
             auto& prngData = std::get<RandomData>(condition.data);
-            std::mt19937 prng(settings.seed + prngData.seedOffset);
-            ctx.conditionPrngs[key] = std::move(prng);
-        }
-        else if (condition.type == Type::NormalAngle && ctx.normalMap.empty())
-        {
-            // TODO compute normals
+            std::mt19937 prng(genCtx.settings.seed + prngData.seedOffset);
+            evalCtx.conditionPrngs[key] = std::move(prng);
         }
         else if (condition.type == Type::BlendNoise)
         {
             auto& noiseBlendData = std::get<BlendNoiseData>(condition.data);
 
-            BaseSettings baseSettings = {BaseType::Simplex, settings.seed + noiseBlendData.seedOffset, noiseBlendData.frequency * NOISE_SCALE};
+            BaseSettings baseSettings = {BaseType::Simplex, genCtx.settings.seed + noiseBlendData.seedOffset, noiseBlendData.frequency * NOISE_SCALE};
             FractalSettings fractalSettings = {FractalType::Fbm, noiseBlendData.octaves, 2.0f, 0.5f, 0.0f };
 
             auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
-            ctx.conditionNoiseFns[key] = std::move(noise);
+            evalCtx.conditionNoiseFns[key] = std::move(noise);
             // shouldn't cause artifacts to use the same seed for prng and noise?
-            std::mt19937 prng(settings.seed + noiseBlendData.seedOffset);
-            ctx.conditionPrngs[key] = std::move(prng);
+            std::mt19937 prng(genCtx.settings.seed + noiseBlendData.seedOffset);
+            evalCtx.conditionPrngs[key] = std::move(prng);
         }
         else if (condition.type == Type::BlendHeight)
         {
             auto& heightBlendData = std::get<BlendHeightData>(condition.data);
-            std::mt19937 prng(settings.seed + heightBlendData.seedOffset);
-            ctx.conditionPrngs[key] = std::move(prng);
+            std::mt19937 prng(genCtx.settings.seed + heightBlendData.seedOffset);
+            evalCtx.conditionPrngs[key] = std::move(prng);
         }
     }
 
     template<typename RR, typename RL>
     static void processRules(
-        const Settings& settings, const RL& rules, EvaluationContext& ctx,
+        const MapGenCtx& genCtx, const RL& rules, EvaluationContext& evalCtx,
         const std::function<std::optional<RR>(const RL& rules, EvaluationContext& ctx)>& evaluateAtFn,
         const Callback<RR>& callback)
     {
@@ -531,67 +515,89 @@ namespace OpenRCT2::World::MapGenerator::Rule
         {
             for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
             {
-                ctx.coords = TileCoordsXY{ x, y };
-                ctx.quadCoords = VecXY{ ctx.coords.x, ctx.coords.y };
+                evalCtx.coords = TileCoordsXY{ x, y };
+                evalCtx.quadCoords = VecXY{ evalCtx.coords.x, evalCtx.coords.y };
 
-                auto* surfaceElement = MapGetSurfaceElementAt(ctx.coords);
+                auto* surfaceElement = MapGetSurfaceElementAt(evalCtx.coords);
                 if (surfaceElement == nullptr)
                 {
                     return;
                 }
 
-                ctx.heights = { .tile = surfaceElement->baseHeight,
-                                .min = settings.heightmapLow,
-                                .max = settings.heightmapHigh,
-                                .water = settings.waterLevel };
-                ctx.landTexture = surfaceElement->GetSurfaceObjectIndex();
+                evalCtx.heights = { .tile = surfaceElement->baseHeight,
+                                .min = genCtx.settings.heightmapLow,
+                                .max = genCtx.settings.heightmapHigh,
+                                .water = genCtx.settings.waterLevel };
+                evalCtx.landTexture = surfaceElement->GetSurfaceObjectIndex();
 
-                auto result = evaluateAtFn(rules, ctx);
-                callback(ctx.coords, result);
+                auto result = evaluateAtFn(rules, evalCtx);
+                callback(evalCtx.coords, result);
             }
         }
     }
 
-    void evaluateTextureRules(const Settings& settings, const Callback<TextureResult>& callback)
+    static void initEvaluationContextGlobals(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
-        EvaluationContext ctx{};
+        evalCtx.quadPrng = std::mt19937(genCtx.settings.seed + 4);
 
-        for (size_t r = 0; r < settings.textureRules.size(); ++r)
+        evalCtx.normalMap = NormalMap{genCtx.heightMap.width, genCtx.heightMap.height};
+        computeNormalMap(genCtx, evalCtx.normalMap);
+
+        evalCtx.distanceToWater = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
+        computeWaterDistanceMap(genCtx, evalCtx.distanceToWater);
+
+        if (genCtx.riverMap.has_value())
         {
-            auto& rule = settings.textureRules[r];
+            evalCtx.riverMap = genCtx.riverMap.value();
+        } else
+        {
+            evalCtx.riverMap = RiverMap{genCtx.heightMap.width, genCtx.heightMap.height};
+            evalCtx.riverMap.fill(0.0f);
+        }
+    }
+
+    void evaluateTextureRules(const MapGenCtx& genCtx, const Callback<TextureResult>& callback)
+    {
+        EvaluationContext evalCtx{};
+        initEvaluationContextGlobals(genCtx, evalCtx);
+
+        for (size_t r = 0; r < genCtx.settings.textureRules.size(); ++r)
+        {
+            auto& rule = genCtx.settings.textureRules[r];
             for (size_t c = 0; c < rule.conditions.size(); ++c)
             {
                 auto& condition = rule.conditions[c];
                 auto key = ConditionKey{ static_cast<int32_t>(r), static_cast<int32_t>(c) };
-                initializeEvaluationContextForCondition(settings, ctx, key, condition);
+                initializeEvaluationContextForCondition(genCtx, evalCtx, key, condition);
             }
         }
 
-        processRules<TextureResult, TextureRuleList>(settings, settings.textureRules, ctx, textureResultFromRulesAt, callback);
+        processRules<TextureResult, TextureRuleList>(genCtx, genCtx.settings.textureRules, evalCtx, textureResultFromRulesAt, callback);
     }
 
-    void evaluateSceneryRules(const Settings& settings, const Callback<SceneryResult>& callback)
+    void evaluateSceneryRules(const MapGenCtx& genCtx, const Callback<SceneryResult>& callback)
     {
-        EvaluationContext ctx{};
+        EvaluationContext evalCtx{};
+        initEvaluationContextGlobals(genCtx, evalCtx);
 
-        for (size_t r = 0; r < settings.sceneryRules.size(); ++r)
+        for (size_t r = 0; r < genCtx.settings.sceneryRules.size(); ++r)
         {
-            auto& rule = settings.sceneryRules[r];
+            auto& rule = genCtx.settings.sceneryRules[r];
 
             auto weights = rule.effect.objects | std::views::transform(&SceneryEffectItem::weight);
-            ctx.ruleItemDists[r] = std::discrete_distribution(std::ranges::begin(weights), std::ranges::end(weights));
-            ctx.rulePrngs[r] = std::mt19937(settings.seed + rule.effect.seedOffset);
-            ctx.quadPrng = std::mt19937(settings.seed + r);
+            evalCtx.ruleItemDists[r] = std::discrete_distribution(std::ranges::begin(weights), std::ranges::end(weights));
+            evalCtx.rulePrngs[r] = std::mt19937(genCtx.settings.seed + rule.effect.seedOffset);
+
 
             for (size_t c = 0; c < rule.conditions.size(); ++c)
             {
                 auto& condition = rule.conditions[c];
                 auto key = ConditionKey{ static_cast<int32_t>(r), static_cast<int32_t>(c) };
-                initializeEvaluationContextForCondition(settings, ctx, key, condition);
+                initializeEvaluationContextForCondition(genCtx, evalCtx, key, condition);
             }
         }
 
-        processRules<SceneryResult, SceneryRuleList>(settings, settings.sceneryRules, ctx, sceneryResultFromRulesAt, callback);
+        processRules<SceneryResult, SceneryRuleList>(genCtx, genCtx.settings.sceneryRules, evalCtx, sceneryResultFromRulesAt, callback);
     }
 
     void createDefaultTextureRules(Settings& settings)
@@ -604,6 +610,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .name = FormatStringID(STR_MAPGEN_RULE_DEFAULT),
                          .conditions = std::vector<Condition>{},
                          .effect{ .applyLandTexture = true, .landTexture = 0, .applyEdgeTexture = true, .edgeTexture = 0 } });
+
+        settings.textureRules.push_back(
+            TextureRule{ .enabled = true,
+                         .isDefault = false,
+                         .name = "River waterfalls",
+                         .conditions = std::vector{ Condition{
+                             .enabled = true, .type = Type::RiverMask, .predicate = Predicate::Equal, .data = NoData{} } },
+                         .effect = { .applyLandTexture = false,
+                                     .landTexture = 0,
+                                     .applyEdgeTexture = true,
+                                     .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
 
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,

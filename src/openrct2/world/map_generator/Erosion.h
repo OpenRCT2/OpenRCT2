@@ -15,6 +15,6 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void simulateErosion(HeightMap& heightMap, const Settings& settings);
+    void simulateErosion(MapGenCtx& context);
 
 } // namespace OpenRCT2::World::MapGenerator

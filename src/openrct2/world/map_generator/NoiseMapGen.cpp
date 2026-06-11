@@ -150,84 +150,60 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void generateMap(Settings& settings, HeightMap& heightMap, Noise& noise)
+    static void generateMap(MapGenCtx& context, Noise& noise)
     {
+        const auto& settings = context.settings;
         BiasData ctx = prepareBias(settings);
 
         float low = settings.heightmapLow;
         float high = settings.heightmapHigh - low;
 
-        for (int32_t y = 0; y < heightMap.height; y++)
+        for (int32_t y = 0; y < context.heightMap.height; y++)
         {
-            for (int32_t x = 0; x < heightMap.width; x++)
+            for (int32_t x = 0; x < context.heightMap.width; x++)
             {
                 VecXY pos = { x, y };
                 float noiseValue = noise.generate(pos);
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
-                float biasedNoiseValue = applyBias(settings, ctx, pos, normalisedNoiseValue);
+                float biasedNoiseValue = applyBias(context.settings, ctx, pos, normalisedNoiseValue);
 
-                heightMap[pos.AsTileCoordsXY()] = low + biasedNoiseValue * high;
+                context.heightMap[pos.AsTileCoordsXY()] = low + biasedNoiseValue * high;
             }
         }
 
         // apply smooth/erosion
-        std::optional<RiverMap> maybeRiverMap = applyHeightMapTransform(heightMap, settings);
+        applyHeightMapTransform(context);
 
         // set the game map to the height map
-        resetSurfaces(settings);
-        setMapHeight(settings, heightMap);
+        resetSurfaces(context);
+        setMapHeight(context);
 
         // slope smooth functions operate on the game map
-        applyTileSlopeSmooth(settings, maybeRiverMap);
+        applyTileSlopeSmooth(context);
 
         // set the game map water lvl
-        setWaterLevel(settings.waterLevel);
-
-        if (settings.generateRivers && maybeRiverMap.has_value())
-        {
-            HeightMap waterHeights = maybeRiverMap.value();
-            for (auto y = 1; y < heightMap.height - 1; y++)
-            {
-                for (auto x = 1; x < heightMap.width - 1; x++)
-                {
-                    TileCoordsXY pos{ x, y };
-
-                    if (waterHeights[pos] <= 0)
-                    {
-                        continue;
-                    }
-
-                    auto surfaceElement = MapGetSurfaceElementAt(pos);
-                    if (surfaceElement != nullptr )
-                    {
-                        const auto adjustedHeight =
-                            static_cast<uint8_t>(std::round(std::clamp(waterHeights[pos], 2.0f, 254.0f) * 0.5f) * 2.0f);
-
-                        surfaceElement->SetWaterHeight(adjustedHeight * kCoordsZStep);
-                    }
-                }
-            }
-        }
+        setWaterLevel(context);
+        setRiverWater(context);
     }
 
-    void generateSimplexMap(Settings& settings)
+    void generateSimplexMap(MapGenCtx& context)
     {
-        auto heightMap = HeightMap(settings.mapSize);
+        const auto& settings = context.settings;
 
         // TODO should freq really be influenced by map width?
-        float freq = settings.noiseBaseFreq / 100.0f * (1.0f / heightMap.width);
+        float freq = settings.noiseBaseFreq / 100.0f * (1.0f / context.heightMap.width);
 
         BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
         FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.65f, 0.0f };
 
         auto simplexFbmNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
 
-        generateMap(settings, heightMap, simplexFbmNoise);
+        generateMap(context, simplexFbmNoise);
     }
 
-    void generateWarpedMap(Settings& settings)
+    void generateWarpedMap(MapGenCtx& context)
     {
-        auto heightMap = HeightMap(settings.mapSize);
+        const auto& settings = context.settings;
 
         auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
@@ -237,12 +213,12 @@ namespace OpenRCT2::World::MapGenerator
 
         auto warpedNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
-        generateMap(settings, heightMap, warpedNoise);
+        generateMap(context, warpedNoise);
     }
 
-    void generateRidgedMap(Settings& settings)
+    void generateRidgedMap(MapGenCtx& context)
     {
-        auto heightMap = HeightMap(settings.mapSize);
+        const auto& settings = context.settings;
 
         auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
@@ -252,13 +228,12 @@ namespace OpenRCT2::World::MapGenerator
 
         auto ridgedNoise = Noise(baseSettings, fractalSettings, transformSettings, std::nullopt);
 
-        generateMap(settings, heightMap, ridgedNoise);
+        generateMap(context, ridgedNoise);
     }
 
-    void generateVoronoiMap(Settings& settings)
+    void generateVoronoiMap(MapGenCtx& context)
     {
-        auto heightMap = HeightMap(settings.mapSize);
-
+        const auto& settings = context.settings;
         auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
         BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq };
@@ -267,6 +242,6 @@ namespace OpenRCT2::World::MapGenerator
 
         auto voronoiNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
-        generateMap(settings, heightMap, voronoiNoise);
+        generateMap(context, voronoiNoise);
     }
 } // namespace OpenRCT2::World::MapGenerator

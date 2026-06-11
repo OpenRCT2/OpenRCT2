@@ -358,13 +358,13 @@ namespace OpenRCT2::World::MapGenerator
         return 1;
     }
 
-    void applyTileSlopeSmooth(const Settings& settings, std::optional<RiverMap>& catchment)
+    void applyTileSlopeSmooth(MapGenCtx& context)
     {
-        const auto mapSize = settings.mapSize;
+        const auto mapSize = context.settings.mapSize;
 
         SmoothFunction smoothFunc;
 
-        switch (settings.slopeSmooth)
+        switch (context.settings.slopeSmooth)
         {
             case SlopeSmooth::none:
                 return;
@@ -384,7 +384,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 for (auto x = 1; x < mapSize.x - 1; x++)
                 {
-                    numTilesChanged += smoothFunc({ x, y }, catchment);
+                    numTilesChanged += smoothFunc({ x, y }, context.riverMap);
                 }
             }
 
@@ -546,8 +546,63 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    std::optional<HeightMap> applyHeightMapTransform(HeightMap& heightMap, const Settings& settings)
+    void carveRiverbed(MapGenCtx& context)
     {
+        auto& settings = context.settings;
+        auto& heightMap = context.heightMap;
+        auto& riverMap = context.riverMap.value();
+
+        floodFill(context);
+        genCatchment(context);
+
+        HeightMap heightCopy = heightMap;
+
+        for (int32_t y = 0; y < heightMap.height; y++)
+        {
+            for (int32_t x = 0; x < heightMap.width; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+
+                if (riverMap[pos] <= 0)
+                {
+                    continue;
+                }
+
+                float deltaHeight = heightCopy[pos] - 4.0f;
+                if (deltaHeight < heightMap[pos])
+                {
+                    heightMap[pos] = deltaHeight;
+                }
+
+                const float radius = std::log2(riverMap[pos] / (0.5f * settings.catchmentThreshold));
+
+                for (int32_t dy = -radius; dy <= radius; dy++)
+                {
+                    for (int32_t dx = -radius; dx <= radius; dx++)
+                    {
+                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
+
+                        if (!heightMap.contains(deltaPos) || dx*dx + dy*dy > radius * radius)
+                        {
+                            continue;
+                        }
+
+                        deltaHeight = heightCopy[deltaPos] - 2.0f;
+                        if (deltaHeight < heightMap[deltaPos])
+                        {
+                            heightMap[deltaPos] = deltaHeight;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void applyHeightMapTransform(MapGenCtx& context)
+    {
+        auto& settings = context.settings;
+        auto& heightMap = context.heightMap;
+
         switch (settings.heightmapTransform)
         {
             case HeightMapTransform::none:
@@ -565,64 +620,13 @@ namespace OpenRCT2::World::MapGenerator
                 smoothBilateral(heightMap, settings.transformStrength, 0.1f * settings.transformStrength);
                 break;
             case HeightMapTransform::erosion:
-                simulateErosion(heightMap, settings);
+                simulateErosion(context);
                 break;
         }
 
         if (settings.generateRivers)
         {
-            floodFill(heightMap, settings);
-            HeightMap catchment = genCatchment(heightMap, settings);
-
-            HeightMap waterHeight = heightMap;
-            HeightMap sourceCopy = heightMap;
-
-            for (int32_t y = 0; y < heightMap.height; y++)
-            {
-                for (int32_t x = 0; x < heightMap.width; x++)
-                {
-                    const TileCoordsXY pos{ x, y };
-
-                    if (catchment[pos] <= 0)
-                    {
-                        waterHeight[pos] = 0;
-                        continue;
-                    }
-
-                    waterHeight[pos] = waterHeight[pos] - 2.0f;
-
-                    float deltaHeight = sourceCopy[pos] - 4.0f;
-                    if (deltaHeight < heightMap[pos])
-                    {
-                        heightMap[pos] = deltaHeight;
-                    }
-
-                    const float radius = std::log2(catchment[pos] / (0.5f * settings.catchmentThreshold));
-
-                    for (int32_t dy = -radius; dy <= radius; dy++)
-                    {
-                        for (int32_t dx = -radius; dx <= radius; dx++)
-                        {
-                            TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
-
-                            if (!catchment.contains(deltaPos) || dx*dx + dy*dy > radius * radius)
-                            {
-                                continue;
-                            }
-
-                            deltaHeight = sourceCopy[deltaPos] - 2.0f;
-                            if (deltaHeight < heightMap[deltaPos])
-                            {
-                                heightMap[deltaPos] = deltaHeight;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return std::make_optional(waterHeight);
+            carveRiverbed(context);
         }
-
-        return std::nullopt;
     }
 } // namespace OpenRCT2::World::MapGenerator

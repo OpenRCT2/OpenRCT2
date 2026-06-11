@@ -1427,6 +1427,10 @@ namespace OpenRCT2::Ui::Windows
                             condition.predicate == MapGenerator::Rule::Predicate::Equal ? STR_MAPGEN_RULE_PREDICATE_IN
                                                                                         : STR_MAPGEN_RULE_PREDICATE_NOT_IN);
                         break;
+
+                        case MapGenerator::Rule::Type::RiverMask:
+                        break;
+
                 }
 
                 // Draw description
@@ -2751,6 +2755,9 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case MapGenerator::Rule::Type::LandStyle:
                         // should not be reachable
+                        break;
+                    case MapGenerator::Rule::Type::RiverMask:
+                        // TODO
                         break;
                 }
 

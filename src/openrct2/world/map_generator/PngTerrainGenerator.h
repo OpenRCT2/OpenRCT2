@@ -13,9 +13,9 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    struct Settings;
+    struct MapGenCtx;
 
     bool LoadHeightmapImage(const utf8* path);
     void UnloadHeightmapImage();
-    void GenerateFromHeightmapImage(Settings& settings);
+    void GenerateFromHeightmapImage(MapGenCtx& context);
 } // namespace OpenRCT2::World::MapGenerator

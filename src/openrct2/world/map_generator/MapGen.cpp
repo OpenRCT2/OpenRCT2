@@ -9,6 +9,7 @@
 
 #include "MapGen.h"
 
+#include "../../Context.h"
 #include "../../GameState.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
@@ -20,77 +21,83 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static void generateBlankMap(Settings& settings);
+    static void generateBlankMap(const MapGenCtx& context);
 
-    static void applyTexturesFromRules(const Settings& settings);
-    static void placeSceneryFromRules(const Settings& settings);
+    static void applyTexturesFromRules(const MapGenCtx& context);
+    static void placeSceneryFromRules(const MapGenCtx& context);
 
     void generate(Settings& settings)
     {
+        MapGenCtx context{
+            .settings = settings,
+            .heightMap = HeightMap{settings.mapSize},
+            .riverMap = settings.generateRivers ? std::make_optional(settings.mapSize) : std::nullopt
+        };
+
         switch (settings.algorithm)
         {
             case Algorithm::blank:
-                generateBlankMap(settings);
+                generateBlankMap(context);
                 break;
 
             case Algorithm::simplexNoise:
-                generateSimplexMap(settings);
+                generateSimplexMap(context);
                 break;
 
             case Algorithm::warpedNoise:
-                generateWarpedMap(settings);
+                generateWarpedMap(context);
                 break;
 
             case Algorithm::ridgedNoise:
-                generateRidgedMap(settings);
+                generateRidgedMap(context);
                 break;
 
             case Algorithm::voronoiNoise:
-                generateVoronoiMap(settings);
+                generateVoronoiMap(context);
                 break;
 
             case Algorithm::heightmapImage:
-                GenerateFromHeightmapImage(settings);
+                GenerateFromHeightmapImage(context);
                 break;
         }
 
-        applyTexturesFromRules(settings);
-        placeSceneryFromRules(settings);
+        applyTexturesFromRules(context);
+        placeSceneryFromRules(context);
     }
 
-    void resetSurfaces(Settings& settings)
+    void resetSurfaces(const MapGenCtx& context)
     {
         MapClearAllElements();
-        MapInit(settings.mapSize);
+        MapInit(context.settings.mapSize);
 
-        const auto surfaceTextureId = generateSurfaceTextureId(settings);
-        const auto edgeTextureId = generateEdgeTextureId(settings, surfaceTextureId);
+        const auto surfaceTextureId = generateSurfaceTextureId(context.settings);
+        const auto edgeTextureId = generateEdgeTextureId(context.settings, surfaceTextureId);
 
-        for (auto y = 1; y < settings.mapSize.y - 1; y++)
+        for (auto y = 1; y < context.settings.mapSize.y - 1; y++)
         {
-            for (auto x = 1; x < settings.mapSize.x - 1; x++)
+            for (auto x = 1; x < context.settings.mapSize.x - 1; x++)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->setSurfaceObjectIndex(surfaceTextureId);
                     surfaceElement->setEdgeObjectIndex(edgeTextureId);
-                    surfaceElement->baseHeight = settings.heightmapLow;
-                    surfaceElement->clearanceHeight = settings.heightmapLow;
+                    surfaceElement->baseHeight = context.settings.heightmapLow;
+                    surfaceElement->clearanceHeight = context.settings.heightmapLow;
                 }
             }
         }
     }
 
-    static void generateBlankMap(Settings& settings)
+    static void generateBlankMap(const MapGenCtx& context)
     {
-        resetSurfaces(settings);
-        setWaterLevel(settings.waterLevel);
+        resetSurfaces(context);
+        setWaterLevel(context);
     }
 
-    static void applyTexturesFromRules(const Settings& settings)
+    static void applyTexturesFromRules(const MapGenCtx& context)
     {
-        auto& defaultRule = settings.textureRules[0];
+        auto& defaultRule = context.settings.textureRules[0];
         assert(defaultRule.isDefault);
         auto defaultTextures = defaultRule.effect;
 
@@ -104,14 +111,14 @@ namespace OpenRCT2::World::MapGenerator
 
                 auto actual = result.value_or(defaultTextures);
 
-                element->SetSurfaceObjectIndex(actual.applyLandTexture ? actual.landTexture : defaultTextures.landTexture);
-                element->SetEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
-        };
+                element->setSurfaceObjectIndex(actual.applyLandTexture ? actual.landTexture : defaultTextures.landTexture);
+                element->setEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
+            };
 
-        Rule::evaluateTextureRules(settings, callback);
+        Rule::evaluateTextureRules(context, callback);
     }
 
-    static void placeSceneryFromRules(const Settings& settings)
+    static void placeSceneryFromRules(const MapGenCtx& context)
     {
         Rule::Callback<Rule::SceneryResult> callback = [](const TileCoordsXY& coords,
                                                           const std::optional<Rule::SceneryResult>& result) {
@@ -121,13 +128,13 @@ namespace OpenRCT2::World::MapGenerator
             }
         };
 
-        Rule::evaluateSceneryRules(settings, callback);
+        Rule::evaluateSceneryRules(context, callback);
     }
 
     /**
      * Sets each tile's water level to the specified water level if underneath that water level.
      */
-    void setWaterLevel(int32_t waterLevel)
+    void setWaterLevel(const MapGenCtx& context)
     {
         auto& gameState = getGameState();
         for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
@@ -135,8 +142,36 @@ namespace OpenRCT2::World::MapGenerator
             for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
-                if (surfaceElement != nullptr && surfaceElement->baseHeight < waterLevel)
-                    surfaceElement->setWaterHeight(waterLevel * kCoordsZStep);
+                if (surfaceElement != nullptr && surfaceElement->baseHeight < context.settings.waterLevel)
+                    surfaceElement->setWaterHeight(context.settings.waterLevel * kCoordsZStep);
+            }
+        }
+    }
+
+    void setRiverWater(const MapGenCtx& context)
+    {
+        if (context.settings.generateRivers && context.riverMap.has_value())
+        {
+            RiverMap riverMap = context.riverMap.value();
+            for (auto y = 1; y < riverMap.height - 1; y++)
+            {
+                for (auto x = 1; x < riverMap.width - 1; x++)
+                {
+                    TileCoordsXY pos{ x, y };
+
+                    if (riverMap[pos] <= 0.0)
+                    {
+                        continue;
+                    }
+
+                    auto surfaceElement = MapGetSurfaceElementAt(pos);
+                    if (surfaceElement != nullptr )
+                    {
+                        auto waterHeight = std::max(
+                            (surfaceElement->baseHeight + 2) * kCoordsZStep, surfaceElement->GetWaterHeight());
+                        surfaceElement->SetWaterHeight(waterHeight);
+                    }
+                }
             }
         }
     }
@@ -144,11 +179,11 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Sets the height of the actual game map tiles to the height map.
      */
-    void setMapHeight(const Settings& settings, const HeightMap& heightMap)
+    void setMapHeight(const MapGenCtx& context)
     {
-        for (auto y = 1; y < heightMap.height - 1; y++)
+        for (auto y = 1; y < context.heightMap.height - 1; y++)
         {
-            for (auto x = 1; x < heightMap.width - 1; x++)
+            for (auto x = 1; x < context.heightMap.width - 1; x++)
             {
                 TileCoordsXY pos{ x, y };
 
@@ -157,29 +192,16 @@ namespace OpenRCT2::World::MapGenerator
                     continue;
 
                 // Ensure height is within [2, 254] and a multiple of 2
-                auto adjustedHeight = std::round(std::clamp(heightMap[pos], 2.0f, 254.0f) * 0.5f) * 2.0f;
+                auto adjustedHeight = std::round(std::clamp(context.heightMap[pos], 2.0f, 254.0f) * 0.5f) * 2.0f;
                 surfaceElement->baseHeight = static_cast<uint8_t>(adjustedHeight);
 
                 // TODO is this special case really needed?
                 // If base height is below water level, lower it to create more natural shorelines
-                if (settings.slopeSmooth == SlopeSmooth::strong && surfaceElement->baseHeight >= 4
-                    && surfaceElement->baseHeight <= settings.waterLevel)
+                if (context.settings.slopeSmooth == SlopeSmooth::strong && surfaceElement->baseHeight >= 4
+                    && surfaceElement->baseHeight <= context.settings.waterLevel)
                     surfaceElement->baseHeight -= 2;
 
                 surfaceElement->clearanceHeight = surfaceElement->baseHeight;
-
-                uint8_t currentSlope = surfaceElement->getSlope();
-
-                if (q00 > baseHeight)
-                    currentSlope |= kTileSlopeSCornerUp;
-                if (q01 > baseHeight)
-                    currentSlope |= kTileSlopeWCornerUp;
-                if (q10 > baseHeight)
-                    currentSlope |= kTileSlopeECornerUp;
-                if (q11 > baseHeight)
-                    currentSlope |= kTileSlopeNCornerUp;
-
-                surfaceElement->setSlope(currentSlope);
             }
         }
     }

@@ -18,7 +18,6 @@
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
-#include "Erosion.h"
 #include "MapGen.h"
 #include "MapHelpers.h"
 #include "SurfaceSelection.h"
@@ -102,8 +101,9 @@ namespace OpenRCT2::World::MapGenerator
         _heightMapData.clear();
     }
 
-    void GenerateFromHeightmapImage(Settings& settings)
+    void GenerateFromHeightmapImage(MapGenCtx& context)
     {
+        auto& settings = context.settings;
         Guard::Assert(!_heightMapData.empty(), "No height map loaded");
         Guard::Assert(settings.heightmapHigh != settings.heightmapLow, "Low and high setting cannot be the same");
 
@@ -117,7 +117,8 @@ namespace OpenRCT2::World::MapGenerator
         // The x and y axis are flipped in the world, so this uses y for x and x for y.
         TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
 
-        applyHeightMapTransform(dest, settings);
+        // TODO
+        applyHeightMapTransform(context);
 
         uint8_t maxValue = 255;
         uint8_t minValue = 0;
@@ -186,7 +187,6 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        std::optional<RiverMap> noMap = std::nullopt;
-        applyTileSlopeSmooth(settings, noMap);
+        applyTileSlopeSmooth(context);
     }
 } // namespace OpenRCT2::World::MapGenerator

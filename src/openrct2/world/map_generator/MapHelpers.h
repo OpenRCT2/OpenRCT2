@@ -40,6 +40,8 @@ namespace OpenRCT2::World::MapGenerator
     void sharpen(HeightMap& heightMap, int32_t iterations);
     void smoothBilateral(HeightMap& heightMap, float sigmaScale, float sigmaIntensity);
 
-    std::optional<HeightMap> applyHeightMapTransform(HeightMap& heightMap, const Settings& settings);
-    void applyTileSlopeSmooth(const Settings& settings, std::optional<RiverMap>& catchment);
+    void carveRiverbed(MapGenCtx& context);
+
+    void applyHeightMapTransform(MapGenCtx& context);
+    void applyTileSlopeSmooth(MapGenCtx& context);
 } // namespace OpenRCT2::World::MapGenerator

@@ -226,6 +226,15 @@ namespace OpenRCT2::Ui::Windows
                     edgeHighVisible = false;
                     landStyleVisible = true;
                     break;
+                case Type::RiverMask:
+                    valueVisible = false;
+                    seedVisible = false;
+                    freqVisible = false;
+                    octaVisible = false;
+                    edgeLowVisible = false;
+                    edgeHighVisible = false;
+                    landStyleVisible = false;
+                    break;
             }
 
             //  widgets[WIDX_VALUE_LABEL] stays visible
@@ -260,15 +269,15 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_LAND_STYLE_SCROLL].type = landStyleVisible ? WidgetType::scroll : WidgetType::empty;
 
+
+            bool isInCond = condition.type == Type::LandStyle || condition.type == Type::RiverMask;
             switch (condition.predicate)
             {
                 case Predicate::Equal:
-                    widgets[WIDX_PREDICATE].text = condition.type == Type::LandStyle ? STR_MAPGEN_RULE_PREDICATE_IN
-                                                                                     : STR_MAPGEN_RULE_PREDICATE_EQUAL;
+                    widgets[WIDX_PREDICATE].text = isInCond ? STR_MAPGEN_RULE_PREDICATE_IN : STR_MAPGEN_RULE_PREDICATE_EQUAL;
                     break;
                 case Predicate::NotEqual:
-                    widgets[WIDX_PREDICATE].text = condition.type == Type::LandStyle ? STR_MAPGEN_RULE_PREDICATE_NOT_IN
-                                                                                     : STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
+                    widgets[WIDX_PREDICATE].text = isInCond ? STR_MAPGEN_RULE_PREDICATE_NOT_IN : STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
                     break;
                 case Predicate::LessThan:
                     widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_LESS_THAN;
@@ -459,6 +468,9 @@ namespace OpenRCT2::Ui::Windows
                         STR_STRINGID, ft, { colours[1] });
                     break;
                 }
+                case Type::RiverMask:
+                    // TODO
+                    break;
             }
         }
 

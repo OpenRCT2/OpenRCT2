@@ -98,9 +98,17 @@ namespace OpenRCT2::World::MapGenerator
         int32_t breachMaxDepth = 2;
     };
 
+    struct MapGenCtx
+    {
+        const Settings& settings;
+        HeightMap heightMap;
+        std::optional<RiverMap> riverMap;
+    };
+
     void generate(Settings& settings);
-    void resetSurfaces(Settings& settings);
-    void setWaterLevel(int32_t waterLevel);
-    void setMapHeight(const Settings& settings, const HeightMap& heightMap);
+    void resetSurfaces(const MapGenCtx& context);
+    void setWaterLevel(const MapGenCtx& context);
+    void setRiverWater(const MapGenCtx& context);
+    void setMapHeight(const MapGenCtx& context);
 
 } // namespace OpenRCT2::World::MapGenerator
