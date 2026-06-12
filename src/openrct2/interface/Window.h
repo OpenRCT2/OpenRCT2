@@ -132,66 +132,54 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-// Cannot be expressed using a constexpr.
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define VALIDATE_GLOBAL_WIDX(wc, widx)                                                                                         \
-    static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
-
-constexpr int32_t WC_MAIN_WINDOW__0 = 0;
-constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT = 27;
-constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE = 32;
-constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_EXIT = 33;
-constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ROTATE = 34;
-constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_DIRECTION_GROUPBOX = WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT;
-constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_ENTRANCE = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
-constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_EXIT = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
-constexpr int32_t WC_SCENERY__WIDX_SCENERY_BACKGROUND = 0;
-constexpr int32_t WC_SCENERY__WIDX_SCENERY_TAB_1 = 15;
-constexpr int32_t WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON = 5;
-constexpr int32_t WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON = 10;
-constexpr int32_t WC_PEEP__WIDX_PATROL = 10;
-constexpr int32_t WC_PEEP__WIDX_ACTION_LBL = 13;
-constexpr int32_t WC_PEEP__WIDX_PICKUP = 14;
-constexpr int32_t WC_TRACK_DESIGN_LIST__WIDX_ROTATE = 8;
-constexpr int32_t WC_TRACK_DESIGN_PLACE__WIDX_ROTATE = 3;
-constexpr int32_t WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON = 6;
-constexpr int32_t WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 = 22;
-constexpr int32_t WC_STAFF__WIDX_PICKUP = 9;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE = 15;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_COPY = 18;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE = 17;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_SORT = 16;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE = 12;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP = 13;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN = 14;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE = 6;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE = 7;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE = 10;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE = 11;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE = EnumValue(TileInspectorPage::Surface);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE = 30;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH = EnumValue(TileInspectorPage::Path);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_DECREASE = 30;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK = EnumValue(TileInspectorPage::Track);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_INCREASE = 30;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_DECREASE = 31;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY = EnumValue(TileInspectorPage::Scenery);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE = 30;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE = EnumValue(TileInspectorPage::Entrance);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE = 30;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL = EnumValue(TileInspectorPage::Wall);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_DECREASE = 30;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY = EnumValue(TileInspectorPage::LargeScenery);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE = 30;
-constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER = EnumValue(TileInspectorPage::Banner);
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE = 29;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE = 30;
+constexpr int32_t kWindowMainWidgetIdxViewport = 0;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonConstruct = 27;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonEntrance = 32;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonExit = 33;
+constexpr int32_t kWindowRideConstructionWidgetIdxButtonRotate = 34;
+constexpr int32_t kWindowSceneryWidgetIdxSceneryButtonRotateObjects = 5;
+constexpr int32_t kWindowSceneryWidgetIdxSceneryButtonEyedropper = 10;
+constexpr int32_t kWindowPeepWidgetIdxButtonPickup = 14;
+constexpr int32_t kWindowTrackDesignListWidgetIdxButtonRotate = 8;
+constexpr int32_t kWindowTrackDesignPlaceWidgetIdxButtonRotate = 3;
+constexpr int32_t kWindowEditorParkEntranceWidgetIdxButtonRotateEntrance = 6;
+constexpr int32_t kWindowStaffWidgetIdxButtonPickup = 9;
+constexpr int32_t kWindowStaffWidgetIdxButtonPatrol = 10;
+constexpr int32_t kWindowTileInspectorWidgetIdxButtonRotate = 15;
+constexpr int32_t kWindowTileInspectorWidgetIdxButtonCopy = 18;
+constexpr int32_t kWindowTileInspectorWidgetIdxButtonPaste = 17;
+constexpr int32_t kWindowTileInspectorWidgetIdxButtonSort = 16;
+constexpr int32_t kWindowTileInspectorWidgetIdxButtonRemove = 12;
+constexpr int32_t kWindowTileInspectorWidgetIdxButtonMoveUp = 13;
+constexpr int32_t kWindowTileInspectorWidgetIdxButtonMoveDown = 14;
+constexpr int32_t kWindowTileInspectorWidgetIdxSpinnerXIncrease = 6;
+constexpr int32_t kWindowTileInspectorWidgetIdxSpinnerXDecrease = 7;
+constexpr int32_t kWindowTileInspectorWidgetIdxSpinnerYIncrease = 10;
+constexpr int32_t kWindowTileInspectorWidgetIdxSpinnerYDecrease = 11;
+constexpr int32_t kWindowTileInspectorWidgetIdxSurfaceSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxSurfaceSpinnerHeightDecrease = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxPathSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxPathSpinnerHeightDecrease = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxTrackSpinnerHeightIncrease = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxTrackSpinnerHeightDecrease = 31;
+constexpr int32_t kWindowTileInspectorWidgetIdxScenerySpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxScenerySpinnerHeightDecrease = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxEntranceSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxEntranceSpinnerHeightDecrease = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxWallSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxWallSpinnerHeightDecrease = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxLargeScenerySpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxLargeScenerySpinnerHeightDecrease = 30;
+constexpr int32_t kWindowTileInspectorWidgetIdxBannerSpinnerHeightIncrease = 29;
+constexpr int32_t kWindowTileInspectorWidgetIdxBannerSpinnerHeightDecrease = 30;
+constexpr int32_t kTileInspectorPageSurface = EnumValue(TileInspectorPage::Surface);
+constexpr int32_t kTileInspectorPagePath = EnumValue(TileInspectorPage::Path);
+constexpr int32_t kTileInspectorPageTrack = EnumValue(TileInspectorPage::Track);
+constexpr int32_t kTileInspectorPageScenery = EnumValue(TileInspectorPage::Scenery);
+constexpr int32_t kTileInspectorPageEntrance = EnumValue(TileInspectorPage::Entrance);
+constexpr int32_t kTileInspectorPageWall = EnumValue(TileInspectorPage::Wall);
+constexpr int32_t kTileInspectorPageLargeScenery = EnumValue(TileInspectorPage::LargeScenery);
+constexpr int32_t kTileInspectorPageBanner = EnumValue(TileInspectorPage::Banner);
 
 enum class PromptMode : uint8_t
 {
@@ -202,13 +190,13 @@ enum class PromptMode : uint8_t
     quit
 };
 
-enum BTM_TOOLBAR_DIRTY_FLAGS
+enum BottomToolbarDirtyFlags
 {
-    BTM_TB_DIRTY_FLAG_MONEY = (1 << 0),
-    BTM_TB_DIRTY_FLAG_DATE = (1 << 1),
-    BTM_TB_DIRTY_FLAG_PEEP_COUNT = (1 << 2),
-    BTM_TB_DIRTY_FLAG_CLIMATE = (1 << 3),
-    BTM_TB_DIRTY_FLAG_PARK_RATING = (1 << 4)
+    bottomToolbarDirtyFlagMoney = (1 << 0),
+    bottomToolbarDirtyFlagDate = (1 << 1),
+    bottomToolbarDirtyFlagPeepCount = (1 << 2),
+    bottomToolbarDirtyFlagClimate = (1 << 3),
+    bottomToolbarDirtyFlagParkRating = (1 << 4)
 };
 
 enum class LoadSaveAction : uint8_t
@@ -280,7 +268,8 @@ namespace OpenRCT2
 
     constexpr int8_t kWindowLimitMin = 4;
     constexpr int8_t kWindowLimitMax = 64;
-    constexpr int8_t kWindowLimitReserved = 4; // Used to reserve room for the main viewport, toolbars, etc.
+    // Used to reserve room for the main viewport, toolbars, etc.
+    constexpr int8_t kWindowLimitReserved = 4;
 
     extern WindowBase* gWindowAudioExclusive;
 

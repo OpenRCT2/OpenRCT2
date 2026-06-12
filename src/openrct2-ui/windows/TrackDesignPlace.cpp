@@ -72,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PREVIEW,
     };
 
-    VALIDATE_GLOBAL_WIDX(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
+    static_assert(WIDX_ROTATE == kWindowTrackDesignPlaceWidgetIdxButtonRotate);
 
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(
@@ -337,7 +337,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         RideInitialiseConstructionWindow(*getRide);
                         auto* wnd = windowMgr->FindByClass(WindowClass::rideConstruction);
-                        wnd->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                        wnd->onMouseUp(kWindowRideConstructionWidgetIdxButtonEntrance);
                     }
                 }
                 _placingTrackDesign = false;

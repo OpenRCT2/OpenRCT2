@@ -1087,7 +1087,8 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         // Replace entrance / exit
         ToolSet(
             *constructionWindow,
-            entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
+            entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? kWindowRideConstructionWidgetIdxButtonEntrance
+                                                        : kWindowRideConstructionWidgetIdxButtonExit,
             Tool::crosshair);
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
@@ -1112,8 +1113,9 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
             gRideEntranceExitPlaceType = entranceType;
             windowMgr->InvalidateByClass(WindowClass::rideConstruction);
 
-            auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-                                                                                    : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+            auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                ? kWindowRideConstructionWidgetIdxButtonEntrance
+                : kWindowRideConstructionWidgetIdxButtonExit;
 
             ToolCancel();
             ToolSet(*constructionWindow, newToolWidgetIndex, Tool::crosshair);
@@ -1282,7 +1284,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
 
     w = ride_create_or_find_construction_window(ride.id);
 
-    ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::crosshair);
+    ToolSet(*w, kWindowRideConstructionWidgetIdxButtonConstruct, Tool::crosshair);
     gInputFlags.set(InputFlag::allowRightMouseRemoval);
 
     _currentlySelectedTrack = ride.getRideTypeDescriptor().StartTrackPiece;

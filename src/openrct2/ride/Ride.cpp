@@ -3698,14 +3698,14 @@ void Ride::constructMissingEntranceOrExit() const
 
         if (station.Entrance.IsNull())
         {
-            entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
+            entranceOrExit = kWindowRideConstructionWidgetIdxButtonEntrance;
             incompleteStation = &station;
             break;
         }
 
         if (station.Exit.IsNull())
         {
-            entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+            entranceOrExit = kWindowRideConstructionWidgetIdxButtonExit;
             incompleteStation = &station;
             break;
         }

@@ -82,8 +82,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_COSTUME_BTN,
     };
 
-    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PATROL);
-    VALIDATE_GLOBAL_WIDX(WC_STAFF, WIDX_PICKUP);
+    static_assert(WIDX_PATROL == kWindowStaffWidgetIdxButtonPatrol);
+    static_assert(WIDX_PICKUP == kWindowStaffWidgetIdxButtonPickup);
 
     // clang-format off
     static constexpr auto kMainStaffWidgets = makeWidgets(
@@ -396,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
                             WindowBase* wind = windowMgr->FindByNumber(WindowClass::peep, peepnum);
                             if (wind != nullptr)
                             {
-                                ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
+                                ToolSet(*wind, kWindowStaffWidgetIdxButtonPickup, Tool::picker);
                             }
                         });
                     GameActions::Execute(&pickupAction, gameState);
