@@ -270,7 +270,7 @@ STR_0892    :Ekrankopio estis konservita al la disko kiel ‘{STRINGID}’
 STR_0893    :Malsukcesis konservi ekrankopion!
 STR_0894    :Zono de pejzaĝodatumoj estas plena!
 STR_0895    :Ne eblas konstrui kaj parte supertere kaj parte subtere
-STR_0896    :{STRINGID} Konstruado
+STR_0896    :{STRING} Konstruado
 STR_0897    :Direkto
 STR_0898    :Maldekstra kurbo
 STR_0899    :Dekstra kurbo
@@ -3817,3 +3817,6 @@ STR_7025    :Videbligi
 STR_7026    :Videbligas la tutan atrakcion
 STR_7028    :Kvarona kreska helico
 STR_7029    :Kvarona malkreska helico
+STR_7030    :{WINDOW_COLOUR_2}Gastoj amuzitaj: {BLACK}{COMMA32}
+STR_7031    :Malŝalti kreskadon de herbo
+STR_7032    :Malŝalti maljuniĝon de herbo, por ke ĝi ne kresku.

@@ -271,7 +271,7 @@ STR_0892    :Skärmdumpen sparades som ’{STRINGID}’
 STR_0893    :Skärmdumpen misslyckades!
 STR_0894    :Landskapens minnesutrymme är fullt!
 STR_0895    :Kan inte bygga både ovan och under jord samtidigt
-STR_0896    :{STRINGID} Konstruktion
+STR_0896    :{STRING} Konstruktion
 STR_0897    :Riktning
 STR_0898    :Vänsterkurva
 STR_0899    :Högerkurva
@@ -2917,7 +2917,7 @@ STR_5858    :Använd GPU för grafiken istället för CPU. Ökar kompatibilitete
 STR_5859    :Aktiverar ’frame tweening’ för en visuellt mjukare spelupplevelse.{NEWLINE}Om avaktiverad kommer spelet köras i 40 bilder per sekund.
 STR_5860    :Växla mellan originalkoden och omskrivna koden för spårelement
 STR_5861    :Nyckelverifiering misslyckades.
-STR_5862    :Blockera okända spelare.
+STR_5862    :Blockera okända spelare
 STR_5863    :Tillåt endast spelare med kända nycklar att ansluta.
 STR_5864    :Denna server tillåter endast uppskrivna spelare att ansluta.
 STR_5865    :Logga chatthistorik
@@ -3794,3 +3794,26 @@ STR_6791    :Känslighet: {COMMA32}%
 STR_6792    :Entrébyggnader
 STR_6793    :Gäster och Personal
 STR_6794    :Landskap och Teman
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Ingen förhandsvisning
+STR_6798    :Skärmdump
+STR_6799    :Minikarta
+STR_7000    :eller
+STR_7001    :Attraktionsnamn
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Ljudfilen ‘{STRING}’ är trunkerad. Förväntat antal samples {INT32}, men bara {INT32} finns tillgängliga. Överväg att ominstallera RCT2.
+STR_7004    :Tvinga omritning
+STR_7005    :Dra gångvägsområde
+STR_7006    :Rita en kant runt bildknapparna
+STR_7007    :Åkturstyp
+STR_7008    :Okänd åkturstyp ({INT32})
+STR_7009    :Hämtar skript...
+STR_7010    :Kan inte starta inspelning, filen ‘{STRING}’ finns inte eller är korrupt.
+STR_7011    :Kan inte starta inspelning
+STR_7012    :Polsk Złoty (PLN)
+STR_7013    :Dra gångvägsområde
+STR_7014    :Jag äger spelet på Steam, men jag har inte installerat det än.
+STR_7015    :Var snäll och stäng Steam ifall Steam körs, tryck sedan på 'OK'.
+STR_7016    :OpenRCT2 har försökt påbörja nedladdning i Steam. Öppna Steam och låt det ladda ner spelet. När Steam slutfört nedladdningen, tryck 'OK'.
+STR_7017    :Avsluta

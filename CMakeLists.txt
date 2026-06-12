@@ -355,6 +355,10 @@ else ()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
     endif()
 
+    if(CMAKE_SYSTEM_PROCESSOR STREQUAL "riscv64")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=stringop-overflow")
+    endif()
+
     # Clang -Wmissing-declarations differs from GCC, set -Wmissing-prototypes for parity
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-prototypes")
