@@ -9,10 +9,22 @@
 
 #pragma once
 
-#include "MapGen.h"
+#include "BaseMap.hpp"
 
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void generateRivers(MapGenCtx& context);
+    struct MapGenCtx;
+
+    struct RiverState
+    {
+        float catchment;
+        bool isRiver;
+        bool isRiverbed;
+        bool isFilled;
+        bool isBreached;
+    };
+
+    using RiverMap = BaseMap<RiverState>;
+
 } // namespace OpenRCT2::World::MapGenerator

@@ -12,6 +12,7 @@
 #include "../../Version.h"
 #include "../Location.hpp"
 #include "BaseMap.hpp"
+#include "RiverTypes.hpp"
 #include "rule/Rule.h"
 
 #include <optional>
@@ -71,8 +72,8 @@ namespace OpenRCT2::World::MapGenerator
         int32_t heightmapLow = 14;
         int32_t heightmapHigh = 60;
 
-        Rule::TextureRuleList textureRules{};
-        Rule::SceneryRuleList sceneryRules{};
+        Rule::TextureRuleList textureRules;
+        Rule::SceneryRuleList sceneryRules;
 
         // Noise Parameters
         int32_t noiseBaseFreq = 175;
@@ -93,7 +94,7 @@ namespace OpenRCT2::World::MapGenerator
 
         // River settings
         bool generateRivers = true;
-        int32_t catchmentThreshold = 128;
+        int32_t catchmentThreshold = 256;
         int32_t breachMaxLength = 8;
         int32_t breachMaxDepth = 2;
     };

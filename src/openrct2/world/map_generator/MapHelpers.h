@@ -29,6 +29,28 @@ namespace OpenRCT2::World::MapGenerator
         SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
     };
 
+    template<class... Arrays>
+    consteval auto concat(Arrays... arrays)
+    {
+        return std::apply([](auto... args) { return std::array{ args... }; }, std::tuple_cat(arrays...));
+    }
+
+    static constexpr std::array kNeighbourOffsetsCardinal = {
+        TileCoordsXY{ -1, 0 },
+        TileCoordsXY{ 1, 0 },
+        TileCoordsXY{ 0, -1 },
+        TileCoordsXY{ 0, 1 },
+    };
+
+    static constexpr std::array kNeighbourOffsetsOrdinal = {
+        TileCoordsXY{ 1, 1 },
+        TileCoordsXY{ 1, -1 },
+        TileCoordsXY{ -1, 1 },
+        TileCoordsXY{ -1, -1 }
+    };
+
+    static constexpr std::array kNeighbourOffsets = concat(kNeighbourOffsetsCardinal, kNeighbourOffsetsOrdinal);
+
     // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(TileCoordsXY, std::optional<RiverMap>&)>;
 
@@ -39,8 +61,6 @@ namespace OpenRCT2::World::MapGenerator
     void smoothGaussian(HeightMap& heightMap, float sigma);
     void sharpen(HeightMap& heightMap, int32_t iterations);
     void smoothBilateral(HeightMap& heightMap, float sigmaScale, float sigmaIntensity);
-
-    void carveRiverbed(MapGenCtx& context);
 
     void applyHeightMapTransform(MapGenCtx& context);
     void applyTileSlopeSmooth(MapGenCtx& context);

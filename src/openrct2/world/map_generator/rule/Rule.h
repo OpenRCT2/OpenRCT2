@@ -108,8 +108,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         // global
         std::mt19937 quadPrng;
         NormalMap normalMap;
-        RiverMap riverMap;
         DistanceMap distanceToWater;
+        DistanceMap distanceToRiver;
+        DistanceMap distanceToRiverbed;
+        DistanceMap distanceToBorder;
 
         // per tile
         ObjectEntryIndex landTexture;
@@ -128,12 +130,19 @@ namespace OpenRCT2::World::MapGenerator::Rule
         GreaterThanOrEqual,
     };
 
-    enum class Type : uint8_t
+    enum class Feature : uint8_t
+    {
+        MapBorder,
+        Water,
+        River,
+        Riverbed
+    };
+
+    enum class Type : uint16_t
     {
         HeightAbsolute,
         HeightRelativeToWater,
-        DistanceToWater,
-        RiverMask,
+        DistanceToFeature,
         Noise,
         NormalAngle,
         Random,
@@ -157,8 +166,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
     };
 
     // $value^2 $pred distance
-    struct DistanceData
+    struct DistanceToFeatureData
     {
+        Feature feature;
         int32_t distance;
     };
 
@@ -199,10 +209,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::unordered_set<ObjectEntryIndex> styles;
     };
 
-    struct NoData{};
-
     using ConditionData = std::variant<
-        HeightData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, LandStyleData, NoData>;
+        HeightData, DistanceToFeatureData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, LandStyleData>;
 
     struct Condition
     {

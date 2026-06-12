@@ -31,7 +31,7 @@ namespace OpenRCT2::World::MapGenerator
         MapGenCtx context{
             .settings = settings,
             .heightMap = HeightMap{settings.mapSize},
-            .riverMap = settings.generateRivers ? std::make_optional(settings.mapSize) : std::nullopt
+            .riverMap = settings.generateRivers ? std::make_optional(settings.mapSize) : std::nullopt,
         };
 
         switch (settings.algorithm)
@@ -159,7 +159,7 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     TileCoordsXY pos{ x, y };
 
-                    if (riverMap[pos] <= 0.0)
+                    if (!riverMap[pos].isRiver)
                     {
                         continue;
                     }

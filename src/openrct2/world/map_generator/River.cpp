@@ -11,83 +11,18 @@
 
 #include "../../Context.h"
 #include "../../GameState.h"
+#include "MapHelpers.h"
+#include "TileQueue.hpp"
 
 #include <numbers>
-#include <unistd.h>
 
 namespace OpenRCT2::World::MapGenerator
 {
     static constexpr float kP = 1.1f;
 
-    template<class... Arrays>
-    consteval auto concat(Arrays... arrays)
-    {
-        return std::apply([](auto... args) { return std::array{ args... }; }, std::tuple_cat(arrays...));
-    }
-
-    static constexpr std::array kNeighborOffsetsCardinal = {
-        TileCoordsXY{ -1, 0 },
-        TileCoordsXY{ 1, 0 },
-        TileCoordsXY{ 0, -1 },
-        TileCoordsXY{ 0, 1 },
-    };
-
-    static constexpr std::array kNeighborOffsetsOrdinal = {
-        TileCoordsXY{ 1, 1 },
-        TileCoordsXY{ 1, -1 },
-        TileCoordsXY{ -1, 1 },
-        TileCoordsXY{ -1, -1 }
-    };
-
-    static constexpr std::array kNeighborOffsets = concat(kNeighborOffsetsCardinal, kNeighborOffsetsOrdinal);
-
-    struct QueueTile
-    {
-        TileCoordsXY pos;
-        float height;
-        uint32_t orderIdx;
-
-        friend bool operator<(const QueueTile& lhs, const QueueTile& rhs)
-        {
-            if (lhs.height < rhs.height)
-                return true;
-            if (rhs.height < lhs.height)
-                return false;
-            return lhs.orderIdx < rhs.orderIdx;
-        }
-        friend bool operator<=(const QueueTile& lhs, const QueueTile& rhs)
-        {
-            return !(rhs < lhs);
-        }
-        friend bool operator>(const QueueTile& lhs, const QueueTile& rhs)
-        {
-            return rhs < lhs;
-        }
-        friend bool operator>=(const QueueTile& lhs, const QueueTile& rhs)
-        {
-            return !(lhs < rhs);
-        }
-    };
-
-    using StableTileQueueBase = std::priority_queue<QueueTile, std::vector<QueueTile>, std::greater<QueueTile>>;
-    class StableTileQueue : public StableTileQueueBase
-    {
-    private:
-        uint32_t insertIdx = 0;
-
-    public:
-        void push() = delete;
-
-        template<class... Args>
-        void emplace(Args... args)
-        {
-            StableTileQueueBase::emplace(std::forward<Args>(args)..., insertIdx++);
-        }
-    };
-
     struct TileState
     {
-        // TODO use an uint8_t to encode the kNeighborOffsets index
+        // TODO use an uint8_t to encode the kNeighbourOffsets index
         std::optional<TileCoordsXY> backlink = std::nullopt;
         bool processed = false;
         bool pit = false;
@@ -100,12 +35,14 @@ namespace OpenRCT2::World::MapGenerator
      * elevation models: Efficient Hybrid Sink Removal Methods for Flow Path Enforcement. Hydrological Processes 30, 846--857.
      *
      */
-    void floodFill(MapGenCtx& context)
+    static void fillOrBreach(MapGenCtx& context)
     {
         HeightMap& heightMap = context.heightMap;
+        RiverMap& riverMap = context.riverMap.value();
+
         BaseMap<TileState> state(heightMap.height, heightMap.width);
         StableTileQueue queue;
-        std::queue<TileCoordsXY> tilesToFlood;
+        std::queue<TileCoordsXY> tilesToFill;
 
         // Add edge tiles to queue and mark pits
         for (int32_t y = 0; y < heightMap.height; y++)
@@ -121,18 +58,18 @@ namespace OpenRCT2::World::MapGenerator
                     continue;
                 }
 
-                float minNeighbor = std::numeric_limits<float>::max();
+                float minNeighbour = std::numeric_limits<float>::max();
 
-                for (const auto& offset : kNeighborOffsets)
+                for (const auto& offset : kNeighbourOffsets)
                 {
                     const TileCoordsXY nPos{ pos + offset };
                     // no contains check needed per if-clause above
-                    minNeighbor = std::min(heightMap[nPos], minNeighbor);
+                    minNeighbour = std::min(heightMap[nPos], minNeighbour);
                 }
 
-                if (heightMap[pos] < minNeighbor)
+                if (heightMap[pos] < minNeighbour)
                 {
-                    heightMap[pos] = std::nextafter(minNeighbor, std::numeric_limits<float>::lowest());
+                    heightMap[pos] = std::nextafter(minNeighbour, std::numeric_limits<float>::lowest());
                     state[pos].pit = true;
                 }
             }
@@ -144,8 +81,8 @@ namespace OpenRCT2::World::MapGenerator
             const QueueTile c = queue.top();
             queue.pop();
 
-            // handle neighbors
-            for (const auto& offset : kNeighborOffsets)
+            // handle neighbours
+            for (const auto& offset : kNeighbourOffsets)
             {
                 const TileCoordsXY nPos{ c.pos + offset };
 
@@ -155,7 +92,7 @@ namespace OpenRCT2::World::MapGenerator
                 }
 
                 queue.emplace(nPos, heightMap[nPos]);
-                tilesToFlood.push(nPos);
+                tilesToFill.push(nPos);
                 state[nPos].processed = true;
                 state[nPos].backlink = std::make_optional(c.pos);
 
@@ -187,6 +124,7 @@ namespace OpenRCT2::World::MapGenerator
                         while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
                         {
                             heightMap[currentTile.value()] = targetHeight;
+                            riverMap[currentTile.value()].isBreached = true;
 
                             targetHeight = std::nextafter(targetHeight, std::numeric_limits<float>::lowest());
                             currentTile = state[currentTile.value()].backlink;
@@ -197,40 +135,41 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         // fill depressions
-        while (!tilesToFlood.empty())
+        while (!tilesToFill.empty())
         {
-            const TileCoordsXY& toFlood = tilesToFlood.front();
+            const TileCoordsXY& toFlood = tilesToFill.front();
             if (state[toFlood].backlink.has_value())
             {
                 auto parent = state[toFlood].backlink.value();
                 if (heightMap[toFlood] <= heightMap[parent])
                 {
                     heightMap[toFlood] = std::nextafter(heightMap[parent], std::numeric_limits<float>::infinity());
+                    riverMap[toFlood].isFilled = true;
                 }
             }
-            tilesToFlood.pop();
+            tilesToFill.pop();
         }
     }
 
     static void postProcessTile(
-        RiverMap& catchment, const Settings& settings, std::queue<TileCoordsXY>& queue, BaseMap<int8_t>& visited,
+        RiverMap& riverMap, const Settings& settings, std::queue<TileCoordsXY>& queue, MaskMap& visited,
         const TileCoordsXY& pos)
     {
-        if (catchment[pos] >= settings.catchmentThreshold)
+        if (riverMap[pos].catchment >= settings.catchmentThreshold)
         {
             queue.push(pos);
-            visited[pos] = 1;
+            visited[pos] = Mask::True;
+            riverMap[pos].isRiver = true;
         }
     }
 
     static void removeOrphans(MapGenCtx& context)
     {
-
         auto& settings = context.settings;
         auto& riverMap = context.riverMap.value();
 
         std::queue<TileCoordsXY> queue;
-        BaseMap<int8_t> visited(riverMap.width, riverMap.height);
+        MaskMap visited(riverMap.width, riverMap.height);
 
         for (int32_t y = 0; y < riverMap.height; y++)
         {
@@ -254,11 +193,11 @@ namespace OpenRCT2::World::MapGenerator
         {
             const TileCoordsXY& pos = queue.front();
 
-            for (const auto& offset : kNeighborOffsets)
+            for (const auto& offset : kNeighbourOffsets)
             {
                 const TileCoordsXY nPos{ pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] > 0)
+                if (!riverMap.contains(nPos) || visited[nPos] == Mask::True)
                 {
                     continue;
                 }
@@ -268,22 +207,9 @@ namespace OpenRCT2::World::MapGenerator
 
             queue.pop();
         }
-
-        for (int32_t y = 0; y < riverMap.height; y++)
-        {
-            for (int32_t x = 0; x < riverMap.width; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-
-                if (visited[pos] == 0 || riverMap[pos] < settings.catchmentThreshold)
-                {
-                    riverMap[pos] = 0.0f;
-                }
-            }
-        }
     }
 
-    static void ensureCardinalNeighbors(MapGenCtx& context)
+    static void ensureCardinalNeighbours(MapGenCtx& context)
     {
         auto& heightMap = context.heightMap;
         auto& riverMap = context.riverMap.value();
@@ -294,14 +220,14 @@ namespace OpenRCT2::World::MapGenerator
         for (int32_t y = 0; y < riverMap.height; y++)
         {
             const TileCoordsXY left{ 0, y };
-            if (riverMap[left] > 0.0f)
+            if (riverMap[left].isRiver)
             {
                 queue.emplace(left, heightMap[left]);
                 visited[left] = 1;
             }
 
             const TileCoordsXY right{ riverMap.width - 1, y };
-            if (riverMap[right] > 0.0f)
+            if (riverMap[right].isRiver)
             {
                 queue.emplace(right, heightMap[right]);
                 visited[right] = 1;
@@ -311,14 +237,14 @@ namespace OpenRCT2::World::MapGenerator
         for (int32_t x = 1; x < riverMap.width - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            if (riverMap[top] > 0.0f)
+            if (riverMap[top].isRiver)
             {
                 queue.emplace(top, heightMap[top]);
                 visited[top] = 1;
             }
 
             const TileCoordsXY bottom{ x, riverMap.height - 1 };
-            if (riverMap[bottom] > 0.0f)
+            if (riverMap[bottom].isRiver)
             {
                 queue.emplace(bottom, heightMap[bottom]);
                 visited[bottom] = 1;
@@ -330,11 +256,11 @@ namespace OpenRCT2::World::MapGenerator
             const QueueTile tile = queue.top();
             queue.pop();
 
-            for (const auto& offset : kNeighborOffsetsOrdinal)
+            for (const auto& offset : kNeighbourOffsetsOrdinal)
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] > 0 || riverMap[nPos] == 0.0f)
+                if (!riverMap.contains(nPos) || visited[nPos] > 0 || !riverMap[nPos].isRiver)
                 {
                     continue;
                 }
@@ -347,20 +273,20 @@ namespace OpenRCT2::World::MapGenerator
                     TileCoordsXY{ offset.x, 0 },
                 };
 
-                bool hasCardinalNeighbor = false;
+                bool hasCardinalNeighbour = false;
 
                 for (const TileCoordsXY& scnOffset : sharedCardinalNeighbours)
                 {
                     const TileCoordsXY scnPos{ tile.pos + scnOffset };
 
-                    if (riverMap[scnPos] > 0)
+                    if (riverMap[scnPos].isRiver)
                     {
-                        hasCardinalNeighbor = true;
+                        hasCardinalNeighbour = true;
                         break;
                     }
                 }
 
-                if (hasCardinalNeighbor)
+                if (hasCardinalNeighbour)
                 {
                     continue;
                 }
@@ -369,16 +295,17 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     const TileCoordsXY scnPos{ tile.pos + scnOffset };
                     heightMap[scnPos] = heightMap[tile.pos];
-                    riverMap[scnPos] = riverMap[tile.pos];
+                    riverMap[scnPos].catchment = context.settings.catchmentThreshold;
+                    riverMap[scnPos].isRiver = true;
                     visited[scnPos] = 1;
                 }
             }
 
-            for (const auto& offset : kNeighborOffsetsCardinal)
+            for (const auto& offset : kNeighbourOffsetsCardinal)
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] > 0 || riverMap[nPos] == 0.0f)
+                if (!riverMap.contains(nPos) || visited[nPos] > 0 || !riverMap[nPos].isRiver)
                 {
                     continue;
                 }
@@ -392,11 +319,12 @@ namespace OpenRCT2::World::MapGenerator
     static void postProcessCatchment(MapGenCtx& context)
     {
         removeOrphans(context);
-        ensureCardinalNeighbors(context);
+        ensureCardinalNeighbours(context);
     }
 
     static float downSlope(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
     {
+        // TODO could infer from cardinal/ordinal offset instead and pass in
         const int32_t deltaX = from.x - to.x;
         const int32_t deltaY = from.y - to.y;
 
@@ -412,7 +340,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         float sum = 0.0f;
 
-        for (const auto& offset : kNeighborOffsets)
+        for (const auto& offset : kNeighbourOffsets)
         {
             TileCoordsXY nPos{ from + offset };
 
@@ -427,15 +355,15 @@ namespace OpenRCT2::World::MapGenerator
         return downSlope(heightMap, from, to) / sum;
     }
 
-    static float checkNeighbor(MapGenCtx& context, const TileCoordsXY& pos)
+    static float aggregateNeighbour(MapGenCtx& context, const TileCoordsXY& pos)
     {
         auto& heightMap = context.heightMap;
         auto& riverMap = context.riverMap.value();
 
-        if (riverMap[pos] <= 0.0f)
+        if (riverMap[pos].catchment <= 0.0f)
         {
-            riverMap[pos] = 1.0f;
-            for (const auto& offset : kNeighborOffsets)
+            riverMap[pos].catchment = 1.0f;
+            for (const auto& offset : kNeighbourOffsets)
             {
                 TileCoordsXY nPos{ pos + offset };
 
@@ -447,13 +375,13 @@ namespace OpenRCT2::World::MapGenerator
                 if (heightMap[nPos] > heightMap[pos])
                 {
                     const float flowFraction = std::max(0.0f, fractionalFlow(heightMap, nPos, pos));
-                    const float neighborCatchment = checkNeighbor(context, nPos);
-                    const float fractionalContribution = flowFraction * neighborCatchment;
-                    riverMap[pos] += fractionalContribution;
+                    const float neighbourCatchment = aggregateNeighbour(context, nPos);
+                    const float fractionalContribution = flowFraction * neighbourCatchment;
+                    riverMap[pos].catchment += fractionalContribution;
                 }
             }
         }
-        return riverMap[pos];
+        return riverMap[pos].catchment;
     }
 
     /**
@@ -462,17 +390,86 @@ namespace OpenRCT2::World::MapGenerator
      * Freeman, T.G., 1991. Calculating catchment area with divergent flow based on a regular grid. Computers & geosciences,
      * 17(3), pp.413-422.
      */
-    void genCatchment(MapGenCtx& context)
+    static void aggregateCatchment(MapGenCtx& context)
     {
         for (int32_t y = 0; y < context.heightMap.height; y++)
         {
             for (int32_t x = 0; x < context.heightMap.width; x++)
             {
                 TileCoordsXY pos{ x, y };
-                checkNeighbor(context, pos);
+                aggregateNeighbour(context, pos);
             }
         }
 
         postProcessCatchment(context);
+    }
+
+    static void carveRiverbed(MapGenCtx& context){
+        auto& settings = context.settings;
+        auto& heightMap = context.heightMap;
+        auto& riverMap = context.riverMap.value();
+
+        HeightMap heightCopy = heightMap;
+
+        for (int32_t y = 0; y < heightMap.height; y++)
+        {
+            for (int32_t x = 0; x < heightMap.width; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+
+                if (!riverMap[pos].isRiver)
+                {
+                    continue;
+                }
+
+                float riverHeight = heightCopy[pos] - 4.0f;
+                if (riverHeight < heightMap[pos])
+                {
+                    heightMap[pos] = riverHeight;
+                }
+                else
+                {
+                    riverHeight = heightMap[pos];
+                }
+
+                riverMap[pos].isRiverbed = true;
+
+                const float radius = 0.75f * std::log2(riverMap[pos].catchment / (0.5f * settings.catchmentThreshold));
+
+                const float radiusSquared = radius * radius;
+
+                for (int32_t dy = -radius; dy <= radius; dy++)
+                {
+                    for (int32_t dx = -radius; dx <= radius; dx++)
+                    {
+                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
+
+                        int32_t distance = dx * dx + dy * dy;
+                        if (!heightMap.contains(deltaPos) || distance > radiusSquared)
+                        {
+                            continue;
+                        }
+
+                        float riverbedHeight = heightCopy[deltaPos] - 2.0f;
+                        if (riverbedHeight < heightMap[deltaPos])
+                        {
+                            heightMap[deltaPos] = riverbedHeight;
+
+                            if (riverbedHeight - (riverHeight + 2.0f) < 1.0f && riverMap[deltaPos].isFilled)
+                            {
+                                riverMap[deltaPos].isRiverbed = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void generateRivers(MapGenCtx& context)
+    {
+        fillOrBreach(context);
+        aggregateCatchment(context);
+        carveRiverbed(context);
     }
 } // namespace OpenRCT2::World::MapGenerator

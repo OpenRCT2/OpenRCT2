@@ -26,9 +26,9 @@ namespace OpenRCT2::World::MapGenerator
         return surfaceElement != nullptr ? surfaceElement->baseHeight : 0;
     }
 
-    static bool isRiverTile(const TileCoordsXY& tileCoords, std::optional<RiverMap>& catchment)
+    static bool isRiverTile(const TileCoordsXY& tileCoords, std::optional<RiverMap>& riverMap)
     {
-        return catchment.has_value() && catchment.value()[tileCoords] > 0.0f;
+        return riverMap.has_value() && riverMap.value()[tileCoords].isRiver;
     }
 
     [[maybe_unused]]
@@ -546,58 +546,6 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void carveRiverbed(MapGenCtx& context)
-    {
-        auto& settings = context.settings;
-        auto& heightMap = context.heightMap;
-        auto& riverMap = context.riverMap.value();
-
-        floodFill(context);
-        genCatchment(context);
-
-        HeightMap heightCopy = heightMap;
-
-        for (int32_t y = 0; y < heightMap.height; y++)
-        {
-            for (int32_t x = 0; x < heightMap.width; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-
-                if (riverMap[pos] <= 0)
-                {
-                    continue;
-                }
-
-                float deltaHeight = heightCopy[pos] - 4.0f;
-                if (deltaHeight < heightMap[pos])
-                {
-                    heightMap[pos] = deltaHeight;
-                }
-
-                const float radius = std::log2(riverMap[pos] / (0.5f * settings.catchmentThreshold));
-
-                for (int32_t dy = -radius; dy <= radius; dy++)
-                {
-                    for (int32_t dx = -radius; dx <= radius; dx++)
-                    {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
-
-                        if (!heightMap.contains(deltaPos) || dx*dx + dy*dy > radius * radius)
-                        {
-                            continue;
-                        }
-
-                        deltaHeight = heightCopy[deltaPos] - 2.0f;
-                        if (deltaHeight < heightMap[deltaPos])
-                        {
-                            heightMap[deltaPos] = deltaHeight;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     void applyHeightMapTransform(MapGenCtx& context)
     {
         auto& settings = context.settings;
@@ -626,7 +574,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (settings.generateRivers)
         {
-            carveRiverbed(context);
+            generateRivers(context);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

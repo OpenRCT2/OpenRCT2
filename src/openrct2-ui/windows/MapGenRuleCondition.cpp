@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::HeightRelativeToWater:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER;
                     break;
-                case Type::DistanceToWater:
+                case Type::DistanceToFeature:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER;
                     break;
                 case Type::Noise:
@@ -226,15 +226,6 @@ namespace OpenRCT2::Ui::Windows
                     edgeHighVisible = false;
                     landStyleVisible = true;
                     break;
-                case Type::RiverMask:
-                    valueVisible = false;
-                    seedVisible = false;
-                    freqVisible = false;
-                    octaVisible = false;
-                    edgeLowVisible = false;
-                    edgeHighVisible = false;
-                    landStyleVisible = false;
-                    break;
             }
 
             //  widgets[WIDX_VALUE_LABEL] stays visible
@@ -270,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LAND_STYLE_SCROLL].type = landStyleVisible ? WidgetType::scroll : WidgetType::empty;
 
 
-            bool isInCond = condition.type == Type::LandStyle || condition.type == Type::RiverMask;
+            bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)
             {
                 case Predicate::Equal:
@@ -320,10 +311,10 @@ namespace OpenRCT2::Ui::Windows
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
                     break;
                 }
-                case Type::DistanceToWater:
+                case Type::DistanceToFeature:
                 {
                     auto ft = Formatter();
-                    ft.Add<int16_t>(static_cast<int16_t>(std::get<DistanceData>(condition.data).distance));
+                    ft.Add<int16_t>(static_cast<int16_t>(std::get<DistanceToFeatureData>(condition.data).distance));
                     drawText(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
@@ -468,9 +459,6 @@ namespace OpenRCT2::Ui::Windows
                         STR_STRINGID, ft, { colours[1] });
                     break;
                 }
-                case Type::RiverMask:
-                    // TODO
-                    break;
             }
         }
 
@@ -515,9 +503,9 @@ namespace OpenRCT2::Ui::Windows
                     elevationData.height = std::clamp(elevationValue, -kHeightMax, kHeightMax);
                     break;
                 }
-                case Type::DistanceToWater:
+                case Type::DistanceToFeature:
                 {
-                    auto& distanceData = std::get<DistanceData>(condition.data);
+                    auto& distanceData = std::get<DistanceToFeatureData>(condition.data);
                     auto distanceValue = intValue.value_or(distanceData.distance + 1 * changeMultiplier);
                     distanceData.distance = std::clamp(distanceValue, kDistanceMin, kDistanceMax);
                     break;
@@ -751,7 +739,7 @@ namespace OpenRCT2::Ui::Windows
                         ft, STR_FORMAT_INTEGER, HeightUnitsToMetres(std::get<HeightData>(condition.data).height), 4);
                     break;
                 }
-                case Type::DistanceToWater:
+                case Type::DistanceToFeature:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
@@ -759,7 +747,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(static_cast<int16_t>(kDistanceMax));
                     WindowTextInputOpen(
                         this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
-                        STR_FORMAT_INTEGER, std::get<DistanceData>(condition.data).distance, 4);
+                        STR_FORMAT_INTEGER, std::get<DistanceToFeatureData>(condition.data).distance, 4);
                     break;
                 }
                 case Type::Noise:

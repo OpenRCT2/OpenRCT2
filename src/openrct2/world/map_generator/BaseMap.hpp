@@ -104,8 +104,15 @@ namespace OpenRCT2::World::MapGenerator
         }
     };
 
+    // workaround for vector<bool> conflicting with the & operator[] defs above...
+    enum class Mask : uint8_t
+    {
+        False,
+        True
+    };
+
+    using MaskMap = BaseMap<Mask>;
     using HeightMap = BaseMap<float>;
-    using RiverMap = BaseMap<float>;
     using DistanceMap = BaseMap<float>;
     using NormalMap = BaseMap<VecXYZ>;
 } // namespace OpenRCT2::World::MapGenerator

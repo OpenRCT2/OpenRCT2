@@ -1366,12 +1366,12 @@ namespace OpenRCT2::Ui::Windows
                             HeightUnitsToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
                         break;
 
-                    case MapGenerator::Rule::Type::DistanceToWater:
+                    case MapGenerator::Rule::Type::DistanceToFeature:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
                         ft.Add<StringId>(predRepr);
                         ft.Add<int16_t>(
-                            static_cast<int16_t>(std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
+                            static_cast<int16_t>(std::get<MapGenerator::Rule::DistanceToFeatureData>(condition.data).distance));
                         break;
 
                     case MapGenerator::Rule::Type::Noise:
@@ -1426,9 +1426,6 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(
                             condition.predicate == MapGenerator::Rule::Predicate::Equal ? STR_MAPGEN_RULE_PREDICATE_IN
                                                                                         : STR_MAPGEN_RULE_PREDICATE_NOT_IN);
-                        break;
-
-                        case MapGenerator::Rule::Type::RiverMask:
                         break;
 
                 }
@@ -2700,12 +2697,12 @@ namespace OpenRCT2::Ui::Windows
                             HeightUnitsToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
                         break;
 
-                    case MapGenerator::Rule::Type::DistanceToWater:
+                    case MapGenerator::Rule::Type::DistanceToFeature:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
                         ft.Add<StringId>(predRepr);
                         ft.Add<int16_t>(static_cast<int16_t>(
-                            std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
+                            std::get<MapGenerator::Rule::DistanceToFeatureData>(condition.data).distance));
                         break;
 
                     case MapGenerator::Rule::Type::Noise:
@@ -2755,9 +2752,6 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case MapGenerator::Rule::Type::LandStyle:
                         // should not be reachable
-                        break;
-                    case MapGenerator::Rule::Type::RiverMask:
-                        // TODO
                         break;
                 }
 
