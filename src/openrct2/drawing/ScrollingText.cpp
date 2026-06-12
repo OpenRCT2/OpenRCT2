@@ -1431,7 +1431,8 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
 
         std::scoped_lock<std::mutex> lock(_mutex);
 
-        assert(scrollingMode < kMaxModes);
+        if (scrollingMode >= kMaxModes)
+            return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
         if (session.rt.zoom_level > ZoomLevel{ 0 })
             return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
