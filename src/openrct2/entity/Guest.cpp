@@ -5641,6 +5641,10 @@ namespace OpenRCT2
             }
         }
 
+        // Only watch rides if the guest is not underground
+        if (TileElementIsUnderground(tileElement))
+            return;
+
         int32_t positions_free = 15;
 
         if (tileElement->asPath()->HasAddition())
