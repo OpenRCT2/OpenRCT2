@@ -18,4 +18,4 @@ jobs:
     - uses: ZehMatt/clang-tidy-annotations@v1
       with:
         build_dir: 'build'
-        cmake_args: '-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_DISCORD_RPC=ON'
+        cmake_args: '-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_DISCORD_RPC=ON -DWITH_TESTS=ON'
