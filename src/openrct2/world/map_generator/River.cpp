@@ -14,21 +14,31 @@
 #include "MapHelpers.h"
 #include "TileQueue.hpp"
 
+#include "../../Diagnostic.h"
+
 #include <numbers>
 
 namespace OpenRCT2::World::MapGenerator
 {
     static constexpr float kP = 1.1f;
+    static constexpr int32_t kShortStreamMaxPruneLength = 16;
+
+    using Backref = std::optional<TileCoordsXY>;
+    using BackrefMap = BaseMap<Backref>;
+    using NeighbourCountMap = BaseMap<int32_t>;
 
     struct TileState
     {
         // TODO use an uint8_t to encode the kNeighbourOffsets index
-        std::optional<TileCoordsXY> backlink = std::nullopt;
+        Backref backref = std::nullopt;
         bool processed = false;
         bool pit = false;
     };
 
     /**
+     *
+     * Fill up or breach out of depressions in the heightmap to ensure there is a valid downhill path for rivers to follow.
+     *
      * based on
      *
      * Lindsay, J.B., 2016. Efficient hybrid breaching-filling sink removal methods for flow path enforcement in digital
@@ -94,7 +104,7 @@ namespace OpenRCT2::World::MapGenerator
                 queue.emplace(nPos, heightMap[nPos]);
                 tilesToFill.push(nPos);
                 state[nPos].processed = true;
-                state[nPos].backlink = std::make_optional(c.pos);
+                state[nPos].backref = std::make_optional(c.pos);
 
                 // check if there is a valid path to breach out of the pit
                 if (state[nPos].pit)
@@ -112,7 +122,7 @@ namespace OpenRCT2::World::MapGenerator
                         pathLength++;
 
                         targetHeight = std::nextafter(targetHeight, std::numeric_limits<float>::lowest());
-                        currentTile = state[currentTile.value()].backlink;
+                        currentTile = state[currentTile.value()].backref;
                     }
 
                     currentTile = std::make_optional(nPos);
@@ -127,7 +137,7 @@ namespace OpenRCT2::World::MapGenerator
                             riverMap[currentTile.value()].isBreached = true;
 
                             targetHeight = std::nextafter(targetHeight, std::numeric_limits<float>::lowest());
-                            currentTile = state[currentTile.value()].backlink;
+                            currentTile = state[currentTile.value()].backref;
                         }
                     }
                 }
@@ -138,9 +148,9 @@ namespace OpenRCT2::World::MapGenerator
         while (!tilesToFill.empty())
         {
             const TileCoordsXY& toFlood = tilesToFill.front();
-            if (state[toFlood].backlink.has_value())
+            if (state[toFlood].backref.has_value())
             {
-                auto parent = state[toFlood].backlink.value();
+                auto parent = state[toFlood].backref.value();
                 if (heightMap[toFlood] <= heightMap[parent])
                 {
                     heightMap[toFlood] = std::nextafter(heightMap[parent], std::numeric_limits<float>::infinity());
@@ -151,71 +161,127 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void postProcessTile(
-        RiverMap& riverMap, const Settings& settings, std::queue<TileCoordsXY>& queue, MaskMap& visited,
+    static bool postProcessTile(
+        MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap, Backref backref,
         const TileCoordsXY& pos)
     {
-        if (riverMap[pos].catchment >= settings.catchmentThreshold)
+        RiverState& riverState = context.riverMap.value()[pos];
+
+        if (riverState.catchment < context.settings.catchmentThreshold)
         {
-            queue.push(pos);
-            visited[pos] = Mask::True;
-            riverMap[pos].isRiver = true;
+            return false;
         }
+
+        queue.emplace(pos, context.heightMap[pos]);
+        visited[pos] = Mask::True;
+        backrefMap[pos] = backref;
+        riverState.isRiver = true;
+
+        return true;
     }
 
-    static void removeOrphans(MapGenCtx& context)
+    static void removeOrphansAndShortStreams(MapGenCtx& context)
     {
-        auto& settings = context.settings;
         auto& riverMap = context.riverMap.value();
 
-        std::queue<TileCoordsXY> queue;
+        StableTileQueue queue;
         MaskMap visited(riverMap.width, riverMap.height);
+
+        NeighbourCountMap neighbourCounts{riverMap.width, riverMap.height};
+        BackrefMap backrefMap{riverMap.width, riverMap.height};
+
+        std::queue<TileCoordsXY> springs;
 
         for (int32_t y = 0; y < riverMap.height; y++)
         {
-            const TileCoordsXY left{ 0, y };
-            postProcessTile(riverMap, settings, queue, visited, left);
-
-            const TileCoordsXY right{ riverMap.width - 1, y };
-            postProcessTile(riverMap, settings, queue, visited, right);
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { 0, y });
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { riverMap.width - 1, y });
         }
 
         for (int32_t x = 1; x < riverMap.width - 1; x++)
         {
-            const TileCoordsXY top{ x, 0 };
-            postProcessTile(riverMap, settings, queue, visited, top);
-
-            const TileCoordsXY bottom{ x, riverMap.height - 1 };
-            postProcessTile(riverMap, settings, queue, visited, bottom);
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, 0 });
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, riverMap.height - 1 });
         }
 
         while (!queue.empty())
         {
-            const TileCoordsXY& pos = queue.front();
+            const QueueTile tile = queue.top();
+            queue.pop();
 
+            int32_t riverNeighbours = 0;
+            bool hasUpstreamNeighbours = false;
             for (const auto& offset : kNeighbourOffsets)
             {
-                const TileCoordsXY nPos{ pos + offset };
+                const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] == Mask::True)
+                if (!riverMap.contains(nPos))
                 {
                     continue;
                 }
 
-                postProcessTile(riverMap, settings, queue, visited, nPos);
+                if (visited[nPos] == Mask::True)
+                {
+                    riverNeighbours++;
+                    continue;
+                }
+
+                if (postProcessTile(context, queue, visited, backrefMap, tile.pos, nPos))
+                {
+                    riverNeighbours++;
+                    hasUpstreamNeighbours = true;
+                }
             }
 
-            queue.pop();
+            neighbourCounts[tile.pos] = riverNeighbours;
+            if (!hasUpstreamNeighbours && riverNeighbours == 1 && riverMap[tile.pos].isFilled)
+            {
+                springs.push(tile.pos);
+            }
         }
+
+        bool wololo= true;
+
+        int32_t springsFound = springs.size();
+        int32_t springsPruned = 0;
+
+        while (!springs.empty() && wololo)
+        {
+            const TileCoordsXY spring = springs.front();
+            springs.pop();
+
+            float pathLength = 0.0f;
+
+            std::optional<TileCoordsXY> currentTile = std::make_optional(spring);
+
+            while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 2)
+            {
+                pathLength++;
+                currentTile = backrefMap[currentTile.value()];
+            }
+
+            currentTile = std::make_optional(spring);
+
+            if (pathLength <= kShortStreamMaxPruneLength)
+            {
+                while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 2)
+                {
+                    riverMap[currentTile.value()].isRiver = false;
+                    currentTile = backrefMap[currentTile.value()];
+                }
+
+                springsPruned++;
+            }
+        }
+
+        LOG_INFO("%d springs found, %d pruned", springsFound, springsPruned);
+
     }
 
-    static void ensureCardinalNeighbours(MapGenCtx& context)
+    static void prepareRiverQueue(MapGenCtx& context, StableTileQueue& queue, MaskMap& visited)
     {
         auto& heightMap = context.heightMap;
         auto& riverMap = context.riverMap.value();
-
-        StableTileQueue queue;
-        BaseMap<int8_t> visited(riverMap.width, riverMap.height);
 
         for (int32_t y = 0; y < riverMap.height; y++)
         {
@@ -223,14 +289,14 @@ namespace OpenRCT2::World::MapGenerator
             if (riverMap[left].isRiver)
             {
                 queue.emplace(left, heightMap[left]);
-                visited[left] = 1;
+                visited[left] = Mask::True;
             }
 
             const TileCoordsXY right{ riverMap.width - 1, y };
             if (riverMap[right].isRiver)
             {
                 queue.emplace(right, heightMap[right]);
-                visited[right] = 1;
+                visited[right] = Mask::True;
             }
         }
 
@@ -240,16 +306,26 @@ namespace OpenRCT2::World::MapGenerator
             if (riverMap[top].isRiver)
             {
                 queue.emplace(top, heightMap[top]);
-                visited[top] = 1;
+                visited[top] = Mask::True;
             }
 
             const TileCoordsXY bottom{ x, riverMap.height - 1 };
             if (riverMap[bottom].isRiver)
             {
                 queue.emplace(bottom, heightMap[bottom]);
-                visited[bottom] = 1;
+                visited[bottom] = Mask::True;
             }
         }
+    }
+
+    static void ensureCardinalNeighbours(MapGenCtx& context)
+    {
+        auto& heightMap = context.heightMap;
+        auto& riverMap = context.riverMap.value();
+
+        StableTileQueue queue;
+        MaskMap visited(riverMap.width, riverMap.height);
+        prepareRiverQueue(context, queue, visited);
 
         while (!queue.empty())
         {
@@ -260,13 +336,13 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] > 0 || !riverMap[nPos].isRiver)
+                if (!riverMap.contains(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
                 {
                     continue;
                 }
 
                 queue.emplace(nPos, heightMap[nPos]);
-                visited[nPos] = 1;
+                visited[nPos] = Mask::True;
 
                 const TileCoordsXY sharedCardinalNeighbours[] = {
                     TileCoordsXY{ 0, offset.y },
@@ -297,7 +373,7 @@ namespace OpenRCT2::World::MapGenerator
                     heightMap[scnPos] = heightMap[tile.pos];
                     riverMap[scnPos].catchment = context.settings.catchmentThreshold;
                     riverMap[scnPos].isRiver = true;
-                    visited[scnPos] = 1;
+                    visited[scnPos] = Mask::True;
                 }
             }
 
@@ -305,20 +381,20 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] > 0 || !riverMap[nPos].isRiver)
+                if (!riverMap.contains(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
                 {
                     continue;
                 }
 
                 queue.emplace(nPos, heightMap[nPos]);
-                visited[nPos] = 1;
+                visited[nPos] = Mask::True;
             }
         }
     }
 
     static void postProcessCatchment(MapGenCtx& context)
     {
-        removeOrphans(context);
+        removeOrphansAndShortStreams(context);
         ensureCardinalNeighbours(context);
     }
 
@@ -434,7 +510,7 @@ namespace OpenRCT2::World::MapGenerator
 
                 riverMap[pos].isRiverbed = true;
 
-                const float radius = 0.75f * std::log2(riverMap[pos].catchment / (0.5f * settings.catchmentThreshold));
+                const float radius =  std::log2(riverMap[pos].catchment / settings.catchmentThreshold);
 
                 const float radiusSquared = radius * radius;
 

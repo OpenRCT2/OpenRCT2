@@ -242,7 +242,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::uint32_t seedOffset;
     };
 
-    using TextureResult = TextureEffect;
+    struct TextureResult
+    {
+        std::optional<ObjectEntryIndex> landTexture;
+        std::optional<ObjectEntryIndex> edgeTexture;
+    };
 
     struct SceneryResultItem
     {
@@ -253,6 +257,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     using QuadSceneryItems = std::array<std::optional<SceneryResultItem>, 4>;
     using SceneryResult = std::variant<SceneryResultItem, QuadSceneryItems>;
+    using MaybeSceneryResult = std::optional<SceneryResult>;
 
     struct TextureRule
     {
@@ -279,10 +284,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
     using SceneryRuleList = std::vector<SceneryRule>;
 
     template<typename R>
-    using Callback = std::function<void(const TileCoordsXY&, const std::optional<R>&)>;
+    using Callback = std::function<void(const TileCoordsXY&, const R&)>;
 
     void evaluateTextureRules(const MapGenCtx& settings, const Callback<TextureResult>& callback);
-    void evaluateSceneryRules(const MapGenCtx& settings, const Callback<SceneryResult>& callback);
+    void evaluateSceneryRules(const MapGenCtx& settings, const Callback<MaybeSceneryResult>& callback);
 
     void createDefaultTextureRules(Settings& settings);
     void createNewTextureRule(Settings& settings);

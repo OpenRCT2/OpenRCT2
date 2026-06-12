@@ -10,6 +10,7 @@
 #include "Rule.h"
 
 #include "../../../Context.h"
+#include "../../../Diagnostic.h"
 #include "../../../GameState.h"
 #include "../../../localisation/Formatting.h"
 #include "../../../object/ObjectEntryManager.h"
@@ -498,8 +499,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return true;
     }
 
-    static std::optional<TextureResult> textureResultFromRulesAt(const TextureRuleList& rules, EvaluationContext& ctx)
+    static TextureResult textureResultFromRulesAt(const TextureRuleList& rules, EvaluationContext& ctx)
     {
+        TextureResult result;
+
         for (int32_t r = static_cast<int32_t>(rules.size()) - 1; r >= 0; --r)
         {
             auto& rule = rules[r];
@@ -511,11 +514,24 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
             if (evaluateConditions(ctx, r, rule.conditions))
             {
-                return std::make_optional(rule.effect);
+                if (rule.effect.applyLandTexture && !result.landTexture.has_value())
+                {
+                    result.landTexture = std::make_optional<>(rule.effect.landTexture);
+                }
+
+                if (rule.effect.applyEdgeTexture && !result.edgeTexture.has_value())
+                {
+                    result.edgeTexture = std::make_optional<>(rule.effect.edgeTexture);
+                }
+
+                if (result.landTexture.has_value() && result.edgeTexture.has_value())
+                {
+                    break;
+                }
             }
         }
 
-        return std::nullopt;
+        return result;
     }
 
     static std::optional<SceneryResultItem> sceneryResultFromRuleEffect(
@@ -539,7 +555,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return std::make_optional(result);
     }
 
-    static std::optional<SceneryResult> sceneryResultFromRulesAt(const SceneryRuleList& rules, EvaluationContext& ctx)
+    static MaybeSceneryResult sceneryResultFromRulesAt(const SceneryRuleList& rules, EvaluationContext& ctx)
     {
         std::array<uint8_t, 4> quadIndices = { 0, 1, 2, 3 };
         std::ranges::shuffle(quadIndices, ctx.quadPrng);
@@ -651,8 +667,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     template<typename RR, typename RL>
     static void processRules(
         const MapGenCtx& genCtx, const RL& rules, EvaluationContext& evalCtx,
-        const std::function<std::optional<RR>(const RL& rules, EvaluationContext& ctx)>& evaluateAtFn,
-        const Callback<RR>& callback)
+        const std::function<RR(const RL& rules, EvaluationContext& ctx)>& evaluateAtFn,
+        const std::function<void(TileCoordsXY, RR)>& callback)
     {
         auto& gameState = getGameState();
         for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
@@ -719,7 +735,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         processRules<TextureResult, TextureRuleList>(genCtx, genCtx.settings.textureRules, evalCtx, textureResultFromRulesAt, callback);
     }
 
-    void evaluateSceneryRules(const MapGenCtx& genCtx, const Callback<SceneryResult>& callback)
+    void evaluateSceneryRules(const MapGenCtx& genCtx, const Callback<MaybeSceneryResult>& callback)
     {
         EvaluationContext evalCtx{};
         initEvaluationContextGlobals(genCtx, evalCtx);
@@ -741,7 +757,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             }
         }
 
-        processRules<SceneryResult, SceneryRuleList>(genCtx, genCtx.settings.sceneryRules, evalCtx, sceneryResultFromRulesAt, callback);
+        processRules<MaybeSceneryResult, SceneryRuleList>(genCtx, genCtx.settings.sceneryRules, evalCtx, sceneryResultFromRulesAt, callback);
     }
 
     void createDefaultTextureRules(Settings& settings)

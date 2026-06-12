@@ -102,17 +102,15 @@ namespace OpenRCT2::World::MapGenerator
         auto defaultTextures = defaultRule.effect;
 
         Rule::Callback<Rule::TextureResult> callback =
-            [defaultTextures](const TileCoordsXY& coords, const std::optional<Rule::TextureResult>& result) {
+            [defaultTextures](const TileCoordsXY& coords, const Rule::TextureResult& result) {
                 auto* element = MapGetSurfaceElementAt(coords);
                 if (element == nullptr)
                 {
                     return;
                 }
 
-                auto actual = result.value_or(defaultTextures);
-
-                element->setSurfaceObjectIndex(actual.applyLandTexture ? actual.landTexture : defaultTextures.landTexture);
-                element->setEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
+                element->setSurfaceObjectIndex(result.landTexture.value_or(defaultTextures.landTexture));
+                element->setEdgeObjectIndex(result.edgeTexture.value_or(defaultTextures.edgeTexture));
             };
 
         Rule::evaluateTextureRules(context, callback);
@@ -120,8 +118,8 @@ namespace OpenRCT2::World::MapGenerator
 
     static void placeSceneryFromRules(const MapGenCtx& context)
     {
-        Rule::Callback<Rule::SceneryResult> callback = [](const TileCoordsXY& coords,
-                                                          const std::optional<Rule::SceneryResult>& result) {
+        Rule::Callback<Rule::MaybeSceneryResult> callback = [](const TileCoordsXY& coords,
+                                                          const Rule::MaybeSceneryResult& result) {
             if (result.has_value())
             {
                 placeScenery(coords, result.value());

@@ -3892,7 +3892,7 @@ STR_7115    :Rule name
 STR_7116    :Remove
 STR_7117    :Edit
 STR_7118    :Add ▼
-STR_7119    :For each tile the rules are evaluated top to bottom, applying the land and edge style of the first matching rule or, if unset, the respective default rule style.
+STR_7119    :For each tile the rules are evaluated top to bottom, applying the land or edge style of the first matching rule independently.
 STR_7120    :Edit condition
 STR_7121    :{STRINGID} {STRINGID} {LENGTH}
 STR_7122    :Seed offset:
@@ -3909,7 +3909,7 @@ STR_7132    :Enter {STRINGID} [{LENGTH}..{LENGTH}]
 STR_7133    :Enter {STRINGID} [{COMMA2DP32}..{COMMA2DP32}]
 STR_7140    :Items
 STR_7141    :Select
-STR_7142    :For each tile the rules are evaluated top to bottom, placing a foliage element from the pool of first matching rule. If the pool is empty no item is placed.
+STR_7142    :For each tile the rules are evaluated top to bottom, placing an element from the pool of the first matching rule. If the pool is empty no item is placed.
 STR_7143    :Select scenery
 STR_7144    :{UINT16}x
 STR_7145    :Land style
