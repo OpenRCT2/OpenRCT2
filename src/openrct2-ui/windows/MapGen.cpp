@@ -121,6 +121,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_LEVEL = TAB_BEGIN,
         WIDX_WATER_LEVEL_UP,
         WIDX_WATER_LEVEL_DOWN,
+        WIDX_WATER_RIVERS_ENABLE,
+        WIDX_WATER_RIVERS_CATCHMENT,
+        WIDX_WATER_RIVERS_CATCHMENT_UP,
+        WIDX_WATER_RIVERS_CATCHMENT_DOWN,
 
         WIDX_RULE_TX_NEW = TAB_BEGIN,
         WIDX_RULE_TX_NEW_PRESET,
@@ -220,7 +224,9 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kWaterWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
-        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ) // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeWidget                ({ 10,  70}, {136, 12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_ENABLE, STR_WATER_RIVERS_ENABLE),
+        makeHoldableSpinnerWidgets({179,  86}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ) // NB: 3 widgets
     );
 
     static constexpr auto kTextureWidgets = makeWidgets(
@@ -2947,6 +2953,21 @@ namespace OpenRCT2::Ui::Windows
                         _settings.waterLevel, 6);
                     break;
                 }
+                case WIDX_WATER_RIVERS_CATCHMENT:
+                {
+                    Formatter ft;
+                    ft.Add<int32_t>(1);
+                    ft.Add<int32_t>(std::exp2(20));
+                    WindowTextInputOpen(
+                        this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft, STR_FORMAT_INTEGER,
+                        _settings.catchmentThreshold, 7);
+                    break;
+                }
+                case WIDX_WATER_RIVERS_ENABLE:
+                    _settings.generateRivers = !_settings.generateRivers;
+                    setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.normalizeHeight);
+                    invalidate();
+                    break;
 
             }
         }
@@ -2961,6 +2982,14 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_WATER_LEVEL_DOWN:
                     _settings.waterLevel = std::max<int32_t>(_settings.waterLevel - 2, kMinimumWaterHeight);
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_CATCHMENT_UP:
+                    _settings.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold)+1), std::exp2(20));
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_CATCHMENT_DOWN:
+                    _settings.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold)-1), 1);
                     invalidate();
                     break;
             }
@@ -2981,6 +3010,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_LEVEL:
                     _settings.waterLevel = value;
                     break;
+                case WIDX_WATER_RIVERS_CATCHMENT:
+                    _settings.catchmentThreshold = std::clamp<int32_t>(value, 1, std::exp2(20));
+                    break;
             }
 
             invalidate();
@@ -2988,6 +3020,11 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
+            setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.generateRivers);
+
+            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_UP, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_DOWN, !_settings.generateRivers);
         }
 
         void WaterDraw(RenderTarget& rt)
@@ -2996,6 +3033,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImages(rt);
 
             const auto textColour = colours[1];
+            const auto disabledColour = textColour.withFlag(ColourFlag::inset, true);
 
             drawText(
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, { textColour });
@@ -3005,6 +3043,18 @@ namespace OpenRCT2::Ui::Windows
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
+
+            const auto catchmentColour = isWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT) ? disabledColour : textColour;
+
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_WATER_RIVERS_CATCHMENT,
+                { catchmentColour });
+
+            ft = Formatter();
+            ft.Add<int32_t>(_settings.catchmentThreshold);
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_CATCHMENT].left + 1,
+                widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_FORMAT_INTEGER, ft, { catchmentColour });
         }
 
 #pragma endregion
@@ -3214,7 +3264,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Take care of unit conversion
-            if (page != WINDOW_MAPGEN_PAGE_BASE)
+            if (page != WINDOW_MAPGEN_PAGE_BASE
+                && !(page == WINDOW_MAPGEN_PAGE_WATER && widgetIndex == WIDX_WATER_RIVERS_CATCHMENT))
             {
                 switch (Config::Get().general.measurementFormat)
                 {

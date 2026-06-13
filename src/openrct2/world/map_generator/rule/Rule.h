@@ -111,6 +111,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         DistanceMap distanceToWater;
         DistanceMap distanceToRiver;
         DistanceMap distanceToRiverbed;
+        DistanceMap distanceToFill;
+        DistanceMap distanceToBreach;
         DistanceMap distanceToBorder;
 
         // per tile
@@ -135,7 +137,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
         MapBorder,
         Water,
         River,
-        Riverbed
+        Riverbed,
+        Fill,
+        Breach
     };
 
     enum class Type : uint16_t

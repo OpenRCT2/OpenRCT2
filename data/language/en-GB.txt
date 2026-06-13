@@ -3946,3 +3946,6 @@ STR_7181    :Weak
 STR_7182    :Strong
 STR_7183    :Sharpen
 STR_7184    :Terrace
+STR_7190    :Generate rivers
+STR_7191    :Catchment threshold
+STR_7192    :Enter catchment threshold between {INT32} and {INT32}

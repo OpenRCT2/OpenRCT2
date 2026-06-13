@@ -202,6 +202,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static void computeNormalMap(const MapGenCtx& genCtx, NormalMap& normalMap)
     {
         // TODO actually compute the normal
+        normalMap = NormalMap{genCtx.heightMap.width, genCtx.heightMap.height};
         normalMap.fill({0.0f, 0.0f, 1.0f});
     }
 
@@ -238,35 +239,38 @@ namespace OpenRCT2::World::MapGenerator::Rule
         maskMap[pos] = Mask::True;
     }
 
-    static void computeWaterDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap)
+    static void computeWaterDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
-        distanceMap.fill(std::numeric_limits<float>::infinity());
+        evalCtx.distanceToWater = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
+        evalCtx.distanceToWater.fill(std::numeric_limits<float>::infinity());
 
         StableTileQueue queue;
-        MaskMap visited{distanceMap.width, distanceMap.height};
+        MaskMap visited{evalCtx.distanceToWater.width, evalCtx.distanceToWater.height};
 
-        for (int32_t y = 0; y < distanceMap.height; y++)
+        for (int32_t y = 0; y < evalCtx.distanceToWater.height; y++)
         {
-            for (int32_t x = 0; x < distanceMap.width; x++)
+            for (int32_t x = 0; x < evalCtx.distanceToWater.width; x++)
             {
                 const TileCoordsXY pos{ x, y };
 
                 if (genCtx.heightMap[pos] < genCtx.settings.waterLevel) // correct?
                 {
-                    initZeroDistance(pos, distanceMap, queue, visited);
+                    initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
                 else if (genCtx.riverMap.has_value() && genCtx.riverMap.value()[pos].isRiver)
                 {
-                    initZeroDistance(pos, distanceMap, queue, visited);
+                    initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
             }
         }
 
-        completeDistanceMap(distanceMap, queue, visited);
+        completeDistanceMap(evalCtx.distanceToWater, queue, visited);
     }
 
-    static void computeRiverDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap)
+    static void computeRiverStateBasedDistanceMap(
+        const MapGenCtx& genCtx, DistanceMap& distanceMap, const std::function<bool(const RiverState&)>& featureMapFn)
     {
+        distanceMap = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
         distanceMap.fill(std::numeric_limits<float>::infinity());
 
         if (!genCtx.riverMap.has_value())
@@ -284,7 +288,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (riverMap[pos].isRiver){
+                if (featureMapFn(riverMap[pos])){
                     initZeroDistance(pos, distanceMap, queue, visited);
                 }
             }
@@ -293,60 +297,33 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(distanceMap, queue, visited);
     }
 
-    static void computeRiverbedDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap)
+    static void computeBorderDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
-        distanceMap.fill(std::numeric_limits<float>::infinity());
-
-        if (!genCtx.riverMap.has_value())
-        {
-            return;
-        }
-
-        const auto& riverMap = genCtx.riverMap.value();
-        StableTileQueue queue;
-        MaskMap visited{distanceMap.width, distanceMap.height};
-
-        for (int32_t y = 0; y < distanceMap.height; y++)
-        {
-            for (int32_t x = 0; x < distanceMap.width; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-
-                if (riverMap[pos].isRiverbed){
-                    initZeroDistance(pos, distanceMap, queue, visited);
-                }
-            }
-        }
-
-        completeDistanceMap(distanceMap, queue, visited);
-    }
-
-    static void computeBorderDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap)
-    {
-        distanceMap.fill(std::numeric_limits<float>::infinity());
+        evalCtx.distanceToBorder = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
+        evalCtx.distanceToBorder.fill(std::numeric_limits<float>::infinity());
 
         StableTileQueue queue;
-        MaskMap visited{distanceMap.width, distanceMap.height};
+        MaskMap visited{evalCtx.distanceToBorder.width, evalCtx.distanceToBorder.height};
 
-        for (int32_t y = 0; y < distanceMap.height; y++)
+        for (int32_t y = 0; y < evalCtx.distanceToBorder.height; y++)
         {
             const TileCoordsXY left{ 0, y };
-            initZeroDistance(left, distanceMap, queue, visited);
+            initZeroDistance(left, evalCtx.distanceToBorder, queue, visited);
 
-            const TileCoordsXY right{ distanceMap.width - 1, y };
-            initZeroDistance(right, distanceMap, queue, visited);
+            const TileCoordsXY right{ evalCtx.distanceToBorder.width - 1, y };
+            initZeroDistance(right, evalCtx.distanceToBorder, queue, visited);
         }
 
-        for (int32_t x = 1; x < distanceMap.width - 1; x++)
+        for (int32_t x = 1; x < evalCtx.distanceToBorder.width - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            initZeroDistance(top, distanceMap, queue, visited);
+            initZeroDistance(top, evalCtx.distanceToBorder, queue, visited);
 
-            const TileCoordsXY bottom{ x, distanceMap.height - 1 };
-            initZeroDistance(bottom, distanceMap, queue, visited);
+            const TileCoordsXY bottom{ x, evalCtx.distanceToBorder.height - 1 };
+            initZeroDistance(bottom, evalCtx.distanceToBorder, queue, visited);
         }
 
-        completeDistanceMap(distanceMap, queue, visited);
+        completeDistanceMap(evalCtx.distanceToBorder, queue, visited);
     }
 
     template<typename T>
@@ -419,6 +396,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         break;
                     case Feature::Riverbed:
                         distanceActual = ctx.distanceToRiverbed[ctx.coords];
+                        break;
+                    case Feature::Fill:
+                        distanceActual = ctx.distanceToFill[ctx.coords];
+                        break;
+                    case Feature::Breach:
+                        distanceActual = ctx.distanceToBreach[ctx.coords];
                         break;
                 }
 
@@ -700,20 +683,13 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.quadPrng = std::mt19937(genCtx.settings.seed + 4);
 
-        evalCtx.normalMap = NormalMap{genCtx.heightMap.width, genCtx.heightMap.height};
         computeNormalMap(genCtx, evalCtx.normalMap);
-
-        evalCtx.distanceToWater = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
-        computeWaterDistanceMap(genCtx, evalCtx.distanceToWater);
-
-        evalCtx.distanceToRiver = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
-        computeRiverDistanceMap(genCtx, evalCtx.distanceToRiver);
-
-        evalCtx.distanceToRiverbed = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
-        computeRiverbedDistanceMap(genCtx, evalCtx.distanceToRiverbed);
-
-        evalCtx.distanceToBorder = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
-        computeBorderDistanceMap(genCtx, evalCtx.distanceToBorder);
+        computeWaterDistanceMap(genCtx, evalCtx);
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiver, [](const RiverState& rs){return rs.isRiver;});
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, [](const RiverState& rs){return rs.isRiverbed;});
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToFill, [](const RiverState& rs){return rs.isFilled;});
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToBreach, [](const RiverState& rs){return rs.isBreached;});
+        computeBorderDistanceMap(genCtx, evalCtx);
     }
 
     void evaluateTextureRules(const MapGenCtx& genCtx, const Callback<TextureResult>& callback)
