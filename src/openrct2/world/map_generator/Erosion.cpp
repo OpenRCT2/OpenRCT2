@@ -121,8 +121,7 @@ namespace OpenRCT2::World::MapGenerator
                 auto updatedPosition = particle.position.AsTileCoordsXY();
 
                 // check if particle is still within map/border
-                if (updatedPosition.x < 1 || updatedPosition.y < 1 || updatedPosition.x >= heightMap.width - 1
-                    || updatedPosition.y >= heightMap.height - 1)
+                if (!heightMap.inBounds(updatedPosition))
                 {
                     break;
                 }

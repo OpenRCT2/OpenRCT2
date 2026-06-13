@@ -38,13 +38,13 @@ namespace OpenRCT2::World::MapGenerator
 
     /**
      *
-     * Fill up or breach out of depressions in the heightmap to ensure there is a valid downhill path for rivers to follow.
+     * Fill up or breach out of depressions in the heightmap to ensure there is a strictly monotonic downhill path for rivers
+     * to follow.
      *
      * based on
      *
-     * Lindsay, J.B., 2016. Efficient hybrid breaching-filling sink removal methods for flow path enforcement in digital
-     * elevation models: Efficient Hybrid Sink Removal Methods for Flow Path Enforcement. Hydrological Processes 30, 846--857.
-     *
+     * Lindsay, J.B., 2016. Efficient hybrid breaching‐filling sink removal methods for flow path enforcement in digital
+     * elevation models. Hydrological Processes, 30(6), pp.846-857.
      */
     static void fillOrBreachDepressions(MapGenCtx& context)
     {
@@ -97,7 +97,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ c.pos + offset };
 
-                if (!heightMap.contains(nPos) || state[nPos].processed)
+                if (!heightMap.inBounds(nPos) || state[nPos].processed)
                 {
                     continue;
                 }
@@ -145,13 +145,17 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        // fill depressions while maintaining height gradient
+        // fill depressions
         while (!tilesToFill.empty())
         {
             const TileCoordsXY& toFill = tilesToFill.front();
             if (state[toFill].backref.has_value())
             {
-                auto prev = state[toFill].backref.value();
+                const TileCoordsXY& prev = state[toFill].backref.value();
+
+                // The fill queue is populated in the lowest path order, encountering a node that is lower than the previous
+                // node at this point means no breach was found and the depression needs to be filled. To maintain the overall
+                // height gradient adjust height to just above the prev node
                 if (heightMap[toFill] <= heightMap[prev])
                 {
                     heightMap[toFill] = std::nextafter(heightMap[prev], std::numeric_limits<float>::infinity());
@@ -166,13 +170,11 @@ namespace OpenRCT2::World::MapGenerator
     {
         const bool isCardinal = from.x == 0 || from.y == 0 || to.x == 0 || to.y == 0;
         const float distance = isCardinal ? 1.0f : std::numbers::sqrt2;
-        const float heightFrom = heightMap[from];
-        const float heightTo = heightMap[to];
-        const float delta = (heightFrom - heightTo) / distance;
-        return std::max(0.0f, std::pow(delta, kP));
+        const float slope = (heightMap[from] - heightMap[to]) / distance;
+        return std::max(0.0f, std::pow(slope, kP));
     }
 
-    static float fractionalFlow(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
+    static float flowFraction(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
     {
         float sum = 0.0f;
 
@@ -180,7 +182,7 @@ namespace OpenRCT2::World::MapGenerator
         {
             TileCoordsXY nPos{ from + offset };
 
-            if (!heightMap.contains(nPos))
+            if (!heightMap.inBounds(nPos))
             {
                 continue;
             }
@@ -203,17 +205,17 @@ namespace OpenRCT2::World::MapGenerator
             {
                 TileCoordsXY nPos{ pos + offset };
 
-                if (!heightMap.contains(nPos))
+                if (!heightMap.inBounds(nPos))
                 {
                     continue;
                 }
 
                 if (heightMap[nPos] > heightMap[pos])
                 {
-                    const float flowFraction = std::max(0.0f, fractionalFlow(heightMap, nPos, pos));
+                    const float neighbourFraction = flowFraction(heightMap, nPos, pos);
                     const float neighbourCatchment = aggregateNeighbour(context, nPos);
-                    const float fractionalContribution = flowFraction * neighbourCatchment;
-                    riverMap[pos].catchment += fractionalContribution;
+                    const float neighbourContribution = neighbourFraction * neighbourCatchment;
+                    riverMap[pos].catchment += neighbourContribution;
                 }
             }
         }
@@ -304,7 +306,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos))
+                if (!riverMap.inBounds(nPos))
                 {
                     continue;
                 }
@@ -406,9 +408,64 @@ namespace OpenRCT2::World::MapGenerator
     }
 
     /**
+     * Slightly widen the river in proportion to the catchment.
+     */
+    static void adjustStreamWidth(MapGenCtx& context)
+    {
+        auto& settings = context.settings;
+        auto& heightMap = context.heightMap;
+        auto& riverMap = context.riverMap.value();
+
+        StableTileQueue queue;
+        MaskMap visited(riverMap.width, riverMap.height);
+        prepareRiverQueue(context, queue, visited);
+
+        while (!queue.empty())
+        {
+            const QueueTile tile = queue.top();
+            queue.pop();
+
+            for (const auto& offset : kNeighbourOffsets)
+            {
+                const TileCoordsXY nPos{ tile.pos + offset };
+
+                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
+                {
+                    continue;
+                }
+
+                queue.emplace(nPos, heightMap[nPos]);
+                visited[nPos] = Mask::True;
+            }
+
+            const float radius = 0.75f * std::log2(std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold));;
+            const float radiusSquared = radius * radius;
+
+            for (int32_t dy = -radius; dy <= radius; dy++)
+            {
+                for (int32_t dx = -radius; dx <= radius; dx++)
+                {
+                    TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
+
+                    int32_t distance = dx * dx + dy * dy;
+                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared || riverMap[deltaPos].isRiver)
+                    {
+                        continue;
+                    }
+
+                    float riverHeight = std::min(heightMap[tile.pos], heightMap[deltaPos]);
+                    heightMap[deltaPos] = riverHeight;
+                    riverMap[deltaPos].isRiver = true;
+                    visited[deltaPos] = Mask::True;
+                }
+            }
+        }
+    }
+
+
+
+    /**
      * Ensure diagonal channels render nicely by asserting each river tile has at least one cardinal river neighbour.
-     *
-     * TODO this should work without the queue.
      */
     static void ensureCardinalNeighbours(MapGenCtx& context)
     {
@@ -428,7 +485,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
+                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
                 {
                     continue;
                 }
@@ -473,7 +530,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.contains(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
+                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
                 {
                     continue;
                 }
@@ -486,7 +543,7 @@ namespace OpenRCT2::World::MapGenerator
 
     /**
      * Carve a riverbed around the river on flat parts with increasing width based on the tile catchment.
-     * TODO widen and deepen river in proportion to catchment
+     * TODO deepen river in proportion to catchment
      */
     static void carveRiverbed(MapGenCtx& context)
     {
@@ -529,7 +586,7 @@ namespace OpenRCT2::World::MapGenerator
                         TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
 
                         int32_t distance = dx * dx + dy * dy;
-                        if (!heightMap.contains(deltaPos) || distance > radiusSquared)
+                        if (!heightMap.inBounds(deltaPos) || distance > radiusSquared)
                         {
                             continue;
                         }
@@ -555,6 +612,7 @@ namespace OpenRCT2::World::MapGenerator
         fillOrBreachDepressions(context);
         aggregateCatchment(context);
         postProcessCatchment(context);
+        adjustStreamWidth(context);
         ensureCardinalNeighbours(context);
         carveRiverbed(context);
     }

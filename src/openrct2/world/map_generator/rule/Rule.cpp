@@ -220,7 +220,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
                 const float distance = tile.value + sqrt(offset.x * offset.x + offset.y * offset.y);
 
-                if (!distanceMap.contains(nPos) || visited[nPos] == Mask::True || distance >= distanceMap[nPos])
+                if (!distanceMap.inBounds(nPos) || visited[nPos] == Mask::True || distance >= distanceMap[nPos])
                 {
                     continue;
                 }
