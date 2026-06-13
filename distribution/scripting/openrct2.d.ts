@@ -4285,7 +4285,7 @@ declare global {
          * Spawns a new guest at a random peep spawn point.
          * Note: The "guest.generation" hook will be called before this function returns.
          */
-        generateGuest(): Guest;
+        generateGuest(): Guest | null;
 
         /**
          * The average amount of cash guests will spawn with.
