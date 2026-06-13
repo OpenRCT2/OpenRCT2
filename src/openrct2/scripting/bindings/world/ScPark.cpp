@@ -161,6 +161,8 @@ namespace OpenRCT2::Scripting
     {
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto guest = Park::GenerateGuest();
+        if (guest == nullptr)
+            return JS_NULL;
         return ScGuest::New(ctx, guest->id);
     }
 
