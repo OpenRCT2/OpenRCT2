@@ -909,9 +909,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static Condition aboveWater()
     {
         return Condition{ .enabled = true,
-                          .type = Type::HeightRelativeToWater,
-                          .predicate = Predicate::GreaterThanOrEqual,
-                          .data = HeightData{ .height = 0 } };
+                          .type = Type::DistanceToFeature,
+                          .predicate = Predicate::GreaterThan,
+                          .data = DistanceToFeatureData{ .feature = Feature::Water, .distance = 0 } };
     }
 
     static Condition onSurface(const std::span<const std::string_view> styles)

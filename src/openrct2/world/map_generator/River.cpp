@@ -542,8 +542,8 @@ namespace OpenRCT2::World::MapGenerator
     }
 
     /**
-     * Carve a riverbed around the river on flat parts with increasing width based on the tile catchment.
-     * TODO deepen river in proportion to catchment
+     * Carve a riverbed around the river increasing with catchment.
+     * TODO also deepen river with catchment
      */
     static void carveRiverbed(MapGenCtx& context)
     {
@@ -553,56 +553,56 @@ namespace OpenRCT2::World::MapGenerator
 
         HeightMap heightCopy = heightMap;
 
-        for (int32_t y = 0; y < heightMap.height; y++)
-        {
-            for (int32_t x = 0; x < heightMap.width; x++)
-            {
-                const TileCoordsXY pos{ x, y };
+        StableTileQueue queue;
+        MaskMap visited(riverMap.width, riverMap.height);
+        prepareRiverQueue(context, queue, visited);
 
-                if (!riverMap[pos].isRiver)
+        while (!queue.empty())
+        {
+            const QueueTile tile = queue.top();
+            queue.pop();
+
+            heightMap[tile.pos] = heightCopy[tile.pos] - 4.0f;
+            riverMap[tile.pos].isRiverbed = true;
+
+            const float radius = std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold);
+            const float radiusMinusOne = radius - 1.0f;
+            const float radiusSquared = radius * radius;
+            const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
+
+            for (int32_t dy = -radius; dy <= radius; dy++)
+            {
+                for (int32_t dx = -radius; dx <= radius; dx++)
+                {
+                    const TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
+                    const auto distance = dx * dx + dy * dy;
+
+                    if (!heightMap.inBounds(deltaPos) || riverMap[deltaPos].isRiver || distance > radiusSquared)
+                    {
+                        continue;
+                    }
+
+                    const float riverbedHeight = heightCopy[deltaPos] - 2.0f;
+                    heightMap[deltaPos] = riverbedHeight;
+
+                    if (distance <= radiusMinusOneSquared && riverMap[deltaPos].isFilled)
+                    {
+                        riverMap[deltaPos].isRiverbed = true;
+                    }
+                }
+            }
+
+            for (const auto& offset : kNeighbourOffsets)
+            {
+                const TileCoordsXY nPos{ tile.pos + offset };
+
+                if (!heightMap.inBounds(nPos) || !riverMap[nPos].isRiver || visited[nPos] == Mask::True)
                 {
                     continue;
                 }
 
-                float riverHeight = heightCopy[pos] - 4.0f;
-                if (riverHeight < heightMap[pos])
-                {
-                    heightMap[pos] = riverHeight;
-                }
-                else
-                {
-                    riverHeight = heightMap[pos];
-                }
-
-                riverMap[pos].isRiverbed = true;
-
-                const float radius = std::log2(riverMap[pos].catchment / settings.catchmentThreshold);
-                const float radiusSquared = radius * radius;
-
-                for (int32_t dy = -radius; dy <= radius; dy++)
-                {
-                    for (int32_t dx = -radius; dx <= radius; dx++)
-                    {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
-
-                        int32_t distance = dx * dx + dy * dy;
-                        if (!heightMap.inBounds(deltaPos) || distance > radiusSquared)
-                        {
-                            continue;
-                        }
-
-                        float riverbedHeight = heightCopy[deltaPos] - 2.0f;
-                        if (riverbedHeight < heightMap[deltaPos])
-                        {
-                            heightMap[deltaPos] = riverbedHeight;
-
-                            if (riverbedHeight - (riverHeight + 2.0f) < 1.0f && riverMap[deltaPos].isFilled)
-                            {
-                                riverMap[deltaPos].isRiverbed = true;
-                            }
-                        }
-                    }
-                }
+                queue.emplace(nPos, heightMap[nPos]);
+                visited[nPos] = Mask::True;
             }
         }
     }
