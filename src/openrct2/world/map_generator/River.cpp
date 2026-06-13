@@ -10,22 +10,19 @@
 #include "River.h"
 
 #include "../../Context.h"
+#include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "MapHelpers.h"
 #include "TileQueue.hpp"
-
-#include "../../Diagnostic.h"
 
 #include <numbers>
 
 namespace OpenRCT2::World::MapGenerator
 {
     static constexpr float kP = 1.1f;
-    static constexpr int32_t kShortStreamMaxPruneLength = 16;
+    static constexpr int32_t kMaxPruneLength = 16;
 
     using Backref = std::optional<TileCoordsXY>;
-    using BackrefMap = BaseMap<Backref>;
-    using NeighbourCountMap = BaseMap<int32_t>;
 
     struct TileState
     {
@@ -34,6 +31,10 @@ namespace OpenRCT2::World::MapGenerator
         bool processed = false;
         bool pit = false;
     };
+
+    using BackrefMap = BaseMap<Backref>;
+    using NeighbourCountMap = BaseMap<int32_t>;
+    using StateMap = BaseMap<TileState>;
 
     /**
      *
@@ -45,16 +46,16 @@ namespace OpenRCT2::World::MapGenerator
      * elevation models: Efficient Hybrid Sink Removal Methods for Flow Path Enforcement. Hydrological Processes 30, 846--857.
      *
      */
-    static void fillOrBreach(MapGenCtx& context)
+    static void fillOrBreachDepressions(MapGenCtx& context)
     {
         HeightMap& heightMap = context.heightMap;
         RiverMap& riverMap = context.riverMap.value();
 
-        BaseMap<TileState> state(heightMap.height, heightMap.width);
+        StateMap state(heightMap.height, heightMap.width);
         StableTileQueue queue;
         std::queue<TileCoordsXY> tilesToFill;
 
-        // Add edge tiles to queue and mark pits
+        // prepare queue and mark pits
         for (int32_t y = 0; y < heightMap.height; y++)
         {
             for (int32_t x = 0; x < heightMap.width; x++)
@@ -68,7 +69,7 @@ namespace OpenRCT2::World::MapGenerator
                     continue;
                 }
 
-                float minNeighbour = std::numeric_limits<float>::max();
+                float minNeighbour = std::numeric_limits<float>::infinity();
 
                 for (const auto& offset : kNeighbourOffsets)
                 {
@@ -77,6 +78,7 @@ namespace OpenRCT2::World::MapGenerator
                     minNeighbour = std::min(heightMap[nPos], minNeighbour);
                 }
 
+                // this is a pit, raise to just below the lowest neighbour to shorten/shallow potential breach path
                 if (heightMap[pos] < minNeighbour)
                 {
                     heightMap[pos] = std::nextafter(minNeighbour, std::numeric_limits<float>::lowest());
@@ -85,13 +87,12 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        // process tiles from queue
+        // process lowest tile from queue, moving inward from map edges and building up a lowest path graph
         while (!queue.empty())
         {
             const QueueTile c = queue.top();
             queue.pop();
 
-            // handle neighbours
             for (const auto& offset : kNeighbourOffsets)
             {
                 const TileCoordsXY nPos{ c.pos + offset };
@@ -115,7 +116,7 @@ namespace OpenRCT2::World::MapGenerator
                     std::optional<TileCoordsXY> currentTile = std::make_optional(nPos);
                     float targetHeight = heightMap[nPos];
 
-                    // trace path to lower tile along backlinks to get length and depth
+                    // trace path to lower tile along backref to get length and depth
                     while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
                     {
                         pathDepth = std::max(pathDepth, heightMap[currentTile.value()] - targetHeight);
@@ -128,7 +129,7 @@ namespace OpenRCT2::World::MapGenerator
                     currentTile = std::make_optional(nPos);
                     targetHeight = heightMap[nPos];
 
-                    // if the path limits are not exceeded, adjust height along path
+                    // if the path limits are not exceeded, adjust height along path to assert overall gradient is maintained
                     if (pathLength <= context.settings.breachMaxLength && pathDepth <= context.settings.breachMaxDepth)
                     {
                         while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
@@ -144,20 +145,99 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        // fill depressions
+        // fill depressions while maintaining height gradient
         while (!tilesToFill.empty())
         {
-            const TileCoordsXY& toFlood = tilesToFill.front();
-            if (state[toFlood].backref.has_value())
+            const TileCoordsXY& toFill = tilesToFill.front();
+            if (state[toFill].backref.has_value())
             {
-                auto parent = state[toFlood].backref.value();
-                if (heightMap[toFlood] <= heightMap[parent])
+                auto prev = state[toFill].backref.value();
+                if (heightMap[toFill] <= heightMap[prev])
                 {
-                    heightMap[toFlood] = std::nextafter(heightMap[parent], std::numeric_limits<float>::infinity());
-                    riverMap[toFlood].isFilled = true;
+                    heightMap[toFill] = std::nextafter(heightMap[prev], std::numeric_limits<float>::infinity());
+                    riverMap[toFill].isFilled = true;
                 }
             }
             tilesToFill.pop();
+        }
+    }
+
+    static float downSlope(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
+    {
+        const bool isCardinal = from.x == 0 || from.y == 0 || to.x == 0 || to.y == 0;
+        const float distance = isCardinal ? 1.0f : std::numbers::sqrt2;
+        const float heightFrom = heightMap[from];
+        const float heightTo = heightMap[to];
+        const float delta = (heightFrom - heightTo) / distance;
+        return std::max(0.0f, std::pow(delta, kP));
+    }
+
+    static float fractionalFlow(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
+    {
+        float sum = 0.0f;
+
+        for (const auto& offset : kNeighbourOffsets)
+        {
+            TileCoordsXY nPos{ from + offset };
+
+            if (!heightMap.contains(nPos))
+            {
+                continue;
+            }
+
+            sum += downSlope(heightMap, from, nPos);
+        }
+
+        return downSlope(heightMap, from, to) / sum;
+    }
+
+    static float aggregateNeighbour(MapGenCtx& context, const TileCoordsXY& pos)
+    {
+        auto& heightMap = context.heightMap;
+        auto& riverMap = context.riverMap.value();
+
+        if (riverMap[pos].catchment <= 0.0f)
+        {
+            riverMap[pos].catchment = 1.0f;
+            for (const auto& offset : kNeighbourOffsets)
+            {
+                TileCoordsXY nPos{ pos + offset };
+
+                if (!heightMap.contains(nPos))
+                {
+                    continue;
+                }
+
+                if (heightMap[nPos] > heightMap[pos])
+                {
+                    const float flowFraction = std::max(0.0f, fractionalFlow(heightMap, nPos, pos));
+                    const float neighbourCatchment = aggregateNeighbour(context, nPos);
+                    const float fractionalContribution = flowFraction * neighbourCatchment;
+                    riverMap[pos].catchment += fractionalContribution;
+                }
+            }
+        }
+        return riverMap[pos].catchment;
+    }
+
+    /**
+     * Recursively calculates the catchment (drainage basin) of each tile, catchment is passed down to lower neighbouring tiles
+     * in proportion to slope.
+     *
+     * based on
+     *
+     * Freeman, T.G., 1991. Calculating catchment area with divergent flow based on a regular grid. Computers & geosciences,
+     * 17(3), pp.413-422.
+     */
+    static void aggregateCatchment(MapGenCtx& context)
+    {
+        for (int32_t y = 0; y < context.heightMap.height; y++)
+        {
+            for (int32_t x = 0; x < context.heightMap.width; x++)
+            {
+                TileCoordsXY pos{ x, y };
+                aggregateNeighbour(context, pos);
+            }
         }
     }
 
@@ -180,18 +260,26 @@ namespace OpenRCT2::World::MapGenerator
         return true;
     }
 
-    static void removeOrphansAndShortStreams(MapGenCtx& context)
+    /**
+     * Applies the catchment threshold and removes artifacts. Orphans (possible due to the fractional nature of the catchment
+     * calculation) are implicitly removed by tracing streams from the sinks at the map edges. Short streams are explicitly
+     * removed by first identifying springs and tracing downstream until meeting a wider stream.
+     *
+     * TODO there are also (rare) non-edge sinks that should be pruned
+     */
+    static void postProcessCatchment(MapGenCtx& context)
     {
         auto& riverMap = context.riverMap.value();
 
         StableTileQueue queue;
         MaskMap visited(riverMap.width, riverMap.height);
 
-        NeighbourCountMap neighbourCounts{riverMap.width, riverMap.height};
-        BackrefMap backrefMap{riverMap.width, riverMap.height};
+        NeighbourCountMap neighbourCounts{ riverMap.width, riverMap.height };
+        BackrefMap backrefMap{ riverMap.width, riverMap.height };
 
         std::queue<TileCoordsXY> springs;
 
+        // prepare queue
         for (int32_t y = 0; y < riverMap.height; y++)
         {
             postProcessTile(context, queue, visited, backrefMap, std::nullopt, { 0, y });
@@ -204,6 +292,7 @@ namespace OpenRCT2::World::MapGenerator
             postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, riverMap.height - 1 });
         }
 
+        // process tiles and find springs
         while (!queue.empty())
         {
             const QueueTile tile = queue.top();
@@ -240,12 +329,11 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        bool wololo= true;
-
         int32_t springsFound = springs.size();
         int32_t springsPruned = 0;
 
-        while (!springs.empty() && wololo)
+        // prune if length is below limit
+        while (!springs.empty())
         {
             const TileCoordsXY spring = springs.front();
             springs.pop();
@@ -262,7 +350,7 @@ namespace OpenRCT2::World::MapGenerator
 
             currentTile = std::make_optional(spring);
 
-            if (pathLength <= kShortStreamMaxPruneLength)
+            if (pathLength <= kMaxPruneLength)
             {
                 while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 2)
                 {
@@ -275,7 +363,6 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         LOG_INFO("%d springs found, %d pruned", springsFound, springsPruned);
-
     }
 
     static void prepareRiverQueue(MapGenCtx& context, StableTileQueue& queue, MaskMap& visited)
@@ -318,6 +405,11 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
+    /**
+     * Ensure diagonal channels render nicely by asserting each river tile has at least one cardinal river neighbour.
+     *
+     * TODO this should work without the queue.
+     */
     static void ensureCardinalNeighbours(MapGenCtx& context)
     {
         auto& heightMap = context.heightMap;
@@ -392,95 +484,12 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void postProcessCatchment(MapGenCtx& context)
-    {
-        removeOrphansAndShortStreams(context);
-        ensureCardinalNeighbours(context);
-    }
-
-    static float downSlope(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
-    {
-        // TODO could infer from cardinal/ordinal offset instead and pass in
-        const int32_t deltaX = from.x - to.x;
-        const int32_t deltaY = from.y - to.y;
-
-        const float distance = abs(deltaX) + abs(deltaY) > 1.0f ? std::numbers::sqrt2 : 1.0f;
-        const float heightFrom = heightMap[from];
-        const float heightTo = heightMap[to];
-        const float delta = (heightFrom - heightTo) / distance;
-
-        return std::max(0.0f, std::pow(delta, kP));
-    }
-
-    static float fractionalFlow(const HeightMap& heightMap, const TileCoordsXY& from, const TileCoordsXY& to)
-    {
-        float sum = 0.0f;
-
-        for (const auto& offset : kNeighbourOffsets)
-        {
-            TileCoordsXY nPos{ from + offset };
-
-            if (!heightMap.contains(nPos))
-            {
-                continue;
-            }
-
-            sum += downSlope(heightMap, from, nPos);
-        }
-
-        return downSlope(heightMap, from, to) / sum;
-    }
-
-    static float aggregateNeighbour(MapGenCtx& context, const TileCoordsXY& pos)
-    {
-        auto& heightMap = context.heightMap;
-        auto& riverMap = context.riverMap.value();
-
-        if (riverMap[pos].catchment <= 0.0f)
-        {
-            riverMap[pos].catchment = 1.0f;
-            for (const auto& offset : kNeighbourOffsets)
-            {
-                TileCoordsXY nPos{ pos + offset };
-
-                if (!heightMap.contains(nPos))
-                {
-                    continue;
-                }
-
-                if (heightMap[nPos] > heightMap[pos])
-                {
-                    const float flowFraction = std::max(0.0f, fractionalFlow(heightMap, nPos, pos));
-                    const float neighbourCatchment = aggregateNeighbour(context, nPos);
-                    const float fractionalContribution = flowFraction * neighbourCatchment;
-                    riverMap[pos].catchment += fractionalContribution;
-                }
-            }
-        }
-        return riverMap[pos].catchment;
-    }
-
     /**
-     * based on
-     *
-     * Freeman, T.G., 1991. Calculating catchment area with divergent flow based on a regular grid. Computers & geosciences,
-     * 17(3), pp.413-422.
+     * Carve a riverbed around the river on flat parts with increasing width based on the tile catchment.
+     * TODO widen and deepen river in proportion to catchment
      */
-    static void aggregateCatchment(MapGenCtx& context)
+    static void carveRiverbed(MapGenCtx& context)
     {
-        for (int32_t y = 0; y < context.heightMap.height; y++)
-        {
-            for (int32_t x = 0; x < context.heightMap.width; x++)
-            {
-                TileCoordsXY pos{ x, y };
-                aggregateNeighbour(context, pos);
-            }
-        }
-
-        postProcessCatchment(context);
-    }
-
-    static void carveRiverbed(MapGenCtx& context){
         auto& settings = context.settings;
         auto& heightMap = context.heightMap;
         auto& riverMap = context.riverMap.value();
@@ -510,15 +519,14 @@ namespace OpenRCT2::World::MapGenerator
 
                 riverMap[pos].isRiverbed = true;
 
-                const float radius =  std::log2(riverMap[pos].catchment / settings.catchmentThreshold);
-
+                const float radius = std::log2(riverMap[pos].catchment / settings.catchmentThreshold);
                 const float radiusSquared = radius * radius;
 
                 for (int32_t dy = -radius; dy <= radius; dy++)
                 {
                     for (int32_t dx = -radius; dx <= radius; dx++)
                     {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
+                        TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
 
                         int32_t distance = dx * dx + dy * dy;
                         if (!heightMap.contains(deltaPos) || distance > radiusSquared)
@@ -544,8 +552,10 @@ namespace OpenRCT2::World::MapGenerator
 
     void generateRivers(MapGenCtx& context)
     {
-        fillOrBreach(context);
+        fillOrBreachDepressions(context);
         aggregateCatchment(context);
+        postProcessCatchment(context);
+        ensureCardinalNeighbours(context);
         carveRiverbed(context);
     }
 } // namespace OpenRCT2::World::MapGenerator
