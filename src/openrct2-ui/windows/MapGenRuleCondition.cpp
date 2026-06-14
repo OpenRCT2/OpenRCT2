@@ -70,7 +70,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_EDGE_HIGH_UP,
         WIDX_EDGE_HIGH_DOWN,
 
-        WIDX_LAND_STYLE_SCROLL
+        WIDX_LAND_STYLE_SCROLL,
+
+        WIDX_FEATURE,
+        WIDX_FEATURE_DROPDOWN
     };
 
     static constexpr ScreenSize kWindowSize = { 300, 156 };
@@ -100,7 +103,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget(         {   5, 115 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_EDGE_HIGH),
         makeSpinnerWidgets( { 186, 115 }, { 109, 14 }, WidgetType::spinner, WindowColour::secondary),
         
-        makeWidget(         {   5,  39 }, { 290, 88 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL)
+        makeWidget(         {   5,  39 }, { 290, 88 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL),
+
+        makeDropdownWidgets({ 133, 150 }, {  48, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER)
         // clang-format on
     );
 
@@ -176,6 +181,7 @@ namespace OpenRCT2::Ui::Windows
             bool edgeLowVisible = false;
             bool edgeHighVisible = false;
             bool landStyleVisible = false;
+            bool featureVisible = false;
 
             switch (condition.type)
             {
@@ -186,7 +192,8 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER;
                     break;
                 case Type::DistanceToFeature:
-                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER;
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO;
+                    featureVisible=true;
                     break;
                 case Type::Noise:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_NOISE;
@@ -217,13 +224,16 @@ namespace OpenRCT2::Ui::Windows
                     edgeLowVisible = true;
                     edgeHighVisible = true;
                     break;
+                case Type::BlendDistanceToFeature:
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_COND_BLEND_DISTANCE_VERBOSE;
+                    valueVisible = false;
+                    seedVisible = true;
+                    edgeLowVisible = true;
+                    edgeHighVisible = true;
+                    featureVisible = true;
+                    break;
                 case Type::LandStyle:
                     valueVisible = false;
-                    seedVisible = false;
-                    freqVisible = false;
-                    octaVisible = false;
-                    edgeLowVisible = false;
-                    edgeHighVisible = false;
                     landStyleVisible = true;
                     break;
             }
@@ -260,6 +270,9 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_LAND_STYLE_SCROLL].type = landStyleVisible ? WidgetType::scroll : WidgetType::empty;
 
+            widgets[WIDX_FEATURE].type = featureVisible ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_FEATURE_DROPDOWN].type = featureVisible ? WidgetType::button : WidgetType::empty;
+
 
             bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)
@@ -286,6 +299,26 @@ namespace OpenRCT2::Ui::Windows
                     throw std::runtime_error("unknown predicate");
             }
         }
+
+        StringId featureToStringId(Feature& feature)
+        {
+            switch (feature)
+            {
+                case Feature::Water:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER;
+                case Feature::River:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVER;
+                case Feature::Riverbed:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVERBED;
+                case Feature::MapBorder:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BORDER;
+                case Feature::Fill:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL;
+                case Feature::Breach:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH;
+            }
+        }
+
 
         void onDraw(Drawing::RenderTarget& rt) override
         {
@@ -314,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::DistanceToFeature:
                 {
                     auto ft = Formatter();
-                    ft.Add<int16_t>(static_cast<int16_t>(std::get<DistanceToFeatureData>(condition.data).distance));
+                    ft.Add<int16_t>(static_cast<int16_t>(std::get<DistanceData>(condition.data).distance));
                     drawText(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
@@ -448,6 +481,35 @@ namespace OpenRCT2::Ui::Windows
 
                     break;
                 }
+                case Type::BlendDistanceToFeature:
+                {
+                    auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
+
+                    auto ft = Formatter();
+                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                    drawText(
+                        rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
+                        STR_STRINGID, ft, { colours[1] });
+
+                    ft = Formatter();
+                    ft.Add<int16_t>(static_cast<int16_t>(blendDistanceData.edgeLow));
+                    drawText(
+                        rt, windowPos + ScreenCoordsXY{ widgets[WIDX_EDGE_LOW].left + 1, widgets[WIDX_EDGE_LOW].top + 1 },
+                        STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
+
+                    ft = Formatter();
+                    ft.Add<int16_t>(static_cast<int16_t>(blendDistanceData.edgeHigh));
+                    drawText(
+                        rt, windowPos + ScreenCoordsXY{ widgets[WIDX_EDGE_HIGH].left + 1, widgets[WIDX_EDGE_HIGH].top + 1 },
+                        STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
+
+                    ft = Formatter();
+                    ft.Add<int32_t>(static_cast<int32_t>(blendDistanceData.seedOffset));
+                    drawText(
+                        rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SEED_OFFSET].left + 1, widgets[WIDX_SEED_OFFSET].top + 1 },
+                        STR_FORMAT_INTEGER, ft, { colours[1] });
+                    break;
+                }
                 case Type::LandStyle:
                 {
                     auto ft = Formatter();
@@ -505,8 +567,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case Type::DistanceToFeature:
                 {
-                    auto& distanceData = std::get<DistanceToFeatureData>(condition.data);
-                    auto distanceValue = intValue.value_or(distanceData.distance + 1 * changeMultiplier);
+                    auto& distanceData = std::get<DistanceData>(condition.data);
+                    auto distanceValue = floatValue.value_or(distanceData.distance + 1 * changeMultiplier);
                     distanceData.distance = std::clamp(distanceValue, kDistanceMin, kDistanceMax);
                     break;
                 }
@@ -571,6 +633,17 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
+                case Type::BlendDistanceToFeature:
+                {
+                    auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
+                    auto edgeLow = intValue.has_value() ? intValue.value() : blendDistanceData.edgeLow + 1 * changeMultiplier;
+                    blendDistanceData.edgeLow = std::clamp(edgeLow, kDistanceMin, kDistanceMax);
+                    if (blendDistanceData.edgeLow > blendDistanceData.edgeHigh)
+                    {
+                        blendDistanceData.edgeHigh = blendDistanceData.edgeLow;
+                    }
+                    break;
+                }
                 default:
                 {
                     throw std::runtime_error("edge low change: unexpected condition type");
@@ -604,6 +677,17 @@ namespace OpenRCT2::Ui::Windows
                     if (blendNoiseData.edgeLow > blendNoiseData.edgeHigh)
                     {
                         blendNoiseData.edgeLow = blendNoiseData.edgeHigh;
+                    }
+                    break;
+                }
+                    case Type::BlendDistanceToFeature:
+                {
+                    auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
+                    auto edgeHigh = intValue.has_value() ? intValue.value() : blendDistanceData.edgeHigh + 1 * changeMultiplier;
+                    blendDistanceData.edgeHigh = std::clamp(edgeHigh, kDistanceMin, kDistanceMax);
+                    if (blendDistanceData.edgeLow > blendDistanceData.edgeHigh)
+                    {
+                        blendDistanceData.edgeHigh = blendDistanceData.edgeLow;
                     }
                     break;
                 }
@@ -742,12 +826,12 @@ namespace OpenRCT2::Ui::Windows
                 case Type::DistanceToFeature:
                 {
                     Formatter ft;
-                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
+                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
                     ft.Add<int16_t>(static_cast<int16_t>(kDistanceMin));
                     ft.Add<int16_t>(static_cast<int16_t>(kDistanceMax));
                     WindowTextInputOpen(
-                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
-                        STR_FORMAT_INTEGER, std::get<DistanceToFeatureData>(condition.data).distance, 4);
+                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
+                        STR_FORMAT_INTEGER, std::get<DistanceData>(condition.data).distance, 4);
                     break;
                 }
                 case Type::Noise:
@@ -853,6 +937,9 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendNoise:
                     seedOffset = std::get<BlendNoiseData>(condition.data).seedOffset;
                     break;
+                case Type::BlendDistanceToFeature:
+                    seedOffset = std::get<BlendDistanceData>(condition.data).seedOffset;
+                    break;
                 default:
                     throw std::runtime_error("show seed offset text input: unexpected condition type");
             }
@@ -892,6 +979,17 @@ namespace OpenRCT2::Ui::Windows
                         static_cast<int32_t>(std::get<BlendNoiseData>(condition.data).edgeLow * 100), 4);
                     break;
                 }
+                case Type::BlendDistanceToFeature:
+                {
+                    Formatter ft;
+                    ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_LOW);
+                    ft.Add<int32_t>(static_cast<int32_t>(kDistanceMin));
+                    ft.Add<int32_t>(static_cast<int32_t>(kDistanceMax));
+                    WindowTextInputOpen(
+                        this, WIDX_EDGE_LOW, STR_MAPGEN_RULE_EDGE_LOW, STR_MAPGEN_RULE_ENTER_LENGTH, ft, STR_FORMAT_INTEGER,
+                        BaseZToMetres(std::get<BlendDistanceData>(condition.data).edgeLow), 3);
+                    break;
+                }
                 default:
                     throw std::runtime_error("show edge low text input: unexpected condition type");
             }
@@ -921,6 +1019,17 @@ namespace OpenRCT2::Ui::Windows
                     WindowTextInputOpen(
                         this, WIDX_EDGE_HIGH, STR_MAPGEN_RULE_EDGE_HIGH, STR_MAPGEN_RULE_ENTER_FLOAT, ft, STR_COMMA2DP32,
                         static_cast<int32_t>(std::get<BlendNoiseData>(condition.data).edgeHigh * 100), 4);
+                    break;
+                }
+                case Type::BlendDistanceToFeature:
+                {
+                    Formatter ft;
+                    ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_HIGH);
+                    ft.Add<int32_t>(static_cast<int32_t>(kDistanceMin));
+                    ft.Add<int32_t>(static_cast<int32_t>(kDistanceMax));
+                    WindowTextInputOpen(
+                        this, WIDX_EDGE_HIGH, STR_MAPGEN_RULE_EDGE_HIGH, STR_MAPGEN_RULE_ENTER_LENGTH, ft, STR_FORMAT_INTEGER,
+                        BaseZToMetres(std::get<BlendDistanceData>(condition.data).edgeHigh), 3);
                     break;
                 }
                 default:
@@ -1042,6 +1151,33 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 }
+                case WIDX_FEATURE_DROPDOWN:
+                {
+                    if (selectedIndex == -1)
+                        selectedIndex = gDropdown.highlightedIndex;
+
+                    if (selectedIndex == -1)
+                        return;
+
+                    switch (condition.type)
+                    {
+                        case Type::DistanceToFeature:
+                        {
+                            std::get<DistanceData>(condition.data).feature = static_cast<Feature>(selectedIndex);
+                            invalidate();
+                            break;
+                        }
+                        case Type::BlendDistanceToFeature:
+                        {
+                            std::get<BlendDistanceData>(condition.data).feature = static_cast<Feature>(selectedIndex);
+                            invalidate();
+                            break;
+                        }
+                        default:
+                            throw std::runtime_error("onDropdown feature dropdown unexpected condition type");
+                    }
+
+                }
             }
         }
 
@@ -1078,6 +1214,47 @@ namespace OpenRCT2::Ui::Windows
                         SetItems(items);
                         itemSize = std::size(items);
                     }
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        Dropdown::Flag::StayOpen, itemSize);
+                    break;
+                }
+                case WIDX_FEATURE_DROPDOWN:
+                {
+                    using namespace Dropdown;
+
+                    int32_t selectedIndex;
+                    switch (condition.type)
+                    {
+                        case Type::DistanceToFeature:
+                        {
+                            selectedIndex = static_cast<int32_t>(std::get<DistanceData>(condition.data).feature);
+                            break;
+                        }
+                        case Type::BlendDistanceToFeature:
+                        {
+                            selectedIndex = static_cast<int32_t>(std::get<BlendDistanceData>(condition.data).feature);
+                            break;
+                        }
+                        default:
+                            throw std::runtime_error("onMouseDown feature dropdown unexpected condition type");
+                    }
+
+                    constexpr ItemExt items[] = {
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVER),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVERBED),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BORDER),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH),
+                    };
+
+                    SetItems(items);
+                    size_t itemSize = std::size(items);
+
+                    gDropdown.items[selectedIndex].setChecked(true);
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(

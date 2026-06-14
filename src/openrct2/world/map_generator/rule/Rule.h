@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../localisation/Formatting.h"
+#include "../../../rct1/Limits.h"
 #include "../../tile_element/SurfaceElement.h"
 #include "../BaseMap.hpp"
 
@@ -33,8 +34,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
 {
     constexpr int32_t kHeightMin = 2;
     constexpr int32_t kHeightMax = 254;
-    constexpr int32_t kDistanceMin = 0;
-    constexpr int32_t kDistanceMax = 1415; // ceil(SQRT2 * 1000)
+    constexpr float kDistanceMin = 0.0f;
+    constexpr float kDistanceMax = 1415.0f;
     constexpr float kNoiseMin = 0.0f;
     constexpr float kNoiseMax = 1.0f;
     constexpr float kRandomMin = 0.0f;
@@ -43,6 +44,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     constexpr float kAngleMax = 90.0f;
     constexpr float kFrequencyMin = 0.0f;
     constexpr float kFrequencyMax = 10.0f;
+
     constexpr int32_t kOctavesMin = 1;
     constexpr int32_t kOctavesMax = 10;
     constexpr int32_t kSeedOffsetMin = std::numeric_limits<int32_t>::min();
@@ -134,10 +136,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     enum class Feature : uint8_t
     {
-        MapBorder,
         Water,
         River,
         Riverbed,
+        MapBorder,
         Fill,
         Breach
     };
@@ -152,6 +154,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Random,
         BlendHeight,
         BlendNoise,
+        BlendDistanceToFeature,
         LandStyle,
     };
 
@@ -170,10 +173,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
     };
 
     // $value^2 $pred distance
-    struct DistanceToFeatureData
+    struct DistanceData
     {
         Feature feature;
-        int32_t distance;
+        float distance;
     };
 
     // $value $pred noise(x,y)
@@ -191,6 +194,15 @@ namespace OpenRCT2::World::MapGenerator::Rule
         uint32_t seedOffset;
         float frequency;
         int32_t octaves;
+        float edgeLow;
+        float edgeHigh;
+    };
+
+    // smoothstep($low, $high, distance) $pred $prng
+    struct BlendDistanceData
+    {
+        Feature feature;
+        uint32_t seedOffset;
         float edgeLow;
         float edgeHigh;
     };
@@ -214,7 +226,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     };
 
     using ConditionData = std::variant<
-        HeightData, DistanceToFeatureData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, LandStyleData>;
+        HeightData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData,
+        BlendDistanceData, LandStyleData>;
 
     struct Condition
     {

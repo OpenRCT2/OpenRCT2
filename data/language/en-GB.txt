@@ -3868,7 +3868,7 @@ STR_7089    :New rule {UINT16}
 STR_7090    :Remove
 STR_7091    :Height
 STR_7094    :Height - WaterLevel
-STR_7095    :DistanceToWater
+STR_7095    :DistanceTo
 STR_7096    :Noise
 STR_7097    :NormalAngle
 STR_7098    :Random
@@ -3949,3 +3949,13 @@ STR_7184    :Terrace
 STR_7190    :Generate rivers
 STR_7191    :Catchment threshold
 STR_7192    :Enter catchment threshold between {INT32} and {INT32}
+STR_7200    :Water
+STR_7201    :River
+STR_7202    :Riverbed
+STR_7203    :Map edge
+STR_7204    :Filled
+STR_7205    :Breached
+STR_7206    :{STRINGID}[{STRINGID}] {STRINGID} {LENGTH}
+STR_7207    :BlendDistanceTo
+STR_7208    :BlendDistanceTo[Low..High]
+STR_7209    :{STRINGID}[{STRINGID},{LENGTH}..{LENGTH}] {STRINGID} {STRINGID}

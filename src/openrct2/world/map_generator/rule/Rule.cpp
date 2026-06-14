@@ -257,7 +257,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
-                else if (genCtx.riverMap.has_value() && genCtx.riverMap.value()[pos].isRiver)
+                else if (genCtx.riverMap.has_value() && genCtx.riverMap.value()[pos].river)
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
@@ -362,6 +362,33 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
+    static float lookupDistanceTo(const EvaluationContext& ctx, const Feature& feature)
+    {
+        float distanceActual = std::numeric_limits<float>::infinity();
+        switch (feature)
+        {
+            case Feature::MapBorder:
+                distanceActual = ctx.distanceToBorder[ctx.coords];
+                break;
+            case Feature::Water:
+                distanceActual = ctx.distanceToWater[ctx.coords];
+                break;
+            case Feature::River:
+                distanceActual = ctx.distanceToRiver[ctx.coords];
+                break;
+            case Feature::Riverbed:
+                distanceActual = ctx.distanceToRiverbed[ctx.coords];
+                break;
+            case Feature::Fill:
+                distanceActual = ctx.distanceToFill[ctx.coords];
+                break;
+            case Feature::Breach:
+                distanceActual = ctx.distanceToBreach[ctx.coords];
+                break;
+        }
+        return distanceActual;
+    }
+
     static bool evaluateCondition(EvaluationContext& ctx, const ConditionKey& key, const Condition& condition)
     {
         switch (condition.type)
@@ -380,32 +407,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
             }
             case Type::DistanceToFeature:
             {
-                auto distanceData = std::get<DistanceToFeatureData>(condition.data);
-
-                float distanceActual = 0.0f;
-                switch (distanceData.feature)
-                {
-                    case Feature::MapBorder:
-                        distanceActual = ctx.distanceToBorder[ctx.coords];
-                        break;
-                    case Feature::Water:
-                        distanceActual = ctx.distanceToWater[ctx.coords];
-                        break;
-                    case Feature::River:
-                        distanceActual = ctx.distanceToRiver[ctx.coords];
-                        break;
-                    case Feature::Riverbed:
-                        distanceActual = ctx.distanceToRiverbed[ctx.coords];
-                        break;
-                    case Feature::Fill:
-                        distanceActual = ctx.distanceToFill[ctx.coords];
-                        break;
-                    case Feature::Breach:
-                        distanceActual = ctx.distanceToBreach[ctx.coords];
-                        break;
-                }
-
-                auto limit = static_cast<float>(distanceData.distance);
+                auto distanceData = std::get<DistanceData>(condition.data);
+                auto distanceActual = lookupDistanceTo(ctx, distanceData.feature);
+                const auto limit = static_cast<float>(distanceData.distance);
                 return evaluatePredicate(distanceActual, condition.predicate, limit);
             }
             case Type::Noise:
@@ -437,6 +441,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 auto& heightBlendData = std::get<BlendHeightData>(condition.data);
                 auto heightSs = Smoothstep(heightBlendData.edgeLow, heightBlendData.edgeHigh, ctx.heights.tile);
+                auto prngValue = ctx.prngDist(ctx.conditionPrngs[key]);
+                return evaluatePredicate(prngValue, condition.predicate, heightSs);
+            }
+            case Type::BlendDistanceToFeature:
+            {
+                auto& distanceBlendData = std::get<BlendDistanceData>(condition.data);
+                auto actualDistance = lookupDistanceTo(ctx, distanceBlendData.feature);
+                auto heightSs = Smoothstep(distanceBlendData.edgeLow, distanceBlendData.edgeHigh, actualDistance);
                 auto prngValue = ctx.prngDist(ctx.conditionPrngs[key]);
                 return evaluatePredicate(prngValue, condition.predicate, heightSs);
             }
@@ -685,10 +697,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         computeNormalMap(genCtx, evalCtx.normalMap);
         computeWaterDistanceMap(genCtx, evalCtx);
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiver, [](const RiverState& rs){return rs.isRiver;});
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, [](const RiverState& rs){return rs.isRiverbed;});
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToFill, [](const RiverState& rs){return rs.isFilled;});
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToBreach, [](const RiverState& rs){return rs.isBreached;});
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiver, [](const RiverState& rs){return rs.river;});
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, [](const RiverState& rs){return rs.riverbed;});
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToFill, [](const RiverState& rs){return rs.filled;});
+        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToBreach, [](const RiverState& rs){return rs.breached;});
         computeBorderDistanceMap(genCtx, evalCtx);
     }
 
@@ -752,7 +764,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .isDefault = false,
                          .name = "River waterfalls",
                          .conditions = std::vector{ Condition{
-                             .enabled = true, .type = Type::DistanceToFeature, .predicate = Predicate::Equal, .data = DistanceToFeatureData{
+                             .enabled = true, .type = Type::DistanceToFeature, .predicate = Predicate::Equal, .data = DistanceData{
                              .feature = Feature::River, .distance = 0} } },
                          .effect = { .applyLandTexture = false,
                                      .landTexture = 0,
@@ -766,11 +778,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .conditions = std::vector{ Condition{ .enabled = true,
                                                                .type = Type::DistanceToFeature,
                                                                .predicate = Predicate::Equal,
-                                                               .data = DistanceToFeatureData{ .feature=Feature::Riverbed,.distance=0 } },
+                                                               .data = DistanceData{ .feature=Feature::Riverbed,.distance=0 } },
                                                     Condition{ .enabled = false,
                                                                .type = Type::DistanceToFeature,
                                                                .predicate = Predicate::LessThanOrEqual,
-                                                               .data = DistanceToFeatureData{ .feature=Feature::Water,
+                                                               .data = DistanceData{ .feature=Feature::Water,
                                                                    .distance=4 } } },
                          .effect = { .applyLandTexture = true,
                                      .landTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_surface.sand").value_or(0),
@@ -911,7 +923,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return Condition{ .enabled = true,
                           .type = Type::DistanceToFeature,
                           .predicate = Predicate::GreaterThan,
-                          .data = DistanceToFeatureData{ .feature = Feature::Water, .distance = 0 } };
+                          .data = DistanceData{ .feature = Feature::Water, .distance = 0 } };
     }
 
     static Condition onSurface(const std::span<const std::string_view> styles)
@@ -951,12 +963,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
                           .data = BlendHeightData{ .seedOffset = seed, .edgeLow = low, .edgeHigh = high } };
     }
 
-    static Condition distanceToFeature(const Feature feature, const int32_t distance)
+    static Condition distanceToFeature(const Feature feature, const float distance)
     {
         return Condition{ .enabled = true,
                           .type = Type::DistanceToFeature,
                           .predicate = Predicate::LessThan,
-                          .data = DistanceToFeatureData{ .feature = feature, .distance = distance } };
+                          .data = DistanceData{ .feature = feature, .distance = distance } };
     }
 
     void createDefaultSceneryRules(Settings& settings)
@@ -1111,7 +1123,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     SceneryRule{
                         .enabled = true,
                         .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_OASIS),
-                        .conditions = { onSurface(SURFACE_SAND), aboveWater(), chance(prng(), .55f), distanceToFeature(Feature::Water, 4) },
+                        .conditions = { onSurface(SURFACE_SAND), aboveWater(), chance(prng(), .55f), distanceToFeature(Feature::Water, 4.0f) },
                         .effect = {
                             .objects = toSceneryEffectItemsIfAvailable(ARID_OASIS),
                             .seedOffset = prng(),
@@ -1209,7 +1221,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 };
             case Type::DistanceToFeature:
                 return Condition{
-                    .enabled = true, .type = type, .predicate = Predicate::LessThan, .data = DistanceToFeatureData{
+                    .enabled = true, .type = type, .predicate = Predicate::LessThan, .data = DistanceData{
                         .feature=Feature::Water, .distance = 2 }
                 };
             case Type::Noise:
@@ -1243,6 +1255,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                           .octaves = 6,
                                                           .edgeLow = 0.33f,
                                                           .edgeHigh = 0.66f } };
+            case Type::BlendDistanceToFeature:
+                return Condition{ .enabled = true,
+                                  .type = type,
+                                  .predicate = Predicate::GreaterThan,
+                                  .data = BlendDistanceData{
+                                      .feature = Feature::Water, .seedOffset = std::random_device{}(), .edgeLow = 0, .edgeHigh = 8} };
             case Type::LandStyle:
                 return Condition{ .enabled = true,
                                   .type = type,

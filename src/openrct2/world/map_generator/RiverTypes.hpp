@@ -19,10 +19,10 @@ namespace OpenRCT2::World::MapGenerator
     struct RiverState
     {
         float catchment;
-        bool isRiver;
-        bool isRiverbed;
-        bool isFilled;
-        bool isBreached;
+        bool river;
+        bool riverbed;
+        bool filled;
+        bool breached;
     };
 
     using RiverMap = BaseMap<RiverState>;

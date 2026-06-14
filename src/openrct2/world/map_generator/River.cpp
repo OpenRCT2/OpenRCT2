@@ -10,7 +10,6 @@
 #include "River.h"
 
 #include "../../Context.h"
-#include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "MapHelpers.h"
 #include "TileQueue.hpp"
@@ -28,7 +27,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         // TODO use an uint8_t to encode the kNeighbourOffsets index
         Backref backref = std::nullopt;
-        bool processed = false;
+        bool visited = false;
         bool pit = false;
     };
 
@@ -37,9 +36,7 @@ namespace OpenRCT2::World::MapGenerator
     using StateMap = BaseMap<TileState>;
 
     /**
-     *
-     * Fill up or breach out of depressions in the heightmap to ensure there is a strictly monotonic downhill path for rivers
-     * to follow.
+     * Fill up or breach out of depressions in the heightmap to ensure there is a monotonic downhill path for rivers to follow.
      *
      * based on
      *
@@ -53,7 +50,7 @@ namespace OpenRCT2::World::MapGenerator
 
         StateMap state(heightMap.height, heightMap.width);
         StableTileQueue queue;
-        std::queue<TileCoordsXY> tilesToFill;
+        std::queue<TileCoordsXY> fillQueue;
 
         // prepare queue and mark pits
         for (int32_t y = 0; y < heightMap.height; y++)
@@ -65,7 +62,7 @@ namespace OpenRCT2::World::MapGenerator
                 if (x == 0 || y == 0 || x == heightMap.width - 1 || y == heightMap.height - 1)
                 {
                     queue.emplace(pos, heightMap[pos]);
-                    state[pos].processed = true;
+                    state[pos].visited = true;
                     continue;
                 }
 
@@ -74,7 +71,7 @@ namespace OpenRCT2::World::MapGenerator
                 for (const auto& offset : kNeighbourOffsets)
                 {
                     const TileCoordsXY nPos{ pos + offset };
-                    // no contains check needed per if-clause above
+                    // no bounds check needed per if-clause above
                     minNeighbour = std::min(heightMap[nPos], minNeighbour);
                 }
 
@@ -87,25 +84,25 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        // process lowest tile from queue, moving inward from map edges and building up a lowest path graph
+        // process lowest tile from queue, moving inward from map edges and building up a 'lowest path' graph
         while (!queue.empty())
         {
-            const QueueTile c = queue.top();
+            const QueueTile tile = queue.top();
             queue.pop();
 
             for (const auto& offset : kNeighbourOffsets)
             {
-                const TileCoordsXY nPos{ c.pos + offset };
+                const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!heightMap.inBounds(nPos) || state[nPos].processed)
+                if (!heightMap.inBounds(nPos) || state[nPos].visited)
                 {
                     continue;
                 }
 
                 queue.emplace(nPos, heightMap[nPos]);
-                tilesToFill.push(nPos);
-                state[nPos].processed = true;
-                state[nPos].backref = std::make_optional(c.pos);
+                fillQueue.push(nPos);
+                state[nPos].visited = true;
+                state[nPos].backref = std::make_optional(tile.pos);
 
                 // check if there is a valid path to breach out of the pit
                 if (state[nPos].pit)
@@ -135,7 +132,7 @@ namespace OpenRCT2::World::MapGenerator
                         while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
                         {
                             heightMap[currentTile.value()] = targetHeight;
-                            riverMap[currentTile.value()].isBreached = true;
+                            riverMap[currentTile.value()].breached = true;
 
                             targetHeight = std::nextafter(targetHeight, std::numeric_limits<float>::lowest());
                             currentTile = state[currentTile.value()].backref;
@@ -145,24 +142,23 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        // fill depressions
-        while (!tilesToFill.empty())
+        // fill depressions based on the 'lowest-path' graph so some structure of the filled up topology is maintained in the
+        // new micro surface, which makes for more interesting river paths compared to epsilon priority-flood. The queue order
+        // ensures the backref node has already been handled.
+        while (!fillQueue.empty())
         {
-            const TileCoordsXY& toFill = tilesToFill.front();
-            if (state[toFill].backref.has_value())
+            const TileCoordsXY& fillPos = fillQueue.front();
+            if (state[fillPos].backref.has_value())
             {
-                const TileCoordsXY& prev = state[toFill].backref.value();
+                const TileCoordsXY& backrefPos = state[fillPos].backref.value();
 
-                // The fill queue is populated in the lowest path order, encountering a node that is lower than the previous
-                // node at this point means no breach was found and the depression needs to be filled. To maintain the overall
-                // height gradient adjust height to just above the prev node
-                if (heightMap[toFill] <= heightMap[prev])
+                if (heightMap[fillPos] <= heightMap[backrefPos])
                 {
-                    heightMap[toFill] = std::nextafter(heightMap[prev], std::numeric_limits<float>::infinity());
-                    riverMap[toFill].isFilled = true;
+                    heightMap[fillPos] = std::nextafter(heightMap[backrefPos], std::numeric_limits<float>::infinity());
+                    riverMap[fillPos].filled = true;
                 }
             }
-            tilesToFill.pop();
+            fillQueue.pop();
         }
     }
 
@@ -257,7 +253,7 @@ namespace OpenRCT2::World::MapGenerator
         queue.emplace(pos, context.heightMap[pos]);
         visited[pos] = Mask::True;
         backrefMap[pos] = backref;
-        riverState.isRiver = true;
+        riverState.river = true;
 
         return true;
     }
@@ -325,14 +321,11 @@ namespace OpenRCT2::World::MapGenerator
             }
 
             neighbourCounts[tile.pos] = riverNeighbours;
-            if (!hasUpstreamNeighbours && riverNeighbours == 1 && riverMap[tile.pos].isFilled)
+            if (!hasUpstreamNeighbours && riverNeighbours == 1 && riverMap[tile.pos].filled)
             {
                 springs.push(tile.pos);
             }
         }
-
-        int32_t springsFound = springs.size();
-        int32_t springsPruned = 0;
 
         // prune if length is below limit
         while (!springs.empty())
@@ -356,15 +349,11 @@ namespace OpenRCT2::World::MapGenerator
             {
                 while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 2)
                 {
-                    riverMap[currentTile.value()].isRiver = false;
+                    riverMap[currentTile.value()].river = false;
                     currentTile = backrefMap[currentTile.value()];
                 }
-
-                springsPruned++;
             }
         }
-
-        LOG_INFO("%d springs found, %d pruned", springsFound, springsPruned);
     }
 
     static void prepareRiverQueue(MapGenCtx& context, StableTileQueue& queue, MaskMap& visited)
@@ -375,14 +364,14 @@ namespace OpenRCT2::World::MapGenerator
         for (int32_t y = 0; y < riverMap.height; y++)
         {
             const TileCoordsXY left{ 0, y };
-            if (riverMap[left].isRiver)
+            if (riverMap[left].river)
             {
                 queue.emplace(left, heightMap[left]);
                 visited[left] = Mask::True;
             }
 
             const TileCoordsXY right{ riverMap.width - 1, y };
-            if (riverMap[right].isRiver)
+            if (riverMap[right].river)
             {
                 queue.emplace(right, heightMap[right]);
                 visited[right] = Mask::True;
@@ -392,14 +381,14 @@ namespace OpenRCT2::World::MapGenerator
         for (int32_t x = 1; x < riverMap.width - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            if (riverMap[top].isRiver)
+            if (riverMap[top].river)
             {
                 queue.emplace(top, heightMap[top]);
                 visited[top] = Mask::True;
             }
 
             const TileCoordsXY bottom{ x, riverMap.height - 1 };
-            if (riverMap[bottom].isRiver)
+            if (riverMap[bottom].river)
             {
                 queue.emplace(bottom, heightMap[bottom]);
                 visited[bottom] = Mask::True;
@@ -429,7 +418,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
+                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].river)
                 {
                     continue;
                 }
@@ -438,7 +427,7 @@ namespace OpenRCT2::World::MapGenerator
                 visited[nPos] = Mask::True;
             }
 
-            const float radius = 0.75f * std::log2(std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold));;
+            const float radius = 0.75f * std::log2(std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold));
             const float radiusSquared = radius * radius;
 
             for (int32_t dy = -radius; dy <= radius; dy++)
@@ -448,24 +437,22 @@ namespace OpenRCT2::World::MapGenerator
                     TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
 
                     int32_t distance = dx * dx + dy * dy;
-                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared || riverMap[deltaPos].isRiver)
+                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared || riverMap[deltaPos].river)
                     {
                         continue;
                     }
 
-                    float riverHeight = std::min(heightMap[tile.pos], heightMap[deltaPos]);
+                    const float riverHeight = std::min(heightMap[tile.pos], heightMap[deltaPos]);
                     heightMap[deltaPos] = riverHeight;
-                    riverMap[deltaPos].isRiver = true;
+                    riverMap[deltaPos].river = true;
                     visited[deltaPos] = Mask::True;
                 }
             }
         }
     }
 
-
-
     /**
-     * Ensure diagonal channels render nicely by asserting each river tile has at least one cardinal river neighbour.
+     * Ensure diagonal channels render nicely by asserting each river tile has at least one cardinal neighbour.
      */
     static void ensureCardinalNeighbours(MapGenCtx& context)
     {
@@ -485,7 +472,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
+                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].river)
                 {
                     continue;
                 }
@@ -504,7 +491,7 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     const TileCoordsXY scnPos{ tile.pos + scnOffset };
 
-                    if (riverMap[scnPos].isRiver)
+                    if (riverMap[scnPos].river)
                     {
                         hasCardinalNeighbour = true;
                         break;
@@ -521,7 +508,7 @@ namespace OpenRCT2::World::MapGenerator
                     const TileCoordsXY scnPos{ tile.pos + scnOffset };
                     heightMap[scnPos] = heightMap[tile.pos];
                     riverMap[scnPos].catchment = context.settings.catchmentThreshold;
-                    riverMap[scnPos].isRiver = true;
+                    riverMap[scnPos].river = true;
                     visited[scnPos] = Mask::True;
                 }
             }
@@ -530,7 +517,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].isRiver)
+                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].river)
                 {
                     continue;
                 }
@@ -563,7 +550,7 @@ namespace OpenRCT2::World::MapGenerator
             queue.pop();
 
             heightMap[tile.pos] = heightCopy[tile.pos] - 4.0f;
-            riverMap[tile.pos].isRiverbed = true;
+            riverMap[tile.pos].riverbed = true;
 
             const float radius = std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold);
             const float radiusMinusOne = radius - 1.0f;
@@ -577,7 +564,7 @@ namespace OpenRCT2::World::MapGenerator
                     const TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
                     const auto distance = dx * dx + dy * dy;
 
-                    if (!heightMap.inBounds(deltaPos) || riverMap[deltaPos].isRiver || distance > radiusSquared)
+                    if (!heightMap.inBounds(deltaPos) || riverMap[deltaPos].river || distance > radiusSquared)
                     {
                         continue;
                     }
@@ -585,9 +572,9 @@ namespace OpenRCT2::World::MapGenerator
                     const float riverbedHeight = heightCopy[deltaPos] - 2.0f;
                     heightMap[deltaPos] = riverbedHeight;
 
-                    if (distance <= radiusMinusOneSquared && riverMap[deltaPos].isFilled)
+                    if (distance <= radiusMinusOneSquared && riverMap[deltaPos].filled)
                     {
-                        riverMap[deltaPos].isRiverbed = true;
+                        riverMap[deltaPos].riverbed = true;
                     }
                 }
             }
@@ -596,7 +583,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!heightMap.inBounds(nPos) || !riverMap[nPos].isRiver || visited[nPos] == Mask::True)
+                if (!heightMap.inBounds(nPos) || !riverMap[nPos].river || visited[nPos] == Mask::True)
                 {
                     continue;
                 }

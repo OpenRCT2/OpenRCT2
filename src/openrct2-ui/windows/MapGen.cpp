@@ -981,13 +981,14 @@ namespace OpenRCT2::Ui::Windows
                     constexpr ItemExt items[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
                         ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
                         ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
                         ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
                         ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
                         ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
-                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
+                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
                     };
 
                     SetItems(items);
@@ -1259,6 +1260,25 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        StringId featureToStringId(MapGenerator::Rule::Feature& feature)
+        {
+            switch (feature)
+            {
+                case MapGenerator::Rule::Feature::Water:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER;
+                case MapGenerator::Rule::Feature::River:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVER;
+                case MapGenerator::Rule::Feature::Riverbed:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVERBED;
+                case MapGenerator::Rule::Feature::MapBorder:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BORDER;
+                case MapGenerator::Rule::Feature::Fill:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL;
+                case MapGenerator::Rule::Feature::Breach:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH;
+            }
+        }
+
         void SceneryScrollDrawCondition(RenderTarget& rt)
         {
             if (_selectedScRule == -1)
@@ -1373,11 +1393,12 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     case MapGenerator::Rule::Type::DistanceToFeature:
-                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
-                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
+                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::DistanceData>(condition.data).feature));
                         ft.Add<StringId>(predRepr);
                         ft.Add<int16_t>(
-                            static_cast<int16_t>(std::get<MapGenerator::Rule::DistanceToFeatureData>(condition.data).distance));
+                            static_cast<int16_t>(std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
                         break;
 
                     case MapGenerator::Rule::Type::Noise:
@@ -1422,6 +1443,18 @@ namespace OpenRCT2::Ui::Windows
                             static_cast<int32_t>(std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeLow * 100));
                         ft.Add<int32_t>(
                             static_cast<int32_t>(std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeHigh * 100));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        break;
+
+                    case MapGenerator::Rule::Type::BlendDistanceToFeature:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_DISTANCE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO);
+                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeLow * 100));
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeHigh * 100));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
@@ -2210,6 +2243,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_TX_NEW:
                 {
+                    MapGenerator::Rule::createNewTextureRule(_settings);
                     SetSelectedTextureRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
                     invalidate();
                     break;
@@ -2347,13 +2381,14 @@ namespace OpenRCT2::Ui::Windows
                     constexpr ItemExt items[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
                         ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
                         ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
                         ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
                         ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
                         ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
-                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
+                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
                     };
 
                     SetItems(items);
@@ -2366,7 +2401,7 @@ namespace OpenRCT2::Ui::Windows
                     // TODO implement
                     gDropdown.items[4].setDisabled(true);
                     // not available here
-                    gDropdown.items[8].setDisabled(true);
+                    gDropdown.items[9].setDisabled(true);
 
                     break;
                 }
@@ -2704,11 +2739,12 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     case MapGenerator::Rule::Type::DistanceToFeature:
-                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
-                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
+                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::DistanceData>(condition.data).feature));
                         ft.Add<StringId>(predRepr);
                         ft.Add<int16_t>(static_cast<int16_t>(
-                            std::get<MapGenerator::Rule::DistanceToFeatureData>(condition.data).distance));
+                            std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
                         break;
 
                     case MapGenerator::Rule::Type::Noise:
@@ -2756,6 +2792,19 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
+
+                    case MapGenerator::Rule::Type::BlendDistanceToFeature:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_DISTANCE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO);
+                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeLow * 100));
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeHigh * 100));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        break;
+
                     case MapGenerator::Rule::Type::LandStyle:
                         // should not be reachable
                         break;

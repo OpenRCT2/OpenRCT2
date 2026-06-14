@@ -28,7 +28,7 @@ namespace OpenRCT2::World::MapGenerator
 
     static bool isRiverTile(const TileCoordsXY& tileCoords, std::optional<RiverMap>& riverMap)
     {
-        return riverMap.has_value() && riverMap.value()[tileCoords].isRiver;
+        return riverMap.has_value() && riverMap.value()[tileCoords].river;
     }
 
     [[maybe_unused]]

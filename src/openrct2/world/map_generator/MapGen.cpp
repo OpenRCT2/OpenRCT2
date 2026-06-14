@@ -157,7 +157,7 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     TileCoordsXY pos{ x, y };
 
-                    if (!riverMap[pos].isRiver)
+                    if (!riverMap[pos].river)
                     {
                         continue;
                     }
