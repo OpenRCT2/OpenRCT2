@@ -615,6 +615,7 @@
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
+    <ClInclude Include="scenes\editor\EditorStep.h" />
     <ClInclude Include="scenes\game\GameScene.h" />
     <ClInclude Include="scenes\intro\IntroScene.h" />
     <ClInclude Include="scenes\preloader\PreloaderScene.h" />

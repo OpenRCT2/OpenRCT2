@@ -33,18 +33,4 @@ namespace OpenRCT2::Editor
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
 } // namespace OpenRCT2::Editor
 
-enum class EditorStep : uint8_t
-{
-    objectSelection,       // 0
-    landscapeEditor,       // 1
-    inventionsListSetUp,   // 2
-    optionsSelection,      // 3
-    objectiveSelection,    // 4
-    scenarioDetails,       // 5
-    saveScenario,          // 6
-    rollerCoasterDesigner, // 7
-    designsManager,        // 8
-    invalid = 255,         // 255
-};
-
 void EditorOpenWindowsForCurrentStep();
