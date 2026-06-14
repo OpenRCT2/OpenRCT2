@@ -40,6 +40,7 @@
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
+#include "scenes/SceneManager.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
@@ -108,8 +109,8 @@ namespace OpenRCT2::Editor
     void Load()
     {
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
         auto& gameState = getGameState();
         Audio::StopAll();
@@ -184,8 +185,8 @@ namespace OpenRCT2::Editor
     void LoadTrackDesigner()
     {
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
         Audio::StopAll();
         gLegacyScene = LegacyScene::trackDesigner;
@@ -212,8 +213,8 @@ namespace OpenRCT2::Editor
     void LoadTrackManager()
     {
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
         Audio::StopAll();
         gLegacyScene = LegacyScene::trackDesignsManager;
@@ -258,8 +259,8 @@ namespace OpenRCT2::Editor
         ClearMapForEditing(loadedFromSave);
 
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
         getGameState().editorStep = Editor::Step::landscapeEditor;
         gScreenAge = 0;

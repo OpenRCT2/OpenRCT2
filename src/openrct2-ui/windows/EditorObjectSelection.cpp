@@ -44,6 +44,7 @@
 #include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/scenes/SceneManager.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -399,8 +400,8 @@ namespace OpenRCT2::Ui::Windows
                         GameNotifyMapChange();
                         GameUnloadScripts();
 
-                        auto* context = GetContext();
-                        context->SetActiveScene(context->GetTitleScene());
+                        auto* sceneMgr = GetContext()->GetSceneManager();
+                        sceneMgr->setActiveScene(sceneMgr->getTitleScene());
                     }
                     break;
                 }

@@ -59,6 +59,7 @@
 #include "ride/Vehicle.h"
 #include "sawyer_coding/SawyerCoding.h"
 #include "scenario/Scenario.h"
+#include "scenes/SceneManager.h"
 #include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
@@ -361,7 +362,8 @@ void GameLoadInit()
     IGameStateSnapshots* snapshots = context->GetGameStateSnapshots();
     snapshots->Reset();
 
-    context->SetActiveScene(context->GetGameScene());
+    auto* sceneMgr = context->GetSceneManager();
+    sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
     // Invalidate scrolling text cache to prevent stale text from previous park
     // being displayed due to pointer value reuse in the cache matching logic
@@ -724,8 +726,8 @@ void GameLoadOrQuitNoSavePrompt()
             EmscriptenResetAutosave();
 #endif
 
-            auto* context = GetContext();
-            context->SetActiveScene(context->GetTitleScene());
+            auto* sceneMgr = GetContext()->GetSceneManager();
+            sceneMgr->setActiveScene(sceneMgr->getTitleScene());
             break;
         }
         case PromptMode::saveBeforeNewGame:
