@@ -28,7 +28,8 @@ namespace OpenRCT2
         std::unique_ptr<TitleScene> _titleScene;
 
     public:
-        explicit SceneManager(IContext* context) : _sceneContext(context)
+        explicit SceneManager(IContext* context)
+            : _sceneContext(context)
         {
         }
 
