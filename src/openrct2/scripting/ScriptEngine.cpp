@@ -53,6 +53,7 @@
     #include "bindings/object/ScObjectManager.h"
     #include "bindings/ride/ScRide.hpp"
     #include "bindings/ride/ScRideStation.hpp"
+    #include "bindings/ride/ScRideTypeDescriptor.h"
     #include "bindings/world/ScAward.hpp"
     #include "bindings/world/ScDate.hpp"
     #include "bindings/world/ScMap.hpp"
@@ -530,6 +531,7 @@ ScProfiler Scripting::gScProfiler;
 ScResearch Scripting::gScResearch;
 ScRide Scripting::gScRide;
 ScRideStation Scripting::gScRideStation;
+ScRideTypeDescriptor Scripting::gScRideTypeDescriptor;
 ScRideObjectVehicle Scripting::gScRideObjectVehicle;
 ScTile Scripting::gScTile;
 ScTileElement Scripting::gScTileElement;
@@ -571,6 +573,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScResearch.Register(ctx);
     gScRide.Register(ctx);
     gScRideStation.Register(ctx);
+    gScRideTypeDescriptor.Register(ctx);
     gScRideObjectVehicle.Register(ctx);
     gScTile.Register(ctx);
     gScTileElement.Register(ctx);
@@ -624,6 +627,7 @@ void ScriptEngine::UnregisterClasses()
     gScResearch.Unregister();
     gScRide.Unregister();
     gScRideStation.Unregister();
+    gScRideTypeDescriptor.Unregister();
     gScRideObjectVehicle.Unregister();
     gScTile.Unregister();
     gScTileElement.Unregister();

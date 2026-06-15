@@ -24,6 +24,7 @@
     #include "../game/ScConfiguration.hpp"
     #include "../game/ScDisposable.hpp"
     #include "../object/ScObjectManager.h"
+    #include "../ride/ScRideTypeDescriptor.h"
     #include "../ride/ScTrackSegment.h"
 
     #include <cstdio>
@@ -191,6 +192,18 @@ namespace OpenRCT2::Scripting
             {
                 return gScTrackSegment.New(ctx, static_cast<TrackElemType>(type));
             }
+        }
+
+        static JSValue getRideTypeDescriptor(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JS_UNPACK_INT32(rideType, ctx, argv[0]);
+
+            if (rideType < 0 || rideType >= RIDE_TYPE_COUNT)
+            {
+                return JS_NULL;
+            }
+
+            return gScRideTypeDescriptor.New(ctx, static_cast<ride_type_t>(rideType));
         }
 
         static JSValue getAllTrackSegments(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -432,6 +445,7 @@ namespace OpenRCT2::Scripting
                 JS_CFUNC_DEF("getObject", 2, ScContext::getObject),
                 JS_CFUNC_DEF("getAllObjects", 2, ScContext::getAllObjects),
                 JS_CFUNC_DEF("getTrackSegment", 1, ScContext::getTrackSegment),
+                JS_CFUNC_DEF("getRideTypeDescriptor", 1, ScContext::getRideTypeDescriptor),
                 JS_CFUNC_DEF("getAllTrackSegments", 0, ScContext::getAllTrackSegments),
                 JS_CFUNC_DEF("getRandom", 2, ScContext::getRandom),
                 JS_CFUNC_DEF("formatString", 0, ScContext::formatString),

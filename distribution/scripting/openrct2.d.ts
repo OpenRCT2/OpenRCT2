@@ -276,6 +276,12 @@ declare global {
          */
         getTrackSegment(type: number): TrackSegment | null;
 
+        /**
+         * Gets track segment compatibility information for a ride type.
+         * @param rideType The ride type.
+         */
+        getRideTypeDescriptor(rideType: number): RideTypeDescriptor | null;
+
         getAllTrackSegments(): TrackSegment[];
 
         /**
@@ -846,7 +852,7 @@ declare global {
         object: number;
         railingsObject: number;
         /** 0 if flat, 1 if sloped */
-        slopeType: number; // 
+        slopeType: number; //
         /** direction if sloped, otherwise ignored */
         slopeDirection: Direction;
         constructFlags: number;
@@ -1649,7 +1655,7 @@ declare global {
 		readonly rideId: number;
 		breakdownReason: string;
 	}
- 
+
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
         excitement: number;
@@ -2568,6 +2574,68 @@ declare global {
         entrance: CoordsXYZD;
         exit: CoordsXYZD;
     }
+
+    interface RideTypeDescriptor {
+					/**
+					 * The ride type this descriptor describes.
+					 */
+					readonly rideType: number;
+
+					/**
+					 * The stable internal ride type name, typically snake case. E.g. "car_ride", "cash_machine", "river_rafts"
+					 */
+					readonly name: string;
+
+					/**
+					 * The ride type category. Slightly more descriptive than @RideClassification
+					 */
+					readonly category: RideTypeCategory;
+
+					/**
+					 * The starting track segment type for this ride type when opening the ride builder window.
+					 * Typically an end station for tracked rides (not beginning or middle station),
+					 * flat track 1x1 or 3x3 & variants for shops/stalls,
+					 * tower base for drops/launched rides,
+					 * maze for maze,
+					 * null if no valid starting segment.
+					 */
+					readonly startTrackSegment: TrackSegment | null;
+
+					/**
+					 * Standard track segments included for this ride type.
+					 */
+					readonly standardTrackSegments: TrackSegment[];
+
+					/**
+					 * Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
+					 * or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
+					 */
+					readonly extraTrackSegments: TrackSegment[];
+
+					/**
+					 * Advanced metadata: Track segments are actually assigned by groups (e.g. "halfLoopMedium", "liftHillCurve"),
+					 * so that a ride will have a whole set of pieces that go together, e.g. corkscrew left & right.
+					 * Unless you really want to know which track segments are included in which groups, you probably don't need this,
+					 * and can just enumerate through the standardTrackSegments.
+					 *
+					 * see @TrackSegment trackGroup.
+					 *
+					 * This is the standard tracks' groups for this ride type.
+					 */
+					readonly standardTrackGroups: number[];
+
+					/**
+					 * Advanced metadata: Track segments are actually assigned by groups (e.g. "corkscrew", "liftHillCurve"),
+					 * so that a ride will have a whole set of pieces that go together, e.g. corkscrew left & right.
+					 * Unless you really want to know which track segments are included in which groups, you probably don't need this,
+					 * and can just enumerate through the standardTrackSegments.
+					 *
+					 * see @TrackSegment trackGroup.
+					 *
+					 * This is the extra tracks' groups for this ride type.
+					 */
+					readonly extraTrackGroups: number[];
+				}
 
     interface TrackSegment {
         /**
@@ -4525,6 +4593,8 @@ declare global {
         "thrill" |
         "water" |
         "shop";
+
+    type RideTypeCategory = RideResearchCategory | "none";
 
     type ResearchCategory = RideResearchCategory | "scenery";
 
