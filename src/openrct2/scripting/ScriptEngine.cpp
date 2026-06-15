@@ -1689,7 +1689,6 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "playersetgroup", GameCommand::SetPlayerGroup },
     { "ridecreate", GameCommand::CreateRide },
     { "ridedemolish", GameCommand::DemolishRide },
-    { "riderefurbish", GameCommand::DemolishRide },
     { "rideentranceexitplace", GameCommand::PlaceRideEntranceOrExit },
     { "rideentranceexitremove", GameCommand::RemoveRideEntranceOrExit },
     { "ridefreezerating", GameCommand::FreezeRideRating },
@@ -1821,38 +1820,19 @@ void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, Gam
 std::pair<std::unique_ptr<GameActions::GameAction>, bool> ScriptEngine::CreateGameAction(
     JSContext* ctx, const std::string& actionid, JSValue args, const std::string& pluginName)
 {
-    JSValue paramArgs = args;
-    bool freeParamArgs = false;
-    if (actionid == "riderefurbish")
-    {
-        paramArgs = JS_DupValue(ctx, args);
-        freeParamArgs = true;
-        JS_SetPropertyStr(
-            ctx, paramArgs, "modifyType", JS_NewInt32(ctx, static_cast<int32_t>(GameActions::RideModifyType::renew)));
-    }
-
     auto action = CreateGameActionFromActionId(actionid);
     if (action != nullptr)
     {
-        JSToGameActionParameterVisitor visitor(ctx, paramArgs);
+        JSToGameActionParameterVisitor visitor(ctx, args);
         action->AcceptParameters(visitor);
 
-        JSValue flags = JS_GetPropertyStr(ctx, paramArgs, "flags");
+        JSValue flags = JS_GetPropertyStr(ctx, args, "flags");
         if (JS_IsNumber(flags))
         {
             action->AcceptFlags(visitor);
         }
         JS_FreeValue(ctx, flags);
-        if (freeParamArgs)
-        {
-            JS_FreeValue(ctx, paramArgs);
-        }
         return { std::move(action), visitor.GetErrorFlag() };
-    }
-
-    if (freeParamArgs)
-    {
-        JS_FreeValue(ctx, paramArgs);
     }
 
     // Serialise args to json so that it can be sent

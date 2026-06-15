@@ -374,7 +374,6 @@ declare global {
         queryAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         queryAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "riderefurbish", args: RideRefurbishArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
@@ -466,7 +465,6 @@ declare global {
         executeAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
         executeAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "riderefurbish", args: RideRefurbishArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
@@ -719,7 +717,6 @@ declare global {
         "playersetgroup" |
         "ridecreate" |
         "ridedemolish" |
-        "riderefurbish" |
         "rideentranceexitplace" |
         "rideentranceexitremove" |
         "ridefreezerating" |
@@ -1227,10 +1224,6 @@ declare global {
         colour1: number;
         colour2: number;
         inspectionInterval: number;
-    }
-
-    interface RideRefurbishArgs extends GameActionArgs {
-        ride: number;
     }
 
     interface RideDemolishArgs extends GameActionArgs {
@@ -1772,50 +1765,7 @@ declare global {
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
 
-        /**
-         * Bulk-export footpath, track, or entrance elements within a map region.
-         */
-        getElementsInRect(
-            type: "footpath" | "track" | "entrance",
-            bounds: { minX: number; minY: number; maxX: number; maxY: number },
-        ): MapElementSummary[];
-
-        /**
-         * Returns all guests whose sprite occupies a tile within the given bounds.
-         */
-        getGuestsInRect(bounds: { minX: number; minY: number; maxX: number; maxY: number }): Guest[];
-
     }
-
-    interface MapFootpathSummary {
-        tileX: number;
-        tileY: number;
-        baseZ: number;
-        isQueue: boolean;
-        additionStatus?: number;
-        isAdditionBroken?: boolean;
-        isAdditionFull?: boolean;
-    }
-
-    interface MapTrackSummary {
-        tileX: number;
-        tileY: number;
-        baseZ: number;
-        trackType: number;
-        ride: number;
-        sequenceIndex: number;
-    }
-
-    interface MapEntranceSummary {
-        tileX: number;
-        tileY: number;
-        baseZ: number;
-        ride: number;
-        station: number;
-        isExit: boolean;
-    }
-
-    type MapElementSummary = MapFootpathSummary | MapTrackSummary | MapEntranceSummary;
 
     type TileElementType =
         "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
