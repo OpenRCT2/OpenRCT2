@@ -72,6 +72,7 @@ namespace OpenRCT2::Ui::Windows
 
         WIDX_LAND_STYLE_SCROLL,
 
+        WIDX_FEATURE_LABEL,
         WIDX_FEATURE,
         WIDX_FEATURE_DROPDOWN
     };
@@ -105,7 +106,8 @@ namespace OpenRCT2::Ui::Windows
         
         makeWidget(         {   5,  39 }, { 290, 88 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL),
 
-        makeDropdownWidgets({ 133, 150 }, {  48, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER)
+        makeWidget(         {   5,  58 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_FEATURE),
+        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER)
         // clang-format on
     );
 
@@ -270,9 +272,9 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_LAND_STYLE_SCROLL].type = landStyleVisible ? WidgetType::scroll : WidgetType::empty;
 
+            widgets[WIDX_FEATURE_LABEL].type = featureVisible ? WidgetType::label : WidgetType::empty;
             widgets[WIDX_FEATURE].type = featureVisible ? WidgetType::dropdownMenu : WidgetType::empty;
             widgets[WIDX_FEATURE_DROPDOWN].type = featureVisible ? WidgetType::button : WidgetType::empty;
-
 
             bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)
@@ -298,6 +300,11 @@ namespace OpenRCT2::Ui::Windows
                 default:
                     throw std::runtime_error("unknown predicate");
             }
+
+            if (featureVisible)
+            {
+                widgets[WIDX_FEATURE].text = featureToStringId(getFeature());
+            }
         }
 
         StringId featureToStringId(Feature& feature)
@@ -316,9 +323,10 @@ namespace OpenRCT2::Ui::Windows
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL;
                 case Feature::Breach:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH;
+                default:
+                    throw std::runtime_error("unknown feature");
             }
         }
-
 
         void onDraw(Drawing::RenderTarget& rt) override
         {
@@ -1159,25 +1167,27 @@ namespace OpenRCT2::Ui::Windows
                     if (selectedIndex == -1)
                         return;
 
-                    switch (condition.type)
-                    {
-                        case Type::DistanceToFeature:
-                        {
-                            std::get<DistanceData>(condition.data).feature = static_cast<Feature>(selectedIndex);
-                            invalidate();
-                            break;
-                        }
-                        case Type::BlendDistanceToFeature:
-                        {
-                            std::get<BlendDistanceData>(condition.data).feature = static_cast<Feature>(selectedIndex);
-                            invalidate();
-                            break;
-                        }
-                        default:
-                            throw std::runtime_error("onDropdown feature dropdown unexpected condition type");
-                    }
-
+                    getFeature() = static_cast<Feature>(selectedIndex);
+                    invalidate();
+                    break;
                 }
+            }
+        }
+
+        Feature& getFeature()
+        {
+            switch (condition.type)
+            {
+                case Type::DistanceToFeature:
+                {
+                    return std::get<DistanceData>(condition.data).feature;
+                }
+                case Type::BlendDistanceToFeature:
+                {
+                    return std::get<BlendDistanceData>(condition.data).feature;
+                }
+                default:
+                    throw std::runtime_error("getFeature called with bad condition type");
             }
         }
 
@@ -1225,22 +1235,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     using namespace Dropdown;
 
-                    int32_t selectedIndex;
-                    switch (condition.type)
-                    {
-                        case Type::DistanceToFeature:
-                        {
-                            selectedIndex = static_cast<int32_t>(std::get<DistanceData>(condition.data).feature);
-                            break;
-                        }
-                        case Type::BlendDistanceToFeature:
-                        {
-                            selectedIndex = static_cast<int32_t>(std::get<BlendDistanceData>(condition.data).feature);
-                            break;
-                        }
-                        default:
-                            throw std::runtime_error("onMouseDown feature dropdown unexpected condition type");
-                    }
+                    int32_t selectedIndex = static_cast<int32_t>(getFeature());
 
                     constexpr ItemExt items[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER),
