@@ -88,7 +88,7 @@ namespace
 
 void ScRideTypeDescriptor::Register(JSContext* ctx)
 {
-    static constexpr JSCFunctionListEntry funcs[] = {
+    static constexpr JSCFunctionListEntry kFuncs[] = {
         JS_CGETSET_DEF("rideType", ScRideTypeDescriptor::rideType_get, nullptr),
         JS_CGETSET_DEF("name", ScRideTypeDescriptor::name_get, nullptr),
         JS_CGETSET_DEF("category", ScRideTypeDescriptor::category_get, nullptr),
@@ -98,7 +98,7 @@ void ScRideTypeDescriptor::Register(JSContext* ctx)
         JS_CGETSET_DEF("standardTrackGroups", ScRideTypeDescriptor::standardTrackGroups_get, nullptr),
         JS_CGETSET_DEF("extraTrackGroups", ScRideTypeDescriptor::extraTrackGroups_get, nullptr),
     };
-    RegisterBase(ctx, "RideTypeDescriptor", Finalize, funcs);
+    RegisterBase(ctx, "RideTypeDescriptor", Finalize, kFuncs);
 }
 
 JSValue ScRideTypeDescriptor::New(JSContext* ctx, ride_type_t rideType)
