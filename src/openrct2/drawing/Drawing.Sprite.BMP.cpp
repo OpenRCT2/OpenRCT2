@@ -43,11 +43,11 @@ template<DrawBlendOp TBlendOp>
 static void FASTCALL DrawBMPSpriteMinify(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     auto& g1 = args.SourceImage;
-    
+
     // FIX: Use ptrdiff_t to safely handle potentially negative SrcX or SrcY values
     ptrdiff_t start_offset = (static_cast<ptrdiff_t>(g1.width) * args.SrcY) + args.SrcX;
     auto* src = reinterpret_cast<PaletteIndex*>(g1.offset) + start_offset;
-    
+
     auto* dst = reinterpret_cast<PaletteIndex*>(args.DestinationBits);
     auto& paletteMap = args.PalMap;
 
@@ -65,15 +65,15 @@ static void FASTCALL DrawBMPSpriteMinify(RenderTarget& rt, const DrawSpriteArgs&
     {
         auto nextSrc = src + srcLineWidth;
         auto nextDst = dst + dstLineWidth;
-        
+
         for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src += zoom, dst++)
         {
-            if (src >= src_start && src < src_end) 
+            if (src >= src_start && src < src_end)
             {
                 BlitPixel<TBlendOp>(src, dst, paletteMap);
             }
         }
-        
+
         src = nextSrc;
         dst = nextDst;
     }
