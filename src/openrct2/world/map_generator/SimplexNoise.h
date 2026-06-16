@@ -9,14 +9,49 @@
 
 #pragma once
 
+#include "Noise.h"
+
 #include <cstdint>
+#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
     struct Settings;
 
-    void NoiseRand();
-    float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
+    class SimplexNoise : public Noise
+    {
+    private:
+        uint8_t _perm[512];
+
+    public:
+        SimplexNoise(uint32_t seed);
+        SimplexNoise();
+        float Generate(float x, float y) override;
+    };
+
+    class SimplexFbmNoise final : public SimplexNoise
+    {
+    private:
+        float _frequency;
+        int32_t _octaves;
+        float _lacunarity;
+        float _persistence;
+
+    public:
+        SimplexFbmNoise(float frequency, int32_t octaves, float lacunarity, float persistence)
+            : SimplexFbmNoise(std::random_device{}(), frequency, octaves, lacunarity, persistence)
+        {
+        }
+        SimplexFbmNoise(uint32_t seed, float frequency, int32_t octaves, float lacunarity, float persistence)
+            : SimplexNoise(seed)
+            , _frequency(frequency)
+            , _octaves(octaves)
+            , _lacunarity(lacunarity)
+            , _persistence(persistence)
+        {
+        }
+        float Generate(float x, float y) override;
+    };
 
     void generateSimplexMap(Settings* settings);
 } // namespace OpenRCT2::World::MapGenerator

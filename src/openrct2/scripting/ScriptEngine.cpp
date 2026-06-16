@@ -30,6 +30,9 @@
     #include "../platform/Platform.h"
     #include "../profiling/Profiling.h"
     #include "../ride/ted/PitchAndRoll.h"
+    #include "bindings/editor/ScEditor.hpp"
+    #include "bindings/editor/ScLandscape.hpp"
+    #include "bindings/editor/ScNoiseFn.hpp"
     #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
     #include "bindings/entity/ScGuest.hpp"
@@ -516,6 +519,9 @@ ScConsole Scripting::gScConsole;
 ScContext Scripting::gScContext;
 ScDate Scripting::gScDate;
 ScDisposable Scripting::gScDisposable;
+ScEditor Scripting::gScEditor;
+ScLandscape Scripting::gScLandscape;
+ScNoiseFn Scripting::gScNoiseFn;
 ScMap Scripting::gScMap;
 ScNetwork Scripting::gScNetwork;
 ScObjectManager Scripting::gScObjectManager;
@@ -557,6 +563,9 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScContext.Register(ctx);
     gScDate.Register(ctx);
     gScDisposable.Register(ctx);
+    gScEditor.Register(ctx);
+    gScLandscape.Register(ctx);
+    gScNoiseFn.Register(ctx);
     gScMap.Register(ctx);
     gScNetwork.Register(ctx);
     gScObjectManager.Register(ctx);
@@ -610,6 +619,9 @@ void ScriptEngine::UnregisterClasses()
     gScContext.Unregister();
     gScDate.Unregister();
     gScDisposable.Unregister();
+    gScEditor.Unregister();
+    gScLandscape.Unregister();
+    gScNoiseFn.Unregister();
     gScMap.Unregister();
     gScNetwork.Unregister();
     gScObjectManager.Unregister();
@@ -676,6 +688,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
     JS_SetPropertyStr(ctx, glb, "date", gScDate.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "editor", gScEditor.New(ctx));
     JS_SetPropertyStr(ctx, glb, "map", gScMap.New(ctx));
     JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));
     JS_SetPropertyStr(ctx, glb, "park", gScPark.New(ctx));
