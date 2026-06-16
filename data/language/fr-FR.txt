@@ -3825,3 +3825,5 @@ STR_7026    :Rend toute l’attraction visible
 STR_7028    :Quart d’hélice montante
 STR_7029    :Quart d’hélice descendante
 STR_7030    :{WINDOW_COLOUR_2}Visiteurs divertis : {BLACK}{COMMA32}
+STR_7031    :Désactiver la pousse de l’herbe
+STR_7032    :Désactive la croissance de l’herbe pour qu’elle ne pousse pas
