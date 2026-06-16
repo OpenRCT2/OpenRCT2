@@ -4282,10 +4282,11 @@ declare global {
         readonly guestGenerationProbability: number;
 
         /**
-         * Spawns a new guest at a random peep spawn point.
+         * Spawns a new guest at a random peep spawn point, or null if a guest could not
+         * spawn due to entity limits or no spawn points.
          * Note: The "guest.generation" hook will be called before this function returns.
          */
-        generateGuest(): Guest;
+        generateGuest(): Guest | null;
 
         /**
          * The average amount of cash guests will spawn with.
