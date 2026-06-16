@@ -781,12 +781,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     int32_t x = coords.x;
     int32_t y = coords.y;
 
-    const auto* g1 = GfxGetG1Element(imageId);
-    if (g1 == nullptr)
+   const auto* g1 = GfxGetG1Element(imageId);
+    if (g1 == nullptr || g1->offset == nullptr || g1->width <= 0 || g1->height <= 0)
     {
         return;
     }
-
     if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::hasZoomSprite))
     {
         RenderTarget zoomedRT = rt;
