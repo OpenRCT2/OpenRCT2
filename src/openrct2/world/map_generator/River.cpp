@@ -321,7 +321,7 @@ namespace OpenRCT2::World::MapGenerator
             }
 
             neighbourCounts[tile.pos] = riverNeighbours;
-            if (!hasUpstreamNeighbours && riverNeighbours == 1 && riverMap[tile.pos].filled)
+            if (!hasUpstreamNeighbours && riverNeighbours <= 1 && riverMap[tile.pos].filled)
             {
                 springs.push(tile.pos);
             }
@@ -330,6 +330,7 @@ namespace OpenRCT2::World::MapGenerator
         // prune if length is below limit
         while (!springs.empty())
         {
+            bool pruned = false;
             const TileCoordsXY spring = springs.front();
             springs.pop();
 
@@ -337,7 +338,7 @@ namespace OpenRCT2::World::MapGenerator
 
             std::optional<TileCoordsXY> currentTile = std::make_optional(spring);
 
-            while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 2)
+            while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 4)
             {
                 pathLength++;
                 currentTile = backrefMap[currentTile.value()];
@@ -347,12 +348,16 @@ namespace OpenRCT2::World::MapGenerator
 
             if (pathLength <= kMaxPruneLength)
             {
-                while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 2)
+                while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 4)
                 {
                     riverMap[currentTile.value()].river = false;
                     currentTile = backrefMap[currentTile.value()];
                 }
+                pruned = true;
             }
+
+            context.debugSigns.emplace_back(spring, "spring", Drawing::Colour::white,
+                pruned ? Drawing::Colour::brightRed : Drawing::Colour::lightBlue);
         }
     }
 
