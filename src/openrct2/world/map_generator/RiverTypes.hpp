@@ -19,6 +19,8 @@ namespace OpenRCT2::World::MapGenerator
     struct RiverState
     {
         float catchment;
+        float waterHeight;
+
         bool river;
         bool riverbed;
         bool filled;

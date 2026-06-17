@@ -530,7 +530,6 @@ namespace OpenRCT2::World::MapGenerator
 
     /**
      * Carve a riverbed around the river increasing with catchment.
-     * TODO also deepen river with catchment
      */
     static void carveRiverbed(MapGenCtx& context)
     {
@@ -549,13 +548,14 @@ namespace OpenRCT2::World::MapGenerator
             const QueueTile tile = queue.top();
             queue.pop();
 
-            heightMap[tile.pos] = heightCopy[tile.pos] - 4.0f;
-            riverMap[tile.pos].riverbed = true;
-
             const float radius = std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold);
             const float radiusMinusOne = radius - 1.0f;
             const float radiusSquared = radius * radius;
             const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
+
+            riverMap[tile.pos].riverbed = true;
+            riverMap[tile.pos].waterHeight = heightCopy[tile.pos] - 2.0f;
+            heightMap[tile.pos] = heightCopy[tile.pos] - (4.0f + std::max(0.0f, radius * 0.125f));
 
             for (int32_t dy = -radius; dy <= radius; dy++)
             {

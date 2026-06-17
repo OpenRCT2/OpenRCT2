@@ -133,6 +133,12 @@ namespace OpenRCT2::World::MapGenerator
         Rule::evaluateSceneryRules(context, callback);
     }
 
+    static int8_t quantizeHeight(float height)
+    {
+        // Ensure height is within [2, 254] and a multiple of 2
+        return static_cast<int8_t>(std::round(std::clamp(height, 2.0f, 254.0f) * 0.5f) * 2.0f);
+    }
+
     /**
      * Sets each tile's water level to the specified water level if underneath that water level.
      */
@@ -169,8 +175,10 @@ namespace OpenRCT2::World::MapGenerator
                     auto surfaceElement = MapGetSurfaceElementAt(pos);
                     if (surfaceElement != nullptr )
                     {
-                        auto waterHeight = std::max(
-                            (surfaceElement->baseHeight + 2) * kCoordsZStep, surfaceElement->GetWaterHeight());
+                        const int32_t riverHeight = quantizeHeight(riverMap[pos].waterHeight) * kCoordsZStep;
+                        const int32_t waterTableHeight = surfaceElement->GetWaterHeight();
+                        const int32_t waterHeight = std::max(riverHeight, waterTableHeight);
+
                         surfaceElement->SetWaterHeight(waterHeight);
                     }
                 }
@@ -193,9 +201,7 @@ namespace OpenRCT2::World::MapGenerator
                 if (surfaceElement == nullptr)
                     continue;
 
-                // Ensure height is within [2, 254] and a multiple of 2
-                auto adjustedHeight = std::round(std::clamp(context.heightMap[pos], 2.0f, 254.0f) * 0.5f) * 2.0f;
-                surfaceElement->baseHeight = static_cast<uint8_t>(adjustedHeight);
+                surfaceElement->baseHeight = quantizeHeight(context.heightMap[pos]);
 
                 // TODO is this special case really needed?
                 // If base height is below water level, lower it to create more natural shorelines
