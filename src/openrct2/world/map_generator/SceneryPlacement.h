@@ -10,9 +10,11 @@
 #pragma once
 
 #include "../Location.hpp"
+#include "MapGen.h"
 #include "rule/Rule.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
     void placeScenery(const TileCoordsXY& loc, const Rule::SceneryResult& sceneryResult);
+    void placeDebugSign(const DebugSign& debugSignResult);
 } // namespace OpenRCT2::World::MapGenerator

@@ -25,6 +25,7 @@ namespace OpenRCT2::World::MapGenerator
 
     static void applyTexturesFromRules(const MapGenCtx& context);
     static void placeSceneryFromRules(const MapGenCtx& context);
+    static void placeDebugSigns(const MapGenCtx& context);
 
     void generate(Settings& settings)
     {
@@ -32,6 +33,7 @@ namespace OpenRCT2::World::MapGenerator
             .settings = settings,
             .heightMap = HeightMap{settings.mapSize},
             .riverMap = settings.generateRivers ? std::make_optional(settings.mapSize) : std::nullopt,
+            .debugSigns = {}
         };
 
         switch (settings.algorithm)
@@ -60,6 +62,8 @@ namespace OpenRCT2::World::MapGenerator
                 GenerateFromHeightmapImage(context);
                 break;
         }
+
+        placeDebugSigns(context);
 
         applyTexturesFromRules(context);
         placeSceneryFromRules(context);
@@ -201,6 +205,14 @@ namespace OpenRCT2::World::MapGenerator
 
                 surfaceElement->clearanceHeight = surfaceElement->baseHeight;
             }
+        }
+    }
+
+    void placeDebugSigns(const MapGenCtx& context)
+    {
+        for (const auto& sign : context.debugSigns)
+        {
+            placeDebugSign(sign);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

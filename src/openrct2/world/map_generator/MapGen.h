@@ -99,11 +99,20 @@ namespace OpenRCT2::World::MapGenerator
         int32_t breachMaxDepth = 4;
     };
 
+    struct DebugSign
+    {
+        TileCoordsXY position;
+        std::string text;
+        Drawing::Colour textColour = Drawing::Colour::white;
+        Drawing::Colour backgroundColour = Drawing::Colour::brightRed;
+    };
+
     struct MapGenCtx
     {
         const Settings& settings;
         HeightMap heightMap;
         std::optional<RiverMap> riverMap;
+        std::vector<DebugSign> debugSigns;
     };
 
     void generate(Settings& settings);
