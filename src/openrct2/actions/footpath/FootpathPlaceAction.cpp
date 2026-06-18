@@ -15,7 +15,6 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../core/Guard.hpp"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../object/PathAdditionEntry.h"
@@ -25,17 +24,13 @@
 #include "../../world/Footpath.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
-#include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/EntranceElement.h"
 #include "../../world/tile_element/PathElement.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
-
-#include <algorithm>
 
 namespace OpenRCT2::GameActions
 {

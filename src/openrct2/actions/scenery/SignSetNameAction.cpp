@@ -9,12 +9,10 @@
 
 #include "SignSetNameAction.h"
 
-#include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../localisation/StringIds.h"
-#include "../../ride/Ride.h"
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
 

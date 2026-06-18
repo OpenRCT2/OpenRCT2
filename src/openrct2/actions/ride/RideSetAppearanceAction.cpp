@@ -9,16 +9,12 @@
 
 #include "RideSetAppearanceAction.h"
 
-#include "../../Cheats.h"
-#include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../core/MemoryStream.h"
 #include "../../drawing/Drawing.h"
 #include "../../localisation/StringIds.h"
 #include "../../ride/Ride.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {

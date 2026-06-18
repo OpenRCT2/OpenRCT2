@@ -13,13 +13,10 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
-#include "../../management/Finance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 #include "../../world/tile_element/PathElement.h"
 
 namespace OpenRCT2::GameActions

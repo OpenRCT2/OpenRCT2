@@ -9,16 +9,13 @@
 
 #include "ClearAction.h"
 
-#include "../../Context.h"
 #include "../../GameState.h"
-#include "../../core/MemoryStream.h"
-#include "../../drawing/Drawing.h"
+#include "../../OpenRCT2.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
-#include "../../world/tile_element/PathElement.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
 #include "../GameActionRunner.h"
 #include "../footpath/FootpathRemoveAction.h"

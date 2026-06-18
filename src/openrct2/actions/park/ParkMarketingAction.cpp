@@ -9,15 +9,12 @@
 
 #include "ParkMarketingAction.h"
 
-#include "../../Context.h"
-#include "../../GameState.h"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../management/Marketing.h"
 #include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
-#include "../../world/Park.h"
+#include "../../world/ParkData.h"
 
 #include <iterator>
 

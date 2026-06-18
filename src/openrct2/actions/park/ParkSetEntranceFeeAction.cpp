@@ -9,13 +9,11 @@
 
 #include "ParkSetEntranceFeeAction.h"
 
-#include "../../Cheats.h"
 #include "../../Diagnostic.h"
-#include "../../GameState.h"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Park.h"
+#include "../../world/ParkData.h"
 
 namespace OpenRCT2::GameActions
 {
