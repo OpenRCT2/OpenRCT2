@@ -10,6 +10,7 @@
 #include "River.h"
 
 #include "../../Context.h"
+#include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "MapHelpers.h"
 #include "TileQueue.hpp"
@@ -26,13 +27,12 @@ namespace OpenRCT2::World::MapGenerator
     struct TileState
     {
         // TODO use an uint8_t to encode the kNeighbourOffsets index
-        Backref backref = std::nullopt;
-        bool visited = false;
-        bool pit = false;
+        Backref backref;
+        bool visited;
+        bool pit;
     };
 
     using BackrefMap = BaseMap<Backref>;
-    using NeighbourCountMap = BaseMap<int32_t>;
     using StateMap = BaseMap<TileState>;
 
     /**
@@ -46,9 +46,9 @@ namespace OpenRCT2::World::MapGenerator
     static void fillOrBreachDepressions(MapGenCtx& context)
     {
         HeightMap& heightMap = context.heightMap;
-        RiverMap& riverMap = context.riverMap.value();
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        StateMap state(heightMap.height, heightMap.width);
+        StateMap state(hydroMaps.dimensions);
         StableTileQueue queue;
         std::queue<TileCoordsXY> fillQueue;
 
@@ -132,7 +132,7 @@ namespace OpenRCT2::World::MapGenerator
                         while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
                         {
                             heightMap[currentTile.value()] = targetHeight;
-                            riverMap[currentTile.value()].breached = true;
+                            hydroMaps.flags[currentTile.value()].set(breached);
 
                             targetHeight = std::nextafter(targetHeight, std::numeric_limits<float>::lowest());
                             currentTile = state[currentTile.value()].backref;
@@ -155,7 +155,7 @@ namespace OpenRCT2::World::MapGenerator
                 if (heightMap[fillPos] <= heightMap[backrefPos])
                 {
                     heightMap[fillPos] = std::nextafter(heightMap[backrefPos], std::numeric_limits<float>::infinity());
-                    riverMap[fillPos].filled = true;
+                    hydroMaps.flags[fillPos].set(filled);
                 }
             }
             fillQueue.pop();
@@ -191,12 +191,12 @@ namespace OpenRCT2::World::MapGenerator
 
     static float aggregateNeighbour(MapGenCtx& context, const TileCoordsXY& pos)
     {
-        auto& heightMap = context.heightMap;
-        auto& riverMap = context.riverMap.value();
+        HeightMap& heightMap = context.heightMap;
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        if (riverMap[pos].catchment <= 0.0f)
+        if (hydroMaps.catchment[pos] <= 0.0f)
         {
-            riverMap[pos].catchment = 1.0f;
+            hydroMaps.catchment[pos] = 1.0f;
             for (const auto& offset : kNeighbourOffsets)
             {
                 TileCoordsXY nPos{ pos + offset };
@@ -211,11 +211,11 @@ namespace OpenRCT2::World::MapGenerator
                     const float neighbourFraction = flowFraction(heightMap, nPos, pos);
                     const float neighbourCatchment = aggregateNeighbour(context, nPos);
                     const float neighbourContribution = neighbourFraction * neighbourCatchment;
-                    riverMap[pos].catchment += neighbourContribution;
+                    hydroMaps.catchment[pos] += neighbourContribution;
                 }
             }
         }
-        return riverMap[pos].catchment;
+        return hydroMaps.catchment[pos];
     }
 
     /**
@@ -239,55 +239,48 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static bool postProcessTile(
+    static void postProcessTile(
         MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap, Backref backref,
         const TileCoordsXY& pos)
     {
-        RiverState& riverState = context.riverMap.value()[pos];
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        if (riverState.catchment < context.settings.catchmentThreshold)
+        if (hydroMaps.catchment[pos] < context.settings.catchmentThreshold)
         {
-            return false;
+            return;
         }
 
         queue.emplace(pos, context.heightMap[pos]);
         visited[pos] = Mask::True;
         backrefMap[pos] = backref;
-        riverState.river = true;
 
-        return true;
+        hydroMaps.flags[pos].set(river);
+        hydroMaps.flags[pos].set(skeleton);
     }
 
     /**
-     * Applies the catchment threshold and removes artifacts. Orphans (possible due to the fractional nature of the catchment
-     * calculation) are implicitly removed by tracing streams from the sinks at the map edges. Short streams are explicitly
-     * removed by first identifying springs and tracing downstream until meeting a wider stream.
-     *
-     * TODO there are also (rare) non-edge sinks that should be pruned
+     * Applies the catchment threshold and implicitly removes orphans.
      */
     static void postProcessCatchment(MapGenCtx& context)
     {
-        auto& riverMap = context.riverMap.value();
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
-        MaskMap visited(riverMap.width, riverMap.height);
-
-        NeighbourCountMap neighbourCounts{ riverMap.width, riverMap.height };
-        BackrefMap backrefMap{ riverMap.width, riverMap.height };
+        MaskMap visited(hydroMaps.dimensions);
+        BackrefMap backrefMap{ hydroMaps.dimensions };
 
         std::queue<TileCoordsXY> springs;
 
-        // prepare queue
-        for (int32_t y = 0; y < riverMap.height; y++)
+        for (int32_t y = 0; y < hydroMaps.dimensions.y; y++)
         {
             postProcessTile(context, queue, visited, backrefMap, std::nullopt, { 0, y });
-            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { riverMap.width - 1, y });
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { hydroMaps.dimensions.x - 1, y });
         }
 
-        for (int32_t x = 1; x < riverMap.width - 1; x++)
+        for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
         {
             postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, 0 });
-            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, riverMap.height - 1 });
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, hydroMaps.dimensions.y - 1 });
         }
 
         // process tiles and find springs
@@ -296,123 +289,459 @@ namespace OpenRCT2::World::MapGenerator
             const QueueTile tile = queue.top();
             queue.pop();
 
-            int32_t riverNeighbours = 0;
-            bool hasUpstreamNeighbours = false;
             for (const auto& offset : kNeighbourOffsets)
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.inBounds(nPos))
+                if (!hydroMaps.flags.inBounds(nPos) || visited[nPos] == Mask::True)
                 {
                     continue;
                 }
 
-                if (visited[nPos] == Mask::True)
-                {
-                    riverNeighbours++;
-                    continue;
-                }
-
-                if (postProcessTile(context, queue, visited, backrefMap, tile.pos, nPos))
-                {
-                    riverNeighbours++;
-                    hasUpstreamNeighbours = true;
-                }
+                postProcessTile(context, queue, visited, backrefMap, tile.pos, nPos);
             }
-
-            neighbourCounts[tile.pos] = riverNeighbours;
-            if (!hasUpstreamNeighbours && riverNeighbours <= 1 && riverMap[tile.pos].filled)
-            {
-                springs.push(tile.pos);
-            }
-        }
-
-        // prune if length is below limit
-        while (!springs.empty())
-        {
-            bool pruned = false;
-            const TileCoordsXY spring = springs.front();
-            springs.pop();
-
-            float pathLength = 0.0f;
-
-            std::optional<TileCoordsXY> currentTile = std::make_optional(spring);
-
-            while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 4)
-            {
-                pathLength++;
-                currentTile = backrefMap[currentTile.value()];
-            }
-
-            currentTile = std::make_optional(spring);
-
-            if (pathLength <= kMaxPruneLength)
-            {
-                while (currentTile.has_value() && neighbourCounts[currentTile.value()] <= 4)
-                {
-                    riverMap[currentTile.value()].river = false;
-                    currentTile = backrefMap[currentTile.value()];
-                }
-                pruned = true;
-            }
-
-            context.debugSigns.emplace_back(spring, "spring", Drawing::Colour::white,
-                pruned ? Drawing::Colour::brightRed : Drawing::Colour::lightBlue);
         }
     }
 
-    static void prepareRiverQueue(MapGenCtx& context, StableTileQueue& queue, MaskMap& visited)
+    /**
+     * To aid short stream pruning reduce the river map to a skeleton graph by running a line thinning algorithm.
+     *
+     * based on
+     *
+     * Chen, Y.S. and Hsu, W.H., 1988. A modified fast parallel algorithm for thinning digital patterns. Pattern Recognition
+     * Letters, 7(2), pp.99-106.
+     */
+    static void constructRiverSkeletons(MapGenCtx& context)
     {
-        auto& heightMap = context.heightMap;
-        auto& riverMap = context.riverMap.value();
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        for (int32_t y = 0; y < riverMap.height; y++)
+        bool firstSubiteration = true;
+        std::vector<TileCoordsXY> toClear;
+
+        while (true)
+        {
+            for (int32_t y = 1; y < hydroMaps.dimensions.y - 1; y++)
+            {
+                for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
+                {
+                    TileCoordsXY p1{ x, y };
+
+                    if (!hydroMaps.flags[p1].has(skeleton))
+                    {
+                        continue;
+                    }
+
+                    union
+                    {
+                        bool pN[8];
+                        struct
+                        {
+                            bool p2, p3, p4, p5, p6, p7, p8, p9;
+                        };
+                    } nb = { .p2 = hydroMaps.flags[p1 + TileCoordsXY{ 0, -1 }].has(skeleton),
+                             .p3 = hydroMaps.flags[p1 + TileCoordsXY{ 1, -1 }].has(skeleton),
+                             .p4 = hydroMaps.flags[p1 + TileCoordsXY{ 1, 0 }].has(skeleton),
+                             .p5 = hydroMaps.flags[p1 + TileCoordsXY{ 1, 1 }].has(skeleton),
+                             .p6 = hydroMaps.flags[p1 + TileCoordsXY{ 0, 1 }].has(skeleton),
+                             .p7 = hydroMaps.flags[p1 + TileCoordsXY{ -1, 1 }].has(skeleton),
+                             .p8 = hydroMaps.flags[p1 + TileCoordsXY{ -1, 0 }].has(skeleton),
+                             .p9 = hydroMaps.flags[p1 + TileCoordsXY{ -1, -1 }].has(skeleton) };
+
+                    int32_t bOfP1 = 0;
+                    for (const auto& n : nb.pN)
+                    {
+                        if (n)
+                        {
+                            bOfP1 += 1;
+                        }
+                    }
+
+                    if (!(2 <= bOfP1 && bOfP1 <= 7))
+                    {
+                        continue; // condition a
+                    }
+
+                    int32_t aOfP1 = 0;
+                    for (size_t i = 0; i < 8; ++i)
+                    {
+                        if (!nb.pN[i] && nb.pN[(i + 1) % 8])
+                        {
+                            aOfP1 += 1;
+                        }
+                    }
+
+                    if (aOfP1 != 1 && aOfP1 != 2)
+                    {
+                        continue; // condition b
+                    }
+
+                    if (firstSubiteration)
+                    {
+                        if (aOfP1 == 1)
+                        {
+                            if (!((!nb.p2 || !nb.p4 || !nb.p6) && (!nb.p4 || !nb.p6 || !nb.p8)))
+                            {
+                                continue; // condition {c, d}
+                            }
+                        }
+                        else
+                        {
+                            if (!(((nb.p2 && nb.p4) && (!nb.p6 && !nb.p7 && !nb.p8))
+                               || ((nb.p4 && nb.p6) && (!nb.p2 && !nb.p8 && !nb.p9))))
+                            {
+                                continue; // condition {f, g}
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (aOfP1 == 1)
+                        {
+                            if (!((!nb.p2 || !nb.p4 || !nb.p8) && (!nb.p2 || !nb.p6 || !nb.p8)))
+                            {
+                                continue; // condition {c', d'}
+                            }
+                        }
+                        else
+                        {
+                            if (!(((nb.p2 && nb.p8) && (!nb.p4 && !nb.p5 && !nb.p6))
+                               || ((nb.p6 && nb.p8) && (!nb.p2 && !nb.p3 && !nb.p4))))
+                            {
+                                continue; // condition {f', g'}
+                            }
+                        }
+                    }
+
+                    toClear.push_back(p1);
+                }
+            }
+
+            if (toClear.empty())
+            {
+                break;
+            }
+
+            for (const auto& pos : toClear)
+            {
+                hydroMaps.flags[pos].unset(skeleton);
+            }
+
+            toClear.clear();
+            firstSubiteration = !firstSubiteration;
+        }
+    }
+
+    /**
+     * Common setup steps for queue based traversal
+     */
+    static void prepareRiverQueue(
+        MapGenCtx& context, const std::function<void(const TileCoordsXY&)>& queueEmplace, MaskMap& visited,
+        const HydroFlag flag = river)
+    {
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        for (int32_t y = 0; y < hydroMaps.dimensions.y - 1; y++)
         {
             const TileCoordsXY left{ 0, y };
-            if (riverMap[left].river)
+            if (hydroMaps.flags[left].has(flag))
             {
-                queue.emplace(left, heightMap[left]);
+                queueEmplace(left);
                 visited[left] = Mask::True;
             }
 
-            const TileCoordsXY right{ riverMap.width - 1, y };
-            if (riverMap[right].river)
+            const TileCoordsXY right{ hydroMaps.dimensions.x - 1, y };
+            if (hydroMaps.flags[right].has(flag))
             {
-                queue.emplace(right, heightMap[right]);
+                queueEmplace(right);
                 visited[right] = Mask::True;
             }
         }
 
-        for (int32_t x = 1; x < riverMap.width - 1; x++)
+        for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            if (riverMap[top].river)
+            if (hydroMaps.flags[top].has(flag))
             {
-                queue.emplace(top, heightMap[top]);
+                queueEmplace(top);
                 visited[top] = Mask::True;
             }
 
-            const TileCoordsXY bottom{ x, riverMap.height - 1 };
-            if (riverMap[bottom].river)
+            const TileCoordsXY bottom{ x, hydroMaps.dimensions.y - 1 };
+            if (hydroMaps.flags[bottom].has(flag))
             {
-                queue.emplace(bottom, heightMap[bottom]);
+                queueEmplace(bottom);
                 visited[bottom] = Mask::True;
             }
         }
     }
 
     /**
-     * Slightly widen the river in proportion to the catchment.
+     * Returns the two cardinal neighbours for the given ordinal offset.
+     */
+    static std::array<TileCoordsXY, 2> cardinalNeighbours(const TileCoordsXY& offset)
+    {
+        return {
+            TileCoordsXY{ 0, offset.y },
+            TileCoordsXY{ offset.x, 0 },
+        };
+    }
+
+    /**
+     * Checks if the tile at the offset from the given position share a cardinal neighbour with the given flag.
+     */
+    static bool haveCommonCardinalNeighbour(
+        const HydroMaps& hydroMaps, const TileCoordsXY& pos, const TileCoordsXY& offset, const HydroFlag flag = river)
+    {
+        for (const TileCoordsXY& scnOffset : cardinalNeighbours(offset))
+        {
+            const TileCoordsXY scnPos{ pos + scnOffset };
+
+            if (hydroMaps.flags[scnPos].has(flag))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Queue visitor function for pruneShortStreams
+     */
+    static void pruneVisit(
+        MapGenCtx& context, std::queue<TileCoordsXY>& queue, MaskMap& visited, BackrefMap& backrefMap,
+        DistanceMap& distanceMap, const TileCoordsXY& pos, int32_t& upstreamCount, const TileCoordsXY& offset,
+        const bool isOrdinal)
+    {
+        const TileCoordsXY nPos{ pos + offset };
+
+        if (!context.hydroMaps.value().flags.inBounds(nPos) || !context.hydroMaps.value().flags[nPos].has(skeleton))
+        {
+            return;
+        }
+
+        // bit of a workaround, the thinning algorithm can leave T-junctions, prefer the cardinal
+        if (isOrdinal && haveCommonCardinalNeighbour(context.hydroMaps.value(), pos, offset, skeleton))
+        {
+            return;
+        }
+
+        if (visited[nPos] == Mask::True)
+        {
+            if (distanceMap[nPos] >= distanceMap[pos]) // bifurcations
+            {
+                upstreamCount++;
+            }
+            return;
+        }
+
+        backrefMap[nPos] = pos;
+        queue.emplace(nPos);
+        visited[nPos] = Mask::True;
+        upstreamCount++;
+        distanceMap[nPos] = distanceMap[pos] + 1.0f;
+    }
+
+    /**
+     * Prunes tributary streams that are shorter than kMaxPruneLength.
+     * This does a bit of a dance, the more straightforward solution of only using the skeleton to reconstruct the river in the
+     * widen step below produces rather ugly rivers as much of the variation and naturalness from the flow-fraction aggregation
+     * is lost. So instead keep track of the nearest skeleton tile for each river tile and unset if the skeleton tile was
+     * pruned.
+     * The pruning itself works by first identifying springs and confluences. Next the max length spring for each confluence is
+     * identified. Finally prune from each spring if the distance to the nearest confluence is below the threshold and the
+     * spring isn't the furthest for the confluence.
+     *
+     * TODO should be iterated until no stream is pruned
+     */
+    static void pruneShortStreams(MapGenCtx& context)
+    {
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        std::queue<TileCoordsXY> queue;
+        MaskMap visited{ hydroMaps.dimensions };
+
+        auto emplaceFn = [&queue](const TileCoordsXY& pos){queue.emplace(pos);};
+        prepareRiverQueue(context, emplaceFn, visited, skeleton);
+
+        BackrefMap backrefMap{ hydroMaps.dimensions };
+        MaskMap confluenceMap{ hydroMaps.dimensions };
+        BackrefMap confluenceMaxSpringMap{ hydroMaps.dimensions };
+        DistanceMap distanceMap{ hydroMaps.dimensions };
+        BackrefMap nearestSkeletonMap{ hydroMaps.dimensions };
+        std::vector<TileCoordsXY> springs;
+
+        // setup nearest skeleton map for later
+        for (int32_t y = 0; y < hydroMaps.dimensions.y ; y++)
+        {
+            for (int32_t x = 0; x < hydroMaps.dimensions.x ; x++)
+            {
+                TileCoordsXY pos{ x, y };
+                if (!hydroMaps.flags[pos].has(river))
+                {
+                    continue;
+                }
+
+                if (hydroMaps.flags[pos].has(skeleton))
+                {
+                    nearestSkeletonMap[pos] = pos;
+                    continue;
+                }
+
+                // TODO this is dumb
+                std::queue<TileCoordsXY> findSkeletonQueue;
+                MaskMap findSkeletonVisited{hydroMaps.dimensions};
+
+                findSkeletonQueue.emplace(pos);
+                findSkeletonVisited[pos] = Mask::True;
+
+                while (!findSkeletonQueue.empty())
+                {
+                    TileCoordsXY candidateSkeletonPos = findSkeletonQueue.front();
+                    findSkeletonQueue.pop();
+
+                    if (hydroMaps.flags[candidateSkeletonPos].has(skeleton))
+                    {
+                        nearestSkeletonMap[pos] = candidateSkeletonPos;
+                        break;
+                    }
+
+                    for (const auto& offset : kNeighbourOffsets)
+                    {
+                        TileCoordsXY candidateSkeletonNeighborPos = candidateSkeletonPos + offset;
+
+                        if (!hydroMaps.flags.inBounds(candidateSkeletonNeighborPos)
+                            || !hydroMaps.flags[candidateSkeletonNeighborPos].has(river))
+                        {
+                            continue;
+                        }
+
+                        findSkeletonQueue.emplace(candidateSkeletonNeighborPos);
+                        findSkeletonVisited[candidateSkeletonNeighborPos] = Mask::True;
+                    }
+                }
+            }
+        }
+
+        // process tiles and find springs
+        while (!queue.empty())
+        {
+            const TileCoordsXY pos = queue.front();
+            queue.pop();
+
+            int32_t upstreamCount = 0;
+            for (const auto& offset : kNeighbourOffsetsCardinal)
+            {
+                pruneVisit(context, queue, visited, backrefMap, distanceMap, pos, upstreamCount, offset, false);
+            }
+            for (const auto& offset : kNeighbourOffsetsOrdinal)
+            {
+                pruneVisit(context, queue, visited, backrefMap, distanceMap, pos, upstreamCount, offset, true);
+            }
+
+            if (upstreamCount > 1)
+            {
+                confluenceMap[pos] = Mask::True;
+            }
+            else if (upstreamCount == 0)
+            {
+                springs.push_back(pos);
+            }
+        }
+
+        // find furthest spring for each confluence
+        for (const auto& spring : springs)
+        {
+            std::optional<TileCoordsXY> currentTile = std::make_optional(spring);
+            while (currentTile.has_value())
+            {
+                if (confluenceMap[currentTile.value()] == Mask::True)
+                {
+                    const Backref& maybeMaxSpring = confluenceMaxSpringMap[currentTile.value()];
+                    if (!maybeMaxSpring.has_value() || distanceMap[spring] > distanceMap[maybeMaxSpring.value()])
+                    {
+                        confluenceMaxSpringMap[currentTile.value()] = spring;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                currentTile = backrefMap[currentTile.value()];
+            }
+        }
+
+        // prune if length is below limit and isn't the furthest spring
+        for (const auto& spring : springs)
+        {
+            bool prune = false;
+            std::optional<TileCoordsXY> currentTile = std::make_optional(spring);
+
+            while (currentTile.has_value())
+            {
+                if (distanceMap[spring] - distanceMap[currentTile.value()] > kMaxPruneLength)
+                {
+                    break;
+                }
+
+                // checking next here to also prune short streams at the map edge
+                const auto& next = backrefMap[currentTile.value()];
+                if (confluenceMap[currentTile.value()] == Mask::True || !next.has_value())
+                {
+                    const auto& maybeMaxSpring = confluenceMaxSpringMap[currentTile.value()];
+                    if (!maybeMaxSpring.has_value() || maybeMaxSpring.value() != spring)
+                    {
+                        prune = true;
+                    }
+                    break;
+                }
+                currentTile = next;
+            }
+
+            if (prune)
+            {
+                currentTile = std::make_optional(spring);
+                while (currentTile.has_value() && confluenceMap[currentTile.value()] != Mask::True)
+                {
+                    hydroMaps.flags[currentTile.value()].unset(skeleton);
+                    currentTile = backrefMap[currentTile.value()];
+                }
+            }
+        }
+
+        // throw out river tiles that point to a no-longer-skeleton as their nearest skeleton.
+        for (int32_t y = 0; y < hydroMaps.dimensions.y ; y++)
+        {
+            for (int32_t x = 0; x < hydroMaps.dimensions.x ; x++)
+            {
+                TileCoordsXY pos{ x, y };
+                if (!hydroMaps.flags[pos].has(river))
+                {
+                    continue;
+                }
+
+                if (nearestSkeletonMap[pos].has_value() && !hydroMaps.flags[nearestSkeletonMap[pos].value()].has(skeleton))
+                {
+                    hydroMaps.flags[pos].unset(river);
+                    context.debugSigns.emplace_back(pos, "pruned");
+                }
+            }
+        }
+    }
+
+    /**
+     * Slightly widen the river based on catchment.
      */
     static void adjustStreamWidth(MapGenCtx& context)
     {
-        auto& settings = context.settings;
-        auto& heightMap = context.heightMap;
-        auto& riverMap = context.riverMap.value();
+        const Settings& settings = context.settings;
+        HeightMap& heightMap = context.heightMap;
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
-        MaskMap visited(riverMap.width, riverMap.height);
-        prepareRiverQueue(context, queue, visited);
+        MaskMap visited(hydroMaps.dimensions);
+
+        auto emplaceFn = [&context, &queue](const TileCoordsXY& pos){queue.emplace(pos, context.heightMap[pos]);};
+        prepareRiverQueue(context, emplaceFn, visited, river);
 
         while (!queue.empty())
         {
@@ -423,7 +752,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].river)
+                if (!hydroMaps.flags.inBounds(nPos) || visited[nPos] == Mask::True || !hydroMaps.flags[nPos].has(river))
                 {
                     continue;
                 }
@@ -432,7 +761,9 @@ namespace OpenRCT2::World::MapGenerator
                 visited[nPos] = Mask::True;
             }
 
-            const float radius = 0.75f * std::log2(std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold));
+            hydroMaps.flags[tile.pos].set(river);
+
+            const float radius = 0.75f * std::log2(std::log2(hydroMaps.catchment[tile.pos] / settings.catchmentThreshold));
             const float radiusSquared = radius * radius;
 
             for (int32_t dy = -radius; dy <= radius; dy++)
@@ -442,14 +773,14 @@ namespace OpenRCT2::World::MapGenerator
                     TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
 
                     int32_t distance = dx * dx + dy * dy;
-                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared || riverMap[deltaPos].river)
+                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared || hydroMaps.flags[deltaPos].has(river))
                     {
                         continue;
                     }
 
                     const float riverHeight = std::min(heightMap[tile.pos], heightMap[deltaPos]);
                     heightMap[deltaPos] = riverHeight;
-                    riverMap[deltaPos].river = true;
+                    hydroMaps.flags[deltaPos].set(river);
                     visited[deltaPos] = Mask::True;
                 }
             }
@@ -461,12 +792,14 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void ensureCardinalNeighbours(MapGenCtx& context)
     {
-        auto& heightMap = context.heightMap;
-        auto& riverMap = context.riverMap.value();
+        HeightMap& heightMap = context.heightMap;
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
-        MaskMap visited(riverMap.width, riverMap.height);
-        prepareRiverQueue(context, queue, visited);
+        MaskMap visited(hydroMaps.dimensions);
+
+        auto emplaceFn = [&context, &queue](const TileCoordsXY& pos){queue.emplace(pos, context.heightMap[pos]);};
+        prepareRiverQueue(context, emplaceFn, visited);
 
         while (!queue.empty())
         {
@@ -477,7 +810,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].river)
+                if (!hydroMaps.flags.inBounds(nPos) || visited[nPos] == Mask::True || !hydroMaps.flags[nPos].has(river))
                 {
                     continue;
                 }
@@ -485,35 +818,17 @@ namespace OpenRCT2::World::MapGenerator
                 queue.emplace(nPos, heightMap[nPos]);
                 visited[nPos] = Mask::True;
 
-                const TileCoordsXY sharedCardinalNeighbours[] = {
-                    TileCoordsXY{ 0, offset.y },
-                    TileCoordsXY{ offset.x, 0 },
-                };
-
-                bool hasCardinalNeighbour = false;
-
-                for (const TileCoordsXY& scnOffset : sharedCardinalNeighbours)
-                {
-                    const TileCoordsXY scnPos{ tile.pos + scnOffset };
-
-                    if (riverMap[scnPos].river)
-                    {
-                        hasCardinalNeighbour = true;
-                        break;
-                    }
-                }
-
-                if (hasCardinalNeighbour)
+                if (haveCommonCardinalNeighbour(hydroMaps, tile.pos, offset))
                 {
                     continue;
                 }
 
-                for (const TileCoordsXY& scnOffset : sharedCardinalNeighbours)
+                for (const TileCoordsXY& scnOffset : cardinalNeighbours(offset))
                 {
                     const TileCoordsXY scnPos{ tile.pos + scnOffset };
                     heightMap[scnPos] = heightMap[tile.pos];
-                    riverMap[scnPos].catchment = context.settings.catchmentThreshold;
-                    riverMap[scnPos].river = true;
+                    hydroMaps.catchment[scnPos] = context.settings.catchmentThreshold;
+                    hydroMaps.flags[scnPos].set(river);
                     visited[scnPos] = Mask::True;
                 }
             }
@@ -522,7 +837,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!riverMap.inBounds(nPos) || visited[nPos] == Mask::True || !riverMap[nPos].river)
+                if (!hydroMaps.flags.inBounds(nPos) || visited[nPos] == Mask::True || !hydroMaps.flags[nPos].has(river))
                 {
                     continue;
                 }
@@ -538,28 +853,30 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void carveRiverbed(MapGenCtx& context)
     {
-        auto& settings = context.settings;
-        auto& heightMap = context.heightMap;
-        auto& riverMap = context.riverMap.value();
+        const Settings& settings = context.settings;
+        HeightMap& heightMap = context.heightMap;
+        HydroMaps& hydroMaps = context.hydroMaps.value();
 
         HeightMap heightCopy = heightMap;
 
         StableTileQueue queue;
-        MaskMap visited(riverMap.width, riverMap.height);
-        prepareRiverQueue(context, queue, visited);
+        MaskMap visited(hydroMaps.dimensions);
+
+        auto emplaceFn = [&context, &queue](const TileCoordsXY& pos){queue.emplace(pos, context.heightMap[pos]);};
+        prepareRiverQueue(context, emplaceFn, visited);
 
         while (!queue.empty())
         {
             const QueueTile tile = queue.top();
             queue.pop();
 
-            const float radius = std::log2(riverMap[tile.pos].catchment / settings.catchmentThreshold);
+            const float radius = std::log2(hydroMaps.catchment[tile.pos] / settings.catchmentThreshold);
             const float radiusMinusOne = radius - 1.0f;
             const float radiusSquared = radius * radius;
             const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
 
-            riverMap[tile.pos].riverbed = true;
-            riverMap[tile.pos].waterHeight = heightCopy[tile.pos] - 2.0f;
+            hydroMaps.flags[tile.pos].set(riverbed);
+            hydroMaps.height[tile.pos] = heightCopy[tile.pos] - 2.0f;
             heightMap[tile.pos] = heightCopy[tile.pos] - (4.0f + std::max(0.0f, radius * 0.125f));
 
             for (int32_t dy = -radius; dy <= radius; dy++)
@@ -569,7 +886,7 @@ namespace OpenRCT2::World::MapGenerator
                     const TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
                     const auto distance = dx * dx + dy * dy;
 
-                    if (!heightMap.inBounds(deltaPos) || riverMap[deltaPos].river || distance > radiusSquared)
+                    if (!heightMap.inBounds(deltaPos) || hydroMaps.flags[deltaPos].has(river) || distance > radiusSquared)
                     {
                         continue;
                     }
@@ -577,9 +894,9 @@ namespace OpenRCT2::World::MapGenerator
                     const float riverbedHeight = heightCopy[deltaPos] - 2.0f;
                     heightMap[deltaPos] = riverbedHeight;
 
-                    if (distance <= radiusMinusOneSquared && riverMap[deltaPos].filled)
+                    if (distance <= radiusMinusOneSquared && hydroMaps.flags[deltaPos].has(filled))
                     {
-                        riverMap[deltaPos].riverbed = true;
+                        hydroMaps.flags[deltaPos].set(riverbed);
                     }
                 }
             }
@@ -588,7 +905,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!heightMap.inBounds(nPos) || !riverMap[nPos].river || visited[nPos] == Mask::True)
+                if (!hydroMaps.flags.inBounds(nPos) || !hydroMaps.flags[nPos].has(river) || visited[nPos] == Mask::True)
                 {
                     continue;
                 }
@@ -604,6 +921,8 @@ namespace OpenRCT2::World::MapGenerator
         fillOrBreachDepressions(context);
         aggregateCatchment(context);
         postProcessCatchment(context);
+        constructRiverSkeletons(context);
+        pruneShortStreams(context);
         adjustStreamWidth(context);
         ensureCardinalNeighbours(context);
         carveRiverbed(context);

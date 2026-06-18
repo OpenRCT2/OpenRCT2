@@ -52,10 +52,10 @@ namespace OpenRCT2::World::MapGenerator
     static constexpr std::array kNeighbourOffsets = concat(kNeighbourOffsetsCardinal, kNeighbourOffsetsOrdinal);
 
     // TODO deduplicate smoothing functions
-    using SmoothFunction = std::function<int32_t(TileCoordsXY, std::optional<RiverMap>&)>;
+    using SmoothFunction = std::function<int32_t(TileCoordsXY, const std::optional<HydroMaps>&)>;
 
-    int32_t smoothTileSlopeStrong(TileCoordsXY tileCoords, std::optional<RiverMap>& catchment);
-    int32_t smoothTileSlopeWeak(TileCoordsXY tileCoords, std::optional<RiverMap>& catchment);
+    int32_t smoothTileSlopeStrong(TileCoordsXY tileCoords, const std::optional<HydroMaps>& hydroMaps);
+    int32_t smoothTileSlopeWeak(TileCoordsXY tileCoords, const std::optional<HydroMaps>& hydroMaps);
 
     void smoothBox(HeightMap& heightMap, int32_t iterations);
     void smoothGaussian(HeightMap& heightMap, float sigma);

@@ -111,7 +111,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         const Settings& settings;
         HeightMap heightMap;
-        std::optional<RiverMap> riverMap;
+        std::optional<HydroMaps> hydroMaps;
         std::vector<DebugSign> debugSigns;
     };
 

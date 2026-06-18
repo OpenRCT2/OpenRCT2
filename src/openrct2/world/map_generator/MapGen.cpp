@@ -32,7 +32,7 @@ namespace OpenRCT2::World::MapGenerator
         MapGenCtx context{
             .settings = settings,
             .heightMap = HeightMap{settings.mapSize},
-            .riverMap = settings.generateRivers ? std::make_optional(settings.mapSize) : std::nullopt,
+            .hydroMaps = settings.generateRivers ? std::make_optional(settings.mapSize) : std::nullopt,
             .debugSigns = {}
         };
 
@@ -158,16 +158,16 @@ namespace OpenRCT2::World::MapGenerator
 
     void setRiverWater(const MapGenCtx& context)
     {
-        if (context.settings.generateRivers && context.riverMap.has_value())
+        if (context.settings.generateRivers && context.hydroMaps.has_value())
         {
-            RiverMap riverMap = context.riverMap.value();
-            for (auto y = 1; y < riverMap.height - 1; y++)
+            HydroMaps hydroMaps = context.hydroMaps.value();
+            for (auto y = 1; y < hydroMaps.flags.height - 1; y++)
             {
-                for (auto x = 1; x < riverMap.width - 1; x++)
+                for (auto x = 1; x < hydroMaps.flags.width - 1; x++)
                 {
                     TileCoordsXY pos{ x, y };
 
-                    if (!riverMap[pos].river)
+                    if (!hydroMaps.flags[pos].has(river))
                     {
                         continue;
                     }
@@ -175,7 +175,7 @@ namespace OpenRCT2::World::MapGenerator
                     auto surfaceElement = MapGetSurfaceElementAt(pos);
                     if (surfaceElement != nullptr )
                     {
-                        const int32_t riverHeight = quantizeHeight(riverMap[pos].waterHeight) * kCoordsZStep;
+                        const int32_t riverHeight = quantizeHeight(hydroMaps.height[pos]) * kCoordsZStep;
                         const int32_t waterTableHeight = surfaceElement->GetWaterHeight();
                         const int32_t waterHeight = std::max(riverHeight, waterTableHeight);
 

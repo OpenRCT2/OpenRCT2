@@ -9,24 +9,37 @@
 
 #pragma once
 
+#include "../../core/FlagHolder.hpp"
 #include "BaseMap.hpp"
-
 
 namespace OpenRCT2::World::MapGenerator
 {
     struct MapGenCtx;
 
-    struct RiverState
+    enum HydroFlag : uint8_t
     {
-        float catchment;
-        float waterHeight;
-
-        bool river;
-        bool riverbed;
-        bool filled;
-        bool breached;
+        river,
+        riverbed,
+        filled,
+        breached,
+        skeleton
     };
 
-    using RiverMap = BaseMap<RiverState>;
+    using HydroFlags = FlagHolder<uint8_t, HydroFlag>;
+
+    struct HydroMaps
+    {
+        BaseMap<float> catchment;
+        BaseMap<float> height;
+        BaseMap<HydroFlags> flags;
+        TileCoordsXY dimensions;
+
+        HydroMaps(const TileCoordsXY size)
+            : catchment(size)
+            , height(size)
+            , flags(size)
+            , dimensions(size)
+        {}
+    };
 
 } // namespace OpenRCT2::World::MapGenerator

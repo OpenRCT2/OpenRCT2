@@ -257,7 +257,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
-                else if (genCtx.riverMap.has_value() && genCtx.riverMap.value()[pos].river)
+                else if (genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(river))
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
@@ -267,18 +267,18 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(evalCtx.distanceToWater, queue, visited);
     }
 
-    static void computeRiverStateBasedDistanceMap(
-        const MapGenCtx& genCtx, DistanceMap& distanceMap, const std::function<bool(const RiverState&)>& featureMapFn)
+    static void computeHydroFlagBasedDistanceMap(
+        const MapGenCtx& genCtx, DistanceMap& distanceMap, const HydroFlag flag)
     {
         distanceMap = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
         distanceMap.fill(std::numeric_limits<float>::infinity());
 
-        if (!genCtx.riverMap.has_value())
+        if (!genCtx.hydroMaps.has_value())
         {
             return;
         }
 
-        const auto& riverMap = genCtx.riverMap.value();
+        const auto& hydroMaps = genCtx.hydroMaps.value();
         StableTileQueue queue;
         MaskMap visited{distanceMap.width, distanceMap.height};
 
@@ -288,7 +288,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (featureMapFn(riverMap[pos])){
+                if (hydroMaps.flags[pos].has(flag)){
                     initZeroDistance(pos, distanceMap, queue, visited);
                 }
             }
@@ -697,10 +697,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         computeNormalMap(genCtx, evalCtx.normalMap);
         computeWaterDistanceMap(genCtx, evalCtx);
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiver, [](const RiverState& rs){return rs.river;});
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, [](const RiverState& rs){return rs.riverbed;});
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToFill, [](const RiverState& rs){return rs.filled;});
-        computeRiverStateBasedDistanceMap(genCtx, evalCtx.distanceToBreach, [](const RiverState& rs){return rs.breached;});
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiver, HydroFlag::river);
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, HydroFlag::riverbed);
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToFill, HydroFlag::filled);
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToBreach, HydroFlag::breached);
         computeBorderDistanceMap(genCtx, evalCtx);
     }
 
