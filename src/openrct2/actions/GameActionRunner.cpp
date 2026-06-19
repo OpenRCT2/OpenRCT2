@@ -20,17 +20,10 @@
 #include "../localisation/Formatter.h"
 #include "../network/Network.h"
 #include "../platform/Platform.h"
-#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
-#include "../world/Map.h"
-#include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "GameActionRegistry.h"
-
-#include <iterator>
 
 namespace OpenRCT2::GameActions
 {

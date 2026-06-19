@@ -25,7 +25,6 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
-#include "../../world/Scenery.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../../world/tile_element/PathElement.h"

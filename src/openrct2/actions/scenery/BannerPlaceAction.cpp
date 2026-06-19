@@ -18,7 +18,6 @@
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
-#include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/BannerElement.h"
 #include "../../world/tile_element/PathElement.h"

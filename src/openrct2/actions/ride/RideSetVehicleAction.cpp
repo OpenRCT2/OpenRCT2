@@ -14,16 +14,14 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../core/EnumUtils.hpp"
-#include "../../core/MemoryStream.h"
 #include "../../drawing/Drawing.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Research.h"
 #include "../../object/ObjectManager.h"
 #include "../../ride/Ride.h"
 #include "../../ride/RideData.h"
-#include "../../ui/WindowManager.h"
+#include "../../windows/Intent.h"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {

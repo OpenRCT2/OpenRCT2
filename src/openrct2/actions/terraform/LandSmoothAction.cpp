@@ -9,18 +9,12 @@
 
 #include "LandSmoothAction.h"
 
-#include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
-#include "../../ride/RideData.h"
-#include "../../windows/Intent.h"
 #include "../../world/Map.h"
 #include "../../world/MapSelection.h"
-#include "../../world/Park.h"
-#include "../../world/Scenery.h"
 #include "../../world/SurfaceData.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"

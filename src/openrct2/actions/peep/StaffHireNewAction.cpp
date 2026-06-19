@@ -13,8 +13,6 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../core/MemoryStream.h"
-#include "../../drawing/Drawing.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Staff.h"
@@ -22,12 +20,8 @@
 #include "../../management/Finance.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/PeepAnimationsObject.h"
-#include "../../ride/Ride.h"
 #include "../../scenario/Scenario.h"
-#include "../../ui/WindowManager.h"
-#include "../../world/Entrance.h"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 
 #include <set>
 

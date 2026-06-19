@@ -13,17 +13,13 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/SmallSceneryEntry.h"
-#include "../../ride/Ride.h"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
-#include "SmallSceneryPlaceAction.h"
 
 namespace OpenRCT2::GameActions
 {

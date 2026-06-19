@@ -14,7 +14,6 @@
 #include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
-#include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../world/Map.h"
 
