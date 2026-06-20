@@ -774,6 +774,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
                     unsigned int j;
                     if (src->pixel_mode == FT_PIXEL_MODE_MONO)
                     {
+                        // Process full bytes (8 pixels per byte)
                         for (j = 0; j < src->width; j += 8)
                         {
                             unsigned char c = *srcp++;
@@ -792,6 +793,17 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
                             *dstp++ = (c & 0x80) >> 7;
                             c <<= 1;
                             *dstp++ = (c & 0x80) >> 7;
+                        }
+                        // Handle any remaining pixels when width is not a multiple of 8
+                        unsigned int remaining = src->width % 8;
+                        if (remaining)
+                        {
+                            unsigned char c = *srcp++;
+                            for (unsigned int k = 0; k < remaining; ++k)
+                            {
+                                *dstp++ = (c & 0x80) >> 7;
+                                c <<= 1;
+                            }
                         }
                     }
                     else if (src->pixel_mode == FT_PIXEL_MODE_GRAY2)
