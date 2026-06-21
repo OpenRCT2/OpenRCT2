@@ -3,7 +3,6 @@
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
 - Change: [#26689] A clear scenario editor can now be opened directly from the command line.
-- Fix: [#26428] WALL_SCENERY_2_IS_OPAQUE flag denotes transparent wall objects.
 - Fix: [#26494] The limits for where walls on the path side of the first tile block the view of rides/scenery are wrong (original bug).
 - Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
 - Fix: [#26545] Game crashes when plugin API function generateGuest fails to generate a guest.
