@@ -30,7 +30,7 @@ namespace OpenRCT2
     // Get surface height including raised corners and steep slopes
     static int32_t getMaxSurfaceHeight(const SurfaceElement& surface)
     {
-        int32_t z = surface.GetBaseZ();
+        int32_t z = surface.getBaseZ();
         uint8_t slope = surface.GetSlope();
         if (slope & kTileSlopeRaisedCornersMask)
             z += kPathHeightStep;
@@ -111,7 +111,7 @@ namespace OpenRCT2
                 auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(pos));
                 if (surfaceElement != nullptr)
                 {
-                    int32_t base = surfaceElement->GetBaseZ();
+                    int32_t base = surfaceElement->getBaseZ();
                     int32_t top = getMaxSurfaceHeight(*surfaceElement);
 
                     sliceBaseZ = std::max(sliceBaseZ, base);
