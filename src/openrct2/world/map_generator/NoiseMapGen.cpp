@@ -178,20 +178,20 @@ namespace OpenRCT2::World::MapGenerator
         resetSurfaces(context);
         setMapHeight(context);
 
-        // slope smooth functions operate on the game map
-        applyTileSlopeSmooth(context);
-
         // set the game map water lvl
         setWaterLevel(context);
         setRiverWater(context);
+
+        // slope smooth functions operate on the game map
+        applyTileSlopeSmooth(context);
+
     }
 
     void generateSimplexMap(MapGenCtx& context)
     {
         const auto& settings = context.settings;
 
-        // TODO should freq really be influenced by map width?
-        float freq = settings.noiseBaseFreq / 100.0f * (1.0f / context.heightMap.width);
+        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
         BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
         FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.65f, 0.0f };
@@ -236,7 +236,7 @@ namespace OpenRCT2::World::MapGenerator
         const auto& settings = context.settings;
         auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
-        BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq };
+        BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq, VoronoiValueType::Distance };
         FractalSettings fractalSettings = { FractalType::PingPong, settings.noiseOctaves, 2.0f, 0.75f, 0.0f };
         WarpSettings warpSettings = {WarpType::Grid, WarpFractalType::Independent, 32, settings.seed, freq / 2, 4, 2.0f, 0.5f };
 

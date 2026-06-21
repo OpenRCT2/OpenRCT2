@@ -14,6 +14,7 @@
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
+#include "MapHelpers.h"
 #include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
 #include "SceneryPlacement.h"
@@ -27,12 +28,16 @@ namespace OpenRCT2::World::MapGenerator
     static void placeSceneryFromRules(const MapGenCtx& context);
     static void placeDebugSigns(const MapGenCtx& context);
 
+
     void generate(Settings& settings)
     {
+
+       TileCoordsXY genSize = TileCoordsXY{settings.mapSize.x * kRiversOverscanFactor, settings.mapSize.y * kRiversOverscanFactor};
+
         MapGenCtx context{
             .settings = settings,
-            .heightMap = HeightMap{settings.mapSize},
-            .hydroMaps = settings.generateRivers ? std::make_optional(settings.mapSize) : std::nullopt,
+            .heightMap = HeightMap{genSize},
+            .hydroMaps = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
             .debugSigns = {}
         };
 
@@ -161,21 +166,23 @@ namespace OpenRCT2::World::MapGenerator
         if (context.settings.generateRivers && context.hydroMaps.has_value())
         {
             HydroMaps hydroMaps = context.hydroMaps.value();
-            for (auto y = 1; y < hydroMaps.flags.height - 1; y++)
-            {
-                for (auto x = 1; x < hydroMaps.flags.width - 1; x++)
-                {
-                    TileCoordsXY pos{ x, y };
 
-                    if (!hydroMaps.flags[pos].has(river))
+            for (auto y = 1; y < context.settings.mapSize.y - 1; y++)
+            {
+                for (auto x = 1; x < context.settings.mapSize.x - 1; x++)
+                {
+                    const TileCoordsXY posGameMap{ x, y };
+                    const TileCoordsXY posGenMap = worldCoordsToGenCoords(context, posGameMap);
+
+                    if (!hydroMaps.flags[posGenMap].has(river))
                     {
                         continue;
                     }
 
-                    auto surfaceElement = MapGetSurfaceElementAt(pos);
+                    auto surfaceElement = MapGetSurfaceElementAt(posGameMap);
                     if (surfaceElement != nullptr )
                     {
-                        const int32_t riverHeight = quantizeHeight(hydroMaps.height[pos]) * kCoordsZStep;
+                        const int32_t riverHeight = quantizeHeight(hydroMaps.height[posGenMap]) * kCoordsZStep;
                         const int32_t waterTableHeight = surfaceElement->GetWaterHeight();
                         const int32_t waterHeight = std::max(riverHeight, waterTableHeight);
 
@@ -191,17 +198,18 @@ namespace OpenRCT2::World::MapGenerator
      */
     void setMapHeight(const MapGenCtx& context)
     {
-        for (auto y = 1; y < context.heightMap.height - 1; y++)
+        for (auto y = 1; y < context.settings.mapSize.y - 1; y++)
         {
-            for (auto x = 1; x < context.heightMap.width - 1; x++)
+            for (auto x = 1; x < context.settings.mapSize.x - 1; x++)
             {
-                TileCoordsXY pos{ x, y };
+                const TileCoordsXY posGameMap{ x, y };
+                const TileCoordsXY posGenMap = worldCoordsToGenCoords(context, posGameMap);
 
-                auto surfaceElement = MapGetSurfaceElementAt(pos);
+                auto surfaceElement = MapGetSurfaceElementAt(posGameMap);
                 if (surfaceElement == nullptr)
                     continue;
 
-                surfaceElement->baseHeight = quantizeHeight(context.heightMap[pos]);
+                surfaceElement->baseHeight = quantizeHeight(context.heightMap[posGenMap]);
 
                 // TODO is this special case really needed?
                 // If base height is below water level, lower it to create more natural shorelines
@@ -218,7 +226,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         for (const auto& sign : context.debugSigns)
         {
-            placeDebugSign(sign);
+            placeDebugSign(context, sign);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

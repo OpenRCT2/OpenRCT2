@@ -16,13 +16,16 @@ namespace OpenRCT2::World::MapGenerator
 {
     struct MapGenCtx;
 
+    constexpr int32_t kRiversOverscanFactor = 2;
+
     enum HydroFlag : uint8_t
     {
         river,
         riverbed,
         filled,
         breached,
-        skeleton
+        skeleton,
+        blocked
     };
 
     using HydroFlags = FlagHolder<uint8_t, HydroFlag>;
@@ -33,6 +36,7 @@ namespace OpenRCT2::World::MapGenerator
         BaseMap<float> height;
         BaseMap<HydroFlags> flags;
         TileCoordsXY dimensions;
+        BaseMap<float> incomingCatchment;
 
         HydroMaps(const TileCoordsXY size)
             : catchment(size)

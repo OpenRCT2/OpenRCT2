@@ -27,8 +27,19 @@ namespace OpenRCT2::World::MapGenerator
                 _noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
                 break;
             case BaseType::Voronoi:
+            {
                 _noise.SetNoiseType(FastNoiseLite::NoiseType_Cellular);
+                switch (baseSettings.voronoiValueType)
+                {
+                    case VoronoiValueType::Distance:
+                        _noise.SetCellularReturnType(FastNoiseLite::CellularReturnType_Distance);
+                        break;
+                    case VoronoiValueType::Cell:
+                        _noise.SetCellularReturnType(FastNoiseLite::CellularReturnType_CellValue);
+                        break;
+                }
                 break;
+            }
         }
 
         // fractal settings

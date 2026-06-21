@@ -26,11 +26,18 @@ namespace OpenRCT2::World::MapGenerator
         // Value?
     };
 
+    enum class VoronoiValueType
+    {
+        Distance,
+        Cell
+    };
+
     struct BaseSettings
     {
         BaseType type;
         uint32_t seed;
         float frequency;
+        VoronoiValueType voronoiValueType = VoronoiValueType::Distance;
     };
 
     enum class FractalType

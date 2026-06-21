@@ -18,6 +18,7 @@
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectManager.h"
 #include "../Map.h"
+#include "MapHelpers.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -80,17 +81,17 @@ namespace OpenRCT2::World::MapGenerator
         return idx == kObjectEntryIndexNull ? std::nullopt : std::make_optional(idx);
     }
 
-    void placeDebugSign(const DebugSign& debugSign)
+    void placeDebugSign(const MapGenCtx& context, const DebugSign& debugSign)
     {
         auto banner = lookupObjectEntryIdxByIdentifier("rct2.scenery_large.ssig3");
 
         if (!banner.has_value())
         {
-            LOG_WARNING("vertical banner not loaded");
+            LOG_VERBOSE("vertical banner not loaded");
             return;
         }
 
-        CoordsXY position = debugSign.position.ToCoordsXY();
+        CoordsXY position = genCoordsToWorldCoords(context, debugSign.position).ToCoordsXY();
         auto groundHeight = TileElementHeight(position);
         auto waterHeight = TileElementWaterHeight(position);
 
@@ -104,7 +105,7 @@ namespace OpenRCT2::World::MapGenerator
         auto queryPlaceResult = actionPlace.Query(gameState, park);
         if (queryPlaceResult.error != GameActions::Status::ok)
         {
-            LOG_WARNING(
+            LOG_VERBOSE(
                 "LargeSceneryPlaceAction query: %s - %s", queryPlaceResult.getErrorTitle().c_str(),
                 queryPlaceResult.getErrorMessage().c_str());
             return;
@@ -113,7 +114,7 @@ namespace OpenRCT2::World::MapGenerator
         auto execPlaceResult = actionPlace.Execute(gameState, park);
         if (execPlaceResult.error != GameActions::Status::ok)
         {
-            LOG_WARNING(
+            LOG_VERBOSE(
                 "LargeSceneryPlaceAction exec: %s - %s", execPlaceResult.getErrorTitle().c_str(),
                 execPlaceResult.getErrorMessage().c_str());
             return;
@@ -126,7 +127,7 @@ namespace OpenRCT2::World::MapGenerator
         auto querySetSignNameResult = actionSetSignName.Query(gameState, park);
         if (querySetSignNameResult.error != GameActions::Status::ok)
         {
-            LOG_WARNING(
+            LOG_VERBOSE(
                 "SignSetNameAction query: %s - %s", querySetSignNameResult.getErrorTitle().c_str(),
                 querySetSignNameResult.getErrorMessage().c_str());
             return;
@@ -135,7 +136,7 @@ namespace OpenRCT2::World::MapGenerator
         auto execSetSignNameResult = actionSetSignName.Execute(gameState, park);
         if (execSetSignNameResult.error != GameActions::Status::ok)
         {
-            LOG_WARNING(
+            LOG_VERBOSE(
                 "SignSetNameAction exec: %s - %s", execSetSignNameResult.getErrorTitle().c_str(),
                 execSetSignNameResult.getErrorMessage().c_str());
         }

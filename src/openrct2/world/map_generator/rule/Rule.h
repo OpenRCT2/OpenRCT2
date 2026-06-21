@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../../../localisation/Formatting.h"
-#include "../../../rct1/Limits.h"
 #include "../../tile_element/SurfaceElement.h"
 #include "../BaseMap.hpp"
 
@@ -119,7 +118,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         // per tile
         ObjectEntryIndex landTexture;
-        TileCoordsXY coords;
+        TileCoordsXY gameCoords;
+        TileCoordsXY genCoords;
         VecXY quadCoords;
         EvaluationHeights heights;
     };

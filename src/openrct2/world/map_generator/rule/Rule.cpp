@@ -368,22 +368,22 @@ namespace OpenRCT2::World::MapGenerator::Rule
         switch (feature)
         {
             case Feature::MapBorder:
-                distanceActual = ctx.distanceToBorder[ctx.coords];
+                distanceActual = ctx.distanceToBorder[ctx.genCoords];
                 break;
             case Feature::Water:
-                distanceActual = ctx.distanceToWater[ctx.coords];
+                distanceActual = ctx.distanceToWater[ctx.genCoords];
                 break;
             case Feature::River:
-                distanceActual = ctx.distanceToRiver[ctx.coords];
+                distanceActual = ctx.distanceToRiver[ctx.genCoords];
                 break;
             case Feature::Riverbed:
-                distanceActual = ctx.distanceToRiverbed[ctx.coords];
+                distanceActual = ctx.distanceToRiverbed[ctx.genCoords];
                 break;
             case Feature::Fill:
-                distanceActual = ctx.distanceToFill[ctx.coords];
+                distanceActual = ctx.distanceToFill[ctx.genCoords];
                 break;
             case Feature::Breach:
-                distanceActual = ctx.distanceToBreach[ctx.coords];
+                distanceActual = ctx.distanceToBreach[ctx.genCoords];
                 break;
         }
         return distanceActual;
@@ -420,7 +420,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             }
             case Type::NormalAngle:
             {
-                auto normal = ctx.normalMap[ctx.coords];
+                auto normal = ctx.normalMap[ctx.genCoords];
                 auto angle = VecXYZ{ 0.0f, 0.0f, 1.0f }.Angle(normal);
                 return evaluatePredicate(angle, condition.predicate, std::get<NormalAngleData>(condition.data).angle);
             }
@@ -569,7 +569,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     continue;
                 }
 
-                ctx.quadCoords = VecXY{ ctx.coords.x, ctx.coords.y } + QUAD_OFFSET[q];
+                ctx.quadCoords = VecXY{ ctx.genCoords.x, ctx.genCoords.y } + QUAD_OFFSET[q];
                 if (!evaluateConditions(ctx, r, rule.conditions))
                 {
                     // rule doesn't match for tile, try next rule
@@ -670,10 +670,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
         {
             for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
             {
-                evalCtx.coords = TileCoordsXY{ x, y };
-                evalCtx.quadCoords = VecXY{ evalCtx.coords.x, evalCtx.coords.y };
+                evalCtx.gameCoords = { x, y };
+                evalCtx.genCoords = worldCoordsToGenCoords(genCtx, evalCtx.gameCoords);
+                evalCtx.quadCoords = VecXY{ evalCtx.genCoords.x, evalCtx.genCoords.y };
 
-                auto* surfaceElement = MapGetSurfaceElementAt(evalCtx.coords);
+                auto* surfaceElement = MapGetSurfaceElementAt(evalCtx.gameCoords);
                 if (surfaceElement == nullptr)
                 {
                     return;
@@ -686,7 +687,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 evalCtx.landTexture = surfaceElement->GetSurfaceObjectIndex();
 
                 auto result = evaluateAtFn(rules, evalCtx);
-                callback(evalCtx.coords, result);
+                callback(evalCtx.gameCoords, result);
             }
         }
     }

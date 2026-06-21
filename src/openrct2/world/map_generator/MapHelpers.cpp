@@ -26,21 +26,16 @@ namespace OpenRCT2::World::MapGenerator
         return surfaceElement != nullptr ? surfaceElement->baseHeight : 0;
     }
 
-    static bool isRiverTile(const TileCoordsXY& tileCoords, const std::optional<HydroMaps>& hydroMaps)
+    static bool isRiverTile(const TileCoordsXY& tileCoords, const MapGenCtx& context)
     {
-        return hydroMaps.has_value() && hydroMaps.value().flags[tileCoords].has(river);
-    }
-
-    [[maybe_unused]]
-    static bool riverConsents(const TileCoordsXY& tile, const TileCoordsXY& neighbour, const std::optional<HydroMaps>& hydroMaps)
-    {
-        return isRiverTile(tile, hydroMaps) && isRiverTile(neighbour, hydroMaps);
+        TileCoordsXY genCoords = worldCoordsToGenCoords(context, tileCoords);
+        return context.hydroMaps.has_value() && context.hydroMaps.value().flags[genCoords].has(river);
     }
 
     /**
      * Not perfect, this still leaves some particular tiles unsmoothed.
      */
-    int32_t smoothTileSlopeStrong(const TileCoordsXY tileCoords, const std::optional<HydroMaps>& hydroMaps)
+    int32_t smoothTileSlopeStrong(const TileCoordsXY tileCoords, const MapGenCtx& context)
     {
         auto surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
@@ -211,12 +206,29 @@ namespace OpenRCT2::World::MapGenerator
         return raisedLand;
     }
 
+    template<class T>
+    union NeighbourData
+    {
+        T neighbour[8];
+        struct
+        {
+            T N;
+            T NW;
+            T W;
+            T NE;
+            T SW;
+            T E;
+            T SE;
+            T S;
+        };
+    };
+
     /**
      * Raises the corners based on the height offset of neighbour tiles.
      * This does not change the base height, unless all corners have been raised.
      * @returns 0 if no edits were made, 1 otherwise
      */
-    int32_t smoothTileSlopeWeak(const TileCoordsXY tileCoords, const std::optional<HydroMaps>& hydroMaps)
+    int32_t smoothTileSlopeWeak(const TileCoordsXY tileCoords, const MapGenCtx& context)
     {
         auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
@@ -233,39 +245,11 @@ namespace OpenRCT2::World::MapGenerator
         // |  7  |  6  |  5  |
         // +-----+-----+-----+
 
-        union
-        {
-            int32_t baseheight[8];
-            struct
-            {
-                int32_t N;
-                int32_t NW;
-                int32_t W;
-                int32_t NE;
-                int32_t SW;
-                int32_t E;
-                int32_t SE;
-                int32_t S;
-            };
-        } neighbourHeightOffset = {};
+        NeighbourData<int32_t> neighbourHeightOffset = {};
+        NeighbourData<int32_t> neighbourWaterOffset = {};
+        NeighbourData<bool> r = {};
 
-        union
-        {
-            bool river[8];
-            struct
-            {
-                bool N;
-                bool NW;
-                bool W;
-                bool NE;
-                bool SW;
-                bool E;
-                bool SE;
-                bool S;
-            };
-        } r = {};
-
-        const bool riverTile = isRiverTile(tileCoords, hydroMaps);
+        const bool riverTile = isRiverTile(tileCoords, context);
 
         // Find the neighbour base heights
         for (int32_t index = 0, y_offset = -1; y_offset <= 1; y_offset++)
@@ -279,14 +263,22 @@ namespace OpenRCT2::World::MapGenerator
                 auto neighbourCoords = tileCoords + TileCoordsXY{ x_offset, y_offset };
                 // Get neighbour height. If the element is not valid (outside of map) assume the same height
                 auto* neighbourSurfaceElement = MapGetSurfaceElementAt(neighbourCoords);
-                neighbourHeightOffset.baseheight[index] = neighbourSurfaceElement != nullptr
-                    ? neighbourSurfaceElement->baseHeight
-                    : surfaceElement->baseHeight;
+                if (neighbourSurfaceElement != nullptr)
+                {
+                    neighbourHeightOffset.neighbour[index] = neighbourSurfaceElement->baseHeight;
+                    neighbourWaterOffset.neighbour[index] = neighbourSurfaceElement->GetWaterHeight();
+                }
+                else
+                {
+                    neighbourHeightOffset.neighbour[index] = surfaceElement->baseHeight;
+                    neighbourWaterOffset.neighbour[index] = surfaceElement->GetWaterHeight();
+                }
 
                 // Make the height relative to the current surface element
-                neighbourHeightOffset.baseheight[index] -= surfaceElement->baseHeight;
-                // Isn't there someone you forgot to ask
-                r.river[index] = isRiverTile(neighbourCoords, hydroMaps);
+                neighbourHeightOffset.neighbour[index] -= surfaceElement->baseHeight;
+                neighbourWaterOffset.neighbour[index] -= surfaceElement->GetWaterHeight();
+                // Check if this is a river tile
+                r.neighbour[index] = isRiverTile(neighbourCoords, context);
 
                 index++;
             }
@@ -306,10 +298,16 @@ namespace OpenRCT2::World::MapGenerator
         // The first clause covers waterfalls and the other eight situations where one of the two edges connected to this corner
         // is a one tile wide channel.
         // TODO might be possible to reduce?
-        const bool riverW = !riverTile || (!(r.W && r.NW && r.SW) && !(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW) && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW) && !(!r.SW && !r.NE && r.NW) && !(!r.SE && !r.NW && r.SW));
-        const bool riverN = !riverTile || (!(r.N && r.NW && r.NE) && !(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW) && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE) && !(!r.NW && !r.SE && r.NE) && !(!r.SW && !r.NE && r.NW));
-        const bool riverE = !riverTile || (!(r.E && r.NE && r.SE) && !(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE) && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE) && !(!r.NE && !r.SW && r.SE) && !(!r.NW && !r.SE && r.NE));
-        const bool riverS = !riverTile || (!(r.S && r.SW && r.SE) && !(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE) && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW) && !(!r.SE && !r.NW && r.SW) && !(!r.NE && !r.SW && r.SE));
+
+        const bool waterfallW = (r.W && neighbourWaterOffset.W > 0) || (r.NW && neighbourWaterOffset.NW > 0) || (r.SW && neighbourWaterOffset.SW > 0);
+        const bool waterfallN = (r.N && neighbourWaterOffset.N > 0) || (r.NW && neighbourWaterOffset.NW > 0) || (r.NE && neighbourWaterOffset.NE > 0);
+        const bool waterfallE = (r.E && neighbourWaterOffset.E > 0) || (r.NE && neighbourWaterOffset.NE > 0) || (r.SE && neighbourWaterOffset.SE > 0);
+        const bool waterfallS = (r.S && neighbourWaterOffset.S > 0) || (r.SW && neighbourWaterOffset.SW > 0) || (r.SE && neighbourWaterOffset.SE > 0);
+
+        const bool riverW = !riverTile || (!waterfallW && !(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW) && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW) && !(!r.SW && !r.NE && r.NW) && !(!r.SE && !r.NW && r.SW));
+        const bool riverN = !riverTile || (!waterfallN && !(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW) && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE) && !(!r.NW && !r.SE && r.NE) && !(!r.SW && !r.NE && r.NW));
+        const bool riverE = !riverTile || (!waterfallE && !(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE) && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE) && !(!r.NE && !r.SW && r.SE) && !(!r.NW && !r.SE && r.NE));
+        const bool riverS = !riverTile || (!waterfallS && !(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE) && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW) && !(!r.SE && !r.NW && r.SW) && !(!r.NE && !r.SW && r.SE));
 
         uint8_t slope = kTileSlopeFlat;
         slope |= (thresholdW >= 1 && riverW) ? SLOPE_W_THRESHOLD_FLAGS : 0;
@@ -384,7 +382,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 for (auto x = 1; x < mapSize.x - 1; x++)
                 {
-                    numTilesChanged += smoothFunc({ x, y }, context.hydroMaps);
+                    numTilesChanged += smoothFunc({ x, y }, context);
                 }
             }
 
@@ -576,5 +574,37 @@ namespace OpenRCT2::World::MapGenerator
         {
             generateRivers(context);
         }
+    }
+
+    static TileCoordsXY getWorldCoordsOffset(const MapGenCtx& context)
+    {
+        const int32_t offsetX = (context.settings.mapSize.x * kRiversOverscanFactor - 1) / 2;
+        const int32_t offsetY = (context.settings.mapSize.y * kRiversOverscanFactor - 1) / 2;
+        return {offsetX, offsetY};
+    }
+
+    bool isInWorldMap(const MapGenCtx& context, const TileCoordsXY& genCoords)
+    {
+        const TileCoordsXY offset = getWorldCoordsOffset(context);
+
+        const int32_t xMin = offset.x;
+        const int32_t xMax = offset.x + context.settings.mapSize.x;
+        const int32_t yMin = offset.y;
+        const int32_t yMax = offset.y + context.settings.mapSize.y;
+
+        return xMin <= genCoords.x && genCoords.x < xMax && yMin <= genCoords.y && genCoords.y < yMax;
+    }
+
+    TileCoordsXY worldCoordsToGenCoords(const MapGenCtx& context, const TileCoordsXY& worldCoords)
+    {
+        const TileCoordsXY offset = getWorldCoordsOffset(context);
+        return {worldCoords.x + offset.x, worldCoords.y + offset.y};
+    }
+
+    // can be OOB
+    TileCoordsXY genCoordsToWorldCoords(const MapGenCtx& context, const TileCoordsXY& genCoords)
+    {
+        const TileCoordsXY offset = getWorldCoordsOffset(context);
+        return {genCoords.x - offset.x, genCoords.y - offset.y};
     }
 } // namespace OpenRCT2::World::MapGenerator
