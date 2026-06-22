@@ -492,7 +492,7 @@ namespace OpenRCT2::String
             // current character.
             size_t newStringSize = (nextCh - 1) - firstNonWhitespace;
 
-#ifdef DEBUG
+#if DEBUG > 0
             size_t currentStringSize = sizeOf(str);
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif

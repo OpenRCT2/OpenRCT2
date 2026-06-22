@@ -1149,7 +1149,7 @@ void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
     bool isValid = (imageId >= SPR_IMAGE_LIST_BEGIN && imageId < SPR_IMAGE_LIST_END)
         || (imageId >= SPR_SCROLLING_TEXT_START && imageId < SPR_SCROLLING_TEXT_END);
 
-#ifdef DEBUG
+#if DEBUG > 0
     Guard::Assert(!gOpenRCT2NoGraphics, "GfxSetG1Element called on headless instance");
     Guard::Assert(isValid || isTemp, "GfxSetG1Element called with unexpected image id");
     Guard::Assert(g1 != nullptr, "g1 was nullptr");
