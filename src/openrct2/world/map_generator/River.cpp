@@ -265,7 +265,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void postProcessCatchment(MapGenCtx& context)
     {
-        HydroMaps& hydroMaps = context.hydroMaps.value();
+        const HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
         MaskMap visited(hydroMaps.dimensions);
@@ -776,6 +776,9 @@ namespace OpenRCT2::World::MapGenerator
         StableTileQueue queue;
         MaskMap visited(hydroMaps.dimensions);
 
+        DistanceMap distanceMap(hydroMaps.dimensions);
+        distanceMap.fill(std::numeric_limits<float>::infinity());
+
         prepareRiverQueue(context, queue, visited, river);
 
         while (!queue.empty())
@@ -796,8 +799,6 @@ namespace OpenRCT2::World::MapGenerator
                 visited[nPos] = Mask::True;
             }
 
-            hydroMaps.flags[tile.pos].set(river);
-
             const float radius = std::log2(std::log2(hydroMaps.catchment[tile.pos] / settings.catchmentThreshold));
             const float radiusSquared = radius * radius;
 
@@ -808,13 +809,32 @@ namespace OpenRCT2::World::MapGenerator
                     TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
 
                     int32_t distance = dx * dx + dy * dy;
-                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared || hydroMaps.flags[deltaPos].has(river))
+                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared)
                     {
                         continue;
                     }
 
-                    const float riverHeight = std::min(heightMap[tile.pos], heightMap[deltaPos]);
-                    heightMap[deltaPos] = riverHeight;
+                    // ensure waterfalls look nice (i.e. are monotonic) by setting the height of newly minted river tiles to the
+                    // height of the closest river tile
+                    if (hydroMaps.flags[deltaPos].has(river))
+                    {
+                        if (distanceMap[deltaPos] < std::numeric_limits<float>::infinity())
+                        {
+                            if (distance < distanceMap[deltaPos])
+                            {
+                                heightMap[deltaPos] = heightMap[tile.pos];
+                                distanceMap[deltaPos] = distance;
+                            }
+                            else if (distance == distanceMap[deltaPos])
+                            {
+                                heightMap[deltaPos] = std::min(heightMap[tile.pos], heightMap[deltaPos]);
+                            }
+                        }
+                        continue;
+                    }
+
+                    heightMap[deltaPos] = heightMap[tile.pos];
+                    distanceMap[deltaPos] = distance;
                     hydroMaps.flags[deltaPos].set(river);
                     hydroMaps.flags[deltaPos].set(skeleton);
                     visited[deltaPos] = Mask::True;
@@ -904,7 +924,7 @@ namespace OpenRCT2::World::MapGenerator
             const QueueTile tile = queue.top();
             queue.pop();
 
-            const float radius = std::log2(std::log2(hydroMaps.catchment[tile.pos] / settings.catchmentThreshold)) +1.0f;
+            const float radius = std::log2(std::log2(hydroMaps.catchment[tile.pos] / settings.catchmentThreshold)) + 1.0f;
             const float radiusMinusOne = radius - 1.0f;
             const float radiusSquared = radius * radius;
             const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
