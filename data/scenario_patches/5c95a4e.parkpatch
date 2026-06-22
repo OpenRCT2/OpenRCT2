@@ -20,5 +20,11 @@
             "coordinates": [ [ 85, 77, 22 ] ],
             "slope_direction": 2
         }
+    ],
+    "rides": [
+        {
+            "id": 29,
+            "operation": "open_ride"
+        }
     ]
 }
