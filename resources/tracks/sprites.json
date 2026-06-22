@@ -56828,20 +56828,20 @@
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_1_1.png",
-        "x": -52,
-        "y": -14,
+        "x": -34,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_1_2.png",
-        "x": -130,
-        "y": -76,
+        "x": -32,
+        "y": -1,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_1_3.png",
-        "x": 0,
-        "y": 0,
+        "x": -34,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -56852,248 +56852,248 @@
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_1_5.png",
-        "x": 0,
-        "y": 0,
+        "x": -1,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_1_6.png",
-        "x": -12,
-        "y": -31,
+        "x": -34,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_2_1.png",
-        "x": -18,
-        "y": -28,
+        "x": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_2_2.png",
         "x": -34,
-        "y": -28,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_2_3.png",
         "x": -28,
-        "y": -39,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_2_4.png",
         "x": -28,
-        "y": -92,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_2_5.png",
-        "x": -32,
-        "y": -46,
+        "x": -27,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_2_6.png",
         "x": -32,
-        "y": -124,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_3_1.png",
         "x": -30,
-        "y": -14,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_3_2.png",
-        "x": -1,
-        "y": -12,
+        "x": -33,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_3_3.png",
         "x": -26,
-        "y": -23,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_3_4.png",
-        "x": -27,
-        "y": -22,
+        "x": -31,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_3_5.png",
-        "x": 2,
+        "x": -34,
         "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_3_6.png",
-        "x": -24,
-        "y": -28,
+        "x": -34,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_4_1.png",
-        "x": -15,
-        "y": -22,
+        "x": -20,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_4_2.png",
         "x": -26,
-        "y": 15,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_4_3.png",
-        "x": -12,
+        "x": -24,
         "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_4_4.png",
         "x": -66,
-        "y": -31,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_4_5.png",
-        "x": 11,
-        "y": -14,
+        "x": -26,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_left_4_6.png",
-        "x": -23,
-        "y": -32,
+        "x": -34,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_1_1.png",
-        "x": -31,
-        "y": -22,
+        "x": -34,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_1_2.png",
         "x": -34,
-        "y": 15,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_1_3.png",
-        "x": -29,
+        "x": -30,
         "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_1_4.png",
-        "x": -22,
-        "y": -31,
+        "x": -36,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_1_5.png",
         "x": -22,
-        "y": -14,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_1_6.png",
-        "x": -24,
-        "y": -32,
+        "x": -30,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_2_1.png",
-        "x": -34,
-        "y": -14,
+        "x": -22,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_2_2.png",
-        "x": -130,
-        "y": -12,
+        "x": -34,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_2_3.png",
-        "x": -8,
-        "y": -23,
+        "x": -9,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_2_4.png",
-        "x": 6,
-        "y": -22,
+        "x": -15,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_2_5.png",
-        "x": -7,
+        "x": -11,
         "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_2_6.png",
-        "x": -6,
-        "y": -28,
+        "x": -12,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_3_1.png",
         "x": -4,
-        "y": -28,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_3_2.png",
         "x": -4,
-        "y": -28,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_3_3.png",
-        "x": 0,
-        "y": -39,
+        "x": 1,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_3_4.png",
         "x": 0,
-        "y": -92,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_3_5.png",
-        "x": 17,
-        "y": -46,
+        "x": -34,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_3_6.png",
         "x": -34,
-        "y": -124,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_4_1.png",
-        "x": 13,
-        "y": -14,
+        "x": -8,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_4_2.png",
-        "x": -18,
-        "y": -76,
+        "x": -40,
+        "y": -1,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_4_3.png",
-        "x": 0,
-        "y": 0,
+        "x": -27,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -57104,14 +57104,14 @@
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_4_5.png",
-        "x": 0,
-        "y": 0,
+        "x": -26,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_barrel_roll_right_4_6.png",
-        "x": -24,
-        "y": -31,
+        "x": -34,
+        "y": -44,
         "palette": "keep"
     },
     {
@@ -57285,13 +57285,13 @@
     {
         "path": "track/rmc/banked_zero_g_roll_left_2_1.png",
         "x": -3,
-        "y": -12,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_zero_g_roll_left_2_2.png",
         "x": -34,
-        "y": -12,
+        "y": -15,
         "palette": "keep"
     },
     {
@@ -57309,7 +57309,7 @@
     {
         "path": "track/rmc/banked_zero_g_roll_left_3_1.png",
         "x": -21,
-        "y": -19,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -57333,7 +57333,7 @@
     {
         "path": "track/rmc/banked_zero_g_roll_left_4_1.png",
         "x": -24,
-        "y": -42,
+        "y": -46,
         "palette": "keep"
     },
     {
@@ -57357,7 +57357,7 @@
     {
         "path": "track/rmc/banked_zero_g_roll_right_1_1.png",
         "x": -34,
-        "y": -42,
+        "y": -46,
         "palette": "keep"
     },
     {
@@ -57381,7 +57381,7 @@
     {
         "path": "track/rmc/banked_zero_g_roll_right_2_1.png",
         "x": -34,
-        "y": -19,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -57404,14 +57404,14 @@
     },
     {
         "path": "track/rmc/banked_zero_g_roll_right_3_1.png",
-        "x": -1,
-        "y": -12,
+        "x": 1,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/rmc/banked_zero_g_roll_right_3_2.png",
         "x": -9,
-        "y": -12,
+        "y": -15,
         "palette": "keep"
     },
     {
