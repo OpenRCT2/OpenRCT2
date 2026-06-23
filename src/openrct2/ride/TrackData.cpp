@@ -6791,12 +6791,12 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0000,
     };
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown60Seq1 = {
-        .clearance = { -32, 0, 96, 64, { 0b0001, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-    };
-    static constexpr SequenceDescriptor kRightEighthToOrthogonalDown60Seq2 = {
         .clearance = { 0, 32, 48, 80, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalDown60Seq2 = {
+        .clearance = { -32, 0, 96, 64, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
     };
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown60Seq3 = {
         .clearance = { -32, 32, 48, 80, { 0b1111, 0 }, {} },
@@ -6811,12 +6811,12 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0000,
     };
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown60Seq1 = {
-        .clearance = { 0, 32, 96, 64, { 0b0100, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-    };
-    static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown60Seq2 = {
         .clearance = { -32, 0, 48, 80, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown60Seq2 = {
+        .clearance = { 0, 32, 96, 64, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
     };
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown60Seq3 = {
         .clearance = { -32, 32, 48, 80, { 0b1111, 0 }, {} },
@@ -6875,12 +6875,12 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1000,
     };
     static constexpr SequenceDescriptor kRightEighthToDiagDown60Seq2 = {
-        .clearance = { -64, 0, 0, 32, { 0b0001, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-    };
-    static constexpr SequenceDescriptor kRightEighthToDiagDown60Seq3 = {
         .clearance = { -32, 32, 0, 96, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kRightEighthToDiagDown60Seq3 = {
+        .clearance = { -64, 0, 0, 32, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
     };
     static constexpr SequenceDescriptor kRightEighthToDiagDown60Seq4 = {
         .clearance = { -64, 32, 0, 32, { 0b0010, 0 }, {} },
@@ -6895,12 +6895,12 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0010,
     };
     static constexpr SequenceDescriptor kLeftEighthToDiagDown60Seq2 = {
-        .clearance = { -64, 0, 0, 32, { 0b0010, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-    };
-    static constexpr SequenceDescriptor kLeftEighthToDiagDown60Seq3 = {
         .clearance = { -32, -32, 0, 96, { 0b1000, 0 }, {} },
         .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kLeftEighthToDiagDown60Seq3 = {
+        .clearance = { -64, 0, 0, 32, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
     };
     static constexpr SequenceDescriptor kLeftEighthToDiagDown60Seq4 = {
         .clearance = { -64, -32, 0, 32, { 0b0001, 0 }, {} },
