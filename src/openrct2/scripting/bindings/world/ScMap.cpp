@@ -29,6 +29,7 @@
     #include "../entity/ScVehicle.hpp"
     #include "../ride/ScRide.hpp"
     #include "../ride/ScTrackIterator.h"
+    #include "../world/ScPathConnection.h"
     #include "../world/ScPathNavigator.h"
     #include "../world/ScTile.hpp"
 

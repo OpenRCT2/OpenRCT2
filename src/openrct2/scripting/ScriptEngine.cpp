@@ -58,6 +58,8 @@
     #include "bindings/world/ScMap.hpp"
     #include "bindings/world/ScPark.hpp"
     #include "bindings/world/ScParkMessage.hpp"
+    #include "bindings/world/ScPathConnection.h"
+    #include "bindings/world/ScPathNavigator.h"
     #include "bindings/world/ScResearch.hpp"
     #include "bindings/world/ScScenario.hpp"
     #include "bindings/world/ScTile.hpp"

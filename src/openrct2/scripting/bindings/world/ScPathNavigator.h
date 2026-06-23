@@ -14,8 +14,6 @@
     #include "../../../world/Location.hpp"
     #include "../../ScriptEngine.h"
 
-    #include <cstdint>
-
 namespace OpenRCT2::Scripting
 {
     class ScPathNavigator;

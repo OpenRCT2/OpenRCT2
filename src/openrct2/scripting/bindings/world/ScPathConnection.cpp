@@ -60,8 +60,6 @@ namespace OpenRCT2::Scripting
             return nullptr;
         if (el->baseHeight != data->position.z)
             return nullptr;
-        if (el->isGhost())
-            return nullptr;
         return el->asPath();
     }
 
