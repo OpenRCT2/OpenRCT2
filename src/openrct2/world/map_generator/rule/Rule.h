@@ -49,6 +49,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
     constexpr int32_t kSeedOffsetMin = std::numeric_limits<int32_t>::min();
     constexpr int32_t kSeedOffsetMax = std::numeric_limits<int32_t>::max();
 
+    // TODO just use ObjectType?
+    enum RuleSceneryType : uint8_t
+    {
+        Small,
+        Large,
+        Wall,
+    };
+
     enum class TextureRulePreset : uint8_t
     {
         SmallRockPatches,
@@ -67,10 +75,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     struct EvaluationHeights
     {
-        int32_t tile;
-        int32_t min;
-        int32_t max;
+        int32_t land;
         int32_t water;
+    };
+
+    struct LocalEvaluationHeights
+    {
+        EvaluationHeights self;
+        std::optional<EvaluationHeights> neighbourNW;
+        std::optional<EvaluationHeights> neighbourNE;
+        std::optional<EvaluationHeights> neighbourSE;
+        std::optional<EvaluationHeights> neighbourSW;
     };
 
     struct ConditionKey
@@ -121,7 +136,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         TileCoordsXY gameCoords;
         TileCoordsXY genCoords;
         VecXY quadCoords;
-        EvaluationHeights heights;
+        LocalEvaluationHeights localHeights;
     };
 
     enum class Predicate : uint8_t
@@ -141,13 +156,35 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Riverbed,
         MapBorder,
         Fill,
-        Breach
+        Breach,
+        // TODO Land,
+    };
+
+    enum class HeightMode : uint8_t
+    {
+        Absolute,
+        Relative,
+    };
+
+    enum class HeightType : uint8_t
+    {
+        Land,
+        Water
+    };
+
+    enum class HeightSource: uint8_t
+    {
+        Self,
+        NeighbourNW,
+        NeighbourNE,
+        NeighbourSE,
+        NeighbourSW,
+        // TODO cardinals?
     };
 
     enum class Type : uint16_t
     {
-        HeightAbsolute,
-        HeightRelativeToWater,
+        Height,
         DistanceToFeature,
         Noise,
         NormalAngle,
@@ -162,6 +199,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
     struct HeightData
     {
         int32_t height;
+        HeightMode mode;
+        HeightSource sourceFirst;
+        HeightType typeFirst;
+        HeightSource sourceSecond;
+        HeightType typeSecond;
     };
 
     // smoothstep($low, $high, height) $pred $prng
@@ -247,6 +289,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     struct SceneryEffectItem
     {
+        RuleSceneryType type;
         ObjectEntryIndex index;
         int8_t weight = 1;
         std::optional<uint8_t> direction;
@@ -267,18 +310,26 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     struct SceneryResultItem
     {
+        RuleSceneryType type;
         ObjectEntryIndex index;
         uint8_t direction;
         std::array<Drawing::Colour, 3> colours;
     };
 
+    using WallSceneryItems = std::array<std::optional<SceneryResultItem>, 4>;
     using QuadSceneryItems = std::array<std::optional<SceneryResultItem>, 4>;
-    using SceneryResult = std::variant<SceneryResultItem, QuadSceneryItems>;
+    using TileSceneryItems = std::variant<SceneryResultItem, QuadSceneryItems>;
+
+    struct SceneryResult
+    {
+        WallSceneryItems walls;
+        TileSceneryItems items;
+    };
+
     using MaybeSceneryResult = std::optional<SceneryResult>;
 
     struct TextureRule
     {
-        // TODO extract base rule struct
         bool enabled;
         bool isDefault;
         std::string name;
@@ -289,7 +340,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     struct SceneryRule
     {
-        // TODO extract base rule struct
         bool enabled;
         std::string name;
         std::vector<Condition> conditions;

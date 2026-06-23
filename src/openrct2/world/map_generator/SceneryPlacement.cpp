@@ -15,6 +15,7 @@
 #include "../../actions/scenery/LargeSceneryPlaceAction.h"
 #include "../../actions/scenery/SignSetNameAction.h"
 #include "../../actions/scenery/SmallSceneryPlaceAction.h"
+#include "../../actions/scenery/WallPlaceAction.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectManager.h"
 #include "../Map.h"
@@ -22,10 +23,71 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
+    static CoordsXYZ xyzFrom(const TileCoordsXY& loc)
+    {
+        const auto coords = loc.ToCoordsXY();
+        const auto groundHeight = TileElementHeight(coords);
+        const auto waterHeight = TileElementWaterHeight(coords);
+        return CoordsXYZ{ coords.x, coords.y, std::max(groundHeight, waterHeight) };
+    }
 
+    static void placeSceneryWall(const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem)
+    {
+        auto action = GameActions::WallPlaceAction(
+            sceneryItem.index, xyzFrom(loc), sceneryItem.direction,
+            sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
 
-    static void placeScenery(
-        const TileCoordsXY& loc, const std::optional<uint8_t> quadrant, const Rule::SceneryResultItem& sceneryItem)
+        auto& gameState = getGameState();
+        auto& park = gameState.park;
+
+        auto queryPlaceResult = action.Query(gameState, park);
+        if (queryPlaceResult.error != GameActions::Status::ok)
+        {
+            LOG_VERBOSE(
+                "WallPlaceAction query: %s - %s", queryPlaceResult.getErrorTitle().c_str(),
+                queryPlaceResult.getErrorMessage().c_str());
+            return;
+        }
+
+        auto execPlaceResult = action.Execute(gameState, park);
+        if (execPlaceResult.error != GameActions::Status::ok)
+        {
+            LOG_VERBOSE(
+                "WallPlaceAction exec: %s - %s", execPlaceResult.getErrorTitle().c_str(),
+                execPlaceResult.getErrorMessage().c_str());
+            return;
+        }
+    }
+
+    static void placeSceneryLarge(const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem)
+    {
+        auto action = GameActions::LargeSceneryPlaceAction(
+           CoordsXYZD{ xyzFrom(loc), sceneryItem.direction }, sceneryItem.index,
+            sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
+
+        auto& gameState = getGameState();
+        auto& park = gameState.park;
+
+        auto queryPlaceResult = action.Query(gameState, park);
+        if (queryPlaceResult.error != GameActions::Status::ok)
+        {
+            LOG_VERBOSE(
+                "LargeSceneryPlaceAction query: %s - %s", queryPlaceResult.getErrorTitle().c_str(),
+                queryPlaceResult.getErrorMessage().c_str());
+            return;
+        }
+
+        auto execPlaceResult = action.Execute(gameState, park);
+        if (execPlaceResult.error != GameActions::Status::ok)
+        {
+            LOG_VERBOSE(
+                "LargeSceneryPlaceAction exec: %s - %s", execPlaceResult.getErrorTitle().c_str(),
+                execPlaceResult.getErrorMessage().c_str());
+            return;
+        }
+    }
+
+    static void placeScenerySmall(const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem, const std::optional<uint8_t> quadrant)
     {
         auto coords = loc.ToCoordsXY();
         auto action = GameActions::SmallSceneryPlaceAction(
@@ -53,16 +115,34 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
+
+    static void placeScenery(
+        const TileCoordsXY& loc, const std::optional<uint8_t> quadrant, const Rule::SceneryResultItem& sceneryItem)
+    {
+        switch (sceneryItem.type)
+        {
+            case Rule::Small:
+                placeScenerySmall(loc, sceneryItem, quadrant);
+                break;
+            case Rule::Large:
+                placeSceneryLarge(loc, sceneryItem);
+                break;
+            case Rule::Wall:
+                placeSceneryWall(loc, sceneryItem);
+                break;
+        }
+    }
+
     void placeScenery(const TileCoordsXY& loc, const Rule::SceneryResult& sceneryResult)
     {
-        if (std::holds_alternative<Rule::SceneryResultItem>(sceneryResult))
+        if (std::holds_alternative<Rule::SceneryResultItem>(sceneryResult.items))
         {
-            auto& sceneryItem = std::get<Rule::SceneryResultItem>(sceneryResult);
+            auto& sceneryItem = std::get<Rule::SceneryResultItem>(sceneryResult.items);
             placeScenery(loc, std::nullopt, sceneryItem);
         }
-        else if (std::holds_alternative<Rule::QuadSceneryItems>(sceneryResult))
+        else if (std::holds_alternative<Rule::QuadSceneryItems>(sceneryResult.items))
         {
-            auto& quadSceneryItems = std::get<Rule::QuadSceneryItems>(sceneryResult);
+            auto& quadSceneryItems = std::get<Rule::QuadSceneryItems>(sceneryResult.items);
             for (int q = 0; q < 4; ++q)
             {
                 auto& quadSceneryItem = quadSceneryItems[q];
@@ -70,6 +150,14 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     placeScenery(loc, std::make_optional(q), quadSceneryItem.value());
                 }
+            }
+        }
+        for (int d = 0; d < 4; ++d)
+        {
+            auto& edgeWall = sceneryResult.walls[d];
+            if (edgeWall.has_value())
+            {
+                placeScenery(loc, std::nullopt, edgeWall.value());
             }
         }
     }
@@ -95,6 +183,8 @@ namespace OpenRCT2::World::MapGenerator
         auto groundHeight = TileElementHeight(position);
         auto waterHeight = TileElementWaterHeight(position);
 
+
+        // TODO dedupe, use placeSceneryLarge
         auto actionPlace = GameActions::LargeSceneryPlaceAction(
             CoordsXYZD{ position.x, position.y, std::max(groundHeight, waterHeight) + 2*kCoordsZStep, 0 }, banner.value(),
             debugSign.backgroundColour, debugSign.textColour, Drawing::Colour::brightPink);

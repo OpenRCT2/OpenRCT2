@@ -15,7 +15,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <optional>
 
 struct TileCoordsXY;
 
@@ -35,21 +34,42 @@ namespace OpenRCT2::World::MapGenerator
         return std::apply([](auto... args) { return std::array{ args... }; }, std::tuple_cat(arrays...));
     }
 
-    static constexpr std::array kNeighbourOffsetsCardinal = {
-        TileCoordsXY{ -1, 0 },
-        TileCoordsXY{ 1, 0 },
-        TileCoordsXY{ 0, -1 },
-        TileCoordsXY{ 0, 1 },
-    };
+    // map coordinates and orientation, rotated 45deg counter clockwise in game
+    //    +x                   -x, -y
+    //      +-----+-----+-----+
+    //      |  W  | NW  |  N  |
+    //      +-----+-----+-----+
+    //      | SW  |  *  | NE  |
+    //      +-----+-----+-----+
+    //      |  S  | SE  |  E  |
+    //      +-----+-----+-----+
+    // +x,+y                    +y
+
+    static constexpr TileCoordsXY kNeighbourOffsetNE{ -1, 0};
+    static constexpr TileCoordsXY kNeighbourOffsetSW{ 1, 0};
+    static constexpr TileCoordsXY kNeighbourOffsetNW{ 0, -1};
+    static constexpr TileCoordsXY kNeighbourOffsetSE{ 0, 1};
+
+    static constexpr TileCoordsXY kNeighbourOffsetS{ 1, 1 };
+    static constexpr TileCoordsXY kNeighbourOffsetW{ 1, -1 };
+    static constexpr TileCoordsXY kNeighbourOffsetE{ -1, 1 };
+    static constexpr TileCoordsXY kNeighbourOffsetN{ -1, -1 };
 
     static constexpr std::array kNeighbourOffsetsOrdinal = {
-        TileCoordsXY{ 1, 1 },
-        TileCoordsXY{ 1, -1 },
-        TileCoordsXY{ -1, 1 },
-        TileCoordsXY{ -1, -1 }
+        kNeighbourOffsetNE,
+        kNeighbourOffsetSW,
+        kNeighbourOffsetNW,
+        kNeighbourOffsetSE,
     };
 
-    static constexpr std::array kNeighbourOffsets = concat(kNeighbourOffsetsCardinal, kNeighbourOffsetsOrdinal);
+    static constexpr std::array kNeighbourOffsetsCardinal = {
+        kNeighbourOffsetS,
+        kNeighbourOffsetW,
+        kNeighbourOffsetE,
+        kNeighbourOffsetN,
+    };
+
+    static constexpr std::array kNeighbourOffsets = concat(kNeighbourOffsetsOrdinal, kNeighbourOffsetsCardinal);
 
     // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(TileCoordsXY, const MapGenCtx&)>;

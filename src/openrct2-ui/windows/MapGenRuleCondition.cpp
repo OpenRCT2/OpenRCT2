@@ -187,11 +187,8 @@ namespace OpenRCT2::Ui::Windows
 
             switch (condition.type)
             {
-                case Type::HeightAbsolute:
+                case Type::Height:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE;
-                    break;
-                case Type::HeightRelativeToWater:
-                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER;
                     break;
                 case Type::DistanceToFeature:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO;
@@ -334,19 +331,10 @@ namespace OpenRCT2::Ui::Windows
 
             switch (condition.type)
             {
-                case Type::HeightAbsolute:
+                case Type::Height:
                 {
                     auto ft = Formatter();
                     ft.Add<int16_t>(static_cast<int16_t>(BaseZToMetres(std::get<HeightData>(condition.data).height)));
-                    drawText(
-                        rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
-                        STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
-                    break;
-                }
-                case Type::HeightRelativeToWater:
-                {
-                    auto ft = Formatter();
-                    ft.Add<int16_t>(static_cast<int16_t>(HeightUnitsToMetres(std::get<HeightData>(condition.data).height)));
                     drawText(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
@@ -557,20 +545,12 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::HeightAbsolute:
+                case Type::Height:
                 {
                     auto& elevationData = std::get<HeightData>(condition.data);
                     auto elevationValue = intValue.has_value() ? MetresToBaseZ(intValue.value())
                                                                : elevationData.height + 2 * changeMultiplier;
                     elevationData.height = std::clamp(elevationValue, kHeightMin, kHeightMax);
-                    break;
-                }
-                case Type::HeightRelativeToWater:
-                {
-                    auto& elevationData = std::get<HeightData>(condition.data);
-                    auto elevationValue = intValue.has_value() ? MetresToHeightUnits(intValue.value())
-                                                               : elevationData.height + 2 * changeMultiplier;
-                    elevationData.height = std::clamp(elevationValue, -kHeightMax, kHeightMax);
                     break;
                 }
                 case Type::DistanceToFeature:
@@ -809,7 +789,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::HeightAbsolute:
+                case Type::Height:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
@@ -818,17 +798,6 @@ namespace OpenRCT2::Ui::Windows
                     WindowTextInputOpen(
                         this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
                         STR_FORMAT_INTEGER, BaseZToMetres(std::get<HeightData>(condition.data).height), 3);
-                    break;
-                }
-                case Type::HeightRelativeToWater:
-                {
-                    Formatter ft;
-                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER);
-                    ft.Add<int16_t>(static_cast<int16_t>(-kHeightMax));
-                    ft.Add<int16_t>(static_cast<int16_t>(kHeightMax));
-                    WindowTextInputOpen(
-                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER, STR_MAPGEN_RULE_ENTER_LENGTH,
-                        ft, STR_FORMAT_INTEGER, HeightUnitsToMetres(std::get<HeightData>(condition.data).height), 4);
                     break;
                 }
                 case Type::DistanceToFeature:

@@ -24,6 +24,7 @@
 #include "../TileQueue.hpp"
 
 #include <charconv>
+#include <csignal>
 #include <random>
 #include <ranges>
 #include <regex>
@@ -61,6 +62,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::string_view identifier;
         int8_t weight;
         std::optional<Drawing::Colour> primary = std::nullopt;
+        std::optional<Direction> direction = std::nullopt;
+        RuleSceneryType type = RuleSceneryType::Small;
     };
 
     constexpr SceneryPresetItem DEFAULT_SHRUB[] = {
@@ -156,6 +159,22 @@ namespace OpenRCT2::World::MapGenerator::Rule
         SceneryPresetItem{ "rct2.scenery_small.tsh4", 1 }, SceneryPresetItem{ "rct2.scenery_small.tsh5", 1 },
     };
 
+    constexpr SceneryPresetItem WATERFALL_NW[] = {
+        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 3, Wall },
+    };
+
+    constexpr SceneryPresetItem WATERFALL_NE[] = {
+        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 0, Wall },
+    };
+
+    constexpr SceneryPresetItem WATERFALL_SE[] = {
+        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 1, Wall },
+    };
+
+    constexpr SceneryPresetItem WATERFALL_SW[] = {
+        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 2, Wall },
+    };
+
     static std::optional<ObjectEntryIndex> lookupObjectEntryIdxByIdentifier(const std::string_view identifier)
     {
         auto& objectManager = GetContext()->GetObjectManager();
@@ -189,9 +208,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
             if (maybeObjectId.has_value())
             {
                 result.push_back(
-                    SceneryEffectItem{ .index = maybeObjectId.value(),
+                    SceneryEffectItem{ .type = item.type,
+                                       .index = maybeObjectId.value(),
                                        .weight = item.weight,
-                                       .direction = std::nullopt,
+                                       .direction = item.direction,
                                        .colours = { item.primary.value_or(Drawing::Colour::bordeauxRed),
                                                     Drawing::Colour::yellow, Drawing::Colour::darkBrown } });
             }
@@ -389,21 +409,75 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return distanceActual;
     }
 
+    static std::optional<int32_t> fetchHeight(const HeightType& type, const std::optional<EvaluationHeights>& heights)
+    {
+        switch (type)
+        {
+            case HeightType::Land:
+                return heights.has_value() ? std::make_optional(heights.value().land) : std::nullopt;
+            case HeightType::Water:
+                return heights.has_value() ? std::make_optional(heights.value().water) : std::nullopt;
+            default:
+                throw std::runtime_error("Unknown HeightType");
+        }
+    }
+
+    static std::optional<int32_t> fetchHeight(const HeightSource& source, const HeightType& type, const LocalEvaluationHeights& localHeights)
+    {
+        switch (source)
+        {
+            case HeightSource::Self:
+                return fetchHeight(type, localHeights.self);
+            case HeightSource::NeighbourNW:
+                return fetchHeight(type, localHeights.neighbourNW);
+            case HeightSource::NeighbourNE:
+                return fetchHeight(type, localHeights.neighbourNE);
+            case HeightSource::NeighbourSE:
+                return fetchHeight(type, localHeights.neighbourSE);
+            case HeightSource::NeighbourSW:
+                return fetchHeight(type, localHeights.neighbourSW);
+            default:
+                throw std::runtime_error("Unknown HeightSource");
+        }
+    }
+
+    static std::optional<int32_t> calculateHeightValue(const HeightData& heightData, const LocalEvaluationHeights& localHeights)
+    {
+        if (heightData.mode == HeightMode::Absolute)
+        {
+            switch (heightData.typeFirst)
+            {
+                case HeightType::Land:
+                    return localHeights.self.land;
+                case HeightType::Water:
+                    return localHeights.self.water;
+                default:
+                    throw std::runtime_error("Unknown HeightType");
+            }
+        }
+
+        const auto heightFirst = fetchHeight(heightData.sourceFirst, heightData.typeFirst, localHeights);
+        const auto heightSecond = fetchHeight(heightData.sourceSecond, heightData.typeSecond, localHeights);
+
+        if (heightFirst.has_value() && heightSecond.has_value())
+        {
+            return heightFirst.value() - heightSecond.value();
+        }
+
+        return std::nullopt;
+    }
+
     static bool evaluateCondition(EvaluationContext& ctx, const ConditionKey& key, const Condition& condition)
     {
         switch (condition.type)
         {
-            case Type::HeightAbsolute:
+            case Type::Height:
             {
-                auto heightCondition = std::get<HeightData>(condition.data).height;
-                auto heightActual = ctx.heights.tile;
-                return evaluatePredicate(heightActual, condition.predicate, heightCondition);
-            }
-            case Type::HeightRelativeToWater:
-            {
-                auto heightCondition = std::get<HeightData>(condition.data).height;
-                auto heightActual = ctx.heights.tile - ctx.heights.water;
-                return evaluatePredicate(heightActual, condition.predicate, heightCondition);
+                const auto heightData = std::get<HeightData>(condition.data);
+                const auto heightActual = calculateHeightValue(heightData, ctx.localHeights);
+                return heightActual.has_value()
+                    ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height)
+                    : false;
             }
             case Type::DistanceToFeature:
             {
@@ -440,7 +514,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case Type::BlendHeight:
             {
                 auto& heightBlendData = std::get<BlendHeightData>(condition.data);
-                auto heightSs = Smoothstep(heightBlendData.edgeLow, heightBlendData.edgeHigh, ctx.heights.tile);
+                auto heightSs = Smoothstep(heightBlendData.edgeLow, heightBlendData.edgeHigh, ctx.localHeights.self.land);
                 auto prngValue = ctx.prngDist(ctx.conditionPrngs[key]);
                 return evaluatePredicate(prngValue, condition.predicate, heightSs);
             }
@@ -541,6 +615,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         auto& selectedItem = rule.effect.objects[idx];
 
         auto result = SceneryResultItem{
+            .type = selectedItem.type,
             .index = selectedItem.index,
             .direction = selectedItem.direction.has_value() ? selectedItem.direction.value()
                                                             : static_cast<uint8_t>(ctx.directionDist(ctx.rulePrngs[ruleIdx])),
@@ -555,13 +630,15 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::array<uint8_t, 4> quadIndices = { 0, 1, 2, 3 };
         std::ranges::shuffle(quadIndices, ctx.quadPrng);
 
-        std::optional<QuadSceneryItems> quadResult = std::nullopt;
+        std::optional<WallSceneryItems> wallResult = std::nullopt;
+        std::optional<TileSceneryItems> tileResult = std::nullopt;
 
-        // pick a random quad order to sample
-        for (auto q : quadIndices)
+        for (int32_t r = static_cast<int32_t>(rules.size()) - 1; r >= 0; --r)
         {
-            for (int32_t r = static_cast<int32_t>(rules.size()) - 1; r >= 0; --r)
+            // TODO check if this causes oversampling on full-tile scenery
+            for (size_t qIdx = 0; qIdx < quadIndices.size(); qIdx++)
             {
+                auto quad = quadIndices[qIdx];
                 auto& rule = rules[r];
 
                 if (!rule.enabled)
@@ -569,7 +646,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     continue;
                 }
 
-                ctx.quadCoords = VecXY{ ctx.genCoords.x, ctx.genCoords.y } + QUAD_OFFSET[q];
+                ctx.quadCoords = VecXY{ ctx.genCoords.x, ctx.genCoords.y } + QUAD_OFFSET[quad];
                 if (!evaluateConditions(ctx, r, rule.conditions))
                 {
                     // rule doesn't match for tile, try next rule
@@ -580,43 +657,74 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 if (!item.has_value())
                 {
                     // rule matches but has empty object pool, abort to support clearing/glade rules
-                    return item;
+                    return std::nullopt;
                 }
 
-                auto* entry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(item.value().index);
-                Guard::Assert(entry != nullptr);
-
-                // treating diagonal as full tile cause sanity
-                if (entry->flags.hasAny(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::isDiagonal))
+                switch (item.value().type)
                 {
-                    if (quadResult.has_value())
+                    case Small:
                     {
-                        // already in quad mode, ignore full tile items
-                        continue;
+                        auto* entry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(item.value().index);
+                        Guard::Assert(entry != nullptr);
+
+                        // treating diagonal as full tile cause sanity
+                        if (entry->flags.hasAny(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::isDiagonal))
+                        {
+                            if (!tileResult.has_value() && qIdx == 0)
+                            {
+                                tileResult = item.value();
+                            }
+                        }
+                        else
+                        {
+                            if (!tileResult.has_value())
+                            {
+                                tileResult = QuadSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt };
+                            }
+                            if (std::holds_alternative<QuadSceneryItems>(tileResult.value()))
+                            {
+                                auto& quadItems = std::get<QuadSceneryItems>(tileResult.value());
+                                quadItems[quad] = item;
+                            }
+                        }
+                        break;
                     }
-                    return item;
+                    case Large:
+                    {
+                        // TODO
+                        break;
+                    }
+                    case Wall:
+                    {
+                        if (!wallResult.has_value())
+                        {
+                            wallResult = std::make_optional(WallSceneryItems{});
+                        }
+                        if (!wallResult.value()[item.value().direction].has_value())
+                        {
+                            wallResult.value()[item.value().direction] = item.value();
+                        }
+                        break;
+                    }
                 }
-
-                // got a quad item, switch to quad mode if not already and update result
-                if (!quadResult.has_value())
-                {
-                    QuadSceneryItems result = { std::nullopt, std::nullopt, std::nullopt, std::nullopt };
-                    quadResult = std::make_optional(result);
-                }
-                auto& quadItem = quadResult.value()[q];
-                quadItem = item;
-            }
-
-            // didn't return a full tile item or switched to quad mode from the first sampled quad, abort to avoid oversampling
-            // full tile items.
-            if (!quadResult.has_value())
-            {
-                return std::nullopt;
             }
         }
 
-        // return the quad result, at least one quad must be populated to end up here
-        return quadResult;
+        if (wallResult.has_value() && tileResult.has_value())
+        {
+            return SceneryResult{ wallResult.value(), tileResult.value() };
+        }
+        else if (wallResult.has_value())
+        {
+            return SceneryResult{ wallResult.value(), {} };
+        }
+         else if (tileResult.has_value())
+        {
+             return SceneryResult{ {}, tileResult.value() };
+        }else
+        {
+            return std::nullopt;
+        }
     }
 
     static void initializeEvaluationContextForCondition(
@@ -659,6 +767,30 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
+    static std::optional<EvaluationHeights> getHeightsAt(const TileCoordsXY& gameCoords)
+    {
+        auto* surfaceElement = MapGetSurfaceElementAt(gameCoords);
+        if (surfaceElement == nullptr)
+        {
+            return std::nullopt;
+        }
+
+        return std::make_optional(EvaluationHeights{
+            static_cast<int32_t>(surfaceElement->baseHeight),
+            surfaceElement->GetWaterHeight()} );
+    }
+
+    static LocalEvaluationHeights getLocalHeightsAt(const TileCoordsXY& gameCoords)
+    {
+        return {
+            .self = getHeightsAt(gameCoords).value(),
+            .neighbourNW = getHeightsAt(gameCoords + kNeighbourOffsetNW),
+            .neighbourNE = getHeightsAt(gameCoords + kNeighbourOffsetNE),
+            .neighbourSE = getHeightsAt(gameCoords + kNeighbourOffsetSE),
+            .neighbourSW = getHeightsAt(gameCoords + kNeighbourOffsetSW),
+        };
+    }
+
     template<typename RR, typename RL>
     static void processRules(
         const MapGenCtx& genCtx, const RL& rules, EvaluationContext& evalCtx,
@@ -680,10 +812,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     return;
                 }
 
-                evalCtx.heights = { .tile = surfaceElement->baseHeight,
-                                .min = genCtx.settings.heightmapLow,
-                                .max = genCtx.settings.heightmapHigh,
-                                .water = genCtx.settings.waterLevel };
+                evalCtx.localHeights = getLocalHeightsAt(evalCtx.gameCoords);
                 evalCtx.landTexture = surfaceElement->GetSurfaceObjectIndex();
 
                 auto result = evaluateAtFn(rules, evalCtx);
@@ -763,10 +892,16 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "River waterfalls",
-                         .conditions = std::vector{ Condition{
-                             .enabled = true, .type = Type::DistanceToFeature, .predicate = Predicate::Equal, .data = DistanceData{
-                             .feature = Feature::River, .distance = 0} } },
+                         .name = "Waterfalls",
+                         .conditions = std::vector{
+                             Condition{
+                                 .enabled = true,
+                                 .type = Type::DistanceToFeature,
+                                 .predicate = Predicate::Equal,
+                                 .data = DistanceData{
+                                    .feature = Feature::River,
+                                    .distance = 0} },
+                         },
                          .effect = { .applyLandTexture = false,
                                      .landTexture = 0,
                                      .applyEdgeTexture = true,
@@ -780,11 +915,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                                .type = Type::DistanceToFeature,
                                                                .predicate = Predicate::Equal,
                                                                .data = DistanceData{ .feature=Feature::Riverbed,.distance=0 } },
-                                                    Condition{ .enabled = false,
+                                                    Condition{ .enabled = true,
                                                                .type = Type::DistanceToFeature,
-                                                               .predicate = Predicate::LessThanOrEqual,
-                                                               .data = DistanceData{ .feature=Feature::Water,
-                                                                   .distance=4 } } },
+                                                               .predicate = Predicate::GreaterThan,
+                                                               .data = DistanceData{ .feature=Feature::River,
+                                                                   .distance=0 } } },
                          .effect = { .applyLandTexture = true,
                                      .landTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_surface.sand").value_or(0),
                                      .applyEdgeTexture = false,
@@ -972,11 +1107,67 @@ namespace OpenRCT2::World::MapGenerator::Rule
                           .data = DistanceData{ .feature = feature, .distance = distance } };
     }
 
+    static Condition heightDeltaToNeighbour(const HeightSource neighbour, const HeightType type)
+    {
+        return Condition{
+        .enabled = true,
+        .type = Type::Height,
+        .predicate = Predicate::GreaterThan,
+        .data = HeightData{
+            .height = 0,
+            .mode = HeightMode::Relative,
+            .sourceFirst=neighbour,
+            .typeFirst = type,
+            .sourceSecond = HeightSource::Self,
+            .typeSecond = type}
+        };
+    }
+
     void createDefaultSceneryRules(Settings& settings)
     {
         std::random_device prng{};
         auto seedOffset = prng();
 
+        settings.sceneryRules.push_back(SceneryRule{
+        .enabled = true,
+        .name = "Waterfalls NW",
+        .conditions = std::vector{
+            distanceToFeature(Feature::Water, 1),
+            heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water)
+        },
+        .effect = {
+            .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NW),
+            .seedOffset = 3,}});
+        settings.sceneryRules.push_back(SceneryRule{
+.enabled = true,
+.name = "Waterfalls NE",
+.conditions = std::vector{
+    distanceToFeature(Feature::Water, 1),
+    heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water)
+},
+.effect = {
+    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NE),
+    .seedOffset = 3,}});
+        settings.sceneryRules.push_back(SceneryRule{
+.enabled = true,
+.name = "Waterfalls SE",
+.conditions = std::vector{
+    distanceToFeature(Feature::Water, 1),
+    heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water)
+},
+.effect = {
+    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SE),
+    .seedOffset = 3,}});
+        settings.sceneryRules.push_back(SceneryRule{
+.enabled = true,
+.name = "Waterfalls SW",
+.conditions = std::vector{
+    distanceToFeature(Feature::Water, 1),
+    heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water)
+},
+.effect = {
+    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SW),
+    .seedOffset = 3,}});
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
@@ -1212,13 +1403,15 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         switch (type)
         {
-            case Type::HeightAbsolute:
+            case Type::Height:
                 return Condition{
-                    .enabled = true, .type = type, .predicate = Predicate::GreaterThan, .data = HeightData{ .height = 2 }
-                };
-            case Type::HeightRelativeToWater:
-                return Condition{
-                    .enabled = true, .type = type, .predicate = Predicate::GreaterThan, .data = HeightData{ .height = 2 }
+                    .enabled = true, .type = type, .predicate = Predicate::GreaterThan, .data = HeightData{
+                        .height = 2,
+                        .mode=HeightMode::Absolute,
+                        .sourceFirst = HeightSource::Self,
+                        .typeFirst = HeightType::Land,
+                        .sourceSecond=HeightSource::Self,
+                        .typeSecond=HeightType::Land}
                 };
             case Type::DistanceToFeature:
                 return Condition{

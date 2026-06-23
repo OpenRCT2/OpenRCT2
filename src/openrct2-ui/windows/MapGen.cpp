@@ -980,15 +980,14 @@ namespace OpenRCT2::Ui::Windows
 
                     constexpr ItemExt items[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
-                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
-                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
-                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
-                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
-                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
-                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
-                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
                     };
 
                     SetItems(items);
@@ -1376,20 +1375,12 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 switch (condition.type)
                 {
-                    case MapGenerator::Rule::Type::HeightAbsolute:
+                    case MapGenerator::Rule::Type::Height:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
                         ft.Add<StringId>(predRepr);
                         ft.Add<int16_t>(static_cast<int16_t>(
                             BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
-                        break;
-
-                    case MapGenerator::Rule::Type::HeightRelativeToWater:
-                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
-                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER);
-                        ft.Add<StringId>(predRepr);
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            HeightUnitsToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
                         break;
 
                     case MapGenerator::Rule::Type::DistanceToFeature:
@@ -2380,15 +2371,14 @@ namespace OpenRCT2::Ui::Windows
 
                     constexpr ItemExt items[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
-                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
-                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
-                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
-                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
-                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
-                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
-                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
                     };
 
                     SetItems(items);
@@ -2722,20 +2712,12 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 switch (condition.type)
                 {
-                    case MapGenerator::Rule::Type::HeightAbsolute:
+                    case MapGenerator::Rule::Type::Height:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
                         ft.Add<StringId>(predRepr);
                         ft.Add<int16_t>(static_cast<int16_t>(
                             BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
-                        break;
-
-                    case MapGenerator::Rule::Type::HeightRelativeToWater:
-                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
-                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER);
-                        ft.Add<StringId>(predRepr);
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            HeightUnitsToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
                         break;
 
                     case MapGenerator::Rule::Type::DistanceToFeature:

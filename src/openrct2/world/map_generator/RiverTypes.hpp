@@ -25,7 +25,7 @@ namespace OpenRCT2::World::MapGenerator
         filled,
         breached,
         skeleton,
-        blocked
+        //TODO lake,
     };
 
     using HydroFlags = FlagHolder<uint8_t, HydroFlag>;
@@ -36,7 +36,6 @@ namespace OpenRCT2::World::MapGenerator
         BaseMap<float> height;
         BaseMap<HydroFlags> flags;
         TileCoordsXY dimensions;
-        BaseMap<float> incomingCatchment;
 
         HydroMaps(const TileCoordsXY size)
             : catchment(size)

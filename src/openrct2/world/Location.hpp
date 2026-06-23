@@ -456,10 +456,10 @@ struct TileCoordsXYRangedZ : public TileCoordsXY
 /**
  * Cardinal directions are represented by the Direction type. It has four
  * possible values:
- * 0 is X-decreasing
- * 1 is Y-increasing
- * 2 is X-increasing
- * 3 is Y-decreasing
+ * 0 is X-decreasing (NE)
+ * 1 is Y-increasing (SE)
+ * 2 is X-increasing (SW)
+ * 3 is Y-decreasing (NW)
  * Direction is not used to model up/down, or diagonal directions.
  */
 using Direction = uint8_t;

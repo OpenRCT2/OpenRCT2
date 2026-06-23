@@ -510,7 +510,7 @@ namespace OpenRCT2::World::MapGenerator
     static void pruneVisit(
         MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap,
         DistanceMap& distanceMap, const TileCoordsXY& pos, int32_t& upstreamCount,int32_t& blockedCount, const TileCoordsXY& offset,
-        const bool isOrdinal)
+        const bool isCardinal)
     {
         const TileCoordsXY nPos{ pos + offset };
 
@@ -528,8 +528,8 @@ namespace OpenRCT2::World::MapGenerator
             return;
         }
 
-        // a bit of a workaround, the thinning algorithm leaves T-junctions instead of reducing to Y), prefer the cardinal
-        if (isOrdinal && haveCommonCardinalNeighbour(context.hydroMaps.value(), pos, offset, skeleton))
+        // a bit of a workaround, the thinning algorithm leaves T-junctions instead of reducing to Y), prefer the ordinal
+        if (isCardinal && haveCommonCardinalNeighbour(context.hydroMaps.value(), pos, offset, skeleton))
         {
             blockedCount++;
             return;
@@ -632,11 +632,11 @@ namespace OpenRCT2::World::MapGenerator
                 int32_t upstreamCount = 0;
                 int32_t blockedCount = 0;
 
-                for (const auto& offset : kNeighbourOffsetsCardinal)
+                for (const auto& offset : kNeighbourOffsetsOrdinal)
                 {
                     pruneVisit(context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, false);
                 }
-                for (const auto& offset : kNeighbourOffsetsOrdinal)
+                for (const auto& offset : kNeighbourOffsetsCardinal)
                 {
                     pruneVisit(context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, true);
                 }
@@ -861,7 +861,7 @@ namespace OpenRCT2::World::MapGenerator
             const QueueTile tile = queue.top();
             queue.pop();
 
-            for (const auto& offset : kNeighbourOffsetsOrdinal)
+            for (const auto& offset : kNeighbourOffsetsCardinal)
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
@@ -888,7 +888,7 @@ namespace OpenRCT2::World::MapGenerator
                 }
             }
 
-            for (const auto& offset : kNeighbourOffsetsCardinal)
+            for (const auto& offset : kNeighbourOffsetsOrdinal)
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
