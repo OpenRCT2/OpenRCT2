@@ -408,6 +408,151 @@ namespace OpenRCT2::TrackMetadata
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq5.blockedSegments),
     };
 
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq2 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq3 = {
+        .clearance = { -32, 32, 0, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq4 = {
+        .clearance = { -64, 32, 16, 56, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq5 = {
+        .clearance = { -96, 32, 56, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq6 = {
+        .clearance = { -128, 32, 80, 0, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq7 = {
+        .clearance = { -96, 0, 80, 0, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq8 = {
+        .clearance = { -128, 0, 80, 0, { 0b1011, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq3 = {
+        .clearance = { -32, 32, 0, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0001,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq4 = {
+        .clearance = { -32, 64, 16, 56, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0101,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq5 = {
+        .clearance = { -32, 96, 56, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0001,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq6 = {
+        .clearance = { -32, 128, 80, 0, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq7 = {
+        .clearance = { 0, 96, 80, 0, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq8 = {
+        .clearance = { 0, 128, 80, 0, { 0b1110, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, 80, 0, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq1 = {
+        .clearance = { -32, 0, 80, 0, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq2 = {
+        .clearance = { 0, 32, 80, 0, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq3 = {
+        .clearance = { -32, 32, 56, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq4 = {
+        .clearance = { -64, 32, 16, 56, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq5 = {
+        .clearance = { -96, 32, 0, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq6 = {
+        .clearance = { -128, 32, 0, 0, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq7 = {
+        .clearance = { -96, 0, 0, 0, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq8 = {
+        .clearance = { -128, 0, 0, 0, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, 80, 0, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq1 = {
+        .clearance = { 0, 32, 80, 0, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq2 = {
+        .clearance = { -32, 0, 80, 0, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq3 = {
+        .clearance = { -32, 32, 56, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0001,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq4 = {
+        .clearance = { -32, 64, 16, 56, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0101,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq5 = {
+        .clearance = { -32, 96, 0, 32, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0001,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq6 = {
+        .clearance = { -32, 128, 0, 0, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq7 = {
+        .clearance = { 0, 96, 0, 0, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kDiagRightLargeCorkscrewDownSeq8 = {
+        .clearance = { 0, 128, 0, 0, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+
     constexpr auto kTEDLeftCorkscrewUp = TrackElementDescriptor{
         .description = STR_HALF_CORKSCREW_LEFT,
         .coordinates = { 0, 3, 0, 80, -32, -32 },
@@ -592,6 +737,81 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 6,
                           { kRightLargeCorkscrewDownSeq0, kRightLargeCorkscrewDownSeq1, kRightLargeCorkscrewDownSeq2,
                             kRightLargeCorkscrewDownSeq3, kRightLargeCorkscrewDownSeq4, kRightLargeCorkscrewDownSeq5 } },
+    };
+
+    constexpr auto kTEDDiagLeftLargeCorkscrewUp = TrackElementDescriptor{
+        .description = STR_LARGE_HALF_CORKSCREW_LEFT,
+        .coordinates = { 4, 7, 0, 112, -128, 0 },
+        .pieceLength = 96,
+        .curveChain = { TrackElemType::diagRightLargeCorkscrewDown, TrackCurve::none },
+        .priceModifier = 360448,
+        .mirrorElement = TrackElemType::diagRightLargeCorkscrewUp,
+        .flags = { TrackElementFlag::up, TrackElementFlag::normalToInversion, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::corkscrewLarge, TrackPitch::none, TrackPitch::none, TrackRoll::upsideDown, TrackRoll::none,
+                        32 },
+        .verticalFactor = EvaluatorConst<89>,
+        .lateralFactor = EvaluatorConst<117>,
+        .sequenceData = { 9,
+                          { kDiagLeftLargeCorkscrewUpSeq0, kDiagLeftLargeCorkscrewUpSeq1, kDiagLeftLargeCorkscrewUpSeq2,
+                            kDiagLeftLargeCorkscrewUpSeq3, kDiagLeftLargeCorkscrewUpSeq4, kDiagLeftLargeCorkscrewUpSeq5,
+                            kDiagLeftLargeCorkscrewUpSeq6, kDiagLeftLargeCorkscrewUpSeq7, kDiagLeftLargeCorkscrewUpSeq8 } }
+    };
+
+    constexpr auto kTEDDiagRightLargeCorkscrewUp = TrackElementDescriptor{
+        .description = STR_LARGE_HALF_CORKSCREW_RIGHT,
+        .coordinates = { 4, 5, 0, 112, 0, 128 },
+        .pieceLength = 96,
+        .curveChain = { TrackElemType::diagLeftLargeCorkscrewDown, TrackCurve::none },
+        .priceModifier = 360448,
+        .mirrorElement = TrackElemType::diagLeftLargeCorkscrewUp,
+        .flags = { TrackElementFlag::up, TrackElementFlag::normalToInversion, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::corkscrewLarge, TrackPitch::none, TrackPitch::none, TrackRoll::upsideDown, TrackRoll::none,
+                        32 },
+        .verticalFactor = EvaluatorConst<89>,
+        .lateralFactor = EvaluatorConst<-117>,
+        .sequenceData = { 9,
+                          { kDiagRightLargeCorkscrewUpSeq0, kDiagRightLargeCorkscrewUpSeq1, kDiagRightLargeCorkscrewUpSeq2,
+                            kDiagRightLargeCorkscrewUpSeq3, kDiagRightLargeCorkscrewUpSeq4, kDiagRightLargeCorkscrewUpSeq5,
+                            kDiagRightLargeCorkscrewUpSeq6, kDiagRightLargeCorkscrewUpSeq7, kDiagRightLargeCorkscrewUpSeq8 } }
+    };
+
+    constexpr auto kTEDDiagLeftLargeCorkscrewDown = TrackElementDescriptor{
+        .description = STR_LARGE_HALF_CORKSCREW_LEFT,
+        .coordinates = { 4, 7, 112, 0, -128, 0 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackElemType::diagRightLargeCorkscrewUp },
+        .priceModifier = 360448,
+        .mirrorElement = TrackElemType::diagRightLargeCorkscrewDown,
+        .flags = { TrackElementFlag::down, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::corkscrewLarge, TrackPitch::none, TrackPitch::none, TrackRoll::none, TrackRoll::upsideDown,
+                        -32 },
+        .verticalFactor = EvaluatorConst<89>,
+        .lateralFactor = EvaluatorConst<-117>,
+        .sequenceData = { 9,
+                          { kDiagLeftLargeCorkscrewDownSeq0, kDiagLeftLargeCorkscrewDownSeq1, kDiagLeftLargeCorkscrewDownSeq2,
+                            kDiagLeftLargeCorkscrewDownSeq3, kDiagLeftLargeCorkscrewDownSeq4, kDiagLeftLargeCorkscrewDownSeq5,
+                            kDiagLeftLargeCorkscrewDownSeq6, kDiagLeftLargeCorkscrewDownSeq7,
+                            kDiagLeftLargeCorkscrewDownSeq8 } }
+    };
+
+    constexpr auto kTEDDiagRightLargeCorkscrewDown = TrackElementDescriptor{
+        .description = STR_LARGE_HALF_CORKSCREW_RIGHT,
+        .coordinates = { 4, 5, 112, 0, 0, 128 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackElemType::diagLeftLargeCorkscrewUp },
+        .priceModifier = 360448,
+        .mirrorElement = TrackElemType::diagLeftLargeCorkscrewDown,
+        .flags = { TrackElementFlag::down, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::corkscrewLarge, TrackPitch::none, TrackPitch::none, TrackRoll::none, TrackRoll::upsideDown,
+                        -32 },
+        .verticalFactor = EvaluatorConst<89>,
+        .lateralFactor = EvaluatorConst<117>,
+        .sequenceData = { 9,
+                          { kDiagRightLargeCorkscrewDownSeq0, kDiagRightLargeCorkscrewDownSeq1,
+                            kDiagRightLargeCorkscrewDownSeq2, kDiagRightLargeCorkscrewDownSeq3,
+                            kDiagRightLargeCorkscrewDownSeq4, kDiagRightLargeCorkscrewDownSeq5,
+                            kDiagRightLargeCorkscrewDownSeq6, kDiagRightLargeCorkscrewDownSeq7,
+                            kDiagRightLargeCorkscrewDownSeq8 } }
     };
 
 } // namespace OpenRCT2::TrackMetadata

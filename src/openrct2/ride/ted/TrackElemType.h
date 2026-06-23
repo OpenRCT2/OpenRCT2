@@ -426,7 +426,12 @@ namespace OpenRCT2
         leftZeroGRollDownBanked = 390,
         rightZeroGRollDownBanked = 391,
 
-        count = 392,
+        diagLeftLargeCorkscrewUp = 392,
+        diagRightLargeCorkscrewUp = 393,
+        diagLeftLargeCorkscrewDown = 394,
+        diagRightLargeCorkscrewDown = 395,
+
+        count = 396,
 
         none = 65535,
     };
