@@ -10,7 +10,6 @@
 #include "Rule.h"
 
 #include "../../../Context.h"
-#include "../../../Diagnostic.h"
 #include "../../../GameState.h"
 #include "../../../localisation/Formatting.h"
 #include "../../../object/ObjectEntryManager.h"
@@ -24,7 +23,6 @@
 #include "../TileQueue.hpp"
 
 #include <charconv>
-#include <csignal>
 #include <random>
 #include <ranges>
 #include <regex>
@@ -273,7 +271,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (genCtx.heightMap[pos] < genCtx.settings.waterLevel) // correct?
+                if (quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel) // TODO correct?
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
@@ -635,16 +633,16 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         for (int32_t r = static_cast<int32_t>(rules.size()) - 1; r >= 0; --r)
         {
-            // TODO check if this causes oversampling on full-tile scenery
+            auto& rule = rules[r];
+
+            if (!rule.enabled)
+            {
+                continue;
+            }
+
             for (size_t qIdx = 0; qIdx < quadIndices.size(); qIdx++)
             {
                 auto quad = quadIndices[qIdx];
-                auto& rule = rules[r];
-
-                if (!rule.enabled)
-                {
-                    continue;
-                }
 
                 ctx.quadCoords = VecXY{ ctx.genCoords.x, ctx.genCoords.y } + QUAD_OFFSET[quad];
                 if (!evaluateConditions(ctx, r, rule.conditions))
@@ -670,6 +668,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         // treating diagonal as full tile cause sanity
                         if (entry->flags.hasAny(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::isDiagonal))
                         {
+                            // avoid oversampling on full-tile scenery by only applying full tile on first quad
                             if (!tileResult.has_value() && qIdx == 0)
                             {
                                 tileResult = item.value();
@@ -698,7 +697,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     {
                         if (!wallResult.has_value())
                         {
-                            wallResult = std::make_optional(WallSceneryItems{});
+                            wallResult = WallSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt };
                         }
                         if (!wallResult.value()[item.value().direction].has_value())
                         {
@@ -716,11 +715,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
         else if (wallResult.has_value())
         {
-            return SceneryResult{ wallResult.value(), {} };
+            return SceneryResult{ wallResult.value(), QuadSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt } };
         }
          else if (tileResult.has_value())
         {
-             return SceneryResult{ {}, tileResult.value() };
+             return SceneryResult{ WallSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt }, tileResult.value() };
         }else
         {
             return std::nullopt;

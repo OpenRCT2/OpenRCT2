@@ -88,4 +88,6 @@ namespace OpenRCT2::World::MapGenerator
     bool isInWorldMap(const MapGenCtx& context, const TileCoordsXY& genCoords);
     TileCoordsXY worldCoordsToGenCoords(const MapGenCtx& context, const TileCoordsXY& worldCoords);
     TileCoordsXY genCoordsToWorldCoords(const MapGenCtx& context, const TileCoordsXY& genCoords);
+
+    uint8_t quantizeHeight(float height);
 } // namespace OpenRCT2::World::MapGenerator

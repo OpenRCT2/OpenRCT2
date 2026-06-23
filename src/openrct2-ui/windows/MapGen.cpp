@@ -998,7 +998,7 @@ namespace OpenRCT2::Ui::Windows
                         Dropdown::Flag::StayOpen, std::size(items));
 
                     // TODO implement
-                    gDropdown.items[4].setDisabled(true);
+                    gDropdown.items[3].setDisabled(true);
 
                     break;
                 }
@@ -2389,9 +2389,9 @@ namespace OpenRCT2::Ui::Windows
                         Dropdown::Flag::StayOpen, std::size(items));
 
                     // TODO implement
-                    gDropdown.items[4].setDisabled(true);
+                    gDropdown.items[3].setDisabled(true);
                     // not available here
-                    gDropdown.items[9].setDisabled(true);
+                    gDropdown.items[8].setDisabled(true);
 
                     break;
                 }

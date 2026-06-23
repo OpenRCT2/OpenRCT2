@@ -138,12 +138,6 @@ namespace OpenRCT2::World::MapGenerator
         Rule::evaluateSceneryRules(context, callback);
     }
 
-    static int8_t quantizeHeight(float height)
-    {
-        // Ensure height is within [2, 254] and a multiple of 2
-        return static_cast<int8_t>(std::round(std::clamp(height, 2.0f, 254.0f) * 0.5f) * 2.0f);
-    }
-
     /**
      * Sets each tile's water level to the specified water level if underneath that water level.
      */

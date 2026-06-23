@@ -607,4 +607,11 @@ namespace OpenRCT2::World::MapGenerator
         const TileCoordsXY offset = getWorldCoordsOffset(context);
         return {genCoords.x - offset.x, genCoords.y - offset.y};
     }
+
+
+    // Ensure height is within [2, 254] and a multiple of 2
+    uint8_t quantizeHeight(const float height)
+    {
+        return static_cast<uint8_t>(std::round(std::clamp(height, 2.0f, 254.0f) * 0.5f) * 2.0f);
+    }
 } // namespace OpenRCT2::World::MapGenerator
