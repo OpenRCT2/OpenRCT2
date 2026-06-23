@@ -14,6 +14,7 @@
 #include "../PlatformEnvironment.h"
 #include "../actions/GameActionResult.h"
 #include "../actions/footpath/FootpathPlaceAction.h"
+#include "../actions/ride/RideSetStatusAction.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
@@ -536,6 +537,24 @@ static void SwapRideEntranceAndExit(RideId rideId)
     }
 }
 
+static void OpenRide(RideId rideId)
+{
+    auto ride = GetRide(rideId);
+    if (ride == nullptr)
+    {
+        Guard::Assert(false, "Invalid Ride Id for OpenRide");
+        return;
+    }
+
+    auto rideOpenAction = GameActions::RideSetStatusAction(ride->id, RideStatus::open);
+    auto& gameState = getGameState();
+    auto result = rideOpenAction.Execute(gameState, gameState.park);
+    if (result.error != GameActions::Status::ok)
+    {
+        Guard::Assert(false, "Could not open ride %s", ride->getName().c_str());
+    }
+}
+
 static void ApplyRideFixes(const json_t& scenarioPatch)
 {
     if (!scenarioPatch.contains(_ridesKey))
@@ -581,6 +600,10 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
         if (operation == "swap_entrance_exit")
         {
             SwapRideEntranceAndExit(rideId);
+        }
+        else if (operation == "open_ride")
+        {
+            OpenRide(rideId);
         }
         else
         {

@@ -8,6 +8,7 @@
 - Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
 - Fix: [#26545] Game crashes when plugin API function generateGuest fails to generate a guest.
 - Fix: [#26578] Crash when drawing path elements without a valid object.
+- Fix: [#26654] Fix Alton Towers stall and Rock’n’Roll Revival toilet being closed on scenario start.
 
 0.5.2 (2026-06-07)
 ------------------------------------------------------------------------
