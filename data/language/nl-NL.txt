@@ -3816,4 +3816,6 @@ STR_7025    :Zichtb. maken
 STR_7026    :Hele attractie zichtbaar maken
 STR_7028    :Kwartspiraal omhoog
 STR_7029    :Kwartspiraal omlaag
-
+STR_7030    :{WINDOW_COLOUR_2}Bezoekers vermaakt: {BLACK}{COMMA32}
+STR_7031    :Grasgroei uitschakelen
+STR_7032    :Zorgt ervoor dat het gras op dezelfde lengte blijft.
