@@ -1831,12 +1831,11 @@ declare global {
 
         addition: number | null;
         /**
-         * Edge status bits for path additions (e.g. litter bins). Each bin uses 2 bits; 3 means empty.
-         * 255 means all slots empty; values below 255 indicate at least one full bin.
+         * Raw path addition status: 2-bit slot per edge (3 = empty, 0 = full), 255 = all empty.
          */
         additionStatus: number | null;
         isAdditionBroken: boolean | null;
-        /** True when a litter bin addition has at least one full slot. */
+        /** True when a litter bin has a fully-filled slot (visibly full / emptiable). Null if not a bin. */
         readonly isAdditionFull: boolean | null;
         isAdditionGhost: boolean | null;
     }
