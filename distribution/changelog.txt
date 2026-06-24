@@ -10,6 +10,7 @@
 - Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
 - Fix: [#26545] Game crashes when plugin API function generateGuest fails to generate a guest.
 - Fix: [#26578] Crash when drawing path elements without a valid object.
+- Fix: [#26605] Desync when placing a track design in multiplayer.
 - Fix: [#26654] Fix Alton Towers stall and Rock’n’Roll Revival toilet being closed on scenario start.
 - Fix: [objects#411] Some colours in green, acid green, pink and red water are inconsistent with natural water.
 - Fix: [objects#436] St. Basil’s Cathedral building pieces are incorrectly labelled as “Kremlin” pieces.
