@@ -13,7 +13,7 @@
 - Fix: [#26654] Fix Alton Towers stall and Rock’n’Roll Revival toilet being closed on scenario start.
 - Fix: [objects#411] Some colours in green, acid green, pink and red water are inconsistent with natural water.
 - Fix: [objects#436] St. Basil’s Cathedral building pieces are incorrectly labelled as “Kremlin” pieces.
-- Fix: [objects#438] Some walls are not marked as see-through while they don't fully block the view.
+- Fix: [objects#438] Some walls are not marked as see-through while they don’t fully block the view.
 - Fix: [objects#440] Inconsistencies in scenario/park name capitalisation.
 
 0.5.2 (2026-06-07)
