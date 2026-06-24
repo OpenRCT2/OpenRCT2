@@ -220,8 +220,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static void computeNormalMap(const MapGenCtx& genCtx, NormalMap& normalMap)
     {
         // TODO actually compute the normal
-        normalMap = NormalMap{genCtx.heightMap.width, genCtx.heightMap.height};
-        normalMap.fill({0.0f, 0.0f, 1.0f});
+        normalMap = NormalMap{ genCtx.heightMap.width, genCtx.heightMap.height };
+        normalMap.fill({ 0.0f, 0.0f, 1.0f });
     }
 
     static void completeDistanceMap(DistanceMap& distanceMap, StableTileQueue& queue, MaskMap& visited)
@@ -233,9 +233,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
             visited[tile.pos] = Mask::True;
 
-            for (const auto & offset : kNeighbourOffsets)
+            for (const auto& offset : kNeighbourOffsets)
             {
-                const TileCoordsXY nPos{tile.pos + offset};
+                const TileCoordsXY nPos{ tile.pos + offset };
 
                 const float distance = tile.value + sqrt(offset.x * offset.x + offset.y * offset.y);
 
@@ -259,11 +259,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     static void computeWaterDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
-        evalCtx.distanceToWater = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
+        evalCtx.distanceToWater = DistanceMap{ genCtx.heightMap.width, genCtx.heightMap.height };
         evalCtx.distanceToWater.fill(std::numeric_limits<float>::infinity());
 
         StableTileQueue queue;
-        MaskMap visited{evalCtx.distanceToWater.width, evalCtx.distanceToWater.height};
+        MaskMap visited{ evalCtx.distanceToWater.width, evalCtx.distanceToWater.height };
 
         for (int32_t y = 0; y < evalCtx.distanceToWater.height; y++)
         {
@@ -285,10 +285,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(evalCtx.distanceToWater, queue, visited);
     }
 
-    static void computeHydroFlagBasedDistanceMap(
-        const MapGenCtx& genCtx, DistanceMap& distanceMap, const HydroFlag flag)
+    static void computeHydroFlagBasedDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap, const HydroFlag flag)
     {
-        distanceMap = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
+        distanceMap = DistanceMap{ genCtx.heightMap.width, genCtx.heightMap.height };
         distanceMap.fill(std::numeric_limits<float>::infinity());
 
         if (!genCtx.hydroMaps.has_value())
@@ -298,7 +297,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         const auto& hydroMaps = genCtx.hydroMaps.value();
         StableTileQueue queue;
-        MaskMap visited{distanceMap.width, distanceMap.height};
+        MaskMap visited{ distanceMap.width, distanceMap.height };
 
         for (int32_t y = 0; y < distanceMap.height; y++)
         {
@@ -306,7 +305,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (hydroMaps.flags[pos].has(flag)){
+                if (hydroMaps.flags[pos].has(flag))
+                {
                     initZeroDistance(pos, distanceMap, queue, visited);
                 }
             }
@@ -317,11 +317,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     static void computeBorderDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
-        evalCtx.distanceToBorder = DistanceMap{genCtx.heightMap.width, genCtx.heightMap.height};
+        evalCtx.distanceToBorder = DistanceMap{ genCtx.heightMap.width, genCtx.heightMap.height };
         evalCtx.distanceToBorder.fill(std::numeric_limits<float>::infinity());
 
         StableTileQueue queue;
-        MaskMap visited{evalCtx.distanceToBorder.width, evalCtx.distanceToBorder.height};
+        MaskMap visited{ evalCtx.distanceToBorder.width, evalCtx.distanceToBorder.height };
 
         for (int32_t y = 0; y < evalCtx.distanceToBorder.height; y++)
         {
@@ -345,39 +345,47 @@ namespace OpenRCT2::World::MapGenerator::Rule
     }
 
     template<typename T>
-    static bool evaluatePredicate(const T a, const Predicate& predicate, const T b)
+    static std::optional<int32_t> evaluatePredicate(const T a, const Predicate& predicate, const T b)
     {
+        bool result;
         switch (predicate)
         {
             case Predicate::Equal:
             {
-                return a == b;
+                result = a == b;
+                break;
             }
             case Predicate::NotEqual:
             {
-                return a != b;
+                result = a != b;
+                break;
             }
             case Predicate::LessThan:
             {
-                return a < b;
+                result = a < b;
+                break;
             }
             case Predicate::GreaterThan:
             {
-                return a > b;
+                result = a > b;
+                break;
             }
             case Predicate::LessThanOrEqual:
             {
-                return a <= b;
+                result = a <= b;
+                break;
             }
             case Predicate::GreaterThanOrEqual:
             {
-                return a >= b;
+                result = a >= b;
+                break;
             }
             default:
             {
                 throw std::invalid_argument("unknown predicate");
             }
         }
+        return result ? std::make_optional(static_cast<int32_t>(a)) : std::nullopt;
     }
 
     static float lookupDistanceTo(const EvaluationContext& ctx, const Feature& feature)
@@ -420,7 +428,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
-    static std::optional<int32_t> fetchHeight(const HeightSource& source, const HeightType& type, const LocalEvaluationHeights& localHeights)
+    static std::optional<int32_t> fetchHeight(
+        const HeightSource& source, const HeightType& type, const LocalEvaluationHeights& localHeights)
     {
         switch (source)
         {
@@ -439,7 +448,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
-    static std::optional<int32_t> calculateHeightValue(const HeightData& heightData, const LocalEvaluationHeights& localHeights)
+    static std::optional<int32_t> fetchHeightValue(const HeightData& heightData, const LocalEvaluationHeights& localHeights)
     {
         if (heightData.mode == HeightMode::Absolute)
         {
@@ -465,14 +474,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return std::nullopt;
     }
 
-    static bool evaluateCondition(EvaluationContext& ctx, const ConditionKey& key, const Condition& condition)
+    static std::optional<int32_t> evaluateCondition(EvaluationContext& ctx, const ConditionKey& key, const Condition& condition)
     {
         switch (condition.type)
         {
             case Type::Height:
             {
                 const auto heightData = std::get<HeightData>(condition.data);
-                const auto heightActual = calculateHeightValue(heightData, ctx.localHeights);
+                const auto heightActual = fetchHeightValue(heightData, ctx.localHeights);
                 return heightActual.has_value()
                     ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height)
                     : false;
@@ -481,7 +490,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 auto distanceData = std::get<DistanceData>(condition.data);
                 auto distanceActual = lookupDistanceTo(ctx, distanceData.feature);
-                const auto limit = static_cast<float>(distanceData.distance);
+                const auto limit = distanceData.distance;
                 return evaluatePredicate(distanceActual, condition.predicate, limit);
             }
             case Type::Noise:
@@ -558,9 +567,15 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 continue;
             }
 
-            if (!evaluateCondition(ctx, key, condition))
+            std::optional<uint8_t> result = evaluateCondition(ctx, key, condition);
+            if (!result.has_value())
             {
                 return false;
+            }
+
+            if (condition.zRepeat)
+            {
+                ctx.zRepeat = result;
             }
         }
         return true;
@@ -602,7 +617,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     }
 
     static std::optional<SceneryResultItem> sceneryResultFromRuleEffect(
-        EvaluationContext& ctx, int32_t ruleIdx, const SceneryRule& rule)
+        EvaluationContext& ctx, const int32_t ruleIdx, const SceneryRule& rule)
     {
         if (rule.effect.objects.empty())
         {
@@ -618,6 +633,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             .direction = selectedItem.direction.has_value() ? selectedItem.direction.value()
                                                             : static_cast<uint8_t>(ctx.directionDist(ctx.rulePrngs[ruleIdx])),
             .colours = selectedItem.colours,
+            .zRepeat = rule.zRepeat ? ctx.zRepeat : std::nullopt,
         };
 
         return std::make_optional(result);
@@ -631,9 +647,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::optional<WallSceneryItems> wallResult = std::nullopt;
         std::optional<TileSceneryItems> tileResult = std::nullopt;
 
-        for (int32_t r = static_cast<int32_t>(rules.size()) - 1; r >= 0; --r)
+        for (int32_t r = static_cast<int32_t>(rules.size()) - 1; r >= 0; r--)
         {
-            auto& rule = rules[r];
+            const auto& rule = rules[r];
+            ctx.zRepeat = std::nullopt;
 
             if (!rule.enabled)
             {
@@ -642,12 +659,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
             for (size_t qIdx = 0; qIdx < quadIndices.size(); qIdx++)
             {
-                auto quad = quadIndices[qIdx];
+                const auto quad = quadIndices[qIdx];
 
                 ctx.quadCoords = VecXY{ ctx.genCoords.x, ctx.genCoords.y } + QUAD_OFFSET[quad];
                 if (!evaluateConditions(ctx, r, rule.conditions))
                 {
-                    // rule doesn't match for tile, try next rule
+                    // rule doesn't match for tile/quad
                     continue;
                 }
 
@@ -695,6 +712,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     }
                     case Wall:
                     {
+                        // TODO handle SmallSceneryFlag::prohibitWalls? The placement actions should handle it as the walls are
+                        //   placed after
                         if (!wallResult.has_value())
                         {
                             wallResult = WallSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt };
@@ -713,17 +732,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
         {
             return SceneryResult{ wallResult.value(), tileResult.value() };
         }
-        else if (wallResult.has_value())
+        if (wallResult.has_value())
         {
-            return SceneryResult{ wallResult.value(), QuadSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt } };
+            return SceneryResult{ wallResult.value(),
+                                  QuadSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt } };
         }
-         else if (tileResult.has_value())
+        if (tileResult.has_value())
         {
-             return SceneryResult{ WallSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt }, tileResult.value() };
-        }else
-        {
-            return std::nullopt;
+            return SceneryResult{ WallSceneryItems{ std::nullopt, std::nullopt, std::nullopt, std::nullopt },
+                                  tileResult.value() };
         }
+        return std::nullopt;
     }
 
     static void initializeEvaluationContextForCondition(
@@ -733,10 +752,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
         {
             auto& noiseData = std::get<NoiseData>(condition.data);
 
-            BaseSettings baseSettings = {BaseType::Simplex, genCtx.settings.seed + noiseData.seedOffset, noiseData.frequency * NOISE_SCALE};
-            FractalSettings fractalSettings = {FractalType::Fbm, noiseData.octaves, 2.0f, 0.5f, 0.0f };
+            BaseSettings baseSettings = { BaseType::Simplex, genCtx.settings.seed + noiseData.seedOffset,
+                                          noiseData.frequency * NOISE_SCALE };
+            FractalSettings fractalSettings = { FractalType::Fbm, noiseData.octaves, 2.0f, 0.5f, 0.0f };
 
-            auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
+            auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt);
             evalCtx.conditionNoiseFns[key] = std::move(noise);
         }
         else if (condition.type == Type::Random)
@@ -749,10 +769,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
         {
             auto& noiseBlendData = std::get<BlendNoiseData>(condition.data);
 
-            BaseSettings baseSettings = {BaseType::Simplex, genCtx.settings.seed + noiseBlendData.seedOffset, noiseBlendData.frequency * NOISE_SCALE};
-            FractalSettings fractalSettings = {FractalType::Fbm, noiseBlendData.octaves, 2.0f, 0.5f, 0.0f };
+            BaseSettings baseSettings = { BaseType::Simplex, genCtx.settings.seed + noiseBlendData.seedOffset,
+                                          noiseBlendData.frequency * NOISE_SCALE };
+            FractalSettings fractalSettings = { FractalType::Fbm, noiseBlendData.octaves, 2.0f, 0.5f, 0.0f };
 
-            auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
+            auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt);
             evalCtx.conditionNoiseFns[key] = std::move(noise);
             // shouldn't cause artifacts to use the same seed for prng and noise?
             std::mt19937 prng(genCtx.settings.seed + noiseBlendData.seedOffset);
@@ -774,9 +795,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
             return std::nullopt;
         }
 
-        return std::make_optional(EvaluationHeights{
-            static_cast<int32_t>(surfaceElement->baseHeight),
-            surfaceElement->GetWaterHeight()} );
+        return std::make_optional(
+            EvaluationHeights{ static_cast<int32_t>(surfaceElement->baseHeight), surfaceElement->GetWaterHeight() / kWaterHeightStep });
     }
 
     static LocalEvaluationHeights getLocalHeightsAt(const TileCoordsXY& gameCoords)
@@ -849,7 +869,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
             }
         }
 
-        processRules<TextureResult, TextureRuleList>(genCtx, genCtx.settings.textureRules, evalCtx, textureResultFromRulesAt, callback);
+        processRules<TextureResult, TextureRuleList>(
+            genCtx, genCtx.settings.textureRules, evalCtx, textureResultFromRulesAt, callback);
     }
 
     void evaluateSceneryRules(const MapGenCtx& genCtx, const Callback<MaybeSceneryResult>& callback)
@@ -865,7 +886,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
             evalCtx.ruleItemDists[r] = std::discrete_distribution(std::ranges::begin(weights), std::ranges::end(weights));
             evalCtx.rulePrngs[r] = std::mt19937(genCtx.settings.seed + rule.effect.seedOffset);
 
-
             for (size_t c = 0; c < rule.conditions.size(); ++c)
             {
                 auto& condition = rule.conditions[c];
@@ -874,7 +894,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
             }
         }
 
-        processRules<MaybeSceneryResult, SceneryRuleList>(genCtx, genCtx.settings.sceneryRules, evalCtx, sceneryResultFromRulesAt, callback);
+        processRules<MaybeSceneryResult, SceneryRuleList>(
+            genCtx, genCtx.settings.sceneryRules, evalCtx, sceneryResultFromRulesAt, callback);
     }
 
     void createDefaultTextureRules(Settings& settings)
@@ -907,22 +928,22 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                      .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
 
         settings.textureRules.push_back(
-            TextureRule{ .enabled = true,
-                         .isDefault = false,
-                         .name = FormatStringID(STR_MAPGEN_RULE_BEACHES_WATER_BODIES),
-                         .conditions = std::vector{ Condition{ .enabled = true,
-                                                               .type = Type::DistanceToFeature,
-                                                               .predicate = Predicate::Equal,
-                                                               .data = DistanceData{ .feature=Feature::Riverbed,.distance=0 } },
-                                                    Condition{ .enabled = true,
-                                                               .type = Type::DistanceToFeature,
-                                                               .predicate = Predicate::GreaterThan,
-                                                               .data = DistanceData{ .feature=Feature::River,
-                                                                   .distance=0 } } },
-                         .effect = { .applyLandTexture = true,
-                                     .landTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_surface.sand").value_or(0),
-                                     .applyEdgeTexture = false,
-                                     .edgeTexture = 0 } });
+            TextureRule{
+                .enabled = true,
+                .isDefault = false,
+                .name = FormatStringID(STR_MAPGEN_RULE_BEACHES_WATER_BODIES),
+                .conditions = std::vector{ Condition{ .enabled = true,
+                                                      .type = Type::DistanceToFeature,
+                                                      .predicate = Predicate::Equal,
+                                                      .data = DistanceData{ .feature = Feature::Riverbed, .distance = 0 } },
+                                           Condition{ .enabled = true,
+                                                      .type = Type::DistanceToFeature,
+                                                      .predicate = Predicate::GreaterThan,
+                                                      .data = DistanceData{ .feature = Feature::River, .distance = 0 } } },
+                .effect = { .applyLandTexture = true,
+                            .landTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_surface.sand").value_or(0),
+                            .applyEdgeTexture = false,
+                            .edgeTexture = 0 } });
     }
 
     void createNewTextureRule(Settings& settings)
@@ -1106,94 +1127,99 @@ namespace OpenRCT2::World::MapGenerator::Rule
                           .data = DistanceData{ .feature = feature, .distance = distance } };
     }
 
-    static Condition heightDeltaToNeighbour(const HeightSource neighbour, const HeightType type)
+    static Condition heightDeltaToNeighbour(const HeightSource neighbour, const HeightType type, bool zRepeat = false)
     {
         return Condition{
-        .enabled = true,
-        .type = Type::Height,
-        .predicate = Predicate::GreaterThan,
-        .data = HeightData{
-            .height = 0,
-            .mode = HeightMode::Relative,
-            .sourceFirst=neighbour,
-            .typeFirst = type,
-            .sourceSecond = HeightSource::Self,
-            .typeSecond = type}
+            .enabled = true,
+            .type = Type::Height,
+            .predicate = Predicate::GreaterThan,
+            .data = HeightData{ .height = 0,
+                                .mode = HeightMode::Relative,
+                                .sourceFirst = neighbour,
+                                .typeFirst = type,
+                                .sourceSecond = HeightSource::Self,
+                                .typeSecond = type },
+            .zRepeat = zRepeat,
         };
     }
 
     void createDefaultSceneryRules(Settings& settings)
     {
         std::random_device prng{};
-        auto seedOffset = prng();
+        const auto seedOffset = prng();
 
-        settings.sceneryRules.push_back(SceneryRule{
-        .enabled = true,
-        .name = "Waterfalls NW",
-        .conditions = std::vector{
-            distanceToFeature(Feature::Water, 1),
-            heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water)
-        },
-        .effect = {
-            .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NW),
-            .seedOffset = 3,}});
-        settings.sceneryRules.push_back(SceneryRule{
-.enabled = true,
-.name = "Waterfalls NE",
-.conditions = std::vector{
-    distanceToFeature(Feature::Water, 1),
-    heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water)
-},
-.effect = {
-    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NE),
-    .seedOffset = 3,}});
-        settings.sceneryRules.push_back(SceneryRule{
-.enabled = true,
-.name = "Waterfalls SE",
-.conditions = std::vector{
-    distanceToFeature(Feature::Water, 1),
-    heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water)
-},
-.effect = {
-    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SE),
-    .seedOffset = 3,}});
-        settings.sceneryRules.push_back(SceneryRule{
-.enabled = true,
-.name = "Waterfalls SW",
-.conditions = std::vector{
-    distanceToFeature(Feature::Water, 1),
-    heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water)
-},
-.effect = {
-    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SW),
-    .seedOffset = 3,}});
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_SHRUBS),
-                .conditions = std::vector{
-                    aboveWater(),
-                    blendHeight(prng(), 64, 72),
-                                            blendNoise(prng(), 9.5f, 6, 0.60f, 0.70f),
-                                           chance(prng(), 0.66f), },
+                .name = "Waterfalls NW",
+                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                                           heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water, true) },
+                .zRepeat = true,
                 .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(DEFAULT_SHRUB),
-                    .seedOffset = 4,
+                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NW),
+                    .seedOffset = 3,
                 } });
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_MIXED),
-                .conditions = std::vector{
-                    onSurface(SURFACE_SOIL),
-                    chance(prng(), .33f),
-                    blendHeight(prng(), 32, 42),
-                    blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.85f),
-                },
+                .name = "Waterfalls NE",
+                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                                           heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water, true) },
+                .zRepeat = true,
                 .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(TREES_MIXED),
-                    .seedOffset = 2,
+                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NE),
+                    .seedOffset = 3,
                 } });
+        settings.sceneryRules.push_back(
+            SceneryRule{
+                .enabled = true,
+                .name = "Waterfalls SE",
+                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                                           heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water, true) },
+                .zRepeat = true,
+                .effect = {
+                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SE),
+                    .seedOffset = 3,
+                } });
+        settings.sceneryRules.push_back(
+            SceneryRule{
+                .enabled = true,
+                .name = "Waterfalls SW",
+                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                                           heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water, true) },
+                .zRepeat = true,
+                .effect = {
+                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SW),
+                    .seedOffset = 3,
+                } });
+        settings.sceneryRules.push_back(
+                    SceneryRule{
+                        .enabled = true,
+                        .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_SHRUBS),
+                        .conditions = std::vector{
+                            aboveWater(),
+                            blendHeight(prng(), 64, 72),
+                                                    blendNoise(prng(), 9.5f, 6, 0.60f, 0.70f),
+                                                   chance(prng(), 0.66f), },
+                        .zRepeat = true,
+                        .effect = {
+                            .objects = toSceneryEffectItemsIfAvailable(DEFAULT_SHRUB),
+                            .seedOffset = 4,
+                        } });
+        settings.sceneryRules.push_back(
+                    SceneryRule{
+                        .enabled = true,
+                        .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_MIXED),
+                        .conditions = std::vector{
+                            onSurface(SURFACE_SOIL),
+                            chance(prng(), .33f),
+                            blendHeight(prng(), 32, 42),
+                            blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.85f),
+                        },
+                        .effect = {
+                            .objects = toSceneryEffectItemsIfAvailable(TREES_MIXED),
+                            .seedOffset = 2,
+                        } });
         settings.sceneryRules.push_back(
             SceneryRule{ .enabled = true,
                          .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CONIFERS),
@@ -1311,14 +1337,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 auto seedOffset = prng();
                 settings.sceneryRules.push_back(
-                    SceneryRule{
-                        .enabled = true,
-                        .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_OASIS),
-                        .conditions = { onSurface(SURFACE_SAND), aboveWater(), chance(prng(), .55f), distanceToFeature(Feature::Water, 4.0f) },
-                        .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(ARID_OASIS),
-                            .seedOffset = prng(),
-                        } });
+                    SceneryRule{ .enabled = true,
+                                 .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_OASIS),
+                                 .conditions = { onSurface(SURFACE_SAND), aboveWater(), chance(prng(), .55f),
+                                                 distanceToFeature(Feature::Water, 4.0f) },
+                                 .effect = {
+                                     .objects = toSceneryEffectItemsIfAvailable(ARID_OASIS),
+                                     .seedOffset = prng(),
+                                 } });
                 settings.sceneryRules.push_back(SceneryRule{
                     .enabled = true,
                     .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_SHRUBS),
@@ -1403,20 +1429,20 @@ namespace OpenRCT2::World::MapGenerator::Rule
         switch (type)
         {
             case Type::Height:
-                return Condition{
-                    .enabled = true, .type = type, .predicate = Predicate::GreaterThan, .data = HeightData{
-                        .height = 2,
-                        .mode=HeightMode::Absolute,
-                        .sourceFirst = HeightSource::Self,
-                        .typeFirst = HeightType::Land,
-                        .sourceSecond=HeightSource::Self,
-                        .typeSecond=HeightType::Land}
-                };
+                return Condition{ .enabled = true,
+                                  .type = type,
+                                  .predicate = Predicate::GreaterThan,
+                                  .data = HeightData{ .height = 2,
+                                                      .mode = HeightMode::Absolute,
+                                                      .sourceFirst = HeightSource::Self,
+                                                      .typeFirst = HeightType::Land,
+                                                      .sourceSecond = HeightSource::Self,
+                                                      .typeSecond = HeightType::Land } };
             case Type::DistanceToFeature:
-                return Condition{
-                    .enabled = true, .type = type, .predicate = Predicate::LessThan, .data = DistanceData{
-                        .feature=Feature::Water, .distance = 2 }
-                };
+                return Condition{ .enabled = true,
+                                  .type = type,
+                                  .predicate = Predicate::LessThan,
+                                  .data = DistanceData{ .feature = Feature::Water, .distance = 2 } };
             case Type::Noise:
                 return Condition{ .enabled = true,
                                   .type = type,
@@ -1452,8 +1478,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 return Condition{ .enabled = true,
                                   .type = type,
                                   .predicate = Predicate::GreaterThan,
-                                  .data = BlendDistanceData{
-                                      .feature = Feature::Water, .seedOffset = std::random_device{}(), .edgeLow = 0, .edgeHigh = 8} };
+                                  .data = BlendDistanceData{ .feature = Feature::Water,
+                                                             .seedOffset = std::random_device{}(),
+                                                             .edgeLow = 0,
+                                                             .edgeHigh = 8 } };
             case Type::LandStyle:
                 return Condition{ .enabled = true,
                                   .type = type,

@@ -18,103 +18,156 @@
 #include "../../actions/scenery/WallPlaceAction.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectManager.h"
+#include "../../object/LargeSceneryEntry.h"
+#include "../../object/SmallSceneryEntry.h"
+#include "../../object/WallSceneryEntry.h"
 #include "../Map.h"
 #include "MapHelpers.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static CoordsXYZ xyzFrom(const TileCoordsXY& loc)
+    static CoordsXYZ xyzFrom(const TileCoordsXY& loc, const int32_t stackElevation, const bool checkWaterHeight)
     {
         const auto coords = loc.ToCoordsXY();
-        const auto groundHeight = TileElementHeight(coords);
-        const auto waterHeight = TileElementWaterHeight(coords);
-        return CoordsXYZ{ coords.x, coords.y, std::max(groundHeight, waterHeight) };
+
+        if (stackElevation > 0)
+        {
+            return CoordsXYZ{ coords.x, coords.y, stackElevation };
+        }
+
+        if (checkWaterHeight)
+        {
+            const auto waterHeight = TileElementWaterHeight(coords);
+
+            if (waterHeight >= TileElementHeight(coords))
+            {
+                return CoordsXYZ{ coords.x, coords.y, waterHeight };
+            }
+        }
+
+        return CoordsXYZ{ coords.x, coords.y, 0 };
     }
 
     static void placeSceneryWall(const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem)
     {
-        auto action = GameActions::WallPlaceAction(
-            sceneryItem.index, xyzFrom(loc), sceneryItem.direction,
-            sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
+        auto* entry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(sceneryItem.index);
+        Guard::Assert(entry != nullptr);
 
-        auto& gameState = getGameState();
-        auto& park = gameState.park;
+        int32_t elevation = 0;
 
-        auto queryPlaceResult = action.Query(gameState, park);
-        if (queryPlaceResult.error != GameActions::Status::ok)
+        for (int s = 0; s < sceneryItem.zRepeat.value_or(1); s++)
         {
-            LOG_VERBOSE(
-                "WallPlaceAction query: %s - %s", queryPlaceResult.getErrorTitle().c_str(),
-                queryPlaceResult.getErrorMessage().c_str());
-            return;
-        }
+            auto action = GameActions::WallPlaceAction(
+                sceneryItem.index, xyzFrom(loc, elevation, true), sceneryItem.direction,
+                sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
 
-        auto execPlaceResult = action.Execute(gameState, park);
-        if (execPlaceResult.error != GameActions::Status::ok)
-        {
-            LOG_VERBOSE(
-                "WallPlaceAction exec: %s - %s", execPlaceResult.getErrorTitle().c_str(),
-                execPlaceResult.getErrorMessage().c_str());
-            return;
+            auto& gameState = getGameState();
+            auto& park = gameState.park;
+
+            auto queryResult = action.Query(gameState, park);
+            if (queryResult.error != GameActions::Status::ok)
+            {
+                LOG_VERBOSE(
+                    "WallPlaceAction query: %s - %s", queryResult.getErrorTitle().c_str(),
+                    queryResult.getErrorMessage().c_str());
+                continue;
+            }
+
+            auto execResult = action.Execute(gameState, park);
+            if (execResult.error != GameActions::Status::ok)
+            {
+                LOG_VERBOSE(
+                    "WallPlaceAction exec: %s - %s", execResult.getErrorTitle().c_str(),
+                    execResult.getErrorMessage().c_str());
+                continue;
+            }
+
+            auto execResultData = execResult.getData<GameActions::WallPlaceActionResult>();
+            elevation = execResultData.BaseHeight + entry->height * kCoordsZStep;
         }
     }
 
     static void placeSceneryLarge(const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem)
     {
-        auto action = GameActions::LargeSceneryPlaceAction(
-           CoordsXYZD{ xyzFrom(loc), sceneryItem.direction }, sceneryItem.index,
-            sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
+        auto* entry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(sceneryItem.index);
+        Guard::Assert(entry != nullptr);
 
-        auto& gameState = getGameState();
-        auto& park = gameState.park;
-
-        auto queryPlaceResult = action.Query(gameState, park);
-        if (queryPlaceResult.error != GameActions::Status::ok)
+        uint8_t height = 0;
+        for (const auto & tile : entry->tiles)
         {
-            LOG_VERBOSE(
-                "LargeSceneryPlaceAction query: %s - %s", queryPlaceResult.getErrorTitle().c_str(),
-                queryPlaceResult.getErrorMessage().c_str());
-            return;
+            height = std::max(height, static_cast<uint8_t>( tile.zClearance));
         }
 
-        auto execPlaceResult = action.Execute(gameState, park);
-        if (execPlaceResult.error != GameActions::Status::ok)
+        int32_t elevation = 0;
+        for (int s = 0; s < sceneryItem.zRepeat.value_or(1); s++)
         {
-            LOG_VERBOSE(
-                "LargeSceneryPlaceAction exec: %s - %s", execPlaceResult.getErrorTitle().c_str(),
-                execPlaceResult.getErrorMessage().c_str());
-            return;
+            auto action = GameActions::LargeSceneryPlaceAction(
+               CoordsXYZD{ xyzFrom(loc, elevation, true), sceneryItem.direction }, sceneryItem.index,
+                sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
+
+            auto& gameState = getGameState();
+            auto& park = gameState.park;
+
+            auto queryResult = action.Query(gameState, park);
+            if (queryResult.error != GameActions::Status::ok)
+            {
+                LOG_VERBOSE(
+                    "LargeSceneryPlaceAction query: %s - %s", queryResult.getErrorTitle().c_str(),
+                    queryResult.getErrorMessage().c_str());
+                continue;
+            }
+
+            auto execResult = action.Execute(gameState, park);
+            if (execResult.error != GameActions::Status::ok)
+            {
+                LOG_VERBOSE(
+                    "LargeSceneryPlaceAction exec: %s - %s", execResult.getErrorTitle().c_str(),
+                    execResult.getErrorMessage().c_str());
+                continue;
+            }
+
+            auto execResultData = execResult.getData<GameActions::LargeSceneryPlaceActionResult>();
+            elevation = execResultData.firstTileHeight + height;
         }
     }
 
     static void placeScenerySmall(const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem, const std::optional<uint8_t> quadrant)
     {
-        auto coords = loc.ToCoordsXY();
-        auto action = GameActions::SmallSceneryPlaceAction(
-            CoordsXYZD{ coords.x, coords.y, 0, sceneryItem.direction }, quadrant.value_or(0), sceneryItem.index,
-            sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
+        auto* entry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryItem.index);
+        Guard::Assert(entry != nullptr);
 
-        auto& gameState = getGameState();
-        auto& park = gameState.park;
-
-        auto queryResult = action.Query(gameState, park);
-        if (queryResult.error != GameActions::Status::ok)
+        int32_t elevation = 0;
+        for (int s = 0; s < sceneryItem.zRepeat.value_or(1); s++)
         {
-            LOG_VERBOSE(
-                "SmallSceneryPlaceAction query: %s - %s", queryResult.getErrorTitle().c_str(),
-                queryResult.getErrorMessage().c_str());
-            return;
-        }
+            auto action = GameActions::SmallSceneryPlaceAction(
+                CoordsXYZD{ xyzFrom(loc, elevation, false), sceneryItem.direction }, quadrant.value_or(0), sceneryItem.index,
+                sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
 
-        auto execResult = action.Execute(gameState, park);
-        if (execResult.error != GameActions::Status::ok)
-        {
-            LOG_VERBOSE(
-                "SmallSceneryPlaceAction exec: %s - %s", execResult.getErrorTitle().c_str(),
-                execResult.getErrorMessage().c_str());
+            auto& gameState = getGameState();
+            auto& park = gameState.park;
+
+            auto queryResult = action.Query(gameState, park);
+            if (queryResult.error != GameActions::Status::ok)
+            {
+                LOG_VERBOSE(
+                    "SmallSceneryPlaceAction query: %s - %s", queryResult.getErrorTitle().c_str(),
+                    queryResult.getErrorMessage().c_str());
+                continue;
+            }
+
+            auto execResult = action.Execute(gameState, park);
+            if (execResult.error != GameActions::Status::ok)
+            {
+                LOG_VERBOSE(
+                    "SmallSceneryPlaceAction exec: %s - %s", execResult.getErrorTitle().c_str(),
+                    execResult.getErrorMessage().c_str());
+                continue;
+            }
+
+            auto execResultData = execResult.getData<GameActions::SmallSceneryPlaceActionResult>();
+            elevation = execResultData.BaseHeight + entry->height * kCoordsZStep;
         }
     }
-
 
     static void placeScenery(
         const TileCoordsXY& loc, const std::optional<uint8_t> quadrant, const Rule::SceneryResultItem& sceneryItem)
@@ -230,6 +283,5 @@ namespace OpenRCT2::World::MapGenerator
                 "SignSetNameAction exec: %s - %s", execSetSignNameResult.getErrorTitle().c_str(),
                 execSetSignNameResult.getErrorMessage().c_str());
         }
-
     }
 } // namespace OpenRCT2::World::MapGenerator

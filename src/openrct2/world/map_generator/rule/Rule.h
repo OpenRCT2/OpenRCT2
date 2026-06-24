@@ -137,6 +137,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
         TileCoordsXY genCoords;
         VecXY quadCoords;
         LocalEvaluationHeights localHeights;
+
+        // per rule per tile
+        std::optional<int32_t> zRepeat = std::nullopt;
     };
 
     enum class Predicate : uint8_t
@@ -277,6 +280,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Type type;
         Predicate predicate;
         ConditionData data;
+        bool zRepeat = false;
     };
 
     struct TextureEffect
@@ -314,6 +318,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         ObjectEntryIndex index;
         uint8_t direction;
         std::array<Drawing::Colour, 3> colours;
+        std::optional<uint8_t> zRepeat = std::nullopt;
     };
 
     using WallSceneryItems = std::array<std::optional<SceneryResultItem>, 4>;
@@ -344,6 +349,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::string name;
         std::vector<Condition> conditions;
 
+        bool zRepeat = false;
         SceneryEffect effect;
     };
 
