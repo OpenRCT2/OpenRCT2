@@ -28,6 +28,26 @@ namespace OpenRCT2::TrackMetadata
         return (progress < 48) ? -98 : 98;
     }
 
+    static int32_t EvaluatorBankedSBendLeftLateral(const int16_t progress)
+    {
+        return (progress < 48) ? 160 : -160;
+    }
+
+    static int32_t EvaluatorBankedSBendRightLateral(const int16_t progress)
+    {
+        return (progress < 48) ? -160 : 160;
+    }
+
+    static int32_t EvaluatorBankedSBendLeftVertical(const int16_t progress)
+    {
+        return (progress < 48) ? 200 : -200;
+    }
+
+    static int32_t EvaluatorBankedSBendRightVertical(const int16_t progress)
+    {
+        return (progress < 48) ? -200 : 200;
+    }
+
     static constexpr SequenceDescriptor kSBendLeftSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
@@ -219,7 +239,8 @@ namespace OpenRCT2::TrackMetadata
         .flags = {},
         .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::right, TrackRoll::left, 0 },
         .spinFunction = SpinFunction::lr,
-        .lateralFactor = EvaluatorSBendLeft, // TODO
+        .verticalFactor = EvaluatorBankedSBendLeftVertical,
+        .lateralFactor = EvaluatorBankedSBendLeftLateral,
         .sequenceData = { 4, { kSBendLeftSeq0, kSBendLeftSeq1, kSBendLeftSeq2, kSBendLeftSeq3 } },
     };
 
@@ -233,7 +254,8 @@ namespace OpenRCT2::TrackMetadata
         .flags = {},
         .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::left, TrackRoll::right, 0 },
         .spinFunction = SpinFunction::rl,
-        .lateralFactor = EvaluatorSBendRight, // TODO
+        .verticalFactor = EvaluatorBankedSBendRightVertical,
+        .lateralFactor = EvaluatorBankedSBendRightLateral,
         .sequenceData = { 4, { kSBendRightSeq0, kSBendRightSeq1, kSBendRightSeq2, kSBendRightSeq3 } },
     };
 
