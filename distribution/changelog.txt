@@ -2,10 +2,12 @@
 ------------------------------------------------------------------------
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
+- Improved: [#26325] Changing the train type, length, or direction no longer resets the number of laps if there is just one train.
 - Improved: [objects#437] Re-order St. Basil’s Cathedral pieces to be more consistent.
 - Change: [#26689] A clear scenario editor can now be opened directly from the command line.
 - Change: [objects#439] Drop numbers from Wacky Worlds scenery descriptions.
 - Fix: [#24613] Incorrect sprites drawn for path elements without a valid object.
+- Fix: [#26323] Ride stats do not reset when changing the number of trains changes the number of laps.
 - Fix: [#26494] The limits for where walls on the path side of the first tile block the view of rides/scenery are wrong (original bug).
 - Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
 - Fix: [#26545] Game crashes when plugin API function generateGuest fails to generate a guest.
@@ -41,7 +43,7 @@
 - Fix: [#25581] Chart drawing issue on some platforms due to compiler optimisation.
 - Fix: [#26019] Inverted and Inverted Flying Roller Coaster large half loops glitch with the train and don‘t draw in tunnels at some angles (original bug).
 - Fix: [#26183] The ride stat graph placeholder text is not drawn in the expected position.
-- Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard. 
+- Fix: [#26287] Game crashes upon connect/disconnect of physical keyboard.
 - Fix: [#26299] Single Rail S-Bend sprites don’t fully connect to the next track piece at certain angles.
 - Fix: [#26352] Large scenery items are incorrectly labelled as ‘banners’ in the tile inspector.
 - Fix: [#26352] The label for path additions is using the wrong text colour in the tile inspector.
