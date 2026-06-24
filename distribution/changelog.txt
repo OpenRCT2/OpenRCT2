@@ -2,13 +2,19 @@
 ------------------------------------------------------------------------
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
+- Improved: [objects#437] Re-order St. Basil’s Cathedral pieces to be more consistent.
 - Change: [#26689] A clear scenario editor can now be opened directly from the command line.
+- Change: [objects#439] Drop numbers from Wacky Worlds scenery descriptions.
 - Fix: [#24613] Incorrect sprites drawn for path elements without a valid object.
 - Fix: [#26494] The limits for where walls on the path side of the first tile block the view of rides/scenery are wrong (original bug).
 - Fix: [#26504] The boosts/penalties to excitement and nausea that air time provides are calculated wrong.
 - Fix: [#26545] Game crashes when plugin API function generateGuest fails to generate a guest.
 - Fix: [#26578] Crash when drawing path elements without a valid object.
 - Fix: [#26654] Fix Alton Towers stall and Rock’n’Roll Revival toilet being closed on scenario start.
+- Fix: [objects#411] Some colours in green, acid green, pink and red water are inconsistent with natural water.
+- Fix: [objects#436] St. Basil’s Cathedral building pieces are incorrectly labelled as “Kremlin” pieces.
+- Fix: [objects#438] Some walls are not marked as see-through while they don't fully block the view.
+- Fix: [objects#440] Inconsistencies in scenario/park name capitalisation.
 
 0.5.2 (2026-06-07)
 ------------------------------------------------------------------------
