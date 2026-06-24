@@ -12,6 +12,7 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
+#include "../../profiling/Profiling.h"
 #include "MapHelpers.h"
 #include "TileQueue.hpp"
 
@@ -20,7 +21,6 @@
 namespace OpenRCT2::World::MapGenerator
 {
     static constexpr float kP = 1.1f;
-    static constexpr int32_t kMaxPruneLength = 24;
 
     using Backref = std::optional<TileCoordsXY>;
 
@@ -45,6 +45,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void fillOrBreachDepressions(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         HeightMap& heightMap = context.heightMap;
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
@@ -231,6 +232,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void aggregateCatchment(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         for (int32_t y = 0; y < context.heightMap.height; y++)
         {
             for (int32_t x = 0; x < context.heightMap.width; x++)
@@ -265,6 +267,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void postProcessCatchment(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         const HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
@@ -313,6 +316,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void constructRiverSkeletons(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
         bool firstSubiteration = true;
@@ -553,6 +557,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void pruneShortStreams(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
         BackrefMap nearestSkeletonMap{ hydroMaps.dimensions };
 
@@ -682,7 +687,7 @@ namespace OpenRCT2::World::MapGenerator
 
                 while (currentTile.has_value())
                 {
-                    if (distanceMap[spring] - distanceMap[currentTile.value()] > kMaxPruneLength)
+                    if (distanceMap[spring] - distanceMap[currentTile.value()] > context.settings.maxPruneLength)
                     {
                         break;
                     }
@@ -715,22 +720,6 @@ namespace OpenRCT2::World::MapGenerator
 
             if (!pruned)
             {
-                // for ( const auto& spring : springs)
-                // {
-                //     context.debugSigns.emplace_back(spring, "spring", Drawing::Colour::white, Drawing::Colour::lightBlue);
-                // }
-                // for (int32_t y = 0; y < hydroMaps.dimensions.y ; y++)
-                // {
-                //     for (int32_t x = 0; x < hydroMaps.dimensions.x ; x++)
-                //     {
-                //         TileCoordsXY pos{ x, y };
-                //         if (confluenceMap[pos] == Mask::True)
-                //         {
-                //             context.debugSigns.emplace_back(pos, "confluence", Drawing::Colour::white, Drawing::Colour::brightPurple);
-                //         }
-                //     }
-                // }
-
                 break;
             }
 
@@ -753,13 +742,7 @@ namespace OpenRCT2::World::MapGenerator
                 if (nearestSkeletonMap[pos].has_value() && !hydroMaps.flags[nearestSkeletonMap[pos].value()].has(skeleton))
                 {
                     hydroMaps.flags[pos].unset(river);
-                    // context.debugSigns.emplace_back(pos, "pruned");
                 }
-
-                // if (hydroMaps.flags[pos].has(skeleton))
-                // {
-                //     context.debugSigns.emplace_back(pos, "skeleton", Drawing::Colour::black, Drawing::Colour::white);
-                // }
             }
         }
     }
@@ -769,6 +752,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void adjustStreamWidth(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         const Settings& settings = context.settings;
         HeightMap& heightMap = context.heightMap;
         HydroMaps& hydroMaps = context.hydroMaps.value();
@@ -814,6 +798,12 @@ namespace OpenRCT2::World::MapGenerator
                         continue;
                     }
 
+                    // make waterfalls a bit thinner
+                    if (heightMap[deltaPos] - heightMap[tile.pos] > 4.0f)
+                    {
+                        continue;
+                    }
+
                     // ensure waterfalls look nice (i.e. are monotonic) by setting the height of newly minted river tiles to the
                     // height of the closest river tile
                     if (hydroMaps.flags[deltaPos].has(river))
@@ -848,6 +838,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void ensureCardinalNeighbours(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         HeightMap& heightMap = context.heightMap;
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
@@ -908,6 +899,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void carveRiverbed(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         const Settings& settings = context.settings;
         HeightMap& heightMap = context.heightMap;
         HydroMaps& hydroMaps = context.hydroMaps.value();
@@ -930,8 +922,8 @@ namespace OpenRCT2::World::MapGenerator
             const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
 
             hydroMaps.flags[tile.pos].set(riverbed);
-            hydroMaps.height[tile.pos] = heightCopy[tile.pos] - 2.0f;
-            heightMap[tile.pos] = heightCopy[tile.pos] - (4.0f + std::max(0.0f, radius * 0.66f));
+            hydroMaps.height[tile.pos] = std::floor(heightCopy[tile.pos] - 2.0f);
+            heightMap[tile.pos] = std::floor(heightCopy[tile.pos] - (4.0f + std::max(0.0f, radius * 0.66f)));
 
             for (int32_t dy = -radius; dy <= radius; dy++)
             {
@@ -945,8 +937,7 @@ namespace OpenRCT2::World::MapGenerator
                         continue;
                     }
 
-                    const float riverbedHeight = heightCopy[deltaPos] - 2.0f;
-                    heightMap[deltaPos] = std::min(riverbedHeight, heightCopy[deltaPos]);
+                    heightMap[deltaPos] = std::min(heightCopy[deltaPos] - 2.0f, heightMap[deltaPos]);
 
                     if (distance <= radiusMinusOneSquared && hydroMaps.flags[deltaPos].has(filled))
                     {
@@ -970,8 +961,68 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
+    /**
+     * Ensure there are no river tiles with lower land neighbours or sinks.
+     *
+     * TODO this post-hoc pass shouldn't be needed in the first place...
+     */
+    static void ensureConsistent(MapGenCtx& context)
+    {
+        PROFILED_FUNCTION();
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        for (int32_t y = 1; y < hydroMaps.dimensions.y - 1 ; y++)
+        {
+            for (int32_t x = 1; x < hydroMaps.dimensions.x - 1 ; x++)
+            {
+                const TileCoordsXY pos { x, y };
+
+                if (!hydroMaps.flags[pos].has(river))
+                {
+                    float minHeight = context.heightMap[pos];
+                    for (const auto & offset : kNeighbourOffsetsOrdinal)
+                    {
+                        const TileCoordsXY nPos{ pos + offset };
+                        if (hydroMaps.flags[nPos].has(river))
+                        {
+                            minHeight = std::max(minHeight, hydroMaps.height[nPos]);
+                        }
+                    }
+
+                    context.heightMap[pos] = minHeight;
+                }
+                else
+                {
+                    bool hasSource = false;
+                    bool hasSink = false;
+                    for (const auto & offset : kNeighbourOffsetsOrdinal)
+                    {
+                        const TileCoordsXY nPos{ pos + offset };
+                        if (hydroMaps.flags[nPos].has(river))
+                        {
+                            if (hydroMaps.height[pos] >= hydroMaps.height[nPos])
+                            {
+                                hasSink = true;
+                            }
+                            else if (hydroMaps.height[pos] < hydroMaps.height[nPos])
+                            {
+                                hasSource = true;
+                            }
+                        }
+                    }
+                    if (hasSource && !hasSink)
+                    {
+                        // TODO should done in a separate pass before checking land neighbour height?
+                        hydroMaps.height[pos] += 2.0f;
+                    }
+                }
+            }
+        }
+    }
+
     void generateRivers(MapGenCtx& context)
     {
+        PROFILED_FUNCTION();
         fillOrBreachDepressions(context);
         aggregateCatchment(context);
         postProcessCatchment(context);
@@ -980,5 +1031,6 @@ namespace OpenRCT2::World::MapGenerator
         pruneShortStreams(context);
         ensureCardinalNeighbours(context);
         carveRiverbed(context);
+        ensureConsistent(context);
     }
 } // namespace OpenRCT2::World::MapGenerator

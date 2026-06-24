@@ -95,6 +95,7 @@ namespace OpenRCT2::World::MapGenerator
         // River settings
         bool generateRivers = true;
         int32_t catchmentThreshold = 384;
+        int32_t maxPruneLength = 24;
         int32_t breachMaxLength = 8;
         int32_t breachMaxDepth = 2;
         int32_t offMapCatchmentMultiplier = 2;
