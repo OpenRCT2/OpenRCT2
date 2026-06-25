@@ -160,6 +160,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         MapBorder,
         Fill,
         Breach,
+        // TODO Spring,
         // TODO Land,
     };
 
@@ -175,7 +176,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Water
     };
 
-    enum class HeightSource: uint8_t
+    enum class HeightSource : uint8_t
     {
         Self,
         NeighbourNW,
@@ -271,8 +272,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     };
 
     using ConditionData = std::variant<
-        HeightData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData,
-        BlendDistanceData, LandStyleData>;
+        HeightData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, BlendDistanceData,
+        LandStyleData>;
 
     struct Condition
     {

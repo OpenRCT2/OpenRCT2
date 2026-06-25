@@ -9,16 +9,16 @@
 
 #include "River.h"
 
-#include "../../Context.h"
-#include "../../Diagnostic.h"
-#include "../../GameState.h"
-#include "../../profiling/Profiling.h"
-#include "MapHelpers.h"
-#include "TileQueue.hpp"
+#include "../../../Context.h"
+#include "../../../Diagnostic.h"
+#include "../../../GameState.h"
+#include "../../../profiling/Profiling.h"
+#include "../MapHelpers.h"
+#include "../TileQueue.hpp"
 
 #include <numbers>
 
-namespace OpenRCT2::World::MapGenerator
+namespace OpenRCT2::World::MapGenerator::Hydro
 {
     static constexpr float kP = 1.1f;
 
@@ -391,7 +391,7 @@ namespace OpenRCT2::World::MapGenerator
                         else
                         {
                             if (!(((nb.p2 && nb.p4) && (!nb.p6 && !nb.p7 && !nb.p8))
-                               || ((nb.p4 && nb.p6) && (!nb.p2 && !nb.p8 && !nb.p9))))
+                                  || ((nb.p4 && nb.p6) && (!nb.p2 && !nb.p8 && !nb.p9))))
                             {
                                 continue; // condition {f, g}
                             }
@@ -409,7 +409,7 @@ namespace OpenRCT2::World::MapGenerator
                         else
                         {
                             if (!(((nb.p2 && nb.p8) && (!nb.p4 && !nb.p5 && !nb.p6))
-                               || ((nb.p6 && nb.p8) && (!nb.p2 && !nb.p3 && !nb.p4))))
+                                  || ((nb.p6 && nb.p8) && (!nb.p2 && !nb.p3 && !nb.p4))))
                             {
                                 continue; // condition {f', g'}
                             }
@@ -438,9 +438,7 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Common setup steps for queue based traversal
      */
-    static void prepareRiverQueue(
-        MapGenCtx& context, StableTileQueue& queue, MaskMap& visited,
-        const HydroFlag flag = river)
+    static void prepareRiverQueue(MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, const HydroFlag flag = river)
     {
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
@@ -512,8 +510,8 @@ namespace OpenRCT2::World::MapGenerator
      * Queue visitor function for pruneShortStreams
      */
     static void pruneVisit(
-        MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap,
-        DistanceMap& distanceMap, const TileCoordsXY& pos, int32_t& upstreamCount,int32_t& blockedCount, const TileCoordsXY& offset,
+        MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap, DistanceMap& distanceMap,
+        const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& blockedCount, const TileCoordsXY& offset,
         const bool isCardinal)
     {
         const TileCoordsXY nPos{ pos + offset };
@@ -562,9 +560,9 @@ namespace OpenRCT2::World::MapGenerator
         BackrefMap nearestSkeletonMap{ hydroMaps.dimensions };
 
         // setup nearest skeleton map for later
-        for (int32_t y = 0; y < hydroMaps.dimensions.y ; y++)
+        for (int32_t y = 0; y < hydroMaps.dimensions.y; y++)
         {
-            for (int32_t x = 0; x < hydroMaps.dimensions.x ; x++)
+            for (int32_t x = 0; x < hydroMaps.dimensions.x; x++)
             {
                 TileCoordsXY pos{ x, y };
                 if (!hydroMaps.flags[pos].has(river))
@@ -580,7 +578,7 @@ namespace OpenRCT2::World::MapGenerator
 
                 // TODO this is kinda dumb
                 std::queue<TileCoordsXY> findSkeletonQueue;
-                MaskMap findSkeletonVisited{hydroMaps.dimensions};
+                MaskMap findSkeletonVisited{ hydroMaps.dimensions };
 
                 findSkeletonQueue.emplace(pos);
                 findSkeletonVisited[pos] = Mask::True;
@@ -598,16 +596,16 @@ namespace OpenRCT2::World::MapGenerator
 
                     for (const auto& offset : kNeighbourOffsets)
                     {
-                        TileCoordsXY candidateSkeletonNeighborPos = candidateSkeletonPos + offset;
+                        TileCoordsXY candidateSkeletonNeighbourPos = candidateSkeletonPos + offset;
 
-                        if (!hydroMaps.flags.inBounds(candidateSkeletonNeighborPos)
-                            || !hydroMaps.flags[candidateSkeletonNeighborPos].has(river))
+                        if (!hydroMaps.flags.inBounds(candidateSkeletonNeighbourPos)
+                            || !hydroMaps.flags[candidateSkeletonNeighbourPos].has(river))
                         {
                             continue;
                         }
 
-                        findSkeletonQueue.emplace(candidateSkeletonNeighborPos);
-                        findSkeletonVisited[candidateSkeletonNeighborPos] = Mask::True;
+                        findSkeletonQueue.emplace(candidateSkeletonNeighbourPos);
+                        findSkeletonVisited[candidateSkeletonNeighbourPos] = Mask::True;
                     }
                 }
             }
@@ -633,17 +631,18 @@ namespace OpenRCT2::World::MapGenerator
                 const QueueTile tile = queue.top();
                 queue.pop();
 
-
                 int32_t upstreamCount = 0;
                 int32_t blockedCount = 0;
 
                 for (const auto& offset : kNeighbourOffsetsOrdinal)
                 {
-                    pruneVisit(context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, false);
+                    pruneVisit(
+                        context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, false);
                 }
                 for (const auto& offset : kNeighbourOffsetsCardinal)
                 {
-                    pruneVisit(context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, true);
+                    pruneVisit(
+                        context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, true);
                 }
 
                 if (upstreamCount > 1)
@@ -720,18 +719,22 @@ namespace OpenRCT2::World::MapGenerator
 
             if (!pruned)
             {
+                for (const auto& s : springs)
+                {
+                    hydroMaps.flags[s].set(spring);
+                }
                 break;
             }
 
-            iterations+=1;
+            iterations += 1;
         }
 
-        LOG_INFO("prune iterations=%d", iterations );
+        LOG_INFO("prune iterations=%d", iterations);
 
         // throw out river tiles that point to a no-longer-skeleton as their nearest skeleton.
-        for (int32_t y = 0; y < hydroMaps.dimensions.y ; y++)
+        for (int32_t y = 0; y < hydroMaps.dimensions.y; y++)
         {
-            for (int32_t x = 0; x < hydroMaps.dimensions.x ; x++)
+            for (int32_t x = 0; x < hydroMaps.dimensions.x; x++)
             {
                 TileCoordsXY pos{ x, y };
                 if (!hydroMaps.flags[pos].has(river))
@@ -922,8 +925,8 @@ namespace OpenRCT2::World::MapGenerator
             const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
 
             hydroMaps.flags[tile.pos].set(riverbed);
-            hydroMaps.height[tile.pos] = std::floor(heightCopy[tile.pos] - 2.0f);
-            heightMap[tile.pos] = std::floor(heightCopy[tile.pos] - (4.0f + std::max(0.0f, radius * 0.66f)));
+            hydroMaps.height[tile.pos] = quantizeHeight(heightCopy[tile.pos] - 2.0f);
+            heightMap[tile.pos] = quantizeHeight(heightCopy[tile.pos] - (4.0f + std::max(0.0f, radius * 0.66f)));
 
             for (int32_t dy = -radius; dy <= radius; dy++)
             {
@@ -962,7 +965,7 @@ namespace OpenRCT2::World::MapGenerator
     }
 
     /**
-     * Ensure there are no river tiles with lower land neighbours or sinks.
+     * Ensure there are no river tiles with lower land neighbours or sinks/non-spring sources.
      *
      * TODO this post-hoc pass shouldn't be needed in the first place...
      */
@@ -971,16 +974,16 @@ namespace OpenRCT2::World::MapGenerator
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        for (int32_t y = 1; y < hydroMaps.dimensions.y - 1 ; y++)
+        for (int32_t y = 1; y < hydroMaps.dimensions.y - 1; y++)
         {
-            for (int32_t x = 1; x < hydroMaps.dimensions.x - 1 ; x++)
+            for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
             {
-                const TileCoordsXY pos { x, y };
+                const TileCoordsXY pos{ x, y };
 
                 if (!hydroMaps.flags[pos].has(river))
                 {
                     float minHeight = context.heightMap[pos];
-                    for (const auto & offset : kNeighbourOffsetsOrdinal)
+                    for (const auto& offset : kNeighbourOffsetsOrdinal)
                     {
                         const TileCoordsXY nPos{ pos + offset };
                         if (hydroMaps.flags[nPos].has(river))
@@ -991,29 +994,44 @@ namespace OpenRCT2::World::MapGenerator
 
                     context.heightMap[pos] = minHeight;
                 }
-                else
+                else // TODO should be done in a separate pass before checking land neighbour height?
                 {
                     bool hasSource = false;
                     bool hasSink = false;
-                    for (const auto & offset : kNeighbourOffsetsOrdinal)
+                    bool hasPeer = false;
+                    for (const auto& offset : kNeighbourOffsetsOrdinal)
                     {
                         const TileCoordsXY nPos{ pos + offset };
                         if (hydroMaps.flags[nPos].has(river))
                         {
-                            if (hydroMaps.height[pos] >= hydroMaps.height[nPos])
+                            if (hydroMaps.height[pos] > hydroMaps.height[nPos])
                             {
                                 hasSink = true;
                             }
                             else if (hydroMaps.height[pos] < hydroMaps.height[nPos])
                             {
                                 hasSource = true;
+                            } else
+                            {
+                                hasPeer = true;
                             }
                         }
                     }
-                    if (hasSource && !hasSink)
+                    if (!hasPeer)
                     {
-                        // TODO should done in a separate pass before checking land neighbour height?
-                        hydroMaps.height[pos] += 2.0f;
+                        if (hasSource && !hasSink)
+                        {
+                            //auto worldPos = genCoordsToWorldCoords(context, pos);
+                            //LOG_INFO("changed gen(%d,%d) world(%d,%d)  +=2", pos.x, pos.y, worldPos.x, worldPos.y);
+                            hydroMaps.height[pos] += 2.0f;
+                        }
+                        else if (!hasSource && hasSink && !hydroMaps.flags[pos].has(spring))
+                        {
+                            //auto worldPos = genCoordsToWorldCoords(context, pos);
+                            //LOG_INFO("changed gen(%d,%d) world(%d,%d) -=2", pos.x, pos.y, worldPos.x, worldPos.y);
+                            hydroMaps.height[pos] -= 2.0f;
+                            context.heightMap[pos] -= 2.0f;
+                        }
                     }
                 }
             }
@@ -1033,4 +1051,4 @@ namespace OpenRCT2::World::MapGenerator
         carveRiverbed(context);
         ensureConsistent(context);
     }
-} // namespace OpenRCT2::World::MapGenerator
+} // namespace OpenRCT2::World::MapGenerator::Hydro

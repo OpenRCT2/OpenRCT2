@@ -14,7 +14,7 @@
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
 #include "Erosion.h"
-#include "River.h"
+#include "hydro/River.h"
 
 #include <algorithm>
 
@@ -29,7 +29,7 @@ namespace OpenRCT2::World::MapGenerator
     static bool isRiverTile(const TileCoordsXY& tileCoords, const MapGenCtx& context)
     {
         TileCoordsXY genCoords = worldCoordsToGenCoords(context, tileCoords);
-        return context.hydroMaps.has_value() && context.hydroMaps.value().flags[genCoords].has(river);
+        return context.hydroMaps.has_value() && context.hydroMaps.value().flags[genCoords].has(Hydro::river);
     }
 
     /**
@@ -572,15 +572,15 @@ namespace OpenRCT2::World::MapGenerator
 
         if (settings.generateRivers)
         {
-            generateRivers(context);
+            Hydro::generateRivers(context);
         }
     }
 
     static TileCoordsXY getWorldCoordsOffset(const MapGenCtx& context)
     {
-        const int32_t offsetX = (context.settings.mapSize.x * kRiversOverscanFactor - 1) / 2;
-        const int32_t offsetY = (context.settings.mapSize.y * kRiversOverscanFactor - 1) / 2;
-        return {offsetX, offsetY};
+        const int32_t offsetX = (context.settings.mapSize.x * (Hydro::kRiversOverscanFactor - 1)) / 2;
+        const int32_t offsetY = (context.settings.mapSize.y * (Hydro::kRiversOverscanFactor - 1)) / 2;
+        return TileCoordsXY{offsetX, offsetY};
     }
 
     bool isInWorldMap(const MapGenCtx& context, const TileCoordsXY& genCoords)
@@ -598,16 +598,15 @@ namespace OpenRCT2::World::MapGenerator
     TileCoordsXY worldCoordsToGenCoords(const MapGenCtx& context, const TileCoordsXY& worldCoords)
     {
         const TileCoordsXY offset = getWorldCoordsOffset(context);
-        return {worldCoords.x + offset.x, worldCoords.y + offset.y};
+        return TileCoordsXY{worldCoords.x + offset.x, worldCoords.y + offset.y};
     }
 
     // can be OOB
     TileCoordsXY genCoordsToWorldCoords(const MapGenCtx& context, const TileCoordsXY& genCoords)
     {
         const TileCoordsXY offset = getWorldCoordsOffset(context);
-        return {genCoords.x - offset.x, genCoords.y - offset.y};
+        return TileCoordsXY{genCoords.x - offset.x, genCoords.y - offset.y};
     }
-
 
     // Ensure height is within [2, 254] and a multiple of 2
     uint8_t quantizeHeight(const float height)

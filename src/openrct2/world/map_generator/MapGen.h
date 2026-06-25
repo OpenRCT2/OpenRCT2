@@ -12,7 +12,7 @@
 #include "../../Version.h"
 #include "../Location.hpp"
 #include "BaseMap.hpp"
-#include "RiverTypes.hpp"
+#include "hydro/HydroTypes.hpp"
 #include "rule/Rule.h"
 
 #include <optional>
@@ -113,7 +113,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         const Settings& settings;
         HeightMap heightMap;
-        std::optional<HydroMaps> hydroMaps;
+        std::optional<Hydro::HydroMaps> hydroMaps;
         std::vector<DebugSign> debugSigns;
     };
 

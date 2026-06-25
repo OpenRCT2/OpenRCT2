@@ -30,26 +30,26 @@
 
 namespace OpenRCT2::World::MapGenerator::Rule
 {
-    constexpr float NOISE_SCALE = 1.0f / 256.0f;
+    constexpr float kNoiseScale = 1.0f / 256.0f;
 
-    constexpr VecXY QUAD_OFFSET[] = {
+    constexpr VecXY kQuadOffset[] = {
         VecXY{ 0.0f, 0.0f },
         VecXY{ 0.0f, 0.5f },
         VecXY{ 0.5f, 0.5f },
         VecXY{ 0.5f, 0.0f },
     };
 
-    constexpr std::string_view SURFACE_SOIL[] = {
+    constexpr std::string_view kSurfaceSoil[] = {
         "rct2.terrain_surface.dirt",
         "rct2.terrain_surface.grass",
         "rct2.terrain_surface.grass_clumps",
     };
 
-    constexpr std::string_view SURFACE_SNOW[] = {
+    constexpr std::string_view kSurfaceSnow[] = {
         "rct2.terrain_surface.ice",
     };
 
-    constexpr std::string_view SURFACE_SAND[] = {
+    constexpr std::string_view kSurfaceSand[] = {
         "rct2.terrain_surface.sand",
         "rct2.terrain_surface.sand_brown",
         "rct2.terrain_surface.sand_red",
@@ -61,16 +61,16 @@ namespace OpenRCT2::World::MapGenerator::Rule
         int8_t weight;
         std::optional<Drawing::Colour> primary = std::nullopt;
         std::optional<Direction> direction = std::nullopt;
-        RuleSceneryType type = RuleSceneryType::Small;
+        RuleSceneryType type = Small;
     };
 
-    constexpr SceneryPresetItem DEFAULT_SHRUB[] = {
+    constexpr SceneryPresetItem kDefaultShrub[] = {
         SceneryPresetItem{ "rct2.scenery_small.tsh0", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tsh1", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tsh4", 1 },
     };
 
-    constexpr SceneryPresetItem TREES_MIXED[] = {
+    constexpr SceneryPresetItem kTreesMixed[] = {
         SceneryPresetItem{ "rct2.scenery_small.tap", 4 },  SceneryPresetItem{ "rct2.scenery_small.tas", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tbp", 4 },  SceneryPresetItem{ "rct2.scenery_small.tcf", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tco", 1 },  SceneryPresetItem{ "rct2.scenery_small.tel", 4 },
@@ -81,37 +81,37 @@ namespace OpenRCT2::World::MapGenerator::Rule
         SceneryPresetItem{ "rct2.scenery_small.twp", 1 },
     };
 
-    constexpr SceneryPresetItem TREES_CONIFER[] = {
+    constexpr SceneryPresetItem kTreesConifer[] = {
         SceneryPresetItem{ "rct2.scenery_small.tcf", 8 },  SceneryPresetItem{ "rct2.scenery_small.tel", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tmbj", 4 }, SceneryPresetItem{ "rct2.scenery_small.tns", 8 },
         SceneryPresetItem{ "rct2.scenery_small.trf", 8 },  SceneryPresetItem{ "rct2.scenery_small.trf2", 8 },
     };
 
-    constexpr SceneryPresetItem TREES_CONIFER_SNOW[] = {
+    constexpr SceneryPresetItem kTreesConiferSnow[] = {
         SceneryPresetItem{ "rct2.scenery_small.tcfs", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tnss", 1 },
         SceneryPresetItem{ "rct2.scenery_small.trf3", 1 },
         SceneryPresetItem{ "rct2.scenery_small.trfs", 1 },
     };
 
-    constexpr SceneryPresetItem COLD_SHRUBS[] = {
+    constexpr SceneryPresetItem kColdShrubs[] = {
         SceneryPresetItem{ "rct2.scenery_small.tsh1", 4 },
         SceneryPresetItem{ "rct2.scenery_small.tsh4", 4 },
         SceneryPresetItem{ "rct2.scenery_small.tsh0", 1 },
     };
 
-    constexpr SceneryPresetItem ARID_CACTI[] = {
+    constexpr SceneryPresetItem kAridCacti[] = {
         SceneryPresetItem{ "rct2.scenery_small.tbc", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tsc", 4 },
     };
 
-    constexpr SceneryPresetItem ARID_SHRUBS[] = {
+    constexpr SceneryPresetItem kAridShrubs[] = {
         SceneryPresetItem{ "rct2.scenery_small.tsh1", 2 },
         SceneryPresetItem{ "rct2.scenery_small.tsh4", 2 },
         SceneryPresetItem{ "rct2.scenery_small.tjb1", 1 },
     };
 
-    constexpr SceneryPresetItem ARID_OASIS[] = {
+    constexpr SceneryPresetItem kAridOasis[] = {
         SceneryPresetItem{ "rct2.scenery_small.tmp", 1 },  SceneryPresetItem{ "rct2.scenery_small.thl", 1 },
         SceneryPresetItem{ "rct2.scenery_small.th1", 4 },  SceneryPresetItem{ "rct2.scenery_small.th2", 4 },
         SceneryPresetItem{ "rct2.scenery_small.tpm", 4 },  SceneryPresetItem{ "rct2.scenery_small.tropt1", 2 },
@@ -119,57 +119,57 @@ namespace OpenRCT2::World::MapGenerator::Rule
         SceneryPresetItem{ "rct2.scenery_small.tjb1", 4 },
     };
 
-    constexpr SceneryPresetItem RAINFOREST_FLOWER[] = {
+    constexpr SceneryPresetItem kRainforestFlower[] = {
         SceneryPresetItem{ "rct2.scenery_small.tjf", 1, std::optional{ Drawing::Colour::saturatedRed } },
         SceneryPresetItem{ "rct2.scenery_small.tjf", 1, std::optional{ Drawing::Colour::white } }
     };
 
-    constexpr SceneryPresetItem RAINFOREST_GROUND[] = {
+    constexpr SceneryPresetItem kRainforestGround[] = {
         SceneryPresetItem{ "rct2.scenery_small.tg19", 1, std::optional{ Drawing::Colour::forestGreen } },
         SceneryPresetItem{ "rct2.scenery_small.tg19", 1, std::optional{ Drawing::Colour::darkOliveGreen } },
         SceneryPresetItem{ "rct2.scenery_small.tg19", 1, std::optional{ Drawing::Colour::armyGreen } },
         SceneryPresetItem{ "rct2.scenery_small.tg19", 1, std::optional{ Drawing::Colour::mossGreen } },
     };
 
-    constexpr SceneryPresetItem RAINFOREST_SHRUB[] = {
+    constexpr SceneryPresetItem kRainforestShrub[] = {
         SceneryPresetItem{ "rct2.scenery_small.tjp1", 5 },  SceneryPresetItem{ "rct2.scenery_small.tjp2", 3 },
         SceneryPresetItem{ "rct2.scenery_small.tjb1", 2 },  SceneryPresetItem{ "rct2.scenery_small.tjb2", 7 },
         SceneryPresetItem{ "rct2.scenery_small.tjb3", 1 },  SceneryPresetItem{ "rct2.scenery_small.tjb4", 1 },
         SceneryPresetItem{ "rct2.scenery_small.fern1", 9 }, SceneryPresetItem{ "rct2.scenery_small.beanst2", 1 },
     };
 
-    constexpr SceneryPresetItem RAINFOREST_TREES[] = {
+    constexpr SceneryPresetItem kRainforestTrees[] = {
         SceneryPresetItem{ "rct2.scenery_small.tjt1", 4 }, SceneryPresetItem{ "rct2.scenery_small.tjt2", 4 },
         SceneryPresetItem{ "rct2.scenery_small.tjt3", 1 }, SceneryPresetItem{ "rct2.scenery_small.tjt4", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tjt5", 1 }, SceneryPresetItem{ "rct2.scenery_small.tjt6", 1 },
     };
 
-    constexpr SceneryPresetItem MEDITERRANEAN_TREES[] = {
+    constexpr SceneryPresetItem kMediterraneanTrees[] = {
         SceneryPresetItem{ "rct2.scenery_small.tap", 3 }, SceneryPresetItem{ "rct2.scenery_small.tcrp", 3 },
         SceneryPresetItem{ "rct2.scenery_small.tac", 1 }, SceneryPresetItem{ "rct2.scenery_small.tcj", 3 },
         SceneryPresetItem{ "rct2.scenery_small.tic", 1 }, SceneryPresetItem{ "rct2.scenery_small.titc", 5 },
         SceneryPresetItem{ "rct2.scenery_small.tlc", 1 }, SceneryPresetItem{ "rct2.scenery_small.tlp", 5 },
     };
 
-    constexpr SceneryPresetItem MEDITERRANEAN_SHRUBS[] = {
+    constexpr SceneryPresetItem kMediterraneanShrubs[] = {
         SceneryPresetItem{ "rct2.scenery_small.tsh0", 1 }, SceneryPresetItem{ "rct2.scenery_small.tsh1", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tsh2", 1 }, SceneryPresetItem{ "rct2.scenery_small.tsh3", 1 },
         SceneryPresetItem{ "rct2.scenery_small.tsh4", 1 }, SceneryPresetItem{ "rct2.scenery_small.tsh5", 1 },
     };
 
-    constexpr SceneryPresetItem WATERFALL_NW[] = {
+    constexpr SceneryPresetItem kWaterfallNw[] = {
         SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 3, Wall },
     };
 
-    constexpr SceneryPresetItem WATERFALL_NE[] = {
+    constexpr SceneryPresetItem kWaterfallNe[] = {
         SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 0, Wall },
     };
 
-    constexpr SceneryPresetItem WATERFALL_SE[] = {
+    constexpr SceneryPresetItem kWaterfallSe[] = {
         SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 1, Wall },
     };
 
-    constexpr SceneryPresetItem WATERFALL_SW[] = {
+    constexpr SceneryPresetItem kWaterfallSw[] = {
         SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 2, Wall },
     };
 
@@ -275,7 +275,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
-                else if (genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(river))
+                else if (genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river))
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
@@ -285,7 +285,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(evalCtx.distanceToWater, queue, visited);
     }
 
-    static void computeHydroFlagBasedDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap, const HydroFlag flag)
+    static void computeHydroFlagBasedDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap, const Hydro::HydroFlag flag)
     {
         distanceMap = DistanceMap{ genCtx.heightMap.width, genCtx.heightMap.height };
         distanceMap.fill(std::numeric_limits<float>::infinity());
@@ -661,7 +661,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const auto quad = quadIndices[qIdx];
 
-                ctx.quadCoords = VecXY{ ctx.genCoords.x, ctx.genCoords.y } + QUAD_OFFSET[quad];
+                ctx.quadCoords = VecXY{ ctx.genCoords.x, ctx.genCoords.y } + kQuadOffset[quad];
                 if (!evaluateConditions(ctx, r, rule.conditions))
                 {
                     // rule doesn't match for tile/quad
@@ -753,7 +753,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             auto& noiseData = std::get<NoiseData>(condition.data);
 
             BaseSettings baseSettings = { BaseType::Simplex, genCtx.settings.seed + noiseData.seedOffset,
-                                          noiseData.frequency * NOISE_SCALE };
+                                          noiseData.frequency * kNoiseScale };
             FractalSettings fractalSettings = { FractalType::Fbm, noiseData.octaves, 2.0f, 0.5f, 0.0f };
 
             auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt);
@@ -770,7 +770,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             auto& noiseBlendData = std::get<BlendNoiseData>(condition.data);
 
             BaseSettings baseSettings = { BaseType::Simplex, genCtx.settings.seed + noiseBlendData.seedOffset,
-                                          noiseBlendData.frequency * NOISE_SCALE };
+                                          noiseBlendData.frequency * kNoiseScale };
             FractalSettings fractalSettings = { FractalType::Fbm, noiseBlendData.octaves, 2.0f, 0.5f, 0.0f };
 
             auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt);
@@ -796,7 +796,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
 
         return std::make_optional(
-            EvaluationHeights{ static_cast<int32_t>(surfaceElement->baseHeight), surfaceElement->GetWaterHeight() / kWaterHeightStep });
+            EvaluationHeights{ static_cast<int32_t>(surfaceElement->baseHeight),
+                               surfaceElement->GetWaterHeight() / kWaterHeightStep });
     }
 
     static LocalEvaluationHeights getLocalHeightsAt(const TileCoordsXY& gameCoords)
@@ -846,10 +847,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         computeNormalMap(genCtx, evalCtx.normalMap);
         computeWaterDistanceMap(genCtx, evalCtx);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiver, HydroFlag::river);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, HydroFlag::riverbed);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToFill, HydroFlag::filled);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToBreach, HydroFlag::breached);
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiver, Hydro::HydroFlag::river);
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, Hydro::HydroFlag::riverbed);
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToFill, Hydro::HydroFlag::filled);
+        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToBreach, Hydro::HydroFlag::breached);
         computeBorderDistanceMap(genCtx, evalCtx);
     }
 
@@ -1156,7 +1157,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                            heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NW),
+                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallNw),
                     .seedOffset = 3,
                 } });
         settings.sceneryRules.push_back(
@@ -1167,7 +1168,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                            heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_NE),
+                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallNe),
                     .seedOffset = 3,
                 } });
         settings.sceneryRules.push_back(
@@ -1178,7 +1179,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                            heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SE),
+                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallSe),
                     .seedOffset = 3,
                 } });
         settings.sceneryRules.push_back(
@@ -1189,7 +1190,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                            heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(WATERFALL_SW),
+                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallSw),
                     .seedOffset = 3,
                 } });
         settings.sceneryRules.push_back(
@@ -1203,7 +1204,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                    chance(prng(), 0.66f), },
                         .zRepeat = true,
                         .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(DEFAULT_SHRUB),
+                            .objects = toSceneryEffectItemsIfAvailable(kDefaultShrub),
                             .seedOffset = 4,
                         } });
         settings.sceneryRules.push_back(
@@ -1211,22 +1212,22 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         .enabled = true,
                         .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_MIXED),
                         .conditions = std::vector{
-                            onSurface(SURFACE_SOIL),
+                            onSurface(kSurfaceSoil),
                             chance(prng(), .33f),
                             blendHeight(prng(), 32, 42),
                             blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.85f),
                         },
                         .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(TREES_MIXED),
+                            .objects = toSceneryEffectItemsIfAvailable(kTreesMixed),
                             .seedOffset = 2,
                         } });
         settings.sceneryRules.push_back(
             SceneryRule{ .enabled = true,
                          .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CONIFERS),
-                         .conditions = std::vector{ onSurface(SURFACE_SOIL), chance(prng(), .33f), blendHeight(prng(), 54, 64),
+                         .conditions = std::vector{ onSurface(kSurfaceSoil), chance(prng(), .33f), blendHeight(prng(), 54, 64),
                                                     blendNoise(seedOffset, 4.0f, 6, 0.55f, 0.80f) },
                          .effect = {
-                             .objects = toSceneryEffectItemsIfAvailable(TREES_CONIFER),
+                             .objects = toSceneryEffectItemsIfAvailable(kTreesConifer),
                              .seedOffset = 2,
                          } });
     }
@@ -1269,13 +1270,13 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     .enabled = true,
                     .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_SHRUBS),
                     .conditions = {
-                        onSurface(SURFACE_SOIL),
+                        onSurface(kSurfaceSoil),
                         aboveWater(),
                         chance(prng(), .55f),
                         blendNoise(seedOffset, 8.0f, 8, 0.50f, 0.75f),
                     },
                     .effect = {
-                        .objects = toSceneryEffectItemsIfAvailable(MEDITERRANEAN_SHRUBS),
+                        .objects = toSceneryEffectItemsIfAvailable(kMediterraneanShrubs),
                         .seedOffset = prng(),
                 }});
                 settings.sceneryRules.push_back(
@@ -1283,12 +1284,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         .enabled = true,
                         .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CYPRESSES_AND_PINES),
                         .conditions = std::vector{
-                            onSurface(SURFACE_SOIL),
+                            onSurface(kSurfaceSoil),
                             chance(prng(), 0.40f),
                             blendNoise(seedOffset, 8.0f, 8, 0.50f, 1.00f),
                         },
                         .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(MEDITERRANEAN_TREES),
+                            .objects = toSceneryEffectItemsIfAvailable(kMediterraneanTrees),
                             .seedOffset = prng(),
                         } });
                 break;
@@ -1300,13 +1301,13 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     .enabled = true,
                     .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_SHRUBS),
                     .conditions = {
-                        onSurface(SURFACE_SOIL),
+                        onSurface(kSurfaceSoil),
                         aboveWater(),
                         chance(prng(), .44f),
                         blendNoise(seedOffset,4.0f, 5, 0.3f, 0.6f),
                     },
                     .effect = {
-                        .objects = toSceneryEffectItemsIfAvailable(COLD_SHRUBS),
+                        .objects = toSceneryEffectItemsIfAvailable(kColdShrubs),
                         .seedOffset = prng(),
                 }});
                 settings.sceneryRules.push_back(
@@ -1314,10 +1315,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         .enabled = true,
                         .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CONIFERS),
                         .conditions = std::vector{
-                            onSurface(SURFACE_SOIL), chance(prng(), 0.33f), blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.65f),
+                            onSurface(kSurfaceSoil), chance(prng(), 0.33f), blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.65f),
                         },
                         .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(TREES_CONIFER),
+                            .objects = toSceneryEffectItemsIfAvailable(kTreesConifer),
                             .seedOffset = prng(),
                         } });
                 settings.sceneryRules.push_back(
@@ -1325,10 +1326,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         .enabled = true,
                         .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CONIFERS_SNOW),
                         .conditions = std::vector{
-                            onSurface(SURFACE_SNOW), chance(prng(), .33f), blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.65f),
+                            onSurface(kSurfaceSnow), chance(prng(), .33f), blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.65f),
                         },
                         .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(TREES_CONIFER_SNOW),
+                            .objects = toSceneryEffectItemsIfAvailable(kTreesConiferSnow),
                             .seedOffset = prng(),
                         } });
                 break;
@@ -1339,60 +1340,60 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 settings.sceneryRules.push_back(
                     SceneryRule{ .enabled = true,
                                  .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_OASIS),
-                                 .conditions = { onSurface(SURFACE_SAND), aboveWater(), chance(prng(), .55f),
+                                 .conditions = { onSurface(kSurfaceSand), aboveWater(), chance(prng(), .55f),
                                                  distanceToFeature(Feature::Water, 4.0f) },
                                  .effect = {
-                                     .objects = toSceneryEffectItemsIfAvailable(ARID_OASIS),
+                                     .objects = toSceneryEffectItemsIfAvailable(kAridOasis),
                                      .seedOffset = prng(),
                                  } });
                 settings.sceneryRules.push_back(SceneryRule{
                     .enabled = true,
                     .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_SHRUBS),
                     .conditions = {
-                        onSurface(SURFACE_SAND),
+                        onSurface(kSurfaceSand),
                         blendNoise(seedOffset,9.0f, 7, 0.62f, 1.0f),
                         chance(prng(), 0.50f),
                         aboveWater(),
                     },
                     .effect = {
-                        .objects = toSceneryEffectItemsIfAvailable(ARID_SHRUBS),
+                        .objects = toSceneryEffectItemsIfAvailable(kAridShrubs),
                         .seedOffset = prng(),
                 }});
                 settings.sceneryRules.push_back(SceneryRule{
                     .enabled = true,
                     .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CACTI),
                     .conditions = {
-                        onSurface(SURFACE_SAND),
+                        onSurface(kSurfaceSand),
                         blendNoise(seedOffset, 9.0f, 7, 0.66f, 1.00f),
                         chance(prng(), 0.33f),
                         aboveWater(),
                     },
                     .effect = {
-                        .objects = toSceneryEffectItemsIfAvailable(ARID_CACTI),
+                        .objects = toSceneryEffectItemsIfAvailable(kAridCacti),
                         .seedOffset = prng(),
                 }});
                 break;
             }
             case SceneryRulePreset::Rainforest:
             {
-                for (auto& groudItem : toSceneryEffectItemsIfAvailable(RAINFOREST_GROUND))
+                for (auto& groudItem : toSceneryEffectItemsIfAvailable(kRainforestGround))
                 {
                     settings.sceneryRules.push_back(
                         SceneryRule{ .enabled = true,
                                      .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_GROUND),
-                                     .conditions = std::vector{ onSurface(SURFACE_SOIL), aboveWater(), chance(prng(), .25f) },
+                                     .conditions = std::vector{ onSurface(kSurfaceSoil), aboveWater(), chance(prng(), .25f) },
                                      .effect = {
                                          .objects = std::vector{ groudItem },
                                          .seedOffset = prng(),
                                      } });
                 }
-                auto flowerEffects = toSceneryEffectItemsIfAvailable(RAINFOREST_FLOWER);
+                auto flowerEffects = toSceneryEffectItemsIfAvailable(kRainforestFlower);
                 for (size_t f = 0; f < flowerEffects.size(); ++f)
                 {
                     settings.sceneryRules.push_back(
                         SceneryRule{ .enabled = true,
                                      .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_FLOWERS),
-                                     .conditions = std::vector{ onSurface(SURFACE_SOIL), aboveWater(),
+                                     .conditions = std::vector{ onSurface(kSurfaceSoil), aboveWater(),
                                                                 blendNoise(
                                                                     prng(), 7.0f + static_cast<float>(f * 2),
                                                                     7 + static_cast<int32_t>(f * 2), 0.55f, 0.77f) },
@@ -1405,18 +1406,18 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     SceneryRule{
                         .enabled = true,
                         .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_SHRUBS),
-                        .conditions = std::vector{ onSurface(SURFACE_SOIL), aboveWater(), chance(prng(), .25f), },
+                        .conditions = std::vector{ onSurface(kSurfaceSoil), aboveWater(), chance(prng(), .25f), },
                         .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(RAINFOREST_SHRUB),
+                            .objects = toSceneryEffectItemsIfAvailable(kRainforestShrub),
                             .seedOffset = prng(),
                         } });
                 settings.sceneryRules.push_back(
                     SceneryRule{
                         .enabled = true,
                         .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CANOPY),
-                        .conditions = std::vector{ onSurface(SURFACE_SOIL), chance(prng(), .40f), },
+                        .conditions = std::vector{ onSurface(kSurfaceSoil), chance(prng(), .40f), },
                         .effect = {
-                            .objects = toSceneryEffectItemsIfAvailable(RAINFOREST_TREES),
+                            .objects = toSceneryEffectItemsIfAvailable(kRainforestTrees),
                             .seedOffset = prng(),
                         } });
                 break;
