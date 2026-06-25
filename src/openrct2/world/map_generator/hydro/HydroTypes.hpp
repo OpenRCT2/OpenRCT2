@@ -16,6 +16,14 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 {
     constexpr int32_t kRiversOverscanFactor = 2;
 
+    constexpr float kRiverGrowthExponentScaling = 0.01f;
+    constexpr int32_t kRiverMinGrowthExponent = 1; // * kRiverGrowthExponentScaling
+    constexpr int32_t kRiverMaxGrowthExponent = 800; // * kRiverGrowthExponentScaling
+    constexpr int32_t kRiverMinPruneLengthThreshold = 0;
+    constexpr int32_t kRiverMaxPruneLengthThreshold = 128;
+    constexpr int32_t kRiverMinWidth = 1;
+    constexpr int32_t kRiverMaxWidth = 128;
+
     enum HydroFlag : uint8_t
     {
         river,

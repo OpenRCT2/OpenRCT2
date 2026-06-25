@@ -37,6 +37,7 @@
 #include <openrct2/world/map_generator/Erosion.h>
 #include <openrct2/world/map_generator/MapGen.h>
 #include <openrct2/world/map_generator/PngTerrainGenerator.h>
+#include <openrct2/world/map_generator/hydro/HydroTypes.hpp>
 #include <random>
 
 using namespace OpenRCT2::Drawing;
@@ -125,6 +126,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_RIVERS_CATCHMENT,
         WIDX_WATER_RIVERS_CATCHMENT_UP,
         WIDX_WATER_RIVERS_CATCHMENT_DOWN,
+        WIDX_WATER_RIVERS_WIDTH_MAX,
+        WIDX_WATER_RIVERS_WIDTH_MAX_UP,
+        WIDX_WATER_RIVERS_WIDTH_MAX_DOWN,
+        WIDX_WATER_RIVERS_GROWTH_EXPONENT,
+        WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP,
+        WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN,
+        WIDX_WATER_RIVERS_PRUNE_THRESHOLD,
+        WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP,
+        WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN,
 
         WIDX_RULE_TX_NEW = TAB_BEGIN,
         WIDX_RULE_TX_NEW_PRESET,
@@ -226,7 +236,10 @@ namespace OpenRCT2::Ui::Windows
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
         makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
         makeWidget                ({ 10,  70}, {136, 12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_ENABLE, STR_WATER_RIVERS_ENABLE),
-        makeHoldableSpinnerWidgets({179,  86}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ) // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179,  86}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179, 104}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179, 122}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179, 140}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ) // NB: 3 widgets
     );
 
     static constexpr auto kTextureWidgets = makeWidgets(
@@ -2995,11 +3008,42 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_WATER_RIVERS_ENABLE:
+                {
                     _settings.generateRivers = !_settings.generateRivers;
                     setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.normalizeHeight);
                     invalidate();
                     break;
-
+                }
+                case WIDX_WATER_RIVERS_WIDTH_MAX:
+                {
+                    Formatter ft;
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverMinWidth);
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverMaxWidth);
+                    WindowTextInputOpen(
+                        this, WIDX_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX_ENTER, ft, STR_FORMAT_INTEGER,
+                        _settings.riverWidthMax, 2);
+                    break;
+                }
+                case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
+                {
+                    Formatter ft;
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverMinGrowthExponent);
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverMaxGrowthExponent);
+                    WindowTextInputOpen(
+                        this, WIDX_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32,
+                        _settings.riverWidthMax, 5);
+                    break;
+                }
+                case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
+                {
+                    Formatter ft;
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverMinGrowthExponent);
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverMaxGrowthExponent);
+                    WindowTextInputOpen(
+                        this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
+                        _settings.pruneThreshold, 2);
+                    break;
+                }
             }
         }
 
@@ -3023,6 +3067,30 @@ namespace OpenRCT2::Ui::Windows
                     _settings.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold)-1), 1);
                     invalidate();
                     break;
+                case WIDX_WATER_RIVERS_WIDTH_MAX_UP:
+                    _settings.riverWidthMax = std::min<int32_t>(_settings.riverWidthMax + 1, MapGenerator::Hydro::kRiverMaxWidth);
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_WIDTH_MAX_DOWN:
+                    _settings.riverWidthMax = std::max<int32_t>(_settings.riverWidthMax - 1, MapGenerator::Hydro::kRiverMinWidth);
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP:
+                    _settings.riverGrowthExponent = std::min<int32_t>(_settings.riverGrowthExponent + 1, MapGenerator::Hydro::kRiverMaxGrowthExponent);
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN:
+                    _settings.riverGrowthExponent = std::max<int32_t>(_settings.riverGrowthExponent - 1, MapGenerator::Hydro::kRiverMinGrowthExponent);
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP:
+                    _settings.pruneThreshold = std::min<int32_t>(_settings.pruneThreshold + 1, MapGenerator::Hydro::kRiverMaxPruneLengthThreshold);
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN:
+                    _settings.pruneThreshold = std::max<int32_t>(_settings.pruneThreshold - 1, MapGenerator::Hydro::kRiverMinPruneLengthThreshold);
+                    invalidate();
+                    break;
             }
         }
 
@@ -3044,6 +3112,15 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_CATCHMENT:
                     _settings.catchmentThreshold = std::clamp<int32_t>(value, 1, std::exp2(20));
                     break;
+                case WIDX_WATER_RIVERS_WIDTH_MAX:
+                    _settings.riverWidthMax = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverMinWidth, MapGenerator::Hydro::kRiverMaxWidth);
+                    break;
+                case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
+                    _settings.riverGrowthExponent = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverMinGrowthExponent, MapGenerator::Hydro::kRiverMaxGrowthExponent);
+                    break;
+                case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
+                    _settings.pruneThreshold = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverMinPruneLengthThreshold, MapGenerator::Hydro::kRiverMaxPruneLengthThreshold);
+                    break;
             }
 
             invalidate();
@@ -3056,6 +3133,18 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT, !_settings.generateRivers);
             setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_UP, !_settings.generateRivers);
             setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_DOWN, !_settings.generateRivers);
+
+            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX_UP, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX_DOWN, !_settings.generateRivers);
+
+            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN, !_settings.generateRivers);
+
+            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN, !_settings.generateRivers);
         }
 
         void WaterDraw(RenderTarget& rt)
@@ -3075,17 +3164,51 @@ namespace OpenRCT2::Ui::Windows
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
 
-            const auto catchmentColour = isWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT) ? disabledColour : textColour;
+            const auto valueColour = isWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT) ? disabledColour : textColour;
 
+            // catchment
             drawText(
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_WATER_RIVERS_CATCHMENT,
-                { catchmentColour });
+                { valueColour });
 
             ft = Formatter();
             ft.Add<int32_t>(_settings.catchmentThreshold);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_CATCHMENT].left + 1,
-                widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_FORMAT_INTEGER, ft, { catchmentColour });
+                widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
+
+            // max width
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_RIVERS_WIDTH_MAX].top + 1 }, STR_WATER_RIVERS_WIDTH_MAX,
+                { valueColour });
+
+            ft = Formatter();
+            ft.Add<int32_t>(_settings.riverWidthMax);
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_WIDTH_MAX].left + 1,
+                widgets[WIDX_WATER_RIVERS_WIDTH_MAX].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
+
+            // growth exponent
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_RIVERS_GROWTH_EXPONENT].top + 1 }, STR_WATER_RIVERS_GROWTH_EXPONENT,
+                { valueColour });
+
+            ft = Formatter();
+            ft.Add<int32_t>(_settings.riverGrowthExponent);
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_GROWTH_EXPONENT].left + 1,
+                widgets[WIDX_WATER_RIVERS_GROWTH_EXPONENT].top + 1 }, STR_FORMAT_COMMA2DP32, ft, { valueColour });
+
+            // prune threshold
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].top + 1 }, STR_WATER_RIVERS_PRUNE_THRESHOLD,
+                { valueColour });
+
+            ft = Formatter();
+            ft.Add<int32_t>(_settings.pruneThreshold);
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].left + 1,
+                widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
         }
 
 #pragma endregion

@@ -15,14 +15,13 @@
 #include "../../../profiling/Profiling.h"
 #include "../MapHelpers.h"
 #include "../TileQueue.hpp"
+#include "../DistanceMapUtils.h"
 
 #include <numbers>
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
     static constexpr float kP = 1.1f;
-
-    using Backref = std::optional<TileCoordsXY>;
 
     struct TileState
     {
@@ -32,7 +31,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         bool pit;
     };
 
-    using BackrefMap = BaseMap<Backref>;
     using StateMap = BaseMap<TileState>;
 
     /**
@@ -557,59 +555,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
+
         BackrefMap nearestSkeletonMap{ hydroMaps.dimensions };
+        DistanceMap skeletonDistanceMap{ hydroMaps.dimensions };
 
         // setup nearest skeleton map for later
-        for (int32_t y = 0; y < hydroMaps.dimensions.y; y++)
-        {
-            for (int32_t x = 0; x < hydroMaps.dimensions.x; x++)
-            {
-                TileCoordsXY pos{ x, y };
-                if (!hydroMaps.flags[pos].has(river))
-                {
-                    continue;
-                }
-
-                if (hydroMaps.flags[pos].has(skeleton))
-                {
-                    nearestSkeletonMap[pos] = pos;
-                    continue;
-                }
-
-                // TODO this is kinda dumb
-                std::queue<TileCoordsXY> findSkeletonQueue;
-                MaskMap findSkeletonVisited{ hydroMaps.dimensions };
-
-                findSkeletonQueue.emplace(pos);
-                findSkeletonVisited[pos] = Mask::True;
-
-                while (!findSkeletonQueue.empty())
-                {
-                    TileCoordsXY candidateSkeletonPos = findSkeletonQueue.front();
-                    findSkeletonQueue.pop();
-
-                    if (hydroMaps.flags[candidateSkeletonPos].has(skeleton))
-                    {
-                        nearestSkeletonMap[pos] = candidateSkeletonPos;
-                        break;
-                    }
-
-                    for (const auto& offset : kNeighbourOffsets)
-                    {
-                        TileCoordsXY candidateSkeletonNeighbourPos = candidateSkeletonPos + offset;
-
-                        if (!hydroMaps.flags.inBounds(candidateSkeletonNeighbourPos)
-                            || !hydroMaps.flags[candidateSkeletonNeighbourPos].has(river))
-                        {
-                            continue;
-                        }
-
-                        findSkeletonQueue.emplace(candidateSkeletonNeighbourPos);
-                        findSkeletonVisited[candidateSkeletonNeighbourPos] = Mask::True;
-                    }
-                }
-            }
-        }
+        computeHydroFlagBasedDistanceMap(context, skeletonDistanceMap, skeleton);
+        computeNearestMapFromDistanceMap(skeletonDistanceMap, nearestSkeletonMap);
 
         int32_t iterations = 0;
         while (true)
@@ -686,7 +638,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
                 while (currentTile.has_value())
                 {
-                    if (distanceMap[spring] - distanceMap[currentTile.value()] > context.settings.maxPruneLength)
+                    if (distanceMap[spring] - distanceMap[currentTile.value()] > context.settings.pruneThreshold)
                     {
                         break;
                     }
@@ -751,12 +703,47 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
+     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
+     * settings.
+     *
+     */
+    static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
+    {
+        const HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        const float catchmentMin = 1.0f;
+        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y * kRiversOverscanFactor;
+
+        const float widthMin = 0.0f;
+        const float widthMax = context.settings.riverWidthMax;
+
+        const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
+        const float exponentiatedCatchment = std::pow(rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
+        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
+
+        return width;
+    }
+
+    /**
+     * Determines the river depth based on the width. Constants adopted from table 2 in
+     *
+     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
+     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
+     * Research: Earth Surface, 118(1), pp.216-228.
+     */
+    static float riverDepth(const float width)
+    {
+        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
+        // rescale for rct
+        return std::max(2.0f, 8.0f * depth);
+    }
+
+    /**
      * Slightly widen the river based on catchment.
      */
     static void adjustStreamWidth(MapGenCtx& context)
     {
         PROFILED_FUNCTION();
-        const Settings& settings = context.settings;
         HeightMap& heightMap = context.heightMap;
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
@@ -786,7 +773,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 visited[nPos] = Mask::True;
             }
 
-            const float radius = std::log2(std::log2(hydroMaps.catchment[tile.pos] / settings.catchmentThreshold));
+            const float radius = riverWidth(context, tile.pos) / 2.0f;
             const float radiusSquared = radius * radius;
 
             for (int32_t dy = -radius; dy <= radius; dy++)
@@ -903,7 +890,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     static void carveRiverbed(MapGenCtx& context)
     {
         PROFILED_FUNCTION();
-        const Settings& settings = context.settings;
         HeightMap& heightMap = context.heightMap;
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
@@ -919,30 +905,45 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             const QueueTile tile = queue.top();
             queue.pop();
 
-            const float radius = std::log2(std::log2(hydroMaps.catchment[tile.pos] / settings.catchmentThreshold)) + 1.0f;
+            const float width = riverWidth(context, tile.pos);
+            const float radius = width / 2.0f + 1.0f;
             const float radiusMinusOne = radius - 1.0f;
             const float radiusSquared = radius * radius;
             const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
 
+            const float depth = riverDepth(width);
+            const float referenceHeight = heightCopy[tile.pos] - 2.0f;
+
             hydroMaps.flags[tile.pos].set(riverbed);
             hydroMaps.height[tile.pos] = quantizeHeight(heightCopy[tile.pos] - 2.0f);
-            heightMap[tile.pos] = quantizeHeight(heightCopy[tile.pos] - (4.0f + std::max(0.0f, radius * 0.66f)));
 
             for (int32_t dy = -radius; dy <= radius; dy++)
             {
                 for (int32_t dx = -radius; dx <= radius; dx++)
                 {
-                    const TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
-                    const auto distance = dx * dx + dy * dy;
+                    const float dxSquared = dx * dx;
+                    const float dySquared = dy * dy;
+                    const float distanceSquared = dxSquared + dySquared;
 
-                    if (!heightMap.inBounds(deltaPos) || hydroMaps.flags[deltaPos].has(river) || distance > radiusSquared)
+                    const TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
+
+                    if (!heightMap.inBounds(deltaPos) || distanceSquared > radiusSquared)
                     {
                         continue;
                     }
 
-                    heightMap[deltaPos] = std::min(heightCopy[deltaPos] - 2.0f, heightMap[deltaPos]);
+                    float candidateHeight = referenceHeight;
 
-                    if (distance <= radiusMinusOneSquared && hydroMaps.flags[deltaPos].has(filled))
+                    if (hydroMaps.flags[deltaPos].has(river))
+                    {
+                        const float dz = depth * std::sqrt(1.0f - distanceSquared / radiusSquared);
+                        candidateHeight = candidateHeight - dz;
+                    }
+
+                    heightMap[deltaPos] = quantizeHeight(std::min(candidateHeight, heightMap[deltaPos]));
+
+
+                    if (distanceSquared <= radiusMinusOneSquared && hydroMaps.flags[deltaPos].has(filled))
                     {
                         hydroMaps.flags[deltaPos].set(riverbed);
                     }

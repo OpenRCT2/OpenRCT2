@@ -3960,3 +3960,9 @@ STR_7207    :BlendDistanceTo
 STR_7208    :BlendDistanceTo[Low..High]
 STR_7209    :{STRINGID}[{STRINGID},{LENGTH}..{LENGTH}] {STRINGID} {STRINGID}
 STR_7210    :Feature:
+STR_7211    :Width limit
+STR_7212    :Enter width limit between {INT32} and {INT32}
+STR_7213    :Growth exponent
+STR_7214    :Enter growth exponent between {COMMA2DP32} and {COMMA2DP32}
+STR_7215    :Prune threshold
+STR_7216    :Enter prune threshold between {INT32} and {INT32}
