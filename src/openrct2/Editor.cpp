@@ -66,7 +66,9 @@ namespace OpenRCT2::Editor
     static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path);
     static void SetAllLandOwned();
     static void FinaliseMainView();
-    static void ClearMapForEditing(bool fromSave);
+
+    static void clearMapForEditing();
+    static void clearFinances();
 
     void ObjectListLoad()
     {
@@ -230,10 +232,9 @@ namespace OpenRCT2::Editor
         GameActions::Execute(&landBuyRightsAction, gameState);
     }
 
-    static void AfterLoadCleanup(bool loadedFromSave)
+    // NB: only called by LoadLandscape
+    static void AfterLoadCleanup()
     {
-        ClearMapForEditing(loadedFromSave);
-
         // TODO: replace with dedicated scene
         auto* sceneMgr = GetContext()->GetSceneManager();
         sceneMgr->setActiveScene(sceneMgr->getEditorScene());
@@ -259,14 +260,19 @@ namespace OpenRCT2::Editor
         if (!GetContext()->LoadParkFromFile(path))
             return false;
 
-        auto extension = Path::GetExtension(path);
-        bool loadedFromSave = !ParkImporter::ExtensionIsScenario(extension);
+        clearMapForEditing();
 
-        AfterLoadCleanup(loadedFromSave);
+        auto extension = Path::GetExtension(path);
+        bool wasScenario = ParkImporter::ExtensionIsScenario(extension);
+        if (!wasScenario)
+            clearFinances();
+
+        AfterLoadCleanup();
         return true;
     }
 
-    static void ClearMapForEditing(bool fromSave)
+    // NB: only called by LoadLandscape
+    static void clearMapForEditing()
     {
         MapRemoveAllRides();
         UnlinkAllRideBanners();
@@ -282,45 +288,49 @@ namespace OpenRCT2::Editor
             staff->SetName({});
         }
 
-        getGameState().entities.ResetAllEntities();
+        auto& gameState = getGameState();
+        gameState.entities.ResetAllEntities();
+
         UpdateConsolidatedPatrolAreas();
 
-        auto& gameState = getGameState();
         auto& park = gameState.park;
-        auto& scenarioOptions = gameState.scenarioOptions;
-
         park.numGuestsInPark = 0;
         park.numGuestsHeadingForPark = 0;
         park.numGuestsInParkLastWeek = 0;
         park.guestChangeModifier = 0;
 
-        if (fromSave)
-        {
-            park.flags |= PARK_FLAGS_NO_MONEY;
-
-            if (park.entranceFee == 0)
-            {
-                park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-            }
-            else
-            {
-                park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-            }
-
-            park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-
-            scenarioOptions.guestInitialCash = std::clamp(scenarioOptions.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
-            scenarioOptions.initialCash = std::min<money64>(scenarioOptions.initialCash, 100000);
-            FinanceResetCashToInitial();
-
-            park.bankLoan = std::clamp<money64>(park.bankLoan, 0.00_GBP, 5000000.00_GBP);
-            park.maxBankLoan = std::clamp<money64>(park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
-            park.bankLoanInterestRate = std::clamp<uint8_t>(park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
-        }
-
         Weather::reset();
 
         News::InitQueue(gameState);
+    }
+
+    // NB: only called by LoadLandscape
+    static void clearFinances()
+    {
+        auto& gameState = getGameState();
+        auto& park = gameState.park;
+
+        park.flags |= PARK_FLAGS_NO_MONEY;
+
+        if (park.entranceFee == 0)
+        {
+            park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+        }
+        else
+        {
+            park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+        }
+
+        park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+
+        auto& scenarioOptions = gameState.scenarioOptions;
+        scenarioOptions.guestInitialCash = std::clamp(scenarioOptions.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
+        scenarioOptions.initialCash = std::min<money64>(scenarioOptions.initialCash, 100000);
+        FinanceResetCashToInitial();
+
+        park.bankLoan = std::clamp<money64>(park.bankLoan, 0.00_GBP, 5000000.00_GBP);
+        park.maxBankLoan = std::clamp<money64>(park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
+        park.bankLoanInterestRate = std::clamp<uint8_t>(park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
     }
 
     /**
