@@ -984,8 +984,8 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
         return;
     }
 
-    // Must have transparency in order to pass check
-    if (!imgMask->flags.has(G1Flag::hasTransparency) || !imgColour->flags.has(G1Flag::hasTransparency))
+    // Masking only works with non-RLE images. Fall back to regular drawing for RLE images.
+    if (imgMask->flags.has(G1Flag::hasRLECompression) || imgColour->flags.has(G1Flag::hasRLECompression))
     {
         GfxDrawSpriteSoftware(rt, colourImage, scrCoords);
         return;
