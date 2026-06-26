@@ -69,9 +69,17 @@ namespace OpenRCT2
             return lhs == rhs;
         }
     };
+    struct ObjectEntryFuzzyEqual
+    {
+        bool operator()(const RCTObjectEntry& lhs, const RCTObjectEntry& rhs) const
+        {
+            return lhs.flags == rhs.flags && lhs.GetName() == rhs.GetName();
+        }
+    };
 
     using ObjectIdentifierMap = std::unordered_map<std::string, size_t, String::Hash, std::equal_to<>>;
     using ObjectEntryMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHash, ObjectEntryEqual>;
+    using ObjectEntryFallbackMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHash, ObjectEntryFuzzyEqual>;
 
     class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
     {
@@ -172,6 +180,7 @@ namespace OpenRCT2
         std::vector<ObjectRepositoryItem> _items;
         ObjectIdentifierMap _newItemMap;
         ObjectEntryMap _itemMap;
+        ObjectEntryFallbackMap _itemFallbackMap;
 
     public:
         explicit ObjectRepository(IPlatformEnvironment& env)
@@ -225,12 +234,13 @@ namespace OpenRCT2
 
         const ObjectRepositoryItem* FindObjectLegacy(uint32_t flags, std::string_view legacyIdentifier) const override
         {
-            for (const auto& currentEntry : _itemMap)
+            RCTObjectEntry entry = {};
+            entry.SetName(legacyIdentifier);
+
+            auto kvp = _itemFallbackMap.find(entry);
+            if (kvp != _itemFallbackMap.end())
             {
-                if (currentEntry.first.flags == flags && currentEntry.first.GetName() == legacyIdentifier)
-                {
-                    return &_items[currentEntry.second];
-                }
+                return &_items[kvp->second];
             }
 
             return nullptr;
@@ -381,6 +391,7 @@ namespace OpenRCT2
             _items.clear();
             _newItemMap.clear();
             _itemMap.clear();
+            _itemFallbackMap.clear();
         }
 
         void SortItems()
@@ -397,11 +408,13 @@ namespace OpenRCT2
 
             // Rebuild item map
             _itemMap.clear();
+            _itemFallbackMap.clear();
             _newItemMap.clear();
             for (size_t i = 0; i < _items.size(); i++)
             {
                 RCTObjectEntry entry = _items[i].ObjectEntry;
                 _itemMap[entry] = i;
+                _itemFallbackMap[entry] = i;
                 if (!_items[i].Identifier.empty())
                 {
                     _newItemMap[_items[i].Identifier] = i;
@@ -456,6 +469,7 @@ namespace OpenRCT2
                 if (!item.ObjectEntry.IsEmpty())
                 {
                     _itemMap[item.ObjectEntry] = index;
+                    _itemFallbackMap[item.ObjectEntry] = index;
                 }
                 return true;
             }
