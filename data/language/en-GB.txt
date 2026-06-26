@@ -3868,7 +3868,7 @@ STR_7089    :New rule {UINT16}
 STR_7090    :Remove
 STR_7091    :Height
 STR_7094    :Height - WaterLevel
-STR_7095    :DistanceTo
+STR_7095    :Distance
 STR_7096    :Noise
 STR_7097    :NormalAngle
 STR_7098    :Random
@@ -3956,8 +3956,8 @@ STR_7203    :Map edge
 STR_7204    :Filled
 STR_7205    :Breached
 STR_7206    :{STRINGID}[{STRINGID}] {STRINGID} {LENGTH}
-STR_7207    :BlendDistanceTo
-STR_7208    :BlendDistanceTo[Low..High]
+STR_7207    :BlendDistance
+STR_7208    :BlendDistance[Low..High]
 STR_7209    :{STRINGID}[{STRINGID},{LENGTH}..{LENGTH}] {STRINGID} {STRINGID}
 STR_7210    :Feature:
 STR_7211    :Width limit
@@ -3966,3 +3966,8 @@ STR_7213    :Growth exponent
 STR_7214    :Enter growth exponent between {COMMA2DP32} and {COMMA2DP32}
 STR_7215    :Prune threshold
 STR_7216    :Enter prune threshold between {INT32} and {INT32}
+STR_7217    :Breach length
+STR_7218    :Enter breach length between {INT32} and {INT32}
+STR_7219    :Breach depth
+STR_7220    :Enter breach depth between {INT32} and {INT32}
+STR_7221    :Breach length/depth

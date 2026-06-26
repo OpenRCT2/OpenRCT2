@@ -21,12 +21,14 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
+    constexpr float kQ = 1.0f / Hydro::kRiversOverscanFactor;
+
     using BiasData = std::variant<std::unique_ptr<Noise>, VecXY>;
 
     static BiasData prepareBias(const Settings& settings)
     {
         BiasData ctx;
-        if (settings.bias == Bias::coastal || settings.bias == Bias::river)
+        if (settings.bias == Bias::coastal || settings.bias == Bias::river || settings.bias == Bias::valley)
         {
             std::mt19937 prng(settings.seed);
             std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
@@ -51,15 +53,15 @@ namespace OpenRCT2::World::MapGenerator
         return ctx;
     }
 
-    static float cliffBias(const float height, const int32_t cliffs, const float noise)
+    static float cliffBias(const float height, const int32_t numCliffs, const float noise)
     {
-        const float n = static_cast<float>(cliffs);
+        const float n = static_cast<float>(numCliffs);
         return (1 - n * height) * noise + height * std::floor((n + 1) * noise);
     }
 
-    static float terraceBias(const float width, const int32_t terraces, const float noise)
+    static float terraceBias(const float width, const int32_t numTerraces, const float noise)
     {
-        const float n = static_cast<float>(terraces);
+        const float n = static_cast<float>(numTerraces);
         const float u = n * noise;
         const float k = std::floor(u);
         const float t = u - k;
@@ -67,16 +69,16 @@ namespace OpenRCT2::World::MapGenerator
         return (k + g) / n;
     }
 
-    static float applyBias(const Settings& settings, BiasData& ctx, VecXY pos, float noise)
+    static float applyBias(const MapGenCtx& context, const BiasData& ctx, const VecXY& pos, const float noise)
     {
-        float biasStrength = static_cast<float>(settings.biasStrength) / 100.0f;
-        float biasSteps = settings.biasSteps;
+        const float biasStrength = static_cast<float>(context.settings.biasStrength) / 100.0f;
+        const float biasSteps = context.settings.biasSteps;
 
-        float nx = 2.0f * pos.x / settings.mapSize.x - 1.0f;
-        float ny = 2.0f * pos.y / settings.mapSize.y - 1.0f;
-        auto normPos = VecXY{ nx, ny };
+        const float nx = 2.0f * pos.x / context.dimensions.x - 1.0f;
+        const float ny = 2.0f * pos.y / context.dimensions.y - 1.0f;
+        const VecXY normPos{ nx, ny };
 
-        switch (settings.bias)
+        switch (context.settings.bias)
         {
             case Bias::none:
             {
@@ -84,26 +86,28 @@ namespace OpenRCT2::World::MapGenerator
             }
             case Bias::island:
             {
-                float d = std::pow(1.0f - (1.0f - std::pow(nx, 2)) * (1.0f - std::pow(ny, 2)), 1.75f);
-                return Smoothstep(0.0f, 1.0f, 1.0f - d * biasStrength) * noise;
+                if (-kQ <= nx && nx <= kQ && -kQ <= ny && ny <= kQ)
+                {
+                    float d = std::pow(1.0f - (1.0f - std::pow(nx / kQ, 2)) * (1.0f - std::pow(ny / kQ, 2)), 1.75f);
+                    return Smoothstep(0.0f, 1.0f, 1.0f - d * biasStrength) * noise;
+                }
+                return 0.0f;
             }
             case Bias::valley:
             {
-                float d = std::pow(1.0f - (1.0f - std::pow(nx, 2)) * (1.0f - std::pow(ny, 2)), 1.25f);
+                const VecXY& r = std::get<VecXY>(ctx);
+                const float xr = r.x * nx + r.y * ny;
+                const float yr = -r.y * nx + r.x * ny;
+                const float z = std::clamp(16.0f*std::pow(yr, 4.0f) - 8.0f*std::pow(xr, 3.0f) , 0.0f, 1.0f);
+                const float d = std::pow(0.5f * std::sin(M_PI * 0.5f * z) + 0.5f, 3.0f);
                 return Smoothstep(0.0f, 1.0f, 1.0f - (1.0f - d) * biasStrength) * noise;
             }
             case Bias::coastal:
             {
-                // TODO offset center (or simplify the distance calc below)?
-                VecXY c{ 0.0f, 0.0f };
-                VecXY b = std::get<VecXY>(ctx);
-                VecXY p = normPos;
-
-                float d = ((b.y - c.y) * p.x - (b.x - c.x) * p.y + b.x * c.y - b.y * c.x)
-                    / sqrt(pow(b.x - c.x, 2) + pow(b.y - c.y, 2));
-
-                d = (std::pow(d, 3) + 1.0f) / 2.0f;
-
+                const VecXY& r = std::get<VecXY>(ctx);
+                const float xr = r.x * nx + r.y * ny;
+                const float yr = -r.y * nx + r.x * ny;
+                const auto d = (pow(xr, 3.0f)+pow(yr,3.0f))/(4.0f*pow(kQ,3.0f)) + (3.0f*xr+3.0f*yr)/(4.0f*kQ) + 0.5f;
                 return Smoothstep(0.0f, 1.0f, 1.0f - (1.0f - d) * biasStrength) * noise;
             }
             case Bias::river:
@@ -150,22 +154,22 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void generateMap(MapGenCtx& context, Noise& noise)
+    static void generateMap(MapGenCtx& context, const Noise& noise)
     {
         const auto& settings = context.settings;
-        BiasData ctx = prepareBias(settings);
+        const BiasData ctx = prepareBias(settings);
 
-        float low = settings.heightmapLow;
-        float high = settings.heightmapHigh - low;
+        const float low = settings.heightmapLow;
+        const float high = settings.heightmapHigh - low;
 
-        for (int32_t y = 0; y < context.heightMap.height; y++)
+        for (int32_t y = 0; y < context.dimensions.x; y++)
         {
-            for (int32_t x = 0; x < context.heightMap.width; x++)
+            for (int32_t x = 0; x < context.dimensions.y; x++)
             {
-                VecXY pos = { x, y };
-                float noiseValue = noise.generate(pos);
-                float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
-                float biasedNoiseValue = applyBias(context.settings, ctx, pos, normalisedNoiseValue);
+                const VecXY pos = { x, y };
+                const float noiseValue = noise.generate(pos);
+                const float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
+                const float biasedNoiseValue = applyBias(context, ctx, pos, normalisedNoiseValue);
 
                 context.heightMap[pos.AsTileCoordsXY()] = low + biasedNoiseValue * high;
             }
@@ -184,19 +188,17 @@ namespace OpenRCT2::World::MapGenerator
 
         // slope smooth functions operate on the game map
         applyTileSlopeSmooth(context);
-
     }
 
     void generateSimplexMap(MapGenCtx& context)
     {
         const auto& settings = context.settings;
+        const auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
-        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
+        const BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
+        const FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.65f, 0.0f };
 
-        BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
-        FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.65f, 0.0f };
-
-        auto simplexFbmNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
+        const Noise simplexFbmNoise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
 
         generateMap(context, simplexFbmNoise);
     }
@@ -204,14 +206,13 @@ namespace OpenRCT2::World::MapGenerator
     void generateWarpedMap(MapGenCtx& context)
     {
         const auto& settings = context.settings;
+        const auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
-        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
+        const BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
+        const FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
+        const WarpSettings warpSettings = {WarpType::Simplex, WarpFractalType::Independent, 256, settings.seed, freq / 2, 4, 2.0f, 0.5f };
 
-        BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
-        FractalSettings fractalSettings = { FractalType::Fbm, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
-        WarpSettings warpSettings = {WarpType::Simplex, WarpFractalType::Independent, 256, settings.seed, freq / 2, 4, 2.0f, 0.5f };
-
-        auto warpedNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
+        const Noise warpedNoise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
         generateMap(context, warpedNoise);
     }
@@ -219,14 +220,13 @@ namespace OpenRCT2::World::MapGenerator
     void generateRidgedMap(MapGenCtx& context)
     {
         const auto& settings = context.settings;
-
-        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
+        const auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
         BaseSettings baseSettings = { BaseType::Simplex, settings.seed, freq };
         FractalSettings fractalSettings = { FractalType::Ridge, settings.noiseOctaves, 2.0f, 0.5f, 0.0f };
         TransformSettings transformSettings = { { 64, 64 }, 0.0f };
 
-        auto ridgedNoise = Noise(baseSettings, fractalSettings, transformSettings, std::nullopt);
+        const Noise ridgedNoise(baseSettings, fractalSettings, transformSettings, std::nullopt);
 
         generateMap(context, ridgedNoise);
     }
@@ -234,13 +234,13 @@ namespace OpenRCT2::World::MapGenerator
     void generateVoronoiMap(MapGenCtx& context)
     {
         const auto& settings = context.settings;
-        auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
+        const auto freq = settings.noiseBaseFreq / std::pow(2.0f, 15.0f);
 
-        BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq, VoronoiValueType::Distance };
-        FractalSettings fractalSettings = { FractalType::PingPong, settings.noiseOctaves, 2.0f, 0.75f, 0.0f };
-        WarpSettings warpSettings = {WarpType::Grid, WarpFractalType::Independent, 32, settings.seed, freq / 2, 4, 2.0f, 0.5f };
+        const BaseSettings baseSettings = { BaseType::Voronoi, settings.seed, freq, VoronoiValueType::Distance };
+        const FractalSettings fractalSettings = { FractalType::PingPong, settings.noiseOctaves, 2.0f, 0.75f, 0.0f };
+        const WarpSettings warpSettings = {WarpType::Grid, WarpFractalType::Independent, 32, settings.seed, freq / 2, 4, 2.0f, 0.5f };
 
-        auto voronoiNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
+        const Noise voronoiNoise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
         generateMap(context, voronoiNoise);
     }

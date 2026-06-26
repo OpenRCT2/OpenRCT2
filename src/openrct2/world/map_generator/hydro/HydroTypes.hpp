@@ -17,12 +17,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     constexpr int32_t kRiversOverscanFactor = 2;
 
     constexpr float kRiverGrowthExponentScaling = 0.01f;
-    constexpr int32_t kRiverMinGrowthExponent = 1; // * kRiverGrowthExponentScaling
-    constexpr int32_t kRiverMaxGrowthExponent = 800; // * kRiverGrowthExponentScaling
-    constexpr int32_t kRiverMinPruneLengthThreshold = 0;
-    constexpr int32_t kRiverMaxPruneLengthThreshold = 128;
-    constexpr int32_t kRiverMinWidth = 1;
-    constexpr int32_t kRiverMaxWidth = 128;
+    constexpr int32_t kRiverGrowthExponentMin = 1; // * kRiverGrowthExponentScaling
+    constexpr int32_t kRiverGrowthExponentMax = 800; // * kRiverGrowthExponentScaling
+    constexpr int32_t kRiverPruneLengthThresholdMin = 0;
+    constexpr int32_t kRiverPruneLengthThresholdMax = 128;
+    constexpr int32_t kRiverWidthMin = 1;
+    constexpr int32_t kRiverWidthMax = 128;
+    constexpr int32_t kRiverBreachLengthMin = 0;
+    constexpr int32_t kRiverBreachLengthMax = 128;
+    constexpr int32_t kRiverBreachDepthMin = 0;
+    constexpr int32_t kRiverBreachDepthMax = 32;
 
     enum HydroFlag : uint8_t
     {
@@ -42,13 +46,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         BaseMap<float> catchment;
         BaseMap<float> height;
         BaseMap<HydroFlags> flags;
-        TileCoordsXY dimensions;
 
-        HydroMaps(const TileCoordsXY size)
+        HydroMaps(const TileCoordsXY& size)
             : catchment(size)
             , height(size)
             , flags(size)
-            , dimensions(size)
         {
         }
     };

@@ -47,18 +47,18 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HeightMap& heightMap = context.heightMap;
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        StateMap state(hydroMaps.dimensions);
+        StateMap state(context.dimensions);
         StableTileQueue queue;
         std::queue<TileCoordsXY> fillQueue;
 
         // prepare queue and mark pits
-        for (int32_t y = 0; y < heightMap.height; y++)
+        for (int32_t y = 0; y < context.dimensions.x; y++)
         {
-            for (int32_t x = 0; x < heightMap.width; x++)
+            for (int32_t x = 0; x < context.dimensions.y; x++)
             {
                 TileCoordsXY pos{ x, y };
 
-                if (x == 0 || y == 0 || x == heightMap.width - 1 || y == heightMap.height - 1)
+                if (x == 0 || y == 0 || x == context.dimensions.x - 1 || y == context.dimensions.y - 1)
                 {
                     queue.emplace(pos, heightMap[pos]);
                     state[pos].visited = true;
@@ -269,19 +269,19 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         const HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
-        MaskMap visited(hydroMaps.dimensions);
-        BackrefMap backrefMap{ hydroMaps.dimensions };
+        MaskMap visited(context.dimensions);
+        BackrefMap backrefMap{ context.dimensions };
 
-        for (int32_t y = 0; y < hydroMaps.dimensions.y; y++)
+        for (int32_t y = 0; y < context.dimensions.y; y++)
         {
             postProcessTile(context, queue, visited, backrefMap, std::nullopt, { 0, y });
-            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { hydroMaps.dimensions.x - 1, y });
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { context.dimensions.x - 1, y });
         }
 
-        for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
+        for (int32_t x = 1; x < context.dimensions.x - 1; x++)
         {
             postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, 0 });
-            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, hydroMaps.dimensions.y - 1 });
+            postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, context.dimensions.y - 1 });
         }
 
         // process tiles and find springs
@@ -322,9 +322,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         while (true)
         {
-            for (int32_t y = 1; y < hydroMaps.dimensions.y - 1; y++)
+            for (int32_t y = 1; y < context.dimensions.y - 1; y++)
             {
-                for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
+                for (int32_t x = 1; x < context.dimensions.x - 1; x++)
                 {
                     TileCoordsXY p1{ x, y };
 
@@ -440,7 +440,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        for (int32_t y = 0; y < hydroMaps.dimensions.y - 1; y++)
+        for (int32_t y = 0; y < context.dimensions.y - 1; y++)
         {
             const TileCoordsXY left{ 0, y };
             if (hydroMaps.flags[left].has(flag))
@@ -449,7 +449,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 visited[left] = Mask::True;
             }
 
-            const TileCoordsXY right{ hydroMaps.dimensions.x - 1, y };
+            const TileCoordsXY right{ context.dimensions.x - 1, y };
             if (hydroMaps.flags[right].has(flag))
             {
                 queue.emplace(right, context.heightMap[right]);
@@ -457,7 +457,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-        for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
+        for (int32_t x = 1; x < context.dimensions.x - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
             if (hydroMaps.flags[top].has(flag))
@@ -466,7 +466,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 visited[top] = Mask::True;
             }
 
-            const TileCoordsXY bottom{ x, hydroMaps.dimensions.y - 1 };
+            const TileCoordsXY bottom{ x, context.dimensions.y - 1 };
             if (hydroMaps.flags[bottom].has(flag))
             {
                 queue.emplace(bottom, context.heightMap[bottom]);
@@ -556,8 +556,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        BackrefMap nearestSkeletonMap{ hydroMaps.dimensions };
-        DistanceMap skeletonDistanceMap{ hydroMaps.dimensions };
+        BackrefMap nearestSkeletonMap{ context.dimensions };
+        DistanceMap skeletonDistanceMap{ context.dimensions };
 
         // setup nearest skeleton map for later
         computeHydroFlagBasedDistanceMap(context, skeletonDistanceMap, skeleton);
@@ -567,13 +567,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         while (true)
         {
             StableTileQueue queue;
-            MaskMap visited{ hydroMaps.dimensions };
+            MaskMap visited{ context.dimensions };
             prepareRiverQueue(context, queue, visited, skeleton);
 
-            BackrefMap backrefMap{ hydroMaps.dimensions };
-            MaskMap confluenceMap{ hydroMaps.dimensions };
-            BackrefMap confluenceMaxSpringMap{ hydroMaps.dimensions };
-            DistanceMap distanceMap{ hydroMaps.dimensions };
+            BackrefMap backrefMap{ context.dimensions };
+            MaskMap confluenceMap{ context.dimensions };
+            BackrefMap confluenceMaxSpringMap{ context.dimensions };
+            DistanceMap distanceMap{ context.dimensions };
 
             std::vector<TileCoordsXY> springs;
 
@@ -684,9 +684,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         LOG_INFO("prune iterations=%d", iterations);
 
         // throw out river tiles that point to a no-longer-skeleton as their nearest skeleton.
-        for (int32_t y = 0; y < hydroMaps.dimensions.y; y++)
+        for (int32_t y = 0; y < context.dimensions.y; y++)
         {
-            for (int32_t x = 0; x < hydroMaps.dimensions.x; x++)
+            for (int32_t x = 0; x < context.dimensions.x; x++)
             {
                 TileCoordsXY pos{ x, y };
                 if (!hydroMaps.flags[pos].has(river))
@@ -747,9 +747,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
-        MaskMap visited(hydroMaps.dimensions);
+        MaskMap visited(context.dimensions);
 
-        DistanceMap distanceMap(hydroMaps.dimensions);
+        DistanceMap distanceMap(context.dimensions);
         distanceMap.fill(std::numeric_limits<float>::infinity());
 
         prepareRiverQueue(context, queue, visited, river);
@@ -832,7 +832,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
         StableTileQueue queue;
-        MaskMap visited(hydroMaps.dimensions);
+        MaskMap visited(context.dimensions);
 
         prepareRiverQueue(context, queue, visited);
 
@@ -895,7 +895,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HeightMap heightCopy = heightMap;
 
         StableTileQueue queue;
-        MaskMap visited(hydroMaps.dimensions);
+        MaskMap visited(context.dimensions);
 
         prepareRiverQueue(context, queue, visited);
 
@@ -932,13 +932,17 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
 
                     // don't carve rivers into the sea floor
-                    float candidateHeight = std::max(referenceHeight, static_cast<float>(context.settings.waterLevel));
+                    float candidateHeight = std::max(referenceHeight, static_cast<float>(context.settings.waterLevel - 4));
 
                     if (hydroMaps.flags[deltaPos].has(river))
                     {
                         const float dz = depth * std::sqrt(1.0f - distanceSquared / radiusSquared);
                         candidateHeight = candidateHeight - dz;
                     }
+                    // else if (!hydroMaps.flags[deltaPos].has(filled))
+                    // {
+                    //     continue;
+                    // }
 
                     heightMap[deltaPos] = quantizeHeight(std::min(candidateHeight, heightMap[deltaPos]));
 
@@ -974,9 +978,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        for (int32_t y = 1; y < hydroMaps.dimensions.y - 1; y++)
+        for (int32_t y = 1; y < context.dimensions.y - 1; y++)
         {
-            for (int32_t x = 1; x < hydroMaps.dimensions.x - 1; x++)
+            for (int32_t x = 1; x < context.dimensions.x - 1; x++)
             {
                 const TileCoordsXY pos{ x, y };
 

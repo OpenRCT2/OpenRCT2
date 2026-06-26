@@ -38,7 +38,7 @@ namespace OpenRCT2::World::MapGenerator
         island,
         valley,
         coastal,
-        river,
+        river, // TODO should probably rename it
         canyon,
         mountain,
         cliff,
@@ -99,8 +99,8 @@ namespace OpenRCT2::World::MapGenerator
         int32_t breachMaxLength = 8;
         int32_t breachMaxDepth = 2;
         int32_t offMapCatchmentMultiplier = 2;
-        int32_t riverGrowthExponent = 50; // * kRiverGrowthExponentScaling
-        int32_t riverWidthMax = 16;
+        int32_t riverGrowthExponent = 45; // * kRiverGrowthExponentScaling
+        int32_t riverWidthMax = 12;
     };
 
     struct DebugSign
@@ -114,12 +114,14 @@ namespace OpenRCT2::World::MapGenerator
     struct MapGenCtx
     {
         const Settings& settings;
+        TileCoordsXY dimensions;
+        TileCoordsXY overscanOffset;
         HeightMap heightMap;
         std::optional<Hydro::HydroMaps> hydroMaps;
         std::vector<DebugSign> debugSigns;
     };
 
-    void generate(Settings& settings);
+    void generate(const Settings& settings);
     void resetSurfaces(const MapGenCtx& context);
     void setWaterLevel(const MapGenCtx& context);
     void setRiverWater(const MapGenCtx& context);

@@ -28,12 +28,14 @@ namespace OpenRCT2::World::MapGenerator
     static void placeSceneryFromRules(const MapGenCtx& context);
     static void placeDebugSigns(const MapGenCtx& context);
 
-    void generate(Settings& settings)
+    void generate(const Settings& settings)
     {
-        TileCoordsXY genSize = TileCoordsXY{ settings.mapSize.x * Hydro::kRiversOverscanFactor,
-                                             settings.mapSize.y * Hydro::kRiversOverscanFactor };
+        const TileCoordsXY genSize{ settings.mapSize.x * Hydro::kRiversOverscanFactor,
+                                    settings.mapSize.y * Hydro::kRiversOverscanFactor };
 
         MapGenCtx context{ .settings = settings,
+                           .dimensions = genSize,
+                           .overscanOffset = getWorldCoordsOffset(settings),
                            .heightMap = HeightMap{ genSize },
                            .hydroMaps = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
                            .debugSigns = {} };

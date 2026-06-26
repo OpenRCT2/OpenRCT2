@@ -576,36 +576,32 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static TileCoordsXY getWorldCoordsOffset(const MapGenCtx& context)
+    TileCoordsXY getWorldCoordsOffset(const Settings& settings)
     {
-        const int32_t offsetX = (context.settings.mapSize.x * (Hydro::kRiversOverscanFactor - 1)) / 2;
-        const int32_t offsetY = (context.settings.mapSize.y * (Hydro::kRiversOverscanFactor - 1)) / 2;
+        const int32_t offsetX = (settings.mapSize.x * (Hydro::kRiversOverscanFactor - 1)) / 2;
+        const int32_t offsetY = (settings.mapSize.y * (Hydro::kRiversOverscanFactor - 1)) / 2;
         return TileCoordsXY{offsetX, offsetY};
     }
 
     bool isInWorldMap(const MapGenCtx& context, const TileCoordsXY& genCoords)
     {
-        const TileCoordsXY offset = getWorldCoordsOffset(context);
-
-        const int32_t xMin = offset.x;
-        const int32_t xMax = offset.x + context.settings.mapSize.x;
-        const int32_t yMin = offset.y;
-        const int32_t yMax = offset.y + context.settings.mapSize.y;
+        const int32_t xMin = context.overscanOffset.x;
+        const int32_t xMax = context.overscanOffset.x + context.settings.mapSize.x;
+        const int32_t yMin = context.overscanOffset.y;
+        const int32_t yMax = context.overscanOffset.y + context.settings.mapSize.y;
 
         return xMin <= genCoords.x && genCoords.x < xMax && yMin <= genCoords.y && genCoords.y < yMax;
     }
 
     TileCoordsXY worldCoordsToGenCoords(const MapGenCtx& context, const TileCoordsXY& worldCoords)
     {
-        const TileCoordsXY offset = getWorldCoordsOffset(context);
-        return TileCoordsXY{worldCoords.x + offset.x, worldCoords.y + offset.y};
+        return TileCoordsXY{worldCoords.x + context.overscanOffset.x, worldCoords.y + context.overscanOffset.y};
     }
 
     // can be OOB
     TileCoordsXY genCoordsToWorldCoords(const MapGenCtx& context, const TileCoordsXY& genCoords)
     {
-        const TileCoordsXY offset = getWorldCoordsOffset(context);
-        return TileCoordsXY{genCoords.x - offset.x, genCoords.y - offset.y};
+        return TileCoordsXY{genCoords.x - context.overscanOffset.x, genCoords.y - context.overscanOffset.y};
     }
 
     // Ensure height is within [2, 254] and a multiple of 2
