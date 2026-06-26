@@ -235,6 +235,7 @@ namespace OpenRCT2
         const ObjectRepositoryItem* FindObjectLegacy(uint32_t flags, std::string_view legacyIdentifier) const override
         {
             RCTObjectEntry entry = {};
+            entry.flags = flags;
             entry.SetName(legacyIdentifier);
 
             auto kvp = _itemFallbackMap.find(entry);
