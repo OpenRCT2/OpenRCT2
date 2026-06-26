@@ -76,7 +76,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     struct EvaluationHeights
     {
         int32_t land;
-        int32_t water;
+        std::optional<int32_t> water;
     };
 
     struct LocalEvaluationHeights

@@ -360,7 +360,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case HeightType::Land:
                 return heights.has_value() ? std::make_optional(heights.value().land) : std::nullopt;
             case HeightType::Water:
-                return heights.has_value() ? std::make_optional(heights.value().water) : std::nullopt;
+                 return heights.has_value() ? heights.value().water : std::nullopt;
             default:
                 throw std::runtime_error("Unknown HeightType");
         }
@@ -733,9 +733,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
             return std::nullopt;
         }
 
+        const int32_t baseHeight = surfaceElement->baseHeight;
+        const int32_t waterHeight = surfaceElement->GetWaterHeight() / kWaterHeightStep;
+
         return std::make_optional(
-            EvaluationHeights{ static_cast<int32_t>(surfaceElement->baseHeight),
-                               surfaceElement->GetWaterHeight() / kWaterHeightStep });
+            EvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt });
     }
 
     static LocalEvaluationHeights getLocalHeightsAt(const TileCoordsXY& gameCoords)
@@ -1091,7 +1093,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             SceneryRule{
                 .enabled = true,
                 .name = "Waterfalls NW",
-                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
                                            heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {
@@ -1102,7 +1104,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             SceneryRule{
                 .enabled = true,
                 .name = "Waterfalls NE",
-                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
                                            heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {
@@ -1113,7 +1115,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             SceneryRule{
                 .enabled = true,
                 .name = "Waterfalls SE",
-                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
                                            heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {
@@ -1124,7 +1126,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             SceneryRule{
                 .enabled = true,
                 .name = "Waterfalls SW",
-                .conditions = std::vector{ distanceToFeature(Feature::Water, 1),
+                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
                                            heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water, true) },
                 .zRepeat = true,
                 .effect = {

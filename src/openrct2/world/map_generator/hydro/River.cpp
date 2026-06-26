@@ -705,7 +705,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     /**
      * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
      * settings.
-     *
      */
     static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
     {
@@ -725,7 +724,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Determines the river depth based on the width. Constants adopted from table 2 in
+     * Determines the river depth based on the width, constants from table 2 in
      *
      * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
      * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
@@ -932,7 +931,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         continue;
                     }
 
-                    float candidateHeight = referenceHeight;
+                    // don't carve rivers into the sea floor
+                    float candidateHeight = std::max(referenceHeight, static_cast<float>(context.settings.waterLevel));
 
                     if (hydroMaps.flags[deltaPos].has(river))
                     {
@@ -941,7 +941,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
 
                     heightMap[deltaPos] = quantizeHeight(std::min(candidateHeight, heightMap[deltaPos]));
-
 
                     if (distanceSquared <= radiusMinusOneSquared && hydroMaps.flags[deltaPos].has(filled))
                     {
