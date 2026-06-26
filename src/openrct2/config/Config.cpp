@@ -725,13 +725,13 @@ namespace OpenRCT2::Config
     {
         LOG_VERBOSE("config_find_rct1_path(...)");
 
-        static std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT1();
+        static std::vector<u8string> searchLocations = Platform::GetSearchablePathsRCT1();
 
         for (const auto& location : searchLocations)
         {
             if (RCT1DataPresentAtLocation(location))
             {
-                return u8string(location);
+                return location;
             }
         }
 
@@ -806,13 +806,13 @@ namespace OpenRCT2::Config
     {
         LOG_VERBOSE("config_find_rct2_path(...)");
 
-        static std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT2();
+        static std::vector<u8string> searchLocations = Platform::GetSearchablePathsRCT2();
 
         for (const auto& location : searchLocations)
         {
             if (Platform::OriginalGameDataExists(location))
             {
-                return u8string(location);
+                return location;
             }
         }
 

@@ -3,6 +3,7 @@
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
 - Feature: [#26675] [Plugin] Add automation APIs: ride reliability, guest count and income metrics, station queue time, readonly `context.gameSpeed`, `riderefurbish` game action, `map.getElementsInRect`, `map.getGuestsInRect`, and `FootpathElement.isAdditionFull`.
+- Improved: [#7921] On Linux, RCT2 and RCT1 installs in Wine are now automatically detected.
 - Improved: [#26325] Changing the train type, length, or direction no longer resets the number of laps if there is just one train.
 - Improved: [objects#437] Re-order St. Basil’s Cathedral pieces to be more consistent.
 - Change: [#26689] A clear scenario editor can now be opened directly from the command line.
