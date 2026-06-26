@@ -77,7 +77,7 @@ namespace OpenRCT2::World::MapGenerator
         completeDistanceMap(distanceMap, queue, visited);
     }
 
-    static TileCoordsXY findNearestFromDistanceMap(const DistanceMap& distanceMap, BackrefMap& backrefMap, const TileCoordsXY& pos)
+    static Backref findNearestFromDistanceMap(const DistanceMap& distanceMap, BackrefMap& backrefMap, const TileCoordsXY& pos)
     {
         if (backrefMap[pos].has_value())
         {
@@ -102,16 +102,21 @@ namespace OpenRCT2::World::MapGenerator
                 continue;
             }
 
-            if (!minPos.has_value() || distanceMap[nPos] < minDistance)
+            if (distanceMap[nPos] < minDistance)
             {
                 minPos = nPos;
                 minDistance = distanceMap[nPos];
             }
         }
 
-        TileCoordsXY nearest = findNearestFromDistanceMap(distanceMap, backrefMap, minPos.value());
-        backrefMap[pos] = nearest;
-        return nearest;
+        if (minPos.has_value())
+        {
+            Backref nearest = findNearestFromDistanceMap(distanceMap, backrefMap, minPos.value());
+            backrefMap[pos] = nearest;
+            return nearest;
+        }
+
+        return std::nullopt;
     }
 
     void computeNearestMapFromDistanceMap(const DistanceMap& distanceMap, BackrefMap& backrefMap)
