@@ -18,12 +18,12 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    Exitcode append(const char** argv, int32_t argc, ImportMode spriteMode)
+    ExitCode append(const char** argv, int32_t argc, ImportMode spriteMode)
     {
         if (argc != 3 && argc != 5)
         {
             fprintf(stderr, "usage: sprite append <spritefile> <input> [<x offset> <y offset>]\n");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         const utf8* spriteFilePath = argv[1];
@@ -39,14 +39,14 @@ namespace OpenRCT2::CommandLine::Sprite
             if (*endptr != 0)
             {
                 fprintf(stderr, "X offset must be an integer\n");
-                return Exitcode::fail;
+                return ExitCode::fail;
             }
 
             yOffset = strtol(argv[4], &endptr, 0);
             if (*endptr != 0)
             {
                 fprintf(stderr, "Y offset must be an integer\n");
-                return Exitcode::fail;
+                return ExitCode::fail;
             }
         }
 
@@ -54,7 +54,7 @@ namespace OpenRCT2::CommandLine::Sprite
         ImageImportMeta meta = { { xOffset, yOffset }, Palette::OpenRCT2, importFlags, spriteMode };
         const auto image = SpriteImageLoad(imagePath, meta);
         if (!image.has_value())
-            return Exitcode::fail;
+            return ExitCode::fail;
         ImageImporter importer;
         auto importResult = importer.Import(image.value(), meta);
 
@@ -62,14 +62,14 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         spriteFile->AddImage(importResult);
 
         if (!spriteFile->Save(spriteFilePath))
-            return Exitcode::fail;
+            return ExitCode::fail;
 
-        return Exitcode::ok;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "Exitcode.h"
+#include "ExitCode.h"
 
 #include <cstdint>
 
@@ -49,7 +49,7 @@ namespace OpenRCT2
         bool TryPopString(const char** result);
     };
 
-    using CommandLineFunc = OpenRCT2::CommandLine::Exitcode (*)(CommandLineArgEnumerator*);
+    using CommandLineFunc = OpenRCT2::CommandLine::ExitCode (*)(CommandLineArgEnumerator*);
 
     struct CommandLineExample
     {
@@ -116,9 +116,9 @@ namespace OpenRCT2
         extern const CommandLineExample kRootExamples[];
 
         void PrintHelp(bool allCommands = false);
-        Exitcode HandleCommandDefault();
+        ExitCode HandleCommandDefault();
 
-        Exitcode HandleCommandUri(CommandLineArgEnumerator* enumerator);
-        Exitcode HandleCommandTriggerSteamDownload(CommandLineArgEnumerator* enumerator);
+        ExitCode HandleCommandUri(CommandLineArgEnumerator* enumerator);
+        ExitCode HandleCommandTriggerSteamDownload(CommandLineArgEnumerator* enumerator);
     } // namespace CommandLine
 } // namespace OpenRCT2

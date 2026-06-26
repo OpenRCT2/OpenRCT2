@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "command_line/Exitcode.h"
+#include "command_line/ExitCode.h"
 #include "core/StringTypes.h"
 
 enum class PromptMode : uint8_t;
@@ -68,7 +68,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2
 {
-    CommandLine::Exitcode CommandLineRun(const char** argv, int32_t argc);
+    CommandLine::ExitCode CommandLineRun(const char** argv, int32_t argc);
 } // namespace OpenRCT2
 
 extern uint32_t gCurrentDrawCount;

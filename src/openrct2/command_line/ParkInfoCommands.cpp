@@ -26,7 +26,7 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static Exitcode HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
+    static ExitCode HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
 
     const CommandLineCommand CommandLine::kParkInfoCommands[]{
         // Main commands
@@ -36,10 +36,10 @@ namespace OpenRCT2
     };
     // clang-format on
 
-    static Exitcode HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
+    static ExitCode HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     {
-        Exitcode result = CommandLine::HandleCommandDefault();
-        if (result != Exitcode::launch)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -49,7 +49,7 @@ namespace OpenRCT2
         if (!argEnumerator->TryPopString(&rawSourcePath))
         {
             Console::Error::WriteLine("Expected a source save file path.");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         auto sourcePath = Path::GetAbsolute(rawSourcePath);
@@ -62,13 +62,13 @@ namespace OpenRCT2
         if (!TryClassifyFile(&stream, &info))
         {
             Console::Error::WriteLine("Unable to detect file type");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         if (info.Type != FileType::park && info.Type != FileType::savedGame && info.Type != FileType::scenario)
         {
             Console::Error::WriteLine("Invalid file type.");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         auto& objectRepository = context->GetObjectRepository();
@@ -146,6 +146,6 @@ namespace OpenRCT2
             }
             Console::WriteLine();
         }
-        return Exitcode::ok;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2

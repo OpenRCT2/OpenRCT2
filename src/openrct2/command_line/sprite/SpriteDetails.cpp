@@ -17,12 +17,12 @@
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    Exitcode details(const char** argv, int32_t argc)
+    ExitCode details(const char** argv, int32_t argc)
     {
         if (argc < 2)
         {
             fprintf(stdout, "usage: sprite details <spritefile> [idx]\n");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         if (argc == 2)
@@ -32,12 +32,12 @@ namespace OpenRCT2::CommandLine::Sprite
             if (!spriteFile.has_value())
             {
                 fprintf(stderr, "Unable to open input sprite file.\n");
-                return Exitcode::fail;
+                return ExitCode::fail;
             }
 
             printf("sprites: %u\n", spriteFile->Header.numEntries);
             printf("data size: %u\n", spriteFile->Header.totalSize);
-            return Exitcode::ok;
+            return ExitCode::ok;
         }
 
         const utf8* spriteFilePath = argv[1];
@@ -46,13 +46,13 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.numEntries))
         {
             fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         G1Element* g1 = &spriteFile->Entries[spriteIndex];
@@ -61,6 +61,6 @@ namespace OpenRCT2::CommandLine::Sprite
         printf("x offset: %d\n", g1->xOffset);
         printf("y offset: %d\n", g1->yOffset);
         printf("data offset: %p\n", g1->offset);
-        return Exitcode::ok;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

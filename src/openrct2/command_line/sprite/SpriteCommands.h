@@ -11,7 +11,7 @@
 
 #include "../../core/StringTypes.h"
 #include "../../drawing/ImageImporter.h"
-#include "../Exitcode.h"
+#include "../ExitCode.h"
 
 #include <cstdint>
 #include <optional>
@@ -28,12 +28,12 @@ namespace OpenRCT2::CommandLine::Sprite
     std::optional<Image> SpriteImageLoad(u8string_view path, ImageImportMeta meta);
     std::string PopStr(std::ostringstream& oss);
 
-    Exitcode append(const char** argv, int32_t argc, ImportMode spriteMode);
-    Exitcode build(const char** argv, int32_t argc, ImportMode spriteMode);
-    Exitcode combine(const char** argv, int32_t argc);
-    Exitcode create(const char** argv, int32_t argc);
-    Exitcode details(const char** argv, int32_t argc);
-    Exitcode exportAll(const char** argv, int32_t argc);
-    Exitcode exportObject(const char** argv, int32_t argc);
-    Exitcode exportSingle(const char** argv, int32_t argc);
+    ExitCode append(const char** argv, int32_t argc, ImportMode spriteMode);
+    ExitCode build(const char** argv, int32_t argc, ImportMode spriteMode);
+    ExitCode combine(const char** argv, int32_t argc);
+    ExitCode create(const char** argv, int32_t argc);
+    ExitCode details(const char** argv, int32_t argc);
+    ExitCode exportAll(const char** argv, int32_t argc);
+    ExitCode exportObject(const char** argv, int32_t argc);
+    ExitCode exportSingle(const char** argv, int32_t argc);
 } // namespace OpenRCT2::CommandLine::Sprite

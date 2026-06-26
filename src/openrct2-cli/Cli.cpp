@@ -21,7 +21,7 @@ int main(int argc, const char** argv)
 {
     int32_t rc = EXIT_SUCCESS;
     auto runGame = CommandLineRun(argv, argc);
-    if (runGame == Exitcode::launch)
+    if (runGame == ExitCode::launch)
     {
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
@@ -30,7 +30,7 @@ int main(int argc, const char** argv)
         auto context = CreateContext();
         rc = context->RunOpenRCT2(argc, argv);
     }
-    else if (runGame == Exitcode::fail)
+    else if (runGame == ExitCode::fail)
     {
         rc = EXIT_FAILURE;
     }

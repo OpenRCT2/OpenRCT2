@@ -11,7 +11,7 @@
 
 namespace OpenRCT2::CommandLine
 {
-    enum class Exitcode
+    enum class ExitCode
     {
         fail,
         ok,

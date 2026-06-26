@@ -22,12 +22,12 @@
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    Exitcode exportAll(const char** argv, int32_t argc)
+    ExitCode exportAll(const char** argv, int32_t argc)
     {
         if (argc < 3)
         {
             fprintf(stdout, "usage: sprite exportall <spritefile> <output directory>\n");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         const utf8* spriteFilePath = argv[1];
@@ -37,13 +37,13 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         if (!Path::CreateDirectory(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         const uint32_t maxIndex = spriteFile->Header.numEntries;
@@ -61,9 +61,9 @@ namespace OpenRCT2::CommandLine::Sprite
             if (!SpriteImageExport(spriteHeader, Path::Combine(outputPath, PopStr(oss))))
             {
                 fprintf(stderr, "Could not export\n");
-                return Exitcode::fail;
+                return ExitCode::fail;
             }
         }
-        return Exitcode::ok;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

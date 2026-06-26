@@ -31,7 +31,7 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static Exitcode HandleSimulate(CommandLineArgEnumerator* argEnumerator);
+    static ExitCode HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
     const CommandLineCommand CommandLine::kSimulateCommands[]{
         // Main commands
@@ -40,20 +40,20 @@ namespace OpenRCT2
     };
     // clang-format on
 
-    static Exitcode HandleSimulate(CommandLineArgEnumerator* argEnumerator)
+    static ExitCode HandleSimulate(CommandLineArgEnumerator* argEnumerator)
     {
         const utf8* inputPath;
         if (!argEnumerator->TryPopString(&inputPath))
         {
             Console::Error::WriteLine("Expected a save file path");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         int32_t ticks;
         if (!argEnumerator->TryPopInteger(&ticks))
         {
             Console::Error::WriteLine("Expected a number of ticks to simulate");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
         gOpenRCT2Headless = true;
@@ -67,7 +67,7 @@ namespace OpenRCT2
         {
             if (!context->LoadParkFromFile(inputPath))
             {
-                return Exitcode::fail;
+                return ExitCode::fail;
             }
 
             Console::WriteLine("Running %d ticks...", ticks);
@@ -80,9 +80,9 @@ namespace OpenRCT2
         else
         {
             Console::Error::WriteLine("Context initialization failed.");
-            return Exitcode::fail;
+            return ExitCode::fail;
         }
 
-        return Exitcode::ok;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2
