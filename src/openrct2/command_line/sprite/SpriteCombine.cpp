@@ -15,12 +15,12 @@
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    int32_t combine(const char** argv, int32_t argc)
+    Exitcode combine(const char** argv, int32_t argc)
     {
         if (argc < 4)
         {
             fprintf(stdout, "usage: sprite combine <index file> <image file> <output>\n");
-            return -1;
+            return Exitcode::fail;
         }
 
         const utf8* indexFile = argv[1];
@@ -58,6 +58,6 @@ namespace OpenRCT2::CommandLine::Sprite
         fileData.Read(data.data(), fileDataSize);
         outputStream.Write(data.data(), fileDataSize);
 
-        return 0;
+        return Exitcode::ok;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

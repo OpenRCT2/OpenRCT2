@@ -12,6 +12,7 @@
 #include <openrct2/command_line/CommandLine.hpp>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::CommandLine;
 
 /**
  * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
@@ -19,8 +20,8 @@ using namespace OpenRCT2;
 int main(int argc, const char** argv)
 {
     int32_t rc = EXIT_SUCCESS;
-    int runGame = CommandLineRun(argv, argc);
-    if (runGame == EXITCODE_CONTINUE)
+    auto runGame = CommandLineRun(argv, argc);
+    if (runGame == Exitcode::launch)
     {
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
@@ -29,7 +30,7 @@ int main(int argc, const char** argv)
         auto context = CreateContext();
         rc = context->RunOpenRCT2(argc, argv);
     }
-    else if (runGame == EXITCODE_FAIL)
+    else if (runGame == Exitcode::fail)
     {
         rc = EXIT_FAILURE;
     }

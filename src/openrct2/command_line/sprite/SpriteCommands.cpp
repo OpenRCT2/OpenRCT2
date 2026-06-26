@@ -44,7 +44,7 @@ namespace OpenRCT2::CommandLine::Sprite
         kOptionTableEnd
     };
 
-    static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
+    static Exitcode HandleSprite(CommandLineArgEnumerator *argEnumerator);
 
     const CommandLineCommand kSpriteCommands[]
     {
@@ -62,7 +62,7 @@ namespace OpenRCT2::CommandLine::Sprite
     };
     // clang-format on
 
-    static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
+    static Exitcode HandleSprite(CommandLineArgEnumerator* argEnumerator)
     {
         auto spriteMode = ImportMode::Default;
         if (String::iequals(_mode, SZ_CLOSEST))
@@ -75,7 +75,7 @@ namespace OpenRCT2::CommandLine::Sprite
 
         gOpenRCT2Headless = true;
         if (argc == 0)
-            return -1;
+            return Exitcode::fail;
 
         if (String::iequals(argv[0], "details"))
         {
@@ -118,7 +118,7 @@ namespace OpenRCT2::CommandLine::Sprite
         }
 
         fprintf(stderr, "Unknown sprite command.\n");
-        return EXITCODE_FAIL;
+        return Exitcode::fail;
     }
 
     bool SpriteImageExport(const G1Element& spriteElement, u8string_view outPath)

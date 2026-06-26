@@ -9,6 +9,9 @@
 
 #include "../interface/Screenshot.h"
 #include "CommandLine.hpp"
+#include "Exitcode.h"
+
+using namespace OpenRCT2::CommandLine;
 
 namespace OpenRCT2
 {
@@ -32,7 +35,7 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator);
+    static Exitcode HandleScreenshot(CommandLineArgEnumerator *argEnumerator);
 
     const CommandLineCommand CommandLine::kScreenshotCommands[]
     {
@@ -43,15 +46,15 @@ namespace OpenRCT2
     };
     // clang-format on
 
-    static exitcode_t HandleScreenshot(CommandLineArgEnumerator* argEnumerator)
+    static Exitcode HandleScreenshot(CommandLineArgEnumerator* argEnumerator)
     {
         const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
         int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
         int32_t result = CommandLineForScreenshot(argv, argc, &_options);
         if (result < 0)
         {
-            return EXITCODE_FAIL;
+            return Exitcode::fail;
         }
-        return EXITCODE_OK;
+        return Exitcode::ok;
     }
 } // namespace OpenRCT2

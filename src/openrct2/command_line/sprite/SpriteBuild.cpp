@@ -20,12 +20,12 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    int32_t build(const char** argv, int32_t argc, ImportMode spriteMode)
+    Exitcode build(const char** argv, int32_t argc, ImportMode spriteMode)
     {
         if (argc < 3)
         {
             fprintf(stdout, "usage: sprite build <spritefile> <sprite description file> [silent]\n");
-            return -1;
+            return Exitcode::fail;
         }
 
         const utf8* spriteFilePath = argv[1];
@@ -36,7 +36,7 @@ namespace OpenRCT2::CommandLine::Sprite
         if (jsonSprites.is_null())
         {
             fprintf(stderr, "Unable to read sprite description file: %s\n", spriteDescriptionPath);
-            return -1;
+            return Exitcode::fail;
         }
 
         if (jsonSprites.is_object() && !jsonSprites["images"].is_null())
@@ -45,7 +45,7 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!jsonSprites.is_array())
         {
             fprintf(stderr, "Error: expected array\n");
-            return -1;
+            return Exitcode::fail;
         }
 
         bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
@@ -72,7 +72,7 @@ namespace OpenRCT2::CommandLine::Sprite
             if (!jsonSprite.is_object())
             {
                 fprintf(stderr, "Error: expected object for sprite %s\n", jsonKey.c_str());
-                return -1;
+                return Exitcode::fail;
             }
 
             json_t colours = jsonSprite["colours"];
@@ -90,7 +90,7 @@ namespace OpenRCT2::CommandLine::Sprite
                 if (!path.is_string())
                 {
                     fprintf(stderr, "Error: no path provided for sprite %s\n", jsonKey.c_str());
-                    return -1;
+                    return Exitcode::fail;
                 }
                 std::string strPath = Json::GetString(path);
 
@@ -111,7 +111,7 @@ namespace OpenRCT2::CommandLine::Sprite
                     if (image == std::nullopt)
                     {
                         fprintf(stderr, "Could not read image file: %s\nCancelling\n", imagePath.c_str());
-                        return -1;
+                        return Exitcode::fail;
                     }
                     images[imagePath] = image.value();
 
@@ -130,7 +130,7 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!spriteFile.Save(spriteFilePath))
         {
             fprintf(stderr, "Could not save sprite file, cancelling.");
-            return -1;
+            return Exitcode::fail;
         }
 
         fprintf(stdout, "Finished building graphics repository with %u images\n", numSuccessful);
@@ -142,6 +142,6 @@ namespace OpenRCT2::CommandLine::Sprite
             fprintf(stdout, "\"$LGX:%s[0..%u]\"\n", spriteFileName.c_str(), numSuccessful - 1);
         }
 
-        return 0;
+        return Exitcode::ok;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

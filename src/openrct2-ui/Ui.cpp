@@ -21,6 +21,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/command_line/CommandLine.hpp>
+#include <openrct2/command_line/Exitcode.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 
@@ -54,9 +55,9 @@ int main(int argc, const char** argv)
     });
 #endif
     int32_t rc = EXIT_SUCCESS;
-    int runGame = CommandLineRun(argv, argc);
+    auto runGame = CommandLineRun(argv, argc);
     RegisterBitmapReader();
-    if (runGame == EXITCODE_CONTINUE)
+    if (runGame == OpenRCT2::CommandLine::Exitcode::launch)
     {
         std::unique_ptr<IContext> context;
         if (gOpenRCT2Headless)
@@ -83,7 +84,7 @@ int main(int argc, const char** argv)
         }
         rc = context->RunOpenRCT2(argc, argv);
     }
-    else if (runGame == EXITCODE_FAIL)
+    else if (runGame == OpenRCT2::CommandLine::Exitcode::fail)
     {
         rc = EXIT_FAILURE;
     }

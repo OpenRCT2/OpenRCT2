@@ -36,6 +36,8 @@
     #define IMPLIES_SILENT_BREAKPAD
 #endif // USE_BREAKPAD
 
+using namespace OpenRCT2::CommandLine;
+
 namespace OpenRCT2
 {
 #ifndef DISABLE_NETWORK
@@ -89,15 +91,15 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleNoCommand(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleCommandEdit(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleCommandIntro(CommandLineArgEnumerator * enumerator);
     #ifndef DISABLE_NETWORK
-    static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleCommandHost(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleCommandJoin(CommandLineArgEnumerator * enumerator);
     #endif
-    static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
 
     #if defined(_WIN32)
 
@@ -108,7 +110,7 @@ namespace OpenRCT2
         { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
     };
 
-    static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator);
+    static Exitcode HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator);
 
     #endif
 
@@ -164,14 +166,14 @@ namespace OpenRCT2
     };
     // clang-format on
 
-    exitcode_t CommandLine::HandleCommandDefault()
+    Exitcode CommandLine::HandleCommandDefault()
     {
-        exitcode_t result = EXITCODE_CONTINUE;
+        Exitcode result = Exitcode::launch;
 
         if (_about)
         {
             PrintAbout();
-            result = EXITCODE_OK;
+            result = Exitcode::ok;
         }
         else
         {
@@ -187,14 +189,14 @@ namespace OpenRCT2
                 {
                     PrintVersion();
                 }
-                result = EXITCODE_OK;
+                result = Exitcode::ok;
             }
         }
 
         if (_help || _all)
         {
             PrintHelp(_all);
-            result = EXITCODE_OK;
+            result = Exitcode::ok;
         }
 
         gOpenRCT2Headless = _headless;
@@ -234,10 +236,10 @@ namespace OpenRCT2
         return result;
     }
 
-    exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
+    Exitcode HandleNoCommand(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
@@ -249,13 +251,13 @@ namespace OpenRCT2
             gOpenRCT2StartupAction = StartupAction::open;
         }
 
-        return EXITCODE_CONTINUE;
+        return Exitcode::launch;
     }
 
-    exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
+    Exitcode HandleCommandEdit(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
@@ -267,27 +269,27 @@ namespace OpenRCT2
         }
 
         gOpenRCT2StartupAction = StartupAction::edit;
-        return EXITCODE_CONTINUE;
+        return Exitcode::launch;
     }
 
-    exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    Exitcode HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
 
         gOpenRCT2StartupAction = StartupAction::intro;
-        return EXITCODE_CONTINUE;
+        return Exitcode::launch;
     }
 
 #ifndef DISABLE_NETWORK
 
-    exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
+    Exitcode HandleCommandHost(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
@@ -296,7 +298,7 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&parkUri))
         {
             Console::Error::WriteLine("Expected path or URL to a scenario or saved park.");
-            return EXITCODE_FAIL;
+            return Exitcode::fail;
         }
 
         gOpenRCT2StartupAction = StartupAction::open;
@@ -306,13 +308,13 @@ namespace OpenRCT2
         gNetworkStartPort = _port;
         gNetworkStartAddress = _address;
 
-        return EXITCODE_CONTINUE;
+        return Exitcode::launch;
     }
 
-    exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
+    Exitcode HandleCommandJoin(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
@@ -321,21 +323,21 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&hostname))
         {
             Console::Error::WriteLine("Expected a hostname or IP address to the server to connect to.");
-            return EXITCODE_FAIL;
+            return Exitcode::fail;
         }
 
         gNetworkStart = Network::Mode::client;
         gNetworkStartPort = _port;
         gNetworkStartHost = hostname;
-        return EXITCODE_CONTINUE;
+        return Exitcode::launch;
     }
 
 #endif // DISABLE_NETWORK
 
-    static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
+    static Exitcode HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
@@ -345,7 +347,7 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&rawPath))
         {
             Console::Error::WriteLine("Expected a path.");
-            return EXITCODE_FAIL;
+            return Exitcode::fail;
         }
 
         const auto path = Path::GetAbsolute(rawPath);
@@ -355,7 +357,7 @@ namespace OpenRCT2
         if (!Path::DirectoryExists(path))
         {
             Console::Error::WriteLine("The path '%s' does not exist", path.c_str());
-            return EXITCODE_FAIL;
+            return Exitcode::fail;
         }
 
         // Check if g1.dat exists (naive but good check)
@@ -366,7 +368,7 @@ namespace OpenRCT2
         {
             Console::Error::WriteLine("RCT2 path not valid.");
             Console::Error::WriteLine("Unable to find %s.", pathG1Check.c_str());
-            return EXITCODE_FAIL;
+            return Exitcode::fail;
         }
 
         // Update RCT2 path in config
@@ -380,17 +382,17 @@ namespace OpenRCT2
             Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
             Console::WriteLine();
             Console::WriteLine("Updated config.ini");
-            return EXITCODE_OK;
+            return Exitcode::ok;
         }
 
         Console::Error::WriteLine("Unable to update config.ini");
-        return EXITCODE_FAIL;
+        return Exitcode::fail;
     }
 
-    static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    static Exitcode HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
@@ -402,14 +404,14 @@ namespace OpenRCT2
         auto& env = context->GetPlatformEnvironment();
         auto objectRepository = CreateObjectRepository(env);
         objectRepository->Construct(Config::Get().general.language);
-        return EXITCODE_OK;
+        return Exitcode::ok;
     }
 
 #if defined(_WIN32)
-    static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    static Exitcode HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        Exitcode result = CommandLine::HandleCommandDefault();
+        if (result != Exitcode::launch)
         {
             return result;
         }
@@ -422,7 +424,7 @@ namespace OpenRCT2
         {
             Platform::RemoveFileAssociations();
         }
-        return EXITCODE_OK;
+        return Exitcode::ok;
     }
 #endif // defined(_WIN32)
 
@@ -495,13 +497,13 @@ namespace OpenRCT2
         // TODO Print other potential information (e.g. user, hardware)
     }
 
-    exitcode_t CommandLine::HandleCommandTriggerSteamDownload([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    Exitcode CommandLine::HandleCommandTriggerSteamDownload([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
         if (!Platform::triggerSteamDownload())
         {
-            return EXITCODE_FAIL;
+            return Exitcode::fail;
         }
 
-        return EXITCODE_OK;
+        return Exitcode::ok;
     }
 } // namespace OpenRCT2
