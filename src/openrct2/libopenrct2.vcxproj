@@ -181,6 +181,7 @@
     <ClInclude Include="command_line\sprite\SpriteCommands.h" />
     <ClInclude Include="command_line\sprite\SpriteFile.h" />
     <ClInclude Include="command_line\CommandLine.hpp" />
+    <ClInclude Include="command_line\ExitCode.h" />
     <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\ConfigEnum.hpp" />
     <ClInclude Include="config\ConfigTypes.h" />
