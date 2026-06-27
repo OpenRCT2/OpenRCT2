@@ -81,6 +81,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     struct LocalEvaluationHeights
     {
+        int32_t seaLevel;
         EvaluationHeights self;
         std::optional<EvaluationHeights> neighbourNW;
         std::optional<EvaluationHeights> neighbourNE;
@@ -126,7 +127,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         NormalMap normalMap;
         DistanceMap distanceToWater;
         DistanceMap distanceToRiver;
-        DistanceMap distanceToRiverbed;
+        DistanceMap distanceToSea;
+        DistanceMap distanceToLand;
         DistanceMap distanceToFill;
         DistanceMap distanceToBreach;
         DistanceMap distanceToBorder;
@@ -156,12 +158,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         Water,
         River,
-        Riverbed,
+        Sea,
         MapBorder,
         Fill,
         Breach,
-        // TODO Spring,
-        // TODO Land,
+        Land,
+        // TODO Spring?
+        // TODO Waterfall (Downstream)?
+        // Lake
     };
 
     enum class HeightMode : uint8_t
@@ -173,7 +177,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     enum class HeightType : uint8_t
     {
         Land,
-        Water
+        Water,
+        SeaLevel,
     };
 
     enum class HeightSource : uint8_t
@@ -183,20 +188,18 @@ namespace OpenRCT2::World::MapGenerator::Rule
         NeighbourNE,
         NeighbourSE,
         NeighbourSW,
-        // TODO cardinals?
-        // TODO seaLevel
     };
 
     enum class Type : uint16_t
     {
         Height,
-        DistanceToFeature,
+        Distance,
         Noise,
         NormalAngle,
         Random,
         BlendHeight,
         BlendNoise,
-        BlendDistanceToFeature,
+        BlendDistance,
         LandStyle,
     };
 

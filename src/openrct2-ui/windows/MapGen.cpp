@@ -1288,14 +1288,16 @@ namespace OpenRCT2::Ui::Windows
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER;
                 case MapGenerator::Rule::Feature::River:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVER;
-                case MapGenerator::Rule::Feature::Riverbed:
-                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVERBED;
+                case MapGenerator::Rule::Feature::Sea:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_SEA;
                 case MapGenerator::Rule::Feature::MapBorder:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BORDER;
                 case MapGenerator::Rule::Feature::Fill:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL;
                 case MapGenerator::Rule::Feature::Breach:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH;
+                case MapGenerator::Rule::Feature::Land:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_LAND;
             }
         }
 
@@ -1404,7 +1406,7 @@ namespace OpenRCT2::Ui::Windows
                             BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
                         break;
 
-                    case MapGenerator::Rule::Type::DistanceToFeature:
+                    case MapGenerator::Rule::Type::Distance:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
                         ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::DistanceData>(condition.data).feature));
@@ -1459,7 +1461,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
 
-                    case MapGenerator::Rule::Type::BlendDistanceToFeature:
+                    case MapGenerator::Rule::Type::BlendDistance:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_DISTANCE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO);
                         ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));
@@ -2741,7 +2743,7 @@ namespace OpenRCT2::Ui::Windows
                             BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
                         break;
 
-                    case MapGenerator::Rule::Type::DistanceToFeature:
+                    case MapGenerator::Rule::Type::Distance:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
                         ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::DistanceData>(condition.data).feature));
@@ -2796,7 +2798,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
 
-                    case MapGenerator::Rule::Type::BlendDistanceToFeature:
+                    case MapGenerator::Rule::Type::BlendDistance:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_DISTANCE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO);
                         ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));

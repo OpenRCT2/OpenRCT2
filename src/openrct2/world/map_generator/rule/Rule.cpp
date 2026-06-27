@@ -17,11 +17,11 @@
 #include "../../../object/SmallSceneryEntry.h"
 #include "../../../util/Util.h"
 #include "../../Map.h"
+#include "../DistanceMapUtils.h"
 #include "../MapGen.h"
 #include "../MapHelpers.h"
 #include "../Noise.h"
 #include "../TileQueue.hpp"
-#include "../DistanceMapUtils.h"
 
 #include <charconv>
 #include <random>
@@ -221,29 +221,55 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static void computeNormalMap(const MapGenCtx& genCtx, NormalMap& normalMap)
     {
         // TODO actually compute the normal
-        normalMap = NormalMap{ genCtx.heightMap.width, genCtx.heightMap.height };
+        normalMap = NormalMap{ genCtx.dimensions };
         normalMap.fill({ 0.0f, 0.0f, 1.0f });
+    }
+
+    static void computeLandDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
+    {
+        evalCtx.distanceToLand = DistanceMap{ genCtx.dimensions };
+        evalCtx.distanceToLand.fill(std::numeric_limits<float>::infinity());
+
+        StableTileQueue queue;
+        MaskMap visited{ genCtx.dimensions };
+
+        for (int32_t y = 0; y < genCtx.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < genCtx.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+
+                bool isRiver = genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river);
+                bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
+
+                if (!isSea && !isRiver)
+                {
+                    initZeroDistance(pos, evalCtx.distanceToLand, queue, visited);
+                }
+            }
+        }
+
+        completeDistanceMap(evalCtx.distanceToLand, queue, visited);
     }
 
     static void computeWaterDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
-        evalCtx.distanceToWater = DistanceMap{ genCtx.heightMap.width, genCtx.heightMap.height };
+        evalCtx.distanceToWater = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToWater.fill(std::numeric_limits<float>::infinity());
 
         StableTileQueue queue;
-        MaskMap visited{ evalCtx.distanceToWater.width, evalCtx.distanceToWater.height };
+        MaskMap visited{ genCtx.dimensions };
 
-        for (int32_t y = 0; y < evalCtx.distanceToWater.height; y++)
+        for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
-            for (int32_t x = 0; x < evalCtx.distanceToWater.width; x++)
+            for (int32_t x = 0; x < genCtx.dimensions.x; x++)
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel) // TODO correct?
-                {
-                    initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
-                }
-                else if (genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river))
+                bool isRiver = genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river);
+                bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
+
+                if (isSea || isRiver)
                 {
                     initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
                 }
@@ -253,13 +279,40 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(evalCtx.distanceToWater, queue, visited);
     }
 
+    static void computeSeaDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
+    {
+        evalCtx.distanceToSea = DistanceMap{ genCtx.dimensions };
+        evalCtx.distanceToSea.fill(std::numeric_limits<float>::infinity());
+
+        StableTileQueue queue;
+        MaskMap visited{ genCtx.dimensions };
+
+        for (int32_t y = 0; y < genCtx.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < genCtx.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+
+                bool isRiver = genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river);
+                bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
+
+                if (isSea && !isRiver)
+                {
+                    initZeroDistance(pos, evalCtx.distanceToSea, queue, visited);
+                }
+            }
+        }
+
+        completeDistanceMap(evalCtx.distanceToSea, queue, visited);
+    }
+
     static void computeBorderDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
-        evalCtx.distanceToBorder = DistanceMap{ genCtx.heightMap.width, genCtx.heightMap.height };
+        evalCtx.distanceToBorder = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToBorder.fill(std::numeric_limits<float>::infinity());
 
         StableTileQueue queue;
-        MaskMap visited{ evalCtx.distanceToBorder.width, evalCtx.distanceToBorder.height };
+        MaskMap visited{ genCtx.dimensions };
 
         for (int32_t y = 0; y < evalCtx.distanceToBorder.height; y++)
         {
@@ -340,8 +393,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case Feature::River:
                 distanceActual = ctx.distanceToRiver[ctx.genCoords];
                 break;
-            case Feature::Riverbed:
-                distanceActual = ctx.distanceToRiverbed[ctx.genCoords];
+            case Feature::Sea:
+                distanceActual = ctx.distanceToSea[ctx.genCoords];
+                break;
+            case Feature::Land:
+                distanceActual = ctx.distanceToLand[ctx.genCoords];
                 break;
             case Feature::Fill:
                 distanceActual = ctx.distanceToFill[ctx.genCoords];
@@ -353,14 +409,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return distanceActual;
     }
 
-    static std::optional<int32_t> fetchHeight(const HeightType& type, const std::optional<EvaluationHeights>& heights)
+    static std::optional<int32_t> fetchHeight(
+        const HeightType& type, const std::optional<EvaluationHeights>& heights, int32_t seaLevel)
     {
         switch (type)
         {
             case HeightType::Land:
                 return heights.has_value() ? std::make_optional(heights.value().land) : std::nullopt;
             case HeightType::Water:
-                 return heights.has_value() ? heights.value().water : std::nullopt;
+                return heights.has_value() ? heights.value().water : std::nullopt;
+            case HeightType::SeaLevel:
+                return seaLevel > 0 ? std::make_optional(seaLevel) : std::nullopt;
             default:
                 throw std::runtime_error("Unknown HeightType");
         }
@@ -369,18 +428,18 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static std::optional<int32_t> fetchHeight(
         const HeightSource& source, const HeightType& type, const LocalEvaluationHeights& localHeights)
     {
-        switch (source)
+        switch (source) // TODO handle sea level better
         {
             case HeightSource::Self:
-                return fetchHeight(type, localHeights.self);
+                return fetchHeight(type, localHeights.self, localHeights.seaLevel);
             case HeightSource::NeighbourNW:
-                return fetchHeight(type, localHeights.neighbourNW);
+                return fetchHeight(type, localHeights.neighbourNW, localHeights.seaLevel);
             case HeightSource::NeighbourNE:
-                return fetchHeight(type, localHeights.neighbourNE);
+                return fetchHeight(type, localHeights.neighbourNE, localHeights.seaLevel);
             case HeightSource::NeighbourSE:
-                return fetchHeight(type, localHeights.neighbourSE);
+                return fetchHeight(type, localHeights.neighbourSE, localHeights.seaLevel);
             case HeightSource::NeighbourSW:
-                return fetchHeight(type, localHeights.neighbourSW);
+                return fetchHeight(type, localHeights.neighbourSW, localHeights.seaLevel);
             default:
                 throw std::runtime_error("Unknown HeightSource");
         }
@@ -396,6 +455,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     return localHeights.self.land;
                 case HeightType::Water:
                     return localHeights.self.water;
+                case HeightType::SeaLevel:
+                    return localHeights.seaLevel;
                 default:
                     throw std::runtime_error("Unknown HeightType");
             }
@@ -424,7 +485,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height)
                     : false;
             }
-            case Type::DistanceToFeature:
+            case Type::Distance:
             {
                 auto distanceData = std::get<DistanceData>(condition.data);
                 auto distanceActual = lookupDistanceTo(ctx, distanceData.feature);
@@ -463,7 +524,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 auto prngValue = ctx.prngDist(ctx.conditionPrngs[key]);
                 return evaluatePredicate(prngValue, condition.predicate, heightSs);
             }
-            case Type::BlendDistanceToFeature:
+            case Type::BlendDistance:
             {
                 auto& distanceBlendData = std::get<BlendDistanceData>(condition.data);
                 auto actualDistance = lookupDistanceTo(ctx, distanceBlendData.feature);
@@ -740,9 +801,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
             EvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt });
     }
 
-    static LocalEvaluationHeights getLocalHeightsAt(const TileCoordsXY& gameCoords)
+    static LocalEvaluationHeights getLocalHeightsAt(const MapGenCtx& genCtx, const TileCoordsXY& gameCoords)
     {
         return {
+            .seaLevel = genCtx.settings.waterLevel,
             .self = getHeightsAt(gameCoords).value(),
             .neighbourNW = getHeightsAt(gameCoords + kNeighbourOffsetNW),
             .neighbourNE = getHeightsAt(gameCoords + kNeighbourOffsetNE),
@@ -772,7 +834,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     return;
                 }
 
-                evalCtx.localHeights = getLocalHeightsAt(evalCtx.worldCoords);
+                evalCtx.localHeights = getLocalHeightsAt(genCtx, evalCtx.worldCoords);
                 evalCtx.landTexture = surfaceElement->GetSurfaceObjectIndex();
 
                 auto result = evaluateAtFn(rules, evalCtx);
@@ -787,8 +849,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         computeNormalMap(genCtx, evalCtx.normalMap);
         computeWaterDistanceMap(genCtx, evalCtx);
+        computeSeaDistanceMap(genCtx, evalCtx);
+        computeLandDistanceMap(genCtx, evalCtx);
         computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiver, Hydro::HydroFlag::river);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiverbed, Hydro::HydroFlag::riverbed);
         computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToFill, Hydro::HydroFlag::filled);
         computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToBreach, Hydro::HydroFlag::breached);
         computeBorderDistanceMap(genCtx, evalCtx);
@@ -857,7 +920,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .conditions = std::vector{
                              Condition{
                                  .enabled = true,
-                                 .type = Type::DistanceToFeature,
+                                 .type = Type::Distance,
                                  .predicate = Predicate::Equal,
                                  .data = DistanceData{
                                     .feature = Feature::River,
@@ -869,22 +932,24 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                      .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
 
         settings.textureRules.push_back(
-            TextureRule{
-                .enabled = true,
-                .isDefault = false,
-                .name = FormatStringID(STR_MAPGEN_RULE_BEACHES_WATER_BODIES),
-                .conditions = std::vector{ Condition{ .enabled = true,
-                                                      .type = Type::DistanceToFeature,
-                                                      .predicate = Predicate::Equal,
-                                                      .data = DistanceData{ .feature = Feature::Riverbed, .distance = 0 } },
-                                           Condition{ .enabled = true,
-                                                      .type = Type::DistanceToFeature,
-                                                      .predicate = Predicate::GreaterThan,
-                                                      .data = DistanceData{ .feature = Feature::River, .distance = 0 } } },
-                .effect = { .applyLandTexture = true,
-                            .landTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_surface.sand").value_or(0),
-                            .applyEdgeTexture = false,
-                            .edgeTexture = 0 } });
+            TextureRule{ .enabled = true,
+                         .isDefault = false,
+                         .name = FormatStringID(STR_MAPGEN_RULE_BEACHES_WATER_BODIES),
+                         .conditions = std::vector{ Condition{ .enabled = true,
+                                                               .type = Type::Distance,
+                                                               .predicate = Predicate::LessThanOrEqual,
+                                                               .data = DistanceData{ .feature = Feature::Sea, .distance = 1 } },
+                                                    Condition{ .enabled = true,
+                                                               .type = Type::BlendDistance,
+                                                               .predicate = Predicate::LessThan,
+                                                               .data = BlendDistanceData{ .feature = Feature::River,
+                                                                                          .seedOffset = 4,
+                                                                                          .edgeLow = 2,
+                                                                                          .edgeHigh = 16 } } },
+                         .effect = { .applyLandTexture = true,
+                                     .landTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_surface.sand").value_or(0),
+                                     .applyEdgeTexture = false,
+                                     .edgeTexture = 0 } });
     }
 
     void createNewTextureRule(Settings& settings)
@@ -1018,7 +1083,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static Condition aboveWater()
     {
         return Condition{ .enabled = true,
-                          .type = Type::DistanceToFeature,
+                          .type = Type::Distance,
                           .predicate = Predicate::GreaterThan,
                           .data = DistanceData{ .feature = Feature::Water, .distance = 0 } };
     }
@@ -1063,7 +1128,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static Condition distanceToFeature(const Feature feature, const float distance)
     {
         return Condition{ .enabled = true,
-                          .type = Type::DistanceToFeature,
+                          .type = Type::Distance,
                           .predicate = Predicate::LessThan,
                           .data = DistanceData{ .feature = feature, .distance = distance } };
     }
@@ -1379,7 +1444,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                       .typeFirst = HeightType::Land,
                                                       .sourceSecond = HeightSource::Self,
                                                       .typeSecond = HeightType::Land } };
-            case Type::DistanceToFeature:
+            case Type::Distance:
                 return Condition{ .enabled = true,
                                   .type = type,
                                   .predicate = Predicate::LessThan,
@@ -1415,7 +1480,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                           .octaves = 6,
                                                           .edgeLow = 0.33f,
                                                           .edgeHigh = 0.66f } };
-            case Type::BlendDistanceToFeature:
+            case Type::BlendDistance:
                 return Condition{ .enabled = true,
                                   .type = type,
                                   .predicate = Predicate::GreaterThan,

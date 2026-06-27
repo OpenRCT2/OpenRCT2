@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::Height:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE;
                     break;
-                case Type::DistanceToFeature:
+                case Type::Distance:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_LABEL;
                     featureVisible=true;
                     break;
@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                     edgeLowVisible = true;
                     edgeHighVisible = true;
                     break;
-                case Type::BlendDistanceToFeature:
+                case Type::BlendDistance:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_COND_BLEND_DISTANCE_VERBOSE;
                     valueVisible = false;
                     seedVisible = true;
@@ -312,14 +312,16 @@ namespace OpenRCT2::Ui::Windows
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER;
                 case Feature::River:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVER;
-                case Feature::Riverbed:
-                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVERBED;
+                case Feature::Sea:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_SEA;
                 case Feature::MapBorder:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BORDER;
                 case Feature::Fill:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL;
                 case Feature::Breach:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH;
+                case Feature::Land:
+                    return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_LAND;
                 default:
                     throw std::runtime_error("unknown feature");
             }
@@ -340,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
                     break;
                 }
-                case Type::DistanceToFeature:
+                case Type::Distance:
                 {
                     auto ft = Formatter();
                     ft.Add<int16_t>(static_cast<int16_t>(std::get<DistanceData>(condition.data).distance));
@@ -477,7 +479,7 @@ namespace OpenRCT2::Ui::Windows
 
                     break;
                 }
-                case Type::BlendDistanceToFeature:
+                case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
 
@@ -553,7 +555,7 @@ namespace OpenRCT2::Ui::Windows
                     elevationData.height = std::clamp(elevationValue, kHeightMin, kHeightMax);
                     break;
                 }
-                case Type::DistanceToFeature:
+                case Type::Distance:
                 {
                     auto& distanceData = std::get<DistanceData>(condition.data);
                     auto distanceValue = floatValue.value_or(distanceData.distance + 1 * changeMultiplier);
@@ -621,7 +623,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case Type::BlendDistanceToFeature:
+                case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
                     auto edgeLow = intValue.has_value() ? intValue.value() : blendDistanceData.edgeLow + 1 * changeMultiplier;
@@ -668,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                    case Type::BlendDistanceToFeature:
+                    case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
                     auto edgeHigh = intValue.has_value() ? intValue.value() : blendDistanceData.edgeHigh + 1 * changeMultiplier;
@@ -800,7 +802,7 @@ namespace OpenRCT2::Ui::Windows
                         STR_FORMAT_INTEGER, BaseZToMetres(std::get<HeightData>(condition.data).height), 3);
                     break;
                 }
-                case Type::DistanceToFeature:
+                case Type::Distance:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
@@ -914,7 +916,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendNoise:
                     seedOffset = std::get<BlendNoiseData>(condition.data).seedOffset;
                     break;
-                case Type::BlendDistanceToFeature:
+                case Type::BlendDistance:
                     seedOffset = std::get<BlendDistanceData>(condition.data).seedOffset;
                     break;
                 default:
@@ -956,7 +958,7 @@ namespace OpenRCT2::Ui::Windows
                         static_cast<int32_t>(std::get<BlendNoiseData>(condition.data).edgeLow * 100), 4);
                     break;
                 }
-                case Type::BlendDistanceToFeature:
+                case Type::BlendDistance:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_LOW);
@@ -998,7 +1000,7 @@ namespace OpenRCT2::Ui::Windows
                         static_cast<int32_t>(std::get<BlendNoiseData>(condition.data).edgeHigh * 100), 4);
                     break;
                 }
-                case Type::BlendDistanceToFeature:
+                case Type::BlendDistance:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_HIGH);
@@ -1147,11 +1149,11 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::DistanceToFeature:
+                case Type::Distance:
                 {
                     return std::get<DistanceData>(condition.data).feature;
                 }
-                case Type::BlendDistanceToFeature:
+                case Type::BlendDistance:
                 {
                     return std::get<BlendDistanceData>(condition.data).feature;
                 }
@@ -1209,10 +1211,11 @@ namespace OpenRCT2::Ui::Windows
                     constexpr ItemExt items[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVER),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVERBED),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_SEA),
                         ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BORDER),
                         ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL),
                         ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_LAND),
                     };
 
                     SetItems(items);

@@ -58,14 +58,24 @@ namespace OpenRCT2::World::MapGenerator
 
         T& operator[](TileCoordsXY pos)
         {
-            assert(inBounds(pos));
-            return _value[pos.y * width + pos.x];
+            return _value[idx(pos)];
         }
 
         const T& operator[](TileCoordsXY pos) const
         {
+            return _value[idx(pos)];
+        }
+
+        size_t idx(const TileCoordsXY pos) const
+        {
             assert(inBounds(pos));
-            return _value[pos.y * width + pos.x];
+            return pos.y * width + pos.x;
+        }
+
+        TileCoordsXY pos(const size_t idx) const
+        {
+            assert (idx < size());
+            return TileCoordsXY{ static_cast<int32_t>(idx % width), static_cast<int32_t>(idx / width) };
         }
 
         void fill(const T& value)

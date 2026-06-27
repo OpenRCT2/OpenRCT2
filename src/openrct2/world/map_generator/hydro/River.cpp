@@ -933,6 +933,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         prepareRiverQueue(context, queue, visited);
 
+        const float seafloorMaxCarveDepth = static_cast<float>(context.settings.waterLevel - kRiversSeafloorMaxCarveDepth);
+
         while (!queue.empty())
         {
             const QueueTile tile = queue.top();
@@ -940,15 +942,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
             const float width = riverWidth(context, tile.pos);
             const float radius = width / 2.0f + 1.0f;
-            const float radiusMinusOne = radius - 1.0f;
             const float radiusSquared = radius * radius;
-            const float radiusMinusOneSquared = radiusMinusOne * radiusMinusOne;
 
             const float depth = riverDepth(width);
             const float referenceHeight = heightCopy[tile.pos] - 2.0f;
 
-            hydroMaps.flags[tile.pos].set(riverbed);
-            hydroMaps.height[tile.pos] = quantizeHeight(heightCopy[tile.pos] - 2.0f);
+            hydroMaps.height[tile.pos] = heightCopy[tile.pos] - 2.0f;
 
             for (int32_t dy = -radius; dy <= radius; dy++)
             {
@@ -966,7 +965,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
 
                     // don't carve rivers into the sea floor
-                    float candidateHeight = std::max(referenceHeight, static_cast<float>(context.settings.waterLevel - 4));
+                    float candidateHeight = std::max(referenceHeight, seafloorMaxCarveDepth);
 
                     if (hydroMaps.flags[deltaPos].has(river))
                     {
@@ -978,12 +977,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     //     continue;
                     // }
 
-                    heightMap[deltaPos] = quantizeHeight(std::min(candidateHeight, heightMap[deltaPos]));
-
-                    if (distanceSquared <= radiusMinusOneSquared && hydroMaps.flags[deltaPos].has(filled))
-                    {
-                        hydroMaps.flags[deltaPos].set(riverbed);
-                    }
+                    heightMap[deltaPos] = std::min(candidateHeight, heightMap[deltaPos]);
                 }
             }
 
@@ -1011,6 +1005,19 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        for (int32_t y = 1; y < context.dimensions.y - 1; y++)
+        {
+            for (int32_t x = 1; x < context.dimensions.x - 1; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                context.heightMap[pos] = quantizeHeight(context.heightMap[pos]);
+                if (hydroMaps.flags[pos].has(river))
+                {
+                    hydroMaps.height[pos] = quantizeHeight(hydroMaps.height[pos]);
+                }
+            }
+        }
 
         for (int32_t y = 1; y < context.dimensions.y - 1; y++)
         {
@@ -1077,6 +1084,29 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     }
 
+    /**
+     * unset river and riverbed flags below sea level for more intuitive behavior in texture/scenery rules.
+     */
+    static void clearRiversBelowSeaLevel(MapGenCtx& context)
+    {
+        PROFILED_FUNCTION();
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        const float seafloorMaxCarveDepth = static_cast<float>(context.settings.waterLevel - kRiversSeafloorMaxCarveDepth);
+
+        for (int32_t y = 1; y < context.dimensions.y - 1; y++)
+        {
+            for (int32_t x = 1; x < context.dimensions.x - 1; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                if (hydroMaps.height[pos] < seafloorMaxCarveDepth)
+                {
+                    hydroMaps.flags[pos].unset(river);
+                }
+            }
+        }
+    }
+
     void generateRivers(MapGenCtx& context)
     {
         PROFILED_FUNCTION();
@@ -1088,6 +1118,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         pruneShortStreams(context);
         ensureCardinalNeighbours(context);
         carveRiverbed(context);
+        clearRiversBelowSeaLevel(context);
         ensureConsistent(context);
     }
 } // namespace OpenRCT2::World::MapGenerator::Hydro

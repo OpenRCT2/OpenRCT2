@@ -3951,7 +3951,7 @@ STR_7191    :Catchment threshold
 STR_7192    :Enter catchment threshold between {INT32} and {INT32}
 STR_7200    :Water
 STR_7201    :River
-STR_7202    :Riverbed
+STR_7202    :Sea
 STR_7203    :Map edge
 STR_7204    :Filled
 STR_7205    :Breached
@@ -3972,3 +3972,4 @@ STR_7219    :Breach depth
 STR_7220    :Enter breach depth between {INT32} and {INT32}
 STR_7221    :Breach length/depth
 STR_7222    :Distance[Feature]
+STR_7223    :Land
