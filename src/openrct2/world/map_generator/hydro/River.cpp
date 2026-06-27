@@ -13,11 +13,14 @@
 #include "../../../Diagnostic.h"
 #include "../../../GameState.h"
 #include "../../../profiling/Profiling.h"
+#include "../DistanceMapUtils.h"
 #include "../MapHelpers.h"
 #include "../TileQueue.hpp"
-#include "../DistanceMapUtils.h"
 
+#include <format>
 #include <numbers>
+
+//#define ENABLE_DEBUG_SIGNS
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
@@ -510,8 +513,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
      */
     static void pruneVisit(
         MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap, DistanceMap& distanceMap,
-        const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& blockedCount, const TileCoordsXY& offset,
-        const bool isCardinal)
+        const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& blockedCount, const TileCoordsXY& offset)
     {
         const TileCoordsXY nPos{ pos + offset };
 
@@ -526,13 +528,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             {
                 blockedCount++;
             }
-            return;
-        }
-
-        // a bit of a workaround, the thinning algorithm leaves T-junctions instead of reducing to Y), prefer the ordinal
-        if (isCardinal && haveCommonOrdinalNeighbour(context.hydroMaps.value(), pos, offset, skeleton))
-        {
-            blockedCount++;
             return;
         }
 
@@ -557,12 +552,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        BackrefMap nearestSkeletonMap{ context.dimensions };
-        DistanceMap skeletonDistanceMap{ context.dimensions };
-
-        // setup nearest skeleton map for later
-        computeHydroFlagBasedDistanceMap(context, skeletonDistanceMap, skeleton);
-        computeNearestMapFromDistanceMap(skeletonDistanceMap, nearestSkeletonMap);
+        // setup pre pruning nearest skeleton map for later
+        BackrefMap preNearestSkeletonMap{ context.dimensions };
+        DistanceMap preSkeletonDistanceMap{ context.dimensions };
+        computeHydroFlagBasedDistanceMap(context, preSkeletonDistanceMap, skeleton);
+        computeNearestMapFromDistanceMap(preSkeletonDistanceMap, preNearestSkeletonMap);
 
         int32_t iterations = 0;
         while (true)
@@ -587,15 +581,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 int32_t upstreamCount = 0;
                 int32_t blockedCount = 0;
 
-                for (const auto& offset : kNeighbourOffsetsOrdinal)
+                for (const auto& offset : kNeighbourOffsets)
                 {
-                    pruneVisit(
-                        context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, false);
-                }
-                for (const auto& offset : kNeighbourOffsetsCardinal)
-                {
-                    pruneVisit(
-                        context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset, true);
+                    pruneVisit(context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset);
                 }
 
                 if (upstreamCount > 1)
@@ -644,9 +632,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         break;
                     }
 
-                    // checking next here to also prune short streams at the map edge
-                    const auto& next = backrefMap[currentTile.value()];
-                    if (confluenceMap[currentTile.value()] == Mask::True || !next.has_value())
+                    if (confluenceMap[currentTile.value()] == Mask::True)
                     {
                         const auto& maybeMaxSpring = confluenceMaxSpringMap[currentTile.value()];
                         if (!maybeMaxSpring.has_value() || maybeMaxSpring.value() != spring)
@@ -655,7 +641,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         }
                         break;
                     }
-                    currentTile = next;
+                    currentTile = backrefMap[currentTile.value()];
+                    ;
                 }
 
                 if (prune)
@@ -672,10 +659,37 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
             if (!pruned)
             {
-                for (const auto& s : springs)
+                for (const auto& spring : springs)
                 {
-                    hydroMaps.flags[s].set(spring);
+                    hydroMaps.flags[spring].set(HydroFlag::spring);
+#ifdef ENABLE_DEBUG_SIGNS
+                    context.debugSigns.emplace_back(
+                        spring, std::format("spring {}", distanceMap[spring]), Drawing::Colour::white,
+                        Drawing::Colour::lightBlue);
+#endif
                 }
+#ifdef ENABLE_DEBUG_SIGNS
+                for (int32_t y = 0; y < context.dimensions.y; y++)
+                {
+                    for (int32_t x = 0; x < context.dimensions.x; x++)
+                    {
+                        const TileCoordsXY pos{ x, y };
+                        if (confluenceMap[pos] == Mask::True)
+                        {
+                            context.debugSigns.emplace_back(
+                                pos, std::format("confluence {}", distanceMap[pos]), Drawing::Colour::white,
+                                Drawing::Colour::brightPurple);
+                        }
+
+                        if (hydroMaps.flags[pos].has(skeleton))
+                        {
+                            context.debugSigns.emplace_back(
+                                pos, std::format("skeleton {}", distanceMap[pos]), Drawing::Colour::black,
+                                Drawing::Colour::white);
+                        }
+                    }
+                }
+#endif
                 break;
             }
 
@@ -684,20 +698,36 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         LOG_INFO("prune iterations=%d", iterations);
 
+        // setup post pruning nearest skeleton map
+        DistanceMap postSkeletonDistanceMap{ context.dimensions };
+        computeHydroFlagBasedDistanceMap(context, postSkeletonDistanceMap, skeleton);
+
         // throw out river tiles that point to a no-longer-skeleton as their nearest skeleton.
         for (int32_t y = 0; y < context.dimensions.y; y++)
         {
             for (int32_t x = 0; x < context.dimensions.x; x++)
             {
-                TileCoordsXY pos{ x, y };
+                const TileCoordsXY pos{ x, y };
                 if (!hydroMaps.flags[pos].has(river))
                 {
                     continue;
                 }
 
-                if (nearestSkeletonMap[pos].has_value() && !hydroMaps.flags[nearestSkeletonMap[pos].value()].has(skeleton))
+                if (preNearestSkeletonMap[pos].has_value()
+                    && !hydroMaps.flags[preNearestSkeletonMap[pos].value()].has(skeleton))
                 {
-                    hydroMaps.flags[pos].unset(river);
+                    const float preDistance = preSkeletonDistanceMap[pos];
+                    const float postDistance = postSkeletonDistanceMap[pos];
+
+                    if (postDistance > preDistance)
+                    {
+                        hydroMaps.flags[pos].unset(river);
+#ifdef ENABLE_DEBUG_SIGNS
+                        context.debugSigns.emplace_back(
+                            pos, "pruned", Drawing::Colour::white,
+                            preDistance == 0 ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
+#endif
+                    }
                 }
             }
         }
@@ -712,13 +742,15 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         const HydroMaps& hydroMaps = context.hydroMaps.value();
 
         const float catchmentMin = 1.0f;
-        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y * kRiversOverscanFactor;
+        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y
+            * kRiversOverscanFactor;
 
         const float widthMin = 0.0f;
         const float widthMax = context.settings.riverWidthMax;
 
         const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
-        const float exponentiatedCatchment = std::pow(rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
+        const float exponentiatedCatchment = std::pow(
+            rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
         const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
 
         return width;
@@ -1017,7 +1049,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                             else if (hydroMaps.height[pos] < hydroMaps.height[nPos])
                             {
                                 hasSource = true;
-                            } else
+                            }
+                            else
                             {
                                 hasPeer = true;
                             }
@@ -1027,14 +1060,14 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     {
                         if (hasSource && !hasSink)
                         {
-                            //auto worldPos = genCoordsToWorldCoords(context, pos);
-                            //LOG_INFO("changed gen(%d,%d) world(%d,%d)  +=2", pos.x, pos.y, worldPos.x, worldPos.y);
+                            // auto worldPos = genCoordsToWorldCoords(context, pos);
+                            // LOG_INFO("changed gen(%d,%d) world(%d,%d)  +=2", pos.x, pos.y, worldPos.x, worldPos.y);
                             hydroMaps.height[pos] += 2.0f;
                         }
                         else if (!hasSource && hasSink && !hydroMaps.flags[pos].has(spring))
                         {
-                            //auto worldPos = genCoordsToWorldCoords(context, pos);
-                            //LOG_INFO("changed gen(%d,%d) world(%d,%d) -=2", pos.x, pos.y, worldPos.x, worldPos.y);
+                            // auto worldPos = genCoordsToWorldCoords(context, pos);
+                            // LOG_INFO("changed gen(%d,%d) world(%d,%d) -=2", pos.x, pos.y, worldPos.x, worldPos.y);
                             hydroMaps.height[pos] -= 2.0f;
                             context.heightMap[pos] -= 2.0f;
                         }

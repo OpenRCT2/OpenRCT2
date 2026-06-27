@@ -38,7 +38,7 @@ namespace OpenRCT2::World::MapGenerator
         island,
         valley,
         coastal,
-        river, // TODO should probably rename it
+        river, // TODO should probably rename/remove it
         canyon,
         mountain,
         cliff,
