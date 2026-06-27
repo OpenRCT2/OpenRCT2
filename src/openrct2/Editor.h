@@ -28,6 +28,8 @@ namespace OpenRCT2::Editor
     void LoadTrackManager();
     bool LoadLandscape(const utf8* path);
 
+    void SetAllLandOwned();
+
     void ObjectListLoad();
     ResultWithMessage CheckPark();
     std::pair<ObjectType, StringId> CheckObjectSelection();

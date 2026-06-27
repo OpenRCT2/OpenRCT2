@@ -619,6 +619,8 @@
     <ClInclude Include="scenes\editor\EditorController.h" />
     <ClInclude Include="scenes\editor\EditorScene.h" />
     <ClInclude Include="scenes\editor\EditorStep.h" />
+    <ClInclude Include="scenes\editor\TrackDesignerScene.h" />
+    <ClInclude Include="scenes\editor\TrackManagerScene.h" />
     <ClInclude Include="scenes\game\GameScene.h" />
     <ClInclude Include="scenes\intro\IntroScene.h" />
     <ClInclude Include="scenes\preloader\PreloaderScene.h" />
@@ -1211,6 +1213,8 @@
     <ClCompile Include="scenes\SceneManager.cpp" />
     <ClCompile Include="scenes\editor\EditorController.cpp" />
     <ClCompile Include="scenes\editor\EditorScene.cpp" />
+    <ClCompile Include="scenes\editor\TrackDesignerScene.cpp" />
+    <ClCompile Include="scenes\editor\TrackManagerScene.cpp" />
     <ClCompile Include="scenes\game\GameScene.cpp" />
     <ClCompile Include="scenes\intro\IntroScene.cpp" />
     <ClCompile Include="scenes\preloader\PreloaderScene.cpp" />

@@ -64,7 +64,6 @@ namespace OpenRCT2::Editor
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
 
     static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path);
-    static void SetAllLandOwned();
     static void FinaliseMainView();
 
     static void clearMapForEditing();
@@ -162,26 +161,8 @@ namespace OpenRCT2::Editor
      */
     void LoadTrackDesigner()
     {
-        // TODO: replace with dedicated scene
         auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
-
-        Audio::StopAll();
-        gLegacyScene = LegacyScene::trackDesigner;
-        gScreenAge = 0;
-
-        auto& gameState = getGameState();
-        gameStateInitAll(gameState, kDefaultMapSize);
-        gameState.editorStep = Editor::Step::objectSelection;
-        SetAllLandOwned();
-        ObjectListLoad();
-        ContextResetSubsystems();
-        WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
-        LoadPalette();
-
-        GameLoadScripts();
-        GameNotifyMapChanged();
+        sceneMgr->setActiveScene(sceneMgr->getTrackDesignerScene());
     }
 
     /**
@@ -190,33 +171,15 @@ namespace OpenRCT2::Editor
      */
     void LoadTrackManager()
     {
-        // TODO: replace with dedicated scene
         auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
-
-        Audio::StopAll();
-        gLegacyScene = LegacyScene::trackDesignsManager;
-        gScreenAge = 0;
-
-        auto& gameState = getGameState();
-        gameStateInitAll(gameState, kDefaultMapSize);
-        SetAllLandOwned();
-        gameState.editorStep = Editor::Step::objectSelection;
-        ObjectListLoad();
-        ContextResetSubsystems();
-        WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
-        LoadPalette();
-
-        GameLoadScripts();
-        GameNotifyMapChanged();
+        sceneMgr->setActiveScene(sceneMgr->getTrackManagerScene());
     }
 
     /**
      *
      *  rct2: 0x0068ABEC
      */
-    static void SetAllLandOwned()
+    void SetAllLandOwned()
     {
         auto& gameState = getGameState();
 
