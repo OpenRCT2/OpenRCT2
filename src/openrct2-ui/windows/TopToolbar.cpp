@@ -586,7 +586,6 @@ namespace OpenRCT2::Ui::Windows
             else if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_LOAD_LANDSCAPE);
-                gDropdown.items[numItems++] = Dropdown::Separator();
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SAVE_LANDSCAPE);
                 gDropdown.items[numItems++] = Dropdown::Separator();
                 gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SCREENSHOT);
@@ -930,7 +929,7 @@ namespace OpenRCT2::Ui::Windows
                     // Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the
                     // menus of the other modes.
                     if (gLegacyScene == LegacyScene::scenarioEditor && selectedIndex > DDIDX_LOAD_GAME)
-                        selectedIndex += 1;
+                        selectedIndex += 2;
 
                     // Track designer and track designs manager start with Screenshot, not Load/save
                     if (isInTrackDesignerOrManager())
