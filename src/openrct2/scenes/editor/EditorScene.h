@@ -14,6 +14,13 @@
 
 enum class ModalResult : int8_t;
 
+// Counter false positive around EditorScene, needed for gcc 15.2 (used for MinGW CI)
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
 namespace OpenRCT2
 {
     class EditorScene : public Scene
@@ -42,3 +49,7 @@ namespace OpenRCT2
         void clearFinances();
     };
 } // namespace OpenRCT2
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic pop
+#endif
