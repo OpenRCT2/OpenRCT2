@@ -15,6 +15,7 @@
 - Fix: [#26578] Crash when drawing path elements without a valid object.
 - Fix: [#26605] Desync when placing a track design in multiplayer.
 - Fix: [#26654] Fix Alton Towers stall and Rock’n’Roll Revival toilet being closed on scenario start.
+- Fix: [#26722] Missing construction rights owned on UCES Sand Dune scenario.
 - Fix: [objects#411] Some colours in green, acid green, pink and red water are inconsistent with natural water.
 - Fix: [objects#436] St. Basil’s Cathedral building pieces are incorrectly labelled as “Kremlin” pieces.
 - Fix: [objects#438] Some walls are not marked as see-through while they don’t fully block the view.
