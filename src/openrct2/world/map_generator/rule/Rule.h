@@ -100,8 +100,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::size_t operator()(const ConditionKey& s) const noexcept
         {
             // TODO bit of a hack...
-            std::size_t hashRuleIdx = std::hash<std::string>{}(FormatString("r{INT32}", s.ruleIdx));
-            std::size_t hashConditionIdx = std::hash<std::string>{}(FormatString("c{INT32}", s.conditionIdx));
+            std::size_t hashRuleIdx = std::hash<std::string>{}(std::to_string(s.ruleIdx));
+            std::size_t hashConditionIdx = std::hash<std::string>{}(std::to_string(s.conditionIdx));
             return hashRuleIdx ^ (hashConditionIdx << 1);
         }
     };
