@@ -11,7 +11,7 @@
 #include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Editor.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
@@ -29,6 +29,8 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/scenes/SceneManager.h>
+#include <openrct2/scenes/editor/EditorScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>
@@ -252,7 +254,9 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseByNumber(WindowClass::manageTrackDesign, number);
             windowMgr->CloseByNumber(WindowClass::trackDeletePrompt, number);
-            Editor::LoadTrackManager();
+
+            auto& gameState = getGameState();
+            gameState.editorStep = Editor::Step::objectSelection;
         }
 
         void onClose() override

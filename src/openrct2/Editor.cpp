@@ -91,36 +91,6 @@ namespace OpenRCT2::Editor
 
     /**
      *
-     *  rct2: 0x0066FFE1
-     */
-    void Load()
-    {
-        auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
-    }
-
-    /**
-     *
-     *  rct2: 0x00672957
-     */
-    void LoadTrackDesigner()
-    {
-        auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getTrackDesignerScene());
-    }
-
-    /**
-     *
-     *  rct2: 0x006729FD
-     */
-    void LoadTrackManager()
-    {
-        auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getTrackManagerScene());
-    }
-
-    /**
-     *
      *  rct2: 0x0068ABEC
      */
     void SetAllLandOwned()
