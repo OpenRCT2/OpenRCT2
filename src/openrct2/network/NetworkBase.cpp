@@ -2824,7 +2824,7 @@ namespace OpenRCT2::Network
         auto ms = MemoryStream(packet.data.data(), packet.data.size());
         if (LoadMap(&ms))
         {
-            GameLoadInit();
+            GameLoadInit(); // NB: calls `setActiveScene`
             GameLoadScripts();
             GameNotifyMapChanged();
 

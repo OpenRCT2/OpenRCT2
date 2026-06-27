@@ -361,6 +361,7 @@ void GameLoadInit()
     IGameStateSnapshots* snapshots = context->GetGameStateSnapshots();
     snapshots->Reset();
 
+    // TODO: move this to caller sites??
     auto* sceneMgr = context->GetSceneManager();
     sceneMgr->setActiveScene(sceneMgr->getGameScene());
 

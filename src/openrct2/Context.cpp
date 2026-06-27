@@ -809,7 +809,7 @@ namespace OpenRCT2
                         _network.Close();
                     }
 #endif
-                    GameLoadInit();
+                    GameLoadInit(); // NB: calls `setActiveScene`
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == Network::Mode::server)
                     {

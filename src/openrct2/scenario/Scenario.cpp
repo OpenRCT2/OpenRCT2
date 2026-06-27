@@ -79,7 +79,7 @@ static void ScenarioCheckObjective(GameState_t& gameState);
 
 void ScenarioBegin(GameState_t& gameState)
 {
-    GameLoadInit();
+    GameLoadInit(); // NB: calls `setActiveScene`
     ScenarioReset(gameState);
 
     if (gameState.scenarioOptions.objective.Type != ObjectiveType::none && !gLoadKeepWindowsOpen)
