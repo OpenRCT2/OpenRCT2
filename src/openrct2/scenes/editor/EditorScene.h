@@ -33,6 +33,9 @@ namespace OpenRCT2
         static void FinaliseMainView();
         static void resetMainViewport();
 
+    protected:
+        void SetAllLandOwned();
+
     private:
         void AfterLoadCleanup();
         void clearMapForEditing();

@@ -22,8 +22,6 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Editor
 {
-    void SetAllLandOwned();
-
     void ObjectListLoad();
     ResultWithMessage CheckPark();
     std::pair<ObjectType, StringId> CheckObjectSelection();

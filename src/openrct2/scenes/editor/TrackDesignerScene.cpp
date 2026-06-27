@@ -34,7 +34,7 @@ void TrackDesignerScene::Load()
     auto& gameState = getGameState();
     gameStateInitAll(gameState, kDefaultMapSize);
     gameState.editorStep = Editor::Step::objectSelection;
-    Editor::SetAllLandOwned();
+    SetAllLandOwned();
     Editor::ObjectListLoad();
     ContextResetSubsystems();
 

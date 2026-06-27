@@ -57,7 +57,6 @@
 #include <vector>
 
 using namespace OpenRCT2;
-using OpenRCT2::GameActions::CommandFlag;
 
 namespace OpenRCT2::Editor
 {
@@ -87,26 +86,6 @@ namespace OpenRCT2::Editor
         }
 
         context->CloseProgress();
-    }
-
-    /**
-     *
-     *  rct2: 0x0068ABEC
-     */
-    void SetAllLandOwned()
-    {
-        auto& gameState = getGameState();
-
-        MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.mapSize.x - 3) * kCoordsXYStep,
-                           (gameState.mapSize.y - 3) * kCoordsXYStep };
-
-        auto landSetRightsAction = GameActions::LandSetRightsAction(range, GameActions::LandSetRightSetting::setForSale);
-        landSetRightsAction.SetFlags({ CommandFlag::noSpend });
-        GameActions::Execute(&landSetRightsAction, gameState);
-
-        auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::buyLand);
-        landBuyRightsAction.SetFlags({ CommandFlag::noSpend });
-        GameActions::Execute(&landBuyRightsAction, gameState);
     }
 
     /**

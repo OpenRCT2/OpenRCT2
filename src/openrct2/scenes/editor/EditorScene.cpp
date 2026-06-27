@@ -16,6 +16,10 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../ParkImporter.h"
+#include "../../actions/GameActionRunner.h"
+#include "../../actions/ResultWithMessage.h"
+#include "../../actions/park/LandBuyRightsAction.h"
+#include "../../actions/park/LandSetRightsAction.h"
 #include "../../audio/Audio.h"
 #include "../../core/Path.hpp"
 #include "../../drawing/Drawing.h"
@@ -34,6 +38,7 @@
 #include "../SceneManager.h"
 
 using namespace OpenRCT2;
+using OpenRCT2::GameActions::CommandFlag;
 
 void EditorScene::Load()
 {
@@ -310,4 +315,24 @@ void EditorScene::resetMainViewport()
 {
     auto* mainWindow = WindowGetMain();
     mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+}
+
+/**
+ *
+ *  rct2: 0x0068ABEC
+ */
+void EditorScene::SetAllLandOwned()
+{
+    auto& gameState = getGameState();
+
+    MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.mapSize.x - 3) * kCoordsXYStep,
+                       (gameState.mapSize.y - 3) * kCoordsXYStep };
+
+    auto landSetRightsAction = GameActions::LandSetRightsAction(range, GameActions::LandSetRightSetting::setForSale);
+    landSetRightsAction.SetFlags({ CommandFlag::noSpend });
+    GameActions::Execute(&landSetRightsAction, gameState);
+
+    auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::buyLand);
+    landBuyRightsAction.SetFlags({ CommandFlag::noSpend });
+    GameActions::Execute(&landBuyRightsAction, gameState);
 }
