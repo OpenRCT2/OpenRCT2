@@ -3971,3 +3971,4 @@ STR_7218    :Enter breach length between {INT32} and {INT32}
 STR_7219    :Breach depth
 STR_7220    :Enter breach depth between {INT32} and {INT32}
 STR_7221    :Breach length/depth
+STR_7222    :Distance[Feature]

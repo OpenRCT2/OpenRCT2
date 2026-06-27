@@ -762,21 +762,21 @@ namespace OpenRCT2::World::MapGenerator::Rule
         {
             for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
             {
-                evalCtx.gameCoords = { x, y };
-                evalCtx.genCoords = worldCoordsToGenCoords(genCtx, evalCtx.gameCoords);
+                evalCtx.worldCoords = { x, y };
+                evalCtx.genCoords = worldCoordsToGenCoords(genCtx, evalCtx.worldCoords);
                 evalCtx.quadCoords = VecXY{ evalCtx.genCoords.x, evalCtx.genCoords.y };
 
-                auto* surfaceElement = MapGetSurfaceElementAt(evalCtx.gameCoords);
+                auto* surfaceElement = MapGetSurfaceElementAt(evalCtx.worldCoords);
                 if (surfaceElement == nullptr)
                 {
                     return;
                 }
 
-                evalCtx.localHeights = getLocalHeightsAt(evalCtx.gameCoords);
+                evalCtx.localHeights = getLocalHeightsAt(evalCtx.worldCoords);
                 evalCtx.landTexture = surfaceElement->GetSurfaceObjectIndex();
 
                 auto result = evaluateAtFn(rules, evalCtx);
-                callback(evalCtx.gameCoords, result);
+                callback(evalCtx.worldCoords, result);
             }
         }
     }

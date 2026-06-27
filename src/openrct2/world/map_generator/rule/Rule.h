@@ -133,7 +133,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         // per tile
         ObjectEntryIndex landTexture;
-        TileCoordsXY gameCoords;
+        TileCoordsXY worldCoords;
         TileCoordsXY genCoords;
         VecXY quadCoords;
         LocalEvaluationHeights localHeights;
@@ -184,6 +184,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         NeighbourSE,
         NeighbourSW,
         // TODO cardinals?
+        // TODO seaLevel
     };
 
     enum class Type : uint16_t

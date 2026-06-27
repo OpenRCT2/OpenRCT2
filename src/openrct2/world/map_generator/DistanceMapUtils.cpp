@@ -111,7 +111,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (minPos.has_value())
         {
-            Backref nearest = findNearestFromDistanceMap(distanceMap, backrefMap, minPos.value());
+            const Backref nearest = findNearestFromDistanceMap(distanceMap, backrefMap, minPos.value());
             backrefMap[pos] = nearest;
             return nearest;
         }

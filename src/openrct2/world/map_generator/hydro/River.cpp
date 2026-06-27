@@ -284,7 +284,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             postProcessTile(context, queue, visited, backrefMap, std::nullopt, { x, context.dimensions.y - 1 });
         }
 
-        // process tiles and find springs
         while (!queue.empty())
         {
             const QueueTile tile = queue.top();
@@ -476,9 +475,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Returns the two cardinal neighbours for the given ordinal offset.
+     * Returns the two ordinal neighbours for the given cardinal offset.
+     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
      */
-    static std::array<TileCoordsXY, 2> cardinalNeighbours(const TileCoordsXY& offset)
+    static std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset)
     {
         return {
             TileCoordsXY{ 0, offset.y },
@@ -487,12 +487,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Checks if the tile at the offset from the given position share a cardinal neighbour with the given flag.
+     * Checks if the tile at the offset from the given position share an ordinal neighbour with the given flag.
+     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
      */
-    static bool haveCommonCardinalNeighbour(
+    static bool haveCommonOrdinalNeighbour(
         const HydroMaps& hydroMaps, const TileCoordsXY& pos, const TileCoordsXY& offset, const HydroFlag flag = river)
     {
-        for (const TileCoordsXY& scnOffset : cardinalNeighbours(offset))
+        for (const TileCoordsXY& scnOffset : ordinalNeighbours(offset))
         {
             const TileCoordsXY scnPos{ pos + scnOffset };
 
@@ -529,7 +530,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
 
         // a bit of a workaround, the thinning algorithm leaves T-junctions instead of reducing to Y), prefer the ordinal
-        if (isCardinal && haveCommonCardinalNeighbour(context.hydroMaps.value(), pos, offset, skeleton))
+        if (isCardinal && haveCommonOrdinalNeighbour(context.hydroMaps.value(), pos, offset, skeleton))
         {
             blockedCount++;
             return;
@@ -543,7 +544,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Prunes tributary streams that are shorter than kMaxPruneLength.
+     * Prunes tributary streams that are shorter than context.settings.pruneThreshold.
      * This does a bit of a dance, the more straightforward solution of only using the skeleton to reconstruct the river in the
      * widen step below produces rather ugly rivers as much of the variation from the flow-fraction aggregation is lost.
      * So instead keep track of the nearest skeleton tile for each river tile and unset if the skeleton tile was pruned.
@@ -823,7 +824,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Ensure diagonal channels render nicely by asserting each river tile has at least one cardinal neighbour.
+     * Ensure diagonal channels render nicely by asserting each river tile has at least one ordinal neighbour.
+     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
      */
     static void ensureCardinalNeighbours(MapGenCtx& context)
     {
@@ -853,12 +855,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 queue.emplace(nPos, heightMap[nPos]);
                 visited[nPos] = Mask::True;
 
-                if (haveCommonCardinalNeighbour(hydroMaps, tile.pos, offset))
+                if (haveCommonOrdinalNeighbour(hydroMaps, tile.pos, offset))
                 {
                     continue;
                 }
 
-                for (const TileCoordsXY& scnOffset : cardinalNeighbours(offset))
+                for (const TileCoordsXY& scnOffset : ordinalNeighbours(offset))
                 {
                     const TileCoordsXY scnPos{ tile.pos + scnOffset };
                     heightMap[scnPos] = heightMap[tile.pos];

@@ -191,7 +191,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE;
                     break;
                 case Type::DistanceToFeature:
-                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO;
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_LABEL;
                     featureVisible=true;
                     break;
                 case Type::Noise:
