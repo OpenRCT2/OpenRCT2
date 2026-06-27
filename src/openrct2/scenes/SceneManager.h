@@ -28,7 +28,7 @@ namespace OpenRCT2
         virtual IScene* getTrackDesignerScene() = 0;
         virtual IScene* getTrackManagerScene() = 0;
 
-        virtual void setActiveScene(IScene* screen) = 0;
+        virtual void setActiveScene(IScene* scene) = 0;
     };
 
     std::unique_ptr<ISceneManager> createSceneManager(IContext* context);

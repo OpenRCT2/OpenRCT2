@@ -107,11 +107,14 @@ namespace OpenRCT2
             return _trackManagerScene.get();
         }
 
-        void setActiveScene(IScene* screen) override
+        void setActiveScene(IScene* scene) override
         {
+            if (_activeScene == scene)
+                return;
+
             if (_activeScene != nullptr)
                 _activeScene->Stop();
-            _activeScene = screen;
+            _activeScene = scene;
             if (_activeScene)
                 _activeScene->Load();
         }

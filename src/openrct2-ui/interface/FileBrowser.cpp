@@ -306,6 +306,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
                         auto* sceneMgr = GetContext()->GetSceneManager();
                         auto* editorScene = static_cast<EditorScene*>(sceneMgr->getEditorScene());
+                        sceneMgr->setActiveScene(editorScene);
                         if (editorScene->LoadLandscape(pathBuffer))
                         {
                             gCurrentLoadedPath = pathBuffer;
