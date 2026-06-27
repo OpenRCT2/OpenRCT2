@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Sand Dune",
+    "sha256": "14ad956554bf58dacb39a30abf5a899f75629cf1967559cc891bece4eb286258",
+    "land_ownership": {
+        "construction_rights_owned": {
+            "coordinates": [
+                [ 52, 82 ], [ 52, 83 ], [ 52, 84 ], [ 52, 85 ], [ 52, 86]
+            ]
+        }
+    }
+}
