@@ -9,11 +9,14 @@
 
 #pragma once
 
+#include "../../core/StringTypes.h"
 #include "../Scene.h"
+
+enum class ModalResult : int8_t;
 
 namespace OpenRCT2
 {
-    class EditorScene final : public Scene
+    class EditorScene : public Scene
     {
     public:
         using Scene::Scene;
@@ -21,5 +24,18 @@ namespace OpenRCT2
         void Load() override;
         void Tick() override;
         void Stop() override;
+
+        void ConvertSaveToScenario();
+        bool LoadLandscape(const utf8* path);
+
+        static void OpenEditorWindows();
+        static void OpenWindowsForCurrentStep();
+        static void FinaliseMainView();
+        static void resetMainViewport();
+
+    private:
+        void AfterLoadCleanup();
+        void clearMapForEditing();
+        void clearFinances();
     };
 } // namespace OpenRCT2

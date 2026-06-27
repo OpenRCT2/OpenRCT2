@@ -63,12 +63,6 @@ namespace OpenRCT2::Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
 
-    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path);
-    static void FinaliseMainView();
-
-    static void clearMapForEditing();
-    static void clearFinances();
-
     void ObjectListLoad()
     {
         auto* context = GetContext();
@@ -95,14 +89,6 @@ namespace OpenRCT2::Editor
         context->CloseProgress();
     }
 
-    WindowBase* OpenEditorWindows()
-    {
-        auto* main = ContextOpenWindow(WindowClass::mainWindow);
-        ContextOpenWindow(WindowClass::topToolbar);
-        ContextOpenWindowView(WindowView::editorBottomToolbar);
-        return main;
-    }
-
     /**
      *
      *  rct2: 0x0066FFE1
@@ -111,48 +97,6 @@ namespace OpenRCT2::Editor
     {
         auto* sceneMgr = GetContext()->GetSceneManager();
         sceneMgr->setActiveScene(sceneMgr->getEditorScene());
-    }
-
-    /**
-     *
-     *  rct2: 0x00672781
-     */
-    void ConvertSaveToScenario()
-    {
-        ToolCancel();
-        auto intent = Intent(WindowClass::loadsave);
-        intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
-        intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
-        intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(ConvertSaveToScenarioCallback));
-        ContextOpenIntent(&intent);
-    }
-
-    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
-    {
-        if (result != ModalResult::ok)
-        {
-            return;
-        }
-
-        auto& gameState = getGameState();
-        ScenarioReset(gameState);
-
-        gLegacyScene = LegacyScene::scenarioEditor;
-        gameState.editorStep = Editor::Step::optionsSelection;
-        gameState.scenarioOptions.category = Scenario::Category::other;
-        ContextResetSubsystems();
-        OpenEditorWindows();
-        FinaliseMainView();
-        gScreenAge = 0;
-
-        GameLoadScripts();
-        GameNotifyMapChanged();
-
-#ifdef ENABLE_SCRIPTING
-        // Clear the plugin storage before saving
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ClearParkStorage();
-#endif
     }
 
     /**
@@ -193,183 +137,6 @@ namespace OpenRCT2::Editor
         auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::buyLand);
         landBuyRightsAction.SetFlags({ CommandFlag::noSpend });
         GameActions::Execute(&landBuyRightsAction, gameState);
-    }
-
-    // NB: only called by LoadLandscape
-    static void AfterLoadCleanup()
-    {
-        // TODO: replace with dedicated scene
-        auto* sceneMgr = GetContext()->GetSceneManager();
-        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
-
-        getGameState().editorStep = Editor::Step::landscapeEditor;
-        gScreenAge = 0;
-        gLegacyScene = LegacyScene::scenarioEditor;
-        ContextResetSubsystems();
-        OpenEditorWindows();
-        FinaliseMainView();
-
-        GameLoadScripts();
-        GameNotifyMapChanged();
-    }
-
-    bool LoadLandscape(const utf8* path)
-    {
-        // #4996: Make sure the object selection window closes here to prevent unload objects
-        //        after we have loaded a new park.
-        auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseAll();
-
-        if (!GetContext()->LoadParkFromFile(path))
-            return false;
-
-        clearMapForEditing();
-
-        auto extension = Path::GetExtension(path);
-        bool wasScenario = ParkImporter::ExtensionIsScenario(extension);
-        if (!wasScenario)
-            clearFinances();
-
-        AfterLoadCleanup();
-        return true;
-    }
-
-    // NB: only called by LoadLandscape
-    static void clearMapForEditing()
-    {
-        MapRemoveAllRides();
-        UnlinkAllRideBanners();
-
-        RideInitAll();
-
-        for (auto* guest : EntityList<Guest>())
-        {
-            guest->SetName({});
-        }
-        for (auto* staff : EntityList<Staff>())
-        {
-            staff->SetName({});
-        }
-
-        auto& gameState = getGameState();
-        gameState.entities.ResetAllEntities();
-
-        UpdateConsolidatedPatrolAreas();
-
-        auto& park = gameState.park;
-        park.numGuestsInPark = 0;
-        park.numGuestsHeadingForPark = 0;
-        park.numGuestsInParkLastWeek = 0;
-        park.guestChangeModifier = 0;
-
-        Weather::reset();
-
-        News::InitQueue(gameState);
-    }
-
-    // NB: only called by LoadLandscape
-    static void clearFinances()
-    {
-        auto& gameState = getGameState();
-        auto& park = gameState.park;
-
-        park.flags |= PARK_FLAGS_NO_MONEY;
-
-        if (park.entranceFee == 0)
-        {
-            park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-        }
-        else
-        {
-            park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-        }
-
-        park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-
-        auto& scenarioOptions = gameState.scenarioOptions;
-        scenarioOptions.guestInitialCash = std::clamp(scenarioOptions.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
-        scenarioOptions.initialCash = std::min<money64>(scenarioOptions.initialCash, 100000);
-        FinanceResetCashToInitial();
-
-        park.bankLoan = std::clamp<money64>(park.bankLoan, 0.00_GBP, 5000000.00_GBP);
-        park.maxBankLoan = std::clamp<money64>(park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
-        park.bankLoanInterestRate = std::clamp<uint8_t>(park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
-    }
-
-    /**
-     *
-     *  rct2: 0x0067009A
-     */
-    void OpenWindowsForCurrentStep()
-    {
-        if (!isInEditorMode())
-        {
-            return;
-        }
-
-        auto* windowMgr = Ui::GetWindowManager();
-
-        switch (getGameState().editorStep)
-        {
-            case Editor::Step::objectSelection:
-                if (windowMgr->FindByClass(WindowClass::editorObjectSelection) != nullptr)
-                {
-                    return;
-                }
-
-                if (windowMgr->FindByClass(WindowClass::installTrack) != nullptr)
-                {
-                    return;
-                }
-
-                if (gLegacyScene == LegacyScene::trackDesignsManager)
-                {
-                    ObjectManagerUnloadAllObjects();
-                }
-
-                ContextOpenWindow(WindowClass::editorObjectSelection);
-                break;
-            case Editor::Step::inventionsListSetUp:
-                if (windowMgr->FindByClass(WindowClass::editorInventionList) != nullptr)
-                {
-                    return;
-                }
-
-                ContextOpenWindow(WindowClass::editorInventionList);
-                break;
-            case Editor::Step::optionsSelection:
-            case Editor::Step::objectiveSelection:
-            case Editor::Step::scenarioDetails:
-                if (windowMgr->FindByClass(WindowClass::editorScenarioOptions) != nullptr)
-                {
-                    return;
-                }
-
-                ContextOpenWindow(WindowClass::editorScenarioOptions);
-                break;
-            case Editor::Step::landscapeEditor:
-            case Editor::Step::saveScenario:
-            case Editor::Step::rollerCoasterDesigner:
-            case Editor::Step::designsManager:
-            case Editor::Step::invalid:
-                break;
-        }
-    }
-
-    static void FinaliseMainView()
-    {
-        auto windowManager = Ui::GetWindowManager();
-        auto& gameState = getGameState();
-        windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
-
-        ResetAllSpriteQuadrantPlacements();
-
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG));
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
-
-        gWindowUpdateTicks = 0;
-        LoadPalette();
     }
 
     /**

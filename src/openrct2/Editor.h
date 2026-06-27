@@ -23,7 +23,6 @@ namespace OpenRCT2
 namespace OpenRCT2::Editor
 {
     void Load();
-    void ConvertSaveToScenario();
     void LoadTrackDesigner();
     void LoadTrackManager();
     bool LoadLandscape(const utf8* path);
@@ -34,12 +33,7 @@ namespace OpenRCT2::Editor
     ResultWithMessage CheckPark();
     std::pair<ObjectType, StringId> CheckObjectSelection();
 
-    WindowBase* OpenEditorWindows();
-    void OpenWindowsForCurrentStep();
-
     uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
     void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
 } // namespace OpenRCT2::Editor
-
-void EditorOpenWindowsForCurrentStep();

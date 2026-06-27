@@ -37,8 +37,10 @@ void TrackDesignerScene::Load()
     Editor::SetAllLandOwned();
     Editor::ObjectListLoad();
     ContextResetSubsystems();
-    WindowBase* mainWindow = Editor::OpenEditorWindows();
-    mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+
+    OpenEditorWindows();
+    resetMainViewport();
+
     LoadPalette();
 
     GameLoadScripts();
