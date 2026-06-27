@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include "../Scene.h"
+#include "EditorScene.h"
 
 namespace OpenRCT2
 {
-    class TrackDesignerScene final : public Scene
+    class TrackDesignerScene final : public EditorScene
     {
     public:
-        using Scene::Scene;
+        using EditorScene::EditorScene;
 
         void Load() override;
         void Tick() override;

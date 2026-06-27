@@ -29,6 +29,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/SceneManager.h>
+#include <openrct2/scenes/editor/EditorScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -303,7 +304,10 @@ namespace OpenRCT2::Ui::FileBrowser
                     case (LoadSaveType::landscape):
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
-                        if (Editor::LoadLandscape(pathBuffer))
+
+                        auto* sceneMgr = GetContext()->GetSceneManager();
+                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getEditorScene());
+                        if (editorScene->LoadLandscape(pathBuffer))
                         {
                             gCurrentLoadedPath = pathBuffer;
                             GfxInvalidateScreen();
