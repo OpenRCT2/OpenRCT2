@@ -84,7 +84,7 @@ void EditorScene::Stop()
     ContextForceCloseWindowByClass(WindowClass::editorObjectSelection);
 }
 
-static void ConvertSaveToScenarioCallback(EditorScene& scene, ModalResult result, const utf8* path)
+static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
 {
     if (result != ModalResult::ok)
     {
@@ -99,8 +99,11 @@ static void ConvertSaveToScenarioCallback(EditorScene& scene, ModalResult result
     gameState.scenarioOptions.category = Scenario::Category::other;
     ContextResetSubsystems();
 
-    scene.OpenEditorWindows();
-    scene.FinaliseMainView();
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* scene = static_cast<EditorScene*>(sceneMgr->getEditorScene());
+
+    scene->OpenEditorWindows();
+    scene->FinaliseMainView();
     gScreenAge = 0;
 
     GameLoadScripts();
@@ -108,7 +111,7 @@ static void ConvertSaveToScenarioCallback(EditorScene& scene, ModalResult result
 
 #ifdef ENABLE_SCRIPTING
     // Clear the plugin storage before saving
-    auto& scriptEngine = scene.GetContext().GetScriptEngine();
+    auto& scriptEngine = GetContext()->GetScriptEngine();
     scriptEngine.ClearParkStorage();
 #endif
 }
