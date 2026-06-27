@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Editor.h"
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"

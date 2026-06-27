@@ -11,7 +11,6 @@
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../Editor.h"
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
@@ -31,6 +30,7 @@
 #include "../../localisation/Language.h"
 #include "../../object/ObjectManager.h"
 #include "../../scenario/Scenario.h"
+#include "../../scenes/editor/EditorController.h"
 #include "../../scripting/ScriptEngine.h"
 #include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"

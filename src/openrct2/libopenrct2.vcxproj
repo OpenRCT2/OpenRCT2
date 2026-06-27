@@ -274,7 +274,6 @@
     <ClInclude Include="drawing\TTF.h" />
     <ClInclude Include="drawing\WeatherDrawer.h" />
     <ClInclude Include="drawing\X8DrawingEngine.h" />
-    <ClInclude Include="Editor.h" />
     <ClInclude Include="entity\Balloon.h" />
     <ClInclude Include="entity\Duck.h" />
     <ClInclude Include="entity\EntityBase.h" />
@@ -911,7 +910,6 @@
     <ClCompile Include="drawing\TTFSDLPort.cpp" />
     <ClCompile Include="drawing\WeatherDrawer.cpp" />
     <ClCompile Include="drawing\X8DrawingEngine.cpp" />
-    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="entity\Balloon.cpp" />
     <ClCompile Include="entity\Duck.cpp" />
     <ClCompile Include="entity\EntityBase.cpp" />

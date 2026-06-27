@@ -13,7 +13,6 @@
 #include <functional>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>

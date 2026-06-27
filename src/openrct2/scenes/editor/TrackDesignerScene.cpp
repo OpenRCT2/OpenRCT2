@@ -11,7 +11,6 @@
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../Editor.h"
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
@@ -20,6 +19,7 @@
 #include "../../interface/WindowBase.h"
 #include "../../localisation/Language.h"
 #include "../../world/Map.h"
+#include "EditorController.h"
 
 using namespace OpenRCT2;
 

@@ -14,7 +14,6 @@
 
 #include "AssetPackManager.h"
 #include "Context.h"
-#include "Editor.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
