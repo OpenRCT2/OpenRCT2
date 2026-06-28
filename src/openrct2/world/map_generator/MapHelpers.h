@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../util/Hash.hpp"
 #include "../Location.hpp"
 #include "BaseMap.hpp"
 #include "MapGen.h"
@@ -28,13 +29,7 @@ namespace OpenRCT2::World::MapGenerator
         SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
     };
 
-    template<class... Arrays>
-    consteval auto concat(Arrays... arrays)
-    {
-        return std::apply([](auto... args) { return std::array{ args... }; }, std::tuple_cat(arrays...));
-    }
-
-    // map coordinates and orientation, rotated 45deg counter clockwise in game
+    // map coordinates and orientation, rotated 45deg counter clockwise in game when compass points north
     //    +x                   -x, -y
     //      +-----+-----+-----+
     //      |  W  | NW  |  N  |
@@ -69,7 +64,28 @@ namespace OpenRCT2::World::MapGenerator
         kNeighbourOffsetN,
     };
 
-    static constexpr std::array kNeighbourOffsets = concat(kNeighbourOffsetsOrdinal, kNeighbourOffsetsCardinal);
+    static constexpr std::array kNeighbourOffsets = {
+        kNeighbourOffsetNE,
+        kNeighbourOffsetSW,
+        kNeighbourOffsetNW,
+        kNeighbourOffsetSE,
+        kNeighbourOffsetS,
+        kNeighbourOffsetW,
+        kNeighbourOffsetE,
+        kNeighbourOffsetN,
+    };
+
+    struct TileCoordsXYHash
+    {
+        size_t operator()(const TileCoordsXY& pos) const noexcept
+        {
+            using namespace Util::Hash;
+            size_t hash = 0;
+            update(hash, pos.x);
+            update(hash, pos.y);
+            return hash;
+        }
+    };
 
     // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(TileCoordsXY, const MapGenCtx&)>;
