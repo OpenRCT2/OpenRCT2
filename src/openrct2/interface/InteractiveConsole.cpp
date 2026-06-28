@@ -1237,7 +1237,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
 
 static void ConsoleCommandRemoveUnusedObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    int32_t result = EditorRemoveUnusedObjects();
+    int32_t result = Editor::RemoveUnusedObjects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
 }
 

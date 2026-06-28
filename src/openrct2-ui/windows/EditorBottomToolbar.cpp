@@ -222,7 +222,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
-            FinishObjectSelection();
+            Editor::FinishObjectSelection();
             if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 ContextOpenWindow(WindowClass::constructRide);
