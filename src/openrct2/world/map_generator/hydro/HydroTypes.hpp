@@ -35,6 +35,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         breached,
         skeleton,
         spring,
+        pruned,
         // TODO lake,
     };
 

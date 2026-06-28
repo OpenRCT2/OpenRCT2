@@ -512,7 +512,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
      * Queue visitor function for pruneShortStreams
      */
     static void pruneVisit(
-        MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap, DistanceMap& distanceMap,
+        MapGenCtx& context, StableTileQueue& queue, MaskMap& visited, BackrefMap& backrefMap, BackrefsMap& auxBackrefsMap, DistanceMap& distanceMap,
         const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& blockedCount, const TileCoordsXY& offset)
     {
         const TileCoordsXY nPos{ pos + offset };
@@ -524,14 +524,18 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         if (visited[nPos] == Mask::True)
         {
-            if (context.heightMap[nPos] >= context.heightMap[pos]) // bifurcations
+            //if (backrefMap[pos].has_value() && backrefMap[pos].value() != nPos)
+            if (!auxBackrefsMap[pos].contains(nPos))
             {
+                auxBackrefsMap[nPos].insert(pos);
                 blockedCount++;
             }
+
             return;
         }
 
         backrefMap[nPos] = pos;
+        auxBackrefsMap[nPos].insert(pos);
         queue.emplace(nPos, context.heightMap[nPos]);
         visited[nPos] = Mask::True;
         upstreamCount++;
@@ -566,9 +570,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             prepareRiverQueue(context, queue, visited, skeleton);
 
             BackrefMap backrefMap{ context.dimensions };
+            BackrefsMap auxBackrefsMap{ context.dimensions };
             MaskMap confluenceMap{ context.dimensions };
             BackrefMap confluenceMaxSpringMap{ context.dimensions };
             DistanceMap distanceMap{ context.dimensions };
+
+            BackrefsMap springHits{context.dimensions };
 
             std::vector<TileCoordsXY> springs;
 
@@ -583,7 +590,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
                 for (const auto& offset : kNeighbourOffsets)
                 {
-                    pruneVisit(context, queue, visited, backrefMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset);
+                    pruneVisit(context, queue, visited, backrefMap, auxBackrefsMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset);
                 }
 
                 if (upstreamCount > 1)
@@ -596,25 +603,57 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
             }
 
-            // find furthest spring for each confluence
+            // populate springHits and confluenceMaxSpringMap.
             for (const auto& spring : springs)
             {
-                std::optional<TileCoordsXY> currentTile = std::make_optional(spring);
-                while (currentTile.has_value())
+                std::queue<TileCoordsXY> springTraceQueue;
+                MaskMap springTraceVisited{context.dimensions};
+
+                springTraceQueue.push(spring);
+                springTraceVisited[spring] = Mask::True;
+
+                while (!springTraceQueue.empty())
                 {
-                    if (confluenceMap[currentTile.value()] == Mask::True)
+                    TileCoordsXY current = springTraceQueue.front();
+                    springTraceQueue.pop();
+
+                    springHits[current].insert(spring);
+
+                    if (confluenceMap[current] == Mask::True)
                     {
-                        const Backref& maybeMaxSpring = confluenceMaxSpringMap[currentTile.value()];
+                        const Backref& maybeMaxSpring = confluenceMaxSpringMap[current];
                         if (!maybeMaxSpring.has_value() || distanceMap[spring] > distanceMap[maybeMaxSpring.value()])
                         {
-                            confluenceMaxSpringMap[currentTile.value()] = spring;
-                        }
-                        else
-                        {
-                            break;
+                            confluenceMaxSpringMap[current] = spring;
                         }
                     }
-                    currentTile = backrefMap[currentTile.value()];
+
+                    for (const auto & backref : auxBackrefsMap[current])
+                    {
+                        if (springTraceVisited[backref] != Mask::True )
+                        {
+                            springTraceQueue.push(backref);
+                            springTraceVisited[backref] = Mask::True;
+                        }
+                    }
+                }
+            }
+
+            // unmark single-spring confluences so they can be pruned.
+            for (int32_t y = 1; y < context.dimensions.y - 1; y++)
+            {
+                for (int32_t x = 1; x < context.dimensions.x - 1; x++)
+                {
+                    const TileCoordsXY pos{ x, y };
+                    if (confluenceMap[pos] != Mask::True)
+                    {
+                        continue;
+                    }
+
+                    if (springHits[pos].size() == 1)
+                    {
+                        confluenceMap[pos] = Mask::False;
+                    }
                 }
             }
 
@@ -622,36 +661,68 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             // prune if length is below limit and isn't the furthest spring
             for (const auto& spring : springs)
             {
-                bool prune = false;
-                std::optional<TileCoordsXY> currentTile = std::make_optional(spring);
+                std::unordered_set<TileCoordsXY, TileCoordsXYHash> pruneCandidates;
+                std::unordered_set<TileCoordsXY, TileCoordsXYHash> validPruneTargetConfluence;
+                bool thresholdExceeded = false;
+                bool maxSpring = false;
 
-                while (currentTile.has_value())
+                std::queue<std::pair<TileCoordsXY, int32_t>> pruneQueue;
+                MaskMap pruneVisited{context.dimensions};
+
+                pruneQueue.push({spring, 0});
+                pruneVisited[spring] = Mask::True;
+
+                while (!pruneQueue.empty())
                 {
-                    if (distanceMap[spring] - distanceMap[currentTile.value()] > context.settings.pruneThreshold)
-                    {
-                        break;
-                    }
+                    auto queuePair = pruneQueue.front();
+                    TileCoordsXY currentTile = queuePair.first;
+                    int32_t distance = queuePair.second;
+                    pruneQueue.pop();
 
-                    if (confluenceMap[currentTile.value()] == Mask::True)
+                    if (distance > context.settings.pruneThreshold)
                     {
-                        const auto& maybeMaxSpring = confluenceMaxSpringMap[currentTile.value()];
+                        thresholdExceeded = true;
+                    }
+                    else if (confluenceMap[currentTile] == Mask::True)
+                    {
+                        const auto& maybeMaxSpring = confluenceMaxSpringMap[currentTile];
                         if (!maybeMaxSpring.has_value() || maybeMaxSpring.value() != spring)
                         {
-                            prune = true;
+                            validPruneTargetConfluence.insert(currentTile);
                         }
-                        break;
+                        else
+                        {
+                            maxSpring = true;
+                        }
                     }
-                    currentTile = backrefMap[currentTile.value()];
-                    ;
+                    else
+                    {
+                        pruneCandidates.insert(currentTile);
+                        //for (const auto & backref : auxBackrefsMap[currentTile])
+                        if (backrefMap[currentTile].has_value())
+                        {
+                            auto backref = backrefMap[currentTile].value();
+                            if (pruneVisited[backref] != Mask::True)
+                            {
+                                pruneQueue.push({backref, distance+1});
+                                pruneVisited[backref] = Mask::True;
+                            }
+                        }
+                    }
                 }
 
-                if (prune)
+                auto worldPos = genCoordsToWorldCoords(context, spring);
+                LOG_INFO("spring (%d, %d) prune target=%d threshold=%d headwater=%d ",
+                worldPos.x, worldPos.y, validPruneTargetConfluence.size(), !thresholdExceeded, !maxSpring);
+
+                if (validPruneTargetConfluence.size() == 1 && !thresholdExceeded && !maxSpring)
                 {
-                    currentTile = std::make_optional(spring);
-                    while (currentTile.has_value() && confluenceMap[currentTile.value()] != Mask::True)
+                    for (const auto & toPrune : pruneCandidates)
                     {
-                        hydroMaps.flags[currentTile.value()].unset(skeleton);
-                        currentTile = backrefMap[currentTile.value()];
+                        if (springHits[toPrune].size() == 1)
+                        {
+                            hydroMaps.flags[toPrune].unset(skeleton);
+                        }
                     }
                     pruned = true;
                 }
@@ -664,7 +735,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     hydroMaps.flags[spring].set(HydroFlag::spring);
 #ifdef ENABLE_DEBUG_SIGNS
                     context.debugSigns.emplace_back(
-                        spring, std::format("spring {}", distanceMap[spring]), Drawing::Colour::white,
+                        spring, std::format("spring {} {}", distanceMap[spring], auxBackrefsMap[spring].size()), Drawing::Colour::white,
                         Drawing::Colour::lightBlue);
 #endif
                 }
@@ -677,14 +748,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         if (confluenceMap[pos] == Mask::True)
                         {
                             context.debugSigns.emplace_back(
-                                pos, std::format("confluence {}", distanceMap[pos]), Drawing::Colour::white,
-                                Drawing::Colour::brightPurple);
+                                pos, std::format("confluence {} {}", distanceMap[pos], auxBackrefsMap[pos].size()), Drawing::Colour::white,
+                                springHits[pos].size() == 1
+                                    ? Drawing::Colour::darkPurple
+                                    : Drawing::Colour::brightPurple);
                         }
 
                         if (hydroMaps.flags[pos].has(skeleton))
                         {
                             context.debugSigns.emplace_back(
-                                pos, std::format("skeleton {}", distanceMap[pos]), Drawing::Colour::black,
+                                pos, std::format("skeleton {} {}", distanceMap[pos], auxBackrefsMap[pos].size()), Drawing::Colour::black,
                                 Drawing::Colour::white);
                         }
                     }
@@ -698,11 +771,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         LOG_INFO("prune iterations=%d", iterations);
 
-        // setup post pruning nearest skeleton map
-        DistanceMap postSkeletonDistanceMap{ context.dimensions };
-        computeHydroFlagBasedDistanceMap(context, postSkeletonDistanceMap, skeleton);
-
         // throw out river tiles that point to a no-longer-skeleton as their nearest skeleton.
+        // TODO This will overcorrect close to non-pruned streams
         for (int32_t y = 0; y < context.dimensions.y; y++)
         {
             for (int32_t x = 0; x < context.dimensions.x; x++)
@@ -713,21 +783,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     continue;
                 }
 
-                if (preNearestSkeletonMap[pos].has_value()
-                    && !hydroMaps.flags[preNearestSkeletonMap[pos].value()].has(skeleton))
+                if (preNearestSkeletonMap[pos].has_value() && !hydroMaps.flags[preNearestSkeletonMap[pos].value()].has(skeleton))
                 {
-                    const float preDistance = preSkeletonDistanceMap[pos];
-                    const float postDistance = postSkeletonDistanceMap[pos];
-
-                    if (postDistance > preDistance)
-                    {
-                        hydroMaps.flags[pos].unset(river);
+                    hydroMaps.flags[pos].unset(river);
+                    hydroMaps.flags[pos].set(pruned);
 #ifdef ENABLE_DEBUG_SIGNS
-                        context.debugSigns.emplace_back(
-                            pos, "pruned", Drawing::Colour::white,
-                            preDistance == 0 ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
+                    const float preDistance = preSkeletonDistanceMap[pos];
+                    context.debugSigns.emplace_back(
+                        pos, "pruned", Drawing::Colour::white,
+                        preDistance == 0 ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
 #endif
-                    }
                 }
             }
         }
@@ -898,6 +963,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     heightMap[scnPos] = heightMap[tile.pos];
                     hydroMaps.catchment[scnPos] = context.settings.catchmentThreshold;
                     hydroMaps.flags[scnPos].set(river);
+                    hydroMaps.flags[scnPos].set(skeleton);
                     visited[scnPos] = Mask::True;
                 }
             }
@@ -1114,9 +1180,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         aggregateCatchment(context);
         postProcessCatchment(context);
         adjustStreamWidth(context);
+        ensureCardinalNeighbours(context);
         constructRiverSkeletons(context);
         pruneShortStreams(context);
-        ensureCardinalNeighbours(context);
         carveRiverbed(context);
         clearRiversBelowSeaLevel(context);
         ensureConsistent(context);

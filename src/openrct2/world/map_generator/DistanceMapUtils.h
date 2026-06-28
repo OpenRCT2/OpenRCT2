@@ -11,16 +11,14 @@
 
 #include "BaseMap.hpp"
 #include "MapGen.h"
+#include "MapHelpers.h"
 #include "TileQueue.hpp"
 
 namespace OpenRCT2::World::MapGenerator
 {
     using Backref = std::optional<TileCoordsXY>;
     using BackrefMap = BaseMap<Backref>;
-
-    using BackrefIndex = size_t;
-    using BackrefIndices = std::unordered_set<BackrefIndex>;
-    using BackrefIndicesMap = BaseMap<BackrefIndices>;
+    using BackrefsMap = BaseMap<std::unordered_set<TileCoordsXY, TileCoordsXYHash>>;
 
     void completeDistanceMap(DistanceMap& distanceMap, StableTileQueue& queue, MaskMap& visited);
     void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, StableTileQueue& queue, MaskMap& maskMap);
