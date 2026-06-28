@@ -314,22 +314,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
         StableTileQueue queue;
         MaskMap visited{ genCtx.dimensions };
 
-        for (int32_t y = 0; y < evalCtx.distanceToBorder.height; y++)
+        for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
-            const TileCoordsXY left{ 0, y };
-            initZeroDistance(left, evalCtx.distanceToBorder, queue, visited);
+            for (int32_t x = 0; x < genCtx.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
 
-            const TileCoordsXY right{ evalCtx.distanceToBorder.width - 1, y };
-            initZeroDistance(right, evalCtx.distanceToBorder, queue, visited);
-        }
-
-        for (int32_t x = 1; x < evalCtx.distanceToBorder.width - 1; x++)
-        {
-            const TileCoordsXY top{ x, 0 };
-            initZeroDistance(top, evalCtx.distanceToBorder, queue, visited);
-
-            const TileCoordsXY bottom{ x, evalCtx.distanceToBorder.height - 1 };
-            initZeroDistance(bottom, evalCtx.distanceToBorder, queue, visited);
+                if (!isInWorldMap(genCtx, pos))
+                {
+                    initZeroDistance(pos, evalCtx.distanceToSea, queue, visited);
+                }
+            }
         }
 
         completeDistanceMap(evalCtx.distanceToBorder, queue, visited);
@@ -483,7 +478,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 const auto heightActual = fetchHeightValue(heightData, ctx.localHeights);
                 return heightActual.has_value()
                     ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height)
-                    : false;
+                    : std::nullopt;
             }
             case Type::Distance:
             {
@@ -902,6 +897,31 @@ namespace OpenRCT2::World::MapGenerator::Rule
             genCtx, genCtx.settings.sceneryRules, evalCtx, sceneryResultFromRulesAt, callback);
     }
 
+    static Condition distanceToFeature(const Feature feature, const float distance, Predicate pred = Predicate::Equal)
+    {
+        return Condition{ .enabled = true,
+                          .type = Type::Distance,
+                          .predicate = pred,
+                          .data = DistanceData{ .feature = feature, .distance = distance } };
+    }
+
+    static Condition heightDeltaToNeighbour(
+        const HeightSource neighbour, const HeightType type, Predicate pred = Predicate::GreaterThan, bool zRepeat = false)
+    {
+        return Condition{
+            .enabled = true,
+            .type = Type::Height,
+            .predicate = pred,
+            .data = HeightData{ .height = 0,
+                                .mode = HeightMode::Relative,
+                                .sourceFirst = neighbour,
+                                .typeFirst = type,
+                                .sourceSecond = HeightSource::Self,
+                                .typeSecond = type },
+            .zRepeat = zRepeat,
+        };
+    }
+
     void createDefaultTextureRules(Settings& settings)
     {
         settings.textureRules.clear();
@@ -916,15 +936,50 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfalls",
+                         .name = "Waterfall NW",
                          .conditions = std::vector{
-                             Condition{
-                                 .enabled = true,
-                                 .type = Type::Distance,
-                                 .predicate = Predicate::Equal,
-                                 .data = DistanceData{
-                                    .feature = Feature::River,
-                                    .distance = 0} },
+                             distanceToFeature(Feature::River, 0),
+                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
+                             heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water, Predicate::LessThan),
+                         },
+                         .effect = { .applyLandTexture = false,
+                                     .landTexture = 0,
+                                     .applyEdgeTexture = true,
+                                     .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
+        settings.textureRules.push_back(
+            TextureRule{ .enabled = true,
+                         .isDefault = false,
+                         .name = "Waterfall NE",
+                         .conditions = std::vector{
+                             distanceToFeature(Feature::River, 0),
+                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
+                             heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water, Predicate::LessThan),
+                         },
+                         .effect = { .applyLandTexture = false,
+                                     .landTexture = 0,
+                                     .applyEdgeTexture = true,
+                                     .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
+        settings.textureRules.push_back(
+            TextureRule{ .enabled = true,
+                         .isDefault = false,
+                         .name = "Waterfall SE",
+                         .conditions = std::vector{
+                             distanceToFeature(Feature::River, 0),
+                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
+                             heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water, Predicate::LessThan),
+                         },
+                         .effect = { .applyLandTexture = false,
+                                     .landTexture = 0,
+                                     .applyEdgeTexture = true,
+                                     .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
+        settings.textureRules.push_back(
+            TextureRule{ .enabled = true,
+                         .isDefault = false,
+                         .name = "Waterfall SW",
+                         .conditions = std::vector{
+                             distanceToFeature(Feature::River, 0),
+                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
+                             heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water, Predicate::LessThan),
                          },
                          .effect = { .applyLandTexture = false,
                                      .landTexture = 0,
@@ -1125,30 +1180,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                           .data = BlendHeightData{ .seedOffset = seed, .edgeLow = low, .edgeHigh = high } };
     }
 
-    static Condition distanceToFeature(const Feature feature, const float distance)
-    {
-        return Condition{ .enabled = true,
-                          .type = Type::Distance,
-                          .predicate = Predicate::LessThan,
-                          .data = DistanceData{ .feature = feature, .distance = distance } };
-    }
-
-    static Condition heightDeltaToNeighbour(const HeightSource neighbour, const HeightType type, bool zRepeat = false)
-    {
-        return Condition{
-            .enabled = true,
-            .type = Type::Height,
-            .predicate = Predicate::GreaterThan,
-            .data = HeightData{ .height = 0,
-                                .mode = HeightMode::Relative,
-                                .sourceFirst = neighbour,
-                                .typeFirst = type,
-                                .sourceSecond = HeightSource::Self,
-                                .typeSecond = type },
-            .zRepeat = zRepeat,
-        };
-    }
-
     void createDefaultSceneryRules(Settings& settings)
     {
         std::random_device prng{};
@@ -1157,9 +1188,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfalls NW",
-                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
-                                           heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water, true) },
+                .name = "Waterfall NW",
+                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                           heightDeltaToNeighbour(
+                                               HeightSource::NeighbourNW, HeightType::Water, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallNw),
@@ -1168,9 +1200,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfalls NE",
-                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
-                                           heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water, true) },
+                .name = "Waterfall NE",
+                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                           heightDeltaToNeighbour(
+                                               HeightSource::NeighbourNE, HeightType::Water, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallNe),
@@ -1179,9 +1212,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfalls SE",
-                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
-                                           heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water, true) },
+                .name = "Waterfall SE",
+                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                           heightDeltaToNeighbour(
+                                               HeightSource::NeighbourSE, HeightType::Water, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallSe),
@@ -1190,9 +1224,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfalls SW",
-                .conditions = std::vector{ distanceToFeature(Feature::River, 1),
-                                           heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water, true) },
+                .name = "Waterfall SW",
+                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                           heightDeltaToNeighbour(
+                                               HeightSource::NeighbourSW, HeightType::Water, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallSw),
