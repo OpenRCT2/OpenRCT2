@@ -179,6 +179,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Land,
         Water,
         SeaLevel,
+         // TODO Min
+        // TODO Max
     };
 
     enum class HeightSource : uint8_t

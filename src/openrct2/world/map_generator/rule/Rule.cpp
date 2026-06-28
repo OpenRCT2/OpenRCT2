@@ -229,9 +229,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToLand = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToLand.fill(std::numeric_limits<float>::infinity());
-
-        StableTileQueue queue;
-        MaskMap visited{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -244,21 +242,19 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
                 if (!isSea && !isRiver)
                 {
-                    initZeroDistance(pos, evalCtx.distanceToLand, queue, visited);
+                    initZeroDistance(pos, evalCtx.distanceToLand, queue);
                 }
             }
         }
 
-        completeDistanceMap(evalCtx.distanceToLand, queue, visited);
+        completeDistanceMap(evalCtx.distanceToLand, queue);
     }
 
     static void computeWaterDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.distanceToWater = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToWater.fill(std::numeric_limits<float>::infinity());
-
-        StableTileQueue queue;
-        MaskMap visited{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -271,21 +267,19 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
                 if (isSea || isRiver)
                 {
-                    initZeroDistance(pos, evalCtx.distanceToWater, queue, visited);
+                    initZeroDistance(pos, evalCtx.distanceToWater, queue);
                 }
             }
         }
 
-        completeDistanceMap(evalCtx.distanceToWater, queue, visited);
+        completeDistanceMap(evalCtx.distanceToWater, queue);
     }
 
     static void computeSeaDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.distanceToSea = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToSea.fill(std::numeric_limits<float>::infinity());
-
-        StableTileQueue queue;
-        MaskMap visited{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -298,21 +292,19 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
                 if (isSea && !isRiver)
                 {
-                    initZeroDistance(pos, evalCtx.distanceToSea, queue, visited);
+                    initZeroDistance(pos, evalCtx.distanceToSea, queue);
                 }
             }
         }
 
-        completeDistanceMap(evalCtx.distanceToSea, queue, visited);
+        completeDistanceMap(evalCtx.distanceToSea, queue);
     }
 
     static void computeBorderDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.distanceToBorder = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToBorder.fill(std::numeric_limits<float>::infinity());
-
-        StableTileQueue queue;
-        MaskMap visited{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -322,12 +314,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
                 if (!isInWorldMap(genCtx, pos))
                 {
-                    initZeroDistance(pos, evalCtx.distanceToSea, queue, visited);
+                    initZeroDistance(pos, evalCtx.distanceToSea, queue);
                 }
             }
         }
 
-        completeDistanceMap(evalCtx.distanceToBorder, queue, visited);
+        completeDistanceMap(evalCtx.distanceToBorder, queue);
     }
 
     template<typename T>

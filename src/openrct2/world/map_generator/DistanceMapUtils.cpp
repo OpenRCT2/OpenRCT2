@@ -14,14 +14,12 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void completeDistanceMap(DistanceMap& distanceMap, StableTileQueue& queue, MaskMap& visited)
+    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue)
     {
         while (!queue.empty())
         {
             QueueTile tile = queue.top();
             queue.pop();
-
-            visited[tile.pos] = Mask::True;
 
             for (const auto& offset : kNeighbourOffsets)
             {
@@ -29,22 +27,21 @@ namespace OpenRCT2::World::MapGenerator
 
                 const float distance = tile.value + sqrt(offset.x * offset.x + offset.y * offset.y);
 
-                if (!distanceMap.inBounds(nPos) || visited[nPos] == Mask::True || distance >= distanceMap[nPos])
+                if (!distanceMap.inBounds(nPos) || queue.visited(nPos) || distance >= distanceMap[nPos])
                 {
                     continue;
                 }
 
                 distanceMap[nPos] = distance;
-                queue.emplace(nPos, distance);
+                queue.emplaceAndVisit(nPos, distance);
             }
         }
     }
 
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, StableTileQueue& queue, MaskMap& maskMap)
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue)
     {
         distanceMap[pos] = 0.0f;
-        queue.emplace(pos, 0.0f);
-        maskMap[pos] = Mask::True;
+        queue.emplaceAndVisit(pos, 0.0f);
     }
 
     void computeHydroFlagBasedDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap, const Hydro::HydroFlag flag)
@@ -58,8 +55,7 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         const auto& hydroMaps = genCtx.hydroMaps.value();
-        StableTileQueue queue;
-        MaskMap visited{ distanceMap.width, distanceMap.height };
+        TrackingStableTileQueue queue {genCtx.dimensions};
 
         for (int32_t y = 0; y < distanceMap.height; y++)
         {
@@ -69,12 +65,12 @@ namespace OpenRCT2::World::MapGenerator
 
                 if (hydroMaps.flags[pos].has(flag))
                 {
-                    initZeroDistance(pos, distanceMap, queue, visited);
+                    initZeroDistance(pos, distanceMap, queue);
                 }
             }
         }
 
-        completeDistanceMap(distanceMap, queue, visited);
+        completeDistanceMap(distanceMap, queue);
     }
 
     static Backref findNearestFromDistanceMap(const DistanceMap& distanceMap, BackrefMap& backrefMap, const TileCoordsXY& pos)

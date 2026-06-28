@@ -20,8 +20,8 @@ namespace OpenRCT2::World::MapGenerator
     using BackrefMap = BaseMap<Backref>;
     using BackrefsMap = BaseMap<std::unordered_set<TileCoordsXY, TileCoordsXYHash>>;
 
-    void completeDistanceMap(DistanceMap& distanceMap, StableTileQueue& queue, MaskMap& visited);
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, StableTileQueue& queue, MaskMap& maskMap);
+    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue);
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue);
     void computeHydroFlagBasedDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap, Hydro::HydroFlag flag);
     void computeNearestMapFromDistanceMap(const DistanceMap& distanceMap, BackrefMap& backrefMap);
 } // namespace OpenRCT2::World::MapGenerator

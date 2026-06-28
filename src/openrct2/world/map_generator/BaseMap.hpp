@@ -22,7 +22,7 @@ namespace OpenRCT2::World::MapGenerator
     template<typename T>
     class BaseMap
     {
-    private:
+    protected:
         std::vector<T> _value;
 
     public:
@@ -56,12 +56,12 @@ namespace OpenRCT2::World::MapGenerator
 
         BaseMap() = default;
 
-        T& operator[](TileCoordsXY pos)
+        T& operator[](const TileCoordsXY pos)
         {
             return _value[idx(pos)];
         }
 
-        const T& operator[](TileCoordsXY pos) const
+        const T& operator[](const TileCoordsXY pos) const
         {
             return _value[idx(pos)];
         }
@@ -74,7 +74,7 @@ namespace OpenRCT2::World::MapGenerator
 
         TileCoordsXY pos(const size_t idx) const
         {
-            assert (idx < size());
+            assert(idx < size());
             return TileCoordsXY{ static_cast<int32_t>(idx % width), static_cast<int32_t>(idx / width) };
         }
 
@@ -114,14 +114,21 @@ namespace OpenRCT2::World::MapGenerator
         }
     };
 
-    // workaround for vector<bool> conflicting with the & operator[] defs above...
-    enum class Mask : uint8_t
+    // deal with std::vector<bool> specialization
+    class BooleanMap : public BaseMap<bool>
     {
-        False,
-        True
+    public:
+        std::vector<bool>::reference operator[](const TileCoordsXY pos)
+        {
+            return _value[idx(pos)];
+        }
+
+        std::vector<bool>::const_reference operator[](const TileCoordsXY pos) const
+        {
+            return _value[idx(pos)];
+        }
     };
 
-    using MaskMap = BaseMap<Mask>;
     using HeightMap = BaseMap<float>;
     using DistanceMap = BaseMap<float>;
     using NormalMap = BaseMap<VecXYZ>;
