@@ -10,7 +10,6 @@
 #include "Editor.h"
 
 #include "Context.h"
-#include "scenes/editor/EditorController.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
@@ -41,6 +40,7 @@
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
 #include "scenes/SceneManager.h"
+#include "scenes/editor/EditorController.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"

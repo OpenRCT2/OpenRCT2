@@ -15,7 +15,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
-#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -45,6 +44,7 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenes/SceneManager.h>
+#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>

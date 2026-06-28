@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Date.h"
-#include "../scenes/editor/EditorController.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -60,6 +59,7 @@
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
+#include "../scenes/editor/EditorController.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"

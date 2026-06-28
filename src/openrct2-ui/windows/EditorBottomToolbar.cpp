@@ -13,7 +13,6 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
-#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -26,6 +25,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
