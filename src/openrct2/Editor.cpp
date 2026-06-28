@@ -10,7 +10,7 @@
 #include "Editor.h"
 
 #include "Context.h"
-#include "EditorObjectSelectionSession.h"
+#include "scenes/editor/EditorController.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"

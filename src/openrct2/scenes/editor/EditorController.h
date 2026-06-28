@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include "core/EnumUtils.hpp"
-#include "core/FlagHolder.hpp"
-#include "core/StringTypes.h"
-#include "object/ObjectTypes.h"
+#include "../../core/EnumUtils.hpp"
+#include "../../core/FlagHolder.hpp"
+#include "../../core/StringTypes.h"
+#include "../../object/ObjectTypes.h"
 
 #include <optional>
 #include <vector>

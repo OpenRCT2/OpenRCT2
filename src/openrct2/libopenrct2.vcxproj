@@ -275,7 +275,6 @@
     <ClInclude Include="drawing\WeatherDrawer.h" />
     <ClInclude Include="drawing\X8DrawingEngine.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="EditorObjectSelectionSession.h" />
     <ClInclude Include="entity\Balloon.h" />
     <ClInclude Include="entity\Duck.h" />
     <ClInclude Include="entity\EntityBase.h" />
@@ -617,6 +616,7 @@
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
     <ClInclude Include="scenes\SceneManager.h" />
+    <ClInclude Include="scenes\editor\EditorController.h" />
     <ClInclude Include="scenes\editor\EditorStep.h" />
     <ClInclude Include="scenes\game\GameScene.h" />
     <ClInclude Include="scenes\intro\IntroScene.h" />
@@ -909,7 +909,6 @@
     <ClCompile Include="drawing\WeatherDrawer.cpp" />
     <ClCompile Include="drawing\X8DrawingEngine.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="EditorObjectSelectionSession.cpp" />
     <ClCompile Include="entity\Balloon.cpp" />
     <ClCompile Include="entity\Duck.cpp" />
     <ClCompile Include="entity\EntityBase.cpp" />
@@ -1209,6 +1208,7 @@
     <ClCompile Include="scenario\ScenarioSources.cpp" />
     <ClCompile Include="scenes\Scene.cpp" />
     <ClCompile Include="scenes\SceneManager.cpp" />
+    <ClCompile Include="scenes\editor\EditorController.cpp" />
     <ClCompile Include="scenes\game\GameScene.cpp" />
     <ClCompile Include="scenes\intro\IntroScene.cpp" />
     <ClCompile Include="scenes\preloader\PreloaderScene.cpp" />

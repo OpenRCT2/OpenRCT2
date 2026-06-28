@@ -11,7 +11,7 @@
 
 #include "../Context.h"
 #include "../Date.h"
-#include "../EditorObjectSelectionSession.h"
+#include "../scenes/editor/EditorController.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
