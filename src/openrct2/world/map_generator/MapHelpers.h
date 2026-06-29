@@ -87,6 +87,8 @@ namespace OpenRCT2::World::MapGenerator
         }
     };
 
+    using TileCoordsXYSet = std::unordered_set<TileCoordsXY, TileCoordsXYHash>;
+
     // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(TileCoordsXY, const MapGenCtx&)>;
 

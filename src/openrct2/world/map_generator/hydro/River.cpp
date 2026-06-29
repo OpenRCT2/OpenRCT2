@@ -35,6 +35,44 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     using StateMap = BaseMap<TileState>;
 
     /**
+     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
+     * settings.
+     */
+    static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
+    {
+        const HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        const float catchmentMin = 1.0f;
+        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y
+            * kRiversOverscanFactor;
+
+        const float widthMin = 0.0f;
+        const float widthMax = context.settings.riverWidthMax;
+
+        const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
+        const float exponentiatedCatchment = std::pow(
+            rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
+        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
+
+        return width;
+    }
+
+    /**
+     * Determines the river depth based on the width, constants from table 2 in
+     *
+     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
+     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
+     * Research: Earth Surface, 118(1), pp.216-228.
+     */
+    static float riverDepth(const float width)
+    {
+        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
+        // rescale for rct
+        return std::max(2.0f, 8.0f * depth);
+    }
+
+
+    /**
      * Fill up or breach out of depressions in the heightmap to ensure there is a monotonic downhill path for rivers to follow.
      *
      * based on
@@ -482,7 +520,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
      */
     static void pruneVisit(
         MapGenCtx& context, TrackingStableTileQueue& queue, BackrefMap& backrefMap, BackrefsMap& auxBackrefsMap,
-        DistanceMap& distanceMap, const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& blockedCount,
+        DistanceMap& distanceMap, const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& auxCount,
         const TileCoordsXY& offset)
     {
         const TileCoordsXY nPos{ pos + offset };
@@ -494,10 +532,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         if (queue.visited(nPos))
         {
-            if (!auxBackrefsMap[pos].contains(nPos)) // if (backrefMap[pos].has_value() && backrefMap[pos].value() != nPos)
+            if (backrefMap[pos].has_value() && backrefMap[pos].value() != nPos)
             {
                 auxBackrefsMap[nPos].insert(pos);
-                blockedCount++;
+                auxCount++;
             }
             return;
         }
@@ -511,26 +549,15 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
     /**
      * Prunes tributary streams that are shorter than context.settings.pruneThreshold.
-     * This does a bit of a dance, the more straightforward solution of only using the skeleton to reconstruct the river in the
-     * widen step below produces rather ugly rivers as much of the variation from the flow-fraction aggregation is lost.
-     * So instead keep track of the nearest skeleton tile for each river tile and unset if the skeleton tile was pruned.
-     * The pruning itself works by first identifying springs and confluences. Next the max length spring for each confluence is
-     * identified. Finally prune from each spring if the distance to the nearest confluence is below the threshold and the
-     * spring isn't the furthest for the confluence.
      *
-     * TODO this function is a mess and inefficient
+     * TODO this function is way too long and inefficient
      */
     static void pruneShortStreams(MapGenCtx& context)
     {
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-        // setup pre pruning nearest skeleton map for later
-        BackrefMap preNearestSkeletonMap{ context.dimensions };
-        DistanceMap preSkeletonDistanceMap{ context.dimensions };
-        computeHydroFlagBasedDistanceMap(context, preSkeletonDistanceMap, skeleton);
-        computeNearestMapFromDistanceMap(preSkeletonDistanceMap, preNearestSkeletonMap);
-
+        // iterate until no streams are pruned
         while (true)
         {
             TrackingStableTileQueue queue{ context.dimensions };
@@ -543,32 +570,33 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             std::vector<TileCoordsXY> springs;
             prepareRiverQueue(context, queue, skeleton);
 
-            // process tiles and find springs
+            // initial pass; upstream to populate backref, auxBackrefs, confluence and distance maps
             while (!queue.empty())
             {
                 const QueueTile tile = queue.top();
                 queue.pop();
 
                 int32_t upstreamCount = 0;
-                int32_t blockedCount = 0;
+                int32_t auxCount = 0;
 
                 for (const auto& offset : kNeighbourOffsets)
                 {
                     pruneVisit(
-                        context, queue, backrefMap, auxBackrefsMap, distanceMap, tile.pos, upstreamCount, blockedCount, offset);
+                        context, queue, backrefMap, auxBackrefsMap, distanceMap, tile.pos, upstreamCount, auxCount, offset);
                 }
 
                 if (upstreamCount > 1)
                 {
                     confluenceMap[tile.pos] = true;
                 }
-                else if (upstreamCount == 0 && blockedCount == 0)
+                else if (upstreamCount == 0 && auxCount == 0)
                 {
                     springs.push_back(tile.pos);
                 }
             }
 
-            // populate springHits and confluenceMaxSpringMap.
+            // second pass; downstream from springs following backrefs to populate springHits and confluenceMaxSpringMap
+            // FIXME this is super slow with catchmentThreshold=1
             for (const auto& spring : springs)
             {
                 std::queue<TileCoordsXY> springTraceQueue;
@@ -583,7 +611,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
                     springHits[current].insert(spring);
 
-                    if (confluenceMap[current] == true)
+                    if (confluenceMap[current])
                     {
                         const Backref& maybeMaxSpring = confluenceMaxSpringMap[current];
                         if (!maybeMaxSpring.has_value() || distanceMap[spring] > distanceMap[maybeMaxSpring.value()])
@@ -603,30 +631,25 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
             }
 
-            // unmark single-spring confluences so they can be pruned.
+            // unmark single-spring confluences
             for (int32_t y = 1; y < context.dimensions.y - 1; y++)
             {
                 for (int32_t x = 1; x < context.dimensions.x - 1; x++)
                 {
                     const TileCoordsXY pos{ x, y };
-                    if (!confluenceMap[pos])
-                    {
-                        continue;
-                    }
-
-                    if (springHits[pos].size() == 1)
+                    if (confluenceMap[pos] && springHits[pos].size() == 1)
                     {
                         confluenceMap[pos] = false;
                     }
                 }
             }
 
+            // third pass; downstream from springs following backrefs until the first confluence to identify prunable streams
             bool pruned = false;
-            // prune if length is below limit and isn't the furthest spring
             for (const auto& spring : springs)
             {
-                std::unordered_set<TileCoordsXY, TileCoordsXYHash> pruneCandidates;
-                std::unordered_set<TileCoordsXY, TileCoordsXYHash> validPruneTargetConfluence;
+                TileCoordsXYSet pruneCandidates;
+                TileCoordsXYSet validConfluence;
                 std::queue<std::pair<TileCoordsXY, int32_t>> pruneQueue;
                 BooleanMap pruneVisited{ context.dimensions };
                 bool thresholdExceeded = false;
@@ -641,50 +664,55 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     int32_t distance = queuePair.second;
                     pruneQueue.pop();
 
+                    // if the distance from the spring is exceeded on any path consider the stream not prunable
                     if (distance > context.settings.pruneThreshold)
                     {
                         thresholdExceeded = true;
                     }
-                    else if (confluenceMap[currentTile] == true)
+                    // if this is the furthest spring of any confluence the stream isn't prunable
+                    else if (confluenceMap[currentTile])
                     {
                         const auto& maybeMaxSpring = confluenceMaxSpringMap[currentTile];
-                        if (!maybeMaxSpring.has_value() || maybeMaxSpring.value() != spring)
-                        {
-                            validPruneTargetConfluence.insert(currentTile);
-                        }
-                        else
+                        if (maybeMaxSpring.has_value() && maybeMaxSpring.value() == spring)
                         {
                             maxSpring = true;
                         }
+                        else
+                        {
+                            validConfluence.insert(currentTile);
+                        }
                     }
+                    // continue downstream, enqueue the 'main' backref or backrefs that are only visited by this spring
                     else
                     {
                         pruneCandidates.insert(currentTile);
-                        if (backrefMap[currentTile].has_value()) // for (const auto & backref : auxBackrefsMap[currentTile])
+                        for (const auto& backref : auxBackrefsMap[currentTile])
                         {
-                            auto backref = backrefMap[currentTile].value();
-                            if (pruneVisited[backref] != true)
+                            if (!pruneVisited[backref])
                             {
-                                pruneQueue.push({ backref, distance + 1 });
-                                pruneVisited[backref] = true;
+                                if ((backrefMap[currentTile].has_value() && backrefMap[currentTile].value() == backref)
+                                    || (springHits[currentTile].contains(spring) && springHits[currentTile].size() == 1))
+                                {
+                                    pruneQueue.push({ backref, distance + 1 });
+                                    pruneVisited[backref] = true;
+                                }
                             }
                         }
                     }
                 }
 
-                if (validPruneTargetConfluence.size() == 1 && !thresholdExceeded && !maxSpring)
+                // the spring and its downstream stream(s) are prunable
+                if (!validConfluence.empty() && !thresholdExceeded && !maxSpring)
                 {
                     for (const auto& toPrune : pruneCandidates)
                     {
-                        if (springHits[toPrune].size() == 1)
-                        {
-                            hydroMaps.flags[toPrune].unset(skeleton);
-                        }
+                        hydroMaps.flags[toPrune].unset(skeleton);
                     }
                     pruned = true;
                 }
             }
 
+            // no springs pruned in this iteration, mark remaining springs and break from loop
             if (!pruned)
             {
                 for (const auto& spring : springs)
@@ -702,7 +730,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     for (int32_t x = 0; x < context.dimensions.x; x++)
                     {
                         const TileCoordsXY pos{ x, y };
-                        if (confluenceMap[pos] == true)
+                        if (confluenceMap[pos])
                         {
                             context.debugSigns.emplace_back(
                                 pos, std::format("confluence {} {}", distanceMap[pos], auxBackrefsMap[pos].size()),
@@ -723,69 +751,57 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-        // throw out river tiles that point to a no-longer-skeleton as their nearest skeleton.
-        // TODO This will overcorrect close to non-pruned streams
+        // set up an inverted river distance map
+        DistanceMap riverRadiusMap{ context.dimensions };
+        computeHydroFlagBasedDistanceMap(context, riverRadiusMap, river, true);
+
+        // create a mask consisting of disks with radius riverRadiusMap[pos] around the remaining river skeletons
+        BooleanMap skeletonMask{ context.dimensions };
         for (int32_t y = 0; y < context.dimensions.y; y++)
         {
             for (int32_t x = 0; x < context.dimensions.x; x++)
             {
                 const TileCoordsXY pos{ x, y };
-                if (!hydroMaps.flags[pos].has(river))
+                if (!hydroMaps.flags[pos].has(skeleton))
                 {
                     continue;
                 }
 
-                if (preNearestSkeletonMap[pos].has_value()
-                    && !hydroMaps.flags[preNearestSkeletonMap[pos].value()].has(skeleton))
+                float maskRadius = riverRadiusMap[pos];
+                float maskRadiusSquared = maskRadius * maskRadius;
+
+                for (int32_t dy = -maskRadius; dy <= maskRadius; dy++)
                 {
-                    hydroMaps.flags[pos].unset(river);
-                    hydroMaps.flags[pos].set(pruned);
-#ifdef ENABLE_DEBUG_SIGNS
-                    const float preDistance = preSkeletonDistanceMap[pos];
-                    context.debugSigns.emplace_back(
-                        pos, "pruned", Drawing::Colour::white,
-                        preDistance == 0 ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
-#endif
+                    for (int32_t dx = -maskRadius; dx <= maskRadius; dx++)
+                    {
+                        const TileCoordsXY deltaPos{ pos.x+dx, pos.y+dy };
+                        if (skeletonMask.inBounds(deltaPos) && dx*dx + dy*dy <= maskRadiusSquared)
+                        {
+                            skeletonMask[deltaPos] = true;
+                        }
+                    }
                 }
             }
         }
-    }
 
-    /**
-     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
-     * settings.
-     */
-    static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
-    {
-        const HydroMaps& hydroMaps = context.hydroMaps.value();
+        // unset the river flag for all tiles not in the skeletonMask
+        for (int32_t y = 0; y < context.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < context.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                if (!skeletonMask[pos])
+                {
+                    hydroMaps.flags[pos].unset(river);
+                    #ifdef ENABLE_DEBUG_SIGNS
 
-        const float catchmentMin = 1.0f;
-        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y
-            * kRiversOverscanFactor;
-
-        const float widthMin = 0.0f;
-        const float widthMax = context.settings.riverWidthMax;
-
-        const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
-        const float exponentiatedCatchment = std::pow(
-            rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
-        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
-
-        return width;
-    }
-
-    /**
-     * Determines the river depth based on the width, constants from table 2 in
-     *
-     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
-     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
-     * Research: Earth Surface, 118(1), pp.216-228.
-     */
-    static float riverDepth(const float width)
-    {
-        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
-        // rescale for rct
-        return std::max(2.0f, 8.0f * depth);
+                    context.debugSigns.emplace_back(
+                        pos, "pruned", Drawing::Colour::white,
+                        preDistance == 0 ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
+                    #endif
+                }
+            }
+        }
     }
 
     /**
@@ -946,9 +962,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             const float radius = width / 2.0f + 1.0f;
             const float radiusSquared = radius * radius;
             const float depth = riverDepth(width);
-            const float referenceHeight = heightCopy[tile.pos] - 2.0f;
+            const float riverHeight = heightCopy[tile.pos] - 2.0f;
 
-            hydroMaps.height[tile.pos] = heightCopy[tile.pos] - 2.0f;
+            hydroMaps.height[tile.pos] = riverHeight;
 
             for (int32_t dy = -radius; dy <= radius; dy++)
             {
@@ -965,7 +981,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         continue;
                     }
 
-                    float candidateHeight = std::max(referenceHeight, seafloorMaxCarveDepth);
+                    float candidateHeight = std::max(riverHeight, seafloorMaxCarveDepth);
 
                     if (hydroMaps.flags[deltaPos].has(river))
                     {
