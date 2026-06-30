@@ -17,14 +17,10 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/Guest.h>
-#include <openrct2/peep/GuestPathfinding.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/world/Footpath.h>
-#include <openrct2/world/Map.h>
-#include <openrct2/world/Park.h>
 #include <string>
 
 using namespace OpenRCT2;
@@ -97,15 +93,15 @@ TEST_F(TransportPathfindingTest, GuestsUseTransportToReachDistantRide)
     TileCoordsXYZ startTile{ 48, 24, 14 };
     auto startCoords = startTile.ToCoordsXYZ().ToTileCentre();
 
-    auto* guest1 = Guest::Generate(startCoords);
-    guest1->OutsideOfPark = false;
-    guest1->CashInPocket = 0;
-    guest1->GuestHeadingToRideId = goalRide->id;
+    auto* guest1 = Guest::generate(startCoords);
+    guest1->outsideOfPark = false;
+    guest1->cashInPocket = 0;
+    guest1->guestHeadingToRideId = goalRide->id;
 
-    auto* guest2 = Guest::Generate(startCoords);
-    guest2->OutsideOfPark = false;
-    guest2->CashInPocket = 0;
-    guest2->GuestHeadingToRideId = goalRide->id;
+    auto* guest2 = Guest::generate(startCoords);
+    guest2->outsideOfPark = false;
+    guest2->cashInPocket = 0;
+    guest2->guestHeadingToRideId = goalRide->id;
 
     gameState.cheats.ignoreRideIntensity = true;
 

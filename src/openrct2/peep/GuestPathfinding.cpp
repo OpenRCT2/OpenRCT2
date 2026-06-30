@@ -59,11 +59,8 @@ namespace OpenRCT2::PathFinding
         // TODO: Move them, those are query parameters not really state, but for now its easier to pass it down.
         bool ignoreForeignQueues;
         RideId queueRideIndex;
-        // Track which transport ride has been used in this search path to prevent Loops
         RideId usedTransportRideId;
-        // Whether any usable transport rides exist in the park, this is cached for performance
         bool hasUsableTransport;
-        // Flag set when the search found a path that uses transport, used for tiebreaking
         bool foundPathViaTransport;
         // A junction history for the peep path finding heuristic search.
         struct
@@ -162,15 +159,14 @@ namespace OpenRCT2::PathFinding
 #pragma region Transport Ride Integration
 
     /**
-     * Gets the next station a guest would exit at when boarding a transport ride.
-     * For continuous circuit it returns the next station in index order (wrapping around).
-     * For 2-station shuttle it returns the other station.
+     * Returns the next station a guest would exit at when boarding a transport ride.
+     * For continuous circuit: next station in index order (wrapping).
+     * For 2-station shuttle: the other station.
      */
     static std::optional<StationIndex> GetNextStationForTransport(const Ride& ride, StationIndex entranceStation)
     {
         uint8_t curIdx = entranceStation.ToUnderlying();
 
-        // Handle 2-station shuttle
         if (ride.mode == RideMode::shuttle && ride.numStations == 2)
         {
             uint8_t nextIdx = (curIdx == 0) ? 1 : 0;
@@ -180,8 +176,6 @@ namespace OpenRCT2::PathFinding
             return std::nullopt;
         }
 
-        // Continuous circuit, find next valid station (handles index gaps)
-        // Early exit once it's checked all existing stations
         auto stations = ride.getStations();
         uint8_t validStationsChecked = 0;
         for (uint8_t offset = 1; offset <= Limits::kMaxStationsPerRide && validStationsChecked < ride.numStations; offset++)
@@ -194,7 +188,6 @@ namespace OpenRCT2::PathFinding
 
             validStationsChecked++;
 
-            // Station is valid and has an exit. Destination found.
             if (!station.Exit.IsNull())
                 return StationIndex::FromUnderlying(nextIdx);
         }
@@ -202,10 +195,6 @@ namespace OpenRCT2::PathFinding
         return std::nullopt;
     }
 
-    /**
-     * Checks if a ride is a usable transport ride for pathfinding purposes.
-     * Requirements: transport type, open, free, 2+ stations. Also, not a 3+ station shuttle.
-     */
     static bool IsUsableTransportRide(const Ride& ride)
     {
         if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide))
@@ -223,12 +212,10 @@ namespace OpenRCT2::PathFinding
         return true;
     }
 
-    // Cache for checking if usable transport rides exist, avoids scanning all rides every pathfind.
     static struct TransportCache
     {
         bool hasUsableTransport = false;
         uint32_t lastCheckTick = 0;
-        // Recheck every ~3 seconds at normal speed
         static constexpr uint32_t kCacheValidTicks = 128;
 
         bool CheckHasUsableTransport()
@@ -236,11 +223,9 @@ namespace OpenRCT2::PathFinding
             auto& gameState = getGameState();
             uint32_t currentTick = gameState.currentTicks;
 
-            // Check if cache is still valid
             if (currentTick - lastCheckTick < kCacheValidTicks)
                 return hasUsableTransport;
 
-            // Cache expired, rescan
             lastCheckTick = currentTick;
             hasUsableTransport = false;
 
@@ -257,27 +242,13 @@ namespace OpenRCT2::PathFinding
         }
     } _transportCache;
 
-    /**
-     * Calculates the "cost" of using a transport ride in terms of path steps.
-     * This allows the heuristic search to compare walking vs transport.
-     *
-     * It use zero cost to strongly prefer transport over walking.
-     * The real benefit of transport is the "teleportation" effect. The guest
-     * skips a large portion of the path network. This also makes sure transports
-     * win tiebreakers against equally long walking routes.
-     */
+    // TODO: Zero cost means transport always wins. Needs a proper cost model.
     static uint8_t CalculateTransportCost(
         [[maybe_unused]] const RideStation& entranceStation, [[maybe_unused]] const RideStation& exitStation)
     {
-        // Keeping this around for potential future enhancements (e.g., wait-time or distance-based costs). Zero means it's
-        // free.
         return 0;
     }
 
-    /**
-     * Finds the direction guests walk out from a ride exit.
-     * Returns nullopt if no exit entrance element found at the location.
-     */
     static std::optional<Direction> FindExitFacingDirection(const TileCoordsXYZ& exitLoc)
     {
         TileElement* element = MapGetFirstElementAt(exitLoc);
@@ -293,18 +264,12 @@ namespace OpenRCT2::PathFinding
             if (element->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
-            // Exit's stored direction points INTO the ride, reverse it
             return DirectionReverse(element->getDirection());
         } while (!(element++)->isLastForTile());
 
         return std::nullopt;
     }
 
-    /**
-     * Finds a path tile element at or near the given location with height tolerance.
-     * Updates outZ with the actual path height if found.
-     * Returns the tile element or nullptr if not found.
-     */
     static TileElement* FindPathTileElementNearExit(const TileCoordsXYZ& loc, int& outZ)
     {
         TileElement* element = MapGetFirstElementAt(loc);
@@ -316,7 +281,6 @@ namespace OpenRCT2::PathFinding
             if (element->getType() != TileElementType::Path)
                 continue;
 
-            // Allow height tolerance for sloped paths
             if (std::abs(element->baseHeight - loc.z) > kPathHeightTolerance)
                 continue;
 
@@ -1002,8 +966,7 @@ namespace OpenRCT2::PathFinding
 
                             if (direction == testEdge)
                             {
-                                // Check if this is a usable transport ride (for guests only)
-                                // Skip expensive checks if no usable transport rides exist
+                                searchResult = PathSearchResult::RideEntrance;
                                 if (state.hasUsableTransport)
                                 {
                                     auto* ride = GetRide(rideIndex);
@@ -1012,14 +975,6 @@ namespace OpenRCT2::PathFinding
                                         searchResult = PathSearchResult::TransportRideEntrance;
                                         transportRide = ride;
                                     }
-                                    else
-                                    {
-                                        searchResult = PathSearchResult::RideEntrance;
-                                    }
-                                }
-                                else
-                                {
-                                    searchResult = PathSearchResult::RideEntrance;
                                 }
                                 found = true;
                                 break;
@@ -1087,9 +1042,6 @@ namespace OpenRCT2::PathFinding
                         {
                             if (state.ignoreForeignQueues && !pathElement->GetRideIndex().IsNull())
                             {
-                                // Check if this queue belongs to a usable transport ride
-                                // If so, let the search continue to potentially find the transport entrance
-                                // Skip expensive checks if no usable transport rides exist
                                 bool isTransportQueue = false;
                                 if (state.hasUsableTransport)
                                 {
@@ -1100,10 +1052,8 @@ namespace OpenRCT2::PathFinding
 
                                 if (!isTransportQueue)
                                 {
-                                    // Path is a queue we aren't interested in
                                     searchResult = PathSearchResult::RideQueue;
                                 }
-                                // else: continue searching through transport queue to find entrance
                             }
                         }
                     }
@@ -1159,10 +1109,8 @@ namespace OpenRCT2::PathFinding
 
             /* At this point the map element tile is not the goal. */
 
-            /* Handle transport ride entrances specially. "teleport" the search to the exit station. */
             if (searchResult == PathSearchResult::TransportRideEntrance)
             {
-                // transportRide was set when we detected this entrance
                 if (transportRide != nullptr && state.usedTransportRideId != rideIndex)
                 {
                     StationIndex entranceStationIdx = tileElement->asEntrance()->GetStationIndex();
@@ -1177,16 +1125,13 @@ namespace OpenRCT2::PathFinding
                         {
                             TileCoordsXYZ exitLoc{ exitStation.Exit.x, exitStation.Exit.y, exitStation.Exit.z };
 
-                            // Exit early if the exit is already further from goal than current best, skipping transport
                             uint16_t exitHeuristic = CalculateHeuristicPathingScore(exitLoc, goal);
                             if (exitHeuristic >= *endScore)
                                 continue;
 
-                            // Find direction guests walk out from exit
                             auto exitDirOpt = FindExitFacingDirection(exitLoc);
                             if (exitDirOpt.has_value())
                             {
-                                // The path is on the tile the exit faces toward
                                 TileCoordsXYZ pathLoc = exitLoc;
                                 pathLoc += TileDirectionDelta[exitDirOpt.value()];
 
@@ -1195,7 +1140,6 @@ namespace OpenRCT2::PathFinding
 
                                 if (exitPathElement != nullptr)
                                 {
-                                    // Mark this transport as used to prevent loops
                                     RideId savedTransportId = state.usedTransportRideId;
                                     state.usedTransportRideId = rideIndex;
 
@@ -1203,32 +1147,27 @@ namespace OpenRCT2::PathFinding
                                     uint8_t exitEdges = exitPathElement->asPath()->GetEdges();
                                     uint8_t transportCost = CalculateTransportCost(entranceStation, exitStation);
 
-                                    // Search from exit path in all valid directions
                                     for (Direction exitDir = 0; exitDir < kNumOrthogonalDirections; exitDir++)
                                     {
                                         if (!(exitEdges & (1 << exitDir)))
                                             continue;
 
-                                        // Recursively search from exit, steps reset to transport cost only
                                         PeepPathfindHeuristicSearch(
                                             state, pathLoc, goal, peep, exitPathElement, inPatrolArea, transportCost, endScore,
                                             exitDir, endJunctions, junctionList, directionList, endXYZ, endSteps);
                                     }
 
-                                    // Mark that this search path found a route via transport
                                     if (*endScore < 65535)
                                     {
                                         state.foundPathViaTransport = true;
                                     }
 
-                                    // Restore transport ID for other search branches
                                     state.usedTransportRideId = savedTransportId;
                                 }
                             }
                         }
                     }
                 }
-                // Don't continue regular search from transport entrance
                 continue;
             }
 
@@ -1528,8 +1467,6 @@ namespace OpenRCT2::PathFinding
         state.queueRideIndex = queueRideIndex;
         state.usedTransportRideId = RideId::GetNull();
         state.foundPathViaTransport = false;
-        // Check if any usable transport rides exist (only for guests, using cache)
-        // Staff don't use transport rides (unfortunately?) so skip the cache check entirely for them
         state.hasUsableTransport = (peep.as<Guest>() != nullptr) && _transportCache.CheckHasUsableTransport();
 
         // The max number of thin junctions searched - a per-search-path limit.
@@ -1753,7 +1690,6 @@ namespace OpenRCT2::PathFinding
                 LogPathfinding(
                     &peep, "Pathfind searching in direction: %d from %d,%d,%d", testEdge, loc.x >> 5, loc.y >> 5, loc.z);
 
-                // Reset transport flag before each edge search
                 state.foundPathViaTransport = false;
                 state.usedTransportRideId = RideId::GetNull();
 
@@ -1761,7 +1697,6 @@ namespace OpenRCT2::PathFinding
                     state, { loc.x, loc.y, height }, goal, peep, firstTileElement, inPatrolArea, 0, &score, testEdge,
                     &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
-                // If this edge found a path via transport, it gets a tiebreaker bonus
                 bool usedTransport = state.foundPathViaTransport;
 
                 if constexpr (kLogPathfinding)
@@ -1777,7 +1712,6 @@ namespace OpenRCT2::PathFinding
                     }
                 }
 
-                // Transport routes get tiebreaker advantage, at equal score and steps, the transport ride wins
                 bool isBetter = (score < bestScore) || (score == bestScore && endSteps < bestSub)
                     || (score == bestScore && endSteps == bestSub && usedTransport);
                 if (isBetter)
