@@ -455,7 +455,6 @@ namespace OpenRCT2
     static void GuestUpdateRideNauseaGrowth(Guest& guest, const Ride& ride);
     static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride);
     static bool GuestShouldPreferredIntensityIncrease(Guest& guest);
-    static bool GuestReallyLikedRide(Guest& guest, const Ride& ride);
     static PeepThoughtType GuestAssessSurroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z);
     static void GuestUpdateHunger(Guest& guest);
     static void GuestDecideWhetherToLeavePark(Guest& guest);
@@ -1156,10 +1155,10 @@ namespace OpenRCT2
              * remaining times the encompassing conditional is
              * executed (which is also every second time, but
              * the alternate time to the true branch). */
-            if (nausea >= 140)
+            if (nausea >= kPeepNauseaMildDecisionThreshold)
             {
                 PeepThoughtType thought_type = PeepThoughtType::sick;
-                if (nausea >= 200)
+                if (nausea >= kPeepNauseaSevereDecisionThreshold)
                 {
                     thought_type = PeepThoughtType::verySick;
                     GuestHeadForNearestRideWithSpecialType(*this, true, RtdSpecialType::firstAid);
@@ -2173,7 +2172,7 @@ namespace OpenRCT2
                                 }
 
                                 // Very nauseous peeps will only go on very gentle rides.
-                                if (ride.ratings.nausea >= RideRating::make(1, 40) && nausea > 160)
+                                if (ride.ratings.nausea >= RideRating::make(1, 40) && nausea > kPeepNauseaModerateDecisionThreshold)
                                 {
                                     choseNotToGoOnRide(ride, peepAtRide, false);
                                     return false;
@@ -2905,25 +2904,58 @@ namespace OpenRCT2
         guest.nauseaTarget = static_cast<uint8_t>(std::min<int32_t>(guest.nauseaTarget + nauseaGrowthRateChange, 255));
     }
 
-    static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride)
+    uint8_t GuestNeedsTolerance(const Guest& guest)
+    {
+        // kPeepMaxEnergy is 128 (not 255). Full energy + max hunger => 255 (identity).
+        return static_cast<uint8_t>(
+            (static_cast<uint32_t>(guest.Energy) * guest.hunger * 255u)
+            / (static_cast<uint32_t>(kPeepMaxEnergy) * static_cast<uint32_t>(kPeepMaxHunger)));
+    }
+
+    static uint8_t GuestScaleDecisionThreshold(uint8_t threshold, uint8_t tolerance)
+    {
+        return static_cast<uint8_t>((static_cast<uint16_t>(threshold) * tolerance) / 255);
+    }
+
+    static RideRating_t GuestScaleIntensityThreshold(RideRating_t threshold, uint8_t tolerance)
+    {
+        return static_cast<RideRating_t>((static_cast<int32_t>(threshold) * tolerance) / 255);
+    }
+
+    bool GuestMeetsGoOnRideAgainConditions(const Guest& guest, const Ride& ride)
     {
         if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::guestsWillRideAgain))
             return false;
         if (!RideHasRatings(ride))
             return false;
-        if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
+
+        const auto tolerance = GuestNeedsTolerance(guest);
+        const auto intensityThreshold = GuestScaleIntensityThreshold(RideRating::make(10, 00), tolerance);
+        if (ride.ratings.intensity > intensityThreshold && !getGameState().cheats.ignoreRideIntensity)
             return false;
-        if (guest.happiness < 180)
+
+        if (guest.happiness < kPeepHappinessRideAgainDecisionThreshold)
             return false;
-        if (guest.Energy < 100)
+        if (guest.Energy < kPeepEnergyDecisionThreshold)
             return false;
-        if (guest.nausea > 160)
+
+        const auto nauseaThreshold = GuestScaleDecisionThreshold(kPeepNauseaModerateDecisionThreshold, tolerance);
+        if (guest.nausea > nauseaThreshold)
             return false;
-        if (guest.hunger < 30)
+
+        if (guest.hunger < kPeepHungerDecisionThreshold)
             return false;
-        if (guest.thirst < 20)
+        if (guest.thirst < kPeepThirstDecisionThreshold)
             return false;
-        if (guest.toilet > 170)
+        if (guest.toilet > kPeepToiletDecisionThreshold)
+            return false;
+
+        return true;
+    }
+
+    static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride)
+    {
+        if (!GuestMeetsGoOnRideAgainConditions(guest, ride))
             return false;
 
         uint8_t r = (ScenarioRand() & 0xFF);
@@ -2942,21 +2974,27 @@ namespace OpenRCT2
     {
         if (getGameState().park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
             return false;
-        if (guest.happiness < 200)
+        if (guest.happiness < kPeepHappinessIntensityDecisionThreshold)
             return false;
 
         return (ScenarioRand() & 0xFF) >= static_cast<uint8_t>(guest.intensity);
     }
 
-    static bool GuestReallyLikedRide(Guest& guest, const Ride& ride)
+    bool GuestReallyLikedRide(const Guest& guest, const Ride& ride)
     {
-        if (guest.happiness < 215)
+        if (guest.happiness < kPeepHappinessReallyLikedDecisionThreshold)
             return false;
-        if (guest.nausea > 120)
+
+        const auto tolerance = GuestNeedsTolerance(guest);
+        const auto nauseaThreshold = GuestScaleDecisionThreshold(kPeepNauseaLowDecisionThreshold, tolerance);
+        if (guest.nausea > nauseaThreshold)
             return false;
+
         if (!RideHasRatings(ride))
             return false;
-        if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
+
+        const auto intensityThreshold = GuestScaleIntensityThreshold(RideRating::make(10, 00), tolerance);
+        if (ride.ratings.intensity > intensityThreshold && !getGameState().cheats.ignoreRideIntensity)
             return false;
         return true;
     }
@@ -5607,7 +5645,7 @@ namespace OpenRCT2
         if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
             return;
 
-        if (nausea > 140)
+        if (nausea > kPeepNauseaMildDecisionThreshold)
             return;
 
         if (happiness < 120)
@@ -6129,7 +6167,7 @@ namespace OpenRCT2
             }
         }
 
-        if (nausea <= 170 && Energy > 50)
+        if (nausea <= kPeepNauseaHighDecisionThreshold && Energy > 50)
         {
             return false;
         }
@@ -7001,13 +7039,13 @@ namespace OpenRCT2
             return;
         }
 
-        if (nausea > 170)
+        if (nausea > kPeepNauseaHighDecisionThreshold)
         {
             setAnimationGroup(PeepAnimationGroup::veryNauseous);
             return;
         }
 
-        if (nausea > 140)
+        if (nausea > kPeepNauseaMildDecisionThreshold)
         {
             setAnimationGroup(PeepAnimationGroup::nauseous);
             return;
@@ -7480,15 +7518,15 @@ namespace OpenRCT2
             return PEEP_FACE_OFFSET_ANGRY;
 
         // VERY_VERY_SICK
-        if (peep->nausea > 200)
+        if (peep->nausea > kPeepNauseaSevereDecisionThreshold)
             return PEEP_FACE_OFFSET_VERY_VERY_SICK;
 
         // VERY_SICK
-        if (peep->nausea > 170)
+        if (peep->nausea > kPeepNauseaHighDecisionThreshold)
             return PEEP_FACE_OFFSET_VERY_SICK;
 
         // SICK
-        if (peep->nausea > 140)
+        if (peep->nausea > kPeepNauseaMildDecisionThreshold)
             return PEEP_FACE_OFFSET_SICK;
 
         // VERY_TIRED

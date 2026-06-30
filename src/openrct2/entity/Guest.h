@@ -19,6 +19,8 @@ struct CarEntry;
 
 namespace OpenRCT2
 {
+    struct Guest;
+
     constexpr int8_t kPeepMaxThoughts = 5;
 
     constexpr int8_t kPeepHungerWarningThreshold = 25;
@@ -31,11 +33,37 @@ namespace OpenRCT2
     constexpr int8_t kPeepLostWarningThreshold = 8;
     constexpr int8_t kPeepTooLongQueueThreshold = 25;
 
+    // Guest decision thresholds (ride-again, preferences, nausea behaviour)
+    constexpr uint8_t kPeepHungerDecisionThreshold = 30;
+    constexpr uint8_t kPeepThirstDecisionThreshold = 20;
+    constexpr uint8_t kPeepToiletDecisionThreshold = 170;
+    constexpr uint8_t kPeepNauseaLowDecisionThreshold = 120;
+    constexpr uint8_t kPeepNauseaMildDecisionThreshold = 140;
+    constexpr uint8_t kPeepNauseaModerateDecisionThreshold = 160;
+    constexpr uint8_t kPeepNauseaHighDecisionThreshold = 170;
+    constexpr uint8_t kPeepNauseaSevereDecisionThreshold = 200;
+    constexpr uint8_t kPeepHappinessRideAgainDecisionThreshold = 180;
+    constexpr uint8_t kPeepHappinessIntensityDecisionThreshold = 200;
+    constexpr uint8_t kPeepHappinessReallyLikedDecisionThreshold = 215;
+    constexpr uint8_t kPeepEnergyDecisionThreshold = 100;
+
     constexpr int kPeepMaxHappiness = 255;
     constexpr int kPeepMaxHunger = 255;
     constexpr int16_t kPeepMaxToilet = 255;
     constexpr int16_t kPeepMaxNausea = 255;
     constexpr int kPeepMaxThirst = 255;
+
+    /**
+     * 0–255 modifier for condition-sensitive decision gates.
+     * Full Energy (kPeepMaxEnergy) and high hunger (kPeepMaxHunger) yield 255 (identity).
+     * Tired / hungry guests yield a lower value and stricter nausea / intensity gates.
+     */
+    uint8_t GuestNeedsTolerance(const Guest& guest);
+
+    /** Deterministic ride-again gates (no ScenarioRand). */
+    bool GuestMeetsGoOnRideAgainConditions(const Guest& guest, const Ride& ride);
+
+    bool GuestReallyLikedRide(const Guest& guest, const Ride& ride);
 
     enum class PeepThoughtType : uint8_t
     {
