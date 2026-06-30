@@ -57,6 +57,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Wall,
     };
 
+    inline ObjectType objectTypeOf(const RuleSceneryType type)
+    {
+        switch (type)
+        {
+            case Small: return ObjectType::smallScenery;
+            case Large: return ObjectType::largeScenery;
+            case Wall: return ObjectType::walls;
+        }
+        return ObjectType::none;
+    }
+
     enum class TextureRulePreset : uint8_t
     {
         SmallRockPatches,

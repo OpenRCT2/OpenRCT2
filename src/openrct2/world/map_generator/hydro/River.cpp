@@ -20,7 +20,7 @@
 #include <format>
 #include <numbers>
 
-//#define ENABLE_DEBUG_SIGNS
+// #define ENABLE_DEBUG_SIGNS
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
@@ -463,14 +463,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
      * Checks if the tile at the offset from the given position share an ordinal neighbour with the given flag.
      * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
      */
-    static bool haveCommonOrdinalNeighbour(
-        const HydroMaps& hydroMaps, const TileCoordsXY& pos, const TileCoordsXY& offset, const HydroFlag flag = river)
+    static bool haveCommonOrdinalNeighbour(const HydroMaps& hydroMaps, const TileCoordsXY& pos, const TileCoordsXY& offset)
     {
         for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(offset))
         {
             const TileCoordsXY sharedOrdinalPos{ pos + ordinalOffset };
-
-            if (hydroMaps.flags[sharedOrdinalPos].has(flag))
+            if (hydroMaps.flags[sharedOrdinalPos].has(river))
             {
                 return true;
             }
@@ -508,6 +506,179 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         queue.emplaceAndVisit(nPos, context.heightMap[nPos]);
         upstreamCount++;
         distanceMap[nPos] = distanceMap[pos] + 1.0f;
+    }
+
+    /**
+     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
+     * settings.
+     */
+    static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
+    {
+        const HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        const float catchmentMin = 1.0f;
+        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y
+            * kRiversOverscanFactor;
+
+        const float widthMin = 0.0f;
+        const float widthMax = context.settings.riverWidthMax;
+
+        const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
+        const float exponentiatedCatchment = std::pow(
+            rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
+        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
+
+        return width;
+    }
+
+    /**
+     * Determines the river depth based on the width, constants from table 2 in
+     *
+     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
+     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
+     * Research: Earth Surface, 118(1), pp.216-228.
+     */
+    static float riverDepth(const float width)
+    {
+        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
+        // rescale for rct
+        return std::max(2.0f, 8.0f * depth);
+    }
+
+    /**
+     * Slightly widen the river based on catchment.
+     */
+    static void adjustStreamWidth(MapGenCtx& context)
+    {
+        PROFILED_FUNCTION();
+        HeightMap& heightMap = context.heightMap;
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+        TrackingStableTileQueue queue{ context.dimensions };
+        DistanceMap distanceMap{ context.dimensions };
+        distanceMap.fill(std::numeric_limits<float>::infinity());
+        prepareRiverQueue(context, queue, river);
+
+        while (!queue.empty())
+        {
+            const QueueTile tile = queue.top();
+            queue.pop();
+
+            for (const auto& offset : kNeighbourOffsets)
+            {
+                const TileCoordsXY nPos{ tile.pos + offset };
+
+                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
+                {
+                    continue;
+                }
+
+                queue.emplaceAndVisit(nPos, heightMap[nPos]);
+            }
+
+            const float radius = riverWidth(context, tile.pos) / 2.0f;
+            const float radiusSquared = radius * radius;
+
+            for (int32_t dy = -radius; dy <= radius; dy++)
+            {
+                for (int32_t dx = -radius; dx <= radius; dx++)
+                {
+                    TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
+
+                    int32_t distance = dx * dx + dy * dy;
+                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared)
+                    {
+                        continue;
+                    }
+
+                    // make waterfalls a bit thinner
+                    if (heightMap[deltaPos] - heightMap[tile.pos] > 4.0f)
+                    {
+                        continue;
+                    }
+
+                    // ensure waterfalls look nice (i.e. are monotonic) by setting the height of newly minted river tiles to the
+                    // height of the closest river tile
+                    if (hydroMaps.flags[deltaPos].has(river))
+                    {
+                        if (distanceMap[deltaPos] < std::numeric_limits<float>::infinity())
+                        {
+                            if (distance < distanceMap[deltaPos])
+                            {
+                                heightMap[deltaPos] = heightMap[tile.pos];
+                                distanceMap[deltaPos] = distance;
+                            }
+                            else if (distance == distanceMap[deltaPos])
+                            {
+                                heightMap[deltaPos] = std::min(heightMap[tile.pos], heightMap[deltaPos]);
+                            }
+                        }
+                        continue;
+                    }
+
+                    heightMap[deltaPos] = heightMap[tile.pos];
+                    distanceMap[deltaPos] = distance;
+                    hydroMaps.flags[deltaPos].set(river);
+                    hydroMaps.flags[deltaPos].set(skeleton);
+                    queue.visit(deltaPos);
+                }
+            }
+        }
+    }
+
+    /**
+     * Ensure diagonal channels render nicely by asserting each river tile has at least one ordinal neighbour.
+     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
+     */
+    static void ensureCardinalNeighbours(MapGenCtx& context)
+    {
+        PROFILED_FUNCTION();
+        HeightMap& heightMap = context.heightMap;
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+        TrackingStableTileQueue queue{ context.dimensions };
+        prepareRiverQueue(context, queue);
+
+        while (!queue.empty())
+        {
+            const QueueTile tile = queue.top();
+            queue.pop();
+
+            for (const auto& offset : kNeighbourOffsetsCardinal)
+            {
+                const TileCoordsXY nPos{ tile.pos + offset };
+
+                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
+                {
+                    continue;
+                }
+
+                queue.emplaceAndVisit(nPos, heightMap[nPos]);
+
+                if (!haveCommonOrdinalNeighbour(hydroMaps, tile.pos, offset))
+                {
+                    for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(offset))
+                    {
+                        const TileCoordsXY sharedOrdinalPos{ tile.pos + ordinalOffset };
+                        heightMap[sharedOrdinalPos] = heightMap[tile.pos];
+                        hydroMaps.catchment[sharedOrdinalPos] = context.settings.catchmentThreshold;
+                        hydroMaps.flags[sharedOrdinalPos].set(river);
+                        hydroMaps.flags[sharedOrdinalPos].set(skeleton);
+                        queue.visit(sharedOrdinalPos);
+                    }
+                }
+            }
+
+            for (const auto& offset : kNeighbourOffsetsOrdinal)
+            {
+                const TileCoordsXY nPos{ tile.pos + offset };
+
+                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
+                {
+                    continue;
+                }
+
+                queue.emplaceAndVisit(nPos, heightMap[nPos]);
+            }
+        }
     }
 
     /**
@@ -773,179 +944,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
-     * settings.
-     */
-    static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
-    {
-        const HydroMaps& hydroMaps = context.hydroMaps.value();
-
-        const float catchmentMin = 1.0f;
-        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y
-            * kRiversOverscanFactor;
-
-        const float widthMin = 0.0f;
-        const float widthMax = context.settings.riverWidthMax;
-
-        const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
-        const float exponentiatedCatchment = std::pow(
-            rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
-        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
-
-        return width;
-    }
-
-    /**
-     * Determines the river depth based on the width, constants from table 2 in
-     *
-     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
-     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
-     * Research: Earth Surface, 118(1), pp.216-228.
-     */
-    static float riverDepth(const float width)
-    {
-        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
-        // rescale for rct
-        return std::max(2.0f, 8.0f * depth);
-    }
-
-    /**
-     * Slightly widen the river based on catchment.
-     */
-    static void adjustStreamWidth(MapGenCtx& context)
-    {
-        PROFILED_FUNCTION();
-        HeightMap& heightMap = context.heightMap;
-        HydroMaps& hydroMaps = context.hydroMaps.value();
-        TrackingStableTileQueue queue{ context.dimensions };
-        DistanceMap distanceMap{ context.dimensions };
-        distanceMap.fill(std::numeric_limits<float>::infinity());
-        prepareRiverQueue(context, queue, river);
-
-        while (!queue.empty())
-        {
-            const QueueTile tile = queue.top();
-            queue.pop();
-
-            for (const auto& offset : kNeighbourOffsets)
-            {
-                const TileCoordsXY nPos{ tile.pos + offset };
-
-                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
-                {
-                    continue;
-                }
-
-                queue.emplaceAndVisit(nPos, heightMap[nPos]);
-            }
-
-            const float radius = riverWidth(context, tile.pos) / 2.0f;
-            const float radiusSquared = radius * radius;
-
-            for (int32_t dy = -radius; dy <= radius; dy++)
-            {
-                for (int32_t dx = -radius; dx <= radius; dx++)
-                {
-                    TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
-
-                    int32_t distance = dx * dx + dy * dy;
-                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared)
-                    {
-                        continue;
-                    }
-
-                    // make waterfalls a bit thinner
-                    if (heightMap[deltaPos] - heightMap[tile.pos] > 4.0f)
-                    {
-                        continue;
-                    }
-
-                    // ensure waterfalls look nice (i.e. are monotonic) by setting the height of newly minted river tiles to the
-                    // height of the closest river tile
-                    if (hydroMaps.flags[deltaPos].has(river))
-                    {
-                        if (distanceMap[deltaPos] < std::numeric_limits<float>::infinity())
-                        {
-                            if (distance < distanceMap[deltaPos])
-                            {
-                                heightMap[deltaPos] = heightMap[tile.pos];
-                                distanceMap[deltaPos] = distance;
-                            }
-                            else if (distance == distanceMap[deltaPos])
-                            {
-                                heightMap[deltaPos] = std::min(heightMap[tile.pos], heightMap[deltaPos]);
-                            }
-                        }
-                        continue;
-                    }
-
-                    heightMap[deltaPos] = heightMap[tile.pos];
-                    distanceMap[deltaPos] = distance;
-                    hydroMaps.flags[deltaPos].set(river);
-                    hydroMaps.flags[deltaPos].set(skeleton);
-                    queue.visit(deltaPos);
-                }
-            }
-        }
-    }
-
-    /**
-     * Ensure diagonal channels render nicely by asserting each river tile has at least one ordinal neighbour.
-     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
-     */
-    static void ensureCardinalNeighbours(MapGenCtx& context)
-    {
-        PROFILED_FUNCTION();
-        HeightMap& heightMap = context.heightMap;
-        HydroMaps& hydroMaps = context.hydroMaps.value();
-        TrackingStableTileQueue queue{ context.dimensions };
-        prepareRiverQueue(context, queue);
-
-        while (!queue.empty())
-        {
-            const QueueTile tile = queue.top();
-            queue.pop();
-
-            for (const auto& offset : kNeighbourOffsetsCardinal)
-            {
-                const TileCoordsXY nPos{ tile.pos + offset };
-
-                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
-                {
-                    continue;
-                }
-
-                queue.emplaceAndVisit(nPos, heightMap[nPos]);
-
-                if (!haveCommonOrdinalNeighbour(hydroMaps, tile.pos, offset))
-                {
-                    for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(offset))
-                    {
-                        const TileCoordsXY sharedOrdinalPos{ tile.pos + ordinalOffset };
-                        heightMap[sharedOrdinalPos] = heightMap[tile.pos];
-                        hydroMaps.catchment[sharedOrdinalPos] = context.settings.catchmentThreshold;
-                        hydroMaps.flags[sharedOrdinalPos].set(river);
-                        hydroMaps.flags[sharedOrdinalPos].set(skeleton);
-                        queue.visit(sharedOrdinalPos);
-                    }
-                }
-            }
-
-            for (const auto& offset : kNeighbourOffsetsOrdinal)
-            {
-                const TileCoordsXY nPos{ tile.pos + offset };
-
-                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
-                {
-                    continue;
-                }
-
-                queue.emplaceAndVisit(nPos, heightMap[nPos]);
-            }
-        }
-    }
-
-    /**
      * Carve a riverbed around the river increasing with catchment.
      */
     static void carveRiverbed(MapGenCtx& context)
@@ -998,9 +996,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     {
                         // set water level to the lowest valid option to avoid possible artifacts at pruned tributaries (min)
                         // while ensuring streams remain connected (max)
-                        auto aboveRiverbedLevel = heightMap[deltaPos] + 2.0f;
-                        auto referenceLevel = std::min(riverHeight, heightCopy[deltaPos] - 2.0f);
-                        auto candidateLevel = std::max(aboveRiverbedLevel, referenceLevel);
+                        const float aboveRiverbedLevel = heightMap[deltaPos] + 2.0f;
+                        const float referenceLevel = std::min(riverHeight, heightCopy[deltaPos] - 2.0f);
+                        const float candidateLevel = std::max(aboveRiverbedLevel, referenceLevel);
 
                         // if the height was modified previously, keep the min
                         hydroMaps.height[deltaPos] = hydroMaps.height[deltaPos] > 0.0f

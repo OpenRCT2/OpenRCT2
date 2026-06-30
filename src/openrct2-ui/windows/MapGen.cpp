@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/object/WallSceneryEntry.h"
 #include "openrct2/world/map_generator/MapHelpers.h"
 
 #include <algorithm>
@@ -1211,48 +1212,105 @@ namespace OpenRCT2::Ui::Windows
         {
             uint8_t direction = item.direction.value_or(0);
 
-            auto sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(item.index);
-            auto imageId = ImageId(sceneryEntry->image + direction);
-
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
+            switch (item.type)
             {
-                imageId = imageId.WithPrimary(item.colours[0]);
-            }
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
-            {
-                imageId = imageId.WithSecondary(item.colours[1]);
-            }
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
-            {
-                imageId = imageId.WithTertiary(item.colours[2]);
-            }
+                case MapGenerator::Rule::Small:
+                {
+                    auto sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(item.index);
+                    auto imageId = ImageId(sceneryEntry->image + direction);
 
-            auto spriteTop = (targetSize.y / 2) + (sceneryEntry->height / 2);
-            if (sceneryEntry->flags.hasAll(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::vOffsetCentre))
-            {
-                spriteTop -= 12;
-            }
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
+                    {
+                        imageId = imageId.WithPrimary(item.colours[0]);
+                    }
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
+                    {
+                        imageId = imageId.WithSecondary(item.colours[1]);
+                    }
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
+                    {
+                        imageId = imageId.WithTertiary(item.colours[2]);
+                    }
 
-            if (item.weight == 0)
-            {
-                imageId = imageId.WithRemap(FilterPaletteID::paletteGhost);
-            }
+                    auto spriteTop = (targetSize.y / 2) + (sceneryEntry->height / 2);
+                    if (sceneryEntry->flags.hasAll(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::vOffsetCentre))
+                    {
+                        spriteTop -= 12;
+                    }
 
-            auto spriteOffsetX = static_cast<int32_t>(targetSize.x / (count + 1) * (idx + 1));
-            auto spritePosition = ScreenCoordsXY{ spriteOffsetX, spriteTop };
+                    if (item.weight == 0)
+                    {
+                        imageId = imageId.WithRemap(FilterPaletteID::paletteGhost);
+                    }
 
-            GfxDrawSprite(rt, imageId, spritePosition);
+                    auto spriteOffsetX = static_cast<int32_t>(targetSize.x / (count + 1) * (idx + 1));
+                    auto spritePosition = ScreenCoordsXY{ spriteOffsetX, spriteTop };
 
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasGlass))
-            {
-                imageId = ImageId(sceneryEntry->image + 4 + direction).WithTransparency(item.colours[0]);
-                GfxDrawSprite(rt, imageId, spritePosition);
-            }
+                    GfxDrawSprite(rt, imageId, spritePosition);
 
-            if (sceneryEntry->flags.has(SmallSceneryFlag::isAnimated))
-            {
-                imageId = ImageId(sceneryEntry->image + 4 + direction);
-                GfxDrawSprite(rt, imageId, spritePosition);
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasGlass))
+                    {
+                        imageId = ImageId(sceneryEntry->image + 4 + direction).WithTransparency(item.colours[0]);
+                        GfxDrawSprite(rt, imageId, spritePosition);
+                    }
+
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::isAnimated))
+                    {
+                        imageId = ImageId(sceneryEntry->image + 4 + direction);
+                        GfxDrawSprite(rt, imageId, spritePosition);
+                    }
+                    break;
+                }
+                case MapGenerator::Rule::Large:
+                {
+                    // TODO
+                    break;
+                }
+                case MapGenerator::Rule::Wall:
+                {
+                    auto wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(item.index);
+                    if (wallEntry == nullptr)
+                        return;
+
+                    // TODO rotation?
+                    auto imageId = ImageId(wallEntry->image);
+
+                    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+                    {
+                        imageId = imageId.WithPrimary(item.colours[0]);
+                    }
+                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    {
+                        imageId = imageId.WithSecondary(item.colours[1]);
+                    }
+                    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+                    {
+                        imageId = imageId.WithTertiary(item.colours[2]);
+                    }
+
+                    if (item.weight == 0)
+                    {
+                        imageId = imageId.WithRemap(FilterPaletteID::paletteGhost);
+                    }
+
+                    auto spriteTop = (targetSize.y / 2) + (wallEntry->height / 2);
+                    auto spriteOffsetX = static_cast<int32_t>(targetSize.x / (count + 1) * (idx + 1));
+                    auto spritePosition = ScreenCoordsXY{ spriteOffsetX + 16, spriteTop };
+
+                    GfxDrawSprite(rt, imageId, spritePosition);
+
+                    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+                    {
+                        GfxDrawSprite(rt, imageId.WithIndexOffset(1), spritePosition);
+                    }
+                    if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
+                    {
+                        auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(item.colours[1]);
+                        GfxDrawSprite(rt, glassImageId, spritePosition);
+                    }
+
+                    break;
+                }
             }
         }
 

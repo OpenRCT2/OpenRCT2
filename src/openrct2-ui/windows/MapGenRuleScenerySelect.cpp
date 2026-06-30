@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "openrct2/drawing/ColourMap.h"
-
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -17,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
@@ -26,7 +25,10 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/SmallSceneryObject.h>
+#include <openrct2/object/WallObject.h>
+#include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/util/Hash.hpp>
 #include <openrct2/world/map_generator/rule/Rule.h>
 #include <optional>
 #include <ranges>
@@ -70,6 +72,35 @@ namespace OpenRCT2::Ui::Windows
         // clang-format on
     );
 
+    struct SceneryItem
+    {
+        RuleSceneryType type;
+        ObjectEntryIndex index;
+
+        friend bool operator==(const SceneryItem& lhs, const SceneryItem& rhs)
+        {
+            return lhs.type == rhs.type && lhs.index == rhs.index;
+        }
+    };
+
+    struct SceneryItemHash
+    {
+        size_t operator()(const SceneryItem& si) const noexcept
+        {
+            size_t hash = 0;
+            Util::Hash::update(hash, si.type);
+            Util::Hash::update(hash, si.index);
+            return hash;
+        }
+    };
+
+    enum class ColourSlot
+    {
+        Primary,
+        Secondary,
+        Tertiary,
+    };
+
     class MapGenRuleScenerySelectWindow final : public Window
     {
     private:
@@ -80,13 +111,13 @@ namespace OpenRCT2::Ui::Windows
         u8string filter = "";
         bool filterSelectedOnly = false;
 
-        std::vector<ObjectEntryIndex> availableItems;
-        std::vector<ObjectEntryIndex> filteredItems;
-        std::unordered_map<ObjectEntryIndex, SceneryEffectItem> selectedItems;
+        std::vector<SceneryItem> availableItems;
+        std::vector<SceneryItem> filteredItems;
+        std::unordered_map<SceneryItem, SceneryEffectItem, SceneryItemHash> selectedItems;
 
-        std::optional<ObjectEntryIndex> highlightedItem = std::nullopt;
-        std::optional<std::pair<ObjectEntryIndex, uint8_t>> colourBtnPressed = std::nullopt;
-        std::optional<std::pair<ObjectEntryIndex, uint8_t>> weightBtnPressed = std::nullopt;
+        std::optional<SceneryItem> highlightedItem = std::nullopt;
+        std::optional<std::pair<SceneryItem, uint8_t>> colourBtnPressed = std::nullopt;
+        std::optional<std::pair<SceneryItem, uint8_t>> weightBtnPressed = std::nullopt;
 
         bool HasParentWindow() const
         {
@@ -117,7 +148,15 @@ namespace OpenRCT2::Ui::Windows
                 const auto* sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
                 {
-                    availableItems.push_back(sceneryId);
+                    availableItems.emplace_back(Small, sceneryId);
+                }
+            }
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxWallSceneryObjects; sceneryId++)
+            {
+                const auto* sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(sceneryId);
+                if (sceneryEntry != nullptr)
+                {
+                    availableItems.emplace_back(Wall, sceneryId);
                 }
             }
 
@@ -150,12 +189,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        bool matchesFilter(const ObjectEntryIndex& idx) const
+        bool matchesFilter(const SceneryItem& si) const
         {
-            auto& objManager = GetContext()->GetObjectManager();
-            auto object = objManager.GetLoadedObject(ObjectType::smallScenery, idx);
-
-            auto matchesSelectedOnlyFilter = !filterSelectedOnly || selectedItems.contains(idx);
+            auto object = GetContext()->GetObjectManager().GetLoadedObject(objectTypeOf(si.type), si.index);
+            auto matchesSelectedOnlyFilter = !filterSelectedOnly || selectedItems.contains(si);
             auto matchesTextFilter = String::contains(object->GetName(), filter, true)
                 || std::ranges::any_of(object->GetAuthors(),
                                        [&](const std::string& a) { return String::contains(a, filter, true); })
@@ -168,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
         void applyFilter()
         {
             filteredItems.clear();
-            for (ObjectEntryIndex& item : availableItems)
+            for (const SceneryItem& item : availableItems)
             {
                 if (matchesFilter(item))
                 {
@@ -192,7 +229,8 @@ namespace OpenRCT2::Ui::Windows
 
             if (highlightedItem.has_value())
             {
-                auto* obj = GetContext()->GetObjectManager().GetLoadedObject<SmallSceneryObject>(highlightedItem.value());
+                auto hi = highlightedItem.value();
+                auto* obj = GetContext()->GetObjectManager().GetLoadedObject(objectTypeOf(hi.type), hi.index);
                 Guard::Assert(obj != nullptr);
 
                 auto coordsName = windowPos + ScreenCoordsXY{ 5, 365 };
@@ -230,62 +268,156 @@ namespace OpenRCT2::Ui::Windows
             return { 0, GetNumRows() * kItemSize.height };
         }
 
-        void SceneryDrawItem(Drawing::RenderTarget& rt, const ObjectEntryIndex& idx)
+        bool hasColourSlot(const SceneryItem& si, const ColourSlot& colourSlot)
+        {
+            switch (si.type)
+            {
+                case Small:
+                {
+                    auto sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(si.index);
+                    switch (colourSlot)
+                    {
+                        case ColourSlot::Primary:
+                            return sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour);
+                        case ColourSlot::Secondary:
+                            return sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour);
+                        case ColourSlot::Tertiary:
+                            return sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour);
+                    }
+                }
+                case Large:
+                    // TODO
+                    break;
+                case Wall:
+                {
+                    auto wallEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(si.index);
+                    switch (colourSlot)
+                    {
+                        case ColourSlot::Primary:
+                            return wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR;
+                        case ColourSlot::Secondary:
+                            return wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR;
+                        case ColourSlot::Tertiary:
+                            return wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR;
+                    }
+                }
+            }
+            return false;
+        }
+
+
+        void SceneryDrawItem(Drawing::RenderTarget& rt, const SceneryItem& si)
         {
             std::array<Drawing::Colour, 3> colours = { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow,
                                                        Drawing::Colour::darkBrown };
             uint8_t direction = 0;
             int32_t weight = 1;
 
-            if (selectedItems.contains(idx))
+            if (selectedItems.contains(si))
             {
-                auto& effectItem = selectedItems[idx];
+                auto& effectItem = selectedItems[si];
                 colours = effectItem.colours;
                 direction = effectItem.direction.value_or(0);
                 weight = effectItem.weight;
             }
 
-            auto sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(idx);
-            auto imageId = ImageId(sceneryEntry->image + direction);
-
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
+            switch (si.type)
             {
-                imageId = imageId.WithPrimary(colours[0]);
-            }
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
-            {
-                imageId = imageId.WithSecondary(colours[1]);
-            }
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
-            {
-                imageId = imageId.WithTertiary(colours[2]);
-            }
+                case Small:
+                {
+                    auto sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(si.index);
+                    auto imageId = ImageId(sceneryEntry->image + direction);
 
-            auto spriteTop = (kItemSize.height / 2) + (sceneryEntry->height / 2);
-            if (sceneryEntry->flags.hasAll(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::vOffsetCentre))
-            {
-                spriteTop -= 12;
-            }
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
+                    {
+                        imageId = imageId.WithPrimary(colours[0]);
+                    }
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
+                    {
+                        imageId = imageId.WithSecondary(colours[1]);
+                    }
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
+                    {
+                        imageId = imageId.WithTertiary(colours[2]);
+                    }
 
-            if (weight == 0)
-            {
-                imageId = imageId.WithRemap(Drawing::FilterPaletteID::paletteGhost);
-            }
+                    auto spriteTop = (kItemSize.height / 2) + (sceneryEntry->height / 2);
+                    if (sceneryEntry->flags.hasAll(SmallSceneryFlag::occupiesFullTile, SmallSceneryFlag::vOffsetCentre))
+                    {
+                        spriteTop -= 12;
+                    }
 
-            auto spritePosition = ScreenCoordsXY{ kItemSize.width / 2, spriteTop };
+                    if (weight == 0)
+                    {
+                        imageId = imageId.WithRemap(Drawing::FilterPaletteID::paletteGhost);
+                    }
 
-            GfxDrawSprite(rt, imageId, spritePosition);
+                    auto spritePosition = ScreenCoordsXY{ kItemSize.width / 2, spriteTop };
 
-            if (sceneryEntry->flags.has(SmallSceneryFlag::hasGlass))
-            {
-                imageId = ImageId(sceneryEntry->image + 4 + direction).WithTransparency(colours[0]);
-                GfxDrawSprite(rt, imageId, spritePosition);
-            }
+                    GfxDrawSprite(rt, imageId, spritePosition);
 
-            if (sceneryEntry->flags.has(SmallSceneryFlag::isAnimated))
-            {
-                imageId = ImageId(sceneryEntry->image + 4 + direction);
-                GfxDrawSprite(rt, imageId, spritePosition);
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::hasGlass))
+                    {
+                        imageId = ImageId(sceneryEntry->image + 4 + direction).WithTransparency(colours[0]);
+                        GfxDrawSprite(rt, imageId, spritePosition);
+                    }
+
+                    if (sceneryEntry->flags.has(SmallSceneryFlag::isAnimated))
+                    {
+                        imageId = ImageId(sceneryEntry->image + 4 + direction);
+                        GfxDrawSprite(rt, imageId, spritePosition);
+                    }
+                    break;
+                }
+                case Large:
+                {
+                    // TODO
+                    break;
+                }
+                case Wall:
+                {
+                    auto wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(si.index);
+                    if (wallEntry == nullptr)
+                        return;
+
+                    // TODO rotation?
+                    auto imageId = ImageId(wallEntry->image);
+
+                    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+                    {
+                        imageId = imageId.WithPrimary(colours[0]);
+                    }
+                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    {
+                        imageId = imageId.WithSecondary(colours[1]);
+                    }
+                    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+                    {
+                        imageId = imageId.WithTertiary(colours[2]);
+                    }
+
+                    if (weight == 0)
+                    {
+                        imageId = imageId.WithRemap(Drawing::FilterPaletteID::paletteGhost);
+                    }
+
+                    auto spriteTop = (kItemSize.height / 2) + (wallEntry->height / 2);
+                    auto spritePosition = ScreenCoordsXY{ (kItemSize.width / 2) + 16, spriteTop };
+
+                    GfxDrawSprite(rt, imageId, spritePosition);
+
+                    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+                    {
+                        GfxDrawSprite(rt, imageId.WithIndexOffset(1), spritePosition);
+                    }
+                    if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
+                    {
+                        auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(colours[1]);
+                        GfxDrawSprite(rt, glassImageId, spritePosition);
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -296,11 +428,10 @@ namespace OpenRCT2::Ui::Windows
             return { point1, point2 };
         }
 
-        void drawColourButton(
-            Drawing::RenderTarget& rt, const ObjectEntryIndex objectIdx, const uint8_t nthColour, const ScreenRect& rect)
+        void drawColourButton(Drawing::RenderTarget& rt, const SceneryItem si, const uint8_t nthColour, const ScreenRect& rect)
         {
-            ImageId btnImage = getColourButtonImage(selectedItems[objectIdx].colours[nthColour]);
-            if (colourBtnPressed.has_value() && colourBtnPressed.value().first == objectIdx
+            ImageId btnImage = getColourButtonImage(selectedItems[si].colours[nthColour]);
+            if (colourBtnPressed.has_value() && colourBtnPressed.value().first == si
                 && colourBtnPressed.value().second == nthColour)
             {
                 btnImage = btnImage.WithIndexOffset(1);
@@ -316,11 +447,10 @@ namespace OpenRCT2::Ui::Windows
             return { point1, point2 };
         }
 
-        void drawWeightButton(
-            Drawing::RenderTarget& rt, const ObjectEntryIndex objectIdx, const uint8_t nthButton, const ScreenRect& rect)
+        void drawWeightButton(Drawing::RenderTarget& rt, const SceneryItem si, const uint8_t nthButton, const ScreenRect& rect)
         {
             // draw btn
-            bool pressed = weightBtnPressed.has_value() && weightBtnPressed.value().first == objectIdx
+            bool pressed = weightBtnPressed.has_value() && weightBtnPressed.value().first == si
                 && weightBtnPressed->second == nthButton;
             ScreenRect btnRect = itemRectToWeightBtnRect(rect, nthButton);
             Drawing::Rectangle::fillInset(
@@ -344,18 +474,18 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY pos{ 0, 0 };
 
-            for (auto& itemIdx : filteredItems)
+            for (auto& item : filteredItems)
             {
                 auto itemRect = ScreenRect{ pos, pos + ScreenCoordsXY{ kItemSize.width - 1, kItemSize.height - 1 } };
 
-                bool selected = selectedItems.contains(itemIdx);
+                bool selected = selectedItems.contains(item);
                 if (selected)
                 {
                     Drawing::Rectangle::fillInset(
                         rt, itemRect, colours[1], Drawing::Rectangle::BorderStyle::inset,
                         Drawing::Rectangle::FillBrightness::light);
                 }
-                else if (highlightedItem.has_value() && highlightedItem.value() == itemIdx)
+                else if (highlightedItem.has_value() && highlightedItem.value() == item)
                 {
                     Drawing::Rectangle::fillInset(
                         rt, itemRect, colours[1], Drawing::Rectangle::BorderStyle::none,
@@ -366,22 +496,21 @@ namespace OpenRCT2::Ui::Windows
                 Drawing::RenderTarget clippedRT;
                 if (ClipRenderTarget(clippedRT, rt, pos + ScreenCoordsXY{ 1, 1 }, kItemSize.width - 2, kItemSize.height - 2))
                 {
-                    SceneryDrawItem(clippedRT, itemIdx);
+                    SceneryDrawItem(clippedRT, item);
                 }
 
                 // draw colour buttons
-                auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(itemIdx);
-                if (selected && sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
+                if (selected && hasColourSlot(item, ColourSlot::Primary))
                 {
-                    drawColourButton(rt, itemIdx, 0, itemRect);
+                    drawColourButton(rt, item, 0, itemRect);
                 }
-                if (selected && sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
+                if (selected && hasColourSlot(item, ColourSlot::Secondary))
                 {
-                    drawColourButton(rt, itemIdx, 1, itemRect);
+                    drawColourButton(rt, item, 1, itemRect);
                 }
-                if (selected && sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
+                if (selected && hasColourSlot(item, ColourSlot::Tertiary))
                 {
-                    drawColourButton(rt, itemIdx, 2, itemRect);
+                    drawColourButton(rt, item, 2, itemRect);
                 }
 
                 // draw weight + buttons
@@ -390,10 +519,10 @@ namespace OpenRCT2::Ui::Windows
                     auto weightRect = ScreenRect{ { itemRect.GetLeft() + 4, itemRect.GetBottom() - 4 - 12 },
                                                   { itemRect.GetRight() - 4, itemRect.GetBottom() - 4 } };
                     Drawing::Rectangle::fillInset(rt, weightRect, colours[2], Drawing::Rectangle::BorderStyle::inset);
-                    drawWeightButton(rt, itemIdx, 0, itemRect);
-                    drawWeightButton(rt, itemIdx, 1, itemRect);
+                    drawWeightButton(rt, item, 0, itemRect);
+                    drawWeightButton(rt, item, 1, itemRect);
                     Formatter ft;
-                    ft.Add<uint16_t>(static_cast<uint16_t>(selectedItems[itemIdx].weight));
+                    ft.Add<uint16_t>(static_cast<uint16_t>(selectedItems[item].weight));
                     drawText(
                         rt, { weightRect.GetLeft() + 2, weightRect.GetTop() + 2 }, STR_MAPGEN_RULE_SCENERY_ITEM_WEIGHT_TIMES_X,
                         ft, { colours[2] });
@@ -409,8 +538,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void ShowColourDropdown(
-            const ObjectEntryIndex idx, const uint8_t nthColour, const Drawing::Colour selectedColour,
-            const ScreenRect& btnRect)
+            const SceneryItem si, const uint8_t nthColour, const Drawing::Colour selectedColour, const ScreenRect& btnRect)
         {
             widgets[WIDX_COLOUR_BTN_DUMMY].type = WidgetType::colourBtn;
             widgets[WIDX_COLOUR_BTN_DUMMY].left = widgets[WIDX_SCROLL].left + btnRect.GetLeft();
@@ -418,7 +546,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_COLOUR_BTN_DUMMY].right = widgets[WIDX_COLOUR_BTN_DUMMY].left + 12;
             widgets[WIDX_COLOUR_BTN_DUMMY].bottom = widgets[WIDX_COLOUR_BTN_DUMMY].top + 12;
 
-            colourBtnPressed = std::make_optional(std::make_pair(idx, nthColour));
+            colourBtnPressed = std::make_optional(std::make_pair(si, nthColour));
             WindowDropdownShowColour(this, &widgets[WIDX_COLOUR_BTN_DUMMY], colours[1], selectedColour);
         }
 
@@ -434,12 +562,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto objectIdx = maybeObjectIdx.value();
-            auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(objectIdx);
+            auto sceneryItem = maybeObjectIdx.value();
 
-            if (selectedItems.contains(objectIdx))
+            if (selectedItems.contains(sceneryItem))
             {
-                auto& selectedItem = selectedItems[objectIdx];
+                auto& selectedItem = selectedItems[sceneryItem];
 
                 auto rectPrimaryColour = itemRectToColourRect(box, 0);
                 auto rectSecondaryColour = itemRectToColourRect(box, 1);
@@ -448,40 +575,38 @@ namespace OpenRCT2::Ui::Windows
                 auto rectWeightUp = itemRectToWeightBtnRect(box, 0);
                 auto rectWeightDown = itemRectToWeightBtnRect(box, 1);
 
-                if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour) && rectPrimaryColour.Contains(screenCoords))
+                if (hasColourSlot(sceneryItem, ColourSlot::Primary) && rectPrimaryColour.Contains(screenCoords))
                 {
-                    ShowColourDropdown(objectIdx, 0, selectedItem.colours[0], rectPrimaryColour);
+                    ShowColourDropdown(sceneryItem, 0, selectedItem.colours[0], rectPrimaryColour);
                 }
-                else if (
-                    sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour) && rectSecondaryColour.Contains(screenCoords)
-                    && rectSecondaryColour.Contains(screenCoords))
+                else if (hasColourSlot(sceneryItem, ColourSlot::Secondary) && rectSecondaryColour.Contains(screenCoords))
                 {
-                    ShowColourDropdown(objectIdx, 1, selectedItem.colours[1], rectSecondaryColour);
+                    ShowColourDropdown(sceneryItem, 1, selectedItem.colours[1], rectSecondaryColour);
                 }
-                else if (
-                    sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour) && rectTertiaryColour.Contains(screenCoords))
+                else if (hasColourSlot(sceneryItem, ColourSlot::Tertiary) && rectTertiaryColour.Contains(screenCoords))
                 {
-                    ShowColourDropdown(objectIdx, 2, selectedItem.colours[2], rectTertiaryColour);
+                    ShowColourDropdown(sceneryItem, 2, selectedItem.colours[2], rectTertiaryColour);
                 }
                 else if (rectWeightUp.Contains(screenCoords))
                 {
-                    weightBtnPressed = std::make_optional(std::make_pair(objectIdx, 0));
+                    weightBtnPressed = std::make_optional(std::make_pair(sceneryItem, 0));
                     selectedItem.weight = std::min(selectedItem.weight + 1, 100);
                 }
                 else if (rectWeightDown.Contains(screenCoords))
                 {
-                    weightBtnPressed = std::make_optional(std::make_pair(objectIdx, 1));
+                    weightBtnPressed = std::make_optional(std::make_pair(sceneryItem, 1));
                     selectedItem.weight = std::max(selectedItem.weight - 1, 0);
                 }
                 else
                 {
-                    selectedItems.erase(objectIdx);
+                    selectedItems.erase(sceneryItem);
                 }
             }
             else
             {
-                selectedItems[objectIdx] = SceneryEffectItem{
-                    .index = objectIdx,
+                selectedItems[sceneryItem] = SceneryEffectItem{
+                    .type = sceneryItem.type,
+                    .index = sceneryItem.index,
                     .weight = 1,
                     .direction = std::nullopt,
                     .colours = { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow, Drawing::Colour::darkBrown }
@@ -506,7 +631,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
         }
 
-        std::optional<ObjectEntryIndex> getItemIdxAt(const ScreenCoordsXY& screenCoords, ScreenRect& box) const
+        std::optional<SceneryItem> getItemIdxAt(const ScreenCoordsXY& screenCoords, ScreenRect& box) const
         {
             const auto columns = GetNumColumns();
             const auto col = screenCoords.x / kItemSize.width;
@@ -547,7 +672,7 @@ namespace OpenRCT2::Ui::Windows
             effect = _effect;
             for (auto& item : effect.objects)
             {
-                selectedItems[item.index] = item;
+                selectedItems[{ item.type, item.index }] = item;
             }
         }
 
@@ -654,9 +779,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseDown(WidgetIndex widgetIndex) override
         {
-            switch (widgetIndex)
-            {
-            }
+            switch (widgetIndex) {}
         }
 
         bool WasCalledFrom(const WindowBase* call_w, const WidgetIndex call_widget) const
