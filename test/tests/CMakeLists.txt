@@ -15,6 +15,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/Endianness.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/EnumMapTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/FormattingTests.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/GuestNeedsToleranceTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/ImageImporterTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/IniReaderTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/IniWriterTest.cpp"
