@@ -15,7 +15,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
-#include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -45,6 +44,7 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenes/SceneManager.h>
+#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -284,8 +284,8 @@ namespace OpenRCT2::Ui::Windows
         {
             initWidgets();
 
-            Sub6AB211();
-            ResetSelectedObjectCountAndSize();
+            Editor::Sub6AB211();
+            Editor::ResetSelectedObjectCountAndSize();
 
             _filterFlags = FILTER_RIDES_ALL | Config::Get().interface.objectSelectionFilterFlags;
             _filter.clear();
@@ -322,9 +322,9 @@ namespace OpenRCT2::Ui::Windows
          */
         void onClose() override
         {
-            UnloadUnselectedObjects();
+            Editor::UnloadUnselectedObjects();
             EditorLoadSelectedObjects();
-            EditorObjectFlagsClear();
+            Editor::ObjectFlagsClear();
 
             if (_loadedObject != nullptr)
                 _loadedObject->Unload();
@@ -393,7 +393,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (isInEditorMode())
                     {
-                        FinishObjectSelection();
+                        Editor::FinishObjectSelection();
                     }
                     if (gLegacyScene == LegacyScene::trackDesignsManager)
                     {
@@ -630,8 +630,8 @@ namespace OpenRCT2::Ui::Windows
 
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
-                const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(
-                    0, { EditorInputFlag::select }, listItem->repositoryItem);
+                const auto objectSelectResult = Editor::ObjectSelectionSelectObject(
+                    0, { Editor::InputFlag::select }, listItem->repositoryItem);
                 if (!objectSelectResult.successful)
                     return;
 
@@ -653,17 +653,17 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            EditorInputFlags inputFlags = { EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup };
+            Editor::InputFlags inputFlags = { Editor::InputFlag::unk1, Editor::InputFlag::selectObjectsInSceneryGroup };
             // If already selected
             if (!(object_selection_flags & ObjectSelectionFlags::Selected))
-                inputFlags.set(EditorInputFlag::select);
+                inputFlags.set(Editor::InputFlag::select);
 
-            gSceneryGroupPartialSelectError.clear();
-            const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
+            Editor::gSceneryGroupPartialSelectError.clear();
+            const auto objectSelectResult = Editor::ObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
             if (!objectSelectResult.successful)
             {
-                StringId errorTitle = inputFlags.has(EditorInputFlag::select) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                              : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+                StringId errorTitle = inputFlags.has(Editor::InputFlag::select) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                                : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
                 Formatter ft{};
                 ft.Add<const char*>(objectSelectResult.message.c_str());
@@ -677,10 +677,10 @@ namespace OpenRCT2::Ui::Windows
                 invalidate();
             }
 
-            if (!gSceneryGroupPartialSelectError.empty())
+            if (!Editor::gSceneryGroupPartialSelectError.empty())
             {
                 Formatter ft{};
-                ft.Add<const char*>(gSceneryGroupPartialSelectError.c_str());
+                ft.Add<const char*>(Editor::gSceneryGroupPartialSelectError.c_str());
                 ContextShowError(STR_STRING, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, ft);
             }
         }
@@ -1074,7 +1074,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
 
-                auto numSelected = _numSelectedObjectsForType[EnumValue(GetSelectedObjectType())];
+                auto numSelected = Editor::_numSelectedObjectsForType[EnumValue(GetSelectedObjectType())];
                 auto totalSelectable = getObjectEntryGroupCount(GetSelectedObjectType());
 
                 auto ft = Formatter();
@@ -1193,7 +1193,7 @@ namespace OpenRCT2::Ui::Windows
             const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
             for (int32_t i = 0; i < numObjects; i++)
             {
-                uint8_t selectionFlags = _objectSelectionFlags[i];
+                uint8_t selectionFlags = Editor::_objectSelectionFlags[i];
                 const ObjectRepositoryItem* item = &items[i];
                 if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6)
                     && FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags)
@@ -1207,7 +1207,7 @@ namespace OpenRCT2::Ui::Windows
                     ObjectListItem currentListItem;
                     currentListItem.repositoryItem = item;
                     currentListItem.filter = std::move(filter);
-                    currentListItem.flags = &_objectSelectionFlags[i];
+                    currentListItem.flags = &Editor::_objectSelectionFlags[i];
                     _listItems.push_back(std::move(currentListItem));
                 }
             }
@@ -1695,7 +1695,7 @@ namespace OpenRCT2::Ui::Windows
         bool showFallbackWarning = false;
         for (int32_t i = 0; i < numItems; i++)
         {
-            if (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
+            if (Editor::_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
             {
                 const auto* item = &items[i];
                 auto descriptor = ObjectEntryDescriptor(*item);
@@ -1731,7 +1731,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
         }
-        if (_numSelectedObjectsForType[EnumValue(ObjectType::water)] == 0)
+        if (Editor::_numSelectedObjectsForType[EnumValue(ObjectType::water)] == 0)
         {
             // Reloads the default cyan water palette if no palette was selected.
             LoadPalette();

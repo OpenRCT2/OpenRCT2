@@ -10,7 +10,6 @@
 #include "Editor.h"
 
 #include "Context.h"
-#include "EditorObjectSelectionSession.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
@@ -41,6 +40,7 @@
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
 #include "scenes/SceneManager.h"
+#include "scenes/editor/EditorController.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
@@ -438,7 +438,7 @@ namespace OpenRCT2::Editor
 
         for (auto& pair : kBasicCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneSelected(pair.first))
+            if (!Editor::CheckObjectGroupAtLeastOneSelected(pair.first))
             {
                 return { pair.first, pair.second };
             }
@@ -451,11 +451,11 @@ namespace OpenRCT2::Editor
             return { ObjectType::none, kStringIdNone };
         }
 
-        if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
+        if (!Editor::CheckObjectGroupAtLeastOneSurfaceSelected(false))
         {
             return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
-        if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(true))
+        if (!Editor::CheckObjectGroupAtLeastOneSurfaceSelected(true))
         {
             return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
@@ -469,7 +469,7 @@ namespace OpenRCT2::Editor
 
         for (auto& pair : kParkCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneSelected(pair.first))
+            if (!Editor::CheckObjectGroupAtLeastOneSelected(pair.first))
             {
                 return { pair.first, pair.second };
             }
@@ -486,7 +486,7 @@ namespace OpenRCT2::Editor
 
         for (auto& pair : kPeepCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
+            if (!Editor::CheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
             {
                 return { ObjectType::peepAnimations, pair.second };
             }
