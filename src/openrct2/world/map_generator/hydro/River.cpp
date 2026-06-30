@@ -10,6 +10,7 @@
 #include "River.h"
 
 #include "../../../Context.h"
+#include "../../../Diagnostic.h"
 #include "../../../GameState.h"
 #include "../../../profiling/Profiling.h"
 #include "../DistanceMapUtils.h"
@@ -19,7 +20,7 @@
 #include <format>
 #include <numbers>
 
-// #define ENABLE_DEBUG_SIGNS
+//#define ENABLE_DEBUG_SIGNS
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
@@ -33,44 +34,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     };
 
     using StateMap = BaseMap<TileState>;
-
-    /**
-     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
-     * settings.
-     */
-    static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
-    {
-        const HydroMaps& hydroMaps = context.hydroMaps.value();
-
-        const float catchmentMin = 1.0f;
-        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y
-            * kRiversOverscanFactor;
-
-        const float widthMin = 0.0f;
-        const float widthMax = context.settings.riverWidthMax;
-
-        const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
-        const float exponentiatedCatchment = std::pow(
-            rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
-        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
-
-        return width;
-    }
-
-    /**
-     * Determines the river depth based on the width, constants from table 2 in
-     *
-     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
-     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
-     * Research: Earth Surface, 118(1), pp.216-228.
-     */
-    static float riverDepth(const float width)
-    {
-        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
-        // rescale for rct
-        return std::max(2.0f, 8.0f * depth);
-    }
-
 
     /**
      * Fill up or breach out of depressions in the heightmap to ensure there is a monotonic downhill path for rivers to follow.
@@ -550,12 +513,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     /**
      * Prunes tributary streams that are shorter than context.settings.pruneThreshold.
      *
-     * TODO this function is way too long and inefficient
+     * TODO split up and optimize
      */
     static void pruneShortStreams(MapGenCtx& context)
     {
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
+
+#ifdef ENABLE_DEBUG_SIGNS
+        TileCoordsXYSet prunedSkeletons;
+#endif
 
         // iterate until no streams are pruned
         while (true)
@@ -596,7 +563,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
 
             // second pass; downstream from springs following backrefs to populate springHits and confluenceMaxSpringMap
-            // FIXME this is super slow with catchmentThreshold=1
             for (const auto& spring : springs)
             {
                 std::queue<TileCoordsXY> springTraceQueue;
@@ -707,6 +673,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     for (const auto& toPrune : pruneCandidates)
                     {
                         hydroMaps.flags[toPrune].unset(skeleton);
+#ifdef ENABLE_DEBUG_SIGNS
+                        prunedSkeletons.insert(toPrune);
+#endif
                     }
                     pruned = true;
                 }
@@ -774,8 +743,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 {
                     for (int32_t dx = -maskRadius; dx <= maskRadius; dx++)
                     {
-                        const TileCoordsXY deltaPos{ pos.x+dx, pos.y+dy };
-                        if (skeletonMask.inBounds(deltaPos) && dx*dx + dy*dy <= maskRadiusSquared)
+                        const TileCoordsXY deltaPos{ pos.x + dx, pos.y + dy };
+                        if (skeletonMask.inBounds(deltaPos) && dx * dx + dy * dy <= maskRadiusSquared)
                         {
                             skeletonMask[deltaPos] = true;
                         }
@@ -790,18 +759,54 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (int32_t x = 0; x < context.dimensions.x; x++)
             {
                 const TileCoordsXY pos{ x, y };
-                if (!skeletonMask[pos])
+                if (!skeletonMask[pos] && hydroMaps.flags[pos].has(river)) // checking river flag for debug signs
                 {
                     hydroMaps.flags[pos].unset(river);
-                    #ifdef ENABLE_DEBUG_SIGNS
-
+#ifdef ENABLE_DEBUG_SIGNS
                     context.debugSigns.emplace_back(
                         pos, "pruned", Drawing::Colour::white,
-                        preDistance == 0 ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
-                    #endif
+                        prunedSkeletons.contains(pos) ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
+#endif
                 }
             }
         }
+    }
+
+    /**
+     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
+     * settings.
+     */
+    static float riverWidth(const MapGenCtx& context, const TileCoordsXY& pos)
+    {
+        const HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        const float catchmentMin = 1.0f;
+        const float catchmentMax = context.settings.mapSize.x * kRiversOverscanFactor * context.settings.mapSize.y
+            * kRiversOverscanFactor;
+
+        const float widthMin = 0.0f;
+        const float widthMax = context.settings.riverWidthMax;
+
+        const float rescaledCatchment = (hydroMaps.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
+        const float exponentiatedCatchment = std::pow(
+            rescaledCatchment, context.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
+        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
+
+        return width;
+    }
+
+    /**
+     * Determines the river depth based on the width, constants from table 2 in
+     *
+     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
+     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
+     * Research: Earth Surface, 118(1), pp.216-228.
+     */
+    static float riverDepth(const float width)
+    {
+        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
+        // rescale for rct
+        return std::max(2.0f, 8.0f * depth);
     }
 
     /**
@@ -964,8 +969,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             const float depth = riverDepth(width);
             const float riverHeight = heightCopy[tile.pos] - 2.0f;
 
-            hydroMaps.height[tile.pos] = riverHeight;
-
             for (int32_t dy = -radius; dy <= radius; dy++)
             {
                 for (int32_t dx = -radius; dx <= radius; dx++)
@@ -990,6 +993,20 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
 
                     heightMap[deltaPos] = std::min(candidateHeight, heightMap[deltaPos]);
+
+                    if (hydroMaps.flags[deltaPos].has(river))
+                    {
+                        // set water level to the lowest valid option to avoid possible artifacts at pruned tributaries (min)
+                        // while ensuring streams remain connected (max)
+                        auto aboveRiverbedLevel = heightMap[deltaPos] + 2.0f;
+                        auto referenceLevel = std::min(riverHeight, heightCopy[deltaPos] - 2.0f);
+                        auto candidateLevel = std::max(aboveRiverbedLevel, referenceLevel);
+
+                        // if the height was modified previously, keep the min
+                        hydroMaps.height[deltaPos] = hydroMaps.height[deltaPos] > 0.0f
+                            ? std::min(hydroMaps.height[deltaPos], candidateLevel)
+                            : candidateLevel;
+                    }
                 }
             }
 
@@ -1002,7 +1019,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     continue;
                 }
 
-                queue.emplaceAndVisit(nPos, heightMap[nPos]);
+                queue.emplaceAndVisit(nPos, heightCopy[nPos]);
             }
         }
     }

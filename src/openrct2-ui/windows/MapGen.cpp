@@ -122,6 +122,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_LEVEL = TAB_BEGIN,
         WIDX_WATER_LEVEL_UP,
         WIDX_WATER_LEVEL_DOWN,
+        WIDX_WATER_RIVERS_GROUP,
         WIDX_WATER_RIVERS_ENABLE,
         WIDX_WATER_RIVERS_CATCHMENT,
         WIDX_WATER_RIVERS_CATCHMENT_UP,
@@ -240,14 +241,15 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kWaterWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
-        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeWidget                ({ 10,  70}, {136, 12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_ENABLE, STR_WATER_RIVERS_ENABLE),
-        makeHoldableSpinnerWidgets({179,  86}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 104}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 122}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 140}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 158}, { 52, 14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({236, 158}, { 52, 14}, WidgetType::spinner,  WindowColour::secondary                         ) // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179,  52}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeWidget                ({  5,  70}, {290, 126}, WidgetType::groupbox, WindowColour::secondary, STR_WATER_RIVERS       ),
+        makeWidget                ({ 10,  86}, {136,  12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_ENABLE, STR_WATER_RIVERS_ENABLE),
+        makeHoldableSpinnerWidgets({179, 104}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179, 122}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179, 140}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179, 158}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({179, 176}, { 52,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({236, 176}, { 52,  14}, WidgetType::spinner,  WindowColour::secondary                         ) // NB: 3 widgets
     );
 
     static constexpr auto kTextureWidgets = makeWidgets(
@@ -3010,8 +3012,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_CATCHMENT:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(1);
-                    ft.Add<int32_t>(std::exp2(20));
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverCatchmentThresholdMin);
+                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverCatchmentThresholdMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft, STR_FORMAT_INTEGER,
                         _settings.catchmentThreshold, 7);
@@ -3090,11 +3092,11 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_UP:
-                    _settings.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold)+1), std::exp2(20));
+                    _settings.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) + 1), MapGenerator::Hydro::kRiverCatchmentThresholdMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_DOWN:
-                    _settings.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold)-1), 1);
+                    _settings.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) - 1), MapGenerator::Hydro::kRiverCatchmentThresholdMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_UP:
@@ -3156,7 +3158,7 @@ namespace OpenRCT2::Ui::Windows
                     _settings.waterLevel = value;
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT:
-                    _settings.catchmentThreshold = std::clamp<int32_t>(value, 1, std::exp2(20));
+                    _settings.catchmentThreshold = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverCatchmentThresholdMin, MapGenerator::Hydro::kRiverCatchmentThresholdMax);
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
                     _settings.riverWidthMax = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverWidthMin, MapGenerator::Hydro::kRiverWidthMax);

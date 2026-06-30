@@ -19,6 +19,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     constexpr float kRiverGrowthExponentScaling = 0.01f;
     constexpr int32_t kRiverGrowthExponentMin = 1; // * kRiverGrowthExponentScaling
     constexpr int32_t kRiverGrowthExponentMax = 800; // * kRiverGrowthExponentScaling
+    constexpr int32_t kRiverCatchmentThresholdMin = 2;
+    constexpr int32_t kRiverCatchmentThresholdMax = 2 << 19;
     constexpr int32_t kRiverPruneLengthThresholdMin = 0;
     constexpr int32_t kRiverPruneLengthThresholdMax = 128;
     constexpr int32_t kRiverWidthMin = 1;
