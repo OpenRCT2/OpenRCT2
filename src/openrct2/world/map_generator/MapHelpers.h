@@ -40,10 +40,10 @@ namespace OpenRCT2::World::MapGenerator
     //      +-----+-----+-----+
     // +x,+y                    +y
 
-    static constexpr TileCoordsXY kNeighbourOffsetNE{ -1, 0};
-    static constexpr TileCoordsXY kNeighbourOffsetSW{ 1, 0};
-    static constexpr TileCoordsXY kNeighbourOffsetNW{ 0, -1};
-    static constexpr TileCoordsXY kNeighbourOffsetSE{ 0, 1};
+    static constexpr TileCoordsXY kNeighbourOffsetNE{ -1, 0 };
+    static constexpr TileCoordsXY kNeighbourOffsetSW{ 1, 0 };
+    static constexpr TileCoordsXY kNeighbourOffsetNW{ 0, -1 };
+    static constexpr TileCoordsXY kNeighbourOffsetSE{ 0, 1 };
 
     static constexpr TileCoordsXY kNeighbourOffsetS{ 1, 1 };
     static constexpr TileCoordsXY kNeighbourOffsetW{ 1, -1 };
@@ -65,14 +65,8 @@ namespace OpenRCT2::World::MapGenerator
     };
 
     static constexpr std::array kNeighbourOffsets = {
-        kNeighbourOffsetNE,
-        kNeighbourOffsetSW,
-        kNeighbourOffsetNW,
-        kNeighbourOffsetSE,
-        kNeighbourOffsetS,
-        kNeighbourOffsetW,
-        kNeighbourOffsetE,
-        kNeighbourOffsetN,
+        kNeighbourOffsetNE, kNeighbourOffsetSW, kNeighbourOffsetNW, kNeighbourOffsetSE,
+        kNeighbourOffsetS,  kNeighbourOffsetW,  kNeighbourOffsetE,  kNeighbourOffsetN,
     };
 
     struct TileCoordsXYHash

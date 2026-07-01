@@ -119,7 +119,7 @@ struct VecXY
         const float sin = std::sin(degrees);
         const float cos = std::cos(degrees);
 
-        return {x * cos - y * sin, x * sin + y * cos };
+        return { x * cos - y * sin, x * sin + y * cos };
     }
 };
 

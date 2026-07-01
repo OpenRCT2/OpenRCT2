@@ -1094,7 +1094,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         PROFILED_FUNCTION();
 
-
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
         // quantize heights for segmentation
@@ -1117,9 +1116,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
         int32_t iteration = 1;
-        #endif
+#endif
         // find and handle isolated segments
         while (true)
         {
@@ -1200,7 +1199,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
             if (segments.empty())
             {
-                LOG_INFO("done");
                 break;
             }
 
@@ -1272,9 +1270,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     break;
                 }
             }
-            #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
             iteration++;
-            #endif
+#endif
         }
 
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY

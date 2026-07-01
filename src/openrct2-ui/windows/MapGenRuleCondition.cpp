@@ -192,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case Type::Distance:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_LABEL;
-                    featureVisible=true;
+                    featureVisible = true;
                     break;
                 case Type::Noise:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_NOISE;
@@ -280,7 +280,8 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_PREDICATE].text = isInCond ? STR_MAPGEN_RULE_PREDICATE_IN : STR_MAPGEN_RULE_PREDICATE_EQUAL;
                     break;
                 case Predicate::NotEqual:
-                    widgets[WIDX_PREDICATE].text = isInCond ? STR_MAPGEN_RULE_PREDICATE_NOT_IN : STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
+                    widgets[WIDX_PREDICATE].text = isInCond ? STR_MAPGEN_RULE_PREDICATE_NOT_IN
+                                                            : STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
                     break;
                 case Predicate::LessThan:
                     widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_LESS_THAN;
@@ -670,7 +671,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                    case Type::BlendDistance:
+                case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
                     auto edgeHigh = intValue.has_value() ? intValue.value() : blendDistanceData.edgeHigh + 1 * changeMultiplier;

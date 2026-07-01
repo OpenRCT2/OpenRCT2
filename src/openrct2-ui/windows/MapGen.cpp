@@ -385,7 +385,8 @@ namespace OpenRCT2::Ui::Windows
             removeViewport();
 
             setWidgets(PageWidgets[newPage]);
-            widgetSetPressedExclusive(*this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5 }, WIDX_TAB_1 + newPage);
+            widgetSetPressedExclusive(
+                *this, { WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5 }, WIDX_TAB_1 + newPage);
 
             initScrollWidgets();
             invalidate();
@@ -482,6 +483,7 @@ namespace OpenRCT2::Ui::Windows
                 LOG_INFO("seed %s", _seed.c_str());
             }
             mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}(_seed));
+            // mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}("1211662211"));
 
             MapGenerator::generate(mapgenSettings);
             GfxInvalidateScreen();
@@ -577,12 +579,9 @@ namespace OpenRCT2::Ui::Windows
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ToggleOption(0, STR_HEIGHTMAP_FLATLAND),
-                        ToggleOption(1, STR_HEIGHTMAP_SIMPLEX_NOISE),
-                        ToggleOption(2, STR_HEIGHTMAP_WARPED_NOISE),
-                        ToggleOption(3, STR_HEIGHTMAP_RIDGED_NOISE),
-                        ToggleOption(4, STR_HEIGHTMAP_VORONOI_NOISE),
-                        ToggleOption(5, STR_HEIGHTMAP_FILE),
+                        ToggleOption(0, STR_HEIGHTMAP_FLATLAND),      ToggleOption(1, STR_HEIGHTMAP_SIMPLEX_NOISE),
+                        ToggleOption(2, STR_HEIGHTMAP_WARPED_NOISE),  ToggleOption(3, STR_HEIGHTMAP_RIDGED_NOISE),
+                        ToggleOption(4, STR_HEIGHTMAP_VORONOI_NOISE), ToggleOption(5, STR_HEIGHTMAP_FILE),
                     };
 
                     SetItems(items);
@@ -627,9 +626,9 @@ namespace OpenRCT2::Ui::Windows
         void BaseTextInput(WidgetIndex widgetIndex, int32_t value)
         {
             if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
-            || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
-            || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
-            || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
+                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
+                || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
+                || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
             {
                 SimplexTextInput(widgetIndex, value);
                 BiasTextInput(widgetIndex, value);
@@ -803,9 +802,9 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImages(rt);
 
             if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
-            || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
-            || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
-            || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
+                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
+                || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
+                || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
             {
                 SimplexDraw(rt);
                 BiasDraw(rt);
@@ -1526,11 +1525,12 @@ namespace OpenRCT2::Ui::Windows
                     case MapGenerator::Rule::Type::BlendDistance:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_DISTANCE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO);
-                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeLow * 100));
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeHigh * 100));
+                        ft.Add<StringId>(
+                            featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));
+                        ft.Add<int32_t>(static_cast<int32_t>(
+                            std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeLow * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(
+                            std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeHigh * 100));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
@@ -1542,7 +1542,6 @@ namespace OpenRCT2::Ui::Windows
                             condition.predicate == MapGenerator::Rule::Predicate::Equal ? STR_MAPGEN_RULE_PREDICATE_IN
                                                                                         : STR_MAPGEN_RULE_PREDICATE_NOT_IN);
                         break;
-
                 }
 
                 // Draw description

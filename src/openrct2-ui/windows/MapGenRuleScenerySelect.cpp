@@ -305,7 +305,6 @@ namespace OpenRCT2::Ui::Windows
             return false;
         }
 
-
         void SceneryDrawItem(Drawing::RenderTarget& rt, const SceneryItem& si)
         {
             std::array<Drawing::Colour, 3> colours = { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow,
@@ -779,7 +778,9 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseDown(WidgetIndex widgetIndex) override
         {
-            switch (widgetIndex) {}
+            switch (widgetIndex)
+            {
+            }
         }
 
         bool WasCalledFrom(const WindowBase* call_w, const WidgetIndex call_widget) const

@@ -12,7 +12,6 @@
 #include "BaseMap.hpp"
 #include "MapGen.h"
 
-
 namespace OpenRCT2::World::MapGenerator
 {
     void simulateErosion(MapGenCtx& context);

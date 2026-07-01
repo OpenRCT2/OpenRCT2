@@ -100,12 +100,11 @@ namespace OpenRCT2::World::MapGenerator
         FastNoiseLite _noise;
         std::optional<FastNoiseLite> _warp;
         std::optional<Transform> _transform;
+
     public:
         Noise(
-            const BaseSettings& baseSettings,
-            const std::optional<FractalSettings>& fractalSettings,
-            const std::optional<TransformSettings>& transformSettings,
-            const std::optional<WarpSettings>& warpSettings);
+            const BaseSettings& baseSettings, const std::optional<FractalSettings>& fractalSettings,
+            const std::optional<TransformSettings>& transformSettings, const std::optional<WarpSettings>& warpSettings);
         float generate(const VecXY& pos) const;
     };
 } // namespace OpenRCT2::World::MapGenerator

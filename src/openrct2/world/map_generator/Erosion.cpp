@@ -39,7 +39,6 @@ namespace OpenRCT2::World::MapGenerator
         float dt = 1.2f;
     };
 
-
     struct Particle
     {
         explicit Particle(const VecXY _position)

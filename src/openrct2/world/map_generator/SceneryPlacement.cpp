@@ -16,9 +16,9 @@
 #include "../../actions/scenery/SignSetNameAction.h"
 #include "../../actions/scenery/SmallSceneryPlaceAction.h"
 #include "../../actions/scenery/WallPlaceAction.h"
+#include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectManager.h"
-#include "../../object/LargeSceneryEntry.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../Map.h"
@@ -58,8 +58,8 @@ namespace OpenRCT2::World::MapGenerator
         for (int s = 0; s < sceneryItem.zRepeat.value_or(1); s++)
         {
             auto action = GameActions::WallPlaceAction(
-                sceneryItem.index, xyzFrom(loc, elevation, true), sceneryItem.direction,
-                sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
+                sceneryItem.index, xyzFrom(loc, elevation, true), sceneryItem.direction, sceneryItem.colours[0],
+                sceneryItem.colours[1], sceneryItem.colours[2]);
 
             auto& gameState = getGameState();
             auto& park = gameState.park;
@@ -77,8 +77,7 @@ namespace OpenRCT2::World::MapGenerator
             if (execResult.error != GameActions::Status::ok)
             {
                 LOG_VERBOSE(
-                    "WallPlaceAction exec: %s - %s", execResult.getErrorTitle().c_str(),
-                    execResult.getErrorMessage().c_str());
+                    "WallPlaceAction exec: %s - %s", execResult.getErrorTitle().c_str(), execResult.getErrorMessage().c_str());
                 continue;
             }
 
@@ -93,17 +92,17 @@ namespace OpenRCT2::World::MapGenerator
         Guard::Assert(entry != nullptr);
 
         uint8_t height = 0;
-        for (const auto & tile : entry->tiles)
+        for (const auto& tile : entry->tiles)
         {
-            height = std::max(height, static_cast<uint8_t>( tile.zClearance));
+            height = std::max(height, static_cast<uint8_t>(tile.zClearance));
         }
 
         int32_t elevation = 0;
         for (int s = 0; s < sceneryItem.zRepeat.value_or(1); s++)
         {
             auto action = GameActions::LargeSceneryPlaceAction(
-               CoordsXYZD{ xyzFrom(loc, elevation, true), sceneryItem.direction }, sceneryItem.index,
-                sceneryItem.colours[0], sceneryItem.colours[1], sceneryItem.colours[2]);
+                CoordsXYZD{ xyzFrom(loc, elevation, true), sceneryItem.direction }, sceneryItem.index, sceneryItem.colours[0],
+                sceneryItem.colours[1], sceneryItem.colours[2]);
 
             auto& gameState = getGameState();
             auto& park = gameState.park;
@@ -131,7 +130,8 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void placeScenerySmall(const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem, const std::optional<uint8_t> quadrant)
+    static void placeScenerySmall(
+        const TileCoordsXY& loc, const Rule::SceneryResultItem& sceneryItem, const std::optional<uint8_t> quadrant)
     {
         auto* entry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryItem.index);
         Guard::Assert(entry != nullptr);
@@ -236,10 +236,9 @@ namespace OpenRCT2::World::MapGenerator
         auto groundHeight = TileElementHeight(position);
         auto waterHeight = TileElementWaterHeight(position);
 
-
         // TODO dedupe, use placeSceneryLarge
         auto actionPlace = GameActions::LargeSceneryPlaceAction(
-            CoordsXYZD{ position.x, position.y, std::max(groundHeight, waterHeight) + 2*kCoordsZStep, 0 }, banner.value(),
+            CoordsXYZD{ position.x, position.y, std::max(groundHeight, waterHeight) + 2 * kCoordsZStep, 0 }, banner.value(),
             debugSign.backgroundColour, debugSign.textColour, Drawing::Colour::brightPink);
 
         auto& gameState = getGameState();

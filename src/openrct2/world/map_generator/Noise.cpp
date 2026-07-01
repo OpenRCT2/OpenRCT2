@@ -12,10 +12,8 @@
 namespace OpenRCT2::World::MapGenerator
 {
     Noise::Noise(
-        const BaseSettings& baseSettings,
-        const std::optional<FractalSettings>& fractalSettings,
-        const std::optional<TransformSettings>& transformSettings,
-        const std::optional<WarpSettings>& warpSettings)
+        const BaseSettings& baseSettings, const std::optional<FractalSettings>& fractalSettings,
+        const std::optional<TransformSettings>& transformSettings, const std::optional<WarpSettings>& warpSettings)
     {
         // base settings
         _noise = FastNoiseLite();
@@ -110,18 +108,15 @@ namespace OpenRCT2::World::MapGenerator
         {
             const TransformSettings& transformSettingsValue = transformSettings.value();
 
-            _transform = std::make_optional<Transform>({
-                .offset = transformSettingsValue.offset,
-                .sin = std::sin(transformSettingsValue.rotateDeg),
-                .cos = std::cos(transformSettingsValue.rotateDeg)});
-
+            _transform = std::make_optional<Transform>({ .offset = transformSettingsValue.offset,
+                                                         .sin = std::sin(transformSettingsValue.rotateDeg),
+                                                         .cos = std::cos(transformSettingsValue.rotateDeg) });
         }
         else
         {
             _transform = std::nullopt;
         }
     }
-
 
     float Noise::generate(const VecXY& pos) const
     {
@@ -130,10 +125,8 @@ namespace OpenRCT2::World::MapGenerator
         if (_transform.has_value())
         {
             const Transform& transform = _transform.value();
-            coords = {
-                coords.x * transform.cos - coords.y * transform.sin,
-                coords.x * transform.sin + coords.y * transform.cos
-            };
+            coords = { coords.x * transform.cos - coords.y * transform.sin,
+                       coords.x * transform.sin + coords.y * transform.cos };
             coords = coords + transform.offset;
         }
 

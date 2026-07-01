@@ -15,9 +15,11 @@ namespace OpenRCT2::Util::Hash
 {
     // based on boost container_hash
 
-    template<size_t S> struct HashMixer;
+    template<size_t S>
+    struct HashMixer;
 
-    template<> struct HashMixer<8>
+    template<>
+    struct HashMixer<8>
     {
         static void mix(size_t& hash)
         {
@@ -31,7 +33,8 @@ namespace OpenRCT2::Util::Hash
         }
     };
 
-    template<> struct HashMixer<4>
+    template<>
+    struct HashMixer<4>
     {
         static void mix(size_t& hash)
         {
@@ -61,12 +64,11 @@ namespace OpenRCT2::Util::Hash
      *         }
      *     };
      */
-    template <class T>
+    template<class T>
     void update(size_t& hash, T const& value)
     {
         hash = hash + 0x9e3779b9 + std::hash<T>()(value);
         HashMixer<sizeof(size_t)>::mix(hash);
     }
 
-
-} //namespace OpenRCT2::Util::Hash
+} // namespace OpenRCT2::Util::Hash

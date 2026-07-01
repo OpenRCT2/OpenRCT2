@@ -62,9 +62,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         switch (type)
         {
-            case Small: return ObjectType::smallScenery;
-            case Large: return ObjectType::largeScenery;
-            case Wall: return ObjectType::walls;
+            case Small:
+                return ObjectType::smallScenery;
+            case Large:
+                return ObjectType::largeScenery;
+            case Wall:
+                return ObjectType::walls;
         }
         return ObjectType::none;
     }
@@ -191,7 +194,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Land,
         Water,
         SeaLevel,
-         // TODO Min
+        // TODO Min
         // TODO Max
     };
 

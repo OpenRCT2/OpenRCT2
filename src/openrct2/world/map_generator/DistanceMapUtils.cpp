@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-
 #include "DistanceMapUtils.h"
 
 #include "MapHelpers.h"
@@ -44,7 +43,8 @@ namespace OpenRCT2::World::MapGenerator
         queue.emplaceAndVisit(pos, 0.0f);
     }
 
-    void computeHydroFlagBasedDistanceMap(const MapGenCtx& genCtx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
+    void computeHydroFlagBasedDistanceMap(
+        const MapGenCtx& genCtx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
     {
         distanceMap = DistanceMap{ genCtx.heightMap.width, genCtx.heightMap.height };
         distanceMap.fill(std::numeric_limits<float>::infinity());
@@ -55,7 +55,7 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         const auto& hydroMaps = genCtx.hydroMaps.value();
-        TrackingStableTileQueue queue {genCtx.dimensions};
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < distanceMap.height; y++)
         {

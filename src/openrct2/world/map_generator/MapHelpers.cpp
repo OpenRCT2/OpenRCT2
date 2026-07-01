@@ -299,15 +299,31 @@ namespace OpenRCT2::World::MapGenerator
         // is a one tile wide channel.
         // TODO might be possible to reduce?
 
-        const bool waterfallW = (r.W && neighbourWaterOffset.W > 0) || (r.NW && neighbourWaterOffset.NW > 0) || (r.SW && neighbourWaterOffset.SW > 0);
-        const bool waterfallN = (r.N && neighbourWaterOffset.N > 0) || (r.NW && neighbourWaterOffset.NW > 0) || (r.NE && neighbourWaterOffset.NE > 0);
-        const bool waterfallE = (r.E && neighbourWaterOffset.E > 0) || (r.NE && neighbourWaterOffset.NE > 0) || (r.SE && neighbourWaterOffset.SE > 0);
-        const bool waterfallS = (r.S && neighbourWaterOffset.S > 0) || (r.SW && neighbourWaterOffset.SW > 0) || (r.SE && neighbourWaterOffset.SE > 0);
+        const bool waterfallW = (r.W && neighbourWaterOffset.W > 0) || (r.NW && neighbourWaterOffset.NW > 0)
+            || (r.SW && neighbourWaterOffset.SW > 0);
+        const bool waterfallN = (r.N && neighbourWaterOffset.N > 0) || (r.NW && neighbourWaterOffset.NW > 0)
+            || (r.NE && neighbourWaterOffset.NE > 0);
+        const bool waterfallE = (r.E && neighbourWaterOffset.E > 0) || (r.NE && neighbourWaterOffset.NE > 0)
+            || (r.SE && neighbourWaterOffset.SE > 0);
+        const bool waterfallS = (r.S && neighbourWaterOffset.S > 0) || (r.SW && neighbourWaterOffset.SW > 0)
+            || (r.SE && neighbourWaterOffset.SE > 0);
 
-        const bool riverW = !riverTile || (!waterfallW && !(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW) && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW) && !(!r.SW && !r.NE && r.NW) && !(!r.SE && !r.NW && r.SW));
-        const bool riverN = !riverTile || (!waterfallN && !(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW) && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE) && !(!r.NW && !r.SE && r.NE) && !(!r.SW && !r.NE && r.NW));
-        const bool riverE = !riverTile || (!waterfallE && !(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE) && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE) && !(!r.NE && !r.SW && r.SE) && !(!r.NW && !r.SE && r.NE));
-        const bool riverS = !riverTile || (!waterfallS && !(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE) && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW) && !(!r.SE && !r.NW && r.SW) && !(!r.NE && !r.SW && r.SE));
+        const bool riverW = !riverTile
+            || (!waterfallW && !(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW)
+                && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW) && !(!r.SW && !r.NE && r.NW)
+                && !(!r.SE && !r.NW && r.SW));
+        const bool riverN = !riverTile
+            || (!waterfallN && !(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW)
+                && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE) && !(!r.NW && !r.SE && r.NE)
+                && !(!r.SW && !r.NE && r.NW));
+        const bool riverE = !riverTile
+            || (!waterfallE && !(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE)
+                && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE) && !(!r.NE && !r.SW && r.SE)
+                && !(!r.NW && !r.SE && r.NE));
+        const bool riverS = !riverTile
+            || (!waterfallS && !(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE)
+                && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW) && !(!r.SE && !r.NW && r.SW)
+                && !(!r.NE && !r.SW && r.SE));
 
         uint8_t slope = kTileSlopeFlat;
         slope |= (thresholdW >= 1 && riverW) ? SLOPE_W_THRESHOLD_FLAGS : 0;
@@ -440,20 +456,20 @@ namespace OpenRCT2::World::MapGenerator
         {
             for (auto x = 0; x < heightMap.width; x++)
             {
-                const TileCoordsXY pos = {x, y};
+                const TileCoordsXY pos = { x, y };
 
                 for (auto dy = -dHalf; dy <= dHalf; dy++)
                 {
                     for (auto dx = -dHalf; dx <= dHalf; dx++)
                     {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
+                        TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
 
                         if (deltaPos.x < 0 || deltaPos.x >= heightMap.width || deltaPos.y < 0 || deltaPos.y >= heightMap.height)
                         {
                             deltaPos = pos;
                         }
 
-                        const float weight = gaussian(dx*dx + dy*dy, sigma);
+                        const float weight = gaussian(dx * dx + dy * dy, sigma);
 
                         temp[pos] += weight * heightMap[deltaPos];
                         norm[pos] += weight;
@@ -466,15 +482,15 @@ namespace OpenRCT2::World::MapGenerator
         {
             for (auto x = 0; x < heightMap.width; x++)
             {
-                const TileCoordsXY pos = {x, y};
+                const TileCoordsXY pos = { x, y };
                 heightMap[pos] = temp[pos] / norm[pos];
             }
         }
     }
 
     /**
- * Based on https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
- */
+     * Based on https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
+     */
     void smoothBilateral(HeightMap& heightMap, float sigmaSpace, float sigmaIntensity)
     {
         HeightMap temp(heightMap.width, heightMap.height, heightMap.density);
@@ -490,21 +506,22 @@ namespace OpenRCT2::World::MapGenerator
         {
             for (auto x = 0; x < heightMap.width; x++)
             {
-                const TileCoordsXY pos = {x, y};
+                const TileCoordsXY pos = { x, y };
 
                 for (auto dy = -dHalf; dy <= dHalf; dy++)
                 {
                     for (auto dx = -dHalf; dx <= dHalf; dx++)
                     {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{dx, dy};
+                        TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
 
                         if (deltaPos.x < 0 || deltaPos.x >= heightMap.width || deltaPos.y < 0 || deltaPos.y >= heightMap.height)
                         {
                             deltaPos = pos;
                         }
 
-                        const float closeness = gaussian(dx*dx + dy*dy, sigmaSpace);
-                        const float similarity = gaussian(std::pow(heightMap[pos] - heightMap[deltaPos], 2.0f) / kMaxTileElementHeight, sigmaIntensity);
+                        const float closeness = gaussian(dx * dx + dy * dy, sigmaSpace);
+                        const float similarity = gaussian(
+                            std::pow(heightMap[pos] - heightMap[deltaPos], 2.0f) / kMaxTileElementHeight, sigmaIntensity);
 
                         const float weight = closeness * similarity;
 
@@ -519,7 +536,7 @@ namespace OpenRCT2::World::MapGenerator
         {
             for (auto x = 0; x < heightMap.width; x++)
             {
-                const TileCoordsXY pos = {x, y};
+                const TileCoordsXY pos = { x, y };
                 heightMap[pos] = temp[pos] / norm[pos];
             }
         }
@@ -536,7 +553,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 for (auto x = 0; x < heightMap.width; x++)
                 {
-                    const TileCoordsXY pos = {x, y};
+                    const TileCoordsXY pos = { x, y };
                     auto delta = heightMap[pos] - blurCopy[pos];
                     heightMap[pos] = heightMap[pos] + delta;
                 }
@@ -580,7 +597,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         const int32_t offsetX = (settings.mapSize.x * (Hydro::kRiversOverscanFactor - 1)) / 2;
         const int32_t offsetY = (settings.mapSize.y * (Hydro::kRiversOverscanFactor - 1)) / 2;
-        return TileCoordsXY{offsetX, offsetY};
+        return TileCoordsXY{ offsetX, offsetY };
     }
 
     bool isInWorldMap(const MapGenCtx& context, const TileCoordsXY& genCoords)
@@ -595,13 +612,13 @@ namespace OpenRCT2::World::MapGenerator
 
     TileCoordsXY worldCoordsToGenCoords(const MapGenCtx& context, const TileCoordsXY& worldCoords)
     {
-        return TileCoordsXY{worldCoords.x + context.overscanOffset.x, worldCoords.y + context.overscanOffset.y};
+        return TileCoordsXY{ worldCoords.x + context.overscanOffset.x, worldCoords.y + context.overscanOffset.y };
     }
 
     // can be OOB
     TileCoordsXY genCoordsToWorldCoords(const MapGenCtx& context, const TileCoordsXY& genCoords)
     {
-        return TileCoordsXY{genCoords.x - context.overscanOffset.x, genCoords.y - context.overscanOffset.y};
+        return TileCoordsXY{ genCoords.x - context.overscanOffset.x, genCoords.y - context.overscanOffset.y };
     }
 
     // Ensure height is within [2, 254] and a multiple of 2
