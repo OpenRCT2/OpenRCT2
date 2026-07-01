@@ -3814,3 +3814,6 @@ STR_7025    :Sichtbar machen
 STR_7026    :Macht das gesamte Fahrgeschäft sichtbar
 STR_7028    :Viertelspirale n. oben
 STR_7029    :Viertelspirale n. unten
+STR_7030    :{WINDOW_COLOUR_2}Bespaßte Gäste: {BLACK}{COMMA32}
+STR_7031    :Graswachsum deaktivieren
+STR_7032    :Die Alterung des Grases deaktivieren, damit es nicht wächst.
