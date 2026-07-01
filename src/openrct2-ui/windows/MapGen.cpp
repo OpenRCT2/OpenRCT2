@@ -3082,7 +3082,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_ENABLE:
                 {
                     _settings.generateRivers = !_settings.generateRivers;
-                    setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.normalizeHeight);
+                    setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.generateRivers);
                     invalidate();
                     break;
                 }

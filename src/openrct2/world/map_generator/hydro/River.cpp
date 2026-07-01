@@ -22,7 +22,7 @@
 #include <ranges>
 
 // #define ENABLE_DEBUG_SIGNS_PRUNING
-#define ENABLE_DEBUG_SIGNS_CONSISTENCY
+// #define ENABLE_DEBUG_SIGNS_CONSISTENCY
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
@@ -669,19 +669,24 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         if (queue.visited(nPos))
         {
-            if (backrefMap[pos].has_value() && backrefMap[pos].value() != nPos)
+            if (backrefMap[pos].has_value() && backrefMap[pos].value() == nPos) // nPos is backref/downstream of pos, ignore
+            {
+                return;
+            }
+            if (distanceMap[pos] < distanceMap[nPos]) // nPos is upstream of pos, add pos to nPos auxBackrefs
             {
                 auxBackrefsMap[nPos].insert(pos);
                 auxCount++;
             }
-            return;
         }
-
-        backrefMap[nPos] = pos;
-        auxBackrefsMap[nPos].insert(pos);
-        queue.emplaceAndVisit(nPos, context.heightMap[nPos]);
-        upstreamCount++;
-        distanceMap[nPos] = distanceMap[pos] + 1.0f;
+        else
+        {
+            backrefMap[nPos] = pos;
+            auxBackrefsMap[nPos].insert(pos);
+            queue.emplaceAndVisit(nPos, context.heightMap[nPos]);
+            upstreamCount++;
+            distanceMap[nPos] = distanceMap[pos] + 1.0f;
+        }
     }
 
     /**
@@ -1089,6 +1094,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         PROFILED_FUNCTION();
 
+
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
         // quantize heights for segmentation
@@ -1111,8 +1117,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-        // find and handle isolated segments
+        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
         int32_t iteration = 1;
+        #endif
+        // find and handle isolated segments
         while (true)
         {
             BooleanMap visited{ context.dimensions };
@@ -1205,6 +1213,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     {
                         hydroMaps.height[sPos] -= 2.0f;
                         context.heightMap[sPos] = std::min(hydroMaps.height[sPos] - 2.0f, context.heightMap[sPos]);
+
+                        if (hydroMaps.height[sPos] < 0.0f)
+                        {
+                            throw std::runtime_error(std::format("({},{}) lowered below 0", sPos.x, sPos.y));
+                        }
                     }
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                     context.debugSigns.emplace_back(
@@ -1222,6 +1235,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     for (const TileCoordsXY& sPos : segments[candidate])
                     {
                         hydroMaps.height[sPos] += 2.0f;
+
+                        if (hydroMaps.height[sPos] >= 256.0f)
+                        {
+                            throw std::runtime_error(std::format("({},{}) raised above 256", sPos.x, sPos.y));
+                        }
                     }
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                     context.debugSigns.emplace_back(
@@ -1253,7 +1271,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     break;
                 }
             }
+            #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
             iteration++;
+            #endif
         }
 
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
