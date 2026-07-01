@@ -123,6 +123,11 @@ namespace OpenRCT2
         barrelRollBanked,
         zeroGRollBanked,
 
+        diagCorkscrew,
+        diagCorkscrewLarge,
+        diagHalfLoop,
+        diagVerticalLoop,
+
         count,
     };
 } // namespace OpenRCT2

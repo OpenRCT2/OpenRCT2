@@ -146,8 +146,12 @@ namespace OpenRCT2
         // Corkscrews
         TrackElemType::leftCorkscrewUp,
         TrackElemType::leftCorkscrewDown,
+        TrackElemType::diagLeftCorkscrewUp,
+        TrackElemType::diagLeftCorkscrewDown,
         TrackElemType::rightCorkscrewUp,
         TrackElemType::rightCorkscrewDown,
+        TrackElemType::diagRightCorkscrewUp,
+        TrackElemType::diagRightCorkscrewDown,
         TrackElemType::leftFlyerCorkscrewUp,
         TrackElemType::leftFlyerCorkscrewDown,
         TrackElemType::rightFlyerCorkscrewUp,
@@ -164,9 +168,13 @@ namespace OpenRCT2
 
         // Loops
         TrackElemType::leftVerticalLoop,
+        TrackElemType::diagLeftVerticalLoop,
         TrackElemType::rightVerticalLoop,
+        TrackElemType::diagRightVerticalLoop,
         TrackElemType::halfLoopUp,
+        TrackElemType::diagHalfLoopUp,
         TrackElemType::halfLoopDown,
+        TrackElemType::diagHalfLoopDown,
         TrackElemType::flyerHalfLoopUninvertedUp,
         TrackElemType::flyerHalfLoopInvertedDown,
         TrackElemType::flyerHalfLoopInvertedUp,
@@ -241,7 +249,7 @@ namespace OpenRCT2
     };
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(EnumValue(TrackElemType::count) == 396, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::count) == 404, "Reminder to add new track element to special dropdown list");
 
     /**
      *

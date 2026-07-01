@@ -11479,10 +11479,18 @@ namespace OpenRCT2::TrackMetadata
           kTEDRightZeroGRollUpBanked,
           kTEDLeftZeroGRollDownBanked,
           kTEDRightZeroGRollDownBanked,
+          kTEDDiagLeftCorkscrewUp,
+          kTEDDiagRightCorkscrewUp,
+          kTEDDiagLeftCorkscrewDown,
+          kTEDDiagRightCorkscrewDown,
           kTEDDiagLeftLargeCorkscrewUp,
           kTEDDiagRightLargeCorkscrewUp,
           kTEDDiagLeftLargeCorkscrewDown,
-          kTEDDiagRightLargeCorkscrewDown });
+          kTEDDiagRightLargeCorkscrewDown,
+          kTEDDiagHalfLoopUp,
+          kTEDDiagHalfLoopDown,
+          kTEDDiagLeftVerticalLoop,
+          kTEDDiagRightVerticalLoop });
     static_assert(kTrackElementDescriptors.size() == EnumValue(TrackElemType::count));
 
 #pragma endregion
