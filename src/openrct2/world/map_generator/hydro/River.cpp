@@ -1143,6 +1143,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     visited[pos] = true;
                     bool hasSource = false;
                     bool hasSink = false;
+                    bool belowSeaLevel = hydroMaps.height[pos] <= context.settings.waterLevel;
 
                     while (!queue.empty())
                     {
@@ -1182,15 +1183,15 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         }
                     }
 
-                    if (!hasSource && !hasSink)
+                    if (!hasSource && !hasSink && !belowSeaLevel)
                     {
                         segments[{ pos, segment.size(), ConsistencyOperation::remove }] = segment;
                     }
-                    if (!hasSource && hasSink)
+                    if (!hasSource && hasSink && !belowSeaLevel)
                     {
                         segments[{ pos, segment.size(), ConsistencyOperation::lower }] = segment;
                     }
-                    else if (!hasSink && hasSource)
+                    else if (!hasSink && hasSource && !belowSeaLevel)
                     {
                         segments[{ pos, segment.size(), ConsistencyOperation::raise }] = segment;
                     }
