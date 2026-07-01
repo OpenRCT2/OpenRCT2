@@ -3242,31 +3242,33 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
-            setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.generateRivers);
+            bool enableRiver = _settings.generateRivers;
 
-            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_UP, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_DOWN, !_settings.generateRivers);
+            setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, enableRiver);
 
-            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX_UP, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX_DOWN, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_UP, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_CATCHMENT_DOWN, !enableRiver);
 
-            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX_UP, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_WIDTH_MAX_DOWN, !enableRiver);
 
-            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN, !enableRiver);
 
-            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_LENGTH, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_LENGTH_UP, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_LENGTH_DOWN, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN, !enableRiver);
 
-            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH_UP, !_settings.generateRivers);
-            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN, !_settings.generateRivers);
+            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_LENGTH, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_LENGTH_UP, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_LENGTH_DOWN, !enableRiver);
+
+            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH_UP, !enableRiver);
+            setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN, !enableRiver);
         }
 
         void WaterDraw(RenderTarget& rt)

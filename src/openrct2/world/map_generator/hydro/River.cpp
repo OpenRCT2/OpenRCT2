@@ -771,89 +771,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
                 }
             }
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-            LOG_INFO(">>>>>>>>>> skel @ %d", iteration);
-            for (int32_t y = 4; y >=0; y--)
-            {
-                std::stringstream ss;
-                for (int32_t x = 420; x < 430 ; x++)
-                {
-                   ss << (hydroMaps.flags[{x,y}].has(skeleton) ? "██|" : "  |");
-                }
-                LOG_INFO("%s", ss.str().c_str());
-            }
-            LOG_INFO("");
-            LOG_INFO(">>>>>>>>>> spring @ %d", iteration);
-            for (int32_t y = 4; y >=0; y--)
-            {
-                std::stringstream ss;
-                for (int32_t x = 420; x < 430 ; x++)
-                {
-                    ss << (std::find(springs.begin(), springs.end(), TileCoordsXY{x, y}) != springs.end() ? "██|" : "  |");
-                }
-                LOG_INFO("%s", ss.str().c_str());
-            }
-            LOG_INFO("");
-            LOG_INFO(">>>>>>>>>> confluence @ %d", iteration);
-            for (int32_t y = 4; y >=0; y--)
-            {
-                std::stringstream ss;
-                for (int32_t x = 420; x < 430 ; x++)
-                {
-                    ss << (confluenceMap[{x,y}] ? "██|" : "  |");
-                }
-                LOG_INFO("%s", ss.str().c_str());
-            }
-            LOG_INFO("");
-            LOG_INFO(">>>>>>>>>> hits @ %d", iteration);
-            for (int32_t y = 4; y >=0; y--)
-            {
-                std::stringstream ss;
-                for (int32_t x = 420; x < 430 ; x++)
-                {
-                    ss << std::format("{:2d}|", springHits[{x,y}].size());
-                }
-                LOG_INFO("%s", ss.str().c_str());
-            }
-            LOG_INFO("");
-            LOG_INFO(">>>>>>>>>> backrefs @ %d", iteration);
-            for (int32_t y = 4; y >=0; y--)
-            {
-                std::stringstream ss;
-                for (int32_t x = 420; x < 430 ; x++)
-                {
-                    const auto& back = backrefMap[{x,y}];
-                    if (back.has_value())
-                    {
-                        auto xx = back.value().x;
-                        auto yy = back.value().y;
-                        ss << std::format("{:3d},{:3d}|", xx,yy);
-                    }
-                    else
-                    {
-                        ss << std::format("       |");
-                    }
-                }
-                LOG_INFO("%s", ss.str().c_str());
-            }
-            LOG_INFO("");
-            LOG_INFO(">>>>>>>>>> aux backrefs @ %d", iteration);
-            for (int32_t y = 4; y >=0; y--)
-            {
-                std::stringstream ss;
-                for (int32_t x = 420; x < 430 ; x++)
-                {
-                    ss << std::format("{:2d}|", auxBackrefsMap[{x,y}].size());
-                }
-                LOG_INFO("%s", ss.str().c_str());
-            }
-            LOG_INFO("");
-#endif
-
             // unmark single-spring confluences
-            for (int32_t y = 0; y < context.dimensions.y ; y++)
+            for (int32_t y = 0; y < context.dimensions.y; y++)
             {
-                for (int32_t x = 0; x < context.dimensions.x ; x++)
+                for (int32_t x = 0; x < context.dimensions.x; x++)
                 {
                     const TileCoordsXY pos{ x, y };
                     if (confluenceMap[pos] && springHits[pos].size() == 1)
@@ -973,10 +894,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 #endif
                 break;
             }
-            #ifdef ENABLE_DEBUG_SIGNS_PRUNING
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
             iteration++;
-            prunedTotal+=pruned;
-            #endif
+            prunedTotal += pruned;
+#endif
         }
 
         // set up an inverted river distance map
@@ -1029,10 +950,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
             }
         }
-        #ifdef ENABLE_DEBUG_SIGNS_PRUNING
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
         LOG_INFO("pruned %d springs in %d iterations", prunedTotal, iteration);
-        #endif
-
+#endif
     }
 
     /**
@@ -1169,11 +1089,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         PROFILED_FUNCTION();
 
-        if (!context.settings.applyConsistency)
-        {
-            return;
-        }
-
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
         // quantize heights for segmentation
@@ -1187,12 +1102,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 {
                     hydroMaps.height[pos] = quantizeHeight(hydroMaps.height[pos]);
                 }
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                 if (hydroMaps.flags[pos].has(spring))
                 {
-#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                     context.debugSigns.emplace_back(pos, "spring", Drawing::Colour::white, Drawing::Colour::black);
-#endif
                 }
+#endif
             }
         }
 
@@ -1274,7 +1189,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
             }
 
-            if (segments.empty() ) //|| iteration >= context.settings.maxIterations
+            if (segments.empty())
             {
                 LOG_INFO("done");
                 break;
@@ -1296,7 +1211,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         candidate.pos, std::format("lower i={} n={}", iteration, candidate.size), Drawing::Colour::white,
                         Drawing::Colour::lightBlue);
                     TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate.pos);
-                    LOG_INFO("%d | of n=%d lower segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x, worldCoords.y, candidate.size);
+                    LOG_INFO(
+                        "%d | of n=%d lower segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x,
+                        worldCoords.y, candidate.size);
 #endif
                     break;
                 }
@@ -1311,7 +1228,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         candidate.pos, std::format("raise i={} n={}", iteration, candidate.size), Drawing::Colour::white,
                         Drawing::Colour::lightPink);
                     TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate.pos);
-                    LOG_INFO("%d | of n=%d raise segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x, worldCoords.y, candidate.size);
+                    LOG_INFO(
+                        "%d | of n=%d raise segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x,
+                        worldCoords.y, candidate.size);
 #endif
                     break;
                 }
@@ -1327,7 +1246,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         candidate.pos, std::format("rm i={} n={}", iteration, candidate.size), Drawing::Colour::white,
                         Drawing::Colour::lightOrange);
                     TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate.pos);
-                    LOG_INFO("%d | of n=%d remove segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x, worldCoords.y, candidate.size);
+                    LOG_INFO(
+                        "%d | of n=%d remove segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x,
+                        worldCoords.y, candidate.size);
 #endif
                     break;
                 }
@@ -1335,8 +1256,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             iteration++;
         }
 
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
         LOG_INFO("consistency iteration=%d", iteration);
-
+#endif
         // make sure waterfalls are properly enclosed
         for (int32_t y = 0; y < context.dimensions.y; y++)
         {
