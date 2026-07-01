@@ -831,7 +831,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                             if (!pruneVisited[backref])
                             {
                                 if ((backrefMap[currentTile].has_value() && backrefMap[currentTile].value() == backref)
-                                    || (springHits[currentTile].contains(spring) && springHits[currentTile].size() == 1))
+                                    || (springHits[backref].contains(spring) && springHits[backref].size() == 1))
                                 {
                                     pruneQueue.push({ backref, distance + 1 });
                                     pruneVisited[backref] = true;
