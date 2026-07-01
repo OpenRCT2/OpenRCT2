@@ -19,8 +19,10 @@
 
 #include <format>
 #include <numbers>
+#include <ranges>
 
-// #define ENABLE_DEBUG_SIGNS
+// #define ENABLE_DEBUG_SIGNS_PRUNING
+#define ENABLE_DEBUG_SIGNS_CONSISTENCY
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
@@ -460,23 +462,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Checks if the tile at the offset from the given position share an ordinal neighbour with the given flag.
-     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
-     */
-    static bool haveCommonOrdinalNeighbour(const HydroMaps& hydroMaps, const TileCoordsXY& pos, const TileCoordsXY& offset)
-    {
-        for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(offset))
-        {
-            const TileCoordsXY sharedOrdinalPos{ pos + ordinalOffset };
-            if (hydroMaps.flags[sharedOrdinalPos].has(river))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Queue visitor function for pruneShortStreams
      */
     static void pruneVisit(
@@ -626,6 +611,23 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
+     * Checks if the tile at the offset from the given position share an ordinal neighbour with the given flag.
+     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
+     */
+    static bool haveCommonOrdinalNeighbour(const HydroMaps& hydroMaps, const TileCoordsXY& pos, const TileCoordsXY& offset)
+    {
+        for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(offset))
+        {
+            const TileCoordsXY sharedOrdinalPos{ pos + ordinalOffset };
+            if (hydroMaps.flags[sharedOrdinalPos].has(river))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Ensure diagonal channels render nicely by asserting each river tile has at least one ordinal neighbour.
      * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
      */
@@ -646,12 +648,15 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
+                if (!hydroMaps.flags.inBounds(nPos) ||  !hydroMaps.flags[nPos].has(river))
                 {
                     continue;
                 }
 
-                queue.emplaceAndVisit(nPos, heightMap[nPos]);
+                if (!queue.visited(nPos))
+                {
+                    queue.emplaceAndVisit(nPos, heightMap[nPos]);
+                }
 
                 if (!haveCommonOrdinalNeighbour(hydroMaps, tile.pos, offset))
                 {
@@ -662,7 +667,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         hydroMaps.catchment[sharedOrdinalPos] = context.settings.catchmentThreshold;
                         hydroMaps.flags[sharedOrdinalPos].set(river);
                         hydroMaps.flags[sharedOrdinalPos].set(skeleton);
-                        queue.visit(sharedOrdinalPos);
+                        queue.emplaceAndVisit(sharedOrdinalPos, heightMap[sharedOrdinalPos]);
                     }
                 }
             }
@@ -671,12 +676,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!hydroMaps.flags.inBounds(nPos) || queue.visited(nPos) || !hydroMaps.flags[nPos].has(river))
+                if (hydroMaps.flags.inBounds(nPos) && !queue.visited(nPos) && hydroMaps.flags[nPos].has(river))
                 {
-                    continue;
+                    queue.emplaceAndVisit(nPos, heightMap[nPos]);
                 }
-
-                queue.emplaceAndVisit(nPos, heightMap[nPos]);
             }
         }
     }
@@ -691,7 +694,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
         HydroMaps& hydroMaps = context.hydroMaps.value();
 
-#ifdef ENABLE_DEBUG_SIGNS
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
         TileCoordsXYSet prunedSkeletons;
 #endif
 
@@ -844,7 +847,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     for (const auto& toPrune : pruneCandidates)
                     {
                         hydroMaps.flags[toPrune].unset(skeleton);
-#ifdef ENABLE_DEBUG_SIGNS
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
                         prunedSkeletons.insert(toPrune);
 #endif
                     }
@@ -858,13 +861,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 for (const auto& spring : springs)
                 {
                     hydroMaps.flags[spring].set(HydroFlag::spring);
-#ifdef ENABLE_DEBUG_SIGNS
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
                     context.debugSigns.emplace_back(
                         spring, std::format("spring {} {}", distanceMap[spring], auxBackrefsMap[spring].size()),
                         Drawing::Colour::white, Drawing::Colour::lightBlue);
 #endif
                 }
-#ifdef ENABLE_DEBUG_SIGNS
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
                 for (int32_t y = 0; y < context.dimensions.y; y++)
                 {
                     for (int32_t x = 0; x < context.dimensions.x; x++)
@@ -933,7 +936,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 if (!skeletonMask[pos] && hydroMaps.flags[pos].has(river)) // checking river flag for debug signs
                 {
                     hydroMaps.flags[pos].unset(river);
-#ifdef ENABLE_DEBUG_SIGNS
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
                     context.debugSigns.emplace_back(
                         pos, "pruned", Drawing::Colour::white,
                         prunedSkeletons.contains(pos) ? Drawing::Colour::lightOrange : Drawing::Colour::brightRed);
@@ -967,6 +970,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             const float depth = riverDepth(width);
             const float riverHeight = heightCopy[tile.pos] - 2.0f;
 
+            hydroMaps.height[tile.pos] = riverHeight;
+
             for (int32_t dy = -radius; dy <= radius; dy++)
             {
                 for (int32_t dx = -radius; dx <= radius; dx++)
@@ -991,20 +996,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
 
                     heightMap[deltaPos] = std::min(candidateHeight, heightMap[deltaPos]);
-
-                    if (hydroMaps.flags[deltaPos].has(river))
-                    {
-                        // set water level to the lowest valid option to avoid possible artifacts at pruned tributaries (min)
-                        // while ensuring streams remain connected (max)
-                        const float aboveRiverbedLevel = heightMap[deltaPos] + 2.0f;
-                        const float referenceLevel = std::min(riverHeight, heightCopy[deltaPos] - 2.0f);
-                        const float candidateLevel = std::max(aboveRiverbedLevel, referenceLevel);
-
-                        // if the height was modified previously, keep the min
-                        hydroMaps.height[deltaPos] = hydroMaps.height[deltaPos] > 0.0f
-                            ? std::min(hydroMaps.height[deltaPos], candidateLevel)
-                            : candidateLevel;
-                    }
                 }
             }
 
@@ -1018,6 +1009,266 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
 
                 queue.emplaceAndVisit(nPos, heightCopy[nPos]);
+            }
+        }
+    }
+
+    enum class ConsistencyOperation
+    {
+        lower,
+        raise,
+        remove
+    };
+
+    struct SegmentKey
+    {
+        TileCoordsXY pos;
+        size_t size;
+        float height;
+
+        friend bool operator<(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            if (lhs.size < rhs.size)
+                return true;
+            if (rhs.size < lhs.size)
+                return false;
+            return lhs.height < rhs.height;
+        }
+        friend bool operator<=(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return !(rhs < lhs);
+        }
+        friend bool operator>(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return rhs < lhs;
+        }
+        friend bool operator>=(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return !(lhs < rhs);
+        }
+    };
+
+    /**
+     * Ensure there are no river tiles with lower land neighbours or sinks/non-spring sources.
+     */
+    static void ensureConsistent(MapGenCtx& context)
+    {
+        PROFILED_FUNCTION();
+
+        if (!context.settings.applyConsistency)
+        {
+            return;
+        }
+
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        // quantize heights for segmentation
+        for (int32_t y = 0; y < context.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < context.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                context.heightMap[pos] = quantizeHeight(context.heightMap[pos]);
+                if (hydroMaps.flags[pos].has(river))
+                {
+                    hydroMaps.height[pos] = quantizeHeight(hydroMaps.height[pos]);
+                }
+            }
+        }
+
+        ConsistencyOperation operation = ConsistencyOperation::lower;
+        // find and handle isolated segments
+        int32_t iteration = 1;
+        while (true)
+        {
+            BooleanMap visited{ context.dimensions };
+            std::unordered_map<TileCoordsXY, TileCoordsXYSet, TileCoordsXYHash> segments;
+
+            for (int32_t y = 0; y < context.dimensions.y; y++)
+            {
+                for (int32_t x = 0; x < context.dimensions.x; x++)
+                {
+                    const TileCoordsXY pos{ x, y };
+                    if (!hydroMaps.flags[pos].has(river) || visited[pos])
+                    {
+                        continue;
+                    }
+
+                    TileCoordsXYSet segment;
+                    std::queue<TileCoordsXY> queue;
+                    queue.emplace(pos);
+                    segment.insert(pos);
+                    visited[pos] = true;
+                    bool hasSource = false;
+                    bool hasSink = false;
+
+                    while (!queue.empty())
+                    {
+                        TileCoordsXY qPos = queue.front();
+                        queue.pop();
+
+                        if (hydroMaps.flags.onEdge(qPos))
+                        {
+                            hasSink = true;
+                        }
+
+                        if (hydroMaps.flags[qPos].has(spring))
+                        {
+                            hasSource = true;
+                        }
+
+                        for (const auto& offset : kNeighbourOffsetsOrdinal)
+                        {
+                            const TileCoordsXY nPos{ qPos + offset };
+                            if (hydroMaps.flags.inBounds(nPos) && hydroMaps.flags[nPos].has(river))
+                            {
+                                if (hydroMaps.height[qPos] > hydroMaps.height[nPos])
+                                {
+                                    hasSink = true;
+                                }
+                                else if (hydroMaps.height[qPos] < hydroMaps.height[nPos])
+                                {
+                                    hasSource = true;
+                                }
+                                else if (!visited[nPos])
+                                {
+                                    queue.emplace(nPos);
+                                    segment.insert(nPos);
+                                    visited[nPos] = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (operation == ConsistencyOperation::remove && !hasSource && !hasSink)
+                    {
+                        segments[pos] = segment;
+                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
+                        LOG_INFO("removable segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
+                    }
+                    if (operation == ConsistencyOperation::lower && !hasSource && hasSink)
+                    {
+                        segments[pos] = segment;
+                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
+                        LOG_INFO("lowerable segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
+                    }
+                    else if (operation == ConsistencyOperation::raise && !hasSink && hasSource)
+                    {
+                        segments[pos] = segment;
+                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
+                        LOG_INFO("raisable segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
+                    }
+                    // else if (!hasSource || !hasSink)
+                    // {
+                    //     TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
+                    //     LOG_INFO("skipping segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
+                    // }
+                }
+            }
+
+            if (segments.empty())
+            {
+                if (operation == ConsistencyOperation::lower)
+                {
+                    operation = ConsistencyOperation::raise;
+                    LOG_INFO("switching operation to raise");
+                }
+                else if (operation == ConsistencyOperation::raise)
+                {
+                    LOG_INFO("switching operation to remove");
+                    operation = ConsistencyOperation::remove;
+                }
+                else
+                {
+                    LOG_INFO("done");
+                    break;
+                }
+            }
+            else
+            {
+                std::vector<SegmentKey> orderedKeys;
+                for (const auto& key : segments | std::views::keys)
+                {
+                    orderedKeys.emplace_back(key, segments[key].size(), hydroMaps.height[key]);
+                }
+                auto candidate = std::min_element(orderedKeys.begin(), orderedKeys.end());
+
+                switch (operation)
+                {
+                    case ConsistencyOperation::lower:
+                    {
+                        for (const TileCoordsXY& sPos : segments[candidate->pos])
+                        {
+                            hydroMaps.height[sPos] -= 2.0f;
+                            context.heightMap[sPos] = std::min(hydroMaps.height[sPos] - 2.0f, context.heightMap[sPos]);
+                        }
+                        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+                        context.debugSigns.emplace_back(
+                            candidate->pos, std::format("lower n={} h={}", candidate->size, candidate->height),
+                            Drawing::Colour::white, Drawing::Colour::lightBlue);
+                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate->pos);
+                        LOG_INFO("lower segment at (%d,%d)=%f size %d", worldCoords.x, worldCoords.y, candidate->height, candidate->size);
+                        #endif
+                        break;
+                    }
+                    case ConsistencyOperation::raise:
+                    {
+                        for (const TileCoordsXY& sPos : segments[candidate->pos])
+                        {
+                            hydroMaps.height[sPos] += 2.0f;
+                        }
+                        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+                        context.debugSigns.emplace_back(
+                            candidate->pos, std::format("raise n={} h={}", candidate->size, candidate->height),
+                            Drawing::Colour::white, Drawing::Colour::lightPink);
+                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate->pos);
+                        LOG_INFO( "raise segment at (%d,%d)=%f size %d", worldCoords.x,  worldCoords.y, candidate->size, candidate->height);
+                        #endif
+                        break;
+                    }
+                    case ConsistencyOperation::remove:
+                    {
+                        for (const TileCoordsXY& sPos : segments[candidate->pos])
+                        {
+                            hydroMaps.height[sPos] = 0.0f;
+                            hydroMaps.flags[sPos].unset(river);
+                        }
+                        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+                        context.debugSigns.emplace_back(
+                            candidate->pos, std::format("rm n={} h={}", candidate->size, candidate->height), Drawing::Colour::white,
+                            Drawing::Colour::lightOrange);
+                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate->pos);
+                        LOG_INFO("rm segment at (%d,%d)=%f size %d", worldCoords.x, worldCoords.y, candidate->size, candidate->height);
+                        #endif
+                        break;
+                    }
+                }
+            }
+            LOG_INFO("ensureConsistent isolation iteration %d", iteration);
+            iteration++;
+        }
+
+        // make sure waterfalls are properly enclosed
+        for (int32_t y = 0; y < context.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < context.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+
+                if (!hydroMaps.flags[pos].has(river))
+                {
+                    float minHeight = context.heightMap[pos];
+                    for (const auto& offset : kNeighbourOffsetsOrdinal)
+                    {
+                        const TileCoordsXY nPos{ pos + offset };
+                        if (hydroMaps.flags.inBounds(nPos) && hydroMaps.flags[nPos].has(river))
+                        {
+                            minHeight = std::max(minHeight, hydroMaps.height[nPos]);
+                        }
+                    }
+
+                    context.heightMap[pos] = minHeight;
+                }
             }
         }
     }
@@ -1045,90 +1296,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     }
 
-    /**
-     * Ensure there are no river tiles with lower land neighbours or sinks/non-spring sources.
-     *
-     * TODO this post-hoc pass shouldn't be needed in the first place...
-     */
-    static void ensureConsistent(MapGenCtx& context)
-    {
-        PROFILED_FUNCTION();
-        HydroMaps& hydroMaps = context.hydroMaps.value();
-
-        for (int32_t y = 1; y < context.dimensions.y - 1; y++)
-        {
-            for (int32_t x = 1; x < context.dimensions.x - 1; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-                context.heightMap[pos] = quantizeHeight(context.heightMap[pos]);
-                if (hydroMaps.flags[pos].has(river))
-                {
-                    hydroMaps.height[pos] = quantizeHeight(hydroMaps.height[pos]);
-                }
-            }
-        }
-
-        for (int32_t y = 1; y < context.dimensions.y - 1; y++)
-        {
-            for (int32_t x = 1; x < context.dimensions.x - 1; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-
-                if (!hydroMaps.flags[pos].has(river))
-                {
-                    float minHeight = context.heightMap[pos];
-                    for (const auto& offset : kNeighbourOffsetsOrdinal)
-                    {
-                        const TileCoordsXY nPos{ pos + offset };
-                        if (hydroMaps.flags[nPos].has(river))
-                        {
-                            minHeight = std::max(minHeight, hydroMaps.height[nPos]);
-                        }
-                    }
-
-                    context.heightMap[pos] = minHeight;
-                }
-                else // TODO should be done in a separate pass before checking land neighbour height?
-                {
-                    bool hasSource = false;
-                    bool hasSink = false;
-                    bool hasPeer = false;
-                    for (const auto& offset : kNeighbourOffsetsOrdinal)
-                    {
-                        const TileCoordsXY nPos{ pos + offset };
-                        if (hydroMaps.flags[nPos].has(river))
-                        {
-                            if (hydroMaps.height[pos] > hydroMaps.height[nPos])
-                            {
-                                hasSink = true;
-                            }
-                            else if (hydroMaps.height[pos] < hydroMaps.height[nPos])
-                            {
-                                hasSource = true;
-                            }
-                            else
-                            {
-                                hasPeer = true;
-                            }
-                        }
-                    }
-                    if (!hasPeer)
-                    {
-                        if (hasSource && !hasSink)
-                        {
-                            hydroMaps.height[pos] += 2.0f;
-                        }
-                        else if (!hasSource && hasSink && !hydroMaps.flags[pos].has(spring))
-                        {
-                            hydroMaps.height[pos] -= 2.0f;
-                            context.heightMap[pos] -= 2.0f;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     void generateRivers(MapGenCtx& context)
     {
         PROFILED_FUNCTION();
@@ -1140,7 +1307,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         constructRiverSkeletons(context);
         pruneShortStreams(context);
         carveRiverbed(context);
-        clearRiversBelowSeaLevel(context);
         ensureConsistent(context);
+        clearRiversBelowSeaLevel(context);
     }
 } // namespace OpenRCT2::World::MapGenerator::Hydro

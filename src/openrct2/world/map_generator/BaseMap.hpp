@@ -112,6 +112,11 @@ namespace OpenRCT2::World::MapGenerator
         {
             return pos.x >= 0 && pos.y >= 0 && pos.x < width && pos.y < height;
         }
+
+        bool onEdge(const TileCoordsXY& pos) const
+        {
+            return pos.x == 0 || pos.y == 0 || pos.x == width - 1 || pos.y == height - 1;
+        }
     };
 
     // deal with std::vector<bool> specialization
