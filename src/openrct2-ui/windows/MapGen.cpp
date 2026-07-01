@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/Diagnostic.h"
 #include "openrct2/object/WallSceneryEntry.h"
 #include "openrct2/world/map_generator/MapHelpers.h"
 
@@ -478,6 +479,7 @@ namespace OpenRCT2::Ui::Windows
             if (_random_seed)
             {
                 _seed = std::to_string(std::random_device{}());
+                LOG_INFO("seed %s", _seed.c_str());
             }
             mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}(_seed));
 

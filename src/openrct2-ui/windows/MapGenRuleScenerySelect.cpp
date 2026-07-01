@@ -268,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             return { 0, GetNumRows() * kItemSize.height };
         }
 
-        bool hasColourSlot(const SceneryItem& si, const ColourSlot& colourSlot)
+        static bool hasColourSlot(const SceneryItem& si, const ColourSlot& colourSlot)
         {
             switch (si.type)
             {

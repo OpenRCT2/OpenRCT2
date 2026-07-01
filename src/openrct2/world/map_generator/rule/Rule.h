@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../localisation/Formatting.h"
+#include "../../../util/Hash.hpp"
 #include "../../tile_element/SurfaceElement.h"
 #include "../BaseMap.hpp"
 
@@ -109,12 +110,12 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     struct ContextKeyHash
     {
-        std::size_t operator()(const ConditionKey& s) const noexcept
+        size_t operator()(const ConditionKey& s) const noexcept
         {
-            // TODO bit of a hack...
-            std::size_t hashRuleIdx = std::hash<std::string>{}(std::to_string(s.ruleIdx));
-            std::size_t hashConditionIdx = std::hash<std::string>{}(std::to_string(s.conditionIdx));
-            return hashRuleIdx ^ (hashConditionIdx << 1);
+            size_t hash = 0;
+            Util::Hash::update(hash, s.ruleIdx);
+            Util::Hash::update(hash, s.conditionIdx);
+            return hash;
         }
     };
 

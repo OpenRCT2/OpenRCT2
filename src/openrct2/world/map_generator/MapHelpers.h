@@ -79,10 +79,9 @@ namespace OpenRCT2::World::MapGenerator
     {
         size_t operator()(const TileCoordsXY& pos) const noexcept
         {
-            using namespace Util::Hash;
             size_t hash = 0;
-            update(hash, pos.x);
-            update(hash, pos.y);
+            Util::Hash::update(hash, pos.x);
+            Util::Hash::update(hash, pos.y);
             return hash;
         }
     };
