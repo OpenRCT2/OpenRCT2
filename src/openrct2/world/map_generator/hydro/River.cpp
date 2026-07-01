@@ -462,38 +462,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Queue visitor function for pruneShortStreams
-     */
-    static void pruneVisit(
-        MapGenCtx& context, TrackingStableTileQueue& queue, BackrefMap& backrefMap, BackrefsMap& auxBackrefsMap,
-        DistanceMap& distanceMap, const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& auxCount,
-        const TileCoordsXY& offset)
-    {
-        const TileCoordsXY nPos{ pos + offset };
-
-        if (!context.hydroMaps.value().flags.inBounds(nPos) || !context.hydroMaps.value().flags[nPos].has(skeleton))
-        {
-            return;
-        }
-
-        if (queue.visited(nPos))
-        {
-            if (backrefMap[pos].has_value() && backrefMap[pos].value() != nPos)
-            {
-                auxBackrefsMap[nPos].insert(pos);
-                auxCount++;
-            }
-            return;
-        }
-
-        backrefMap[nPos] = pos;
-        auxBackrefsMap[nPos].insert(pos);
-        queue.emplaceAndVisit(nPos, context.heightMap[nPos]);
-        upstreamCount++;
-        distanceMap[nPos] = distanceMap[pos] + 1.0f;
-    }
-
-    /**
      * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
      * settings.
      */
@@ -648,7 +616,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             {
                 const TileCoordsXY nPos{ tile.pos + offset };
 
-                if (!hydroMaps.flags.inBounds(nPos) ||  !hydroMaps.flags[nPos].has(river))
+                if (!hydroMaps.flags.inBounds(nPos) || !hydroMaps.flags[nPos].has(river))
                 {
                     continue;
                 }
@@ -685,6 +653,38 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
+     * Queue visitor function for pruneShortStreams
+     */
+    static void pruneVisit(
+        MapGenCtx& context, TrackingStableTileQueue& queue, BackrefMap& backrefMap, BackrefsMap& auxBackrefsMap,
+        DistanceMap& distanceMap, const TileCoordsXY& pos, int32_t& upstreamCount, int32_t& auxCount,
+        const TileCoordsXY& offset)
+    {
+        const TileCoordsXY nPos{ pos + offset };
+
+        if (!context.hydroMaps.value().flags.inBounds(nPos) || !context.hydroMaps.value().flags[nPos].has(skeleton))
+        {
+            return;
+        }
+
+        if (queue.visited(nPos))
+        {
+            if (backrefMap[pos].has_value() && backrefMap[pos].value() != nPos)
+            {
+                auxBackrefsMap[nPos].insert(pos);
+                auxCount++;
+            }
+            return;
+        }
+
+        backrefMap[nPos] = pos;
+        auxBackrefsMap[nPos].insert(pos);
+        queue.emplaceAndVisit(nPos, context.heightMap[nPos]);
+        upstreamCount++;
+        distanceMap[nPos] = distanceMap[pos] + 1.0f;
+    }
+
+    /**
      * Prunes tributary streams that are shorter than context.settings.pruneThreshold.
      *
      * TODO split up and optimize
@@ -696,8 +696,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
 #ifdef ENABLE_DEBUG_SIGNS_PRUNING
         TileCoordsXYSet prunedSkeletons;
+        int32_t prunedTotal = 0;
+        int32_t iteration = 0;
 #endif
-
         // iterate until no streams are pruned
         while (true)
         {
@@ -770,11 +771,89 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
                 }
             }
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
+            LOG_INFO(">>>>>>>>>> skel @ %d", iteration);
+            for (int32_t y = 4; y >=0; y--)
+            {
+                std::stringstream ss;
+                for (int32_t x = 420; x < 430 ; x++)
+                {
+                   ss << (hydroMaps.flags[{x,y}].has(skeleton) ? "██|" : "  |");
+                }
+                LOG_INFO("%s", ss.str().c_str());
+            }
+            LOG_INFO("");
+            LOG_INFO(">>>>>>>>>> spring @ %d", iteration);
+            for (int32_t y = 4; y >=0; y--)
+            {
+                std::stringstream ss;
+                for (int32_t x = 420; x < 430 ; x++)
+                {
+                    ss << (std::find(springs.begin(), springs.end(), TileCoordsXY{x, y}) != springs.end() ? "██|" : "  |");
+                }
+                LOG_INFO("%s", ss.str().c_str());
+            }
+            LOG_INFO("");
+            LOG_INFO(">>>>>>>>>> confluence @ %d", iteration);
+            for (int32_t y = 4; y >=0; y--)
+            {
+                std::stringstream ss;
+                for (int32_t x = 420; x < 430 ; x++)
+                {
+                    ss << (confluenceMap[{x,y}] ? "██|" : "  |");
+                }
+                LOG_INFO("%s", ss.str().c_str());
+            }
+            LOG_INFO("");
+            LOG_INFO(">>>>>>>>>> hits @ %d", iteration);
+            for (int32_t y = 4; y >=0; y--)
+            {
+                std::stringstream ss;
+                for (int32_t x = 420; x < 430 ; x++)
+                {
+                    ss << std::format("{:2d}|", springHits[{x,y}].size());
+                }
+                LOG_INFO("%s", ss.str().c_str());
+            }
+            LOG_INFO("");
+            LOG_INFO(">>>>>>>>>> backrefs @ %d", iteration);
+            for (int32_t y = 4; y >=0; y--)
+            {
+                std::stringstream ss;
+                for (int32_t x = 420; x < 430 ; x++)
+                {
+                    const auto& back = backrefMap[{x,y}];
+                    if (back.has_value())
+                    {
+                        auto xx = back.value().x;
+                        auto yy = back.value().y;
+                        ss << std::format("{:3d},{:3d}|", xx,yy);
+                    }
+                    else
+                    {
+                        ss << std::format("       |");
+                    }
+                }
+                LOG_INFO("%s", ss.str().c_str());
+            }
+            LOG_INFO("");
+            LOG_INFO(">>>>>>>>>> aux backrefs @ %d", iteration);
+            for (int32_t y = 4; y >=0; y--)
+            {
+                std::stringstream ss;
+                for (int32_t x = 420; x < 430 ; x++)
+                {
+                    ss << std::format("{:2d}|", auxBackrefsMap[{x,y}].size());
+                }
+                LOG_INFO("%s", ss.str().c_str());
+            }
+            LOG_INFO("");
+#endif
 
             // unmark single-spring confluences
-            for (int32_t y = 1; y < context.dimensions.y - 1; y++)
+            for (int32_t y = 0; y < context.dimensions.y ; y++)
             {
-                for (int32_t x = 1; x < context.dimensions.x - 1; x++)
+                for (int32_t x = 0; x < context.dimensions.x ; x++)
                 {
                     const TileCoordsXY pos{ x, y };
                     if (confluenceMap[pos] && springHits[pos].size() == 1)
@@ -785,7 +864,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
 
             // third pass; downstream from springs following backrefs until the first confluence to identify prunable streams
-            bool pruned = false;
+            int32_t pruned = 0;
             for (const auto& spring : springs)
             {
                 TileCoordsXYSet pruneCandidates;
@@ -796,6 +875,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 bool maxSpring = false;
                 pruneQueue.push({ spring, 0 });
                 pruneVisited[spring] = true;
+                int32_t maxDist = 0;
 
                 while (!pruneQueue.empty())
                 {
@@ -825,6 +905,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     // continue downstream, enqueue the 'main' backref or backrefs that are only visited by this spring
                     else
                     {
+                        maxDist = std::max(maxDist, distance);
                         pruneCandidates.insert(currentTile);
                         for (const auto& backref : auxBackrefsMap[currentTile])
                         {
@@ -851,12 +932,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         prunedSkeletons.insert(toPrune);
 #endif
                     }
-                    pruned = true;
+                    pruned++;
                 }
             }
 
             // no springs pruned in this iteration, mark remaining springs and break from loop
-            if (!pruned)
+            if (pruned == 0)
             {
                 for (const auto& spring : springs)
                 {
@@ -892,6 +973,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 #endif
                 break;
             }
+            #ifdef ENABLE_DEBUG_SIGNS_PRUNING
+            iteration++;
+            prunedTotal+=pruned;
+            #endif
         }
 
         // set up an inverted river distance map
@@ -944,6 +1029,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
             }
         }
+        #ifdef ENABLE_DEBUG_SIGNS_PRUNING
+        LOG_INFO("pruned %d springs in %d iterations", prunedTotal, iteration);
+        #endif
+
     }
 
     /**
@@ -1015,8 +1104,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
     enum class ConsistencyOperation
     {
-        lower,
         raise,
+        lower,
         remove
     };
 
@@ -1024,15 +1113,27 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         TileCoordsXY pos;
         size_t size;
-        float height;
+        ConsistencyOperation operation;
 
+        friend bool operator==(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return lhs.pos == rhs.pos && lhs.size == rhs.size && lhs.operation == rhs.operation;
+        }
+        friend bool operator!=(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return !(lhs == rhs);
+        }
         friend bool operator<(const SegmentKey& lhs, const SegmentKey& rhs)
         {
             if (lhs.size < rhs.size)
+            {
                 return true;
+            }
             if (rhs.size < lhs.size)
+            {
                 return false;
-            return lhs.height < rhs.height;
+            }
+            return lhs.operation < rhs.operation;
         }
         friend bool operator<=(const SegmentKey& lhs, const SegmentKey& rhs)
         {
@@ -1045,6 +1146,19 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         friend bool operator>=(const SegmentKey& lhs, const SegmentKey& rhs)
         {
             return !(lhs < rhs);
+        }
+    };
+
+    struct SegmentKeyHash
+    {
+        size_t operator()(const SegmentKey& s) const noexcept
+        {
+            size_t hash = 0;
+            Util::Hash::update(hash, s.pos.x);
+            Util::Hash::update(hash, s.pos.y);
+            Util::Hash::update(hash, s.size);
+            Util::Hash::update(hash, s.operation);
+            return hash;
         }
     };
 
@@ -1073,16 +1187,21 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 {
                     hydroMaps.height[pos] = quantizeHeight(hydroMaps.height[pos]);
                 }
+                if (hydroMaps.flags[pos].has(spring))
+                {
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+                    context.debugSigns.emplace_back(pos, "spring", Drawing::Colour::white, Drawing::Colour::black);
+#endif
+                }
             }
         }
 
-        ConsistencyOperation operation = ConsistencyOperation::lower;
         // find and handle isolated segments
         int32_t iteration = 1;
         while (true)
         {
             BooleanMap visited{ context.dimensions };
-            std::unordered_map<TileCoordsXY, TileCoordsXYSet, TileCoordsXYHash> segments;
+            std::unordered_map<SegmentKey, TileCoordsXYSet, SegmentKeyHash> segments;
 
             for (int32_t y = 0; y < context.dimensions.y; y++)
             {
@@ -1140,113 +1259,83 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         }
                     }
 
-                    if (operation == ConsistencyOperation::remove && !hasSource && !hasSink)
+                    if (!hasSource && !hasSink)
                     {
-                        segments[pos] = segment;
-                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
-                        LOG_INFO("removable segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
+                        segments[{ pos, segment.size(), ConsistencyOperation::remove }] = segment;
                     }
-                    if (operation == ConsistencyOperation::lower && !hasSource && hasSink)
+                    if (!hasSource && hasSink)
                     {
-                        segments[pos] = segment;
-                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
-                        LOG_INFO("lowerable segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
+                        segments[{ pos, segment.size(), ConsistencyOperation::lower }] = segment;
                     }
-                    else if (operation == ConsistencyOperation::raise && !hasSink && hasSource)
+                    else if (!hasSink && hasSource)
                     {
-                        segments[pos] = segment;
-                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
-                        LOG_INFO("raisable segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
+                        segments[{ pos, segment.size(), ConsistencyOperation::raise }] = segment;
                     }
-                    // else if (!hasSource || !hasSink)
-                    // {
-                    //     TileCoordsXY worldCoords = genCoordsToWorldCoords(context, pos);
-                    //     LOG_INFO("skipping segment at (%d,%d)=%f size %d",worldCoords.x, worldCoords.y, hydroMaps.height[pos], segment.size());
-                    // }
                 }
             }
 
-            if (segments.empty())
+            if (segments.empty() ) //|| iteration >= context.settings.maxIterations
             {
-                if (operation == ConsistencyOperation::lower)
+                LOG_INFO("done");
+                break;
+            }
+
+            const auto minIterator = std::ranges::min_element(segments | std::views::keys);
+            const auto& candidate = *minIterator;
+            switch (candidate.operation)
+            {
+                case ConsistencyOperation::lower:
                 {
-                    operation = ConsistencyOperation::raise;
-                    LOG_INFO("switching operation to raise");
+                    for (const TileCoordsXY& sPos : segments[candidate])
+                    {
+                        hydroMaps.height[sPos] -= 2.0f;
+                        context.heightMap[sPos] = std::min(hydroMaps.height[sPos] - 2.0f, context.heightMap[sPos]);
+                    }
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+                    context.debugSigns.emplace_back(
+                        candidate.pos, std::format("lower i={} n={}", iteration, candidate.size), Drawing::Colour::white,
+                        Drawing::Colour::lightBlue);
+                    TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate.pos);
+                    LOG_INFO("%d | of n=%d lower segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x, worldCoords.y, candidate.size);
+#endif
+                    break;
                 }
-                else if (operation == ConsistencyOperation::raise)
+                case ConsistencyOperation::raise:
                 {
-                    LOG_INFO("switching operation to remove");
-                    operation = ConsistencyOperation::remove;
+                    for (const TileCoordsXY& sPos : segments[candidate])
+                    {
+                        hydroMaps.height[sPos] += 2.0f;
+                    }
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+                    context.debugSigns.emplace_back(
+                        candidate.pos, std::format("raise i={} n={}", iteration, candidate.size), Drawing::Colour::white,
+                        Drawing::Colour::lightPink);
+                    TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate.pos);
+                    LOG_INFO("%d | of n=%d raise segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x, worldCoords.y, candidate.size);
+#endif
+                    break;
                 }
-                else
+                case ConsistencyOperation::remove:
                 {
-                    LOG_INFO("done");
+                    for (const TileCoordsXY& sPos : segments[candidate])
+                    {
+                        hydroMaps.height[sPos] = 0.0f;
+                        hydroMaps.flags[sPos].unset(river);
+                    }
+#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
+                    context.debugSigns.emplace_back(
+                        candidate.pos, std::format("rm i={} n={}", iteration, candidate.size), Drawing::Colour::white,
+                        Drawing::Colour::lightOrange);
+                    TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate.pos);
+                    LOG_INFO("%d | of n=%d remove segment at (%d,%d) size=%d", iteration, segments.size(), worldCoords.x, worldCoords.y, candidate.size);
+#endif
                     break;
                 }
             }
-            else
-            {
-                std::vector<SegmentKey> orderedKeys;
-                for (const auto& key : segments | std::views::keys)
-                {
-                    orderedKeys.emplace_back(key, segments[key].size(), hydroMaps.height[key]);
-                }
-                auto candidate = std::min_element(orderedKeys.begin(), orderedKeys.end());
-
-                switch (operation)
-                {
-                    case ConsistencyOperation::lower:
-                    {
-                        for (const TileCoordsXY& sPos : segments[candidate->pos])
-                        {
-                            hydroMaps.height[sPos] -= 2.0f;
-                            context.heightMap[sPos] = std::min(hydroMaps.height[sPos] - 2.0f, context.heightMap[sPos]);
-                        }
-                        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
-                        context.debugSigns.emplace_back(
-                            candidate->pos, std::format("lower n={} h={}", candidate->size, candidate->height),
-                            Drawing::Colour::white, Drawing::Colour::lightBlue);
-                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate->pos);
-                        LOG_INFO("lower segment at (%d,%d)=%f size %d", worldCoords.x, worldCoords.y, candidate->height, candidate->size);
-                        #endif
-                        break;
-                    }
-                    case ConsistencyOperation::raise:
-                    {
-                        for (const TileCoordsXY& sPos : segments[candidate->pos])
-                        {
-                            hydroMaps.height[sPos] += 2.0f;
-                        }
-                        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
-                        context.debugSigns.emplace_back(
-                            candidate->pos, std::format("raise n={} h={}", candidate->size, candidate->height),
-                            Drawing::Colour::white, Drawing::Colour::lightPink);
-                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate->pos);
-                        LOG_INFO( "raise segment at (%d,%d)=%f size %d", worldCoords.x,  worldCoords.y, candidate->size, candidate->height);
-                        #endif
-                        break;
-                    }
-                    case ConsistencyOperation::remove:
-                    {
-                        for (const TileCoordsXY& sPos : segments[candidate->pos])
-                        {
-                            hydroMaps.height[sPos] = 0.0f;
-                            hydroMaps.flags[sPos].unset(river);
-                        }
-                        #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
-                        context.debugSigns.emplace_back(
-                            candidate->pos, std::format("rm n={} h={}", candidate->size, candidate->height), Drawing::Colour::white,
-                            Drawing::Colour::lightOrange);
-                        TileCoordsXY worldCoords = genCoordsToWorldCoords(context, candidate->pos);
-                        LOG_INFO("rm segment at (%d,%d)=%f size %d", worldCoords.x, worldCoords.y, candidate->size, candidate->height);
-                        #endif
-                        break;
-                    }
-                }
-            }
-            LOG_INFO("ensureConsistent isolation iteration %d", iteration);
             iteration++;
         }
+
+        LOG_INFO("consistency iteration=%d", iteration);
 
         // make sure waterfalls are properly enclosed
         for (int32_t y = 0; y < context.dimensions.y; y++)
