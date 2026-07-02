@@ -49,9 +49,9 @@ namespace OpenRCT2
 
         template<typename T>
         constexpr explicit Focus(T newValue, ZoomLevel newZoom = {})
+            : zoom(newZoom)
+            , data(newValue)
         {
-            data = newValue;
-            zoom = newZoom;
         }
 
         CoordsXYZ GetPos() const;
