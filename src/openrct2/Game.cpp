@@ -495,6 +495,12 @@ void SaveGameCmd(u8string_view name /* = {} */)
     }
     else
     {
+        if (!Platform::IsFilenameValid(name))
+        {
+            LOG_ERROR("Cannot save game: filename contains invalid characters.");
+            return;
+        }
+
         auto& env = GetContext()->GetPlatformEnvironment();
         auto savesDir = fs::canonical(env.GetDirectoryPath(DirBase::user, DirId::saves));
         auto savePath = savesDir / fs::u8path(u8string(name) + u8".park");
