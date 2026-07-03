@@ -14,7 +14,7 @@
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
-    constexpr int32_t kRiversOverscanFactor = 2;
+    constexpr int32_t kRiversOverscanFactor = 1;
     constexpr int32_t kRiversSeafloorMaxCarveDepth = 3;
     constexpr float kRiverGrowthExponentScaling = 0.01f;
     constexpr int32_t kRiverGrowthExponentMin = 1;   // * kRiverGrowthExponentScaling
@@ -44,12 +44,14 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
     struct HydroMaps
     {
+        BackrefMap gradient;
         BaseMap<float> catchment;
         BaseMap<float> height;
         BaseMap<HydroFlags> flags;
 
         HydroMaps(const TileCoordsXY& size)
-            : catchment(size)
+            : gradient(size)
+            , catchment(size)
             , height(size)
             , flags(size)
         {

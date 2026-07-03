@@ -63,29 +63,29 @@ namespace OpenRCT2::World::MapGenerator
     class TrackingStableTileQueue : public StableTileQueue
     {
     private:
-        BooleanMap _visited;
+        BooleanMap _marked;
 
     public:
         explicit TrackingStableTileQueue(const TileCoordsXY& dimensions)
-            : _visited(dimensions)
+            : _marked(dimensions)
         {
         }
 
-        bool visited(const TileCoordsXY& pos)
+        bool isMarked(const TileCoordsXY& pos)
         {
-            return _visited[pos];
+            return _marked[pos];
         }
 
-        void visit(const TileCoordsXY& pos)
+        void setMarked(const TileCoordsXY& pos)
         {
-            _visited[pos] = true;
+            _marked[pos] = true;
         }
 
         template<class... Args>
-        void emplaceAndVisit(const TileCoordsXY pos, Args... args)
+        void emplaceAndSetMarked(const TileCoordsXY pos, Args... args)
         {
             emplace(pos, std::forward<Args>(args)...);
-            visit(pos);
+            setMarked(pos);
         }
     };
 

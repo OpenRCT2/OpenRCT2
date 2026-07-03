@@ -9,12 +9,14 @@
 
 #pragma once
 
+#include "../../util/Hash.hpp"
 #include "../Location.hpp"
 #include "../Vec.hpp"
 
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <unordered_set>
 #include <vector>
 
 namespace OpenRCT2::World::MapGenerator
@@ -134,7 +136,23 @@ namespace OpenRCT2::World::MapGenerator
         }
     };
 
+    struct TileCoordsXYHash
+    {
+        size_t operator()(const TileCoordsXY& pos) const noexcept
+        {
+            size_t hash = 0;
+            Util::Hash::update(hash, pos.x);
+            Util::Hash::update(hash, pos.y);
+            return hash;
+        }
+    };
+
     using HeightMap = BaseMap<float>;
     using DistanceMap = BaseMap<float>;
     using NormalMap = BaseMap<VecXYZ>;
+    using Backref = std::optional<TileCoordsXY>;
+    using BackrefMap = BaseMap<Backref>;
+    using TileCoordsXYSet = std::unordered_set<TileCoordsXY, TileCoordsXYHash>;
+    using BackrefsMap = BaseMap<TileCoordsXYSet>;
+
 } // namespace OpenRCT2::World::MapGenerator

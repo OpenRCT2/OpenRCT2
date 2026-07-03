@@ -17,9 +17,9 @@
 #include "../../../object/SmallSceneryEntry.h"
 #include "../../../util/Util.h"
 #include "../../Map.h"
-#include "../DistanceMapUtils.h"
 #include "../MapGen.h"
 #include "../MapHelpers.h"
+#include "../MapTraversalUtils.h"
 #include "../Noise.h"
 #include "../TileQueue.hpp"
 

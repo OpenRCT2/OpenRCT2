@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../util/Hash.hpp"
 #include "../Location.hpp"
 #include "BaseMap.hpp"
 #include "MapGen.h"
@@ -68,19 +67,6 @@ namespace OpenRCT2::World::MapGenerator
         kNeighbourOffsetNE, kNeighbourOffsetSW, kNeighbourOffsetNW, kNeighbourOffsetSE,
         kNeighbourOffsetS,  kNeighbourOffsetW,  kNeighbourOffsetE,  kNeighbourOffsetN,
     };
-
-    struct TileCoordsXYHash
-    {
-        size_t operator()(const TileCoordsXY& pos) const noexcept
-        {
-            size_t hash = 0;
-            Util::Hash::update(hash, pos.x);
-            Util::Hash::update(hash, pos.y);
-            return hash;
-        }
-    };
-
-    using TileCoordsXYSet = std::unordered_set<TileCoordsXY, TileCoordsXYHash>;
 
     // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(TileCoordsXY, const MapGenCtx&)>;
