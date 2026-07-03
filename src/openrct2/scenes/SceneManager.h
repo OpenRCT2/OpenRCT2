@@ -20,10 +20,10 @@ namespace OpenRCT2
         virtual ~ISceneManager() = default;
 
         virtual IScene* getActiveScene() = 0;
-        virtual IScene* getEditorScene() = 0;
         virtual IScene* getGameScene() = 0;
         virtual IScene* getIntroScene() = 0;
         virtual IScene* getPreloaderScene() = 0;
+        virtual IScene* getScenarioEditorScene() = 0;
         virtual IScene* getTitleScene() = 0;
         virtual IScene* getTrackDesignerScene() = 0;
         virtual IScene* getTrackManagerScene() = 0;

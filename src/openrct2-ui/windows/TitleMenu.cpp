@@ -235,11 +235,11 @@ namespace OpenRCT2::Ui::Windows
                 switch (selectedIndex)
                 {
                     case DDIDX_SCENARIO_EDITOR:
-                        sceneMgr->setActiveScene(sceneMgr->getEditorScene());
+                        sceneMgr->setActiveScene(sceneMgr->getScenarioEditorScene());
                         break;
                     case DDIDX_CONVERT_SAVED_GAME:
                     {
-                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getEditorScene());
+                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getScenarioEditorScene());
                         editorScene->ConvertSaveToScenario();
                         break;
                     }

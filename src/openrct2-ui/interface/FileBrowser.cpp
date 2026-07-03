@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
 
                         auto* sceneMgr = GetContext()->GetSceneManager();
-                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getEditorScene());
+                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getScenarioEditorScene());
                         sceneMgr->setActiveScene(editorScene);
                         if (editorScene->LoadLandscape(pathBuffer))
                         {

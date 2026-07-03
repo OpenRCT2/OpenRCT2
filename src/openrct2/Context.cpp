@@ -1086,7 +1086,7 @@ namespace OpenRCT2
 
                 case StartupAction::edit:
                 {
-                    auto* editorScene = static_cast<EditorScene*>(_sceneManager->getEditorScene());
+                    auto* editorScene = static_cast<EditorScene*>(_sceneManager->getScenarioEditorScene());
                     _sceneManager->setActiveScene(editorScene);
                     if (String::sizeOf(gOpenRCT2StartupActionPath) == 0)
                     {

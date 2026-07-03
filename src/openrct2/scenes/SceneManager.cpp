@@ -25,10 +25,10 @@ namespace OpenRCT2
     private:
         IScene* _activeScene = nullptr;
         IContext* _sceneContext = nullptr;
-        std::unique_ptr<EditorScene> _editorScene;
         std::unique_ptr<GameScene> _gameScene;
         std::unique_ptr<IntroScene> _introScene;
         std::unique_ptr<PreloaderScene> _preloaderScene;
+        std::unique_ptr<EditorScene> _scenarioEditorScene;
         std::unique_ptr<TitleScene> _titleScene;
         std::unique_ptr<TrackDesignerScene> _trackDesignerScene;
         std::unique_ptr<TrackManagerScene> _trackManagerScene;
@@ -42,15 +42,6 @@ namespace OpenRCT2
         IScene* getActiveScene() override
         {
             return _activeScene;
-        }
-
-        IScene* getEditorScene() override
-        {
-            if (auto* scene = _editorScene.get())
-                return scene;
-
-            _editorScene = std::make_unique<EditorScene>(*_sceneContext);
-            return _editorScene.get();
         }
 
         IScene* getGameScene() override
@@ -78,6 +69,15 @@ namespace OpenRCT2
 
             _preloaderScene = std::make_unique<PreloaderScene>(*_sceneContext);
             return _preloaderScene.get();
+        }
+
+        IScene* getScenarioEditorScene() override
+        {
+            if (auto* scene = _scenarioEditorScene.get())
+                return scene;
+
+            _scenarioEditorScene = std::make_unique<EditorScene>(*_sceneContext);
+            return _scenarioEditorScene.get();
         }
 
         IScene* getTitleScene() override

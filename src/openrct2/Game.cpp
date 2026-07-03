@@ -363,7 +363,7 @@ void GameLoadInit()
 
     // TODO: move this to caller sites??
     auto* sceneMgr = context->GetSceneManager();
-    if (sceneMgr->getActiveScene() != sceneMgr->getEditorScene()) // HACK
+    if (sceneMgr->getActiveScene() != sceneMgr->getScenarioEditorScene()) // HACK
         sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
     // Invalidate scrolling text cache to prevent stale text from previous park

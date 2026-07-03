@@ -100,7 +100,7 @@ static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
     ContextResetSubsystems();
 
     auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* scene = static_cast<EditorScene*>(sceneMgr->getEditorScene());
+    auto* scene = static_cast<EditorScene*>(sceneMgr->getScenarioEditorScene());
 
     scene->OpenEditorWindows();
     scene->FinaliseMainView();
@@ -156,7 +156,7 @@ void EditorScene::AfterLoadCleanup()
 {
     // TODO: replace with dedicated scene
     auto* sceneMgr = _context.GetSceneManager();
-    sceneMgr->setActiveScene(sceneMgr->getEditorScene());
+    sceneMgr->setActiveScene(sceneMgr->getScenarioEditorScene());
 
     getGameState().editorStep = Editor::Step::landscapeEditor;
     gScreenAge = 0;
