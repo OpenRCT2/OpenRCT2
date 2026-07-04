@@ -230,9 +230,86 @@ namespace OpenRCT2
         return String::toUtf8(u16);
     }
 
+    /**
+     * RCT2 strings do not record their own charset, and the S6/S4 importers assume the Western
+     * code page (englishUK) for everything. Two real-world cases break under that assumption:
+     *   1. Parks saved by OpenRCT2 itself may already contain UTF-8 (e.g. scenario name and
+     *      details typed in the scenario editor) — converting them again mangles the text.
+     *   2. Parks made with the Korean release of RCT2 contain raw CP949 byte pairs.
+     * IsValidNonAsciiUTF8 detects case 1 by strict UTF-8 validation with at least one non-ASCII
+     * sequence, so plain ASCII still goes through the RCT2 format-code table as before.
+     */
+    static bool IsValidNonAsciiUTF8(std::string_view src)
+    {
+        bool hasNonAscii = false;
+        size_t i = 0;
+        while (i < src.size())
+        {
+            auto b = static_cast<uint8_t>(src[i]);
+            if (b < 0x80)
+            {
+                i++;
+                continue;
+            }
+            hasNonAscii = true;
+            size_t len = (b >= 0xF0 && b <= 0xF4) ? 4 : (b >= 0xE0) ? 3 : (b >= 0xC2) ? 2 : 0;
+            if (len == 0 || i + len > src.size())
+            {
+                return false;
+            }
+            for (size_t j = 1; j < len; j++)
+            {
+                auto t = static_cast<uint8_t>(src[i + j]);
+                if (t < 0x80 || t > 0xBF)
+                {
+                    return false;
+                }
+            }
+            i += len;
+        }
+        return hasNonAscii;
+    }
+
+    /**
+     * Detects raw CP949 (Korean) text by looking for byte pairs in the KS X 1001 hangul zone
+     * (lead 0xB0-0xC8, trail 0xA1-0xFE). Strings containing 0xFF escapes are excluded: those
+     * already carry two-byte wide chars (e.g. UTF-16 code units written by OpenRCT2 for user
+     * strings) which the table path passes through intact.
+     */
+    static bool IsLikelyCP949Korean(std::string_view src)
+    {
+        bool found = false;
+        for (size_t i = 0; i + 1 < src.size(); i++)
+        {
+            auto b1 = static_cast<uint8_t>(src[i]);
+            if (b1 == 0xFF)
+            {
+                return false;
+            }
+            auto b2 = static_cast<uint8_t>(src[i + 1]);
+            if (b1 >= 0xB0 && b1 <= 0xC8 && b2 >= 0xA1 && b2 <= 0xFE)
+            {
+                found = true;
+            }
+        }
+        return found;
+    }
+
     std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId)
     {
         auto codePage = GetCodePageForRCT2Language(languageId);
+        if (codePage == CodePage::CP_1252)
+        {
+            if (IsValidNonAsciiUTF8(src))
+            {
+                // Already UTF-8 (saved by OpenRCT2), nothing to convert.
+                return std::string(src);
+            }
+            if (IsLikelyCP949Korean(src))
+            {
+                codePage = CodePage::CP_949;
+            }
+        }
         if (codePage == CodePage::CP_1252)
         {
             // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.

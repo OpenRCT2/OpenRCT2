@@ -63,3 +63,33 @@ TEST_F(Localisation, RCT2_to_UTF8_ZH_TW_PREMATURE_END)
     auto actual = RCT2StringToUTF8(input, RCT2LanguageId::chineseTraditional);
     ASSERT_EQ(expected, actual);
 }
+
+TEST_F(Localisation, RCT2_to_UTF8_ALREADY_UTF8)
+{
+    // Scenario names/details written by OpenRCT2 itself are stored as UTF-8; they must pass
+    // through unchanged even though the importer requests the englishUK conversion.
+    auto input = StringFromHex("ebaaa8eb9190ec9d9820ed8380ec9db4ecbfa4");
+    auto expected = u8"모두의 타이쿤";
+    auto actual = RCT2StringToUTF8(input, RCT2LanguageId::englishUK);
+    ASSERT_EQ(expected, actual);
+}
+
+TEST_F(Localisation, RCT2_to_UTF8_KO_RAW_CP949)
+{
+    // Parks made with the Korean release of RCT2 store raw CP949 byte pairs, but the importer
+    // hardcodes englishUK; the CP949 hangul zone must be auto-detected.
+    auto input = StringFromHex("b8f0b5cec0c720c5b8c0ccc4ef");
+    auto expected = u8"모두의 타이쿤";
+    auto actual = RCT2StringToUTF8(input, RCT2LanguageId::englishUK);
+    ASSERT_EQ(expected, actual);
+}
+
+TEST_F(Localisation, RCT2_to_UTF8_KO_WIDECHAR_ESCAPED)
+{
+    // User strings (park/ride names) written by OpenRCT2 encode non-ASCII as 0xFF-escaped
+    // UTF-16 code units; the table path passes those through and CP949 detection must not fire.
+    auto input = StringFromHex("ffbaa8ffb450ffc75820ffd0c0ffc774ffcfe4");
+    auto expected = u8"모두의 타이쿤";
+    auto actual = RCT2StringToUTF8(input, RCT2LanguageId::englishUK);
+    ASSERT_EQ(expected, actual);
+}
