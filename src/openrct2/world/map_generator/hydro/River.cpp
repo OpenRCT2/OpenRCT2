@@ -506,8 +506,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
 
         // sentinel for edge-sinks, no need to trace them individually
+        TileCoordsXY nullSink{ kCoordsNull, kCoordsNull };
         TileCoordsXYSet sinksWithNull = sinks;
-        sinksWithNull.emplace(kCoordsNull, kCoordsNull);
+        sinksWithNull.insert(nullSink);
 
         // trace sinks to populate sink hits map
         for (const TileCoordsXY& sink : sinksWithNull)
@@ -516,9 +517,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
             if (sink.IsNull())
             {
-                primeHydroFlagQueue(context, queue, { river, QueueMode::distance, [&sinkHitsMap](const TileCoordsXY& s) {
-                                                         sinkHitsMap[s][s] = 0.0f;
-                                                     } });
+                auto callback = [&sinkHitsMap, &nullSink](const TileCoordsXY& s) { sinkHitsMap[s][nullSink] = 0.0f; };
+                primeHydroFlagQueue(context, queue, { river, QueueMode::distance, callback });
             }
             else
             {
@@ -686,9 +686,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         Drawing::Colour::white, Drawing::Colour::lightBlue);
 #endif
                 }
-                LOG_INFO(
-                    "pruning done, removed %d sources and %d sinks in %d iterations", prunedSourceCount, sinks.size(),
-                    iteration);
                 break;
             }
 
@@ -729,6 +726,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             prunedSourceCount += unprunableSources.size();
             iteration++;
         }
+
+        LOG_INFO("pruned sources=%d and sinks=%d in %d iterations", prunedSourceCount, sinks.size(), iteration);
     }
 
     /**
@@ -943,9 +942,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
         int32_t iteration = 1;
-#endif
+        int32_t totalRaised = 0;
+        int32_t totalLowered = 0;
+        int32_t totalRemoved = 0;
+        size_t maxSize = 0;
         // find and handle isolated segments
         while (true)
         {
@@ -979,7 +980,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         if (hydroMaps.flags.onEdge(qPos))
                         {
                             hasSink = true;
-                            // hasSource = true; // TODO is this needed?
                         }
 
                         if (hydroMaps.flags[qPos].has(source))
@@ -1046,6 +1046,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                             throw std::runtime_error(std::format("({},{}) lowered below 0", sPos.x, sPos.y));
                         }
                     }
+                    totalLowered++;
+                    maxSize = std::max(maxSize, segments[candidate].size());
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                     context.debugSigns.emplace_back(
                         candidate.pos, std::format("lower i={} n={}", iteration, candidate.size), Drawing::Colour::white,
@@ -1068,6 +1070,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                             throw std::runtime_error(std::format("({},{}) raised above 256", sPos.x, sPos.y));
                         }
                     }
+                    totalRaised++;
+                    maxSize = std::max(maxSize, segments[candidate].size());
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                     context.debugSigns.emplace_back(
                         candidate.pos, std::format("raise i={} n={}", iteration, candidate.size), Drawing::Colour::white,
@@ -1086,6 +1090,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         hydroMaps.height[sPos] = 0.0f;
                         hydroMaps.flags[sPos].unset(river);
                     }
+                    totalRemoved++;
+                    maxSize = std::max(maxSize, segments[candidate].size());
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                     context.debugSigns.emplace_back(
                         candidate.pos, std::format("rm i={} n={}", iteration, candidate.size), Drawing::Colour::white,
@@ -1098,15 +1104,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     break;
                 }
             }
-#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
             iteration++;
-#endif
         }
 
-#ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
-        LOG_INFO("consistency iteration=%d", iteration);
-#endif
         // make sure waterfalls are properly enclosed
+        int32_t raisedBanks = 0;
         for (int32_t y = 0; y < context.dimensions.y; y++)
         {
             for (int32_t x = 0; x < context.dimensions.x; x++)
@@ -1125,10 +1127,17 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         }
                     }
 
-                    context.heightMap[pos] = minHeight;
+                    if (minHeight > context.heightMap[pos])
+                    {
+                        raisedBanks++;
+                        context.heightMap[pos] = minHeight;
+                    }
                 }
             }
         }
+
+        LOG_INFO("raised=%d lowered=%d deleted=%d segments (max size %d) in %d iterations and adjusted banks=%d",
+    totalRaised, totalLowered, totalRemoved, maxSize, iteration, raisedBanks);
     }
 
     /**
