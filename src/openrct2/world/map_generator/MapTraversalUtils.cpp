@@ -19,11 +19,11 @@ namespace OpenRCT2::World::MapGenerator
             QueueTile tile = queue.top();
             queue.pop();
 
-            for (const auto& offset : kNeighbourOffsets)
+            for (const auto& neighbour : kNeighbours)
             {
-                const TileCoordsXY nPos{ tile.pos + offset };
+                const TileCoordsXY nPos{ tile.pos + neighbour.offset };
 
-                const float distance = tile.value + sqrt(offset.x * offset.x + offset.y * offset.y);
+                const float distance = tile.value + sqrt(neighbour.offset.x * neighbour.offset.x + neighbour.offset.y * neighbour.offset.y);
 
                 if (!distanceMap.inBounds(nPos) || queue.isMarked(nPos) || distance >= distanceMap[nPos])
                 {
@@ -43,9 +43,9 @@ namespace OpenRCT2::World::MapGenerator
             QueueTile tile = queue.top();
             queue.pop();
 
-            for (const auto& offset : kNeighbourOffsets)
+            for (const auto& neighbour : kNeighbours)
             {
-                const TileCoordsXY nPos{ tile.pos + offset };
+                const TileCoordsXY nPos{ tile.pos + neighbour.offset };
 
                 if (!backrefMap.inBounds(nPos) || queue.isMarked(nPos))
                 {

@@ -42,15 +42,20 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
     using HydroFlags = FlagHolder<uint8_t, HydroFlag>;
 
+
     struct HydroMaps
     {
-        BackrefMap gradient;
+        MapDirectionMaskMap flowsIn;
+        MapDirectionMaskMap flowsOut;
+        MapDirectionMaskMap flowsLateral;
         BaseMap<float> catchment;
         BaseMap<float> height;
         BaseMap<HydroFlags> flags;
 
         HydroMaps(const TileCoordsXY& size)
-            : gradient(size)
+            : flowsIn(size)
+            , flowsOut(size)
+            , flowsLateral(size)
             , catchment(size)
             , height(size)
             , flags(size)

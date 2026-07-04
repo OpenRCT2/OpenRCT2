@@ -793,10 +793,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return {
             .seaLevel = genCtx.settings.waterLevel,
             .self = getHeightsAt(gameCoords).value(),
-            .neighbourNW = getHeightsAt(gameCoords + kNeighbourOffsetNW),
-            .neighbourNE = getHeightsAt(gameCoords + kNeighbourOffsetNE),
-            .neighbourSE = getHeightsAt(gameCoords + kNeighbourOffsetSE),
-            .neighbourSW = getHeightsAt(gameCoords + kNeighbourOffsetSW),
+            .neighbourNW = getHeightsAt(gameCoords + kNeighbourNorthWest.offset),
+            .neighbourNE = getHeightsAt(gameCoords + kNeighbourNorthEast.offset),
+            .neighbourSE = getHeightsAt(gameCoords + kNeighbourSouthEast.offset),
+            .neighbourSW = getHeightsAt(gameCoords + kNeighbourSouthWest.offset),
         };
     }
 

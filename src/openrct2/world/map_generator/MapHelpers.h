@@ -28,46 +28,6 @@ namespace OpenRCT2::World::MapGenerator
         SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
     };
 
-    // map coordinates and orientation, rotated 45deg counter clockwise in game when compass points north
-    //    +x                   -x, -y
-    //      +-----+-----+-----+
-    //      |  W  | NW  |  N  |
-    //      +-----+-----+-----+
-    //      | SW  |  *  | NE  |
-    //      +-----+-----+-----+
-    //      |  S  | SE  |  E  |
-    //      +-----+-----+-----+
-    // +x,+y                    +y
-
-    static constexpr TileCoordsXY kNeighbourOffsetNE{ -1, 0 };
-    static constexpr TileCoordsXY kNeighbourOffsetSW{ 1, 0 };
-    static constexpr TileCoordsXY kNeighbourOffsetNW{ 0, -1 };
-    static constexpr TileCoordsXY kNeighbourOffsetSE{ 0, 1 };
-
-    static constexpr TileCoordsXY kNeighbourOffsetS{ 1, 1 };
-    static constexpr TileCoordsXY kNeighbourOffsetW{ 1, -1 };
-    static constexpr TileCoordsXY kNeighbourOffsetE{ -1, 1 };
-    static constexpr TileCoordsXY kNeighbourOffsetN{ -1, -1 };
-
-    static constexpr std::array kNeighbourOffsetsOrdinal = {
-        kNeighbourOffsetNE,
-        kNeighbourOffsetSW,
-        kNeighbourOffsetNW,
-        kNeighbourOffsetSE,
-    };
-
-    static constexpr std::array kNeighbourOffsetsCardinal = {
-        kNeighbourOffsetS,
-        kNeighbourOffsetW,
-        kNeighbourOffsetE,
-        kNeighbourOffsetN,
-    };
-
-    static constexpr std::array kNeighbourOffsets = {
-        kNeighbourOffsetNE, kNeighbourOffsetSW, kNeighbourOffsetNW, kNeighbourOffsetSE,
-        kNeighbourOffsetS,  kNeighbourOffsetW,  kNeighbourOffsetE,  kNeighbourOffsetN,
-    };
-
     // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(TileCoordsXY, const MapGenCtx&)>;
 

@@ -626,4 +626,5 @@ namespace OpenRCT2::World::MapGenerator
     {
         return static_cast<uint8_t>(std::round(std::clamp(height, 2.0f, 254.0f) * 0.5f) * 2.0f);
     }
+
 } // namespace OpenRCT2::World::MapGenerator

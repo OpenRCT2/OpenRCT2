@@ -31,8 +31,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     void prepareSourcesAndSinksForPruning(
         MapGenCtx& context, TileCoordsXYSet& sources, TileCoordsXYSet& sinks);
     void prepareConfluencesAndBifurcationsForPruning(
-        MapGenCtx& context, BackrefMap& mainUpstreamMap, BackrefMap& mainDownstreamMap, BackrefsMap& auxDownstreamsMap,
-        BackrefsMap& auxUpstreamsMap, BooleanMap& confluenceMap, BooleanMap& bifurcationMap);
+        MapGenCtx& context, BackrefMap& mainUpstreamMap, BackrefMap& mainDownstreamMap, BackrefsMap& auxUpstreamsMap,
+        BackrefsMap& auxDownstreamsMap, BooleanMap& confluenceMap, BooleanMap& bifurcationMap);
 
     void traceFromSources(
         const MapGenCtx& context, const TileCoordsXYSet& sources, BackrefsMap& sourceHits,
