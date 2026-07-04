@@ -205,6 +205,36 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     }
 
+
+    /**
+     * Returns the two ordinal neighbours for the given cardinal offset.
+     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
+     */
+    std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset)
+    {
+        return {
+            TileCoordsXY{ 0, offset.y },
+            TileCoordsXY{ offset.x, 0 },
+        };
+    }
+
+    /**
+     * Checks if the tile at the offset from the given position share an ordinal neighbour with the given flag.
+     * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
+     */
+    bool haveCommonOrdinalNeighbour(const HydroContext& hydroCtx, const TileCoordsXY& pos, const TileCoordsXY& offset)
+    {
+        for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(offset))
+        {
+            const TileCoordsXY sharedOrdinalPos{ pos + ordinalOffset };
+            if (hydroCtx.flags[sharedOrdinalPos].has(river))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     std::string summarizeHydroStatistics(const MapGenContext& ctx)
     {
         const auto& stats = ctx.hydroContext.value().stats;

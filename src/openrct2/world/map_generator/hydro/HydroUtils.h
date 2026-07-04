@@ -91,6 +91,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     void primeHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, const QueueCfg& cfg);
     void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks);
 
+    std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset);
+    bool haveCommonOrdinalNeighbour(const HydroContext& hydroCtx, const TileCoordsXY& pos, const TileCoordsXY& offset);
+
     std::string summarizeHydroStatistics(const MapGenContext& ctx);
 
 } // namespace OpenRCT2::World::MapGenerator::Hydro
