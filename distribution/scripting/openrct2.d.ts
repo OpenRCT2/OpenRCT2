@@ -5093,6 +5093,12 @@ declare global {
         column: number;
     }
 
+    /**
+     * A single row of a list view.
+     * - Use a `string` for a single-column list (one label for the row).
+     * - Use a `string[]` for a multi-column list, with one entry per column, in the same order as `columns`.
+     * - Use a {@link ListViewItemSeparator} to render a separator row instead of data.
+     */
     type ListViewItem = ListViewItemSeparator | string[] | string;
 
     interface ListViewWidget extends WidgetBase {
@@ -5101,6 +5107,10 @@ declare global {
         isStriped: boolean;
         showColumnHeaders: boolean;
         columns: ListViewColumn[];
+        /**
+         * The rows of the list. For a list with multiple `columns`, this is an array of rows,
+         * where each row is a `string[]` containing one value per column (i.e. `string[][]` overall).
+         */
         items: ListViewItem[];
         selectedCell: RowColumn | null;
         readonly highlightedCell: RowColumn;
