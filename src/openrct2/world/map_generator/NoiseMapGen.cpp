@@ -163,9 +163,9 @@ namespace OpenRCT2::World::MapGenerator
         const float low = settings.heightmapLow;
         const float high = settings.heightmapHigh - low;
 
-        for (int32_t y = 0; y < context.dimensions.x; y++)
+        for (int32_t y = 0; y < context.dimensions.y; y++)
         {
-            for (int32_t x = 0; x < context.dimensions.y; x++)
+            for (int32_t x = 0; x < context.dimensions.x; x++)
             {
                 const VecXY pos = { x, y };
                 const float noiseValue = noise.generate(pos);

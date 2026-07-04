@@ -49,9 +49,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         std::queue<TileCoordsXY> fillQueue;
 
         // prepare queue and mark pits
-        for (int32_t y = 0; y < context.dimensions.x; y++)
+        for (int32_t y = 0; y < context.dimensions.y; y++)
         {
-            for (int32_t x = 0; x < context.dimensions.y; x++)
+            for (int32_t x = 0; x < context.dimensions.x; x++)
             {
                 TileCoordsXY pos{ x, y };
 
@@ -581,12 +581,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     else if (sourceHitsMap[pos].size() > 1)
                     {
                         float maxDistance = 0.0f;
-                        for (const auto& springHits : sourceHitsMap[pos])
+                        for (const auto& sourceHits : sourceHitsMap[pos])
                         {
-                            if (!furthestSourceAt[pos].has_value() || springHits.second > maxDistance)
+                            if (!furthestSourceAt[pos].has_value() || sourceHits.second > maxDistance)
                             {
-                                maxDistance = springHits.second;
-                                furthestSourceAt[pos] = springHits.first;
+                                maxDistance = sourceHits.second;
+                                furthestSourceAt[pos] = sourceHits.first;
                             }
                         }
                     }
@@ -689,7 +689,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 break;
             }
 
-            // clear prunable sources from springDistanceMap and sinks from remainingSinks
+            // clear prunable sources from sourceHitsMap and sinks from remainingSinks
             for (int32_t y = 0; y < context.dimensions.y; y++)
             {
                 for (int32_t x = 0; x < context.dimensions.x; x++)
@@ -914,7 +914,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     };
 
     /**
-     * Ensure there are no river tiles with lower land neighbours or sinks/non-spring sources.
+     * Ensure there are no river tiles with lower land neighbours or reachable sinks/sources.
      */
     static void ensureConsistent(MapGenCtx& context)
     {
@@ -936,7 +936,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
                 if (hydroMaps.flags[pos].has(source))
                 {
-                    context.debugSigns.emplace_back(pos, "spring", Drawing::Colour::white, Drawing::Colour::black);
+                    context.debugSigns.emplace_back(pos, "src", Drawing::Colour::white, Drawing::Colour::black);
                 }
 #endif
             }
@@ -1141,7 +1141,71 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * unset river and riverbed flags below sea level for more intuitive behavior in texture/scenery rules.
+     * Remove single tile river bank indentations.
+     */
+    static void removeBankIndentations(MapGenCtx& context)
+    {
+        PROFILED_FUNCTION();
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+
+        // X = river, O = land, center tile not in mask
+        constexpr std::array kMasks = {
+            // O O O
+            // O X O
+            // X X X
+            MapDirectionMask{South, SouthEast, East},
+            // X O O
+            // X X O
+            // X O O
+            MapDirectionMask{South, SouthWest, West},
+            // O O X
+            // O X X
+            // O O X
+            MapDirectionMask{North, NorthEast, East},
+            // X X X
+            // O X O
+            // O O O
+            MapDirectionMask{North, NorthWest, West}
+        };
+
+        int32_t totalRemoved = 0;
+        for (int32_t y = 1; y < context.dimensions.y-1; y++)
+        {
+            for (int32_t x = 1; x < context.dimensions.x-1; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+
+                if (!hydroMaps.flags[pos].has(river))
+                {
+                    continue;
+                }
+
+                for (const auto & mask : kMasks)
+                {
+                    bool maskMatches = true;
+                    for (const Neighbour& neighbour : kNeighbours)
+                    {
+                        const TileCoordsXY nPos{ pos + neighbour.offset };
+                        if (mask.has(neighbour.direction) != hydroMaps.flags[nPos].has(river))
+                        {
+                            maskMatches = false;
+                            break;
+                        }
+                    }
+                    if (maskMatches)
+                    {
+                        hydroMaps.flags[pos].unset(river);
+                        totalRemoved++;
+                        break;
+                    }
+                }
+            }
+        }
+        LOG_INFO("indentations=%d removed", totalRemoved);
+    }
+
+    /**
+     * Unset river and riverbed flags below sea level for more intuitive behavior in texture/scenery rules.
      */
     static void clearRiversBelowSeaLevel(MapGenCtx& context)
     {
@@ -1174,6 +1238,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         ensureCardinalNeighbours(context);
         carveRiverbed(context);
         ensureConsistent(context);
+        removeBankIndentations(context);
         clearRiversBelowSeaLevel(context);
     }
 } // namespace OpenRCT2::World::MapGenerator::Hydro
