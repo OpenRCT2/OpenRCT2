@@ -14,7 +14,7 @@
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
-    constexpr int32_t kRiversOverscanFactor = 1;
+    constexpr int32_t kRiversOverscanFactor = 2;
     constexpr int32_t kRiversSeafloorMaxCarveDepth = 3;
     constexpr float kRiverGrowthExponentScaling = 0.01f;
     constexpr int32_t kRiverGrowthExponentMin = 1;   // * kRiverGrowthExponentScaling
@@ -35,8 +35,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         river,
         filled,
         breached,
-        skeleton,
-        spring,
+        source,
         // TODO lake,
     };
 

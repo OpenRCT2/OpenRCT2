@@ -36,28 +36,6 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void completeBackrefMap(BackrefMap& backrefMap, TrackingStableTileQueue& queue)
-    {
-        while (!queue.empty())
-        {
-            QueueTile tile = queue.top();
-            queue.pop();
-
-            for (const auto& neighbour : kNeighbours)
-            {
-                const TileCoordsXY nPos{ tile.pos + neighbour.offset };
-
-                if (!backrefMap.inBounds(nPos) || queue.isMarked(nPos))
-                {
-                    continue;
-                }
-
-                backrefMap[nPos] = tile.pos;
-                queue.emplaceAndSetMarked(nPos, tile.value + 1.0f);
-            }
-        }
-    }
-
     void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue)
     {
         distanceMap[pos] = 0.0f;
@@ -92,32 +70,6 @@ namespace OpenRCT2::World::MapGenerator
         completeDistanceMap(distanceMap, queue);
     }
 
-    // assumes backrefMap is sized correctly
-    void computeHydroFlagBasedBackrefMap(const MapGenCtx& context, BackrefMap& backrefMap, Hydro::HydroFlag flag)
-    {
-        if (!context.hydroMaps.has_value())
-        {
-            return;
-        }
-
-        const auto& hydroMaps = context.hydroMaps.value();
-        TrackingStableTileQueue queue{ context.dimensions };
-
-        for (int32_t y = 0; y < backrefMap.height; y++)
-        {
-            for (int32_t x = 0; x < backrefMap.width; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-
-                if (hydroMaps.flags[pos].has(flag))
-                {
-                    queue.emplaceAndSetMarked(pos, 0.0f);
-                }
-            }
-        }
-
-        completeBackrefMap(backrefMap, queue);
-    }
 
 
 } // namespace OpenRCT2::World::MapGenerator

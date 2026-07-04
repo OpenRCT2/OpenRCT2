@@ -483,8 +483,7 @@ namespace OpenRCT2::Ui::Windows
                 LOG_INFO("seed %s", _seed.c_str());
             }
             mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}(_seed));
-            //mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}("4242906346"));
-            mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}("177306642"));
+            //mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}("177306642"));
 
             MapGenerator::generate(mapgenSettings);
             GfxInvalidateScreen();

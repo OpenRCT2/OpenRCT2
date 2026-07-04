@@ -13,18 +13,17 @@
 #include "../../../Diagnostic.h"
 #include "../../../GameState.h"
 #include "../../../profiling/Profiling.h"
+#include "../BaseMap.hpp"
 #include "../MapHelpers.h"
 #include "../MapTraversalUtils.h"
 #include "../TileQueue.hpp"
-#include "../BaseMap.hpp"
-#include "RiverUtils.h"
+#include "HydroUtils.h"
 
 #include <format>
 #include <numbers>
 #include <ranges>
 
-// #define ENABLE_DEBUG_SIGNS_SINKS
-#define ENABLE_DEBUG_SIGNS_PRUNING
+// #define ENABLE_DEBUG_SIGNS_PRUNING
 // #define ENABLE_DEBUG_SIGNS_CONSISTENCY
 
 namespace OpenRCT2::World::MapGenerator::Hydro
@@ -170,7 +169,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         float sum = 0.0f;
 
-        for (const auto&  neighbour : kNeighbours)
+        for (const auto& neighbour : kNeighbours) // TODO use flow maps
         {
             const TileCoordsXY nPos{ from + neighbour.offset };
 
@@ -193,7 +192,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             const int32_t multiplier = isInWorldMap(context, pos) ? 1 : context.settings.offMapCatchmentMultiplier;
 
             hydroMaps.catchment[pos] = 1.0f * multiplier;
-            for (const auto& neighbour : kNeighbours)
+            for (const auto& neighbour : kNeighbours) // TODO use flow maps
             {
                 const TileCoordsXY nPos{ pos + neighbour.offset };
 
@@ -275,7 +274,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         if (hydroMaps.catchment[pos] >= context.settings.catchmentThreshold)
         {
             queue.emplaceAndSetMarked(pos, context.heightMap[pos]);
-            hydroMaps.flags[pos].set(river, skeleton);
+            hydroMaps.flags[pos].set(river);
         }
     }
 
@@ -313,136 +312,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     postProcessTile(context, queue, nPos);
                 }
             }
-        }
-    }
-
-    /**
-     * To aid short stream pruning reduce the river map to a skeleton graph by running a line thinning algorithm.
-     *
-     * based on
-     *
-     * Chen, Y.S. and Hsu, W.H., 1988. A modified fast parallel algorithm for thinning digital patterns. Pattern Recognition
-     * Letters, 7(2), pp.99-106.
-     */
-    static void constructRiverSkeletons(MapGenCtx& context)
-    {
-        PROFILED_FUNCTION();
-        HydroMaps& hydroMaps = context.hydroMaps.value();
-        bool firstSubiteration = true;
-        std::vector<TileCoordsXY> toClear;
-
-        while (true)
-        {
-            // the algorithm doesn't handle edge coords, resulting in 'T' shapes being left behind, should be ok for this.
-            for (int32_t y = 1; y < context.dimensions.y - 1; y++)
-            {
-                for (int32_t x = 1; x < context.dimensions.x - 1; x++)
-                {
-                    TileCoordsXY p1{ x, y };
-
-                    if (!hydroMaps.flags[p1].has(skeleton))
-                    {
-                        continue;
-                    }
-
-                    union
-                    {
-                        bool pN[8];
-                        struct
-                        {
-                            bool p2, p3, p4, p5, p6, p7, p8, p9;
-                        };
-                        // coordinates differ from the paper to account for inverted x-axis of rct
-                    } nb = { .p2 = hydroMaps.flags[p1 + TileCoordsXY{ 0, -1 }].has(skeleton),
-                             .p3 = hydroMaps.flags[p1 + TileCoordsXY{ 1, -1 }].has(skeleton),
-                             .p4 = hydroMaps.flags[p1 + TileCoordsXY{ 1, 0 }].has(skeleton),
-                             .p5 = hydroMaps.flags[p1 + TileCoordsXY{ 1, 1 }].has(skeleton),
-                             .p6 = hydroMaps.flags[p1 + TileCoordsXY{ 0, 1 }].has(skeleton),
-                             .p7 = hydroMaps.flags[p1 + TileCoordsXY{ -1, 1 }].has(skeleton),
-                             .p8 = hydroMaps.flags[p1 + TileCoordsXY{ -1, 0 }].has(skeleton),
-                             .p9 = hydroMaps.flags[p1 + TileCoordsXY{ -1, -1 }].has(skeleton) };
-
-                    int32_t bOfP1 = 0; // count neighbours
-                    for (const auto& n : nb.pN)
-                    {
-                        if (n)
-                        {
-                            bOfP1 += 1;
-                        }
-                    }
-
-                    if (!(2 <= bOfP1 && bOfP1 <= 7))
-                    {
-                        continue; // condition a
-                    }
-
-                    int32_t aOfP1 = 0; // count clockwise 0->1 transitions
-                    for (size_t i = 0; i < 8; ++i)
-                    {
-                        if (!nb.pN[i] && nb.pN[(i + 1) % 8])
-                        {
-                            aOfP1 += 1;
-                        }
-                    }
-
-                    if (aOfP1 != 1 && aOfP1 != 2)
-                    {
-                        continue; // condition b
-                    }
-
-                    if (firstSubiteration)
-                    {
-                        if (aOfP1 == 1)
-                        {
-                            if (!((!nb.p2 || !nb.p4 || !nb.p6) && (!nb.p4 || !nb.p6 || !nb.p8)))
-                            {
-                                continue; // condition {c, d}
-                            }
-                        }
-                        else
-                        {
-                            if (!(((nb.p2 && nb.p4) && (!nb.p6 && !nb.p7 && !nb.p8))
-                                  || ((nb.p4 && nb.p6) && (!nb.p2 && !nb.p8 && !nb.p9))))
-                            {
-                                continue; // condition {f, g}
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (aOfP1 == 1)
-                        {
-                            if (!((!nb.p2 || !nb.p4 || !nb.p8) && (!nb.p2 || !nb.p6 || !nb.p8)))
-                            {
-                                continue; // condition {c', d'}
-                            }
-                        }
-                        else
-                        {
-                            if (!(((nb.p2 && nb.p8) && (!nb.p4 && !nb.p5 && !nb.p6))
-                                  || ((nb.p6 && nb.p8) && (!nb.p2 && !nb.p3 && !nb.p4))))
-                            {
-                                continue; // condition {f', g'}
-                            }
-                        }
-                    }
-
-                    toClear.push_back(p1);
-                }
-            }
-
-            if (toClear.empty())
-            {
-                break;
-            }
-
-            for (const auto& pos : toClear)
-            {
-                hydroMaps.flags[pos].unset(skeleton);
-            }
-
-            toClear.clear();
-            firstSubiteration = !firstSubiteration; // alternate between subiterations
         }
     }
 
@@ -566,7 +435,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
                     heightMap[deltaPos] = heightMap[tile.pos];
                     distanceMap[deltaPos] = distance;
-                    hydroMaps.flags[deltaPos].set(river, skeleton);
+                    hydroMaps.flags[deltaPos].set(river);
                     queue.setMarked(deltaPos);
                 }
             }
@@ -588,6 +457,278 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
         return false;
+    }
+
+    /**
+     * Prune streams below a length threshold and non-edge sinks.
+     */
+    static void pruneShortStreamsAndSinks(MapGenCtx& context)
+    {
+        TileCoordsXYSet sources;
+        TileCoordsXYSet sinks;
+        findSourcesAndSinks(context, sources, sinks);
+
+        HydroMaps& hydroMaps = context.hydroMaps.value();
+        BaseMap<std::unordered_map<TileCoordsXY, float, TileCoordsXYHash>> sourceHitsMap{ context.dimensions };
+        BaseMap<std::unordered_map<TileCoordsXY, float, TileCoordsXYHash>> sinkHitsMap{ context.dimensions };
+
+        // trace sources to populate source hits map
+        for (const TileCoordsXY& source : sources)
+        {
+            TrackingStableTileQueue queue{ context.dimensions };
+            queue.emplaceAndSetMarked(source, 0.0f);
+            sourceHitsMap[source][source] = 0.0f;
+
+            while (!queue.empty())
+            {
+                const QueueTile tile = queue.top();
+                queue.pop();
+
+                for (const auto& neighbour : kNeighbours)
+                {
+                    const TileCoordsXY nPos{ tile.pos + neighbour.offset };
+
+                    if (!sourceHitsMap.inBounds(nPos) || queue.isMarked(nPos)
+                        || !(hydroMaps.flowsOut[tile.pos].has(neighbour.direction)
+                             //|| hydroMaps.flowsLateral[tile.pos].has(neighbour.direction)
+                             )
+                        || !hydroMaps.flags[nPos].has(river))
+                    {
+                        continue;
+                    }
+
+                    const float distance = tile.value + 1.0f;
+
+                    sourceHitsMap[nPos][source] = distance;
+                    queue.emplaceAndSetMarked(nPos, distance);
+                }
+            }
+        }
+
+        // sentinel for edge-sinks, no need to trace them individually
+        TileCoordsXYSet sinksWithNull = sinks;
+        sinksWithNull.emplace(kCoordsNull, kCoordsNull);
+
+        // trace sinks to populate sink hits map
+        for (const TileCoordsXY& sink : sinksWithNull)
+        {
+            TrackingStableTileQueue queue{ context.dimensions };
+
+            if (sink.IsNull())
+            {
+                primeHydroFlagQueue(context, queue, { river, QueueMode::distance, [&sinkHitsMap](const TileCoordsXY& s) {
+                                                         sinkHitsMap[s][s] = 0.0f;
+                                                     } });
+            }
+            else
+            {
+                queue.emplaceAndSetMarked(sink, 0.0f);
+                sinkHitsMap[sink][sink] = 0.0f;
+            }
+
+            while (!queue.empty())
+            {
+                const QueueTile tile = queue.top();
+                queue.pop();
+
+                for (const auto& neighbour : kNeighbours)
+                {
+                    const TileCoordsXY nPos{ tile.pos + neighbour.offset };
+
+                    if (!sinkHitsMap.inBounds(nPos) || queue.isMarked(nPos)
+                        || !(hydroMaps.flowsIn[tile.pos].has(neighbour.direction)
+                             //|| hydroMaps.flowsLateral[tile.pos].has(neighbour.direction)
+                             )
+                        || !hydroMaps.flags[nPos].has(river))
+                    {
+                        continue;
+                    }
+
+                    const float distance = tile.value + 1.0f;
+
+                    sinkHitsMap[nPos][sink] = distance;
+                    queue.emplaceAndSetMarked(nPos, distance);
+                }
+            }
+        }
+
+        TileCoordsXYSet remainingSources = sources;
+        TileCoordsXYSet remainingSinks = sinks;
+
+        int32_t iteration = 1;
+        int32_t prunedSourceCount = 0;
+        while (true)
+        {
+            std::unordered_map<TileCoordsXY, float, TileCoordsXYHash> sourceStreamLength;
+            BackrefMap furthestSourceAt{ context.dimensions };
+
+            // scan map to either find the source stream length (if only a single source reaches a tile) or to populate the
+            // furthestSourceAt map (if multiple sources hits a tile)
+            for (int32_t y = 0; y < context.dimensions.y; y++)
+            {
+                for (int32_t x = 0; x < context.dimensions.x; x++)
+                {
+                    TileCoordsXY pos{ x, y };
+
+                    if (sourceHitsMap[pos].size() == 1)
+                    {
+                        for (const auto& sourceHits : sourceHitsMap[pos])
+                        {
+                            sourceStreamLength[sourceHits.first] = std::max(
+                                sourceStreamLength[sourceHits.first], sourceHits.second);
+                        }
+                    }
+                    else if (sourceHitsMap[pos].size() > 1)
+                    {
+                        float maxDistance = 0.0f;
+                        for (const auto& springHits : sourceHitsMap[pos])
+                        {
+                            if (!furthestSourceAt[pos].has_value() || springHits.second > maxDistance)
+                            {
+                                maxDistance = springHits.second;
+                                furthestSourceAt[pos] = springHits.first;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // populate furthestSources
+            TileCoordsXYSet furthestSources;
+            for (int32_t y = 0; y < context.dimensions.y; y++)
+            {
+                for (int32_t x = 0; x < context.dimensions.x; x++)
+                {
+                    TileCoordsXY pos{ x, y };
+
+                    if (furthestSourceAt[pos].has_value())
+                    {
+                        furthestSources.insert(furthestSourceAt[pos].value());
+                    }
+                }
+            }
+
+            // identify prunable sources
+            TileCoordsXYSet prunableSources;
+            TileCoordsXYSet unprunableSources;
+            TileCoordsXYSet unprunableSourcesBelowThreshold;
+            for (const TileCoordsXY& source : remainingSources)
+            {
+                if (sourceStreamLength[source] < context.settings.pruneThreshold)
+                {
+                    if (!furthestSources.contains(source))
+                    {
+                        prunableSources.insert(source);
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
+                        LOG_INFO(
+                            "%d | pruning source (%d, %d) length=%f", iteration, source.x, source.y,
+                            sourceStreamLength[source]);
+
+                        context.debugSigns.emplace_back(
+                            source, std::format("src {} {}", sourceStreamLength[source], furthestSources.contains(source)),
+                            Drawing::Colour::white, Drawing::Colour::brightRed);
+#endif
+                    }
+                    else
+                    {
+                        unprunableSourcesBelowThreshold.insert(source);
+                        unprunableSources.insert(source);
+                    }
+                }
+                else
+                {
+                    unprunableSources.insert(source);
+                }
+            }
+
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
+            for (const TileCoordsXY& sink : remainingSinks)
+            {
+                LOG_INFO("%d | pruning sink (%d, %d)", iteration, sink.x, sink.y);
+                context.debugSigns.emplace_back(sink, "sink", Drawing::Colour::white, Drawing::Colour::beige);
+            }
+#endif
+
+            // if there are no prunable sources but sources below the threshold, there are deadlocks between sources each being
+            // the furthest at different tiles. Mark the shortest as prunable to unblock progress
+            if (prunableSources.empty() && !unprunableSourcesBelowThreshold.empty())
+            {
+                float minLength = std::numeric_limits<float>::infinity();
+                TileCoordsXY minSource;
+
+                for (const TileCoordsXY& source : unprunableSourcesBelowThreshold)
+                {
+                    if (sourceStreamLength[source] < minLength)
+                    {
+                        minLength = sourceStreamLength[source];
+                        minSource = source;
+                    }
+                }
+
+                prunableSources.insert(minSource);
+                unprunableSources.erase(minSource);
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
+                LOG_INFO(
+                    "%d | deadlock detected, removing (%d, %d) %f", iteration, minSource.x, minSource.y,
+                    sourceStreamLength[minSource]);
+#endif
+            }
+
+            // nothing to prune, mark remaining sources and break from loop
+            if (prunableSources.empty() && remainingSinks.empty())
+            {
+                for (const TileCoordsXY& source : unprunableSources)
+                {
+                    hydroMaps.flags[source].set(HydroFlag::source);
+#ifdef ENABLE_DEBUG_SIGNS_PRUNING
+                    context.debugSigns.emplace_back(
+                        source, std::format("src {} {}", sourceStreamLength[source], furthestSources.contains(source)),
+                        Drawing::Colour::white, Drawing::Colour::lightBlue);
+#endif
+                }
+                LOG_INFO(
+                    "pruning done, removed %d sources and %d sinks in %d iterations", prunedSourceCount, sinks.size(),
+                    iteration);
+                break;
+            }
+
+            // clear prunable sources from springDistanceMap and sinks from remainingSinks
+            for (int32_t y = 0; y < context.dimensions.y; y++)
+            {
+                for (int32_t x = 0; x < context.dimensions.x; x++)
+                {
+                    TileCoordsXY pos{ x, y };
+                    for (const TileCoordsXY& source : prunableSources)
+                    {
+                        sourceHitsMap[pos].erase(source);
+                    }
+
+                    for (const TileCoordsXY& sink : remainingSinks)
+                    {
+                        sinkHitsMap[pos].erase(sink);
+                    }
+                }
+            }
+
+            // unset river flag for all tiles with no remaining source or sink hits
+            for (int32_t y = 0; y < context.dimensions.y; y++)
+            {
+                for (int32_t x = 0; x < context.dimensions.x; x++)
+                {
+                    TileCoordsXY pos{ x, y };
+
+                    if (sourceHitsMap[pos].empty() || sinkHitsMap[pos].empty())
+                    {
+                        hydroMaps.flags[pos].unset(river);
+                    }
+                }
+            }
+
+            remainingSources = unprunableSources;
+            remainingSinks.clear();
+            prunedSourceCount += unprunableSources.size();
+            iteration++;
+        }
     }
 
     /**
@@ -628,7 +769,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         const TileCoordsXY sharedOrdinalPos{ tile.pos + ordinalOffset };
                         heightMap[sharedOrdinalPos] = heightMap[tile.pos];
                         hydroMaps.catchment[sharedOrdinalPos] = context.settings.catchmentThreshold;
-                        hydroMaps.flags[sharedOrdinalPos].set(river, skeleton);
+                        hydroMaps.flags[sharedOrdinalPos].set(river);
                         queue.emplaceAndSetMarked(sharedOrdinalPos, heightMap[sharedOrdinalPos]);
                     }
                 }
@@ -644,186 +785,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
             }
         }
-    }
-
-    /**
-     * Prunes tributary streams that are shorter than context.settings.pruneThreshold.
-     *
-     * TODO split up and optimize
-     */
-    static void pruneShortStreams(MapGenCtx& context)
-    {
-        PROFILED_FUNCTION();
-        HydroMaps& hydroMaps = context.hydroMaps.value();
-
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-        int32_t prunedTotal = 0;
-        int32_t iteration = 0;
-#endif
-
-        // identify sources and sinks and connect them to the river skeletons
-        TileCoordsXYSet sources;
-        TileCoordsXYSet sinks;
-        prepareSourcesAndSinksForPruning(context, sources, sinks);
-
-        // iterate until no streams are pruned
-        while (true)
-        {
-            // identify confluences and bifurcations
-            BackrefMap mainUpstreamMap{ context.dimensions };
-            BackrefMap mainDownstreamMap{ context.dimensions };
-            BackrefsMap auxUpstreamsMap{ context.dimensions };
-            BackrefsMap auxDownstreamsMap{ context.dimensions };
-            BooleanMap confluenceMap{ context.dimensions };
-            BooleanMap bifurcationMap{ context.dimensions };
-            prepareConfluencesAndBifurcationsForPruning(
-                context, mainUpstreamMap, mainDownstreamMap, auxUpstreamsMap, auxDownstreamsMap, confluenceMap, bifurcationMap);
-
-            // populate sourceHits and sinkHits maps and the confluenceMaxSpringMap and unmark single source confluences as well
-            // as single sink bifurcations
-            BackrefsMap sourceHits{ context.dimensions };
-            BackrefsMap sinkHits{ context.dimensions };
-            BackrefMap confluenceMaxSpringMap{ context.dimensions };
-            traceFromSources(context, sources, sourceHits, auxDownstreamsMap, confluenceMap, confluenceMaxSpringMap);
-            traceFromSinks(context, sinks, sourceHits, auxDownstreamsMap, confluenceMap);
-
-            // prune
-            int32_t prunedSources = pruneSources(
-                context, sources, mainDownstreamMap, auxDownstreamsMap, confluenceMap, sourceHits, confluenceMaxSpringMap);
-            int32_t prunedSinks = pruneSinks(context, sinks, mainUpstreamMap, auxUpstreamsMap, bifurcationMap, sinkHits);
-
-            // no streams pruned in this iteration, mark remaining src/sink and break from loop
-            if (prunedSources + prunedSinks == 0)
-            {
-                for (const auto& source : sources)
-                {
-                    hydroMaps.flags[source].set(HydroFlag::spring);
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-                    context.debugSigns.emplace_back(
-                        source,
-                        std::format(
-                            "src {}-{}-{}-{}-{}", auxDownstreamsMap[source].size(), auxUpstreamsMap[source].size(),
-                            sourceHits[source].size(), sinkHits[source].size(), context.heightMap[source]),
-                        Drawing::Colour::white, Drawing::Colour::lightBlue);
-#endif
-                }
-                for (const auto& sink : sinks)
-                {
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-                    context.debugSigns.emplace_back(
-                        sink,
-                        std::format(
-                            "sink {}-{}-{}-{}-{}", auxDownstreamsMap[sink].size(), auxUpstreamsMap[sink].size(),
-                            sourceHits[sink].size(), sinkHits[sink].size(), context.heightMap[sink]),
-                        Drawing::Colour::white, Drawing::Colour::peach);
-#endif
-                }
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-                for (int32_t y = 0; y < context.dimensions.y; y++)
-                {
-                    for (int32_t x = 0; x < context.dimensions.x; x++)
-                    {
-                        const TileCoordsXY pos{ x, y };
-                        if (confluenceMap[pos] && bifurcationMap[pos])
-                        {
-                            context.debugSigns.emplace_back(
-                                pos,
-                                std::format(
-                                    "co/bi {}-{}-{}-{}-{}", auxDownstreamsMap[pos].size(), auxUpstreamsMap[pos].size(),
-                                    sourceHits[pos].size(), sinkHits[pos].size(), context.heightMap[pos]),
-                                Drawing::Colour::white, Drawing::Colour::brightYellow);
-                        }
-                        else if (confluenceMap[pos])
-                        {
-                            context.debugSigns.emplace_back(
-                                pos,
-                                std::format(
-                                    "conf {}-{}-{}-{}-{}", auxDownstreamsMap[pos].size(), auxUpstreamsMap[pos].size(),
-                                    sourceHits[pos].size(), sinkHits[pos].size(), context.heightMap[pos]),
-                                Drawing::Colour::white, Drawing::Colour::brightPurple);
-                        }
-                        else if (bifurcationMap[pos])
-                        {
-                            context.debugSigns.emplace_back(
-                                pos,
-                                std::format(
-                                    "bifu {}-{}-{}-{}-{}", auxDownstreamsMap[pos].size(), auxUpstreamsMap[pos].size(),
-                                    sourceHits[pos].size(), sinkHits[pos].size(), context.heightMap[pos]),
-                                Drawing::Colour::white, Drawing::Colour::brightGreen);
-                        }
-                        else if (hydroMaps.flags[pos].has(skeleton))
-                        {
-                            context.debugSigns.emplace_back(
-                                pos,
-                                std::format(
-                                    "skel {}-{}-{}-{}-{}", auxDownstreamsMap[pos].size(), auxUpstreamsMap[pos].size(),
-                                    sourceHits[pos].size(), sinkHits[pos].size(), context.heightMap[pos]),
-                                Drawing::Colour::black, Drawing::Colour::white);
-                        }
-                    }
-                }
-#endif
-                break;
-            }
-
-            // set up an inverted river distance map
-            DistanceMap riverRadiusMap{ context.dimensions };
-            computeHydroFlagBasedDistanceMap(context, riverRadiusMap, river, true);
-
-            // create a mask consisting of disks with radius riverRadiusMap[pos] around the remaining river skeletons
-            BooleanMap skeletonMask{ context.dimensions };
-            for (int32_t y = 0; y < context.dimensions.y; y++)
-            {
-                for (int32_t x = 0; x < context.dimensions.x; x++)
-                {
-                    const TileCoordsXY pos{ x, y };
-                    if (!hydroMaps.flags[pos].has(skeleton))
-                    {
-                        continue;
-                    }
-
-                    float maskRadius = riverRadiusMap[pos];
-                    float maskRadiusSquared = maskRadius * maskRadius;
-
-                    for (int32_t dy = -maskRadius; dy <= maskRadius; dy++)
-                    {
-                        for (int32_t dx = -maskRadius; dx <= maskRadius; dx++)
-                        {
-                            const TileCoordsXY deltaPos{ pos.x + dx, pos.y + dy };
-                            if (skeletonMask.inBounds(deltaPos) && dx * dx + dy * dy <= maskRadiusSquared)
-                            {
-                                skeletonMask[deltaPos] = true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // unset the river flag for all tiles not in the skeletonMask
-            for (int32_t y = 0; y < context.dimensions.y; y++)
-            {
-                for (int32_t x = 0; x < context.dimensions.x; x++)
-                {
-                    const TileCoordsXY pos{ x, y };
-                    if (!skeletonMask[pos] && hydroMaps.flags[pos].has(river)) // checking river flag for debug signs
-                    {
-                        hydroMaps.flags[pos].unset(river);
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-                        context.debugSigns.emplace_back(pos, "pruned", Drawing::Colour::white, Drawing::Colour::brightRed);
-#endif
-                    }
-                }
-            }
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-            iteration++;
-            prunedTotal += prunedSources + prunedSinks;
-            LOG_INFO("iter=%d prunedSources=%d prunedSinks=%d", iteration, prunedSources, prunedSinks);
-#endif
-        }
-
-#ifdef ENABLE_DEBUG_SIGNS_PRUNING
-        LOG_INFO("pruned %d springs in %d iterations", prunedTotal, iteration);
-#endif
     }
 
     /**
@@ -974,7 +935,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     hydroMaps.height[pos] = quantizeHeight(hydroMaps.height[pos]);
                 }
 #ifdef ENABLE_DEBUG_SIGNS_CONSISTENCY
-                if (hydroMaps.flags[pos].has(spring))
+                if (hydroMaps.flags[pos].has(source))
                 {
                     context.debugSigns.emplace_back(pos, "spring", Drawing::Colour::white, Drawing::Colour::black);
                 }
@@ -1021,7 +982,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                             // hasSource = true; // TODO is this needed?
                         }
 
-                        if (hydroMaps.flags[qPos].has(spring))
+                        if (hydroMaps.flags[qPos].has(source))
                         {
                             hasSource = true;
                         }
@@ -1199,10 +1160,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         fillOrBreachDepressions(context);
         aggregateCatchment(context);
         postProcessCatchment(context);
+        pruneShortStreamsAndSinks(context);
         adjustStreamWidth(context);
         ensureCardinalNeighbours(context);
-        constructRiverSkeletons(context);
-        pruneShortStreams(context);
         carveRiverbed(context);
         ensureConsistent(context);
         clearRiversBelowSeaLevel(context);
