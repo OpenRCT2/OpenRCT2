@@ -111,20 +111,20 @@ namespace OpenRCT2::World::MapGenerator
         Drawing::Colour backgroundColour = Drawing::Colour::brightRed;
     };
 
-    struct MapGenCtx
+    struct MapGenContext
     {
         const Settings& settings;
         TileCoordsXY dimensions;
         TileCoordsXY overscanOffset;
         HeightMap heightMap;
-        std::optional<Hydro::HydroMaps> hydroMaps;
+        std::optional<Hydro::HydroContext> hydroContext;
         std::vector<DebugSign> debugSigns;
     };
 
     void generate(const Settings& settings);
-    void resetSurfaces(const MapGenCtx& context);
-    void setWaterLevel(const MapGenCtx& context);
-    void setRiverWater(const MapGenCtx& context);
-    void setMapHeight(const MapGenCtx& context);
+    void resetSurfaces(const MapGenContext& ctx);
+    void setWaterLevel(const MapGenContext& ctx);
+    void setRiverWater(const MapGenContext& ctx);
+    void setMapHeight(const MapGenContext& ctx);
 
 } // namespace OpenRCT2::World::MapGenerator

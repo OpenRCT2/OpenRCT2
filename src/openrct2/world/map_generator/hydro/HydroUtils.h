@@ -15,6 +15,66 @@
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
 
+    enum class ConsistencyOperation
+    {
+        raise,
+        lower,
+        remove
+    };
+
+    struct SegmentKey
+    {
+        TileCoordsXY pos;
+        size_t size;
+        ConsistencyOperation operation;
+
+        friend bool operator==(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return lhs.pos == rhs.pos && lhs.size == rhs.size && lhs.operation == rhs.operation;
+        }
+        friend bool operator!=(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return !(lhs == rhs);
+        }
+        friend bool operator<(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            if (lhs.size < rhs.size)
+            {
+                return true;
+            }
+            if (rhs.size < lhs.size)
+            {
+                return false;
+            }
+            return lhs.operation < rhs.operation;
+        }
+        friend bool operator<=(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return !(rhs < lhs);
+        }
+        friend bool operator>(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return rhs < lhs;
+        }
+        friend bool operator>=(const SegmentKey& lhs, const SegmentKey& rhs)
+        {
+            return !(lhs < rhs);
+        }
+    };
+
+    struct SegmentKeyHash
+    {
+        size_t operator()(const SegmentKey& s) const noexcept
+        {
+            size_t hash = 0;
+            Util::Hash::update(hash, s.pos.x);
+            Util::Hash::update(hash, s.pos.y);
+            Util::Hash::update(hash, s.size);
+            Util::Hash::update(hash, s.operation);
+            return hash;
+        }
+    };
+
     enum class QueueMode
     {
         height,
@@ -28,7 +88,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         std::optional<std::function<void(const TileCoordsXY&)>> posCallback = std::nullopt;
     };
 
-    void primeHydroFlagQueue(MapGenCtx& context, TrackingStableTileQueue& queue, const QueueCfg& cfg);
-    void findSourcesAndSinks(MapGenCtx& context, TileCoordsXYSet& sources, TileCoordsXYSet& sinks);
+    void primeHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, const QueueCfg& cfg);
+    void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks);
+
+    std::string summarizeHydroStatistics(const MapGenContext& ctx);
 
 } // namespace OpenRCT2::World::MapGenerator::Hydro

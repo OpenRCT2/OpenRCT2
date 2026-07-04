@@ -26,16 +26,16 @@ namespace OpenRCT2::World::MapGenerator
         return surfaceElement != nullptr ? surfaceElement->baseHeight : 0;
     }
 
-    static bool isRiverTile(const TileCoordsXY& tileCoords, const MapGenCtx& context)
+    static bool isRiverTile(const MapGenContext& ctx, const TileCoordsXY& tileCoords)
     {
-        TileCoordsXY genCoords = worldCoordsToGenCoords(context, tileCoords);
-        return context.hydroMaps.has_value() && context.hydroMaps.value().flags[genCoords].has(Hydro::river);
+        TileCoordsXY genCoords = worldCoordsToGenCoords(ctx, tileCoords);
+        return ctx.hydroContext.has_value() && ctx.hydroContext.value().flags[genCoords].has(Hydro::river);
     }
 
     /**
      * Not perfect, this still leaves some particular tiles unsmoothed.
      */
-    int32_t smoothTileSlopeStrong(const TileCoordsXY tileCoords, const MapGenCtx& context)
+    int32_t smoothTileSlopeStrong(const MapGenContext& ctx, const TileCoordsXY tileCoords)
     {
         auto surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
@@ -228,7 +228,7 @@ namespace OpenRCT2::World::MapGenerator
      * This does not change the base height, unless all corners have been raised.
      * @returns 0 if no edits were made, 1 otherwise
      */
-    int32_t smoothTileSlopeWeak(const TileCoordsXY tileCoords, const MapGenCtx& context)
+    int32_t smoothTileSlopeWeak(const MapGenContext& ctx, const TileCoordsXY tileCoords)
     {
         auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
@@ -249,7 +249,7 @@ namespace OpenRCT2::World::MapGenerator
         NeighbourData<int32_t> neighbourWaterOffset = {};
         NeighbourData<bool> r = {};
 
-        const bool riverTile = isRiverTile(tileCoords, context);
+        const bool riverTile = isRiverTile(ctx, tileCoords);
 
         // Find the neighbour base heights
         for (int32_t index = 0, y_offset = -1; y_offset <= 1; y_offset++)
@@ -278,7 +278,7 @@ namespace OpenRCT2::World::MapGenerator
                 neighbourHeightOffset.neighbour[index] -= surfaceElement->baseHeight;
                 neighbourWaterOffset.neighbour[index] -= surfaceElement->GetWaterHeight();
                 // Check if this is a river tile
-                r.neighbour[index] = isRiverTile(neighbourCoords, context);
+                r.neighbour[index] = isRiverTile(ctx, neighbourCoords);
 
                 index++;
             }
@@ -372,13 +372,13 @@ namespace OpenRCT2::World::MapGenerator
         return 1;
     }
 
-    void applyTileSlopeSmooth(MapGenCtx& context)
+    void applyTileSlopeSmooth(MapGenContext& ctx)
     {
-        const auto mapSize = context.settings.mapSize;
+        const auto mapSize = ctx.settings.mapSize;
 
         SmoothFunction smoothFunc;
 
-        switch (context.settings.slopeSmooth)
+        switch (ctx.settings.slopeSmooth)
         {
             case SlopeSmooth::none:
                 return;
@@ -398,7 +398,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 for (auto x = 1; x < mapSize.x - 1; x++)
                 {
-                    numTilesChanged += smoothFunc({ x, y }, context);
+                    numTilesChanged += smoothFunc(ctx, { x, y });
                 }
             }
 
@@ -561,10 +561,10 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void applyHeightMapTransform(MapGenCtx& context)
+    void applyHeightMapTransform(MapGenContext& ctx)
     {
-        auto& settings = context.settings;
-        auto& heightMap = context.heightMap;
+        auto& settings = ctx.settings;
+        auto& heightMap = ctx.heightMap;
 
         switch (settings.heightmapTransform)
         {
@@ -583,13 +583,13 @@ namespace OpenRCT2::World::MapGenerator
                 smoothBilateral(heightMap, settings.transformStrength, 0.1f * settings.transformStrength);
                 break;
             case HeightMapTransform::erosion:
-                simulateErosion(context);
+                simulateErosion(ctx);
                 break;
         }
 
         if (settings.generateRivers)
         {
-            Hydro::generateRivers(context);
+            Hydro::generateRivers(ctx);
         }
     }
 
@@ -600,25 +600,25 @@ namespace OpenRCT2::World::MapGenerator
         return TileCoordsXY{ offsetX, offsetY };
     }
 
-    bool isInWorldMap(const MapGenCtx& context, const TileCoordsXY& genCoords)
+    bool isInWorldMap(const MapGenContext& ctx, const TileCoordsXY& genCoords)
     {
-        const int32_t xMin = context.overscanOffset.x;
-        const int32_t xMax = context.overscanOffset.x + context.settings.mapSize.x;
-        const int32_t yMin = context.overscanOffset.y;
-        const int32_t yMax = context.overscanOffset.y + context.settings.mapSize.y;
+        const int32_t xMin = ctx.overscanOffset.x;
+        const int32_t xMax = ctx.overscanOffset.x + ctx.settings.mapSize.x;
+        const int32_t yMin = ctx.overscanOffset.y;
+        const int32_t yMax = ctx.overscanOffset.y + ctx.settings.mapSize.y;
 
         return xMin <= genCoords.x && genCoords.x < xMax && yMin <= genCoords.y && genCoords.y < yMax;
     }
 
-    TileCoordsXY worldCoordsToGenCoords(const MapGenCtx& context, const TileCoordsXY& worldCoords)
+    TileCoordsXY worldCoordsToGenCoords(const MapGenContext& ctx, const TileCoordsXY& worldCoords)
     {
-        return TileCoordsXY{ worldCoords.x + context.overscanOffset.x, worldCoords.y + context.overscanOffset.y };
+        return TileCoordsXY{ worldCoords.x + ctx.overscanOffset.x, worldCoords.y + ctx.overscanOffset.y };
     }
 
     // can be OOB
-    TileCoordsXY genCoordsToWorldCoords(const MapGenCtx& context, const TileCoordsXY& genCoords)
+    TileCoordsXY genCoordsToWorldCoords(const MapGenContext& ctx, const TileCoordsXY& genCoords)
     {
-        return TileCoordsXY{ genCoords.x - context.overscanOffset.x, genCoords.y - context.overscanOffset.y };
+        return TileCoordsXY{ genCoords.x - ctx.overscanOffset.x, genCoords.y - ctx.overscanOffset.y };
     }
 
     // Ensure height is within [2, 254] and a multiple of 2

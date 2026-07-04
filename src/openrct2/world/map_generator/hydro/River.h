@@ -13,5 +13,5 @@
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
-    void generateRivers(MapGenCtx& context);
+    void generateRivers(MapGenContext& ctx);
 } // namespace OpenRCT2::World::MapGenerator::Hydro

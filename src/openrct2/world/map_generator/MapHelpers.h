@@ -29,23 +29,23 @@ namespace OpenRCT2::World::MapGenerator
     };
 
     // TODO deduplicate smoothing functions
-    using SmoothFunction = std::function<int32_t(TileCoordsXY, const MapGenCtx&)>;
+    using SmoothFunction = std::function<int32_t(const MapGenContext&, TileCoordsXY)>;
 
-    int32_t smoothTileSlopeStrong(TileCoordsXY tileCoords, const MapGenCtx& context);
-    int32_t smoothTileSlopeWeak(TileCoordsXY tileCoords, const MapGenCtx& context);
+    int32_t smoothTileSlopeStrong(const MapGenContext& ctx, TileCoordsXY tileCoords);
+    int32_t smoothTileSlopeWeak(const MapGenContext& ctx, TileCoordsXY tileCoords);
 
     void smoothBox(HeightMap& heightMap, int32_t iterations);
     void smoothGaussian(HeightMap& heightMap, float sigma);
     void sharpen(HeightMap& heightMap, int32_t iterations);
     void smoothBilateral(HeightMap& heightMap, float sigmaScale, float sigmaIntensity);
 
-    void applyHeightMapTransform(MapGenCtx& context);
-    void applyTileSlopeSmooth(MapGenCtx& context);
+    void applyHeightMapTransform(MapGenContext& ctx);
+    void applyTileSlopeSmooth(MapGenContext& ctx);
 
     TileCoordsXY getWorldCoordsOffset(const Settings& settings);
-    TileCoordsXY worldCoordsToGenCoords(const MapGenCtx& context, const TileCoordsXY& worldCoords);
-    TileCoordsXY genCoordsToWorldCoords(const MapGenCtx& context, const TileCoordsXY& genCoords);
-    bool isInWorldMap(const MapGenCtx& context, const TileCoordsXY& genCoords);
+    TileCoordsXY worldCoordsToGenCoords(const MapGenContext& ctx, const TileCoordsXY& worldCoords);
+    TileCoordsXY genCoordsToWorldCoords(const MapGenContext& ctx, const TileCoordsXY& genCoords);
+    bool isInWorldMap(const MapGenContext& ctx, const TileCoordsXY& genCoords);
 
     uint8_t quantizeHeight(float height);
 } // namespace OpenRCT2::World::MapGenerator

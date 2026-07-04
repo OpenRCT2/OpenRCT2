@@ -22,22 +22,21 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static void generateBlankMap(const MapGenCtx& context);
-
-    static void applyTexturesFromRules(const MapGenCtx& context);
-    static void placeSceneryFromRules(const MapGenCtx& context);
-    static void placeDebugSigns(const MapGenCtx& context);
+    static void generateBlankMap(const MapGenContext& ctx);
+    static void applyTexturesFromRules(const MapGenContext& ctx);
+    static void placeSceneryFromRules(const MapGenContext& ctx);
+    static void placeDebugSigns(const MapGenContext& ctx);
 
     void generate(const Settings& settings)
     {
         const TileCoordsXY genSize{ settings.mapSize.x * Hydro::kRiversOverscanFactor,
                                     settings.mapSize.y * Hydro::kRiversOverscanFactor };
 
-        MapGenCtx context{ .settings = settings,
+        MapGenContext context{ .settings = settings,
                            .dimensions = genSize,
                            .overscanOffset = getWorldCoordsOffset(settings),
                            .heightMap = HeightMap{ genSize },
-                           .hydroMaps = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
+                           .hydroContext = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
                            .debugSigns = {} };
 
         switch (settings.algorithm)
@@ -73,39 +72,39 @@ namespace OpenRCT2::World::MapGenerator
         placeSceneryFromRules(context);
     }
 
-    void resetSurfaces(const MapGenCtx& context)
+    void resetSurfaces(const MapGenContext& ctx)
     {
         MapClearAllElements();
-        MapInit(context.settings.mapSize);
+        MapInit(ctx.settings.mapSize);
 
-        const auto surfaceTextureId = generateSurfaceTextureId(context.settings);
-        const auto edgeTextureId = generateEdgeTextureId(context.settings, surfaceTextureId);
+        const auto surfaceTextureId = generateSurfaceTextureId(ctx.settings);
+        const auto edgeTextureId = generateEdgeTextureId(ctx.settings, surfaceTextureId);
 
-        for (auto y = 1; y < context.settings.mapSize.y - 1; y++)
+        for (auto y = 1; y < ctx.settings.mapSize.y - 1; y++)
         {
-            for (auto x = 1; x < context.settings.mapSize.x - 1; x++)
+            for (auto x = 1; x < ctx.settings.mapSize.x - 1; x++)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->setSurfaceObjectIndex(surfaceTextureId);
                     surfaceElement->setEdgeObjectIndex(edgeTextureId);
-                    surfaceElement->baseHeight = context.settings.heightmapLow;
-                    surfaceElement->clearanceHeight = context.settings.heightmapLow;
+                    surfaceElement->baseHeight = ctx.settings.heightmapLow;
+                    surfaceElement->clearanceHeight = ctx.settings.heightmapLow;
                 }
             }
         }
     }
 
-    static void generateBlankMap(const MapGenCtx& context)
+    static void generateBlankMap(const MapGenContext& ctx)
     {
-        resetSurfaces(context);
-        setWaterLevel(context);
+        resetSurfaces(ctx);
+        setWaterLevel(ctx);
     }
 
-    static void applyTexturesFromRules(const MapGenCtx& context)
+    static void applyTexturesFromRules(const MapGenContext& ctx)
     {
-        auto& defaultRule = context.settings.textureRules[0];
+        auto& defaultRule = ctx.settings.textureRules[0];
         assert(defaultRule.isDefault);
         auto defaultTextures = defaultRule.effect;
 
@@ -121,10 +120,10 @@ namespace OpenRCT2::World::MapGenerator
                 element->setEdgeObjectIndex(result.edgeTexture.value_or(defaultTextures.edgeTexture));
             };
 
-        Rule::evaluateTextureRules(context, callback);
+        Rule::evaluateTextureRules(ctx, callback);
     }
 
-    static void placeSceneryFromRules(const MapGenCtx& context)
+    static void placeSceneryFromRules(const MapGenContext& ctx)
     {
         Rule::Callback<Rule::MaybeSceneryResult> callback = [](const TileCoordsXY& coords,
                                                                const Rule::MaybeSceneryResult& result) {
@@ -134,13 +133,13 @@ namespace OpenRCT2::World::MapGenerator
             }
         };
 
-        Rule::evaluateSceneryRules(context, callback);
+        Rule::evaluateSceneryRules(ctx, callback);
     }
 
     /**
      * Sets each tile's water level to the specified water level if underneath that water level.
      */
-    void setWaterLevel(const MapGenCtx& context)
+    void setWaterLevel(const MapGenContext& ctx)
     {
         auto& gameState = getGameState();
         for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
@@ -148,24 +147,24 @@ namespace OpenRCT2::World::MapGenerator
             for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
-                if (surfaceElement != nullptr && surfaceElement->baseHeight < context.settings.waterLevel)
-                    surfaceElement->setWaterHeight(context.settings.waterLevel * kCoordsZStep);
+                if (surfaceElement != nullptr && surfaceElement->baseHeight < ctx.settings.waterLevel)
+                    surfaceElement->setWaterHeight(ctx.settings.waterLevel * kCoordsZStep);
             }
         }
     }
 
-    void setRiverWater(const MapGenCtx& context)
+    void setRiverWater(const MapGenContext& ctx)
     {
-        if (context.settings.generateRivers && context.hydroMaps.has_value())
+        if (ctx.settings.generateRivers && ctx.hydroContext.has_value())
         {
-            Hydro::HydroMaps hydroMaps = context.hydroMaps.value();
+            Hydro::HydroContext hydroMaps = ctx.hydroContext.value();
 
-            for (auto y = 1; y < context.settings.mapSize.y - 1; y++)
+            for (auto y = 1; y < ctx.settings.mapSize.y - 1; y++)
             {
-                for (auto x = 1; x < context.settings.mapSize.x - 1; x++)
+                for (auto x = 1; x < ctx.settings.mapSize.x - 1; x++)
                 {
                     const TileCoordsXY posGameMap{ x, y };
-                    const TileCoordsXY posGenMap = worldCoordsToGenCoords(context, posGameMap);
+                    const TileCoordsXY posGenMap = worldCoordsToGenCoords(ctx, posGameMap);
 
                     if (!hydroMaps.flags[posGenMap].has(Hydro::river))
                     {
@@ -189,25 +188,25 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Sets the height of the actual game map tiles to the height map.
      */
-    void setMapHeight(const MapGenCtx& context)
+    void setMapHeight(const MapGenContext& ctx)
     {
-        for (auto y = 1; y < context.settings.mapSize.y - 1; y++)
+        for (auto y = 1; y < ctx.settings.mapSize.y - 1; y++)
         {
-            for (auto x = 1; x < context.settings.mapSize.x - 1; x++)
+            for (auto x = 1; x < ctx.settings.mapSize.x - 1; x++)
             {
                 const TileCoordsXY posGameMap{ x, y };
-                const TileCoordsXY posGenMap = worldCoordsToGenCoords(context, posGameMap);
+                const TileCoordsXY posGenMap = worldCoordsToGenCoords(ctx, posGameMap);
 
                 auto surfaceElement = MapGetSurfaceElementAt(posGameMap);
                 if (surfaceElement == nullptr)
                     continue;
 
-                surfaceElement->baseHeight = quantizeHeight(context.heightMap[posGenMap]);
+                surfaceElement->baseHeight = quantizeHeight(ctx.heightMap[posGenMap]);
 
                 // TODO is this special case really needed?
                 // If base height is below water level, lower it to create more natural shorelines
-                if (context.settings.slopeSmooth == SlopeSmooth::strong && surfaceElement->baseHeight >= 4
-                    && surfaceElement->baseHeight <= context.settings.waterLevel)
+                if (ctx.settings.slopeSmooth == SlopeSmooth::strong && surfaceElement->baseHeight >= 4
+                    && surfaceElement->baseHeight <= ctx.settings.waterLevel)
                     surfaceElement->baseHeight -= 2;
 
                 surfaceElement->clearanceHeight = surfaceElement->baseHeight;
@@ -215,11 +214,11 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void placeDebugSigns(const MapGenCtx& context)
+    void placeDebugSigns(const MapGenContext& ctx)
     {
-        for (const auto& sign : context.debugSigns)
+        for (const auto& sign : ctx.debugSigns)
         {
-            placeDebugSign(context, sign);
+            placeDebugSign(ctx, sign);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

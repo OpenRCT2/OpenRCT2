@@ -41,8 +41,38 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
     using HydroFlags = FlagHolder<uint8_t, HydroFlag>;
 
+    struct HydroStatistics
+    {
+        int32_t pitsFound = 0;
+        int32_t pitsBreachSuccess = 0;
+        int32_t pitsBreachedTiles = 0;
+        int32_t pitsFilledTiles = 0;
 
-    struct HydroMaps
+        float flowAggMax = -std::numeric_limits<float>::infinity();
+
+        int32_t pruneIterations = 1;
+        int32_t pruneSinksFound = 0;
+        int32_t pruneSourcesFound = 0;
+        int32_t pruneSourcesRemoved = 0;
+        int32_t pruneDeadlocks = 0;
+
+        int32_t widthAdjustNewTiles = 0;
+
+        int32_t ensureCardinalNewTiles = 0;
+
+        int32_t bankIndentationsRemoved = 0;
+
+        int32_t consistencySegmentsIterations = 1;
+        int32_t consistencySegmentsRaised = 0;
+        int32_t consistencySegmentsLowered = 0;
+        int32_t consistencySegmentsRemoved = 0;
+        int32_t consistencySegmentsRaisedMaxSize = 0;
+        int32_t consistencySegmentsLoweredMaxSize = 0;
+        int32_t consistencySegmentsRemovedMaxSize = 0;
+        int32_t consistencyBanksRaised = 0;
+    };
+
+    struct HydroContext
     {
         MapDirectionMaskMap flowsIn;
         MapDirectionMaskMap flowsOut;
@@ -51,7 +81,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         BaseMap<float> height;
         BaseMap<HydroFlags> flags;
 
-        HydroMaps(const TileCoordsXY& size)
+        HydroStatistics stats;
+
+        HydroContext(const TileCoordsXY& size)
             : flowsIn(size)
             , flowsOut(size)
             , flowsLateral(size)

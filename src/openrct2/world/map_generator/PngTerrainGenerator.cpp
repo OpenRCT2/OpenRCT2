@@ -101,9 +101,9 @@ namespace OpenRCT2::World::MapGenerator
         _heightMapData.clear();
     }
 
-    void GenerateFromHeightmapImage(MapGenCtx& context)
+    void GenerateFromHeightmapImage(MapGenContext& ctx)
     {
-        auto& settings = context.settings;
+        auto& settings = ctx.settings;
         Guard::Assert(!_heightMapData.empty(), "No height map loaded");
         Guard::Assert(settings.heightmapHigh != settings.heightmapLow, "Low and high setting cannot be the same");
 
@@ -118,7 +118,7 @@ namespace OpenRCT2::World::MapGenerator
         TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
 
         // TODO
-        applyHeightMapTransform(context);
+        applyHeightMapTransform(ctx);
 
         uint8_t maxValue = 255;
         uint8_t minValue = 0;
@@ -187,6 +187,6 @@ namespace OpenRCT2::World::MapGenerator
             }
         }
 
-        applyTileSlopeSmooth(context);
+        applyTileSlopeSmooth(ctx);
     }
 } // namespace OpenRCT2::World::MapGenerator

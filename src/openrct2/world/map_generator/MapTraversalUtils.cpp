@@ -42,17 +42,17 @@ namespace OpenRCT2::World::MapGenerator
         queue.emplaceAndSetMarked(pos, 0.0f);
     }
 
-    void computeHydroFlagBasedDistanceMap(const MapGenCtx& context, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
+    void computeHydroFlagBasedDistanceMap(const MapGenContext& ctx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
     {
-        if (!context.hydroMaps.has_value())
+        if (!ctx.hydroContext.has_value())
         {
             return;
         }
 
-        distanceMap = DistanceMap{context.dimensions};
+        distanceMap = DistanceMap{ctx.dimensions};
         distanceMap.fill(std::numeric_limits<float>::infinity());
-        const auto& hydroMaps = context.hydroMaps.value();
-        TrackingStableTileQueue queue{ context.dimensions };
+        const auto& hydroMaps = ctx.hydroContext.value();
+        TrackingStableTileQueue queue{ ctx.dimensions };
 
         for (int32_t y = 0; y < distanceMap.height; y++)
         {

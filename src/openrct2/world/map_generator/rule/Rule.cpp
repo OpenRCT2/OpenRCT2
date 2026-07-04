@@ -218,14 +218,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return result;
     }
 
-    static void computeNormalMap(const MapGenCtx& genCtx, NormalMap& normalMap)
+    static void computeNormalMap(const MapGenContext& genCtx, NormalMap& normalMap)
     {
         // TODO actually compute the normal
         normalMap = NormalMap{ genCtx.dimensions };
         normalMap.fill({ 0.0f, 0.0f, 1.0f });
     }
 
-    static void computeLandDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
+    static void computeLandDistanceMap(const MapGenContext& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.distanceToLand = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToLand.fill(std::numeric_limits<float>::infinity());
@@ -237,7 +237,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                bool isRiver = genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river);
+                bool isRiver = genCtx.hydroContext.has_value() && genCtx.hydroContext.value().flags[pos].has(Hydro::river);
                 bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
 
                 if (!isSea && !isRiver)
@@ -250,7 +250,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(evalCtx.distanceToLand, queue);
     }
 
-    static void computeWaterDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
+    static void computeWaterDistanceMap(const MapGenContext& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.distanceToWater = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToWater.fill(std::numeric_limits<float>::infinity());
@@ -262,7 +262,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                bool isRiver = genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river);
+                bool isRiver = genCtx.hydroContext.has_value() && genCtx.hydroContext.value().flags[pos].has(Hydro::river);
                 bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
 
                 if (isSea || isRiver)
@@ -275,7 +275,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(evalCtx.distanceToWater, queue);
     }
 
-    static void computeSeaDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
+    static void computeSeaDistanceMap(const MapGenContext& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.distanceToSea = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToSea.fill(std::numeric_limits<float>::infinity());
@@ -287,7 +287,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                bool isRiver = genCtx.hydroMaps.has_value() && genCtx.hydroMaps.value().flags[pos].has(Hydro::river);
+                bool isRiver = genCtx.hydroContext.has_value() && genCtx.hydroContext.value().flags[pos].has(Hydro::river);
                 bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
 
                 if (isSea && !isRiver)
@@ -300,7 +300,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         completeDistanceMap(evalCtx.distanceToSea, queue);
     }
 
-    static void computeBorderDistanceMap(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
+    static void computeBorderDistanceMap(const MapGenContext& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.distanceToBorder = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToBorder.fill(std::numeric_limits<float>::infinity());
@@ -732,7 +732,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     }
 
     static void initializeEvaluationContextForCondition(
-        const MapGenCtx& genCtx, EvaluationContext& evalCtx, const ConditionKey& key, const Condition& condition)
+        const MapGenContext& genCtx, EvaluationContext& evalCtx, const ConditionKey& key, const Condition& condition)
     {
         if (condition.type == Type::Noise)
         {
@@ -788,7 +788,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             EvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt });
     }
 
-    static LocalEvaluationHeights getLocalHeightsAt(const MapGenCtx& genCtx, const TileCoordsXY& gameCoords)
+    static LocalEvaluationHeights getLocalHeightsAt(const MapGenContext& genCtx, const TileCoordsXY& gameCoords)
     {
         return {
             .seaLevel = genCtx.settings.waterLevel,
@@ -802,7 +802,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     template<typename RR, typename RL>
     static void processRules(
-        const MapGenCtx& genCtx, const RL& rules, EvaluationContext& evalCtx,
+        const MapGenContext& genCtx, const RL& rules, EvaluationContext& evalCtx,
         const std::function<RR(const RL& rules, EvaluationContext& ctx)>& evaluateAtFn,
         const std::function<void(TileCoordsXY, RR)>& callback)
     {
@@ -830,7 +830,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
-    static void initEvaluationContextGlobals(const MapGenCtx& genCtx, EvaluationContext& evalCtx)
+    static void initEvaluationContextGlobals(const MapGenContext& genCtx, EvaluationContext& evalCtx)
     {
         evalCtx.quadPrng = std::mt19937(genCtx.settings.seed + 4);
 
@@ -844,7 +844,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         computeBorderDistanceMap(genCtx, evalCtx);
     }
 
-    void evaluateTextureRules(const MapGenCtx& genCtx, const Callback<TextureResult>& callback)
+    void evaluateTextureRules(const MapGenContext& genCtx, const Callback<TextureResult>& callback)
     {
         EvaluationContext evalCtx{};
         initEvaluationContextGlobals(genCtx, evalCtx);
@@ -864,7 +864,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             genCtx, genCtx.settings.textureRules, evalCtx, textureResultFromRulesAt, callback);
     }
 
-    void evaluateSceneryRules(const MapGenCtx& genCtx, const Callback<MaybeSceneryResult>& callback)
+    void evaluateSceneryRules(const MapGenContext& genCtx, const Callback<MaybeSceneryResult>& callback)
     {
         EvaluationContext evalCtx{};
         initEvaluationContextGlobals(genCtx, evalCtx);

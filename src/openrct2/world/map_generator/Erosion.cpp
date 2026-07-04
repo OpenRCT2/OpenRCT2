@@ -145,9 +145,9 @@ namespace OpenRCT2::World::MapGenerator
         GetContext()->CloseProgress();
     }
 
-    void simulateErosion(MapGenCtx& context)
+    void simulateErosion(MapGenContext& ctx)
     {
-        const ErosionSettings erosionSettings(context.settings);
-        simulateErosion(erosionSettings, context.heightMap);
+        const ErosionSettings erosionSettings(ctx.settings);
+        simulateErosion(erosionSettings, ctx.heightMap);
     }
 } // namespace OpenRCT2::World::MapGenerator

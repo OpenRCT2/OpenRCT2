@@ -7,49 +7,50 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "HydroUtils.h"
+
 #include "../../../Diagnostic.h"
 #include "../../../profiling/Profiling.h"
 #include "../MapGen.h"
 #include "../MapHelpers.h"
 #include "../MapTraversalUtils.h"
 #include "HydroTypes.hpp"
-#include "HydroUtils.h"
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
-    static float getQueueValue(MapGenCtx& context, const TileCoordsXY& pos, QueueMode queueMode)
+    static float getQueueValue(MapGenContext& ctx, const TileCoordsXY& pos, QueueMode queueMode)
     {
         switch (queueMode)
         {
             case QueueMode::height:
-                return context.heightMap[pos];
+                return ctx.heightMap[pos];
             case QueueMode::distance:
                 return 0.0f;
         }
         throw std::runtime_error("unsupported queue mode");
     }
 
-    void primeHydroFlagQueue(MapGenCtx& context, TrackingStableTileQueue& queue, const QueueCfg& cfg)
+    void primeHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, const QueueCfg& cfg)
     {
         PROFILED_FUNCTION();
-        HydroMaps& hydroMaps = context.hydroMaps.value();
+        HydroContext& hydroCtx = ctx.hydroContext.value();
 
-        for (int32_t y = 0; y < context.dimensions.y - 1; y++)
+        for (int32_t y = 0; y < ctx.dimensions.y - 1; y++)
         {
             const TileCoordsXY left{ 0, y };
-            if (hydroMaps.flags[left].has(cfg.flag))
+            if (hydroCtx.flags[left].has(cfg.flag))
             {
-                queue.emplaceAndSetMarked(left, getQueueValue(context, left, cfg.mode));
+                queue.emplaceAndSetMarked(left, getQueueValue(ctx, left, cfg.mode));
                 if (cfg.posCallback.has_value())
                 {
                     cfg.posCallback.value()(left);
                 }
             }
 
-            const TileCoordsXY right{ context.dimensions.x - 1, y };
-            if (hydroMaps.flags[right].has(cfg.flag))
+            const TileCoordsXY right{ ctx.dimensions.x - 1, y };
+            if (hydroCtx.flags[right].has(cfg.flag))
             {
-                queue.emplaceAndSetMarked(right, getQueueValue(context, right, cfg.mode));
+                queue.emplaceAndSetMarked(right, getQueueValue(ctx, right, cfg.mode));
                 if (cfg.posCallback.has_value())
                 {
                     cfg.posCallback.value()(right);
@@ -57,22 +58,22 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-        for (int32_t x = 1; x < context.dimensions.x - 1; x++)
+        for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            if (hydroMaps.flags[top].has(cfg.flag))
+            if (hydroCtx.flags[top].has(cfg.flag))
             {
-                queue.emplaceAndSetMarked(top, getQueueValue(context, top, cfg.mode));
+                queue.emplaceAndSetMarked(top, getQueueValue(ctx, top, cfg.mode));
                 if (cfg.posCallback.has_value())
                 {
                     cfg.posCallback.value()(top);
                 }
             }
 
-            const TileCoordsXY bottom{ x, context.dimensions.y - 1 };
-            if (hydroMaps.flags[bottom].has(cfg.flag))
+            const TileCoordsXY bottom{ x, ctx.dimensions.y - 1 };
+            if (hydroCtx.flags[bottom].has(cfg.flag))
             {
-                queue.emplaceAndSetMarked(bottom, getQueueValue(context, bottom, cfg.mode));
+                queue.emplaceAndSetMarked(bottom, getQueueValue(ctx, bottom, cfg.mode));
                 if (cfg.posCallback.has_value())
                 {
                     cfg.posCallback.value()(bottom);
@@ -83,9 +84,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
     // TODO can be optimized by keeping the visited set out of the loops in the caller
     static Backref findLateralSetIdentityPos(
-        const MapGenCtx& context, const TileCoordsXY& pos, const MapDirectionMaskMap& directionalRefsMap)
+        const MapGenContext& ctx, const TileCoordsXY& pos, const MapDirectionMaskMap& directionalRefsMap)
     {
-        const HydroMaps& hydroMaps = context.hydroMaps.value();
+        const HydroContext& hydroCtx = ctx.hydroContext.value();
 
         TileCoordsXY maxHashPos = pos;
         size_t maxHash = TileCoordsXYHash{}(pos);
@@ -115,7 +116,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (const Neighbour& neighbour : kNeighbours)
             {
                 const TileCoordsXY& lateralPos = currentPos + neighbour.offset;
-                if (hydroMaps.flowsLateral[currentPos].has(neighbour.direction) && !visited.contains(lateralPos))
+                if (hydroCtx.flowsLateral[currentPos].has(neighbour.direction) && !visited.contains(lateralPos))
                 {
                     queue.emplace(lateralPos);
                     visited.insert(lateralPos);
@@ -126,19 +127,19 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         return maxHashPos;
     }
 
-    void findSourcesAndSinks(MapGenCtx& context, TileCoordsXYSet& sources, TileCoordsXYSet& sinks)
+    void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks)
     {
         PROFILED_FUNCTION();
 
-        HydroMaps& hydroMaps = context.hydroMaps.value();
+        HydroContext& hydroCtx = ctx.hydroContext.value();
 
-        for (int32_t y = 0; y < context.dimensions.y; y++)
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
-            for (int32_t x = 0; x < context.dimensions.x; x++)
+            for (int32_t x = 0; x < ctx.dimensions.x; x++)
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (!hydroMaps.flags[pos].has(river))
+                if (!hydroCtx.flags[pos].has(river))
                 {
                     continue;
                 }
@@ -151,20 +152,20 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 {
                     const TileCoordsXY nPos = pos + neighbour.offset;
 
-                    if (!hydroMaps.flags.inBounds(nPos))
+                    if (!hydroCtx.flags.inBounds(nPos))
                     {
                         continue;
                     }
 
-                    if (hydroMaps.flowsOut[pos].has(neighbour.direction) && hydroMaps.flags[nPos].has(river))
+                    if (hydroCtx.flowsOut[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
                     {
                         downstreamCount++;
                     }
-                    if (hydroMaps.flowsIn[pos].has(neighbour.direction) && hydroMaps.flags[nPos].has(river))
+                    if (hydroCtx.flowsIn[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
                     {
                         upstreamCount++;
                     }
-                    if (hydroMaps.flowsLateral[pos].has(neighbour.direction) && hydroMaps.flags[nPos].has(river))
+                    if (hydroCtx.flowsLateral[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
                     {
                         lateralCount++;
                     }
@@ -178,14 +179,14 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
                     else
                     {
-                        Backref maybeLateralSetSource = findLateralSetIdentityPos(context, pos, hydroMaps.flowsIn);
+                        Backref maybeLateralSetSource = findLateralSetIdentityPos(ctx, pos, hydroCtx.flowsIn);
                         if (maybeLateralSetSource.has_value())
                         {
                             sources.insert(maybeLateralSetSource.value());
                         }
                     }
                 }
-                else if (downstreamCount == 0 && !hydroMaps.flags.onEdge(pos))
+                else if (downstreamCount == 0 && !hydroCtx.flags.onEdge(pos))
                 {
                     if (lateralCount == 0)
                     {
@@ -193,7 +194,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     }
                     else
                     {
-                        Backref maybeLateralSetSource = findLateralSetIdentityPos(context, pos, hydroMaps.flowsOut);
+                        Backref maybeLateralSetSource = findLateralSetIdentityPos(ctx, pos, hydroCtx.flowsOut);
                         if (maybeLateralSetSource.has_value())
                         {
                             sources.insert(maybeLateralSetSource.value());
@@ -202,6 +203,62 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 }
             }
         }
+    }
+
+    std::string summarizeHydroStatistics(const MapGenContext& ctx)
+    {
+        const auto& stats = ctx.hydroContext.value().stats;
+
+        const auto pitSummary = std::format(
+            "\n[breach or fill]\n"
+            "    pits {}\n"
+            "    breach successes {}\n"
+            "    tiles breached {}\n"
+            "    tiles filled {}\n",
+            stats.pitsFound, stats.pitsBreachSuccess, stats.pitsBreachedTiles, stats.pitsFilledTiles);
+
+        const auto flowSummary = std::format(
+            "\n[flow aggregation]\n"
+            "    catchment max {}\n",
+            stats.flowAggMax);
+
+        const auto pruningSummary = std::format(
+            "\n[pruning]\n"
+            "    sinks removed {}\n"
+            "    sources removed {} of {}\n"
+            "    iterations {}\n"
+            "    deadlocks resolved {}\n",
+            stats.pruneSinksFound, stats.pruneSourcesRemoved, stats.pruneSourcesFound, stats.pruneIterations,
+            stats.pruneDeadlocks);
+
+        const auto widthAdjust = std::format(
+            "\n[width adjustment]\n"
+            "    river tiles added {}\n",
+            stats.widthAdjustNewTiles);
+
+        const auto ensureCardinal = std::format(
+            "\n[ensure cardinal]\n"
+            "    river tiles added {}\n",
+            stats.ensureCardinalNewTiles);
+
+        const auto bankIndentationsSummary = std::format(
+            "\n[bank indentations]\n"
+            "    removed {}\n",
+            stats.bankIndentationsRemoved);
+
+        const auto consistencySummary = std::format(
+            "\n[consistency]\n"
+            "    segments raised {} (max size {})\n"
+            "    segments lowered {} (max size {})\n"
+            "    segments deleted {} (max size {})\n"
+            "    segments iterations {}\n"
+            "    banks raised {}\n",
+            stats.consistencySegmentsRaised, stats.consistencySegmentsRaisedMaxSize, stats.consistencySegmentsLowered,
+            stats.consistencySegmentsLoweredMaxSize, stats.consistencySegmentsRemoved, stats.consistencySegmentsRemovedMaxSize,
+            stats.consistencySegmentsIterations, stats.consistencyBanksRaised);
+
+        return pitSummary + flowSummary + pruningSummary + widthAdjust + ensureCardinal + bankIndentationsSummary
+            + consistencySummary;
     }
 
 } // namespace OpenRCT2::World::MapGenerator::Hydro

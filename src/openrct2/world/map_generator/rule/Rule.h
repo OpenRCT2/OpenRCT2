@@ -27,7 +27,7 @@ namespace OpenRCT2::World::MapGenerator
 {
     class Noise;
     struct Settings;
-    struct MapGenCtx;
+    struct MapGenContext;
 } // namespace OpenRCT2::World::MapGenerator
 
 namespace OpenRCT2::World::MapGenerator::Rule
@@ -381,8 +381,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     template<typename R>
     using Callback = std::function<void(const TileCoordsXY&, const R&)>;
 
-    void evaluateTextureRules(const MapGenCtx& settings, const Callback<TextureResult>& callback);
-    void evaluateSceneryRules(const MapGenCtx& settings, const Callback<MaybeSceneryResult>& callback);
+    void evaluateTextureRules(const MapGenContext& genCtx, const Callback<TextureResult>& callback);
+    void evaluateSceneryRules(const MapGenContext& genCtx, const Callback<MaybeSceneryResult>& callback);
 
     void createDefaultTextureRules(Settings& settings);
     void createNewTextureRule(Settings& settings);

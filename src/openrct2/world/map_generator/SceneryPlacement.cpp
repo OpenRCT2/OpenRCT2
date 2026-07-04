@@ -222,7 +222,7 @@ namespace OpenRCT2::World::MapGenerator
         return idx == kObjectEntryIndexNull ? std::nullopt : std::make_optional(idx);
     }
 
-    void placeDebugSign(const MapGenCtx& context, const DebugSign& debugSign)
+    void placeDebugSign(const MapGenContext& ctx, const DebugSign& debugSign)
     {
         auto banner = lookupObjectEntryIdxByIdentifier("rct2.scenery_large.ssig3");
 
@@ -232,7 +232,7 @@ namespace OpenRCT2::World::MapGenerator
             return;
         }
 
-        CoordsXY position = genCoordsToWorldCoords(context, debugSign.position).ToCoordsXY();
+        CoordsXY position = genCoordsToWorldCoords(ctx, debugSign.position).ToCoordsXY();
         auto groundHeight = TileElementHeight(position);
         auto waterHeight = TileElementWaterHeight(position);
 
