@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../entity/Staff.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions

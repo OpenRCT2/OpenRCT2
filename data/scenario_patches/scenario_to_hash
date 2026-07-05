@@ -241,3 +241,5 @@
 // UCES Scenario names to hashes
  'Cemetery Ridge': ['9401f88',
                     '9401f88e1dfdc5f7e6e4759271ac8dea3fc499c2fb21cdbf42567d876a91641a'],
+ 'Sand Dune': ['14ad956',
+               '14ad956554bf58dacb39a30abf5a899f75629cf1967559cc891bece4eb286258'],

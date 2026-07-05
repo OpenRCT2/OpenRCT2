@@ -13,7 +13,6 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
-#include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -26,6 +25,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -62,15 +62,15 @@ namespace OpenRCT2::Ui::Windows
         using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
         static constexpr StringId kEditorStepNames[] = {
-            STR_EDITOR_STEP_OBJECT_SELECTION,       // EditorStep::objectSelection
-            STR_EDITOR_STEP_LANDSCAPE_EDITOR,       // EditorStep::landscapeEditor
-            STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, // EditorStep::inventionsListSetUp
-            STR_EDITOR_STEP_OPTIONS_SELECTION,      // EditorStep::optionsSelection
-            STR_EDITOR_STEP_OBJECTIVE_SELECTION,    // EditorStep::objectiveSelection
-            STR_EDITOR_STEP_SCENARIO_DETAILS,       // EditorStep::scenarioDetails
-            STR_EDITOR_STEP_SAVE_SCENARIO,          // EditorStep::saveScenario
-            STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // EditorStep::rollerCoasterDesigner
-            STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,  // EditorStep::designsManager
+            STR_EDITOR_STEP_OBJECT_SELECTION,       // Editor::Step::objectSelection
+            STR_EDITOR_STEP_LANDSCAPE_EDITOR,       // Editor::Step::landscapeEditor
+            STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, // Editor::Step::inventionsListSetUp
+            STR_EDITOR_STEP_OPTIONS_SELECTION,      // Editor::Step::optionsSelection
+            STR_EDITOR_STEP_OBJECTIVE_SELECTION,    // Editor::Step::objectiveSelection
+            STR_EDITOR_STEP_SCENARIO_DETAILS,       // Editor::Step::scenarioDetails
+            STR_EDITOR_STEP_SAVE_SCENARIO,          // Editor::Step::saveScenario
+            STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // Editor::Step::rollerCoasterDesigner
+            STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,  // Editor::Step::designsManager
         };
 
     public:
@@ -108,19 +108,19 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEXT_IMAGE].type = WidgetType::imgBtn;
 
             auto& gameState = getGameState();
-            if (gLegacyScene == LegacyScene::trackDesignsManager || gameState.editorStep == EditorStep::saveScenario)
+            if (gLegacyScene == LegacyScene::trackDesignsManager || gameState.editorStep == Editor::Step::saveScenario)
             {
                 HidePreviousStepButton();
                 HideNextStepButton();
             }
             else
             {
-                if (gameState.editorStep == EditorStep::objectSelection
-                    || (GameHasEntities() && gameState.editorStep == EditorStep::optionsSelection))
+                if (gameState.editorStep == Editor::Step::objectSelection
+                    || (GameHasEntities() && gameState.editorStep == Editor::Step::optionsSelection))
                 {
                     HidePreviousStepButton();
                 }
-                else if (gameState.editorStep == EditorStep::rollerCoasterDesigner)
+                else if (gameState.editorStep == Editor::Step::rollerCoasterDesigner)
                 {
                     HideNextStepButton();
                 }
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
 
-            getGameState().editorStep = EditorStep::objectSelection;
+            getGameState().editorStep = Editor::Step::objectSelection;
             GfxInvalidateScreen();
         }
 
@@ -179,7 +179,7 @@ namespace OpenRCT2::Ui::Windows
 
             SetAllSceneryItemsInvented();
             WindowScenerySetDefaultPlacementConfiguration();
-            getGameState().editorStep = EditorStep::landscapeEditor;
+            getGameState().editorStep = Editor::Step::landscapeEditor;
             ContextOpenWindow(WindowClass::map);
             GfxInvalidateScreen();
         }
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorInventionList);
-            getGameState().editorStep = EditorStep::inventionsListSetUp;
+            getGameState().editorStep = Editor::Step::inventionsListSetUp;
             GfxInvalidateScreen();
         }
 
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
-            getGameState().editorStep = EditorStep::objectiveSelection;
+            getGameState().editorStep = Editor::Step::objectiveSelection;
             GfxInvalidateScreen();
         }
 
@@ -210,7 +210,7 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
-            getGameState().editorStep = EditorStep::optionsSelection;
+            getGameState().editorStep = Editor::Step::optionsSelection;
             GfxInvalidateScreen();
         }
 
@@ -222,7 +222,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseByClass(WindowClass::editorObjectSelection);
 
-            FinishObjectSelection();
+            Editor::FinishObjectSelection();
             if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 ContextOpenWindow(WindowClass::constructRide);
@@ -242,7 +242,7 @@ namespace OpenRCT2::Ui::Windows
                 auto* windowMgr = GetWindowManager();
                 windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::editorInventionList);
-                getGameState().editorStep = EditorStep::inventionsListSetUp;
+                getGameState().editorStep = Editor::Step::inventionsListSetUp;
             }
             else
             {
@@ -258,7 +258,7 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
-            getGameState().editorStep = EditorStep::objectiveSelection;
+            getGameState().editorStep = Editor::Step::objectiveSelection;
             GfxInvalidateScreen();
         }
 
@@ -268,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
-            getGameState().editorStep = EditorStep::optionsSelection;
+            getGameState().editorStep = Editor::Step::optionsSelection;
             GfxInvalidateScreen();
         }
 
@@ -278,7 +278,7 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::editorScenarioOptions);
-            getGameState().editorStep = EditorStep::scenarioDetails;
+            getGameState().editorStep = Editor::Step::scenarioDetails;
             GfxInvalidateScreen();
         }
 
@@ -290,14 +290,14 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                getGameState().editorStep = EditorStep::scenarioDetails;
+                getGameState().editorStep = Editor::Step::scenarioDetails;
             }
         }
 
         void JumpForwardToSaveScenario() const
         {
             auto& gameState = getGameState();
-            gameState.editorStep = EditorStep::saveScenario;
+            gameState.editorStep = Editor::Step::saveScenario;
             GfxInvalidateScreen();
 
             const auto savePrepareResult = ScenarioPrepareForSave(gameState);

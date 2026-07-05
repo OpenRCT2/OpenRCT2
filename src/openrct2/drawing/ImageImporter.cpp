@@ -29,9 +29,9 @@ namespace OpenRCT2::Drawing
         if (meta.srcSize.height == 0)
             meta.srcSize.height = image.Height;
 
-        if (meta.srcSize.width > 256 || meta.srcSize.height > 256)
+        if (meta.srcSize.width > 300 || meta.srcSize.height > 300)
         {
-            throw std::invalid_argument("Only images 256x256 or less are supported.");
+            throw std::invalid_argument("Only images 300x300 or less are supported.");
         }
 
         if (meta.palette == Palette::KeepIndices && image.Depth != 8)
@@ -43,15 +43,19 @@ namespace OpenRCT2::Drawing
         auto pixels = GetPixels(image, meta);
         auto buffer = isRLE ? EncodeRLE(pixels.data(), meta.srcSize) : EncodeRaw(pixels.data(), meta.srcSize);
 
+        G1Flags flags = { G1Flag::hasTransparency };
+        flags.set(G1Flag::hasRLECompression, isRLE);
         G1Element outElement;
         outElement.width = meta.srcSize.width;
         outElement.height = meta.srcSize.height;
-        outElement.flags = { isRLE ? G1Flag::hasRLECompression : G1Flag::hasTransparency };
+        outElement.flags = flags;
         outElement.xOffset = meta.offset.x;
         outElement.yOffset = meta.offset.y;
         outElement.zoomedOffset = meta.zoomedOffset;
         if (meta.importFlags.has(ImportFlag::noDrawOnZoom))
             outElement.flags.set(G1Flag::noZoomDraw);
+        if (meta.zoomedOffset != 0)
+            outElement.flags.set(G1Flag::hasZoomSprite);
 
         ImageImportResult result;
         result.Element = outElement;
@@ -246,13 +250,15 @@ namespace OpenRCT2::Drawing
                         currentCode->NumPixels = npixels;
                         currentCode->OffsetX = startX;
 
-                        if (x == size.width - 1)
+                        auto isLastPixel = x == size.width - 1;
+                        if (isLastPixel)
                         {
                             currentCode->NumPixels |= 0x80;
                         }
 
                         currentCode = reinterpret_cast<RLECode*>(dst);
-                        dst += 2;
+                        if (!isLastPixel)
+                            dst += 2;
                     }
                     else
                     {

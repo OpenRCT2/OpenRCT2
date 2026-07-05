@@ -527,7 +527,7 @@ namespace OpenRCT2::CommandLine
 
 namespace OpenRCT2
 {
-    int32_t CommandLineRun(const char** argv, int32_t argc)
+    CommandLine::ExitCode CommandLineRun(const char** argv, int32_t argc)
     {
         auto argEnumerator = CommandLineArgEnumerator(argv, argc);
 
@@ -538,7 +538,7 @@ namespace OpenRCT2
 
         if (command == nullptr)
         {
-            return EXITCODE_FAIL;
+            return CommandLine::ExitCode::fail;
         }
 
         if (command->Options != nullptr)
@@ -546,7 +546,7 @@ namespace OpenRCT2
             auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
             if (!CommandLine::ParseOptions(command->Options, &argEnumeratorForOptions))
             {
-                return EXITCODE_FAIL;
+                return CommandLine::ExitCode::fail;
             }
         }
 

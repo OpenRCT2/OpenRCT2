@@ -644,7 +644,10 @@ namespace OpenRCT2
                     _legacyType.flags.set(RideEntryFlag::hasEnterpriseRotationType);
                 }
 
-                auto ratingMultiplier = properties["ratingMultipler"];
+                // ratingMultiplier was incorrectly called ratingMultipler pre-rename
+                auto ratingMultiplier = properties["ratingMultiplier"].is_object() ? properties["ratingMultiplier"]
+                                                                                   : properties["ratingMultipler"];
+
                 if (ratingMultiplier.is_object())
                 {
                     _legacyType.excitement_multiplier = Json::GetNumber<int8_t>(ratingMultiplier["excitement"]);

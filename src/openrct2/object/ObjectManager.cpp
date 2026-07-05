@@ -88,7 +88,7 @@ namespace OpenRCT2
 
             if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
             {
-#ifdef DEBUG
+#if DEBUG > 0
                 if (index != kObjectEntryIndexNull)
                 {
                     LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);

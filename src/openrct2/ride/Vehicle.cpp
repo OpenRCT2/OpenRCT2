@@ -251,7 +251,7 @@ void VehicleUpdateAll()
     if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
-    if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::rollerCoasterDesigner)
+    if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != Editor::Step::rollerCoasterDesigner)
         return;
 
     for (auto vehicle : TrainManager::View())

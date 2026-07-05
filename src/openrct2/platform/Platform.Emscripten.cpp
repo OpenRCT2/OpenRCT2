@@ -109,12 +109,12 @@ namespace OpenRCT2::Platform
     }
     #endif
 
-    std::vector<std::string_view> GetSearchablePathsRCT1()
+    std::vector<std::string> GetSearchablePathsRCT1()
     {
         return { "/RCT" };
     }
 
-    std::vector<std::string_view> GetSearchablePathsRCT2()
+    std::vector<std::string> GetSearchablePathsRCT2()
     {
         return { "/RCT" };
     }

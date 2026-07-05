@@ -662,15 +662,6 @@ static void PathPaintFencesAdditionsTunnels(
     }
 }
 
-static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
-{
-    FootpathPaintInfo pathPaintInfo;
-    pathPaintInfo.surface = pathEl.GetSurfaceDescriptor();
-    pathPaintInfo.railings = pathEl.GetRailingsDescriptor();
-
-    return pathPaintInfo;
-}
-
 static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl, uint16_t height)
 {
     auto surface = MapGetSurfaceElementAt(session.MapPosition);
@@ -801,7 +792,15 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
     PaintHeightMarkers(session, tileElement);
 
     auto hasSupports = ShouldDrawSupports(session, tileElement, height);
-    auto pathPaintInfo = GetFootpathPaintInfo(tileElement);
+
+    const auto* const surfaceDescriptor = tileElement.GetSurfaceDescriptor();
+    const auto* const railingsDescriptor = tileElement.GetRailingsDescriptor();
+    if (surfaceDescriptor == nullptr || railingsDescriptor == nullptr)
+    {
+        return;
+    }
+    const auto pathPaintInfo = FootpathPaintInfo{ *surfaceDescriptor, *railingsDescriptor };
+
     if (pathPaintInfo.railings.supportType == RailingEntrySupportType::pole)
     {
         PathPaintPoleSupport(session, tileElement, height, pathPaintInfo, hasSupports, imageTemplate, sceneryImageTemplate);

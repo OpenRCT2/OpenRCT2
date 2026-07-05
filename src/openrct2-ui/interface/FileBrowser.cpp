@@ -13,6 +13,7 @@
 #include <functional>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -27,6 +28,7 @@
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/SceneManager.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -320,7 +322,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
                         int32_t parkFlagsBackup = gameState.park.flags;
                         gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-                        gameState.editorStep = EditorStep::invalid;
+                        gameState.editorStep = Editor::Step::invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
                         gameState.park.flags = parkFlagsBackup;
@@ -330,13 +332,13 @@ namespace OpenRCT2::Ui::FileBrowser
                             windowMgr->CloseByClass(WindowClass::loadsave);
                             InvokeCallback(ModalResult::ok, pathBuffer);
 
-                            auto* context = GetContext();
-                            context->SetActiveScene(context->GetTitleScene());
+                            auto* sceneMgr = GetContext()->GetSceneManager();
+                            sceneMgr->setActiveScene(sceneMgr->getTitleScene());
                         }
                         else
                         {
                             ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                            gameState.editorStep = EditorStep::objectiveSelection;
+                            gameState.editorStep = Editor::Step::objectiveSelection;
                             InvokeCallback(ModalResult::fail, pathBuffer);
                         }
                         break;
@@ -409,7 +411,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
                         int32_t parkFlagsBackup = gameState.park.flags;
                         gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-                        gameState.editorStep = EditorStep::invalid;
+                        gameState.editorStep = Editor::Step::invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
                         gameState.park.flags = parkFlagsBackup;
@@ -419,13 +421,13 @@ namespace OpenRCT2::Ui::FileBrowser
                             windowMgr->CloseByClass(WindowClass::loadsave);
                             InvokeCallback(ModalResult::ok, pathBuffer);
 
-                            auto* context = GetContext();
-                            context->SetActiveScene(context->GetTitleScene());
+                            auto* sceneMgr = GetContext()->GetSceneManager();
+                            sceneMgr->setActiveScene(sceneMgr->getTitleScene());
                         }
                         else
                         {
                             ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                            gameState.editorStep = EditorStep::objectiveSelection;
+                            gameState.editorStep = Editor::Step::objectiveSelection;
                             InvokeCallback(ModalResult::fail, pathBuffer);
                         }
                         break;

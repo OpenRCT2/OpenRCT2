@@ -12,13 +12,12 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../config/Config.h"
 #include "../../management/Finance.h"
 #include "../../management/Research.h"
 #include "../../object/ObjectManager.h"
-#include "../../object/ObjectRepository.h"
 #include "../../ride/RideConstruction.h"
 #include "../../ride/TrackDesign.h"
+#include "../../scenario/Scenario.h"
 #include "../GameActionRunner.h"
 #include "../ride/RideCreateAction.h"
 #include "../ride/RideDemolishAction.h"
@@ -224,7 +223,8 @@ namespace OpenRCT2::GameActions
 
         if (entryIndex != kObjectEntryIndexNull)
         {
-            auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
+            // This runs inside a networked game action's Execute, and therefore needs to use ScenarioRand
+            auto colour = RideGetUnusedPresetVehicleColour(entryIndex, ScenarioRand());
             auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::rideEntry, entryIndex, colour);
             ExecuteNested(&rideSetVehicleAction, gameState);
         }

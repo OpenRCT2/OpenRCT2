@@ -1439,7 +1439,7 @@ namespace OpenRCT2::RCT1
     {
         static constexpr const char * map[] =
         {
-            "rct2.water.wtrcyan",
+            "rct1.water.natural_water",
             "rct2.water.wtrorng",
         };
         return map[waterType];

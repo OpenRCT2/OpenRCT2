@@ -699,21 +699,21 @@ void Ride::updateAll()
     {
         switch (getGameState().editorStep)
         {
-            case EditorStep::objectSelection:
-            case EditorStep::landscapeEditor:
-            case EditorStep::inventionsListSetUp:
+            case Editor::Step::objectSelection:
+            case Editor::Step::landscapeEditor:
+            case Editor::Step::inventionsListSetUp:
             {
                 for (auto& ride : RideManager(gameState))
                     ride.remove();
                 break;
             }
-            case EditorStep::optionsSelection:
-            case EditorStep::objectiveSelection:
-            case EditorStep::scenarioDetails:
-            case EditorStep::saveScenario:
-            case EditorStep::rollerCoasterDesigner:
-            case EditorStep::designsManager:
-            case EditorStep::invalid:
+            case Editor::Step::optionsSelection:
+            case Editor::Step::objectiveSelection:
+            case Editor::Step::scenarioDetails:
+            case Editor::Step::saveScenario:
+            case Editor::Step::rollerCoasterDesigner:
+            case Editor::Step::designsManager:
+            case Editor::Step::invalid:
                 break;
         }
         return;
@@ -1942,7 +1942,7 @@ static bool RideTypeVehicleColourExists(ObjectEntryIndex subType, const VehicleC
     return false;
 }
 
-int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
+int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType, uint32_t randomValue)
 {
     const auto* rideEntry = GetRideEntryByIndex(subType);
     if (rideEntry == nullptr)
@@ -1968,10 +1968,10 @@ int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType)
 
     // If all presets have been used, just go with a random preset
     if (unused.empty())
-        return UtilRand() % colourPresets->count;
+        return randomValue % colourPresets->count;
 
     // Choose a random preset from the list of unused presets
-    auto unusedIndex = UtilRand() % unused.size();
+    auto unusedIndex = randomValue % unused.size();
     return unused[unusedIndex];
 }
 
@@ -4978,7 +4978,7 @@ void Ride::updateNumberOfCircuits()
 
 void Ride::setRideEntry(ObjectEntryIndex entryIndex)
 {
-    auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
+    auto colour = RideGetUnusedPresetVehicleColour(entryIndex, UtilRand());
     auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
         id, GameActions::RideSetVehicleType::rideEntry, entryIndex, colour);
     GameActions::Execute(&rideSetVehicleAction, getGameState());

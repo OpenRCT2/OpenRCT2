@@ -17,7 +17,6 @@
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectLimits.h"
-#include "../../ride/Ride.h"
 #include "../../ride/RideConstruction.h"
 #include "../../world/Banner.h"
 #include "../../world/ConstructionClearance.h"

@@ -17,12 +17,12 @@
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    int32_t exportSingle(const char** argv, int32_t argc)
+    ExitCode exportSingle(const char** argv, int32_t argc)
     {
         if (argc < 4)
         {
             fprintf(stdout, "usage: sprite export <spritefile> <idx> <output>\n");
-            return -1;
+            return ExitCode::fail;
         }
 
         const utf8* spriteFilePath = argv[1];
@@ -32,22 +32,22 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
-            return -1;
+            return ExitCode::fail;
         }
 
         if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.numEntries))
         {
             fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
-            return -1;
+            return ExitCode::fail;
         }
 
         const auto& spriteHeader = spriteFile->Entries[spriteIndex];
         if (!SpriteImageExport(spriteHeader, outputPath))
         {
             fprintf(stderr, "Could not export\n");
-            return -1;
+            return ExitCode::fail;
         }
         fprintf(stdout, "{ \"x\": %d, \"y\": %d }\n", spriteHeader.xOffset, spriteHeader.yOffset);
-        return 0;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

@@ -16,7 +16,6 @@
 #include <array>
 #include <cstdint>
 #include <limits>
-#include <memory>
 #include <string>
 #include <type_traits>
 #include <variant>

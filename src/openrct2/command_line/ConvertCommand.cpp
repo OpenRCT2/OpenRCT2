@@ -27,6 +27,8 @@
 #include <limits>
 #include <memory>
 
+using namespace OpenRCT2::CommandLine;
+
 namespace OpenRCT2
 {
     static int32_t _compressLevel = kParkFileSaveCompressionLevel;
@@ -38,7 +40,7 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static exitcode_t HandleCommandConvert(CommandLineArgEnumerator* argEnumerator);
+    static ExitCode HandleCommandConvert(CommandLineArgEnumerator* argEnumerator);
 
     const CommandLineCommand CommandLine::kConvertCommands[]{
         // Main commands
@@ -50,10 +52,10 @@ namespace OpenRCT2
     static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType);
     static u8string GetFileTypeFriendlyName(FileExtension fileType);
 
-    static exitcode_t HandleCommandConvert(CommandLineArgEnumerator* enumerator)
+    static ExitCode HandleCommandConvert(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -63,7 +65,7 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&rawSourcePath))
         {
             Console::Error::WriteLine("Expected a source path.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         const auto sourcePath = Path::GetAbsolute(rawSourcePath);
@@ -84,7 +86,7 @@ namespace OpenRCT2
         if (destinationFileType != FileExtension::PARK)
         {
             Console::Error::WriteLine("Only conversion to .PARK is supported.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         // Validate the source type
@@ -104,7 +106,7 @@ namespace OpenRCT2
                 break;
             default:
                 Console::Error::WriteLine("Only conversion from .SC4, .SV4, .SC6, .SV6, or .PARK is supported.");
-                return EXITCODE_FAIL;
+                return ExitCode::fail;
         }
 
         // Perform conversion
@@ -130,7 +132,7 @@ namespace OpenRCT2
         catch (const std::exception& ex)
         {
             Console::Error::WriteLine(ex.what());
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
@@ -153,11 +155,11 @@ namespace OpenRCT2
         catch (const std::exception& ex)
         {
             Console::Error::WriteLine(ex.what());
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         Console::WriteLine("Conversion successful!");
-        return EXITCODE_OK;
+        return ExitCode::ok;
     }
 
     static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType)

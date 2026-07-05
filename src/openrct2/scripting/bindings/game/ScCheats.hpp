@@ -47,6 +47,7 @@ namespace OpenRCT2::Scripting
                     "disableClearanceChecks", &ScCheats::disableClearanceChecks_get, &ScCheats::disableClearanceChecks_set),
                 JS_CGETSET_DEF("disableLittering", &ScCheats::disableLittering_get, &ScCheats::disableLittering_set),
                 JS_CGETSET_DEF("disablePlantAging", &ScCheats::disablePlantAging_get, &ScCheats::disablePlantAging_set),
+                JS_CGETSET_DEF("disableGrassGrowing", &ScCheats::disableGrassGrowing_get, &ScCheats::disableGrassGrowing_set),
                 JS_CGETSET_DEF(
                     "allowRegularPathAsQueue", &ScCheats::allowRegularPathAsQueue_get, &ScCheats::allowRegularPathAsQueue_set),
                 JS_CGETSET_DEF(
@@ -194,6 +195,20 @@ namespace OpenRCT2::Scripting
             JS_UNPACK_BOOL(valueBool, ctx, value);
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
             getGameState().cheats.disablePlantAging = valueBool;
+
+            return JS_UNDEFINED;
+        }
+
+        static JSValue disableGrassGrowing_get(JSContext* ctx, JSValue thisVal)
+        {
+            return JS_NewBool(ctx, getGameState().cheats.disableGrassGrowing);
+        }
+
+        static JSValue disableGrassGrowing_set(JSContext* ctx, JSValue thisVal, JSValue value)
+        {
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+            JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+            getGameState().cheats.disableGrassGrowing = valueBool;
 
             return JS_UNDEFINED;
         }

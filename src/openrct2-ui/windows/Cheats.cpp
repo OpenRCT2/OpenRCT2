@@ -156,6 +156,7 @@ enum WindowCheatsWidgetIdx : WidgetIndex
     WIDX_MOWED_GRASS,
     WIDX_WATER_PLANTS,
     WIDX_DISABLE_PLANT_AGING,
+    WIDX_DISABLE_GRASS_GROWING,
 
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OWN_ALL_LAND,
@@ -293,13 +294,14 @@ static constexpr auto window_cheats_staff_widgets = makeWidgets(
     makeWidget                ({126, 371-309}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary                                                                  ), // Staff speed
     makeWidget                ({225, 372-309}, { 11,  12},       WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ), // Staff speed
 
-    makeWidget                ({  5, 257-168}, {238,  99},       WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                     ), // Maintenance group
+    makeWidget                ({  5, 257-168}, {238,  116},      WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                     ), // Maintenance group
     makeWidget                ({ 11, 271-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_REMOVE_LITTER                                         ), // Remove litter
     makeWidget                ({127, 271-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_FIX_VANDALISM                                         ), // Fix vandalism
     makeWidget                ({ 11, 292-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_CLEAR_GRASS                                           ), // Clear grass
     makeWidget                ({127, 292-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_MOWED_GRASS                                           ), // Mowed grass
     makeWidget                ({ 11, 313-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_WATER_PLANTS                                          ), // Water plants
-    makeWidget                ({ 11, 334-164}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_DISABLE_PLANT_AGING, STR_CHEAT_DISABLE_PLANT_AGING_TIP)  // Disable plant ageing
+    makeWidget                ({ 11, 334-164}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_DISABLE_PLANT_AGING, STR_CHEAT_DISABLE_PLANT_AGING_TIP),  // Disable plant ageing
+    makeWidget                ({ 11, 351-164}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_DISABLE_GRASS_GROWING, STR_CHEAT_DISABLE_GRASS_GROWING_TIP)  // Disable grass growing
 );
 
 static constexpr auto window_cheats_park_widgets = makeWidgets(
@@ -543,6 +545,7 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
                     setCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.cheats.disablePlantAging);
+                    setCheckboxValue(WIDX_DISABLE_GRASS_GROWING, gameState.cheats.disableGrassGrowing);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
                     setCheckboxValue(WIDX_FREEZE_WEATHER, gameState.cheats.freezeWeather);
@@ -1084,6 +1087,9 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_DISABLE_PLANT_AGING:
                     CheatsSet(CheatType::disablePlantAging, !gameState.cheats.disablePlantAging);
+                    break;
+                case WIDX_DISABLE_GRASS_GROWING:
+                    CheatsSet(CheatType::disableGrassGrowing, !gameState.cheats.disableGrassGrowing);
                     break;
             }
         }

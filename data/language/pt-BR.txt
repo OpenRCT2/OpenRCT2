@@ -3818,3 +3818,5 @@ STR_7026    :Tornar toda a atração visível
 STR_7028    :Quarto de Espiral para Cima
 STR_7029    :Quarto de Espiral para Baixo
 STR_7030    :{WINDOW_COLOUR_2}Visitantes entretidos: {BLACK}{COMMA32}
+STR_7031    :Desabilitar crescimento da grama
+STR_7032    :Desabilitar envelhecimento da grama, para que não cresça.

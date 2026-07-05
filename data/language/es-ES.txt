@@ -26,7 +26,7 @@ STR_0021    :Montaña Rusa Sacacorchos
 STR_0022    :Laberinto
 STR_0023    :Tobogán en Espiral
 STR_0024    :Go-Karts
-STR_0025    :Leños de agua
+STR_0025    :Troncos de Madera
 STR_0026    :Río Rápido
 STR_0027    :Coches de Choque
 STR_0028    :Barco Pirata
@@ -837,7 +837,7 @@ STR_1466    :Hélice abajo (pequeña)
 STR_1467    :Hélice abajo (grande)
 STR_1468    :Empleados
 STR_1469    :La atracción debe comenzar y terminar con las estaciones.
-STR_1470    :La estación no es lo suficientemente largo.
+STR_1470    :La estación no es lo suficientemente larga.
 STR_1471    :{WINDOW_COLOUR_2}Velocidad:
 STR_1472    :Velocidad de esta atracción
 STR_1473    :{WINDOW_COLOUR_2}Nivel de emoción: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -2629,8 +2629,8 @@ STR_5521    :Púrpura brillante
 STR_5522    :Azul oscuro
 STR_5523    :Azul claro
 STR_5524    :Azul helado
-STR_5525    :Agua oscuro
-STR_5526    :Agua claro
+STR_5525    :Agua oscura
+STR_5526    :Agua clara
 STR_5527    :Verde saturado
 STR_5528    :Verde oscuro
 STR_5529    :Verde musgo
@@ -3401,7 +3401,7 @@ STR_6399    :OpenRCT2 necesita archivos del juego original RollerCoaster Tycoon 
 STR_6400    :He descargado el instalador sin conexión de GOG, pero no está instalado.
 STR_6401    :Ya instalé RollerCoaster Tycoon 2
 STR_6402    :Configuración de datos de OpenRCT2
-STR_6403    :Elige el opción que aplica mejor a ti.
+STR_6403    :Elige la opción que aplica mejor a ti.
 STR_6404    :Por favor selecciona el instalador de GOG de RollerCoaster Tycoon 2.
 STR_6405    :Elige Instalador de GOG
 STR_6406    :Instalador de GOG RollerCoaster Tycoon 2

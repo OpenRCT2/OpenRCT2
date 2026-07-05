@@ -1294,16 +1294,17 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
     if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasAirTime))
     {
         int32_t excitementModifier;
+        int32_t totalAirTime = ride.totalAirTime;
         if (rideEntry->flags.has(RideEntryFlag::limitAirTimeBonus))
         {
-            // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
-            excitementModifier = std::min<uint16_t>(ride.totalAirTime, 96) / 8;
+            totalAirTime = std::max(0, totalAirTime - 96);
+            excitementModifier = -1 * (std::min<uint16_t>(totalAirTime, 200) / 8);
         }
         else
         {
-            excitementModifier = ride.totalAirTime / 8;
+            excitementModifier = std::min<uint16_t>(totalAirTime, 200) / 8;
         }
-        int32_t nauseaModifier = ride.totalAirTime / 16;
+        int32_t nauseaModifier = totalAirTime / 16;
 
         RideRatingsAdd(ratings, excitementModifier, 0, nauseaModifier);
     }

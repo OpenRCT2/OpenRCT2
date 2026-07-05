@@ -15,9 +15,6 @@
 #include "../scripting/ScriptEngine.h"
 #include "../world/Map.h"
 #include "GameActionRegistry.h"
-#include "GameActionRunner.h"
-
-#include <iterator>
 
 namespace OpenRCT2::GameActions
 {

@@ -24,6 +24,7 @@
 #include "../../network/Network.h"
 #include "../../network/NetworkBase.h"
 #include "../../scenario/ScenarioRepository.h"
+#include "../../scenes/SceneManager.h"
 #include "../../ui/UiContext.h"
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
@@ -334,8 +335,8 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
 
 void TitleCreateWindows()
 {
-    auto* context = GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
     if (titleScene != nullptr)
     {
         titleScene->CreateWindows();
@@ -344,8 +345,8 @@ void TitleCreateWindows()
 
 void* TitleGetSequencePlayer()
 {
-    auto* context = GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->GetSequencePlayer();
@@ -355,8 +356,8 @@ void* TitleGetSequencePlayer()
 
 void TitleSequenceChangePreset(size_t preset)
 {
-    auto* context = GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
     if (titleScene != nullptr)
     {
         titleScene->ChangePresetSequence(preset);
@@ -370,8 +371,8 @@ size_t TitleGetConfigSequence()
 
 size_t TitleGetCurrentSequence()
 {
-    auto* context = GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->GetCurrentSequence();
@@ -381,8 +382,8 @@ size_t TitleGetCurrentSequence()
 
 bool TitlePreviewSequence(size_t value)
 {
-    auto* context = GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->PreviewSequence(value);
@@ -392,8 +393,8 @@ bool TitlePreviewSequence(size_t value)
 
 void TitleStopPreviewingSequence()
 {
-    auto* context = GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
     if (titleScene != nullptr)
     {
         titleScene->StopPreviewingSequence();
@@ -402,8 +403,8 @@ void TitleStopPreviewingSequence()
 
 bool TitleIsPreviewingSequence()
 {
-    auto* context = GetContext();
-    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
+    auto* sceneMgr = GetContext()->GetSceneManager();
+    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->IsPreviewingSequence();

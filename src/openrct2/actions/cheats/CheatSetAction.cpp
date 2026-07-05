@@ -16,7 +16,6 @@
 #include "../../config/Config.h"
 #include "../../core/EnumUtils.hpp"
 #include "../../core/Guard.hpp"
-#include "../../core/String.hpp"
 #include "../../drawing/Colour.h"
 #include "../../drawing/Drawing.h"
 #include "../../entity/Duck.h"
@@ -33,7 +32,6 @@
 #include "../../scenario/ScenarioObjective.h"
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
-#include "../../windows/Intent.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
 #include "../../world/Park.h"
@@ -195,6 +193,9 @@ namespace OpenRCT2::GameActions
             case CheatType::disablePlantAging:
                 gameState.cheats.disablePlantAging = _param1 != 0;
                 break;
+            case CheatType::disableGrassGrowing:
+                gameState.cheats.disableGrassGrowing = _param1 != 0;
+                break;
             case CheatType::setStaffSpeed:
                 SetStaffSpeed(_param1);
                 break;
@@ -323,6 +324,8 @@ namespace OpenRCT2::GameActions
             case CheatType::noMoney:
                 [[fallthrough]];
             case CheatType::disablePlantAging:
+                [[fallthrough]];
+            case CheatType::disableGrassGrowing:
                 [[fallthrough]];
             case CheatType::freezeWeather:
                 [[fallthrough]];

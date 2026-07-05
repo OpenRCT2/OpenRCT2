@@ -21,7 +21,6 @@
 
 struct RideObjectEntry;
 enum class Breakdown : uint8_t;
-enum class EditorStep : uint8_t;
 enum class MechanicStatus : uint8_t;
 enum class RideInvalidateFlag : uint8_t;
 enum class VehicleColourSettings : uint8_t;
@@ -29,6 +28,11 @@ enum class VehicleColourSettings : uint8_t;
 template<typename THolderType, typename TEnumType>
 struct FlagHolder;
 using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
+
+namespace OpenRCT2::Editor
+{
+    enum class Step : uint8_t;
+}
 
 namespace OpenRCT2::Scenario
 {
@@ -781,7 +785,7 @@ namespace OpenRCT2::RCT2
      */
     struct S6Info
     {
-        ::EditorStep EditorStep;
+        Editor::Step EditorStep;
         Scenario::Category Category;           // 0x01
         Scenario::ObjectiveType ObjectiveType; // 0x02
         uint8_t ObjectiveArg1;                 // 0x03

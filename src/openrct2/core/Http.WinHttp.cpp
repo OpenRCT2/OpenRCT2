@@ -230,7 +230,7 @@ namespace OpenRCT2::Http
         }
         catch ([[maybe_unused]] const std::exception& e)
         {
-    #ifdef DEBUG
+    #if DEBUG > 0
             Console::Error::WriteLine("HTTP request failed: %s", e.what());
     #endif
             WinHttpCloseHandle(hSession);

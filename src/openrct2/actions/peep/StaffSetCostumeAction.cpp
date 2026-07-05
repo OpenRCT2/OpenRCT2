@@ -13,6 +13,7 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../entity/EntityRegistry.h"
+#include "../../entity/Staff.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/PeepAnimationsObject.h"

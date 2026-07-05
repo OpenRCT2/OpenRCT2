@@ -15,7 +15,6 @@
 #include "../../management/Finance.h"
 #include "../../ride/MazeCost.h"
 #include "../../ride/RideData.h"
-#include "../../ride/TrackData.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"

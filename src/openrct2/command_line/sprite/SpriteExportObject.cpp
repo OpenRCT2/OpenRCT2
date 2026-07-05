@@ -21,12 +21,12 @@
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    int32_t exportObject(const char** argv, int32_t argc)
+    ExitCode exportObject(const char** argv, int32_t argc)
     {
         if (argc < 3)
         {
             fprintf(stdout, "usage: sprite exportobject <path to object> <output directory>\n");
-            return -1;
+            return ExitCode::fail;
         }
 
         const char* objectPath = argv[1];
@@ -38,13 +38,13 @@ namespace OpenRCT2::CommandLine::Sprite
         if (metaObject == nullptr)
         {
             fprintf(stderr, "Could not load the object.\n");
-            return -1;
+            return ExitCode::fail;
         }
 
         if (!Path::CreateDirectory(outputPath))
         {
             fprintf(stderr, "Unable to create output directory.\n");
-            return -1;
+            return ExitCode::fail;
         }
 
         const auto* imageTableStart = metaObject->GetImageTable().GetImages();
@@ -67,7 +67,7 @@ namespace OpenRCT2::CommandLine::Sprite
                 if (!SpriteImageExport(g1, path))
                 {
                     fprintf(stderr, "Could not export\n");
-                    return -1;
+                    return ExitCode::fail;
                 }
 
                 path = fs::u8path(path).generic_u8string();
@@ -76,7 +76,7 @@ namespace OpenRCT2::CommandLine::Sprite
 
             fprintf(stdout, (spriteIndex + 1 != maxIndex) ? ",\n" : "\n");
         }
-        return 0;
+        return ExitCode::ok;
     }
 
 } // namespace OpenRCT2::CommandLine::Sprite

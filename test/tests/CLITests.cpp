@@ -9,6 +9,7 @@
 #include <openrct2/core/Path.hpp>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::CommandLine;
 using namespace OpenRCT2::CommandLine::Sprite;
 
 class CommandLineTests : public testing::Test
@@ -62,10 +63,10 @@ TEST_F(CommandLineTests, command_line_for_sprite_details)
     std::string exampleFilePath = ExampleSpriteFilePath();
     const char* detailsCmd[3] = { "details", exampleFilePath.c_str() };
 
-    int32_t result = details(detailsCmd, 2);
+    auto result = details(detailsCmd, 2);
     // need to come up with some way to extract stdout/stderr stream if we want to
     // fully test this module
-    ASSERT_EQ(result, 0);
+    ASSERT_EQ(result, ExitCode::ok);
 }
 
 TEST_F(CommandLineTests, command_line_for_sprite_build)
@@ -74,8 +75,8 @@ TEST_F(CommandLineTests, command_line_for_sprite_build)
     std::string outputfilePath = BuildOutputfilePath();
     const char* buildCmd[3] = { "build", outputfilePath.c_str(), manifestFilePath.c_str() };
 
-    int32_t result = build(buildCmd, 3, ImportMode::Default);
-    ASSERT_EQ(result, 0);
+    auto result = build(buildCmd, 3, ImportMode::Default);
+    ASSERT_EQ(result, ExitCode::ok);
     // compare the resulting output file and assert its identical to expected
     ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
 }
@@ -86,8 +87,8 @@ TEST_F(CommandLineTests, command_line_for_sprite_failed_build)
     std::string manifestFilePath = ManifestFilePath();
     std::string outputfilePath = BuildOutputfilePath();
     const char* buildCmd[3] = { "build", outputfilePath.c_str(), manifestFilePath.c_str() };
-    int32_t result = build(buildCmd, 3, ImportMode::Default);
-    ASSERT_EQ(result, 0);
+    auto result = build(buildCmd, 3, ImportMode::Default);
+    ASSERT_EQ(result, ExitCode::ok);
     ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
 
     // now use bad manifest and make sure output file is not edited
@@ -95,7 +96,7 @@ TEST_F(CommandLineTests, command_line_for_sprite_failed_build)
     buildCmd[2] = badManifestFilePath.c_str();
     result = build(buildCmd, 3, ImportMode::Default);
     // check the command failed
-    ASSERT_EQ(result, -1);
+    ASSERT_EQ(result, ExitCode::fail);
     // validate the target file was unchanged
     ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
 }

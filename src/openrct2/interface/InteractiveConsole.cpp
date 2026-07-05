@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Date.h"
-#include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -60,6 +59,7 @@
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
+#include "../scenes/editor/EditorController.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -1237,7 +1237,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
 
 static void ConsoleCommandRemoveUnusedObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    int32_t result = EditorRemoveUnusedObjects();
+    int32_t result = Editor::RemoveUnusedObjects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
 }
 

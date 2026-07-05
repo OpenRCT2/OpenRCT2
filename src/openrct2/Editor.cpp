@@ -10,7 +10,6 @@
 #include "Editor.h"
 
 #include "Context.h"
-#include "EditorObjectSelectionSession.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
@@ -40,6 +39,8 @@
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
+#include "scenes/SceneManager.h"
+#include "scenes/editor/EditorController.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
@@ -108,14 +109,14 @@ namespace OpenRCT2::Editor
     void Load()
     {
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
         auto& gameState = getGameState();
         Audio::StopAll();
         gameStateInitAll(gameState, kDefaultMapSize);
         gLegacyScene = LegacyScene::scenarioEditor;
-        gameState.editorStep = EditorStep::objectSelection;
+        gameState.editorStep = Editor::Step::objectSelection;
         gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioOptions.category = Scenario::Category::other;
         ObjectListLoad();
@@ -160,7 +161,7 @@ namespace OpenRCT2::Editor
         ScenarioReset(gameState);
 
         gLegacyScene = LegacyScene::scenarioEditor;
-        gameState.editorStep = EditorStep::optionsSelection;
+        gameState.editorStep = Editor::Step::optionsSelection;
         gameState.scenarioOptions.category = Scenario::Category::other;
         ContextResetSubsystems();
         OpenEditorWindows();
@@ -184,8 +185,8 @@ namespace OpenRCT2::Editor
     void LoadTrackDesigner()
     {
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
         Audio::StopAll();
         gLegacyScene = LegacyScene::trackDesigner;
@@ -193,7 +194,7 @@ namespace OpenRCT2::Editor
 
         auto& gameState = getGameState();
         gameStateInitAll(gameState, kDefaultMapSize);
-        gameState.editorStep = EditorStep::objectSelection;
+        gameState.editorStep = Editor::Step::objectSelection;
         SetAllLandOwned();
         ObjectListLoad();
         ContextResetSubsystems();
@@ -212,8 +213,8 @@ namespace OpenRCT2::Editor
     void LoadTrackManager()
     {
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
         Audio::StopAll();
         gLegacyScene = LegacyScene::trackDesignsManager;
@@ -222,7 +223,7 @@ namespace OpenRCT2::Editor
         auto& gameState = getGameState();
         gameStateInitAll(gameState, kDefaultMapSize);
         SetAllLandOwned();
-        gameState.editorStep = EditorStep::objectSelection;
+        gameState.editorStep = Editor::Step::objectSelection;
         ObjectListLoad();
         ContextResetSubsystems();
         WindowBase* mainWindow = OpenEditorWindows();
@@ -258,10 +259,10 @@ namespace OpenRCT2::Editor
         ClearMapForEditing(loadedFromSave);
 
         // TODO: replace with dedicated scene
-        auto* context = GetContext();
-        context->SetActiveScene(context->GetGameScene());
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
-        getGameState().editorStep = EditorStep::landscapeEditor;
+        getGameState().editorStep = Editor::Step::landscapeEditor;
         gScreenAge = 0;
         gLegacyScene = LegacyScene::scenarioEditor;
         ContextResetSubsystems();
@@ -361,7 +362,7 @@ namespace OpenRCT2::Editor
 
         switch (getGameState().editorStep)
         {
-            case EditorStep::objectSelection:
+            case Editor::Step::objectSelection:
                 if (windowMgr->FindByClass(WindowClass::editorObjectSelection) != nullptr)
                 {
                     return;
@@ -379,7 +380,7 @@ namespace OpenRCT2::Editor
 
                 ContextOpenWindow(WindowClass::editorObjectSelection);
                 break;
-            case EditorStep::inventionsListSetUp:
+            case Editor::Step::inventionsListSetUp:
                 if (windowMgr->FindByClass(WindowClass::editorInventionList) != nullptr)
                 {
                     return;
@@ -387,9 +388,9 @@ namespace OpenRCT2::Editor
 
                 ContextOpenWindow(WindowClass::editorInventionList);
                 break;
-            case EditorStep::optionsSelection:
-            case EditorStep::objectiveSelection:
-            case EditorStep::scenarioDetails:
+            case Editor::Step::optionsSelection:
+            case Editor::Step::objectiveSelection:
+            case Editor::Step::scenarioDetails:
                 if (windowMgr->FindByClass(WindowClass::editorScenarioOptions) != nullptr)
                 {
                     return;
@@ -397,11 +398,11 @@ namespace OpenRCT2::Editor
 
                 ContextOpenWindow(WindowClass::editorScenarioOptions);
                 break;
-            case EditorStep::landscapeEditor:
-            case EditorStep::saveScenario:
-            case EditorStep::rollerCoasterDesigner:
-            case EditorStep::designsManager:
-            case EditorStep::invalid:
+            case Editor::Step::landscapeEditor:
+            case Editor::Step::saveScenario:
+            case Editor::Step::rollerCoasterDesigner:
+            case Editor::Step::designsManager:
+            case Editor::Step::invalid:
                 break;
         }
     }
@@ -437,7 +438,7 @@ namespace OpenRCT2::Editor
 
         for (auto& pair : kBasicCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneSelected(pair.first))
+            if (!Editor::CheckObjectGroupAtLeastOneSelected(pair.first))
             {
                 return { pair.first, pair.second };
             }
@@ -450,11 +451,11 @@ namespace OpenRCT2::Editor
             return { ObjectType::none, kStringIdNone };
         }
 
-        if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
+        if (!Editor::CheckObjectGroupAtLeastOneSurfaceSelected(false))
         {
             return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
-        if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(true))
+        if (!Editor::CheckObjectGroupAtLeastOneSurfaceSelected(true))
         {
             return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
@@ -468,7 +469,7 @@ namespace OpenRCT2::Editor
 
         for (auto& pair : kParkCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneSelected(pair.first))
+            if (!Editor::CheckObjectGroupAtLeastOneSelected(pair.first))
             {
                 return { pair.first, pair.second };
             }
@@ -485,7 +486,7 @@ namespace OpenRCT2::Editor
 
         for (auto& pair : kPeepCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
+            if (!Editor::CheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
             {
                 return { ObjectType::peepAnimations, pair.second };
             }
@@ -574,8 +575,3 @@ namespace OpenRCT2::Editor
         }
     }
 } // namespace OpenRCT2::Editor
-
-void EditorOpenWindowsForCurrentStep()
-{
-    Editor::OpenWindowsForCurrentStep();
-}
