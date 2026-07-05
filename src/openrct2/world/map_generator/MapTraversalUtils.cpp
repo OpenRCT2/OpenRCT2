@@ -12,7 +12,7 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue)
+    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableEuclidianDistanceTileQueue& queue)
     {
         while (!queue.empty())
         {
@@ -31,15 +31,15 @@ namespace OpenRCT2::World::MapGenerator
                 }
 
                 distanceMap[nPos] = distance;
-                queue.emplaceAndSetMarked(nPos, distance);
+                queue.emplaceAndMark(nPos, distance);
             }
         }
     }
 
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue)
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableEuclidianDistanceTileQueue& queue)
     {
         distanceMap[pos] = 0.0f;
-        queue.emplaceAndSetMarked(pos, 0.0f);
+        queue.emplaceAndMark(pos, 0.0f);
     }
 
     void computeHydroFlagBasedDistanceMap(const MapGenContext& ctx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
@@ -52,7 +52,7 @@ namespace OpenRCT2::World::MapGenerator
         distanceMap = DistanceMap{ctx.dimensions};
         distanceMap.fill(std::numeric_limits<float>::infinity());
         const auto& hydroMaps = ctx.hydroContext.value();
-        TrackingStableTileQueue queue{ ctx.dimensions };
+        TrackingStableEuclidianDistanceTileQueue queue{ ctx.dimensions };
 
         for (int32_t y = 0; y < distanceMap.height; y++)
         {

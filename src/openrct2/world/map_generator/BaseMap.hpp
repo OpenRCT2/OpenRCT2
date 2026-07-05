@@ -128,6 +128,9 @@ namespace OpenRCT2::World::MapGenerator
     class BooleanMap : public BaseMap<bool>
     {
     public:
+
+        explicit BooleanMap(TileCoordsXY mapSize) : BaseMap(mapSize){}
+
         std::vector<bool>::reference operator[](const TileCoordsXY pos)
         {
             return _value[idx(pos)];
@@ -221,26 +224,9 @@ namespace OpenRCT2::World::MapGenerator
     using NormalMap = BaseMap<VecXYZ>;
     using Backref = std::optional<TileCoordsXY>;
     using BackrefMap = BaseMap<Backref>;
+    using TileCoordsXYVec = std::vector<TileCoordsXY>;
     using TileCoordsXYSet = std::unordered_set<TileCoordsXY, TileCoordsXYHash>;
     using BackrefsMap = BaseMap<TileCoordsXYSet>;
     using MapDirectionMaskMap = BaseMap<MapDirectionMask>;
 
-    // inline auto inBoundsNeighbourPositionsFrom(const MapDirectionMaskMap& mapDirectionMaskMap, const TileCoordsXY& pos,const std::span<const Neighbour>& candidates = kNeighbours)
-    // {
-    //     const MapDirectionMask& mapDirectionMask = mapDirectionMaskMap[pos];
-    //
-    //     return candidates
-    //         | std::ranges::views::filter([mapDirectionMask](const Neighbour& n) { return mapDirectionMask.has(n.direction); })
-    //         | std::ranges::views::transform([pos](const Neighbour& n) { return pos + n.offset; })
-    //         | std::ranges::views::filter(
-    //                [mapDirectionMaskMap](const TileCoordsXY& p) { return mapDirectionMaskMap.inBounds(p); });
-    // }
-    //
-    // template<class T>
-    // auto inBoundsNeighbourPositionsOf(const BaseMap<T>& map, const TileCoordsXY& pos, const std::span<const Neighbour>& candidates = kNeighbours)
-    // {
-    //     return candidates
-    //         | std::ranges::views::transform([pos](const Neighbour& n) { return pos + n.offset; })
-    //         | std::ranges::views::filter([map](const TileCoordsXY& p) { return map.inBounds(p); });
-    // }
 } // namespace OpenRCT2::World::MapGenerator

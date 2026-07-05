@@ -9,7 +9,6 @@
 
 #include "HydroUtils.h"
 
-#include "../../../Diagnostic.h"
 #include "../../../profiling/Profiling.h"
 #include "../MapGen.h"
 #include "../MapHelpers.h"
@@ -18,42 +17,30 @@
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
-    static float getQueueValue(MapGenContext& ctx, const TileCoordsXY& pos, QueueMode queueMode)
+    void primeHydroFlagHeightQueue(
+    MapGenContext& ctx, TrackingStableHeightTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
     {
-        switch (queueMode)
-        {
-            case QueueMode::height:
-                return ctx.heightMap[pos];
-            case QueueMode::distance:
-                return 0.0f;
-        }
-        throw std::runtime_error("unsupported queue mode");
-    }
-
-    void primeHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, const QueueCfg& cfg)
-    {
-        PROFILED_FUNCTION();
         HydroContext& hydroCtx = ctx.hydroContext.value();
 
         for (int32_t y = 0; y < ctx.dimensions.y - 1; y++)
         {
             const TileCoordsXY left{ 0, y };
-            if (hydroCtx.flags[left].has(cfg.flag))
+            if (hydroCtx.flags[left].has(flag))
             {
-                queue.emplaceAndSetMarked(left, getQueueValue(ctx, left, cfg.mode));
-                if (cfg.posCallback.has_value())
+                queue.emplaceAndMark(left, ctx.heightMap[left]);
+                if (callback.has_value())
                 {
-                    cfg.posCallback.value()(left);
+                    callback.value()(left);
                 }
             }
 
             const TileCoordsXY right{ ctx.dimensions.x - 1, y };
-            if (hydroCtx.flags[right].has(cfg.flag))
+            if (hydroCtx.flags[right].has(flag))
             {
-                queue.emplaceAndSetMarked(right, getQueueValue(ctx, right, cfg.mode));
-                if (cfg.posCallback.has_value())
+                queue.emplaceAndMark(right, ctx.heightMap[right]);
+                if (callback.has_value())
                 {
-                    cfg.posCallback.value()(right);
+                    callback.value()(right);
                 }
             }
         }
@@ -61,22 +48,73 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            if (hydroCtx.flags[top].has(cfg.flag))
+            if (hydroCtx.flags[top].has(flag))
             {
-                queue.emplaceAndSetMarked(top, getQueueValue(ctx, top, cfg.mode));
-                if (cfg.posCallback.has_value())
+                queue.emplaceAndMark(top, ctx.heightMap[top]);
+                if (callback.has_value())
                 {
-                    cfg.posCallback.value()(top);
+                    callback.value()(top);
                 }
             }
 
             const TileCoordsXY bottom{ x, ctx.dimensions.y - 1 };
-            if (hydroCtx.flags[bottom].has(cfg.flag))
+            if (hydroCtx.flags[bottom].has(flag))
             {
-                queue.emplaceAndSetMarked(bottom, getQueueValue(ctx, bottom, cfg.mode));
-                if (cfg.posCallback.has_value())
+                queue.emplaceAndMark(bottom, ctx.heightMap[bottom]);
+                if (callback.has_value())
                 {
-                    cfg.posCallback.value()(bottom);
+                    callback.value()(bottom);
+                }
+            }
+        }
+    }
+    void primeHydroFlagDistanceQueue(
+        MapGenContext& ctx, TrackingStableTileDistanceTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
+    {
+        HydroContext& hydroCtx = ctx.hydroContext.value();
+
+        for (int32_t y = 0; y < ctx.dimensions.y - 1; y++)
+        {
+            const TileCoordsXY left{ 0, y };
+            if (hydroCtx.flags[left].has(flag))
+            {
+                queue.emplaceAndMark(left, 0);
+                if (callback.has_value())
+                {
+                    callback.value()(left);
+                }
+            }
+
+            const TileCoordsXY right{ ctx.dimensions.x - 1, y };
+            if (hydroCtx.flags[right].has(flag))
+            {
+                queue.emplaceAndMark(right, 0);
+                if (callback.has_value())
+                {
+                    callback.value()(right);
+                }
+            }
+        }
+
+        for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
+        {
+            const TileCoordsXY top{ x, 0 };
+            if (hydroCtx.flags[top].has(flag))
+            {
+                queue.emplaceAndMark(top, 0);
+                if (callback.has_value())
+                {
+                    callback.value()(top);
+                }
+            }
+
+            const TileCoordsXY bottom{ x, ctx.dimensions.y - 1 };
+            if (hydroCtx.flags[bottom].has(flag))
+            {
+                queue.emplaceAndMark(bottom, 0);
+                if (callback.has_value())
+                {
+                    callback.value()(bottom);
                 }
             }
         }
@@ -127,6 +165,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         return maxHashPos;
     }
 
+
     void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks)
     {
         PROFILED_FUNCTION();
@@ -152,20 +191,20 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 {
                     const TileCoordsXY nPos = pos + neighbour.offset;
 
-                    if (!hydroCtx.flags.inBounds(nPos))
+                    if (!hydroCtx.flags.inBounds(nPos) || !hydroCtx.flags[nPos].has(river))
                     {
                         continue;
                     }
 
-                    if (hydroCtx.flowsOut[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
+                    if (hydroCtx.flowsOut[pos].has(neighbour.direction))
                     {
                         downstreamCount++;
                     }
-                    if (hydroCtx.flowsIn[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
+                    if (hydroCtx.flowsIn[pos].has(neighbour.direction))
                     {
                         upstreamCount++;
                     }
-                    if (hydroCtx.flowsLateral[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
+                    if (hydroCtx.flowsLateral[pos].has(neighbour.direction))
                     {
                         lateralCount++;
                     }

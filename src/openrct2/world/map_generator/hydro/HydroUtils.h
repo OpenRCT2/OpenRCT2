@@ -75,20 +75,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     };
 
-    enum class QueueMode
-    {
-        height,
-        distance,
-    };
 
-    struct QueueCfg
-    {
-        HydroFlag flag = HydroFlag::river;
-        QueueMode mode = QueueMode::height;
-        std::optional<std::function<void(const TileCoordsXY&)>> posCallback = std::nullopt;
-    };
+    using QueueInitPosCallback =  std::optional<std::function<void(const TileCoordsXY&)>>;
 
-    void primeHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, const QueueCfg& cfg);
+    void primeHydroFlagHeightQueue(MapGenContext& ctx, TrackingStableHeightTileQueue& queue, HydroFlag flag = HydroFlag::river, const QueueInitPosCallback& callback = std::nullopt);
+    void primeHydroFlagDistanceQueue(MapGenContext& ctx, TrackingStableTileDistanceTileQueue& queue, HydroFlag flag = HydroFlag::river, const QueueInitPosCallback& callback = std::nullopt);
     void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks);
 
     std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset);
