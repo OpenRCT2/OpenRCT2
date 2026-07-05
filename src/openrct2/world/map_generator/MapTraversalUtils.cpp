@@ -47,13 +47,15 @@ namespace OpenRCT2::World::MapGenerator
     void computeHydroFlagBasedDistanceMap(
         const MapGenContext& ctx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
     {
+
+        distanceMap = DistanceMap{ ctx.dimensions };
+        distanceMap.fill(std::numeric_limits<float>::infinity());
+
         if (!ctx.hydroContext.has_value())
         {
             return;
         }
 
-        distanceMap = DistanceMap{ ctx.dimensions };
-        distanceMap.fill(std::numeric_limits<float>::infinity());
         const auto& hydroMaps = ctx.hydroContext.value();
         TrackingStableTileQueue queue{ ctx.dimensions };
 
