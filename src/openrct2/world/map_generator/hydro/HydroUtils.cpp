@@ -18,7 +18,7 @@
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
     void primeHydroFlagHeightQueue(
-    MapGenContext& ctx, TrackingStableHeightTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
+         MapGenContext& ctx, TrackingStableHeightTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
     {
         HydroContext& hydroCtx = ctx.hydroContext.value();
 
@@ -120,6 +120,145 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     }
 
+    /**
+     * Reduce the river mask to a skeleton by running a line thinning algorithm.
+     *
+     * based on
+     *
+     * Chen, Y.S. and Hsu, W.H., 1988. A modified fast parallel algorithm for thinning digital patterns. Pattern Recognition
+     * Letters, 7(2), pp.99-106.
+     */
+    void constructRiverSkeletonMap(MapGenContext& ctx, BooleanMap& skeletonMap)
+    {
+        PROFILED_FUNCTION();
+        HydroContext& hydroCtx = ctx.hydroContext.value();
+        bool firstSubiteration = true;
+        std::vector<TileCoordsXY> toClear;
+
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < ctx.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                skeletonMap[pos] = hydroCtx.flags[pos].has(river);
+            }
+        }
+
+        while (true)
+        {
+            // the algorithm doesn't handle edge coords, resulting in 'T' shapes being left behind, should be ok for this.
+            for (int32_t y = 1; y < ctx.dimensions.y - 1; y++)
+            {
+                for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
+                {
+                    TileCoordsXY p1{ x, y };
+
+                    if (!skeletonMap[p1])
+                    {
+                        continue;
+                    }
+
+                    union
+                    {
+                        bool pN[8];
+                        struct
+                        {
+                            bool p2, p3, p4, p5, p6, p7, p8, p9;
+                        };
+                        // coordinates differ from the paper to account for inverted x-axis of rct
+                    } nb = { .p2 = skeletonMap[p1 + TileCoordsXY{ 0, -1 }],
+                             .p3 = skeletonMap[p1 + TileCoordsXY{ 1, -1 }],
+                             .p4 = skeletonMap[p1 + TileCoordsXY{ 1, 0 }],
+                             .p5 = skeletonMap[p1 + TileCoordsXY{ 1, 1 }],
+                             .p6 = skeletonMap[p1 + TileCoordsXY{ 0, 1 }],
+                             .p7 = skeletonMap[p1 + TileCoordsXY{ -1, 1 }],
+                             .p8 = skeletonMap[p1 + TileCoordsXY{ -1, 0 }],
+                             .p9 = skeletonMap[p1 + TileCoordsXY{ -1, -1 }] };
+
+                    int32_t bOfP1 = 0; // count neighbours
+                    for (const auto& n : nb.pN)
+                    {
+                        if (n)
+                        {
+                            bOfP1 += 1;
+                        }
+                    }
+
+                    if (!(2 <= bOfP1 && bOfP1 <= 7))
+                    {
+                        continue; // condition a
+                    }
+
+                    int32_t aOfP1 = 0; // count clockwise 0->1 transitions
+                    for (size_t i = 0; i < 8; ++i)
+                    {
+                        if (!nb.pN[i] && nb.pN[(i + 1) % 8])
+                        {
+                            aOfP1 += 1;
+                        }
+                    }
+
+                    if (aOfP1 != 1 && aOfP1 != 2)
+                    {
+                        continue; // condition b
+                    }
+
+                    if (firstSubiteration)
+                    {
+                        if (aOfP1 == 1)
+                        {
+                            if (!((!nb.p2 || !nb.p4 || !nb.p6) && (!nb.p4 || !nb.p6 || !nb.p8)))
+                            {
+                                continue; // condition {c, d}
+                            }
+                        }
+                        else
+                        {
+                            if (!(((nb.p2 && nb.p4) && (!nb.p6 && !nb.p7 && !nb.p8))
+                                  || ((nb.p4 && nb.p6) && (!nb.p2 && !nb.p8 && !nb.p9))))
+                            {
+                                continue; // condition {f, g}
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (aOfP1 == 1)
+                        {
+                            if (!((!nb.p2 || !nb.p4 || !nb.p8) && (!nb.p2 || !nb.p6 || !nb.p8)))
+                            {
+                                continue; // condition {c', d'}
+                            }
+                        }
+                        else
+                        {
+                            if (!(((nb.p2 && nb.p8) && (!nb.p4 && !nb.p5 && !nb.p6))
+                                  || ((nb.p6 && nb.p8) && (!nb.p2 && !nb.p3 && !nb.p4))))
+                            {
+                                continue; // condition {f', g'}
+                            }
+                        }
+                    }
+
+                    toClear.push_back(p1);
+                }
+            }
+
+            if (toClear.empty())
+            {
+                break;
+            }
+
+            for (const auto& pos : toClear)
+            {
+                skeletonMap[pos] = false;
+            }
+
+            toClear.clear();
+            firstSubiteration = !firstSubiteration; // alternate between subiterations
+        }
+    }
+
     // TODO can be optimized by keeping the visited set out of the loops in the caller
     static Backref findLateralSetIdentityPos(
         const MapGenContext& ctx, const TileCoordsXY& pos, const MapDirectionMaskMap& directionalRefsMap)
@@ -164,7 +303,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         return maxHashPos;
     }
-
 
     void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks)
     {
@@ -244,7 +382,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     }
 
-
     /**
      * Returns the two ordinal neighbours for the given cardinal offset.
      * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
@@ -310,6 +447,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             "    river tiles added {}\n",
             stats.ensureCardinalNewTiles);
 
+        const auto skeletonSummary = std::format(
+            "\n[skeleton mask]\n"
+            "    river tiles removed {}\n",
+            stats.skeletonRemovedTiles);
+
         const auto bankIndentationsSummary = std::format(
             "\n[bank indentations]\n"
             "    removed {}\n",
@@ -326,8 +468,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             stats.consistencySegmentsLoweredMaxSize, stats.consistencySegmentsRemoved, stats.consistencySegmentsRemovedMaxSize,
             stats.consistencySegmentsIterations, stats.consistencyBanksRaised);
 
-        return pitSummary + flowSummary + pruningSummary + widthAdjust + ensureCardinal + bankIndentationsSummary
-            + consistencySummary;
+        return pitSummary + flowSummary + pruningSummary + widthAdjust + ensureCardinal + skeletonSummary
+            + bankIndentationsSummary + consistencySummary;
     }
 
 } // namespace OpenRCT2::World::MapGenerator::Hydro
