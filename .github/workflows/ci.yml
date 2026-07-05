@@ -807,7 +807,7 @@ jobs:
           cat release_notes.txt
       # Only upload tagged releases, mark them as draft for manual verification
       - name: Create tagged release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           draft: true
@@ -829,7 +829,7 @@ jobs:
               sha: '2032e1601f3b35d07f088758d34bedbb84868616'
             })
       - name: Create release in binaries repo
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: ${{ needs.build_variables.outputs.push }}
         with:
           repository: OpenRCT2/OpenRCT2-binaries
