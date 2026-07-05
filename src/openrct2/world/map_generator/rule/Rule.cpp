@@ -229,7 +229,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToLand = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToLand.fill(std::numeric_limits<float>::infinity());
-        TrackingStableEuclidianDistanceTileQueue queue{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -254,7 +254,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToWater = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToWater.fill(std::numeric_limits<float>::infinity());
-        TrackingStableEuclidianDistanceTileQueue queue{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -279,7 +279,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToSea = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToSea.fill(std::numeric_limits<float>::infinity());
-        TrackingStableEuclidianDistanceTileQueue queue{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -304,7 +304,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToBorder = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToBorder.fill(std::numeric_limits<float>::infinity());
-        TrackingStableEuclidianDistanceTileQueue queue{ genCtx.dimensions };
+        TrackingStableTileQueue queue{ genCtx.dimensions };
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {

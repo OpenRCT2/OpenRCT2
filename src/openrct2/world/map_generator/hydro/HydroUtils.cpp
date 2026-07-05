@@ -18,7 +18,7 @@
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
     void primeHydroFlagHeightQueue(
-    MapGenContext& ctx, TrackingStableHeightTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
+        MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
     {
         HydroContext& hydroCtx = ctx.hydroContext.value();
 
@@ -68,182 +68,36 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
     }
-    void primeHydroFlagDistanceQueue(
-        MapGenContext& ctx, TrackingStableTileDistanceTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
+
+    int8_t countRiverInflows(MapGenContext& ctx, const TileCoordsXY& pos)
     {
         HydroContext& hydroCtx = ctx.hydroContext.value();
-
-        for (int32_t y = 0; y < ctx.dimensions.y - 1; y++)
+        int8_t inflows = 0;
+        for (const Neighbour& neighbour : kNeighbours)
         {
-            const TileCoordsXY left{ 0, y };
-            if (hydroCtx.flags[left].has(flag))
+            const TileCoordsXY nPos{ pos + neighbour.offset };
+            if (hydroCtx.flowsIn[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
             {
-                queue.emplaceAndMark(left, 0);
-                if (callback.has_value())
-                {
-                    callback.value()(left);
-                }
-            }
-
-            const TileCoordsXY right{ ctx.dimensions.x - 1, y };
-            if (hydroCtx.flags[right].has(flag))
-            {
-                queue.emplaceAndMark(right, 0);
-                if (callback.has_value())
-                {
-                    callback.value()(right);
-                }
+                inflows++;
             }
         }
-
-        for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
-        {
-            const TileCoordsXY top{ x, 0 };
-            if (hydroCtx.flags[top].has(flag))
-            {
-                queue.emplaceAndMark(top, 0);
-                if (callback.has_value())
-                {
-                    callback.value()(top);
-                }
-            }
-
-            const TileCoordsXY bottom{ x, ctx.dimensions.y - 1 };
-            if (hydroCtx.flags[bottom].has(flag))
-            {
-                queue.emplaceAndMark(bottom, 0);
-                if (callback.has_value())
-                {
-                    callback.value()(bottom);
-                }
-            }
-        }
+        return inflows;
     }
 
-    // TODO can be optimized by keeping the visited set out of the loops in the caller
-    static Backref findLateralSetIdentityPos(
-        const MapGenContext& ctx, const TileCoordsXY& pos, const MapDirectionMaskMap& directionalRefsMap)
+    int8_t countRiverOutflows(MapGenContext& ctx, const TileCoordsXY& pos)
     {
-        const HydroContext& hydroCtx = ctx.hydroContext.value();
-
-        TileCoordsXY maxHashPos = pos;
-        size_t maxHash = TileCoordsXYHash{}(pos);
-
-        TileCoordsXYSet visited;
-        std::queue<TileCoordsXY> queue;
-        queue.emplace(pos);
-        visited.insert(pos);
-
-        while (!queue.empty())
-        {
-            const TileCoordsXY currentPos{ queue.front() };
-            queue.pop();
-
-            if (!directionalRefsMap[currentPos].isEmpty())
-            {
-                return std::nullopt;
-            }
-
-            const size_t currentHash = TileCoordsXYHash{}(currentPos);
-            if (currentHash > maxHash)
-            {
-                maxHashPos = currentPos;
-                maxHash = currentHash;
-            }
-
-            for (const Neighbour& neighbour : kNeighbours)
-            {
-                const TileCoordsXY& lateralPos = currentPos + neighbour.offset;
-                if (hydroCtx.flowsLateral[currentPos].has(neighbour.direction) && !visited.contains(lateralPos))
-                {
-                    queue.emplace(lateralPos);
-                    visited.insert(lateralPos);
-                }
-            }
-        }
-
-        return maxHashPos;
-    }
-
-
-    void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks)
-    {
-        PROFILED_FUNCTION();
-
         HydroContext& hydroCtx = ctx.hydroContext.value();
-
-        for (int32_t y = 0; y < ctx.dimensions.y; y++)
+        int8_t outflows = 0;
+        for (const Neighbour& neighbour : kNeighbours)
         {
-            for (int32_t x = 0; x < ctx.dimensions.x; x++)
+            const TileCoordsXY nPos{ pos + neighbour.offset };
+            if (hydroCtx.flowsOut[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
             {
-                const TileCoordsXY pos{ x, y };
-
-                if (!hydroCtx.flags[pos].has(river))
-                {
-                    continue;
-                }
-
-                auto downstreamCount = 0;
-                auto upstreamCount = 0;
-                auto lateralCount = 0;
-
-                for (const Neighbour& neighbour : kNeighbours)
-                {
-                    const TileCoordsXY nPos = pos + neighbour.offset;
-
-                    if (!hydroCtx.flags.inBounds(nPos) || !hydroCtx.flags[nPos].has(river))
-                    {
-                        continue;
-                    }
-
-                    if (hydroCtx.flowsOut[pos].has(neighbour.direction))
-                    {
-                        downstreamCount++;
-                    }
-                    if (hydroCtx.flowsIn[pos].has(neighbour.direction))
-                    {
-                        upstreamCount++;
-                    }
-                    if (hydroCtx.flowsLateral[pos].has(neighbour.direction))
-                    {
-                        lateralCount++;
-                    }
-                }
-
-                if (upstreamCount == 0)
-                {
-                    if (lateralCount == 0)
-                    {
-                        sources.insert(pos);
-                    }
-                    else
-                    {
-                        Backref maybeLateralSetSource = findLateralSetIdentityPos(ctx, pos, hydroCtx.flowsIn);
-                        if (maybeLateralSetSource.has_value())
-                        {
-                            sources.insert(maybeLateralSetSource.value());
-                        }
-                    }
-                }
-                else if (downstreamCount == 0 && !hydroCtx.flags.onEdge(pos))
-                {
-                    if (lateralCount == 0)
-                    {
-                        sinks.insert(pos);
-                    }
-                    else
-                    {
-                        Backref maybeLateralSetSource = findLateralSetIdentityPos(ctx, pos, hydroCtx.flowsOut);
-                        if (maybeLateralSetSource.has_value())
-                        {
-                            sources.insert(maybeLateralSetSource.value());
-                        }
-                    }
-                }
+                outflows++;
             }
         }
+        return outflows;
     }
-
 
     /**
      * Returns the two ordinal neighbours for the given cardinal offset.
@@ -294,11 +148,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         const auto pruningSummary = std::format(
             "\n[pruning]\n"
             "    sinks removed {}\n"
-            "    sources removed {} of {}\n"
-            "    iterations {}\n"
-            "    deadlocks resolved {}\n",
-            stats.pruneSinksFound, stats.pruneSourcesRemoved, stats.pruneSourcesFound, stats.pruneIterations,
-            stats.pruneDeadlocks);
+            "    sinks tiles removed {}\n"
+            "    sources found {}\n"
+            "    sources removed {}\n"
+            "    sources tiles removed {}\n"
+            "    sources longest {}\n",
+            stats.pruneSinksFound, stats.pruneSinksTilesRemoved, stats.pruneSourcesFound,
+            stats.pruneSourcesFound - stats.pruneSourcesRemaining, stats.pruneSourcesTilesRemoved, stats.pruneSourcesLongest);
 
         const auto widthAdjust = std::format(
             "\n[width adjustment]\n"

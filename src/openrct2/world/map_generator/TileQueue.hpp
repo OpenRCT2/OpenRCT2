@@ -15,11 +15,10 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    template<class T>
     struct QueueTile
     {
         TileCoordsXY pos;
-        T value;
+        float value;
         uint32_t orderIdx;
 
         friend bool operator<(const QueueTile& lhs, const QueueTile& rhs)
@@ -44,11 +43,9 @@ namespace OpenRCT2::World::MapGenerator
         }
     };
 
-    template<class T>
-    using StableTileQueueBase = std::priority_queue<QueueTile<T>, std::vector<QueueTile<T>>, std::greater<QueueTile<T>>>;
+    using StableTileQueueBase = std::priority_queue<QueueTile, std::vector<QueueTile>, std::greater<QueueTile>>;
 
-    template<class T>
-    class StableTileQueue : public StableTileQueueBase<T>
+    class StableTileQueue : public StableTileQueueBase
     {
     private:
         uint32_t insertIdx = 0;
@@ -59,19 +56,18 @@ namespace OpenRCT2::World::MapGenerator
         template<class... Args>
         void emplace(Args... args)
         {
-            StableTileQueueBase<T>::emplace(std::forward<Args>(args)..., insertIdx++);
+            StableTileQueueBase::emplace(std::forward<Args>(args)..., insertIdx++);
         }
     };
 
-    template<class T>
-    class TrackingStableTileQueue : public StableTileQueue<T>
+    class TrackingStableTileQueue : public StableTileQueue
     {
     private:
         BooleanMap marked;
 
     public:
         explicit TrackingStableTileQueue(const TileCoordsXY& dimensions)
-            : StableTileQueue<T>(), marked{ dimensions }
+            : StableTileQueue(), marked{ dimensions }
         {
         }
 
@@ -88,12 +84,9 @@ namespace OpenRCT2::World::MapGenerator
         template<class... Args>
         void emplaceAndMark(const TileCoordsXY pos, Args... args)
         {
-            StableTileQueue<T>::emplace(pos, std::forward<Args>(args)...);
+            StableTileQueue::emplace(pos, std::forward<Args>(args)...);
             mark(pos);
         }
     };
 
-    using TrackingStableHeightTileQueue = TrackingStableTileQueue<float>;
-    using TrackingStableTileDistanceTileQueue = TrackingStableTileQueue<uint32_t>;
-    using TrackingStableEuclidianDistanceTileQueue = TrackingStableTileQueue<float>;
 } // namespace OpenRCT2::World::MapGenerator

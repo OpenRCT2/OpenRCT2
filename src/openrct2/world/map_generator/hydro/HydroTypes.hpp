@@ -50,11 +50,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         float flowAggMax = -std::numeric_limits<float>::infinity();
 
-        int32_t pruneIterations = 1;
         int32_t pruneSinksFound = 0;
+        int32_t pruneSinksTilesRemoved = 0;
         int32_t pruneSourcesFound = 0;
-        int32_t pruneSourcesRemoved = 0;
-        int32_t pruneDeadlocks = 0;
+        int32_t pruneSourcesTilesRemoved = 0;
+        int32_t pruneSourcesRemaining = 0;
+        float pruneSourcesLongest = 0;
 
         int32_t widthAdjustNewTiles = 0;
 

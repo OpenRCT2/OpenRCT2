@@ -7,12 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "MapHelpers.h"
 #include "MapTraversalUtils.h"
+
+#include "MapHelpers.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableEuclidianDistanceTileQueue& queue)
+    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue)
     {
         while (!queue.empty())
         {
@@ -23,7 +24,8 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
 
-                const float distance = tile.value + sqrt(neighbour.offset.x * neighbour.offset.x + neighbour.offset.y * neighbour.offset.y);
+                const float distance = tile.value
+                    + sqrt(neighbour.offset.x * neighbour.offset.x + neighbour.offset.y * neighbour.offset.y);
 
                 if (!distanceMap.inBounds(nPos) || queue.isMarked(nPos) || distance >= distanceMap[nPos])
                 {
@@ -36,23 +38,24 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableEuclidianDistanceTileQueue& queue)
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue)
     {
         distanceMap[pos] = 0.0f;
         queue.emplaceAndMark(pos, 0.0f);
     }
 
-    void computeHydroFlagBasedDistanceMap(const MapGenContext& ctx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
+    void computeHydroFlagBasedDistanceMap(
+        const MapGenContext& ctx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
     {
         if (!ctx.hydroContext.has_value())
         {
             return;
         }
 
-        distanceMap = DistanceMap{ctx.dimensions};
+        distanceMap = DistanceMap{ ctx.dimensions };
         distanceMap.fill(std::numeric_limits<float>::infinity());
         const auto& hydroMaps = ctx.hydroContext.value();
-        TrackingStableEuclidianDistanceTileQueue queue{ ctx.dimensions };
+        TrackingStableTileQueue queue{ ctx.dimensions };
 
         for (int32_t y = 0; y < distanceMap.height; y++)
         {
@@ -69,7 +72,5 @@ namespace OpenRCT2::World::MapGenerator
 
         completeDistanceMap(distanceMap, queue);
     }
-
-
 
 } // namespace OpenRCT2::World::MapGenerator

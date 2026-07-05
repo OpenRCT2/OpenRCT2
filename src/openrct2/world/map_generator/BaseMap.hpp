@@ -18,6 +18,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <numbers>
 #include <ranges>
 #include <unordered_set>
 #include <vector>
@@ -128,8 +129,10 @@ namespace OpenRCT2::World::MapGenerator
     class BooleanMap : public BaseMap<bool>
     {
     public:
-
-        explicit BooleanMap(TileCoordsXY mapSize) : BaseMap(mapSize){}
+        explicit BooleanMap(TileCoordsXY mapSize)
+            : BaseMap(mapSize)
+        {
+        }
 
         std::vector<bool>::reference operator[](const TileCoordsXY pos)
         {
@@ -182,11 +185,17 @@ namespace OpenRCT2::World::MapGenerator
         MapDirection direction;
         MapDirection opposite;
         TileCoordsXY offset;
+        float distance;
     };
 
     static constexpr std::array kMapDirectionOffsets = { TileCoordsXY{ -1, -1 }, TileCoordsXY{ -1, 0 }, TileCoordsXY{ -1, 1 },
                                                          TileCoordsXY{ 0, 1 },   TileCoordsXY{ 1, 1 },  TileCoordsXY{ 1, 0 },
                                                          TileCoordsXY{ 1, -1 },  TileCoordsXY{ 0, -1 } };
+
+    static constexpr std::array kMapDirectionDistance = { static_cast<float>(std::numbers::sqrt2), 1.0f,
+                                                          static_cast<float>(std::numbers::sqrt2), 1.0f,
+                                                          static_cast<float>(std::numbers::sqrt2), 1.0f,
+                                                          static_cast<float>(std::numbers::sqrt2), 1.0f };
 
     static constexpr std::array kNeighbourOpposites = {
         South, SouthWest, West, NorthWest, North, NorthEast, East, SouthEast,
@@ -194,7 +203,8 @@ namespace OpenRCT2::World::MapGenerator
 
     static constexpr Neighbour _makeNeighbour(const MapDirection mapDirection)
     {
-        return Neighbour{ mapDirection, kNeighbourOpposites[mapDirection], kMapDirectionOffsets[mapDirection] };
+        return Neighbour{ mapDirection, kNeighbourOpposites[mapDirection], kMapDirectionOffsets[mapDirection],
+                          kMapDirectionDistance[mapDirection] };
     }
 
     static constexpr Neighbour kNeighbourNorth = _makeNeighbour(North);
@@ -222,9 +232,8 @@ namespace OpenRCT2::World::MapGenerator
     using HeightMap = BaseMap<float>;
     using DistanceMap = BaseMap<float>;
     using NormalMap = BaseMap<VecXYZ>;
-    using Backref = std::optional<TileCoordsXY>;
-    using BackrefMap = BaseMap<Backref>;
-    using TileCoordsXYVec = std::vector<TileCoordsXY>;
+    using Reference = std::optional<TileCoordsXY>;
+    using ReferenceMap = BaseMap<Reference>;
     using TileCoordsXYSet = std::unordered_set<TileCoordsXY, TileCoordsXYHash>;
     using BackrefsMap = BaseMap<TileCoordsXYSet>;
     using MapDirectionMaskMap = BaseMap<MapDirectionMask>;

@@ -19,7 +19,6 @@
 #include "HydroUtils.h"
 
 #include <format>
-#include <numbers>
 #include <ranges>
 
 namespace OpenRCT2::World::MapGenerator::Hydro
@@ -40,8 +39,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HeightMap& heightMap = ctx.heightMap;
         HydroContext& hydroCtx = ctx.hydroContext.value();
         BooleanMap pitMap{ ctx.dimensions };
-        BackrefMap backrefMap{ ctx.dimensions };
-        TrackingStableHeightTileQueue queue{ ctx.dimensions };
+        ReferenceMap backrefMap{ ctx.dimensions };
+        TrackingStableTileQueue queue{ ctx.dimensions };
         std::queue<TileCoordsXY> fillQueue;
 
         // prepare queue and mark pits
@@ -157,15 +156,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     }
 
-    static float downSlope(const MapGenContext& ctx, const TileCoordsXY& from, const TileCoordsXY& to)
+    static float downSlope(const MapGenContext& ctx, const TileCoordsXY& from, const TileCoordsXY& to, const float distance)
     {
-        const bool isOrdinal = from.x == 0 || from.y == 0 || to.x == 0 || to.y == 0;
-        const float distance = isOrdinal ? 1.0f : std::numbers::sqrt2;
         const float slope = (ctx.heightMap[from] - ctx.heightMap[to]) / distance;
         return std::max(0.0f, std::pow(slope, kP));
     }
 
-    static float flowFraction(const MapGenContext& ctx, const TileCoordsXY& from, const TileCoordsXY& to)
+    static float flowFraction(const MapGenContext& ctx, const TileCoordsXY& from, const TileCoordsXY& to, const float distance)
     {
         const HydroContext& hydroCtx = ctx.hydroContext.value();
         float sum = 0.0f;
@@ -176,11 +173,11 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
             if (ctx.heightMap.inBounds(nPos) && hydroCtx.flowsOut[from].has(neighbour.direction))
             {
-                sum += downSlope(ctx, from, nPos);
+                sum += downSlope(ctx, from, nPos, neighbour.distance);
             }
         }
 
-        return downSlope(ctx, from, to) / sum;
+        return downSlope(ctx, from, to, distance) / sum;
     }
 
     static float aggregateNeighbour(MapGenContext& ctx, const TileCoordsXY& pos)
@@ -198,7 +195,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
                 if (hydroCtx.flowsIn.inBounds(nPos) && hydroCtx.flowsIn[pos].has(neighbour.direction))
                 {
-                    const float neighbourFraction = flowFraction(ctx, nPos, pos);
+                    const float neighbourFraction = flowFraction(ctx, nPos, pos, neighbour.distance);
                     const float neighbourCatchment = aggregateNeighbour(ctx, nPos);
                     const float neighbourContribution = neighbourFraction * neighbourCatchment;
                     hydroCtx.catchment[pos] += neighbourContribution;
@@ -269,7 +266,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     }
 
-    static void postProcessTile(MapGenContext& ctx, TrackingStableHeightTileQueue& queue, const TileCoordsXY& pos)
+    static void postProcessTile(MapGenContext& ctx, TrackingStableTileQueue& queue, const TileCoordsXY& pos)
     {
         HydroContext& hydroCtx = ctx.hydroContext.value();
 
@@ -287,7 +284,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         PROFILED_FUNCTION();
         const HydroContext& hydroCtx = ctx.hydroContext.value();
-        TrackingStableHeightTileQueue queue{ ctx.dimensions };
+        TrackingStableTileQueue queue{ ctx.dimensions };
 
         for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
@@ -361,7 +358,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
         HeightMap& heightMap = ctx.heightMap;
         HydroContext& hydroCtx = ctx.hydroContext.value();
-        TrackingStableHeightTileQueue queue{ ctx.dimensions };
+        TrackingStableTileQueue queue{ ctx.dimensions };
         DistanceMap distanceMap{ ctx.dimensions };
         distanceMap.fill(std::numeric_limits<float>::infinity());
         primeHydroFlagHeightQueue(ctx, queue, river);
@@ -434,244 +431,207 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Prune streams below a length threshold and non-edge sinks.
+     * Remove short streams below the configured threshold.
      */
-    static void pruneShortStreamsAndSinks(MapGenContext& ctx)
+    static void pruneShortStreams(MapGenContext& ctx)
     {
         PROFILED_FUNCTION();
 
         HydroContext& hydroCtx = ctx.hydroContext.value();
 
-        TileCoordsXYSet sources;
-        TileCoordsXYSet sinks;
-        findSourcesAndSinks(ctx, sources, sinks);
+        std::stack<TileCoordsXY> stack;
+        BaseMap<int8_t> inflowCount{ ctx.dimensions };
 
-        hydroCtx.stats.pruneSinksFound = sinks.size();
-        hydroCtx.stats.pruneSourcesFound = sources.size();
+        ReferenceMap sourceAt{ ctx.dimensions };
+        DistanceMap sourceDistanceAt{ ctx.dimensions };
+        DistanceMap sourceLength{ ctx.dimensions };
 
-        BaseMap<std::unordered_map<TileCoordsXY, int32_t, TileCoordsXYHash>> sourceHitsMap{ ctx.dimensions };
-        BaseMap<std::unordered_map<TileCoordsXY, int32_t, TileCoordsXYHash>> sinkHitsMap{ ctx.dimensions };
+        inflowCount.fill(-1);
+        sourceDistanceAt.fill(-1);
+        sourceLength.fill(-1);
 
-        // trace sources to populate source hits map
-        for (const TileCoordsXY& source : sources)
+        // populate inflowCount, identify sinks and prime stack
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
-            TrackingStableTileDistanceTileQueue queue{ ctx.dimensions };
-            queue.emplaceAndMark(source, 0);
-            sourceHitsMap[source][source] = 0;
-
-            while (!queue.empty())
+            for (int32_t x = 0; x < ctx.dimensions.x; x++)
             {
-                const QueueTile tile = queue.top();
-                queue.pop();
-
-                for (const auto& neighbour : kNeighbours)
+                const TileCoordsXY pos{ x, y };
+                if (hydroCtx.flags[pos].has(river))
                 {
-                    const TileCoordsXY nPos{ tile.pos + neighbour.offset };
+                    const int8_t inflows = countRiverInflows(ctx, pos);
+                    inflowCount[pos] = inflows;
 
-                    if (!sourceHitsMap.inBounds(nPos) || queue.isMarked(nPos)
-                        || !hydroCtx.flowsOut[tile.pos].has(neighbour.direction) || !hydroCtx.flags[nPos].has(river))
+                    if (inflows == 0)
                     {
-                        continue;
+                        stack.push(pos);
+                        sourceAt[pos] = pos;
+                        sourceDistanceAt[pos] = 0.0f;
                     }
-
-                    const float distance = tile.value + 1;
-
-                    sourceHitsMap[nPos][source] = distance;
-                    queue.emplaceAndMark(nPos, distance);
                 }
             }
         }
 
-        // sentinel for edge-sinks, no need to trace them individually
-        TileCoordsXY nullSink{ kCoordsNull, kCoordsNull };
-        TileCoordsXYSet sinksWithNull = sinks;
-        sinksWithNull.insert(nullSink);
+        hydroCtx.stats.pruneSourcesFound = stack.size();
 
-        // trace sinks to populate sink hits map
-        for (const TileCoordsXY& sink : sinksWithNull)
+        // trace rivers from the sources, propagating the furthest source downstream after all inflows have been considered
+        while (!stack.empty())
         {
-            TrackingStableTileDistanceTileQueue queue{ ctx.dimensions };
+            const TileCoordsXY currentPos = stack.top();
+            stack.pop();
+            auto currentSource = sourceAt[currentPos].value();
 
-            if (sink.IsNull())
+            for (const Neighbour& neighbour : kNeighbours)
             {
-                const auto callback = [&sinkHitsMap, &nullSink](const TileCoordsXY& s) { sinkHitsMap[s][nullSink] = 0; };
-                primeHydroFlagDistanceQueue(ctx, queue, river, callback);
-            }
-            else
-            {
-                queue.emplaceAndMark(sink, 0);
-                sinkHitsMap[sink][sink] = 0;
-            }
-
-            while (!queue.empty())
-            {
-                const QueueTile tile = queue.top();
-                queue.pop();
-
-                for (const auto& neighbour : kNeighbours)
+                const TileCoordsXY nPos{ currentPos + neighbour.offset };
+                if (hydroCtx.flags.inBounds(nPos) && hydroCtx.flowsOut[currentPos].has(neighbour.direction)
+                    && hydroCtx.flags[nPos].has(river))
                 {
-                    const TileCoordsXY nPos{ tile.pos + neighbour.offset };
+                    const float distance = sourceDistanceAt[currentPos] + neighbour.distance;
 
-                    if (!sinkHitsMap.inBounds(nPos) || queue.isMarked(nPos)
-                        || !hydroCtx.flowsIn[tile.pos].has(neighbour.direction) || !hydroCtx.flags[nPos].has(river))
+                    if (sourceLength[currentSource] < distance)
                     {
-                        continue;
+                        sourceLength[currentSource] = distance;
                     }
 
-                    const float distance = tile.value + 1;
+                    if (sourceDistanceAt[nPos] < distance)
+                    {
+                        sourceDistanceAt[nPos] = distance;
+                        sourceAt[nPos] = currentSource;
+                    }
 
-                    sinkHitsMap[nPos][sink] = distance;
-                    queue.emplaceAndMark(nPos, distance);
+                    inflowCount[nPos]--;
+                    if (inflowCount[nPos] == 0)
+                    {
+                        stack.push(nPos);
+                    }
                 }
             }
         }
 
-        TileCoordsXYSet remainingSources = sources;
-        TileCoordsXYSet remainingSinks = sinks;
-
-        while (true)
+        // clear tiles with a source ref that is below the threshold
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
-            std::unordered_map<TileCoordsXY, int32_t, TileCoordsXYHash> sourceStreamLength;
-            BackrefMap furthestSourceAt{ ctx.dimensions };
-
-            // scan map to either find the source stream length (if only a single source reaches a tile) or to populate the
-            // furthestSourceAt map (if multiple sources hits a tile)
-            for (int32_t y = 0; y < ctx.dimensions.y; y++)
+            for (int32_t x = 0; x < ctx.dimensions.x; x++)
             {
-                for (int32_t x = 0; x < ctx.dimensions.x; x++)
+                const TileCoordsXY pos{ x, y };
+                if (hydroCtx.flags[pos].has(river))
                 {
-                    TileCoordsXY pos{ x, y };
-
-                    if (sourceHitsMap[pos].size() == 1)
-                    {
-                        for (const auto& sourceHits : sourceHitsMap[pos])
-                        {
-                            sourceStreamLength[sourceHits.first] = std::max(
-                                sourceStreamLength[sourceHits.first], sourceHits.second);
-                        }
-                    }
-                    else if (sourceHitsMap[pos].size() > 1)
-                    {
-                        int32_t maxDistance = 0;
-                        for (const auto& sourceHits : sourceHitsMap[pos])
-                        {
-                            if (!furthestSourceAt[pos].has_value() || sourceHits.second > maxDistance)
-                            {
-                                maxDistance = sourceHits.second;
-                                furthestSourceAt[pos] = sourceHits.first;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // populate furthestSources
-            TileCoordsXYSet furthestSources;
-            for (int32_t y = 0; y < ctx.dimensions.y; y++)
-            {
-                for (int32_t x = 0; x < ctx.dimensions.x; x++)
-                {
-                    TileCoordsXY pos{ x, y };
-
-                    if (furthestSourceAt[pos].has_value())
-                    {
-                        furthestSources.insert(furthestSourceAt[pos].value());
-                    }
-                }
-            }
-
-            // identify prunable sources
-            TileCoordsXYSet prunableSources;
-            TileCoordsXYSet notPrunableSources;
-            TileCoordsXYSet notPrunableSourcesBelowThreshold;
-            for (const TileCoordsXY& source : remainingSources)
-            {
-                if (sourceStreamLength[source] < ctx.settings.pruneThreshold)
-                {
-                    if (!furthestSources.contains(source))
-                    {
-                        prunableSources.insert(source);
-                    }
-                    else
-                    {
-                        notPrunableSourcesBelowThreshold.insert(source);
-                        notPrunableSources.insert(source);
-                    }
-                }
-                else
-                {
-                    notPrunableSources.insert(source);
-                }
-            }
-
-            // if there are no prunable sources but sources below the threshold, there are deadlocks between sources, each being
-            // the furthest at different tiles. Mark the shortest as prunable to unblock progress
-            if (prunableSources.empty() && !notPrunableSourcesBelowThreshold.empty())
-            {
-                float minLength = std::numeric_limits<float>::infinity();
-                TileCoordsXY minSource;
-
-                for (const TileCoordsXY& source : notPrunableSourcesBelowThreshold)
-                {
-                    if (sourceStreamLength[source] < minLength)
-                    {
-                        minLength = sourceStreamLength[source];
-                        minSource = source;
-                    }
-                }
-
-                prunableSources.insert(minSource);
-                notPrunableSources.erase(minSource);
-
-                hydroCtx.stats.pruneDeadlocks++;
-            }
-
-            // nothing to prune, mark remaining sources and break from loop
-            if (prunableSources.empty() && remainingSinks.empty())
-            {
-                for (const TileCoordsXY& source : notPrunableSources)
-                {
-                    hydroCtx.flags[source].set(HydroFlag::source);
-                }
-                break;
-            }
-
-            // clear prunable sources from sourceHitsMap and sinks from remainingSinks
-            for (int32_t y = 0; y < ctx.dimensions.y; y++)
-            {
-                for (int32_t x = 0; x < ctx.dimensions.x; x++)
-                {
-                    TileCoordsXY pos{ x, y };
-                    for (const TileCoordsXY& source : prunableSources)
-                    {
-                        sourceHitsMap[pos].erase(source);
-                    }
-
-                    for (const TileCoordsXY& sink : remainingSinks)
-                    {
-                        sinkHitsMap[pos].erase(sink);
-                    }
-                }
-            }
-
-            // unset river flag for all tiles with no remaining source or sink hits
-            for (int32_t y = 0; y < ctx.dimensions.y; y++)
-            {
-                for (int32_t x = 0; x < ctx.dimensions.x; x++)
-                {
-                    TileCoordsXY pos{ x, y };
-
-                    if (sourceHitsMap[pos].empty() || sinkHitsMap[pos].empty())
+                    if (sourceLength[sourceAt[pos].value()] < ctx.settings.pruneThreshold)
                     {
                         hydroCtx.flags[pos].unset(river);
+                        hydroCtx.stats.pruneSourcesTilesRemoved++;
                     }
                 }
             }
+        }
 
-            remainingSources = notPrunableSources;
-            remainingSinks.clear();
-            hydroCtx.stats.pruneSourcesRemoved += prunableSources.size();
-            hydroCtx.stats.pruneIterations++;
+        // mark remaining sources
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < ctx.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                if (hydroCtx.flags[pos].has(river))
+                {
+                    if (countRiverInflows(ctx, pos) == 0)
+                    {
+                        hydroCtx.flags[pos].set(source);
+                        hydroCtx.stats.pruneSourcesRemaining++;
+                        hydroCtx.stats.pruneSourcesLongest = std::max(hydroCtx.stats.pruneSourcesLongest, sourceLength[pos]);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Remove sinks that are not on the map edge, mostly analogous to pruneShortStreams.
+     */
+    static void pruneSinks(MapGenContext& ctx)
+    {
+        PROFILED_FUNCTION();
+
+        HydroContext& hydroCtx = ctx.hydroContext.value();
+
+        std::stack<TileCoordsXY> stack;
+        BaseMap<int8_t> outflowCount{ ctx.dimensions };
+        ReferenceMap sinkAt{ ctx.dimensions };
+        DistanceMap sinkDistance{ ctx.dimensions };
+
+        outflowCount.fill(-1);
+        sinkDistance.fill(-1);
+
+        // populate outflowCount, identify sinks and prime stack
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < ctx.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                if (hydroCtx.flags[pos].has(river))
+                {
+                    const int8_t outflows = countRiverOutflows(ctx, pos);
+                    outflowCount[pos] = outflows;
+
+                    if (outflows == 0)
+                    {
+                        stack.push(pos);
+                        sinkAt[pos] = pos;
+                        sinkDistance[pos] = 0.0f;
+                        if (!hydroCtx.flags.onEdge(pos))
+                        {
+                            hydroCtx.stats.pruneSinksFound++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // trace rivers from the sinks, propagating the furthest sink upstream after all outflows have been considered
+        while (!stack.empty())
+        {
+            const TileCoordsXY currentPos = stack.top();
+            stack.pop();
+
+            auto currentSink = sinkAt[currentPos].value();
+
+            for (const Neighbour& neighbour : kNeighbours)
+            {
+                const TileCoordsXY nPos{ currentPos + neighbour.offset };
+                if (hydroCtx.flags.inBounds(nPos) && hydroCtx.flowsIn[currentPos].has(neighbour.direction)
+                    && hydroCtx.flags[nPos].has(river))
+                {
+                    const float distance = sinkDistance[currentPos] + neighbour.distance;
+
+                    if (sinkDistance[nPos] < distance)
+                    {
+                        sinkDistance[nPos] = distance;
+                        sinkAt[nPos] = currentSink;
+                    }
+
+                    outflowCount[nPos]--;
+                    if (outflowCount[nPos] == 0)
+                    {
+                        stack.push(nPos);
+                    }
+                }
+            }
+        }
+
+        // clear tiles with a sink ref that isn't on the map edge
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
+        {
+            for (int32_t x = 0; x < ctx.dimensions.x; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                if (hydroCtx.flags[pos].has(river))
+                {
+                    if (!hydroCtx.flags.onEdge(sinkAt[pos].value()))
+                    {
+                        hydroCtx.flags[pos].unset(river);
+                        hydroCtx.stats.pruneSinksTilesRemoved++;
+                    }
+                }
+            }
         }
     }
 
@@ -684,7 +644,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
         HeightMap& heightMap = ctx.heightMap;
         HydroContext& hydroCtx = ctx.hydroContext.value();
-        TrackingStableHeightTileQueue queue{ ctx.dimensions };
+        TrackingStableTileQueue queue{ ctx.dimensions };
         primeHydroFlagHeightQueue(ctx, queue);
 
         while (!queue.empty())
@@ -741,7 +701,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HeightMap& heightMap = ctx.heightMap;
         HydroContext& hydroCtx = ctx.hydroContext.value();
         HeightMap heightCopy = heightMap;
-        TrackingStableHeightTileQueue queue{ ctx.dimensions };
+        TrackingStableTileQueue queue{ ctx.dimensions };
         primeHydroFlagHeightQueue(ctx, queue);
         const float seafloorMaxCarveDepth = static_cast<float>(ctx.settings.waterLevel - kRiversSeafloorMaxCarveDepth);
 
@@ -1079,7 +1039,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         fillOrBreachDepressions(ctx);
         aggregateCatchment(ctx);
         postProcessCatchment(ctx);
-        pruneShortStreamsAndSinks(ctx);
+        pruneShortStreams(ctx);
+        pruneSinks(ctx);
         ensureCardinalNeighbours(ctx);
         adjustStreamWidth(ctx);
         carveRiverbed(ctx);

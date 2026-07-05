@@ -15,8 +15,9 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableEuclidianDistanceTileQueue& queue);
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableEuclidianDistanceTileQueue& queue);
-    void computeHydroFlagBasedDistanceMap(const MapGenContext& ctx, DistanceMap& distanceMap, Hydro::HydroFlag flag, bool invert = false);
+    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue);
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue);
+    void computeHydroFlagBasedDistanceMap(
+        const MapGenContext& ctx, DistanceMap& distanceMap, Hydro::HydroFlag flag, bool invert = false);
 
 } // namespace OpenRCT2::World::MapGenerator
