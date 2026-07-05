@@ -60,8 +60,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         int32_t ensureCardinalNewTiles = 0;
 
-        int32_t skeletonRemovedTiles = 0;
-
         int32_t bankIndentationsRemoved = 0;
 
         int32_t consistencySegmentsIterations = 1;

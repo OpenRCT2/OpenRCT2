@@ -15,7 +15,6 @@
 #include "../../../profiling/Profiling.h"
 #include "../BaseMap.hpp"
 #include "../MapHelpers.h"
-#include "../MapTraversalUtils.h"
 #include "../TileQueue.hpp"
 #include "HydroUtils.h"
 
@@ -435,70 +434,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Improve the river shape by constructing a skeleton mask and filtering
-     */
-    static void applySkeletonMask(MapGenContext& ctx)
-    {
-        PROFILED_FUNCTION();
-
-        HydroContext& hydroCtx = ctx.hydroContext.value();
-
-        BooleanMap skeletonMap{ ctx.dimensions };
-        constructRiverSkeletonMap(ctx, skeletonMap);
-
-        DistanceMap riverRadiusMap{ ctx.dimensions };
-        computeHydroFlagBasedDistanceMap(ctx, riverRadiusMap, river, true);
-
-        // create a mask consisting of disks with radius riverRadiusMap[pos] around the remaining river skeletons
-        BooleanMap skeletonMask{ ctx.dimensions };
-        for (int32_t y = 0; y < ctx.dimensions.y; y++)
-        {
-            for (int32_t x = 0; x < ctx.dimensions.x; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-                if (!skeletonMap[pos])
-                {
-                    continue;
-                }
-
-                float maskRadius = riverRadiusMap[pos];
-                float maskRadiusSquared = maskRadius * maskRadius;
-
-                for (int32_t dy = -maskRadius; dy <= maskRadius; dy++)
-                {
-                    for (int32_t dx = -maskRadius; dx <= maskRadius; dx++)
-                    {
-                        const TileCoordsXY deltaPos{ pos.x + dx, pos.y + dy };
-                        if (skeletonMask.inBounds(deltaPos) && dx * dx + dy * dy <= maskRadiusSquared)
-                        {
-                            skeletonMask[deltaPos] = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        // unset the river flag for all tiles not in the skeletonMask
-        for (int32_t y = 0; y < ctx.dimensions.y; y++)
-        {
-            for (int32_t x = 0; x < ctx.dimensions.x; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-                if (hydroCtx.flags[pos].has(river) && !skeletonMask[pos] && !hydroCtx.flags[pos].has(source))
-                {
-                    hydroCtx.flags[pos].unset(river);
-                    hydroCtx.stats.skeletonRemovedTiles++;
-
-                    ctx.debugSigns.emplace_back(pos, "skel", Drawing::Colour::white, Drawing::Colour::brightRed);
-
-                }
-            }
-        }
-    }
-
-    /**
      * Prune streams below a length threshold and non-edge sinks.
-     * TODO bad scaling... O(x*y*s)
      */
     static void pruneShortStreamsAndSinks(MapGenContext& ctx)
     {
@@ -514,6 +450,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         hydroCtx.stats.pruneSourcesFound = sources.size();
 
         BaseMap<std::unordered_map<TileCoordsXY, int32_t, TileCoordsXYHash>> sourceHitsMap{ ctx.dimensions };
+        BaseMap<std::unordered_map<TileCoordsXY, int32_t, TileCoordsXYHash>> sinkHitsMap{ ctx.dimensions };
 
         // trace sources to populate source hits map
         for (const TileCoordsXY& source : sources)
@@ -549,8 +486,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         TileCoordsXY nullSink{ kCoordsNull, kCoordsNull };
         TileCoordsXYSet sinksWithNull = sinks;
         sinksWithNull.insert(nullSink);
-
-        BaseMap<std::unordered_map<TileCoordsXY, int32_t, TileCoordsXYHash>> sinkHitsMap{ ctx.dimensions };
 
         // trace sinks to populate sink hits map
         for (const TileCoordsXY& sink : sinksWithNull)
@@ -600,7 +535,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             BackrefMap furthestSourceAt{ ctx.dimensions };
 
             // scan map to either find the source stream length (if only a single source reaches a tile) or to populate the
-            // furthestSourceAt map (if multiple sources hit a tile)
+            // furthestSourceAt map (if multiple sources hits a tile)
             for (int32_t y = 0; y < ctx.dimensions.y; y++)
             {
                 for (int32_t x = 0; x < ctx.dimensions.x; x++)
@@ -611,18 +546,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     {
                         for (const auto& sourceHits : sourceHitsMap[pos])
                         {
-                            if (sourceHits.second > sourceStreamLength[sourceHits.first])
-                            {
-                                sourceStreamLength[sourceHits.first] = sourceHits.second;
-                            }
+                            sourceStreamLength[sourceHits.first] = std::max(
+                                sourceStreamLength[sourceHits.first], sourceHits.second);
                         }
                     }
                     else if (sourceHitsMap[pos].size() > 1)
                     {
-                        int32_t maxDistance = -1;
+                        int32_t maxDistance = 0;
                         for (const auto& sourceHits : sourceHitsMap[pos])
                         {
-                            if (sourceHits.second > maxDistance)
+                            if (!furthestSourceAt[pos].has_value() || sourceHits.second > maxDistance)
                             {
                                 maxDistance = sourceHits.second;
                                 furthestSourceAt[pos] = sourceHits.first;
@@ -1149,7 +1082,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         pruneShortStreamsAndSinks(ctx);
         ensureCardinalNeighbours(ctx);
         adjustStreamWidth(ctx);
-        applySkeletonMask(ctx);
         carveRiverbed(ctx);
         removeBankIndentations(ctx);
         ensureConsistent(ctx);

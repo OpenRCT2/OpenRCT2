@@ -75,13 +75,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     };
 
-    using QueueInitPosCallback = std::optional<std::function<void(const TileCoordsXY&)>>;
+
+    using QueueInitPosCallback =  std::optional<std::function<void(const TileCoordsXY&)>>;
 
     void primeHydroFlagHeightQueue(MapGenContext& ctx, TrackingStableHeightTileQueue& queue, HydroFlag flag = HydroFlag::river, const QueueInitPosCallback& callback = std::nullopt);
     void primeHydroFlagDistanceQueue(MapGenContext& ctx, TrackingStableTileDistanceTileQueue& queue, HydroFlag flag = HydroFlag::river, const QueueInitPosCallback& callback = std::nullopt);
     void findSourcesAndSinks(MapGenContext& ctx, TileCoordsXYSet& sources, TileCoordsXYSet& sinks);
-
-    void constructRiverSkeletonMap(MapGenContext& ctx, BooleanMap& skeletonMap);
 
     std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset);
     bool haveCommonOrdinalNeighbour(const HydroContext& hydroCtx, const TileCoordsXY& pos, const TileCoordsXY& offset);
