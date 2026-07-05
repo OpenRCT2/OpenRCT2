@@ -48,8 +48,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         {
             for (int32_t x = 0; x < ctx.dimensions.x; x++)
             {
-                TileCoordsXY pos{ x, y };
-
+                const TileCoordsXY pos{ x, y };
                 if (x == 0 || y == 0 || x == ctx.dimensions.x - 1 || y == ctx.dimensions.y - 1)
                 {
                     queue.emplaceAndMark(pos, heightMap[pos]);
@@ -60,8 +59,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
                 for (const auto& neighbour : kNeighbours)
                 {
-                    const TileCoordsXY nPos{ pos + neighbour.offset };
-                    // no bounds check needed per if-clause above
+                    const TileCoordsXY nPos{ pos + neighbour.offset }; // no bounds check needed, if-clause above
                     minNeighbour = std::min(heightMap[nPos], minNeighbour);
                 }
 
@@ -85,7 +83,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
-
                 if (!heightMap.inBounds(nPos) || queue.isMarked(nPos))
                 {
                     continue;
@@ -144,7 +141,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             if (backrefMap[fillPos].has_value())
             {
                 const TileCoordsXY& backrefPos = backrefMap[fillPos].value();
-
                 if (heightMap[fillPos] <= heightMap[backrefPos])
                 {
                     heightMap[fillPos] = std::nextafter(heightMap[backrefPos], std::numeric_limits<float>::infinity());
@@ -170,7 +166,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         for (const auto& neighbour : kNeighbours)
         {
             const TileCoordsXY nPos{ from + neighbour.offset };
-
             if (ctx.heightMap.inBounds(nPos) && hydroCtx.flowsOut[from].has(neighbour.direction))
             {
                 sum += downSlope(ctx, from, nPos, neighbour.distance);
@@ -192,7 +187,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ pos + neighbour.offset };
-
                 if (hydroCtx.flowsIn.inBounds(nPos) && hydroCtx.flowsIn[pos].has(neighbour.direction))
                 {
                     const float neighbourFraction = flowFraction(ctx, nPos, pos, neighbour.distance);
@@ -204,6 +198,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
             hydroCtx.stats.flowAggMax = std::max(hydroCtx.stats.flowAggMax, hydroCtx.catchment[pos]);
         }
+
         return hydroCtx.catchment[pos];
     }
 
@@ -213,26 +208,23 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         for (const auto& neighbour : kNeighbours)
         {
             const TileCoordsXY nPos{ pos + neighbour.offset };
-
-            if (!ctx.heightMap.inBounds(nPos))
+            if (ctx.heightMap.inBounds(nPos))
             {
-                continue;
-            }
-
-            if (ctx.heightMap[pos] > ctx.heightMap[nPos])
-            {
-                hydroCtx.flowsIn[nPos].set(neighbour.opposite);
-                hydroCtx.flowsOut[pos].set(neighbour.direction);
-            }
-            else if (ctx.heightMap[pos] < ctx.heightMap[nPos])
-            {
-                hydroCtx.flowsIn[pos].set(neighbour.direction);
-                hydroCtx.flowsOut[nPos].set(neighbour.opposite);
-            }
-            else
-            {
-                hydroCtx.flowsLateral[pos].set(neighbour.direction);
-                hydroCtx.flowsLateral[nPos].set(neighbour.opposite);
+                if (ctx.heightMap[pos] > ctx.heightMap[nPos])
+                {
+                    hydroCtx.flowsIn[nPos].set(neighbour.opposite);
+                    hydroCtx.flowsOut[pos].set(neighbour.direction);
+                }
+                else if (ctx.heightMap[pos] < ctx.heightMap[nPos])
+                {
+                    hydroCtx.flowsIn[pos].set(neighbour.direction);
+                    hydroCtx.flowsOut[nPos].set(neighbour.opposite);
+                }
+                else
+                {
+                    hydroCtx.flowsLateral[pos].set(neighbour.direction);
+                    hydroCtx.flowsLateral[nPos].set(neighbour.opposite);
+                }
             }
         }
     }
@@ -332,9 +324,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         const float rescaledCatchment = (hydroCtx.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
         const float exponentiatedCatchment = std::pow(
             rescaledCatchment, ctx.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
-        const float width = widthMin + exponentiatedCatchment * (widthMax - widthMin);
 
-        return width;
+        return widthMin + exponentiatedCatchment * (widthMax - widthMin);
     }
 
     /**
@@ -361,7 +352,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         TrackingStableTileQueue queue{ ctx.dimensions };
         DistanceMap distanceMap{ ctx.dimensions };
         distanceMap.fill(std::numeric_limits<float>::infinity());
-        primeHydroFlagHeightQueue(ctx, queue, river);
+        initHydroFlagQueue(ctx, queue);
 
         while (!queue.empty())
         {
@@ -371,13 +362,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
-
-                if (!hydroCtx.flags.inBounds(nPos) || queue.isMarked(nPos) || !hydroCtx.flags[nPos].has(river))
+                if (hydroCtx.flags.inBounds(nPos) && !queue.isMarked(nPos) && hydroCtx.flags[nPos].has(river))
                 {
-                    continue;
+                    queue.emplaceAndMark(nPos, heightMap[nPos]);
                 }
-
-                queue.emplaceAndMark(nPos, heightMap[nPos]);
             }
 
             const float radius = riverWidth(ctx, tile.pos) / 2.0f;
@@ -388,21 +376,14 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 for (int32_t dx = -radius; dx <= radius; dx++)
                 {
                     TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
-
-                    int32_t distance = dx * dx + dy * dy;
-                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared)
+                    const int32_t distance = dx * dx + dy * dy;
+                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared
+                        || heightMap[deltaPos] - heightMap[tile.pos] > 4.0f) // make waterfalls slightly thinner
                     {
                         continue;
                     }
 
-                    // make waterfalls a bit thinner
-                    if (heightMap[deltaPos] - heightMap[tile.pos] > 4.0f)
-                    {
-                        continue;
-                    }
-
-                    // ensure waterfalls look nice (i.e. are monotonic) by setting the height of newly minted river tiles to the
-                    // height of the closest river tile
+                    // make waterfalls look nice, set height of newly minted river tiles to the height of the closest river tile
                     if (hydroCtx.flags[deltaPos].has(river))
                     {
                         if (distanceMap[deltaPos] < std::numeric_limits<float>::infinity())
@@ -438,19 +419,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
 
         HydroContext& hydroCtx = ctx.hydroContext.value();
-
         std::stack<TileCoordsXY> stack;
-        BaseMap<int8_t> inflowCount{ ctx.dimensions };
-
+        BaseMap<int8_t> inflowsOutstanding{ ctx.dimensions };
         ReferenceMap sourceAt{ ctx.dimensions };
         DistanceMap sourceDistanceAt{ ctx.dimensions };
         DistanceMap sourceLength{ ctx.dimensions };
-
-        inflowCount.fill(-1);
+        inflowsOutstanding.fill(-1);
         sourceDistanceAt.fill(-1);
         sourceLength.fill(-1);
 
-        // populate inflowCount, identify sinks and prime stack
+        // populate inflowsOutstanding, identify sinks and init stack
         for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
             for (int32_t x = 0; x < ctx.dimensions.x; x++)
@@ -458,10 +436,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 const TileCoordsXY pos{ x, y };
                 if (hydroCtx.flags[pos].has(river))
                 {
-                    const int8_t inflows = countRiverInflows(ctx, pos);
-                    inflowCount[pos] = inflows;
-
-                    if (inflows == 0)
+                    inflowsOutstanding[pos] = countRiverInflows(ctx, pos);
+                    if (inflowsOutstanding[pos] == 0)
                     {
                         stack.push(pos);
                         sourceAt[pos] = pos;
@@ -499,8 +475,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         sourceAt[nPos] = currentSource;
                     }
 
-                    inflowCount[nPos]--;
-                    if (inflowCount[nPos] == 0)
+                    inflowsOutstanding[nPos]--;
+                    if (inflowsOutstanding[nPos] == 0)
                     {
                         stack.push(nPos);
                     }
@@ -552,16 +528,14 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         PROFILED_FUNCTION();
 
         HydroContext& hydroCtx = ctx.hydroContext.value();
-
         std::stack<TileCoordsXY> stack;
-        BaseMap<int8_t> outflowCount{ ctx.dimensions };
+        BaseMap<int8_t> outflowsOutstanding{ ctx.dimensions };
         ReferenceMap sinkAt{ ctx.dimensions };
         DistanceMap sinkDistance{ ctx.dimensions };
-
-        outflowCount.fill(-1);
+        outflowsOutstanding.fill(-1);
         sinkDistance.fill(-1);
 
-        // populate outflowCount, identify sinks and prime stack
+        // populate outflowsOutstanding, identify sinks and init stack
         for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
             for (int32_t x = 0; x < ctx.dimensions.x; x++)
@@ -569,10 +543,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 const TileCoordsXY pos{ x, y };
                 if (hydroCtx.flags[pos].has(river))
                 {
-                    const int8_t outflows = countRiverOutflows(ctx, pos);
-                    outflowCount[pos] = outflows;
-
-                    if (outflows == 0)
+                    outflowsOutstanding[pos] = countRiverOutflows(ctx, pos);
+                    if (outflowsOutstanding[pos] == 0)
                     {
                         stack.push(pos);
                         sinkAt[pos] = pos;
@@ -608,8 +580,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         sinkAt[nPos] = currentSink;
                     }
 
-                    outflowCount[nPos]--;
-                    if (outflowCount[nPos] == 0)
+                    outflowsOutstanding[nPos]--;
+                    if (outflowsOutstanding[nPos] == 0)
                     {
                         stack.push(nPos);
                     }
@@ -636,16 +608,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Ensure diagonal channels render nicely by asserting each river tile has at least one ordinal neighbour.
+     * Ensure diagonal channels render nicely by making sure each river tile has at least one ordinal neighbour.
      * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
      */
-    static void ensureCardinalNeighbours(MapGenContext& ctx)
+    static void ensureOrdinalNeighbours(MapGenContext& ctx)
     {
         PROFILED_FUNCTION();
         HeightMap& heightMap = ctx.heightMap;
         HydroContext& hydroCtx = ctx.hydroContext.value();
         TrackingStableTileQueue queue{ ctx.dimensions };
-        primeHydroFlagHeightQueue(ctx, queue);
+        initHydroFlagQueue(ctx, queue);
 
         while (!queue.empty())
         {
@@ -656,26 +628,24 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
 
-                if (!hydroCtx.flags.inBounds(nPos) || !hydroCtx.flags[nPos].has(river))
+                if (hydroCtx.flags.inBounds(nPos) && hydroCtx.flags[nPos].has(river))
                 {
-                    continue;
-                }
-
-                if (!queue.isMarked(nPos))
-                {
-                    queue.emplaceAndMark(nPos, heightMap[nPos]);
-                }
-
-                if (!haveCommonOrdinalNeighbour(hydroCtx, tile.pos, neighbour.offset))
-                {
-                    for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(neighbour.offset))
+                    if (!queue.isMarked(nPos))
                     {
-                        const TileCoordsXY sharedOrdinalPos{ tile.pos + ordinalOffset };
-                        heightMap[sharedOrdinalPos] = heightMap[tile.pos];
-                        hydroCtx.catchment[sharedOrdinalPos] = ctx.settings.catchmentThreshold;
-                        hydroCtx.flags[sharedOrdinalPos].set(river);
-                        queue.emplaceAndMark(sharedOrdinalPos, heightMap[sharedOrdinalPos]);
-                        hydroCtx.stats.ensureCardinalNewTiles++;
+                        queue.emplaceAndMark(nPos, heightMap[nPos]);
+                    }
+
+                    if (!haveCommonOrdinalNeighbour(hydroCtx, tile.pos, neighbour.offset))
+                    {
+                        for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(neighbour.offset))
+                        {
+                            const TileCoordsXY sharedOrdinalPos{ tile.pos + ordinalOffset };
+                            heightMap[sharedOrdinalPos] = heightMap[tile.pos];
+                            hydroCtx.catchment[sharedOrdinalPos] = ctx.settings.catchmentThreshold;
+                            hydroCtx.flags[sharedOrdinalPos].set(river);
+                            queue.emplaceAndMark(sharedOrdinalPos, heightMap[sharedOrdinalPos]);
+                            hydroCtx.stats.ensureOrdinalNewTiles++;
+                        }
                     }
                 }
             }
@@ -702,7 +672,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HydroContext& hydroCtx = ctx.hydroContext.value();
         HeightMap heightCopy = heightMap;
         TrackingStableTileQueue queue{ ctx.dimensions };
-        primeHydroFlagHeightQueue(ctx, queue);
+        initHydroFlagQueue(ctx, queue);
         const float seafloorMaxCarveDepth = static_cast<float>(ctx.settings.waterLevel - kRiversSeafloorMaxCarveDepth);
 
         while (!queue.empty())
@@ -727,94 +697,74 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     const float distanceSquared = dxSquared + dySquared;
 
                     const TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
-
-                    if (!heightMap.inBounds(deltaPos) || distanceSquared > radiusSquared)
+                    if (heightMap.inBounds(deltaPos) && distanceSquared <= radiusSquared)
                     {
-                        continue;
+                        float candidateHeight = std::max(riverHeight, seafloorMaxCarveDepth);
+
+                        if (hydroCtx.flags[deltaPos].has(river))
+                        {
+                            const float dz = depth * std::sqrt(1.0f - distanceSquared / radiusSquared);
+                            candidateHeight = candidateHeight - dz;
+                        }
+
+                        heightMap[deltaPos] = std::min(candidateHeight, heightMap[deltaPos]);
                     }
-
-                    float candidateHeight = std::max(riverHeight, seafloorMaxCarveDepth);
-
-                    if (hydroCtx.flags[deltaPos].has(river))
-                    {
-                        const float dz = depth * std::sqrt(1.0f - distanceSquared / radiusSquared);
-                        candidateHeight = candidateHeight - dz;
-                    }
-
-                    heightMap[deltaPos] = std::min(candidateHeight, heightMap[deltaPos]);
                 }
             }
 
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
-
-                if (!hydroCtx.flags.inBounds(nPos) || !hydroCtx.flags[nPos].has(river) || queue.isMarked(nPos))
+                if (hydroCtx.flags.inBounds(nPos) && hydroCtx.flags[nPos].has(river) && !queue.isMarked(nPos))
                 {
-                    continue;
+                    queue.emplaceAndMark(nPos, heightCopy[nPos]);
                 }
-
-                queue.emplaceAndMark(nPos, heightCopy[nPos]);
             }
         }
     }
 
     /**
-     * Remove single tile river bank indentations.
+     * Remove single tile river bank indentations; 1 = river, O = land, center tile not in masks:
+     *
+     *      O O O     1 O O     O O 1     1 1 1
+     *      O 1 O     1 1 O     O 1 1     O 1 O
+     *      1 1 1     1 O O     O O 1     O O O
      */
     static void removeBankIndentations(MapGenContext& ctx)
     {
         PROFILED_FUNCTION();
         HydroContext& hydroCtx = ctx.hydroContext.value();
 
-        // X = river, O = land, center tile not in mask
-        constexpr std::array kMasks = { // O O O
-                                        // O X O
-                                        // X X X
-                                        MapDirectionMask{ South, SouthEast, East },
-                                        // X O O
-                                        // X X O
-                                        // X O O
-                                        MapDirectionMask{ South, SouthWest, West },
-                                        // O O X
-                                        // O X X
-                                        // O O X
-                                        MapDirectionMask{ North, NorthEast, East },
-                                        // X X X
-                                        // O X O
-                                        // O O O
-                                        MapDirectionMask{ North, NorthWest, West }
-        };
+        constexpr std::array kIndentationMasks = { MapDirectionMask{ South, SouthEast, East },
+                                                   MapDirectionMask{ South, SouthWest, West },
+                                                   MapDirectionMask{ North, NorthEast, East },
+                                                   MapDirectionMask{ North, NorthWest, West } };
 
         for (int32_t y = 1; y < ctx.dimensions.y - 1; y++)
         {
             for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
             {
                 const TileCoordsXY pos{ x, y };
-
-                // don't want to remove sources...
-                if (!hydroCtx.flags[pos].has(river) || hydroCtx.flags[pos].has(source))
+                if (hydroCtx.flags[pos].has(river) && !hydroCtx.flags[pos].has(source))
                 {
-                    continue;
-                }
-
-                for (const auto& mask : kMasks)
-                {
-                    bool maskMatches = true;
-                    for (const Neighbour& neighbour : kNeighbours)
+                    for (const auto& mask : kIndentationMasks)
                     {
-                        const TileCoordsXY nPos{ pos + neighbour.offset };
-                        if (mask.has(neighbour.direction) != hydroCtx.flags[nPos].has(river))
+                        bool maskMatches = true;
+                        for (const Neighbour& neighbour : kNeighbours)
                         {
-                            maskMatches = false;
+                            const TileCoordsXY nPos{ pos + neighbour.offset };
+                            if (mask.has(neighbour.direction) != hydroCtx.flags[nPos].has(river))
+                            {
+                                maskMatches = false;
+                                break;
+                            }
+                        }
+                        if (maskMatches)
+                        {
+                            hydroCtx.flags[pos].unset(river);
+                            hydroCtx.stats.bankIndentationsRemoved++;
                             break;
                         }
-                    }
-                    if (maskMatches)
-                    {
-                        hydroCtx.flags[pos].unset(river);
-                        hydroCtx.stats.bankIndentationsRemoved++;
-                        break;
                     }
                 }
             }
@@ -844,7 +794,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-        // find and handle isolated segments
+        // find and handle isolated segments in iterations until none are found, greedily altering the smallest segment
         while (true)
         {
             BooleanMap visited{ ctx.dimensions };
@@ -909,15 +859,15 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
                     if (!hasSource && !hasSink && !belowSeaLevel)
                     {
-                        segments[{ pos, segment.size(), ConsistencyOperation::remove }] = segment;
+                        segments[{ pos, segment.size(), ConsistencyOperation::remove }] = std::move(segment);
                     }
                     else if (!hasSource && hasSink && !belowSeaLevel)
                     {
-                        segments[{ pos, segment.size(), ConsistencyOperation::lower }] = segment;
+                        segments[{ pos, segment.size(), ConsistencyOperation::lower }] = std::move(segment);
                     }
                     else if (hasSource && !hasSink && !belowSeaLevel)
                     {
-                        segments[{ pos, segment.size(), ConsistencyOperation::raise }] = segment;
+                        segments[{ pos, segment.size(), ConsistencyOperation::raise }] = std::move(segment);
                     }
                 }
             }
@@ -964,7 +914,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         hydroCtx.stats.consistencySegmentsRaisedMaxSize, static_cast<int32_t>(segments[candidate].size()));
                     break;
                 }
-                case ConsistencyOperation::remove:
+                case ConsistencyOperation::remove: // should not happen
                 {
                     for (const TileCoordsXY& sPos : segments[candidate])
                     {
@@ -1041,10 +991,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         postProcessCatchment(ctx);
         pruneShortStreams(ctx);
         pruneSinks(ctx);
-        ensureCardinalNeighbours(ctx);
+        ensureOrdinalNeighbours(ctx);
         adjustStreamWidth(ctx);
-        carveRiverbed(ctx);
         removeBankIndentations(ctx);
+        carveRiverbed(ctx);
         ensureConsistent(ctx);
         clearRiversBelowSeaLevel(ctx);
 

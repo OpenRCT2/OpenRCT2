@@ -17,8 +17,7 @@
 
 namespace OpenRCT2::World::MapGenerator::Hydro
 {
-    void primeHydroFlagHeightQueue(
-        MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag, const QueueInitPosCallback& callback)
+    void initHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag)
     {
         HydroContext& hydroCtx = ctx.hydroContext.value();
 
@@ -28,20 +27,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             if (hydroCtx.flags[left].has(flag))
             {
                 queue.emplaceAndMark(left, ctx.heightMap[left]);
-                if (callback.has_value())
-                {
-                    callback.value()(left);
-                }
             }
 
             const TileCoordsXY right{ ctx.dimensions.x - 1, y };
             if (hydroCtx.flags[right].has(flag))
             {
                 queue.emplaceAndMark(right, ctx.heightMap[right]);
-                if (callback.has_value())
-                {
-                    callback.value()(right);
-                }
             }
         }
 
@@ -51,20 +42,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             if (hydroCtx.flags[top].has(flag))
             {
                 queue.emplaceAndMark(top, ctx.heightMap[top]);
-                if (callback.has_value())
-                {
-                    callback.value()(top);
-                }
             }
 
             const TileCoordsXY bottom{ x, ctx.dimensions.y - 1 };
             if (hydroCtx.flags[bottom].has(flag))
             {
                 queue.emplaceAndMark(bottom, ctx.heightMap[bottom]);
-                if (callback.has_value())
-                {
-                    callback.value()(bottom);
-                }
             }
         }
     }
@@ -161,10 +144,10 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             "    river tiles added {}\n",
             stats.widthAdjustNewTiles);
 
-        const auto ensureCardinal = std::format(
-            "\n[ensure cardinal]\n"
+        const auto ensureOrdinal = std::format(
+            "\n[ensure ordinal]\n"
             "    river tiles added {}\n",
-            stats.ensureCardinalNewTiles);
+            stats.ensureOrdinalNewTiles);
 
         const auto bankIndentationsSummary = std::format(
             "\n[bank indentations]\n"
@@ -182,7 +165,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             stats.consistencySegmentsLoweredMaxSize, stats.consistencySegmentsRemoved, stats.consistencySegmentsRemovedMaxSize,
             stats.consistencySegmentsIterations, stats.consistencyBanksRaised);
 
-        return pitSummary + flowSummary + pruningSummary + widthAdjust + ensureCardinal + bankIndentationsSummary
+        return pitSummary + flowSummary + pruningSummary + widthAdjust + ensureOrdinal + bankIndentationsSummary
             + consistencySummary;
     }
 

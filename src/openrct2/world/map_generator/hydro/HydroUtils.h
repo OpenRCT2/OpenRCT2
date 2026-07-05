@@ -75,9 +75,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     };
 
-    using QueueInitPosCallback =  std::optional<std::function<void(const TileCoordsXY&)>>;
-
-    void primeHydroFlagHeightQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag = HydroFlag::river, const QueueInitPosCallback& callback = std::nullopt);
+    void initHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag = HydroFlag::river);
 
     int8_t countRiverInflows(MapGenContext& ctx, const TileCoordsXY& pos);
     int8_t countRiverOutflows(MapGenContext& ctx, const TileCoordsXY& pos);
