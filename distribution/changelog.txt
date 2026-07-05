@@ -1,4 +1,4 @@
-0.5.3 (in development)
+0.5.3 (2025-07-05)
 ------------------------------------------------------------------------
 - Feature: [#26308] Add all new track pieces to the inverted roller coaster.
 - Feature: [#26442] Add cheat to disable grass growing.
