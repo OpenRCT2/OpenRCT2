@@ -13,8 +13,8 @@
 #include "../../../util/Hash.hpp"
 #include "../../tile_element/SurfaceElement.h"
 #include "../BaseMap.hpp"
+#include "../Noise.h"
 
-#include <bitset>
 #include <functional>
 #include <optional>
 #include <random>
@@ -25,7 +25,6 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    class Noise;
     struct Settings;
     struct MapGenContext;
 } // namespace OpenRCT2::World::MapGenerator
@@ -157,6 +156,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         // per rule per tile
         std::optional<int32_t> zRepeat = std::nullopt;
+
+        //make sure to update resetEvaluationContextRuleAndConditionState() when adding new state
     };
 
     enum class Predicate : uint8_t
@@ -381,17 +382,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     template<typename R>
     using Callback = std::function<void(const TileCoordsXY&, const R&)>;
 
-    void evaluateTextureRules(const MapGenContext& genCtx, const Callback<TextureResult>& callback);
-    void evaluateSceneryRules(const MapGenContext& genCtx, const Callback<MaybeSceneryResult>& callback);
-
-    void createDefaultTextureRules(Settings& settings);
-    void createNewTextureRule(Settings& settings);
-    void createNewTextureRuleFromPreset(Settings& settings, TextureRulePreset preset);
-
-    void createDefaultSceneryRules(Settings& settings);
-    void createNewSceneryRule(Settings& settings);
-    void createNewSceneryRuleFromPreset(Settings& settings, SceneryRulePreset preset);
-
-    Condition createNewCondition(const Type& type);
-
+    void initializeEvaluationContext(const MapGenContext& genCtx, EvaluationContext& evalCtx);
+    void evaluateTextureRules(const MapGenContext& genCtx, EvaluationContext& evalCtx, const Callback<TextureResult>& callback);
+    void evaluateSceneryRules(const MapGenContext& genCtx, EvaluationContext& evalCtx, const Callback<MaybeSceneryResult>& callback);
 } // namespace OpenRCT2::World::MapGenerator::Rule

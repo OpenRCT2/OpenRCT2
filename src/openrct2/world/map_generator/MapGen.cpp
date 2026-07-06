@@ -48,11 +48,11 @@ namespace OpenRCT2::World::MapGenerator
 
     static void generateBlankMap(MapGenContext& ctx)
     {
-        // todo appy a bit of noise for rivers
+        // todo appy a bit of noise for rivers?
         ctx.heightMap.fill(ctx.settings.heightmapLow);
     }
 
-    static void applyTexturesFromRules(const MapGenContext& ctx)
+    static void applyTexturesFromRules(const MapGenContext& ctx, Rule::EvaluationContext& evalCtx)
     {
         auto& defaultRule = ctx.settings.textureRules[0];
         assert(defaultRule.isDefault);
@@ -70,10 +70,10 @@ namespace OpenRCT2::World::MapGenerator
                 element->setEdgeObjectIndex(result.edgeTexture.value_or(defaultTextures.edgeTexture));
             };
 
-        Rule::evaluateTextureRules(ctx, callback);
+        Rule::evaluateTextureRules(ctx, evalCtx, callback);
     }
 
-    static void placeSceneryFromRules(const MapGenContext& ctx)
+    static void placeSceneryFromRules(const MapGenContext& ctx, Rule::EvaluationContext& evalCtx)
     {
         Rule::Callback<Rule::MaybeSceneryResult> callback = [](const TileCoordsXY& coords,
                                                                const Rule::MaybeSceneryResult& result) {
@@ -83,7 +83,7 @@ namespace OpenRCT2::World::MapGenerator
             }
         };
 
-        Rule::evaluateSceneryRules(ctx, callback);
+        Rule::evaluateSceneryRules(ctx, evalCtx, callback);
     }
 
     /**
@@ -230,9 +230,13 @@ namespace OpenRCT2::World::MapGenerator
         // slope smooth functions operate on the game map
         applyTileSlopeSmooth(ctx);
 
+        // place debug signs
         placeDebugSigns(ctx);
 
-        applyTexturesFromRules(ctx);
-        placeSceneryFromRules(ctx);
+        // prepare rule evaluation context and evaluate texture and scenery rules
+        Rule::EvaluationContext evalCtx{};
+        Rule::initializeEvaluationContext(ctx, evalCtx);
+        applyTexturesFromRules(ctx, evalCtx);
+        placeSceneryFromRules(ctx, evalCtx);
     }
 } // namespace OpenRCT2::World::MapGenerator

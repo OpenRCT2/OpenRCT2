@@ -10,6 +10,7 @@
 #include "openrct2/Diagnostic.h"
 #include "openrct2/object/WallSceneryEntry.h"
 #include "openrct2/world/map_generator/MapHelpers.h"
+#include "openrct2/world/map_generator/rule/RuleMisc.h"
 
 #include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
