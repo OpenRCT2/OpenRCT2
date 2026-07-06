@@ -17,6 +17,7 @@
 #include "hydro/River.h"
 
 #include <algorithm>
+#include <numbers>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -206,6 +207,16 @@ namespace OpenRCT2::World::MapGenerator
         return raisedLand;
     }
 
+    // +-----+-----+-----+
+    // |  W  | NW  |  N  |
+    // |  2  |  1  |  0  |
+    // +-----+-----+-----+
+    // | SW  |  _  | NE  |
+    // |  4  |     |  3  |
+    // +-----+-----+-----+
+    // |  S  | SE  |  E  |
+    // |  7  |  6  |  5  |
+    // +-----+-----+-----+
     template<class T>
     union NeighbourData
     {
@@ -233,17 +244,6 @@ namespace OpenRCT2::World::MapGenerator
         auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
             return 0;
-
-        // +-----+-----+-----+
-        // |  W  | NW  |  N  |
-        // |  2  |  1  |  0  |
-        // +-----+-----+-----+
-        // | SW  |  _  | NE  |
-        // |  4  |     |  3  |
-        // +-----+-----+-----+
-        // |  S  | SE  |  E  |
-        // |  7  |  6  |  5  |
-        // +-----+-----+-----+
 
         NeighbourData<int32_t> neighbourHeightOffset = {};
         NeighbourData<int32_t> neighbourWaterOffset = {};
@@ -407,12 +407,50 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static float gaussian(float delta, float sigma)
+    static float gaussian(const float delta, const float sigma)
     {
-        return std::exp(-0.5f * std::pow(delta / sigma, 2.0f));
+        return (1.0f / 2 * std::numbers::pi * sigma * sigma) * std::exp(-1.0f * (delta * delta / (2.0f * sigma * sigma)));
     }
 
-    void smoothBox(HeightMap& heightMap, int32_t iterations)
+    class GaussianKernel
+    {
+    private:
+        int32_t kernelSizeHalf;
+        HeightMap kernel;
+
+    public:
+        explicit GaussianKernel(const float sigma)
+        {
+            int32_t kernelSize = static_cast<int32_t>(std::ceil(6.0f * sigma));
+            if (kernelSize % 2 == 0)
+            {
+                kernelSize++;
+            }
+            kernelSize = std::max(kernelSize, 3);
+            kernelSizeHalf = kernelSize / 2;
+
+            kernel = { kernelSize, kernelSize };
+            for (int32_t y = 0; y < kernelSize; y++)
+            {
+                for (int32_t x = 0; x < kernelSize; x++)
+                {
+                    const int32_t dx = x - kernelSizeHalf;
+                    const int32_t dy = y - kernelSizeHalf;
+                    kernel[{ x, y }] = gaussian(dx * dx + dy * dy, sigma);
+                }
+            }
+        }
+        float operator()(const int32_t dx, const int32_t dy)
+        {
+            return kernel[{ dx + kernelSizeHalf, dy + kernelSizeHalf }];
+        }
+        int32_t getKernelSizeHalf() const
+        {
+            return kernelSizeHalf;
+        }
+    };
+
+    void smoothBox(HeightMap& heightMap, const int32_t iterations)
     {
         for (auto i = 0; i < iterations; i++)
         {
@@ -421,141 +459,111 @@ namespace OpenRCT2::World::MapGenerator
             {
                 for (auto x = 0; x < heightMap.width; x++)
                 {
-                    auto avg = 0;
-                    for (auto yy = -1; yy <= 1; yy++)
+                    const TileCoordsXY pos = { x, y };
+                    float sum = 0;
+                    for (auto dy = -1; dy <= 1; dy++)
                     {
-                        for (auto xx = -1; xx <= 1; xx++)
+                        for (auto dx = -1; dx <= 1; dx++)
                         {
-                            auto dx = x + xx;
-                            auto dy = y + yy;
-
+                            const TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
                             // Use tile height if OOB
-                            auto oob = dy < 0 || dx < 0 || dy >= heightMap.width || dx >= heightMap.height;
-                            avg += oob ? copyHeight[{ x, y }] : copyHeight[{ dx, dy }];
+                            sum += heightMap.inBounds(deltaPos) ? copyHeight[deltaPos] : copyHeight[pos];
                         }
                     }
-                    avg /= 9.0f;
-                    heightMap[{ x, y }] = avg;
+                    heightMap[pos] = sum / 9.0f;
                 }
             }
         }
     }
 
-    void smoothGaussian(HeightMap& heightMap, float sigma)
+    void smoothGaussian(HeightMap& heightMap, const float sigma)
     {
-        HeightMap temp(heightMap.width, heightMap.height, heightMap.density);
-        HeightMap norm(heightMap.width, heightMap.height, heightMap.density);
+        HeightMap copy = heightMap;
+        GaussianKernel kernel(sigma);
 
-        temp.fill(0.0f);
-        norm.fill(1.0f);
-
-        const uint16_t d = static_cast<uint16_t>(2.0f * sigma + 1.0f);
-        const uint16_t dHalf = d / 2;
-
-        for (auto y = 0; y < heightMap.height; y++)
+        for (int32_t y = 0; y < heightMap.height; y++)
         {
-            for (auto x = 0; x < heightMap.width; x++)
+            for (int32_t x = 0; x < heightMap.width; x++)
             {
                 const TileCoordsXY pos = { x, y };
-
-                for (auto dy = -dHalf; dy <= dHalf; dy++)
+                float value = 0.0f;
+                float sum = 0.0f;
+                for (auto dy = -kernel.getKernelSizeHalf(); dy <= kernel.getKernelSizeHalf(); dy++)
                 {
-                    for (auto dx = -dHalf; dx <= dHalf; dx++)
+                    for (auto dx = -kernel.getKernelSizeHalf(); dx <= kernel.getKernelSizeHalf(); dx++)
                     {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
-
-                        if (deltaPos.x < 0 || deltaPos.x >= heightMap.width || deltaPos.y < 0 || deltaPos.y >= heightMap.height)
+                        const TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
+                        if (heightMap.inBounds(deltaPos))
                         {
-                            deltaPos = pos;
+                            const float weight = kernel(dx, dy);
+                            value += weight * copy[deltaPos];
+                            sum += weight;
                         }
-
-                        const float weight = gaussian(dx * dx + dy * dy, sigma);
-
-                        temp[pos] += weight * heightMap[deltaPos];
-                        norm[pos] += weight;
                     }
                 }
-            }
-        }
-
-        for (auto y = 0; y < heightMap.height; y++)
-        {
-            for (auto x = 0; x < heightMap.width; x++)
-            {
-                const TileCoordsXY pos = { x, y };
-                heightMap[pos] = temp[pos] / norm[pos];
+                heightMap[pos] = value / sum;
             }
         }
     }
 
     /**
-     * Based on https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
+     * See
+     *
+     * Paris, S., Kornprobst, P., Tumblin, J. and Durand, F., 2009. Bilateral filtering: Theory and applications. Foundations
+     * and trends in computer graphics and vision, 4(1), pp.1-73.
      */
-    void smoothBilateral(HeightMap& heightMap, float sigmaSpace, float sigmaIntensity)
+    void smoothBilateral(HeightMap& heightMap, const float sigmaSpace, const float sigmaIntensity)
     {
-        HeightMap temp(heightMap.width, heightMap.height, heightMap.density);
-        HeightMap norm(heightMap.width, heightMap.height, heightMap.density);
+        HeightMap copy = heightMap;
+        GaussianKernel kernel(sigmaSpace);
 
-        temp.fill(0.0f);
-        norm.fill(1.0f);
-
-        const uint16_t d = static_cast<uint16_t>(2.0f * sigmaSpace + 1.0f);
-        const uint16_t dHalf = d / 2;
-
-        for (auto y = 0; y < heightMap.height; y++)
+        for (int32_t y = 0; y < heightMap.height; y++)
         {
-            for (auto x = 0; x < heightMap.width; x++)
+            for (int32_t x = 0; x < heightMap.width; x++)
             {
                 const TileCoordsXY pos = { x, y };
 
-                for (auto dy = -dHalf; dy <= dHalf; dy++)
+                float value = 0.0f;
+                float sum = 0.0f;
+                for (int32_t dy = -kernel.getKernelSizeHalf(); dy <= kernel.getKernelSizeHalf(); dy++)
                 {
-                    for (auto dx = -dHalf; dx <= dHalf; dx++)
+                    for (int32_t dx = -kernel.getKernelSizeHalf(); dx <= kernel.getKernelSizeHalf(); dx++)
                     {
-                        TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
-
-                        if (deltaPos.x < 0 || deltaPos.x >= heightMap.width || deltaPos.y < 0 || deltaPos.y >= heightMap.height)
+                        const TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
+                        if (heightMap.inBounds(deltaPos))
                         {
-                            deltaPos = pos;
+                            const float closeness = kernel(dx, dy);
+                            const float similarity = gaussian(
+                                std::pow(copy[pos] - copy[deltaPos], 2.0f) / kMaximumLandHeight, sigmaIntensity);
+
+                            const float weight = closeness * similarity;
+
+                            value += weight * copy[deltaPos];
+                            sum += weight;
                         }
-
-                        const float closeness = gaussian(dx * dx + dy * dy, sigmaSpace);
-                        const float similarity = gaussian(
-                            std::pow(heightMap[pos] - heightMap[deltaPos], 2.0f) / kMaxTileElementHeight, sigmaIntensity);
-
-                        const float weight = closeness * similarity;
-
-                        temp[pos] += weight * heightMap[deltaPos];
-                        norm[pos] += weight;
                     }
                 }
-            }
-        }
-
-        for (auto y = 0; y < heightMap.height; y++)
-        {
-            for (auto x = 0; x < heightMap.width; x++)
-            {
-                const TileCoordsXY pos = { x, y };
-                heightMap[pos] = temp[pos] / norm[pos];
+                heightMap[pos] = value / sum;
             }
         }
     }
 
-    void sharpen(HeightMap& heightMap, int32_t iterations)
+    /**
+     * see https://docs.gimp.org/en_GB/gimp-filter-unsharp-mask.html#id3062
+     */
+    void sharpen(HeightMap& heightMap, const int32_t iterations)
     {
         for (auto i = 0; i < iterations; i++)
         {
             HeightMap blurCopy = heightMap;
-            smoothGaussian(blurCopy, 7);
+            smoothGaussian(blurCopy, 0.5f);
 
             for (auto y = 0; y < heightMap.height; y++)
             {
                 for (auto x = 0; x < heightMap.width; x++)
                 {
-                    const TileCoordsXY pos = { x, y };
-                    auto delta = heightMap[pos] - blurCopy[pos];
-                    heightMap[pos] = heightMap[pos] + delta;
+                    const TileCoordsXY pos{ x, y };
+                    heightMap[pos] = 2.0f * heightMap[pos] - blurCopy[pos];
                 }
             }
         }
