@@ -593,10 +593,10 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    TileCoordsXY getWorldCoordsOffset(const Settings& settings)
+    TileCoordsXY getWorldCoordsOffset(const Settings& settings, const int32_t overscanFactor)
     {
-        const int32_t offsetX = (settings.mapSize.x * (Hydro::kRiversOverscanFactor - 1)) / 2;
-        const int32_t offsetY = (settings.mapSize.y * (Hydro::kRiversOverscanFactor - 1)) / 2;
+        const int32_t offsetX = (settings.mapSize.x * (overscanFactor - 1)) / 2;
+        const int32_t offsetY = (settings.mapSize.y * (overscanFactor - 1)) / 2;
         return TileCoordsXY{ offsetX, offsetY };
     }
 

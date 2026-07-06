@@ -115,6 +115,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         const Settings& settings;
         TileCoordsXY dimensions;
+        int32_t overscan;
         TileCoordsXY overscanOffset;
         HeightMap heightMap;
         std::optional<Hydro::HydroContext> hydroContext;
@@ -122,9 +123,4 @@ namespace OpenRCT2::World::MapGenerator
     };
 
     void generate(const Settings& settings);
-    void resetSurfaces(const MapGenContext& ctx);
-    void setWaterLevel(const MapGenContext& ctx);
-    void setRiverWater(const MapGenContext& ctx);
-    void setMapHeight(const MapGenContext& ctx);
-
 } // namespace OpenRCT2::World::MapGenerator

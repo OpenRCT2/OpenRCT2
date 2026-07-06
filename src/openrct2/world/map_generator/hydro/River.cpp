@@ -313,8 +313,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         const HydroContext& hydroCtx = ctx.hydroContext.value();
 
         const float catchmentMin = 1.0f;
-        const float catchmentMax = ctx.settings.mapSize.x * kRiversOverscanFactor * ctx.settings.mapSize.y
-            * kRiversOverscanFactor;
+        const float catchmentMax = ctx.settings.mapSize.x * ctx.overscan * ctx.settings.mapSize.y * ctx.overscan;
 
         const float widthMin = 0.0f;
         const float widthMax = ctx.settings.riverWidthMax;
@@ -620,13 +619,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Remove single tile river bank indentations; 1 = river, O = land, center tile not in masks:
+     * Adjust single tile river bank indentations; 1 = river, O = land, center tile not in masks:
      *
      *      O O O     1 O O     O O 1     1 1 1
      *      O 1 O     1 1 O     O 1 1     O 1 O
      *      1 1 1     1 O O     O O 1     O O O
      */
-    static void removeBankIndentations(MapGenContext& ctx)
+    static void adjustBankIndentations(MapGenContext& ctx)
     {
         PROFILED_FUNCTION();
         HydroContext& hydroCtx = ctx.hydroContext.value();
@@ -657,8 +656,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                         }
                         if (maskMatches)
                         {
-                            hydroCtx.flags[pos].unset(river);
-                            hydroCtx.stats.bankIndentationsRemoved++;
+                            auto riverHeight = hydroCtx.height[pos];
+                            for (const Neighbour& neighbour : kNeighbours)
+                            {
+                                const TileCoordsXY nPos{ pos + neighbour.offset };
+                                if (!hydroCtx.flags[nPos].has(river))
+                                {
+                                    ctx.heightMap[nPos] = std::min(riverHeight, ctx.heightMap[nPos]);
+                                }
+                            }
+                            hydroCtx.stats.bankIndentationsAdjusted++;
                             break;
                         }
                     }
@@ -887,8 +894,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         pruneShortStreams(ctx);
         ensureOrdinalNeighbours(ctx);
         adjustStreamWidth(ctx);
-        removeBankIndentations(ctx);
         carveRiverbed(ctx);
+        adjustBankIndentations(ctx);
         ensureConsistent(ctx);
         clearRiversBelowSeaLevel(ctx);
 

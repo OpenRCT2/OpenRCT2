@@ -31,13 +31,12 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Return the tile coordinate that matches the given pixel of a heightmap
      */
-    static TileCoordsXY HeightmapCoordToTileCoordsXY(uint32_t x, uint32_t y)
+    static TileCoordsXY HeightmapCoordToTileCoordsXY(const MapGenContext& ctx, int32_t x, int32_t y)
     {
-        // The height map does not include the empty tiles around the map, so we add 1.
-        return TileCoordsXY(static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1));
+        return worldCoordsToGenCoords(ctx, TileCoordsXY(y, x));
     }
 
-    bool LoadHeightmapImage(const utf8* path)
+    bool loadHeightmapImage(const utf8* path)
     {
         auto format = Imaging::GetImageFormatFromPath(path);
         if (format == ImageFormat::png)
@@ -54,22 +53,23 @@ namespace OpenRCT2::World::MapGenerator
             if (width != image.Width || height != image.Height)
             {
                 ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIGHT_MAP_TOO_BIG, {});
+                return false;
             }
 
-            // Allocate memory for the height map values, one byte pixel
+            // Allocate memory for the height map values
             _heightMapData = HeightMap(width, height);
 
             // Copy average RGB value to mono bitmap
-            constexpr auto numChannels = 4;
+            constexpr auto kNumChannels = 4;
             const auto pitch = image.Stride;
             const auto pixels = image.Pixels.data();
             for (uint32_t x = 0; x < _heightMapData.width; x++)
             {
                 for (uint32_t y = 0; y < _heightMapData.height; y++)
                 {
-                    const auto red = pixels[x * numChannels + y * pitch];
-                    const auto green = pixels[x * numChannels + y * pitch + 1];
-                    const auto blue = pixels[x * numChannels + y * pitch + 2];
+                    const auto red = pixels[x * kNumChannels + y * pitch];
+                    const auto green = pixels[x * kNumChannels + y * pitch + 1];
+                    const auto blue = pixels[x * kNumChannels + y * pitch + 2];
                     _heightMapData[TileCoordsXY(x, y)] = (red + green + blue) / 3;
                 }
             }
@@ -96,43 +96,37 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Frees the memory used to store the selected height map
      */
-    void UnloadHeightmapImage()
+    void unloadHeightmapImage()
     {
         _heightMapData.clear();
     }
 
-    void GenerateFromHeightmapImage(MapGenContext& ctx)
+    TileCoordsXY queryHeightmapImageDimensions()
+    {
+        Guard::Assert(!_heightMapData.empty(), "No height map loaded");
+
+        // The x and y axis are flipped in the world, so this uses y for x and x for y.
+        return { _heightMapData.height, _heightMapData.width };
+    }
+
+    void generateFromHeightmapImage(MapGenContext& ctx)
     {
         auto& settings = ctx.settings;
         Guard::Assert(!_heightMapData.empty(), "No height map loaded");
-        Guard::Assert(settings.heightmapHigh != settings.heightmapLow, "Low and high setting cannot be the same");
 
-        // Make a copy of the original height map that we can edit
-        HeightMap dest = _heightMapData;
-
-        // Get technical map size, +2 for the black tiles around the map
-        auto mapWidth = static_cast<int32_t>(dest.width + 2);
-        auto mapHeight = static_cast<int32_t>(dest.height + 2);
-
-        // The x and y axis are flipped in the world, so this uses y for x and x for y.
-        TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
-
-        // TODO
-        applyHeightMapTransform(ctx);
-
-        uint8_t maxValue = 255;
-        uint8_t minValue = 0;
+        float maxValue = 255.0f;
+        float minValue = 0.0f;
 
         if (settings.normalizeHeight)
         {
             // Get highest and lowest pixel value
-            maxValue = 0;
-            minValue = 255;
-            for (auto y = 0; y < dest.height; y++)
+            maxValue = 0.0f;
+            minValue = 255.0f;
+            for (auto y = 0; y < _heightMapData.height; y++)
             {
-                for (auto x = 0; x < dest.width; x++)
+                for (auto x = 0; x < _heightMapData.width; x++)
                 {
-                    uint8_t value = dest[{ x, y }];
+                    float value = _heightMapData[{ x, y }];
                     maxValue = std::max(maxValue, value);
                     minValue = std::min(minValue, value);
                 }
@@ -148,45 +142,18 @@ namespace OpenRCT2::World::MapGenerator
         Guard::Assert(maxValue > minValue, "Input range is invalid");
         Guard::Assert(settings.heightmapHigh > settings.heightmapLow, "Output range is invalid");
 
-        const auto surfaceTextureId = generateSurfaceTextureId(settings);
-        const auto edgeTextureId = generateEdgeTextureId(settings, surfaceTextureId);
+        const float rangeIn = maxValue - minValue;
+        const float rangeOut = (settings.heightmapHigh - settings.heightmapLow) * 2;
 
-        const uint8_t rangeIn = maxValue - minValue;
-        const uint8_t rangeOut = (settings.heightmapHigh - settings.heightmapLow) * 2;
-
-        MapInit(flippedMapSize);
-        for (auto y = 0; y < dest.height; y++)
+        for (auto y = 0; y < _heightMapData.height; y++)
         {
-            for (auto x = 0; x < dest.width; x++)
+            for (auto x = 0; x < _heightMapData.width; x++)
             {
-                auto tileCoords = HeightmapCoordToTileCoordsXY(x, y);
-                auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
-                if (surfaceElement == nullptr)
-                    continue;
-
                 // Read value from bitmap, and convert its range
-                uint8_t value = dest[{ x, y }];
-                value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut)
-                    + (settings.heightmapLow * 2);
-                surfaceElement->baseHeight = value;
-
-                // Floor to even number
-                surfaceElement->baseHeight /= 2;
-                surfaceElement->baseHeight *= 2;
-                surfaceElement->clearanceHeight = surfaceElement->baseHeight;
-
-                // Set textures
-                surfaceElement->setSurfaceObjectIndex(surfaceTextureId);
-                surfaceElement->setEdgeObjectIndex(edgeTextureId);
-
-                // Set water level
-                if (surfaceElement->baseHeight < settings.waterLevel)
-                {
-                    surfaceElement->setWaterHeight(settings.waterLevel * kCoordsZStep);
-                }
+                float value = _heightMapData[{ x, y }];
+                value = (value - minValue) / rangeIn * rangeOut + settings.heightmapLow * 2;
+                ctx.heightMap[HeightmapCoordToTileCoordsXY(ctx, x, y)] = value;
             }
         }
-
-        applyTileSlopeSmooth(ctx);
     }
 } // namespace OpenRCT2::World::MapGenerator

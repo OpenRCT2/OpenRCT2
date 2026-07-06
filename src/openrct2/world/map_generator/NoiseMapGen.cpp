@@ -21,8 +21,6 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    constexpr float kQ = 1.0f / Hydro::kRiversOverscanFactor;
-
     using BiasData = std::variant<std::unique_ptr<Noise>, VecXY>;
 
     static BiasData prepareBias(const Settings& settings)
@@ -73,6 +71,8 @@ namespace OpenRCT2::World::MapGenerator
     {
         const float biasStrength = static_cast<float>(ctx.settings.biasStrength) / 100.0f;
         const float biasSteps = ctx.settings.biasSteps;
+
+        const float kQ = 1.0f / ctx.overscan;
 
         const float nx = 2.0f * pos.x / ctx.dimensions.x - 1.0f;
         const float ny = 2.0f * pos.y / ctx.dimensions.y - 1.0f;
@@ -175,20 +175,6 @@ namespace OpenRCT2::World::MapGenerator
                 ctx.heightMap[pos.AsTileCoordsXY()] = low + biasedNoiseValue * high;
             }
         }
-
-        // apply smooth/erosion
-        applyHeightMapTransform(ctx);
-
-        // set the game map to the height map
-        resetSurfaces(ctx);
-        setMapHeight(ctx);
-
-        // set the game map water lvl
-        setWaterLevel(ctx);
-        setRiverWater(ctx);
-
-        // slope smooth functions operate on the game map
-        applyTileSlopeSmooth(ctx);
     }
 
     void generateSimplexMap(MapGenContext& ctx)

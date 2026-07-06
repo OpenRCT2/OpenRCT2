@@ -22,57 +22,7 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static void generateBlankMap(const MapGenContext& ctx);
-    static void applyTexturesFromRules(const MapGenContext& ctx);
-    static void placeSceneryFromRules(const MapGenContext& ctx);
-    static void placeDebugSigns(const MapGenContext& ctx);
-
-    void generate(const Settings& settings)
-    {
-        const TileCoordsXY genSize{ settings.mapSize.x * Hydro::kRiversOverscanFactor,
-                                    settings.mapSize.y * Hydro::kRiversOverscanFactor };
-
-        MapGenContext context{ .settings = settings,
-                           .dimensions = genSize,
-                           .overscanOffset = getWorldCoordsOffset(settings),
-                           .heightMap = HeightMap{ genSize },
-                           .hydroContext = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
-                           .debugSigns = {} };
-
-        switch (settings.algorithm)
-        {
-            case Algorithm::blank:
-                generateBlankMap(context);
-                break;
-
-            case Algorithm::simplexNoise:
-                generateSimplexMap(context);
-                break;
-
-            case Algorithm::warpedNoise:
-                generateWarpedMap(context);
-                break;
-
-            case Algorithm::ridgedNoise:
-                generateRidgedMap(context);
-                break;
-
-            case Algorithm::voronoiNoise:
-                generateVoronoiMap(context);
-                break;
-
-            case Algorithm::heightmapImage:
-                GenerateFromHeightmapImage(context);
-                break;
-        }
-
-        placeDebugSigns(context);
-
-        applyTexturesFromRules(context);
-        placeSceneryFromRules(context);
-    }
-
-    void resetSurfaces(const MapGenContext& ctx)
+    static void resetSurfaces(const MapGenContext& ctx)
     {
         MapClearAllElements();
         MapInit(ctx.settings.mapSize);
@@ -96,10 +46,10 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void generateBlankMap(const MapGenContext& ctx)
+    static void generateBlankMap(MapGenContext& ctx)
     {
-        resetSurfaces(ctx);
-        setWaterLevel(ctx);
+        // todo appy a bit of noise for rivers
+        ctx.heightMap.fill(ctx.settings.heightmapLow);
     }
 
     static void applyTexturesFromRules(const MapGenContext& ctx)
@@ -139,7 +89,7 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Sets each tile's water level to the specified water level if underneath that water level.
      */
-    void setWaterLevel(const MapGenContext& ctx)
+    static void setWaterLevel(const MapGenContext& ctx)
     {
         auto& gameState = getGameState();
         for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
@@ -153,7 +103,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void setRiverWater(const MapGenContext& ctx)
+    static void setRiverWater(const MapGenContext& ctx)
     {
         if (ctx.settings.generateRivers && ctx.hydroContext.has_value())
         {
@@ -188,7 +138,7 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Sets the height of the actual game map tiles to the height map.
      */
-    void setMapHeight(const MapGenContext& ctx)
+    static void setMapHeight(const MapGenContext& ctx)
     {
         for (auto y = 1; y < ctx.settings.mapSize.y - 1; y++)
         {
@@ -214,11 +164,75 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void placeDebugSigns(const MapGenContext& ctx)
+    static void placeDebugSigns(const MapGenContext& ctx)
     {
         for (const auto& sign : ctx.debugSigns)
         {
             placeDebugSign(ctx, sign);
         }
+    }
+
+    void generate(const Settings& settings)
+    {
+        // TODO might be better to make this user configurable?
+        const auto overscanFactor = (settings.algorithm == Algorithm::heightmapImage || settings.algorithm == Algorithm::blank)
+            ? 1
+            : Hydro::kRiversOverscanFactor;
+
+        const TileCoordsXY genSize{ settings.mapSize.x * overscanFactor, settings.mapSize.y * overscanFactor };
+
+        MapGenContext ctx{ .settings = settings,
+                           .dimensions = genSize,
+                           .overscan = overscanFactor,
+                           .overscanOffset = getWorldCoordsOffset(settings, overscanFactor),
+                           .heightMap = HeightMap{ genSize },
+                           .hydroContext = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
+                           .debugSigns = {} };
+
+        switch (settings.algorithm)
+        {
+            case Algorithm::blank:
+                generateBlankMap(ctx);
+                break;
+
+            case Algorithm::simplexNoise:
+                generateSimplexMap(ctx);
+                break;
+
+            case Algorithm::warpedNoise:
+                generateWarpedMap(ctx);
+                break;
+
+            case Algorithm::ridgedNoise:
+                generateRidgedMap(ctx);
+                break;
+
+            case Algorithm::voronoiNoise:
+                generateVoronoiMap(ctx);
+                break;
+
+            case Algorithm::heightmapImage:
+                generateFromHeightmapImage(ctx);
+                break;
+        }
+
+        // apply smooth/erosion
+        applyHeightMapTransform(ctx);
+
+        // set the game map to the height map
+        resetSurfaces(ctx);
+        setMapHeight(ctx);
+
+        // set the game map water lvl
+        setWaterLevel(ctx);
+        setRiverWater(ctx);
+
+        // slope smooth functions operate on the game map
+        applyTileSlopeSmooth(ctx);
+
+        placeDebugSigns(ctx);
+
+        applyTexturesFromRules(ctx);
+        placeSceneryFromRules(ctx);
     }
 } // namespace OpenRCT2::World::MapGenerator

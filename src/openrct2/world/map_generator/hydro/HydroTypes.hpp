@@ -59,7 +59,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         int32_t ensureOrdinalNewTiles = 0;
 
-        int32_t bankIndentationsRemoved = 0;
+        int32_t bankIndentationsAdjusted = 0;
 
         int32_t consistencySegmentsIterations = 1;
         int32_t consistencySegmentsRaised = 0;

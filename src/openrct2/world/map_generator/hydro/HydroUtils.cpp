@@ -134,8 +134,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         const auto bankIndentationsSummary = std::format(
             "\n[bank indentations]\n"
-            "    removed {}\n",
-            stats.bankIndentationsRemoved);
+            "    adjusted {}\n",
+            stats.bankIndentationsAdjusted);
 
         const auto consistencySummary = std::format(
             "\n[consistency]\n"

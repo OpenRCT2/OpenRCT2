@@ -220,7 +220,7 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({179, 151}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
         makeHoldableSpinnerWidgets({179, 169}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
 
-        makeWidget                ({  5, 134}, {290, 86}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        makeWidget                ({  5, 134}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
         makeWidget                ({223, 151}, { 65, 14}, WidgetType::button,       WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
         makeWidget                ({ 10, 169}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
 
@@ -238,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
         makeDropdownWidgets       ({179, 105}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_TRANSFORM_TYPE_BOX), // WIDX_HEIGHTMAP_SMOOTH_FILTER(_DROPDOWN)
         makeHoldableSpinnerWidgets({179, 125}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_SMOOTH_STRENGTH
 
-        makeDropdownWidgets       ({179, 146}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_SMOOTH_EDGE_WEAK  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES(_DROPDOWN)
+        makeDropdownWidgets       ({179, 149}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_SMOOTH_EDGE_WEAK  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES(_DROPDOWN)
     );
 
     static constexpr auto kWaterWidgets = makeWidgets(
@@ -484,6 +484,12 @@ namespace OpenRCT2::Ui::Windows
             }
             mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}(_seed));
             //mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}("177306642"));
+
+            // a bit of a hack but this way everything is consistent
+            if (mapgenSettings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            {
+                mapgenSettings.mapSize = MapGenerator::queryHeightmapImageDimensions();
+            }
 
             MapGenerator::generate(mapgenSettings);
             GfxInvalidateScreen();
@@ -3370,7 +3376,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onClose() override
         {
-            MapGenerator::UnloadHeightmapImage();
+            MapGenerator::unloadHeightmapImage();
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -3589,7 +3595,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (result == ModalResult::ok)
             {
-                if (!MapGenerator::LoadHeightmapImage(path))
+                if (!MapGenerator::loadHeightmapImage(path))
                 {
                     // TODO: Display error popup
                     return;

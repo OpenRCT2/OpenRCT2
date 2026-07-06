@@ -42,7 +42,7 @@ namespace OpenRCT2::World::MapGenerator
     void applyHeightMapTransform(MapGenContext& ctx);
     void applyTileSlopeSmooth(MapGenContext& ctx);
 
-    TileCoordsXY getWorldCoordsOffset(const Settings& settings);
+    TileCoordsXY getWorldCoordsOffset(const Settings& settings, int32_t overscanFactor);
     TileCoordsXY worldCoordsToGenCoords(const MapGenContext& ctx, const TileCoordsXY& worldCoords);
     TileCoordsXY genCoordsToWorldCoords(const MapGenContext& ctx, const TileCoordsXY& genCoords);
     bool isInWorldMap(const MapGenContext& ctx, const TileCoordsXY& genCoords);
