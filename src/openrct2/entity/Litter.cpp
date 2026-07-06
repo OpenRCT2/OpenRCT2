@@ -10,7 +10,7 @@
 #include "../profiling/Profiling.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/tile_element/pathElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
