@@ -8,9 +8,9 @@
 #include "../localisation/StringIds.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
-#include "../world/tile_element/pathElement.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/tile_element/pathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
