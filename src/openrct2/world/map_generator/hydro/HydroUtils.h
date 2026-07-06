@@ -78,7 +78,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     void initHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag = HydroFlag::river);
 
     int8_t countRiverInflows(MapGenContext& ctx, const TileCoordsXY& pos);
-    int8_t countRiverOutflows(MapGenContext& ctx, const TileCoordsXY& pos);
 
     std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset);
     bool haveCommonOrdinalNeighbour(const HydroContext& hydroCtx, const TileCoordsXY& pos, const TileCoordsXY& offset);

@@ -49,14 +49,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (int32_t x = 0; x < ctx.dimensions.x; x++)
             {
                 const TileCoordsXY pos{ x, y };
-                if (x == 0 || y == 0 || x == ctx.dimensions.x - 1 || y == ctx.dimensions.y - 1)
+                if (heightMap.onEdge(pos))
                 {
                     queue.emplaceAndMark(pos, heightMap[pos]);
                     continue;
                 }
 
                 float minNeighbour = std::numeric_limits<float>::infinity();
-
                 for (const auto& neighbour : kNeighbours)
                 {
                     const TileCoordsXY nPos{ pos + neighbour.offset }; // no bounds check needed, if-clause above
@@ -220,11 +219,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     hydroCtx.flowsIn[pos].set(neighbour.direction);
                     hydroCtx.flowsOut[nPos].set(neighbour.opposite);
                 }
-                else
-                {
-                    hydroCtx.flowsLateral[pos].set(neighbour.direction);
-                    hydroCtx.flowsLateral[nPos].set(neighbour.opposite);
-                }
+                // no lateral flows
             }
         }
     }
@@ -270,7 +265,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Applies the catchment threshold and implicitly removes orphans.
+     * Due to the fractional catchment aggregation it is possible for downstream tiles to have a lower catchment than their
+     * upstream(s), leading to non-edge sinks or orphans if these tiles fall below the threshold. Implicitly remove them by
+     * tracing the stream networks upstream from the edge sinks.
      */
     static void postProcessCatchment(MapGenContext& ctx)
     {
@@ -298,7 +295,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
-                if (hydroCtx.flags.inBounds(nPos) && !queue.isMarked(nPos))
+                if (hydroCtx.flags.inBounds(nPos) && !queue.isMarked(nPos)
+                    && hydroCtx.flowsIn[tile.pos].has(neighbour.direction))
                 {
                     postProcessTile(ctx, queue, nPos);
                 }
@@ -421,7 +419,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HydroContext& hydroCtx = ctx.hydroContext.value();
         std::stack<TileCoordsXY> stack;
         BaseMap<int8_t> inflowsOutstanding{ ctx.dimensions };
-        ReferenceMap sourceAt{ ctx.dimensions };
+        ReferenceMap sourceReferenceAt{ ctx.dimensions };
         DistanceMap sourceDistanceAt{ ctx.dimensions };
         DistanceMap sourceLength{ ctx.dimensions };
         inflowsOutstanding.fill(-1);
@@ -440,21 +438,20 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     if (inflowsOutstanding[pos] == 0)
                     {
                         stack.push(pos);
-                        sourceAt[pos] = pos;
+                        sourceReferenceAt[pos] = pos;
                         sourceDistanceAt[pos] = 0.0f;
+                        hydroCtx.stats.pruneSourcesFound++;
                     }
                 }
             }
         }
-
-        hydroCtx.stats.pruneSourcesFound = stack.size();
 
         // trace rivers from the sources, propagating the furthest source downstream after all inflows have been considered
         while (!stack.empty())
         {
             const TileCoordsXY currentPos = stack.top();
             stack.pop();
-            auto currentSource = sourceAt[currentPos].value();
+            auto currentSource = sourceReferenceAt[currentPos].value();
 
             for (const Neighbour& neighbour : kNeighbours)
             {
@@ -472,7 +469,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                     if (sourceDistanceAt[nPos] < distance)
                     {
                         sourceDistanceAt[nPos] = distance;
-                        sourceAt[nPos] = currentSource;
+                        sourceReferenceAt[nPos] = currentSource;
                     }
 
                     inflowsOutstanding[nPos]--;
@@ -484,7 +481,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             }
         }
 
-        // clear tiles with a source ref that is below the threshold
+        // clear tiles with a source ref that is below the threshold and mark valid sources
         for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
             for (int32_t x = 0; x < ctx.dimensions.x; x++)
@@ -492,115 +489,16 @@ namespace OpenRCT2::World::MapGenerator::Hydro
                 const TileCoordsXY pos{ x, y };
                 if (hydroCtx.flags[pos].has(river))
                 {
-                    if (sourceLength[sourceAt[pos].value()] < ctx.settings.pruneThreshold)
+                    if (sourceLength[sourceReferenceAt[pos].value()] < ctx.settings.pruneThreshold)
                     {
                         hydroCtx.flags[pos].unset(river);
                         hydroCtx.stats.pruneSourcesTilesRemoved++;
                     }
-                }
-            }
-        }
-
-        // mark remaining sources
-        for (int32_t y = 0; y < ctx.dimensions.y; y++)
-        {
-            for (int32_t x = 0; x < ctx.dimensions.x; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-                if (hydroCtx.flags[pos].has(river))
-                {
-                    if (countRiverInflows(ctx, pos) == 0)
+                    if (sourceLength[pos] >= ctx.settings.pruneThreshold)
                     {
                         hydroCtx.flags[pos].set(source);
                         hydroCtx.stats.pruneSourcesRemaining++;
                         hydroCtx.stats.pruneSourcesLongest = std::max(hydroCtx.stats.pruneSourcesLongest, sourceLength[pos]);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Remove sinks that are not on the map edge, mostly analogous to pruneShortStreams.
-     */
-    static void pruneSinks(MapGenContext& ctx)
-    {
-        PROFILED_FUNCTION();
-
-        HydroContext& hydroCtx = ctx.hydroContext.value();
-        std::stack<TileCoordsXY> stack;
-        BaseMap<int8_t> outflowsOutstanding{ ctx.dimensions };
-        ReferenceMap sinkAt{ ctx.dimensions };
-        DistanceMap sinkDistance{ ctx.dimensions };
-        outflowsOutstanding.fill(-1);
-        sinkDistance.fill(-1);
-
-        // populate outflowsOutstanding, identify sinks and init stack
-        for (int32_t y = 0; y < ctx.dimensions.y; y++)
-        {
-            for (int32_t x = 0; x < ctx.dimensions.x; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-                if (hydroCtx.flags[pos].has(river))
-                {
-                    outflowsOutstanding[pos] = countRiverOutflows(ctx, pos);
-                    if (outflowsOutstanding[pos] == 0)
-                    {
-                        stack.push(pos);
-                        sinkAt[pos] = pos;
-                        sinkDistance[pos] = 0.0f;
-                        if (!hydroCtx.flags.onEdge(pos))
-                        {
-                            hydroCtx.stats.pruneSinksFound++;
-                        }
-                    }
-                }
-            }
-        }
-
-        // trace rivers from the sinks, propagating the furthest sink upstream after all outflows have been considered
-        while (!stack.empty())
-        {
-            const TileCoordsXY currentPos = stack.top();
-            stack.pop();
-
-            auto currentSink = sinkAt[currentPos].value();
-
-            for (const Neighbour& neighbour : kNeighbours)
-            {
-                const TileCoordsXY nPos{ currentPos + neighbour.offset };
-                if (hydroCtx.flags.inBounds(nPos) && hydroCtx.flowsIn[currentPos].has(neighbour.direction)
-                    && hydroCtx.flags[nPos].has(river))
-                {
-                    const float distance = sinkDistance[currentPos] + neighbour.distance;
-
-                    if (sinkDistance[nPos] < distance)
-                    {
-                        sinkDistance[nPos] = distance;
-                        sinkAt[nPos] = currentSink;
-                    }
-
-                    outflowsOutstanding[nPos]--;
-                    if (outflowsOutstanding[nPos] == 0)
-                    {
-                        stack.push(nPos);
-                    }
-                }
-            }
-        }
-
-        // clear tiles with a sink ref that isn't on the map edge
-        for (int32_t y = 0; y < ctx.dimensions.y; y++)
-        {
-            for (int32_t x = 0; x < ctx.dimensions.x; x++)
-            {
-                const TileCoordsXY pos{ x, y };
-                if (hydroCtx.flags[pos].has(river))
-                {
-                    if (!hydroCtx.flags.onEdge(sinkAt[pos].value()))
-                    {
-                        hydroCtx.flags[pos].unset(river);
-                        hydroCtx.stats.pruneSinksTilesRemoved++;
                     }
                 }
             }
@@ -627,7 +525,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (const auto& neighbour : kNeighboursCardinal)
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
-
                 if (hydroCtx.flags.inBounds(nPos) && hydroCtx.flags[nPos].has(river))
                 {
                     if (!queue.isMarked(nPos))
@@ -653,7 +550,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             for (const auto& neighbour : kNeighboursOrdinal)
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
-
                 if (hydroCtx.flags.inBounds(nPos) && !queue.isMarked(nPos) && hydroCtx.flags[nPos].has(river))
                 {
                     queue.emplaceAndMark(nPos, heightMap[nPos]);
@@ -966,7 +862,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         PROFILED_FUNCTION();
         HydroContext& hydroCtx = ctx.hydroContext.value();
-
         const float seafloorMaxCarveDepth = static_cast<float>(ctx.settings.waterLevel - kRiversSeafloorMaxCarveDepth);
 
         for (int32_t y = 0; y < ctx.dimensions.y; y++)
@@ -990,7 +885,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         aggregateCatchment(ctx);
         postProcessCatchment(ctx);
         pruneShortStreams(ctx);
-        pruneSinks(ctx);
         ensureOrdinalNeighbours(ctx);
         adjustStreamWidth(ctx);
         removeBankIndentations(ctx);

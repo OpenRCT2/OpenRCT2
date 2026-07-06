@@ -67,21 +67,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         return inflows;
     }
 
-    int8_t countRiverOutflows(MapGenContext& ctx, const TileCoordsXY& pos)
-    {
-        HydroContext& hydroCtx = ctx.hydroContext.value();
-        int8_t outflows = 0;
-        for (const Neighbour& neighbour : kNeighbours)
-        {
-            const TileCoordsXY nPos{ pos + neighbour.offset };
-            if (hydroCtx.flowsOut[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
-            {
-                outflows++;
-            }
-        }
-        return outflows;
-    }
-
     /**
      * Returns the two ordinal neighbours for the given cardinal offset.
      * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
@@ -130,14 +115,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         const auto pruningSummary = std::format(
             "\n[pruning]\n"
-            "    sinks removed {}\n"
-            "    sinks tiles removed {}\n"
             "    sources found {}\n"
             "    sources removed {}\n"
             "    sources tiles removed {}\n"
             "    sources longest {}\n",
-            stats.pruneSinksFound, stats.pruneSinksTilesRemoved, stats.pruneSourcesFound,
-            stats.pruneSourcesFound - stats.pruneSourcesRemaining, stats.pruneSourcesTilesRemoved, stats.pruneSourcesLongest);
+            stats.pruneSourcesFound, stats.pruneSourcesFound - stats.pruneSourcesRemaining, stats.pruneSourcesTilesRemoved,
+            stats.pruneSourcesLongest);
 
         const auto widthAdjust = std::format(
             "\n[width adjustment]\n"

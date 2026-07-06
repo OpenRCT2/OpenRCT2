@@ -50,8 +50,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
         float flowAggMax = -std::numeric_limits<float>::infinity();
 
-        int32_t pruneSinksFound = 0;
-        int32_t pruneSinksTilesRemoved = 0;
         int32_t pruneSourcesFound = 0;
         int32_t pruneSourcesTilesRemoved = 0;
         int32_t pruneSourcesRemaining = 0;
@@ -77,7 +75,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     {
         MapDirectionMaskMap flowsIn;
         MapDirectionMaskMap flowsOut;
-        MapDirectionMaskMap flowsLateral;
         BaseMap<float> catchment;
         BaseMap<float> height;
         BaseMap<HydroFlags> flags;
@@ -87,7 +84,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         HydroContext(const TileCoordsXY& size)
             : flowsIn(size)
             , flowsOut(size)
-            , flowsLateral(size)
             , catchment(size)
             , height(size)
             , flags(size)
