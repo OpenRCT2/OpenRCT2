@@ -34,6 +34,21 @@ namespace OpenRCT2::TrackMetadata
         return (progress / 2) + 28;
     }
 
+    static int32_t EvaluatorDiagVerticalLoop(const int16_t progress)
+    {
+        return (abs(progress - 169) / 2) + 31;
+    }
+
+    static int32_t EvaluatorDiagHalfLoopUp(const int16_t progress)
+    {
+        return ((static_cast<uint16_t>(-(progress - 169))) / 2) + 31;
+    }
+
+    static int32_t EvaluatorDiagHalfLoopDown(const int16_t progress)
+    {
+        return (progress / 2) + 31;
+    }
+
     static int32_t EvaluatorMediumHalfLoopUp(const int16_t progress)
     {
         return (244 - progress) / 4 + 51;
@@ -1922,7 +1937,7 @@ namespace OpenRCT2::TrackMetadata
                    TrackElementFlag::inversionToNormal },
         .definition = { TrackGroup::diagVerticalLoop, TrackPitch::down25, TrackPitch::up25, TrackRoll::none, TrackRoll::none,
                         -48 },
-        .verticalFactor = EvaluatorVerticalLoop,
+        .verticalFactor = EvaluatorDiagVerticalLoop,
         .sequenceData = { 16,
                           { kDiagLeftVerticalLoopSeq0, kDiagLeftVerticalLoopSeq1, kDiagLeftVerticalLoopSeq2,
                             kDiagLeftVerticalLoopSeq3, kDiagLeftVerticalLoopSeq4, kDiagLeftVerticalLoopSeq5,
@@ -1943,7 +1958,7 @@ namespace OpenRCT2::TrackMetadata
                    TrackElementFlag::inversionToNormal },
         .definition = { TrackGroup::diagVerticalLoop, TrackPitch::down25, TrackPitch::up25, TrackRoll::none, TrackRoll::none,
                         -48 },
-        .verticalFactor = EvaluatorVerticalLoop,
+        .verticalFactor = EvaluatorDiagVerticalLoop,
         .sequenceData = { 16,
                           { kDiagRightVerticalLoopSeq0, kDiagRightVerticalLoopSeq1, kDiagRightVerticalLoopSeq2,
                             kDiagRightVerticalLoopSeq3, kDiagRightVerticalLoopSeq4, kDiagRightVerticalLoopSeq5,
@@ -1964,7 +1979,7 @@ namespace OpenRCT2::TrackMetadata
                    TrackElementFlag::inversionToNormal },
         .definition = { TrackGroup::diagHalfLoop, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown, TrackRoll::none,
                         64 },
-        .verticalFactor = EvaluatorHalfLoopUp,
+        .verticalFactor = EvaluatorDiagHalfLoopUp,
         .sequenceData = { 10,
                           { kDiagHalfLoopUpSeq0, kDiagHalfLoopUpSeq1, kDiagHalfLoopUpSeq2, kDiagHalfLoopUpSeq3,
                             kDiagHalfLoopUpSeq4, kDiagHalfLoopUpSeq5, kDiagHalfLoopUpSeq6, kDiagHalfLoopUpSeq7,
@@ -1981,7 +1996,7 @@ namespace OpenRCT2::TrackMetadata
         .flags = { TrackElementFlag::down, TrackElementFlag::inversionToNormal, TrackElementFlag::startsAtHalfHeight },
         .definition = { TrackGroup::diagHalfLoop, TrackPitch::down25, TrackPitch::none, TrackRoll::none, TrackRoll::upsideDown,
                         -64 },
-        .verticalFactor = EvaluatorHalfLoopDown,
+        .verticalFactor = EvaluatorDiagHalfLoopDown,
         .sequenceData = { 10,
                           { kDiagHalfLoopDownSeq0, kDiagHalfLoopDownSeq1, kDiagHalfLoopDownSeq2, kDiagHalfLoopDownSeq3,
                             kDiagHalfLoopDownSeq4, kDiagHalfLoopDownSeq5, kDiagHalfLoopDownSeq6, kDiagHalfLoopDownSeq7,
