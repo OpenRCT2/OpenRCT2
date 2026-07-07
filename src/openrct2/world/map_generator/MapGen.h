@@ -118,7 +118,7 @@ namespace OpenRCT2::World::MapGenerator
         int32_t overscan;
         TileCoordsXY overscanOffset;
         HeightMap heightMap;
-        std::optional<Hydro::HydroContext> hydroContext;
+        std::optional<Hydro::HydroContext> hydroContext; // TODO get rid of the optional? keeps 11 bytes per tile
         std::vector<DebugSign> debugSigns;
     };
 

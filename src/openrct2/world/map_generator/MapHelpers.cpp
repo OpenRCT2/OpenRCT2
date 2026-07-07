@@ -14,7 +14,6 @@
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
 #include "Erosion.h"
-#include "hydro/River.h"
 
 #include <algorithm>
 #include <numbers>
@@ -29,8 +28,8 @@ namespace OpenRCT2::World::MapGenerator
 
     static bool isRiverTile(const MapGenContext& ctx, const TileCoordsXY& tileCoords)
     {
-        TileCoordsXY genCoords = worldCoordsToGenCoords(ctx, tileCoords);
-        return ctx.hydroContext.has_value() && ctx.hydroContext.value().flags[genCoords].has(Hydro::river);
+        return ctx.hydroContext.has_value()
+            && ctx.hydroContext.value().flags[worldCoordsToGenCoords(ctx, tileCoords)].has(Hydro::river);
     }
 
     /**
@@ -610,11 +609,6 @@ namespace OpenRCT2::World::MapGenerator
             case HeightMapTransform::erosion:
                 simulateErosion(ctx);
                 break;
-        }
-
-        if (settings.generateRivers)
-        {
-            Hydro::generateRivers(ctx);
         }
     }
 

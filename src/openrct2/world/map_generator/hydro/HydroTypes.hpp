@@ -76,7 +76,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         MapDirectionMaskMap flowsIn;
         MapDirectionMaskMap flowsOut;
         BaseMap<float> catchment;
-        BaseMap<float> height;
+        BaseMap<float> waterLevel;
         BaseMap<HydroFlags> flags;
 
         HydroStatistics stats;
@@ -85,7 +85,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             : flowsIn(size)
             , flowsOut(size)
             , catchment(size)
-            , height(size)
+            , waterLevel(size)
             , flags(size)
         {
         }
