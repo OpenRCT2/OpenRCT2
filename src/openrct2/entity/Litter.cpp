@@ -37,7 +37,8 @@ namespace OpenRCT2
                 continue;
 
             int32_t pathZ = tileElement->getBaseZ();
-            if (pathZ < mapPos.z || pathZ >= mapPos.z + kPathClearance)
+            int32_t pathClearanceZ = tileElement->getClearanceZ();
+            if (mapPos.z < pathZ || mapPos.z >= pathClearanceZ)
                 continue;
 
             return !TileElementIsUnderground(tileElement);
