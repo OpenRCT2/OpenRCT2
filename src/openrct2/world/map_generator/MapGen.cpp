@@ -18,7 +18,7 @@
 #include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
 #include "SceneryPlacement.h"
-#include "hydro/River.h"
+#include "river/River.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -78,17 +78,17 @@ namespace OpenRCT2::World::MapGenerator
     }
 
     /**
-     * Set the water level for each tile based on settings.waterLevel and hydroCtx.waterLevel.
+     * Set the water level for each tile based on settings.waterLevel and riverCtx.waterLevel.
      *
-     * TODO Move HydroContext.waterLevel to MapGenContext and initialize with settings.waterLevel?
+     * TODO Move RiverContext.waterLevel to MapGenContext and initialize with settings.waterLevel?
      *   Would complicate the river logic but simplify this and be more flexible for plugins/lakes/...?
      *   Or have both and let generateRivers write back to MapGenContext?
      */
     static void setWaterLevel(const MapGenContext& ctx)
     {
-        if(ctx.hydroContext.has_value())
+        if(ctx.riverContext.has_value())
         {
-            const Hydro::HydroContext& hydroCtx = ctx.hydroContext.value();
+            const River::RiverContext& riverCtx = ctx.riverContext.value();
             for (auto y = 1; y < ctx.settings.mapSize.y - 1; y++)
             {
                 for (auto x = 1; x < ctx.settings.mapSize.x - 1; x++)
@@ -100,9 +100,9 @@ namespace OpenRCT2::World::MapGenerator
                         int32_t waterLevel = ctx.settings.waterLevel;
 
                         const TileCoordsXY posGenMap = worldCoordsToGenCoords(ctx, posGameMap);
-                        if (hydroCtx.flags[posGenMap].has(Hydro::river))
+                        if (riverCtx.flags[posGenMap].has(River::river))
                         {
-                            const int32_t riverHeight = quantizeHeight(hydroCtx.waterLevel[posGenMap]);
+                            const int32_t riverHeight = quantizeHeight(riverCtx.waterLevel[posGenMap]);
                             waterLevel = std::max(waterLevel, riverHeight);
                         }
 
@@ -195,7 +195,7 @@ namespace OpenRCT2::World::MapGenerator
         // TODO make this user configurable?
         const auto overscanFactor = (settings.algorithm == Algorithm::heightmapImage || settings.algorithm == Algorithm::blank)
             ? 1
-            : Hydro::kRiversOverscanFactor;
+            : River::kRiversOverscanFactor;
 
         const TileCoordsXY genSize{ settings.mapSize.x * overscanFactor, settings.mapSize.y * overscanFactor };
 
@@ -204,7 +204,7 @@ namespace OpenRCT2::World::MapGenerator
                            .overscan = overscanFactor,
                            .overscanOffset = getWorldCoordsOffset(settings, overscanFactor),
                            .heightMap = HeightMap{ genSize },
-                           .hydroContext = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
+                           .riverContext = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
                            .debugSigns = {} };
 
         return ctx;
@@ -222,7 +222,7 @@ namespace OpenRCT2::World::MapGenerator
 
         // generate rivers if enabled
         if (settings.generateRivers)
-            Hydro::generateRivers(ctx);
+            River::generateRivers(ctx);
 
         // reset the game map and apply the generated height and water maps
         resetSurfaces(ctx);

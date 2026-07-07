@@ -12,7 +12,7 @@
 #include "../../../core/FlagHolder.hpp"
 #include "../BaseMap.hpp"
 
-namespace OpenRCT2::World::MapGenerator::Hydro
+namespace OpenRCT2::World::MapGenerator::River
 {
     constexpr int32_t kRiversOverscanFactor = 2;
     constexpr int32_t kRiversSeafloorMaxCarveDepth = 3;
@@ -30,25 +30,24 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     constexpr int32_t kRiverBreachDepthMin = 0;
     constexpr int32_t kRiverBreachDepthMax = 32;
 
-    enum HydroFlag : uint8_t
+    enum RiverFlag : uint8_t
     {
         river,
         filled,
         breached,
         source,
-        // TODO lake,
     };
 
-    using HydroFlags = FlagHolder<uint8_t, HydroFlag>;
+    using RiverFlags = FlagHolder<uint8_t, RiverFlag>;
 
-    struct HydroStatistics
+    struct RiverStatistics
     {
         int32_t pitsFound = 0;
         int32_t pitsBreachSuccess = 0;
         int32_t pitsBreachedTiles = 0;
         int32_t pitsFilledTiles = 0;
 
-        float flowAggMax = -std::numeric_limits<float>::infinity();
+        float flowAggMaxCatchment = -std::numeric_limits<float>::infinity();
 
         int32_t pruneSourcesFound = 0;
         int32_t pruneSourcesTilesRemoved = 0;
@@ -71,17 +70,17 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         int32_t consistencyBanksRaised = 0;
     };
 
-    struct HydroContext
+    struct RiverContext
     {
         MapDirectionMaskMap flowsIn;
         MapDirectionMaskMap flowsOut;
         BaseMap<float> catchment;
         BaseMap<float> waterLevel;
-        BaseMap<HydroFlags> flags;
+        BaseMap<RiverFlags> flags;
 
-        HydroStatistics stats;
+        RiverStatistics statistics;
 
-        HydroContext(const TileCoordsXY& size)
+        RiverContext(const TileCoordsXY& size)
             : flowsIn(size)
             , flowsOut(size)
             , catchment(size)
@@ -91,4 +90,4 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     };
 
-} // namespace OpenRCT2::World::MapGenerator::Hydro
+} // namespace OpenRCT2::World::MapGenerator::River

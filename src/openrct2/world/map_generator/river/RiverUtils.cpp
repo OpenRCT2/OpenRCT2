@@ -7,33 +7,33 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "HydroUtils.h"
+#include "RiverUtils.h"
 
 #include "../../../profiling/Profiling.h"
 #include "../MapGen.h"
 #include "../MapHelpers.h"
 #include "../MapTraversalUtils.h"
-#include "HydroTypes.hpp"
+#include "RiverTypes.hpp"
 
-namespace OpenRCT2::World::MapGenerator::Hydro
+namespace OpenRCT2::World::MapGenerator::River
 {
     /**
      * Prime the given queue with all tiles on the map edges that have the given flag.
      */
-    void initHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag)
+    void initRiverFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, RiverFlag flag)
     {
-        HydroContext& hydroCtx = ctx.hydroContext.value();
+        RiverContext& riverCtx = ctx.riverContext.value();
 
         for (int32_t y = 0; y < ctx.dimensions.y - 1; y++)
         {
             const TileCoordsXY left{ 0, y };
-            if (hydroCtx.flags[left].has(flag))
+            if (riverCtx.flags[left].has(flag))
             {
                 queue.emplaceAndMark(left, ctx.heightMap[left]);
             }
 
             const TileCoordsXY right{ ctx.dimensions.x - 1, y };
-            if (hydroCtx.flags[right].has(flag))
+            if (riverCtx.flags[right].has(flag))
             {
                 queue.emplaceAndMark(right, ctx.heightMap[right]);
             }
@@ -42,13 +42,13 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
         {
             const TileCoordsXY top{ x, 0 };
-            if (hydroCtx.flags[top].has(flag))
+            if (riverCtx.flags[top].has(flag))
             {
                 queue.emplaceAndMark(top, ctx.heightMap[top]);
             }
 
             const TileCoordsXY bottom{ x, ctx.dimensions.y - 1 };
-            if (hydroCtx.flags[bottom].has(flag))
+            if (riverCtx.flags[bottom].has(flag))
             {
                 queue.emplaceAndMark(bottom, ctx.heightMap[bottom]);
             }
@@ -60,12 +60,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
      */
     int8_t countRiverInflows(MapGenContext& ctx, const TileCoordsXY& pos)
     {
-        HydroContext& hydroCtx = ctx.hydroContext.value();
+        RiverContext& riverCtx = ctx.riverContext.value();
         int8_t inflows = 0;
         for (const Neighbour& neighbour : kNeighbours)
         {
             const TileCoordsXY nPos{ pos + neighbour.offset };
-            if (hydroCtx.flowsIn[pos].has(neighbour.direction) && hydroCtx.flags[nPos].has(river))
+            if (riverCtx.flowsIn[pos].has(neighbour.direction) && riverCtx.flags[nPos].has(river))
             {
                 inflows++;
             }
@@ -89,12 +89,12 @@ namespace OpenRCT2::World::MapGenerator::Hydro
      * Checks if the tile at the offset from the given position share an ordinal neighbour with the given flag.
      * Uses the game coordinate convention, i.e. the diagonal neighbours are cardinal directions.
      */
-    bool haveCommonOrdinalNeighbour(const HydroContext& hydroCtx, const TileCoordsXY& pos, const TileCoordsXY& offset)
+    bool haveCommonOrdinalNeighbour(const RiverContext& riverCtx, const TileCoordsXY& pos, const TileCoordsXY& offset)
     {
         for (const TileCoordsXY& ordinalOffset : ordinalNeighbours(offset))
         {
             const TileCoordsXY sharedOrdinalPos{ pos + ordinalOffset };
-            if (hydroCtx.flags[sharedOrdinalPos].has(river))
+            if (riverCtx.flags[sharedOrdinalPos].has(river))
             {
                 return true;
             }
@@ -116,7 +116,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
      */
     float riverWidth(const MapGenContext& ctx, const TileCoordsXY& pos)
     {
-        const HydroContext& hydroCtx = ctx.hydroContext.value();
+        const RiverContext& riverCtx = ctx.riverContext.value();
 
         const float catchmentMin = 1.0f;
         const float catchmentMax = calculateMaxCatchment(ctx);
@@ -124,7 +124,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         const float widthMin = 0.0f;
         const float widthMax = ctx.settings.riverWidthMax;
 
-        const float rescaledCatchment = (hydroCtx.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
+        const float rescaledCatchment = (riverCtx.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
         const float exponentiatedCatchment = std::pow(
             rescaledCatchment, ctx.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
 
@@ -147,9 +147,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     /**
      * Returns a textual summary of the river generation statistics.
      */
-    std::string summarizeHydroStatistics(const MapGenContext& ctx)
+    std::string summarizeRiverStatistics(const MapGenContext& ctx)
     {
-        const auto& stats = ctx.hydroContext.value().stats;
+        const auto& stats = ctx.riverContext.value().statistics;
 
         const auto pitSummary = std::format(
             "\n[breach or fill]\n"
@@ -165,8 +165,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             "    catchment max actual {}\n"
             "    river width max setting {}\n"
             "    river width max actual {}\n",
-            calculateMaxCatchment(ctx), stats.flowAggMax, ctx.settings.riverWidthMax,
-            (stats.flowAggMax / calculateMaxCatchment(ctx)) * ctx.settings.riverWidthMax);
+            calculateMaxCatchment(ctx), stats.flowAggMaxCatchment, ctx.settings.riverWidthMax,
+            (stats.flowAggMaxCatchment / calculateMaxCatchment(ctx)) * ctx.settings.riverWidthMax);
 
         const auto pruningSummary = std::format(
             "\n[prune sources]\n"
@@ -207,4 +207,4 @@ namespace OpenRCT2::World::MapGenerator::Hydro
             + consistencySummary;
     }
 
-} // namespace OpenRCT2::World::MapGenerator::Hydro
+} // namespace OpenRCT2::World::MapGenerator::River

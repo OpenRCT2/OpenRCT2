@@ -44,19 +44,19 @@ namespace OpenRCT2::World::MapGenerator
         queue.emplaceAndMark(pos, 0.0f);
     }
 
-    void computeHydroFlagBasedDistanceMap(
-        const MapGenContext& ctx, DistanceMap& distanceMap, const Hydro::HydroFlag flag, bool invert)
+    void computeRiverFlagBasedDistanceMap(
+        const MapGenContext& ctx, DistanceMap& distanceMap, const River::RiverFlag flag, bool invert)
     {
 
         distanceMap = DistanceMap{ ctx.dimensions };
         distanceMap.fill(std::numeric_limits<float>::infinity());
 
-        if (!ctx.hydroContext.has_value())
+        if (!ctx.riverContext.has_value())
         {
             return;
         }
 
-        const auto& hydroMaps = ctx.hydroContext.value();
+        const auto& riverCtx = ctx.riverContext.value();
         TrackingStableTileQueue queue{ ctx.dimensions };
 
         for (int32_t y = 0; y < distanceMap.height; y++)
@@ -65,7 +65,7 @@ namespace OpenRCT2::World::MapGenerator
             {
                 const TileCoordsXY pos{ x, y };
 
-                if (hydroMaps.flags[pos].has(flag) == !invert)
+                if (riverCtx.flags[pos].has(flag) == !invert)
                 {
                     initZeroDistance(pos, distanceMap, queue);
                 }

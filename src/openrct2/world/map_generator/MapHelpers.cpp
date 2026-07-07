@@ -28,8 +28,8 @@ namespace OpenRCT2::World::MapGenerator
 
     static bool isRiverTile(const MapGenContext& ctx, const TileCoordsXY& tileCoords)
     {
-        return ctx.hydroContext.has_value()
-            && ctx.hydroContext.value().flags[worldCoordsToGenCoords(ctx, tileCoords)].has(Hydro::river);
+        return ctx.riverContext.has_value()
+            && ctx.riverContext.value().flags[worldCoordsToGenCoords(ctx, tileCoords)].has(River::river);
     }
 
     /**

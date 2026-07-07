@@ -55,7 +55,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                bool isRiver = genCtx.hydroContext.has_value() && genCtx.hydroContext.value().flags[pos].has(Hydro::river);
+                bool isRiver = genCtx.riverContext.has_value() && genCtx.riverContext.value().flags[pos].has(River::river);
                 bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
 
                 if (!isSea && !isRiver)
@@ -80,7 +80,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                bool isRiver = genCtx.hydroContext.has_value() && genCtx.hydroContext.value().flags[pos].has(Hydro::river);
+                bool isRiver = genCtx.riverContext.has_value() && genCtx.riverContext.value().flags[pos].has(River::river);
                 bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
 
                 if (isSea || isRiver)
@@ -105,7 +105,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {
                 const TileCoordsXY pos{ x, y };
 
-                bool isRiver = genCtx.hydroContext.has_value() && genCtx.hydroContext.value().flags[pos].has(Hydro::river);
+                bool isRiver = genCtx.riverContext.has_value() && genCtx.riverContext.value().flags[pos].has(River::river);
                 bool isSea = quantizeHeight(genCtx.heightMap[pos]) < genCtx.settings.waterLevel;
 
                 if (isSea && !isRiver)
@@ -656,9 +656,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
         computeWaterDistanceMap(genCtx, evalCtx);
         computeSeaDistanceMap(genCtx, evalCtx);
         computeLandDistanceMap(genCtx, evalCtx);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiver, Hydro::HydroFlag::river);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToFill, Hydro::HydroFlag::filled);
-        computeHydroFlagBasedDistanceMap(genCtx, evalCtx.distanceToBreach, Hydro::HydroFlag::breached);
+        computeRiverFlagBasedDistanceMap(genCtx, evalCtx.distanceToRiver, River::RiverFlag::river);
+        computeRiverFlagBasedDistanceMap(genCtx, evalCtx.distanceToFill, River::RiverFlag::filled);
+        computeRiverFlagBasedDistanceMap(genCtx, evalCtx.distanceToBreach, River::RiverFlag::breached);
         computeBorderDistanceMap(genCtx, evalCtx);
     }
 

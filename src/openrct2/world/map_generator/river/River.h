@@ -11,7 +11,7 @@
 
 #include "../MapGen.h"
 
-namespace OpenRCT2::World::MapGenerator::Hydro
+namespace OpenRCT2::World::MapGenerator::River
 {
     void generateRivers(MapGenContext& ctx);
-} // namespace OpenRCT2::World::MapGenerator::Hydro
+} // namespace OpenRCT2::World::MapGenerator::River

@@ -40,7 +40,7 @@
 #include <openrct2/world/map_generator/Erosion.h>
 #include <openrct2/world/map_generator/MapGen.h>
 #include <openrct2/world/map_generator/PngTerrainGenerator.h>
-#include <openrct2/world/map_generator/hydro/HydroTypes.hpp>
+#include <openrct2/world/map_generator/river/RiverTypes.hpp>
 #include <random>
 
 using namespace OpenRCT2::Drawing;
@@ -3078,8 +3078,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_CATCHMENT:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverCatchmentThresholdMin);
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverCatchmentThresholdMax);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverCatchmentThresholdMin);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverCatchmentThresholdMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft, STR_FORMAT_INTEGER,
                         _settings.catchmentThreshold, 7);
@@ -3095,8 +3095,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverWidthMin);
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverWidthMax);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverWidthMin);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverWidthMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX_ENTER, ft, STR_FORMAT_INTEGER,
                         _settings.riverWidthMax, 2);
@@ -3105,8 +3105,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverGrowthExponentMin);
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverGrowthExponentMax);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMin);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32,
                         _settings.riverWidthMax, 5);
@@ -3115,8 +3115,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverGrowthExponentMin);
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverGrowthExponentMax);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMin);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
                         _settings.pruneThreshold, 2);
@@ -3125,8 +3125,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverBreachLengthMin);
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverBreachLengthMax);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachLengthMin);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachLengthMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH_ENTER, ft, STR_FORMAT_INTEGER,
                         _settings.breachMaxLength, 3);
@@ -3135,8 +3135,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverBreachDepthMin);
-                    ft.Add<int32_t>(MapGenerator::Hydro::kRiverBreachDepthMax);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachDepthMin);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachDepthMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH_ENTER, ft, STR_FORMAT_INTEGER,
                         _settings.breachMaxDepth, 2);
@@ -3158,51 +3158,51 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_UP:
-                    _settings.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) + 1), MapGenerator::Hydro::kRiverCatchmentThresholdMax);
+                    _settings.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) + 1), MapGenerator::River::kRiverCatchmentThresholdMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_DOWN:
-                    _settings.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) - 1), MapGenerator::Hydro::kRiverCatchmentThresholdMin);
+                    _settings.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) - 1), MapGenerator::River::kRiverCatchmentThresholdMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_UP:
-                    _settings.riverWidthMax = std::min<int32_t>(_settings.riverWidthMax + 1, MapGenerator::Hydro::kRiverWidthMax);
+                    _settings.riverWidthMax = std::min<int32_t>(_settings.riverWidthMax + 1, MapGenerator::River::kRiverWidthMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_DOWN:
-                    _settings.riverWidthMax = std::max<int32_t>(_settings.riverWidthMax - 1, MapGenerator::Hydro::kRiverWidthMin);
+                    _settings.riverWidthMax = std::max<int32_t>(_settings.riverWidthMax - 1, MapGenerator::River::kRiverWidthMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP:
-                    _settings.riverGrowthExponent = std::min<int32_t>(_settings.riverGrowthExponent + 1, MapGenerator::Hydro::kRiverGrowthExponentMax);
+                    _settings.riverGrowthExponent = std::min<int32_t>(_settings.riverGrowthExponent + 1, MapGenerator::River::kRiverGrowthExponentMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN:
-                    _settings.riverGrowthExponent = std::max<int32_t>(_settings.riverGrowthExponent - 1, MapGenerator::Hydro::kRiverGrowthExponentMin);
+                    _settings.riverGrowthExponent = std::max<int32_t>(_settings.riverGrowthExponent - 1, MapGenerator::River::kRiverGrowthExponentMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP:
-                    _settings.pruneThreshold = std::min<int32_t>(_settings.pruneThreshold + 1, MapGenerator::Hydro::kRiverPruneLengthThresholdMax);
+                    _settings.pruneThreshold = std::min<int32_t>(_settings.pruneThreshold + 1, MapGenerator::River::kRiverPruneLengthThresholdMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN:
-                    _settings.pruneThreshold = std::max<int32_t>(_settings.pruneThreshold - 1, MapGenerator::Hydro::kRiverPruneLengthThresholdMin);
+                    _settings.pruneThreshold = std::max<int32_t>(_settings.pruneThreshold - 1, MapGenerator::River::kRiverPruneLengthThresholdMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_UP:
-                    _settings.breachMaxLength = std::min<int32_t>(_settings.breachMaxLength + 1, MapGenerator::Hydro::kRiverBreachLengthMax);
+                    _settings.breachMaxLength = std::min<int32_t>(_settings.breachMaxLength + 1, MapGenerator::River::kRiverBreachLengthMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_DOWN:
-                    _settings.breachMaxLength = std::max<int32_t>(_settings.breachMaxLength - 1, MapGenerator::Hydro::kRiverBreachLengthMin);
+                    _settings.breachMaxLength = std::max<int32_t>(_settings.breachMaxLength - 1, MapGenerator::River::kRiverBreachLengthMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_UP:
-                    _settings.breachMaxDepth = std::min<int32_t>(_settings.breachMaxDepth + 1, MapGenerator::Hydro::kRiverBreachDepthMax);
+                    _settings.breachMaxDepth = std::min<int32_t>(_settings.breachMaxDepth + 1, MapGenerator::River::kRiverBreachDepthMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN:
-                    _settings.breachMaxDepth = std::max<int32_t>(_settings.breachMaxDepth - 1, MapGenerator::Hydro::kRiverBreachDepthMin);
+                    _settings.breachMaxDepth = std::max<int32_t>(_settings.breachMaxDepth - 1, MapGenerator::River::kRiverBreachDepthMin);
                     invalidate();
                     break;
             }
@@ -3224,22 +3224,22 @@ namespace OpenRCT2::Ui::Windows
                     _settings.waterLevel = value;
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT:
-                    _settings.catchmentThreshold = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverCatchmentThresholdMin, MapGenerator::Hydro::kRiverCatchmentThresholdMax);
+                    _settings.catchmentThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverCatchmentThresholdMin, MapGenerator::River::kRiverCatchmentThresholdMax);
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
-                    _settings.riverWidthMax = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverWidthMin, MapGenerator::Hydro::kRiverWidthMax);
+                    _settings.riverWidthMax = std::clamp<int32_t>(value, MapGenerator::River::kRiverWidthMin, MapGenerator::River::kRiverWidthMax);
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
-                    _settings.riverGrowthExponent = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverGrowthExponentMin, MapGenerator::Hydro::kRiverGrowthExponentMax);
+                    _settings.riverGrowthExponent = std::clamp<int32_t>(value, MapGenerator::River::kRiverGrowthExponentMin, MapGenerator::River::kRiverGrowthExponentMax);
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
-                    _settings.pruneThreshold = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverPruneLengthThresholdMin, MapGenerator::Hydro::kRiverPruneLengthThresholdMax);
+                    _settings.pruneThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverPruneLengthThresholdMin, MapGenerator::River::kRiverPruneLengthThresholdMax);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
-                    _settings.breachMaxLength = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverBreachLengthMin, MapGenerator::Hydro::kRiverBreachLengthMax);
+                    _settings.breachMaxLength = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachLengthMin, MapGenerator::River::kRiverBreachLengthMax);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
-                    _settings.breachMaxDepth = std::clamp<int32_t>(value, MapGenerator::Hydro::kRiverBreachDepthMin, MapGenerator::Hydro::kRiverBreachDepthMax);
+                    _settings.breachMaxDepth = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachDepthMin, MapGenerator::River::kRiverBreachDepthMax);
                     break;
             }
 

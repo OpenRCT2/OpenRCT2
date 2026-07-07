@@ -12,7 +12,7 @@
 #include "../MapGen.h"
 #include "../TileQueue.hpp"
 
-namespace OpenRCT2::World::MapGenerator::Hydro
+namespace OpenRCT2::World::MapGenerator::River
 {
 
     enum class ConsistencyOperation
@@ -75,7 +75,7 @@ namespace OpenRCT2::World::MapGenerator::Hydro
         }
     };
 
-    void initHydroFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, HydroFlag flag = HydroFlag::river);
+    void initRiverFlagQueue(MapGenContext& ctx, TrackingStableTileQueue& queue, RiverFlag flag = RiverFlag::river);
 
     int8_t countRiverInflows(MapGenContext& ctx, const TileCoordsXY& pos);
 
@@ -83,8 +83,8 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     float riverDepth(float width);
 
     std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset);
-    bool haveCommonOrdinalNeighbour(const HydroContext& hydroCtx, const TileCoordsXY& pos, const TileCoordsXY& offset);
+    bool haveCommonOrdinalNeighbour(const RiverContext& riverCtx, const TileCoordsXY& pos, const TileCoordsXY& offset);
 
-    std::string summarizeHydroStatistics(const MapGenContext& ctx);
+    std::string summarizeRiverStatistics(const MapGenContext& ctx);
 
-} // namespace OpenRCT2::World::MapGenerator::Hydro
+} // namespace OpenRCT2::World::MapGenerator::River

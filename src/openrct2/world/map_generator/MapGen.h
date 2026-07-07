@@ -12,7 +12,7 @@
 #include "../../Version.h"
 #include "../Location.hpp"
 #include "BaseMap.hpp"
-#include "hydro/HydroTypes.hpp"
+#include "river/RiverTypes.hpp"
 #include "rule/Rule.h"
 
 #include <optional>
@@ -118,7 +118,7 @@ namespace OpenRCT2::World::MapGenerator
         int32_t overscan;
         TileCoordsXY overscanOffset;
         HeightMap heightMap;
-        std::optional<Hydro::HydroContext> hydroContext; // TODO get rid of the optional? keeps 11 bytes per tile
+        std::optional<River::RiverContext> riverContext; // TODO get rid of the optional? keeps 11 bytes per tile
         std::vector<DebugSign> debugSigns;
     };
 
