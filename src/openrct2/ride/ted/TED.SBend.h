@@ -234,7 +234,7 @@ namespace OpenRCT2::TrackMetadata
         .coordinates = { 0, 0, 0, 0, -64, -32 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackCurve::none },
-        .priceModifier = 229376, // TODO
+        .priceModifier = 243712,
         .mirrorElement = TrackElemType::bankedSBendRight,
         .flags = {},
         .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::right, TrackRoll::left, 0 },
@@ -249,7 +249,7 @@ namespace OpenRCT2::TrackMetadata
         .coordinates = { 0, 0, 0, 0, -64, 32 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackCurve::none },
-        .priceModifier = 229376, // TODO
+        .priceModifier = 243712,
         .mirrorElement = TrackElemType::bankedSBendLeft,
         .flags = {},
         .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::left, TrackRoll::right, 0 },

@@ -10989,7 +10989,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftTwistDownToUpBanked = TrackElementDescriptor{
-        .description = STR_IN_LINE_TWIST_LEFT,
+        .description = STR_BANKED_IN_LINE_TWIST_LEFT,
         .coordinates = { 0, 0, 0, 16, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackElemType::leftTwistUpToDown, TrackCurve::none },
@@ -11003,7 +11003,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightTwistDownToUpBanked = TrackElementDescriptor{
-        .description = STR_IN_LINE_TWIST_RIGHT,
+        .description = STR_BANKED_IN_LINE_TWIST_RIGHT,
         .coordinates = { 0, 0, 0, 16, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackElemType::rightTwistUpToDown, TrackCurve::none },
@@ -11017,7 +11017,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftTwistUpToDownBanked = TrackElementDescriptor{
-        .description = STR_IN_LINE_TWIST_LEFT,
+        .description = STR_BANKED_IN_LINE_TWIST_LEFT,
         .coordinates = { 0, 0, 0, -16, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackElemType::leftTwistDownToUp },
@@ -11031,7 +11031,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightTwistUpToDownBanked = TrackElementDescriptor{
-        .description = STR_IN_LINE_TWIST_RIGHT,
+        .description = STR_BANKED_IN_LINE_TWIST_RIGHT,
         .coordinates = { 0, 0, 0, -16, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackElemType::rightTwistDownToUp },
@@ -11045,7 +11045,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftBarrelRollUpToDownBanked = TrackElementDescriptor{
-        .description = STR_BARREL_ROLL_LEFT,
+        .description = STR_BANKED_BARREL_ROLL_LEFT,
         .coordinates = { 0, 0, 0, 32, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackElemType::leftBarrelRollDownToUp, TrackCurve::none },
@@ -11060,7 +11060,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightBarrelRollUpToDownBanked = TrackElementDescriptor{
-        .description = STR_BARREL_ROLL_RIGHT,
+        .description = STR_BANKED_BARREL_ROLL_RIGHT,
         .coordinates = { 0, 0, 0, 32, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackElemType::rightBarrelRollDownToUp, TrackCurve::none },
@@ -11075,7 +11075,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftBarrelRollDownToUpBanked = TrackElementDescriptor{
-        .description = STR_BARREL_ROLL_LEFT,
+        .description = STR_BANKED_BARREL_ROLL_LEFT,
         .coordinates = { 0, 0, 0, -32, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackElemType::leftBarrelRollUpToDown },
@@ -11090,7 +11090,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightBarrelRollDownToUpBanked = TrackElementDescriptor{
-        .description = STR_BARREL_ROLL_RIGHT,
+        .description = STR_BANKED_BARREL_ROLL_RIGHT,
         .coordinates = { 0, 0, 0, -32, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackElemType::rightBarrelRollUpToDown },

@@ -205,12 +205,12 @@ namespace OpenRCT2
 
         // Zero-G Rolls, Dive Loops
         TrackElemType::leftZeroGRollUp,
-        TrackElemType::leftZeroGRollUpBanked,
         TrackElemType::leftZeroGRollDown,
-        TrackElemType::leftZeroGRollDownBanked,
         TrackElemType::rightZeroGRollUp,
-        TrackElemType::rightZeroGRollUpBanked,
         TrackElemType::rightZeroGRollDown,
+        TrackElemType::leftZeroGRollUpBanked,
+        TrackElemType::leftZeroGRollDownBanked,
+        TrackElemType::rightZeroGRollUpBanked,
         TrackElemType::rightZeroGRollDownBanked,
         TrackElemType::leftLargeZeroGRollUp,
         TrackElemType::leftLargeZeroGRollDown,
@@ -224,28 +224,28 @@ namespace OpenRCT2
 
         // Barrel Rolls
         TrackElemType::leftBarrelRollUpToDown,
-        TrackElemType::leftBarrelRollUpToDownBanked,
         TrackElemType::leftBarrelRollDownToUp,
-        TrackElemType::leftBarrelRollDownToUpBanked,
         TrackElemType::rightBarrelRollUpToDown,
-        TrackElemType::rightBarrelRollUpToDownBanked,
         TrackElemType::rightBarrelRollDownToUp,
+        TrackElemType::leftBarrelRollUpToDownBanked,
+        TrackElemType::leftBarrelRollDownToUpBanked,
+        TrackElemType::rightBarrelRollUpToDownBanked,
         TrackElemType::rightBarrelRollDownToUpBanked,
         kSeparator,
 
         // Twists
         TrackElemType::leftTwistDownToUp,
-        TrackElemType::leftTwistDownToUpBanked,
         TrackElemType::leftTwistUpToDown,
-        TrackElemType::leftTwistUpToDownBanked,
         TrackElemType::rightTwistDownToUp,
-        TrackElemType::rightTwistDownToUpBanked,
         TrackElemType::rightTwistUpToDown,
-        TrackElemType::rightTwistUpToDownBanked,
         TrackElemType::leftFlyerTwistUp,
         TrackElemType::leftFlyerTwistDown,
         TrackElemType::rightFlyerTwistUp,
         TrackElemType::rightFlyerTwistDown,
+        TrackElemType::leftTwistDownToUpBanked,
+        TrackElemType::leftTwistUpToDownBanked,
+        TrackElemType::rightTwistDownToUpBanked,
+        TrackElemType::rightTwistUpToDownBanked,
     };
 
     // Update the magic number with the current number of track elements to silence

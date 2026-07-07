@@ -451,7 +451,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftZeroGRollUpBanked = TrackElementDescriptor{
-        .description = STR_ZERO_G_ROLL_LEFT,
+        .description = STR_BANKED_ZERO_G_ROLL_LEFT,
         .coordinates = { 0, 0, 0, 56, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackElemType::leftZeroGRollDown, TrackCurve::none },
@@ -467,7 +467,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightZeroGRollUpBanked = TrackElementDescriptor{
-        .description = STR_ZERO_G_ROLL_RIGHT,
+        .description = STR_BANKED_ZERO_G_ROLL_RIGHT,
         .coordinates = { 0, 0, 0, 56, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackElemType::rightZeroGRollDownBanked, TrackCurve::none },
@@ -483,7 +483,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDLeftZeroGRollDownBanked = TrackElementDescriptor{
-        .description = STR_ZERO_G_ROLL_LEFT,
+        .description = STR_BANKED_ZERO_G_ROLL_LEFT,
         .coordinates = { 0, 0, 0, -56, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackElemType::leftZeroGRollUp },
@@ -498,7 +498,7 @@ namespace OpenRCT2::TrackMetadata
     };
 
     constexpr auto kTEDRightZeroGRollDownBanked = TrackElementDescriptor{
-        .description = STR_ZERO_G_ROLL_RIGHT,
+        .description = STR_BANKED_ZERO_G_ROLL_RIGHT,
         .coordinates = { 0, 0, 0, -56, -64, 0 },
         .pieceLength = 96,
         .curveChain = { TrackCurve::none, TrackElemType::rightZeroGRollUp },
