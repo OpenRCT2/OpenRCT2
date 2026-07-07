@@ -1312,6 +1312,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagHalfLoopUpSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagHalfLoopUpSeq1 = {
         .clearance = { 0, 32, 8, 16, { 0b0100, 0 }, {} },
@@ -1348,6 +1349,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagHalfLoopUpSeq9 = {
         .clearance = { -32, 32, 136, 8, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagHalfLoopDownSeq0 = {
         .clearance = { 0, 0, 136, 8, { 0b1000, 0 }, {} },
@@ -1388,11 +1390,13 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagHalfLoopDownSeq9 = {
         .clearance = { 32, -32, 0, 8, { 0b1000, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
 
     static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq1 = {
         .clearance = { 0, 32, 8, 16, { 0b0100, 0 }, {} },
@@ -1453,10 +1457,12 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq15 = {
         .clearance = { -64, 32, 0, 8, { 0b0010, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq1 = {
         .clearance = { -32, 0, 8, 16, { 0b0001, 0 }, {} },
@@ -1517,6 +1523,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq15 = {
         .clearance = { -32, 64, 0, 8, { 0b0010, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
 
     constexpr auto kTEDLeftVerticalLoop = TrackElementDescriptor{

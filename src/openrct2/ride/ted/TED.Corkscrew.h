@@ -411,6 +411,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagLeftCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagLeftCorkscrewUpSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b0011, 0 }, {} },
@@ -439,10 +440,12 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagLeftCorkscrewUpSeq7 = {
         .clearance = { -96, 0, 48, 8, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagRightCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagRightCorkscrewUpSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0110, 0 }, {} },
@@ -471,6 +474,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagRightCorkscrewUpSeq7 = {
         .clearance = { 0, 96, 48, 8, { 0b1110, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagLeftCorkscrewDownSeq0 = {
         .clearance = { 0, 0, 48, 8, { 0b1000, 0 }, {} },
@@ -539,6 +543,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, {} },
@@ -571,10 +576,12 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewUpSeq8 = {
         .clearance = { -128, 0, 80, 8, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, {} },
@@ -607,6 +614,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kDiagRightLargeCorkscrewUpSeq8 = {
         .clearance = { 0, 128, 80, 8, { 0b1110, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kDiagLeftLargeCorkscrewDownSeq0 = {
         .clearance = { 0, 0, 80, 8, { 0b1000, 0 }, {} },

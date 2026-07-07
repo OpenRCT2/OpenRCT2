@@ -6685,6 +6685,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b0111, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp60Seq1 = {
         .clearance = { 0, -32, 48, 48, { 0b1000, 0 }, {} },
@@ -6701,6 +6702,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1011, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp60Seq1 = {
         .clearance = { 0, 32, 48, 48, { 0b0100, 0 }, {} },
@@ -6717,6 +6719,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown60Seq0 = {
         .clearance = { 0, 0, 48, 80, { 0b0010, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown60Seq1 = {
         .clearance = { 0, -32, 48, 48, { 0b1000, 0 }, {} },
@@ -6733,6 +6736,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown60Seq0 = {
         .clearance = { 0, 0, 48, 80, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown60Seq1 = {
         .clearance = { 0, 32, 48, 48, { 0b0100, 0 }, {} },
@@ -6749,6 +6753,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftEighthToDiagUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kLeftEighthToDiagUp60Seq1 = {
         .clearance = { -32, 0, 48, 80, { 0b1111, 0 }, {} },
@@ -6769,6 +6774,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kRightEighthToDiagUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kRightEighthToDiagUp60Seq1 = {
         .clearance = { -32, 0, 48, 80, { 0b1111, 0 }, {} },
@@ -6789,6 +6795,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown60Seq0 = {
         .clearance = { 0, 0, 96, 64, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown60Seq1 = {
         .clearance = { 0, 32, 48, 80, { 0b0100, 0 }, {} },
@@ -6809,6 +6816,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown60Seq0 = {
         .clearance = { 0, 0, 96, 64, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown60Seq1 = {
         .clearance = { -32, 0, 48, 80, { 0b0001, 0 }, {} },
@@ -6829,6 +6837,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp60Seq1 = {
         .clearance = { -32, 0, 0, 96, { 0b0001, 0 }, {} },
@@ -6849,6 +6858,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp60Seq1 = {
         .clearance = { 0, 32, 0, 96, { 0b0100, 0 }, {} },
@@ -6869,6 +6879,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kRightEighthToDiagDown60Seq0 = {
         .clearance = { 0, 0, 96, 64, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kRightEighthToDiagDown60Seq1 = {
         .clearance = { -32, 0, 32, 64, { 0b1111, 0 }, {} },
@@ -6889,6 +6900,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftEighthToDiagDown60Seq0 = {
         .clearance = { 0, 0, 96, 64, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
     };
     static constexpr SequenceDescriptor kLeftEighthToDiagDown60Seq1 = {
         .clearance = { -32, 0, 32, 64, { 0b1111, 0 }, {} },
