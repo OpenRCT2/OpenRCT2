@@ -10,6 +10,7 @@
 #include "../profiling/Profiling.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
@@ -36,8 +37,9 @@ namespace OpenRCT2
             if (tileElement->getType() != TileElementType::Path)
                 continue;
 
-            int32_t pathZ = tileElement->getBaseZ();
-            if (pathZ < mapPos.z || pathZ >= mapPos.z + kPathClearance)
+            int32_t pathBaseZ = tileElement->getBaseZ();
+            int32_t pathTopZ = pathBaseZ + (tileElement->asPath()->IsSloped() ? kPathHeightStep : 0);
+            if (!(pathBaseZ <= mapPos.z && pathTopZ >= mapPos.z))
                 continue;
 
             return !TileElementIsUnderground(tileElement);
