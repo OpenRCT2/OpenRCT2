@@ -49,7 +49,7 @@ using namespace OpenRCT2::Drawing;
 
 extern CoordsXY gClipSelectionA;
 extern CoordsXY gClipSelectionB;
-extern uint8_t gClipHeight;
+extern int16_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 

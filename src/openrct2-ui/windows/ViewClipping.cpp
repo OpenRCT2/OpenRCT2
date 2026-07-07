@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <cmath>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -48,6 +49,9 @@ namespace OpenRCT2::Ui::Windows
         DisplayRaw,
         DisplayUnits
     };
+
+    constexpr int16_t kClipHeightMin = -128;
+    constexpr int16_t kClipHeightMax = 255;
 
 #pragma region Widgets
 
@@ -162,14 +166,14 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLIP_HEIGHT_INCREASE:
-                    if (gClipHeight < 255)
+                    if (gClipHeight < kClipHeightMax)
                         SetClipHeight(gClipHeight + 1);
                     mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                         mainWindow->invalidate();
                     break;
                 case WIDX_CLIP_HEIGHT_DECREASE:
-                    if (gClipHeight > 0)
+                    if (gClipHeight > kClipHeightMin)
                         SetClipHeight(gClipHeight - 1);
                     mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
@@ -183,8 +187,9 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
             const ScrollArea* const scroll = &this->scrolls[0];
             const int16_t scroll_width = widget.width() - 2;
-            const uint8_t clip_height = static_cast<uint8_t>(
-                (static_cast<float>(scroll->contentOffsetX) / (scroll->contentWidth - scroll_width)) * 255);
+            const float ratio = static_cast<float>(scroll->contentOffsetX) / (scroll->contentWidth - scroll_width);
+            const int16_t clip_height = static_cast<int16_t>(
+                std::round(ratio * (kClipHeightMax - kClipHeightMin) + kClipHeightMin));
             if (clip_height != gClipHeight)
             {
                 gClipHeight = clip_height;
@@ -387,11 +392,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SetClipHeight(const uint8_t clipHeight)
+        void SetClipHeight(const int16_t clipHeight)
         {
-            gClipHeight = clipHeight;
+            gClipHeight = std::clamp(clipHeight, kClipHeightMin, kClipHeightMax);
             const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
-            const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
+            const float clip_height_ratio = static_cast<float>(gClipHeight - kClipHeightMin)
+                / (kClipHeightMax - kClipHeightMin);
             this->scrolls[0].contentOffsetX = static_cast<int16_t>(
                 std::ceil(clip_height_ratio * (this->scrolls[0].contentWidth - (widget.width() - 2))));
         }

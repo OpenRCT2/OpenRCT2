@@ -37,7 +37,7 @@ using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Numerics;
 
 // Globals for paint clipping
-uint8_t gClipHeight = 128; // Default to middle value
+int16_t gClipHeight = 128; // Default to middle value
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { kMaximumTileStartXY, kMaximumTileStartXY };
 
