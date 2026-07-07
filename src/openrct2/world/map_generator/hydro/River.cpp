@@ -305,40 +305,6 @@ namespace OpenRCT2::World::MapGenerator::Hydro
     }
 
     /**
-     * Calculate the river width at the given position by scaling the catchment based on the max width and growth exponent
-     * settings.
-     */
-    static float riverWidth(const MapGenContext& ctx, const TileCoordsXY& pos)
-    {
-        const HydroContext& hydroCtx = ctx.hydroContext.value();
-
-        const float catchmentMin = 1.0f;
-        const float catchmentMax = ctx.settings.mapSize.x * ctx.overscan * ctx.settings.mapSize.y * ctx.overscan;
-
-        const float widthMin = 0.0f;
-        const float widthMax = ctx.settings.riverWidthMax;
-
-        const float rescaledCatchment = (hydroCtx.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
-        const float exponentiatedCatchment = std::pow(
-            rescaledCatchment, ctx.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
-
-        return widthMin + exponentiatedCatchment * (widthMax - widthMin);
-    }
-
-    /**
-     * Determines the river depth based on the width, constants from table 2 in
-     *
-     * Konsoer, K., Zinger, J. and Parker, G., 2013. Bankfull hydraulic geometry of submarine channels created by turbidity
-     * currents: Relations between bankfull channel characteristics and formative flow discharge. Journal of Geophysical
-     * Research: Earth Surface, 118(1), pp.216-228.
-     */
-    static float riverDepth(const float width)
-    {
-        const float depth = std::pow(width / 18.8f, 1.0f / 1.41f);
-        return std::max(2.0f, 8.0f * depth); // rescale for rct
-    }
-
-    /**
      * Slightly widen the river based on catchment.
      */
     static void adjustStreamWidth(MapGenContext& ctx)

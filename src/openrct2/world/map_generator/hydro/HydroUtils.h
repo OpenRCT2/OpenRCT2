@@ -79,6 +79,9 @@ namespace OpenRCT2::World::MapGenerator::Hydro
 
     int8_t countRiverInflows(MapGenContext& ctx, const TileCoordsXY& pos);
 
+    float riverWidth(const MapGenContext& ctx, const TileCoordsXY& pos);
+    float riverDepth(float width);
+
     std::array<TileCoordsXY, 2> ordinalNeighbours(const TileCoordsXY& offset);
     bool haveCommonOrdinalNeighbour(const HydroContext& hydroCtx, const TileCoordsXY& pos, const TileCoordsXY& offset);
 
