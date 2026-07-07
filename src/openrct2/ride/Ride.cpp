@@ -4690,10 +4690,12 @@ BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const Ride
         { SpriteGroupType::Slopes25, SpritePrecision::sprites8, SpriteGroupType::Slopes42, SpritePrecision::sprites8,
           SpriteGroupType::Slopes50, SpritePrecision::sprites4 }, // TrackGroup::diagSlopeSteepUp
         { SpriteGroupType::Slopes25, SpritePrecision::sprites8, SpriteGroupType::Slopes42, SpritePrecision::sprites8,
-          SpriteGroupType::Slopes50, SpritePrecision::sprites4 },   // TrackGroup::diagSlopeSteepDown
-        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16 }, // TrackGroup::sBend //TODO fix
-        { SpriteGroupType::Slopes60, SpritePrecision::sprites4 },   // TrackGroup::steepToBank //TODO fix
-        { SpriteGroupType::Slopes60, SpritePrecision::sprites16 },  // TrackGroup::slopeCurveSteepLarge,
+          SpriteGroupType::Slopes50, SpritePrecision::sprites4 }, // TrackGroup::diagSlopeSteepDown
+        { SpriteGroupType::SlopeFlat, SpritePrecision::sprites16, SpriteGroupType::FlatBanked22, SpritePrecision::sprites4,
+          SpriteGroupType::FlatBanked45, SpritePrecision::sprites4 }, // TrackGroup::sBend
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes25Banked45,
+          SpritePrecision::sprites4 },                             // TrackGroup::steepToBank
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites16 }, // TrackGroup::slopeCurveSteepLarge,
         { SpriteGroupType::FlatBanked22, SpritePrecision::sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::sprites4,
           SpriteGroupType::InlineTwists, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::sprites4 }, // TrackGroup::twistBanked,
@@ -4708,12 +4710,12 @@ BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const Ride
           SpritePrecision::sprites8 }, // TrackGroup::diagCorkscrew
         { SpriteGroupType::Corkscrews, SpritePrecision::sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::sprites8 }, // TrackGroup::diagLargeCorkscrew
-        { SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 }, // TrackGroup::diagHalfLoop
-        { SpriteGroupType::Slopes60, SpritePrecision::sprites4, SpriteGroupType::Slopes75, SpritePrecision::sprites4,
-          SpriteGroupType::Slopes90, SpritePrecision::sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::sprites4,
-          SpriteGroupType::SlopeInverted, SpritePrecision::sprites4 } // TrackGroup::diagVerticalLoop
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites8, SpriteGroupType::Slopes75, SpritePrecision::sprites8,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites8, SpriteGroupType::SlopesLoop, SpritePrecision::sprites8,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites8 }, // TrackGroup::diagHalfLoop
+        { SpriteGroupType::Slopes60, SpritePrecision::sprites8, SpriteGroupType::Slopes75, SpritePrecision::sprites8,
+          SpriteGroupType::Slopes90, SpritePrecision::sprites8, SpriteGroupType::SlopesLoop, SpritePrecision::sprites8,
+          SpriteGroupType::SlopeInverted, SpritePrecision::sprites8 } // TrackGroup::diagVerticalLoop
     };
 
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));
