@@ -180,6 +180,23 @@ namespace OpenRCT2::World::MapGenerator
     };
     using MapDirectionMask = FlagHolder<uint8_t, MapDirection>;
 
+    template<class T>
+    union NeighbourData
+    {
+        T direction[8];
+        struct
+        { // same order as MapDirection
+            T N;
+            T NE;
+            T E;
+            T SE;
+            T S;
+            T SW;
+            T W;
+            T NW;
+        };
+    };
+
     struct Neighbour
     {
         MapDirection direction;

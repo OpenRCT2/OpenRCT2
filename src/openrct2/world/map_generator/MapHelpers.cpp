@@ -20,9 +20,9 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static uint8_t GetBaseHeightOrZero(int32_t x, int32_t y)
+    static uint8_t GetBaseHeightOrZero(const TileCoordsXY& pos)
     {
-        auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+        const auto surfaceElement = MapGetSurfaceElementAt(pos);
         return surfaceElement != nullptr ? surfaceElement->baseHeight : 0;
     }
 
@@ -37,122 +37,129 @@ namespace OpenRCT2::World::MapGenerator
      */
     int32_t smoothTileSlopeStrong(const MapGenContext& ctx, const TileCoordsXY tileCoords)
     {
-        auto surfaceElement = MapGetSurfaceElementAt(tileCoords);
+        const auto surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
+        {
             return 0;
-
+        }
+        auto raisedLand = 0;
         surfaceElement->setSlope(kTileSlopeFlat);
 
-        auto x = tileCoords.x, y = tileCoords.y;
-        auto raisedLand = 0;
-
-        // Raise to edge height - 2
-        uint8_t highest = surfaceElement->baseHeight;
-        highest = std::max(highest, GetBaseHeightOrZero(x - 1, y + 0));
-        highest = std::max(highest, GetBaseHeightOrZero(x + 1, y + 0));
-        highest = std::max(highest, GetBaseHeightOrZero(x + 0, y - 1));
-        highest = std::max(highest, GetBaseHeightOrZero(x + 0, y + 1));
-        if (surfaceElement->baseHeight < highest - 2)
+        // populate neighbour heights
+        NeighbourData<uint8_t> neighbourHeights={};
+        for (const Neighbour& neighbour : kNeighbours)
         {
-            raisedLand = 1;
-            surfaceElement->baseHeight = surfaceElement->clearanceHeight = highest - 2;
+            neighbourHeights.direction[neighbour.direction] = GetBaseHeightOrZero(tileCoords + neighbour.offset);
         }
 
-        // Check corners
-        int32_t doubleCorner = -1;
-        uint8_t cornerHeights[4] = {
-            GetBaseHeightOrZero(x - 1, y - 1),
-            GetBaseHeightOrZero(x + 1, y - 1),
-            GetBaseHeightOrZero(x + 1, y + 1),
-            GetBaseHeightOrZero(x - 1, y + 1),
-        };
-
-        highest = surfaceElement->baseHeight;
-        for (std::size_t i = 0; i < std::size(cornerHeights); i++)
-            highest = std::max(highest, cornerHeights[i]);
-
-        if (highest >= surfaceElement->baseHeight + 4)
+        // Raise tile to the height of the highest ordinal neighbour - 2
+        uint8_t highestNeighbourOrdinal = surfaceElement->baseHeight;
+        for (const Neighbour& neighbour : kNeighboursOrdinal)
         {
-            int32_t count = 0;
-            int32_t canCompensate = 1;
-            for (std::size_t i = 0; i < std::size(cornerHeights); i++)
+            highestNeighbourOrdinal = std::max(highestNeighbourOrdinal, neighbourHeights.direction[neighbour.direction]);
+        }
+
+        if (surfaceElement->baseHeight < highestNeighbourOrdinal - 2)
+        {
+            raisedLand = 1;
+            surfaceElement->baseHeight = highestNeighbourOrdinal - 2;
+            surfaceElement->clearanceHeight = highestNeighbourOrdinal - 2;
+        }
+
+        // Check cardinal neighbours
+        std::optional<MapDirection> doubleCorner = std::nullopt;
+
+        uint8_t cardinalNeighbourMaxHeight = surfaceElement->baseHeight;
+        for (const Neighbour& neighbour : kNeighboursCardinal)
+        {
+            cardinalNeighbourMaxHeight = std::max(cardinalNeighbourMaxHeight, neighbourHeights.direction[neighbour.direction]);
+        }
+
+        if (cardinalNeighbourMaxHeight >= surfaceElement->baseHeight + 4)
+        {
+            int32_t cardinalNeighbourDoubleCornerCount = 0;
+            bool canCompensate = true;
+            for (const Neighbour& neighbour : kNeighboursCardinal)
             {
-                if (cornerHeights[i] == highest)
+                if (neighbourHeights.direction[neighbour.direction] == cardinalNeighbourMaxHeight)
                 {
-                    count++;
+                    cardinalNeighbourDoubleCornerCount++;
 
                     // Check if surrounding corners aren't too high. The current tile
                     // can't compensate for all the height differences anymore if it has
                     // the extra height slope.
-                    int32_t highestOnLowestSide;
-                    switch (i)
+                    int32_t highestOnOpposingOrdinal;
+                    switch (neighbour.direction)
                     {
                         default:
-                        case 0:
-                            highestOnLowestSide = std::max(GetBaseHeightOrZero(x + 1, y), GetBaseHeightOrZero(x, y + 1));
+                        case North:
+                            highestOnOpposingOrdinal = std::max(neighbourHeights.SE, neighbourHeights.SW);
                             break;
-                        case 1:
-                            highestOnLowestSide = std::max(GetBaseHeightOrZero(x - 1, y), GetBaseHeightOrZero(x, y + 1));
+                        case West:
+                            highestOnOpposingOrdinal = std::max(neighbourHeights.NE, neighbourHeights.SE);
                             break;
-                        case 2:
-                            highestOnLowestSide = std::max(GetBaseHeightOrZero(x - 1, y), GetBaseHeightOrZero(x, y - 1));
+                        case South:
+                            highestOnOpposingOrdinal = std::max(neighbourHeights.NE, neighbourHeights.NW);
                             break;
-                        case 3:
-                            highestOnLowestSide = std::max(GetBaseHeightOrZero(x + 1, y), GetBaseHeightOrZero(x, y - 1));
+                        case East:
+                            highestOnOpposingOrdinal = std::max(neighbourHeights.NW, neighbourHeights.SW);
                             break;
                     }
 
-                    if (highestOnLowestSide > surfaceElement->baseHeight)
+                    if (highestOnOpposingOrdinal > surfaceElement->baseHeight)
                     {
-                        surfaceElement->baseHeight = surfaceElement->clearanceHeight = highestOnLowestSide;
+                        surfaceElement->baseHeight = highestOnOpposingOrdinal;
+                        surfaceElement->clearanceHeight = highestOnOpposingOrdinal;
                         raisedLand = 1;
-                        canCompensate = 0;
+                        canCompensate = false;
                     }
                 }
             }
 
-            if (count == 1 && canCompensate)
+            if (cardinalNeighbourDoubleCornerCount == 1 && canCompensate)
             {
-                if (surfaceElement->baseHeight < highest - 4)
+                if (surfaceElement->baseHeight < cardinalNeighbourMaxHeight - 4)
                 {
-                    surfaceElement->baseHeight = surfaceElement->clearanceHeight = highest - 4;
+                    surfaceElement->baseHeight = surfaceElement->clearanceHeight = cardinalNeighbourMaxHeight - 4;
                     raisedLand = 1;
                 }
-                if (cornerHeights[0] == highest && cornerHeights[2] <= cornerHeights[0] - 4)
-                    doubleCorner = 0;
-                else if (cornerHeights[1] == highest && cornerHeights[3] <= cornerHeights[1] - 4)
-                    doubleCorner = 1;
-                else if (cornerHeights[2] == highest && cornerHeights[0] <= cornerHeights[2] - 4)
-                    doubleCorner = 2;
-                else if (cornerHeights[3] == highest && cornerHeights[1] <= cornerHeights[3] - 4)
-                    doubleCorner = 3;
+                if (neighbourHeights.N == cardinalNeighbourMaxHeight && neighbourHeights.S <= neighbourHeights.N - 4)
+                    doubleCorner = North;
+                else if (neighbourHeights.W == cardinalNeighbourMaxHeight && neighbourHeights.E <= neighbourHeights.W - 4)
+                    doubleCorner = West;
+                else if (neighbourHeights.S == cardinalNeighbourMaxHeight && neighbourHeights.N <= neighbourHeights.S - 4)
+                    doubleCorner = South;
+                else if (neighbourHeights.E == cardinalNeighbourMaxHeight && neighbourHeights.W <= neighbourHeights.E - 4)
+                    doubleCorner = East;
             }
             else
             {
-                if (surfaceElement->baseHeight < highest - 2)
+                if (surfaceElement->baseHeight < cardinalNeighbourMaxHeight - 2)
                 {
-                    surfaceElement->baseHeight = surfaceElement->clearanceHeight = highest - 2;
+                    surfaceElement->baseHeight = surfaceElement->clearanceHeight = cardinalNeighbourMaxHeight - 2;
                     raisedLand = 1;
                 }
             }
         }
 
-        if (doubleCorner != -1)
+        if (doubleCorner.has_value())
         {
             uint8_t slope = surfaceElement->getSlope() | kTileSlopeDiagonalFlag;
-            switch (doubleCorner)
+            switch (doubleCorner.value())
             {
-                case 0:
+                case North:
                     slope |= kTileSlopeNCornerDown;
                     break;
-                case 1:
+                case West:
                     slope |= kTileSlopeWCornerDown;
                     break;
-                case 2:
+                case South:
                     slope |= kTileSlopeSCornerDown;
                     break;
-                case 3:
+                case East:
                     slope |= kTileSlopeECornerDown;
+                    break;
+                default:
                     break;
             }
             surfaceElement->setSlope(slope);
@@ -160,41 +167,33 @@ namespace OpenRCT2::World::MapGenerator
         else
         {
             uint8_t slope = surfaceElement->getSlope();
-            // Corners
-            auto surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 1 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            // Cardinals
+            if (neighbourHeights.S > surfaceElement->baseHeight)
                 slope |= kTileSlopeNCornerUp;
 
-            surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 1 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            if (neighbourHeights.E > surfaceElement->baseHeight)
                 slope |= kTileSlopeWCornerUp;
 
-            surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y - 1 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            if (neighbourHeights.W > surfaceElement->baseHeight)
                 slope |= kTileSlopeECornerUp;
 
-            surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y - 1 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            if (neighbourHeights.N > surfaceElement->baseHeight)
                 slope |= kTileSlopeSCornerUp;
 
-            // Sides
-            surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 0 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            // Ordinals
+            if (neighbourHeights.SW > surfaceElement->baseHeight)
                 slope |= kTileSlopeNESideUp;
 
-            surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 0 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            if (neighbourHeights.NE > surfaceElement->baseHeight)
                 slope |= kTileSlopeSWSideUp;
 
-            surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y - 1 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            if (neighbourHeights.NW > surfaceElement->baseHeight)
                 slope |= kTileSlopeSESideUp;
 
-            surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y + 1 });
-            if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
+            if (neighbourHeights.SE > surfaceElement->baseHeight)
                 slope |= kTileSlopeNWSideUp;
 
-            // Raise
+            // If all corners are raised, set flat slope and increment height
             if (slope == kTileSlopeRaisedCornersMask)
             {
                 slope = kTileSlopeFlat;
@@ -206,32 +205,41 @@ namespace OpenRCT2::World::MapGenerator
         return raisedLand;
     }
 
-    // +-----+-----+-----+
-    // |  W  | NW  |  N  |
-    // |  2  |  1  |  0  |
-    // +-----+-----+-----+
-    // | SW  |  _  | NE  |
-    // |  4  |     |  3  |
-    // +-----+-----+-----+
-    // |  S  | SE  |  E  |
-    // |  7  |  6  |  5  |
-    // +-----+-----+-----+
-    template<class T>
-    union NeighbourData
+    /**
+     * Make sure raising the tile edges won't block a river.
+     * The first clause covers waterfalls and the other eight situations where one of the two edges connected to this corner
+     * is a one tile wide channel.
+     * TODO should be possible to express this in a more readable way
+     */
+    static NeighbourData<bool> wontBlockRiver(
+        const bool riverTile, const NeighbourData<bool>& r, const NeighbourData<int32_t>& waterDelta)
     {
-        T neighbour[8];
-        struct
-        {
-            T N;
-            T NW;
-            T W;
-            T NE;
-            T SW;
-            T E;
-            T SE;
-            T S;
-        };
-    };
+        NeighbourData<bool> result = {};
+
+        const bool waterfallW = (r.W && waterDelta.W > 0) || (r.NW && waterDelta.NW > 0) || (r.SW && waterDelta.SW > 0);
+        const bool waterfallN = (r.N && waterDelta.N > 0) || (r.NW && waterDelta.NW > 0) || (r.NE && waterDelta.NE > 0);
+        const bool waterfallE = (r.E && waterDelta.E > 0) || (r.NE && waterDelta.NE > 0) || (r.SE && waterDelta.SE > 0);
+        const bool waterfallS = (r.S && waterDelta.S > 0) || (r.SW && waterDelta.SW > 0) || (r.SE && waterDelta.SE > 0);
+
+        result.W  = !riverTile
+            || (!waterfallW && !(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW)
+                && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW) && !(!r.SW && !r.NE && r.NW)
+                && !(!r.SE && !r.NW && r.SW));
+        result.N = !riverTile
+            || (!waterfallN && !(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW)
+                && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE) && !(!r.NW && !r.SE && r.NE)
+                && !(!r.SW && !r.NE && r.NW));
+       result.E = !riverTile
+            || (!waterfallE && !(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE)
+                && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE) && !(!r.NE && !r.SW && r.SE)
+                && !(!r.NW && !r.SE && r.NE));
+        result.S = !riverTile
+            || (!waterfallS && !(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE)
+                && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW) && !(!r.SE && !r.NW && r.SW)
+                && !(!r.NE && !r.SW && r.SE));
+
+        return result;
+    }
 
     /**
      * Raises the corners based on the height offset of neighbour tiles.
@@ -242,45 +250,38 @@ namespace OpenRCT2::World::MapGenerator
     {
         auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
         if (surfaceElement == nullptr)
+        {
             return 0;
+        }
 
         NeighbourData<int32_t> neighbourHeightOffset = {};
         NeighbourData<int32_t> neighbourWaterOffset = {};
-        NeighbourData<bool> r = {};
+        NeighbourData<bool> neighbourIsRiver = {};
 
         const bool riverTile = isRiverTile(ctx, tileCoords);
 
-        // Find the neighbour base heights
-        for (int32_t index = 0, y_offset = -1; y_offset <= 1; y_offset++)
+        for (const Neighbour& neighbour : kNeighbours)
         {
-            for (int32_t x_offset = -1; x_offset <= 1; x_offset++)
+            auto neighbourCoords = tileCoords + neighbour.offset;
+            // Get neighbour height. If the element is not valid (outside of map) assume the same height
+            auto* neighbourSurfaceElement = MapGetSurfaceElementAt(neighbourCoords);
+            if (neighbourSurfaceElement != nullptr)
             {
-                // Skip self
-                if (y_offset == 0 && x_offset == 0)
-                    continue;
-
-                auto neighbourCoords = tileCoords + TileCoordsXY{ x_offset, y_offset };
-                // Get neighbour height. If the element is not valid (outside of map) assume the same height
-                auto* neighbourSurfaceElement = MapGetSurfaceElementAt(neighbourCoords);
-                if (neighbourSurfaceElement != nullptr)
-                {
-                    neighbourHeightOffset.neighbour[index] = neighbourSurfaceElement->baseHeight;
-                    neighbourWaterOffset.neighbour[index] = neighbourSurfaceElement->GetWaterHeight();
-                }
-                else
-                {
-                    neighbourHeightOffset.neighbour[index] = surfaceElement->baseHeight;
-                    neighbourWaterOffset.neighbour[index] = surfaceElement->GetWaterHeight();
-                }
-
-                // Make the height relative to the current surface element
-                neighbourHeightOffset.neighbour[index] -= surfaceElement->baseHeight;
-                neighbourWaterOffset.neighbour[index] -= surfaceElement->GetWaterHeight();
-                // Check if this is a river tile
-                r.neighbour[index] = isRiverTile(ctx, neighbourCoords);
-
-                index++;
+                neighbourHeightOffset.direction[neighbour.direction] = neighbourSurfaceElement->baseHeight;
+                neighbourWaterOffset.direction[neighbour.direction] = neighbourSurfaceElement->GetWaterHeight();
             }
+            else
+            {
+                neighbourHeightOffset.direction[neighbour.direction] = surfaceElement->baseHeight;
+                neighbourWaterOffset.direction[neighbour.direction] = surfaceElement->GetWaterHeight();
+            }
+
+            // Make the height relative to the current surface element
+            neighbourHeightOffset.direction[neighbour.direction] -= surfaceElement->baseHeight;
+            neighbourWaterOffset.direction[neighbour.direction] -= surfaceElement->GetWaterHeight();
+
+            // Check if this is a river tile
+            neighbourIsRiver.direction[neighbour.direction] = isRiverTile(ctx, neighbourCoords);
         }
 
         // Count number from the three tiles that is currently higher
@@ -293,42 +294,13 @@ namespace OpenRCT2::World::MapGenerator
         int8_t thresholdS = std::clamp(neighbourHeightOffset.SE, 0, 1) + std::clamp(neighbourHeightOffset.S, 0, 1)
             + std::clamp(neighbourHeightOffset.SW, 0, 1);
 
-        // Make sure raising the tile corner doesn't block a river.
-        // The first clause covers waterfalls and the other eight situations where one of the two edges connected to this corner
-        // is a one tile wide channel.
-        // TODO might be possible to reduce?
-
-        const bool waterfallW = (r.W && neighbourWaterOffset.W > 0) || (r.NW && neighbourWaterOffset.NW > 0)
-            || (r.SW && neighbourWaterOffset.SW > 0);
-        const bool waterfallN = (r.N && neighbourWaterOffset.N > 0) || (r.NW && neighbourWaterOffset.NW > 0)
-            || (r.NE && neighbourWaterOffset.NE > 0);
-        const bool waterfallE = (r.E && neighbourWaterOffset.E > 0) || (r.NE && neighbourWaterOffset.NE > 0)
-            || (r.SE && neighbourWaterOffset.SE > 0);
-        const bool waterfallS = (r.S && neighbourWaterOffset.S > 0) || (r.SW && neighbourWaterOffset.SW > 0)
-            || (r.SE && neighbourWaterOffset.SE > 0);
-
-        const bool riverW = !riverTile
-            || (!waterfallW && !(!r.S && !r.W && r.SW) && !(!r.N && !r.W && r.NW) && !(!r.S && !r.NW && r.SW)
-                && !(!r.N && !r.SW && r.NW) && !(!r.W && !r.SE && r.SW) && !(!r.W && !r.NE && r.NW) && !(!r.SW && !r.NE && r.NW)
-                && !(!r.SE && !r.NW && r.SW));
-        const bool riverN = !riverTile
-            || (!waterfallN && !(!r.W && !r.N && r.NW) && !(!r.E && !r.N && r.NE) && !(!r.W && !r.NE && r.NW)
-                && !(!r.E && !r.NW && r.NE) && !(!r.N && !r.SW && r.NW) && !(!r.N && !r.SE && r.NE) && !(!r.NW && !r.SE && r.NE)
-                && !(!r.SW && !r.NE && r.NW));
-        const bool riverE = !riverTile
-            || (!waterfallE && !(!r.N && !r.E && r.NE) && !(!r.S && !r.E && r.SE) && !(!r.N && !r.SE && r.NE)
-                && !(!r.S && !r.NE && r.SE) && !(!r.E && !r.NW && r.NE) && !(!r.E && !r.SW && r.SE) && !(!r.NE && !r.SW && r.SE)
-                && !(!r.NW && !r.SE && r.NE));
-        const bool riverS = !riverTile
-            || (!waterfallS && !(!r.E && !r.S && r.SE) && !(!r.W && !r.S && r.SW) && !(!r.E && !r.SW && r.SE)
-                && !(!r.W && !r.SE && r.SW) && !(!r.S && !r.NE && r.SE) && !(!r.S && !r.NW && r.SW) && !(!r.SE && !r.NW && r.SW)
-                && !(!r.NE && !r.SW && r.SE));
+        const auto riverNotBlocked = wontBlockRiver(riverTile, neighbourIsRiver, neighbourWaterOffset);
 
         uint8_t slope = kTileSlopeFlat;
-        slope |= (thresholdW >= 1 && riverW) ? SLOPE_W_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdN >= 1 && riverN) ? SLOPE_N_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdE >= 1 && riverE) ? SLOPE_E_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdS >= 1 && riverS) ? SLOPE_S_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdW >= 1 && riverNotBlocked.W) ? SLOPE_W_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdN >= 1 && riverNotBlocked.N) ? SLOPE_N_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdE >= 1 && riverNotBlocked.E) ? SLOPE_E_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdS >= 1 && riverNotBlocked.S) ? SLOPE_S_THRESHOLD_FLAGS : 0;
 
         // Set diagonal when three corners (one corner down) have been raised, and the middle one can be raised one more
         if ((slope == kTileSlopeWCornerDown && neighbourHeightOffset.W >= 4)
