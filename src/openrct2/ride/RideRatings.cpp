@@ -662,7 +662,9 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateSt
                 {
                     proximity_score_increment(state, PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
                     if (tileElement->asTrack()->GetTrackType() == TrackElemType::leftVerticalLoop
-                        || tileElement->asTrack()->GetTrackType() == TrackElemType::rightVerticalLoop)
+                        || tileElement->asTrack()->GetTrackType() == TrackElemType::rightVerticalLoop
+                        || tileElement->asTrack()->GetTrackType() == TrackElemType::diagLeftVerticalLoop
+                        || tileElement->asTrack()->GetTrackType() == TrackElemType::diagRightVerticalLoop)
                     {
                         proximity_score_increment(state, PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                     }
@@ -679,7 +681,8 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateSt
 static void ride_ratings_score_close_proximity_loops(RideRating::UpdateState& state, TileElement* inputTileElement)
 {
     auto trackType = inputTileElement->asTrack()->GetTrackType();
-    if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop)
+    if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop
+        || trackType == TrackElemType::diagLeftVerticalLoop || trackType == TrackElemType::diagRightVerticalLoop)
     {
         ride_ratings_score_close_proximity_loops_helper(state, { state.Proximity, inputTileElement });
 
@@ -773,7 +776,8 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
             case TileElementType::track:
             {
                 auto trackType = tileElement->asTrack()->GetTrackType();
-                if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop)
+                if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop
+                    || trackType == TrackElemType::diagLeftVerticalLoop || trackType == TrackElemType::diagRightVerticalLoop)
                 {
                     int32_t sequence = tileElement->asTrack()->GetSequenceIndex();
                     if (sequence == 3 || sequence == 6)
