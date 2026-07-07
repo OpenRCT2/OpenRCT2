@@ -1,6 +1,7 @@
 0.5.4 (in development)
 ------------------------------------------------------------------------
 - Fix: [#26756] Guests cannot puke or litter on sloped path.
+- Fix: [#26758] [Plugin] IPv6 addresses are reported incorrectly.
 
 0.5.3 (2026-07-05)
 ------------------------------------------------------------------------

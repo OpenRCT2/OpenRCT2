@@ -663,7 +663,7 @@ namespace OpenRCT2::Network
             }
             else if (addr->sin_family == AF_INET6)
             {
-                auto addrv6 = reinterpret_cast<const sockaddr_in6*>(&addr);
+                auto addrv6 = reinterpret_cast<const sockaddr_in6*>(addr);
                 char str[INET6_ADDRSTRLEN]{};
                 inet_ntop(AF_INET6, &addrv6->sin6_addr, str, sizeof(str));
                 result = str;
