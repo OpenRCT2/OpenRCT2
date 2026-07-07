@@ -15,12 +15,9 @@
 #include "../../core/Imaging.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/StringIds.h"
-#include "../Map.h"
-#include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
 #include "MapGen.h"
 #include "MapHelpers.h"
-#include "SurfaceSelection.h"
 
 #include <algorithm>
 

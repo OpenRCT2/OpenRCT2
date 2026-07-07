@@ -18,7 +18,7 @@
 #include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
 #include "SceneryPlacement.h"
-#include "SurfaceSelection.h"
+#include "hydro/River.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -27,8 +27,12 @@ namespace OpenRCT2::World::MapGenerator
         MapClearAllElements();
         MapInit(ctx.settings.mapSize);
 
-        const auto surfaceTextureId = generateSurfaceTextureId(ctx.settings);
-        const auto edgeTextureId = generateEdgeTextureId(ctx.settings, surfaceTextureId);
+        const auto& defaultRule = ctx.settings.textureRules[0];
+        assert(defaultRule.isDefault);
+        const auto defaultTextures = defaultRule.effect;
+
+        const auto surfaceTextureId = defaultTextures.landTexture;
+        const auto edgeTextureId = defaultTextures.edgeTexture;
 
         for (auto y = 1; y < ctx.settings.mapSize.y - 1; y++)
         {
@@ -48,15 +52,15 @@ namespace OpenRCT2::World::MapGenerator
 
     static void generateBlankMap(MapGenContext& ctx)
     {
-        // todo appy a bit of noise for rivers?
+        // todo apply a bit of noise for rivers?
         ctx.heightMap.fill(ctx.settings.heightmapLow);
     }
 
     static void applyTexturesFromRules(const MapGenContext& ctx, Rule::EvaluationContext& evalCtx)
     {
-        auto& defaultRule = ctx.settings.textureRules[0];
+        const auto& defaultRule = ctx.settings.textureRules[0];
         assert(defaultRule.isDefault);
-        auto defaultTextures = defaultRule.effect;
+        const auto defaultTextures = defaultRule.effect;
 
         Rule::Callback<Rule::TextureResult> callback =
             [defaultTextures](const TileCoordsXY& coords, const Rule::TextureResult& result) {
