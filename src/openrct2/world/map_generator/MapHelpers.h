@@ -20,15 +20,6 @@ struct TileCoordsXY;
 
 namespace OpenRCT2::World::MapGenerator
 {
-    enum
-    {
-        SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
-        SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
-        SLOPE_N_THRESHOLD_FLAGS = (1 << 2),
-        SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
-    };
-
-    // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(const MapGenContext&, TileCoordsXY)>;
 
     int32_t smoothTileSlopeStrong(const MapGenContext& ctx, TileCoordsXY tileCoords);

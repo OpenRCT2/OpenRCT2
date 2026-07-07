@@ -297,10 +297,10 @@ namespace OpenRCT2::World::MapGenerator
         const auto riverNotBlocked = wontBlockRiver(riverTile, neighbourIsRiver, neighbourWaterOffset);
 
         uint8_t slope = kTileSlopeFlat;
-        slope |= (thresholdW >= 1 && riverNotBlocked.W) ? SLOPE_W_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdN >= 1 && riverNotBlocked.N) ? SLOPE_N_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdE >= 1 && riverNotBlocked.E) ? SLOPE_E_THRESHOLD_FLAGS : 0;
-        slope |= (thresholdS >= 1 && riverNotBlocked.S) ? SLOPE_S_THRESHOLD_FLAGS : 0;
+        slope |= (thresholdW >= 1 && riverNotBlocked.W) ? kTileSlopeECornerUp : 0;
+        slope |= (thresholdN >= 1 && riverNotBlocked.N) ? kTileSlopeSCornerUp : 0;
+        slope |= (thresholdE >= 1 && riverNotBlocked.E) ? kTileSlopeWCornerUp : 0;
+        slope |= (thresholdS >= 1 && riverNotBlocked.S) ? kTileSlopeNCornerUp : 0;
 
         // Set diagonal when three corners (one corner down) have been raised, and the middle one can be raised one more
         if ((slope == kTileSlopeWCornerDown && neighbourHeightOffset.W >= 4)
