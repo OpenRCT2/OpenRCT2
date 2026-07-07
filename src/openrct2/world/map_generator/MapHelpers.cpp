@@ -407,9 +407,20 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static float gaussian(const float delta, const float sigma)
+    static float gaussian1d(const float delta, const float sigma)
     {
-        return (1.0f / 2 * std::numbers::pi * sigma * sigma) * std::exp(-1.0f * (delta * delta / (2.0f * sigma * sigma)));
+        const float sigmaSqrd = sigma * sigma;
+        const float deltaSqrd = delta * delta;
+        return (1.0f / std::sqrt(2.0f * std::numbers::pi * sigmaSqrd)) * std::exp(-1.0f * (deltaSqrd / (2.0f * sigmaSqrd)));
+    }
+
+    static float gaussian2d(const float deltaX, const float deltaY, const float sigma)
+    {
+        const float sigmaSqrd = sigma * sigma;
+        const float deltaXSqrd = deltaX * deltaX;
+        const float deltaYSqrd = deltaY * deltaY;
+        return (1.0f / 2.0f * std::numbers::pi * sigmaSqrd)
+            * std::exp(-1.0f * ((deltaXSqrd + deltaYSqrd) / (2.0f * sigmaSqrd)));
     }
 
     class GaussianKernel
@@ -436,7 +447,7 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     const int32_t dx = x - kernelSizeHalf;
                     const int32_t dy = y - kernelSizeHalf;
-                    kernel[{ x, y }] = gaussian(dx * dx + dy * dy, sigma);
+                    kernel[{ x, y }] = gaussian2d(dx, dy, sigma);
                 }
             }
         }
@@ -533,11 +544,11 @@ namespace OpenRCT2::World::MapGenerator
                         if (heightMap.inBounds(deltaPos))
                         {
                             const float closeness = kernel(dx, dy);
-                            const float similarity = gaussian(
-                                std::pow(copy[pos] - copy[deltaPos], 2.0f) / kMaximumLandHeight, sigmaIntensity);
+
+                            const float deltaIntensity = copy[pos] - copy[deltaPos];
+                            const float similarity = gaussian1d(deltaIntensity, sigmaIntensity);
 
                             const float weight = closeness * similarity;
-
                             value += weight * copy[deltaPos];
                             sum += weight;
                         }
@@ -571,6 +582,10 @@ namespace OpenRCT2::World::MapGenerator
 
     void applyHeightMapTransform(MapGenContext& ctx)
     {
+        // these multipliers give reasonable results, haven't done an exhaustive search tho
+        constexpr float kGaussianSpaceSigmaScalingFactor = 0.5f;
+        constexpr float kGaussianIntensitySigmaScalingFactor = 5.5f;
+
         auto& settings = ctx.settings;
         auto& heightMap = ctx.heightMap;
 
@@ -582,13 +597,15 @@ namespace OpenRCT2::World::MapGenerator
                 smoothBox(heightMap, settings.transformStrength);
                 break;
             case HeightMapTransform::gaussian:
-                smoothGaussian(heightMap, settings.transformStrength);
+                smoothGaussian(heightMap, kGaussianSpaceSigmaScalingFactor * settings.transformStrength);
                 break;
             case HeightMapTransform::sharpen:
                 sharpen(heightMap, settings.transformStrength);
                 break;
             case HeightMapTransform::bilateral:
-                smoothBilateral(heightMap, settings.transformStrength, 0.1f * settings.transformStrength);
+                smoothBilateral(
+                    heightMap, kGaussianSpaceSigmaScalingFactor * settings.transformStrength,
+                    kGaussianIntensitySigmaScalingFactor * settings.transformStrength);
                 break;
             case HeightMapTransform::erosion:
                 simulateErosion(ctx);
