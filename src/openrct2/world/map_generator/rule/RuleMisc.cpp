@@ -241,7 +241,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall NW",
+                         .name = "Waterfall NW",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
@@ -254,7 +254,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall NE",
+                         .name = "Waterfall NE",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
@@ -267,7 +267,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall SE",
+                         .name = "Waterfall SE",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
@@ -280,7 +280,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall SW",
+                         .name = "Waterfall SW",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
@@ -493,7 +493,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall NW",
+                .name = "Waterfall NW",// TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaToNeighbour(
                                                HeightSource::NeighbourNW, HeightType::Water, Predicate::GreaterThan, true) },
@@ -505,7 +505,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall NE",
+                .name = "Waterfall NE",// TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaToNeighbour(
                                                HeightSource::NeighbourNE, HeightType::Water, Predicate::GreaterThan, true) },
@@ -517,7 +517,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall SE",
+                .name = "Waterfall SE",// TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaToNeighbour(
                                                HeightSource::NeighbourSE, HeightType::Water, Predicate::GreaterThan, true) },
@@ -529,7 +529,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall SW",
+                .name = "Waterfall SW", // TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaToNeighbour(
                                                HeightSource::NeighbourSW, HeightType::Water, Predicate::GreaterThan, true) },
@@ -559,7 +559,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         .conditions = std::vector{
                             onSurface(kSurfaceSoil),
                             chance(prng(), .33f),
-                            blendHeight(prng(), 32, 42),
+                            blendHeight(prng(), 44, 54),
                             blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.85f),
                         },
                         .effect = {
