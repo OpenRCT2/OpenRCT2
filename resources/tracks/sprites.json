@@ -56469,18 +56469,18 @@
     {
         "path": "track/lattice_triangle/corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -30,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_diag_1_2.png",
         "x": -31,
-        "y": -15,
+        "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_diag_1_3.png",
-        "x": -30,
+        "x": -22,
         "y": -29,
         "palette": "keep"
     },
@@ -56553,7 +56553,7 @@
     {
         "path": "track/lattice_triangle/corkscrew_left_diag_4_3.png",
         "x": -54,
-        "y": -20,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -56618,8 +56618,8 @@
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_diag_3_2.png",
-        "x": -13,
-        "y": -15,
+        "x": -22,
+        "y": -31,
         "palette": "keep"
     },
     {
@@ -56649,12 +56649,12 @@
     {
         "path": "track/lattice_triangle/corkscrew_right_diag_4_3.png",
         "x": -14,
-        "y": -20,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_diag_4_4.png",
-        "x": -16,
+        "x": -32,
         "y": -24,
         "palette": "keep"
     },
@@ -56715,13 +56715,13 @@
     {
         "path": "track/lattice_triangle/large_corkscrew_left_diag_2_5.png",
         "x": -16,
-        "y": -24,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_diag_3_1.png",
         "x": -16,
-        "y": -6,
+        "y": -7,
         "palette": "keep"
     },
     {
@@ -56762,7 +56762,7 @@
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_diag_4_3.png",
-        "x": -47,
+        "x": -46,
         "y": -64,
         "palette": "keep"
     },
@@ -56804,7 +56804,7 @@
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_diag_1_5.png",
-        "x": -13,
+        "x": -12,
         "y": -16,
         "palette": "keep"
     },
@@ -56852,7 +56852,7 @@
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_diag_3_3.png",
-        "x": -31,
+        "x": -30,
         "y": -44,
         "palette": "keep"
     },
@@ -56883,7 +56883,7 @@
     {
         "path": "track/lattice_triangle/large_corkscrew_right_diag_4_3.png",
         "x": -15,
-        "y": -64,
+        "y": -63,
         "palette": "keep"
     },
     {
@@ -56931,7 +56931,7 @@
     {
         "path": "track/lattice_triangle/half_loop_diag_2_2.png",
         "x": -8,
-        "y": -20,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -56973,7 +56973,7 @@
     {
         "path": "track/lattice_triangle/half_loop_diag_4_1.png",
         "x": -8,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -57068,8 +57068,8 @@
     },
     {
         "path": "track/lattice_triangle/vertical_loop_left_diag_4_1.png",
-        "x": -10,
-        "y": -48,
+        "x": -9,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -57165,12 +57165,12 @@
     {
         "path": "track/lattice_triangle/vertical_loop_right_diag_4_1.png",
         "x": -8,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/vertical_loop_right_diag_4_2.png",
-        "x": -6,
+        "x": -7,
         "y": -88,
         "palette": "keep"
     },
@@ -57189,18 +57189,18 @@
     {
         "path": "track/bm/corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -31,
+        "y": -47,
         "palette": "keep"
     },
     {
         "path": "track/bm/corkscrew_left_diag_1_2.png",
         "x": -31,
-        "y": -15,
+        "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/bm/corkscrew_left_diag_1_3.png",
-        "x": -32,
+        "x": -24,
         "y": -29,
         "palette": "keep"
     },
@@ -57332,14 +57332,14 @@
     },
     {
         "path": "track/bm/corkscrew_right_diag_3_1.png",
-        "x": -32,
-        "y": -31,
+        "x": -40,
+        "y": -47,
         "palette": "keep"
     },
     {
         "path": "track/bm/corkscrew_right_diag_3_2.png",
-        "x": -13,
-        "y": -15,
+        "x": -23,
+        "y": -31,
         "palette": "keep"
     },
     {
@@ -57374,26 +57374,26 @@
     },
     {
         "path": "track/bm/corkscrew_right_diag_4_4.png",
-        "x": -16,
+        "x": -32,
         "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -25,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_left_diag_1_2.png",
         "x": -31,
-        "y": -11,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_left_diag_1_3.png",
         "x": -17,
-        "y": -43,
+        "y": -44,
         "palette": "keep"
     },
     {
@@ -57458,14 +57458,14 @@
     },
     {
         "path": "track/bm/large_corkscrew_left_diag_3_4.png",
-        "x": -7,
+        "x": -9,
         "y": -7,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_left_diag_3_5.png",
         "x": -12,
-        "y": -15,
+        "y": -14,
         "palette": "keep"
     },
     {
@@ -57482,14 +57482,14 @@
     },
     {
         "path": "track/bm/large_corkscrew_left_diag_4_3.png",
-        "x": -48,
+        "x": -47,
         "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_left_diag_4_4.png",
         "x": -16,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -57525,12 +57525,12 @@
     {
         "path": "track/bm/large_corkscrew_right_diag_1_5.png",
         "x": -21,
-        "y": -15,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_right_diag_2_1.png",
-        "x": -18,
+        "x": -21,
         "y": -9,
         "palette": "keep"
     },
@@ -57560,20 +57560,20 @@
     },
     {
         "path": "track/bm/large_corkscrew_right_diag_3_1.png",
-        "x": -45,
-        "y": -25,
+        "x": -47,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_right_diag_3_2.png",
         "x": -15,
-        "y": -11,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_corkscrew_right_diag_3_3.png",
         "x": -32,
-        "y": -43,
+        "y": -44,
         "palette": "keep"
     },
     {
@@ -57609,7 +57609,7 @@
     {
         "path": "track/bm/large_corkscrew_right_diag_4_4.png",
         "x": -16,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -57645,18 +57645,18 @@
     {
         "path": "track/bm/half_loop_diag_2_1.png",
         "x": -9,
-        "y": -19,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/bm/half_loop_diag_2_2.png",
-        "x": -12,
-        "y": -20,
+        "x": -13,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/bm/half_loop_diag_2_3.png",
-        "x": -12,
+        "x": -13,
         "y": -72,
         "palette": "keep"
     },
@@ -57692,13 +57692,13 @@
     },
     {
         "path": "track/bm/half_loop_diag_4_1.png",
-        "x": -12,
-        "y": -48,
+        "x": -13,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/bm/half_loop_diag_4_2.png",
-        "x": -12,
+        "x": -13,
         "y": -16,
         "palette": "keep"
     },
@@ -57740,19 +57740,19 @@
     },
     {
         "path": "track/bm/vertical_loop_left_diag_2_1.png",
-        "x": -12,
+        "x": -13,
         "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/bm/vertical_loop_left_diag_2_2.png",
-        "x": -12,
+        "x": -13,
         "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/bm/vertical_loop_left_diag_2_3.png",
-        "x": -9,
+        "x": -10,
         "y": -72,
         "palette": "keep"
     },
@@ -57789,7 +57789,7 @@
     {
         "path": "track/bm/vertical_loop_left_diag_4_1.png",
         "x": -14,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -57842,7 +57842,7 @@
     },
     {
         "path": "track/bm/vertical_loop_right_diag_2_2.png",
-        "x": -15,
+        "x": -16,
         "y": -20,
         "palette": "keep"
     },
@@ -57884,8 +57884,8 @@
     },
     {
         "path": "track/bm/vertical_loop_right_diag_4_1.png",
-        "x": -12,
-        "y": -48,
+        "x": -13,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -57896,7 +57896,7 @@
     },
     {
         "path": "track/bm/vertical_loop_right_diag_4_3.png",
-        "x": -5,
+        "x": -6,
         "y": 9,
         "palette": "keep"
     },
@@ -57915,12 +57915,12 @@
     {
         "path": "track/corkscrew/corkscrew_left_diag_1_2.png",
         "x": -31,
-        "y": -15,
+        "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/corkscrew_left_diag_1_3.png",
-        "x": -31,
+        "x": -24,
         "y": -30,
         "palette": "keep"
     },
@@ -57993,7 +57993,7 @@
     {
         "path": "track/corkscrew/corkscrew_left_diag_4_3.png",
         "x": -23,
-        "y": -14,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -58058,8 +58058,8 @@
     },
     {
         "path": "track/corkscrew/corkscrew_right_diag_3_2.png",
-        "x": -11,
-        "y": -15,
+        "x": -20,
+        "y": -31,
         "palette": "keep"
     },
     {
@@ -58089,19 +58089,19 @@
     {
         "path": "track/corkscrew/corkscrew_right_diag_4_3.png",
         "x": -12,
-        "y": -14,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/corkscrew_right_diag_4_4.png",
-        "x": -16,
+        "x": -32,
         "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/large_corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -6,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -58178,7 +58178,7 @@
     },
     {
         "path": "track/corkscrew/large_corkscrew_left_diag_3_4.png",
-        "x": -7,
+        "x": -6,
         "y": -8,
         "palette": "keep"
     },
@@ -58202,8 +58202,8 @@
     },
     {
         "path": "track/corkscrew/large_corkscrew_left_diag_4_3.png",
-        "x": -34,
-        "y": -56,
+        "x": -36,
+        "y": -57,
         "palette": "keep"
     },
     {
@@ -58280,8 +58280,8 @@
     },
     {
         "path": "track/corkscrew/large_corkscrew_right_diag_3_1.png",
-        "x": -24,
-        "y": -6,
+        "x": -22,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -58347,7 +58347,7 @@
     {
         "path": "track/corkscrew/half_loop_diag_1_2.png",
         "x": 0,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -58364,19 +58364,19 @@
     },
     {
         "path": "track/corkscrew/half_loop_diag_2_1.png",
-        "x": -8,
-        "y": -2,
+        "x": -15,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/half_loop_diag_2_2.png",
-        "x": -14,
-        "y": -20,
+        "x": -15,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/half_loop_diag_2_3.png",
-        "x": -14,
+        "x": -15,
         "y": -72,
         "palette": "keep"
     },
@@ -58412,8 +58412,8 @@
     },
     {
         "path": "track/corkscrew/half_loop_diag_4_1.png",
-        "x": -14,
-        "y": -48,
+        "x": -15,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -58443,7 +58443,7 @@
     {
         "path": "track/corkscrew/vertical_loop_left_diag_1_2.png",
         "x": -32,
-        "y": -39,
+        "y": -38,
         "palette": "keep"
     },
     {
@@ -58460,19 +58460,19 @@
     },
     {
         "path": "track/corkscrew/vertical_loop_left_diag_2_1.png",
-        "x": -14,
+        "x": -15,
         "y": -7,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/vertical_loop_left_diag_2_2.png",
-        "x": -14,
+        "x": -15,
         "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/vertical_loop_left_diag_2_3.png",
-        "x": -10,
+        "x": -11,
         "y": -72,
         "palette": "keep"
     },
@@ -58508,8 +58508,8 @@
     },
     {
         "path": "track/corkscrew/vertical_loop_left_diag_4_1.png",
-        "x": -15,
-        "y": -48,
+        "x": -16,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -58556,13 +58556,13 @@
     },
     {
         "path": "track/corkscrew/vertical_loop_right_diag_2_1.png",
-        "x": -10,
+        "x": -11,
         "y": -7,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/vertical_loop_right_diag_2_2.png",
-        "x": -17,
+        "x": -18,
         "y": -20,
         "palette": "keep"
     },
@@ -58604,13 +58604,13 @@
     },
     {
         "path": "track/corkscrew/vertical_loop_right_diag_4_1.png",
-        "x": -14,
-        "y": -48,
+        "x": -15,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/vertical_loop_right_diag_4_2.png",
-        "x": -12,
+        "x": -13,
         "y": -88,
         "palette": "keep"
     },
@@ -58622,7 +58622,7 @@
     },
     {
         "path": "track/corkscrew/vertical_loop_right_diag_4_4.png",
-        "x": -5,
+        "x": -4,
         "y": -2,
         "palette": "keep"
     },
@@ -58635,12 +58635,12 @@
     {
         "path": "track/raptor/corkscrew_left_diag_1_2.png",
         "x": -31,
-        "y": -9,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/raptor/corkscrew_left_diag_1_3.png",
-        "x": -28,
+        "x": -19,
         "y": -23,
         "palette": "keep"
     },
@@ -58713,7 +58713,7 @@
     {
         "path": "track/raptor/corkscrew_left_diag_4_3.png",
         "x": -21,
-        "y": -7,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -58778,8 +58778,8 @@
     },
     {
         "path": "track/raptor/corkscrew_right_diag_3_2.png",
-        "x": -9,
-        "y": -9,
+        "x": -18,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -58814,14 +58814,14 @@
     },
     {
         "path": "track/raptor/corkscrew_right_diag_4_4.png",
-        "x": -16,
+        "x": -32,
         "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/raptor/large_corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -2,
+        "y": -1,
         "palette": "keep"
     },
     {
@@ -58970,7 +58970,7 @@
     },
     {
         "path": "track/raptor/large_corkscrew_right_diag_2_1.png",
-        "x": -19,
+        "x": -9,
         "y": -6,
         "palette": "keep"
     },
@@ -59091,7 +59091,7 @@
     {
         "path": "track/raptor/half_loop_diag_2_2.png",
         "x": -3,
-        "y": -20,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -59133,7 +59133,7 @@
     {
         "path": "track/raptor/half_loop_diag_4_1.png",
         "x": -3,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -59229,7 +59229,7 @@
     {
         "path": "track/raptor/vertical_loop_left_diag_4_1.png",
         "x": -5,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -59325,12 +59325,12 @@
     {
         "path": "track/raptor/vertical_loop_right_diag_4_1.png",
         "x": -3,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/raptor/vertical_loop_right_diag_4_2.png",
-        "x": -1,
+        "x": -2,
         "y": -88,
         "palette": "keep"
     },
@@ -60657,7 +60657,7 @@
     {
         "path": "track/standup/banked_zero_g_roll_left_1_1.png",
         "x": -20,
-        "y": -13,
+        "y": 2,
         "palette": "keep"
     },
     {
@@ -60674,14 +60674,14 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_1_4.png",
-        "x": -22,
-        "y": -27,
+        "x": -21,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_2_1.png",
-        "x": -18,
-        "y": -9,
+        "x": -5,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -60693,19 +60693,19 @@
     {
         "path": "track/standup/banked_zero_g_roll_left_2_3.png",
         "x": -23,
-        "y": -22,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_2_4.png",
         "x": -26,
-        "y": -22,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_3_1.png",
         "x": -22,
-        "y": -17,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -60716,14 +60716,14 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_3_3.png",
-        "x": -7,
-        "y": -16,
+        "x": -5,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_3_4.png",
         "x": -26,
-        "y": -27,
+        "y": -26,
         "palette": "keep"
     },
     {
@@ -60735,19 +60735,19 @@
     {
         "path": "track/standup/banked_zero_g_roll_left_4_2.png",
         "x": -12,
-        "y": -41,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_4_3.png",
         "x": -22,
-        "y": -15,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_4_4.png",
         "x": -23,
-        "y": -27,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -60759,49 +60759,49 @@
     {
         "path": "track/standup/banked_zero_g_roll_right_1_2.png",
         "x": -32,
-        "y": -41,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_1_3.png",
         "x": -21,
-        "y": -15,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_1_4.png",
         "x": -25,
-        "y": -27,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_2_1.png",
         "x": -20,
-        "y": -17,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_2_2.png",
         "x": -17,
-        "y": -27,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_2_3.png",
         "x": -14,
-        "y": -16,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_2_4.png",
         "x": -22,
-        "y": -27,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_3_1.png",
-        "x": -9,
-        "y": -9,
+        "x": -7,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -60813,19 +60813,19 @@
     {
         "path": "track/standup/banked_zero_g_roll_right_3_3.png",
         "x": -6,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_3_4.png",
         "x": -23,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_4_1.png",
-        "x": -22,
-        "y": -13,
+        "x": -20,
+        "y": -11,
         "palette": "keep"
     },
     {
@@ -60836,14 +60836,14 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_4_3.png",
-        "x": -26,
+        "x": -27,
         "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_4_4.png",
         "x": -26,
-        "y": -27,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -61041,18 +61041,18 @@
     {
         "path": "track/standup/corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -31,
+        "y": -47,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_left_diag_1_2.png",
         "x": -31,
-        "y": -16,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_left_diag_1_3.png",
-        "x": -32,
+        "x": -24,
         "y": -30,
         "palette": "keep"
     },
@@ -61184,14 +61184,14 @@
     },
     {
         "path": "track/standup/corkscrew_right_diag_3_1.png",
-        "x": -32,
-        "y": -31,
+        "x": -40,
+        "y": -47,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_right_diag_3_2.png",
-        "x": -11,
-        "y": -16,
+        "x": -21,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -61226,14 +61226,14 @@
     },
     {
         "path": "track/standup/corkscrew_right_diag_4_4.png",
-        "x": -16,
+        "x": -32,
         "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -7,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -61281,7 +61281,7 @@
     {
         "path": "track/standup/large_corkscrew_left_diag_2_4.png",
         "x": -16,
-        "y": -21,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -61293,7 +61293,7 @@
     {
         "path": "track/standup/large_corkscrew_left_diag_3_1.png",
         "x": -16,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
@@ -61334,8 +61334,8 @@
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_4_3.png",
-        "x": -48,
-        "y": -63,
+        "x": -38,
+        "y": -59,
         "palette": "keep"
     },
     {
@@ -61353,7 +61353,7 @@
     {
         "path": "track/standup/large_corkscrew_right_diag_1_1.png",
         "x": -32,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
@@ -61383,7 +61383,7 @@
     {
         "path": "track/standup/large_corkscrew_right_diag_2_1.png",
         "x": -15,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
@@ -61401,7 +61401,7 @@
     {
         "path": "track/standup/large_corkscrew_right_diag_2_4.png",
         "x": -16,
-        "y": -21,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -61412,8 +61412,8 @@
     },
     {
         "path": "track/standup/large_corkscrew_right_diag_3_1.png",
-        "x": -23,
-        "y": -7,
+        "x": -42,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -61455,7 +61455,7 @@
     {
         "path": "track/standup/large_corkscrew_right_diag_4_3.png",
         "x": -13,
-        "y": -63,
+        "y": -59,
         "palette": "keep"
     },
     {
@@ -61503,12 +61503,12 @@
     {
         "path": "track/standup/half_loop_diag_2_2.png",
         "x": -13,
-        "y": -20,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/standup/half_loop_diag_2_3.png",
-        "x": -12,
+        "x": -13,
         "y": -72,
         "palette": "keep"
     },
@@ -61545,7 +61545,7 @@
     {
         "path": "track/standup/half_loop_diag_4_1.png",
         "x": -13,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -61641,7 +61641,7 @@
     {
         "path": "track/standup/vertical_loop_left_diag_4_1.png",
         "x": -14,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -61737,7 +61737,7 @@
     {
         "path": "track/standup/vertical_loop_right_diag_4_1.png",
         "x": -13,
-        "y": -48,
+        "y": -40,
         "palette": "keep"
     },
     {
