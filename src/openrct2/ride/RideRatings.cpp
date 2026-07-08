@@ -776,17 +776,14 @@ static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, T
             case TileElementType::track:
             {
                 auto trackType = tileElement->asTrack()->GetTrackType();
-                if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop
-                    || trackType == TrackElemType::diagLeftVerticalLoop || trackType == TrackElemType::diagRightVerticalLoop)
+                int32_t sequence = tileElement->asTrack()->GetSequenceIndex();
+                if ((((trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop)
+                      && (sequence == 3 || sequence == 6))
+                     || ((trackType == TrackElemType::diagLeftVerticalLoop || trackType == TrackElemType::diagRightVerticalLoop)
+                         && (sequence == 7 || sequence == 8)))
+                    && tileElement->baseHeight - inputTileElement->clearanceHeight <= 10)
                 {
-                    int32_t sequence = tileElement->asTrack()->GetSequenceIndex();
-                    if (sequence == 3 || sequence == 6)
-                    {
-                        if (tileElement->baseHeight - inputTileElement->clearanceHeight <= 10)
-                        {
-                            proximity_score_increment(state, PROXIMITY_THROUGH_VERTICAL_LOOP);
-                        }
-                    }
+                    proximity_score_increment(state, PROXIMITY_THROUGH_VERTICAL_LOOP);
                 }
                 if (inputTileElement->asTrack()->GetRideIndex() != tileElement->asTrack()->GetRideIndex())
                 {
