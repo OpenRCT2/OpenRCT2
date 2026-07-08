@@ -190,20 +190,24 @@ namespace OpenRCT2::Ui::Windows
         WIDX_REFURBISH_RIDE,
         WIDX_FORCE_BREAKDOWN,
 
-        WIDX_PRIMARY_PREVIEW = 14,
+        WIDX_PRIMARY_PREVIEW_GROUP = 14,
+        WIDX_PRIMARY_PREVIEW,
         WIDX_TRACK_COLOUR_SCHEME,
         WIDX_TRACK_COLOUR_SCHEME_DROPDOWN,
         WIDX_TRACK_MAIN_COLOUR,
         WIDX_TRACK_ADDITIONAL_COLOUR,
         WIDX_TRACK_SUPPORT_COLOUR,
+        WIDX_PAINT_INDIVIDUAL_AREA,
         WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
         WIDX_MAZE_STYLE,
         WIDX_MAZE_STYLE_DROPDOWN,
-        WIDX_PAINT_INDIVIDUAL_AREA,
+
+        WIDX_SECONDARY_PREVIEW_GROUP,
         WIDX_SECONDARY_PREVIEW,
-        WIDX_ENTRANCE_STYLE_LABEL,
         WIDX_ENTRANCE_STYLE,
         WIDX_ENTRANCE_STYLE_DROPDOWN,
+
+        WIDX_VEHICLE_PREVIEW_GROUP,
         WIDX_VEHICLE_PREVIEW,
         WIDX_VEHICLE_COLOUR_SCHEME,
         WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN,
@@ -336,28 +340,36 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE2A4
     static constexpr auto _colourWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget({  3,  49}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
-        makeWidget({ 74,  49}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                         ),
+
+        // Primary preview area (tracks, shops)
+        makeWidget({  3,   0}, {310, 69}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                       ),
+        makeWidget({  3,  49}, { 68, 49}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
+        makeWidget({ 74,  49}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                           ),
         makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_COLOUR_SCHEME_TO_CHANGE_TIP              ),
         makeWidget({ 79,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
         makeWidget({119,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
-        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
-
-        makeWidget({ 74,  49}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
-        makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                          ),
-
         makeWidget({289,  68}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_PAINTBRUSH),       STR_PAINT_INDIVIDUAL_AREA_TIP                ),
 
+        // Shops only
+        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
+
+        // Mazes only
+        makeWidget({ 74,  49}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                           ),
+        makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                          ),
+
+        // Secondary preview area (stations)
+        makeWidget({  3,   0}, {310, 69}, WidgetType::groupbox,     WindowColour::secondary, STR_STATION_STYLE                                                           ),
         makeWidget({245, 101}, { 68, 49}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
-        makeWidget({  3, 104}, { 97, 12}, WidgetType::label,        WindowColour::secondary, STR_STATION_STYLE                                                           ),
-        makeWidget({103, 102}, {139, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
+        makeWidget({103, 102}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
         makeWidget({230, 103}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
 
+        // Ternary preview area (vehicles)
+        makeWidget({  3,   0}, {310, 69}, WidgetType::groupbox,     WindowColour::secondary, STR_VEHICLE_STYLE_GROUP                                                     ),
         makeWidget({  3, 157}, { 68, 49}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                                              ),
-        makeWidget({ 74, 157}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                          ),
+        makeWidget({ 74, 157}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
         makeWidget({301, 158}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP         ),
-        makeWidget({ 74, 173}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
+        makeWidget({ 74, 173}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
         makeWidget({301, 174}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_TO_MODIFY_TIP             ),
         makeWidget({ 79, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
@@ -4638,12 +4650,14 @@ namespace OpenRCT2::Ui::Windows
             // Maze style
             if (rtd.specialType == RtdSpecialType::maze)
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = STR_MAZE_STYLE_GROUP;
                 widgets[WIDX_MAZE_STYLE].type = WidgetType::dropdownMenu;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WidgetType::button;
                 widgets[WIDX_MAZE_STYLE].text = MazeOptions[EnumValue(trackColour.supports)].text;
             }
             else
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = STR_TRACK_STYLE_GROUP;
                 widgets[WIDX_MAZE_STYLE].type = WidgetType::empty;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WidgetType::empty;
             }
@@ -4691,6 +4705,7 @@ namespace OpenRCT2::Ui::Windows
             // Selling item random colour checkbox
             if (ride->hasRecolourableShopItems())
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = STR_SHOP_STYLE_GROUP;
                 widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WidgetType::checkbox;
                 setWidgetPressed(WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX, ride->flags.has(RideFlag::randomShopColours));
             }
@@ -4718,22 +4733,24 @@ namespace OpenRCT2::Ui::Windows
                 return startY;
             }
 
+            widgets[WIDX_PRIMARY_PREVIEW_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::spinner;
 
             // clang-format off
-            widgets[WIDX_PRIMARY_PREVIEW].moveTo                 ({  3, startY + 0});
-            widgets[WIDX_TRACK_COLOUR_SCHEME].moveTo             ({ 74, startY + 0});
-            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].moveTo    ({301, startY + 1});
-            widgets[WIDX_TRACK_MAIN_COLOUR].moveTo               ({ 79, startY + 25});
-            widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo         ({ 99, startY + 25});
-            widgets[WIDX_TRACK_SUPPORT_COLOUR].moveTo            ({119, startY + 25});
-            widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].moveTo({100, startY + 25});
-            widgets[WIDX_MAZE_STYLE].moveTo                      ({ 74, startY + 0});
-            widgets[WIDX_MAZE_STYLE_DROPDOWN].moveTo             ({301, startY + 1});
-            widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({289, startY + 19});
+            widgets[WIDX_PRIMARY_PREVIEW_GROUP].moveTo           ({  3, startY + 0});
+            widgets[WIDX_PRIMARY_PREVIEW].moveTo                 ({  3+5, startY + 14 + 0});
+            widgets[WIDX_TRACK_COLOUR_SCHEME].moveTo             ({ 74+5, startY + 14 + 0});
+            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].moveTo    ({301-2-3, startY + 14 + 1});
+            widgets[WIDX_TRACK_MAIN_COLOUR].moveTo               ({ 79+5, startY + 14 + 25});
+            widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo         ({ 99+5, startY + 14 + 25});
+            widgets[WIDX_TRACK_SUPPORT_COLOUR].moveTo            ({119+5, startY + 14 + 25});
+            widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].moveTo({100+5, startY + 14 + 25});
+            widgets[WIDX_MAZE_STYLE].moveTo                      ({ 74+5, startY + 14 + 0});
+            widgets[WIDX_MAZE_STYLE_DROPDOWN].moveTo             ({301-2-3, startY + 14 + 1});
+            widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({288-3, startY + 14 + 19});
             // clang-format on
 
-            return startY + 52;
+            return startY + 52 + 15 + 6;
         }
 
         int32_t colourOnPrepareDrawEntrance(int32_t startY, const Ride* ride)
@@ -4741,27 +4758,27 @@ namespace OpenRCT2::Ui::Windows
             // Entrance style
             if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasEntranceAndExit))
             {
+                widgets[WIDX_SECONDARY_PREVIEW_GROUP].type = WidgetType::empty;
                 widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::empty;
-                widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::empty;
 
                 return startY;
             }
 
+            widgets[WIDX_SECONDARY_PREVIEW_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::spinner;
-            widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::label;
             widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::dropdownMenu;
             widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::button;
 
             // clang-format off
-            widgets[WIDX_SECONDARY_PREVIEW].moveTo      ({245, startY + 0});
-            widgets[WIDX_ENTRANCE_STYLE_LABEL].moveTo   ({  3, startY + 3});
-            widgets[WIDX_ENTRANCE_STYLE].moveTo         ({103, startY + 1});
-            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({230, startY + 2});
+            widgets[WIDX_SECONDARY_PREVIEW_GROUP].moveTo({  3, startY + 0});
+            widgets[WIDX_SECONDARY_PREVIEW].moveTo      ({245-5, startY + 14 + 0});
+            widgets[WIDX_ENTRANCE_STYLE].moveTo         ({3+5, startY + 13 + 1});
+            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({230-5, startY + 13 + 2});
             // clang-format on
 
-            return startY + 56;
+            return startY + 56 + 15 + 3;
         }
 
         int32_t colourOnPrepareDrawVehicles(int32_t startY, const Ride* ride, const RideObjectEntry* rideEntry)
@@ -4769,6 +4786,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = ride->getRideTypeDescriptor();
 
             auto disableVehicleRecolour = [this]() {
+                widgets[WIDX_VEHICLE_PREVIEW_GROUP].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
@@ -4798,6 +4816,7 @@ namespace OpenRCT2::Ui::Windows
 
             VehicleColour vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
+            widgets[WIDX_VEHICLE_PREVIEW_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::scroll;
             widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
             widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
@@ -4886,18 +4905,19 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // clang-format off
-            widgets[WIDX_VEHICLE_PREVIEW].moveTo               ({  3, startY + 0});
-            widgets[WIDX_VEHICLE_COLOUR_SCHEME].moveTo         ({ 74, startY + 0});
-            widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].moveTo({301, startY + 1});
-            widgets[WIDX_VEHICLE_COLOUR_INDEX].moveTo          ({ 74, startY + 16});
-            widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].moveTo ({301, startY + 17});
-            widgets[WIDX_VEHICLE_BODY_COLOUR].moveTo           ({ 79, startY + 33});
-            widgets[WIDX_VEHICLE_TRIM_COLOUR].moveTo           ({ 99, startY + 33});
-            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].moveTo       ({119, startY + 33});
-            widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].moveTo     ({139, startY + 33});
+            widgets[WIDX_VEHICLE_PREVIEW_GROUP].moveTo         ({  3, startY + 0});
+            widgets[WIDX_VEHICLE_PREVIEW].moveTo               ({  3+5, startY + 15 + 0});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME].moveTo         ({ 74+5, startY + 15 + 0});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].moveTo({301-5, startY + 15 + 1});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX].moveTo          ({ 74+5, startY + 15 + 16});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].moveTo ({301-5, startY + 15 + 17});
+            widgets[WIDX_VEHICLE_BODY_COLOUR].moveTo           ({ 79+5, startY + 15 + 33});
+            widgets[WIDX_VEHICLE_TRIM_COLOUR].moveTo           ({ 99+5, startY + 15 + 33});
+            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].moveTo       ({119+5, startY + 15 + 33});
+            widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].moveTo     ({139+5, startY + 15 + 33});
             // clang-format on
 
-            return startY + 53;
+            return startY + 15 + 55 + 3;
         }
 
         void ColourOnDraw(RenderTarget& rt)
