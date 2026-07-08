@@ -4738,19 +4738,19 @@ namespace OpenRCT2::Ui::Windows
 
             // clang-format off
             widgets[WIDX_PRIMARY_PREVIEW_GROUP].moveTo           ({  3, startY + 0});
-            widgets[WIDX_PRIMARY_PREVIEW].moveTo                 ({  3+5, startY + 14 + 0});
-            widgets[WIDX_TRACK_COLOUR_SCHEME].moveTo             ({ 74+5, startY + 14 + 0});
-            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].moveTo    ({301-2-3, startY + 14 + 1});
-            widgets[WIDX_TRACK_MAIN_COLOUR].moveTo               ({ 79+5, startY + 14 + 25});
-            widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo         ({ 99+5, startY + 14 + 25});
-            widgets[WIDX_TRACK_SUPPORT_COLOUR].moveTo            ({119+5, startY + 14 + 25});
-            widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].moveTo({100+5, startY + 14 + 25});
-            widgets[WIDX_MAZE_STYLE].moveTo                      ({ 74+5, startY + 14 + 0});
-            widgets[WIDX_MAZE_STYLE_DROPDOWN].moveTo             ({301-2-3, startY + 14 + 1});
-            widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({288-3, startY + 14 + 19});
+            widgets[WIDX_PRIMARY_PREVIEW].moveTo                 ({  8, startY + 14});
+            widgets[WIDX_TRACK_COLOUR_SCHEME].moveTo             ({ 79, startY + 14});
+            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].moveTo    ({296, startY + 15});
+            widgets[WIDX_TRACK_MAIN_COLOUR].moveTo               ({ 84, startY + 39});
+            widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo         ({104, startY + 39});
+            widgets[WIDX_TRACK_SUPPORT_COLOUR].moveTo            ({124, startY + 39});
+            widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].moveTo({105, startY + 39});
+            widgets[WIDX_MAZE_STYLE].moveTo                      ({ 79, startY + 14});
+            widgets[WIDX_MAZE_STYLE_DROPDOWN].moveTo             ({296, startY + 15});
+            widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({285, startY + 33});
             // clang-format on
 
-            return startY + 52 + 15 + 6;
+            return startY + 73;
         }
 
         int32_t colourOnPrepareDrawEntrance(int32_t startY, const Ride* ride)
@@ -4773,12 +4773,12 @@ namespace OpenRCT2::Ui::Windows
 
             // clang-format off
             widgets[WIDX_SECONDARY_PREVIEW_GROUP].moveTo({  3, startY + 0});
-            widgets[WIDX_SECONDARY_PREVIEW].moveTo      ({245-5, startY + 14 + 0});
-            widgets[WIDX_ENTRANCE_STYLE].moveTo         ({3+5, startY + 13 + 1});
-            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({230-5, startY + 13 + 2});
+            widgets[WIDX_SECONDARY_PREVIEW].moveTo      ({240, startY + 14});
+            widgets[WIDX_ENTRANCE_STYLE].moveTo         ({  8, startY + 14});
+            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({225, startY + 15});
             // clang-format on
 
-            return startY + 56 + 15 + 3;
+            return startY + 74;
         }
 
         int32_t colourOnPrepareDrawVehicles(int32_t startY, const Ride* ride, const RideObjectEntry* rideEntry)
@@ -4906,18 +4906,18 @@ namespace OpenRCT2::Ui::Windows
 
             // clang-format off
             widgets[WIDX_VEHICLE_PREVIEW_GROUP].moveTo         ({  3, startY + 0});
-            widgets[WIDX_VEHICLE_PREVIEW].moveTo               ({  3+5, startY + 15 + 0});
-            widgets[WIDX_VEHICLE_COLOUR_SCHEME].moveTo         ({ 74+5, startY + 15 + 0});
-            widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].moveTo({301-5, startY + 15 + 1});
-            widgets[WIDX_VEHICLE_COLOUR_INDEX].moveTo          ({ 74+5, startY + 15 + 16});
-            widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].moveTo ({301-5, startY + 15 + 17});
-            widgets[WIDX_VEHICLE_BODY_COLOUR].moveTo           ({ 79+5, startY + 15 + 33});
-            widgets[WIDX_VEHICLE_TRIM_COLOUR].moveTo           ({ 99+5, startY + 15 + 33});
-            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].moveTo       ({119+5, startY + 15 + 33});
-            widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].moveTo     ({139+5, startY + 15 + 33});
+            widgets[WIDX_VEHICLE_PREVIEW].moveTo               ({  8, startY + 15});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME].moveTo         ({ 79, startY + 15});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].moveTo({296, startY + 16});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX].moveTo          ({ 79, startY + 31});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].moveTo ({296, startY + 32});
+            widgets[WIDX_VEHICLE_BODY_COLOUR].moveTo           ({ 84, startY + 48});
+            widgets[WIDX_VEHICLE_TRIM_COLOUR].moveTo           ({104, startY + 48});
+            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].moveTo       ({124, startY + 48});
+            widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].moveTo     ({144, startY + 48});
             // clang-format on
 
-            return startY + 15 + 55 + 3;
+            return startY + 73;
         }
 
         void ColourOnDraw(RenderTarget& rt)
