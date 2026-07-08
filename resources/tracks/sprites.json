@@ -5063,7 +5063,7 @@
     },
     {
         "path": "track/lattice_triangle/gentle_left_bank_to_steep_diag_1_1.png",
-        "x": -30,
+        "x": -14,
         "y": -28,
         "palette": "keep"
     },
@@ -5075,13 +5075,13 @@
     },
     {
         "path": "track/lattice_triangle/gentle_left_bank_to_steep_diag_2_1.png",
-        "x": -8,
+        "x": -7,
         "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/gentle_left_bank_to_steep_diag_2_2.png",
-        "x": -11,
+        "x": -10,
         "y": -10,
         "palette": "keep"
     },
@@ -5105,8 +5105,8 @@
     },
     {
         "path": "track/lattice_triangle/gentle_right_bank_to_steep_diag_2_1.png",
-        "x": 3,
-        "y": -14,
+        "x": -3,
+        "y": -15,
         "palette": "keep"
     },
     {
@@ -5129,25 +5129,25 @@
     },
     {
         "path": "track/lattice_triangle/gentle_right_bank_to_steep_diag_4.png",
-        "x": -11,
+        "x": -10,
         "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/steep_to_gentle_left_bank_diag_1_1.png",
         "x": -32,
-        "y": -24,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/steep_to_gentle_left_bank_diag_1_2.png",
         "x": -32,
-        "y": -27,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/steep_to_gentle_left_bank_diag_2.png",
-        "x": -11,
+        "x": -10,
         "y": -19,
         "palette": "keep"
     },
@@ -5160,7 +5160,7 @@
     {
         "path": "track/lattice_triangle/steep_to_gentle_left_bank_diag_4.png",
         "x": -8,
-        "y": -44,
+        "y": -46,
         "palette": "keep"
     },
     {
@@ -5172,25 +5172,25 @@
     {
         "path": "track/lattice_triangle/steep_to_gentle_right_bank_diag_2.png",
         "x": -8,
-        "y": -18,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/steep_to_gentle_right_bank_diag_3_1.png",
-        "x": -7,
-        "y": -18,
+        "x": -31,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/steep_to_gentle_right_bank_diag_3_2.png",
         "x": -32,
-        "y": -27,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/steep_to_gentle_right_bank_diag_4.png",
-        "x": -11,
-        "y": -45,
+        "x": -10,
+        "y": -46,
         "palette": "keep"
     },
     {
