@@ -341,9 +341,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _colourWidgets = makeWidgets(
         kMainRideWidgets,
 
-        // Primary preview area (tracks, shops)
-        makeWidget({  3,   0}, {310, 69}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                       ),
-        makeWidget({  3,  49}, { 68, 49}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
+        // Primary preview area (tracks, mazes, shops)
+        makeWidget({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                       ),
+        makeWidget({  3,  49}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
         makeWidget({ 74,  49}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                           ),
         makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_COLOUR_SCHEME_TO_CHANGE_TIP              ),
         makeWidget({ 79,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
@@ -4750,7 +4750,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({285, startY + 33});
             // clang-format on
 
-            return startY + 73;
+            return startY + 71;
         }
 
         int32_t colourOnPrepareDrawEntrance(int32_t startY, const Ride* ride)
