@@ -12,7 +12,6 @@
 #include "Cheats.h"
 #include "Context.h"
 #include "Diagnostic.h"
-#include "Editor.h"
 #include "FileClassifier.h"
 #include "GameState.h"
 #include "GameStateSnapshots.h"
@@ -362,8 +361,10 @@ void GameLoadInit()
     IGameStateSnapshots* snapshots = context->GetGameStateSnapshots();
     snapshots->Reset();
 
+    // TODO: move this to caller sites??
     auto* sceneMgr = context->GetSceneManager();
-    sceneMgr->setActiveScene(sceneMgr->getGameScene());
+    if (sceneMgr->getActiveScene() != sceneMgr->getScenarioEditorScene()) // HACK
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
     // Invalidate scrolling text cache to prevent stale text from previous park
     // being displayed due to pointer value reuse in the cache matching logic

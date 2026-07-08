@@ -13,7 +13,6 @@
 #include <functional>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -29,6 +28,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/SceneManager.h>
+#include <openrct2/scenes/editor/EditorScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -303,7 +303,11 @@ namespace OpenRCT2::Ui::FileBrowser
                     case (LoadSaveType::landscape):
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
-                        if (Editor::LoadLandscape(pathBuffer))
+
+                        auto* sceneMgr = GetContext()->GetSceneManager();
+                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getScenarioEditorScene());
+                        sceneMgr->setActiveScene(editorScene);
+                        if (editorScene->LoadLandscape(pathBuffer))
                         {
                             gCurrentLoadedPath = pathBuffer;
                             GfxInvalidateScreen();

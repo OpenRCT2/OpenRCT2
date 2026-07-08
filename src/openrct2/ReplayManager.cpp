@@ -552,7 +552,7 @@ namespace OpenRCT2
                 DataSerialiser parkParamsDs(false, data.parkParams);
                 SerialiseParkParameters(parkParamsDs);
 
-                GameLoadInit();
+                GameLoadInit(); // NB: calls `setActiveScene`
                 FixInvalidVehicleSpriteSizes();
             }
             catch (const std::exception& ex)

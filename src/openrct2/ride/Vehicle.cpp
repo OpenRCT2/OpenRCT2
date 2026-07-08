@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Editor.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/ride/RideSetStatusAction.h"

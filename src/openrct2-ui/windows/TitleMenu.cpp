@@ -11,7 +11,6 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/scripting/CustomMenu.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -22,6 +21,8 @@
 #include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/interface/ColourWithFlags.h>
+#include <openrct2/scenes/SceneManager.h>
+#include <openrct2/scenes/editor/EditorScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -230,19 +231,23 @@ namespace OpenRCT2::Ui::Windows
             }
             if (widgetIndex == WIDX_GAME_TOOLS)
             {
+                auto* sceneMgr = GetContext()->GetSceneManager();
                 switch (selectedIndex)
                 {
                     case DDIDX_SCENARIO_EDITOR:
-                        Editor::Load();
+                        sceneMgr->setActiveScene(sceneMgr->getScenarioEditorScene());
                         break;
                     case DDIDX_CONVERT_SAVED_GAME:
-                        Editor::ConvertSaveToScenario();
+                    {
+                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getScenarioEditorScene());
+                        editorScene->ConvertSaveToScenario();
                         break;
+                    }
                     case DDIDX_TRACK_DESIGNER:
-                        Editor::LoadTrackDesigner();
+                        sceneMgr->setActiveScene(sceneMgr->getTrackDesignerScene());
                         break;
                     case DDIDX_TRACK_MANAGER:
-                        Editor::LoadTrackManager();
+                        sceneMgr->setActiveScene(sceneMgr->getTrackManagerScene());
                         break;
                     case DDIDX_OPEN_CONTENT_FOLDER:
                     {

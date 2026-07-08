@@ -12,6 +12,7 @@
 #include "../../core/EnumUtils.hpp"
 #include "../../core/FlagHolder.hpp"
 #include "../../core/StringTypes.h"
+#include "../../localisation/StringIdType.h"
 #include "../../object/ObjectTypes.h"
 
 #include <optional>
@@ -40,6 +41,14 @@ namespace OpenRCT2::Editor
     extern u8string gSceneryGroupPartialSelectError;
     extern std::vector<uint8_t> _objectSelectionFlags;
     extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
+
+    void ObjectListLoad();
+    ResultWithMessage CheckPark();
+    std::pair<ObjectType, StringId> CheckObjectSelection();
+
+    uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
+    void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
+    void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
 
     bool CheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
     bool CheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType);

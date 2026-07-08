@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "GameScene.h"
+#include "TrackDesignerScene.h"
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
@@ -15,24 +15,46 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
+#include "../../drawing/Drawing.h"
+#include "../../interface/WindowBase.h"
+#include "../../localisation/Language.h"
+#include "../../world/Map.h"
+#include "EditorController.h"
 
 using namespace OpenRCT2;
 
-void GameScene::Load()
+void TrackDesignerScene::Load()
 {
-    LOG_VERBOSE("GameScene::Load()");
+    LOG_VERBOSE("TrackDesignerScene::Load()");
 
-    gLegacyScene = LegacyScene::playing;
+    Audio::StopAll();
+    gLegacyScene = LegacyScene::trackDesigner;
+    gScreenAge = 0;
 
-    LOG_VERBOSE("GameScene::Load() finished");
+    auto& gameState = getGameState();
+    gameStateInitAll(gameState, kDefaultMapSize);
+    gameState.editorStep = Editor::Step::objectSelection;
+    SetAllLandOwned();
+    Editor::ObjectListLoad();
+    ContextResetSubsystems();
+
+    OpenEditorWindows();
+    resetMainViewport();
+
+    LoadPalette();
+
+    GameLoadScripts();
+    GameNotifyMapChanged();
+
+    LOG_VERBOSE("TrackDesignerScene::Load() finished");
 }
 
-void GameScene::Tick()
+void TrackDesignerScene::Tick()
 {
     gameStateTick();
 }
 
-void GameScene::Stop()
+void TrackDesignerScene::Stop()
 {
     Audio::StopAll();
 
