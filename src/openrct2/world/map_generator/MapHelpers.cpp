@@ -625,10 +625,10 @@ namespace OpenRCT2::World::MapGenerator
 
     bool isInWorldMap(const MapGenContext& ctx, const TileCoordsXY& genCoords)
     {
-        const int32_t xMin = ctx.overscanOffset.x;
-        const int32_t xMax = ctx.overscanOffset.x + ctx.settings.mapSize.x;
-        const int32_t yMin = ctx.overscanOffset.y;
-        const int32_t yMax = ctx.overscanOffset.y + ctx.settings.mapSize.y;
+        const int32_t xMin = ctx.overscanOffset.x + 1;
+        const int32_t xMax = ctx.overscanOffset.x + ctx.settings.mapSize.x - 1;
+        const int32_t yMin = ctx.overscanOffset.y + 1;
+        const int32_t yMax = ctx.overscanOffset.y + ctx.settings.mapSize.y - 1;
 
         return xMin <= genCoords.x && genCoords.x < xMax && yMin <= genCoords.y && genCoords.y < yMax;
     }
