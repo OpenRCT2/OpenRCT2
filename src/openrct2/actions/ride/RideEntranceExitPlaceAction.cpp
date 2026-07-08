@@ -19,6 +19,7 @@
 #include "../../world/Entrance.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/EntranceElement.h"
@@ -210,6 +211,7 @@ namespace OpenRCT2::GameActions
         entranceElement->SetStationIndex(_stationNum);
         entranceElement->SetRideIndex(_rideIndex);
         entranceElement->setGhost(GetFlags().has(CommandFlag::ghost));
+        entranceElement->setOwner(Park::kDefaultParkOwnerId);
 
         if (_isExit)
         {

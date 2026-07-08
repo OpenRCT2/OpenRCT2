@@ -17,6 +17,7 @@
 #include "../../object/SmallSceneryEntry.h"
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../util/Util.h"
+#include "../../world/Park.h"
 #include "../Map.h"
 #include "../tile_element/SmallSceneryElement.h"
 #include "../tile_element/SurfaceElement.h"
@@ -80,6 +81,7 @@ namespace OpenRCT2::World::MapGenerator
         sceneryElement->SetEntryIndex(type);
         sceneryElement->SetAge(0);
         sceneryElement->SetPrimaryColour(Drawing::Colour::yellow);
+        sceneryElement->setOwner(Park::kNullOwnerId);
     }
 
     static bool surfaceTakesGrassTrees(const TerrainSurfaceObject& surface)

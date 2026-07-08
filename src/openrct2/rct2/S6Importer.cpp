@@ -368,7 +368,7 @@ namespace OpenRCT2::RCT2
             ImportEntities(gameState);
             ConvertPeepAnimationTypeToObjects(gameState);
 
-            auto& park = gameState.park;
+            auto& park = gameState.parks[0];
 
             gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
             park.bankLoan = ToMoney64(_s6.CurrentLoan);
@@ -1313,6 +1313,9 @@ namespace OpenRCT2::RCT2
                 }
             }
             SetTileElements(gameState, std::move(tileElements));
+
+            // S6 saves do not contain tile owner data, so we infer this based on (park) tile ownership flags
+            Park::resetTileOwnerData(gameState);
         }
 
         void ImportTileElement(TileElement* dst, const RCT12TileElement* src, bool invisible)

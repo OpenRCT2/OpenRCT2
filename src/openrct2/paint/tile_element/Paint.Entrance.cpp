@@ -225,10 +225,12 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto& gameState = getGameState();
+    // TODO: use parkId (owner) from entrance element
+    const auto& park = gameState.parks[0];
+
     u8string bannerText;
-    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+    if (park.flags & PARK_FLAGS_PARK_OPEN)
     {
-        const auto& park = gameState.park;
         bannerText = ScrollingText::kParkBannerColourPrefix + park.name;
     }
     else

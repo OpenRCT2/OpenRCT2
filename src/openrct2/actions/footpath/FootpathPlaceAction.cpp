@@ -24,6 +24,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/Wall.h"
@@ -442,6 +443,7 @@ namespace OpenRCT2::GameActions
             pathElement->SetAdditionStatus(255);
             pathElement->SetIsBroken(false);
             pathElement->setGhost(GetFlags().has(CommandFlag::ghost));
+            pathElement->setOwner(Park::kDefaultParkOwnerId);
 
             FootpathQueueChainReset();
 

@@ -313,7 +313,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumSurfaceProperties = 4;
-    constexpr int32_t kNumSurfaceDetails = 4;
+    constexpr int32_t kNumSurfaceDetails = 5;
     constexpr int32_t kSurfacePropertiesHeight = 20 + kNumSurfaceProperties * 21;
     constexpr int32_t kSurfaceDetailsHeight = 20 + kNumSurfaceDetails * 11;
     static constexpr auto kSurfaceWidgets = makeWidgets(
@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumPathProperties = 6;
-    constexpr int32_t kNumPathDetails = 3;
+    constexpr int32_t kNumPathDetails = 4;
     constexpr int32_t kPathPropertiesHeight = 20 + kNumPathProperties * 21;
     constexpr int32_t kPathDetailsHeight = 20 + kNumPathDetails * 11;
     static constexpr auto kPathWidgets = makeWidgets(
@@ -349,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumTrackProperties = 5;
-    constexpr int32_t kNumTrackDetails = 7;
+    constexpr int32_t kNumTrackDetails = 8;
     constexpr int32_t kTrackPropertiesHeight = 20 + kNumTrackProperties * 21;
     constexpr int32_t kTrackDetailsHeight = 20 + kNumTrackDetails * 11;
     static constexpr auto kTrackWidgets = makeWidgets(
@@ -362,7 +362,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumSceneryProperties = 4; // The checkbox groups both count for 2 rows
-    constexpr int32_t kNumSceneryDetails = 3;
+    constexpr int32_t kNumSceneryDetails = 4;
     constexpr int32_t kSceneryPropertiesHeight = 20 + kNumSceneryProperties * 21;
     constexpr int32_t kSceneryDetailsHeight = 20 + kNumSceneryDetails * 11;
     static constexpr auto kSceneryWidgets = makeWidgets(
@@ -379,7 +379,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumEntranceProperties = 2;
-    constexpr int32_t kNumEntranceDetails = 4;
+    constexpr int32_t kNumEntranceDetails = 5;
     constexpr int32_t kEntrancePropertiesHeight = 20 + kNumEntranceProperties * 21;
     constexpr int32_t kEntranceDetailsHeight = 20 + kNumEntranceDetails * 11;
     static constexpr auto kEntranceWidgets = makeWidgets(
@@ -389,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumWallProperties = 4;
-    constexpr int32_t kNumWallDetails = 2;
+    constexpr int32_t kNumWallDetails = 3;
     constexpr int32_t kWallPropertiesHeight = 20 + kNumWallProperties * 21;
     constexpr int32_t kWallDetailsHeight = 20 + kNumWallDetails * 11;
     static constexpr auto kWallWidgets = makeWidgets(
@@ -402,7 +402,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumLargeSceneryProperties = 1;
-    constexpr int32_t kNumLargeSceneryDetails = 3;
+    constexpr int32_t kNumLargeSceneryDetails = 4;
     constexpr int32_t kLargeSceneryPropertiesHeight = 20 + kNumLargeSceneryProperties * 21;
     constexpr int32_t kLargeSceneryDetailsHeight = 20 + kNumLargeSceneryDetails * 11;
     static constexpr auto kLargeSceneryWidgets = makeWidgets(
@@ -411,7 +411,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kNumBannerProperties = 3;
-    constexpr int32_t kNumBannerDetails = 1;
+    constexpr int32_t kNumBannerDetails = 2;
     constexpr int32_t kBannerPropertiesHeight = 20 + kNumBannerProperties * 21;
     constexpr int32_t kBannerDetailsHeight = 20 + kNumBannerDetails * 11;
     static constexpr auto kBannerWidgets = makeWidgets(
@@ -1139,6 +1139,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        const char* getOwnerString(ParkId owner)
+        {
+            // TODO: rework for multiple parks
+            return owner != Park::kNullOwnerId ? getGameState().parks[0].name.c_str()
+                                               : LanguageGetString(STR_TILE_INSPECTOR_OWNED_BY_NA);
+        }
+
         void onDrawSurface(RenderTarget& rt, ScreenCoordsXY screenCoords, const SurfaceElement& surfaceEl)
         {
             // Details
@@ -1177,10 +1184,15 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(landOwnership);
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, ft, { colours[1] });
 
+            // Owned by
+            ft = Formatter();
+            ft.Add<const char*>(getOwnerString(surfaceEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
+
             // Water level
             ft = Formatter();
             ft.Add<uint32_t>(surfaceEl.GetWaterHeight());
-            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, ft, { colours[1] });
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, ft, { colours[1] });
 
             // Properties
             // Raise / lower label
@@ -1253,6 +1265,11 @@ namespace OpenRCT2::Ui::Windows
                     rt, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, { colours[1] });
             }
 
+            // Owned by
+            auto ft = Formatter();
+            ft.Add<const char*>(getOwnerString(pathEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
+
             // Properties
             // Raise / lower label
             screenCoords = windowPos
@@ -1262,7 +1279,7 @@ namespace OpenRCT2::Ui::Windows
             // Current base height
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3, widgets[WIDX_PATH_SPINNER_HEIGHT].textTop() };
-            auto ft = Formatter();
+            ft = Formatter();
             ft.Add<int32_t>(pathEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 
@@ -1325,6 +1342,11 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(ColourSchemeNames[trackEl.GetColourScheme()]);
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 66 }, STR_TILE_INSPECTOR_COLOUR_SCHEME, ft, { colours[1] });
 
+            // Owned by
+            ft = Formatter();
+            ft.Add<const char*>(getOwnerString(trackEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 77 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
+
             // Properties
             // Raise / lower label
             screenCoords.y = windowPos.y + widgets[WIDX_TRACK_SPINNER_HEIGHT].top + 1;
@@ -1366,6 +1388,11 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<ObjectEntryIndex>(smallSceneryEl.GetEntryIndex());
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, ft, { colours[1] });
+
+            // Owned by
+            ft = Formatter();
+            ft.Add<const char*>(getOwnerString(smallSceneryEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
 
             // Properties
             // Raise / Lower
@@ -1446,6 +1473,11 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_STATION_INDEX, ft, { colours[1] });
             }
 
+            // Owned by
+            ft = Formatter();
+            ft.Add<const char*>(getOwnerString(entranceEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
+
             // Properties
             // Raise / Lower
             screenCoords.y = windowPos.y + widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top + 1;
@@ -1480,6 +1512,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, { colours[1] });
             }
+
+            // Owned by
+            ft = Formatter();
+            ft.Add<const char*>(getOwnerString(wallEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
 
             // Properties
             // Raise / lower label
@@ -1548,6 +1585,11 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, { colours[1] });
             }
 
+            // Owned by
+            ft = Formatter();
+            ft.Add<const char*>(getOwnerString(largeSceneryEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
+
             // Properties
             // Raise / lower label
             screenCoords.y = windowPos.y + widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top + 1;
@@ -1572,6 +1614,10 @@ namespace OpenRCT2::Ui::Windows
                 banner->formatTextTo(ft);
                 drawText(rt, screenCoords, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft, { colours[1] });
             }
+            // Owned by
+            auto ft = Formatter();
+            ft.Add<const char*>(getOwnerString(bannerEl.getOwner()));
+            drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_OWNED_BY, ft, { colours[1] });
 
             // Properties
             // Raise / lower label
@@ -1581,7 +1627,7 @@ namespace OpenRCT2::Ui::Windows
             // Current base height
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3, widgets[WIDX_BANNER_SPINNER_HEIGHT].textTop() };
-            auto ft = Formatter();
+            ft = Formatter();
             ft.Add<int32_t>(bannerEl.baseHeight);
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
 

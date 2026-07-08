@@ -178,7 +178,9 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gameState.scenarioOptions.initialCash = gameState.park.cash;
+            // TODO: above comment was introduced with the NSF on 27 Oct 2021. What's the status?
+            //       (commit 34128dc262cefd38911b7833ecc2ec5ea40dee69)
+            gameState.scenarioOptions.initialCash = gameState.parks[0].cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
@@ -489,7 +491,7 @@ namespace OpenRCT2
             os.readWriteChunk(ParkFileChunkType::scenario, [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.readWrite(gameState.scenarioOptions.category);
                 ReadWriteStringTable(cs, gameState.scenarioOptions.name, "en-GB");
-                ReadWriteStringTable(cs, gameState.park.name, "en-GB");
+                ReadWriteStringTable(cs, gameState.parks[0].name, "en-GB");
                 ReadWriteStringTable(cs, gameState.scenarioOptions.details, "en-GB");
 
                 cs.readWrite(gameState.scenarioOptions.objective.Type);
@@ -893,193 +895,210 @@ namespace OpenRCT2
 
         void ReadWriteParkChunk(GameState_t& gameState, OrcaStream& os)
         {
-            // TODO: load/save all parks
-            auto& park = gameState.park;
+            os.readWriteChunk(ParkFileChunkType::park, [&gameState, &os, this](OrcaStream::ChunkStream& cs) {
+                auto version = os.getHeader().targetVersion;
 
-            os.readWriteChunk(
-                ParkFileChunkType::park, [version = os.getHeader().targetVersion, &park](OrcaStream::ChunkStream& cs) {
-                    cs.readWrite(park.name);
-                    cs.readWrite(park.cash);
-                    cs.readWrite(park.bankLoan);
-                    cs.readWrite(park.maxBankLoan);
-                    cs.readWrite(park.bankLoanInterestRate);
-                    cs.readWrite(park.flags);
-                    if (version <= 18)
+                // TODO: rework park initialisation to be performed/called for each of the parks read/written here.
+                // Currently, this is only done for the first park in gameStateInitAll!
+                // Instead, call Park::Initialise(park, gameState) directly below instead.
+
+                if (version >= kParkIdAsTileOwner)
+                {
+                    // Park file supports storing data for multiple parks
+                    cs.readWriteVector(
+                        gameState.parks, [&cs, &version, this](Park::ParkData& park) { ReadWritePark(park, cs, version); });
+                }
+                else
+                {
+                    // Park file only has data for one park; read the one existing park directly
+                    // NB: this element already exists by virtue of `gameStateInitAll`
+                    auto& park = gameState.parks[0];
+                    ReadWritePark(park, cs, version);
+                }
+            });
+        }
+
+        void ReadWritePark(Park::ParkData& park, OrcaStream::ChunkStream& cs, uint16_t version)
+        {
+            cs.readWrite(park.name);
+            cs.readWrite(park.cash);
+            cs.readWrite(park.bankLoan);
+            cs.readWrite(park.maxBankLoan);
+            cs.readWrite(park.bankLoanInterestRate);
+            cs.readWrite(park.flags);
+            if (version <= 18)
+            {
+                money16 tempParkEntranceFee{};
+                cs.readWrite(tempParkEntranceFee);
+                park.entranceFee = ToMoney64(tempParkEntranceFee);
+            }
+            else
+            {
+                cs.readWrite(park.entranceFee);
+            }
+
+            cs.readWrite(park.staffHandymanColour);
+            cs.readWrite(park.staffMechanicColour);
+            cs.readWrite(park.staffSecurityColour);
+            cs.readWrite(park.samePriceThroughoutPark);
+
+            // Finances
+            if (cs.getMode() == OrcaStream::Mode::reading)
+            {
+                auto numMonths = std::min<uint32_t>(kExpenditureTableMonthCount, cs.read<uint32_t>());
+                auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::count), cs.read<uint32_t>());
+                for (uint32_t i = 0; i < numMonths; i++)
+                {
+                    for (uint32_t j = 0; j < numTypes; j++)
                     {
-                        money16 tempParkEntranceFee{};
-                        cs.readWrite(tempParkEntranceFee);
-                        park.entranceFee = ToMoney64(tempParkEntranceFee);
+                        park.expenditureTable[i][j] = cs.read<money64>();
                     }
-                    else
+                }
+            }
+            else
+            {
+                auto numMonths = static_cast<uint32_t>(kExpenditureTableMonthCount);
+                auto numTypes = static_cast<uint32_t>(ExpenditureType::count);
+
+                cs.write(numMonths);
+                cs.write(numTypes);
+                for (uint32_t i = 0; i < numMonths; i++)
+                {
+                    for (uint32_t j = 0; j < numTypes; j++)
                     {
-                        cs.readWrite(park.entranceFee);
+                        cs.write(park.expenditureTable[i][j]);
+                    }
+                }
+            }
+            cs.readWrite(park.historicalProfit);
+
+            // Marketing
+            cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                cs.readWrite(campaign.type);
+                cs.readWrite(campaign.weeksLeft);
+                cs.readWrite(campaign.flags.holder);
+                cs.readWrite(campaign.rideId);
+            });
+
+            // Awards
+            auto& currentAwards = park.currentAwards;
+            if (version <= 6)
+            {
+                Award awards[RCT2::Limits::kMaxAwards]{};
+                cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
+                    if (award.time != 0)
+                    {
+                        cs.readWrite(award.time);
+                        cs.readWrite(award.type);
+                        currentAwards.push_back(award);
+                        return true;
                     }
 
-                    cs.readWrite(park.staffHandymanColour);
-                    cs.readWrite(park.staffMechanicColour);
-                    cs.readWrite(park.staffSecurityColour);
-                    cs.readWrite(park.samePriceThroughoutPark);
+                    return false;
+                });
+            }
+            else
+            {
+                cs.readWriteVector(currentAwards, [&cs](Award& award) {
+                    cs.readWrite(award.time);
+                    cs.readWrite(award.type);
+                });
+            }
+            cs.readWrite(park.value);
+            cs.readWrite(park.companyValue);
+            cs.readWrite(park.size);
+            cs.readWrite(park.numGuestsInPark);
+            cs.readWrite(park.numGuestsHeadingForPark);
+            cs.readWrite(park.rating);
+            cs.readWrite(park.ratingCasualtyPenalty);
+            cs.readWrite(park.currentExpenditure);
+            cs.readWrite(park.currentProfit);
+            cs.readWrite(park.weeklyProfitAverageDividend);
+            cs.readWrite(park.weeklyProfitAverageDivisor);
+            cs.readWrite(park.totalAdmissions);
+            cs.readWrite(park.totalIncomeFromAdmissions);
+            if (version <= 16)
+            {
+                money16 legacyTotalRideValueForMoney = 0;
+                cs.readWrite(legacyTotalRideValueForMoney);
+                park.totalRideValueForMoney = legacyTotalRideValueForMoney;
+            }
+            else
+            {
+                cs.readWrite(park.totalRideValueForMoney);
+            }
+            cs.readWrite(park.numGuestsInParkLastWeek);
+            cs.readWrite(park.guestChangeModifier);
+            cs.readWrite(park.guestGenerationProbability);
+            cs.readWrite(park.suggestedGuestMaximum);
 
-                    // Finances
-                    if (cs.getMode() == OrcaStream::Mode::reading)
-                    {
-                        auto numMonths = std::min<uint32_t>(kExpenditureTableMonthCount, cs.read<uint32_t>());
-                        auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::count), cs.read<uint32_t>());
-                        for (uint32_t i = 0; i < numMonths; i++)
-                        {
-                            for (uint32_t j = 0; j < numTypes; j++)
-                            {
-                                park.expenditureTable[i][j] = cs.read<money64>();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        auto numMonths = static_cast<uint32_t>(kExpenditureTableMonthCount);
-                        auto numTypes = static_cast<uint32_t>(ExpenditureType::count);
+            cs.readWriteArray(park.peepWarningThrottle, [&cs](uint8_t& value) {
+                cs.readWrite(value);
+                return true;
+            });
 
-                        cs.write(numMonths);
-                        cs.write(numTypes);
-                        for (uint32_t i = 0; i < numMonths; i++)
-                        {
-                            for (uint32_t j = 0; j < numTypes; j++)
-                            {
-                                cs.write(park.expenditureTable[i][j]);
-                            }
-                        }
-                    }
-                    cs.readWrite(park.historicalProfit);
-
-                    // Marketing
-                    cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
-                        cs.readWrite(campaign.type);
-                        cs.readWrite(campaign.weeksLeft);
-                        cs.readWrite(campaign.flags.holder);
-                        cs.readWrite(campaign.rideId);
-                    });
-
-                    // Awards
-                    auto& currentAwards = park.currentAwards;
-                    if (version <= 6)
-                    {
-                        Award awards[RCT2::Limits::kMaxAwards]{};
-                        cs.readWriteArray(awards, [&cs, &currentAwards](Award& award) {
-                            if (award.time != 0)
-                            {
-                                cs.readWrite(award.time);
-                                cs.readWrite(award.type);
-                                currentAwards.push_back(award);
-                                return true;
-                            }
-
-                            return false;
-                        });
-                    }
-                    else
-                    {
-                        cs.readWriteVector(currentAwards, [&cs](Award& award) {
-                            cs.readWrite(award.time);
-                            cs.readWrite(award.type);
-                        });
-                    }
-                    cs.readWrite(park.value);
-                    cs.readWrite(park.companyValue);
-                    cs.readWrite(park.size);
-                    cs.readWrite(park.numGuestsInPark);
-                    cs.readWrite(park.numGuestsHeadingForPark);
-                    cs.readWrite(park.rating);
-                    cs.readWrite(park.ratingCasualtyPenalty);
-                    cs.readWrite(park.currentExpenditure);
-                    cs.readWrite(park.currentProfit);
-                    cs.readWrite(park.weeklyProfitAverageDividend);
-                    cs.readWrite(park.weeklyProfitAverageDivisor);
-                    cs.readWrite(park.totalAdmissions);
-                    cs.readWrite(park.totalIncomeFromAdmissions);
-                    if (version <= 16)
-                    {
-                        money16 legacyTotalRideValueForMoney = 0;
-                        cs.readWrite(legacyTotalRideValueForMoney);
-                        park.totalRideValueForMoney = legacyTotalRideValueForMoney;
-                    }
-                    else
-                    {
-                        cs.readWrite(park.totalRideValueForMoney);
-                    }
-                    cs.readWrite(park.numGuestsInParkLastWeek);
-                    cs.readWrite(park.guestChangeModifier);
-                    cs.readWrite(park.guestGenerationProbability);
-                    cs.readWrite(park.suggestedGuestMaximum);
-
-                    cs.readWriteArray(park.peepWarningThrottle, [&cs](uint8_t& value) {
+            if (version < k16BitParkHistoryVersion)
+            {
+                if (cs.getMode() == OrcaStream::Mode::reading)
+                {
+                    uint8_t smallHistory[kParkRatingHistorySize];
+                    cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
                         cs.readWrite(value);
                         return true;
                     });
-
-                    if (version < k16BitParkHistoryVersion)
+                    for (int i = 0; i < kParkRatingHistorySize; i++)
                     {
-                        if (cs.getMode() == OrcaStream::Mode::reading)
-                        {
-                            uint8_t smallHistory[kParkRatingHistorySize];
-                            cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
-                                cs.readWrite(value);
-                                return true;
-                            });
-                            for (int i = 0; i < kParkRatingHistorySize; i++)
-                            {
-                                if (smallHistory[i] == kRCT12ParkHistoryUndefined)
-                                    park.ratingHistory[i] = kParkRatingHistoryUndefined;
-                                else
-                                {
-                                    park.ratingHistory[i] = static_cast<uint16_t>(
-                                        smallHistory[i] * kRCT12ParkRatingHistoryFactor);
-                                }
-                            }
-                        }
+                        if (smallHistory[i] == kRCT12ParkHistoryUndefined)
+                            park.ratingHistory[i] = kParkRatingHistoryUndefined;
                         else
                         {
-                            uint8_t smallHistory[kParkRatingHistorySize];
-                            for (int i = 0; i < kParkRatingHistorySize; i++)
-                            {
-                                if (park.ratingHistory[i] == kParkRatingHistoryUndefined)
-                                    smallHistory[i] = kRCT12ParkHistoryUndefined;
-                                else
-                                {
-                                    smallHistory[i] = static_cast<uint8_t>(
-                                        park.ratingHistory[i] / kRCT12ParkRatingHistoryFactor);
-                                }
-                            }
-                            cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
-                                cs.readWrite(value);
-                                return true;
-                            });
+                            park.ratingHistory[i] = static_cast<uint16_t>(smallHistory[i] * kRCT12ParkRatingHistoryFactor);
                         }
                     }
-                    else
+                }
+                else
+                {
+                    uint8_t smallHistory[kParkRatingHistorySize];
+                    for (int i = 0; i < kParkRatingHistorySize; i++)
                     {
-                        cs.readWriteArray(park.ratingHistory, [&cs](uint16_t& value) {
-                            cs.readWrite(value);
-                            return true;
-                        });
+                        if (park.ratingHistory[i] == kParkRatingHistoryUndefined)
+                            smallHistory[i] = kRCT12ParkHistoryUndefined;
+                        else
+                        {
+                            smallHistory[i] = static_cast<uint8_t>(park.ratingHistory[i] / kRCT12ParkRatingHistoryFactor);
+                        }
                     }
-
-                    cs.readWriteArray(park.guestsInParkHistory, [&cs](uint32_t& value) {
+                    cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
                         cs.readWrite(value);
                         return true;
                     });
-
-                    cs.readWriteArray(park.cashHistory, [&cs](money64& value) {
-                        cs.readWrite(value);
-                        return true;
-                    });
-                    cs.readWriteArray(park.weeklyProfitHistory, [&cs](money64& value) {
-                        cs.readWrite(value);
-                        return true;
-                    });
-                    cs.readWriteArray(park.valueHistory, [&cs](money64& value) {
-                        cs.readWrite(value);
-                        return true;
-                    });
+                }
+            }
+            else
+            {
+                cs.readWriteArray(park.ratingHistory, [&cs](uint16_t& value) {
+                    cs.readWrite(value);
+                    return true;
                 });
+            }
+
+            cs.readWriteArray(park.guestsInParkHistory, [&cs](uint32_t& value) {
+                cs.readWrite(value);
+                return true;
+            });
+
+            cs.readWriteArray(park.cashHistory, [&cs](money64& value) {
+                cs.readWrite(value);
+                return true;
+            });
+            cs.readWriteArray(park.weeklyProfitHistory, [&cs](money64& value) {
+                cs.readWrite(value);
+                return true;
+            });
+            cs.readWriteArray(park.valueHistory, [&cs](money64& value) {
+                cs.readWrite(value);
+                return true;
+            });
         }
 
         void ReadWriteResearchChunk(GameState_t& gameState, OrcaStream& os)
@@ -1203,6 +1222,8 @@ namespace OpenRCT2
                         return;
                     }
 
+                    // !!! This implicitly creates and initialises a park through Park::Initialise!
+                    // TODO: move call to Park::Initialise to park chunk instead (indeed break up gameStateInitAll)
                     gameStateInitAll(gameState, gameState.mapSize);
 
                     auto numElements = cs.read<uint32_t>();
@@ -1210,6 +1231,8 @@ namespace OpenRCT2
                     tileElements.resize(numElements);
                     cs.read(tileElements.data(), tileElements.size() * sizeof(TileElement));
                     SetTileElements(gameState, std::move(tileElements));
+
+                    const auto targetVersion = os.getHeader().targetVersion;
 
                     TileElementIterator it;
                     TileElementIteratorBegin(&it);
@@ -1236,11 +1259,11 @@ namespace OpenRCT2
                         {
                             auto* trackElement = it.element->asTrack();
                             auto trackType = trackElement->GetTrackType();
-                            if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
+                            if (TrackTypeMustBeMadeInvisible(*trackElement, targetVersion))
                             {
                                 it.element->setInvisible(true);
                             }
-                            if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
+                            if (targetVersion < kBlockBrakeImprovementsVersion)
                             {
                                 if (trackType == TrackElemType::brakes)
                                     trackElement->SetBrakeClosed(true);
@@ -1248,7 +1271,7 @@ namespace OpenRCT2
                                     trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
-                        else if (it.element->getType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
+                        else if (it.element->getType() == TileElementType::SmallScenery && targetVersion < 23)
                         {
                             auto* sceneryElement = it.element->asSmallScenery();
                             // Previous formats stored the needs supports flag in the primary colour
@@ -1266,6 +1289,13 @@ namespace OpenRCT2
                     }
 
                     ParkEntranceUpdateLocations();
+
+                    if (targetVersion < kParkIdAsTileOwner)
+                    {
+                        // Before this version, the tile owner byte is assumed to either be uninitialised,
+                        // or containing now-illegal data previously set by a plugin.
+                        Park::resetTileOwnerData(gameState);
+                    }
                 });
             if (!found)
             {

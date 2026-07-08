@@ -1715,8 +1715,9 @@ namespace OpenRCT2::Ui::Windows
             if (_rideConstructionState != RideConstructionState::Place)
                 drawText(rt, screenCoords, STR_BUILD_THIS, { TextAlignment::centre });
 
+            const auto& gameState = getGameState();
             screenCoords.y += 11;
-            if (_currentTrackPrice != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+            if (_currentTrackPrice != kMoney64Undefined && !(gameState.parks[0].flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);

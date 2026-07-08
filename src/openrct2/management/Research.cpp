@@ -329,7 +329,7 @@ void ResearchUpdate()
         return;
     }
 
-    if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) && gameState.researchFundingLevel == RESEARCH_FUNDING_NONE)
+    if ((gameState.parks[0].flags & PARK_FLAGS_NO_MONEY) && gameState.researchFundingLevel == RESEARCH_FUNDING_NONE)
     {
         researchLevel = RESEARCH_FUNDING_NORMAL;
     }

@@ -203,7 +203,8 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = gameState.parks[0];
     if (park.numGuestsHeadingForPark != guestsHeadingToPark)
     {
         LOG_VERBOSE(
@@ -226,7 +227,8 @@ static void FixGuestCount()
         }
     }
 
-    auto& park = getGameState().park;
+    auto& gameState = getGameState();
+    auto& park = gameState.parks[0];
     if (park.numGuestsInPark != guestCount)
     {
         LOG_VERBOSE("Corrected bad amount of guests in park: %u -> %u", park.numGuestsInPark, guestCount);
