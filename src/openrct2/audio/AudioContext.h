@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../core/IStream.hpp"
+#include "AudioMixer.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -24,6 +26,16 @@ namespace OpenRCT2::Audio
     /**
      * Audio services for playing music and sound effects.
      */
+    struct AudioStreamInfo
+    {
+        int32_t bytesPerSecond = 0;
+        uint64_t length = 0;
+    };
+
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
     struct IAudioContext
     {
         virtual ~IAudioContext() = default;
@@ -36,6 +48,21 @@ namespace OpenRCT2::Audio
         virtual IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) = 0;
         virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) = 0;
 
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#endif
+        // Reads format metadata from a stream without fully decoding it
+        // For when you only need bytesPerSecond/length (e.g. MusicObject)
+        virtual AudioStreamInfo ProbeStream(std::unique_ptr<IStream> stream)
+        {
+            (void)stream;
+            return {};
+        }
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic pop
+#endif
+
         virtual void StartTitleMusic() = 0;
 
         virtual void ToggleAllSounds() = 0;
@@ -47,7 +74,57 @@ namespace OpenRCT2::Audio
         virtual void StopRideMusic() = 0;
         virtual void StopTitleMusic() = 0;
         virtual void StopVehicleSounds() = 0;
+
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#endif
+        virtual bool IsNewEngine() const
+        {
+            return false;
+        }
+
+        virtual void PlayOneShot(IAudioSource* source, float volume, float pan)
+        {
+            (void)source;
+            (void)volume;
+            (void)pan;
+        }
+
+        virtual void SyncVolumeSettings()
+        {
+        }
+
+        virtual void SwitchAudioEngine()
+        {
+        }
+
+        virtual bool HandleAudioDeviceEvent(uint32_t eventType, uint32_t deviceIndex, bool isCapture)
+        {
+            (void)eventType;
+            (void)deviceIndex;
+            (void)isCapture;
+            return false;
+        }
+
+        virtual std::shared_ptr<IAudioChannel> CreateChannel(
+            IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate)
+        {
+            (void)source;
+            (void)group;
+            (void)loop;
+            (void)volume;
+            (void)pan;
+            (void)rate;
+            return nullptr;
+        }
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic pop
+#endif
     };
+#if defined(__GNUC__) && !defined(__clang__)
+    #pragma GCC diagnostic pop
+#endif
 
     [[nodiscard]] std::unique_ptr<IAudioContext> CreateDummyAudioContext();
 

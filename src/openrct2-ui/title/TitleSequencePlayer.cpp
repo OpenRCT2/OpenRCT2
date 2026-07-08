@@ -19,6 +19,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
@@ -30,6 +31,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/ride/RideAudio.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/scenes/title/TitleScene.h>
@@ -301,6 +303,8 @@ namespace OpenRCT2::Title
         bool LoadParkFromFile(const u8string& path)
         {
             LOG_VERBOSE("TitleSequencePlayer::LoadParkFromFile(%s)", path.c_str());
+            Audio::StopSFX();
+            RideAudio::StopAllChannels();
             bool success = false;
             try
             {
@@ -359,6 +363,8 @@ namespace OpenRCT2::Title
         bool LoadParkFromStream(IStream* stream, const std::string& hintPath)
         {
             LOG_VERBOSE("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
+            Audio::StopSFX();
+            RideAudio::StopAllChannels();
             bool success = false;
             try
             {

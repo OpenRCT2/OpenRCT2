@@ -63,6 +63,7 @@ namespace OpenRCT2
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;
         void Unload() override;
+        void InvalidateSamples();
 
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
         bool HasPreview() const;

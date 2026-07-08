@@ -3829,3 +3829,9 @@ STR_7029    :Quarter Helix down
 STR_7030    :{WINDOW_COLOUR_2}Guests entertained: {BLACK}{COMMA32}
 STR_7031    :Disable grass growing
 STR_7032    :Disable grass ageing so that it doesn't grow.
+STR_7033    :Audio engine:
+STR_7034    :Select which audio engine to use.
+STR_7035    :Legacy
+STR_7036    :New (experimental)
+STR_7037    :High quality resampling
+STR_7038    :Resample sounds with a windowed-sinc filter to preserve high frequencies. Turn off on slower hardware to use cheaper linear interpolation. Only affects the new audio engine.

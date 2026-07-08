@@ -16,6 +16,7 @@
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
+#include "../../audio/AudioContext.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
 #include "../../drawing/Drawing.h"
@@ -122,6 +123,8 @@ void TitleScene::Load()
         _sequencePlayer->Update();
     }
 
+    auto& audioContext = GetContext().GetAudioContext();
+    audioContext.SyncVolumeSettings();
     Audio::PlayTitleMusic();
 
     CreateWindows();
