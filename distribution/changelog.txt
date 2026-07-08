@@ -1,5 +1,6 @@
 0.5.4 (in development)
 ------------------------------------------------------------------------
+- Improved: [#26747] Exporting a sprite file now also outputs a JSON file, allowing for round-trip conversions.
 - Fix: [#26756] Guests cannot puke or litter on sloped path.
 - Fix: [#26758] [Plugin] IPv6 addresses are reported incorrectly.
 
