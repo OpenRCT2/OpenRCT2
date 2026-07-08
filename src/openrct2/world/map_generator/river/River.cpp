@@ -340,8 +340,7 @@ namespace OpenRCT2::World::MapGenerator::River
                 {
                     TileCoordsXY deltaPos = tile.pos + TileCoordsXY{ dx, dy };
                     const int32_t distance = dx * dx + dy * dy;
-                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared
-                        || heightMap[deltaPos] - heightMap[tile.pos] > 4.0f) // make waterfalls slightly thinner
+                    if (!heightMap.inBounds(deltaPos) || distance > radiusSquared)
                     {
                         continue;
                     }
