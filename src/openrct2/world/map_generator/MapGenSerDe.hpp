@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../Version.h"
 #include "BaseMap.hpp"
 #include "MapGen.h"
 #include "SettingsTypesSerDe.hpp"
@@ -19,6 +20,14 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
+    constexpr std::string_view kMapGenSettingsTypeKey = "__type__";
+    constexpr std::string_view kMapGenSettingsVersionKey = "__version__";
+    constexpr std::string_view kMapGenSettingsFormatKey = "__format__";
+
+    // increment for each breaking change
+    constexpr size_t kMapGenSettingsFormat = 1;
+    const std::string kMapGenSettingsTypeValue = std::format("{}::MapGeneratorSettings", OPENRCT2_NAME);
+
     NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         HeightMapGenerator,
         {
@@ -78,6 +87,9 @@ namespace OpenRCT2::World::MapGenerator
 
     inline void to_json(nlohmann::json& j, const Settings& settings)
     {
+        j[kMapGenSettingsTypeKey] = kMapGenSettingsTypeValue;
+        j[kMapGenSettingsVersionKey] = kOpenRCT2Version;
+        j[kMapGenSettingsFormatKey] = kMapGenSettingsFormat;
         j["generator"] = settings.generator;
         j["mapSize"] = settings.mapSize;
         j["seed"] = settings.seed;
@@ -95,6 +107,20 @@ namespace OpenRCT2::World::MapGenerator
 
     inline void from_json(const nlohmann::json& j, Settings& settings)
     {
+        auto typeValue = j.at(kMapGenSettingsTypeKey).get<std::string>();
+        if (typeValue != kMapGenSettingsTypeValue)
+        {
+            throw SettingSerdeException(
+                "Invalid {}, expected {} found {}", kMapGenSettingsTypeKey, kMapGenSettingsTypeValue, typeValue);
+        }
+
+        auto formatValue = j.at(kMapGenSettingsFormatKey).get<size_t>();
+        if (formatValue != kMapGenSettingsFormat)
+        {
+            throw SettingSerdeException(
+                "Invalid {}, expected {} found {}", kMapGenSettingsFormatKey, kMapGenSettingsFormat, formatValue);
+        }
+
         j.at("generator").get_to(settings.generator);
         j.at("mapSize").get_to(settings.mapSize);
         j.at("seed").get_to(settings.seed);
