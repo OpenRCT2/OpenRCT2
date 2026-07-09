@@ -653,6 +653,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<VehicleTypeLabel> _vehicleDropdownData;
         int16_t _vehicleIndex = 0;
         uint16_t _rideColour = 0;
+        int32_t _operatingPanelHeight = kWindowSize.height;
         int32_t _colourPanelHeight = kWindowSize.height;
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
@@ -3266,7 +3267,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingResize()
         {
-            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6 - getTitleBarDiffNormal();
+            auto bottom = _operatingPanelHeight - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -3523,14 +3524,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void operatingOnPrepareDrawMode()
+        uint16_t operatingOnPrepareDrawMode(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
         {
-            auto ride = GetRide(rideId);
-            if (ride == nullptr)
-                return;
-
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
-            const auto& rtd = ride->getRideTypeDescriptor();
             bool hasAlternativeType = rtd.flags.has(RtdFlag::hasInvertedVariant);
             if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)
                 || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)))
@@ -3572,7 +3568,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
 
             // Mode specific functionality
-            auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
+            auto multiplier = rtd.OperatingSettings.OperatingSettingMultiplier;
             uint16_t tweakValue = static_cast<uint16_t>(ride->operationOption) * multiplier;
 
             StringId format, caption, tooltip;
@@ -3620,7 +3616,7 @@ namespace OpenRCT2::Ui::Windows
                     format = STR_COMMA16;
                     caption = STR_MAX_PEOPLE_ON_RIDE;
                     tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
-                    if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
+                    if (!rtd.flags.has(RtdFlag::noVehicles))
                         format = kStringIdEmpty;
                     break;
             }
@@ -3643,22 +3639,52 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::empty;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
             }
+
+            return startY;
         }
 
-        void operatingOnPrepareDrawLoad()
+        uint16_t operatingOnPrepareDrawLoad(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
         {
-            auto ride = GetRide(rideId);
-            if (ride == nullptr)
-                return;
-
             // Waiting
-            widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLoadOptions))
+            if (rtd.flags.has(RtdFlag::hasLoadOptions))
             {
                 widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::checkbox;
                 widgets[WIDX_LOAD].type = WidgetType::dropdownMenu;
+                widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
                 widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::button;
 
+                setWidgetPressed(WIDX_LOAD_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD) != 0);
+            }
+            else
+            {
+                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::empty;
+                widgets[WIDX_LOAD].type = WidgetType::empty;
+                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::empty;
+            }
+
+            // Leave if another vehicle arrives at station
+            if (rtd.flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
+                && ride->numTrains > 1 && !ride->isBlockSectioned())
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = rtd.NameConvention.vehicle
+                        == RideComponentType::Boat
+                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
+                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
+
+                setWidgetPressed(
+                    WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
+                    (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
+            }
+            else
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
+            }
+
+            // Min/max waiting length
+            if (rtd.flags.has(RtdFlag::hasLoadOptions))
+            {
                 widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
                 widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::spinner;
                 widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::button;
@@ -3674,16 +3700,11 @@ namespace OpenRCT2::Ui::Windows
                 _spinnerCaption4 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->maxWaitingTime));
                 widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
 
-                setWidgetPressed(WIDX_LOAD_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD) != 0);
                 setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH) != 0);
                 setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH) != 0);
             }
             else
             {
-                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::empty;
-                widgets[WIDX_LOAD].type = WidgetType::empty;
-                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::empty;
-
                 widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
                 widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::empty;
                 widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::empty;
@@ -3695,28 +3716,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::empty;
             }
 
-            // Leave if another vehicle arrives at station
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
-                && ride->numTrains > 1 && !ride->isBlockSectioned())
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->getRideTypeDescriptor().NameConvention.vehicle
-                        == RideComponentType::Boat
-                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
-                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
-
-                setWidgetPressed(
-                    WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
-                    (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
-            }
-            else
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
-            }
-
             // Synchronise with adjacent stations
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
+            if (rtd.flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
             {
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::checkbox;
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
@@ -3730,14 +3731,27 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
             }
+
+            return startY;
         }
 
         void OperatingOnPrepareDraw()
         {
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            operatingOnPrepareDrawMode();
-            operatingOnPrepareDrawLoad();
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            const auto& rtd = ride->getRideTypeDescriptor();
+
+            auto startY = 49 + getTitleBarDiffNormal();
+            startY = operatingOnPrepareDrawMode(startY, ride, rtd);
+            startY = operatingOnPrepareDrawLoad(startY, ride, rtd);
+
+            _operatingPanelHeight = startY;
+            if (_operatingPanelHeight != height)
+                onResize();
         }
 
         void OperatingOnDraw(RenderTarget& rt)
