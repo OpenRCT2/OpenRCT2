@@ -4657,7 +4657,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = STR_TRACK_STYLE_GROUP;
+                bool isShop = rtd.Category == RideCategory::shop;
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = isShop ? STR_SHOP_STYLE_GROUP : STR_TRACK_STYLE_GROUP;
                 widgets[WIDX_MAZE_STYLE].type = WidgetType::empty;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WidgetType::empty;
             }
@@ -4707,7 +4708,6 @@ namespace OpenRCT2::Ui::Windows
             // Selling item random colour checkbox
             if (ride->hasRecolourableShopItems())
             {
-                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = STR_SHOP_STYLE_GROUP;
                 widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WidgetType::checkbox;
                 setWidgetPressed(WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX, ride->flags.has(RideFlag::randomShopColours));
             }
