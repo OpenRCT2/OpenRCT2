@@ -4665,12 +4665,14 @@ namespace OpenRCT2::Ui::Windows
             // Track, multiple colour schemes
             if (ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsMultipleColourSchemes))
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].type = WidgetType::groupbox;
                 widgets[WIDX_TRACK_COLOUR_SCHEME].type = WidgetType::dropdownMenu;
                 widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WidgetType::button;
                 widgets[WIDX_PAINT_INDIVIDUAL_AREA].type = WidgetType::flatBtn;
             }
             else
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].type = WidgetType::empty;
                 widgets[WIDX_TRACK_COLOUR_SCHEME].type = WidgetType::empty;
                 widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
                 widgets[WIDX_PAINT_INDIVIDUAL_AREA].type = WidgetType::empty;
