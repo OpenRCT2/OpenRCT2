@@ -351,7 +351,7 @@ TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stat
         return nullptr;
     do
     {
-        if (tileElement->getType() == TileElementType::Track && stationStart.z == tileElement->getBaseZ())
+        if (tileElement->getType() == TileElementType::track && stationStart.z == tileElement->getBaseZ())
             return tileElement;
 
     } while (!(tileElement++)->isLastForTile());
@@ -369,7 +369,7 @@ TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos)
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->getType() == TileElementType::Entrance && elementPos.z == tileElement->getBaseZ())
+        if (tileElement->getType() == TileElementType::entrance && elementPos.z == tileElement->getBaseZ())
             return tileElement;
     } while (!(tileElement++)->isLastForTile());
 

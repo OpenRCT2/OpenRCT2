@@ -558,7 +558,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
     TileElementIteratorBegin(&it);
     do
     {
-        if (it.element->getType() == TileElementType::Track)
+        if (it.element->getType() == TileElementType::track)
         {
             markTrackAsIndestructible = false;
 

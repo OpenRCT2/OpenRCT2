@@ -490,7 +490,7 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
     TileElementIteratorBegin(&it);
     do
     {
-        if (it.element->getType() != TileElementType::Track)
+        if (it.element->getType() != TileElementType::track)
             continue;
         if (it.element->asTrack()->GetRideIndex() != ride.id)
             continue;
@@ -2092,7 +2092,7 @@ static void RideShopConnected(const Ride& ride)
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->getType() == TileElementType::Track && tileElement->asTrack()->GetRideIndex() == ride.id)
+        if (tileElement->getType() == TileElementType::track && tileElement->asTrack()->GetRideIndex() == ride.id)
         {
             trackElement = tileElement->asTrack();
             break;
@@ -2270,11 +2270,11 @@ static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
 
 void RideSetMapTooltip(const TileElement& tileElement)
 {
-    if (tileElement.getType() == TileElementType::Entrance)
+    if (tileElement.getType() == TileElementType::entrance)
     {
         RideEntranceSetMapTooltip(*tileElement.asEntrance());
     }
-    else if (tileElement.getType() == TileElementType::Track)
+    else if (tileElement.getType() == TileElementType::track)
     {
         const auto* trackElement = tileElement.asTrack();
         if (trackElement->IsStation())
@@ -2286,7 +2286,7 @@ void RideSetMapTooltip(const TileElement& tileElement)
             RideTrackSetMapTooltip(*trackElement);
         }
     }
-    else if (tileElement.getType() == TileElementType::Path)
+    else if (tileElement.getType() == TileElementType::path)
     {
         RideQueueBannerSetMapTooltip(*tileElement.asPath());
     }
@@ -2431,7 +2431,7 @@ void Ride::chainQueues() const
         {
             do
             {
-                if (tileElement->getType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::entrance)
                     continue;
                 if (tileElement->getBaseZ() != mapLocation.z)
                     continue;
@@ -2449,7 +2449,7 @@ void Ride::chainQueues() const
  */
 static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE* output, bool shouldCheckCompleteCircuit)
 {
-    if (input.element == nullptr || input.element->getType() != TileElementType::Track)
+    if (input.element == nullptr || input.element->getType() != TileElementType::track)
         return { false };
 
     RideId rideIndex = input.element->asTrack()->GetRideIndex();
@@ -2783,7 +2783,7 @@ static void RideSetMazeEntranceExitPoints(Ride& ride)
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->getType() != TileElementType::Entrance)
+            if (tileElement->getType() != TileElementType::entrance)
                 continue;
             if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE
                 && tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
@@ -3766,7 +3766,7 @@ TrackElement* Ride::getOriginElement(StationIndex stationIndex) const
         return nullptr;
     do
     {
-        if (tileElement->getType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::track)
             continue;
 
         auto* trackElement = tileElement->asTrack();
@@ -4375,7 +4375,7 @@ bool RideHasAnyTrackElements(const Ride& ride)
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
-        if (it.element->getType() != TileElementType::Track)
+        if (it.element->getType() != TileElementType::track)
             continue;
         if (it.element->asTrack()->GetRideIndex() != ride.id)
             continue;
@@ -4753,7 +4753,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
             continue;
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
 
             trackType = tileElement->asTrack()->GetTrackType();
@@ -5119,7 +5119,7 @@ TileElement* GetStationPlatform(const CoordsXYRangedZ& coords)
     {
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             /* Check if tileElement is a station platform. */
             if (!tileElement->asTrack()->IsStation())
@@ -5381,7 +5381,7 @@ void DetermineRideEntranceAndExitLocations()
                     {
                         do
                         {
-                            if (tileElement->getType() != TileElementType::Entrance)
+                            if (tileElement->getType() != TileElementType::entrance)
                             {
                                 continue;
                             }
@@ -5542,7 +5542,7 @@ void Ride::updateRideTypeForAllPieces()
 
             do
             {
-                if (tileElement->getType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::track)
                     continue;
 
                 auto* trackElement = tileElement->asTrack();

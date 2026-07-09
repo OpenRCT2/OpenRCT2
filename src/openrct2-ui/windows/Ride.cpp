@@ -1430,7 +1430,7 @@ namespace OpenRCT2::Ui::Windows
 
             while (TileElementIteratorNext(&it))
             {
-                if (it.element->getType() != TileElementType::Track)
+                if (it.element->getType() != TileElementType::track)
                     continue;
 
                 if (it.element->asTrack()->GetRideIndex() != ride.id)
@@ -4225,7 +4225,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (info.interactionType != ViewportInteractionItem::ride)
                 return;
-            if (info.Element->getType() != TileElementType::Track)
+            if (info.Element->getType() != TileElementType::track)
                 return;
             if (info.Element->asTrack()->GetRideIndex() != rideId)
                 return;
@@ -7225,14 +7225,14 @@ namespace OpenRCT2::Ui::Windows
             if (ride != nullptr)
             {
                 const auto type = tileElement->getType();
-                if (type == TileElementType::Entrance)
+                if (type == TileElementType::entrance)
                 {
                     // Open ride window in station view
                     auto entranceElement = tileElement->asEntrance();
                     auto stationIndex = entranceElement->GetStationIndex();
                     return WindowRideOpenStation(*ride, stationIndex);
                 }
-                else if (type == TileElementType::Track)
+                else if (type == TileElementType::track)
                 {
                     // Open ride window in station view
                     auto trackElement = tileElement->asTrack();

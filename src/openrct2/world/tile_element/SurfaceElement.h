@@ -46,7 +46,7 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct SurfaceElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::Surface;
+        static constexpr TileElementType kElementType = TileElementType::surface;
 
     private:
         uint8_t Slope;

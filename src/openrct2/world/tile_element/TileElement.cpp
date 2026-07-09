@@ -27,7 +27,7 @@ namespace OpenRCT2
     {
         switch (getType())
         {
-            case TileElementType::LargeScenery:
+            case TileElementType::largeScenery:
             {
                 auto* sceneryEntry = asLargeScenery()->GetEntry();
                 if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == kScrollingModeNone)
@@ -35,7 +35,7 @@ namespace OpenRCT2
 
                 return asLargeScenery()->GetBannerIndex();
             }
-            case TileElementType::Wall:
+            case TileElementType::wall:
             {
                 auto* wallEntry = asWall()->GetEntry();
                 if (wallEntry == nullptr || wallEntry->scrolling_mode == kScrollingModeNone)
@@ -43,7 +43,7 @@ namespace OpenRCT2
 
                 return asWall()->GetBannerIndex();
             }
-            case TileElementType::Banner:
+            case TileElementType::banner:
                 return asBanner()->GetIndex();
             default:
                 return BannerIndex::GetNull();
@@ -54,13 +54,13 @@ namespace OpenRCT2
     {
         switch (getType())
         {
-            case TileElementType::Wall:
+            case TileElementType::wall:
                 asWall()->SetBannerIndex(bannerIndex);
                 break;
-            case TileElementType::LargeScenery:
+            case TileElementType::largeScenery:
                 asLargeScenery()->SetBannerIndex(bannerIndex);
                 break;
-            case TileElementType::Banner:
+            case TileElementType::banner:
                 asBanner()->SetIndex(bannerIndex);
                 break;
             default:
@@ -85,11 +85,11 @@ namespace OpenRCT2
     {
         switch (getType())
         {
-            case TileElementType::Track:
+            case TileElementType::track:
                 return asTrack()->GetRideIndex();
-            case TileElementType::Entrance:
+            case TileElementType::entrance:
                 return asEntrance()->GetRideIndex();
-            case TileElementType::Path:
+            case TileElementType::path:
                 return asPath()->GetRideIndex();
             default:
                 return RideId::GetNull();
@@ -115,7 +115,7 @@ namespace OpenRCT2
             tileElement++;
             if ((tileElement - 1)->isLastForTile())
                 return false;
-        } while (tileElement->getType() != TileElementType::Surface);
+        } while (tileElement->getType() != TileElementType::surface);
         return true;
     }
 } // namespace OpenRCT2

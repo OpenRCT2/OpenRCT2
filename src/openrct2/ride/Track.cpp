@@ -63,7 +63,7 @@ static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex
     {
         if (loc.z != tileElement->getBaseZ())
             continue;
-        if (tileElement->getType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::track)
             continue;
         if (tileElement->getDirection() != loc.direction)
             continue;
@@ -471,13 +471,13 @@ bool TrackGetIsSheltered(const CoordsXYZ& input)
         if (tileElement->getBaseZ() <= input.z)
             continue;
 
-        if (tileElement->getType() == TileElementType::LargeScenery)
+        if (tileElement->getType() == TileElementType::largeScenery)
             return true;
 
-        if (tileElement->getType() == TileElementType::Path)
+        if (tileElement->getType() == TileElementType::path)
             return true;
 
-        if (tileElement->getType() != TileElementType::SmallScenery)
+        if (tileElement->getType() != TileElementType::smallScenery)
             continue;
 
         auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();

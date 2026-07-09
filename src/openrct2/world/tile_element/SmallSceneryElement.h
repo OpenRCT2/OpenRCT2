@@ -28,7 +28,7 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct SmallSceneryElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::SmallScenery;
+        static constexpr TileElementType kElementType = TileElementType::smallScenery;
 
     private:
         ObjectEntryIndex entryIndex; // 5

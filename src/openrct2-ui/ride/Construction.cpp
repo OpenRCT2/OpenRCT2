@@ -376,7 +376,7 @@ namespace OpenRCT2
         auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::ride));
         if (info.interactionType != ViewportInteractionItem::none)
         {
-            if (info.Element->getType() == TileElementType::Track)
+            if (info.Element->getType() == TileElementType::track)
             {
                 const auto* trackElement = info.Element->asTrack();
                 if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
@@ -455,7 +455,7 @@ namespace OpenRCT2
                     continue;
                 do
                 {
-                    if (tileElement->getType() != TileElementType::Track)
+                    if (tileElement->getType() != TileElementType::track)
                         continue;
                     if (tileElement->getBaseZ() != stationBaseZ)
                         continue;

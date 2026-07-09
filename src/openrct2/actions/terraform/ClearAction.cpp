@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
 
                 switch (tileElement->getType())
                 {
-                    case TileElementType::Path:
+                    case TileElementType::path:
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryFootpath)
                         {
                             auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->getBaseZ() });
@@ -158,7 +158,7 @@ namespace OpenRCT2::GameActions
                             }
                         }
                         break;
-                    case TileElementType::SmallScenery:
+                    case TileElementType::smallScenery:
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
                             auto removeSceneryAction = SmallSceneryRemoveAction(
@@ -180,7 +180,7 @@ namespace OpenRCT2::GameActions
                             }
                         }
                         break;
-                    case TileElementType::Wall:
+                    case TileElementType::wall:
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
                             CoordsXYZD wallLocation = { tilePos, tileElement->getBaseZ(), tileElement->getDirection() };
@@ -201,7 +201,7 @@ namespace OpenRCT2::GameActions
                             }
                         }
                         break;
-                    case TileElementType::LargeScenery:
+                    case TileElementType::largeScenery:
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
                         {
                             auto removeSceneryAction = LargeSceneryRemoveAction(
@@ -244,7 +244,7 @@ namespace OpenRCT2::GameActions
                 {
                     if (tileElement == nullptr)
                         break;
-                    if (tileElement->getType() == TileElementType::LargeScenery)
+                    if (tileElement->getType() == TileElementType::largeScenery)
                     {
                         tileElement->asLargeScenery()->SetIsAccounted(false);
                     }

@@ -448,7 +448,7 @@ namespace OpenRCT2
      */
     bool findTrackGap(const Ride& ride, const CoordsXYE& input, CoordsXYE* output)
     {
-        if (input.element == nullptr || input.element->getType() != TileElementType::Track)
+        if (input.element == nullptr || input.element->getType() != TileElementType::track)
             return false;
 
         const auto& rtd = ride.getRideTypeDescriptor();

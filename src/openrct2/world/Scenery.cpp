@@ -140,11 +140,11 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
                 continue;
         }
 
-        if (tileElement->getType() == TileElementType::SmallScenery)
+        if (tileElement->getType() == TileElementType::smallScenery)
         {
             tileElement->asSmallScenery()->UpdateAge(sceneryPos);
         }
-        else if (tileElement->getType() == TileElementType::Path)
+        else if (tileElement->getType() == TileElementType::path)
         {
             if (tileElement->asPath()->HasAddition() && !tileElement->asPath()->AdditionIsGhost())
             {
@@ -203,13 +203,13 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
 
         switch (tileElementAbove->getType())
         {
-            case TileElementType::LargeScenery:
-            case TileElementType::Entrance:
-            case TileElementType::Path:
+            case TileElementType::largeScenery:
+            case TileElementType::entrance:
+            case TileElementType::path:
                 MapInvalidateTileZoom1({ sceneryPos, tileElementAbove->getBaseZ(), tileElementAbove->getClearanceZ() });
                 IncreaseAge(sceneryPos);
                 return;
-            case TileElementType::SmallScenery:
+            case TileElementType::smallScenery:
                 sceneryEntry = tileElementAbove->asSmallScenery()->GetEntry();
                 if (sceneryEntry->flags.has(SmallSceneryFlag::vOffsetCentre))
                 {
@@ -255,7 +255,7 @@ void SceneryRemoveGhostToolPlacement()
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->getType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::path)
                 continue;
 
             if (tileElement->getBaseZ() != gSceneryGhostPosition.z)

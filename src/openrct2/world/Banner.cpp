@@ -110,7 +110,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
         return resultRideIndex;
     do
     {
-        if (tileElement->getType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::track)
             continue;
 
         RideId rideIndex = tileElement->asTrack()->GetRideIndex();

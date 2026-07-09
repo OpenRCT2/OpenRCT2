@@ -508,7 +508,7 @@ static void ShortcutToggleWallSlope()
     const TileElement* tileElement = TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
-    if (tileElement == nullptr || tileElement->getType() != TileElementType::Wall)
+    if (tileElement == nullptr || tileElement->getType() != TileElementType::wall)
     {
         return;
     }

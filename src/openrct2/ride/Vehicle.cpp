@@ -1037,7 +1037,7 @@ bool Vehicle::CurrentTowerElementIsTop()
         if (tileElement->isGhost())
             continue;
 
-        if (tileElement->getType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::track)
             continue;
 
         const auto* trackElement = tileElement->asTrack();

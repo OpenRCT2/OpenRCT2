@@ -264,7 +264,7 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->getType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::path)
                 continue;
             if (tileElement->getBaseZ() != newLoc.z)
                 continue;

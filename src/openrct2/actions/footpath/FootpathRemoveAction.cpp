@@ -157,10 +157,10 @@ namespace OpenRCT2::GameActions
         auto result = Result();
         while (!(tileElement++)->isLastForTile())
         {
-            if (tileElement->getType() == TileElementType::Path)
+            if (tileElement->getType() == TileElementType::path)
                 return result;
 
-            if (tileElement->getType() != TileElementType::Banner)
+            if (tileElement->getType() != TileElementType::banner)
                 continue;
 
             auto bannerRemoveAction = BannerRemoveAction(
