@@ -56,6 +56,20 @@ namespace OpenRCT2
         }
     }
 
+    bool TrackElement::IsVerticalLoop() const
+    {
+        switch (GetTrackType())
+        {
+            case TrackElemType::leftVerticalLoop:
+            case TrackElemType::rightVerticalLoop:
+            case TrackElemType::diagLeftVerticalLoop:
+            case TrackElemType::diagRightVerticalLoop:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     bool TrackElement::IsStation() const
     {
         return trackTypeIsStation(GetTrackType());

@@ -661,10 +661,7 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateSt
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(state, PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
-                    if (tileElement->asTrack()->GetTrackType() == TrackElemType::leftVerticalLoop
-                        || tileElement->asTrack()->GetTrackType() == TrackElemType::rightVerticalLoop
-                        || tileElement->asTrack()->GetTrackType() == TrackElemType::diagLeftVerticalLoop
-                        || tileElement->asTrack()->GetTrackType() == TrackElemType::diagRightVerticalLoop)
+                    if (tileElement->asTrack()->IsVerticalLoop())
                     {
                         proximity_score_increment(state, PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                     }
@@ -680,9 +677,7 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateSt
  */
 static void ride_ratings_score_close_proximity_loops(RideRating::UpdateState& state, TileElement* inputTileElement)
 {
-    auto trackType = inputTileElement->asTrack()->GetTrackType();
-    if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop
-        || trackType == TrackElemType::diagLeftVerticalLoop || trackType == TrackElemType::diagRightVerticalLoop)
+    if (inputTileElement->asTrack()->IsVerticalLoop())
     {
         ride_ratings_score_close_proximity_loops_helper(state, { state.Proximity, inputTileElement });
 

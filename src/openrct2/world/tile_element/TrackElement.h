@@ -147,6 +147,7 @@ namespace OpenRCT2
 
         bool IsStation() const;
         bool IsBlockStart() const;
+        bool IsVerticalLoop() const;
     };
     static_assert(sizeof(TrackElement) == kTileElementSize);
 
