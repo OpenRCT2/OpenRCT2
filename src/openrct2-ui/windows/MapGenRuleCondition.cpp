@@ -26,6 +26,7 @@
 #include <openrct2/world/map_generator/rule/Rule.h>
 
 using namespace OpenRCT2::World::MapGenerator::Rule;
+using namespace OpenRCT2::World::MapGenerator;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -544,48 +545,54 @@ namespace OpenRCT2::Ui::Windows
             callback = _callback;
         }
 
-        void HandleValueChange(int32_t changeMultiplier, std::optional<int32_t> intValue, std::optional<float> floatValue)
+        static int32_t MetresToBaseZCast(const int32_t metres)
+        {
+            return static_cast<int32_t>(MetresToBaseZ(static_cast<int16_t>(metres)));
+        }
+
+        template<typename T>
+        static std::optional<T> mapOptional(std::optional<T> maybeT, const std::function<T(T)>& fn)
+        {
+            if (!maybeT.has_value())
+            {
+                return std::nullopt;
+            }
+
+            return fn(maybeT.value());
+        }
+
+        void HandleValueChange(const Change change, std::optional<int32_t> intValue, std::optional<float> floatValue)
         {
             switch (condition.type)
             {
                 case Type::Height:
                 {
                     auto& elevationData = std::get<HeightData>(condition.data);
-                    auto elevationValue = intValue.has_value() ? MetresToBaseZ(intValue.value())
-                                                               : elevationData.height + 2 * changeMultiplier;
-                    elevationData.height = std::clamp(elevationValue, kHeightMin, kHeightMax);
+                    elevationData.height.change(change, mapOptional<int32_t>(intValue, MetresToBaseZCast));
                     break;
                 }
                 case Type::Distance:
                 {
                     auto& distanceData = std::get<DistanceData>(condition.data);
-                    auto distanceValue = floatValue.value_or(distanceData.distance + 1 * changeMultiplier);
-                    distanceData.distance = std::clamp(distanceValue, kDistanceMin, kDistanceMax);
+                    distanceData.distance.change(change, floatValue);
                     break;
                 }
                 case Type::Noise:
                 {
                     auto& noiseData = std::get<NoiseData>(condition.data);
-                    auto noiseValue = floatValue.has_value() ? floatValue.value()
-                                                             : noiseData.value + 0.01f * static_cast<float>(changeMultiplier);
-                    noiseData.value = std::clamp(noiseValue, kNoiseMin, kNoiseMax);
+                    noiseData.value.change(change, floatValue);
                     break;
                 }
                 case Type::NormalAngle:
                 {
                     auto& normalAngleData = std::get<NormalAngleData>(condition.data);
-                    auto angleValue = floatValue.has_value()
-                        ? floatValue.value()
-                        : normalAngleData.angle + 0.5f * static_cast<float>(changeMultiplier);
-                    normalAngleData.angle = std::clamp(angleValue, kAngleMin, kAngleMax);
+                    normalAngleData.angle.change(change, floatValue);
                     break;
                 }
                 case Type::Random:
                 {
                     auto& prngData = std::get<RandomData>(condition.data);
-                    auto prngValue = floatValue.has_value() ? floatValue.value()
-                                                            : prngData.value + 0.01f * static_cast<float>(changeMultiplier);
-                    prngData.value = std::clamp(prngValue, kRandomMin, kRandomMax);
+                    prngData.value.change(change, floatValue);
                     break;
                 }
                 default:
@@ -595,16 +602,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void HandleEdgeLowChange(int32_t changeMultiplier, std::optional<int32_t> intValue, std::optional<float> floatValue)
+        void HandleEdgeLowChange(const Change change, std::optional<int32_t> intValue, std::optional<float> floatValue)
         {
             switch (condition.type)
             {
                 case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
-                    auto edgeLow = intValue.has_value() ? MetresToBaseZ(intValue.value())
-                                                        : blendHeightData.edgeLow + 2 * changeMultiplier;
-                    blendHeightData.edgeLow = std::clamp(edgeLow, kHeightMin, kHeightMax);
+                    blendHeightData.edgeLow.change(change, mapOptional<int32_t>(intValue, MetresToBaseZCast));
                     if (blendHeightData.edgeLow > blendHeightData.edgeHigh)
                     {
                         blendHeightData.edgeHigh = blendHeightData.edgeLow;
@@ -614,10 +619,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
-                    auto edgeLow = floatValue.has_value()
-                        ? floatValue.value()
-                        : blendNoiseData.edgeLow + 0.01f * static_cast<float>(changeMultiplier);
-                    blendNoiseData.edgeLow = std::clamp(edgeLow, kNoiseMin, kNoiseMax);
+                    blendNoiseData.edgeLow.change(change, floatValue);
                     if (blendNoiseData.edgeLow > blendNoiseData.edgeHigh)
                     {
                         blendNoiseData.edgeHigh = blendNoiseData.edgeLow;
@@ -627,8 +629,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
-                    auto edgeLow = intValue.has_value() ? intValue.value() : blendDistanceData.edgeLow + 1 * changeMultiplier;
-                    blendDistanceData.edgeLow = std::clamp(edgeLow, kDistanceMin, kDistanceMax);
+                    blendDistanceData.edgeLow.change(change, floatValue);
                     if (blendDistanceData.edgeLow > blendDistanceData.edgeHigh)
                     {
                         blendDistanceData.edgeHigh = blendDistanceData.edgeLow;
@@ -642,16 +643,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void HandleEdgeHighChange(int32_t changeMultiplier, std::optional<int32_t> intValue, std::optional<float> floatValue)
+        void HandleEdgeHighChange(const Change change, std::optional<int32_t> intValue, std::optional<float> floatValue)
         {
             switch (condition.type)
             {
                 case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
-                    auto edgeHigh = intValue.has_value() ? MetresToBaseZ(intValue.value())
-                                                         : blendHeightData.edgeHigh + 2 * changeMultiplier;
-                    blendHeightData.edgeHigh = std::clamp(edgeHigh, kHeightMin, kHeightMax);
+                    blendHeightData.edgeHigh.change(change, mapOptional<int32_t>(intValue, MetresToBaseZCast));
                     if (blendHeightData.edgeLow > blendHeightData.edgeHigh)
                     {
                         blendHeightData.edgeLow = blendHeightData.edgeHigh;
@@ -661,10 +660,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
-                    auto edgeHigh = floatValue.has_value()
-                        ? floatValue.value()
-                        : blendNoiseData.edgeHigh + 0.01f * static_cast<float>(changeMultiplier);
-                    blendNoiseData.edgeHigh = std::clamp(edgeHigh, kNoiseMin, kNoiseMax);
+                    blendNoiseData.edgeHigh.change(change, floatValue);
                     if (blendNoiseData.edgeLow > blendNoiseData.edgeHigh)
                     {
                         blendNoiseData.edgeLow = blendNoiseData.edgeHigh;
@@ -674,8 +670,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
-                    auto edgeHigh = intValue.has_value() ? intValue.value() : blendDistanceData.edgeHigh + 1 * changeMultiplier;
-                    blendDistanceData.edgeHigh = std::clamp(edgeHigh, kDistanceMin, kDistanceMax);
+                    blendDistanceData.edgeHigh.change(change, floatValue);
                     if (blendDistanceData.edgeLow > blendDistanceData.edgeHigh)
                     {
                         blendDistanceData.edgeHigh = blendDistanceData.edgeLow;
@@ -689,44 +684,32 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void HandleSeedOffsetChange(int32_t changeMultiplier, std::optional<int32_t> seedOffset)
+        void HandleSeedOffsetChange(const Change change, std::optional<int32_t> seedOffset)
         {
             switch (condition.type)
             {
                 case Type::Noise:
                 {
                     auto& noiseData = std::get<NoiseData>(condition.data);
-                    auto noiseSeedOffset = seedOffset.has_value()
-                        ? seedOffset.value()
-                        : static_cast<int32_t>(noiseData.seedOffset) + 1 * changeMultiplier;
-                    noiseData.seedOffset = static_cast<uint32_t>(noiseSeedOffset);
+                    noiseData.seedOffset.change(change, seedOffset);
                     break;
                 }
                 case Type::Random:
                 {
                     auto& prngData = std::get<RandomData>(condition.data);
-                    auto prngSeedOffset = seedOffset.has_value()
-                        ? seedOffset.value()
-                        : static_cast<int32_t>(prngData.seedOffset) + 1 * changeMultiplier;
-                    prngData.seedOffset = static_cast<uint32_t>(prngSeedOffset);
+                    prngData.seedOffset.change(change, seedOffset);
                     break;
                 }
                 case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
-                    auto prngSeedOffset = seedOffset.has_value()
-                        ? seedOffset.value()
-                        : static_cast<int32_t>(blendHeightData.seedOffset) + 1 * changeMultiplier;
-                    blendHeightData.seedOffset = static_cast<uint32_t>(prngSeedOffset);
+                    blendHeightData.seedOffset .change(change, seedOffset);
                     break;
                 }
                 case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
-                    auto prngSeedOffset = seedOffset.has_value()
-                        ? seedOffset.value()
-                        : static_cast<int32_t>(blendNoiseData.seedOffset) + 1 * changeMultiplier;
-                    blendNoiseData.seedOffset = static_cast<uint32_t>(prngSeedOffset);
+                    blendNoiseData.seedOffset .change(change, seedOffset);
                     break;
                 }
                 default:
@@ -736,24 +719,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void HandleFrequencyChange(int32_t changeMultiplier, std::optional<float> frequency)
+        void HandleFrequencyChange(const Change change, std::optional<float> frequency)
         {
             switch (condition.type)
             {
                 case Type::Noise:
                 {
                     auto& noiseData = std::get<NoiseData>(condition.data);
-                    auto noiseFrequency = frequency.has_value() ? frequency.value()
-                                                                : noiseData.frequency + 0.05f * changeMultiplier;
-                    noiseData.frequency = std::clamp(noiseFrequency, kFrequencyMin, kFrequencyMax);
+                    noiseData.frequency.change(change, frequency);
                     break;
                 }
                 case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
-                    auto noiseFrequency = frequency.has_value() ? frequency.value()
-                                                                : blendNoiseData.frequency + 0.05f * changeMultiplier;
-                    blendNoiseData.frequency = std::clamp(noiseFrequency, kFrequencyMin, kFrequencyMax);
+                    blendNoiseData.frequency.change(change, frequency);
                     break;
                 }
                 default:
@@ -763,22 +742,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void HandleOctavesChange(int32_t changeMultiplier, std::optional<int32_t> octaves)
+        void HandleOctavesChange(const Change change, std::optional<int32_t> octaves)
         {
             switch (condition.type)
             {
                 case Type::Noise:
                 {
                     auto& noiseData = std::get<NoiseData>(condition.data);
-                    auto noiseOctaves = octaves.value_or(noiseData.octaves + 1 * changeMultiplier);
-                    noiseData.octaves = std::clamp(noiseOctaves, kOctavesMin, kOctavesMax);
+                    noiseData.octaves.change(change, octaves);
                     break;
                 }
                 case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
-                    auto noiseOctaves = octaves.value_or(blendNoiseData.octaves + 1 * changeMultiplier);
-                    blendNoiseData.octaves = std::clamp(noiseOctaves, kOctavesMin, kOctavesMax);
+                    blendNoiseData.octaves.change(change, octaves);
                     break;
                 }
                 default:
@@ -1089,27 +1066,27 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_VALUE:
-                    HandleValueChange(0, parseInt(text), parseFloat(text));
+                    HandleValueChange(set, parseInt(text), parseFloat(text));
                     invalidate();
                     break;
                 case WIDX_BASE_FREQUENCY:
-                    HandleFrequencyChange(0, parseFloat(text));
+                    HandleFrequencyChange(set, parseFloat(text));
                     invalidate();
                     break;
                 case WIDX_OCTAVES:
-                    HandleOctavesChange(0, parseInt(text));
+                    HandleOctavesChange(set, parseInt(text));
                     invalidate();
                     break;
                 case WIDX_SEED_OFFSET:
-                    HandleSeedOffsetChange(0, parseInt(text));
+                    HandleSeedOffsetChange(set, parseInt(text));
                     invalidate();
                     break;
                 case WIDX_EDGE_LOW:
-                    HandleEdgeLowChange(0, parseInt(text), parseFloat(text));
+                    HandleEdgeLowChange(set, parseInt(text), parseFloat(text));
                     invalidate();
                     break;
                 case WIDX_EDGE_HIGH:
-                    HandleEdgeHighChange(0, parseInt(text), parseFloat(text));
+                    HandleEdgeHighChange(set, parseInt(text), parseFloat(text));
                     invalidate();
                     break;
             }
@@ -1200,7 +1177,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        Dropdown::Flag::StayOpen, itemSize);
+                        StayOpen, itemSize);
                     break;
                 }
                 case WIDX_FEATURE_DROPDOWN:
@@ -1227,78 +1204,78 @@ namespace OpenRCT2::Ui::Windows
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        Dropdown::Flag::StayOpen, itemSize);
+                        StayOpen, itemSize);
                     break;
                 }
                 case WIDX_VALUE_DOWN:
                 {
-                    HandleValueChange(-1, std::nullopt, std::nullopt);
+                    HandleValueChange(decrement, std::nullopt, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_VALUE_UP:
                 {
-                    HandleValueChange(1, std::nullopt, std::nullopt);
+                    HandleValueChange(increment, std::nullopt, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_SEED_OFFSET_DOWN:
                 {
-                    HandleSeedOffsetChange(-1, std::nullopt);
+                    HandleSeedOffsetChange(decrement, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_SEED_OFFSET_UP:
                 {
-                    HandleSeedOffsetChange(1, std::nullopt);
+                    HandleSeedOffsetChange(increment, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_BASE_FREQUENCY_DOWN:
                 {
-                    HandleFrequencyChange(-1, std::nullopt);
+                    HandleFrequencyChange(decrement, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_BASE_FREQUENCY_UP:
                 {
-                    HandleFrequencyChange(1, std::nullopt);
+                    HandleFrequencyChange(increment, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_OCTAVES_DOWN:
                 {
-                    HandleOctavesChange(-1, std::nullopt);
+                    HandleOctavesChange(decrement, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_OCTAVES_UP:
                 {
-                    HandleOctavesChange(1, std::nullopt);
+                    HandleOctavesChange(increment, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_EDGE_LOW_DOWN:
                 {
-                    HandleEdgeLowChange(-1, std::nullopt, std::nullopt);
+                    HandleEdgeLowChange(decrement, std::nullopt, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_EDGE_LOW_UP:
                 {
-                    HandleEdgeLowChange(1, std::nullopt, std::nullopt);
+                    HandleEdgeLowChange(increment, std::nullopt, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_EDGE_HIGH_DOWN:
                 {
-                    HandleEdgeHighChange(-1, std::nullopt, std::nullopt);
+                    HandleEdgeHighChange(decrement, std::nullopt, std::nullopt);
                     invalidate();
                     break;
                 }
                 case WIDX_EDGE_HIGH_UP:
                 {
-                    HandleEdgeHighChange(1, std::nullopt, std::nullopt);
+                    HandleEdgeHighChange(increment, std::nullopt, std::nullopt);
                     invalidate();
                     break;
                 }

@@ -12,6 +12,7 @@
 #include "../Location.hpp"
 #include "BaseMap.hpp"
 #include "MapGen.h"
+#include "TileQueue.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -39,4 +40,10 @@ namespace OpenRCT2::World::MapGenerator
     bool isInWorldMap(const MapGenContext& ctx, const TileCoordsXY& genCoords);
 
     uint8_t quantizeHeight(float height);
+
+    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue);
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue);
+    void computeRiverFlagBasedDistanceMap(
+        const MapGenContext& ctx, DistanceMap& distanceMap, River::RiverFlag flag, bool invert = false);
+
 } // namespace OpenRCT2::World::MapGenerator

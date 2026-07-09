@@ -11,6 +11,7 @@
 
 #include "../../../core/FlagHolder.hpp"
 #include "../BaseMap.hpp"
+#include "../SettingsTypes.hpp"
 
 namespace OpenRCT2::World::MapGenerator::River
 {
@@ -44,13 +45,13 @@ namespace OpenRCT2::World::MapGenerator::River
     struct RiverSettings
     {
         bool generate = true;
-        int32_t catchmentThreshold = 384;
-        int32_t pruneThreshold = 48;
-        int32_t breachMaxLength = 8;
-        int32_t breachMaxDepth = 2;
-        int32_t offMapCatchmentMultiplier = 2;
-        int32_t riverGrowthExponent = 45; // * kRiverGrowthExponentScaling
-        int32_t riverWidthMax = 12;
+        NumericSetting<int32_t, kRiverCatchmentThresholdMin, kRiverCatchmentThresholdMax, 64> catchmentThreshold = 384;
+        NumericSetting<int32_t, kRiverPruneLengthThresholdMin, kRiverPruneLengthThresholdMax> pruneThreshold = 48;
+        NumericSetting<int32_t, kRiverBreachLengthMin, kRiverBreachLengthMax> breachMaxLength = 8;
+        NumericSetting<int32_t, kRiverBreachDepthMin, kRiverBreachDepthMax> breachMaxDepth = 2;
+        NumericSetting<int32_t, 2, 2> offMapCatchmentMultiplier = 2;
+        NumericSetting<int32_t, kRiverGrowthExponentMin, kRiverGrowthExponentMax> riverGrowthExponent = 45; // * kRiverGrowthExponentScaling
+        NumericSetting<int32_t, kRiverWidthMin, kRiverWidthMax> riverWidthMax = 12;
     };
 
     struct RiverStatistics

@@ -13,8 +13,8 @@
 #include "BaseMap.hpp"
 #include "river/RiverTypes.hpp"
 #include "rule/Rule.h"
+#include "SettingsTypes.hpp"
 
-#include <nlohmann/json.hpp>
 #include <optional>
 #include <vector>
 
@@ -73,15 +73,15 @@ namespace OpenRCT2::World::MapGenerator
     struct BiasSettings
     {
         Bias type = Bias::none;
-        int32_t strength = 75;
-        int32_t steps = 1;
+        NumericSetting<int32_t, 0, 100, 5> strength = 75;
+        NumericSetting<int32_t, 0, 10> steps = 1;
     };
 
     struct NoiseSettings
     {
         NoiseAlgorithm algorithm = NoiseAlgorithm::simplex;
-        int32_t baseFrequency = 175;
-        int32_t octaves = 6;
+        NumericSetting<int32_t, 0, 1000, 5> baseFrequency = 175;
+        NumericSetting<int32_t, 1, 10> octaves = 6;
 
         BiasSettings bias{};
     };
@@ -89,20 +89,25 @@ namespace OpenRCT2::World::MapGenerator
     struct FilterSettings
     {
         Filter type = Filter::none;
-        int32_t strength = 1;
+        NumericSetting<int32_t, 0, 10> strength = 1;
+    };
+
+    struct MapSize
+    {
+        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> x = 256;
+        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> y = 256;
     };
 
     struct Settings
     {
         HeightMapGenerator generator = HeightMapGenerator::noise;
-        TileCoordsXY mapSize{ 256, 256 };
-        // TileCoordsXY mapSize{ 512, 512 };
+        MapSize mapSize{};
 
         std::string seed = randomSeed();
 
-        int32_t waterLevel = 6;
-        int32_t heightmapLow = 14;
-        int32_t heightmapHigh = 60;
+        NumericSetting<int32_t, kMinimumWaterHeight, kMaximumWaterHeight - 1, 2> waterLevel = 6;
+        NumericSetting<int32_t, kMinimumLandHeight, kMaximumLandHeight - 1, 2> heightmapLow = 14;
+        NumericSetting<int32_t, kMinimumLandHeight, kMaximumLandHeight - 1, 2> heightmapHigh = 60;
 
         NoiseSettings noise{};
 

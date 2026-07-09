@@ -540,7 +540,8 @@ namespace OpenRCT2::Ui::Windows
             // doing this here so all dimensions in the map gen code are consistent
             if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image)
             {
-                mapgenSettings.mapSize = MapGenerator::queryHeightMapFromImageDimensions();
+                auto imageDimensions = MapGenerator::queryHeightMapFromImageDimensions();
+                mapgenSettings.mapSize = {imageDimensions.x, imageDimensions.y};
             }
 
             MapGenerator::generate(mapgenSettings);
@@ -1812,19 +1813,19 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ_UP:
-                    MapGenerator::gSettings.noise.baseFrequency = std::min<int32_t>(MapGenerator::gSettings.noise.baseFrequency + 5, 1000);
+                    MapGenerator::gSettings.noise.baseFrequency.increment();
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_BASE_FREQ_DOWN:
-                    MapGenerator::gSettings.noise.baseFrequency = std::max<int32_t>(MapGenerator::gSettings.noise.baseFrequency - 5, 0);
+                    MapGenerator::gSettings.noise.baseFrequency.decrement();
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_UP:
-                    MapGenerator::gSettings.noise.octaves = std::min(MapGenerator::gSettings.noise.octaves + 1, 10);
+                    MapGenerator::gSettings.noise.octaves.increment();
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_DOWN:
-                    MapGenerator::gSettings.noise.octaves = std::max(MapGenerator::gSettings.noise.octaves - 1, 1);
+                    MapGenerator::gSettings.noise.octaves.decrement();
                     invalidate();
                     break;
             }
@@ -1864,11 +1865,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ:
-                    MapGenerator::gSettings.noise.baseFrequency = std::clamp(value, 0, 1000);
+                    MapGenerator::gSettings.noise.baseFrequency = value;
                     break;
 
                 case WIDX_SIMPLEX_OCTAVES:
-                    MapGenerator::gSettings.noise.octaves = std::clamp(value, 1, 10);
+                    MapGenerator::gSettings.noise.octaves = value;
                     break;
             }
         }
@@ -1899,11 +1900,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH_UP:
-                    MapGenerator::gSettings.noise.bias.strength = std::min(MapGenerator::gSettings.noise.bias.strength + 5, 100);
+                    MapGenerator::gSettings.noise.bias.strength.increment();
                     invalidate();
                     break;
                 case WIDX_BIAS_STRENGTH_DOWN:
-                    MapGenerator::gSettings.noise.bias.strength = std::max(MapGenerator::gSettings.noise.bias.strength - 5, 0);
+                    MapGenerator::gSettings.noise.bias.strength.decrement();
                     invalidate();
                     break;
                 case WIDX_BIAS_TYPE_DROPDOWN:
@@ -1964,7 +1965,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH:
-                    MapGenerator::gSettings.noise.bias.strength = std::clamp(value, 0, 100);
+                    MapGenerator::gSettings.noise.bias.strength = value;
                     break;
             }
         }
@@ -2062,29 +2063,29 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_LOW_UP:
-                    MapGenerator::gSettings.heightmapLow = std::min(MapGenerator::gSettings.heightmapLow + 2, kMaximumLandHeight / 2 - 1);
-                    MapGenerator::gSettings.heightmapHigh = std::max(MapGenerator::gSettings.heightmapHigh, MapGenerator::gSettings.heightmapLow + 2);
+                    MapGenerator::gSettings.heightmapLow.increment();
+                    MapGenerator::gSettings.heightmapHigh = std::max(MapGenerator::gSettings.heightmapHigh.get(), MapGenerator::gSettings.heightmapLow.get() + 2);
                     invalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_LOW_DOWN:
-                    MapGenerator::gSettings.heightmapLow = std::max<int32_t>(MapGenerator::gSettings.heightmapLow - 2, kMinimumLandHeight);
+                    MapGenerator::gSettings.heightmapLow.decrement();
                     invalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
-                    MapGenerator::gSettings.heightmapHigh = std::min<int32_t>(MapGenerator::gSettings.heightmapHigh + 2, kMaximumLandHeight - 1);
+                    MapGenerator::gSettings.heightmapHigh.increment();
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
-                    MapGenerator::gSettings.heightmapHigh = std::max<int32_t>(MapGenerator::gSettings.heightmapHigh - 2, kMinimumLandHeight);
-                    MapGenerator::gSettings.heightmapLow = std::min(MapGenerator::gSettings.heightmapLow, MapGenerator::gSettings.heightmapHigh - 2);
+                    MapGenerator::gSettings.heightmapHigh.decrement();
+                    MapGenerator::gSettings.heightmapLow = std::min(MapGenerator::gSettings.heightmapLow.get(), MapGenerator::gSettings.heightmapHigh.get() - 2);
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_DOWN:
-                    MapGenerator::gSettings.filter.strength = std::max<int32_t>(MapGenerator::gSettings.filter.strength - 1, 0);
+                    MapGenerator::gSettings.filter.strength.decrement();
                     invalidateWidget(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_UP:
-                    MapGenerator::gSettings.filter.strength = std::min<int32_t>(MapGenerator::gSettings.filter.strength + 1, 10);
+                    MapGenerator::gSettings.filter.strength.increment();
                     invalidateWidget(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_TYPE_DROPDOWN:
@@ -2155,7 +2156,7 @@ namespace OpenRCT2::Ui::Windows
                     MapGenerator::gSettings.heightmapLow = std::min(MapGenerator::gSettings.heightmapLow, MapGenerator::gSettings.heightmapHigh);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH:
-                    MapGenerator::gSettings.filter.strength = std::clamp(value, 1, 10);
+                    MapGenerator::gSettings.filter.strength = value;
                     break;
             }
 
@@ -3222,59 +3223,59 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL_UP:
-                    MapGenerator::gSettings.waterLevel = std::min<int32_t>(MapGenerator::gSettings.waterLevel + 2, kMaximumWaterHeight);
+                    MapGenerator::gSettings.waterLevel.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_LEVEL_DOWN:
-                    MapGenerator::gSettings.waterLevel = std::max<int32_t>(MapGenerator::gSettings.waterLevel - 2, kMinimumWaterHeight);
+                    MapGenerator::gSettings.waterLevel .decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_UP:
-                    MapGenerator::gSettings.river.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(MapGenerator::gSettings.river.catchmentThreshold) + 1), MapGenerator::River::kRiverCatchmentThresholdMax);
+                    MapGenerator::gSettings.river.catchmentThreshold.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_DOWN:
-                    MapGenerator::gSettings.river.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(MapGenerator::gSettings.river.catchmentThreshold) - 1), MapGenerator::River::kRiverCatchmentThresholdMin);
+                    MapGenerator::gSettings.river.catchmentThreshold.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_UP:
-                    MapGenerator::gSettings.river.riverWidthMax = std::min<int32_t>(MapGenerator::gSettings.river.riverWidthMax + 1, MapGenerator::River::kRiverWidthMax);
+                    MapGenerator::gSettings.river.riverWidthMax.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_DOWN:
-                    MapGenerator::gSettings.river.riverWidthMax = std::max<int32_t>(MapGenerator::gSettings.river.riverWidthMax - 1, MapGenerator::River::kRiverWidthMin);
+                    MapGenerator::gSettings.river.riverWidthMax.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP:
-                    MapGenerator::gSettings.river.riverGrowthExponent = std::min<int32_t>(MapGenerator::gSettings.river.riverGrowthExponent + 1, MapGenerator::River::kRiverGrowthExponentMax);
+                    MapGenerator::gSettings.river.riverGrowthExponent.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN:
-                    MapGenerator::gSettings.river.riverGrowthExponent = std::max<int32_t>(MapGenerator::gSettings.river.riverGrowthExponent - 1, MapGenerator::River::kRiverGrowthExponentMin);
+                    MapGenerator::gSettings.river.riverGrowthExponent.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP:
-                    MapGenerator::gSettings.river.pruneThreshold = std::min<int32_t>(MapGenerator::gSettings.river.pruneThreshold + 1, MapGenerator::River::kRiverPruneLengthThresholdMax);
+                    MapGenerator::gSettings.river.pruneThreshold.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN:
-                    MapGenerator::gSettings.river.pruneThreshold = std::max<int32_t>(MapGenerator::gSettings.river.pruneThreshold - 1, MapGenerator::River::kRiverPruneLengthThresholdMin);
+                    MapGenerator::gSettings.river.pruneThreshold.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_UP:
-                    MapGenerator::gSettings.river.breachMaxLength = std::min<int32_t>(MapGenerator::gSettings.river.breachMaxLength + 1, MapGenerator::River::kRiverBreachLengthMax);
+                    MapGenerator::gSettings.river.breachMaxLength.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_DOWN:
-                    MapGenerator::gSettings.river.breachMaxLength = std::max<int32_t>(MapGenerator::gSettings.river.breachMaxLength - 1, MapGenerator::River::kRiverBreachLengthMin);
+                    MapGenerator::gSettings.river.breachMaxLength.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_UP:
-                    MapGenerator::gSettings.river.breachMaxDepth = std::min<int32_t>(MapGenerator::gSettings.river.breachMaxDepth + 1, MapGenerator::River::kRiverBreachDepthMax);
+                    MapGenerator::gSettings.river.breachMaxDepth.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN:
-                    MapGenerator::gSettings.river.breachMaxDepth = std::max<int32_t>(MapGenerator::gSettings.river.breachMaxDepth - 1, MapGenerator::River::kRiverBreachDepthMin);
+                    MapGenerator::gSettings.river.breachMaxDepth.decrement();
                     invalidate();
                     break;
             }
@@ -3296,22 +3297,22 @@ namespace OpenRCT2::Ui::Windows
                     MapGenerator::gSettings.waterLevel = value;
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT:
-                    MapGenerator::gSettings.river.catchmentThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverCatchmentThresholdMin, MapGenerator::River::kRiverCatchmentThresholdMax);
+                    MapGenerator::gSettings.river.catchmentThreshold = value;
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
-                    MapGenerator::gSettings.river.riverWidthMax = std::clamp<int32_t>(value, MapGenerator::River::kRiverWidthMin, MapGenerator::River::kRiverWidthMax);
+                    MapGenerator::gSettings.river.riverWidthMax = value;
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
-                    MapGenerator::gSettings.river.riverGrowthExponent = std::clamp<int32_t>(value, MapGenerator::River::kRiverGrowthExponentMin, MapGenerator::River::kRiverGrowthExponentMax);
+                    MapGenerator::gSettings.river.riverGrowthExponent =  value;
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
-                    MapGenerator::gSettings.river.pruneThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverPruneLengthThresholdMin, MapGenerator::River::kRiverPruneLengthThresholdMax);
+                    MapGenerator::gSettings.river.pruneThreshold =  value;
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
-                    MapGenerator::gSettings.river.breachMaxLength = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachLengthMin, MapGenerator::River::kRiverBreachLengthMax);
+                    MapGenerator::gSettings.river.breachMaxLength =  value;
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
-                    MapGenerator::gSettings.river.breachMaxDepth = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachDepthMin, MapGenerator::River::kRiverBreachDepthMax);
+                    MapGenerator::gSettings.river.breachMaxDepth =  value;
                     break;
             }
 
@@ -3690,8 +3691,15 @@ namespace OpenRCT2::Ui::Windows
         {
             if (result == ModalResult::ok)
             {
-                MapGenerator::gSettings = MapGenerator::loadMapgenSettingsFromPath(path); // TODO error handling
-                _random_seed = false;
+                try
+                {
+                    MapGenerator::gSettings = MapGenerator::loadMapgenSettingsFromPath(path);
+                    _random_seed = false;
+                }
+                catch (MapGenerator::SettingSerdeException& e)
+                {
+                    GetWindowManager()->ShowError("Failed to load mapgen settings", e.what());
+                }
             }
         }
 
@@ -3699,7 +3707,14 @@ namespace OpenRCT2::Ui::Windows
         {
             if (result == ModalResult::ok)
             {
-                MapGenerator::saveMapgenSettingsToPath(MapGenerator::gSettings, path); // TODO error handling
+               try
+                {
+                   MapGenerator::saveMapgenSettingsToPath(MapGenerator::gSettings, path);
+                }
+                catch (MapGenerator::SettingSerdeException& e)
+                {
+                    GetWindowManager()->ShowError("Failed to save mapgen settings", e.what());
+                }
             }
         }
 

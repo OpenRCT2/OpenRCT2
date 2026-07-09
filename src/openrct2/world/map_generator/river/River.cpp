@@ -180,7 +180,7 @@ namespace OpenRCT2::World::MapGenerator::River
 
         if (riverCtx.catchment[pos] <= 0.0f)
         {
-            const int32_t multiplier = isInWorldMap(ctx, pos) ? 1 : ctx.settings.river.offMapCatchmentMultiplier;
+            const int32_t multiplier = isInWorldMap(ctx, pos) ? 1 : ctx.settings.river.offMapCatchmentMultiplier.get();
 
             riverCtx.catchment[pos] = 1.0f * multiplier;
             for (const auto& neighbour : kNeighbours)

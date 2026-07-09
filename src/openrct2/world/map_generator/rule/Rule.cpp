@@ -17,7 +17,6 @@
 #include "../../Map.h"
 #include "../MapGen.h"
 #include "../MapHelpers.h"
-#include "../MapTraversalUtils.h"
 #include "../Noise.h"
 #include "../TileQueue.hpp"
 
@@ -230,7 +229,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     static std::optional<int32_t> fetchHeight(
         const HeightSource& source, const HeightType& type, const EvaluationHeights& localHeights)
     {
-        switch (source) // TODO handle sea level better
+        switch (source)
         {
             case HeightSource::Self:
                 return fetchHeight(type, localHeights.self);
@@ -288,7 +287,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 const auto heightData = std::get<HeightData>(condition.data);
                 const auto heightActual = fetchHeightValue(heightData, ctx.evaluationHeights);
                 return heightActual.has_value()
-                    ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height)
+                    ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height.get())
                     : std::nullopt;
             }
             case Type::Distance:
@@ -296,24 +295,24 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 auto distanceData = std::get<DistanceData>(condition.data);
                 auto distanceActual = lookupDistanceTo(ctx, distanceData.feature);
                 const auto limit = distanceData.distance;
-                return evaluatePredicate(distanceActual, condition.predicate, limit);
+                return evaluatePredicate(distanceActual, condition.predicate, limit.get());
             }
             case Type::Noise:
             {
                 auto noiseValue = (1.0f + ctx.conditionNoiseFns[key]->generate(ctx.quadCoords)) / 2.0f;
                 auto noiseCondition = std::get<NoiseData>(condition.data).value;
-                return evaluatePredicate(noiseValue, condition.predicate, noiseCondition);
+                return evaluatePredicate(noiseValue, condition.predicate, noiseCondition.get());
             }
             case Type::NormalAngle:
             {
                 auto normal = ctx.normalMap[ctx.genCoords];
                 auto angle = VecXYZ{ 0.0f, 0.0f, 1.0f }.Angle(normal);
-                return evaluatePredicate(angle, condition.predicate, std::get<NormalAngleData>(condition.data).angle);
+                return evaluatePredicate(angle, condition.predicate, std::get<NormalAngleData>(condition.data).angle.get());
             }
             case Type::Random:
             {
                 auto prngValue = ctx.prngDist(ctx.conditionPrngs[key]);
-                return evaluatePredicate(prngValue, condition.predicate, std::get<RandomData>(condition.data).value);
+                return evaluatePredicate(prngValue, condition.predicate, std::get<RandomData>(condition.data).value.get());
             }
             case Type::BlendNoise:
             {

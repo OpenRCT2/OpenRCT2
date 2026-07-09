@@ -9,15 +9,22 @@
 
 #pragma once
 
-#include "BaseMap.hpp"
-#include "MapGen.h"
-#include "TileQueue.hpp"
+#include "SettingsTypes.hpp"
+
+#include <nlohmann/json.hpp>
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue);
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue);
-    void computeRiverFlagBasedDistanceMap(
-        const MapGenContext& ctx, DistanceMap& distanceMap, River::RiverFlag flag, bool invert = false);
+    template<typename T, T low, T high, T step = 1>
+    inline void to_json(nlohmann::json& j, const NumericSetting<T, low, high, step>& numericSetting)
+    {
+        j = numericSetting.get();
+    }
+
+    template<typename T, T low, T high, T step = 1>
+    inline void from_json(const nlohmann::json& j, NumericSetting<T, low, high, step>& numericSetting)
+    {
+        numericSetting = j.get<T>();
+    }
 
 } // namespace OpenRCT2::World::MapGenerator

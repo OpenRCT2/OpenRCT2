@@ -11,6 +11,7 @@
 
 #include "../../../Context.h"
 #include "../../../object/ObjectManager.h"
+#include "../SettingsTypesSerDe.hpp"
 #include "Rule.h"
 
 #include <nlohmann/json.hpp>
@@ -18,8 +19,21 @@
 namespace OpenRCT2::World::MapGenerator::Rule
 {
     using json = nlohmann::json;
+    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
+        Type,
+        {
+            { Type::Height, "Height"},
+            { Type::Distance, "Distance"},
+            { Type::Noise, "Noise"},
+            { Type::NormalAngle, "NormalAngle"},
+            { Type::Random, "Random"},
+            { Type::BlendHeight, "BlendHeight"},
+            { Type::BlendNoise, "BlendNoise"},
+            { Type::BlendDistance, "BlendDistance"},
+            { Type::LandStyle, "LandStyle"},
+        })
 
-    NLOHMANN_JSON_SERIALIZE_ENUM(
+    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         RuleSceneryType,
         {
             { RuleSceneryType::Small, "Small" },
@@ -27,7 +41,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             { RuleSceneryType::Wall, "Wall" },
         })
 
-    NLOHMANN_JSON_SERIALIZE_ENUM(
+    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         Predicate,
         {
             { Predicate::Equal, "Equal" },
@@ -38,21 +52,21 @@ namespace OpenRCT2::World::MapGenerator::Rule
             { Predicate::GreaterThanOrEqual, "GreaterThanOrEqual" },
         })
 
-    NLOHMANN_JSON_SERIALIZE_ENUM(
+    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         HeightMode,
         {
             { HeightMode::Absolute, "Absolute" },
             { HeightMode::Relative, "Relative" },
         })
 
-    NLOHMANN_JSON_SERIALIZE_ENUM(
+    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         HeightType,
         {
             { HeightType::Land, "Land" },
             { HeightType::Water, "Water" },
         })
 
-    NLOHMANN_JSON_SERIALIZE_ENUM(
+    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         HeightSource,
         {
             { HeightSource::Self, "Self" },
@@ -67,7 +81,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(HeightData, height, mode, sourceFirst, typeFirst, sourceSecond, typeSecond)
 
-    NLOHMANN_JSON_SERIALIZE_ENUM(
+    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         Feature,
         {
             { Feature::Water, "Water" },
@@ -94,15 +108,15 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         j["styles"] = nlohmann::json::array({});
 
-        for (ObjectEntryIndex idx : landStyleData.styles)
+        for (const ObjectEntryIndex idx : landStyleData.styles)
         {
             const auto obj = objectManager.GetLoadedObject<TerrainSurfaceObject>(idx);
-            if (obj != nullptr)
+            if (obj == nullptr)
             {
-                j["styles"].push_back(obj->GetIdentifier());
+                throw SettingSerdeException("failed to serialize TerrainSurfaceObject {}", idx);
             }
+            j["styles"].push_back(obj->GetIdentifier());
         }
-        // TODO error handling
     }
 
     inline void from_json(const nlohmann::json& j, LandStyleData& landStyleData)
@@ -114,15 +128,16 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         for (auto& style : stylesJson)
         {
-            ObjectEntryIndex idx = objectManager.GetLoadedObjectEntryIndex(style.get<std::string>());
-            if (idx != kObjectEntryIndexNull)
+            auto identifier = style.get<std::string>();
+            ObjectEntryIndex idx = objectManager.GetLoadedObjectEntryIndex(identifier);
+            if (idx == kObjectEntryIndexNull)
             {
-                styles.insert(idx);
+                throw SettingSerdeException("failed to deserialize TerrainSurfaceObject {}, not loaded?", identifier);
             }
+            styles.insert(idx);
         }
 
         landStyleData.styles = styles;
-        // TODO error handling
     }
     // ================================================================================ LandStyleData
 
@@ -235,17 +250,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
         j["applyEdgeTexture"] = textureEffect.applyEdgeTexture;
 
         const auto* objLand = objectManager.GetLoadedObject<TerrainSurfaceObject>(textureEffect.landTexture);
-        if (objLand != nullptr)
+        if (objLand == nullptr)
         {
-            j["landTexture"] = objLand->GetIdentifier();
+            throw SettingSerdeException("failed to serialize TerrainSurfaceObject {}", textureEffect.landTexture);
         }
+        j["landTexture"] = objLand->GetIdentifier();
         const auto* objEdge = objectManager.GetLoadedObject<TerrainEdgeObject>(textureEffect.edgeTexture);
-        if (objEdge != nullptr)
+        if (objEdge == nullptr)
         {
-            j["edgeTexture"] = objEdge->GetIdentifier();
+            throw SettingSerdeException("failed to serialize TerrainEdgeObject {}", textureEffect.edgeTexture);
         }
-
-        // TODO error handling
+        j["edgeTexture"] = objEdge->GetIdentifier();
     }
 
     inline void from_json(const nlohmann::json& j, TextureEffect& textureEffect)
@@ -258,13 +273,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
         const auto landId = objectManager.GetLoadedObjectEntryIndex(j.at("landTexture").get<std::string>());
         const auto edgeId = objectManager.GetLoadedObjectEntryIndex(j.at("edgeTexture").get<std::string>());
 
-        if (landId != kObjectEntryIndexNull)
-            textureEffect.landTexture = landId;
+        if (landId == kObjectEntryIndexNull)
+        {
+            throw SettingSerdeException("failed to deserialize TerrainSurfaceObject {}, not loaded?", landId);
+        }
+        textureEffect.landTexture = landId;
 
-        if (edgeId != kObjectEntryIndexNull)
-            textureEffect.edgeTexture = edgeId;
-
-        // TODO error handling
+        if (edgeId == kObjectEntryIndexNull)
+        {
+            throw SettingSerdeException("failed to deserialize TerrainEdgeObject {}, not loaded?", edgeId);
+        }
+        textureEffect.edgeTexture = edgeId;
     }
     // ================================================================================ TextureEffect
 
@@ -276,11 +295,13 @@ namespace OpenRCT2::World::MapGenerator::Rule
         const auto* obj = objectManager.GetLoadedObject(objectTypeOf(sceneryEffectItem.type), sceneryEffectItem.index);
 
         j["type"] = sceneryEffectItem.type;
-        if (obj != nullptr)
+        if (obj == nullptr)
         {
-            j["identifier"] = obj->GetIdentifier();
+            throw SettingSerdeException(
+                "failed to serialize sceneryEffectItem {} {}", static_cast<int32_t>(sceneryEffectItem.type),
+                sceneryEffectItem.index);
         }
-
+        j["identifier"] = obj->GetIdentifier();
         j["weight"] = sceneryEffectItem.weight;
         if (sceneryEffectItem.direction.has_value())
         {
@@ -291,19 +312,25 @@ namespace OpenRCT2::World::MapGenerator::Rule
             j["direction"] = nullptr;
         }
         j["colours"] = sceneryEffectItem.colours;
-
-        // TODO error handling
     }
 
     inline void from_json(const nlohmann::json& j, SceneryEffectItem& sceneryEffectItem)
     {
         auto& objectManager = GetContext()->GetObjectManager();
-        auto index = objectManager.GetLoadedObjectEntryIndex( j.at("identifier").get<std::string>());
 
-        if (index != kObjectEntryIndexNull)
-            sceneryEffectItem.index = index;
-
+        auto identifier = j.at("identifier").get<std::string>();
         j.at("type").get_to(sceneryEffectItem.type);
+
+        const auto index = objectManager.GetLoadedObjectEntryIndex(identifier);
+
+        if (index == kObjectEntryIndexNull)
+        {
+            throw SettingSerdeException(
+                "failed to deserialize sceneryEffectItem {} {}, not loaded?", static_cast<int32_t>(sceneryEffectItem.type),
+                identifier);
+        }
+        sceneryEffectItem.index = index;
+
         j.at("weight").get_to(sceneryEffectItem.weight);
         if (j["direction"].is_null())
         {
@@ -314,8 +341,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
             sceneryEffectItem.direction = j.at("direction");
         }
         j.at("colours").get_to(sceneryEffectItem.colours);
-
-        // TODO error handling
     }
     // ================================================================================ SceneryEffectItem
 

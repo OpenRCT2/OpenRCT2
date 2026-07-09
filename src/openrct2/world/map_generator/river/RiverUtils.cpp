@@ -12,7 +12,6 @@
 #include "../../../profiling/Profiling.h"
 #include "../MapGen.h"
 #include "../MapHelpers.h"
-#include "../MapTraversalUtils.h"
 #include "RiverTypes.hpp"
 
 namespace OpenRCT2::World::MapGenerator::River
@@ -165,7 +164,7 @@ namespace OpenRCT2::World::MapGenerator::River
             "    catchment max actual {}\n"
             "    river width max setting {}\n"
             "    river width max actual {}\n",
-            calculateMaxCatchment(ctx), stats.flowAggMaxCatchment, ctx.settings.river.riverWidthMax,
+            calculateMaxCatchment(ctx), stats.flowAggMaxCatchment, ctx.settings.river.riverWidthMax.get(),
             (stats.flowAggMaxCatchment / calculateMaxCatchment(ctx)) * ctx.settings.river.riverWidthMax);
 
         const auto pruningSummary = std::format(

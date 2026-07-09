@@ -14,6 +14,7 @@
 #include "../../tile_element/SurfaceElement.h"
 #include "../BaseMap.hpp"
 #include "../Noise.h"
+#include "../SettingsTypes.hpp"
 
 #include <functional>
 #include <optional>
@@ -226,7 +227,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     // $value $pred height{-relativeElevation}
     struct HeightData
     {
-        int32_t height;
+        NumericSetting<int32_t, 0, kMaximumLandHeight, 2> height;
         HeightMode mode;
         HeightSource sourceFirst;
         HeightType typeFirst;
@@ -237,57 +238,57 @@ namespace OpenRCT2::World::MapGenerator::Rule
     // smoothstep($low, $high, height) $pred $prng
     struct BlendHeightData
     {
-        uint32_t seedOffset;
-        int32_t edgeLow;
-        int32_t edgeHigh;
+        NumericSetting<uint32_t, 0, std::numeric_limits<uint32_t>::max()> seedOffset;
+        NumericSetting<int32_t, 0, kMaximumLandHeight, 2> edgeLow;
+        NumericSetting<int32_t, 0, kMaximumLandHeight, 2> edgeHigh;
     };
 
     // $value^2 $pred distance
     struct DistanceData
     {
         Feature feature;
-        float distance;
+        NumericSetting<float, kDistanceMin, kDistanceMax, 1.0f> distance;
     };
 
     // $value $pred noise(x,y)
     struct NoiseData
     {
-        uint32_t seedOffset;
-        float frequency;
-        int32_t octaves;
-        float value;
+        NumericSetting<uint32_t, std::numeric_limits<uint32_t>::min(), std::numeric_limits<uint32_t>::max()> seedOffset;
+        NumericSetting<float, kFrequencyMin, kFrequencyMax, 0.05f> frequency;
+        NumericSetting<int32_t, kOctavesMin, kOctavesMax> octaves;
+        NumericSetting<float, kNoiseMin, kNoiseMax, 0.01f> value;
     };
 
     // smoothstep($low, $high, noise) $pred $prng
     struct BlendNoiseData
     {
-        uint32_t seedOffset;
-        float frequency;
-        int32_t octaves;
-        float edgeLow;
-        float edgeHigh;
+        NumericSetting<uint32_t, std::numeric_limits<uint32_t>::min(), std::numeric_limits<uint32_t>::max()> seedOffset;
+        NumericSetting<float, kFrequencyMin, kFrequencyMax, 0.05f> frequency;
+        NumericSetting<int32_t, kOctavesMin, kOctavesMax> octaves;
+        NumericSetting<float, kNoiseMin, kNoiseMax, 0.01f> edgeLow;
+        NumericSetting<float, kNoiseMin, kNoiseMax, 0.01f> edgeHigh;
     };
 
     // smoothstep($low, $high, distance) $pred $prng
     struct BlendDistanceData
     {
         Feature feature;
-        uint32_t seedOffset;
-        float edgeLow;
-        float edgeHigh;
+        NumericSetting<uint32_t, std::numeric_limits<uint32_t>::min(), std::numeric_limits<uint32_t>::max()> seedOffset;
+        NumericSetting<float, kDistanceMin, kDistanceMax, 1.0f>  edgeLow;
+        NumericSetting<float, kDistanceMin, kDistanceMax, 1.0f>  edgeHigh;
     };
 
     // $value $pred angle between Vec(0,0,1) and normal(x,y)
     struct NormalAngleData
     {
-        float angle;
+        NumericSetting<float, kAngleMin, kAngleMax, 1.0f> angle;
     };
 
     //  $value $pred prng(0..100)
     struct RandomData
     {
-        uint32_t seedOffset;
-        float value;
+        NumericSetting<uint32_t, std::numeric_limits<uint32_t>::min(), std::numeric_limits<uint32_t>::max()> seedOffset;
+        NumericSetting<float, kRandomMin, kRandomMax, 0.01f> value;
     };
 
     struct LandStyleData
