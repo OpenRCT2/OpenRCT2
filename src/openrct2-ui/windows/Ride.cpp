@@ -309,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _operatingWidgets = makeWidgets(
         kMainRideWidgets,
         // Operating mode group
-        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                               ),
+        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_OPERATING_MODE_GROUP                                                            ),
         makeWidget                ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kWidgetContentEmpty,                    STR_SELECT_OPERATING_MODE                   ),
         makeWidget                ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
         makeWidget                ({ 21,  62}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
 
         // Load/wait/sync group
-        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                               ),
+        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_WAIT_AND_LOAD_GROUP                                                             ),
         makeWidget                ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
         makeWidget                ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
         makeWidget                ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
