@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "RiverTypes.hpp"
 #include "../SettingsTypesSerDe.hpp"
+#include "RiverTypes.hpp"
 
 #include <nlohmann/json.hpp>
 

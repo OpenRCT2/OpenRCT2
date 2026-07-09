@@ -67,7 +67,8 @@ namespace OpenRCT2::World::MapGenerator
 
     public:
         explicit TrackingStableTileQueue(const TileCoordsXY& dimensions)
-            : StableTileQueue(), marked{ dimensions }
+            : StableTileQueue()
+            , marked{ dimensions }
         {
         }
 

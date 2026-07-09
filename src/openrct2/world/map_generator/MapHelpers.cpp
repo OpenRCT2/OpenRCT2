@@ -684,7 +684,6 @@ namespace OpenRCT2::World::MapGenerator
     void computeRiverFlagBasedDistanceMap(
         const MapGenContext& ctx, DistanceMap& distanceMap, const River::RiverFlag flag, bool invert)
     {
-
         distanceMap = DistanceMap{ ctx.dimensions };
         distanceMap.fill(std::numeric_limits<float>::infinity());
 
@@ -711,6 +710,5 @@ namespace OpenRCT2::World::MapGenerator
 
         completeDistanceMap(distanceMap, queue);
     }
-
 
 } // namespace OpenRCT2::World::MapGenerator

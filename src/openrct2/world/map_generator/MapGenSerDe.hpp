@@ -90,6 +90,7 @@ namespace OpenRCT2::World::MapGenerator
         j[kMapGenSettingsTypeKey] = kMapGenSettingsTypeValue;
         j[kMapGenSettingsVersionKey] = kOpenRCT2Version;
         j[kMapGenSettingsFormatKey] = kMapGenSettingsFormat;
+
         j["generator"] = settings.generator;
         j["mapSize"] = settings.mapSize;
         j["seed"] = settings.seed;

@@ -26,7 +26,8 @@ namespace OpenRCT2::World::MapGenerator
     static BiasData prepareBias(const MapGenContext& ctx)
     {
         BiasData biasData;
-        if (ctx.settings.noise.bias.type == Bias::coastal || ctx.settings.noise.bias.type == Bias::river || ctx.settings.noise.bias.type == Bias::valley)
+        if (ctx.settings.noise.bias.type == Bias::coastal || ctx.settings.noise.bias.type == Bias::river
+            || ctx.settings.noise.bias.type == Bias::valley)
         {
             std::mt19937 prng(ctx.seed);
             std::uniform_real_distribution dist(-1.0f, 1.0f);
@@ -177,7 +178,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-   static void generateSimplexHeightMap(MapGenContext& ctx)
+    static void generateSimplexHeightMap(MapGenContext& ctx)
     {
         const Settings& settings = ctx.settings;
         const float freq = settings.noise.baseFrequency / std::pow(2.0f, 15.0f);

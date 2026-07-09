@@ -11,9 +11,9 @@
 
 #include "../Location.hpp"
 #include "BaseMap.hpp"
+#include "SettingsTypes.hpp"
 #include "river/RiverTypes.hpp"
 #include "rule/Rule.h"
-#include "SettingsTypes.hpp"
 
 #include <optional>
 #include <vector>

@@ -703,13 +703,13 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
-                    blendHeightData.seedOffset .change(change, seedOffset);
+                    blendHeightData.seedOffset.change(change, seedOffset);
                     break;
                 }
                 case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
-                    blendNoiseData.seedOffset .change(change, seedOffset);
+                    blendNoiseData.seedOffset.change(change, seedOffset);
                     break;
                 }
                 default:

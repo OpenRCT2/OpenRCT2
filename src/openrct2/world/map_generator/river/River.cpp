@@ -195,7 +195,8 @@ namespace OpenRCT2::World::MapGenerator::River
                 }
             }
 
-            riverCtx.statistics.flowAggMaxCatchment = std::max(riverCtx.statistics.flowAggMaxCatchment, riverCtx.catchment[pos]);
+            riverCtx.statistics.flowAggMaxCatchment = std::max(
+                riverCtx.statistics.flowAggMaxCatchment, riverCtx.catchment[pos]);
         }
 
         return riverCtx.catchment[pos];
@@ -462,7 +463,8 @@ namespace OpenRCT2::World::MapGenerator::River
                     {
                         riverCtx.flags[pos].set(source);
                         riverCtx.statistics.pruneSourcesRemaining++;
-                        riverCtx.statistics.pruneSourcesLongest = std::max(riverCtx.statistics.pruneSourcesLongest, sourceLength[pos]);
+                        riverCtx.statistics.pruneSourcesLongest = std::max(
+                            riverCtx.statistics.pruneSourcesLongest, sourceLength[pos]);
                     }
                 }
             }
@@ -655,11 +657,15 @@ namespace OpenRCT2::World::MapGenerator::River
 
                 if (!inBounds)
                 {
-                    ss <<  "XXXXXXXXXXXXXXXX |";
-                } else if (isRiver)
+                    ss << "XXXXXXXXXXXXXXXX |";
+                }
+                else if (isRiver)
                 {
-                    ss << std::format("({},{}) h{} r{} s{} |", deltaPos.x,deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos], isSource ? 'S' : '-');
-                } else
+                    ss << std::format(
+                        "({},{}) h{} r{} s{} |", deltaPos.x, deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos],
+                        isSource ? 'S' : '-');
+                }
+                else
                 {
                     ss << "LLLLLLLLLLLLLLLLL |";
                 }
@@ -792,12 +798,14 @@ namespace OpenRCT2::World::MapGenerator::River
                             printDbgMap(ctx, candidate.pos, 5);
                             printDbgMap(ctx, sPos, 5);
                             // TODO change to return
-                            throw std::runtime_error(std::format("({},{}) size={} lowered below 0", sPos.x, sPos.y, segments[candidate].size()));
+                            throw std::runtime_error(
+                                std::format("({},{}) size={} lowered below 0", sPos.x, sPos.y, segments[candidate].size()));
                         }
                     }
                     riverCtx.statistics.consistencySegmentsLowered++;
                     riverCtx.statistics.consistencySegmentsLoweredMaxSize = std::max(
-                        riverCtx.statistics.consistencySegmentsLoweredMaxSize, static_cast<int32_t>(segments[candidate].size()));
+                        riverCtx.statistics.consistencySegmentsLoweredMaxSize,
+                        static_cast<int32_t>(segments[candidate].size()));
                     break;
                 }
                 case ConsistencyOperation::raise:
@@ -811,7 +819,8 @@ namespace OpenRCT2::World::MapGenerator::River
                             printDbgMap(ctx, candidate.pos, 5);
                             printDbgMap(ctx, sPos, 5);
                             // TODO change to return
-                            throw std::runtime_error(std::format("({},{}) size={} raised above 256", sPos.x, sPos.y, segments[candidate].size()));
+                            throw std::runtime_error(
+                                std::format("({},{}) size={} raised above 256", sPos.x, sPos.y, segments[candidate].size()));
                         }
                     }
                     riverCtx.statistics.consistencySegmentsRaised++;
@@ -828,7 +837,8 @@ namespace OpenRCT2::World::MapGenerator::River
                     }
                     riverCtx.statistics.consistencySegmentsRemoved++;
                     riverCtx.statistics.consistencySegmentsRemovedMaxSize = std::max(
-                        riverCtx.statistics.consistencySegmentsRemovedMaxSize, static_cast<int32_t>(segments[candidate].size()));
+                        riverCtx.statistics.consistencySegmentsRemovedMaxSize,
+                        static_cast<int32_t>(segments[candidate].size()));
                     break;
                 }
             }

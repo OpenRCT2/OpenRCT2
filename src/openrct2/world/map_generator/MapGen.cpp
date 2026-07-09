@@ -25,7 +25,7 @@ namespace OpenRCT2::World::MapGenerator
     static void resetSurfaces(const MapGenContext& ctx)
     {
         MapClearAllElements();
-        MapInit({ctx.settings.mapSize.x, ctx.settings.mapSize.y});
+        MapInit({ ctx.settings.mapSize.x, ctx.settings.mapSize.y });
 
         const auto& defaultRule = ctx.settings.textureRules[0];
         assert(defaultRule.isDefault);

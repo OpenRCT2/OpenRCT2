@@ -160,7 +160,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         // per rule per tile
         std::optional<int32_t> zRepeat = std::nullopt;
 
-        //make sure to update resetEvaluationContextRuleAndConditionState() when adding new state
+        // make sure to update resetEvaluationContextRuleAndConditionState() when adding new state
     };
 
     enum class Predicate : uint8_t
@@ -274,8 +274,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         Feature feature;
         NumericSetting<uint32_t, std::numeric_limits<uint32_t>::min(), std::numeric_limits<uint32_t>::max()> seedOffset;
-        NumericSetting<float, kDistanceMin, kDistanceMax, 1.0f>  edgeLow;
-        NumericSetting<float, kDistanceMin, kDistanceMax, 1.0f>  edgeHigh;
+        NumericSetting<float, kDistanceMin, kDistanceMax, 1.0f> edgeLow;
+        NumericSetting<float, kDistanceMin, kDistanceMax, 1.0f> edgeHigh;
     };
 
     // $value $pred angle between Vec(0,0,1) and normal(x,y)
@@ -387,5 +387,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     void initializeEvaluationContext(const MapGenContext& genCtx, EvaluationContext& evalCtx);
     void evaluateTextureRules(const MapGenContext& genCtx, EvaluationContext& evalCtx, const Callback<TextureResult>& callback);
-    void evaluateSceneryRules(const MapGenContext& genCtx, EvaluationContext& evalCtx, const Callback<MaybeSceneryResult>& callback);
+    void evaluateSceneryRules(
+        const MapGenContext& genCtx, EvaluationContext& evalCtx, const Callback<MaybeSceneryResult>& callback);
 } // namespace OpenRCT2::World::MapGenerator::Rule
