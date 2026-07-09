@@ -48,6 +48,7 @@
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/TileInspector.h>
 #include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
@@ -1615,13 +1616,8 @@ namespace OpenRCT2::Ui::Windows
             int32_t i = 0;
             char buffer[256];
 
-            const TileElement* tileElement = MapGetFirstElementAt(_toolMap);
-
-            do
+            for (const auto* tileElement : TileElementsView(_toolMap))
             {
-                if (tileElement == nullptr)
-                    break;
-
                 const bool selectedRow = i == windowTileInspectorSelectedIndex;
                 const bool hoveredRow = i == _highlightedIndex;
                 const char* typeName = "";
@@ -1751,7 +1747,7 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords.y -= kScrollableRowHeight;
                 i++;
-            } while (!(tileElement++)->isLastForTile());
+            }
         }
 
         void ClearClipboard()

@@ -15,6 +15,7 @@
 #include "../../management/Finance.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/TileElementsView.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
 #include "../GameActionRunner.h"
@@ -239,16 +240,10 @@ namespace OpenRCT2::GameActions
         {
             for (int32_t x = 0; x < gameState.mapSize.x; x++)
             {
-                auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
-                do
+                for (auto* sceneryElement : TileElementsView<LargeSceneryElement>(TileCoordsXY{ x, y }))
                 {
-                    if (tileElement == nullptr)
-                        break;
-                    if (tileElement->getType() == TileElementType::largeScenery)
-                    {
-                        tileElement->asLargeScenery()->SetIsAccounted(false);
-                    }
-                } while (!(tileElement++)->isLastForTile());
+                    sceneryElement->SetIsAccounted(false);
+                }
             }
         }
     }

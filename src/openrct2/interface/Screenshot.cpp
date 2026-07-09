@@ -32,6 +32,7 @@
 #include "../platform/Platform.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "../world/TileElementsView.h"
 #include "../world/Weather.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "Viewport.h"
@@ -194,19 +195,17 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
-    auto element = MapGetFirstElementAt(location);
-    if (element != nullptr)
+
+    for (const auto* tileElement : TileElementsView(location))
     {
-        do
+        if (useViewClipping && (tileElement->getBaseZ() > gClipHeight * kCoordsZStep))
         {
-            if (useViewClipping && (element->getBaseZ() > gClipHeight * kCoordsZStep))
-            {
-                continue;
-            }
-            z = std::max<int32_t>(z, element->getBaseZ());
-            z = std::max<int32_t>(z, element->getClearanceZ());
-        } while (!(element++)->isLastForTile());
+            continue;
+        }
+        z = std::max<int32_t>(z, tileElement->getBaseZ());
+        z = std::max<int32_t>(z, tileElement->getClearanceZ());
     }
+
     return z;
 }
 

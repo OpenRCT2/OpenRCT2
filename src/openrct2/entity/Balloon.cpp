@@ -18,6 +18,7 @@
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
 #include "../world/Map.h"
+#include "../world/TileElementsView.h"
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
 
@@ -126,10 +127,7 @@ namespace OpenRCT2
 
     bool Balloon::Collides() const
     {
-        const TileElement* tileElement = MapGetFirstElementAt(CoordsXY({ x, y }));
-        if (tileElement == nullptr)
-            return false;
-        do
+        for (auto* tileElement : TileElementsView(CoordsXY(x, y)))
         {
             // the balloon has height so we add some padding to prevent it clipping through things.
             int32_t balloon_top = z + kCoordsZStep * 2;
@@ -161,8 +159,7 @@ namespace OpenRCT2
                     return true;
                 }
             }
-
-        } while (!(tileElement++)->isLastForTile());
+        }
         return false;
     }
 } // namespace OpenRCT2

@@ -5033,10 +5033,7 @@ namespace OpenRCT2
         };
         maze_type mazeType = maze_type::invalid;
 
-        auto tileElement = MapGetFirstElementAt(targetLoc);
-        if (tileElement == nullptr)
-            return;
-        do
+        for (auto* tileElement : TileElementsView(targetLoc))
         {
             if (stationBaseZ != tileElement->getBaseZ())
                 continue;
@@ -5053,7 +5050,7 @@ namespace OpenRCT2
                 mazeType = maze_type::entrance_or_exit;
                 break;
             }
-        } while (!(tileElement++)->isLastForTile());
+        }
 
         switch (mazeType)
         {

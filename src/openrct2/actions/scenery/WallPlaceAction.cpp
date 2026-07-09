@@ -25,6 +25,7 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/TileElementsView.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../../world/tile_element/PathElement.h"
@@ -504,8 +505,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        TileElement* tileElement = MapGetFirstElementAt(_loc);
-        do
+        for (auto* tileElement : TileElementsView(_loc))
         {
             if (tileElement == nullptr)
                 break;
@@ -584,7 +584,7 @@ namespace OpenRCT2::GameActions
                 default:
                     break;
             }
-        } while (!(tileElement++)->isLastForTile());
+        }
 
         return Result();
     }

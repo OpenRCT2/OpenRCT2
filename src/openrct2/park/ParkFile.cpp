@@ -58,6 +58,7 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "../world/Weather.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
@@ -1279,22 +1280,14 @@ namespace OpenRCT2
             {
                 for (int32_t x = 0; x < gameState.mapSize.x; x++)
                 {
-                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
-                    if (tileElement == nullptr)
-                        continue;
-                    do
+                    for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY{ x, y }))
                     {
-                        if (tileElement->getType() != TileElementType::track)
-                            continue;
-
-                        auto* trackElement = tileElement->asTrack();
                         const auto* ride = GetRide(trackElement->GetRideIndex());
                         if (ride != nullptr)
                         {
                             trackElement->SetRideType(ride->type);
                         }
-
-                    } while (!(tileElement++)->isLastForTile());
+                    }
                 }
             }
         }
