@@ -154,7 +154,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
         WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE,
 
-        WIDX_MODE = 14,
+        WIDX_MODE_GROUP = 14,
+        WIDX_MODE,
         WIDX_MODE_DROPDOWN,
         WIDX_MODE_TWEAK_LABEL,
         WIDX_MODE_TWEAK,
@@ -168,6 +169,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OPERATE_NUMBER_OF_CIRCUITS,
         WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
         WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE,
+        WIDX_LOAD_GROUP,
         WIDX_LOAD_CHECKBOX,
         WIDX_LOAD,
         WIDX_LOAD_DROPDOWN,
@@ -306,23 +308,28 @@ namespace OpenRCT2::Ui::Windows
     // 0x009ADEFC
     static constexpr auto _operatingWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget        ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
-        makeWidget        ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
-        makeWidget        ({ 21,  62}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
-        makeHoldableSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget                ({ 21,  78}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                   ),
-        makeHoldableSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget                ({ 21,  94}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP          ),
-        makeHoldableSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget        ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
-        makeWidget        ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
-        makeWidget        ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
-        makeWidget        ({  7, 135}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
-        makeWidget        ({  7, 151}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeHoldableSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
+        // Operating mode group
+        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                               ),
+        makeWidget                ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kWidgetContentEmpty,                    STR_SELECT_OPERATING_MODE                   ),
+        makeWidget                ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
+        makeWidget                ({ 21,  62}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
+        makeHoldableSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+        makeWidget                ({ 21,  78}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
+        makeHoldableSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+        makeWidget                ({ 21,  94}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
+        makeHoldableSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+
+        // Load/wait/sync group
+        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                               ),
+        makeWidget                ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
+        makeWidget                ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
+        makeWidget                ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
+        makeWidget                ({  7, 135}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
+        makeWidget                ({  7, 151}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+        makeHoldableSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
         makeWidget                ({  7, 168}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeHoldableSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget        ({  7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
+        makeHoldableSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+        makeWidget                ({  7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
     );
 
     // 0x009AE190
@@ -3526,6 +3533,20 @@ namespace OpenRCT2::Ui::Windows
 
         uint16_t operatingOnPrepareDrawMode(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
         {
+            widgets[WIDX_MODE_GROUP].moveTo({ 3, startY });
+            startY += 15;
+
+            // Mode
+            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
+            widgets[WIDX_MODE].moveTo({ 7, startY });
+            widgets[WIDX_MODE_DROPDOWN].moveTo({ 297, startY + 1 });
+            startY += 20;
+
+            if (ride->isBlockSectioned())
+            {
+                startY += 20;
+            }
+
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
             bool hasAlternativeType = rtd.flags.has(RtdFlag::hasInvertedVariant);
             if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)
@@ -3537,6 +3558,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WidgetType::button;
                 _spinnerCaption1 = FormatStringID(STR_VELOCITY, static_cast<uint16_t>(ride->liftHillSpeed));
                 widgets[WIDX_LIFT_HILL_SPEED].setString(_spinnerCaption1.c_str());
+
+                widgets[WIDX_LIFT_HILL_SPEED_LABEL].moveTo({ 21, startY + 1});
+                resizeSpinner(WIDX_LIFT_HILL_SPEED, { 157, startY }, {152, 14});
+                startY += 20;
             }
             else
             {
@@ -3555,6 +3580,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WidgetType::button;
                 _spinnerCaption2 = std::to_string(ride->numCircuits);
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].setString(_spinnerCaption2.c_str());
+
+                widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].moveTo({ 21, startY + 1});
+                resizeSpinner(WIDX_OPERATE_NUMBER_OF_CIRCUITS, { 157, startY }, {152, 14});
+                startY += 20;
             }
             else
             {
@@ -3563,9 +3592,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WidgetType::empty;
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WidgetType::empty;
             }
-
-            // Mode
-            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
 
             // Mode specific functionality
             auto multiplier = rtd.OperatingSettings.OperatingSettingMultiplier;
@@ -3631,6 +3657,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK].setString(_spinnerCaption0.c_str());
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::button;
+
+                widgets[WIDX_MODE_TWEAK_LABEL].moveTo({ 21, startY + 1});
+                resizeSpinner(WIDX_MODE_TWEAK, { 157, startY }, {152, 14});
+                startY += 20;
             }
             else
             {
@@ -3640,11 +3670,14 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
             }
 
-            return startY;
+            return startY + 5;
         }
 
         uint16_t operatingOnPrepareDrawLoad(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
         {
+            widgets[WIDX_LOAD_GROUP].moveTo({ 3, startY });
+            startY += 15;
+
             // Waiting
             if (rtd.flags.has(RtdFlag::hasLoadOptions))
             {
@@ -3732,7 +3765,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
             }
 
-            return startY;
+            return startY + 5;
         }
 
         void OperatingOnPrepareDraw()
@@ -3768,9 +3801,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(ride->numBlockBrakes + ride->numStations);
-                auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
+
+                bool poweredLaunch = ride->mode == RideMode::poweredLaunchBlockSectioned;
+                auto& refWidget = widgets[poweredLaunch ? WIDX_MODE_TWEAK : WIDX_MODE];
+                auto& labelWidget = widgets[WIDX_MODE_TWEAK_LABEL];
                 drawText(
-                    rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
+                    rt, windowPos + ScreenCoordsXY{ labelWidget.left, refWidget.bottom + 8 }, STR_BLOCK_SECTIONS, ft,
                     { Drawing::Colour::black });
             }
         }
