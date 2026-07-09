@@ -3533,6 +3533,9 @@ namespace OpenRCT2::Ui::Windows
 
         uint16_t operatingOnPrepareDrawMode(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
         {
+            const auto initStartY = startY;
+
+            widgets[WIDX_MODE_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_MODE_GROUP].moveTo({ 3, startY });
             startY += 15;
 
@@ -3670,13 +3673,23 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
             }
 
-            widgets[WIDX_MODE_GROUP].bottom = startY + 2;
-
-            return startY + 7;
+            if (startY != initStartY + 15)
+            {
+                widgets[WIDX_MODE_GROUP].bottom = startY + 2;
+                return startY + 7;
+            }
+            else
+            {
+                widgets[WIDX_MODE_GROUP].type = WidgetType::empty;
+                return initStartY;
+            }
         }
 
         uint16_t operatingOnPrepareDrawLoad(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
         {
+            const auto initStartY = startY;
+
+            widgets[WIDX_LOAD_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_LOAD_GROUP].moveTo({ 3, startY });
             startY += 15;
 
@@ -3785,9 +3798,16 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
             }
 
-            widgets[WIDX_LOAD_GROUP].bottom = startY + 2;
-
-            return startY + 7;
+            if (startY != initStartY + 15)
+            {
+                widgets[WIDX_LOAD_GROUP].bottom = startY + 2;
+                return startY + 7;
+            }
+            else
+            {
+                widgets[WIDX_LOAD_GROUP].type = WidgetType::empty;
+                return initStartY;
+            }
         }
 
         void OperatingOnPrepareDraw()
