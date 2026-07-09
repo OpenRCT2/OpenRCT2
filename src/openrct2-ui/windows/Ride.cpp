@@ -3523,20 +3523,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OperatingOnPrepareDraw()
+        void operatingOnPrepareDrawMode()
         {
-            StringId format, caption, tooltip;
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
-
-            // Widget setup
-            setWidgetPressed(WIDX_LOAD_CHECKBOX, false);
-            setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
-            setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, false);
-            setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, false);
-            setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, false);
 
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
             const auto& rtd = ride->getRideTypeDescriptor();
@@ -3577,93 +3568,14 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WidgetType::empty;
             }
 
-            // Leave if another vehicle arrives at station
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
-                && ride->numTrains > 1 && !ride->isBlockSectioned())
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->getRideTypeDescriptor().NameConvention.vehicle
-                        == RideComponentType::Boat
-                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
-                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
-            }
-            else
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
-            }
-
-            // Synchronise with adjacent stations
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
-            {
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
-            }
-            else
-            {
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
-            }
-
             // Mode
             widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
-
-            // Waiting
-            widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLoadOptions))
-            {
-                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_LOAD].type = WidgetType::dropdownMenu;
-                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::button;
-
-                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::spinner;
-                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::button;
-                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::button;
-
-                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::spinner;
-                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::button;
-                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::button;
-
-                _spinnerCaption3 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->minWaitingTime));
-                widgets[WIDX_MINIMUM_LENGTH].setString(_spinnerCaption3.c_str());
-                _spinnerCaption4 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->maxWaitingTime));
-                widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
-
-                if (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD)
-                    setWidgetPressed(WIDX_LOAD_CHECKBOX, true);
-            }
-            else
-            {
-                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::empty;
-                widgets[WIDX_LOAD].type = WidgetType::empty;
-                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::empty;
-
-                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
-                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::empty;
-                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::empty;
-                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::empty;
-
-                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
-                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::empty;
-                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::empty;
-                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::empty;
-            }
-
-            if (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
-                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-                setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
-                setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
-                setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, true);
 
             // Mode specific functionality
             auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
             uint16_t tweakValue = static_cast<uint16_t>(ride->operationOption) * multiplier;
 
+            StringId format, caption, tooltip;
             switch (ride->mode)
             {
                 case RideMode::poweredLaunchPasstrough:
@@ -3732,8 +3644,108 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::empty;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
             }
+        }
 
+        void operatingOnPrepareDrawLoad()
+        {
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            // Widget setup
+            setWidgetPressed(WIDX_LOAD_CHECKBOX, false);
+            setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
+            setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, false);
+            setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, false);
+            setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, false);
+
+            // Leave if another vehicle arrives at station
+            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
+                && ride->numTrains > 1 && !ride->isBlockSectioned())
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->getRideTypeDescriptor().NameConvention.vehicle
+                        == RideComponentType::Boat
+                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
+                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
+            }
+            else
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
+            }
+
+            // Synchronise with adjacent stations
+            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
+            {
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
+            }
+            else
+            {
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
+            }
+
+            // Waiting
+            widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
+            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLoadOptions))
+            {
+                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_LOAD].type = WidgetType::dropdownMenu;
+                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::button;
+
+                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::spinner;
+                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::button;
+                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::button;
+
+                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::spinner;
+                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::button;
+                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::button;
+
+                _spinnerCaption3 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->minWaitingTime));
+                widgets[WIDX_MINIMUM_LENGTH].setString(_spinnerCaption3.c_str());
+                _spinnerCaption4 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->maxWaitingTime));
+                widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
+
+                if (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD)
+                    setWidgetPressed(WIDX_LOAD_CHECKBOX, true);
+            }
+            else
+            {
+                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::empty;
+                widgets[WIDX_LOAD].type = WidgetType::empty;
+                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::empty;
+
+                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
+                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::empty;
+                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::empty;
+                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::empty;
+
+                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
+                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::empty;
+                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::empty;
+                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::empty;
+            }
+
+            if (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
+                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, true);
+            if (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+                setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, true);
+            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
+                setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, true);
+            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
+                setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, true);
+        }
+
+        void OperatingOnPrepareDraw()
+        {
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
+
+            operatingOnPrepareDrawMode();
+            operatingOnPrepareDrawLoad();
         }
 
         void OperatingOnDraw(RenderTarget& rt)
