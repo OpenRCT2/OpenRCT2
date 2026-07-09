@@ -3651,26 +3651,6 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            // Leave if another vehicle arrives at station
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
-                && ride->numTrains > 1 && !ride->isBlockSectioned())
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->getRideTypeDescriptor().NameConvention.vehicle
-                        == RideComponentType::Boat
-                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
-                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
-
-                setWidgetPressed(
-                    WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
-                    (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
-            }
-            else
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
-            }
-
             // Waiting
             widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
             if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLoadOptions))
@@ -3713,6 +3693,26 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::empty;
                 widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::empty;
                 widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::empty;
+            }
+
+            // Leave if another vehicle arrives at station
+            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
+                && ride->numTrains > 1 && !ride->isBlockSectioned())
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->getRideTypeDescriptor().NameConvention.vehicle
+                        == RideComponentType::Boat
+                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
+                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
+
+                setWidgetPressed(
+                    WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
+                    (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
+            }
+            else
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
             }
 
             // Synchronise with adjacent stations
