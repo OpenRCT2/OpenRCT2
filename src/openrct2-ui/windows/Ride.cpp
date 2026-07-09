@@ -3562,8 +3562,8 @@ namespace OpenRCT2::Ui::Windows
                 _spinnerCaption1 = FormatStringID(STR_VELOCITY, static_cast<uint16_t>(ride->liftHillSpeed));
                 widgets[WIDX_LIFT_HILL_SPEED].setString(_spinnerCaption1.c_str());
 
-                widgets[WIDX_LIFT_HILL_SPEED_LABEL].moveTo({ 21, startY + 1});
-                resizeSpinner(WIDX_LIFT_HILL_SPEED, { 157, startY }, {152, 14});
+                widgets[WIDX_LIFT_HILL_SPEED_LABEL].moveTo({ 21, startY + 1 });
+                resizeSpinner(WIDX_LIFT_HILL_SPEED, { 157, startY }, { 152, 14 });
                 startY += 17;
             }
             else
@@ -3584,8 +3584,8 @@ namespace OpenRCT2::Ui::Windows
                 _spinnerCaption2 = std::to_string(ride->numCircuits);
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].setString(_spinnerCaption2.c_str());
 
-                widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].moveTo({ 21, startY + 1});
-                resizeSpinner(WIDX_OPERATE_NUMBER_OF_CIRCUITS, { 157, startY }, {152, 14});
+                widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].moveTo({ 21, startY + 1 });
+                resizeSpinner(WIDX_OPERATE_NUMBER_OF_CIRCUITS, { 157, startY }, { 152, 14 });
                 startY += 17;
             }
             else
@@ -3661,8 +3661,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::button;
 
-                widgets[WIDX_MODE_TWEAK_LABEL].moveTo({ 21, startY + 1});
-                resizeSpinner(WIDX_MODE_TWEAK, { 157, startY }, {152, 14});
+                widgets[WIDX_MODE_TWEAK_LABEL].moveTo({ 21, startY + 1 });
+                resizeSpinner(WIDX_MODE_TWEAK, { 157, startY }, { 152, 14 });
                 startY += 17;
             }
             else
@@ -3703,8 +3703,8 @@ namespace OpenRCT2::Ui::Windows
 
                 setWidgetPressed(WIDX_LOAD_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD) != 0);
 
-                widgets[WIDX_LOAD_CHECKBOX].moveTo({ 7, startY + 1});
-                resizeDropdown(WIDX_LOAD, { 87, startY }, {222, 14});
+                widgets[WIDX_LOAD_CHECKBOX].moveTo({ 7, startY + 1 });
+                resizeDropdown(WIDX_LOAD, { 87, startY }, { 222, 14 });
                 startY += 17;
             }
             else
@@ -3715,13 +3715,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Leave if another vehicle arrives at station
-            if (rtd.flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
-                && ride->numTrains > 1 && !ride->isBlockSectioned())
+            if (rtd.flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation) && ride->numTrains > 1
+                && !ride->isBlockSectioned())
             {
                 widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
                 widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = rtd.NameConvention.vehicle
-                        == RideComponentType::Boat
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = rtd.NameConvention.vehicle == RideComponentType::Boat
                     ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
                     : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
 
@@ -3729,7 +3728,7 @@ namespace OpenRCT2::Ui::Windows
                     WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
                     (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
 
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].moveTo({ 7, startY});
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].moveTo({ 7, startY });
                 startY += 17;
             }
             else
@@ -3758,12 +3757,12 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH) != 0);
                 setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH) != 0);
 
-                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1});
-                resizeSpinner(WIDX_MINIMUM_LENGTH, { 157, startY }, {152, 14});
+                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1 });
+                resizeSpinner(WIDX_MINIMUM_LENGTH, { 157, startY }, { 152, 14 });
                 startY += 17;
 
-                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1});
-                resizeSpinner(WIDX_MAXIMUM_LENGTH, { 157, startY }, {152, 14});
+                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1 });
+                resizeSpinner(WIDX_MAXIMUM_LENGTH, { 157, startY }, { 152, 14 });
                 startY += 17;
             }
             else
@@ -3790,7 +3789,7 @@ namespace OpenRCT2::Ui::Windows
                     WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX,
                     (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) != 0);
 
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].moveTo({ 7, startY + 1});
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].moveTo({ 7, startY + 1 });
                 startY += 17;
             }
             else
