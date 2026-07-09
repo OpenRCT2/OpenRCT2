@@ -3635,7 +3635,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK].setString(_spinnerCaption0.c_str());
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::button;
-                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
             }
             else
             {
@@ -3652,13 +3651,6 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            // Widget setup
-            setWidgetPressed(WIDX_LOAD_CHECKBOX, false);
-            setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
-            setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, false);
-            setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, false);
-            setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, false);
-
             // Leave if another vehicle arrives at station
             if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
                 && ride->numTrains > 1 && !ride->isBlockSectioned())
@@ -3669,22 +3661,14 @@ namespace OpenRCT2::Ui::Windows
                         == RideComponentType::Boat
                     ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
                     : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
+
+                setWidgetPressed(
+                    WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
+                    (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
             }
             else
             {
                 widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
-            }
-
-            // Synchronise with adjacent stations
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
-            {
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
-            }
-            else
-            {
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
             }
 
             // Waiting
@@ -3710,8 +3694,9 @@ namespace OpenRCT2::Ui::Windows
                 _spinnerCaption4 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->maxWaitingTime));
                 widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
 
-                if (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD)
-                    setWidgetPressed(WIDX_LOAD_CHECKBOX, true);
+                setWidgetPressed(WIDX_LOAD_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD) != 0);
+                setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH) != 0);
+                setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH) != 0);
             }
             else
             {
@@ -3730,14 +3715,21 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::empty;
             }
 
-            if (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
-                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-                setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
-                setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
-                setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, true);
+            // Synchronise with adjacent stations
+            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
+            {
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
+
+                setWidgetPressed(
+                    WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX,
+                    (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) != 0);
+            }
+            else
+            {
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
+            }
         }
 
         void OperatingOnPrepareDraw()
