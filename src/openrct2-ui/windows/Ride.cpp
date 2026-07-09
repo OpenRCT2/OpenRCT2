@@ -3763,14 +3763,6 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            // Horizontal rule between mode settings and depart settings
-            auto ruleStart = widgets[WIDX_LOAD_DROPDOWN].top - 7;
-            Rectangle::fillInset(
-                rt,
-                { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, ruleStart },
-                  windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, ruleStart + 1 } },
-                colours[1], Rectangle::BorderStyle::inset);
-
             // Number of block sections
             if (ride->isBlockSectioned())
             {
