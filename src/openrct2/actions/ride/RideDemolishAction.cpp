@@ -212,7 +212,7 @@ namespace OpenRCT2::GameActions
                         break;
 
                     lastForTileReached = tileElement->isLastForTile();
-                    if (tileElement->getType() != TileElementType::Track)
+                    if (tileElement->getType() != TileElementType::track)
                         continue;
 
                     auto* trackElement = tileElement->asTrack();

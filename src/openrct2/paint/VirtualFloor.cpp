@@ -237,7 +237,7 @@ static void VirtualFloorGetTileProperties(
     {
         const auto elementType = tileElement->getType();
 
-        if (elementType == TileElementType::Surface)
+        if (elementType == TileElementType::surface)
         {
             if (height < tileElement->getClearanceZ())
             {
@@ -260,7 +260,7 @@ static void VirtualFloorGetTileProperties(
             continue;
         }
 
-        if (elementType == TileElementType::Wall || elementType == TileElementType::Banner)
+        if (elementType == TileElementType::wall || elementType == TileElementType::banner)
         {
             int32_t direction = tileElement->getDirection();
             *outOccupiedEdges |= 1 << direction;

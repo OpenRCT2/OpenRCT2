@@ -255,7 +255,7 @@ namespace OpenRCT2::GameActions
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->getType() != TileElementType::SmallScenery)
+            if (tileElement->getType() != TileElementType::smallScenery)
                 continue;
             if (_height > tileElement->clearanceHeight)
                 continue;
@@ -348,10 +348,10 @@ namespace OpenRCT2::GameActions
         TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] CommandFlags flags,
         [[maybe_unused]] money64* price)
     {
-        if ((*tile_element)->getType() == TileElementType::Surface)
+        if ((*tile_element)->getType() == TileElementType::surface)
             return true;
 
-        if ((*tile_element)->getType() == TileElementType::SmallScenery)
+        if ((*tile_element)->getType() == TileElementType::smallScenery)
             return true;
 
         return false;

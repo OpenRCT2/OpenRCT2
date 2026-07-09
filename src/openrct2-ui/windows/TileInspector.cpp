@@ -585,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
             // Page widgets
             switch (tileElement->getType())
             {
-                case TileElementType::Surface:
+                case TileElementType::surface:
                     switch (widgetIndex)
                     {
                         case WIDX_SURFACE_BUTTON_REMOVE_FENCES:
@@ -608,7 +608,7 @@ namespace OpenRCT2::Ui::Windows
                             break;
                     } // switch widgetindex
                     break;
-                case TileElementType::Path:
+                case TileElementType::path:
                     switch (widgetIndex)
                     {
                         case WIDX_PATH_CHECK_SLOPED:
@@ -653,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Track:
+                case TileElementType::track:
                     switch (widgetIndex)
                     {
                         case WIDX_TRACK_CHECK_APPLY_TO_ALL:
@@ -680,7 +680,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::SmallScenery:
+                case TileElementType::smallScenery:
                     switch (widgetIndex)
                     {
                         case WIDX_SCENERY_CHECK_QUARTER_N:
@@ -700,7 +700,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Entrance:
+                case TileElementType::entrance:
                     switch (widgetIndex)
                     {
                         case WIDX_ENTRANCE_BUTTON_MAKE_USABLE:
@@ -709,7 +709,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Banner:
+                case TileElementType::banner:
                     switch (widgetIndex)
                     {
                         case WIDX_BANNER_CHECK_BLOCK_NE:
@@ -721,8 +721,8 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::LargeScenery:
-                case TileElementType::Wall:
+                case TileElementType::largeScenery:
+                case TileElementType::wall:
                     switch (widgetIndex)
                     {
                         case WIDX_WALL_ANIMATION_IS_BACKWARDS:
@@ -802,7 +802,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (tileElement->getType())
             {
-                case TileElementType::Surface:
+                case TileElementType::surface:
                     switch (widgetIndex)
                     {
                         case WIDX_SURFACE_SPINNER_HEIGHT_INCREASE:
@@ -815,7 +815,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Path:
+                case TileElementType::path:
                     switch (widgetIndex)
                     {
                         case WIDX_PATH_SPINNER_HEIGHT_INCREASE:
@@ -828,7 +828,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Track:
+                case TileElementType::track:
                     switch (widgetIndex)
                     {
                         case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
@@ -847,7 +847,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::SmallScenery:
+                case TileElementType::smallScenery:
                     switch (widgetIndex)
                     {
                         case WIDX_SCENERY_SPINNER_HEIGHT_INCREASE:
@@ -860,7 +860,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Entrance:
+                case TileElementType::entrance:
                     switch (widgetIndex)
                     {
                         case WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE:
@@ -877,7 +877,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Wall:
+                case TileElementType::wall:
                     switch (widgetIndex)
                     {
                         case WIDX_WALL_SPINNER_HEIGHT_INCREASE:
@@ -916,7 +916,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::LargeScenery:
+                case TileElementType::largeScenery:
                     switch (widgetIndex)
                     {
                         case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE:
@@ -929,7 +929,7 @@ namespace OpenRCT2::Ui::Windows
                     } // switch widget index
                     break;
 
-                case TileElementType::Banner:
+                case TileElementType::banner:
                     switch (widgetIndex)
                     {
                         case WIDX_BANNER_SPINNER_HEIGHT_INCREASE:
@@ -955,7 +955,7 @@ namespace OpenRCT2::Ui::Windows
             const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
             if (tileInspectorPage == TileInspectorPage::Wall)
             {
-                Guard::Assert(tileElement->getType() == TileElementType::Wall, "Element is not a wall");
+                Guard::Assert(tileElement->getType() == TileElementType::wall, "Element is not a wall");
                 if (widgetIndex == WIDX_WALL_DROPDOWN_SLOPE_BUTTON)
                     WallSetSlope(windowTileInspectorSelectedIndex, dropdownIndex);
             }
@@ -1078,55 +1078,55 @@ namespace OpenRCT2::Ui::Windows
 
                 switch (tileElement->getType())
                 {
-                    case TileElementType::Surface:
+                    case TileElementType::surface:
                     {
                         auto* surfaceEl = tileElement->asSurface();
                         onDrawSurface(rt, screenCoords, *surfaceEl);
                         break;
                     }
-                    case TileElementType::Path:
+                    case TileElementType::path:
                     {
                         auto* pathEl = tileElement->asPath();
                         onDrawPath(rt, screenCoords, *pathEl);
                         break;
                     }
 
-                    case TileElementType::Track:
+                    case TileElementType::track:
                     {
                         auto* trackEl = tileElement->asTrack();
                         onDrawTrack(rt, screenCoords, *trackEl);
                         break;
                     }
 
-                    case TileElementType::SmallScenery:
+                    case TileElementType::smallScenery:
                     {
                         auto* smallSceneryEl = tileElement->asSmallScenery();
                         onDrawSmallScenery(rt, screenCoords, *smallSceneryEl);
                         break;
                     }
 
-                    case TileElementType::Entrance:
+                    case TileElementType::entrance:
                     {
                         auto* entranceEl = tileElement->asEntrance();
                         onDrawEntrance(rt, screenCoords, *entranceEl);
                         break;
                     }
 
-                    case TileElementType::Wall:
+                    case TileElementType::wall:
                     {
                         auto* wallEl = tileElement->asWall();
                         onDrawWall(rt, screenCoords, *wallEl);
                         break;
                     }
 
-                    case TileElementType::LargeScenery:
+                    case TileElementType::largeScenery:
                     {
                         auto* largeSceneryEl = tileElement->asLargeScenery();
                         onDrawLargeScenery(rt, screenCoords, *largeSceneryEl);
                         break;
                     }
 
-                    case TileElementType::Banner:
+                    case TileElementType::banner:
                     {
                         auto* bannerEl = tileElement->asBanner();
                         onDrawBanner(rt, screenCoords, *bannerEl);
@@ -1660,20 +1660,20 @@ namespace OpenRCT2::Ui::Windows
                 const auto type = tileElement->getType();
                 switch (type)
                 {
-                    case TileElementType::Surface:
+                    case TileElementType::surface:
                         typeName = LanguageGetString(STR_TILE_INSPECTOR_SURFACE);
                         break;
 
-                    case TileElementType::Path:
+                    case TileElementType::path:
                         typeName = tileElement->asPath()->IsQueue() ? LanguageGetString(STR_QUEUE_LINE_MAP_TIP)
                                                                     : LanguageGetString(STR_FOOTPATH_MAP_TIP);
                         break;
 
-                    case TileElementType::Track:
+                    case TileElementType::track:
                         typeName = LanguageGetString(STR_RIDE_COMPONENT_TRACK_CAPITALISED);
                         break;
 
-                    case TileElementType::SmallScenery:
+                    case TileElementType::smallScenery:
                     {
                         const auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
                         snprintf(
@@ -1683,11 +1683,11 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     }
 
-                    case TileElementType::Entrance:
+                    case TileElementType::entrance:
                         typeName = LanguageGetString(STR_RIDE_CONSTRUCTION_ENTRANCE);
                         break;
 
-                    case TileElementType::Wall:
+                    case TileElementType::wall:
                     {
                         const auto* entry = tileElement->asWall()->GetEntry();
                         snprintf(
@@ -1697,11 +1697,11 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     }
 
-                    case TileElementType::LargeScenery:
+                    case TileElementType::largeScenery:
                         typeName = LanguageGetString(STR_OBJECT_SELECTION_LARGE_SCENERY);
                         break;
 
-                    case TileElementType::Banner:
+                    case TileElementType::banner:
                         snprintf(
                             buffer, sizeof(buffer), "%s (%u)", LanguageGetString(STR_BANNER_WINDOW_TITLE),
                             tileElement->asBanner()->GetIndex().ToUnderlying());
@@ -2100,35 +2100,35 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (tileElement->getType())
                 {
-                    case TileElementType::Surface:
+                    case TileElementType::surface:
                         p = TileInspectorPage::Surface;
                         break;
 
-                    case TileElementType::Path:
+                    case TileElementType::path:
                         p = TileInspectorPage::Path;
                         break;
 
-                    case TileElementType::Track:
+                    case TileElementType::track:
                         p = TileInspectorPage::Track;
                         break;
 
-                    case TileElementType::SmallScenery:
+                    case TileElementType::smallScenery:
                         p = TileInspectorPage::Scenery;
                         break;
 
-                    case TileElementType::Entrance:
+                    case TileElementType::entrance:
                         p = TileInspectorPage::Entrance;
                         break;
 
-                    case TileElementType::Wall:
+                    case TileElementType::wall:
                         p = TileInspectorPage::Wall;
                         break;
 
-                    case TileElementType::LargeScenery:
+                    case TileElementType::largeScenery:
                         p = TileInspectorPage::LargeScenery;
                         break;
 
-                    case TileElementType::Banner:
+                    case TileElementType::banner:
                         p = TileInspectorPage::Banner;
                         break;
                 }
@@ -2199,7 +2199,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (tileElement->getType())
             {
-                case TileElementType::Surface:
+                case TileElementType::surface:
                     widgets[WIDX_SURFACE_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
                     widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].moveTo(
                         PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 13, 1 });
@@ -2233,7 +2233,7 @@ namespace OpenRCT2::Ui::Windows
                         WIDX_SURFACE_CHECK_DIAGONAL, tileElement->asSurface()->GetSlope() & kTileSlopeDiagonalFlag);
                     break;
 
-                case TileElementType::Path:
+                case TileElementType::path:
                     widgets[WIDX_PATH_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
                     widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].moveTo(
                         PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertySpinnerSize.width - 13, 1 });
@@ -2272,7 +2272,7 @@ namespace OpenRCT2::Ui::Windows
                         WIDX_PATH_CHECK_EDGE_N, tileElement->asPath()->GetCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     break;
 
-                case TileElementType::Track:
+                case TileElementType::track:
                     widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].moveTo(PropertyRowCol(propertiesAnchor, 0, 0));
                     widgets[WIDX_TRACK_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 1, 1));
                     widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].moveTo(
@@ -2292,7 +2292,7 @@ namespace OpenRCT2::Ui::Windows
                     setCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->asTrack()->IsIndestructible());
                     break;
 
-                case TileElementType::SmallScenery:
+                case TileElementType::smallScenery:
                 {
                     // Raise / Lower
                     widgets[WIDX_SCENERY_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
@@ -2344,7 +2344,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
 
-                case TileElementType::Entrance:
+                case TileElementType::entrance:
                     widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
                     widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].moveTo(
                         PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
@@ -2357,7 +2357,7 @@ namespace OpenRCT2::Ui::Windows
                         tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
                     break;
 
-                case TileElementType::Wall:
+                case TileElementType::wall:
                 {
                     bool canBeSloped = false;
                     bool hasAnimation = false;
@@ -2399,7 +2399,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
 
-                case TileElementType::LargeScenery:
+                case TileElementType::largeScenery:
                     widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
                     widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].moveTo(
                         PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
@@ -2407,7 +2407,7 @@ namespace OpenRCT2::Ui::Windows
                         PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 26, 1 });
                     break;
 
-                case TileElementType::Banner:
+                case TileElementType::banner:
                     widgets[WIDX_BANNER_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));
                     widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].moveTo(
                         PropertyRowCol(propertiesAnchor, 0, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });

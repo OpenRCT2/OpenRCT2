@@ -194,7 +194,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         do
         {
             maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->getClearanceZ()));
-            if (element->getType() == TileElementType::Surface)
+            if (element->getType() == TileElementType::surface)
             {
                 maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->asSurface()->GetWaterHeight()));
             }
@@ -229,7 +229,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             // see-through on: paint this tile_element as partial or hidden later on
             // note: surface elements are not painted even with see-through turned on
             if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0
-                || tile_element->getType() == TileElementType::Surface)
+                || tile_element->getType() == TileElementType::surface)
             {
                 continue;
             }
@@ -258,9 +258,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
                     break;
                 }
                 auto type = tile_element_sub_iterator->getType();
-                if (type == TileElementType::Path)
+                if (type == TileElementType::path)
                     session.PathElementOnSameHeight = tile_element_sub_iterator;
-                else if (type == TileElementType::Track)
+                else if (type == TileElementType::track)
                     session.TrackElementOnSameHeight = tile_element_sub_iterator;
             }
         }
@@ -270,28 +270,28 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->getType())
         {
-            case TileElementType::Surface:
+            case TileElementType::surface:
                 PaintSurface(session, direction, baseZ, *(tile_element->asSurface()));
                 break;
-            case TileElementType::Path:
+            case TileElementType::path:
                 PaintPath(session, baseZ, *(tile_element->asPath()));
                 break;
-            case TileElementType::Track:
+            case TileElementType::track:
                 PaintTrack(session, direction, baseZ, *(tile_element->asTrack()));
                 break;
-            case TileElementType::SmallScenery:
+            case TileElementType::smallScenery:
                 PaintSmallScenery(session, direction, baseZ, *(tile_element->asSmallScenery()));
                 break;
-            case TileElementType::Entrance:
+            case TileElementType::entrance:
                 PaintEntrance(session, direction, baseZ, *(tile_element->asEntrance()));
                 break;
-            case TileElementType::Wall:
+            case TileElementType::wall:
                 PaintWall(session, direction, baseZ, *(tile_element->asWall()));
                 break;
-            case TileElementType::LargeScenery:
+            case TileElementType::largeScenery:
                 PaintLargeScenery(session, direction, baseZ, *(tile_element->asLargeScenery()));
                 break;
-            case TileElementType::Banner:
+            case TileElementType::banner:
                 PaintBanner(session, direction, baseZ, *(tile_element->asBanner()));
                 break;
         }
@@ -308,7 +308,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         return;
     }
 
-    if ((tile_element - 1)->getType() == TileElementType::Surface)
+    if ((tile_element - 1)->getType() == TileElementType::surface)
     {
         return;
     }

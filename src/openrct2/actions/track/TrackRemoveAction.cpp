@@ -90,7 +90,7 @@ namespace OpenRCT2::GameActions
             if (tileElement->getBaseZ() != _origin.z)
                 continue;
 
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
 
             if ((tileElement->getDirection()) != _origin.direction)
@@ -185,7 +185,7 @@ namespace OpenRCT2::GameActions
                 if (tileElement->getBaseZ() != mapLoc.z)
                     continue;
 
-                if (tileElement->getType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::track)
                     continue;
 
                 if (tileElement->getDirection() != _origin.direction)
@@ -274,7 +274,7 @@ namespace OpenRCT2::GameActions
             if (tileElement->getBaseZ() != _origin.z)
                 continue;
 
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
 
             if ((tileElement->getDirection()) != _origin.direction)
@@ -355,7 +355,7 @@ namespace OpenRCT2::GameActions
                 if (tileElement->getBaseZ() != mapLoc.z)
                     continue;
 
-                if (tileElement->getType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::track)
                     continue;
 
                 if (tileElement->getDirection() != _origin.direction)

@@ -19,7 +19,7 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct BannerElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::Banner;
+        static constexpr TileElementType kElementType = TileElementType::banner;
 
     private:
         BannerIndex index;    // 5

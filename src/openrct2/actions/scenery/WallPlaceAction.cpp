@@ -510,7 +510,7 @@ namespace OpenRCT2::GameActions
             if (tileElement == nullptr)
                 break;
             auto elementType = tileElement->getType();
-            if (elementType == TileElementType::Surface)
+            if (elementType == TileElementType::surface)
                 continue;
             if (tileElement->isGhost())
                 continue;
@@ -518,7 +518,7 @@ namespace OpenRCT2::GameActions
                 continue;
             if (z1 <= tileElement->baseHeight)
                 continue;
-            if (elementType == TileElementType::Wall)
+            if (elementType == TileElementType::wall)
             {
                 int32_t direction = tileElement->getDirection();
                 if (_edge == direction)
@@ -534,17 +534,17 @@ namespace OpenRCT2::GameActions
             auto res = Result(Status::noClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
             switch (elementType)
             {
-                case TileElementType::Entrance:
+                case TileElementType::entrance:
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
-                case TileElementType::Path:
+                case TileElementType::path:
                     if (tileElement->asPath()->GetEdges() & (1 << _edge))
                     {
                         MapGetObstructionErrorText(tileElement, res);
                         return res;
                     }
                     break;
-                case TileElementType::LargeScenery:
+                case TileElementType::largeScenery:
                 {
                     const auto* largeSceneryElement = tileElement->asLargeScenery();
                     const auto* sceneryEntry = largeSceneryElement->GetEntry();
@@ -564,7 +564,7 @@ namespace OpenRCT2::GameActions
                     }
                     break;
                 }
-                case TileElementType::SmallScenery:
+                case TileElementType::smallScenery:
                 {
                     auto sceneryEntry = tileElement->asSmallScenery()->GetEntry();
                     if (sceneryEntry != nullptr && sceneryEntry->flags.has(SmallSceneryFlag::prohibitWalls))
@@ -574,7 +574,7 @@ namespace OpenRCT2::GameActions
                     }
                     break;
                 }
-                case TileElementType::Track:
+                case TileElementType::track:
                     if (!WallCheckObstructionWithTrack(wall, z0, tileElement->asTrack(), wallAcrossTrack))
                     {
                         MapGetObstructionErrorText(tileElement, res);

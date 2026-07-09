@@ -2766,7 +2766,7 @@ namespace OpenRCT2::Ui::Windows
             gameState.mapSize = { kMaximumMapSizeTechnical, kMaximumMapSizeTechnical };
 
             // Setup non changing parts of the temporary track tile element
-            tempTrackTileElement.setType(TileElementType::Track);
+            tempTrackTileElement.setType(TileElementType::track);
             tempTrackTileElement.setDirection(trackDirection);
             tempTrackTileElement.asTrack()->SetHasChain(liftHillAndInvertedState.has(LiftHillAndInverted::liftHill));
             tempTrackTileElement.setLastForTile(true);

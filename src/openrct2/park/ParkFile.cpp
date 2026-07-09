@@ -1214,7 +1214,7 @@ namespace OpenRCT2
                     TileElementIteratorBegin(&it);
                     while (TileElementIteratorNext(&it))
                     {
-                        if (it.element->getType() == TileElementType::Path)
+                        if (it.element->getType() == TileElementType::path)
                         {
                             auto* pathElement = it.element->asPath();
                             if (pathElement->HasLegacyPathEntry())
@@ -1231,7 +1231,7 @@ namespace OpenRCT2
                                 }
                             }
                         }
-                        else if (it.element->getType() == TileElementType::Track)
+                        else if (it.element->getType() == TileElementType::track)
                         {
                             auto* trackElement = it.element->asTrack();
                             auto trackType = trackElement->GetTrackType();
@@ -1247,7 +1247,7 @@ namespace OpenRCT2
                                     trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
-                        else if (it.element->getType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
+                        else if (it.element->getType() == TileElementType::smallScenery && os.getHeader().targetVersion < 23)
                         {
                             auto* sceneryElement = it.element->asSmallScenery();
                             // Previous formats stored the needs supports flag in the primary colour
@@ -1284,7 +1284,7 @@ namespace OpenRCT2
                         continue;
                     do
                     {
-                        if (tileElement->getType() != TileElementType::Track)
+                        if (tileElement->getType() != TileElementType::track)
                             continue;
 
                         auto* trackElement = tileElement->asTrack();

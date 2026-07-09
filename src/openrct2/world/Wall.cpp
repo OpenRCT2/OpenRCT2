@@ -49,7 +49,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         return;
     do
     {
-        if (tileElement->getType() != TileElementType::Wall)
+        if (tileElement->getType() != TileElementType::wall)
             continue;
 
         if (tileElement->getClearanceZ() <= wallPos.baseZ || tileElement->getBaseZ() >= wallPos.clearanceZ)
@@ -128,7 +128,7 @@ bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
         return false;
     do
     {
-        if (tileElement->getType() != TileElementType::Wall)
+        if (tileElement->getType() != TileElementType::wall)
             continue;
         if (tileElement->isGhost())
             continue;

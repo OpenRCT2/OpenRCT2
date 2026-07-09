@@ -32,7 +32,7 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct WallElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::Wall;
+        static constexpr TileElementType kElementType = TileElementType::wall;
 
     private:
         ObjectEntryIndex entryIndex; // 05

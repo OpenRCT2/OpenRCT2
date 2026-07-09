@@ -139,8 +139,8 @@ namespace OpenRCT2
             }
 
             // check for situations where guests can drop a balloon inside a covered building
-            bool check_ceiling = tileElement->getType() == TileElementType::Entrance;
-            if (tileElement->getType() == TileElementType::Track)
+            bool check_ceiling = tileElement->getType() == TileElementType::entrance;
+            if (tileElement->getType() == TileElementType::track)
             {
                 const TrackElement* trackElement = tileElement->asTrack();
                 const auto* ride = GetRide(trackElement->GetRideIndex());

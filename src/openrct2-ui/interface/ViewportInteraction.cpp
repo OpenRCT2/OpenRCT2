@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui
                     info.interactionType = ViewportInteractionItem::none;
                     return info;
                 }
-                if (tileElement->getType() == TileElementType::Path)
+                if (tileElement->getType() == TileElementType::path)
                 {
                     info.interactionType = ViewportInteractionItem::none;
                     return info;
@@ -335,7 +335,7 @@ namespace OpenRCT2::Ui
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 
-                if (tileElement->getType() == TileElementType::Entrance)
+                if (tileElement->getType() == TileElementType::entrance)
                 {
                     StringId stringId;
                     if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui
                 ft.Add<StringId>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
                 StationIndex::UnderlyingType stationIndex;
-                if (tileElement->getType() == TileElementType::Entrance)
+                if (tileElement->getType() == TileElementType::entrance)
                     stationIndex = tileElement->asEntrance()->GetStationIndex().ToUnderlying();
                 else
                     stationIndex = tileElement->asTrack()->GetStationIndex().ToUnderlying();
@@ -513,7 +513,7 @@ namespace OpenRCT2::Ui
                 if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                     break;
 
-                if (tileElement->getType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::entrance)
                     break;
 
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -648,7 +648,7 @@ namespace OpenRCT2::Ui
         auto z = pathElement.getBaseZ();
         do
         {
-            if (tileElement2->getType() == TileElementType::Path && tileElement2->getBaseZ() == z)
+            if (tileElement2->getType() == TileElementType::path && tileElement2->getBaseZ() == z)
             {
                 auto action = GameActions::FootpathRemoveAction({ mapCoords, z });
                 GameActions::Execute(&action, getGameState());

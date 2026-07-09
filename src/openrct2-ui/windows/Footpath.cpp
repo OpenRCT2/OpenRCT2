@@ -1165,7 +1165,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t z = tileElement->getBaseZ();
 
-            if (tileElement->getType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::surface)
             {
                 uint8_t slope = tileElement->asSurface()->GetSlope();
                 if (slope & kTileSlopeRaisedCornersMask)
@@ -1428,7 +1428,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (tileElement->getType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::surface)
             {
                 // If we start the path on a slope, the arrow is slightly raised, so we
                 // expect the path to be slightly raised as well.
@@ -1448,7 +1448,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 z = tileElement->getBaseZ();
-                if (tileElement->getType() == TileElementType::Path)
+                if (tileElement->getType() == TileElementType::path)
                 {
                     if (tileElement->asPath()->IsSloped())
                     {
@@ -1604,7 +1604,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (tileElement == nullptr)
                     break;
-                if (tileElement->getType() == TileElementType::Path)
+                if (tileElement->getType() == TileElementType::path)
                 {
                     if (tileElement->getBaseZ() == z)
                     {

@@ -156,7 +156,7 @@ namespace OpenRCT2
             bool widefound = false;
             do
             {
-                if (test_element->getType() != TileElementType::Path)
+                if (test_element->getType() != TileElementType::path)
                 {
                     continue;
                 }
@@ -362,7 +362,7 @@ namespace OpenRCT2
         {
             if (tileElement->baseHeight != nextZ)
                 continue;
-            if (tileElement->getType() == TileElementType::Entrance || tileElement->getType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::entrance || tileElement->getType() == TileElementType::track)
             {
                 return kInvalidDirection;
             }
@@ -378,7 +378,7 @@ namespace OpenRCT2
         {
             if (tileElement->baseHeight != nextZ)
                 continue;
-            if (tileElement->getType() == TileElementType::Entrance || tileElement->getType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::entrance || tileElement->getType() == TileElementType::track)
             {
                 return kInvalidDirection;
             }
@@ -1099,7 +1099,7 @@ namespace OpenRCT2
 
             do
             {
-                if (tile_element->getType() != TileElementType::SmallScenery)
+                if (tile_element->getType() != TileElementType::smallScenery)
                     continue;
 
                 if (abs(NextLoc.z - tile_element->getBaseZ()) > 4 * kCoordsZStep)
@@ -1165,7 +1165,7 @@ namespace OpenRCT2
 
             for (;; tile_element++)
             {
-                if (tile_element->getType() == TileElementType::Path)
+                if (tile_element->getType() == TileElementType::path)
                 {
                     if (NextLoc.z == tile_element->getBaseZ())
                         break;
@@ -1475,7 +1475,7 @@ namespace OpenRCT2
 
             do
             {
-                if (tile_element->getType() != TileElementType::SmallScenery)
+                if (tile_element->getType() != TileElementType::smallScenery)
                 {
                     continue;
                 }
@@ -1538,7 +1538,7 @@ namespace OpenRCT2
 
         for (;; tileElement++)
         {
-            if (tileElement->getType() == TileElementType::Path && (tileElement->getBaseZ() == NextLoc.z))
+            if (tileElement->getType() == TileElementType::path && (tileElement->getBaseZ() == NextLoc.z))
                 break;
 
             if (tileElement->isLastForTile())

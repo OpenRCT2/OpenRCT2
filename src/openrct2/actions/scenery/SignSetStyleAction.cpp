@@ -67,11 +67,11 @@ namespace OpenRCT2::GameActions
                 LOG_ERROR("Banner tile element not found for bannerIndex %u", _bannerIndex);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            if (tileElement->getType() != TileElementType::LargeScenery)
+            if (tileElement->getType() != TileElementType::largeScenery)
             {
                 LOG_ERROR(
                     "Tile element has type %u, expected %d (LargeScenery)", tileElement->getType(),
-                    TileElementType::LargeScenery);
+                    TileElementType::largeScenery);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
             loc = { banner->position.ToCoordsXY(), tileElement->getBaseZ() };

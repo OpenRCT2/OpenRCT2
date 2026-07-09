@@ -153,7 +153,7 @@ static void AnimateLandscapeDoor(
 
 static const SurfaceElement* GetSurfaceElementAfterElement(const TileElement* tileElement)
 {
-    while (tileElement->getType() != TileElementType::Surface)
+    while (tileElement->getType() != TileElementType::surface)
     {
         if (tileElement->isLastForTile())
             return nullptr;

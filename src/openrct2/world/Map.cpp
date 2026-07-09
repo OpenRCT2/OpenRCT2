@@ -154,7 +154,7 @@ namespace OpenRCT2
     static TileElement GetDefaultSurfaceElement()
     {
         TileElement el;
-        el.ClearAs(TileElementType::Surface);
+        el.ClearAs(TileElementType::surface);
         el.setLastForTile(true);
         el.baseHeight = 14;
         el.clearanceHeight = 14;
@@ -713,7 +713,7 @@ namespace OpenRCT2
 
         do
         {
-            if (tileElement->getType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::path)
                 continue;
 
             uint8_t slopeDirection = tileElement->asPath()->GetSlopeDirection();
@@ -1028,18 +1028,18 @@ namespace OpenRCT2
         {
             switch (it.element->getType())
             {
-                case TileElementType::Path:
+                case TileElementType::path:
                     if (it.element->asPath()->IsQueue())
                     {
                         it.element->asPath()->SetHasQueueBanner(false);
                         it.element->asPath()->SetRideIndex(RideId::GetNull());
                     }
                     break;
-                case TileElementType::Entrance:
+                case TileElementType::entrance:
                     if (it.element->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                         break;
                     [[fallthrough]];
-                case TileElementType::Track:
+                case TileElementType::track:
                     FootpathQueueChainReset();
                     FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
                     TileElementRemove(it.element);
@@ -1394,7 +1394,7 @@ namespace OpenRCT2
         TileElement* element = *elementPtr;
         switch (element->getType())
         {
-            case TileElementType::Surface:
+            case TileElementType::surface:
                 element->baseHeight = kMinimumLandHeight;
                 element->clearanceHeight = kMinimumLandHeight;
                 element->owner = 0;
@@ -1409,7 +1409,7 @@ namespace OpenRCT2
                 // The rest of the elements are removed from the array, so the pointer doesn't need to be updated.
                 (*elementPtr)++;
                 break;
-            case TileElementType::Entrance:
+            case TileElementType::entrance:
             {
                 int32_t rotation = element->getDirectionWithOffset(1);
                 auto seqLoc = loc;
@@ -1431,7 +1431,7 @@ namespace OpenRCT2
                 }
                 break;
             }
-            case TileElementType::Wall:
+            case TileElementType::wall:
             {
                 CoordsXYZD wallLocation = { loc.x, loc.y, element->getBaseZ(), element->getDirection() };
                 auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
@@ -1443,7 +1443,7 @@ namespace OpenRCT2
                 }
             }
             break;
-            case TileElementType::LargeScenery:
+            case TileElementType::largeScenery:
             {
                 auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                     { loc.x, loc.y, element->getBaseZ(), element->getDirection() },
@@ -1456,7 +1456,7 @@ namespace OpenRCT2
                 }
             }
             break;
-            case TileElementType::Banner:
+            case TileElementType::banner:
             {
                 auto bannerRemoveAction = GameActions::BannerRemoveAction(
                     { loc.x, loc.y, element->getBaseZ(), element->asBanner()->GetPosition() });
@@ -1528,7 +1528,7 @@ namespace OpenRCT2
         auto sceneryTilePos = TileCoordsXYZ{ sceneryPos };
         do
         {
-            if (tileElement->getType() != TileElementType::LargeScenery)
+            if (tileElement->getType() != TileElementType::largeScenery)
                 continue;
             if (tileElement->baseHeight != sceneryTilePos.z)
                 continue;
@@ -1550,7 +1550,7 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::entrance)
                     continue;
 
                 if (tileElement->baseHeight != entranceTileCoords.z)
@@ -1576,7 +1576,7 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::entrance)
                     continue;
 
                 if (tileElement->baseHeight != entranceTileCoords.z)
@@ -1602,7 +1602,7 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::entrance)
                     continue;
 
                 if (tileElement->baseHeight != exitTileCoords.z)
@@ -1628,7 +1628,7 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::SmallScenery)
+                if (tileElement->getType() != TileElementType::smallScenery)
                     continue;
                 if (tileElement->asSmallScenery()->GetSceneryQuadrant() != quadrant)
                     continue;
@@ -1815,10 +1815,10 @@ namespace OpenRCT2
             if (base_z < tileElement->baseHeight)
                 continue;
 
-            if (tileElement->getType() == TileElementType::Path || tileElement->getType() == TileElementType::Wall)
+            if (tileElement->getType() == TileElementType::path || tileElement->getType() == TileElementType::wall)
                 continue;
 
-            if (tileElement->getType() != TileElementType::SmallScenery)
+            if (tileElement->getType() != TileElementType::smallScenery)
                 return true;
 
             auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
@@ -1857,7 +1857,7 @@ namespace OpenRCT2
             return nullptr;
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             if (tileElement->getBaseZ() != trackPos.z)
                 continue;
@@ -1882,7 +1882,7 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
@@ -1909,7 +1909,7 @@ namespace OpenRCT2
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
@@ -1986,7 +1986,7 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
@@ -2015,7 +2015,7 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
@@ -2036,12 +2036,12 @@ namespace OpenRCT2
 
         do
         {
-            if (tileElement->getType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::surface)
             {
                 return nullptr;
             }
 
-            if (tileElement->getType() == TileElementType::Track && tileElement->getBaseZ() == trackPos.z
+            if (tileElement->getType() == TileElementType::track && tileElement->getBaseZ() == trackPos.z
                 && tileElement->asTrack()->GetRideIndex() == rideIndex)
             {
                 return tileElement;
@@ -2066,7 +2066,7 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
@@ -2089,7 +2089,7 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() == TileElementType::Wall && coords.baseZ < tileElement->getClearanceZ()
+                if (tileElement->getType() == TileElementType::wall && coords.baseZ < tileElement->getClearanceZ()
                     && coords.clearanceZ > tileElement->getBaseZ())
                 {
                     return tileElement->asWall();
@@ -2108,7 +2108,7 @@ namespace OpenRCT2
             return nullptr;
         do
         {
-            if (tileElement->getType() != TileElementType::Wall)
+            if (tileElement->getType() != TileElementType::wall)
                 continue;
             if (tileElement->baseHeight != tileWallCoords.z)
                 continue;
@@ -2135,8 +2135,8 @@ namespace OpenRCT2
         do
         {
             auto type = tileElement->getType();
-            if (type == TileElementType::Path
-                || (type == TileElementType::Entrance
+            if (type == TileElementType::path
+                || (type == TileElementType::entrance
                     && tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE))
             {
                 destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;

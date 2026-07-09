@@ -134,7 +134,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
 
     do
     {
-        if (tileElement->getType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::track)
             continue;
         if (tileElement->GetRideIndex() != ride.id)
             continue;

@@ -347,7 +347,7 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 
             do
             {
-                if (tileElement->getType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::track)
                     continue;
 
                 auto* trackElement = tileElement->asTrack();
@@ -363,11 +363,11 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 static TileElementType toTileElementType(const u8string_view tileTypeString)
 {
     if (tileTypeString == "track")
-        return TileElementType::Track;
+        return TileElementType::track;
     else
     {
         Guard::Assert(false, "Unsupported tile type conversion");
-        return TileElementType::Track;
+        return TileElementType::track;
     }
 }
 
@@ -386,7 +386,7 @@ static void ApplyTileFixes(const json_t& scenarioPatch)
     else
     {
         auto tileType = toTileElementType(Json::GetString(tilesFixes[_typeKey]));
-        if (tileType == TileElementType::Track)
+        if (tileType == TileElementType::track)
         {
             ApplyTrackTypeFixes(tilesFixes);
         }
