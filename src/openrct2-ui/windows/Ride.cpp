@@ -3540,7 +3540,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
             widgets[WIDX_MODE].moveTo({ 7, startY });
             widgets[WIDX_MODE_DROPDOWN].moveTo({ 297, startY + 1 });
-            startY += 20;
+            startY += 15;
 
             if (ride->isBlockSectioned())
             {
@@ -3670,6 +3670,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
             }
 
+            widgets[WIDX_MODE_GROUP].bottom = startY;
+
             return startY + 5;
         }
 
@@ -3687,6 +3689,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::button;
 
                 setWidgetPressed(WIDX_LOAD_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD) != 0);
+
+                widgets[WIDX_LOAD_CHECKBOX].moveTo({ 7, startY + 1});
+                resizeDropdown(WIDX_LOAD, { 87, startY }, {222, 14});
+                startY += 20;
             }
             else
             {
@@ -3709,6 +3715,9 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetPressed(
                     WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
                     (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
+
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].moveTo({ 7, startY});
+                startY += 20;
             }
             else
             {
@@ -3735,6 +3744,14 @@ namespace OpenRCT2::Ui::Windows
 
                 setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH) != 0);
                 setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH) != 0);
+
+                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1});
+                resizeSpinner(WIDX_MINIMUM_LENGTH, { 157, startY }, {152, 14});
+                startY += 20;
+
+                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1});
+                resizeSpinner(WIDX_MAXIMUM_LENGTH, { 157, startY }, {152, 14});
+                startY += 20;
             }
             else
             {
@@ -3759,11 +3776,16 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetPressed(
                     WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX,
                     (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) != 0);
+
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].moveTo({ 7, startY + 1});
+                startY += 20;
             }
             else
             {
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
             }
+
+            widgets[WIDX_LOAD_GROUP].bottom = startY;
 
             return startY + 5;
         }
