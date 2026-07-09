@@ -3540,11 +3540,11 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
             widgets[WIDX_MODE].moveTo({ 7, startY });
             widgets[WIDX_MODE_DROPDOWN].moveTo({ 297, startY + 1 });
-            startY += 15;
+            startY += 17;
 
             if (ride->isBlockSectioned())
             {
-                startY += 20;
+                startY += 17;
             }
 
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
@@ -3561,7 +3561,7 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_LIFT_HILL_SPEED_LABEL].moveTo({ 21, startY + 1});
                 resizeSpinner(WIDX_LIFT_HILL_SPEED, { 157, startY }, {152, 14});
-                startY += 20;
+                startY += 17;
             }
             else
             {
@@ -3583,7 +3583,7 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].moveTo({ 21, startY + 1});
                 resizeSpinner(WIDX_OPERATE_NUMBER_OF_CIRCUITS, { 157, startY }, {152, 14});
-                startY += 20;
+                startY += 17;
             }
             else
             {
@@ -3660,7 +3660,7 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_MODE_TWEAK_LABEL].moveTo({ 21, startY + 1});
                 resizeSpinner(WIDX_MODE_TWEAK, { 157, startY }, {152, 14});
-                startY += 20;
+                startY += 17;
             }
             else
             {
@@ -3670,9 +3670,9 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
             }
 
-            widgets[WIDX_MODE_GROUP].bottom = startY;
+            widgets[WIDX_MODE_GROUP].bottom = startY + 2;
 
-            return startY + 5;
+            return startY + 7;
         }
 
         uint16_t operatingOnPrepareDrawLoad(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
@@ -3692,7 +3692,7 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_LOAD_CHECKBOX].moveTo({ 7, startY + 1});
                 resizeDropdown(WIDX_LOAD, { 87, startY }, {222, 14});
-                startY += 20;
+                startY += 17;
             }
             else
             {
@@ -3717,7 +3717,7 @@ namespace OpenRCT2::Ui::Windows
                     (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
 
                 widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].moveTo({ 7, startY});
-                startY += 20;
+                startY += 17;
             }
             else
             {
@@ -3747,11 +3747,11 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1});
                 resizeSpinner(WIDX_MINIMUM_LENGTH, { 157, startY }, {152, 14});
-                startY += 20;
+                startY += 17;
 
                 widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1});
                 resizeSpinner(WIDX_MAXIMUM_LENGTH, { 157, startY }, {152, 14});
-                startY += 20;
+                startY += 17;
             }
             else
             {
@@ -3778,16 +3778,16 @@ namespace OpenRCT2::Ui::Windows
                     (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) != 0);
 
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].moveTo({ 7, startY + 1});
-                startY += 20;
+                startY += 17;
             }
             else
             {
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
             }
 
-            widgets[WIDX_LOAD_GROUP].bottom = startY;
+            widgets[WIDX_LOAD_GROUP].bottom = startY + 2;
 
-            return startY + 5;
+            return startY + 7;
         }
 
         void OperatingOnPrepareDraw()
@@ -3828,7 +3828,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& refWidget = widgets[poweredLaunch ? WIDX_MODE_TWEAK : WIDX_MODE];
                 auto& labelWidget = widgets[WIDX_MODE_TWEAK_LABEL];
                 drawText(
-                    rt, windowPos + ScreenCoordsXY{ labelWidget.left, refWidget.bottom + 8 }, STR_BLOCK_SECTIONS, ft,
+                    rt, windowPos + ScreenCoordsXY{ labelWidget.left + 1, refWidget.bottom + 6 }, STR_BLOCK_SECTIONS, ft,
                     { Drawing::Colour::black });
             }
         }
