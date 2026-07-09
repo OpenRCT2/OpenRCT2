@@ -4643,7 +4643,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t colourOnPrepareDrawTrack(int32_t startY, const Ride* ride, const RideObjectEntry* rideEntry)
         {
             int32_t colourScheme = _rideColour;
-            TrackColour trackColour = ride->trackColours[colourScheme];
+            auto& trackColour = ride->trackColours[colourScheme];
 
             const auto& rtd = ride->getRideTypeDescriptor();
 
@@ -4779,6 +4779,38 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ENTRANCE_STYLE].moveTo         ({  8, startY + 14});
             widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({225, startY + 15});
             // clang-format on
+
+            // If ride does not support track colour styles, reuse track colours for entrances
+            if (!ride->getRideTypeDescriptor().flags.hasAny(
+                    RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports))
+            {
+                int32_t colourScheme = _rideColour;
+                auto& trackColour = ride->trackColours[colourScheme];
+
+                // Main colour
+                if (HasTrackColour(*ride, 0))
+                {
+                    widgets[WIDX_TRACK_MAIN_COLOUR].type = WidgetType::colourBtn;
+                    widgets[WIDX_TRACK_MAIN_COLOUR].image = getColourButtonImage(trackColour.main);
+                    widgets[WIDX_TRACK_MAIN_COLOUR].moveTo({ 84, startY + 39 });
+                }
+                else
+                {
+                    widgets[WIDX_TRACK_MAIN_COLOUR].type = WidgetType::empty;
+                }
+
+                // Additional colour
+                if (HasTrackColour(*ride, 1))
+                {
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WidgetType::colourBtn;
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = getColourButtonImage(trackColour.additional);
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo({ 104, startY + 39 });
+                }
+                else
+                {
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WidgetType::empty;
+                }
+            }
 
             return startY + 74;
         }
