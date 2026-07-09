@@ -22,10 +22,10 @@ namespace OpenRCT2::World::MapGenerator
 
     struct ErosionSettings
     {
-        ErosionSettings(const Settings& settings)
+        ErosionSettings(const MapGenContext& ctx)
         {
-            particles = settings.filter.strength * settings.mapSize.x * settings.mapSize.y;
-            seed = settings.seed;
+            particles = ctx.settings.filter.strength * ctx.settings.mapSize.x * ctx.settings.mapSize.y;
+            seed = ctx.seed;
         }
 
         int32_t particles = 200000;
@@ -148,7 +148,7 @@ namespace OpenRCT2::World::MapGenerator
 
     void simulateErosion(MapGenContext& ctx)
     {
-        const ErosionSettings erosionSettings(ctx.settings);
+        const ErosionSettings erosionSettings(ctx);
         simulateErosion(erosionSettings, ctx.heightMap);
     }
 } // namespace OpenRCT2::World::MapGenerator

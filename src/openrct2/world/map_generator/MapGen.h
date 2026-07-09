@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../Version.h"
 #include "../Location.hpp"
 #include "BaseMap.hpp"
 #include "river/RiverTypes.hpp"
@@ -21,7 +20,10 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static const uint32_t DEFAULT_SEED = static_cast<uint32_t>(std::hash<std::string>{}(OPENRCT2_NAME));
+    static inline std::string randomSeed()
+    {
+        return std::to_string(std::random_device{}());
+    }
 
     enum class HeightMapGenerator : uint8_t
     {
@@ -81,7 +83,7 @@ namespace OpenRCT2::World::MapGenerator
         int32_t baseFrequency = 175;
         int32_t octaves = 6;
 
-        BiasSettings bias;
+        BiasSettings bias{};
     };
 
     struct FilterSettings
@@ -92,27 +94,28 @@ namespace OpenRCT2::World::MapGenerator
 
     struct Settings
     {
-        // Base
         HeightMapGenerator generator = HeightMapGenerator::noise;
         TileCoordsXY mapSize{ 256, 256 };
         // TileCoordsXY mapSize{ 512, 512 };
-        uint32_t seed = DEFAULT_SEED;
+
+        std::string seed = randomSeed();
+
         int32_t waterLevel = 6;
         int32_t heightmapLow = 14;
         int32_t heightmapHigh = 60;
 
-        NoiseSettings noise;
+        NoiseSettings noise{};
 
         bool normalizeHeight = true;
 
-        FilterSettings filter;
+        FilterSettings filter{};
 
         SlopeSmooth slopeSmooth = SlopeSmooth::weak;
 
-        River::RiverSettings river;
+        River::RiverSettings river{};
 
-        Rule::TextureRuleList textureRules;
-        Rule::SceneryRuleList sceneryRules;
+        Rule::TextureRuleList textureRules{};
+        Rule::SceneryRuleList sceneryRules{};
     };
 
     struct DebugSign
@@ -126,6 +129,7 @@ namespace OpenRCT2::World::MapGenerator
     struct MapGenContext
     {
         const Settings& settings;
+        uint32_t seed; // the technical seed used duration map generation, derived from settings.seed
         TileCoordsXY dimensions;
         int32_t overscan;
         TileCoordsXY overscanOffset;
@@ -134,5 +138,9 @@ namespace OpenRCT2::World::MapGenerator
         std::vector<DebugSign> debugSigns;
     };
 
+    static bool gSettingsInitialized = false;
+    static Settings gSettings;
+
+    void setRandomSeed(Settings& settings);
     void generate(const Settings& settings);
 } // namespace OpenRCT2::World::MapGenerator

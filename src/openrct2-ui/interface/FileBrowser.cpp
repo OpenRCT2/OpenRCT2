@@ -478,7 +478,7 @@ namespace OpenRCT2::Ui::FileBrowser
                     {
                         break;
                     }
-                        case LoadSaveType::mapgenSettings:
+                    case LoadSaveType::mapgenSettings:
                     {
                         // TODO save here
                         windowMgr->CloseByClass(WindowClass::loadsave);

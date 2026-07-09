@@ -672,7 +672,7 @@ namespace OpenRCT2::World::MapGenerator::River
     }
 
     /**
-     * Ensure there are no river tiles with lower land neighbours or reachable sinks/sources.
+     * Ensure there are no river tiles with lower land neighbours or without reachable sinks/sources.
      */
     static void ensureConsistent(MapGenContext& ctx)
     {

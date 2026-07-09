@@ -178,14 +178,21 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
+    static uint32_t deriveSeed(const Settings& settings)
+    {
+        return static_cast<uint32_t>(std::hash<std::string>{}(settings.seed));
+    }
+
     static MapGenContext createContext(const Settings& settings)
     {
-        // TODO make this user configurable?
+        // The overscan factor is used independently of settings.river.generate so the base terrain remains stable if the flag
+        // is changed
         const auto overscanFactor = settings.generator == HeightMapGenerator::noise ? River::kRiversOverscanFactor : 1;
 
         const TileCoordsXY genSize{ settings.mapSize.x * overscanFactor, settings.mapSize.y * overscanFactor };
 
         MapGenContext ctx{ .settings = settings,
+                           .seed = deriveSeed(settings),
                            .dimensions = genSize,
                            .overscan = overscanFactor,
                            .overscanOffset = getWorldCoordsOffset(settings, overscanFactor),
@@ -194,6 +201,11 @@ namespace OpenRCT2::World::MapGenerator
                            .debugSigns = {} };
 
         return ctx;
+    }
+
+    void setRandomSeed(Settings& settings)
+    {
+        settings.seed = randomSeed();
     }
 
     void generate(const Settings& settings)
@@ -207,7 +219,7 @@ namespace OpenRCT2::World::MapGenerator
         applyHeightMapFilter(ctx);
 
         // generate rivers if enabled
-        if (settings.river.generate)
+        if (ctx.settings.river.generate)
             River::generateRivers(ctx);
 
         // reset the game map and apply the generated height and water maps

@@ -557,7 +557,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         {
             auto& noiseData = std::get<NoiseData>(condition.data);
 
-            BaseSettings baseSettings = { BaseType::Simplex, genCtx.settings.seed + noiseData.seedOffset,
+            BaseSettings baseSettings = { BaseType::Simplex, genCtx.seed + noiseData.seedOffset,
                                           noiseData.frequency * kNoiseScale };
             FractalSettings fractalSettings = { FractalType::Fbm, noiseData.octaves, 2.0f, 0.5f, 0.0f };
 
@@ -567,27 +567,27 @@ namespace OpenRCT2::World::MapGenerator::Rule
         else if (condition.type == Type::Random)
         {
             auto& prngData = std::get<RandomData>(condition.data);
-            std::mt19937 prng(genCtx.settings.seed + prngData.seedOffset);
+            std::mt19937 prng(genCtx.seed + prngData.seedOffset);
             evalCtx.conditionPrngs[key] = std::move(prng);
         }
         else if (condition.type == Type::BlendNoise)
         {
             auto& noiseBlendData = std::get<BlendNoiseData>(condition.data);
 
-            BaseSettings baseSettings = { BaseType::Simplex, genCtx.settings.seed + noiseBlendData.seedOffset,
+            BaseSettings baseSettings = { BaseType::Simplex, genCtx.seed + noiseBlendData.seedOffset,
                                           noiseBlendData.frequency * kNoiseScale };
             FractalSettings fractalSettings = { FractalType::Fbm, noiseBlendData.octaves, 2.0f, 0.5f, 0.0f };
 
             auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt);
             evalCtx.conditionNoiseFns[key] = std::move(noise);
             // shouldn't cause artifacts to use the same seed for prng and noise?
-            std::mt19937 prng(genCtx.settings.seed + noiseBlendData.seedOffset);
+            std::mt19937 prng(genCtx.seed + noiseBlendData.seedOffset);
             evalCtx.conditionPrngs[key] = std::move(prng);
         }
         else if (condition.type == Type::BlendHeight)
         {
             auto& heightBlendData = std::get<BlendHeightData>(condition.data);
-            std::mt19937 prng(genCtx.settings.seed + heightBlendData.seedOffset);
+            std::mt19937 prng(genCtx.seed + heightBlendData.seedOffset);
             evalCtx.conditionPrngs[key] = std::move(prng);
         }
     }
@@ -653,7 +653,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     void initializeEvaluationContext(const MapGenContext& genCtx, EvaluationContext& evalCtx)
     {
-        evalCtx.quadPrng = std::mt19937(genCtx.settings.seed + 4);
+        evalCtx.quadPrng = std::mt19937(genCtx.seed + 4);
 
         computeNormalMap(genCtx, evalCtx.normalMap);
         computeWaterDistanceMap(genCtx, evalCtx);
@@ -703,7 +703,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
             auto weights = rule.effect.objects | std::views::transform(&SceneryEffectItem::weight);
             evalCtx.ruleItemDists[r] = std::discrete_distribution(std::ranges::begin(weights), std::ranges::end(weights));
-            evalCtx.rulePrngs[r] = std::mt19937(genCtx.settings.seed + rule.effect.seedOffset);
+            evalCtx.rulePrngs[r] = std::mt19937(genCtx.seed + rule.effect.seedOffset);
 
             for (size_t c = 0; c < rule.conditions.size(); ++c)
             {
