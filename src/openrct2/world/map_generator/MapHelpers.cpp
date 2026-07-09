@@ -583,7 +583,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    void applyHeightMapTransform(MapGenContext& ctx)
+    void applyHeightMapFilter(MapGenContext& ctx)
     {
         // these multipliers give reasonable results, haven't done an exhaustive search tho
         constexpr float kGaussianSpaceSigmaScalingFactor = 0.5f;
@@ -592,25 +592,25 @@ namespace OpenRCT2::World::MapGenerator
         auto& settings = ctx.settings;
         auto& heightMap = ctx.heightMap;
 
-        switch (settings.heightmapTransform)
+        switch (settings.filter.type)
         {
-            case HeightMapTransform::none:
+            case Filter::none:
                 break;
-            case HeightMapTransform::box:
-                smoothBox(heightMap, settings.transformStrength);
+            case Filter::box:
+                smoothBox(heightMap, settings.filter.strength);
                 break;
-            case HeightMapTransform::gaussian:
-                smoothGaussian(heightMap, kGaussianSpaceSigmaScalingFactor * settings.transformStrength);
+            case Filter::gaussian:
+                smoothGaussian(heightMap, kGaussianSpaceSigmaScalingFactor * settings.filter.strength);
                 break;
-            case HeightMapTransform::sharpen:
-                sharpen(heightMap, settings.transformStrength);
+            case Filter::sharpen:
+                sharpen(heightMap, settings.filter.strength);
                 break;
-            case HeightMapTransform::bilateral:
+            case Filter::bilateral:
                 smoothBilateral(
-                    heightMap, kGaussianSpaceSigmaScalingFactor * settings.transformStrength,
-                    kGaussianIntensitySigmaScalingFactor * settings.transformStrength);
+                    heightMap, kGaussianSpaceSigmaScalingFactor * settings.filter.strength,
+                    kGaussianIntensitySigmaScalingFactor * settings.filter.strength);
                 break;
-            case HeightMapTransform::erosion:
+            case Filter::erosion:
                 simulateErosion(ctx);
                 break;
         }

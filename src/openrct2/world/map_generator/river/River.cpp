@@ -114,7 +114,7 @@ namespace OpenRCT2::World::MapGenerator::River
                     targetHeight = heightMap[nPos];
 
                     // if the path limits are not exceeded, adjust height along path to assert overall gradient is maintained
-                    if (pathLength <= ctx.settings.breachMaxLength && pathDepth <= ctx.settings.breachMaxDepth)
+                    if (pathLength <= ctx.settings.river.breachMaxLength && pathDepth <= ctx.settings.river.breachMaxDepth)
                     {
                         while (currentTile.has_value() && heightMap[currentTile.value()] >= targetHeight)
                         {
@@ -180,7 +180,7 @@ namespace OpenRCT2::World::MapGenerator::River
 
         if (riverCtx.catchment[pos] <= 0.0f)
         {
-            const int32_t multiplier = isInWorldMap(ctx, pos) ? 1 : ctx.settings.offMapCatchmentMultiplier;
+            const int32_t multiplier = isInWorldMap(ctx, pos) ? 1 : ctx.settings.river.offMapCatchmentMultiplier;
 
             riverCtx.catchment[pos] = 1.0f * multiplier;
             for (const auto& neighbour : kNeighbours)
@@ -257,7 +257,7 @@ namespace OpenRCT2::World::MapGenerator::River
     {
         RiverContext& riverCtx = ctx.riverContext.value();
 
-        if (riverCtx.catchment[pos] >= ctx.settings.catchmentThreshold)
+        if (riverCtx.catchment[pos] >= ctx.settings.river.catchmentThreshold)
         {
             queue.emplaceAndMark(pos, ctx.heightMap[pos]);
             riverCtx.flags[pos].set(river);
@@ -453,12 +453,12 @@ namespace OpenRCT2::World::MapGenerator::River
                 const TileCoordsXY pos{ x, y };
                 if (riverCtx.flags[pos].has(river))
                 {
-                    if (sourceLength[sourceReferenceAt[pos].value()] < ctx.settings.pruneThreshold)
+                    if (sourceLength[sourceReferenceAt[pos].value()] < ctx.settings.river.pruneThreshold)
                     {
                         riverCtx.flags[pos].unset(river);
                         riverCtx.statistics.pruneSourcesTilesRemoved++;
                     }
-                    if (sourceLength[pos] >= ctx.settings.pruneThreshold)
+                    if (sourceLength[pos] >= ctx.settings.river.pruneThreshold)
                     {
                         riverCtx.flags[pos].set(source);
                         riverCtx.statistics.pruneSourcesRemaining++;
@@ -502,7 +502,7 @@ namespace OpenRCT2::World::MapGenerator::River
                         {
                             const TileCoordsXY sharedOrdinalPos{ tile.pos + ordinalOffset };
                             heightMap[sharedOrdinalPos] = heightMap[tile.pos];
-                            riverCtx.catchment[sharedOrdinalPos] = ctx.settings.catchmentThreshold;
+                            riverCtx.catchment[sharedOrdinalPos] = ctx.settings.river.catchmentThreshold;
                             riverCtx.flags[sharedOrdinalPos].set(river);
                             queue.emplaceAndMark(sharedOrdinalPos, heightMap[sharedOrdinalPos]);
                             riverCtx.statistics.ensureOrdinalNewTiles++;
@@ -639,6 +639,38 @@ namespace OpenRCT2::World::MapGenerator::River
         }
     }
 
+    static void printDbgMap(MapGenContext& ctx, const TileCoordsXY& pos, const int32_t size)
+    {
+        RiverContext& riverCtx = ctx.riverContext.value();
+        std::stringstream ss;
+        for (int32_t dy = -size; dy <= size; dy++)
+        {
+            for (int32_t dx = -size; dx <= size; dx++)
+            {
+                const TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
+
+                const bool inBounds = ctx.heightMap.inBounds(deltaPos);
+                const bool isRiver = inBounds && riverCtx.flags[deltaPos].has(river);
+                const bool isSource = inBounds && riverCtx.flags[deltaPos].has(source);
+
+                if (!inBounds)
+                {
+                    ss <<  "XXXXXXXXXXXXXXXX |";
+                } else if (isRiver)
+                {
+                    ss << std::format("({},{}) h{} r{} s{} |", deltaPos.x,deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos], isSource ? 'S' : '-');
+                } else
+                {
+                    ss << "LLLLLLLLLLLLLLLLL |";
+                }
+            }
+
+            ss << std::endl;
+        }
+
+        LOG_INFO("consistency runaway %s", ss.str().c_str());
+    }
+
     /**
      * Ensure there are no river tiles with lower land neighbours or reachable sinks/sources.
      */
@@ -757,7 +789,10 @@ namespace OpenRCT2::World::MapGenerator::River
 
                         if (riverCtx.waterLevel[sPos] < 0.0f)
                         {
-                            throw std::runtime_error(std::format("({},{}) lowered below 0", sPos.x, sPos.y));
+                            printDbgMap(ctx, candidate.pos, 5);
+                            printDbgMap(ctx, sPos, 5);
+                            // TODO change to return
+                            throw std::runtime_error(std::format("({},{}) size={} lowered below 0", sPos.x, sPos.y, segments[candidate].size()));
                         }
                     }
                     riverCtx.statistics.consistencySegmentsLowered++;
@@ -773,7 +808,10 @@ namespace OpenRCT2::World::MapGenerator::River
 
                         if (riverCtx.waterLevel[sPos] >= 256.0f)
                         {
-                            throw std::runtime_error(std::format("({},{}) raised above 256", sPos.x, sPos.y));
+                            printDbgMap(ctx, candidate.pos, 5);
+                            printDbgMap(ctx, sPos, 5);
+                            // TODO change to return
+                            throw std::runtime_error(std::format("({},{}) size={} raised above 256", sPos.x, sPos.y, segments[candidate].size()));
                         }
                     }
                     riverCtx.statistics.consistencySegmentsRaised++;

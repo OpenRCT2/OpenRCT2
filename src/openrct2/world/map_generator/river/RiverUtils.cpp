@@ -122,11 +122,11 @@ namespace OpenRCT2::World::MapGenerator::River
         const float catchmentMax = calculateMaxCatchment(ctx);
 
         const float widthMin = 0.0f;
-        const float widthMax = ctx.settings.riverWidthMax;
+        const float widthMax = ctx.settings.river.riverWidthMax;
 
         const float rescaledCatchment = (riverCtx.catchment[pos] - catchmentMin) / (catchmentMax - catchmentMin);
         const float exponentiatedCatchment = std::pow(
-            rescaledCatchment, ctx.settings.riverGrowthExponent * kRiverGrowthExponentScaling);
+            rescaledCatchment, ctx.settings.river.riverGrowthExponent * kRiverGrowthExponentScaling);
 
         return widthMin + exponentiatedCatchment * (widthMax - widthMin);
     }
@@ -165,8 +165,8 @@ namespace OpenRCT2::World::MapGenerator::River
             "    catchment max actual {}\n"
             "    river width max setting {}\n"
             "    river width max actual {}\n",
-            calculateMaxCatchment(ctx), stats.flowAggMaxCatchment, ctx.settings.riverWidthMax,
-            (stats.flowAggMaxCatchment / calculateMaxCatchment(ctx)) * ctx.settings.riverWidthMax);
+            calculateMaxCatchment(ctx), stats.flowAggMaxCatchment, ctx.settings.river.riverWidthMax,
+            (stats.flowAggMaxCatchment / calculateMaxCatchment(ctx)) * ctx.settings.river.riverWidthMax);
 
         const auto pruningSummary = std::format(
             "\n[prune sources]\n"

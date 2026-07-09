@@ -16,8 +16,8 @@ namespace OpenRCT2::World::MapGenerator
 {
     struct MapGenContext;
 
-    bool loadHeightmapImage(const utf8* path);
-    void unloadHeightmapImage();
-    TileCoordsXY queryHeightmapImageDimensions();
-    void generateFromHeightmapImage(MapGenContext& ctx);
+    bool loadHeightMapImage(const utf8* path);
+    void unloadHeightMapImage();
+    TileCoordsXY queryHeightMapFromImageDimensions();
+    void generateHeightMapFromImage(MapGenContext& ctx);
 } // namespace OpenRCT2::World::MapGenerator

@@ -15,6 +15,7 @@
 #include "river/RiverTypes.hpp"
 #include "rule/Rule.h"
 
+#include <nlohmann/json.hpp>
 #include <optional>
 #include <vector>
 
@@ -22,14 +23,19 @@ namespace OpenRCT2::World::MapGenerator
 {
     static const uint32_t DEFAULT_SEED = static_cast<uint32_t>(std::hash<std::string>{}(OPENRCT2_NAME));
 
-    enum class Algorithm : uint8_t
+    enum class HeightMapGenerator : uint8_t
     {
-        blank,
-        simplexNoise,
-        warpedNoise,
-        ridgedNoise,
-        voronoiNoise,
-        heightmapImage,
+        flat,
+        noise,
+        image
+    };
+
+    enum class NoiseAlgorithm : uint8_t
+    {
+        simplex,
+        warped,
+        ridged,
+        voronoi,
     };
 
     enum class Bias : uint8_t
@@ -45,7 +51,7 @@ namespace OpenRCT2::World::MapGenerator
         terrace
     };
 
-    enum class HeightMapTransform : uint8_t
+    enum class Filter : uint8_t
     {
         none,
         box,
@@ -62,45 +68,51 @@ namespace OpenRCT2::World::MapGenerator
         strong
     };
 
+    struct BiasSettings
+    {
+        Bias type = Bias::none;
+        int32_t strength = 75;
+        int32_t steps = 1;
+    };
+
+    struct NoiseSettings
+    {
+        NoiseAlgorithm algorithm = NoiseAlgorithm::simplex;
+        int32_t baseFrequency = 175;
+        int32_t octaves = 6;
+
+        BiasSettings bias;
+    };
+
+    struct FilterSettings
+    {
+        Filter type = Filter::none;
+        int32_t strength = 1;
+    };
+
     struct Settings
     {
         // Base
-        Algorithm algorithm = Algorithm::blank;
-        TileCoordsXY mapSize{ 150, 150 };
+        HeightMapGenerator generator = HeightMapGenerator::noise;
+        TileCoordsXY mapSize{ 256, 256 };
+        // TileCoordsXY mapSize{ 512, 512 };
         uint32_t seed = DEFAULT_SEED;
         int32_t waterLevel = 6;
         int32_t heightmapLow = 14;
         int32_t heightmapHigh = 60;
 
-        Rule::TextureRuleList textureRules;
-        Rule::SceneryRuleList sceneryRules;
+        NoiseSettings noise;
 
-        // Noise Parameters
-        int32_t noiseBaseFreq = 175;
-        int32_t noiseOctaves = 6;
-
-        // Bias settings
-        Bias bias = Bias::none;
-        int32_t biasStrength = 75;
-        int32_t biasSteps = 1;
-
-        // Height map settings
         bool normalizeHeight = true;
 
-        // Transform settings
-        HeightMapTransform heightmapTransform = HeightMapTransform::none;
-        int32_t transformStrength = 1;
+        FilterSettings filter;
+
         SlopeSmooth slopeSmooth = SlopeSmooth::weak;
 
-        // River settings
-        bool generateRivers = true;
-        int32_t catchmentThreshold = 384;
-        int32_t pruneThreshold = 48;
-        int32_t breachMaxLength = 8;
-        int32_t breachMaxDepth = 2;
-        int32_t offMapCatchmentMultiplier = 2;
-        int32_t riverGrowthExponent = 45; // * kRiverGrowthExponentScaling
-        int32_t riverWidthMax = 12;
+        River::RiverSettings river;
+
+        Rule::TextureRuleList textureRules;
+        Rule::SceneryRuleList sceneryRules;
     };
 
     struct DebugSign

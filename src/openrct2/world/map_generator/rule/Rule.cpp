@@ -214,8 +214,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return distanceActual;
     }
 
-    static std::optional<int32_t> fetchHeight(
-        const HeightType& type, const std::optional<EvaluationHeights>& heights, int32_t seaLevel)
+    static std::optional<int32_t> fetchHeight(const HeightType& type, const std::optional<TileEvaluationHeights>& heights)
     {
         switch (type)
         {
@@ -223,34 +222,38 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 return heights.has_value() ? std::make_optional(heights.value().land) : std::nullopt;
             case HeightType::Water:
                 return heights.has_value() ? heights.value().water : std::nullopt;
-            case HeightType::SeaLevel:
-                return seaLevel > 0 ? std::make_optional(seaLevel) : std::nullopt;
             default:
                 throw std::runtime_error("Unknown HeightType");
         }
     }
 
     static std::optional<int32_t> fetchHeight(
-        const HeightSource& source, const HeightType& type, const LocalEvaluationHeights& localHeights)
+        const HeightSource& source, const HeightType& type, const EvaluationHeights& localHeights)
     {
         switch (source) // TODO handle sea level better
         {
             case HeightSource::Self:
-                return fetchHeight(type, localHeights.self, localHeights.seaLevel);
+                return fetchHeight(type, localHeights.self);
             case HeightSource::NeighbourNW:
-                return fetchHeight(type, localHeights.neighbourNW, localHeights.seaLevel);
+                return fetchHeight(type, localHeights.neighbourNW);
             case HeightSource::NeighbourNE:
-                return fetchHeight(type, localHeights.neighbourNE, localHeights.seaLevel);
+                return fetchHeight(type, localHeights.neighbourNE);
             case HeightSource::NeighbourSE:
-                return fetchHeight(type, localHeights.neighbourSE, localHeights.seaLevel);
+                return fetchHeight(type, localHeights.neighbourSE);
             case HeightSource::NeighbourSW:
-                return fetchHeight(type, localHeights.neighbourSW, localHeights.seaLevel);
+                return fetchHeight(type, localHeights.neighbourSW);
+            case HeightSource::GlobalMin:
+                return localHeights.globalMin;
+            case HeightSource::GlobalMax:
+                return localHeights.globalMax;
+            case HeightSource::GlobalWaterLevel:
+                return localHeights.globalWaterLevel;
             default:
                 throw std::runtime_error("Unknown HeightSource");
         }
     }
 
-    static std::optional<int32_t> fetchHeightValue(const HeightData& heightData, const LocalEvaluationHeights& localHeights)
+    static std::optional<int32_t> fetchHeightValue(const HeightData& heightData, const EvaluationHeights& localHeights)
     {
         if (heightData.mode == HeightMode::Absolute)
         {
@@ -260,8 +263,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     return localHeights.self.land;
                 case HeightType::Water:
                     return localHeights.self.water;
-                case HeightType::SeaLevel:
-                    return localHeights.seaLevel;
                 default:
                     throw std::runtime_error("Unknown HeightType");
             }
@@ -285,7 +286,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case Type::Height:
             {
                 const auto heightData = std::get<HeightData>(condition.data);
-                const auto heightActual = fetchHeightValue(heightData, ctx.localHeights);
+                const auto heightActual = fetchHeightValue(heightData, ctx.evaluationHeights);
                 return heightActual.has_value()
                     ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height)
                     : std::nullopt;
@@ -325,7 +326,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case Type::BlendHeight:
             {
                 auto& heightBlendData = std::get<BlendHeightData>(condition.data);
-                auto heightSs = Smoothstep(heightBlendData.edgeLow, heightBlendData.edgeHigh, ctx.localHeights.self.land);
+                auto heightSs = Smoothstep(heightBlendData.edgeLow, heightBlendData.edgeHigh, ctx.evaluationHeights.self.land);
                 auto prngValue = ctx.prngDist(ctx.conditionPrngs[key]);
                 return evaluatePredicate(prngValue, condition.predicate, heightSs);
             }
@@ -591,7 +592,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
-    static std::optional<EvaluationHeights> getHeightsAt(const TileCoordsXY& gameCoords)
+    static std::optional<TileEvaluationHeights> getHeightsAt(const TileCoordsXY& gameCoords)
     {
         auto* surfaceElement = MapGetSurfaceElementAt(gameCoords);
         if (surfaceElement == nullptr)
@@ -603,13 +604,15 @@ namespace OpenRCT2::World::MapGenerator::Rule
         const int32_t waterHeight = surfaceElement->GetWaterHeight() / kWaterHeightStep;
 
         return std::make_optional(
-            EvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt });
+            TileEvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt });
     }
 
-    static LocalEvaluationHeights getLocalHeightsAt(const MapGenContext& genCtx, const TileCoordsXY& gameCoords)
+    static EvaluationHeights getHeightsAt(const MapGenContext& genCtx, const TileCoordsXY& gameCoords)
     {
         return {
-            .seaLevel = genCtx.settings.waterLevel,
+            .globalMin = genCtx.settings.heightmapLow,
+            .globalMax = genCtx.settings.heightmapHigh,
+            .globalWaterLevel = genCtx.settings.waterLevel,
             .self = getHeightsAt(gameCoords).value(),
             .neighbourNW = getHeightsAt(gameCoords + kNeighbourNorthWest.offset),
             .neighbourNE = getHeightsAt(gameCoords + kNeighbourNorthEast.offset),
@@ -639,7 +642,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     return;
                 }
 
-                evalCtx.localHeights = getLocalHeightsAt(genCtx, evalCtx.worldCoords);
+                evalCtx.evaluationHeights = getHeightsAt(genCtx, evalCtx.worldCoords);
                 evalCtx.landTexture = surfaceElement->GetSurfaceObjectIndex();
 
                 auto result = evaluateAtFn(rules, evalCtx);
@@ -689,7 +692,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
             genCtx, genCtx.settings.textureRules, evalCtx, textureResultFromRulesAt, callback);
     }
 
-    void evaluateSceneryRules(const MapGenContext& genCtx, EvaluationContext& evalCtx, const Callback<MaybeSceneryResult>& callback)
+    void evaluateSceneryRules(
+        const MapGenContext& genCtx, EvaluationContext& evalCtx, const Callback<MaybeSceneryResult>& callback)
     {
         resetEvaluationContextRuleAndConditionState(evalCtx);
 

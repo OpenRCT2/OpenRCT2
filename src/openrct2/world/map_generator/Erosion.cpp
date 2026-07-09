@@ -24,7 +24,7 @@ namespace OpenRCT2::World::MapGenerator
     {
         ErosionSettings(const Settings& settings)
         {
-            particles = settings.transformStrength * settings.mapSize.x * settings.mapSize.y;
+            particles = settings.filter.strength * settings.mapSize.x * settings.mapSize.y;
             seed = settings.seed;
         }
 

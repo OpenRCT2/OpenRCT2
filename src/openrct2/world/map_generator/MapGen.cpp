@@ -49,7 +49,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void generateBlankMap(MapGenContext& ctx)
+    static void generateFlatMap(MapGenContext& ctx)
     {
         // todo apply a bit of noise for rivers?
         ctx.heightMap.fill(ctx.settings.heightmapLow);
@@ -86,7 +86,7 @@ namespace OpenRCT2::World::MapGenerator
      */
     static void setWaterLevel(const MapGenContext& ctx)
     {
-        if(ctx.riverContext.has_value())
+        if (ctx.riverContext.has_value())
         {
             const River::RiverContext& riverCtx = ctx.riverContext.value();
             for (auto y = 1; y < ctx.settings.mapSize.y - 1; y++)
@@ -162,30 +162,18 @@ namespace OpenRCT2::World::MapGenerator
 
     static void generateHeightMap(MapGenContext& ctx)
     {
-        switch (ctx.settings.algorithm)
+        switch (ctx.settings.generator)
         {
-            case Algorithm::blank:
-                generateBlankMap(ctx);
+            case HeightMapGenerator::flat:
+                generateFlatMap(ctx);
                 break;
 
-            case Algorithm::simplexNoise:
-                generateSimplexMap(ctx);
+            case HeightMapGenerator::noise:
+                generateNoiseHeightMap(ctx);
                 break;
 
-            case Algorithm::warpedNoise:
-                generateWarpedMap(ctx);
-                break;
-
-            case Algorithm::ridgedNoise:
-                generateRidgedMap(ctx);
-                break;
-
-            case Algorithm::voronoiNoise:
-                generateVoronoiMap(ctx);
-                break;
-
-            case Algorithm::heightmapImage:
-                generateFromHeightmapImage(ctx);
+            case HeightMapGenerator::image:
+                generateHeightMapFromImage(ctx);
                 break;
         }
     }
@@ -193,9 +181,7 @@ namespace OpenRCT2::World::MapGenerator
     static MapGenContext createContext(const Settings& settings)
     {
         // TODO make this user configurable?
-        const auto overscanFactor = (settings.algorithm == Algorithm::heightmapImage || settings.algorithm == Algorithm::blank)
-            ? 1
-            : River::kRiversOverscanFactor;
+        const auto overscanFactor = settings.generator == HeightMapGenerator::noise ? River::kRiversOverscanFactor : 1;
 
         const TileCoordsXY genSize{ settings.mapSize.x * overscanFactor, settings.mapSize.y * overscanFactor };
 
@@ -204,7 +190,7 @@ namespace OpenRCT2::World::MapGenerator
                            .overscan = overscanFactor,
                            .overscanOffset = getWorldCoordsOffset(settings, overscanFactor),
                            .heightMap = HeightMap{ genSize },
-                           .riverContext = settings.generateRivers ? std::make_optional(genSize) : std::nullopt,
+                           .riverContext = settings.river.generate ? std::make_optional(genSize) : std::nullopt,
                            .debugSigns = {} };
 
         return ctx;
@@ -217,11 +203,11 @@ namespace OpenRCT2::World::MapGenerator
         // generate height map with the selected algorithm
         generateHeightMap(ctx);
 
-         // transform the height map via filters/erosion
-        applyHeightMapTransform(ctx);
+        // transform the height map via filters/erosion
+        applyHeightMapFilter(ctx);
 
         // generate rivers if enabled
-        if (settings.generateRivers)
+        if (settings.river.generate)
             River::generateRivers(ctx);
 
         // reset the game map and apply the generated height and water maps

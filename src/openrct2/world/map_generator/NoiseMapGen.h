@@ -13,8 +13,5 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    void generateSimplexMap(MapGenContext& ctx);
-    void generateWarpedMap(MapGenContext& ctx);
-    void generateRidgedMap(MapGenContext& ctx);
-    void generateVoronoiMap(MapGenContext& ctx);
+    void generateNoiseHeightMap(MapGenContext& ctx);
 } // namespace OpenRCT2::World::MapGenerator

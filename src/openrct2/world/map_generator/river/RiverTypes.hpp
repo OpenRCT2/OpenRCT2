@@ -40,6 +40,19 @@ namespace OpenRCT2::World::MapGenerator::River
 
     using RiverFlags = FlagHolder<uint8_t, RiverFlag>;
 
+
+    struct RiverSettings
+    {
+        bool generate = true;
+        int32_t catchmentThreshold = 384;
+        int32_t pruneThreshold = 48;
+        int32_t breachMaxLength = 8;
+        int32_t breachMaxDepth = 2;
+        int32_t offMapCatchmentMultiplier = 2;
+        int32_t riverGrowthExponent = 45; // * kRiverGrowthExponentScaling
+        int32_t riverWidthMax = 12;
+    };
+
     struct RiverStatistics
     {
         int32_t pitsFound = 0;

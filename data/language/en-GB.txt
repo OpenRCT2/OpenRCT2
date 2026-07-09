@@ -3094,7 +3094,7 @@ STR_6043    :Select height map
 STR_6044    :Smooth height map
 STR_6045    :Strength:
 STR_6046    :Normalise height map
-STR_6047    :Smooth tile edges
+STR_6047    :Smooth tile edges:
 STR_6048    :Height map error
 STR_6049    :Error reading PNG
 STR_6050    :Error reading bitmap
@@ -3674,7 +3674,7 @@ STR_6676    :At least one peep names object must be selected
 STR_6677    :Add beaches around water bodies
 STR_6678    :Heightmap source:
 STR_6679    :Flatland
-STR_6680    :Simplex noise
+STR_6680    :Simplex
 STR_6681    :Heightmap file
 STR_6682    :Map Generator - Generator
 STR_6683    :Map Generator - Terrain
@@ -3839,7 +3839,7 @@ STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Can’t change land height here…
 STR_7054    :Simulating erosion
-STR_7055    :Warped noise
+STR_7055    :Warped
 STR_7056    :None
 STR_7057    :Island
 STR_7058    :Valley
@@ -3931,8 +3931,8 @@ STR_7160    :Broad-leaved
 STR_7161    :Mixed
 STR_7162    :Cypresses and pines
 STR_7163    :Mediterranean
-STR_7170    :Ridged noise
-STR_7171    :Voronoi noise
+STR_7170    :Ridged
+STR_7171    :Voronoi
 STR_7172    :Transform
 STR_7173    :Type:
 STR_7174    :None
@@ -3942,8 +3942,8 @@ STR_7177    :Bilateral filter
 STR_7178    :Simulate erosion
 STR_7179    :Strength:
 STR_7180    :None
-STR_7181    :Weak
-STR_7182    :Strong
+STR_7181    :Default
+STR_7182    :Aggressive
 STR_7183    :Sharpen
 STR_7184    :Terrace
 STR_7189    :Rivers
@@ -3974,3 +3974,9 @@ STR_7220    :Enter breach depth between {INT32} and {INT32}
 STR_7221    :Breach length/depth
 STR_7222    :Distance[Feature]
 STR_7223    :Land
+STR_7230    :Load settings
+STR_7231    :Save settings
+STR_7232    :...
+STR_7233    :Load map generator settings
+STR_7234    :Save map generator settings
+STR_7235    :Map generator settings file

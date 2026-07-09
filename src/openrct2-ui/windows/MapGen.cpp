@@ -9,6 +9,7 @@
 
 #include "openrct2/Diagnostic.h"
 #include "openrct2/object/WallSceneryEntry.h"
+#include "openrct2/world/map_generator/MapGenSerDe.hpp"
 #include "openrct2/world/map_generator/MapHelpers.h"
 #include "openrct2/world/map_generator/rule/RuleMisc.h"
 
@@ -69,6 +70,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_3,
         WIDX_TAB_4,
         WIDX_TAB_5,
+        WIDX_MAP_SERDE,
         WIDX_MAP_GENERATE,
 
         TAB_BEGIN,
@@ -87,6 +89,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_SOURCE_DROPDOWN,
 
         WIDX_SIMPLEX_GROUP,
+        WIDX_SIMPLEX_TYPE,
+        WIDX_SIMPLEX_TYPE_DROPDOWN,
         WIDX_SIMPLEX_BASE_FREQ,
         WIDX_SIMPLEX_BASE_FREQ_UP,
         WIDX_SIMPLEX_BASE_FREQ_DOWN,
@@ -189,7 +193,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    static constexpr ScreenSize kWindowSize = { 300, 276 };
+    static constexpr ScreenSize kWindowSize = { 300, 294 };
 
     // clang-format off
     static constexpr auto makeMapGenWidgets = [](StringId title) {
@@ -201,7 +205,8 @@ namespace OpenRCT2::Ui::Windows
             makeTab   ({  65,  17 }),
             makeTab   ({  96,  17 }),
             makeTab   ({ 127,  17 }),
-            makeWidget({ 185, 256 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
+            makeWidget({   5, 274 }, {  14, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_SERDE_MENU),
+            makeWidget({ 185, 274 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
         );
     };
 
@@ -217,17 +222,18 @@ namespace OpenRCT2::Ui::Windows
 
         makeDropdownWidgets       ({179, 117}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND),
 
-        makeWidget                ({  5, 134}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE  ), // WIDX_SIMPLEX_GROUP
-        makeHoldableSpinnerWidgets({179, 151}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        makeHoldableSpinnerWidgets({179, 169}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+        makeWidget                ({  5, 134}, {290, 74}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE  ), // WIDX_SIMPLEX_GROUP
+        makeDropdownWidgets       ({179, 151}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_NOISE    ), // WIDX_SIMPLEX_TYPE
+        makeHoldableSpinnerWidgets({179, 169}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179, 187}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
 
         makeWidget                ({  5, 134}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
         makeWidget                ({223, 151}, { 65, 14}, WidgetType::button,       WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
         makeWidget                ({ 10, 169}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
 
-        makeWidget                ({  5, 194}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_BIAS          ), // WIDX_BIAS_GROUP
-        makeDropdownWidgets       ({179, 210}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_BIAS_TYPE_NONE), // WIDX_BIAS_TYPE(_DROPDOWN)
-        makeHoldableSpinnerWidgets({179, 230}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                           )  // WIDX_BIAS_STRENGTH{,_UP,_DOWN}
+        makeWidget                ({  5, 212}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_BIAS          ), // WIDX_BIAS_GROUP
+        makeDropdownWidgets       ({179, 228}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_BIAS_TYPE_NONE), // WIDX_BIAS_TYPE(_DROPDOWN)
+        makeHoldableSpinnerWidgets({179, 248}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                           )  // WIDX_BIAS_STRENGTH{,_UP,_DOWN}
     );
 
     static constexpr auto kTerrainWidgets = makeWidgets(
@@ -267,19 +273,19 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 25,  70}, {190,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
         makeWidget({215,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_SURFACE          ),
         makeWidget({255,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_EDGE             ),
-        makeWidget({  5,  83}, {290,  72}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({  5,  83}, {290,  90}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
 
-        makeWidget({  5, 158}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
-        makeWidget({ 10, 170}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
-        makeWidget({ 10, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
-        makeWidget({ 76, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
-        makeWidget({142, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
+        makeWidget({  5, 176}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
+        makeWidget({ 10, 188}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 10, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
+        makeWidget({ 76, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
+        makeWidget({142, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
 
-        makeWidget({212, 158}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
-        makeWidget({222, 180}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
-        makeWidget({241, 168}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
-        makeWidget({222, 222}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
-        makeWidget({241, 210}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP)
+        makeWidget({212, 176}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
+        makeWidget({222, 198}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
+        makeWidget({241, 186}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
+        makeWidget({222, 240}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
+        makeWidget({241, 228}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP)
     );
 
     static constexpr auto kForestsWidgets = makeWidgets(
@@ -293,16 +299,16 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({  5,  70}, { 20,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ENABLED          ),
         makeWidget({ 25,  70}, {190,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
         makeWidget({215,  70}, { 80,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ITEMS            ),
-        makeWidget({  5,  83}, {290,  72}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({  5,  83}, {290,  90}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
 
-        makeWidget({  5, 158}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
-        makeWidget({ 10, 170}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
-        makeWidget({ 10, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
-        makeWidget({ 76, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
-        makeWidget({142, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
+        makeWidget({  5, 176}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
+        makeWidget({ 10, 188}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 10, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
+        makeWidget({ 76, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
+        makeWidget({142, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
 
-        makeWidget({212, 158}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
-        makeWidget({217, 233}, { 73,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_SELECT                  )
+        makeWidget({212, 176}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
+        makeWidget({217, 251}, { 73,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_SELECT                  )
     );
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -348,6 +354,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path);
+    static void MapgenSettingsLoadCallback(ModalResult result, const utf8* path);
+    static void MapgenSettingsSaveCallback(ModalResult result, const utf8* path);
 
     class MapGenWindow final : public Window
     {
@@ -465,16 +473,63 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_5:
                     setPage(widgetIndex - WIDX_TAB_1);
                     break;
+                case WIDX_MAP_SERDE:
+                {
+                    using namespace Dropdown;
+
+                    constexpr ItemExt items[] = {
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_SERDE_IMPORT),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_SERDE_EXPORT),
+                    };
+
+                    SetItems(items);
+
+                    Widget* ddWidget = &widgets[widgetIndex];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1],
+                        Dropdown::Flag::StayOpen, std::size(items));
+
+                    break;
+                }
                 case WIDX_MAP_GENERATE:
                     GenerateMap();
                     break;
             }
         }
 
+        void SharedDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_MAP_SERDE:
+                {
+                    if (dropdownIndex == 0)
+                    {
+                        auto intent = Intent(WindowClass::loadsave);
+                        intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                        intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::mapgenSettings);
+                        intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(MapgenSettingsLoadCallback));
+                        ContextOpenIntent(&intent);
+                    }
+                    else if (dropdownIndex == 1)
+                    {
+                        auto intent = Intent(WindowClass::loadsave);
+                        intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+                        intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::mapgenSettings);
+                        intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(MapgenSettingsSaveCallback));
+                        ContextOpenIntent(&intent);
+                    }
+                    break;
+                }
+            }
+        }
+
         void GenerateMap()
         {
-            if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage && !_heightmapLoaded)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::image && !_heightmapLoaded)
+            {
                 return;
+            }
 
             MapGenerator::Settings mapgenSettings = _settings;
 
@@ -484,12 +539,11 @@ namespace OpenRCT2::Ui::Windows
                 LOG_INFO("seed %s", _seed.c_str());
             }
             mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}(_seed));
-            //mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}("177306642"));
 
-            // a bit of a hack but this way everything is consistent
-            if (mapgenSettings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            // doing this here so all dimensions in the map gen code are consistent
+            if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
-                mapgenSettings.mapSize = MapGenerator::queryHeightmapImageDimensions();
+                mapgenSettings.mapSize = MapGenerator::queryHeightMapFromImageDimensions();
             }
 
             MapGenerator::generate(mapgenSettings);
@@ -502,15 +556,12 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
-                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexMouseUp(widgetIndex);
                 BiasMouseUp(widgetIndex);
             }
-            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapMouseUp(widgetIndex);
             }
@@ -546,15 +597,12 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
-                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexMouseDown(widgetIndex, widget);
                 BiasMouseDown(widgetIndex, widget);
             }
-            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapMouseDown(widgetIndex, widget);
             }
@@ -586,9 +634,9 @@ namespace OpenRCT2::Ui::Windows
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ToggleOption(0, STR_HEIGHTMAP_FLATLAND),      ToggleOption(1, STR_HEIGHTMAP_SIMPLEX_NOISE),
-                        ToggleOption(2, STR_HEIGHTMAP_WARPED_NOISE),  ToggleOption(3, STR_HEIGHTMAP_RIDGED_NOISE),
-                        ToggleOption(4, STR_HEIGHTMAP_VORONOI_NOISE), ToggleOption(5, STR_HEIGHTMAP_FILE),
+                        ToggleOption(0, STR_HEIGHTMAP_FLATLAND),
+                        ToggleOption(1, STR_HEIGHTMAP_NOISE),
+                        ToggleOption(2, STR_HEIGHTMAP_FILE),
                     };
 
                     SetItems(items);
@@ -598,7 +646,28 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0, {},
                         std::size(items), ddWidget->width() - 3);
 
-                    gDropdown.items[EnumValue(_settings.algorithm)].setChecked(true);
+                    gDropdown.items[EnumValue(_settings.generator)].setChecked(true);
+                    break;
+                }
+                case WIDX_SIMPLEX_TYPE_DROPDOWN:
+                {
+                    using namespace Dropdown;
+
+                    constexpr ItemExt items[] = {
+                        ToggleOption(0, STR_HEIGHTMAP_SIMPLEX_NOISE),
+                        ToggleOption(1, STR_HEIGHTMAP_WARPED_NOISE),
+                        ToggleOption(2, STR_HEIGHTMAP_RIDGED_NOISE),
+                        ToggleOption(3, STR_HEIGHTMAP_VORONOI_NOISE),
+                    };
+
+                    SetItems(items);
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
+                        Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
+
+                    gDropdown.items[EnumValue(_settings.noise.algorithm)].setChecked(true);
                     break;
                 }
             }
@@ -614,17 +683,23 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
+            SharedDropdown(widgetIndex, dropdownIndex);
+
             if (dropdownIndex == -1)
                 return;
 
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_SOURCE_DROPDOWN:
-                    _settings.algorithm = MapGenerator::Algorithm(dropdownIndex);
+                    _settings.generator = static_cast<MapGenerator::HeightMapGenerator>(dropdownIndex);
+                    invalidate();
+                    break;
+                case WIDX_SIMPLEX_TYPE_DROPDOWN:
+                    _settings.noise.algorithm = static_cast<MapGenerator::NoiseAlgorithm>(dropdownIndex);
                     invalidate();
                     break;
                 case WIDX_BIAS_TYPE_DROPDOWN:
-                    _settings.bias = MapGenerator::Bias(dropdownIndex);
+                    _settings.noise.bias.type = static_cast<MapGenerator::Bias>(dropdownIndex);
                     invalidate();
                     break;
             }
@@ -632,15 +707,12 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
-                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexTextInput(widgetIndex, value);
                 BiasTextInput(widgetIndex, value);
             }
-            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapTextInput(widgetIndex, value);
             }
@@ -671,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MAP_SEED].string = _seed.data();
             widgets[WIDX_MAP_SEED].type = _random_seed ? WidgetType::empty : WidgetType::textBox;
 
-            bool isHeightMapImage = _settings.algorithm == MapGenerator::Algorithm::heightmapImage;
+            bool isHeightMapImage = _settings.generator == MapGenerator::HeightMapGenerator::image;
             setWidgetDisabled(WIDX_MAP_SIZE_Y, isHeightMapImage);
             setWidgetDisabled(WIDX_MAP_SIZE_Y_UP, isHeightMapImage);
             setWidgetDisabled(WIDX_MAP_SIZE_Y_DOWN, isHeightMapImage);
@@ -684,7 +756,7 @@ namespace OpenRCT2::Ui::Windows
             const bool heightmapEnabled = isHeightMapImage && _heightmapLoaded;
             setWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, heightmapEnabled);
 
-            auto isNoneBias = _settings.bias == MapGenerator::Bias::none;
+            auto isNoneBias = _settings.noise.bias.type == MapGenerator::Bias::none;
             setWidgetDisabled(WIDX_BIAS_STRENGTH, isNoneBias);
             setWidgetDisabled(WIDX_BIAS_STRENGTH_UP, isNoneBias);
             setWidgetDisabled(WIDX_BIAS_STRENGTH_DOWN, isNoneBias);
@@ -695,44 +767,23 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MAP_SIZE_Y].setString(_ySpinnerCaption.c_str());
 
             auto& sourceWidget = widgets[WIDX_HEIGHTMAP_SOURCE];
-            switch (_settings.algorithm)
+            switch (_settings.generator)
             {
-                case MapGenerator::Algorithm::blank:
+                case MapGenerator::HeightMapGenerator::flat:
                     sourceWidget.text = STR_HEIGHTMAP_FLATLAND;
                     ToggleSimplexWidgets(false);
                     ToggleHeightmapWidgets(false);
                     ToggleBiasWidgets(false);
                     break;
 
-                case MapGenerator::Algorithm::simplexNoise:
-                    sourceWidget.text = STR_HEIGHTMAP_SIMPLEX_NOISE;
+                case MapGenerator::HeightMapGenerator::noise:
+                    sourceWidget.text = STR_HEIGHTMAP_NOISE;
                     ToggleSimplexWidgets(true);
                     ToggleHeightmapWidgets(false);
                     ToggleBiasWidgets(true);
                     break;
 
-                case MapGenerator::Algorithm::warpedNoise:
-                    sourceWidget.text = STR_HEIGHTMAP_WARPED_NOISE;
-                    ToggleSimplexWidgets(true);
-                    ToggleHeightmapWidgets(false);
-                    ToggleBiasWidgets(true);
-                    break;
-
-                case MapGenerator::Algorithm::ridgedNoise:
-                    sourceWidget.text = STR_HEIGHTMAP_RIDGED_NOISE;
-                    ToggleSimplexWidgets(true);
-                    ToggleHeightmapWidgets(false);
-                    ToggleBiasWidgets(true);
-                    break;
-
-                case MapGenerator::Algorithm::voronoiNoise:
-                    sourceWidget.text = STR_HEIGHTMAP_VORONOI_NOISE;
-                    ToggleSimplexWidgets(true);
-                    ToggleHeightmapWidgets(false);
-                    ToggleBiasWidgets(true);
-                    break;
-
-                case MapGenerator::Algorithm::heightmapImage:
+                case MapGenerator::HeightMapGenerator::image:
                     sourceWidget.text = STR_HEIGHTMAP_FILE;
                     ToggleSimplexWidgets(false);
                     ToggleHeightmapWidgets(true);
@@ -741,7 +792,23 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            switch (_settings.bias)
+            switch (_settings.noise.algorithm)
+            {
+                case MapGenerator::NoiseAlgorithm::simplex:
+                    widgets[WIDX_SIMPLEX_TYPE].text = STR_HEIGHTMAP_SIMPLEX_NOISE;
+                    break;
+                case MapGenerator::NoiseAlgorithm::warped:
+                    widgets[WIDX_SIMPLEX_TYPE].text = STR_HEIGHTMAP_WARPED_NOISE;
+                    break;
+                case MapGenerator::NoiseAlgorithm::ridged:
+                    widgets[WIDX_SIMPLEX_TYPE].text = STR_HEIGHTMAP_RIDGED_NOISE;
+                    break;
+                case MapGenerator::NoiseAlgorithm::voronoi:
+                    widgets[WIDX_SIMPLEX_TYPE].text = STR_HEIGHTMAP_VORONOI_NOISE;
+                    break;
+            }
+
+            switch (_settings.noise.bias.type)
             {
                 case MapGenerator::Bias::none:
                     widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_NONE;
@@ -773,9 +840,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ToggleSimplexWidgets(bool state)
+        void ToggleSimplexWidgets(const bool state)
         {
             widgets[WIDX_SIMPLEX_GROUP].setVisible(state);
+            widgets[WIDX_SIMPLEX_TYPE].type           = state ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_TYPE_DROPDOWN].type  = state ? WidgetType::button       : WidgetType::empty;
             widgets[WIDX_SIMPLEX_BASE_FREQ].setVisible(state);
             widgets[WIDX_SIMPLEX_BASE_FREQ_UP].setVisible(state);
             widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].setVisible(state);
@@ -784,7 +853,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SIMPLEX_OCTAVES_DOWN].setVisible(state);
         }
 
-        void ToggleBiasWidgets(bool state)
+        void ToggleBiasWidgets(const bool state)
         {
             // clang-format off
             widgets[WIDX_BIAS_GROUP].type         = state ? WidgetType::groupbox     : WidgetType::empty;
@@ -796,7 +865,7 @@ namespace OpenRCT2::Ui::Windows
             // clang-format on
         }
 
-        void ToggleHeightmapWidgets(bool state)
+        void ToggleHeightmapWidgets(const bool state)
         {
             widgets[WIDX_HEIGHTMAP_GROUP].setVisible(state);
             widgets[WIDX_HEIGHTMAP_BROWSE].setVisible(state);
@@ -808,15 +877,12 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
             DrawTabImages(rt);
 
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
-                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::ridgedNoise
-                || _settings.algorithm == MapGenerator::Algorithm::voronoiNoise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexDraw(rt);
                 BiasDraw(rt);
             }
-            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapDraw(rt);
             }
@@ -1138,6 +1204,8 @@ namespace OpenRCT2::Ui::Windows
 
         void SceneryDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
+            SharedDropdown(widgetIndex, dropdownIndex);
+
             switch (widgetIndex)
             {
                 case WIDX_RULE_SC_NEW_PRESET:
@@ -1725,7 +1793,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(1000);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_SIMPLEX_BASE_FREQUENCY, STR_ENTER_BASE_FREQUENCY, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.noiseBaseFreq, 4);
+                        _settings.noise.baseFrequency, 4);
                     break;
                 }
 
@@ -1736,7 +1804,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(10);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_SIMPLEX_OCTAVES, STR_ENTER_OCTAVES, ft, STR_FORMAT_INTEGER,
-                        _settings.noiseOctaves, 10);
+                        _settings.noise.octaves, 10);
                     break;
                 }
             }
@@ -1747,19 +1815,19 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ_UP:
-                    _settings.noiseBaseFreq = std::min<int32_t>(_settings.noiseBaseFreq + 5, 1000);
+                    _settings.noise.baseFrequency = std::min<int32_t>(_settings.noise.baseFrequency + 5, 1000);
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_BASE_FREQ_DOWN:
-                    _settings.noiseBaseFreq = std::max<int32_t>(_settings.noiseBaseFreq - 5, 0);
+                    _settings.noise.baseFrequency = std::max<int32_t>(_settings.noise.baseFrequency - 5, 0);
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_UP:
-                    _settings.noiseOctaves = std::min(_settings.noiseOctaves + 1, 10);
+                    _settings.noise.octaves = std::min(_settings.noise.octaves + 1, 10);
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_DOWN:
-                    _settings.noiseOctaves = std::max(_settings.noiseOctaves - 1, 1);
+                    _settings.noise.octaves = std::max(_settings.noise.octaves - 1, 1);
                     invalidate();
                     break;
             }
@@ -1770,6 +1838,10 @@ namespace OpenRCT2::Ui::Windows
             const auto textColour = colours[1];
 
             drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_TYPE].top + 1 },
+                STR_HEIGHTMAP_NOISE_TYPE, { textColour });
+
+            drawText(
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, { textColour });
             drawText(
@@ -1777,14 +1849,14 @@ namespace OpenRCT2::Ui::Windows
                 {}, { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(_settings.noiseBaseFreq);
+            ft.Add<uint16_t>(_settings.noise.baseFrequency);
             drawText(
                 rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_settings.noiseOctaves);
+            ft.Add<uint16_t>(_settings.noise.octaves);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
                 STR_COMMA16, ft, { textColour });
@@ -1795,11 +1867,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ:
-                    _settings.noiseBaseFreq = std::clamp(value, 0, 1000);
+                    _settings.noise.baseFrequency = std::clamp(value, 0, 1000);
                     break;
 
                 case WIDX_SIMPLEX_OCTAVES:
-                    _settings.noiseOctaves = std::clamp(value, 1, 10);
+                    _settings.noise.octaves = std::clamp(value, 1, 10);
                     break;
             }
         }
@@ -1819,7 +1891,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(100);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_MAPGEN_BIAS_STRENGTH, STR_ENTER_BIAS_STRENGTH, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.biasStrength, 4);
+                        _settings.noise.bias.strength, 4);
                     break;
                 }
             }
@@ -1830,11 +1902,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH_UP:
-                    _settings.biasStrength = std::min(_settings.biasStrength + 5, 100);
+                    _settings.noise.bias.strength = std::min(_settings.noise.bias.strength + 5, 100);
                     invalidate();
                     break;
                 case WIDX_BIAS_STRENGTH_DOWN:
-                    _settings.biasStrength = std::max(_settings.biasStrength - 5, 0);
+                    _settings.noise.bias.strength = std::max(_settings.noise.bias.strength - 5, 0);
                     invalidate();
                     break;
                 case WIDX_BIAS_TYPE_DROPDOWN:
@@ -1862,7 +1934,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
                         Flag::StayOpen, std::size(items), ddWidget->width() - 2);
 
-                    setCheckboxValue(EnumValue(_settings.bias), true);
+                    setCheckboxValue(EnumValue(_settings.noise.bias.type), true);
                     break;
                 }
             }
@@ -1872,7 +1944,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
-            const bool strengthDisabled = _settings.bias == MapGenerator::Bias::none;
+            const bool strengthDisabled = _settings.noise.bias.type == MapGenerator::Bias::none;
             const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
 
             drawText(
@@ -1884,7 +1956,7 @@ namespace OpenRCT2::Ui::Windows
                 { strengthColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(_settings.biasStrength);
+            ft.Add<uint16_t>(_settings.noise.bias.strength);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_BIAS_STRENGTH].left + 1, widgets[WIDX_BIAS_STRENGTH].top + 1 },
                 STR_COMMA2DP32, ft, { strengthColour });
@@ -1895,7 +1967,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH:
-                    _settings.biasStrength = std::clamp(value, 0, 100);
+                    _settings.noise.bias.strength = std::clamp(value, 0, 100);
                     break;
             }
         }
@@ -2011,11 +2083,11 @@ namespace OpenRCT2::Ui::Windows
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_DOWN:
-                    _settings.transformStrength = std::max<int32_t>(_settings.transformStrength - 1, 0);
+                    _settings.filter.strength = std::max<int32_t>(_settings.filter.strength - 1, 0);
                     invalidateWidget(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_UP:
-                    _settings.transformStrength = std::min<int32_t>(_settings.transformStrength + 1, 10);
+                    _settings.filter.strength = std::min<int32_t>(_settings.filter.strength + 1, 10);
                     invalidateWidget(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_TYPE_DROPDOWN:
@@ -2038,7 +2110,7 @@ namespace OpenRCT2::Ui::Windows
                             { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
                             Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
-                        gDropdown.items[EnumValue(_settings.heightmapTransform)].setChecked(true);
+                        gDropdown.items[EnumValue(_settings.filter.type)].setChecked(true);
                         break;
                     }
                 case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_DROPDOWN:
@@ -2086,7 +2158,7 @@ namespace OpenRCT2::Ui::Windows
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH:
-                    _settings.transformStrength = std::clamp(value, 1, 10);
+                    _settings.filter.strength = std::clamp(value, 1, 10);
                     break;
             }
 
@@ -2095,13 +2167,15 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
+            SharedDropdown(widgetIndex, dropdownIndex);
+
             if (dropdownIndex == -1)
                 return;
 
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_TRANSFORM_TYPE_DROPDOWN:
-                    _settings.heightmapTransform = static_cast<MapGenerator::HeightMapTransform>(dropdownIndex);
+                    _settings.filter.type = static_cast<MapGenerator::Filter>(dropdownIndex);
                     invalidate();
                     break;
                 case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_DROPDOWN:
@@ -2163,7 +2237,7 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainPrepareDraw()
         {
-            bool isNotFlatland = _settings.algorithm != MapGenerator::Algorithm::blank;
+            bool isNotFlatland = _settings.generator != MapGenerator::HeightMapGenerator::flat;
 
             // Max land height option is irrelevant for flatland
             setWidgetEnabled(WIDX_HEIGHTMAP_HIGH, isNotFlatland);
@@ -2176,24 +2250,24 @@ namespace OpenRCT2::Ui::Windows
             setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH, isNotFlatland);
 
 
-            switch (_settings.heightmapTransform)
+            switch (_settings.filter.type)
             {
-                case MapGenerator::HeightMapTransform::none:
+                case MapGenerator::Filter::none:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_NONE;
                     break;
-                case MapGenerator::HeightMapTransform::box:
+                case MapGenerator::Filter::box:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_BOX;
                     break;
-                case MapGenerator::HeightMapTransform::gaussian:
+                case MapGenerator::Filter::gaussian:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_GAUSSIAN;
                     break;
-                case MapGenerator::HeightMapTransform::sharpen:
+                case MapGenerator::Filter::sharpen:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_SHARPEN;
                     break;
-                case MapGenerator::HeightMapTransform::bilateral:
+                case MapGenerator::Filter::bilateral:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_BILATERAL;
                     break;
-                case MapGenerator::HeightMapTransform::erosion:
+                case MapGenerator::Filter::erosion:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_EROSION;
                     break;
             }
@@ -2257,7 +2331,7 @@ namespace OpenRCT2::Ui::Windows
                 { transformColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.transformStrength);
+            ft.Add<int32_t>(_settings.filter.strength);
             drawText(
                 rt,
                 windowPos
@@ -2605,6 +2679,7 @@ namespace OpenRCT2::Ui::Windows
 
         void TextureDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
+            SharedDropdown(widgetIndex, dropdownIndex);
 
             switch (widgetIndex)
             {
@@ -3082,13 +3157,13 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverCatchmentThresholdMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft, STR_FORMAT_INTEGER,
-                        _settings.catchmentThreshold, 7);
+                        _settings.river.catchmentThreshold, 7);
                     break;
                 }
                 case WIDX_WATER_RIVERS_ENABLE:
                 {
-                    _settings.generateRivers = !_settings.generateRivers;
-                    setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.generateRivers);
+                    _settings.river.generate = !_settings.river.generate;
+                    setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.river.generate);
                     invalidate();
                     break;
                 }
@@ -3099,7 +3174,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverWidthMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX_ENTER, ft, STR_FORMAT_INTEGER,
-                        _settings.riverWidthMax, 2);
+                        _settings.river.riverWidthMax, 2);
                     break;
                 }
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
@@ -3109,7 +3184,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.riverWidthMax, 5);
+                        _settings.river.riverWidthMax, 5);
                     break;
                 }
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
@@ -3119,7 +3194,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
-                        _settings.pruneThreshold, 2);
+                        _settings.river.pruneThreshold, 2);
                     break;
                 }
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
@@ -3129,7 +3204,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverBreachLengthMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH_ENTER, ft, STR_FORMAT_INTEGER,
-                        _settings.breachMaxLength, 3);
+                        _settings.river.breachMaxLength, 3);
                     break;
                 }
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
@@ -3139,7 +3214,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverBreachDepthMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH_ENTER, ft, STR_FORMAT_INTEGER,
-                        _settings.breachMaxDepth, 2);
+                        _settings.river.breachMaxDepth, 2);
                     break;
                 }
             }
@@ -3158,51 +3233,51 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_UP:
-                    _settings.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) + 1), MapGenerator::River::kRiverCatchmentThresholdMax);
+                    _settings.river.catchmentThreshold = std::min<int32_t>(std::exp2(std::log2(_settings.river.catchmentThreshold) + 1), MapGenerator::River::kRiverCatchmentThresholdMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_DOWN:
-                    _settings.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.catchmentThreshold) - 1), MapGenerator::River::kRiverCatchmentThresholdMin);
+                    _settings.river.catchmentThreshold = std::max<int32_t>(std::exp2(std::log2(_settings.river.catchmentThreshold) - 1), MapGenerator::River::kRiverCatchmentThresholdMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_UP:
-                    _settings.riverWidthMax = std::min<int32_t>(_settings.riverWidthMax + 1, MapGenerator::River::kRiverWidthMax);
+                    _settings.river.riverWidthMax = std::min<int32_t>(_settings.river.riverWidthMax + 1, MapGenerator::River::kRiverWidthMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_DOWN:
-                    _settings.riverWidthMax = std::max<int32_t>(_settings.riverWidthMax - 1, MapGenerator::River::kRiverWidthMin);
+                    _settings.river.riverWidthMax = std::max<int32_t>(_settings.river.riverWidthMax - 1, MapGenerator::River::kRiverWidthMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP:
-                    _settings.riverGrowthExponent = std::min<int32_t>(_settings.riverGrowthExponent + 1, MapGenerator::River::kRiverGrowthExponentMax);
+                    _settings.river.riverGrowthExponent = std::min<int32_t>(_settings.river.riverGrowthExponent + 1, MapGenerator::River::kRiverGrowthExponentMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN:
-                    _settings.riverGrowthExponent = std::max<int32_t>(_settings.riverGrowthExponent - 1, MapGenerator::River::kRiverGrowthExponentMin);
+                    _settings.river.riverGrowthExponent = std::max<int32_t>(_settings.river.riverGrowthExponent - 1, MapGenerator::River::kRiverGrowthExponentMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP:
-                    _settings.pruneThreshold = std::min<int32_t>(_settings.pruneThreshold + 1, MapGenerator::River::kRiverPruneLengthThresholdMax);
+                    _settings.river.pruneThreshold = std::min<int32_t>(_settings.river.pruneThreshold + 1, MapGenerator::River::kRiverPruneLengthThresholdMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN:
-                    _settings.pruneThreshold = std::max<int32_t>(_settings.pruneThreshold - 1, MapGenerator::River::kRiverPruneLengthThresholdMin);
+                    _settings.river.pruneThreshold = std::max<int32_t>(_settings.river.pruneThreshold - 1, MapGenerator::River::kRiverPruneLengthThresholdMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_UP:
-                    _settings.breachMaxLength = std::min<int32_t>(_settings.breachMaxLength + 1, MapGenerator::River::kRiverBreachLengthMax);
+                    _settings.river.breachMaxLength = std::min<int32_t>(_settings.river.breachMaxLength + 1, MapGenerator::River::kRiverBreachLengthMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_DOWN:
-                    _settings.breachMaxLength = std::max<int32_t>(_settings.breachMaxLength - 1, MapGenerator::River::kRiverBreachLengthMin);
+                    _settings.river.breachMaxLength = std::max<int32_t>(_settings.river.breachMaxLength - 1, MapGenerator::River::kRiverBreachLengthMin);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_UP:
-                    _settings.breachMaxDepth = std::min<int32_t>(_settings.breachMaxDepth + 1, MapGenerator::River::kRiverBreachDepthMax);
+                    _settings.river.breachMaxDepth = std::min<int32_t>(_settings.river.breachMaxDepth + 1, MapGenerator::River::kRiverBreachDepthMax);
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN:
-                    _settings.breachMaxDepth = std::max<int32_t>(_settings.breachMaxDepth - 1, MapGenerator::River::kRiverBreachDepthMin);
+                    _settings.river.breachMaxDepth = std::max<int32_t>(_settings.river.breachMaxDepth - 1, MapGenerator::River::kRiverBreachDepthMin);
                     invalidate();
                     break;
             }
@@ -3224,22 +3299,22 @@ namespace OpenRCT2::Ui::Windows
                     _settings.waterLevel = value;
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT:
-                    _settings.catchmentThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverCatchmentThresholdMin, MapGenerator::River::kRiverCatchmentThresholdMax);
+                    _settings.river.catchmentThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverCatchmentThresholdMin, MapGenerator::River::kRiverCatchmentThresholdMax);
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
-                    _settings.riverWidthMax = std::clamp<int32_t>(value, MapGenerator::River::kRiverWidthMin, MapGenerator::River::kRiverWidthMax);
+                    _settings.river.riverWidthMax = std::clamp<int32_t>(value, MapGenerator::River::kRiverWidthMin, MapGenerator::River::kRiverWidthMax);
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
-                    _settings.riverGrowthExponent = std::clamp<int32_t>(value, MapGenerator::River::kRiverGrowthExponentMin, MapGenerator::River::kRiverGrowthExponentMax);
+                    _settings.river.riverGrowthExponent = std::clamp<int32_t>(value, MapGenerator::River::kRiverGrowthExponentMin, MapGenerator::River::kRiverGrowthExponentMax);
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
-                    _settings.pruneThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverPruneLengthThresholdMin, MapGenerator::River::kRiverPruneLengthThresholdMax);
+                    _settings.river.pruneThreshold = std::clamp<int32_t>(value, MapGenerator::River::kRiverPruneLengthThresholdMin, MapGenerator::River::kRiverPruneLengthThresholdMax);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
-                    _settings.breachMaxLength = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachLengthMin, MapGenerator::River::kRiverBreachLengthMax);
+                    _settings.river.breachMaxLength = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachLengthMin, MapGenerator::River::kRiverBreachLengthMax);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
-                    _settings.breachMaxDepth = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachDepthMin, MapGenerator::River::kRiverBreachDepthMax);
+                    _settings.river.breachMaxDepth = std::clamp<int32_t>(value, MapGenerator::River::kRiverBreachDepthMin, MapGenerator::River::kRiverBreachDepthMax);
                     break;
             }
 
@@ -3248,7 +3323,7 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
-            bool enableRiver = _settings.generateRivers;
+            bool enableRiver = _settings.river.generate;
 
             setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, enableRiver);
 
@@ -3302,7 +3377,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.catchmentThreshold);
+            ft.Add<int32_t>(_settings.river.catchmentThreshold);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_CATCHMENT].left + 1,
                 widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
@@ -3313,7 +3388,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.riverWidthMax);
+            ft.Add<int32_t>(_settings.river.riverWidthMax);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_WIDTH_MAX].left + 1,
                 widgets[WIDX_WATER_RIVERS_WIDTH_MAX].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
@@ -3324,7 +3399,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.riverGrowthExponent);
+            ft.Add<int32_t>(_settings.river.riverGrowthExponent);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_GROWTH_EXPONENT].left + 1,
                 widgets[WIDX_WATER_RIVERS_GROWTH_EXPONENT].top + 1 }, STR_FORMAT_COMMA2DP32, ft, { valueColour });
@@ -3335,7 +3410,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.pruneThreshold);
+            ft.Add<int32_t>(_settings.river.pruneThreshold);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].left + 1,
                 widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
@@ -3346,13 +3421,13 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.breachMaxLength);
+            ft.Add<int32_t>(_settings.river.breachMaxLength);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_BREACH_LENGTH].left + 1,
                 widgets[WIDX_WATER_RIVERS_BREACH_LENGTH].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(_settings.breachMaxDepth);
+            ft.Add<int32_t>(_settings.river.breachMaxDepth);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].left + 1,
                 widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
@@ -3377,7 +3452,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onClose() override
         {
-            MapGenerator::unloadHeightmapImage();
+            MapGenerator::unloadHeightMapImage();
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -3454,7 +3529,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            bool isHeightMapImage = _settings.algorithm == MapGenerator::Algorithm::heightmapImage;
+            bool isHeightMapImage = _settings.generator == MapGenerator::HeightMapGenerator::image;
             setWidgetDisabled(WIDX_MAP_GENERATE, isHeightMapImage && !_heightmapLoaded);
 
             switch (page)
@@ -3596,7 +3671,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (result == ModalResult::ok)
             {
-                if (!MapGenerator::loadHeightmapImage(path))
+                if (!MapGenerator::loadHeightMapImage(path))
                 {
                     // TODO: Display error popup
                     return;
@@ -3605,8 +3680,25 @@ namespace OpenRCT2::Ui::Windows
                 // The window needs to be open while using the map
                 _heightmapLoaded = true;
                 _heightmapFilename = fs::u8path(path).filename().string();
-                _settings.algorithm = MapGenerator::Algorithm::heightmapImage;
+                _settings.generator = MapGenerator::HeightMapGenerator::image;
                 setPage(WINDOW_MAPGEN_PAGE_BASE);
+            }
+        }
+
+        void afterLoadMapgenSettings(ModalResult result, const utf8* path)
+        {
+            if (result == ModalResult::ok)
+            {
+                _settings = MapGenerator::loadMapgenSettingsFromPath(path); // TODO error handling
+                _random_seed = false;
+            }
+        }
+
+        void afterSaveMapgenSettings(ModalResult result, const utf8* path)
+        {
+            if (result == ModalResult::ok)
+            {
+                MapGenerator::saveMapgenSettingsToPath(_settings, path); // TODO error handling
             }
         }
 
@@ -3627,5 +3719,17 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* w = static_cast<MapGenWindow*>(MapGenOpen());
         w->afterLoadingHeightMap(result, path);
+    }
+
+    static void MapgenSettingsLoadCallback(ModalResult result, const utf8* path)
+    {
+        auto* w = static_cast<MapGenWindow*>(MapGenOpen());
+        w->afterLoadMapgenSettings(result, path);
+    }
+
+    static void MapgenSettingsSaveCallback(ModalResult result, const utf8* path)
+    {
+        auto* w = static_cast<MapGenWindow*>(MapGenOpen());
+        w->afterSaveMapgenSettings(result, path);
     }
 } // namespace OpenRCT2::Ui::Windows

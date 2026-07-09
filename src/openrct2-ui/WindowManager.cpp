@@ -316,6 +316,9 @@ public:
                 // Intent does not hold a window class
                 break;
 
+            case WindowClass::mapgen:
+                return MapGenOpen();
+
             default:
                 Guard::Assert(false, "OpenIntent was called for an unhandled window class.");
                 break;

@@ -30,7 +30,7 @@ namespace OpenRCT2::World::MapGenerator
     void sharpen(HeightMap& heightMap, int32_t iterations);
     void smoothBilateral(HeightMap& heightMap, float sigmaSpace, float sigmaIntensity);
 
-    void applyHeightMapTransform(MapGenContext& ctx);
+    void applyHeightMapFilter(MapGenContext& ctx);
     void applyTileSlopeSmooth(MapGenContext& ctx);
 
     TileCoordsXY getWorldCoordsOffset(const Settings& settings, int32_t overscanFactor);

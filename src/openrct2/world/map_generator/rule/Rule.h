@@ -87,20 +87,22 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Rainforest,
     };
 
-    struct EvaluationHeights
+    struct TileEvaluationHeights
     {
         int32_t land;
         std::optional<int32_t> water;
     };
 
-    struct LocalEvaluationHeights
+    struct EvaluationHeights
     {
-        int32_t seaLevel;
-        EvaluationHeights self;
-        std::optional<EvaluationHeights> neighbourNW;
-        std::optional<EvaluationHeights> neighbourNE;
-        std::optional<EvaluationHeights> neighbourSE;
-        std::optional<EvaluationHeights> neighbourSW;
+        int32_t globalMin;
+        int32_t globalMax;
+        int32_t globalWaterLevel;
+        TileEvaluationHeights self;
+        std::optional<TileEvaluationHeights> neighbourNW;
+        std::optional<TileEvaluationHeights> neighbourNE;
+        std::optional<TileEvaluationHeights> neighbourSE;
+        std::optional<TileEvaluationHeights> neighbourSW;
     };
 
     struct ConditionKey
@@ -152,7 +154,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         TileCoordsXY worldCoords;
         TileCoordsXY genCoords;
         VecXY quadCoords;
-        LocalEvaluationHeights localHeights;
+        EvaluationHeights evaluationHeights;
 
         // per rule per tile
         std::optional<int32_t> zRepeat = std::nullopt;
@@ -181,7 +183,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Land,
         // TODO Spring?
         // TODO Waterfall (Downstream)?
-        // Lake
     };
 
     enum class HeightMode : uint8_t
@@ -194,9 +195,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         Land,
         Water,
-        SeaLevel,
-        // TODO Min
-        // TODO Max
+        // TODO Normalized
     };
 
     enum class HeightSource : uint8_t
@@ -206,6 +205,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
         NeighbourNE,
         NeighbourSE,
         NeighbourSW,
+        GlobalMin,
+        GlobalMax,
+        GlobalWaterLevel,
     };
 
     enum class Type : uint16_t
@@ -319,7 +321,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         RuleSceneryType type;
         ObjectEntryIndex index;
         int8_t weight = 1;
-        std::optional<uint8_t> direction;
+        std::optional<Direction> direction;
         std::array<Drawing::Colour, 3> colours;
     };
 

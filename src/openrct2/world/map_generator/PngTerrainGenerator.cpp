@@ -33,7 +33,7 @@ namespace OpenRCT2::World::MapGenerator
         return worldCoordsToGenCoords(ctx, TileCoordsXY(y, x));
     }
 
-    bool loadHeightmapImage(const utf8* path)
+    bool loadHeightMapImage(const utf8* path)
     {
         auto format = Imaging::GetImageFormatFromPath(path);
         if (format == ImageFormat::png)
@@ -93,12 +93,12 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Frees the memory used to store the selected height map
      */
-    void unloadHeightmapImage()
+    void unloadHeightMapImage()
     {
         _heightMapData.clear();
     }
 
-    TileCoordsXY queryHeightmapImageDimensions()
+    TileCoordsXY queryHeightMapFromImageDimensions()
     {
         Guard::Assert(!_heightMapData.empty(), "No height map loaded");
 
@@ -106,7 +106,7 @@ namespace OpenRCT2::World::MapGenerator
         return { _heightMapData.height, _heightMapData.width };
     }
 
-    void generateFromHeightmapImage(MapGenContext& ctx)
+    void generateHeightMapFromImage(MapGenContext& ctx)
     {
         auto& settings = ctx.settings;
         Guard::Assert(!_heightMapData.empty(), "No height map loaded");
