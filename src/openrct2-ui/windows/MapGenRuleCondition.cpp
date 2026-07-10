@@ -75,7 +75,19 @@ namespace OpenRCT2::Ui::Windows
 
         WIDX_FEATURE_LABEL,
         WIDX_FEATURE,
-        WIDX_FEATURE_DROPDOWN
+        WIDX_FEATURE_DROPDOWN,
+
+        WIDX_HEIGHT_MODE_LABEL,
+        WIDX_HEIGHT_MODE,
+        WIDX_HEIGHT_MODE_DROPDOWN,
+
+        WIDX_HEIGHT_SOURCE_FIRST_LABEL,
+        WIDX_HEIGHT_SOURCE_FIRST,
+        WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN,
+
+        WIDX_HEIGHT_SOURCE_SECOND_LABEL,
+        WIDX_HEIGHT_SOURCE_SECOND,
+        WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN,
     };
 
     static constexpr ScreenSize kWindowSize = { 300, 156 };
@@ -108,7 +120,16 @@ namespace OpenRCT2::Ui::Windows
         makeWidget(         {   5,  39 }, { 290, 88 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL),
 
         makeWidget(         {   5,  58 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_FEATURE),
-        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER)
+        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER),
+
+        makeWidget(         {   5,  39 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE),
+        makeDropdownWidgets({ 186,  39 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE),
+
+        makeWidget(         {   5,  58 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE),
+        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
+
+        makeWidget(         {   5,  77 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SUBTRAHEND),
+        makeDropdownWidgets({ 186,  77 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL)
         // clang-format on
     );
 
@@ -185,11 +206,13 @@ namespace OpenRCT2::Ui::Windows
             bool edgeHighVisible = false;
             bool landStyleVisible = false;
             bool featureVisible = false;
+            bool heightDropdownsVisible = false;
 
             switch (condition.type)
             {
                 case Type::Height:
-                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE;
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT;
+                    heightDropdownsVisible = true;
                     break;
                 case Type::Distance:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_LABEL;
@@ -238,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            //  widgets[WIDX_VALUE_LABEL] stays visible
+            //  widgets[WIDX_CONDITION_LABEL] stays visible
             widgets[WIDX_VALUE].type = valueVisible ? WidgetType::spinner : WidgetType::empty;
             widgets[WIDX_VALUE_UP].type = valueVisible ? WidgetType::button : WidgetType::empty;
             widgets[WIDX_VALUE_DOWN].type = valueVisible ? WidgetType::button : WidgetType::empty;
@@ -274,6 +297,18 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FEATURE].type = featureVisible ? WidgetType::dropdownMenu : WidgetType::empty;
             widgets[WIDX_FEATURE_DROPDOWN].type = featureVisible ? WidgetType::button : WidgetType::empty;
 
+            widgets[WIDX_HEIGHT_MODE_LABEL].type = heightDropdownsVisible ? WidgetType::label : WidgetType::empty;
+            widgets[WIDX_HEIGHT_MODE].type = heightDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_HEIGHT_MODE_DROPDOWN].type = heightDropdownsVisible ? WidgetType::button : WidgetType::empty;
+
+            widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].type = heightDropdownsVisible ? WidgetType::label : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_FIRST].type = heightDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN].type = heightDropdownsVisible ? WidgetType::button : WidgetType::empty;
+
+            widgets[WIDX_HEIGHT_SOURCE_SECOND_LABEL].type = heightDropdownsVisible ? WidgetType::label : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND].type = heightDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN].type = heightDropdownsVisible ? WidgetType::button : WidgetType::empty;
+
             bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)
             {
@@ -303,6 +338,66 @@ namespace OpenRCT2::Ui::Windows
             if (featureVisible)
             {
                 widgets[WIDX_FEATURE].text = featureToStringId(getFeature());
+            }
+
+            if (heightDropdownsVisible)
+            {
+                auto& heightData = std::get<HeightData>(condition.data);
+                bool isAbsMode = heightData.mode == HeightMode::Absolute;
+
+                setWidgetDisabled(WIDX_HEIGHT_SOURCE_SECOND_LABEL, isAbsMode);
+                setWidgetDisabled(WIDX_HEIGHT_SOURCE_SECOND, isAbsMode);
+                setWidgetDisabled(WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN, isAbsMode);
+
+                if (isAbsMode)
+                {
+                    widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE;
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_VERBOSE_ABSOLUTE;
+                }
+                else
+                {
+                    widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_MINUEND;
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_VERBOSE_RELATIVE;
+                }
+
+                widgets[WIDX_HEIGHT_MODE].text = heightModeToStringId(heightData.mode);
+                widgets[WIDX_HEIGHT_SOURCE_FIRST].text = heightSourceToStringId(heightData.sourceFirst);
+                widgets[WIDX_HEIGHT_SOURCE_SECOND].text = heightSourceToStringId(heightData.sourceSecond);
+            }
+        }
+
+        StringId heightModeToStringId(HeightMode& mode)
+        {
+            switch (mode)
+            {
+                case HeightMode::Absolute:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE;
+                case HeightMode::Relative:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_RELATIVE;
+                default:
+                    throw std::runtime_error("unknown height mode");
+            }
+        }
+
+        StringId heightSourceToStringId(HeightSource& source)
+        {
+            switch (source)
+            {
+                case HeightSource::SelfLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND;
+                case HeightSource::SelfWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER;
+                case HeightSource::NeighbourNWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND;
+                case HeightSource::NeighbourNWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER;
+                case HeightSource::NeighbourNELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND;
+                case HeightSource::NeighbourNEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER;
+                case HeightSource::NeighbourSELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND;
+                case HeightSource::NeighbourSEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER;
+                case HeightSource::NeighbourSWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND;
+                case HeightSource::NeighbourSWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER;
+                case HeightSource::GlobalMin: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN;
+                case HeightSource::GlobalMax: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX;
+                case HeightSource::GlobalWaterLevel: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL;
+                default:
+                    throw std::runtime_error("unknown height source");
             }
         }
 
@@ -772,11 +867,11 @@ namespace OpenRCT2::Ui::Windows
                 case Type::Height:
                 {
                     Formatter ft;
-                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
+                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT);
                     ft.Add<int16_t>(static_cast<int16_t>(kHeightMin));
                     ft.Add<int16_t>(static_cast<int16_t>(kHeightMax));
                     WindowTextInputOpen(
-                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
+                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_HEIGHT, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
                         STR_FORMAT_INTEGER, BaseZToMetres(std::get<HeightData>(condition.data).height), 3);
                     break;
                 }
@@ -1120,6 +1215,46 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 }
+                case WIDX_HEIGHT_MODE_DROPDOWN:
+                {
+                    if (selectedIndex == -1)
+                        selectedIndex = gDropdown.highlightedIndex;
+
+                    if (selectedIndex == -1)
+                        return;
+
+
+                    auto& heightData = std::get<HeightData>(condition.data);
+                    heightData.mode = static_cast<HeightMode>(selectedIndex);
+                    invalidate();
+                    break;
+                }
+                case WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN:
+                {
+                    if (selectedIndex == -1)
+                        selectedIndex = gDropdown.highlightedIndex;
+
+                    if (selectedIndex == -1)
+                        return;
+
+                    auto& heightData = std::get<HeightData>(condition.data);
+                    heightData.sourceFirst = static_cast<HeightSource>(selectedIndex);
+                    invalidate();
+                    break;
+                }
+                case WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN:
+                {
+                    if (selectedIndex == -1)
+                        selectedIndex = gDropdown.highlightedIndex;
+
+                    if (selectedIndex == -1)
+                        return;
+
+                    auto& heightData = std::get<HeightData>(condition.data);
+                    heightData.sourceSecond = static_cast<HeightSource>(selectedIndex);
+                    invalidate();
+                    break;
+                }
             }
         }
 
@@ -1194,6 +1329,97 @@ namespace OpenRCT2::Ui::Windows
                         ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_FILL),
                         ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH),
                         ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_LAND),
+                    };
+
+                    SetItems(items);
+                    size_t itemSize = std::size(items);
+
+                    gDropdown.items[selectedIndex].setChecked(true);
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        StayOpen, itemSize);
+                    break;
+                }
+                case WIDX_HEIGHT_MODE_DROPDOWN:
+                {
+                    using namespace Dropdown;
+
+                    auto& heightData = std::get<HeightData>(condition.data);
+                    int32_t selectedIndex = static_cast<int32_t>(heightData.mode);
+
+                    constexpr ItemExt items[] = {
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_RELATIVE),
+                    };
+
+                    SetItems(items);
+                    size_t itemSize = std::size(items);
+
+                    gDropdown.items[selectedIndex].setChecked(true);
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        StayOpen, itemSize);
+                    break;
+                }
+                case WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN:
+                {
+                    using namespace Dropdown;
+
+                    auto& heightData = std::get<HeightData>(condition.data);
+                    int32_t selectedIndex = static_cast<int32_t>(heightData.sourceFirst);
+
+                    constexpr ItemExt items[] = {
+                        ItemExt( 0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
+                        ItemExt( 1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
+                        ItemExt( 2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND),
+                        ItemExt( 3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER),
+                        ItemExt( 4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND),
+                        ItemExt( 5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER),
+                        ItemExt( 6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND),
+                        ItemExt( 7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER),
+                        ItemExt( 8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND),
+                        ItemExt( 9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER),
+                        ItemExt(10, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN),
+                        ItemExt(11, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX),
+                        ItemExt(12, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL),
+                    };
+
+                    SetItems(items);
+                    size_t itemSize = std::size(items);
+
+                    gDropdown.items[selectedIndex].setChecked(true);
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        StayOpen, itemSize);
+                    break;
+                }
+                case WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN:
+                {
+                    using namespace Dropdown;
+
+                    auto& heightData = std::get<HeightData>(condition.data);
+                    int32_t selectedIndex = static_cast<int32_t>(heightData.sourceSecond);
+
+                    constexpr ItemExt items[] = {
+                        ItemExt( 0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
+                        ItemExt( 1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
+                        ItemExt( 2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND),
+                        ItemExt( 3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER),
+                        ItemExt( 4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND),
+                        ItemExt( 5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER),
+                        ItemExt( 6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND),
+                        ItemExt( 7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER),
+                        ItemExt( 8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND),
+                        ItemExt( 9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER),
+                        ItemExt(10, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN),
+                        ItemExt(11, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX),
+                        ItemExt(12, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL),
                     };
 
                     SetItems(items);

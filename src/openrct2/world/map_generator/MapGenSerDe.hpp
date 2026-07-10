@@ -153,6 +153,13 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     valid = false;
                 }
+                for (auto& condition : rule.conditions)
+                {
+                    if (condition.type == Rule::Type::LandStyle)
+                    {
+                        valid = false;
+                    }
+                }
             }
         }
 

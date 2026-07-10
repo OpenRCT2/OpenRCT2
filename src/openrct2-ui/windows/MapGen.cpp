@@ -1083,7 +1083,7 @@ namespace OpenRCT2::Ui::Windows
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
                         ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
                         ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
@@ -1424,6 +1424,51 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+                StringId heightSourceToStringId(const MapGenerator::Rule::HeightSource& source)
+        {
+            switch (source)
+            {
+                case MapGenerator::Rule::HeightSource::SelfLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND;
+                case MapGenerator::Rule::HeightSource::SelfWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourNWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourNWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourNELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourNEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourSELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourSEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourSWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourSWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER;
+                case MapGenerator::Rule::HeightSource::GlobalMin: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN;
+                case MapGenerator::Rule::HeightSource::GlobalMax: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX;
+                case MapGenerator::Rule::HeightSource::GlobalWaterLevel: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL;
+                default:
+                    throw std::runtime_error("unknown height source");
+            }
+        }
+
+        void formatHeightCondition(Formatter& ft, StringId predRepr, const  MapGenerator::Rule::Condition& condition)
+        {
+            const auto& heightData = std::get<MapGenerator::Rule::HeightData>(condition.data);
+            const bool isAbsMode = heightData.mode == MapGenerator::Rule::HeightMode::Absolute;
+
+            if (isAbsMode)
+            {
+                ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
+                ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT);
+                ft.Add<StringId>(heightSourceToStringId(heightData.sourceFirst));
+                ft.Add<StringId>(predRepr);
+                ft.Add<int16_t>(static_cast<int16_t>( BaseZToMetres(heightData.height)));
+            } else
+            {
+                ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_HEIGHT_RELATIVE_LENGTH);
+                ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT);
+                ft.Add<StringId>(heightSourceToStringId(heightData.sourceFirst));
+                ft.Add<StringId>(heightSourceToStringId(heightData.sourceSecond));
+                ft.Add<StringId>(predRepr);
+                ft.Add<int16_t>(static_cast<int16_t>( BaseZToMetres(heightData.height)));
+            }
+        }
+
         StringId featureToStringId(MapGenerator::Rule::Feature& feature)
         {
             switch (feature)
@@ -1543,11 +1588,7 @@ namespace OpenRCT2::Ui::Windows
                 switch (condition.type)
                 {
                     case MapGenerator::Rule::Type::Height:
-                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
-                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
-                        ft.Add<StringId>(predRepr);
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
+                        formatHeightCondition(ft, predRepr, condition);
                         break;
 
                     case MapGenerator::Rule::Type::Distance:
@@ -2543,7 +2584,7 @@ namespace OpenRCT2::Ui::Windows
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
                         ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
                         ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
@@ -2887,11 +2928,7 @@ namespace OpenRCT2::Ui::Windows
                 switch (condition.type)
                 {
                     case MapGenerator::Rule::Type::Height:
-                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
-                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
-                        ft.Add<StringId>(predRepr);
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
+                        formatHeightCondition(ft, predRepr, condition);
                         break;
 
                     case MapGenerator::Rule::Type::Distance:

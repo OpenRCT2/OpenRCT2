@@ -60,26 +60,24 @@ namespace OpenRCT2::World::MapGenerator::Rule
         })
 
     NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
-        HeightType,
-        {
-            { HeightType::Land, "Land" },
-            { HeightType::Water, "Water" },
-        })
-
-    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         HeightSource,
         {
-            { HeightSource::Self, "Self" },
-            { HeightSource::NeighbourNW, "NeighbourNW" },
-            { HeightSource::NeighbourNE, "NeighbourNE" },
-            { HeightSource::NeighbourSE, "NeighbourSE" },
-            { HeightSource::NeighbourSW, "NeighbourSW" },
-            { HeightSource::GlobalMin, "GlobalMin" },
-            { HeightSource::GlobalMax, "GlobalMax" },
-            { HeightSource::GlobalWaterLevel, "GlobalWaterLevel" },
+            {HeightSource::SelfLand, "SelfLand"},
+            {HeightSource::SelfWater, "SelfWater"},
+            {HeightSource::NeighbourNWLand, "NeighbourNWLand"},
+            {HeightSource::NeighbourNWWater, "NeighbourNWWater"},
+            {HeightSource::NeighbourNELand, "NeighbourNELand"},
+            {HeightSource::NeighbourNEWater, "NeighbourNEWater"},
+            {HeightSource::NeighbourSELand, "NeighbourSELand"},
+            {HeightSource::NeighbourSEWater, "NeighbourSEWater"},
+            {HeightSource::NeighbourSWLand, "NeighbourSWLand"},
+            {HeightSource::NeighbourSWWater, "NeighbourSWWater"},
+            {HeightSource::GlobalMin, "GlobalMin"},
+            {HeightSource::GlobalMax, "GlobalMax"},
+            {HeightSource::GlobalWaterLevel, "GlobalWaterLevel"},
         })
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(HeightData, height, mode, sourceFirst, typeFirst, sourceSecond, typeSecond)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(HeightData, height, mode, sourceFirst, sourceSecond)
 
     NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         Feature,

@@ -213,40 +213,53 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return distanceActual;
     }
 
-    static std::optional<int32_t> fetchHeight(const HeightType& type, const std::optional<TileEvaluationHeights>& heights)
-    {
-        switch (type)
-        {
-            case HeightType::Land:
-                return heights.has_value() ? std::make_optional(heights.value().land) : std::nullopt;
-            case HeightType::Water:
-                return heights.has_value() ? heights.value().water : std::nullopt;
-            default:
-                throw std::runtime_error("Unknown HeightType");
-        }
-    }
-
-    static std::optional<int32_t> fetchHeight(
-        const HeightSource& source, const HeightType& type, const EvaluationHeights& localHeights)
+    static std::optional<int32_t> fetchHeight(const HeightSource& source, const EvaluationHeights& localHeights)
     {
         switch (source)
         {
-            case HeightSource::Self:
-                return fetchHeight(type, localHeights.self);
-            case HeightSource::NeighbourNW:
-                return fetchHeight(type, localHeights.neighbourNW);
-            case HeightSource::NeighbourNE:
-                return fetchHeight(type, localHeights.neighbourNE);
-            case HeightSource::NeighbourSE:
-                return fetchHeight(type, localHeights.neighbourSE);
-            case HeightSource::NeighbourSW:
-                return fetchHeight(type, localHeights.neighbourSW);
+            case HeightSource::SelfLand:
+                return std::make_optional(localHeights.self.land);
+
+            case HeightSource::SelfWater:
+                return localHeights.self.water;
+
+            case HeightSource::NeighbourNWLand:
+                return localHeights.neighbourNW.has_value() ? std::make_optional(localHeights.neighbourNW.value().land)
+                                                            : std::nullopt;
+
+            case HeightSource::NeighbourNWWater:
+                return localHeights.neighbourNW.has_value() ? localHeights.neighbourNW.value().water : std::nullopt;
+
+            case HeightSource::NeighbourNELand:
+                return localHeights.neighbourNE.has_value() ? std::make_optional(localHeights.neighbourNE.value().land)
+                                                            : std::nullopt;
+
+            case HeightSource::NeighbourNEWater:
+                return localHeights.neighbourNE.has_value() ? localHeights.neighbourNE.value().water : std::nullopt;
+
+            case HeightSource::NeighbourSELand:
+                return localHeights.neighbourSE.has_value() ? std::make_optional(localHeights.neighbourSE.value().land)
+                                                            : std::nullopt;
+
+            case HeightSource::NeighbourSEWater:
+                return localHeights.neighbourSE.has_value() ? localHeights.neighbourSE.value().water : std::nullopt;
+
+            case HeightSource::NeighbourSWLand:
+                return localHeights.neighbourSW.has_value() ? std::make_optional(localHeights.neighbourSW.value().land)
+                                                            : std::nullopt;
+
+            case HeightSource::NeighbourSWWater:
+                return localHeights.neighbourSW.has_value() ? localHeights.neighbourSW.value().water : std::nullopt;
+
             case HeightSource::GlobalMin:
                 return localHeights.globalMin;
+
             case HeightSource::GlobalMax:
                 return localHeights.globalMax;
+
             case HeightSource::GlobalWaterLevel:
                 return localHeights.globalWaterLevel;
+
             default:
                 throw std::runtime_error("Unknown HeightSource");
         }
@@ -254,21 +267,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     static std::optional<int32_t> fetchHeightValue(const HeightData& heightData, const EvaluationHeights& localHeights)
     {
+        const auto heightFirst = fetchHeight(heightData.sourceFirst, localHeights);
+
         if (heightData.mode == HeightMode::Absolute)
         {
-            switch (heightData.typeFirst)
-            {
-                case HeightType::Land:
-                    return localHeights.self.land;
-                case HeightType::Water:
-                    return localHeights.self.water;
-                default:
-                    throw std::runtime_error("Unknown HeightType");
-            }
+            return heightFirst;
         }
 
-        const auto heightFirst = fetchHeight(heightData.sourceFirst, heightData.typeFirst, localHeights);
-        const auto heightSecond = fetchHeight(heightData.sourceSecond, heightData.typeSecond, localHeights);
+        const auto heightSecond = fetchHeight(heightData.sourceSecond, localHeights);
 
         if (heightFirst.has_value() && heightSecond.has_value())
         {

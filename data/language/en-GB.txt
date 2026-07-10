@@ -3867,7 +3867,9 @@ STR_7088    :Then
 STR_7089    :New rule {UINT16}
 STR_7090    :Remove
 STR_7091    :Height
-STR_7094    :Height - WaterLevel
+STR_7092    :{STRINGID}[{STRINGID}-{STRINGID}] {STRINGID} {LENGTH}
+STR_7093    :Height[source]
+STR_7094    :Height[minued - subtrahend]
 STR_7095    :Distance
 STR_7096    :Noise
 STR_7097    :NormalAngle
@@ -3980,3 +3982,22 @@ STR_7232    :...
 STR_7233    :Load map generator settings
 STR_7234    :Save map generator settings
 STR_7235    :Map generator settings file
+STR_7240    :Mode
+STR_7241    :Absolute
+STR_7242    :Relative
+STR_7243    :Minued
+STR_7244    :Subtrahend
+STR_7245    :Tile land
+STR_7246    :Tile water
+STR_7247    :Neighbour NW land
+STR_7248    :Neighbour NW water
+STR_7249    :Neighbour NE land
+STR_7250    :Neighbour NE water
+STR_7251    :Neighbour SE land
+STR_7252    :Neighbour SE water
+STR_7253    :Neighbour SW land
+STR_7254    :Neighbour SW water
+STR_7255    :Global min
+STR_7256    :Global max
+STR_7257    :Global water
+STR_7258    :Source

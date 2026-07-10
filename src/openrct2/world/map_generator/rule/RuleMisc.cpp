@@ -210,8 +210,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                           .data = DistanceData{ .feature = feature, .distance = distance } };
     }
 
-    static Condition heightDeltaToNeighbour(
-        const HeightSource neighbour, const HeightType type, Predicate pred = Predicate::GreaterThan, bool zRepeat = false)
+    static Condition heightDeltaBetween( const HeightSource neighbour, const HeightSource self, Predicate pred = Predicate::GreaterThan, bool zRepeat = false)
     {
         return Condition{
             .enabled = true,
@@ -220,9 +219,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             .data = HeightData{ .height = 0,
                                 .mode = HeightMode::Relative,
                                 .sourceFirst = neighbour,
-                                .typeFirst = type,
-                                .sourceSecond = HeightSource::Self,
-                                .typeSecond = type },
+                                .sourceSecond = self},
             .zRepeat = zRepeat,
         };
     }
@@ -244,8 +241,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .name = "Waterfall NW",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
-                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
-                             heightDeltaToNeighbour(HeightSource::NeighbourNW, HeightType::Water, Predicate::LessThan),
+                             heightDeltaBetween(HeightSource::NeighbourNWWater, HeightSource::SelfWater, Predicate::LessThan),
                          },
                          .effect = { .applyLandTexture = false,
                                      .landTexture = 0,
@@ -257,8 +253,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .name = "Waterfall NE",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
-                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
-                             heightDeltaToNeighbour(HeightSource::NeighbourNE, HeightType::Water, Predicate::LessThan),
+                             heightDeltaBetween(HeightSource::NeighbourNEWater, HeightSource::SelfWater, Predicate::LessThan),
                          },
                          .effect = { .applyLandTexture = false,
                                      .landTexture = 0,
@@ -270,8 +265,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .name = "Waterfall SE",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
-                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
-                             heightDeltaToNeighbour(HeightSource::NeighbourSE, HeightType::Water, Predicate::LessThan),
+                             heightDeltaBetween(HeightSource::NeighbourSEWater, HeightSource::SelfWater, Predicate::LessThan),
                          },
                          .effect = { .applyLandTexture = false,
                                      .landTexture = 0,
@@ -283,8 +277,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .name = "Waterfall SW",// TODO Format String
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
-                             distanceToFeature(Feature::MapBorder, 2, Predicate::GreaterThan),
-                             heightDeltaToNeighbour(HeightSource::NeighbourSW, HeightType::Water, Predicate::LessThan),
+                             heightDeltaBetween(HeightSource::NeighbourSWWater, HeightSource::SelfWater, Predicate::LessThan),
                          },
                          .effect = { .applyLandTexture = false,
                                      .landTexture = 0,
@@ -495,8 +488,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 .enabled = true,
                 .name = "Waterfall NW", // TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaToNeighbour(
-                                               HeightSource::NeighbourNW, HeightType::Water, Predicate::GreaterThan, true) },
+                                           heightDeltaBetween(
+                                               HeightSource::NeighbourNWWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallNw),
@@ -507,8 +500,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 .enabled = true,
                 .name = "Waterfall NE", // TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaToNeighbour(
-                                               HeightSource::NeighbourNE, HeightType::Water, Predicate::GreaterThan, true) },
+                                           heightDeltaBetween(
+                                               HeightSource::NeighbourNEWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallNe),
@@ -519,8 +512,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 .enabled = true,
                 .name = "Waterfall SE", // TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaToNeighbour(
-                                               HeightSource::NeighbourSE, HeightType::Water, Predicate::GreaterThan, true) },
+                                           heightDeltaBetween(
+                                               HeightSource::NeighbourSEWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallSe),
@@ -531,8 +524,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 .enabled = true,
                 .name = "Waterfall SW", // TODO Format String
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaToNeighbour(
-                                               HeightSource::NeighbourSW, HeightType::Water, Predicate::GreaterThan, true) },
+                                           heightDeltaBetween(
+                                               HeightSource::NeighbourSWWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
                 .zRepeat = true,
                 .effect = {
                     .objects = toSceneryEffectItemsIfAvailable(kWaterfallSw),
@@ -780,10 +773,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                   .predicate = Predicate::GreaterThan,
                                   .data = HeightData{ .height = 2,
                                                       .mode = HeightMode::Absolute,
-                                                      .sourceFirst = HeightSource::Self,
-                                                      .typeFirst = HeightType::Land,
-                                                      .sourceSecond = HeightSource::Self,
-                                                      .typeSecond = HeightType::Land } };
+                                                      .sourceFirst = HeightSource::SelfLand,
+                                                      .sourceSecond = HeightSource::GlobalWaterLevel,
+                                                      } };
             case Type::Distance:
                 return Condition{ .enabled = true,
                                   .type = type,

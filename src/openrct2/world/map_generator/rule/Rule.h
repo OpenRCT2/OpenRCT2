@@ -192,20 +192,18 @@ namespace OpenRCT2::World::MapGenerator::Rule
         Relative,
     };
 
-    enum class HeightType : uint8_t
-    {
-        Land,
-        Water,
-        // TODO Normalized
-    };
-
     enum class HeightSource : uint8_t
     {
-        Self,
-        NeighbourNW,
-        NeighbourNE,
-        NeighbourSE,
-        NeighbourSW,
+        SelfLand,
+        SelfWater,
+        NeighbourNWLand,
+        NeighbourNWWater,
+        NeighbourNELand,
+        NeighbourNEWater,
+        NeighbourSELand,
+        NeighbourSEWater,
+        NeighbourSWLand,
+        NeighbourSWWater,
         GlobalMin,
         GlobalMax,
         GlobalWaterLevel,
@@ -230,9 +228,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         NumericSetting<int32_t, 0, kMaximumLandHeight, 2> height;
         HeightMode mode;
         HeightSource sourceFirst;
-        HeightType typeFirst;
         HeightSource sourceSecond;
-        HeightType typeSecond;
     };
 
     // smoothstep($low, $high, height) $pred $prng

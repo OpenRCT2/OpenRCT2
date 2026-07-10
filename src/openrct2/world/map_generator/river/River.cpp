@@ -664,12 +664,12 @@ namespace OpenRCT2::World::MapGenerator::River
 
                 if (!inBounds)
                 {
-                    mapVis << "XXXXXXXXXXXXXXXX | ";
+                    mapVis << "XXXXXXXXXXXXXXXXX | ";
                 }
                 else if (isRiver)
                 {
                     mapVis << std::format(
-                        "{},{} h{} r{} s{} | ", deltaPos.x, deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos],
+                        "{},{} h{} w{} s{} | ", deltaPos.x, deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos],
                         isSource ? 'S' : '-');
                 }
                 else
