@@ -3989,14 +3989,14 @@ STR_7243    :Minued
 STR_7244    :Subtrahend
 STR_7245    :Tile land
 STR_7246    :Tile water
-STR_7247    :Neighbour NW land
-STR_7248    :Neighbour NW water
-STR_7249    :Neighbour NE land
-STR_7250    :Neighbour NE water
-STR_7251    :Neighbour SE land
-STR_7252    :Neighbour SE water
-STR_7253    :Neighbour SW land
-STR_7254    :Neighbour SW water
+STR_7247    :Tile NW land
+STR_7248    :Tile NW water
+STR_7249    :Tile NE land
+STR_7250    :Tile NE water
+STR_7251    :Tile SE land
+STR_7252    :Tile SE water
+STR_7253    :Tile SW land
+STR_7254    :Tile SW water
 STR_7255    :Global min
 STR_7256    :Global max
 STR_7257    :Global water

@@ -193,7 +193,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    static constexpr ScreenSize kWindowSize = { 300, 294 };
+    static constexpr ScreenSize kWindowSize = { 310, 294 };
 
     // clang-format off
     static constexpr auto makeMapGenWidgets = [](StringId title) {
@@ -205,110 +205,110 @@ namespace OpenRCT2::Ui::Windows
             makeTab   ({  65,  17 }),
             makeTab   ({  96,  17 }),
             makeTab   ({ 127,  17 }),
-            makeWidget({   5, 274 }, {  14, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_SERDE_MENU),
-            makeWidget({ 185, 274 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
+            makeWidget({  5, 274 }, {  14, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_SERDE_MENU),
+            makeWidget({ 150, 274 }, { 155, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
         );
     };
 
     static constexpr auto kBaseWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
-        makeHoldableSpinnerWidgets({165,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
-        makeWidget                ({216,  52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-        makeHoldableSpinnerWidgets({238,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({153,  52}, { 62, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
+        makeWidget                ({215,  52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+        makeHoldableSpinnerWidgets({236,  52}, { 62, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
 
-        makeWidget                ({  5,  70}, {290, 41}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SEED       ), // WIDX_SEED_GROUP
+        makeWidget                ({  5,  70}, {300, 41}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SEED       ), // WIDX_SEED_GROUP
         makeWidget                ({ 10,  90}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_SEED_RANDOM), // WIDX_SEED_RANDOM
-        makeWidget                ({179,  90}, {109, 14}, WidgetType::textBox,      WindowColour::secondary                        ), // WIDX_SEED
+        makeWidget                ({153,  90}, {145, 14}, WidgetType::textBox,      WindowColour::secondary                        ), // WIDX_SEED
 
-        makeDropdownWidgets       ({179, 117}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND),
+        makeDropdownWidgets       ({153, 117}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND),
 
-        makeWidget                ({  5, 134}, {290, 74}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE  ), // WIDX_SIMPLEX_GROUP
-        makeDropdownWidgets       ({179, 151}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_NOISE    ), // WIDX_SIMPLEX_TYPE
-        makeHoldableSpinnerWidgets({179, 169}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        makeHoldableSpinnerWidgets({179, 187}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+        makeWidget                ({  5, 134}, {300, 74}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE  ), // WIDX_SIMPLEX_GROUP
+        makeDropdownWidgets       ({153, 151}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_NOISE    ), // WIDX_SIMPLEX_TYPE
+        makeHoldableSpinnerWidgets({153, 169}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({153, 187}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
 
-        makeWidget                ({  5, 134}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        makeWidget                ({  5, 134}, {300, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
         makeWidget                ({223, 151}, { 65, 14}, WidgetType::button,       WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
         makeWidget                ({ 10, 169}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
 
-        makeWidget                ({  5, 212}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_BIAS          ), // WIDX_BIAS_GROUP
-        makeDropdownWidgets       ({179, 228}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_BIAS_TYPE_NONE), // WIDX_BIAS_TYPE(_DROPDOWN)
-        makeHoldableSpinnerWidgets({179, 248}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                           )  // WIDX_BIAS_STRENGTH{,_UP,_DOWN}
+        makeWidget                ({  5, 212}, {300, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_BIAS          ), // WIDX_BIAS_GROUP
+        makeDropdownWidgets       ({153, 228}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_BIAS_TYPE_NONE), // WIDX_BIAS_TYPE(_DROPDOWN)
+        makeHoldableSpinnerWidgets({153, 248}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                           )  // WIDX_BIAS_STRENGTH{,_UP,_DOWN}
     );
 
     static constexpr auto kTerrainWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
-        makeHoldableSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        makeHoldableSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({153,  52}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({153,  70}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
 
-        makeWidget                ({  5,  88}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_TRANSFORM         ), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP_GROUP
-        makeDropdownWidgets       ({179, 105}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_TRANSFORM_TYPE_BOX), // WIDX_HEIGHTMAP_SMOOTH_FILTER(_DROPDOWN)
-        makeHoldableSpinnerWidgets({179, 125}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_SMOOTH_STRENGTH
+        makeWidget                ({  5,  88}, {300, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_TRANSFORM         ), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP_GROUP
+        makeDropdownWidgets       ({153, 105}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_TRANSFORM_TYPE_BOX), // WIDX_HEIGHTMAP_SMOOTH_FILTER(_DROPDOWN)
+        makeHoldableSpinnerWidgets({153, 125}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_SMOOTH_STRENGTH
 
-        makeDropdownWidgets       ({179, 149}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_SMOOTH_EDGE_WEAK  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES(_DROPDOWN)
+        makeDropdownWidgets       ({153, 149}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_SMOOTH_EDGE_WEAK  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES(_DROPDOWN)
     );
 
     static constexpr auto kWaterWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
-        makeHoldableSpinnerWidgets({179,  52}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeWidget                ({  5,  70}, {290, 126}, WidgetType::groupbox, WindowColour::secondary, STR_WATER_RIVERS       ),
+        makeHoldableSpinnerWidgets({153,  52}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeWidget                ({  5,  70}, {300, 126}, WidgetType::groupbox, WindowColour::secondary, STR_WATER_RIVERS       ),
         makeWidget                ({ 10,  86}, {136,  12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_ENABLE, STR_WATER_RIVERS_ENABLE),
-        makeHoldableSpinnerWidgets({179, 104}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 122}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 140}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 158}, {109,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({179, 176}, { 52,  14}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({236, 176}, { 52,  14}, WidgetType::spinner,  WindowColour::secondary                         ) // NB: 3 widgets
+        makeHoldableSpinnerWidgets({153, 104}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({153, 122}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({153, 140}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({153, 158}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({153, 176}, { 70,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({228, 176}, { 70,  12}, WidgetType::spinner,  WindowColour::secondary                         )  // NB: 3 widgets
     );
 
     static constexpr auto kTextureWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_RULE_TITLE),
-        makeWidget({226,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
-        makeWidget({281,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
-        makeWidget({152,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),
-        makeWidget({ 78,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_REMOVE                  ),
+        makeWidget({236,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
+        makeWidget({291,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
+        makeWidget({162,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),
+        makeWidget({ 88,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_REMOVE                  ),
         makeWidget({  5,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_UP                                  ),
         makeWidget({ 22,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
         makeWidget({  5,  70}, { 20,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ENABLED          ),
-        makeWidget({ 25,  70}, {190,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
-        makeWidget({215,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_SURFACE          ),
-        makeWidget({255,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_EDGE             ),
-        makeWidget({  5,  83}, {290,  90}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 25,  70}, {200,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
+        makeWidget({225,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_SURFACE          ),
+        makeWidget({265,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_EDGE             ),
+        makeWidget({  5,  83}, {300,  90}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
 
-        makeWidget({  5, 176}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
-        makeWidget({ 10, 188}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
-        makeWidget({ 10, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
-        makeWidget({ 76, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
-        makeWidget({142, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
+        makeWidget({  5, 176}, {212,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
+        makeWidget({ 10, 188}, {201,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 10, 251}, { 62,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
+        makeWidget({ 79, 251}, { 62,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
+        makeWidget({148, 251}, { 62,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
 
-        makeWidget({212, 176}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
-        makeWidget({222, 198}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
-        makeWidget({241, 186}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
-        makeWidget({222, 240}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
-        makeWidget({241, 228}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP)
+        makeWidget({222, 176}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
+        makeWidget({232, 198}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
+        makeWidget({251, 186}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
+        makeWidget({232, 240}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
+        makeWidget({251, 228}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP)
     );
 
     static constexpr auto kForestsWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_FORESTS),
-        makeWidget({226,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
-        makeWidget({281,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
-        makeWidget({152,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),
-        makeWidget({ 78,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_REMOVE                  ),
+        makeWidget({236,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
+        makeWidget({291,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
+        makeWidget({162,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),
+        makeWidget({ 88,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_REMOVE                  ),
         makeWidget({  5,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_UP                                  ),
         makeWidget({ 22,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
         makeWidget({  5,  70}, { 20,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ENABLED          ),
-        makeWidget({ 25,  70}, {190,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
-        makeWidget({215,  70}, { 80,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ITEMS            ),
-        makeWidget({  5,  83}, {290,  90}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 25,  70}, {200,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
+        makeWidget({225,  70}, { 80,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ITEMS            ),
+        makeWidget({  5,  83}, {300,  90}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
 
-        makeWidget({  5, 176}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
-        makeWidget({ 10, 188}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
-        makeWidget({ 10, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
-        makeWidget({ 76, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
-        makeWidget({142, 251}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
+        makeWidget({  5, 176}, {212,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
+        makeWidget({ 10, 188}, {201,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 10, 251}, { 62,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
+        makeWidget({ 79, 251}, { 62,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
+        makeWidget({148, 251}, { 62,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
 
-        makeWidget({212, 176}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
-        makeWidget({217, 251}, { 73,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_SELECT                  )
+        makeWidget({222, 176}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
+        makeWidget({227, 251}, { 73,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_SELECT                  )
     );
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -1682,7 +1682,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Draw description
-                drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+                drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 200, stringFormat, ft);
 
                 screenCoords.y -= kScrollableRowHeight;
             }
@@ -1735,10 +1735,10 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(rule.name.c_str());
-                drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+                drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 200, stringFormat, ft);
 
                 // Preview
-                ScreenCoordsXY sceneryPreviewPos = screenCoords + ScreenCoordsXY{ 208, 0 };
+                ScreenCoordsXY sceneryPreviewPos = screenCoords + ScreenCoordsXY{ 218, 0 };
                 ScreenCoordsXY sceneryPreviewOutcomeSize = { 80, kScrollableRowHeight };
                 SceneryDrawItems(rt, rule, sceneryPreviewPos, sceneryPreviewOutcomeSize);
 
@@ -3042,7 +3042,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Draw description
-                drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+                drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 200, stringFormat, ft);
 
                 screenCoords.y -= kScrollableRowHeight;
             }
@@ -3098,21 +3098,21 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(rule.name.c_str());
                 drawTextEllipsised(
-                    rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+                    rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 200, stringFormat, ft);
 
                 const ImageId maskImage(SPR_G2_MASK_MAPGEN_TEXTURE_SCROLL);
                 // Surface
                 if (rule.effect.applyLandTexture)
                 {
                     const auto surfaceImage = LookupSurfaceImage(rule.effect.landTexture);
-                    GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 208, 0 }, maskImage, surfaceImage);
+                    GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 218, 0 }, maskImage, surfaceImage);
                 }
 
                 // Edge
                 if (rule.effect.applyEdgeTexture)
                 {
                     const auto edgeImage = LookupEdgeImage(rule.effect.edgeTexture);
-                    GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 248, 0 }, maskImage, edgeImage);
+                    GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 258, 0 }, maskImage, edgeImage);
                 }
 
                 screenCoords.y -= kScrollableRowHeight;
@@ -3273,8 +3273,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverGrowthExponentMin));
-                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverGrowthExponentMax));
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverPruneLengthThresholdMin));
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverPruneLengthThresholdMin));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
                         tileUnitsToDisplayLength(MapGenerator::gSettings.river.pruneThreshold), 3);
