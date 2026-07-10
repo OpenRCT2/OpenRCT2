@@ -210,15 +210,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
                           .data = DistanceData{ .feature = feature, .distance = distance } };
     }
 
-    static Condition heightDeltaBetween( const HeightSource neighbour, const HeightSource self, Predicate pred = Predicate::GreaterThan, bool zRepeat = false)
+    static Condition heightDeltaBetween(
+        const HeightSource neighbour, const HeightSource self, Predicate pred = Predicate::GreaterThan, bool zRepeat = false)
     {
         return Condition{
             .enabled = true,
             .type = Type::HeightRelative,
             .predicate = pred,
-            .data = HeightRelativeData{ .height = 0,
-                                .sourceFirst = neighbour,
-                                .sourceSecond = self},
+            .data = HeightRelativeData{ .height = 0, .sourceFirst = neighbour, .sourceSecond = self },
             .zRepeat = zRepeat,
         };
     }
@@ -483,53 +482,53 @@ namespace OpenRCT2::World::MapGenerator::Rule
         const auto seedOffset = prng();
 
         settings.sceneryRules.push_back(
-            SceneryRule{
-                .enabled = true,
-                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NW),
-                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaBetween(
-                                               HeightSource::NeighbourNWWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
-                .zRepeat = true,
-                .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallNw),
-                    .seedOffset = 3,
-                } });
+            SceneryRule{ .enabled = true,
+                         .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NW),
+                         .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                                    heightDeltaBetween(
+                                                        HeightSource::NeighbourNWWater, HeightSource::SelfWater,
+                                                        Predicate::GreaterThan, true) },
+                         .zRepeat = true,
+                         .effect = {
+                             .objects = toSceneryEffectItemsIfAvailable(kWaterfallNw),
+                             .seedOffset = 3,
+                         } });
         settings.sceneryRules.push_back(
-            SceneryRule{
-                .enabled = true,
-                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NE),
-                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaBetween(
-                                               HeightSource::NeighbourNEWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
-                .zRepeat = true,
-                .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallNe),
-                    .seedOffset = 3,
-                } });
+            SceneryRule{ .enabled = true,
+                         .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NE),
+                         .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                                    heightDeltaBetween(
+                                                        HeightSource::NeighbourNEWater, HeightSource::SelfWater,
+                                                        Predicate::GreaterThan, true) },
+                         .zRepeat = true,
+                         .effect = {
+                             .objects = toSceneryEffectItemsIfAvailable(kWaterfallNe),
+                             .seedOffset = 3,
+                         } });
         settings.sceneryRules.push_back(
-            SceneryRule{
-                .enabled = true,
-                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SE),
-                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaBetween(
-                                               HeightSource::NeighbourSEWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
-                .zRepeat = true,
-                .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallSe),
-                    .seedOffset = 3,
-                } });
+            SceneryRule{ .enabled = true,
+                         .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SE),
+                         .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                                    heightDeltaBetween(
+                                                        HeightSource::NeighbourSEWater, HeightSource::SelfWater,
+                                                        Predicate::GreaterThan, true) },
+                         .zRepeat = true,
+                         .effect = {
+                             .objects = toSceneryEffectItemsIfAvailable(kWaterfallSe),
+                             .seedOffset = 3,
+                         } });
         settings.sceneryRules.push_back(
-            SceneryRule{
-                .enabled = true,
-                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SW),
-                .conditions = std::vector{ distanceToFeature(Feature::River, 0),
-                                           heightDeltaBetween(
-                                               HeightSource::NeighbourSWWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
-                .zRepeat = true,
-                .effect = {
-                    .objects = toSceneryEffectItemsIfAvailable(kWaterfallSw),
-                    .seedOffset = 3,
-                } });
+            SceneryRule{ .enabled = true,
+                         .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SW),
+                         .conditions = std::vector{ distanceToFeature(Feature::River, 0),
+                                                    heightDeltaBetween(
+                                                        HeightSource::NeighbourSWWater, HeightSource::SelfWater,
+                                                        Predicate::GreaterThan, true) },
+                         .zRepeat = true,
+                         .effect = {
+                             .objects = toSceneryEffectItemsIfAvailable(kWaterfallSw),
+                             .seedOffset = 3,
+                         } });
         settings.sceneryRules.push_back(
                     SceneryRule{
                         .enabled = true,
@@ -770,17 +769,19 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 return Condition{ .enabled = true,
                                   .type = type,
                                   .predicate = Predicate::GreaterThan,
-                                  .data = HeightAbsoluteData{ .height = 16,
-                                                      .source = HeightSource::SelfLand,
-                                                      } };
+                                  .data = HeightAbsoluteData{
+                                      .height = 16,
+                                      .source = HeightSource::SelfLand,
+                                  } };
             case Type::HeightRelative:
                 return Condition{ .enabled = true,
                                   .type = type,
                                   .predicate = Predicate::GreaterThan,
-                                  .data = HeightRelativeData{ .height = 2,
-                                                      .sourceFirst = HeightSource::SelfLand,
-                                                      .sourceSecond = HeightSource::GlobalWaterLevel,
-                                                      } };
+                                  .data = HeightRelativeData{
+                                      .height = 2,
+                                      .sourceFirst = HeightSource::SelfLand,
+                                      .sourceSecond = HeightSource::GlobalWaterLevel,
+                                  } };
             case Type::Distance:
                 return Condition{ .enabled = true,
                                   .type = type,

@@ -300,9 +300,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_HEIGHT_SOURCE_FIRST].type = heightDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
             widgets[WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN].type = heightDropdownsVisible ? WidgetType::button : WidgetType::empty;
 
-            widgets[WIDX_HEIGHT_SOURCE_SECOND_LABEL].type = heightRelativeDropdownsVisible ? WidgetType::label : WidgetType::empty;
-            widgets[WIDX_HEIGHT_SOURCE_SECOND].type = heightRelativeDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
-            widgets[WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN].type = heightRelativeDropdownsVisible ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND_LABEL].type = heightRelativeDropdownsVisible ? WidgetType::label
+                                                                                           : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND].type = heightRelativeDropdownsVisible ? WidgetType::dropdownMenu
+                                                                                     : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN].type = heightRelativeDropdownsVisible ? WidgetType::button
+                                                                                              : WidgetType::empty;
 
             bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)
@@ -354,19 +357,32 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (source)
             {
-                case HeightSource::SelfLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND;
-                case HeightSource::SelfWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER;
-                case HeightSource::NeighbourNWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND;
-                case HeightSource::NeighbourNWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER;
-                case HeightSource::NeighbourNELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND;
-                case HeightSource::NeighbourNEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER;
-                case HeightSource::NeighbourSELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND;
-                case HeightSource::NeighbourSEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER;
-                case HeightSource::NeighbourSWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND;
-                case HeightSource::NeighbourSWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER;
-                case HeightSource::GlobalMin: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN;
-                case HeightSource::GlobalMax: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX;
-                case HeightSource::GlobalWaterLevel: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL;
+                case HeightSource::SelfLand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND;
+                case HeightSource::SelfWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER;
+                case HeightSource::NeighbourNWLand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND;
+                case HeightSource::NeighbourNWWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER;
+                case HeightSource::NeighbourNELand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND;
+                case HeightSource::NeighbourNEWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER;
+                case HeightSource::NeighbourSELand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND;
+                case HeightSource::NeighbourSEWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER;
+                case HeightSource::NeighbourSWLand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND;
+                case HeightSource::NeighbourSWWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER;
+                case HeightSource::GlobalMin:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN;
+                case HeightSource::GlobalMax:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX;
+                case HeightSource::GlobalWaterLevel:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL;
                 default:
                     throw std::runtime_error("unknown height source");
             }
@@ -1360,16 +1376,16 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     constexpr ItemExt items[] = {
-                        ItemExt( 0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
-                        ItemExt( 1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
-                        ItemExt( 2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND),
-                        ItemExt( 3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER),
-                        ItemExt( 4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND),
-                        ItemExt( 5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER),
-                        ItemExt( 6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND),
-                        ItemExt( 7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER),
-                        ItemExt( 8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND),
-                        ItemExt( 9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND),
+                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER),
                         ItemExt(10, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN),
                         ItemExt(11, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX),
                         ItemExt(12, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL),
@@ -1394,16 +1410,16 @@ namespace OpenRCT2::Ui::Windows
                     int32_t selectedIndex = static_cast<int32_t>(heightData.sourceSecond);
 
                     constexpr ItemExt items[] = {
-                        ItemExt( 0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
-                        ItemExt( 1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
-                        ItemExt( 2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND),
-                        ItemExt( 3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER),
-                        ItemExt( 4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND),
-                        ItemExt( 5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER),
-                        ItemExt( 6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND),
-                        ItemExt( 7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER),
-                        ItemExt( 8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND),
-                        ItemExt( 9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND),
+                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER),
                         ItemExt(10, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN),
                         ItemExt(11, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX),
                         ItemExt(12, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL),

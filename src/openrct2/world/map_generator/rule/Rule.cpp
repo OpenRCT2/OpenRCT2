@@ -267,7 +267,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     static std::optional<int32_t> fetchHeightValue(const HeightAbsoluteData& heightData, const EvaluationHeights& localHeights)
     {
-       return fetchHeight(heightData.source, localHeights);
+        return fetchHeight(heightData.source, localHeights);
     }
 
     static std::optional<int32_t> fetchHeightValue(const HeightRelativeData& heightData, const EvaluationHeights& localHeights)

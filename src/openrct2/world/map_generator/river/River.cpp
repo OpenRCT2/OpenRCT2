@@ -724,7 +724,7 @@ namespace OpenRCT2::World::MapGenerator::River
             }
         }
 
-        // find and handle isolated segments in iterations until none are found, greedily altering the smallest segment
+        // find and handle isolated segments in iterations until none are found, altering the smallest segment
         while (true)
         {
             BooleanMap visited{ ctx.dimensions };

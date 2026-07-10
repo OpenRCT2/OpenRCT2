@@ -293,8 +293,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     };
 
     using ConditionData = std::variant<
-        HeightAbsoluteData, HeightRelativeData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, BlendDistanceData,
-        LandStyleData>;
+        HeightAbsoluteData, HeightRelativeData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData,
+        BlendNoiseData, BlendDistanceData, LandStyleData>;
 
     struct Condition
     {
