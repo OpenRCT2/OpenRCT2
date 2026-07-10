@@ -23,7 +23,7 @@ namespace OpenRCT2::World::MapGenerator::River
     {
         RiverContext& riverCtx = ctx.riverContext.value();
 
-        for (int32_t y = 0; y < ctx.dimensions.y - 1; y++)
+        for (int32_t y = 0; y < ctx.dimensions.y; y++)
         {
             const TileCoordsXY left{ 0, y };
             if (riverCtx.flags[left].has(flag))
