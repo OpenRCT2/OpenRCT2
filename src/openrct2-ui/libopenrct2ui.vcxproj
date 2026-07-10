@@ -198,6 +198,7 @@
     <ClCompile Include="windows\Map.cpp" />
     <ClCompile Include="windows\MapGen.cpp" />
     <ClCompile Include="windows\MapGenRuleCondition.cpp" />
+    <ClCompile Include="windows\MapGenRuleScenerySelect.cpp" />
     <ClCompile Include="windows\MapTooltip.cpp" />
     <ClCompile Include="windows\MazeConstruction.cpp" />
     <ClCompile Include="windows\Multiplayer.cpp" />
