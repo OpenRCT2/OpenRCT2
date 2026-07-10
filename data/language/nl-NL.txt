@@ -3819,3 +3819,7 @@ STR_7029    :Kwartspiraal omlaag
 STR_7030    :{WINDOW_COLOUR_2}Bezoekers vermaakt: {BLACK}{COMMA32}
 STR_7031    :Grasgroei uitschakelen
 STR_7032    :Zorgt ervoor dat het gras op dezelfde lengte blijft.
+STR_7033    :Baanstijl
+STR_7034    :Muursoort
+STR_7035    :Winkelstijl
+STR_7036    :Voertuigstijl
