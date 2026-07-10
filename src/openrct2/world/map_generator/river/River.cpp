@@ -12,8 +12,12 @@
 #include "../../../Context.h"
 #include "../../../Diagnostic.h"
 #include "../../../GameState.h"
+#include "../../../PlatformEnvironment.h"
+#include "../../../core/Path.hpp"
+#include "../../../platform/Platform.h"
 #include "../../../profiling/Profiling.h"
 #include "../BaseMap.hpp"
+#include "../MapGenSerDe.hpp"
 #include "../MapHelpers.h"
 #include "../TileQueue.hpp"
 #include "RiverUtils.h"
@@ -641,13 +645,16 @@ namespace OpenRCT2::World::MapGenerator::River
         }
     }
 
-    static void printDbgMap(MapGenContext& ctx, const TileCoordsXY& pos, const int32_t size)
+    static void handleConsistencyRunaway(
+        MapGenContext& ctx, const TileCoordsXY& segment, const TileCoordsXY& pos, const size_t segmentSize, bool lowered)
     {
         RiverContext& riverCtx = ctx.riverContext.value();
-        std::stringstream ss;
-        for (int32_t dy = -size; dy <= size; dy++)
+        std::stringstream mapVis;
+        constexpr int32_t kSize = 5;
+
+        for (int32_t dy = -kSize; dy <= kSize; dy++)
         {
-            for (int32_t dx = -size; dx <= size; dx++)
+            for (int32_t dx = -kSize; dx <= kSize; dx++)
             {
                 const TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
 
@@ -657,24 +664,41 @@ namespace OpenRCT2::World::MapGenerator::River
 
                 if (!inBounds)
                 {
-                    ss << "XXXXXXXXXXXXXXXX |";
+                    mapVis << "XXXXXXXXXXXXXXXX | ";
                 }
                 else if (isRiver)
                 {
-                    ss << std::format(
-                        "({},{}) h{} r{} s{} |", deltaPos.x, deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos],
+                    mapVis << std::format(
+                        "{},{} h{} r{} s{} | ", deltaPos.x, deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos],
                         isSource ? 'S' : '-');
                 }
                 else
                 {
-                    ss << "LLLLLLLLLLLLLLLLL |";
+                    mapVis << "LLLLLLLLLLLLLLLLL | ";
                 }
             }
-
-            ss << std::endl;
+            mapVis << std::endl;
         }
 
-        LOG_INFO("consistency runaway %s", ss.str().c_str());
+        auto date = Platform::GetDateLocal();
+        auto time = Platform::GetTimeLocal();
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto mapgenDir = env.GetDirectoryPath(DirBase::user, DirId::mapgenSettings);
+        auto name = std::format(
+            "crw_{:04d}-{:02d}-{:02d}_{:02d}-{:02d}-{:02d}.mapgen.json", date.year, date.month, date.day, time.hour,
+            time.minute, time.second);
+        auto filePath = Path::Combine(mapgenDir, name);
+
+        saveMapgenSettingsToPath(ctx.settings, filePath);
+
+        std::string actionStr = lowered ? "lowered below 0" : "raised above 256";
+        auto message = std::format(
+            "consistency runaway: ({},{}) of segment ({},{}) size={} {}, settings saved to {}", pos.x, pos.y, segment.x,
+            segment.y, segmentSize, actionStr, filePath);
+
+        LOG_INFO("%s\n%s\n%s", message.c_str(), mapVis.str().c_str(), summarizeRiverStatistics(ctx).c_str());
+
+        throw std::runtime_error(message);
     }
 
     /**
@@ -795,11 +819,7 @@ namespace OpenRCT2::World::MapGenerator::River
 
                         if (riverCtx.waterLevel[sPos] < 0.0f)
                         {
-                            printDbgMap(ctx, candidate.pos, 5);
-                            printDbgMap(ctx, sPos, 5);
-                            // TODO change to return
-                            throw std::runtime_error(
-                                std::format("({},{}) size={} lowered below 0", sPos.x, sPos.y, segments[candidate].size()));
+                            handleConsistencyRunaway(ctx, candidate.pos, sPos, segments[candidate].size(), true);
                         }
                     }
                     riverCtx.statistics.consistencySegmentsLowered++;
@@ -816,11 +836,7 @@ namespace OpenRCT2::World::MapGenerator::River
 
                         if (riverCtx.waterLevel[sPos] >= 256.0f)
                         {
-                            printDbgMap(ctx, candidate.pos, 5);
-                            printDbgMap(ctx, sPos, 5);
-                            // TODO change to return
-                            throw std::runtime_error(
-                                std::format("({},{}) size={} raised above 256", sPos.x, sPos.y, segments[candidate].size()));
+                            handleConsistencyRunaway(ctx, candidate.pos, sPos, segments[candidate].size(), false);
                         }
                     }
                     riverCtx.statistics.consistencySegmentsRaised++;
