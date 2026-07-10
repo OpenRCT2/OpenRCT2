@@ -265,15 +265,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
-    static std::optional<int32_t> fetchHeightValue(const HeightData& heightData, const EvaluationHeights& localHeights)
+    static std::optional<int32_t> fetchHeightValue(const HeightAbsoluteData& heightData, const EvaluationHeights& localHeights)
+    {
+       return fetchHeight(heightData.source, localHeights);
+    }
+
+    static std::optional<int32_t> fetchHeightValue(const HeightRelativeData& heightData, const EvaluationHeights& localHeights)
     {
         const auto heightFirst = fetchHeight(heightData.sourceFirst, localHeights);
-
-        if (heightData.mode == HeightMode::Absolute)
-        {
-            return heightFirst;
-        }
-
         const auto heightSecond = fetchHeight(heightData.sourceSecond, localHeights);
 
         if (heightFirst.has_value() && heightSecond.has_value())
@@ -288,9 +287,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         switch (condition.type)
         {
-            case Type::Height:
+            case Type::HeightAbsolute:
             {
-                const auto heightData = std::get<HeightData>(condition.data);
+                const auto heightData = std::get<HeightAbsoluteData>(condition.data);
+                const auto heightActual = fetchHeightValue(heightData, ctx.evaluationHeights);
+                return heightActual.has_value()
+                    ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height.get())
+                    : std::nullopt;
+            }
+            case Type::HeightRelative:
+            {
+                const auto heightData = std::get<HeightRelativeData>(condition.data);
                 const auto heightActual = fetchHeightValue(heightData, ctx.evaluationHeights);
                 return heightActual.has_value()
                     ? evaluatePredicate(heightActual.value(), condition.predicate, heightData.height.get())

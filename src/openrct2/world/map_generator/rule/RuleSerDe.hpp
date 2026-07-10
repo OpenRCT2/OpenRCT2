@@ -22,7 +22,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
     NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         Type,
         {
-            { Type::Height, "Height"},
+            { Type::HeightAbsolute, "HeightAbsolute"},
+            { Type::HeightRelative, "HeightRelative"},
             { Type::Distance, "Distance"},
             { Type::Noise, "Noise"},
             { Type::NormalAngle, "NormalAngle"},
@@ -53,13 +54,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
         })
 
     NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
-        HeightMode,
-        {
-            { HeightMode::Absolute, "Absolute" },
-            { HeightMode::Relative, "Relative" },
-        })
-
-    NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         HeightSource,
         {
             {HeightSource::SelfLand, "SelfLand"},
@@ -77,7 +71,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
             {HeightSource::GlobalWaterLevel, "GlobalWaterLevel"},
         })
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(HeightData, height, mode, sourceFirst, sourceSecond)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(HeightAbsoluteData, height, source)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(HeightRelativeData, height, sourceFirst, sourceSecond)
 
     NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         Feature,
@@ -151,8 +146,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         switch (condition.type)
         {
-            case Type::Height:
-                j["data"] = std::get<HeightData>(condition.data);
+            case Type::HeightAbsolute:
+                j["data"] = std::get<HeightAbsoluteData>(condition.data);
+                break;
+            case Type::HeightRelative:
+                j["data"] = std::get<HeightRelativeData>(condition.data);
                 break;
             case Type::Distance:
                 j["data"] = std::get<DistanceData>(condition.data);
@@ -190,9 +188,14 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         switch (condition.type)
         {
-            case Type::Height:
+            case Type::HeightAbsolute:
             {
-                condition.data = j.at("data").get<HeightData>();
+                condition.data = j.at("data").get<HeightAbsoluteData>();
+                break;
+            }
+            case Type::HeightRelative:
+            {
+                condition.data = j.at("data").get<HeightRelativeData>();
                 break;
             }
             case Type::Distance:

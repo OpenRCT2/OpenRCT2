@@ -77,10 +77,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_FEATURE,
         WIDX_FEATURE_DROPDOWN,
 
-        WIDX_HEIGHT_MODE_LABEL,
-        WIDX_HEIGHT_MODE,
-        WIDX_HEIGHT_MODE_DROPDOWN,
-
         WIDX_HEIGHT_SOURCE_FIRST_LABEL,
         WIDX_HEIGHT_SOURCE_FIRST,
         WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN,
@@ -122,14 +118,11 @@ namespace OpenRCT2::Ui::Windows
         makeWidget(         {   5,  58 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_FEATURE),
         makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER),
 
-        makeWidget(         {   5,  39 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE),
-        makeDropdownWidgets({ 186,  39 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE),
+        makeWidget(         {   5,  39 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE),
+        makeDropdownWidgets({ 186,  39 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
 
-        makeWidget(         {   5,  58 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE),
-        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
-
-        makeWidget(         {   5,  77 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SUBTRAHEND),
-        makeDropdownWidgets({ 186,  77 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL)
+        makeWidget(         {   5,  58 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SUBTRAHEND),
+        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL)
         // clang-format on
     );
 
@@ -207,12 +200,18 @@ namespace OpenRCT2::Ui::Windows
             bool landStyleVisible = false;
             bool featureVisible = false;
             bool heightDropdownsVisible = false;
+            bool heightRelativeDropdownsVisible = false;
 
             switch (condition.type)
             {
-                case Type::Height:
-                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT;
+                case Type::HeightAbsolute:
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_VERBOSE_ABSOLUTE;
                     heightDropdownsVisible = true;
+                    break;
+                case Type::HeightRelative:
+                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_VERBOSE_RELATIVE;
+                    heightDropdownsVisible = true;
+                    heightRelativeDropdownsVisible = true;
                     break;
                 case Type::Distance:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_LABEL;
@@ -297,17 +296,13 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FEATURE].type = featureVisible ? WidgetType::dropdownMenu : WidgetType::empty;
             widgets[WIDX_FEATURE_DROPDOWN].type = featureVisible ? WidgetType::button : WidgetType::empty;
 
-            widgets[WIDX_HEIGHT_MODE_LABEL].type = heightDropdownsVisible ? WidgetType::label : WidgetType::empty;
-            widgets[WIDX_HEIGHT_MODE].type = heightDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
-            widgets[WIDX_HEIGHT_MODE_DROPDOWN].type = heightDropdownsVisible ? WidgetType::button : WidgetType::empty;
-
             widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].type = heightDropdownsVisible ? WidgetType::label : WidgetType::empty;
             widgets[WIDX_HEIGHT_SOURCE_FIRST].type = heightDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
             widgets[WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN].type = heightDropdownsVisible ? WidgetType::button : WidgetType::empty;
 
-            widgets[WIDX_HEIGHT_SOURCE_SECOND_LABEL].type = heightDropdownsVisible ? WidgetType::label : WidgetType::empty;
-            widgets[WIDX_HEIGHT_SOURCE_SECOND].type = heightDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
-            widgets[WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN].type = heightDropdownsVisible ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND_LABEL].type = heightRelativeDropdownsVisible ? WidgetType::label : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND].type = heightRelativeDropdownsVisible ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN].type = heightRelativeDropdownsVisible ? WidgetType::button : WidgetType::empty;
 
             bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)
@@ -340,42 +335,18 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_FEATURE].text = featureToStringId(getFeature());
             }
 
-            if (heightDropdownsVisible)
+            if (condition.type == Type::HeightAbsolute)
             {
-                auto& heightData = std::get<HeightData>(condition.data);
-                bool isAbsMode = heightData.mode == HeightMode::Absolute;
-
-                setWidgetDisabled(WIDX_HEIGHT_SOURCE_SECOND_LABEL, isAbsMode);
-                setWidgetDisabled(WIDX_HEIGHT_SOURCE_SECOND, isAbsMode);
-                setWidgetDisabled(WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN, isAbsMode);
-
-                if (isAbsMode)
-                {
-                    widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE;
-                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_VERBOSE_ABSOLUTE;
-                }
-                else
-                {
-                    widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_MINUEND;
-                    widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_VERBOSE_RELATIVE;
-                }
-
-                widgets[WIDX_HEIGHT_MODE].text = heightModeToStringId(heightData.mode);
+                auto& heightData = std::get<HeightAbsoluteData>(condition.data);
+                widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE;
+                widgets[WIDX_HEIGHT_SOURCE_FIRST].text = heightSourceToStringId(heightData.source);
+            }
+            if (condition.type == Type::HeightRelative)
+            {
+                auto& heightData = std::get<HeightRelativeData>(condition.data);
+                widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_MINUEND;
                 widgets[WIDX_HEIGHT_SOURCE_FIRST].text = heightSourceToStringId(heightData.sourceFirst);
                 widgets[WIDX_HEIGHT_SOURCE_SECOND].text = heightSourceToStringId(heightData.sourceSecond);
-            }
-        }
-
-        StringId heightModeToStringId(HeightMode& mode)
-        {
-            switch (mode)
-            {
-                case HeightMode::Absolute:
-                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE;
-                case HeightMode::Relative:
-                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_RELATIVE;
-                default:
-                    throw std::runtime_error("unknown height mode");
             }
         }
 
@@ -430,10 +401,21 @@ namespace OpenRCT2::Ui::Windows
 
             switch (condition.type)
             {
-                case Type::Height:
+                case Type::HeightAbsolute:
                 {
                     auto ft = Formatter();
-                    ft.Add<int16_t>(static_cast<int16_t>(BaseZToMetres(std::get<HeightData>(condition.data).height)));
+                    auto& heightData = std::get<HeightAbsoluteData>(condition.data);
+                    ft.Add<int16_t>(static_cast<int16_t>(BaseZToMetresCast(heightData.height)));
+                    drawText(
+                        rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
+                        STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
+                    break;
+                }
+                case Type::HeightRelative:
+                {
+                    auto ft = Formatter();
+                    auto& heightData = std::get<HeightRelativeData>(condition.data);
+                    ft.Add<int16_t>(static_cast<int16_t>(HeightUnitsToMetres(heightData.height)));
                     drawText(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
@@ -587,13 +569,13 @@ namespace OpenRCT2::Ui::Windows
                         STR_STRINGID, ft, { colours[1] });
 
                     ft = Formatter();
-                    ft.Add<int16_t>(static_cast<int16_t>(blendDistanceData.edgeLow));
+                    ft.Add<int16_t>(static_cast<int16_t>(TileUnitsToMetres(blendDistanceData.edgeLow)));
                     drawText(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_EDGE_LOW].left + 1, widgets[WIDX_EDGE_LOW].top + 1 },
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
 
                     ft = Formatter();
-                    ft.Add<int16_t>(static_cast<int16_t>(blendDistanceData.edgeHigh));
+                    ft.Add<int16_t>(static_cast<int16_t>(TileUnitsToMetres(blendDistanceData.edgeHigh)));
                     drawText(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_EDGE_HIGH].left + 1, widgets[WIDX_EDGE_HIGH].top + 1 },
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
@@ -642,7 +624,12 @@ namespace OpenRCT2::Ui::Windows
 
         static int32_t MetresToBaseZCast(const int32_t metres)
         {
-            return static_cast<int32_t>(MetresToBaseZ(static_cast<int16_t>(metres)));
+            return MetresToBaseZ(static_cast<int16_t>(metres));
+        }
+
+        static int32_t BaseZToMetresCast(const int32_t baseZ)
+        {
+            return BaseZToMetres(static_cast<int16_t>(baseZ));
         }
 
         template<typename T>
@@ -660,10 +647,16 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::Height:
+                case Type::HeightAbsolute:
                 {
-                    auto& elevationData = std::get<HeightData>(condition.data);
-                    elevationData.height.change(change, mapOptional<int32_t>(intValue, MetresToBaseZCast));
+                    auto& heightData = std::get<HeightAbsoluteData>(condition.data);
+                    heightData.height.change(change, mapOptional<int32_t>(intValue, MetresToBaseZCast));
+                    break;
+                }
+                case Type::HeightRelative:
+                {
+                    auto& heightData = std::get<HeightRelativeData>(condition.data);
+                    heightData.height.change(change, mapOptional<int32_t>(intValue, MetresToHeightUnits));
                     break;
                 }
                 case Type::Distance:
@@ -864,15 +857,28 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::Height:
+                case Type::HeightAbsolute:
                 {
                     Formatter ft;
-                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT);
+                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT_ABSOLUTE);
                     ft.Add<int16_t>(static_cast<int16_t>(kHeightMin));
                     ft.Add<int16_t>(static_cast<int16_t>(kHeightMax));
+                    auto& heightData = std::get<HeightAbsoluteData>(condition.data);
                     WindowTextInputOpen(
-                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_HEIGHT, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
-                        STR_FORMAT_INTEGER, BaseZToMetres(std::get<HeightData>(condition.data).height), 3);
+                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_HEIGHT_ABSOLUTE, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
+                        STR_FORMAT_INTEGER, BaseZToMetresCast(heightData.height), 3);
+                    break;
+                }
+                case Type::HeightRelative:
+                {
+                    Formatter ft;
+                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT_RELATIVE);
+                    ft.Add<int16_t>(static_cast<int16_t>(kHeightMin));
+                    ft.Add<int16_t>(static_cast<int16_t>(kHeightMax));
+                    auto& heightData = std::get<HeightRelativeData>(condition.data);
+                    WindowTextInputOpen(
+                        this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_HEIGHT_RELATIVE, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
+                        STR_FORMAT_INTEGER, HeightUnitsToMetres(heightData.height), 3);
                     break;
                 }
                 case Type::Distance:
@@ -883,7 +889,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(static_cast<int16_t>(kDistanceMax));
                     WindowTextInputOpen(
                         this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO, STR_MAPGEN_RULE_ENTER_LENGTH, ft,
-                        STR_FORMAT_INTEGER, std::get<DistanceData>(condition.data).distance, 4);
+                        STR_FORMAT_INTEGER, TileUnitsToMetres(std::get<DistanceData>(condition.data).distance), 4);
                     break;
                 }
                 case Type::Noise:
@@ -1039,7 +1045,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(static_cast<int32_t>(kDistanceMax));
                     WindowTextInputOpen(
                         this, WIDX_EDGE_LOW, STR_MAPGEN_RULE_EDGE_LOW, STR_MAPGEN_RULE_ENTER_LENGTH, ft, STR_FORMAT_INTEGER,
-                        BaseZToMetres(std::get<BlendDistanceData>(condition.data).edgeLow), 3);
+                        TileUnitsToMetres(std::get<BlendDistanceData>(condition.data).edgeLow), 3);
                     break;
                 }
                 default:
@@ -1081,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(static_cast<int32_t>(kDistanceMax));
                     WindowTextInputOpen(
                         this, WIDX_EDGE_HIGH, STR_MAPGEN_RULE_EDGE_HIGH, STR_MAPGEN_RULE_ENTER_LENGTH, ft, STR_FORMAT_INTEGER,
-                        BaseZToMetres(std::get<BlendDistanceData>(condition.data).edgeHigh), 3);
+                        TileUnitsToMetres(std::get<BlendDistanceData>(condition.data).edgeHigh), 3);
                     break;
                 }
                 default:
@@ -1215,20 +1221,6 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 }
-                case WIDX_HEIGHT_MODE_DROPDOWN:
-                {
-                    if (selectedIndex == -1)
-                        selectedIndex = gDropdown.highlightedIndex;
-
-                    if (selectedIndex == -1)
-                        return;
-
-
-                    auto& heightData = std::get<HeightData>(condition.data);
-                    heightData.mode = static_cast<HeightMode>(selectedIndex);
-                    invalidate();
-                    break;
-                }
                 case WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN:
                 {
                     if (selectedIndex == -1)
@@ -1237,9 +1229,18 @@ namespace OpenRCT2::Ui::Windows
                     if (selectedIndex == -1)
                         return;
 
-                    auto& heightData = std::get<HeightData>(condition.data);
-                    heightData.sourceFirst = static_cast<HeightSource>(selectedIndex);
-                    invalidate();
+                    if (condition.type == Type::HeightAbsolute)
+                    {
+                        auto& heightData = std::get<HeightAbsoluteData>(condition.data);
+                        heightData.source = static_cast<HeightSource>(selectedIndex);
+                        invalidate();
+                    }
+                    else if (condition.type == Type::HeightRelative)
+                    {
+                        auto& heightData = std::get<HeightRelativeData>(condition.data);
+                        heightData.sourceFirst = static_cast<HeightSource>(selectedIndex);
+                        invalidate();
+                    }
                     break;
                 }
                 case WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN:
@@ -1250,7 +1251,7 @@ namespace OpenRCT2::Ui::Windows
                     if (selectedIndex == -1)
                         return;
 
-                    auto& heightData = std::get<HeightData>(condition.data);
+                    auto& heightData = std::get<HeightRelativeData>(condition.data);
                     heightData.sourceSecond = static_cast<HeightSource>(selectedIndex);
                     invalidate();
                     break;
@@ -1342,35 +1343,21 @@ namespace OpenRCT2::Ui::Windows
                         StayOpen, itemSize);
                     break;
                 }
-                case WIDX_HEIGHT_MODE_DROPDOWN:
-                {
-                    using namespace Dropdown;
-
-                    auto& heightData = std::get<HeightData>(condition.data);
-                    int32_t selectedIndex = static_cast<int32_t>(heightData.mode);
-
-                    constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_RELATIVE),
-                    };
-
-                    SetItems(items);
-                    size_t itemSize = std::size(items);
-
-                    gDropdown.items[selectedIndex].setChecked(true);
-
-                    Widget* ddWidget = &widgets[widgetIndex - 1];
-                    WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        StayOpen, itemSize);
-                    break;
-                }
                 case WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN:
                 {
                     using namespace Dropdown;
 
-                    auto& heightData = std::get<HeightData>(condition.data);
-                    int32_t selectedIndex = static_cast<int32_t>(heightData.sourceFirst);
+                    int32_t selectedIndex;
+                    if (condition.type == Type::HeightAbsolute)
+                    {
+                        auto& heightData = std::get<HeightAbsoluteData>(condition.data);
+                        selectedIndex = static_cast<int32_t>(heightData.source);
+                    }
+                    else
+                    {
+                        auto& heightData = std::get<HeightRelativeData>(condition.data);
+                        selectedIndex = static_cast<int32_t>(heightData.sourceFirst);
+                    }
 
                     constexpr ItemExt items[] = {
                         ItemExt( 0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
@@ -1403,7 +1390,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     using namespace Dropdown;
 
-                    auto& heightData = std::get<HeightData>(condition.data);
+                    auto& heightData = std::get<HeightRelativeData>(condition.data);
                     int32_t selectedIndex = static_cast<int32_t>(heightData.sourceSecond);
 
                     constexpr ItemExt items[] = {

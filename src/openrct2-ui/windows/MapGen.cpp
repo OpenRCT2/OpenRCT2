@@ -1083,15 +1083,16 @@ namespace OpenRCT2::Ui::Windows
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
-                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
-                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
-                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
-                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
-                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
-                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_ABSOLUTE),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_RELATIVE),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
+                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
                     };
 
                     SetItems(items);
@@ -1102,7 +1103,7 @@ namespace OpenRCT2::Ui::Windows
                         Dropdown::Flag::StayOpen, std::size(items));
 
                     // TODO implement
-                    gDropdown.items[3].setDisabled(true);
+                    gDropdown.items[4].setDisabled(true);
 
                     break;
                 }
@@ -1424,48 +1425,38 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-                StringId heightSourceToStringId(const MapGenerator::Rule::HeightSource& source)
+        StringId heightSourceToStringId(const MapGenerator::Rule::HeightSource& source)
         {
             switch (source)
             {
-                case MapGenerator::Rule::HeightSource::SelfLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND;
-                case MapGenerator::Rule::HeightSource::SelfWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER;
-                case MapGenerator::Rule::HeightSource::NeighbourNWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND;
-                case MapGenerator::Rule::HeightSource::NeighbourNWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER;
-                case MapGenerator::Rule::HeightSource::NeighbourNELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND;
-                case MapGenerator::Rule::HeightSource::NeighbourNEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER;
-                case MapGenerator::Rule::HeightSource::NeighbourSELand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND;
-                case MapGenerator::Rule::HeightSource::NeighbourSEWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER;
-                case MapGenerator::Rule::HeightSource::NeighbourSWLand: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND;
-                case MapGenerator::Rule::HeightSource::NeighbourSWWater: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER;
-                case MapGenerator::Rule::HeightSource::GlobalMin: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN;
-                case MapGenerator::Rule::HeightSource::GlobalMax: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX;
-                case MapGenerator::Rule::HeightSource::GlobalWaterLevel: return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL;
+                case MapGenerator::Rule::HeightSource::SelfLand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND;
+                case MapGenerator::Rule::HeightSource::SelfWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourNWLand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourNWWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourNELand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourNEWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourSELand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourSEWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourSWLand:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND;
+                case MapGenerator::Rule::HeightSource::NeighbourSWWater:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER;
+                case MapGenerator::Rule::HeightSource::GlobalMin:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN;
+                case MapGenerator::Rule::HeightSource::GlobalMax:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MAX;
+                case MapGenerator::Rule::HeightSource::GlobalWaterLevel:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL;
                 default:
                     throw std::runtime_error("unknown height source");
-            }
-        }
-
-        void formatHeightCondition(Formatter& ft, StringId predRepr, const  MapGenerator::Rule::Condition& condition)
-        {
-            const auto& heightData = std::get<MapGenerator::Rule::HeightData>(condition.data);
-            const bool isAbsMode = heightData.mode == MapGenerator::Rule::HeightMode::Absolute;
-
-            if (isAbsMode)
-            {
-                ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
-                ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT);
-                ft.Add<StringId>(heightSourceToStringId(heightData.sourceFirst));
-                ft.Add<StringId>(predRepr);
-                ft.Add<int16_t>(static_cast<int16_t>( BaseZToMetres(heightData.height)));
-            } else
-            {
-                ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_HEIGHT_RELATIVE_LENGTH);
-                ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT);
-                ft.Add<StringId>(heightSourceToStringId(heightData.sourceFirst));
-                ft.Add<StringId>(heightSourceToStringId(heightData.sourceSecond));
-                ft.Add<StringId>(predRepr);
-                ft.Add<int16_t>(static_cast<int16_t>( BaseZToMetres(heightData.height)));
             }
         }
 
@@ -1587,85 +1578,107 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 switch (condition.type)
                 {
-                    case MapGenerator::Rule::Type::Height:
-                        formatHeightCondition(ft, predRepr, condition);
+                    case MapGenerator::Rule::Type::HeightAbsolute:
+                    {
+                        auto& heightData = std::get<MapGenerator::Rule::HeightAbsoluteData>(condition.data);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE);
+                        ft.Add<StringId>(heightSourceToStringId(heightData.source));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>(BaseZToMetres(heightData.height)));
                         break;
-
+                    }
+                    case MapGenerator::Rule::Type::HeightRelative:
+                    {
+                        auto& heightData = std::get<MapGenerator::Rule::HeightRelativeData>(condition.data);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_HEIGHT_RELATIVE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT_RELATIVE);
+                        ft.Add<StringId>(heightSourceToStringId(heightData.sourceFirst));
+                        ft.Add<StringId>(heightSourceToStringId(heightData.sourceSecond));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>(HeightUnitsToMetres(heightData.height)));
+                        break;
+                    }
                     case MapGenerator::Rule::Type::Distance:
+                    {
+                        auto& distanceData = std::get<MapGenerator::Rule::DistanceData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
-                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::DistanceData>(condition.data).feature));
+                        ft.Add<StringId>(featureToStringId(distanceData.feature));
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int16_t>(
-                            static_cast<int16_t>(std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
+                        ft.Add<int16_t>(static_cast<int16_t>(TileUnitsToMetres(distanceData.distance)));
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::Noise:
+                    {
+                        auto& noiseData = std::get<MapGenerator::Rule::NoiseData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NOISE);
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::NoiseData>(condition.data).value * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(noiseData.value * 100));
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::NormalAngle:
+                    {
+                        auto& normalAngleData = std::get<MapGenerator::Rule::NormalAngleData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE);
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::NormalAngleData>(condition.data).angle * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(normalAngleData.angle * 100));
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::Random:
+                    {
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::RandomData>(condition.data).value * 100));
+                        auto& randomData = std::get<MapGenerator::Rule::RandomData>(condition.data);
+                        ft.Add<int32_t>(static_cast<int32_t>(randomData.value * 100));
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::BlendHeight:
+                    {
+                        auto& blendHeightData = std::get<MapGenerator::Rule::BlendHeightData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT);
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeLow)));
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeHigh)));
+                        ft.Add<int16_t>(static_cast<int16_t>(BaseZToMetres(blendHeightData.edgeLow)));
+                        ft.Add<int16_t>(static_cast<int16_t>(BaseZToMetres(blendHeightData.edgeHigh)));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::BlendNoise:
+                    {
+                        auto& blendNoiseData = std::get<MapGenerator::Rule::BlendNoiseData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_NOISE);
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeLow * 100));
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeHigh * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(blendNoiseData.edgeLow * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(blendNoiseData.edgeHigh * 100));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::BlendDistance:
+                    {
+                        auto& blendDistanceData = std::get<MapGenerator::Rule::BlendDistanceData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_DISTANCE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO);
-                        ft.Add<StringId>(
-                            featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));
-                        ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeLow * 100));
-                        ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeHigh * 100));
+                        ft.Add<StringId>(featureToStringId(blendDistanceData.feature));
+                        ft.Add<int16_t>(TileUnitsToMetres(blendDistanceData.edgeLow));
+                        ft.Add<int16_t>(TileUnitsToMetres(blendDistanceData.edgeHigh));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::LandStyle:
+                    {
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_LAND_STYLE_FMT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_LAND_STYLE);
                         ft.Add<StringId>(
                             condition.predicate == MapGenerator::Rule::Predicate::Equal ? STR_MAPGEN_RULE_PREDICATE_IN
                                                                                         : STR_MAPGEN_RULE_PREDICATE_NOT_IN);
                         break;
+                    }
                 }
 
                 // Draw description
@@ -2584,16 +2597,18 @@ namespace OpenRCT2::Ui::Windows
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
-                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
-                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
-                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
-                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
-                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
-                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_ABSOLUTE),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_RELATIVE),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO),
+                        ItemExt(9, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
                     };
+
 
                     SetItems(items);
 
@@ -2603,9 +2618,9 @@ namespace OpenRCT2::Ui::Windows
                         Dropdown::Flag::StayOpen, std::size(items));
 
                     // TODO implement
-                    gDropdown.items[3].setDisabled(true);
+                    gDropdown.items[4].setDisabled(true);
                     // not available here
-                    gDropdown.items[8].setDisabled(true);
+                    gDropdown.items[9].setDisabled(true);
 
                     break;
                 }
@@ -2927,80 +2942,103 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 switch (condition.type)
                 {
-                    case MapGenerator::Rule::Type::Height:
-                        formatHeightCondition(ft, predRepr, condition);
+                    case MapGenerator::Rule::Type::HeightAbsolute:
+                    {
+                        auto& heightData = std::get<MapGenerator::Rule::HeightAbsoluteData>(condition.data);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT_MODE_ABSOLUTE);
+                        ft.Add<StringId>(heightSourceToStringId(heightData.source));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>( BaseZToMetres(heightData.height)));
                         break;
-
+                    }
+                    case MapGenerator::Rule::Type::HeightRelative:
+                    {
+                        auto& heightData = std::get<MapGenerator::Rule::HeightRelativeData>(condition.data);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_HEIGHT_RELATIVE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_HEIGHT_RELATIVE);
+                        ft.Add<StringId>(heightSourceToStringId(heightData.sourceFirst));
+                        ft.Add<StringId>(heightSourceToStringId(heightData.sourceSecond));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>( HeightUnitsToMetres(heightData.height)));
+                        break;
+                    }
                     case MapGenerator::Rule::Type::Distance:
+                    {
+                        auto& distanceData = std::get<MapGenerator::Rule::DistanceData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FEATURE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO);
-                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::DistanceData>(condition.data).feature));
+                        ft.Add<StringId>(featureToStringId(distanceData.feature));
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
+                        ft.Add<int16_t>(static_cast<int16_t>( TileUnitsToMetres(distanceData.distance)));
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::Noise:
+                    {
+                        auto& noiseData = std::get<MapGenerator::Rule::NoiseData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NOISE);
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::NoiseData>(condition.data).value * 100));
-                       break;
-
+                        ft.Add<int32_t>(static_cast<int32_t>(   noiseData.value * 100));
+                        break;
+                    }
                     case MapGenerator::Rule::Type::NormalAngle:
+                    {
+                        auto& normalAngleData = std::get<MapGenerator::Rule::NormalAngleData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE);
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::NormalAngleData>(condition.data).angle * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(  normalAngleData.angle * 100));
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::Random:
+                    {
+                        auto& randomData = std::get<MapGenerator::Rule::RandomData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         ft.Add<StringId>(predRepr);
-                        ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::RandomData>(condition.data).value * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(  randomData.value * 100));
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::BlendHeight:
+                    {
+                        auto& blendHeightData = std::get<MapGenerator::Rule::BlendHeightData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT);
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeLow)));
-                        ft.Add<int16_t>(static_cast<int16_t>(
-                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeHigh)));
+                        ft.Add<int16_t>(static_cast<int16_t>(   BaseZToMetres(blendHeightData.edgeLow)));
+                        ft.Add<int16_t>(static_cast<int16_t>(  BaseZToMetres(blendHeightData.edgeHigh)));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::BlendNoise:
+                    {
+                        auto& blendNoiseData = std::get<MapGenerator::Rule::BlendNoiseData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_NOISE);
-                        ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeLow * 100));
-                        ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeHigh * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(  blendNoiseData.edgeLow * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>( blendNoiseData.edgeHigh * 100));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::BlendDistance:
+                    {
+                        auto& blendDistanceData = std::get<MapGenerator::Rule::BlendDistanceData>(condition.data);
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_DISTANCE_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_DISTANCE_TO);
-                        ft.Add<StringId>(featureToStringId(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).feature));
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeLow * 100));
-                        ft.Add<int32_t>(
-                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendDistanceData>(condition.data).edgeHigh * 100));
+                        ft.Add<StringId>(featureToStringId(blendDistanceData.feature));
+                        ft.Add<int16_t>(TileUnitsToMetres(blendDistanceData.edgeLow));
+                        ft.Add<int16_t>(TileUnitsToMetres(blendDistanceData.edgeHigh));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
-
+                    }
                     case MapGenerator::Rule::Type::LandStyle:
+                    {
                         // should not be reachable
                         break;
+                    }
                 }
 
                 // Draw description
@@ -3188,21 +3226,21 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_LEVEL:
                 {
                     Formatter ft;
-                    ft.Add<int16_t>(kMinimumWaterHeight);
-                    ft.Add<int16_t>(kMaximumWaterHeight);
+                    ft.Add<int16_t>(baseZToDisplayHeight(kMinimumWaterHeight));
+                    ft.Add<int16_t>(baseZToDisplayHeight(kMaximumWaterHeight));
                     WindowTextInputOpen(
                         this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
-                        MapGenerator::gSettings.waterLevel, 6);
+                        baseZToDisplayHeight(MapGenerator::gSettings.waterLevel), 6);
                     break;
                 }
                 case WIDX_WATER_RIVERS_CATCHMENT:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::River::kRiverCatchmentThresholdMin);
-                    ft.Add<int32_t>(MapGenerator::River::kRiverCatchmentThresholdMax);
+                    ft.Add<int32_t>(tileUnitsAreaToDisplayArea(MapGenerator::River::kRiverCatchmentThresholdMin));
+                    ft.Add<int32_t>(tileUnitsAreaToDisplayArea(MapGenerator::River::kRiverCatchmentThresholdMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft, STR_FORMAT_INTEGER,
-                        MapGenerator::gSettings.river.catchmentThreshold, 7);
+                        tileUnitsAreaToDisplayArea(MapGenerator::gSettings.river.catchmentThreshold), 8);
                     break;
                 }
                 case WIDX_WATER_RIVERS_ENABLE:
@@ -3215,11 +3253,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::River::kRiverWidthMin);
-                    ft.Add<int32_t>(MapGenerator::River::kRiverWidthMax);
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverWidthMin));
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverWidthMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX_ENTER, ft, STR_FORMAT_INTEGER,
-                        MapGenerator::gSettings.river.riverWidthMax, 2);
+                        tileUnitsToDisplayLength(MapGenerator::gSettings.river.riverWidthMax), 4);
                     break;
                 }
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
@@ -3235,31 +3273,31 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMin);
-                    ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverGrowthExponentMin));
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverGrowthExponentMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
-                        MapGenerator::gSettings.river.pruneThreshold, 2);
+                        tileUnitsToDisplayLength(MapGenerator::gSettings.river.pruneThreshold), 3);
                     break;
                 }
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachLengthMin);
-                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachLengthMax);
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverBreachLengthMin));
+                    ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverBreachLengthMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH_ENTER, ft, STR_FORMAT_INTEGER,
-                        MapGenerator::gSettings.river.breachMaxLength, 3);
+                        tileUnitsToDisplayLength(MapGenerator::gSettings.river.breachMaxLength), 3);
                     break;
                 }
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
                 {
                     Formatter ft;
-                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachDepthMin);
-                    ft.Add<int32_t>(MapGenerator::River::kRiverBreachDepthMax);
+                    ft.Add<int32_t>(heightUnitsToDisplayHeight(MapGenerator::River::kRiverBreachDepthMin));
+                    ft.Add<int32_t>(heightUnitsToDisplayHeight(MapGenerator::River::kRiverBreachDepthMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH_ENTER, ft, STR_FORMAT_INTEGER,
-                        MapGenerator::gSettings.river.breachMaxDepth, 2);
+                        heightUnitsToDisplayHeight(MapGenerator::gSettings.river.breachMaxDepth), 3);
                     break;
                 }
             }
@@ -3336,30 +3374,107 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_3);
         }
 
+        int32_t tileUnitsAreaToDisplayArea(int32_t area)
+        {
+            area = area * 10;
+
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                area = SquaredMetresToSquaredFeet(area);
+            }
+            return area;
+        }
+
+        int32_t tileUnitsToDisplayLength(int32_t length)
+        {
+            length = TileUnitsToMetres(length);
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                length = MetresToFeet(length);
+            }
+            return length;
+        }
+
+        int32_t baseZToDisplayHeight(int32_t height)
+        {
+            height = BaseZToMetres(height);
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                height =MetresToFeet(height);
+            }
+            return height;
+        }
+
+        int32_t heightUnitsToDisplayHeight(int32_t height)
+        {
+            height = HeightUnitsToMetres(height);
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                height = MetresToFeet(height);
+            }
+            return height;
+        }
+
+        int32_t displayAreaToTileUnits(int32_t displayArea)
+        {
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                displayArea = SquaredFeetToSquaredMetres(displayArea);
+            }
+            return displayArea / 10;
+        }
+
+        int32_t displayLengthToTileUnits(int32_t displayLength)
+        {
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                displayLength = FeetToMetres(displayLength);
+            }
+            return MetresToTileUnits(displayLength);
+        }
+
+        int32_t displayHeightToBaseZ(int32_t displayHeight)
+        {
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                displayHeight =FeetToMetres(displayHeight);
+            }
+            return MetresToBaseZ(displayHeight);
+        }
+
+        int32_t displayHeightToTileUnits(int32_t displayHeight)
+        {
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                displayHeight =FeetToMetres(displayHeight);
+            }
+            return MetresToHeightUnits(displayHeight);
+        }
+
         void WaterTextInput(WidgetIndex widgetIndex, int32_t value)
         {
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL:
-                    MapGenerator::gSettings.waterLevel = value;
+                    MapGenerator::gSettings.waterLevel = displayHeightToBaseZ(value);
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT:
-                    MapGenerator::gSettings.river.catchmentThreshold = value;
+                    MapGenerator::gSettings.river.catchmentThreshold = displayAreaToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
-                    MapGenerator::gSettings.river.riverWidthMax = value;
+                    MapGenerator::gSettings.river.riverWidthMax = displayLengthToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
-                    MapGenerator::gSettings.river.riverGrowthExponent =  value;
+                    MapGenerator::gSettings.river.riverGrowthExponent = value;
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
-                    MapGenerator::gSettings.river.pruneThreshold =  value;
+                    MapGenerator::gSettings.river.pruneThreshold = displayLengthToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
-                    MapGenerator::gSettings.river.breachMaxLength =  value;
+                    MapGenerator::gSettings.river.breachMaxLength = displayLengthToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
-                    MapGenerator::gSettings.river.breachMaxDepth =  value;
+                    MapGenerator::gSettings.river.breachMaxDepth = displayHeightToTileUnits(value);
                     break;
             }
 
@@ -3421,11 +3536,18 @@ namespace OpenRCT2::Ui::Windows
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_WATER_RIVERS_CATCHMENT,
                 { valueColour });
 
+            StringId areaFmt = STR_MAPGEN_FORMAT_AREA_METRIC;
+            auto catchmentFmt = MapGenerator::gSettings.river.catchmentThreshold * 10;
+            if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
+            {
+                areaFmt = STR_MAPGEN_FORMAT_AREA_IMPERIAL;
+                catchmentFmt = SquaredMetresToSquaredFeet(catchmentFmt);
+            }
             ft = Formatter();
-            ft.Add<int32_t>(MapGenerator::gSettings.river.catchmentThreshold);
+            ft.Add<int32_t>(catchmentFmt);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_CATCHMENT].left + 1,
-                widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
+                widgets[WIDX_WATER_RIVERS_CATCHMENT].top + 1 }, areaFmt, ft, { valueColour });
 
             // max width
             drawText(
@@ -3433,10 +3555,10 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(MapGenerator::gSettings.river.riverWidthMax);
+            ft.Add<int32_t>(TileUnitsToMetres(MapGenerator::gSettings.river.riverWidthMax));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_WIDTH_MAX].left + 1,
-                widgets[WIDX_WATER_RIVERS_WIDTH_MAX].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
+                widgets[WIDX_WATER_RIVERS_WIDTH_MAX].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
 
             // growth exponent
             drawText(
@@ -3455,10 +3577,10 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(MapGenerator::gSettings.river.pruneThreshold);
+            ft.Add<int32_t>(TileUnitsToMetres(MapGenerator::gSettings.river.pruneThreshold));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].left + 1,
-                widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
+                widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
 
             // breach length/depth
             drawText(
@@ -3466,16 +3588,16 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(MapGenerator::gSettings.river.breachMaxLength);
+            ft.Add<int32_t>(TileUnitsToMetres(MapGenerator::gSettings.river.breachMaxLength));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_BREACH_LENGTH].left + 1,
-                widgets[WIDX_WATER_RIVERS_BREACH_LENGTH].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
+                widgets[WIDX_WATER_RIVERS_BREACH_LENGTH].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(MapGenerator::gSettings.river.breachMaxDepth);
+            ft.Add<int32_t>(HeightUnitsToMetres(MapGenerator::gSettings.river.breachMaxDepth));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].left + 1,
-                widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].top + 1 }, STR_FORMAT_INTEGER, ft, { valueColour });
+                widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
         }
 
 #pragma endregion
@@ -3689,8 +3811,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Take care of unit conversion
-            if (page != WINDOW_MAPGEN_PAGE_BASE
-                && !(page == WINDOW_MAPGEN_PAGE_WATER && widgetIndex == WIDX_WATER_RIVERS_CATCHMENT))
+            if (page != WINDOW_MAPGEN_PAGE_BASE && page != WINDOW_MAPGEN_PAGE_WATER )
             {
                 switch (Config::Get().general.measurementFormat)
                 {

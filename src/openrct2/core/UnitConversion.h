@@ -14,14 +14,17 @@
 namespace OpenRCT2
 {
     int32_t SquaredMetresToSquaredFeet(int32_t squaredMetres);
+    int32_t SquaredFeetToSquaredMetres(int32_t squaredFeet);
     int32_t MetresToFeet(int32_t metres);
     int32_t FeetToMetres(int32_t feet);
     int32_t MphToKmph(int32_t mph);
     int32_t MphToDmps(int32_t mph);
     int32_t BaseZToMetres(int16_t baseZ);
     uint8_t MetresToBaseZ(int16_t metres);
-    int32_t HeightUnitsToMetres(int32_t heightUnit);
+    int32_t HeightUnitsToMetres(int32_t heightUnits);
     int32_t MetresToHeightUnits(int32_t metres);
+    int32_t TileUnitsToMetres(int32_t tileUnits);
+    int32_t MetresToTileUnits(int32_t metres);
     int32_t ToHumanReadableSpeed(int32_t baseSpeed);
     int32_t ToHumanReadableAirTime(uint16_t airTime);
     int32_t ToHumanReadableRideLength(int32_t rideLength);

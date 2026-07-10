@@ -214,10 +214,9 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         return Condition{
             .enabled = true,
-            .type = Type::Height,
+            .type = Type::HeightRelative,
             .predicate = pred,
-            .data = HeightData{ .height = 0,
-                                .mode = HeightMode::Relative,
+            .data = HeightRelativeData{ .height = 0,
                                 .sourceFirst = neighbour,
                                 .sourceSecond = self},
             .zRepeat = zRepeat,
@@ -238,7 +237,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall NW",// TODO Format String
+                         .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NW),
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              heightDeltaBetween(HeightSource::NeighbourNWWater, HeightSource::SelfWater, Predicate::LessThan),
@@ -250,7 +249,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall NE",// TODO Format String
+                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NE),
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              heightDeltaBetween(HeightSource::NeighbourNEWater, HeightSource::SelfWater, Predicate::LessThan),
@@ -262,7 +261,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall SE",// TODO Format String
+                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SE),
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              heightDeltaBetween(HeightSource::NeighbourSEWater, HeightSource::SelfWater, Predicate::LessThan),
@@ -274,7 +273,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
-                         .name = "Waterfall SW",// TODO Format String
+                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SW),
                          .conditions = std::vector{
                              distanceToFeature(Feature::River, 0),
                              heightDeltaBetween(HeightSource::NeighbourSWWater, HeightSource::SelfWater, Predicate::LessThan),
@@ -486,7 +485,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall NW", // TODO Format String
+                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NW),
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaBetween(
                                                HeightSource::NeighbourNWWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
@@ -498,7 +497,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall NE", // TODO Format String
+                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_NE),
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaBetween(
                                                HeightSource::NeighbourNEWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
@@ -510,7 +509,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall SE", // TODO Format String
+                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SE),
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaBetween(
                                                HeightSource::NeighbourSEWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
@@ -522,7 +521,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         settings.sceneryRules.push_back(
             SceneryRule{
                 .enabled = true,
-                .name = "Waterfall SW", // TODO Format String
+                .name = FormatStringID(STR_MAPGEN_RULE_WATERFALL_SW),
                 .conditions = std::vector{ distanceToFeature(Feature::River, 0),
                                            heightDeltaBetween(
                                                HeightSource::NeighbourSWWater, HeightSource::SelfWater, Predicate::GreaterThan, true) },
@@ -767,12 +766,18 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         switch (type)
         {
-            case Type::Height:
+            case Type::HeightAbsolute:
                 return Condition{ .enabled = true,
                                   .type = type,
                                   .predicate = Predicate::GreaterThan,
-                                  .data = HeightData{ .height = 2,
-                                                      .mode = HeightMode::Absolute,
+                                  .data = HeightAbsoluteData{ .height = 16,
+                                                      .source = HeightSource::SelfLand,
+                                                      } };
+            case Type::HeightRelative:
+                return Condition{ .enabled = true,
+                                  .type = type,
+                                  .predicate = Predicate::GreaterThan,
+                                  .data = HeightRelativeData{ .height = 2,
                                                       .sourceFirst = HeightSource::SelfLand,
                                                       .sourceSecond = HeightSource::GlobalWaterLevel,
                                                       } };

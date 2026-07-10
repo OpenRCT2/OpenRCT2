@@ -3679,7 +3679,7 @@ STR_6681    :Heightmap file
 STR_6682    :Map Generator - Generator
 STR_6683    :Map Generator - Terrain
 STR_6684    :Map Generator - Water
-STR_6685    :Map Generator - Foliage
+STR_6685    :Map Generator - Scenery
 STR_6686    :Tree to land ratio:
 STR_6687    :Min. tree altitude:
 STR_6688    :Max. tree altitude:
@@ -3866,8 +3866,8 @@ STR_7087    :If
 STR_7088    :Then
 STR_7089    :New rule {UINT16}
 STR_7090    :Remove
-STR_7091    :Height
-STR_7092    :{STRINGID}[{STRINGID}-{STRINGID}] {STRINGID} {LENGTH}
+STR_7091    :HeightAbsolute
+STR_7092    :HeightRelative
 STR_7093    :Height[source]
 STR_7094    :Height[minued - subtrahend]
 STR_7095    :Distance
@@ -3914,7 +3914,7 @@ STR_7141    :Select
 STR_7142    :For each tile the rules are evaluated top to bottom, placing an element from the pool of the first matching rule. If the pool is empty no item is placed.
 STR_7143    :Select scenery
 STR_7144    :{UINT16}x
-STR_7145    :Land style
+STR_7145    :LandStyle
 STR_7146    :in
 STR_7147    :not in
 STR_7148    :{STRINGID} {STRINGID}
@@ -4001,3 +4001,10 @@ STR_7255    :Global min
 STR_7256    :Global max
 STR_7257    :Global water
 STR_7258    :Source
+STR_7260    :Waterfall NW
+STR_7261    :Waterfall NE
+STR_7262    :Waterfall SE
+STR_7263    :Waterfall SW
+STR_7264    :{STRINGID}[{STRINGID}-{STRINGID}] {STRINGID} {LENGTH}
+STR_7265    :{COMMA32}m²
+STR_7266    :{COMMA32}sq.ft.

@@ -186,12 +186,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
         // TODO Waterfall (Downstream)?
     };
 
-    enum class HeightMode : uint8_t
-    {
-        Absolute,
-        Relative,
-    };
-
     enum class HeightSource : uint8_t
     {
         SelfLand,
@@ -211,7 +205,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
     enum class Type : uint16_t
     {
-        Height,
+        HeightAbsolute,
+        HeightRelative,
         Distance,
         Noise,
         NormalAngle,
@@ -223,12 +218,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
     };
 
     // $value $pred height{-relativeElevation}
-    struct HeightData
+    struct HeightRelativeData
     {
-        NumericSetting<int32_t, 0, kMaximumLandHeight, 2> height;
-        HeightMode mode;
+        NumericSetting<int32_t, -kMaximumLandHeight, kMaximumLandHeight, 2> height;
         HeightSource sourceFirst;
         HeightSource sourceSecond;
+    };
+
+    struct HeightAbsoluteData
+    {
+        NumericSetting<int32_t, 0, kMaximumLandHeight, 2> height;
+        HeightSource source;
     };
 
     // smoothstep($low, $high, height) $pred $prng
@@ -293,7 +293,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     };
 
     using ConditionData = std::variant<
-        HeightData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, BlendDistanceData,
+        HeightAbsoluteData, HeightRelativeData, DistanceData, NoiseData, NormalAngleData, RandomData, BlendHeightData, BlendNoiseData, BlendDistanceData,
         LandStyleData>;
 
     struct Condition
