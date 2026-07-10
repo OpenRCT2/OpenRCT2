@@ -536,8 +536,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
                         .conditions = std::vector{
                             aboveWater(),
                             blendHeight(prng(), 64, 72),
-                                                    blendNoise(prng(), 9.5f, 6, 0.60f, 0.70f),
-                                                   chance(prng(), 0.66f), },
+                                                    blendNoise(prng(), 10.0f, 8, 0.65f, 0.80f),
+                                                   chance(prng(), 0.6f), },
                         .zRepeat = true,
                         .effect = {
                             .objects = toSceneryEffectItemsIfAvailable(kDefaultShrub),
@@ -551,7 +551,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                             onSurface(kSurfaceSoil),
                             chance(prng(), .33f),
                             blendHeight(prng(), 44, 54),
-                            blendNoise(seedOffset, 4.0f, 5, 0.35f, 0.85f),
+                            blendNoise(seedOffset, 3.25f, 5, 0.35f, 0.85f),
                         },
                         .effect = {
                             .objects = toSceneryEffectItemsIfAvailable(kTreesMixed),
@@ -561,7 +561,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             SceneryRule{ .enabled = true,
                          .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CONIFERS),
                          .conditions = std::vector{ onSurface(kSurfaceSoil), chance(prng(), .33f), blendHeight(prng(), 54, 64),
-                                                    blendNoise(seedOffset, 4.0f, 6, 0.55f, 0.80f) },
+                                                    blendNoise(seedOffset, 3.25f, 6, 0.55f, 0.80f) },
                          .effect = {
                              .objects = toSceneryEffectItemsIfAvailable(kTreesConifer),
                              .seedOffset = 2,
