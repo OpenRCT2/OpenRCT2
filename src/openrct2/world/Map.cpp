@@ -885,6 +885,15 @@ namespace OpenRCT2
         return false;
     }
 
+    bool MapIsLocationUnderground(const CoordsXYZ& loc)
+    {
+        const auto* surfaceElement = MapGetSurfaceElementAt(loc);
+        if (surfaceElement == nullptr)
+            return false;
+
+        return surfaceElement->getClearanceZ() > loc.z;
+    }
+
     int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction)
     {
         switch (direction)
