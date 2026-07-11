@@ -1,6 +1,7 @@
 0.5.4 (in development)
 ------------------------------------------------------------------------
 - Improved: [#26560] [Plugin] Scripts can now be used to trigger saving a game (limited to the user save folder).
+- Improved: [#26638] Guests will no longer watch rides while they’re underground.
 - Improved: [#26747] Exporting a sprite file now also outputs a JSON file, allowing for round-trip conversions.
 - Improved: [#26763] The ride colour/appearance tab now visually separates fields using group boxes.
 - Improved: [#26765] The ride operations tab now visually separates fields using group boxes.
