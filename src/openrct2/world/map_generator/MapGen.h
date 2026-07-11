@@ -89,7 +89,7 @@ namespace OpenRCT2::World::MapGenerator
     struct FilterSettings
     {
         Filter type = Filter::none;
-        NumericSetting<int32_t, 0, 10> strength = 1;
+        NumericSetting<int32_t, 1, 10> strength = 1;
     };
 
     struct MapSize

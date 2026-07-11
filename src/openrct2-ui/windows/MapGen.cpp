@@ -2321,16 +2321,24 @@ namespace OpenRCT2::Ui::Windows
         void TerrainPrepareDraw()
         {
             const bool isNotFlatland = _settings.generator != MapGenerator::HeightMapGenerator::flat;
+            const bool isNoneTransform = _settings.filter.type == MapGenerator::Filter::none;
 
             // Max land height option is irrelevant for flatland
             setWidgetEnabled(WIDX_HEIGHTMAP_HIGH, isNotFlatland);
+            setWidgetEnabled(WIDX_HEIGHTMAP_HIGH_UP, isNotFlatland);
+            setWidgetEnabled(WIDX_HEIGHTMAP_HIGH_DOWN, isNotFlatland);
 
             // only offer terrain edge smoothing if we don't use flatland terrain
             setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, isNotFlatland);
+            setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_DROPDOWN, isNotFlatland);
 
             // Transform can't be used with flatland
             setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_TYPE, isNotFlatland);
-            setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH, isNotFlatland);
+            setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_TYPE_DROPDOWN, isNotFlatland);
+
+            setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH, isNotFlatland && !isNoneTransform);
+            setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_UP, isNotFlatland && !isNoneTransform);
+            setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_DOWN, isNotFlatland && !isNoneTransform);
 
 
             switch (_settings.filter.type)
@@ -2423,9 +2431,10 @@ namespace OpenRCT2::Ui::Windows
                 STR_FORMAT_INTEGER, ft, { transformColour });
 
             // Slope smooth type label
+            const auto smoothColour = isWidgetDisabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES) ? disabledColour   : enabledColour;
             drawText(
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES].top + 1 }, STR_MAPGEN_SMOOTH_TILE, {},
-                { transformColour });
+                { smoothColour });
         }
 
 #pragma endregion
@@ -3502,6 +3511,10 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
+            const bool isNotFlatland = _settings.generator != MapGenerator::HeightMapGenerator::flat;
+
+            setWidgetEnabled(WIDX_WATER_RIVERS_ENABLE, isNotFlatland);
+
             const bool enableRiver = _settings.river.generate;
 
             setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, enableRiver);
@@ -3728,7 +3741,7 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterPrepareDraw();
-               case WINDOW_MAPGEN_PAGE_TEXTURE:
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
                     return TexturePrepareDraw();
             }
         }
