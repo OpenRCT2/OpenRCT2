@@ -1944,7 +1944,7 @@ static void RideRatingsApplyBonusRotoDrop(RideRating::Tuple& ratings, const Ride
 static void RideRatingsApplyBonusMazeSize(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t size = std::min<uint16_t>(ride.mazeTiles, modifier.threshold);
-    RideRatingsAdd(ratings, size * modifier.excitement, size * modifier.intensity, size * modifier.nausea);
+    RideRatingsAdd(ratings, size * modifier.excitement, size / modifier.intensity, size * modifier.nausea);
 }
 
 static void RideRatingsApplyBonusBoatHireNoCircuit(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
