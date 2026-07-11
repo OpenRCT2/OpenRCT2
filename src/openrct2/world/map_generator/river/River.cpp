@@ -12,9 +12,6 @@
 #include "../../../Context.h"
 #include "../../../Diagnostic.h"
 #include "../../../GameState.h"
-#include "../../../PlatformEnvironment.h"
-#include "../../../core/Path.hpp"
-#include "../../../platform/Platform.h"
 #include "../../../profiling/Profiling.h"
 #include "../BaseMap.hpp"
 #include "../MapGenSerDe.hpp"
@@ -22,7 +19,6 @@
 #include "../TileQueue.hpp"
 #include "RiverUtils.h"
 
-#include <format>
 #include <ranges>
 
 namespace OpenRCT2::World::MapGenerator::River
@@ -643,62 +639,6 @@ namespace OpenRCT2::World::MapGenerator::River
                 }
             }
         }
-    }
-
-    static void handleConsistencyRunaway(
-        MapGenContext& ctx, const TileCoordsXY& segment, const TileCoordsXY& pos, const size_t segmentSize, bool lowered)
-    {
-        RiverContext& riverCtx = ctx.riverContext.value();
-        std::stringstream mapVis;
-        constexpr int32_t kSize = 5;
-
-        for (int32_t dy = -kSize; dy <= kSize; dy++)
-        {
-            for (int32_t dx = -kSize; dx <= kSize; dx++)
-            {
-                const TileCoordsXY deltaPos = pos + TileCoordsXY{ dx, dy };
-
-                const bool inBounds = ctx.heightMap.inBounds(deltaPos);
-                const bool isRiver = inBounds && riverCtx.flags[deltaPos].has(river);
-                const bool isSource = inBounds && riverCtx.flags[deltaPos].has(source);
-
-                if (!inBounds)
-                {
-                    mapVis << "XXXXXXXXXXXXXXXXX | ";
-                }
-                else if (isRiver)
-                {
-                    mapVis << std::format(
-                        "{},{} h{} w{} s{} | ", deltaPos.x, deltaPos.y, ctx.heightMap[deltaPos], riverCtx.waterLevel[deltaPos],
-                        isSource ? 'S' : '-');
-                }
-                else
-                {
-                    mapVis << "LLLLLLLLLLLLLLLLL | ";
-                }
-            }
-            mapVis << std::endl;
-        }
-
-        auto date = Platform::GetDateLocal();
-        auto time = Platform::GetTimeLocal();
-        auto& env = GetContext()->GetPlatformEnvironment();
-        auto mapgenDir = env.GetDirectoryPath(DirBase::user, DirId::mapgenSettings);
-        auto name = std::format(
-            "crw_{:04d}-{:02d}-{:02d}_{:02d}-{:02d}-{:02d}.mapgen.json", date.year, date.month, date.day, time.hour,
-            time.minute, time.second);
-        auto filePath = Path::Combine(mapgenDir, name);
-
-        saveMapgenSettingsToPath(ctx.settings, filePath);
-
-        std::string actionStr = lowered ? "lowered below 0" : "raised above 256";
-        auto message = std::format(
-            "consistency runaway: ({},{}) of segment ({},{}) size={} {}, settings saved to {}", pos.x, pos.y, segment.x,
-            segment.y, segmentSize, actionStr, filePath);
-
-        LOG_INFO("%s\n%s\n%s", message.c_str(), mapVis.str().c_str(), summarizeRiverStatistics(ctx).c_str());
-
-        throw std::runtime_error(message);
     }
 
     /**

@@ -87,4 +87,7 @@ namespace OpenRCT2::World::MapGenerator::River
 
     std::string summarizeRiverStatistics(const MapGenContext& ctx);
 
+    void handleConsistencyRunaway(
+        const MapGenContext& ctx, const TileCoordsXY& segment, const TileCoordsXY& pos, size_t segmentSize, bool lowered);
+
 } // namespace OpenRCT2::World::MapGenerator::River

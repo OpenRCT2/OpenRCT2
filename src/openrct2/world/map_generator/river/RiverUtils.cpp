@@ -9,10 +9,19 @@
 
 #include "RiverUtils.h"
 
+#include "../../../Context.h"
+#include "../../../Diagnostic.h"
+#include "../../../GameState.h"
+#include "../../../PlatformEnvironment.h"
+#include "../../../core/Path.hpp"
+#include "../../../platform/Platform.h"
 #include "../../../profiling/Profiling.h"
 #include "../MapGen.h"
+#include "../MapGenSerDe.hpp"
 #include "../MapHelpers.h"
 #include "RiverTypes.hpp"
+
+#include <format>
 
 namespace OpenRCT2::World::MapGenerator::River
 {
@@ -204,6 +213,33 @@ namespace OpenRCT2::World::MapGenerator::River
 
         return pitSummary + flowSummary + pruningSummary + widthAdjust + ensureOrdinal + bankIndentationsSummary
             + consistencySummary;
+    }
+
+    /**
+     * The root causes should've all been fixed by now but better to keep this around for a while...
+     */
+    void handleConsistencyRunaway(
+        const MapGenContext& ctx, const TileCoordsXY& segment, const TileCoordsXY& pos, const size_t segmentSize,
+        const bool lowered)
+    {
+        auto date = Platform::GetDateLocal();
+        auto time = Platform::GetTimeLocal();
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto mapgenDir = env.GetDirectoryPath(DirBase::user, DirId::mapgenSettings);
+        auto name = std::format(
+            "crw_{:04d}-{:02d}-{:02d}_{:02d}-{:02d}-{:02d}.mapgen.json", date.year, date.month, date.day, time.hour,
+            time.minute, time.second);
+        auto filePath = Path::Combine(mapgenDir, name);
+
+        saveMapgenSettingsToPath(ctx.settings, filePath);
+
+        std::string actionStr = lowered ? "lowered below 0" : "raised above 256";
+        auto message = std::format(
+            "consistency runaway: ({},{}) of segment ({},{}) size={} {}, settings saved to {}", pos.x, pos.y, segment.x,
+            segment.y, segmentSize, actionStr, filePath);
+
+        LOG_FATAL("%s", message.c_str());
+        throw std::runtime_error(message);
     }
 
 } // namespace OpenRCT2::World::MapGenerator::River
