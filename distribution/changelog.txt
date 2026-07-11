@@ -5,6 +5,7 @@
 - Improved: [#26747] Exporting a sprite file now also outputs a JSON file, allowing for round-trip conversions.
 - Improved: [#26763] The ride colour/appearance tab now visually separates fields using group boxes.
 - Improved: [#26765] The ride operations tab now visually separates fields using group boxes.
+- Fix: [#26752] The Cut-away View window doesn’t display negative height values correctly on some platforms.
 - Fix: [#26756] Guests cannot puke or litter on sloped path.
 - Fix: [#26758] [Plugin] IPv6 addresses are reported incorrectly.
 
