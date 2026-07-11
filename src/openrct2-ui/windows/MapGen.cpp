@@ -217,7 +217,7 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({236,  52}, { 62, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
 
         makeWidget                ({  5,  70}, {300, 41}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SEED       ), // WIDX_SEED_GROUP
-        makeWidget                ({ 10,  90}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_SEED_RANDOM), // WIDX_SEED_RANDOM
+        makeWidget                ({ 10,  90}, {138, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_SEED_RANDOM), // WIDX_SEED_RANDOM
         makeWidget                ({153,  90}, {145, 14}, WidgetType::textBox,      WindowColour::secondary                        ), // WIDX_SEED
 
         makeDropdownWidgets       ({153, 117}, {145, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND),
@@ -916,7 +916,7 @@ namespace OpenRCT2::Ui::Windows
             if (_random_seed)
             {
                 drawText(
-                    rt, windowPos + ScreenCoordsXY{ 179, widgets[WIDX_MAP_SEED].top + 1 }, _settings.seed.data(),
+                    rt, windowPos + ScreenCoordsXY{ 153, widgets[WIDX_MAP_SEED].top + 1 }, _settings.seed.data(),
                     { disabledColour });
             }
         }
