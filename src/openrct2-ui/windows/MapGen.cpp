@@ -695,8 +695,6 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
-            SharedDropdown(widgetIndex, dropdownIndex);
-
             if (dropdownIndex == -1)
                 return;
 
@@ -1226,8 +1224,6 @@ namespace OpenRCT2::Ui::Windows
 
         void SceneryDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
-            SharedDropdown(widgetIndex, dropdownIndex);
-
             switch (widgetIndex)
             {
                 case WIDX_RULE_SC_NEW_PRESET:
@@ -2243,8 +2239,6 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
-            SharedDropdown(widgetIndex, dropdownIndex);
-
             if (dropdownIndex == -1)
                 return;
 
@@ -2757,8 +2751,6 @@ namespace OpenRCT2::Ui::Windows
 
         void TextureDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
-            SharedDropdown(widgetIndex, dropdownIndex);
-
             switch (widgetIndex)
             {
                 case WIDX_RULE_TX_FLOOR_TEXTURE:
@@ -3281,7 +3273,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.river.riverWidthMax, 5);
+                        _settings.river.riverGrowthExponent, 5);
                     break;
                 }
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
@@ -3670,6 +3662,8 @@ namespace OpenRCT2::Ui::Windows
 
         void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
+            SharedDropdown(widgetIndex, selectedIndex);
+
             switch (page)
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
@@ -3810,7 +3804,8 @@ namespace OpenRCT2::Ui::Windows
             // Convert text to integer value
             int32_t value{};
             if ((page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_SIMPLEX_BASE_FREQ)
-                || (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_BIAS_STRENGTH))
+                || (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_BIAS_STRENGTH)
+                || (page == WINDOW_MAPGEN_PAGE_WATER && widgetIndex == WIDX_WATER_RIVERS_GROWTH_EXPONENT))
                 value = 100 * strtof(strText.c_str(), &end);
             else
                 value = strtol(strText.c_str(), &end, 10);

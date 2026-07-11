@@ -677,7 +677,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                     SceneryRule{ .enabled = true,
                                  .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_OASIS),
                                  .conditions = { onSurface(kSurfaceSand), aboveWater(), chance(prng(), .55f),
-                                                 distanceToFeature(Feature::Water, 4.0f) },
+                                                 distanceToFeature(Feature::Water, 4.0f, Predicate::LessThanOrEqual) },
                                  .effect = {
                                      .objects = toSceneryEffectItemsIfAvailable(kAridOasis),
                                      .seedOffset = prng(),

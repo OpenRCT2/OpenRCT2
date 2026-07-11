@@ -440,7 +440,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::Distance:
                 {
                     auto ft = Formatter();
-                    ft.Add<int16_t>(static_cast<int16_t>(std::get<DistanceData>(condition.data).distance));
+                    ft.Add<int16_t>(static_cast<int16_t>(TileUnitsToMetres(std::get<DistanceData>(condition.data).distance)));
                     drawText(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
                         STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
@@ -648,6 +648,11 @@ namespace OpenRCT2::Ui::Windows
             return BaseZToMetres(static_cast<int16_t>(baseZ));
         }
 
+        static float MetresToTileUnitsCast(const float metres)
+        {
+            return static_cast<float>(MetresToTileUnits(static_cast<int32_t>(metres)));
+        }
+
         template<typename T>
         static std::optional<T> mapOptional(std::optional<T> maybeT, const std::function<T(T)>& fn)
         {
@@ -678,7 +683,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::Distance:
                 {
                     auto& distanceData = std::get<DistanceData>(condition.data);
-                    distanceData.distance.change(change, floatValue);
+                    distanceData.distance.change(change, mapOptional<float>(floatValue, MetresToTileUnitsCast));
                     break;
                 }
                 case Type::Noise:
@@ -733,7 +738,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
-                    blendDistanceData.edgeLow.change(change, floatValue);
+                    blendDistanceData.edgeLow.change(change, mapOptional<float>(floatValue, MetresToTileUnitsCast));
                     if (blendDistanceData.edgeLow > blendDistanceData.edgeHigh)
                     {
                         blendDistanceData.edgeHigh = blendDistanceData.edgeLow;
@@ -774,7 +779,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::BlendDistance:
                 {
                     auto& blendDistanceData = std::get<BlendDistanceData>(condition.data);
-                    blendDistanceData.edgeHigh.change(change, floatValue);
+                    blendDistanceData.edgeHigh.change(change, mapOptional<float>(floatValue, MetresToTileUnitsCast));
                     if (blendDistanceData.edgeLow > blendDistanceData.edgeHigh)
                     {
                         blendDistanceData.edgeHigh = blendDistanceData.edgeLow;
