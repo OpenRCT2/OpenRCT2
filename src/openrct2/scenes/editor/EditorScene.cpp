@@ -34,6 +34,7 @@
 #include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
 #include "../../world/Map.h"
+#include "../../world/map_generator/MapGen.h"
 #include "../SceneManager.h"
 
 using namespace OpenRCT2;
@@ -53,6 +54,7 @@ void EditorScene::Load()
     gameState.scenarioOptions.category = Scenario::Category::other;
 
     Editor::ObjectListLoad();
+    World::MapGenerator::resetMapGenSettings();
     ContextResetSubsystems();
 
     OpenEditorWindows();
@@ -96,6 +98,7 @@ static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
     gLegacyScene = LegacyScene::scenarioEditor;
     gameState.editorStep = Editor::Step::optionsSelection;
     gameState.scenarioOptions.category = Scenario::Category::other;
+    World::MapGenerator::resetMapGenSettings();
     ContextResetSubsystems();
 
     auto* sceneMgr = GetContext()->GetSceneManager();
@@ -160,6 +163,7 @@ void EditorScene::AfterLoadCleanup()
     getGameState().editorStep = Editor::Step::landscapeEditor;
     gScreenAge = 0;
     gLegacyScene = LegacyScene::scenarioEditor;
+    World::MapGenerator::resetMapGenSettings();
     ContextResetSubsystems();
     OpenEditorWindows();
     FinaliseMainView();

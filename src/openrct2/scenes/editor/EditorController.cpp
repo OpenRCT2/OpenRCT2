@@ -39,6 +39,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/Park.h"
+#include "../../world/map_generator/MapGen.h"
 #include "../../world/tile_element/BannerElement.h"
 #include "../../world/tile_element/EntranceElement.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
@@ -729,6 +730,7 @@ namespace OpenRCT2::Editor
             auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
             ContextBroadcastIntent(&intent);
 
+            World::MapGenerator::resetMapGenSettings();
             gameState.editorStep = Editor::Step::landscapeEditor;
             GfxInvalidateScreen();
         }

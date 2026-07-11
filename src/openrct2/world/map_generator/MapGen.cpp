@@ -11,6 +11,7 @@
 
 #include "../../Context.h"
 #include "../../GameState.h"
+#include "../../object/ObjectManager.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
 #include "BaseMap.hpp"
@@ -19,9 +20,12 @@
 #include "PngTerrainGenerator.h"
 #include "SceneryPlacement.h"
 #include "river/River.h"
+#include "rule/RuleMisc.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
+    static Settings gSettings;
+
     static void resetSurfaces(const MapGenContext& ctx)
     {
         MapClearAllElements();
@@ -201,6 +205,18 @@ namespace OpenRCT2::World::MapGenerator
                            .debugSigns = {} };
 
         return ctx;
+    }
+
+    void resetMapGenSettings()
+    {
+        gSettings = Settings{}; //0x105970c20
+        Rule::createDefaultTextureRules(gSettings);
+        Rule::createDefaultSceneryRules(gSettings);
+    }
+
+    Settings& getMapGenSettings()
+    {
+        return gSettings;
     }
 
     void setRandomSeed(Settings& settings)

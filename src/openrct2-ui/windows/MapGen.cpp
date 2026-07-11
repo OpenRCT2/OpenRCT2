@@ -205,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
             makeTab   ({  65,  17 }),
             makeTab   ({  96,  17 }),
             makeTab   ({ 127,  17 }),
-            makeWidget({  5, 274 }, {  14, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_SERDE_MENU),
+            makeWidget({  5, 274 }, {  14, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_SETTINGS_MISC_MENU),
             makeWidget({ 150, 274 }, { 155, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
         );
     };
@@ -364,6 +364,7 @@ namespace OpenRCT2::Ui::Windows
         bool _mapWidthAndHeightLinked{ true };
         bool _random_seed = true;
         bool _heightmapLoaded = false;
+        MapGenerator::Settings& _settings = MapGenerator::getMapGenSettings();
         std::string _heightmapFilename{};
 
         u8string _xSpinnerCaption{};
@@ -434,14 +435,14 @@ namespace OpenRCT2::Ui::Windows
 
             if (_resizeDirection != ResizeDirection::x)
             {
-                MapGenerator::gSettings.mapSize.y = std::clamp<int32_t>(
-                    MapGenerator::gSettings.mapSize.y + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
+                _settings.mapSize.y = std::clamp<int32_t>(
+                    _settings.mapSize.y + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
             }
 
             if (_resizeDirection != ResizeDirection::y)
             {
-                MapGenerator::gSettings.mapSize.x = std::clamp<int32_t>(
-                    MapGenerator::gSettings.mapSize.x + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
+                _settings.mapSize.x = std::clamp<int32_t>(
+                    _settings.mapSize.x + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
             }
         }
 
@@ -471,13 +472,24 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_5:
                     setPage(widgetIndex - WIDX_TAB_1);
                     break;
+                case WIDX_MAP_GENERATE:
+                    GenerateMap();
+                    break;
+            }
+        }
+
+        void SharedMouseDown(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
                 case WIDX_MAP_SERDE:
                 {
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_SERDE_IMPORT),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_SERDE_EXPORT),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_SETTINGS_SERDE_IMPORT),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_SETTINGS_SERDE_EXPORT),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_SETTINGS_RESET),
                     };
 
                     SetItems(items);
@@ -489,9 +501,6 @@ namespace OpenRCT2::Ui::Windows
 
                     break;
                 }
-                case WIDX_MAP_GENERATE:
-                    GenerateMap();
-                    break;
             }
         }
 
@@ -517,6 +526,11 @@ namespace OpenRCT2::Ui::Windows
                         intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(MapgenSettingsSaveCallback));
                         ContextOpenIntent(&intent);
                     }
+                    else if (dropdownIndex == 2)
+                    {
+                        MapGenerator::resetMapGenSettings();
+                        invalidate();
+                    }
                     break;
                 }
             }
@@ -524,21 +538,21 @@ namespace OpenRCT2::Ui::Windows
 
         void GenerateMap()
         {
-            if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image && !_heightmapLoaded)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::image && !_heightmapLoaded)
             {
                 return;
             }
 
             if (_random_seed)
             {
-                MapGenerator::setRandomSeed(MapGenerator::gSettings);
-                LOG_INFO("seed %s", MapGenerator::gSettings.seed.c_str());
+                MapGenerator::setRandomSeed(_settings);
+                LOG_INFO("seed %s", _settings.seed.c_str());
             }
 
-            MapGenerator::Settings mapgenSettings = MapGenerator::gSettings;
+            MapGenerator::Settings mapgenSettings = _settings;
 
             // doing this here so all dimensions in the map gen code are consistent
-            if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 auto imageDimensions = MapGenerator::queryHeightMapFromImageDimensions();
                 mapgenSettings.mapSize = { imageDimensions.x, imageDimensions.y };
@@ -554,12 +568,12 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::noise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexMouseUp(widgetIndex);
                 BiasMouseUp(widgetIndex);
             }
-            else if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapMouseUp(widgetIndex);
             }
@@ -568,11 +582,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_MAP_SIZE_Y:
                     _resizeDirection = ResizeDirection::y;
-                    InputMapSize(WIDX_MAP_SIZE_Y, MapGenerator::gSettings.mapSize.y);
+                    InputMapSize(WIDX_MAP_SIZE_Y, _settings.mapSize.y);
                     break;
                 case WIDX_MAP_SIZE_X:
                     _resizeDirection = ResizeDirection::x;
-                    InputMapSize(WIDX_MAP_SIZE_X, MapGenerator::gSettings.mapSize.x);
+                    InputMapSize(WIDX_MAP_SIZE_X, _settings.mapSize.x);
                     break;
                 case WIDX_MAP_SIZE_LINK:
                     _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
@@ -580,7 +594,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SEED:
                     if (!_random_seed)
                     {
-                        WindowStartTextbox(*this, widgetIndex, MapGenerator::gSettings.seed, 16);
+                        WindowStartTextbox(*this, widgetIndex, _settings.seed, 16);
                     }
                     break;
                 case WIDX_MAP_SEED_RANDOM:
@@ -595,12 +609,12 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
-            if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::noise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexMouseDown(widgetIndex, widget);
                 BiasMouseDown(widgetIndex, widget);
             }
-            else if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapMouseDown(widgetIndex, widget);
             }
@@ -644,7 +658,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0, {},
                         std::size(items), ddWidget->width() - 3);
 
-                    gDropdown.items[EnumValue(MapGenerator::gSettings.generator)].setChecked(true);
+                    gDropdown.items[EnumValue(_settings.generator)].setChecked(true);
                     break;
                 }
                 case WIDX_SIMPLEX_TYPE_DROPDOWN:
@@ -665,7 +679,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
-                    gDropdown.items[EnumValue(MapGenerator::gSettings.noise.algorithm)].setChecked(true);
+                    gDropdown.items[EnumValue(_settings.noise.algorithm)].setChecked(true);
                     break;
                 }
             }
@@ -689,15 +703,15 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_SOURCE_DROPDOWN:
-                    MapGenerator::gSettings.generator = static_cast<MapGenerator::HeightMapGenerator>(dropdownIndex);
+                    _settings.generator = static_cast<MapGenerator::HeightMapGenerator>(dropdownIndex);
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_TYPE_DROPDOWN:
-                    MapGenerator::gSettings.noise.algorithm = static_cast<MapGenerator::NoiseAlgorithm>(dropdownIndex);
+                    _settings.noise.algorithm = static_cast<MapGenerator::NoiseAlgorithm>(dropdownIndex);
                     invalidate();
                     break;
                 case WIDX_BIAS_TYPE_DROPDOWN:
-                    MapGenerator::gSettings.noise.bias.type = static_cast<MapGenerator::Bias>(dropdownIndex);
+                    _settings.noise.bias.type = static_cast<MapGenerator::Bias>(dropdownIndex);
                     invalidate();
                     break;
             }
@@ -705,12 +719,12 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::noise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexTextInput(widgetIndex, value);
                 BiasTextInput(widgetIndex, value);
             }
-            else if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapTextInput(widgetIndex, value);
             }
@@ -723,9 +737,9 @@ namespace OpenRCT2::Ui::Windows
                     const auto technicalSize = std::clamp<uint16_t>(
                         value + 2, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
                     if (_resizeDirection == ResizeDirection::y || _mapWidthAndHeightLinked)
-                        MapGenerator::gSettings.mapSize.y = technicalSize;
+                        _settings.mapSize.y = technicalSize;
                     if (_resizeDirection == ResizeDirection::x || _mapWidthAndHeightLinked)
-                        MapGenerator::gSettings.mapSize.x = technicalSize;
+                        _settings.mapSize.x = technicalSize;
                     break;
             }
 
@@ -736,13 +750,13 @@ namespace OpenRCT2::Ui::Windows
         {
             // only allow linking the map size when X and Y are the same
             setWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            setWidgetDisabled(WIDX_MAP_SIZE_LINK, MapGenerator::gSettings.mapSize.x != MapGenerator::gSettings.mapSize.y);
+            setWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
 
             setCheckboxValue(WIDX_MAP_SEED_RANDOM, _random_seed);
-            widgets[WIDX_MAP_SEED].string = MapGenerator::gSettings.seed.data();
+            widgets[WIDX_MAP_SEED].string = _settings.seed.data();
             widgets[WIDX_MAP_SEED].type = _random_seed ? WidgetType::empty : WidgetType::textBox;
 
-            const bool isHeightMapImage = MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image;
+            const bool isHeightMapImage = _settings.generator == MapGenerator::HeightMapGenerator::image;
             setWidgetDisabled(WIDX_MAP_SIZE_Y, isHeightMapImage);
             setWidgetDisabled(WIDX_MAP_SIZE_Y_UP, isHeightMapImage);
             setWidgetDisabled(WIDX_MAP_SIZE_Y_DOWN, isHeightMapImage);
@@ -755,18 +769,18 @@ namespace OpenRCT2::Ui::Windows
             const bool heightmapEnabled = isHeightMapImage && _heightmapLoaded;
             setWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, heightmapEnabled);
 
-            const auto isNoneBias = MapGenerator::gSettings.noise.bias.type == MapGenerator::Bias::none;
+            const auto isNoneBias = _settings.noise.bias.type == MapGenerator::Bias::none;
             setWidgetDisabled(WIDX_BIAS_STRENGTH, isNoneBias);
             setWidgetDisabled(WIDX_BIAS_STRENGTH_UP, isNoneBias);
             setWidgetDisabled(WIDX_BIAS_STRENGTH_DOWN, isNoneBias);
 
-            _xSpinnerCaption = std::to_string(MapGenerator::gSettings.mapSize.x - 2);
+            _xSpinnerCaption = std::to_string(_settings.mapSize.x - 2);
             widgets[WIDX_MAP_SIZE_X].setString(_xSpinnerCaption.c_str());
-            _ySpinnerCaption = std::to_string(MapGenerator::gSettings.mapSize.y - 2);
+            _ySpinnerCaption = std::to_string(_settings.mapSize.y - 2);
             widgets[WIDX_MAP_SIZE_Y].setString(_ySpinnerCaption.c_str());
 
             auto& sourceWidget = widgets[WIDX_HEIGHTMAP_SOURCE];
-            switch (MapGenerator::gSettings.generator)
+            switch (_settings.generator)
             {
                 case MapGenerator::HeightMapGenerator::flat:
                     sourceWidget.text = STR_HEIGHTMAP_FLATLAND;
@@ -791,7 +805,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            switch (MapGenerator::gSettings.noise.algorithm)
+            switch (_settings.noise.algorithm)
             {
                 case MapGenerator::NoiseAlgorithm::simplex:
                     widgets[WIDX_SIMPLEX_TYPE].text = STR_HEIGHTMAP_SIMPLEX_NOISE;
@@ -807,7 +821,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            switch (MapGenerator::gSettings.noise.bias.type)
+            switch (_settings.noise.bias.type)
             {
                 case MapGenerator::Bias::none:
                     widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_NONE;
@@ -876,12 +890,12 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
             DrawTabImages(rt);
 
-            if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::noise)
+            if (_settings.generator == MapGenerator::HeightMapGenerator::noise)
             {
                 SimplexDraw(rt);
                 BiasDraw(rt);
             }
-            else if (MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image)
+            else if (_settings.generator == MapGenerator::HeightMapGenerator::image)
             {
                 HeightmapDraw(rt);
             }
@@ -904,7 +918,7 @@ namespace OpenRCT2::Ui::Windows
             if (_random_seed)
             {
                 drawText(
-                    rt, windowPos + ScreenCoordsXY{ 179, widgets[WIDX_MAP_SEED].top + 1 }, MapGenerator::gSettings.seed.data(),
+                    rt, windowPos + ScreenCoordsXY{ 179, widgets[WIDX_MAP_SEED].top + 1 }, _settings.seed.data(),
                     { disabledColour });
             }
         }
@@ -944,8 +958,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RULE_SC_NEW:
                 {
-                    MapGenerator::Rule::createNewSceneryRule(MapGenerator::gSettings);
-                    SetSelectedSceneryRule(static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size() - 1));
+                    MapGenerator::Rule::createNewSceneryRule(_settings);
+                    SetSelectedSceneryRule(static_cast<int32_t>(_settings.sceneryRules.size() - 1));
                     invalidate();
                     break;
                 }
@@ -953,8 +967,8 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScRule != -1)
                     {
-                        MapGenerator::gSettings.sceneryRules.erase(
-                            MapGenerator::gSettings.sceneryRules.begin() + _selectedScRule);
+                        _settings.sceneryRules.erase(
+                            _settings.sceneryRules.begin() + _selectedScRule);
                         SetSelectedSceneryRule(_selectedScRule - 1);
                         invalidate();
                     }
@@ -964,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScRule != -1)
                     {
-                        const auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                        const auto& selectedRule = _settings.sceneryRules[_selectedScRule];
                         auto* qqq = selectedRule.name.c_str();
                         WindowTextInputOpen(
                             this, widgetIndex, STR_MAPGEN_RULE_RENAME_TITLE, STR_MAPGEN_RULE_ENTER_NAME, {}, STR_STRING,
@@ -975,11 +989,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_RULE_SC_MOVE_UP:
                 {
                     if (_selectedScRule != -1
-                        && _selectedScRule < static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size() - 1))
+                        && _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1))
                     {
                         std::swap(
-                            MapGenerator::gSettings.sceneryRules[_selectedScRule],
-                            MapGenerator::gSettings.sceneryRules[_selectedScRule + 1]);
+                            _settings.sceneryRules[_selectedScRule],
+                            _settings.sceneryRules[_selectedScRule + 1]);
                         SetSelectedSceneryRule(_selectedScRule + 1);
                         invalidate();
                     }
@@ -990,8 +1004,8 @@ namespace OpenRCT2::Ui::Windows
                     if (_selectedScRule != -1 && _selectedScRule > 0)
                     {
                         std::swap(
-                            MapGenerator::gSettings.sceneryRules[_selectedScRule],
-                            MapGenerator::gSettings.sceneryRules[_selectedScRule - 1]);
+                            _settings.sceneryRules[_selectedScRule],
+                            _settings.sceneryRules[_selectedScRule - 1]);
                         SetSelectedSceneryRule(_selectedScRule - 1);
                         invalidate();
                     }
@@ -1001,7 +1015,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScRule != -1 && _selectedScCondition != -1)
                     {
-                        auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
                         selectedRule.conditions.erase(selectedRule.conditions.begin() + _selectedScCondition);
                         auto nextIdx = _selectedScCondition - 1;
                         if (nextIdx == -1 && !selectedRule.conditions.empty())
@@ -1017,7 +1031,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScRule != -1 && _selectedScCondition != -1)
                     {
-                        auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
                         auto& selectedCondition = selectedRule.conditions[_selectedScCondition];
 
                         auto callback = [this](MapGenerator::Rule::Condition& condition) {
@@ -1025,7 +1039,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 return;
                             }
-                            MapGenerator::gSettings.sceneryRules[_selectedScRule].conditions[_selectedScCondition] = condition;
+                            _settings.sceneryRules[_selectedScRule].conditions[_selectedScCondition] = condition;
                             invalidate();
                         };
 
@@ -1037,14 +1051,14 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScRule != -1)
                     {
-                        auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
 
                         auto callback = [this](MapGenerator::Rule::SceneryEffect& effect) {
                             if (_selectedScRule == -1)
                             {
                                 return;
                             }
-                            MapGenerator::gSettings.sceneryRules[_selectedScRule].effect = effect;
+                            _settings.sceneryRules[_selectedScRule].effect = effect;
                             invalidate();
                         };
 
@@ -1147,7 +1161,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // TODO trim + check not empty?
 
-                    auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                    auto& selectedRule = _settings.sceneryRules[_selectedScRule];
                     selectedRule.name = std::string(value);
                     break;
                 }
@@ -1179,7 +1193,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 setWidgetEnabled(
                     WIDX_RULE_SC_MOVE_UP,
-                    _selectedScRule < static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size() - 1));
+                    _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1));
                 setWidgetEnabled(WIDX_RULE_SC_MOVE_DOWN, _selectedScRule > 0);
 
                 setWidgetEnabled(WIDX_RULE_SC_CONDITION_REMOVE, condSelected);
@@ -1194,7 +1208,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_selectedScRule != -1)
             {
-                auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                auto& selectedRule = _settings.sceneryRules[_selectedScRule];
 
                 ScreenCoordsXY sceneryPreviewPos = { windowPos.x + widgets[WIDX_RULE_SC_OUTCOME_GROUP].left + 4,
                                                      windowPos.y + widgets[WIDX_RULE_SC_OUTCOME_GROUP].top + 12 };
@@ -1224,8 +1238,8 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex != -1)
                     {
                         const auto preset = static_cast<MapGenerator::Rule::SceneryRulePreset>(dropdownIndex);
-                        MapGenerator::Rule::createNewSceneryRuleFromPreset(MapGenerator::gSettings, preset);
-                        SetSelectedSceneryRule(static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size() - 1));
+                        MapGenerator::Rule::createNewSceneryRuleFromPreset(_settings, preset);
+                        SetSelectedSceneryRule(static_cast<int32_t>(_settings.sceneryRules.size() - 1));
                     }
 
                     invalidate();
@@ -1253,7 +1267,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             return;
                         }
-                        auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
                         selectedRule.conditions.push_back(std::move(condition));
                         SetSelectedSceneryCondition(static_cast<int32_t>(selectedRule.conditions.size() - 1));
                         invalidate();
@@ -1273,7 +1287,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return ScreenSize(
                         kWindowSize.width - 10,
-                        static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size() * kScrollableRowHeight));
+                        static_cast<int32_t>(_settings.sceneryRules.size() * kScrollableRowHeight));
                 }
                 case 1:
                 {
@@ -1281,7 +1295,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         return {};
                     }
-                    const auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                    const auto& selectedRule = _settings.sceneryRules[_selectedScRule];
 
                     return ScreenSize(
                         widgets[WIDX_RULE_SC_CONDITION_SCROLL].width(),
@@ -1487,7 +1501,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+            auto& selectedRule = _settings.sceneryRules[_selectedScRule];
 
             const int32_t listWidth = widgets[WIDX_RULE_SC_CONDITION_SCROLL].width();
             Rectangle::fill(
@@ -1696,11 +1710,11 @@ namespace OpenRCT2::Ui::Windows
                 getColourMap(colours[1].colour).midLight);
 
             ScreenCoordsXY screenCoords{};
-            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (MapGenerator::gSettings.sceneryRules.size() - 1));
+            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (_settings.sceneryRules.size() - 1));
 
-            for (int32_t i = 0; i < static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size()); i++)
+            for (int32_t i = 0; i < static_cast<int32_t>(_settings.sceneryRules.size()); i++)
             {
-                auto& rule = MapGenerator::gSettings.sceneryRules[i];
+                auto& rule = _settings.sceneryRules[i];
 
                 // Draw row background colour
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
@@ -1751,8 +1765,8 @@ namespace OpenRCT2::Ui::Windows
             if (scrollIndex == 0)
             {
                 const int32_t index = static_cast<int32_t>(
-                    MapGenerator::gSettings.sceneryRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
-                if (index < 0 || index >= static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size()))
+                    _settings.sceneryRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                if (index < 0 || index >= static_cast<int32_t>(_settings.sceneryRules.size()))
                 {
                     _highlightedScRule = -1;
                 }
@@ -1770,7 +1784,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    const auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                    const auto& selectedRule = _settings.sceneryRules[_selectedScRule];
 
                     const int32_t index = static_cast<int32_t>(
                         selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
@@ -1789,20 +1803,20 @@ namespace OpenRCT2::Ui::Windows
 
         void SceneryScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
-            if (MapGenerator::gSettings.sceneryRules.empty())
+            if (_settings.sceneryRules.empty())
                 return;
 
             if (scrollIndex == 0)
             {
                 // Because the list items are displayed in reverse order, subtract the calculated index from size
                 const int32_t index = static_cast<int32_t>(
-                    MapGenerator::gSettings.sceneryRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                    _settings.sceneryRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
                 const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
                 if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
                 { // Checkbox was clicked
-                    MapGenerator::gSettings.sceneryRules[index].enabled = !MapGenerator::gSettings.sceneryRules[index].enabled;
+                    _settings.sceneryRules[index].enabled = !_settings.sceneryRules[index].enabled;
                 }
-                else if (index >= 0 && index < static_cast<int32_t>(MapGenerator::gSettings.sceneryRules.size()))
+                else if (index >= 0 && index < static_cast<int32_t>(_settings.sceneryRules.size()))
                 {
                     SetSelectedSceneryRule(index);
                 }
@@ -1819,7 +1833,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    auto& selectedRule = MapGenerator::gSettings.sceneryRules[_selectedScRule];
+                    auto& selectedRule = _settings.sceneryRules[_selectedScRule];
                     // Because the list items are displayed in reverse order, subtract the calculated index from size
                     const int32_t index = static_cast<int32_t>(
                         selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
@@ -1855,7 +1869,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(1000);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_SIMPLEX_BASE_FREQUENCY, STR_ENTER_BASE_FREQUENCY, ft, STR_FORMAT_COMMA2DP32,
-                        MapGenerator::gSettings.noise.baseFrequency, 4);
+                        _settings.noise.baseFrequency, 4);
                     break;
                 }
 
@@ -1866,7 +1880,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(10);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_SIMPLEX_OCTAVES, STR_ENTER_OCTAVES, ft, STR_FORMAT_INTEGER,
-                        MapGenerator::gSettings.noise.octaves, 10);
+                        _settings.noise.octaves, 10);
                     break;
                 }
             }
@@ -1877,19 +1891,19 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ_UP:
-                    MapGenerator::gSettings.noise.baseFrequency.increment();
+                    _settings.noise.baseFrequency.increment();
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_BASE_FREQ_DOWN:
-                    MapGenerator::gSettings.noise.baseFrequency.decrement();
+                    _settings.noise.baseFrequency.decrement();
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_UP:
-                    MapGenerator::gSettings.noise.octaves.increment();
+                    _settings.noise.octaves.increment();
                     invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_DOWN:
-                    MapGenerator::gSettings.noise.octaves.decrement();
+                    _settings.noise.octaves.decrement();
                     invalidate();
                     break;
             }
@@ -1911,14 +1925,14 @@ namespace OpenRCT2::Ui::Windows
                 {}, { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(MapGenerator::gSettings.noise.baseFrequency);
+            ft.Add<uint16_t>(_settings.noise.baseFrequency);
             drawText(
                 rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(MapGenerator::gSettings.noise.octaves);
+            ft.Add<uint16_t>(_settings.noise.octaves);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
                 STR_COMMA16, ft, { textColour });
@@ -1929,11 +1943,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_BASE_FREQ:
-                    MapGenerator::gSettings.noise.baseFrequency = value;
+                    _settings.noise.baseFrequency = value;
                     break;
 
                 case WIDX_SIMPLEX_OCTAVES:
-                    MapGenerator::gSettings.noise.octaves = value;
+                    _settings.noise.octaves = value;
                     break;
             }
         }
@@ -1953,7 +1967,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(100);
                     WindowTextInputOpen(
                         this, widgetIndex, STR_MAPGEN_BIAS_STRENGTH, STR_ENTER_BIAS_STRENGTH, ft, STR_FORMAT_COMMA2DP32,
-                        MapGenerator::gSettings.noise.bias.strength, 4);
+                        _settings.noise.bias.strength, 4);
                     break;
                 }
             }
@@ -1964,11 +1978,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH_UP:
-                    MapGenerator::gSettings.noise.bias.strength.increment();
+                    _settings.noise.bias.strength.increment();
                     invalidate();
                     break;
                 case WIDX_BIAS_STRENGTH_DOWN:
-                    MapGenerator::gSettings.noise.bias.strength.decrement();
+                    _settings.noise.bias.strength.decrement();
                     invalidate();
                     break;
                 case WIDX_BIAS_TYPE_DROPDOWN:
@@ -1996,7 +2010,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
                         Flag::StayOpen, std::size(items), ddWidget->width() - 2);
 
-                    setCheckboxValue(EnumValue(MapGenerator::gSettings.noise.bias.type), true);
+                    setCheckboxValue(EnumValue(_settings.noise.bias.type), true);
                     break;
                 }
             }
@@ -2006,7 +2020,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
-            const bool strengthDisabled = MapGenerator::gSettings.noise.bias.type == MapGenerator::Bias::none;
+            const bool strengthDisabled = _settings.noise.bias.type == MapGenerator::Bias::none;
             const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
 
             drawText(
@@ -2018,7 +2032,7 @@ namespace OpenRCT2::Ui::Windows
                 { strengthColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(MapGenerator::gSettings.noise.bias.strength);
+            ft.Add<uint16_t>(_settings.noise.bias.strength);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_BIAS_STRENGTH].left + 1, widgets[WIDX_BIAS_STRENGTH].top + 1 },
                 STR_COMMA2DP32, ft, { strengthColour });
@@ -2029,7 +2043,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BIAS_STRENGTH:
-                    MapGenerator::gSettings.noise.bias.strength = value;
+                    _settings.noise.bias.strength = value;
                     break;
             }
         }
@@ -2058,8 +2072,8 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 case WIDX_HEIGHTMAP_NORMALIZE:
-                    MapGenerator::gSettings.normalizeHeight = !MapGenerator::gSettings.normalizeHeight;
-                    setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, MapGenerator::gSettings.normalizeHeight);
+                    _settings.normalizeHeight = !_settings.normalizeHeight;
+                    setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalizeHeight);
                     invalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
             }
@@ -2067,7 +2081,7 @@ namespace OpenRCT2::Ui::Windows
 
         void HeightmapPrepareDraw()
         {
-            setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, MapGenerator::gSettings.normalizeHeight);
+            setCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalizeHeight);
         }
 
         void HeightmapDraw(RenderTarget& rt)
@@ -2105,7 +2119,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
                     WindowTextInputOpen(
                         this, widgetIndex, STR_MIN_LAND_HEIGHT, STR_ENTER_MIN_LAND, ft, STR_FORMAT_INTEGER,
-                        BaseZToMetres(MapGenerator::gSettings.heightmapLow), 6);
+                        BaseZToMetres(_settings.heightmapLow), 6);
                     break;
                 }
 
@@ -2116,7 +2130,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
                     WindowTextInputOpen(
                         this, widgetIndex, STR_MAX_LAND_HEIGHT, STR_ENTER_MAX_LAND, ft, STR_FORMAT_INTEGER,
-                        BaseZToMetres(MapGenerator::gSettings.heightmapHigh), 6);
+                        BaseZToMetres(_settings.heightmapHigh), 6);
                     break;
                 }
             }
@@ -2127,29 +2141,29 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_LOW_UP:
-                    MapGenerator::gSettings.heightmapLow.increment();
-                    MapGenerator::gSettings.heightmapHigh = std::max(MapGenerator::gSettings.heightmapHigh.get(), MapGenerator::gSettings.heightmapLow.get() + 2);
+                    _settings.heightmapLow.increment();
+                    _settings.heightmapHigh = std::max(_settings.heightmapHigh.get(), _settings.heightmapLow.get() + 2);
                     invalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_LOW_DOWN:
-                    MapGenerator::gSettings.heightmapLow.decrement();
+                    _settings.heightmapLow.decrement();
                     invalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
-                    MapGenerator::gSettings.heightmapHigh.increment();
+                    _settings.heightmapHigh.increment();
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
-                    MapGenerator::gSettings.heightmapHigh.decrement();
-                    MapGenerator::gSettings.heightmapLow = std::min(MapGenerator::gSettings.heightmapLow.get(), MapGenerator::gSettings.heightmapHigh.get() - 2);
+                    _settings.heightmapHigh.decrement();
+                    _settings.heightmapLow = std::min(_settings.heightmapLow.get(), _settings.heightmapHigh.get() - 2);
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_DOWN:
-                    MapGenerator::gSettings.filter.strength.decrement();
+                    _settings.filter.strength.decrement();
                     invalidateWidget(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH_UP:
-                    MapGenerator::gSettings.filter.strength.increment();
+                    _settings.filter.strength.increment();
                     invalidateWidget(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_TYPE_DROPDOWN:
@@ -2172,7 +2186,7 @@ namespace OpenRCT2::Ui::Windows
                             { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
                             Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
-                        gDropdown.items[EnumValue(MapGenerator::gSettings.filter.type)].setChecked(true);
+                        gDropdown.items[EnumValue(_settings.filter.type)].setChecked(true);
                         break;
                     }
                 case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_DROPDOWN:
@@ -2192,7 +2206,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
                         Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
-                    gDropdown.items[EnumValue(MapGenerator::gSettings.slopeSmooth)].setChecked(true);
+                    gDropdown.items[EnumValue(_settings.slopeSmooth)].setChecked(true);
                     break;
                 }
             }
@@ -2211,16 +2225,16 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_LOW:
-                    MapGenerator::gSettings.heightmapLow = value;
-                    MapGenerator::gSettings.heightmapHigh = std::max(MapGenerator::gSettings.heightmapLow, MapGenerator::gSettings.heightmapHigh);
+                    _settings.heightmapLow = value;
+                    _settings.heightmapHigh = std::max(_settings.heightmapLow, _settings.heightmapHigh);
                     break;
 
                 case WIDX_HEIGHTMAP_HIGH:
-                    MapGenerator::gSettings.heightmapHigh = value;
-                    MapGenerator::gSettings.heightmapLow = std::min(MapGenerator::gSettings.heightmapLow, MapGenerator::gSettings.heightmapHigh);
+                    _settings.heightmapHigh = value;
+                    _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh);
                     break;
                 case WIDX_HEIGHTMAP_TRANSFORM_STRENGTH:
-                    MapGenerator::gSettings.filter.strength = value;
+                    _settings.filter.strength = value;
                     break;
             }
 
@@ -2237,11 +2251,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_TRANSFORM_TYPE_DROPDOWN:
-                    MapGenerator::gSettings.filter.type = static_cast<MapGenerator::Filter>(dropdownIndex);
+                    _settings.filter.type = static_cast<MapGenerator::Filter>(dropdownIndex);
                     invalidate();
                     break;
                 case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES_DROPDOWN:
-                    MapGenerator::gSettings.slopeSmooth = static_cast<MapGenerator::SlopeSmooth>(dropdownIndex);
+                    _settings.slopeSmooth = static_cast<MapGenerator::SlopeSmooth>(dropdownIndex);
                     invalidate();
                     break;
             }
@@ -2299,7 +2313,7 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainPrepareDraw()
         {
-            const bool isNotFlatland = MapGenerator::gSettings.generator != MapGenerator::HeightMapGenerator::flat;
+            const bool isNotFlatland = _settings.generator != MapGenerator::HeightMapGenerator::flat;
 
             // Max land height option is irrelevant for flatland
             setWidgetEnabled(WIDX_HEIGHTMAP_HIGH, isNotFlatland);
@@ -2312,7 +2326,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetEnabled(WIDX_HEIGHTMAP_TRANSFORM_STRENGTH, isNotFlatland);
 
 
-            switch (MapGenerator::gSettings.filter.type)
+            switch (_settings.filter.type)
             {
                 case MapGenerator::Filter::none:
                     widgets[WIDX_HEIGHTMAP_TRANSFORM_TYPE].text = STR_MAPGEN_TRANSFORM_TYPE_NONE;
@@ -2334,7 +2348,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            switch (MapGenerator::gSettings.slopeSmooth)
+            switch (_settings.slopeSmooth)
             {
                 case MapGenerator::SlopeSmooth::none:
                     widgets[WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES].text = STR_MAPGEN_SMOOTH_EDGE_NONE;
@@ -2362,7 +2376,7 @@ namespace OpenRCT2::Ui::Windows
                 { enabledColour });
 
             auto ft = Formatter();
-            ft.Add<int32_t>(BaseZToMetres(MapGenerator::gSettings.heightmapLow));
+            ft.Add<int32_t>(BaseZToMetres(_settings.heightmapLow));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { enabledColour });
@@ -2375,7 +2389,7 @@ namespace OpenRCT2::Ui::Windows
                 { maxLandColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(BaseZToMetres(MapGenerator::gSettings.heightmapHigh));
+            ft.Add<int32_t>(BaseZToMetres(_settings.heightmapHigh));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { maxLandColour });
@@ -2393,7 +2407,7 @@ namespace OpenRCT2::Ui::Windows
                 { transformColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(MapGenerator::gSettings.filter.strength);
+            ft.Add<int32_t>(_settings.filter.strength);
             drawText(
                 rt,
                 windowPos
@@ -2443,7 +2457,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedTxRule != -1)
                     {
-                        auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         selectedRule.effect.applyLandTexture = !selectedRule.effect.applyLandTexture;
                         invalidate();
                     }
@@ -2453,7 +2467,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedTxRule != -1)
                     {
-                        auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         selectedRule.effect.applyEdgeTexture = !selectedRule.effect.applyEdgeTexture;
                         invalidate();
                     }
@@ -2461,16 +2475,16 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_TX_NEW:
                 {
-                    MapGenerator::Rule::createNewTextureRule(MapGenerator::gSettings);
-                    SetSelectedTextureRule(static_cast<int32_t>(MapGenerator::gSettings.textureRules.size() - 1));
+                    MapGenerator::Rule::createNewTextureRule(_settings);
+                    SetSelectedTextureRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
                     invalidate();
                     break;
                 }
                 case WIDX_RULE_TX_REMOVE:
                 {
-                    if (_selectedTxRule != -1 && !MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault)
                     {
-                        MapGenerator::gSettings.textureRules.erase(MapGenerator::gSettings.textureRules.begin() + _selectedTxRule);
+                        _settings.textureRules.erase(_settings.textureRules.begin() + _selectedTxRule);
                         SetSelectedTextureRule(_selectedTxRule - 1);
                         invalidate();
                     }
@@ -2478,9 +2492,9 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_TX_RENAME:
                 {
-                    if (_selectedTxRule != -1 && !MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault)
                     {
-                        const auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                        const auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         auto* qqq = selectedRule.name.c_str();
                         WindowTextInputOpen(
                             this, widgetIndex, STR_MAPGEN_RULE_RENAME_TITLE, STR_MAPGEN_RULE_ENTER_NAME, {}, STR_STRING,
@@ -2490,10 +2504,10 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_TX_MOVE_UP:
                 {
-                    if (_selectedTxRule != -1 && !MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault
-                        && _selectedTxRule < static_cast<int32_t>(MapGenerator::gSettings.textureRules.size() - 1))
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault
+                        && _selectedTxRule < static_cast<int32_t>(_settings.textureRules.size() - 1))
                     {
-                        std::swap(MapGenerator::gSettings.textureRules[_selectedTxRule], MapGenerator::gSettings.textureRules[_selectedTxRule + 1]);
+                        std::swap(_settings.textureRules[_selectedTxRule], _settings.textureRules[_selectedTxRule + 1]);
                         SetSelectedTextureRule(_selectedTxRule + 1);
                         invalidate();
                     }
@@ -2501,9 +2515,9 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_TX_MOVE_DOWN:
                 {
-                    if (_selectedTxRule != -1 && !MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault && _selectedTxRule > 1)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault && _selectedTxRule > 1)
                     {
-                        std::swap(MapGenerator::gSettings.textureRules[_selectedTxRule], MapGenerator::gSettings.textureRules[_selectedTxRule - 1]);
+                        std::swap(_settings.textureRules[_selectedTxRule], _settings.textureRules[_selectedTxRule - 1]);
                         SetSelectedTextureRule(_selectedTxRule - 1);
                         invalidate();
                     }
@@ -2511,9 +2525,9 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_TX_CONDITION_REMOVE:
                 {
-                    if (_selectedTxRule != -1 && !MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault && _selectedTxCondition != -1)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault && _selectedTxCondition != -1)
                     {
-                        auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         selectedRule.conditions.erase(selectedRule.conditions.begin() + _selectedTxCondition);
                         auto nextIdx = _selectedTxCondition - 1;
                         if (nextIdx == -1 && !selectedRule.conditions.empty())
@@ -2527,18 +2541,18 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_TX_CONDITION_EDIT:
                 {
-                    if (_selectedTxRule != -1 && !MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault && _selectedTxCondition != -1)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault && _selectedTxCondition != -1)
                     {
-                        auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         auto& selectedCondition = selectedRule.conditions[_selectedTxCondition];
 
                         auto callback = [this](MapGenerator::Rule::Condition& condition) {
-                            if (_selectedTxRule == -1 || MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault
+                            if (_selectedTxRule == -1 || _settings.textureRules[_selectedTxRule].isDefault
                                 || _selectedTxCondition == -1)
                             {
                                 return;
                             }
-                            MapGenerator::gSettings.textureRules[_selectedTxRule].conditions[_selectedTxCondition] = condition;
+                            _settings.textureRules[_selectedTxRule].conditions[_selectedTxCondition] = condition;
                             invalidate();
                         };
 
@@ -2559,7 +2573,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         return;
                     }
-                    const auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    const auto& selectedRule = _settings.textureRules[_selectedTxRule];
                     LandTool::ShowSurfaceStyleDropdown(this, widget, selectedRule.effect.landTexture);
                     break;
                 }
@@ -2569,7 +2583,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         return;
                     }
-                    const auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    const auto& selectedRule = _settings.textureRules[_selectedTxRule];
                     LandTool::ShowEdgeStyleDropdown(this, widget, selectedRule.effect.edgeTexture);
                     break;
                 }
@@ -2657,14 +2671,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RULE_TX_RENAME:
                 {
-                    if (_selectedTxRule == -1 || MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault)
+                    if (_selectedTxRule == -1 || _settings.textureRules[_selectedTxRule].isDefault)
                     {
                         return;
                     }
 
                     // TODO trim + check not empty?
 
-                    auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
                     selectedRule.name = std::string(value);
                     break;
                 }
@@ -2698,7 +2712,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (ruleSelected)
             {
-                const auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                const auto& selectedRule = _settings.textureRules[_selectedTxRule];
                 setCheckboxValue(WIDX_RULE_TX_FLOOR_TEXTURE_CHECK, selectedRule.effect.applyLandTexture);
                 setCheckboxValue(WIDX_RULE_TX_WALL_TEXTURE_CHECK, selectedRule.effect.applyEdgeTexture);
 
@@ -2712,7 +2726,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetEnabled(WIDX_RULE_TX_RENAME, !selectedRule.isDefault);
 
                 setWidgetEnabled(WIDX_RULE_TX_MOVE_UP, !selectedRule.isDefault
-                    && _selectedTxRule < static_cast<int32_t>(MapGenerator::gSettings.textureRules.size() - 1));
+                    && _selectedTxRule < static_cast<int32_t>(_settings.textureRules.size() - 1));
                 setWidgetEnabled(WIDX_RULE_TX_MOVE_DOWN, !selectedRule.isDefault &&  _selectedTxRule > 1);
 
                 setWidgetEnabled(WIDX_RULE_TX_CONDITION_REMOVE, !selectedRule.isDefault && condSelected);
@@ -2728,7 +2742,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_selectedTxRule != -1)
             {
-                const auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                const auto& selectedRule = _settings.textureRules[_selectedTxRule];
                 DrawDropdownButton(rt, WIDX_RULE_TX_FLOOR_TEXTURE, LookupSurfaceImage(selectedRule.effect.landTexture));
                 DrawDropdownButton(rt, WIDX_RULE_TX_WALL_TEXTURE, LookupEdgeImage(selectedRule.effect.edgeTexture));
             }
@@ -2753,7 +2767,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         return;
                     }
-                    auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdown.highlightedIndex;
@@ -2770,7 +2784,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         return;
                     }
-                    auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdown.highlightedIndex;
@@ -2789,8 +2803,8 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex != -1)
                     {
                         const auto preset = static_cast<MapGenerator::Rule::TextureRulePreset>(dropdownIndex);
-                        MapGenerator::Rule::createNewTextureRuleFromPreset(MapGenerator::gSettings, preset);
-                        SetSelectedTextureRule(static_cast<int32_t>(MapGenerator::gSettings.textureRules.size() - 1));
+                        MapGenerator::Rule::createNewTextureRuleFromPreset(_settings, preset);
+                        SetSelectedTextureRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
                     }
 
                     invalidate();
@@ -2814,11 +2828,11 @@ namespace OpenRCT2::Ui::Windows
                     const auto conditionType = static_cast<MapGenerator::Rule::Type>(dropdownIndex);
                     auto newCondition = createNewCondition(conditionType);
                     auto callback = [this](MapGenerator::Rule::Condition& condition) {
-                        if (_selectedTxRule == -1 || MapGenerator::gSettings.textureRules[_selectedTxRule].isDefault)
+                        if (_selectedTxRule == -1 || _settings.textureRules[_selectedTxRule].isDefault)
                         {
                             return;
                         }
-                        auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         selectedRule.conditions.push_back(std::move(condition));
                         SetSelectedTextureCondition(static_cast<int32_t>(selectedRule.conditions.size() - 1));
                         invalidate();
@@ -2837,7 +2851,7 @@ namespace OpenRCT2::Ui::Windows
                 case 0:
                 {
                     return ScreenSize(
-                        kWindowSize.width - 10, static_cast<int32_t>(MapGenerator::gSettings.textureRules.size() * kScrollableRowHeight));
+                        kWindowSize.width - 10, static_cast<int32_t>(_settings.textureRules.size() * kScrollableRowHeight));
                 }
                 case 1:
                 {
@@ -2845,7 +2859,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         return {};
                     }
-                    const auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    const auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     return ScreenSize(
                         widgets[WIDX_RULE_TX_CONDITION_SCROLL].width(),
@@ -2873,7 +2887,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+            auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
             const int32_t listWidth = widgets[WIDX_RULE_TX_CONDITION_SCROLL].width();
             Rectangle::fill(
@@ -3055,11 +3069,11 @@ namespace OpenRCT2::Ui::Windows
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, getColourMap(colours[1].colour).midLight);
 
             ScreenCoordsXY screenCoords{};
-            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (MapGenerator::gSettings.textureRules.size() - 1));
+            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (_settings.textureRules.size() - 1));
 
-            for (int32_t i = 0; i < static_cast<int32_t>(MapGenerator::gSettings.textureRules.size()); i++)
+            for (int32_t i = 0; i < static_cast<int32_t>(_settings.textureRules.size()); i++)
             {
-                auto& rule = MapGenerator::gSettings.textureRules[i];
+                auto& rule = _settings.textureRules[i];
 
                 // Draw row background colour
                 auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
@@ -3124,8 +3138,8 @@ namespace OpenRCT2::Ui::Windows
             if(scrollIndex == 0)
             {
                 const int32_t index = static_cast<int32_t>(
-                    MapGenerator::gSettings.textureRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
-                if (index < 0 || index >= static_cast<int32_t>(MapGenerator::gSettings.textureRules.size()))
+                    _settings.textureRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                if (index < 0 || index >= static_cast<int32_t>(_settings.textureRules.size()))
                 {
                     _highlightedTxRule = -1;
                 }
@@ -3143,7 +3157,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    const auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    const auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     const int32_t index = static_cast<int32_t>(
                         selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
@@ -3164,20 +3178,20 @@ namespace OpenRCT2::Ui::Windows
 
         void TextureScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
-            if (MapGenerator::gSettings.textureRules.empty())
+            if (_settings.textureRules.empty())
                 return;
 
             if (scrollIndex == 0)
             {
                 // Because the list items are displayed in reverse order, subtract the calculated index from size
                 const int32_t index = static_cast<int32_t>(
-                    MapGenerator::gSettings.textureRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                    _settings.textureRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
                 const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
-                if (index >= 0 && checkboxColumnRect.Contains(screenCoords) && !MapGenerator::gSettings.textureRules[index].isDefault)
+                if (index >= 0 && checkboxColumnRect.Contains(screenCoords) && !_settings.textureRules[index].isDefault)
                 { // Checkbox was clicked
-                    MapGenerator::gSettings.textureRules[index].enabled = !MapGenerator::gSettings.textureRules[index].enabled;
+                    _settings.textureRules[index].enabled = !_settings.textureRules[index].enabled;
                 }
-                else if (index >= 0 && index < static_cast<int32_t>(MapGenerator::gSettings.textureRules.size()))
+                else if (index >= 0 && index < static_cast<int32_t>(_settings.textureRules.size()))
                 {
                     SetSelectedTextureRule(index);
                 }
@@ -3192,7 +3206,7 @@ namespace OpenRCT2::Ui::Windows
                     SetSelectedTextureCondition(-1);
                 } else
                 {
-                    auto& selectedRule = MapGenerator::gSettings.textureRules[_selectedTxRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
                     // Because the list items are displayed in reverse order, subtract the calculated index from size
                     const int32_t index = static_cast<int32_t>(
                         selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
@@ -3230,7 +3244,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>(baseZToDisplayHeight(kMaximumWaterHeight));
                     WindowTextInputOpen(
                         this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
-                        baseZToDisplayHeight(MapGenerator::gSettings.waterLevel), 6);
+                        baseZToDisplayHeight(_settings.waterLevel), 6);
                     break;
                 }
                 case WIDX_WATER_RIVERS_CATCHMENT:
@@ -3240,13 +3254,13 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsAreaToDisplayArea(MapGenerator::River::kRiverCatchmentThresholdMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft, STR_FORMAT_INTEGER,
-                        tileUnitsAreaToDisplayArea(MapGenerator::gSettings.river.catchmentThreshold), 8);
+                        tileUnitsAreaToDisplayArea(_settings.river.catchmentThreshold), 8);
                     break;
                 }
                 case WIDX_WATER_RIVERS_ENABLE:
                 {
-                    MapGenerator::gSettings.river.generate = !MapGenerator::gSettings.river.generate;
-                    setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, MapGenerator::gSettings.river.generate);
+                    _settings.river.generate = !_settings.river.generate;
+                    setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, _settings.river.generate);
                     invalidate();
                     break;
                 }
@@ -3257,7 +3271,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverWidthMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX_ENTER, ft, STR_FORMAT_INTEGER,
-                        tileUnitsToDisplayLength(MapGenerator::gSettings.river.riverWidthMax), 4);
+                        tileUnitsToDisplayLength(_settings.river.riverWidthMax), 4);
                     break;
                 }
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
@@ -3267,7 +3281,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32,
-                        MapGenerator::gSettings.river.riverWidthMax, 5);
+                        _settings.river.riverWidthMax, 5);
                     break;
                 }
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
@@ -3277,7 +3291,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverPruneLengthThresholdMin));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
-                        tileUnitsToDisplayLength(MapGenerator::gSettings.river.pruneThreshold), 3);
+                        tileUnitsToDisplayLength(_settings.river.pruneThreshold), 3);
                     break;
                 }
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
@@ -3287,7 +3301,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverBreachLengthMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH_ENTER, ft, STR_FORMAT_INTEGER,
-                        tileUnitsToDisplayLength(MapGenerator::gSettings.river.breachMaxLength), 3);
+                        tileUnitsToDisplayLength(_settings.river.breachMaxLength), 3);
                     break;
                 }
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
@@ -3297,7 +3311,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(heightUnitsToDisplayHeight(MapGenerator::River::kRiverBreachDepthMax));
                     WindowTextInputOpen(
                         this, WIDX_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH_ENTER, ft, STR_FORMAT_INTEGER,
-                        heightUnitsToDisplayHeight(MapGenerator::gSettings.river.breachMaxDepth), 3);
+                        heightUnitsToDisplayHeight(_settings.river.breachMaxDepth), 3);
                     break;
                 }
             }
@@ -3308,59 +3322,59 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL_UP:
-                    MapGenerator::gSettings.waterLevel.increment();
+                    _settings.waterLevel.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_LEVEL_DOWN:
-                    MapGenerator::gSettings.waterLevel .decrement();
+                    _settings.waterLevel .decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_UP:
-                    MapGenerator::gSettings.river.catchmentThreshold.increment();
+                    _settings.river.catchmentThreshold.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT_DOWN:
-                    MapGenerator::gSettings.river.catchmentThreshold.decrement();
+                    _settings.river.catchmentThreshold.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_UP:
-                    MapGenerator::gSettings.river.riverWidthMax.increment();
+                    _settings.river.riverWidthMax.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX_DOWN:
-                    MapGenerator::gSettings.river.riverWidthMax.decrement();
+                    _settings.river.riverWidthMax.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_UP:
-                    MapGenerator::gSettings.river.riverGrowthExponent.increment();
+                    _settings.river.riverGrowthExponent.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT_DOWN:
-                    MapGenerator::gSettings.river.riverGrowthExponent.decrement();
+                    _settings.river.riverGrowthExponent.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_UP:
-                    MapGenerator::gSettings.river.pruneThreshold.increment();
+                    _settings.river.pruneThreshold.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD_DOWN:
-                    MapGenerator::gSettings.river.pruneThreshold.decrement();
+                    _settings.river.pruneThreshold.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_UP:
-                    MapGenerator::gSettings.river.breachMaxLength.increment();
+                    _settings.river.breachMaxLength.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH_DOWN:
-                    MapGenerator::gSettings.river.breachMaxLength.decrement();
+                    _settings.river.breachMaxLength.decrement();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_UP:
-                    MapGenerator::gSettings.river.breachMaxDepth.increment();
+                    _settings.river.breachMaxDepth.increment();
                     invalidate();
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN:
-                    MapGenerator::gSettings.river.breachMaxDepth.decrement();
+                    _settings.river.breachMaxDepth.decrement();
                     invalidate();
                     break;
             }
@@ -3456,25 +3470,25 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL:
-                    MapGenerator::gSettings.waterLevel = displayHeightToBaseZ(value);
+                    _settings.waterLevel = displayHeightToBaseZ(value);
                     break;
                 case WIDX_WATER_RIVERS_CATCHMENT:
-                    MapGenerator::gSettings.river.catchmentThreshold = displayAreaToTileUnits(value);
+                    _settings.river.catchmentThreshold = displayAreaToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_WIDTH_MAX:
-                    MapGenerator::gSettings.river.riverWidthMax = displayLengthToTileUnits(value);
+                    _settings.river.riverWidthMax = displayLengthToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
-                    MapGenerator::gSettings.river.riverGrowthExponent = value;
+                    _settings.river.riverGrowthExponent = value;
                     break;
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
-                    MapGenerator::gSettings.river.pruneThreshold = displayLengthToTileUnits(value);
+                    _settings.river.pruneThreshold = displayLengthToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_LENGTH:
-                    MapGenerator::gSettings.river.breachMaxLength = displayLengthToTileUnits(value);
+                    _settings.river.breachMaxLength = displayLengthToTileUnits(value);
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
-                    MapGenerator::gSettings.river.breachMaxDepth = displayHeightToTileUnits(value);
+                    _settings.river.breachMaxDepth = displayHeightToTileUnits(value);
                     break;
             }
 
@@ -3483,7 +3497,7 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
-            const bool enableRiver = MapGenerator::gSettings.river.generate;
+            const bool enableRiver = _settings.river.generate;
 
             setCheckboxValue(WIDX_WATER_RIVERS_ENABLE, enableRiver);
 
@@ -3524,7 +3538,7 @@ namespace OpenRCT2::Ui::Windows
                 rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, { textColour });
 
             auto ft = Formatter();
-            ft.Add<int32_t>(BaseZToMetres(MapGenerator::gSettings.waterLevel));
+            ft.Add<int32_t>(BaseZToMetres(_settings.waterLevel));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
@@ -3537,7 +3551,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             StringId areaFmt = STR_MAPGEN_FORMAT_AREA_METRIC;
-            auto catchmentFmt = MapGenerator::gSettings.river.catchmentThreshold * 10;
+            auto catchmentFmt = _settings.river.catchmentThreshold * 10;
             if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
             {
                 areaFmt = STR_MAPGEN_FORMAT_AREA_IMPERIAL;
@@ -3555,7 +3569,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(TileUnitsToMetres(MapGenerator::gSettings.river.riverWidthMax));
+            ft.Add<int32_t>(TileUnitsToMetres(_settings.river.riverWidthMax));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_WIDTH_MAX].left + 1,
                 widgets[WIDX_WATER_RIVERS_WIDTH_MAX].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
@@ -3566,7 +3580,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(MapGenerator::gSettings.river.riverGrowthExponent);
+            ft.Add<int32_t>(_settings.river.riverGrowthExponent);
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_GROWTH_EXPONENT].left + 1,
                 widgets[WIDX_WATER_RIVERS_GROWTH_EXPONENT].top + 1 }, STR_FORMAT_COMMA2DP32, ft, { valueColour });
@@ -3577,7 +3591,7 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(TileUnitsToMetres(MapGenerator::gSettings.river.pruneThreshold));
+            ft.Add<int32_t>(TileUnitsToMetres(_settings.river.pruneThreshold));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].left + 1,
                 widgets[WIDX_WATER_RIVERS_PRUNE_THRESHOLD].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
@@ -3588,13 +3602,13 @@ namespace OpenRCT2::Ui::Windows
                 { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(TileUnitsToMetres(MapGenerator::gSettings.river.breachMaxLength));
+            ft.Add<int32_t>(TileUnitsToMetres(_settings.river.breachMaxLength));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_BREACH_LENGTH].left + 1,
                 widgets[WIDX_WATER_RIVERS_BREACH_LENGTH].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
 
             ft = Formatter();
-            ft.Add<int32_t>(HeightUnitsToMetres(MapGenerator::gSettings.river.breachMaxDepth));
+            ft.Add<int32_t>(HeightUnitsToMetres(_settings.river.breachMaxDepth));
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].left + 1,
                 widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
@@ -3606,13 +3620,6 @@ namespace OpenRCT2::Ui::Windows
         void onOpen() override
         {
             number = 0;
-
-            if (!MapGenerator::gSettingsInitialized)
-            {
-                MapGenerator::Rule::createDefaultTextureRules(MapGenerator::gSettings);
-                MapGenerator::Rule::createDefaultSceneryRules(MapGenerator::gSettings);
-                MapGenerator::gSettingsInitialized = true;
-            }
 
             setPage(WINDOW_MAPGEN_PAGE_BASE);
             invalidate();
@@ -3645,6 +3652,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseDown(WidgetIndex widgetIndex) override
         {
+            SharedMouseDown(widgetIndex);
             switch (page)
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
@@ -3700,7 +3708,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            const bool isHeightMapImage = MapGenerator::gSettings.generator == MapGenerator::HeightMapGenerator::image;
+            const bool isHeightMapImage = _settings.generator == MapGenerator::HeightMapGenerator::image;
             setWidgetDisabled(WIDX_MAP_GENERATE, isHeightMapImage && !_heightmapLoaded);
 
             switch (page)
@@ -3787,7 +3795,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_MAP_SEED && !_random_seed)
             {
-                MapGenerator::gSettings.seed.assign(text);
+                _settings.seed.assign(text);
                 return;
             }
             if (page == WINDOW_MAPGEN_PAGE_TEXTURE)
@@ -3850,7 +3858,7 @@ namespace OpenRCT2::Ui::Windows
                 // The window needs to be open while using the map
                 _heightmapLoaded = true;
                 _heightmapFilename = fs::u8path(path).filename().string();
-                MapGenerator::gSettings.generator = MapGenerator::HeightMapGenerator::image;
+                _settings.generator = MapGenerator::HeightMapGenerator::image;
                 setPage(WINDOW_MAPGEN_PAGE_BASE);
             }
         }
@@ -3861,7 +3869,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 try
                 {
-                    MapGenerator::gSettings = MapGenerator::loadMapgenSettingsFromPath(path);
+                    _settings = MapGenerator::loadMapgenSettingsFromPath(path);
                     _random_seed = false;
                 }
                 catch (MapGenerator::SettingSerdeException& e)
@@ -3877,7 +3885,7 @@ namespace OpenRCT2::Ui::Windows
             {
                try
                 {
-                   MapGenerator::saveMapgenSettingsToPath(MapGenerator::gSettings, path);
+                   MapGenerator::saveMapgenSettingsToPath(_settings, path);
                 }
                 catch (MapGenerator::SettingSerdeException& e)
                 {

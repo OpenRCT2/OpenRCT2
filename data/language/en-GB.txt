@@ -3976,6 +3976,7 @@ STR_7220    :Enter breach depth between {INT32} and {INT32}
 STR_7221    :Breach length/depth
 STR_7222    :Distance[Feature]
 STR_7223    :Land
+STR_7229    :Reset settings
 STR_7230    :Load settings
 STR_7231    :Save settings
 STR_7232    :...

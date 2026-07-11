@@ -143,8 +143,8 @@ namespace OpenRCT2::World::MapGenerator
         std::vector<DebugSign> debugSigns;
     };
 
-    static bool gSettingsInitialized = false;
-    static Settings gSettings;
+    void resetMapGenSettings();
+    Settings& getMapGenSettings();
 
     void setRandomSeed(Settings& settings);
     void generate(const Settings& settings);
