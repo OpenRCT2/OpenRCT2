@@ -7,6 +7,7 @@
 - Improved: [#26765] The ride operations tab now visually separates fields using group boxes.
 - Fix: [#26756] Guests cannot puke or litter on sloped path.
 - Fix: [#26758] [Plugin] IPv6 addresses are reported incorrectly.
+- Fix: [#26775] Maze gets wrong intensity boost from size (0.02 per tile instead of 0.01 per 2 tiles).
 
 0.5.3 (2026-07-05)
 ------------------------------------------------------------------------
