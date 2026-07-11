@@ -517,7 +517,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
                             if (std::holds_alternative<QuadSceneryItems>(tileResult.value()))
                             {
                                 auto& quadItems = std::get<QuadSceneryItems>(tileResult.value());
-                                quadItems[quad] = item;
+                                if (!quadItems[quad].has_value())
+                                {
+                                    quadItems[quad] = item;
+                                }
                             }
                         }
                         break;
