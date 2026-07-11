@@ -90,6 +90,7 @@ namespace OpenRCT2
     bool MapIsLocationOwned(const CoordsXYZ& loc);
     bool MapIsLocationInPark(const CoordsXY& coords);
     bool MapIsLocationOwnedOrHasRights(const CoordsXY& loc);
+    bool MapIsLocationUnderground(const CoordsXYZ& loc);
     bool MapSurfaceIsBlocked(const CoordsXY& mapCoords);
     void MapRemoveAllRides();
     void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom);
