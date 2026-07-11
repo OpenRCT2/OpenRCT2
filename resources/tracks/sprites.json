@@ -5340,18 +5340,18 @@
     {
         "path": "track/lattice_triangle/large_turn_left_to_diag_steep_2_1.png",
         "x": -21,
-        "y": -46,
+        "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_turn_left_to_diag_steep_2_2.png",
-        "x": -16,
+        "x": -32,
         "y": -43,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_turn_left_to_diag_steep_2_3.png",
-        "x": -24,
+        "x": -32,
         "y": -56,
         "palette": "keep"
     },
@@ -5459,8 +5459,8 @@
     },
     {
         "path": "track/lattice_triangle/large_turn_right_to_diag_steep_3_1.png",
-        "x": -16,
-        "y": -46,
+        "x": -29,
+        "y": -39,
         "palette": "keep"
     },
     {
@@ -5520,19 +5520,19 @@
     {
         "path": "track/lattice_triangle/large_turn_left_to_orthogonal_steep_1_3.png",
         "x": -32,
-        "y": -56,
+        "y": -71,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_turn_left_to_orthogonal_steep_1_4.png",
-        "x": -32,
+        "x": -24,
         "y": -68,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_turn_left_to_orthogonal_steep_2_1.png",
         "x": -8,
-        "y": -16,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -5543,7 +5543,7 @@
     },
     {
         "path": "track/lattice_triangle/large_turn_left_to_orthogonal_steep_2_3.png",
-        "x": -2,
+        "x": -5,
         "y": -48,
         "palette": "keep"
     },
@@ -5627,8 +5627,8 @@
     },
     {
         "path": "track/lattice_triangle/large_turn_right_to_orthogonal_steep_2_1.png",
-        "x": -14,
-        "y": -16,
+        "x": -10,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -5663,8 +5663,8 @@
     },
     {
         "path": "track/lattice_triangle/large_turn_right_to_orthogonal_steep_3_3.png",
-        "x": -8,
-        "y": -55,
+        "x": -20,
+        "y": -71,
         "palette": "keep"
     },
     {
@@ -10369,8 +10369,8 @@
     },
     {
         "path": "track/bm/s_bend_left_bank_2_1.png",
-        "x": -20,
-        "y": -4,
+        "x": -12,
+        "y": 1,
         "palette": "keep"
     },
     {
@@ -10418,7 +10418,7 @@
     {
         "path": "track/bm/s_bend_right_bank_1_4.png",
         "x": -32,
-        "y": -4,
+        "y": 1,
         "palette": "keep"
     },
     {
@@ -10471,8 +10471,8 @@
     },
     {
         "path": "track/bm/gentle_left_bank_to_steep_3_1.png",
-        "x": -18,
-        "y": -17,
+        "x": -16,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -10501,7 +10501,7 @@
     },
     {
         "path": "track/bm/gentle_right_bank_to_steep_2_2.png",
-        "x": -19,
+        "x": -13,
         "y": -20,
         "palette": "keep"
     },
@@ -10520,7 +10520,7 @@
     {
         "path": "track/bm/steep_to_gentle_left_bank_1.png",
         "x": -24,
-        "y": -36,
+        "y": -35,
         "palette": "keep"
     },
     {
@@ -10555,20 +10555,20 @@
     },
     {
         "path": "track/bm/steep_to_gentle_right_bank_2_1.png",
-        "x": -26,
+        "x": -19,
         "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/bm/steep_to_gentle_right_bank_2_2.png",
-        "x": -25,
+        "x": -26,
         "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/bm/steep_to_gentle_right_bank_3.png",
         "x": -24,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -10579,20 +10579,20 @@
     },
     {
         "path": "track/bm/gentle_left_bank_to_steep_diag_1_1.png",
-        "x": -29,
+        "x": -3,
         "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/bm/gentle_left_bank_to_steep_diag_1_2.png",
         "x": -32,
-        "y": -19,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/bm/gentle_left_bank_to_steep_diag_2_1.png",
-        "x": -12,
-        "y": -17,
+        "x": -11,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -10621,7 +10621,7 @@
     },
     {
         "path": "track/bm/gentle_right_bank_to_steep_diag_2_1.png",
-        "x": -8,
+        "x": 1,
         "y": -16,
         "palette": "keep"
     },
@@ -10640,7 +10640,7 @@
     {
         "path": "track/bm/gentle_right_bank_to_steep_diag_3_2.png",
         "x": -32,
-        "y": -18,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -10652,7 +10652,7 @@
     {
         "path": "track/bm/steep_to_gentle_left_bank_diag_1_1.png",
         "x": -32,
-        "y": -27,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -10664,7 +10664,7 @@
     {
         "path": "track/bm/steep_to_gentle_left_bank_diag_2.png",
         "x": -13,
-        "y": -19,
+        "y": -18,
         "palette": "keep"
     },
     {
@@ -10676,7 +10676,7 @@
     {
         "path": "track/bm/steep_to_gentle_left_bank_diag_4.png",
         "x": -13,
-        "y": -45,
+        "y": -46,
         "palette": "keep"
     },
     {
@@ -10688,13 +10688,13 @@
     {
         "path": "track/bm/steep_to_gentle_right_bank_diag_2.png",
         "x": -13,
-        "y": -18,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/bm/steep_to_gentle_right_bank_diag_3_1.png",
-        "x": -27,
-        "y": -27,
+        "x": -1,
+        "y": -15,
         "palette": "keep"
     },
     {
@@ -10723,14 +10723,14 @@
     },
     {
         "path": "track/bm/small_turn_left_steep_2_1.png",
-        "x": -24,
+        "x": 5,
         "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/bm/small_turn_left_steep_2_2.png",
         "x": -25,
-        "y": -50,
+        "y": -49,
         "palette": "keep"
     },
     {
@@ -10759,8 +10759,8 @@
     },
     {
         "path": "track/bm/small_turn_left_steep_4_2.png",
-        "x": -17,
-        "y": -63,
+        "x": 6,
+        "y": -42,
         "palette": "keep"
     },
     {
@@ -10778,7 +10778,7 @@
     {
         "path": "track/bm/small_turn_right_steep_1_2.png",
         "x": -32,
-        "y": -65,
+        "y": -41,
         "palette": "keep"
     },
     {
@@ -10856,18 +10856,18 @@
     {
         "path": "track/bm/large_turn_left_to_diag_steep_2_1.png",
         "x": -26,
-        "y": -47,
+        "y": -38,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_turn_left_to_diag_steep_2_2.png",
-        "x": -16,
+        "x": -32,
         "y": -43,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_turn_left_to_diag_steep_2_3.png",
-        "x": -24,
+        "x": -32,
         "y": -57,
         "palette": "keep"
     },
@@ -10975,8 +10975,8 @@
     },
     {
         "path": "track/bm/large_turn_right_to_diag_steep_3_1.png",
-        "x": -16,
-        "y": -47,
+        "x": -27,
+        "y": -38,
         "palette": "keep"
     },
     {
@@ -11036,19 +11036,19 @@
     {
         "path": "track/bm/large_turn_left_to_orthogonal_steep_1_3.png",
         "x": -32,
-        "y": -62,
+        "y": -73,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_turn_left_to_orthogonal_steep_1_4.png",
-        "x": -32,
+        "x": -26,
         "y": -70,
         "palette": "keep"
     },
     {
         "path": "track/bm/large_turn_left_to_orthogonal_steep_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -11059,7 +11059,7 @@
     },
     {
         "path": "track/bm/large_turn_left_to_orthogonal_steep_2_3.png",
-        "x": -6,
+        "x": -9,
         "y": -48,
         "palette": "keep"
     },
@@ -11143,8 +11143,8 @@
     },
     {
         "path": "track/bm/large_turn_right_to_orthogonal_steep_2_1.png",
-        "x": -18,
-        "y": -16,
+        "x": -16,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -11179,8 +11179,8 @@
     },
     {
         "path": "track/bm/large_turn_right_to_orthogonal_steep_3_3.png",
-        "x": -9,
-        "y": -61,
+        "x": -21,
+        "y": -73,
         "palette": "keep"
     },
     {
@@ -11215,8 +11215,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_1_1.png",
-        "x": -11,
-        "y": 8,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11227,20 +11227,20 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_1_3.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/banked_barrel_roll_left_1_4.png",
         "x": -25,
         "y": -21,
         "palette": "keep"
     },
     {
-        "path": "track/bm/banked_barrel_roll_left_1_4.png",
-        "x": -24,
-        "y": -21,
-        "palette": "keep"
-    },
-    {
         "path": "track/bm/banked_barrel_roll_left_1_5.png",
-        "x": -5,
-        "y": -17,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11251,8 +11251,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_2_1.png",
-        "x": -8,
-        "y": 3,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11263,8 +11263,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_2_3.png",
-        "x": -27,
-        "y": -10,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11275,14 +11275,14 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_2_5.png",
-        "x": -32,
-        "y": -24,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_left_2_6.png",
         "x": -32,
-        "y": -23,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -11293,8 +11293,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_3_2.png",
-        "x": -29,
-        "y": -5,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11306,7 +11306,7 @@
     {
         "path": "track/bm/banked_barrel_roll_left_3_4.png",
         "x": -29,
-        "y": -19,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -11329,8 +11329,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_4_2.png",
-        "x": -2,
-        "y": -17,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11347,8 +11347,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_left_4_5.png",
-        "x": -16,
-        "y": -16,
+        "x": 5,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -11360,31 +11360,31 @@
     {
         "path": "track/bm/banked_barrel_roll_right_1_1.png",
         "x": -25,
-        "y": -17,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_right_1_2.png",
-        "x": -10,
-        "y": -18,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_right_1_3.png",
         "x": -30,
-        "y": -21,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_right_1_4.png",
-        "x": -29,
+        "x": -20,
         "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_right_1_5.png",
-        "x": -21,
-        "y": -12,
+        "x": -22,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -11401,8 +11401,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_right_2_2.png",
-        "x": -22,
-        "y": -5,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11413,26 +11413,26 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_right_2_4.png",
-        "x": -1,
-        "y": -19,
+        "x": 6,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_right_2_5.png",
         "x": -7,
-        "y": -14,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_right_2_6.png",
-        "x": -6,
+        "x": -7,
         "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_barrel_roll_right_3_1.png",
-        "x": -2,
-        "y": -1,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11444,7 +11444,7 @@
     {
         "path": "track/bm/banked_barrel_roll_right_3_3.png",
         "x": 0,
-        "y": -10,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11455,8 +11455,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_right_3_5.png",
-        "x": -10,
-        "y": -24,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11467,8 +11467,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_right_4_1.png",
-        "x": 2,
-        "y": 8,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11479,8 +11479,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_right_4_3.png",
-        "x": -19,
-        "y": -18,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11491,8 +11491,8 @@
     },
     {
         "path": "track/bm/banked_barrel_roll_right_4_5.png",
-        "x": -26,
-        "y": -17,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11504,7 +11504,7 @@
     {
         "path": "track/bm/banked_zero_g_roll_left_1_1.png",
         "x": -20,
-        "y": -14,
+        "y": 2,
         "palette": "keep"
     },
     {
@@ -11521,20 +11521,20 @@
     },
     {
         "path": "track/bm/banked_zero_g_roll_left_1_4.png",
-        "x": -22,
+        "x": -23,
         "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_zero_g_roll_left_2_1.png",
-        "x": -23,
-        "y": -9,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_zero_g_roll_left_2_2.png",
         "x": -26,
-        "y": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -11569,7 +11569,7 @@
     },
     {
         "path": "track/bm/banked_zero_g_roll_left_3_4.png",
-        "x": -26,
+        "x": -28,
         "y": -27,
         "palette": "keep"
     },
@@ -11587,8 +11587,8 @@
     },
     {
         "path": "track/bm/banked_zero_g_roll_left_4_3.png",
-        "x": -22,
-        "y": -13,
+        "x": 12,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -11600,19 +11600,19 @@
     {
         "path": "track/bm/banked_zero_g_roll_right_1_1.png",
         "x": -26,
-        "y": -27,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_zero_g_roll_right_1_2.png",
         "x": -32,
-        "y": -43,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_zero_g_roll_right_1_3.png",
         "x": -22,
-        "y": -13,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -11647,8 +11647,8 @@
     },
     {
         "path": "track/bm/banked_zero_g_roll_right_3_1.png",
-        "x": -9,
-        "y": -9,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -11665,14 +11665,14 @@
     },
     {
         "path": "track/bm/banked_zero_g_roll_right_3_4.png",
-        "x": -23,
+        "x": -24,
         "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/bm/banked_zero_g_roll_right_4_1.png",
-        "x": -18,
-        "y": -14,
+        "x": -1,
+        "y": 2,
         "palette": "keep"
     },
     {
@@ -23066,7 +23066,7 @@
     },
     {
         "path": "track/standup/flat_to_steep_diag_2_1.png",
-        "x": -13,
+        "x": -12,
         "y": -9,
         "palette": "keep"
     },
@@ -23078,8 +23078,8 @@
     },
     {
         "path": "track/standup/flat_to_steep_diag_2_3.png",
-        "x": -10,
-        "y": -18,
+        "x": -13,
+        "y": -20,
         "palette": "keep"
     },
     {
@@ -23192,14 +23192,14 @@
     },
     {
         "path": "track/standup/s_bend_left_bank_1_1.png",
-        "x": -21,
+        "x": -12,
         "y": -1,
         "palette": "keep"
     },
     {
         "path": "track/standup/s_bend_left_bank_1_2.png",
-        "x": -16,
-        "y": 5,
+        "x": -21,
+        "y": 3,
         "palette": "keep"
     },
     {
@@ -23222,14 +23222,14 @@
     },
     {
         "path": "track/standup/s_bend_left_bank_2_1.png",
-        "x": -22,
-        "y": -5,
+        "x": -3,
+        "y": 5,
         "palette": "keep"
     },
     {
         "path": "track/standup/s_bend_left_bank_2_2.png",
-        "x": -20,
-        "y": 1,
+        "x": -22,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -23271,13 +23271,13 @@
     {
         "path": "track/standup/s_bend_right_bank_1_4.png",
         "x": -32,
-        "y": -6,
+        "y": 3,
         "palette": "keep"
     },
     {
         "path": "track/standup/s_bend_right_bank_1_5.png",
-        "x": -25,
-        "y": 0,
+        "x": -30,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -23300,14 +23300,14 @@
     },
     {
         "path": "track/standup/s_bend_right_bank_2_4.png",
-        "x": -13,
+        "x": -5,
         "y": -1,
         "palette": "keep"
     },
     {
         "path": "track/standup/s_bend_right_bank_2_5.png",
-        "x": -11,
-        "y": 6,
+        "x": -13,
+        "y": 3,
         "palette": "keep"
     },
     {
@@ -23324,14 +23324,14 @@
     },
     {
         "path": "track/standup/gentle_left_bank_to_steep_3_1.png",
-        "x": -25,
-        "y": -21,
+        "x": -14,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/standup/gentle_left_bank_to_steep_3_2.png",
-        "x": -19,
-        "y": -17,
+        "x": -25,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -23349,13 +23349,13 @@
     {
         "path": "track/standup/gentle_right_bank_to_steep_2_1.png",
         "x": -20,
-        "y": -21,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/standup/gentle_right_bank_to_steep_2_2.png",
-        "x": -12,
-        "y": -17,
+        "x": -19,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -23390,8 +23390,8 @@
     },
     {
         "path": "track/standup/steep_to_gentle_left_bank_3_2.png",
-        "x": 1,
-        "y": -5,
+        "x": -22,
+        "y": -15,
         "palette": "keep"
     },
     {
@@ -23408,14 +23408,14 @@
     },
     {
         "path": "track/standup/steep_to_gentle_right_bank_2_1.png",
-        "x": -25,
+        "x": -14,
         "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/standup/steep_to_gentle_right_bank_2_2.png",
-        "x": -19,
-        "y": -5,
+        "x": -25,
+        "y": -15,
         "palette": "keep"
     },
     {
@@ -23432,26 +23432,26 @@
     },
     {
         "path": "track/standup/gentle_left_bank_to_steep_diag_1_1.png",
-        "x": -32,
+        "x": -3,
         "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/standup/gentle_left_bank_to_steep_diag_1_2.png",
-        "x": -30,
-        "y": -16,
+        "x": -32,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/standup/gentle_left_bank_to_steep_diag_2_1.png",
-        "x": -13,
+        "x": -11,
         "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/standup/gentle_left_bank_to_steep_diag_2_2.png",
-        "x": -11,
-        "y": -3,
+        "x": -13,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -23474,14 +23474,14 @@
     },
     {
         "path": "track/standup/gentle_right_bank_to_steep_diag_2_1.png",
-        "x": -13,
+        "x": -8,
         "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/standup/gentle_right_bank_to_steep_diag_2_2.png",
-        "x": -10,
-        "y": -3,
+        "x": -13,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -23493,7 +23493,7 @@
     {
         "path": "track/standup/gentle_right_bank_to_steep_diag_3_2.png",
         "x": -32,
-        "y": -15,
+        "y": -18,
         "palette": "keep"
     },
     {
@@ -23505,13 +23505,13 @@
     {
         "path": "track/standup/steep_to_gentle_left_bank_diag_1_1.png",
         "x": -32,
-        "y": -29,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/standup/steep_to_gentle_left_bank_diag_1_2.png",
         "x": -32,
-        "y": -24,
+        "y": -29,
         "palette": "keep"
     },
     {
@@ -23546,14 +23546,14 @@
     },
     {
         "path": "track/standup/steep_to_gentle_right_bank_diag_3_1.png",
-        "x": -32,
-        "y": -29,
+        "x": 1,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/standup/steep_to_gentle_right_bank_diag_3_2.png",
-        "x": -30,
-        "y": -24,
+        "x": -32,
+        "y": -29,
         "palette": "keep"
     },
     {
@@ -23576,14 +23576,14 @@
     },
     {
         "path": "track/standup/small_turn_left_steep_2_1.png",
-        "x": -25,
+        "x": 5,
         "y": -61,
         "palette": "keep"
     },
     {
         "path": "track/standup/small_turn_left_steep_2_2.png",
-        "x": -19,
-        "y": -46,
+        "x": -25,
+        "y": -50,
         "palette": "keep"
     },
     {
@@ -23612,14 +23612,14 @@
     },
     {
         "path": "track/standup/small_turn_left_steep_4_2.png",
-        "x": -25,
-        "y": -69,
+        "x": 7,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/standup/small_turn_left_steep_4_3.png",
-        "x": -20,
-        "y": -65,
+        "x": -25,
+        "y": -69,
         "palette": "keep"
     },
     {
@@ -23631,13 +23631,13 @@
     {
         "path": "track/standup/small_turn_right_steep_1_2.png",
         "x": -32,
-        "y": -69,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/standup/small_turn_right_steep_1_3.png",
         "x": -32,
-        "y": -65,
+        "y": -69,
         "palette": "keep"
     },
     {
@@ -23661,7 +23661,7 @@
     {
         "path": "track/standup/small_turn_right_steep_3_2.png",
         "x": -32,
-        "y": -46,
+        "y": -49,
         "palette": "keep"
     },
     {
@@ -23889,12 +23889,12 @@
     {
         "path": "track/standup/large_turn_left_to_orthogonal_steep_1_3.png",
         "x": -32,
-        "y": -61,
+        "y": -73,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_turn_left_to_orthogonal_steep_1_4.png",
-        "x": -32,
+        "x": -26,
         "y": -69,
         "palette": "keep"
     },
@@ -24032,8 +24032,8 @@
     },
     {
         "path": "track/standup/large_turn_right_to_orthogonal_steep_3_3.png",
-        "x": -6,
-        "y": -61,
+        "x": -18,
+        "y": -73,
         "palette": "keep"
     },
     {
@@ -24068,74 +24068,74 @@
     },
     {
         "path": "track/standup/banked_barrel_roll_left_1_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/banked_barrel_roll_left_1_2.png",
         "x": -21,
         "y": 3,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_1_2.png",
-        "x": -14,
-        "y": 5,
+        "path": "track/standup/banked_barrel_roll_left_1_3.png",
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_1_3.png",
+        "path": "track/standup/banked_barrel_roll_left_1_4.png",
         "x": -25,
         "y": -22,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_1_4.png",
-        "x": -21,
-        "y": -15,
+        "path": "track/standup/banked_barrel_roll_left_1_5.png",
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_1_5.png",
+        "path": "track/standup/banked_barrel_roll_left_1_6.png",
         "x": -13,
         "y": -26,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_1_6.png",
-        "x": -11,
-        "y": -23,
+        "path": "track/standup/banked_barrel_roll_left_2_1.png",
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_2_1.png",
+        "path": "track/standup/banked_barrel_roll_left_2_2.png",
         "x": -23,
         "y": -5,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_2_2.png",
-        "x": -22,
-        "y": 1,
+        "path": "track/standup/banked_barrel_roll_left_2_3.png",
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_2_3.png",
+        "path": "track/standup/banked_barrel_roll_left_2_4.png",
         "x": -28,
         "y": -10,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_left_2_4.png",
-        "x": -27,
-        "y": -6,
-        "palette": "keep"
-    },
-    {
         "path": "track/standup/banked_barrel_roll_left_2_5.png",
-        "x": -32,
-        "y": -23,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_left_2_6.png",
         "x": -32,
-        "y": -19,
+        "y": -23,
         "palette": "keep"
     },
     {
@@ -24152,26 +24152,26 @@
     },
     {
         "path": "track/standup/banked_barrel_roll_left_3_3.png",
-        "x": -28,
+        "x": -25,
         "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_left_3_4.png",
-        "x": -27,
-        "y": -14,
+        "x": -28,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_left_3_5.png",
-        "x": -26,
-        "y": -24,
+        "x": -4,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_left_3_6.png",
-        "x": -11,
-        "y": -23,
+        "x": -26,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -24189,25 +24189,25 @@
     {
         "path": "track/standup/banked_barrel_roll_left_4_3.png",
         "x": -13,
-        "y": -26,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_left_4_4.png",
-        "x": -4,
-        "y": -22,
+        "x": -11,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_left_4_5.png",
-        "x": -24,
-        "y": -25,
+        "x": 10,
+        "y": -7,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_left_4_6.png",
-        "x": -17,
-        "y": -21,
+        "x": -24,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -24225,25 +24225,25 @@
     {
         "path": "track/standup/banked_barrel_roll_right_1_3.png",
         "x": -29,
-        "y": -26,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_right_1_4.png",
-        "x": -8,
-        "y": -23,
-        "palette": "keep"
-    },
-    {
-        "path": "track/standup/banked_barrel_roll_right_1_5.png",
-        "x": -24,
+        "x": -19,
         "y": -26,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_1_6.png",
+        "path": "track/standup/banked_barrel_roll_right_1_5.png",
         "x": -21,
-        "y": -21,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/banked_barrel_roll_right_1_6.png",
+        "x": -24,
+        "y": -26,
         "palette": "keep"
     },
     {
@@ -24266,104 +24266,104 @@
     },
     {
         "path": "track/standup/banked_barrel_roll_right_2_4.png",
-        "x": 11,
-        "y": -14,
+        "x": 1,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_right_2_5.png",
         "x": -8,
-        "y": -24,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_right_2_6.png",
-        "x": -6,
-        "y": -20,
+        "x": -7,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_right_3_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/banked_barrel_roll_right_3_2.png",
         "x": -4,
         "y": -7,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_3_2.png",
-        "x": -3,
-        "y": -1,
-        "palette": "keep"
-    },
-    {
         "path": "track/standup/banked_barrel_roll_right_3_3.png",
         "x": 0,
-        "y": -11,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_right_3_4.png",
         "x": 0,
-        "y": -7,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_barrel_roll_right_3_5.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/banked_barrel_roll_right_3_6.png",
         "x": -24,
         "y": -24,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_3_6.png",
-        "x": -9,
-        "y": -20,
+        "path": "track/standup/banked_barrel_roll_right_4_1.png",
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_4_1.png",
+        "path": "track/standup/banked_barrel_roll_right_4_2.png",
         "x": -21,
         "y": 3,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_4_2.png",
-        "x": -14,
-        "y": 5,
+        "path": "track/standup/banked_barrel_roll_right_4_3.png",
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_4_3.png",
+        "path": "track/standup/banked_barrel_roll_right_4_4.png",
         "x": -29,
         "y": -22,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_4_4.png",
-        "x": -27,
-        "y": -19,
+        "path": "track/standup/banked_barrel_roll_right_4_5.png",
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_4_5.png",
+        "path": "track/standup/banked_barrel_roll_right_4_6.png",
         "x": -26,
         "y": -25,
         "palette": "keep"
     },
     {
-        "path": "track/standup/banked_barrel_roll_right_4_6.png",
-        "x": -22,
-        "y": -23,
-        "palette": "keep"
-    },
-    {
         "path": "track/standup/banked_zero_g_roll_left_1_1.png",
         "x": -20,
-        "y": -16,
+        "y": 4,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_1_2.png",
-        "x": -14,
-        "y": -14,
+        "x": -20,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -24380,14 +24380,14 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_2_1.png",
-        "x": -24,
-        "y": -8,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_2_2.png",
-        "x": -22,
-        "y": -4,
+        "x": -24,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -24416,13 +24416,13 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_3_3.png",
-        "x": -26,
-        "y": -23,
+        "x": -4,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_3_4.png",
-        "x": -11,
+        "x": -26,
         "y": -26,
         "palette": "keep"
     },
@@ -24440,14 +24440,14 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_4_3.png",
-        "x": -23,
-        "y": -25,
+        "x": 15,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_left_4_4.png",
-        "x": -18,
-        "y": -21,
+        "x": -23,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -24464,14 +24464,14 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_1_3.png",
-        "x": -25,
-        "y": -26,
+        "x": -21,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_1_4.png",
-        "x": -21,
-        "y": -21,
+        "x": -25,
+        "y": -26,
         "palette": "keep"
     },
     {
@@ -24489,25 +24489,25 @@
     {
         "path": "track/standup/banked_zero_g_roll_right_2_3.png",
         "x": -14,
-        "y": -23,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_2_4.png",
-        "x": -20,
+        "x": -22,
         "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_3_1.png",
-        "x": -9,
-        "y": -8,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_3_2.png",
         "x": -9,
-        "y": -4,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -24524,14 +24524,14 @@
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_4_1.png",
-        "x": -30,
-        "y": -16,
+        "x": 4,
+        "y": 4,
         "palette": "keep"
     },
     {
         "path": "track/standup/banked_zero_g_roll_right_4_2.png",
-        "x": -24,
-        "y": -14,
+        "x": -30,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -24608,14 +24608,14 @@
     },
     {
         "path": "track/standup/dive_loop_45_left_3_3.png",
-        "x": -56,
-        "y": -24,
+        "x": -19,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/standup/dive_loop_45_left_3_4.png",
-        "x": -9,
-        "y": -5,
+        "x": -24,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -24626,14 +24626,14 @@
     },
     {
         "path": "track/standup/dive_loop_45_left_4_2.png",
-        "x": -60,
-        "y": -104,
+        "x": -25,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/standup/dive_loop_45_left_4_3.png",
-        "x": -25,
-        "y": -35,
+        "x": -28,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -24657,13 +24657,13 @@
     {
         "path": "track/standup/dive_loop_45_right_1_3.png",
         "x": -30,
-        "y": -24,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/standup/dive_loop_45_right_1_4.png",
         "x": -32,
-        "y": -4,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -24723,13 +24723,13 @@
     {
         "path": "track/standup/dive_loop_45_right_4_2.png",
         "x": -8,
-        "y": -104,
+        "y": -47,
         "palette": "keep"
     },
     {
         "path": "track/standup/dive_loop_45_right_4_3.png",
         "x": -27,
-        "y": -35,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -24741,13 +24741,13 @@
     {
         "path": "track/standup/corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -48,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_left_diag_1_2.png",
-        "x": -29,
-        "y": -29,
+        "x": -31,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -24765,13 +24765,13 @@
     {
         "path": "track/standup/corkscrew_left_diag_2_1.png",
         "x": -12,
-        "y": -15,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_left_diag_2_2.png",
-        "x": -9,
-        "y": -10,
+        "x": -12,
+        "y": -15,
         "palette": "keep"
     },
     {
@@ -24800,13 +24800,13 @@
     },
     {
         "path": "track/standup/corkscrew_left_diag_3_3.png",
-        "x": -12,
-        "y": -8,
+        "x": 2,
+        "y": -5,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_left_diag_3_4.png",
-        "x": -9,
+        "x": -12,
         "y": -8,
         "palette": "keep"
     },
@@ -24824,14 +24824,14 @@
     },
     {
         "path": "track/standup/corkscrew_left_diag_4_3.png",
-        "x": -64,
-        "y": -28,
+        "x": -22,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_left_diag_4_4.png",
-        "x": -28,
-        "y": -15,
+        "x": -32,
+        "y": -20,
         "palette": "keep"
     },
     {
@@ -24849,25 +24849,25 @@
     {
         "path": "track/standup/corkscrew_right_diag_1_3.png",
         "x": -24,
-        "y": -8,
+        "y": -5,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_right_diag_1_4.png",
-        "x": -14,
+        "x": -20,
         "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_right_diag_2_1.png",
-        "x": -16,
-        "y": -14,
+        "x": -11,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_right_diag_2_2.png",
         "x": -16,
-        "y": -10,
+        "y": -14,
         "palette": "keep"
     },
     {
@@ -24884,14 +24884,14 @@
     },
     {
         "path": "track/standup/corkscrew_right_diag_3_1.png",
-        "x": -53,
-        "y": -48,
+        "x": -4,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_right_diag_3_2.png",
-        "x": -16,
-        "y": -29,
+        "x": -21,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -24921,25 +24921,25 @@
     {
         "path": "track/standup/corkscrew_right_diag_4_3.png",
         "x": -12,
-        "y": -28,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/standup/corkscrew_right_diag_4_4.png",
-        "x": -31,
-        "y": -15,
+        "x": -32,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_1_1.png",
         "x": -32,
-        "y": -27,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_1_2.png",
-        "x": -30,
-        "y": -4,
+        "x": -31,
+        "y": -11,
         "palette": "keep"
     },
     {
@@ -24963,13 +24963,13 @@
     {
         "path": "track/standup/large_corkscrew_left_diag_2_1.png",
         "x": -12,
-        "y": -14,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_2_2.png",
-        "x": -10,
-        "y": -12,
+        "x": -12,
+        "y": -14,
         "palette": "keep"
     },
     {
@@ -25010,13 +25010,13 @@
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_3_4.png",
-        "x": -12,
-        "y": -12,
+        "x": -5,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_3_5.png",
-        "x": -9,
+        "x": -12,
         "y": -12,
         "palette": "keep"
     },
@@ -25034,14 +25034,14 @@
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_4_3.png",
-        "x": -48,
-        "y": -75,
+        "x": -35,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_left_diag_4_4.png",
         "x": -16,
-        "y": -15,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -25071,25 +25071,25 @@
     {
         "path": "track/standup/large_corkscrew_right_diag_1_4.png",
         "x": -31,
-        "y": -12,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_right_diag_1_5.png",
-        "x": -12,
+        "x": -17,
         "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_right_diag_2_1.png",
-        "x": -27,
-        "y": -14,
+        "x": -13,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_right_diag_2_2.png",
-        "x": -25,
-        "y": -12,
+        "x": -27,
+        "y": -14,
         "palette": "keep"
     },
     {
@@ -25112,14 +25112,14 @@
     },
     {
         "path": "track/standup/large_corkscrew_right_diag_3_1.png",
-        "x": -47,
-        "y": -27,
+        "x": -20,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_right_diag_3_2.png",
         "x": -15,
-        "y": -4,
+        "y": -11,
         "palette": "keep"
     },
     {
@@ -25155,13 +25155,13 @@
     {
         "path": "track/standup/large_corkscrew_right_diag_4_3.png",
         "x": -13,
-        "y": -75,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/standup/large_corkscrew_right_diag_4_4.png",
         "x": -16,
-        "y": -15,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -25184,25 +25184,25 @@
     },
     {
         "path": "track/standup/half_loop_diag_1_3.png",
-        "x": -64,
-        "y": -92,
+        "x": -32,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/standup/half_loop_diag_1_4.png",
-        "x": -28,
-        "y": -30,
+        "x": -32,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/standup/half_loop_diag_2_1.png",
-        "x": -13,
-        "y": -4,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/standup/half_loop_diag_2_2.png",
-        "x": -10,
+        "x": -13,
         "y": -4,
         "palette": "keep"
     },
@@ -25232,14 +25232,14 @@
     },
     {
         "path": "track/standup/half_loop_diag_3_3.png",
-        "x": 0,
-        "y": -92,
+        "x": 6,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/standup/half_loop_diag_3_4.png",
-        "x": -29,
-        "y": -30,
+        "x": -32,
+        "y": -36,
         "palette": "keep"
     },
     {
@@ -25257,13 +25257,13 @@
     {
         "path": "track/standup/half_loop_diag_4_3.png",
         "x": -12,
-        "y": -11,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/standup/half_loop_diag_4_4.png",
-        "x": -9,
-        "y": -9,
+        "x": -12,
+        "y": -11,
         "palette": "keep"
     },
     {
@@ -25275,13 +25275,13 @@
     {
         "path": "track/standup/vertical_loop_left_diag_1_2.png",
         "x": -32,
-        "y": -95,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/standup/vertical_loop_left_diag_1_3.png",
-        "x": -5,
-        "y": 34,
+        "x": -13,
+        "y": 25,
         "palette": "keep"
     },
     {
@@ -25293,7 +25293,7 @@
     {
         "path": "track/standup/vertical_loop_left_diag_2_1.png",
         "x": -13,
-        "y": -20,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -25322,14 +25322,14 @@
     },
     {
         "path": "track/standup/vertical_loop_left_diag_3_2.png",
-        "x": -16,
-        "y": -89,
+        "x": -11,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/standup/vertical_loop_left_diag_3_3.png",
-        "x": -13,
-        "y": 5,
+        "x": -16,
+        "y": -1,
         "palette": "keep"
     },
     {
@@ -25352,14 +25352,14 @@
     },
     {
         "path": "track/standup/vertical_loop_left_diag_4_3.png",
-        "x": -28,
-        "y": -3,
+        "x": -22,
+        "y": 8,
         "palette": "keep"
     },
     {
         "path": "track/standup/vertical_loop_left_diag_4_4.png",
-        "x": -24,
-        "y": 0,
+        "x": -28,
+        "y": -3,
         "palette": "keep"
     },
     {
@@ -25371,13 +25371,13 @@
     {
         "path": "track/standup/vertical_loop_right_diag_1_2.png",
         "x": -32,
-        "y": -89,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/standup/vertical_loop_right_diag_1_3.png",
-        "x": -12,
-        "y": 5,
+        "x": -20,
+        "y": -1,
         "palette": "keep"
     },
     {
@@ -25388,13 +25388,13 @@
     },
     {
         "path": "track/standup/vertical_loop_right_diag_2_1.png",
-        "x": -16,
-        "y": -20,
+        "x": 10,
+        "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/standup/vertical_loop_right_diag_2_2.png",
-        "x": -13,
+        "x": -16,
         "y": -20,
         "palette": "keep"
     },
@@ -25418,14 +25418,14 @@
     },
     {
         "path": "track/standup/vertical_loop_right_diag_3_2.png",
-        "x": -16,
-        "y": -95,
+        "x": -10,
+        "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/standup/vertical_loop_right_diag_3_3.png",
-        "x": -13,
-        "y": 34,
+        "x": -16,
+        "y": 25,
         "palette": "keep"
     },
     {
@@ -25449,13 +25449,13 @@
     {
         "path": "track/standup/vertical_loop_right_diag_4_3.png",
         "x": -4,
-        "y": -3,
+        "y": 8,
         "palette": "keep"
     },
     {
         "path": "track/standup/vertical_loop_right_diag_4_4.png",
-        "x": 2,
-        "y": 0,
+        "x": -1,
+        "y": -3,
         "palette": "keep"
     },
     {
@@ -31078,8 +31078,8 @@
     },
     {
         "path": "track/corkscrew/s_bend_left_bank_2_1.png",
-        "x": -12,
-        "y": 2,
+        "x": -8,
+        "y": 4,
         "palette": "keep"
     },
     {
@@ -31127,12 +31127,12 @@
     {
         "path": "track/corkscrew/s_bend_right_bank_1_4.png",
         "x": -32,
-        "y": 2,
+        "y": 4,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/s_bend_right_bank_1_5.png",
-        "x": -26,
+        "x": -27,
         "y": -4,
         "palette": "keep"
     },
@@ -31180,7 +31180,7 @@
     },
     {
         "path": "track/corkscrew/gentle_left_bank_to_steep_3_1.png",
-        "x": -14,
+        "x": -13,
         "y": -14,
         "palette": "keep"
     },
@@ -31205,7 +31205,7 @@
     {
         "path": "track/corkscrew/gentle_right_bank_to_steep_2_1.png",
         "x": -20,
-        "y": -20,
+        "y": -13,
         "palette": "keep"
     },
     {
@@ -31247,7 +31247,7 @@
     {
         "path": "track/corkscrew/steep_to_gentle_left_bank_3_2.png",
         "x": -12,
-        "y": -4,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -31264,14 +31264,14 @@
     },
     {
         "path": "track/corkscrew/steep_to_gentle_right_bank_2_1.png",
-        "x": -25,
+        "x": -19,
         "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/steep_to_gentle_right_bank_2_2.png",
-        "x": -24,
-        "y": -4,
+        "x": -25,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -31288,7 +31288,7 @@
     },
     {
         "path": "track/corkscrew/gentle_left_bank_to_steep_diag_1_1.png",
-        "x": -32,
+        "x": -4,
         "y": -28,
         "palette": "keep"
     },
@@ -31300,14 +31300,14 @@
     },
     {
         "path": "track/corkscrew/gentle_left_bank_to_steep_diag_2_1.png",
-        "x": -15,
-        "y": -16,
+        "x": -13,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/gentle_left_bank_to_steep_diag_2_2.png",
-        "x": -17,
-        "y": -13,
+        "x": -15,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -31330,7 +31330,7 @@
     },
     {
         "path": "track/corkscrew/gentle_right_bank_to_steep_diag_2_1.png",
-        "x": -10,
+        "x": 3,
         "y": -15,
         "palette": "keep"
     },
@@ -31354,25 +31354,25 @@
     },
     {
         "path": "track/corkscrew/gentle_right_bank_to_steep_diag_4.png",
-        "x": -17,
+        "x": -15,
         "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/steep_to_gentle_left_bank_diag_1_1.png",
         "x": -32,
-        "y": -28,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/steep_to_gentle_left_bank_diag_1_2.png",
         "x": -32,
-        "y": -27,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/steep_to_gentle_left_bank_diag_2.png",
-        "x": -17,
+        "x": -15,
         "y": -19,
         "palette": "keep"
     },
@@ -31402,20 +31402,20 @@
     },
     {
         "path": "track/corkscrew/steep_to_gentle_right_bank_diag_3_1.png",
-        "x": -32,
-        "y": -28,
+        "x": -2,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/steep_to_gentle_right_bank_diag_3_2.png",
         "x": -32,
-        "y": -27,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/steep_to_gentle_right_bank_diag_4.png",
-        "x": -17,
-        "y": -46,
+        "x": -15,
+        "y": -45,
         "palette": "keep"
     },
     {
@@ -31432,14 +31432,14 @@
     },
     {
         "path": "track/corkscrew/small_turn_left_steep_2_1.png",
-        "x": -25,
+        "x": 4,
         "y": -61,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/small_turn_left_steep_2_2.png",
-        "x": -24,
-        "y": -48,
+        "x": -25,
+        "y": -49,
         "palette": "keep"
     },
     {
@@ -31468,8 +31468,8 @@
     },
     {
         "path": "track/corkscrew/small_turn_left_steep_4_2.png",
-        "x": -19,
-        "y": -65,
+        "x": 7,
+        "y": -40,
         "palette": "keep"
     },
     {
@@ -31487,7 +31487,7 @@
     {
         "path": "track/corkscrew/small_turn_right_steep_1_2.png",
         "x": -32,
-        "y": -68,
+        "y": -41,
         "palette": "keep"
     },
     {
@@ -31745,19 +31745,19 @@
     {
         "path": "track/corkscrew/large_turn_left_to_orthogonal_steep_1_3.png",
         "x": -32,
-        "y": -62,
+        "y": -73,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/large_turn_left_to_orthogonal_steep_1_4.png",
-        "x": -32,
+        "x": -26,
         "y": -66,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/large_turn_left_to_orthogonal_steep_2_1.png",
         "x": -14,
-        "y": -16,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -31768,7 +31768,7 @@
     },
     {
         "path": "track/corkscrew/large_turn_left_to_orthogonal_steep_2_3.png",
-        "x": -7,
+        "x": -10,
         "y": -48,
         "palette": "keep"
     },
@@ -31852,8 +31852,8 @@
     },
     {
         "path": "track/corkscrew/large_turn_right_to_orthogonal_steep_2_1.png",
-        "x": -21,
-        "y": -16,
+        "x": -18,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -31888,8 +31888,8 @@
     },
     {
         "path": "track/corkscrew/large_turn_right_to_orthogonal_steep_3_3.png",
-        "x": -9,
-        "y": -58,
+        "x": -18,
+        "y": -72,
         "palette": "keep"
     },
     {
@@ -31924,8 +31924,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_left_1_1.png",
-        "x": -13,
-        "y": 4,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -31936,8 +31936,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_left_1_3.png",
-        "x": -22,
-        "y": -19,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -31948,8 +31948,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_left_1_5.png",
-        "x": -7,
-        "y": -16,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -31960,8 +31960,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_left_2_1.png",
-        "x": -12,
-        "y": 2,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -31972,8 +31972,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_left_2_3.png",
-        "x": -23,
-        "y": -9,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -31984,8 +31984,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_left_2_5.png",
-        "x": -30,
-        "y": -22,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32056,8 +32056,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_left_4_5.png",
-        "x": -22,
-        "y": -12,
+        "x": 9,
+        "y": -7,
         "palette": "keep"
     },
     {
@@ -32092,8 +32092,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_right_1_5.png",
-        "x": -22,
-        "y": -12,
+        "x": -21,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -32140,8 +32140,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_right_3_1.png",
-        "x": 1,
-        "y": 4,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32153,7 +32153,7 @@
     {
         "path": "track/corkscrew/banked_barrel_roll_right_3_3.png",
         "x": 0,
-        "y": -9,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32164,8 +32164,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_right_3_5.png",
-        "x": -10,
-        "y": -22,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32176,20 +32176,20 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_right_4_1.png",
-        "x": -14,
-        "y": 4,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_right_4_2.png",
         "x": -21,
-        "y": 5,
+        "y": 4,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_right_4_3.png",
-        "x": -27,
-        "y": -20,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32200,8 +32200,8 @@
     },
     {
         "path": "track/corkscrew/banked_barrel_roll_right_4_5.png",
-        "x": -23,
-        "y": -16,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32213,7 +32213,7 @@
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_1_1.png",
         "x": -20,
-        "y": -12,
+        "y": 3,
         "palette": "keep"
     },
     {
@@ -32225,19 +32225,19 @@
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_1_3.png",
         "x": -13,
-        "y": -26,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_1_4.png",
         "x": -21,
-        "y": -26,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_2_1.png",
-        "x": -20,
-        "y": -7,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32249,13 +32249,13 @@
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_2_3.png",
         "x": -23,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_2_4.png",
         "x": -26,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -32267,67 +32267,67 @@
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_3_2.png",
         "x": -22,
-        "y": -30,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_3_3.png",
-        "x": -7,
-        "y": -15,
+        "x": -6,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_3_4.png",
         "x": -25,
-        "y": -28,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_4_1.png",
         "x": -13,
-        "y": -30,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_4_2.png",
         "x": -12,
-        "y": -40,
+        "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_4_3.png",
-        "x": -17,
-        "y": -13,
+        "x": 14,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_left_4_4.png",
         "x": -22,
-        "y": -27,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_1_1.png",
         "x": -24,
-        "y": -30,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_1_2.png",
         "x": -32,
-        "y": -40,
+        "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_1_3.png",
-        "x": -22,
-        "y": -13,
+        "x": -21,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_1_4.png",
         "x": -25,
-        "y": -27,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -32339,25 +32339,25 @@
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_2_2.png",
         "x": -18,
-        "y": -30,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_2_3.png",
         "x": -14,
-        "y": -15,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_2_4.png",
         "x": -22,
-        "y": -28,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_3_1.png",
-        "x": -8,
-        "y": -7,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -32369,19 +32369,19 @@
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_3_3.png",
         "x": -6,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_3_4.png",
         "x": -22,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_4_1.png",
-        "x": -22,
-        "y": -12,
+        "x": 1,
+        "y": 3,
         "palette": "keep"
     },
     {
@@ -32392,14 +32392,14 @@
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_4_3.png",
-        "x": -28,
-        "y": -26,
+        "x": -29,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/banked_zero_g_roll_right_4_4.png",
         "x": -25,
-        "y": -26,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -56491,18 +56491,18 @@
     {
         "path": "track/raptor/large_turn_left_to_diag_steep_2_1.png",
         "x": -18,
-        "y": -42,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/raptor/large_turn_left_to_diag_steep_2_2.png",
-        "x": -16,
+        "x": -29,
         "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/raptor/large_turn_left_to_diag_steep_2_3.png",
-        "x": -24,
+        "x": -32,
         "y": -52,
         "palette": "keep"
     },
@@ -56610,8 +56610,8 @@
     },
     {
         "path": "track/raptor/large_turn_right_to_diag_steep_3_1.png",
-        "x": -16,
-        "y": -42,
+        "x": -15,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -56671,19 +56671,19 @@
     {
         "path": "track/raptor/large_turn_left_to_orthogonal_steep_1_3.png",
         "x": -32,
-        "y": -47,
+        "y": -68,
         "palette": "keep"
     },
     {
         "path": "track/raptor/large_turn_left_to_orthogonal_steep_1_4.png",
-        "x": -32,
+        "x": -20,
         "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/raptor/large_turn_left_to_orthogonal_steep_2_1.png",
         "x": -3,
-        "y": -16,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -56694,7 +56694,7 @@
     },
     {
         "path": "track/raptor/large_turn_left_to_orthogonal_steep_2_3.png",
-        "x": 4,
+        "x": 1,
         "y": -48,
         "palette": "keep"
     },
@@ -56778,8 +56778,8 @@
     },
     {
         "path": "track/raptor/large_turn_right_to_orthogonal_steep_2_1.png",
-        "x": -11,
-        "y": -16,
+        "x": -8,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -56814,8 +56814,8 @@
     },
     {
         "path": "track/raptor/large_turn_right_to_orthogonal_steep_3_3.png",
-        "x": -5,
-        "y": -47,
+        "x": -17,
+        "y": -68,
         "palette": "keep"
     },
     {
@@ -57327,406 +57327,6 @@
         "x": -18,
         "y": -21,
         "palette": "keep"
-    },
-    {
-        "path": "track/raptor/flat_lift_1.png",
-        "x": -18,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/flat_lift_2.png",
-        "x": -18,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/flat_lift_3.png",
-        "x": -18,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/flat_lift_4.png",
-        "x": -18,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_lift_1.png",
-        "x": -18,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_lift_2.png",
-        "x": -18,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_lift_3.png",
-        "x": -19,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_lift_4.png",
-        "x": -19,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/gentle_up_to_flat_lift_1.png",
-        "x": -18,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/gentle_up_to_flat_lift_2.png",
-        "x": -18,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/gentle_up_to_flat_lift_3.png",
-        "x": -18,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/gentle_up_to_flat_lift_4.png",
-        "x": -18,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/gentle_lift_1.png",
-        "x": -18,
-        "y": -14
-    },
-    {
-        "path": "track/raptor/gentle_lift_2.png",
-        "x": -18,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/gentle_lift_3.png",
-        "x": -19,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/gentle_lift_4.png",
-        "x": -19,
-        "y": -14
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_lift_1.png",
-        "x": -18,
-        "y": -30
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_lift_2_1.png",
-        "x": -18,
-        "y": -1
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_lift_2_2.png",
-        "x": -17,
-        "y": -14
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_lift_3_1.png",
-        "x": 0,
-        "y": -1
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_lift_3_2.png",
-        "x": -21,
-        "y": -14
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_lift_4.png",
-        "x": -21,
-        "y": -30
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_lift_1.png",
-        "x": -18,
-        "y": -30
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_lift_2_1.png",
-        "x": -5,
-        "y": -15
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_lift_2_2.png",
-        "x": -18,
-        "y": -10
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_lift_3_1.png",
-        "x": -19,
-        "y": -15
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_lift_3_2.png",
-        "x": -12,
-        "y": -10
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_lift_4.png",
-        "x": -19,
-        "y": -30
-    },
-    {
-        "path": "track/raptor/steep_lift_1.png",
-        "x": -18,
-        "y": -62
-    },
-    {
-        "path": "track/raptor/steep_lift_2.png",
-        "x": -18,
-        "y": -46
-    },
-    {
-        "path": "track/raptor/steep_lift_3.png",
-        "x": -21,
-        "y": -46
-    },
-    {
-        "path": "track/raptor/steep_lift_4.png",
-        "x": -21,
-        "y": -62
-    },
-    {
-        "path": "track/raptor/flat_diag_lift_1.png",
-        "x": -32,
-        "y": 9
-    },
-    {
-        "path": "track/raptor/flat_diag_lift_2.png",
-        "x": -3,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/flat_diag_lift_3.png",
-        "x": -32,
-        "y": 9
-    },
-    {
-        "path": "track/raptor/flat_diag_lift_4.png",
-        "x": -3,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_diag_lift_1.png",
-        "x": -32,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_diag_lift_2.png",
-        "x": -3,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_diag_lift_3.png",
-        "x": -33,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/flat_to_gentle_up_diag_lift_4.png",
-        "x": -3,
-        "y": -14
-    },
-    {
-        "path": "track/raptor/gentle_to_flat_up_diag_lift_1.png",
-        "x": -32,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/gentle_to_flat_up_diag_lift_2.png",
-        "x": -3,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/gentle_to_flat_up_diag_lift_3.png",
-        "x": -32,
-        "y": 1
-    },
-    {
-        "path": "track/raptor/gentle_to_flat_up_diag_lift_4.png",
-        "x": -3,
-        "y": -14
-    },
-    {
-        "path": "track/raptor/gentle_diag_lift_1.png",
-        "x": -32,
-        "y": -7
-    },
-    {
-        "path": "track/raptor/gentle_diag_lift_2.png",
-        "x": -3,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/gentle_diag_lift_3.png",
-        "x": -32,
-        "y": -7
-    },
-    {
-        "path": "track/raptor/gentle_diag_lift_4.png",
-        "x": -3,
-        "y": -22
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_diag_lift_1.png",
-        "x": -32,
-        "y": -23
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_diag_lift_2.png",
-        "x": -3,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_diag_lift_3.png",
-        "x": -32,
-        "y": -23
-    },
-    {
-        "path": "track/raptor/gentle_to_steep_up_diag_lift_4.png",
-        "x": -3,
-        "y": -38
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_diag_lift_1.png",
-        "x": -32,
-        "y": -23
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_diag_lift_2.png",
-        "x": -3,
-        "y": -11
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_diag_lift_3.png",
-        "x": -32,
-        "y": -23
-    },
-    {
-        "path": "track/raptor/steep_to_gentle_up_diag_lift_4.png",
-        "x": -3,
-        "y": -38
-    },
-    {
-        "path": "track/raptor/steep_diag_lift_1.png",
-        "x": -32,
-        "y": -55
-    },
-    {
-        "path": "track/raptor/steep_diag_lift_2.png",
-        "x": -3,
-        "y": -38
-    },
-    {
-        "path": "track/raptor/steep_diag_lift_3.png",
-        "x": -32,
-        "y": -55
-    },
-    {
-        "path": "track/raptor/steep_diag_lift_4.png",
-        "x": -3,
-        "y": -70
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_lift_1.png",
-        "x": -18,
-        "y": -22
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_lift_2_1.png",
-        "x": -18,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_lift_2_2.png",
-        "x": -13,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_lift_3_1.png",
-        "x": -5,
-        "y": 2
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_lift_3_2.png",
-        "x": -21,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_lift_4.png",
-        "x": -21,
-        "y": -22
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_lift_1.png",
-        "x": -18,
-        "y": -22
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_lift_2_1.png",
-        "x": -10,
-        "y": -10
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_lift_2_2.png",
-        "x": -18,
-        "y": -5
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_lift_3_1.png",
-        "x": -18,
-        "y": -10
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_lift_3_2.png",
-        "x": -4,
-        "y": -5
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_lift_4.png",
-        "x": -18,
-        "y": -22
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_diag_lift_1.png",
-        "x": -32,
-        "y": -15
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_diag_lift_2.png",
-        "x": -3,
-        "y": -6
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_diag_lift_3.png",
-        "x": -32,
-        "y": -15
-    },
-    {
-        "path": "track/raptor/small_flat_to_steep_up_diag_lift_4.png",
-        "x": -3,
-        "y": -30
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_diag_lift_1.png",
-        "x": -32,
-        "y": -15
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_diag_lift_2.png",
-        "x": -3,
-        "y": -10
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_diag_lift_3.png",
-        "x": -32,
-        "y": -15
-    },
-    {
-        "path": "track/raptor/small_steep_to_flat_up_diag_lift_4.png",
-        "x": -3,
-        "y": -30
     },
     {
         "path": "track/raptor/corkscrew_left_diag_1_1.png",
@@ -58447,6 +58047,406 @@
         "x": 8,
         "y": 4,
         "palette": "keep"
+    },
+    {
+        "path": "track/raptor/flat_lift_1.png",
+        "x": -18,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/flat_lift_2.png",
+        "x": -18,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/flat_lift_3.png",
+        "x": -18,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/flat_lift_4.png",
+        "x": -18,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_1.png",
+        "x": -18,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_2.png",
+        "x": -18,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_3.png",
+        "x": -19,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_4.png",
+        "x": -19,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_1.png",
+        "x": -18,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_2.png",
+        "x": -18,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_3.png",
+        "x": -18,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_4.png",
+        "x": -18,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/gentle_lift_1.png",
+        "x": -18,
+        "y": -14
+    },
+    {
+        "path": "track/raptor/gentle_lift_2.png",
+        "x": -18,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/gentle_lift_3.png",
+        "x": -19,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/gentle_lift_4.png",
+        "x": -19,
+        "y": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_1.png",
+        "x": -18,
+        "y": -30
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_2_1.png",
+        "x": -18,
+        "y": -1
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_2_2.png",
+        "x": -17,
+        "y": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_3_1.png",
+        "x": 0,
+        "y": -1
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_3_2.png",
+        "x": -21,
+        "y": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_4.png",
+        "x": -21,
+        "y": -30
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_1.png",
+        "x": -18,
+        "y": -30
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_2_1.png",
+        "x": -5,
+        "y": -15
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_2_2.png",
+        "x": -18,
+        "y": -10
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_3_1.png",
+        "x": -19,
+        "y": -15
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_3_2.png",
+        "x": -12,
+        "y": -10
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_4.png",
+        "x": -19,
+        "y": -30
+    },
+    {
+        "path": "track/raptor/steep_lift_1.png",
+        "x": -18,
+        "y": -62
+    },
+    {
+        "path": "track/raptor/steep_lift_2.png",
+        "x": -18,
+        "y": -46
+    },
+    {
+        "path": "track/raptor/steep_lift_3.png",
+        "x": -21,
+        "y": -46
+    },
+    {
+        "path": "track/raptor/steep_lift_4.png",
+        "x": -21,
+        "y": -62
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_1.png",
+        "x": -32,
+        "y": 9
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_3.png",
+        "x": -32,
+        "y": 9
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_4.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_1.png",
+        "x": -32,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_3.png",
+        "x": -33,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_4.png",
+        "x": -3,
+        "y": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_1.png",
+        "x": -32,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_3.png",
+        "x": -32,
+        "y": 1
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_4.png",
+        "x": -3,
+        "y": -14
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_1.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_3.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_4.png",
+        "x": -3,
+        "y": -22
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_1.png",
+        "x": -32,
+        "y": -23
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_3.png",
+        "x": -32,
+        "y": -23
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_4.png",
+        "x": -3,
+        "y": -38
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_1.png",
+        "x": -32,
+        "y": -23
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_2.png",
+        "x": -3,
+        "y": -11
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_3.png",
+        "x": -32,
+        "y": -23
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_4.png",
+        "x": -3,
+        "y": -38
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_1.png",
+        "x": -32,
+        "y": -55
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_2.png",
+        "x": -3,
+        "y": -38
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_3.png",
+        "x": -32,
+        "y": -55
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_4.png",
+        "x": -3,
+        "y": -70
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_1.png",
+        "x": -18,
+        "y": -22
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_2_1.png",
+        "x": -18,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_2_2.png",
+        "x": -13,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_3_1.png",
+        "x": -5,
+        "y": 2
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_3_2.png",
+        "x": -21,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_4.png",
+        "x": -21,
+        "y": -22
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_1.png",
+        "x": -18,
+        "y": -22
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_2_1.png",
+        "x": -10,
+        "y": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_2_2.png",
+        "x": -18,
+        "y": -5
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_3_1.png",
+        "x": -18,
+        "y": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_3_2.png",
+        "x": -4,
+        "y": -5
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_4.png",
+        "x": -18,
+        "y": -22
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_1.png",
+        "x": -32,
+        "y": -15
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_3.png",
+        "x": -32,
+        "y": -15
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_4.png",
+        "x": -3,
+        "y": -30
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_1.png",
+        "x": -32,
+        "y": -15
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_2.png",
+        "x": -3,
+        "y": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_3.png",
+        "x": -32,
+        "y": -15
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_4.png",
+        "x": -3,
+        "y": -30
     },
     {
         "path": "track/alpine/preview_track.png",
@@ -61758,4 +61758,4 @@
         "x": -3,
         "y": -22
     }
- ]
+]

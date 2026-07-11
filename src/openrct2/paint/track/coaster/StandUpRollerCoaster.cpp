@@ -20649,6 +20649,7 @@ static void StandUpRCTrackLeftBankedUp25ToUp60(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 5, 10, 15, 20 };
     switch (direction)
     {
         case 0:
@@ -20678,7 +20679,8 @@ static void StandUpRCTrackLeftBankedUp25ToUp60(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, 10, height + 0, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, supportHeights[direction + 0], height + 0,
+            session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -20700,6 +20702,7 @@ static void StandUpRCTrackRightBankedUp25ToUp60(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 20, 15, 10, 5 };
     switch (direction)
     {
         case 0:
@@ -20729,7 +20732,8 @@ static void StandUpRCTrackRightBankedUp25ToUp60(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, 10, height + 0, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, supportHeights[direction + 0], height + 0,
+            session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -20751,6 +20755,7 @@ static void StandUpRCTrackUp60ToLeftBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 17, 21, 19, 25 };
     switch (direction)
     {
         case 0:
@@ -20780,7 +20785,8 @@ static void StandUpRCTrackUp60ToLeftBankedUp25(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, 19, height + 0, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, supportHeights[direction + 0], height + 0,
+            session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -20802,6 +20808,7 @@ static void StandUpRCTrackUp60ToRightBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 25, 19, 21, 17 };
     switch (direction)
     {
         case 0:
@@ -20831,7 +20838,8 @@ static void StandUpRCTrackUp60ToRightBankedUp25(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, 19, height + 0, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, supportHeights[direction + 0], height + 0,
+            session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -20881,6 +20889,7 @@ static void StandUpRCTrackDiagLeftBankedUp25ToUp60(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 15, 15, 17, 15 };
     switch (trackSequence)
     {
         case 0:
@@ -20943,7 +20952,8 @@ static void StandUpRCTrackDiagLeftBankedUp25ToUp60(
                     { -16, -16, height }, { { 16, 16, height + 66 }, { 32, 32, 0 } });
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::leftCorner, direction, 15, height + 0, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::leftCorner, direction, supportHeights[direction + 0], height + 0,
+                session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -20959,6 +20969,7 @@ static void StandUpRCTrackDiagRightBankedUp25ToUp60(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 17, 15, 15, 15 };
     switch (trackSequence)
     {
         case 0:
@@ -21021,7 +21032,8 @@ static void StandUpRCTrackDiagRightBankedUp25ToUp60(
                     { -16, -16, height }, { { 16, 16, height + 66 }, { 32, 32, 0 } });
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::leftCorner, direction, 15, height + 0, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::leftCorner, direction, supportHeights[direction + 0], height + 0,
+                session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -21037,6 +21049,7 @@ static void StandUpRCTrackDiagUp60ToLeftBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 25, 29, 29, 29 };
     switch (trackSequence)
     {
         case 0:
@@ -21096,7 +21109,8 @@ static void StandUpRCTrackDiagUp60ToLeftBankedUp25(
                     { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::leftCorner, direction, 29, height + 0, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::leftCorner, direction, supportHeights[direction + 0], height + 0,
+                session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -21112,6 +21126,7 @@ static void StandUpRCTrackDiagUp60ToRightBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    int8_t supportHeights[] = { 29, 29, 25, 29 };
     switch (trackSequence)
     {
         case 0:
@@ -21171,7 +21186,8 @@ static void StandUpRCTrackDiagUp60ToRightBankedUp25(
                     { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::leftCorner, direction, 29, height + 0, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::leftCorner, direction, supportHeights[direction + 0], height + 0,
+                session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -21922,7 +21938,7 @@ static void StandUpRCTrackLeftEighthToOrthogonalUp60(
                 session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_STEEP_LARGE_CURVE + 4 * direction + 32)),
                 { 0, 0, height }, boundingBoxes[direction + 0]);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::rightCorner, direction, 24, height + 0, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::rightCorner, direction, 22, height + 0, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -22015,7 +22031,7 @@ static void StandUpRCTrackRightEighthToOrthogonalUp60(
                 session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_STEEP_LARGE_CURVE + 4 * direction + 48)),
                 { 0, 0, height }, boundingBoxes[direction + 0]);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::rightCorner, direction, 24, height + 0, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::rightCorner, direction, 22, height + 0, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -22233,7 +22249,7 @@ static void StandUpRCTrackDiagLeftCorkscrewUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_CORKSCREW_DIAGONAL + 10)),
-                        { -16, -16, height }, { { -8, 21, height + 0 }, { 32, 1, 32 } });
+                        { -16, -16, height }, { { -8, 6, height + 0 }, { 32, 1, 32 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_CORKSCREW_DIAGONAL + 11)),
                         { -16, -16, height }, { { 16, 24, height + 45 }, { 32, 32, 1 } });
@@ -22264,7 +22280,7 @@ static void StandUpRCTrackDiagLeftCorkscrewUp(
             {
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_CORKSCREW_DIAGONAL + 15)),
-                    { -16, -16, height }, { { -16, -16, height + 21 }, { 40, 32, 1 } });
+                    { -16, -16, height }, { { -16, -16, height + 21 }, { 40, 40, 1 } });
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -22394,7 +22410,7 @@ static void StandUpRCTrackDiagRightCorkscrewUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_CORKSCREW_DIAGONAL + 18)),
-                        { -16, -16, height }, { { 21, -8, height + 0 }, { 1, 32, 32 } });
+                        { -16, -16, height }, { { 6, -8, height + 0 }, { 1, 32, 32 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_CORKSCREW_DIAGONAL + 19)),
                         { -16, -16, height }, { { 24, 16, height + 45 }, { 32, 32, 1 } });
@@ -22435,7 +22451,7 @@ static void StandUpRCTrackDiagRightCorkscrewUp(
             {
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_CORKSCREW_DIAGONAL + 31)),
-                    { -16, -16, height }, { { -16, -16, height + 21 }, { 32, 40, 1 } });
+                    { -16, -16, height }, { { -16, -16, height + 21 }, { 40, 40, 1 } });
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -22659,7 +22675,7 @@ static void StandUpRCTrackDiagLeftLargeCorkscrewUp(
                 PaintAddImageAsParentRotated(
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_LARGE_CORKSCREW_DIAGONAL + 19)),
-                    { -16, -16, height }, { { -16, -16, height + 21 }, { 40, 32, 1 } });
+                    { -16, -16, height }, { { -16, -16, height + 21 }, { 40, 40, 1 } });
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -22869,7 +22885,7 @@ static void StandUpRCTrackDiagRightLargeCorkscrewUp(
                 PaintAddImageAsParentRotated(
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_STANDUP_TRACK_LARGE_CORKSCREW_DIAGONAL + 39)),
-                    { -16, -16, height }, { { -16, -16, height + 21 }, { 32, 40, 1 } });
+                    { -16, -16, height }, { { -16, -16, height + 21 }, { 40, 40, 1 } });
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
