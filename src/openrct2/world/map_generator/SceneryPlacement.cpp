@@ -18,7 +18,6 @@
 #include "../../actions/scenery/WallPlaceAction.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
-#include "../../object/ObjectManager.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../Map.h"
@@ -212,75 +211,6 @@ namespace OpenRCT2::World::MapGenerator
             {
                 placeScenery(loc, std::nullopt, edgeWall.value());
             }
-        }
-    }
-
-    static std::optional<ObjectEntryIndex> lookupObjectEntryIdxByIdentifier(const std::string_view identifier)
-    {
-        auto& objectManager = GetContext()->GetObjectManager();
-        ObjectEntryIndex idx = objectManager.GetLoadedObjectEntryIndex(identifier);
-        return idx == kObjectEntryIndexNull ? std::nullopt : std::make_optional(idx);
-    }
-
-    void placeDebugSign(const MapGenContext& ctx, const DebugSign& debugSign)
-    {
-        auto banner = lookupObjectEntryIdxByIdentifier("rct2.scenery_large.ssig3");
-
-        if (!banner.has_value())
-        {
-            LOG_VERBOSE("vertical banner not loaded");
-            return;
-        }
-
-        CoordsXY position = genCoordsToWorldCoords(ctx, debugSign.position).ToCoordsXY();
-        auto groundHeight = TileElementHeight(position);
-        auto waterHeight = TileElementWaterHeight(position);
-
-        // TODO dedupe, use placeSceneryLarge
-        auto actionPlace = GameActions::LargeSceneryPlaceAction(
-            CoordsXYZD{ position.x, position.y, std::max(groundHeight, waterHeight) + 2 * kCoordsZStep, 0 }, banner.value(),
-            debugSign.backgroundColour, debugSign.textColour, Drawing::Colour::brightPink);
-
-        auto& gameState = getGameState();
-        auto& park = gameState.park;
-
-        auto queryPlaceResult = actionPlace.Query(gameState, park);
-        if (queryPlaceResult.error != GameActions::Status::ok)
-        {
-            LOG_VERBOSE(
-                "LargeSceneryPlaceAction query: %s - %s", queryPlaceResult.getErrorTitle().c_str(),
-                queryPlaceResult.getErrorMessage().c_str());
-            return;
-        }
-
-        auto execPlaceResult = actionPlace.Execute(gameState, park);
-        if (execPlaceResult.error != GameActions::Status::ok)
-        {
-            LOG_VERBOSE(
-                "LargeSceneryPlaceAction exec: %s - %s", execPlaceResult.getErrorTitle().c_str(),
-                execPlaceResult.getErrorMessage().c_str());
-            return;
-        }
-
-        auto placeResultData = execPlaceResult.getData<GameActions::LargeSceneryPlaceActionResult>();
-
-        auto actionSetSignName = GameActions::SignSetNameAction(placeResultData.bannerId, debugSign.text);
-
-        auto querySetSignNameResult = actionSetSignName.Query(gameState, park);
-        if (querySetSignNameResult.error != GameActions::Status::ok)
-        {
-            LOG_VERBOSE(
-                "SignSetNameAction query: %s - %s", querySetSignNameResult.getErrorTitle().c_str(),
-                querySetSignNameResult.getErrorMessage().c_str());
-            return;
-        }
-
-        auto execSetSignNameResult = actionSetSignName.Execute(gameState, park);
-        if (execSetSignNameResult.error != GameActions::Status::ok)
-        {
-            LOG_VERBOSE(
-                "SignSetNameAction exec: %s - %s", execSetSignNameResult.getErrorTitle().c_str(),
-                execSetSignNameResult.getErrorMessage().c_str());
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

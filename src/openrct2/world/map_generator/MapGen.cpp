@@ -156,14 +156,6 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void placeDebugSigns(const MapGenContext& ctx)
-    {
-        for (const auto& sign : ctx.debugSigns)
-        {
-            placeDebugSign(ctx, sign);
-        }
-    }
-
     static void generateHeightMap(MapGenContext& ctx)
     {
         switch (ctx.settings.generator)
@@ -201,8 +193,7 @@ namespace OpenRCT2::World::MapGenerator
                            .overscan = overscanFactor,
                            .overscanOffset = getWorldCoordsOffset(settings, overscanFactor),
                            .heightMap = HeightMap{ genSize },
-                           .riverContext = settings.river.generate ? std::make_optional(genSize) : std::nullopt,
-                           .debugSigns = {} };
+                           .riverContext = settings.river.generate ? std::make_optional(genSize) : std::nullopt};
 
         return ctx;
     }
@@ -245,9 +236,6 @@ namespace OpenRCT2::World::MapGenerator
 
         // slope smooth functions operate on the game map
         applyTileSlopeSmooth(ctx);
-
-        // place debug signs
-        placeDebugSigns(ctx);
 
         // prepare rule evaluation context and evaluate texture and scenery rules
         Rule::EvaluationContext evalCtx{};

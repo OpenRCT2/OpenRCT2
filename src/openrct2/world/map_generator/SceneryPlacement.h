@@ -16,5 +16,4 @@
 namespace OpenRCT2::World::MapGenerator
 {
     void placeScenery(const TileCoordsXY& loc, const Rule::SceneryResult& sceneryResult);
-    void placeDebugSign(const MapGenContext& ctx, const DebugSign& debugSignResult);
 } // namespace OpenRCT2::World::MapGenerator
