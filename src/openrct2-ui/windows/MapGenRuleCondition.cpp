@@ -310,7 +310,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN].type = heightRelativeDropdownsVisible ? WidgetType::button
                                                                                               : WidgetType::empty;
             widgets[WIDX_HEIGHT_Z_REPEAT_CHECKBOX].type = heightRelativeDropdownsVisible ? WidgetType::checkbox
-                                                                                  : WidgetType::empty;
+                                                                                         : WidgetType::empty;
 
             bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)

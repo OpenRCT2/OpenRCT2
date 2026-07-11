@@ -118,6 +118,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<SceneryItem> highlightedItem = std::nullopt;
         std::optional<std::pair<SceneryItem, uint8_t>> colourBtnPressed = std::nullopt;
         std::optional<std::pair<SceneryItem, uint8_t>> weightBtnPressed = std::nullopt;
+        std::optional<SceneryItem> rotationBtnPressed = std::nullopt;
 
         bool HasParentWindow() const
         {
@@ -268,6 +269,28 @@ namespace OpenRCT2::Ui::Windows
             return { 0, GetNumRows() * kItemSize.height };
         }
 
+        static bool isRotatable(const SceneryItem& si)
+        {
+            switch (si.type)
+            {
+                case Small:
+                {
+                    auto sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(si.index);
+                    return sceneryEntry->flags.has(SmallSceneryFlag::isRotatable);
+                }
+                case Large:
+                {
+                    // TODO
+                    break;
+                }
+                case Wall:
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         static bool hasColourSlot(const SceneryItem& si, const ColourSlot& colourSlot)
         {
             switch (si.type)
@@ -286,8 +309,10 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
                 case Large:
+                {
                     // TODO
                     break;
+                }
                 case Wall:
                 {
                     auto wallEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(si.index);
@@ -379,8 +404,29 @@ namespace OpenRCT2::Ui::Windows
                     if (wallEntry == nullptr)
                         return;
 
-                    // TODO rotation?
-                    auto imageId = ImageId(wallEntry->image);
+                    auto directionImgOffset = 0;
+                    auto directionPosOffset = 0;
+                    switch (direction)
+                    {
+                        case 0 /* NE */:
+                            directionImgOffset = 1;
+                            directionPosOffset = -16;
+                            break;
+                        case 1 /* SE */:
+                            directionImgOffset = 0;
+                            directionPosOffset = 16;
+                            break;
+                        case 2 /* SW */:
+                            directionImgOffset = 1;
+                            directionPosOffset = -16;
+                            break;
+                        case 3 /* NW */:
+                            directionImgOffset = 0;
+                            directionPosOffset = 16;
+                            break;
+                    }
+
+                    auto imageId = ImageId(wallEntry->image + directionImgOffset);
 
                     if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
                     {
@@ -401,7 +447,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     auto spriteTop = (kItemSize.height / 2) + (wallEntry->height / 2);
-                    auto spritePosition = ScreenCoordsXY{ (kItemSize.width / 2) + 16, spriteTop };
+                    auto spritePosition = ScreenCoordsXY{ (kItemSize.width / 2) + directionPosOffset, spriteTop };
 
                     GfxDrawSprite(rt, imageId, spritePosition);
 
@@ -439,10 +485,55 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(rt, btnImage.WithBlended(false), colourBtnRect.Point1);
         }
 
+        void drawRotationButton(Drawing::RenderTarget& rt, const SceneryItem si, const ScreenRect& rect)
+        {
+            // draw btn
+            bool pressed = rotationBtnPressed.has_value() && rotationBtnPressed.value() == si;
+            ScreenRect btnRect = itemRectToRotationBtnRect(rect);
+            Drawing::Rectangle::fillInset(
+                rt, btnRect, colours[2],
+                pressed ? Drawing::Rectangle::BorderStyle::inset : Drawing::Rectangle::BorderStyle::outset);
+
+            // draw text
+            auto& direction = selectedItems[si].direction;
+
+            auto width = btnRect.GetWidth() - 2;
+            auto coords = btnRect.Point1 + ScreenCoordsXY{ 1 + width / 2, 0 };
+            auto stringId = STR_MAPGEN_SCENERY_EFFECT_ROTATION_RND;
+            if (direction.has_value())
+            {
+                switch (direction.value())
+                {
+                    case 0 /* NE */:
+                        stringId = STR_MAPGEN_SCENERY_EFFECT_ROTATION_NE;
+                        break;
+                    case 1 /* SE */:
+                        stringId = STR_MAPGEN_SCENERY_EFFECT_ROTATION_SE;
+                        break;
+                    case 2 /* SW */:
+                        stringId = STR_MAPGEN_SCENERY_EFFECT_ROTATION_SW;
+                        break;
+                    case 3 /* NW */:
+                        stringId = STR_MAPGEN_SCENERY_EFFECT_ROTATION_NW;
+                        break;
+                }
+            }
+            Formatter ft;
+            auto textPaint = TextPaint{ colours[2], TextAlignment::centre };
+            drawTextEllipsised(rt, coords, width, stringId, ft, textPaint);
+        }
+
         ScreenRect itemRectToWeightBtnRect(const ScreenRect& rect, const uint8_t nthButton)
         {
             auto point2 = rect.Point2 - ScreenCoordsXY{ 5, 5 } - ScreenCoordsXY{ 10 * nthButton, 0 };
             auto point1 = point2 - ScreenCoordsXY{ 10, 10 };
+            return { point1, point2 };
+        }
+
+        ScreenRect itemRectToRotationBtnRect(const ScreenRect& rect)
+        {
+            auto point1 = rect.Point1 + ScreenCoordsXY{ 5, 5 };
+            auto point2 = point1 + ScreenCoordsXY{ 20, 10 };
             return { point1, point2 };
         }
 
@@ -454,7 +545,7 @@ namespace OpenRCT2::Ui::Windows
             ScreenRect btnRect = itemRectToWeightBtnRect(rect, nthButton);
             Drawing::Rectangle::fillInset(
                 rt, btnRect, colours[2],
-                pressed ? Drawing::Rectangle::BorderStyle::inset : Drawing::Rectangle::BorderStyle::none);
+                pressed ? Drawing::Rectangle::BorderStyle::inset : Drawing::Rectangle::BorderStyle::outset);
 
             // draw text
             auto width = btnRect.GetWidth() - 2;
@@ -487,8 +578,8 @@ namespace OpenRCT2::Ui::Windows
                 else if (highlightedItem.has_value() && highlightedItem.value() == item)
                 {
                     Drawing::Rectangle::fillInset(
-                        rt, itemRect, colours[1], Drawing::Rectangle::BorderStyle::none,
-                        Drawing::Rectangle::FillBrightness::light);
+                        rt, itemRect, colours[1], Drawing::Rectangle::BorderStyle::outset,
+                        Drawing::Rectangle::FillBrightness::dark);
                 }
 
                 // draw sprite
@@ -510,6 +601,12 @@ namespace OpenRCT2::Ui::Windows
                 if (selected && hasColourSlot(item, ColourSlot::Tertiary))
                 {
                     drawColourButton(rt, item, 2, itemRect);
+                }
+
+                // draw rotation button
+                if (selected && isRotatable(item))
+                {
+                    drawRotationButton(rt, item, itemRect);
                 }
 
                 // draw weight + buttons
@@ -552,6 +649,7 @@ namespace OpenRCT2::Ui::Windows
         void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             weightBtnPressed = std::nullopt;
+            rotationBtnPressed = std::nullopt;
 
             ScreenRect box;
             auto maybeObjectIdx = getItemIdxAt(screenCoords, box);
@@ -574,6 +672,8 @@ namespace OpenRCT2::Ui::Windows
                 auto rectWeightUp = itemRectToWeightBtnRect(box, 0);
                 auto rectWeightDown = itemRectToWeightBtnRect(box, 1);
 
+                auto rectRotation = itemRectToRotationBtnRect(box);
+
                 if (hasColourSlot(sceneryItem, ColourSlot::Primary) && rectPrimaryColour.Contains(screenCoords))
                 {
                     ShowColourDropdown(sceneryItem, 0, selectedItem.colours[0], rectPrimaryColour);
@@ -585,6 +685,32 @@ namespace OpenRCT2::Ui::Windows
                 else if (hasColourSlot(sceneryItem, ColourSlot::Tertiary) && rectTertiaryColour.Contains(screenCoords))
                 {
                     ShowColourDropdown(sceneryItem, 2, selectedItem.colours[2], rectTertiaryColour);
+                }
+                else if (isRotatable(sceneryItem) && rectRotation.Contains(screenCoords))
+                {
+                    rotationBtnPressed = std::make_optional(sceneryItem);
+                    if (selectedItem.direction.has_value())
+                    {
+                        switch (selectedItem.direction.value())
+                        {
+                            case 0 /* NE */:
+                                selectedItem.direction = 1;
+                                break;
+                            case 1 /* SE */:
+                                selectedItem.direction = 2;
+                                break;
+                            case 2 /* SW */:
+                                selectedItem.direction = 3;
+                                break;
+                            case 3 /* NW */:
+                                selectedItem.direction = std::nullopt;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        selectedItem.direction = 0;
+                    }
                 }
                 else if (rectWeightUp.Contains(screenCoords))
                 {
@@ -619,6 +745,10 @@ namespace OpenRCT2::Ui::Windows
             if (weightBtnPressed.has_value())
             {
                 weightBtnPressed = std::nullopt;
+            }
+            if (rotationBtnPressed.has_value())
+            {
+                rotationBtnPressed = std::nullopt;
             }
         }
 

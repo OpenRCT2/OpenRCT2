@@ -1359,8 +1359,29 @@ namespace OpenRCT2::Ui::Windows
                     if (wallEntry == nullptr)
                         return;
 
-                    // TODO rotation?
-                    auto imageId = ImageId(wallEntry->image);
+                    auto directionImgOffset = 0;
+                    auto directionPosOffset = 0;
+                    switch (direction)
+                    {
+                        case 0 /* NE */:
+                            directionImgOffset = 1;
+                            directionPosOffset = -16;
+                            break;
+                        case 1 /* SE */:
+                            directionImgOffset = 0;
+                            directionPosOffset = 16;
+                            break;
+                        case 2 /* SW */:
+                            directionImgOffset = 1;
+                            directionPosOffset = -16;
+                            break;
+                        case 3 /* NW */:
+                            directionImgOffset = 0;
+                            directionPosOffset = 16;
+                            break;
+                    }
+
+                    auto imageId = ImageId(wallEntry->image + directionImgOffset);
 
                     if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
                     {
@@ -1382,7 +1403,7 @@ namespace OpenRCT2::Ui::Windows
 
                     const auto spriteTop = (targetSize.y / 2) + (wallEntry->height / 2);
                     const auto spriteOffsetX = static_cast<int32_t>(targetSize.x / (count + 1) * (idx + 1));
-                    const auto spritePosition = ScreenCoordsXY{ spriteOffsetX + 16, spriteTop };
+                    const auto spritePosition = ScreenCoordsXY{ spriteOffsetX + directionPosOffset, spriteTop };
 
                     GfxDrawSprite(rt, imageId, spritePosition);
 
