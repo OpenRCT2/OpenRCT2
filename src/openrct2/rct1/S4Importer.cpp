@@ -60,6 +60,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "../world/TilePointerIndex.hpp"
 #include "../world/Wall.h"
 #include "../world/Weather.h"
@@ -2657,37 +2658,31 @@ namespace OpenRCT2::RCT1
             {
                 for (int32_t y = 0; y < Limits::kMaxMapSize; y++)
                 {
-                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
-                    if (tileElement == nullptr)
-                        continue;
-                    do
+                    for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY(x, y)))
                     {
-                        if (tileElement->getType() == TileElementType::track)
+                        // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
+                        if (!trackElement->HasChain())
+                            continue;
+
+                        auto trackType = trackElement->GetTrackType();
+                        switch (trackType)
                         {
-                            // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
-                            if (!tileElement->asTrack()->HasChain())
+                            case TrackElemType::up25ToFlat:
+                            case TrackElemType::up60ToFlat:
+                            case TrackElemType::diagUp25ToFlat:
+                            case TrackElemType::diagUp60ToFlat:
+                                break;
+                            default:
                                 continue;
-
-                            auto trackType = tileElement->asTrack()->GetTrackType();
-                            switch (trackType)
-                            {
-                                case TrackElemType::up25ToFlat:
-                                case TrackElemType::up60ToFlat:
-                                case TrackElemType::diagUp25ToFlat:
-                                case TrackElemType::diagUp60ToFlat:
-                                    break;
-                                default:
-                                    continue;
-                            }
-
-                            RideId rideIndex = tileElement->asTrack()->GetRideIndex();
-                            auto ride = GetRide(rideIndex);
-                            if (ride != nullptr)
-                            {
-                                ride->numBlockBrakes++;
-                            }
                         }
-                    } while (!(tileElement++)->isLastForTile());
+
+                        RideId rideIndex = trackElement->GetRideIndex();
+                        auto ride = GetRide(rideIndex);
+                        if (ride != nullptr)
+                        {
+                            ride->numBlockBrakes++;
+                        }
+                    }
                 }
             }
         }
