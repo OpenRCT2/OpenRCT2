@@ -311,10 +311,10 @@ namespace OpenRCT2::Ui::Windows
                     if (Config::Get().general.showHeightAsUnits)
                     {
                         // Height label is Units.
-                        auto height = MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2 - MakeFixed1dp<fixed16_1dp>(7, 0);
+                        auto fpHeight = MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2 - MakeFixed1dp<fixed16_1dp>(7, 0);
 
                         auto ft = Formatter();
-                        ft.Add<fixed16_1dp>(height);
+                        ft.Add<fixed16_1dp>(fpHeight);
                         drawText(
                             rt, screenCoords, STR_UNIT1DP_NO_SUFFIX, ft,
                             { this->colours[0] }); // Printing the value in Height Units.
@@ -328,21 +328,21 @@ namespace OpenRCT2::Ui::Windows
                             case MeasurementFormat::metric:
                             case MeasurementFormat::SI:
                             {
-                                auto height = std::llround(MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2 * 1.5f)
+                                auto fpHeight = std::llround(MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2 * 1.5f)
                                     - MakeFixed2dp<fixed32_2dp>(10, 50);
 
                                 auto ft = Formatter();
-                                ft.Add<fixed32_2dp>(height);
+                                ft.Add<fixed32_2dp>(fpHeight);
                                 drawText(rt, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
                                 break;
                             }
                             case MeasurementFormat::imperial:
                             {
-                                auto height = std::llround(MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2 * 5.0f)
+                                auto fpHeight = std::llround(MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2 * 5.0f)
                                     - MakeFixed1dp<fixed16_1dp>(35, 0);
 
                                 auto ft = Formatter();
-                                ft.Add<fixed16_1dp>(height);
+                                ft.Add<fixed16_1dp>(fpHeight);
                                 drawText(rt, screenCoords, STR_UNIT1DP_SUFFIX_FEET, ft, { this->colours[0] });
                                 break;
                             }
