@@ -3287,7 +3287,7 @@ STR_6271    :Bords du terrain
 STR_6272    :Quais
 STR_6273    :Musique
 STR_6274    :Impossible de définir la palette de couleurs…
-STR_6275    :{WINDOW_COLOUR_2}Style de quai :
+STR_6275    :Style de quai
 STR_6276    :{RED}{STRINGID} a des visiteurs coincés, probablement à cause d’un type d’attraction invalide ou du mode d’opération
 STR_6277    :Index du quai : {BLACK}{STRINGID}
 STR_6278    :Nombre de sauv. auto. :
@@ -3827,3 +3827,9 @@ STR_7029    :Quart d’hélice descendante
 STR_7030    :{WINDOW_COLOUR_2}Visiteurs divertis : {BLACK}{COMMA32}
 STR_7031    :Désactiver la pousse de l’herbe
 STR_7032    :Désactive la croissance de l’herbe pour qu’elle ne pousse pas
+STR_7033    :Style de voie
+STR_7034    :Style de labyrinthe
+STR_7035    :Style de boutique
+STR_7036    :Style de véhicule
+STR_7037    :Mode de fonctionnement
+STR_7038    :Attente et chargement

@@ -3285,7 +3285,7 @@ STR_6271    :Pareti terreno
 STR_6272    :Stazioni
 STR_6273    :Musica
 STR_6274    :Impossibile impostare schema colore…
-STR_6275    :{WINDOW_COLOUR_2}Stile stazione:
+STR_6275    :Stile stazione
 STR_6276    :{RED}{STRINGID} ha ospiti bloccati, probabilmente a causa di un errato tipo di attrazione o modalità operativa.
 STR_6277    :Indice stazione: {BLACK}{STRINGID}
 STR_6278    :Numero autosalvataggi

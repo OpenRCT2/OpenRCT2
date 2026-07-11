@@ -3275,7 +3275,7 @@ STR_6271    :Terrengkanter
 STR_6272    :Stasjoner
 STR_6273    :Musikk
 STR_6274    :Kan ikke angi fargeplan…
-STR_6275    :{WINDOW_COLOUR_2}Stasjon-stil:
+STR_6275    :Stasjon-stil
 STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attraksjonstype eller driftsmodus.
 STR_6277    :Stasjonsindeks: {BLACK}{STRINGID}
 STR_6278    :Antall autolagringer

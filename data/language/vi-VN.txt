@@ -3223,7 +3223,7 @@ STR_6271    :Các cạnh địa hình
 STR_6272    :Nhà ga
 STR_6273    :Âm nhạc
 STR_6274    :Không thể đặt bảng màu…
-STR_6275    :{WINDOW_COLOUR_2}Kiểu nhà ga:
+STR_6275    :Kiểu nhà ga
 STR_6276    :{RED}{STRINGID} có khách bị kẹt, có thể do loại trò chơi hoặc chế độ vận hành không hợp lệ.
 STR_6277    :Chỉ mục nhà ga: {BLACK}{STRINGID}
 STR_6278    :Số lượng tự động lưu

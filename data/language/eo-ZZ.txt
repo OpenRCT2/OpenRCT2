@@ -3281,7 +3281,7 @@ STR_6271    :Tereno-flankoj
 STR_6272    :Stacioj
 STR_6273    :Muziko
 STR_6274    :Ne eblas agordi kolorskemon…
-STR_6275    :{WINDOW_COLOUR_2}Staciostilo:
+STR_6275    :Staciostilo
 STR_6276    :{RED}{STRINGID} havas gastojn staŭlitajn, eble pro nevalida atrakciotipo aŭ reĝimo de funkciiado.
 STR_6277    :Stacioindekso: {BLACK}{STRINGID}
 STR_6278    :Kiomo por aŭtokonservi
@@ -3820,3 +3820,9 @@ STR_7029    :Kvarona malkreska helico
 STR_7030    :{WINDOW_COLOUR_2}Gastoj amuzitaj: {BLACK}{COMMA32}
 STR_7031    :Malŝalti kreskadon de herbo
 STR_7032    :Malŝalti maljuniĝon de herbo, por ke ĝi ne kresku.
+STR_7033    :Trakstilo
+STR_7034    :Labirintostilo
+STR_7035    :Vendejostilo
+STR_7036    :Veturilostilo
+STR_7037    :Reĝimo de funkciado
+STR_7038    :Atendo kaj ŝarĝo

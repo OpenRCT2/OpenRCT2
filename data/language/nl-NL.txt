@@ -3280,7 +3280,7 @@ STR_6271    :Zijkanten terrein
 STR_6272    :Stations
 STR_6273    :Muziek
 STR_6274    :Kan kleurenschema niet instellen…
-STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
+STR_6275    :Stationsstijl
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
 STR_6277    :Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Aantal autosaves
@@ -3823,3 +3823,5 @@ STR_7033    :Baanstijl
 STR_7034    :Muursoort
 STR_7035    :Winkelstijl
 STR_7036    :Voertuigstijl
+STR_7037    :Bedrijfsmodus
+STR_7038    :Wacht- en laadinstellingen

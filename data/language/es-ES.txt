@@ -3284,7 +3284,7 @@ STR_6271    :Bordes de Terreno
 STR_6272    :Estaciones
 STR_6273    :Música
 STR_6274    :No se puede establecer colores…
-STR_6275    :{WINDOW_COLOUR_2}Estilo de estación:
+STR_6275    :Estilo de estación
 STR_6276    :{RED}{STRINGID} tiene visitantes trabados, posiblemente por tipo de atracción o modo de operación inválidos.
 STR_6277    :Índice de estación: {BLACK}{STRINGID}
 STR_6278    :Número de autoguardados

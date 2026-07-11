@@ -3285,7 +3285,7 @@ STR_6271    :Maastoreunat
 STR_6272    :Asematyylit
 STR_6273    :Musiikki
 STR_6274    :Värimallia ei voi valita…
-STR_6275    :{WINDOW_COLOUR_2}Aseman tyyli:
+STR_6275    :Aseman tyyli
 STR_6276    :{RED}Kävijät juuttuvat kohteeseen {STRINGID}, mahdollisesti väärän laitetyypin tai toimintatilan johdosta.
 STR_6277    :Aseman numero: {BLACK}{STRINGID}
 STR_6278    :Tallennuksien määrä

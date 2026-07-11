@@ -3286,7 +3286,7 @@ STR_6271    :Terrängsidor
 STR_6272    :Stationer
 STR_6273    :Musik
 STR_6274    :Kan inte välja färgschema…
-STR_6275    :{WINDOW_COLOUR_2}Stationsstil:
+STR_6275    :Stationsstil
 STR_6276    :{RED}{STRINGID} har besökare som sitter fast, troligen på grund av ogiltig typ av åktur eller felaktigt körläge.
 STR_6277    :Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Antal autosparningar

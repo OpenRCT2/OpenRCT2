@@ -3281,7 +3281,7 @@ STR_6271    :Krawędzie terenu
 STR_6272    :Stacje
 STR_6273    :Muzyka
 STR_6274    :Nie można ustawić schematu kolorów…
-STR_6275    :{WINDOW_COLOUR_2}Styl stacji:
+STR_6275    :Styl stacji
 STR_6276    :Na {RED}{STRINGID} utykają goście, prawdopodobnie z powodu nieprawidłowego typu atrakcji albo trybu operowania.
 STR_6277    :Numer stacji: {BLACK}{STRINGID}
 STR_6278    :Liczba autozapisów:

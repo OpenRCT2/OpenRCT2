@@ -3284,7 +3284,7 @@ STR_6271    :Hrany terénu
 STR_6272    :Stanice
 STR_6273    :Hudba
 STR_6274    :Nelze nastavit schéma barev…
-STR_6275    :{WINDOW_COLOUR_2}Styl stanice:
+STR_6275    :Styl stanice
 STR_6276    :{RED}Na atrakci {STRINGID} se zasekávají návštěvníci, zkontrolujte typ atrakce a mód provozu.
 STR_6277    :Index stanice: {BLACK}{STRINGID}
 STR_6278    :Počet autouložení
