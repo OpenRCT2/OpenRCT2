@@ -13,11 +13,11 @@
 
 namespace OpenRCT2::World::MapGenerator::Rule
 {
-    void createDefaultTextureRules(Settings& settings);
+    void createDefaultTextureRules(Settings& settings, uint32_t sharedOffset);
     void createNewTextureRule(Settings& settings);
     void createNewTextureRuleFromPreset(Settings& settings, TextureRulePreset preset);
 
-    void createDefaultSceneryRules(Settings& settings);
+    void createDefaultSceneryRules(Settings& settings, uint32_t sharedOffset);
     void createNewSceneryRule(Settings& settings);
     void createNewSceneryRuleFromPreset(Settings& settings, SceneryRulePreset preset);
 

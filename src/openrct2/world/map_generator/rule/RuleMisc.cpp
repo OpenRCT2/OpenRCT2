@@ -222,8 +222,54 @@ namespace OpenRCT2::World::MapGenerator::Rule
         };
     }
 
-    void createDefaultTextureRules(Settings& settings)
+    static Condition aboveWater()
     {
+        return Condition{ .enabled = true,
+                          .type = Type::Distance,
+                          .predicate = Predicate::GreaterThan,
+                          .data = DistanceData{ .feature = Feature::Water, .distance = 0 } };
+    }
+
+    static Condition onSurface(const std::span<const std::string_view> styles)
+    {
+        return Condition{ .enabled = true,
+                          .type = Type::LandStyle,
+                          .predicate = Predicate::Equal,
+                          .data = LandStyleData{ .styles = landStylesOf(styles) } };
+    }
+
+    static Condition chance(const uint32_t seed, const float above)
+    {
+        return Condition{ .enabled = true,
+                          .type = Type::Random,
+                          .predicate = Predicate::GreaterThan,
+                          .data = RandomData{ .seedOffset = seed, .value = above } };
+    }
+
+    static Condition blendNoise(
+        const uint32_t seed, const float frequency, const int32_t octaves, const float low, const float high)
+    {
+        return Condition{ .enabled = true,
+                          .type = Type::BlendNoise,
+                          .predicate = Predicate::LessThan,
+                          .data = BlendNoiseData{ .seedOffset = seed,
+                                                  .frequency = frequency,
+                                                  .octaves = octaves,
+                                                  .edgeLow = low,
+                                                  .edgeHigh = high } };
+    }
+
+    static Condition blendHeight(const uint32_t seed, const int32_t low, const int32_t high)
+    {
+        return Condition{ .enabled = true,
+                          .type = Type::BlendHeight,
+                          .predicate = Predicate::GreaterThan,
+                          .data = BlendHeightData{ .seedOffset = seed, .edgeLow = low, .edgeHigh = high } };
+    }
+
+    void createDefaultTextureRules(Settings& settings, const uint32_t sharedOffset)
+    {
+        std::random_device prng{};
         settings.textureRules.clear();
 
         settings.textureRules.push_back(
@@ -232,7 +278,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                          .name = FormatStringID(STR_MAPGEN_RULE_DEFAULT),
                          .conditions = std::vector<Condition>{},
                          .effect{ .applyLandTexture = true, .landTexture = 0, .applyEdgeTexture = true, .edgeTexture = 0 } });
-
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
@@ -281,7 +326,17 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                      .landTexture = 0,
                                      .applyEdgeTexture = true,
                                      .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
-
+        settings.textureRules.push_back(
+            TextureRule{
+                .enabled = true,
+                .isDefault = false,
+                .name = FormatStringID(STR_MAPGEN_RULE_FOREST_FLOOR),
+                .conditions = std::vector{ blendHeight(prng(), 54, 64), blendNoise(sharedOffset, 3.25f, 6, 0.60f, 0.80f),
+                                           distanceToFeature(Feature::Water, 0, Predicate::GreaterThan) },
+                .effect = { .applyLandTexture = true,
+                            .landTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_surface.grass_clumps").value_or(0),
+                            .applyEdgeTexture = false,
+                            .edgeTexture = 0 } });
         settings.textureRules.push_back(
             TextureRule{ .enabled = true,
                          .isDefault = false,
@@ -431,55 +486,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
     }
 
-    static Condition aboveWater()
-    {
-        return Condition{ .enabled = true,
-                          .type = Type::Distance,
-                          .predicate = Predicate::GreaterThan,
-                          .data = DistanceData{ .feature = Feature::Water, .distance = 0 } };
-    }
-
-    static Condition onSurface(const std::span<const std::string_view> styles)
-    {
-        return Condition{ .enabled = true,
-                          .type = Type::LandStyle,
-                          .predicate = Predicate::Equal,
-                          .data = LandStyleData{ .styles = landStylesOf(styles) } };
-    }
-
-    static Condition chance(const uint32_t seed, const float above)
-    {
-        return Condition{ .enabled = true,
-                          .type = Type::Random,
-                          .predicate = Predicate::GreaterThan,
-                          .data = RandomData{ .seedOffset = seed, .value = above } };
-    }
-
-    static Condition blendNoise(
-        const uint32_t seed, const float frequency, const int32_t octaves, const float low, const float high)
-    {
-        return Condition{ .enabled = true,
-                          .type = Type::BlendNoise,
-                          .predicate = Predicate::LessThan,
-                          .data = BlendNoiseData{ .seedOffset = seed,
-                                                  .frequency = frequency,
-                                                  .octaves = octaves,
-                                                  .edgeLow = low,
-                                                  .edgeHigh = high } };
-    }
-
-    static Condition blendHeight(const uint32_t seed, const int32_t low, const int32_t high)
-    {
-        return Condition{ .enabled = true,
-                          .type = Type::BlendHeight,
-                          .predicate = Predicate::GreaterThan,
-                          .data = BlendHeightData{ .seedOffset = seed, .edgeLow = low, .edgeHigh = high } };
-    }
-
-    void createDefaultSceneryRules(Settings& settings)
+    void createDefaultSceneryRules(Settings& settings, const uint32_t sharedOffset)
     {
         std::random_device prng{};
-        const auto seedOffset = prng();
+        settings.sceneryRules.clear();
 
         settings.sceneryRules.push_back(
             SceneryRule{ .enabled = true,
@@ -546,7 +556,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                             onSurface(kSurfaceSoil),
                             chance(prng(), .33f),
                             blendHeight(prng(), 44, 54),
-                            blendNoise(seedOffset, 3.25f, 5, 0.35f, 0.85f),
+                            blendNoise(sharedOffset, 3.25f, 5, 0.35f, 0.85f),
                         },
                         .effect = {
                             .objects = toSceneryEffectItemsIfAvailable(kTreesMixed),
@@ -556,7 +566,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             SceneryRule{ .enabled = true,
                          .name = FormatStringID(STR_MAPGEN_RULE_SCENERY_CONIFERS),
                          .conditions = std::vector{ onSurface(kSurfaceSoil), chance(prng(), .33f), blendHeight(prng(), 54, 64),
-                                                    blendNoise(seedOffset, 3.25f, 6, 0.55f, 0.80f) },
+                                                    blendNoise(sharedOffset, 3.25f, 6, 0.55f, 0.80f) },
                          .effect = {
                              .objects = toSceneryEffectItemsIfAvailable(kTreesConifer),
                              .seedOffset = 2,

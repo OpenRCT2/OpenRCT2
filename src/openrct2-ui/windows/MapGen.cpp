@@ -196,7 +196,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 310, 294 };
 
     // clang-format off
-    static constexpr auto makeMapGenWidgets = [](StringId title) {
+    static constexpr auto kMakeSharedWidgets = [](StringId title) {
         return makeWidgets(
             makeWindowShim(title, kWindowSize),
             makeWidget({   0,  43 }, { kWindowSize.width, 177 }, WidgetType::resize, WindowColour::secondary),
@@ -211,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto kBaseWidgets = makeWidgets(
-        makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
+        kMakeSharedWidgets(STR_MAPGEN_CAPTION_GENERATOR),
         makeHoldableSpinnerWidgets({153,  52}, { 62, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
         makeWidget                ({215,  52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
         makeHoldableSpinnerWidgets({236,  52}, { 62, 12}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                             ), // NB: 3 widgets
@@ -237,7 +237,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     static constexpr auto kTerrainWidgets = makeWidgets(
-        makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
+        kMakeSharedWidgets(STR_MAPGEN_CAPTION_TERRAIN),
         makeHoldableSpinnerWidgets({153,  52}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
         makeHoldableSpinnerWidgets({153,  70}, {145, 12}, WidgetType::spinner,      WindowColour::secondary                               ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
 
@@ -249,7 +249,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     static constexpr auto kWaterWidgets = makeWidgets(
-        makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
+        kMakeSharedWidgets(STR_MAPGEN_CAPTION_WATER),
         makeHoldableSpinnerWidgets({153,  52}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
         makeWidget                ({  5,  70}, {300, 126}, WidgetType::groupbox, WindowColour::secondary, STR_WATER_RIVERS       ),
         makeWidget                ({ 10,  86}, {136,  12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_ENABLE, STR_WATER_RIVERS_ENABLE),
@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     static constexpr auto kTextureWidgets = makeWidgets(
-        makeMapGenWidgets(STR_MAPGEN_RULE_TITLE),
+        kMakeSharedWidgets(STR_MAPGEN_RULE_TITLE),
         makeWidget({236,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
         makeWidget({291,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
         makeWidget({162,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),
@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     static constexpr auto kForestsWidgets = makeWidgets(
-        makeMapGenWidgets(STR_MAPGEN_CAPTION_FORESTS),
+        kMakeSharedWidgets(STR_MAPGEN_CAPTION_FORESTS),
         makeWidget({236,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
         makeWidget({291,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
         makeWidget({162,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),

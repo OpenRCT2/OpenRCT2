@@ -201,8 +201,11 @@ namespace OpenRCT2::World::MapGenerator
     void resetMapGenSettings()
     {
         gSettings = Settings{};
-        Rule::createDefaultTextureRules(gSettings);
-        Rule::createDefaultSceneryRules(gSettings);
+
+        uint32_t sharedOffset = std::random_device{}();
+
+        Rule::createDefaultTextureRules(gSettings, sharedOffset);
+        Rule::createDefaultSceneryRules(gSettings, sharedOffset);
     }
 
     Settings& getMapGenSettings()
