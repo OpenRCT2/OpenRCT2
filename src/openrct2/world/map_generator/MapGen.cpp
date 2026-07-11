@@ -209,7 +209,7 @@ namespace OpenRCT2::World::MapGenerator
 
     void resetMapGenSettings()
     {
-        gSettings = Settings{}; //0x105970c20
+        gSettings = Settings{};
         Rule::createDefaultTextureRules(gSettings);
         Rule::createDefaultSceneryRules(gSettings);
     }

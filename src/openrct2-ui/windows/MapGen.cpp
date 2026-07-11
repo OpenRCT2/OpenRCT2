@@ -965,8 +965,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScRule != -1)
                     {
-                        _settings.sceneryRules.erase(
-                            _settings.sceneryRules.begin() + _selectedScRule);
+                        _settings.sceneryRules.erase(_settings.sceneryRules.begin() + _selectedScRule);
                         SetSelectedSceneryRule(_selectedScRule - 1);
                         invalidate();
                     }
@@ -986,12 +985,9 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RULE_SC_MOVE_UP:
                 {
-                    if (_selectedScRule != -1
-                        && _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1))
+                    if (_selectedScRule != -1 && _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1))
                     {
-                        std::swap(
-                            _settings.sceneryRules[_selectedScRule],
-                            _settings.sceneryRules[_selectedScRule + 1]);
+                        std::swap(_settings.sceneryRules[_selectedScRule], _settings.sceneryRules[_selectedScRule + 1]);
                         SetSelectedSceneryRule(_selectedScRule + 1);
                         invalidate();
                     }
@@ -1001,9 +997,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedScRule != -1 && _selectedScRule > 0)
                     {
-                        std::swap(
-                            _settings.sceneryRules[_selectedScRule],
-                            _settings.sceneryRules[_selectedScRule - 1]);
+                        std::swap(_settings.sceneryRules[_selectedScRule], _settings.sceneryRules[_selectedScRule - 1]);
                         SetSelectedSceneryRule(_selectedScRule - 1);
                         invalidate();
                     }
@@ -1190,8 +1184,7 @@ namespace OpenRCT2::Ui::Windows
             if (ruleSelected)
             {
                 setWidgetEnabled(
-                    WIDX_RULE_SC_MOVE_UP,
-                    _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1));
+                    WIDX_RULE_SC_MOVE_UP, _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1));
                 setWidgetEnabled(WIDX_RULE_SC_MOVE_DOWN, _selectedScRule > 0);
 
                 setWidgetEnabled(WIDX_RULE_SC_CONDITION_REMOVE, condSelected);
@@ -1282,8 +1275,7 @@ namespace OpenRCT2::Ui::Windows
                 case 0:
                 {
                     return ScreenSize(
-                        kWindowSize.width - 10,
-                        static_cast<int32_t>(_settings.sceneryRules.size() * kScrollableRowHeight));
+                        kWindowSize.width - 10, static_cast<int32_t>(_settings.sceneryRules.size() * kScrollableRowHeight));
                 }
                 case 1:
                 {
