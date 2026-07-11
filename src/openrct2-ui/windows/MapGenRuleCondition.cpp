@@ -84,6 +84,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHT_SOURCE_SECOND_LABEL,
         WIDX_HEIGHT_SOURCE_SECOND,
         WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN,
+        WIDX_HEIGHT_Z_REPEAT_CHECKBOX,
     };
 
     static constexpr ScreenSize kWindowSize = { 300, 156 };
@@ -122,7 +123,9 @@ namespace OpenRCT2::Ui::Windows
         makeDropdownWidgets({ 186,  39 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
 
         makeWidget(         {   5,  58 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SUBTRAHEND),
-        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL)
+        makeDropdownWidgets({ 186,  58 }, { 109, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL),
+
+        makeWidget(         {   5,  77 }, { 290, 14 }, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_RULE_CONDITION_Z_REPEAT)
         // clang-format on
     );
 
@@ -306,6 +309,8 @@ namespace OpenRCT2::Ui::Windows
                                                                                      : WidgetType::empty;
             widgets[WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN].type = heightRelativeDropdownsVisible ? WidgetType::button
                                                                                               : WidgetType::empty;
+            widgets[WIDX_HEIGHT_Z_REPEAT_CHECKBOX].type = heightRelativeDropdownsVisible ? WidgetType::checkbox
+                                                                                  : WidgetType::empty;
 
             bool isInCond = condition.type == Type::LandStyle;
             switch (condition.predicate)
@@ -350,6 +355,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_HEIGHT_SOURCE_FIRST_LABEL].text = STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_MINUEND;
                 widgets[WIDX_HEIGHT_SOURCE_FIRST].text = heightSourceToStringId(heightData.sourceFirst);
                 widgets[WIDX_HEIGHT_SOURCE_SECOND].text = heightSourceToStringId(heightData.sourceSecond);
+
+                setCheckboxValue(WIDX_HEIGHT_Z_REPEAT_CHECKBOX, condition.zRepeat);
             }
         }
 
@@ -1151,6 +1158,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_EDGE_HIGH:
                     ShowEdgeHighTextInput();
                     break;
+                case WIDX_HEIGHT_Z_REPEAT_CHECKBOX:
+                    condition.zRepeat = !condition.zRepeat;
+                    setCheckboxValue(WIDX_HEIGHT_Z_REPEAT_CHECKBOX, condition.zRepeat);
+                    invalidateWidget(WIDX_HEIGHT_Z_REPEAT_CHECKBOX);
+                    break;
             }
         }
 
@@ -1646,7 +1658,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     WindowBase* MapGenRuleConditionOpen(
-        WindowBase* callWindow, WidgetIndex callWidget, Condition& condition, std::function<void(Condition&)> callback)
+        WindowBase* callWindow, WidgetIndex callWidget, Condition& condition, const std::function<void(Condition&)>& callback)
     {
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::mapgenRuleCondition);

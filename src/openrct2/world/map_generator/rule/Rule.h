@@ -371,7 +371,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
         std::string name;
         std::vector<Condition> conditions;
 
-        bool zRepeat = false;
         SceneryEffect effect;
     };
 

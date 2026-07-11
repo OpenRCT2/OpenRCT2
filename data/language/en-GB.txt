@@ -4009,3 +4009,4 @@ STR_7263    :Waterfall SW
 STR_7264    :{STRINGID}[{STRINGID}-{STRINGID}] {STRINGID} {LENGTH}
 STR_7265    :{COMMA32}m²
 STR_7266    :{COMMA32}sq.ft.
+STR_7267    :Use value for z-axis scenery repeat

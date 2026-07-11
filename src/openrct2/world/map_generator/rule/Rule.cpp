@@ -450,7 +450,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             .direction = selectedItem.direction.has_value() ? selectedItem.direction.value()
                                                             : static_cast<uint8_t>(ctx.directionDist(ctx.rulePrngs[ruleIdx])),
             .colours = selectedItem.colours,
-            .zRepeat = rule.zRepeat ? ctx.zRepeat : std::nullopt,
+            .zRepeat = ctx.zRepeat,
         };
 
         return std::make_optional(result);

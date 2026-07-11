@@ -795,7 +795,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     WindowBase* MapGenRuleScenerySelectOpen(
-        WindowBase* callWindow, WidgetIndex callWidget, SceneryEffect& effect, std::function<void(SceneryEffect&)> callback)
+        WindowBase* callWindow, WidgetIndex callWidget, SceneryEffect& effect,
+        const std::function<void(SceneryEffect&)>& callback)
     {
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::mapgenRuleScenerySelect);

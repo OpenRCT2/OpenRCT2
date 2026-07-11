@@ -193,7 +193,7 @@ namespace OpenRCT2::World::MapGenerator
                            .overscan = overscanFactor,
                            .overscanOffset = getWorldCoordsOffset(settings, overscanFactor),
                            .heightMap = HeightMap{ genSize },
-                           .riverContext = settings.river.generate ? std::make_optional(genSize) : std::nullopt};
+                           .riverContext = settings.river.generate ? std::make_optional(genSize) : std::nullopt };
 
         return ctx;
     }

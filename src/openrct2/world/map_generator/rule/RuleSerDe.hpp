@@ -348,6 +348,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(SceneryEffect, objects, seedOffset)
 
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TextureRule, enabled, isDefault, name, conditions, effect)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(SceneryRule, enabled, name, conditions, zRepeat, effect)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(SceneryRule, enabled, name, conditions, effect)
 
 } // namespace OpenRCT2::World::MapGenerator::Rule

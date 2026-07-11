@@ -488,7 +488,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                     heightDeltaBetween(
                                                         HeightSource::NeighbourNWWater, HeightSource::SelfWater,
                                                         Predicate::GreaterThan, true) },
-                         .zRepeat = true,
                          .effect = {
                              .objects = toSceneryEffectItemsIfAvailable(kWaterfallNw),
                              .seedOffset = 3,
@@ -500,7 +499,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                     heightDeltaBetween(
                                                         HeightSource::NeighbourNEWater, HeightSource::SelfWater,
                                                         Predicate::GreaterThan, true) },
-                         .zRepeat = true,
                          .effect = {
                              .objects = toSceneryEffectItemsIfAvailable(kWaterfallNe),
                              .seedOffset = 3,
@@ -512,7 +510,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                     heightDeltaBetween(
                                                         HeightSource::NeighbourSEWater, HeightSource::SelfWater,
                                                         Predicate::GreaterThan, true) },
-                         .zRepeat = true,
                          .effect = {
                              .objects = toSceneryEffectItemsIfAvailable(kWaterfallSe),
                              .seedOffset = 3,
@@ -524,7 +521,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                                     heightDeltaBetween(
                                                         HeightSource::NeighbourSWWater, HeightSource::SelfWater,
                                                         Predicate::GreaterThan, true) },
-                         .zRepeat = true,
                          .effect = {
                              .objects = toSceneryEffectItemsIfAvailable(kWaterfallSw),
                              .seedOffset = 3,
@@ -538,7 +534,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
                             blendHeight(prng(), 64, 72),
                                                     blendNoise(prng(), 10.0f, 8, 0.65f, 0.80f),
                                                    chance(prng(), 0.6f), },
-                        .zRepeat = true,
                         .effect = {
                             .objects = toSceneryEffectItemsIfAvailable(kDefaultShrub),
                             .seedOffset = 4,
