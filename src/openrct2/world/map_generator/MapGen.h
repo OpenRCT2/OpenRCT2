@@ -94,13 +94,13 @@ namespace OpenRCT2::World::MapGenerator
 
     struct MapSize
     {
-        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> x = 256;
-        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> y = 256;
+        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> x = 150;
+        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> y = 150;
     };
 
     struct Settings
     {
-        HeightMapGenerator generator = HeightMapGenerator::noise;
+        HeightMapGenerator generator = HeightMapGenerator::flat;
         MapSize mapSize{};
 
         std::string seed = randomSeed();

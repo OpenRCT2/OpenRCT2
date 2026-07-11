@@ -43,15 +43,15 @@ namespace OpenRCT2::World::MapGenerator::River
 
     struct RiverSettings
     {
-        bool generate = true;
-        NumericSetting<int32_t, kRiverCatchmentThresholdMin, kRiverCatchmentThresholdMax, 64> catchmentThreshold = 384;
-        NumericSetting<int32_t, kRiverPruneLengthThresholdMin, kRiverPruneLengthThresholdMax> pruneThreshold = 48;
+        bool generate = false;
+        NumericSetting<int32_t, kRiverCatchmentThresholdMin, kRiverCatchmentThresholdMax, 64> catchmentThreshold = 512;
+        NumericSetting<int32_t, kRiverPruneLengthThresholdMin, kRiverPruneLengthThresholdMax> pruneThreshold = 64;
         NumericSetting<int32_t, kRiverBreachLengthMin, kRiverBreachLengthMax> breachMaxLength = 8;
         NumericSetting<int32_t, kRiverBreachDepthMin, kRiverBreachDepthMax> breachMaxDepth = 2;
         NumericSetting<int32_t, 2, 2> offMapCatchmentMultiplier = 2;
         NumericSetting<int32_t, kRiverGrowthExponentMin, kRiverGrowthExponentMax>
             riverGrowthExponent = 45; // * kRiverGrowthExponentScaling
-        NumericSetting<int32_t, kRiverWidthMin, kRiverWidthMax> riverWidthMax = 12;
+        NumericSetting<int32_t, kRiverWidthMin, kRiverWidthMax> riverWidthMax = 11;
     };
 
     struct RiverStatistics
