@@ -651,5 +651,10 @@
         "path": "tool/path_drag_tool.png",
         "x": 1,
         "y": 2
+    },
+    {
+        "path": "icons/visibility-toggle.png",
+        "x": 1,
+        "y": 1
     }
 ]
