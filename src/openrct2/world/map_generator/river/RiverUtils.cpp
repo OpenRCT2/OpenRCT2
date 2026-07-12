@@ -196,9 +196,10 @@ namespace OpenRCT2::World::MapGenerator::River
             stats.ensureOrdinalNewTiles);
 
         const auto bankIndentationsSummary = std::format(
-            "\n[bank indentations]\n"
-            "    adjusted {}\n",
-            stats.bankIndentationsAdjusted);
+            "\n[indentations]\n"
+            "    bank tiles adjusted {}\n"
+            "    river tiles adjusted {}\n",
+            stats.bankIndentationsAdjusted, stats.riverIndentationsAdjusted);
 
         const auto consistencySummary = std::format(
             "\n[consistency]\n"

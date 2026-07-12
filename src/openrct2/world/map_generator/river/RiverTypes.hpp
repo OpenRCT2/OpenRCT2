@@ -18,6 +18,7 @@ namespace OpenRCT2::World::MapGenerator::River
     constexpr int32_t kRiversOverscanFactor = 2;
     constexpr int32_t kRiversSeafloorMaxCarveDepth = 3;
     constexpr float kRiverGrowthExponentScaling = 0.01f;
+    constexpr float kRiverOffMapCatchmentScaling = 0.1f;
     constexpr int32_t kRiverGrowthExponentMin = 1;   // * kRiverGrowthExponentScaling
     constexpr int32_t kRiverGrowthExponentMax = 800; // * kRiverGrowthExponentScaling
     constexpr int32_t kRiverCatchmentThresholdMin = 2;
@@ -48,9 +49,9 @@ namespace OpenRCT2::World::MapGenerator::River
         NumericSetting<int32_t, kRiverPruneLengthThresholdMin, kRiverPruneLengthThresholdMax> pruneThreshold = 64;
         NumericSetting<int32_t, kRiverBreachLengthMin, kRiverBreachLengthMax> breachMaxLength = 8;
         NumericSetting<int32_t, kRiverBreachDepthMin, kRiverBreachDepthMax> breachMaxDepth = 2;
-        NumericSetting<int32_t, 2, 2> offMapCatchmentMultiplier = 2;
+        NumericSetting<int32_t, 0, 40> offMapCatchment = 15; // * kRiverOffMapCatchmentScaling
         NumericSetting<int32_t, kRiverGrowthExponentMin, kRiverGrowthExponentMax>
-            riverGrowthExponent = 45; // * kRiverGrowthExponentScaling
+            riverGrowthExponent = 50; // * kRiverGrowthExponentScaling
         NumericSetting<int32_t, kRiverWidthMin, kRiverWidthMax> riverWidthMax = 11;
     };
 
@@ -73,6 +74,7 @@ namespace OpenRCT2::World::MapGenerator::River
         int32_t ensureOrdinalNewTiles = 0;
 
         int32_t bankIndentationsAdjusted = 0;
+        int32_t riverIndentationsAdjusted = 0;
 
         int32_t consistencySegmentsIterations = 1;
         int32_t consistencySegmentsRaised = 0;

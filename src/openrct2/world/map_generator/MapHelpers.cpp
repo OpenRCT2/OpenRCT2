@@ -174,19 +174,23 @@ namespace OpenRCT2::World::MapGenerator
                     proposedHeight = cardinalNeighbourMaxHeight - 4;
                 }
                 if (neighbourHeights.N == cardinalNeighbourMaxHeight && neighbourHeights.S <= neighbourHeights.N - 4
-                    && !neighbourIsRiver.N && !neighbourIsRiver.NE && !neighbourIsRiver.NW)
+                    && ((!neighbourIsRiver.N && !neighbourIsRiver.NE && !neighbourIsRiver.NW)
+                        || neighbourHeights.N <= tileWaterLevel))
                     doubleCorner = North;
                 else if (
                     neighbourHeights.W == cardinalNeighbourMaxHeight && neighbourHeights.E <= neighbourHeights.W - 4
-                    && !neighbourIsRiver.W && !neighbourIsRiver.SW && !neighbourIsRiver.NW)
+                    && ((!neighbourIsRiver.W && !neighbourIsRiver.SW && !neighbourIsRiver.NW)
+                        || neighbourHeights.W <= tileWaterLevel))
                     doubleCorner = West;
                 else if (
                     neighbourHeights.S == cardinalNeighbourMaxHeight && neighbourHeights.N <= neighbourHeights.S - 4
-                    && !neighbourIsRiver.S && !neighbourIsRiver.SE && !neighbourIsRiver.SW)
+                    && ((!neighbourIsRiver.S && !neighbourIsRiver.SE && !neighbourIsRiver.SW)
+                        || neighbourHeights.S <= tileWaterLevel))
                     doubleCorner = South;
                 else if (
                     neighbourHeights.E == cardinalNeighbourMaxHeight && neighbourHeights.W <= neighbourHeights.E - 4
-                    && !neighbourIsRiver.E && !neighbourIsRiver.NE && !neighbourIsRiver.SE)
+                    && ((!neighbourIsRiver.E && !neighbourIsRiver.NE && !neighbourIsRiver.SE)
+                        || neighbourHeights.E <= tileWaterLevel))
                     doubleCorner = East;
             }
             else

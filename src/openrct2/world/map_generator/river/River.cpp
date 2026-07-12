@@ -180,9 +180,9 @@ namespace OpenRCT2::World::MapGenerator::River
 
         if (riverCtx.catchment[pos] <= 0.0f)
         {
-            const int32_t multiplier = isInWorldMap(ctx, pos) ? 1 : ctx.settings.river.offMapCatchmentMultiplier.get();
-
-            riverCtx.catchment[pos] = 1.0f * multiplier;
+            riverCtx.catchment[pos] = isInWorldMap(ctx, pos)
+                ? 1.0f
+                : ctx.settings.river.offMapCatchment.get() * kRiverOffMapCatchmentScaling;
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ pos + neighbour.offset };
@@ -642,6 +642,87 @@ namespace OpenRCT2::World::MapGenerator::River
     }
 
     /**
+     * Adjust single tile river indentations; w = river, l = land, h=raised, x=any, center tile not in masks:
+     *
+     *      x l h     w w x     x w w     h l x
+     *      w l l     w l l     l l w     l l w
+     *      w w x     x l h     h l x     x w w
+     *
+     * This allows the edge smoothing functions to turn them into diagonal raised tiles
+     */
+    static void adjustSingleTriangleRiverIndentations(MapGenContext& ctx)
+    {
+        PROFILED_FUNCTION();
+        RiverContext& riverCtx = ctx.riverContext.value();
+
+        constexpr std::array kSingleTriangleRiverMasks = { MapDirectionMask{ South, SouthEast, SouthWest },
+                                                           MapDirectionMask{ West, NorthWest, SouthWest },
+                                                           MapDirectionMask{ North, NorthEast, NorthWest },
+                                                           MapDirectionMask{ East, NorthEast, SouthEast } };
+
+        constexpr std::array kSingleTriangleLandMasks = { MapDirectionMask{ North, NorthEast, NorthWest },
+                                                          MapDirectionMask{ East, NorthEast, SouthEast },
+                                                          MapDirectionMask{ South, SouthEast, SouthWest },
+                                                          MapDirectionMask{ West, NorthWest, SouthWest } };
+
+        constexpr std::array kSingleTriangleRaisedLandMasks = { MapDirectionMask{ North }, MapDirectionMask{ East },
+                                                                MapDirectionMask{ South }, MapDirectionMask{ West } };
+
+        for (int32_t y = 1; y < ctx.dimensions.y - 1; y++)
+        {
+            for (int32_t x = 1; x < ctx.dimensions.x - 1; x++)
+            {
+                const TileCoordsXY pos{ x, y };
+                if (!riverCtx.flags[pos].has(river))
+                {
+                    for (int m = 0; m < 4; ++m)
+                    {
+                        auto& maskRiver = kSingleTriangleRiverMasks[m];
+                        auto& maskLand = kSingleTriangleLandMasks[m];
+                        auto& maskRaisedLand = kSingleTriangleRaisedLandMasks[m];
+
+                        bool maskMatches = true;
+                        for (const Neighbour& neighbour : kNeighbours)
+                        {
+                            const TileCoordsXY nPos{ pos + neighbour.offset };
+                            if (maskRiver.has(neighbour.direction) && !riverCtx.flags[nPos].has(river))
+                            {
+                                maskMatches = false;
+                                break;
+                            }
+                            if (maskLand.has(neighbour.direction) && riverCtx.flags[nPos].has(river))
+                            {
+                                maskMatches = false;
+                                break;
+                            }
+                            if (maskRaisedLand.has(neighbour.direction)
+                                && quantizeHeight(ctx.heightMap[nPos]) <= quantizeHeight(ctx.heightMap[pos]))
+                            {
+                                maskMatches = false;
+                                break;
+                            }
+                            if (maskLand.has(neighbour.direction) && !maskRaisedLand.has(neighbour.direction)
+                                && quantizeHeight(ctx.heightMap[nPos]) != quantizeHeight(ctx.heightMap[pos]))
+                            {
+                                maskMatches = false;
+                                break;
+                            }
+                        }
+                        if (maskMatches)
+                        {
+                            riverCtx.flags[pos].set(river);
+                            riverCtx.waterLevel[pos] = ctx.heightMap[pos];
+                            ctx.heightMap[pos] = ctx.heightMap[pos] - 2.0f;
+                            riverCtx.statistics.riverIndentationsAdjusted++;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Ensure there are no river tiles with lower land neighbours or without reachable sinks/sources.
      */
     static void ensureConsistent(MapGenContext& ctx)
@@ -864,6 +945,7 @@ namespace OpenRCT2::World::MapGenerator::River
         adjustStreamWidth(ctx);
         carveRiverbed(ctx);
         adjustBankIndentations(ctx);
+        adjustSingleTriangleRiverIndentations(ctx);
         ensureConsistent(ctx);
         clearRiversBelowSeaLevel(ctx);
 
