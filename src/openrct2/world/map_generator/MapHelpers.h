@@ -41,8 +41,8 @@ namespace OpenRCT2::World::MapGenerator
 
     uint8_t quantizeHeight(float height);
 
-    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue);
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue);
+    void completeDistanceMap(DistanceMap& distanceMap, StableTileQueue& queue);
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, StableTileQueue& queue);
     void computeRiverFlagBasedDistanceMap(
         const MapGenContext& ctx, DistanceMap& distanceMap, River::RiverFlag flag, bool invert = false);
 

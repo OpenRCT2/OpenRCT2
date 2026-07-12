@@ -72,22 +72,6 @@ namespace OpenRCT2::World::MapGenerator::Rule
         return ObjectType::none;
     }
 
-    enum class TextureRulePreset : uint8_t
-    {
-        SmallRockPatches,
-        MediumDirtPatches,
-        LargeGrassClumpPatches,
-        MountainPeaks
-    };
-
-    enum class SceneryRulePreset : uint8_t
-    {
-        Mediterranean,
-        Cold,
-        Arid,
-        Rainforest,
-    };
-
     struct TileEvaluationHeights
     {
         int32_t land;
@@ -201,6 +185,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         GlobalMin,
         GlobalMax,
         GlobalWaterLevel,
+        // TODO Clearance?
     };
 
     enum class Type : uint16_t

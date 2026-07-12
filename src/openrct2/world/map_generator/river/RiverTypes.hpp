@@ -53,9 +53,9 @@ namespace OpenRCT2::World::MapGenerator::River
         NumericSetting<int32_t, kRiverBreachLengthMin, kRiverBreachLengthMax> breachMaxLength = 8;
         NumericSetting<int32_t, kRiverBreachDepthMin, kRiverBreachDepthMax> breachMaxDepth = 2;
         NumericSetting<int32_t, 0, 40> offMapCatchment = 15; // * kRiverOffMapCatchmentScaling
-        NumericSetting<int32_t, kRiverGrowthExponentMin, kRiverGrowthExponentMax>
+        NumericSetting<int32_t, kRiverGrowthExponentMin, kRiverGrowthExponentMax, 5>
             riverGrowthExponent = 50; // * kRiverGrowthExponentScaling
-        NumericSetting<int32_t, kRiverFlowAggregationSlopeExponentMin, kRiverFlowAggregationSlopeExponentMax>
+        NumericSetting<int32_t, kRiverFlowAggregationSlopeExponentMin, kRiverFlowAggregationSlopeExponentMax, 5>
             riverFlowAggregationSlopeExponent = 110;
         bool riverFlowAggregationFractional = true;
         NumericSetting<int32_t, kRiverWidthMin, kRiverWidthMax> riverWidthMax = 11;

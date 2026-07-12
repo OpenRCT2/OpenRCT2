@@ -46,7 +46,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToLand = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToLand.fill(std::numeric_limits<float>::infinity());
-        TrackingStableTileQueue queue{ genCtx.dimensions };
+        StableTileQueue queue;
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -71,7 +71,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToWater = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToWater.fill(std::numeric_limits<float>::infinity());
-        TrackingStableTileQueue queue{ genCtx.dimensions };
+        StableTileQueue queue;
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -96,7 +96,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToSea = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToSea.fill(std::numeric_limits<float>::infinity());
-        TrackingStableTileQueue queue{ genCtx.dimensions };
+        StableTileQueue queue;
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -121,7 +121,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         evalCtx.distanceToBorder = DistanceMap{ genCtx.dimensions };
         evalCtx.distanceToBorder.fill(std::numeric_limits<float>::infinity());
-        TrackingStableTileQueue queue{ genCtx.dimensions };
+        StableTileQueue queue;
 
         for (int32_t y = 0; y < genCtx.dimensions.y; y++)
         {
@@ -392,6 +392,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
             if (condition.zRepeat)
             {
+                if (condition.type == Type::HeightRelative && result.has_value())
+                {
+                    result = result.value() / 2;
+                }
                 ctx.zRepeat = result;
             }
         }
@@ -616,7 +620,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
 
         const int32_t baseHeight = surfaceElement->baseHeight;
-        const int32_t waterHeight = surfaceElement->GetWaterHeight() / kWaterHeightStep;
+        const int32_t waterHeight = surfaceElement->GetWaterHeight() / kCoordsZStep;
 
         return std::make_optional(
             TileEvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt });

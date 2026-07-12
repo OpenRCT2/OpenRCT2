@@ -13,6 +13,22 @@
 
 namespace OpenRCT2::World::MapGenerator::Rule
 {
+    enum class TextureRulePreset : uint8_t
+    {
+        SmallRockPatches,
+        MediumDirtPatches,
+        LargeGrassClumpPatches,
+        MountainPeaks
+    };
+
+    enum class SceneryRulePreset : uint8_t
+    {
+        Mediterranean,
+        Cold,
+        Arid,
+        Rainforest,
+    };
+
     void createDefaultTextureRules(Settings& settings, uint32_t sharedOffset);
     void createNewTextureRule(Settings& settings);
     void createNewTextureRuleFromPreset(Settings& settings, TextureRulePreset preset);

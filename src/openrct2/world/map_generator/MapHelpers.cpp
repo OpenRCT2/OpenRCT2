@@ -654,7 +654,7 @@ namespace OpenRCT2::World::MapGenerator
         return static_cast<uint8_t>(std::round(std::clamp(height, 2.0f, 254.0f) * 0.5f) * 2.0f);
     }
 
-    void completeDistanceMap(DistanceMap& distanceMap, TrackingStableTileQueue& queue)
+    void completeDistanceMap(DistanceMap& distanceMap, StableTileQueue& queue)
     {
         while (!queue.empty())
         {
@@ -664,25 +664,23 @@ namespace OpenRCT2::World::MapGenerator
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ tile.pos + neighbour.offset };
+                const float distance = tile.value + neighbour.distance;
 
-                const float distance = tile.value
-                    + sqrt(neighbour.offset.x * neighbour.offset.x + neighbour.offset.y * neighbour.offset.y);
-
-                if (!distanceMap.inBounds(nPos) || queue.isMarked(nPos) || distance >= distanceMap[nPos])
+                if (!distanceMap.inBounds(nPos) || distance >= distanceMap[nPos])
                 {
                     continue;
                 }
 
                 distanceMap[nPos] = distance;
-                queue.emplaceAndMark(nPos, distance);
+                queue.emplace(nPos, distance);
             }
         }
     }
 
-    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, TrackingStableTileQueue& queue)
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, StableTileQueue& queue)
     {
         distanceMap[pos] = 0.0f;
-        queue.emplaceAndMark(pos, 0.0f);
+        queue.emplace(pos, 0.0f);
     }
 
     void computeRiverFlagBasedDistanceMap(
@@ -697,7 +695,7 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         const auto& riverCtx = ctx.riverContext.value();
-        TrackingStableTileQueue queue{ ctx.dimensions };
+        StableTileQueue queue;
 
         for (int32_t y = 0; y < distanceMap.height; y++)
         {
