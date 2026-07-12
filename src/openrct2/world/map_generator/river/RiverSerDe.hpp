@@ -18,6 +18,6 @@ namespace OpenRCT2::World::MapGenerator::River
 {
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(
         RiverSettings, generate, catchmentThreshold, pruneThreshold, breachMaxLength, breachMaxLength, offMapCatchment,
-        riverGrowthExponent, riverWidthMax);
+        riverGrowthExponent, riverFlowAggregationSlopeExponent, riverFlowAggregationFractional, riverWidthMax);
 
 } // namespace OpenRCT2::World::MapGenerator::River

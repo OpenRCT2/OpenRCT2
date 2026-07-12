@@ -149,6 +149,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_RIVERS_BREACH_DEPTH,
         WIDX_WATER_RIVERS_BREACH_DEPTH_UP,
         WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN,
+        WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL,
+        WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT,
+        WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT_UP,
+        WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT_DOWN,
 
         WIDX_RULE_TX_NEW = TAB_BEGIN,
         WIDX_RULE_TX_NEW_PRESET,
@@ -251,14 +255,16 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kWaterWidgets = makeWidgets(
         kMakeSharedWidgets(STR_MAPGEN_CAPTION_WATER),
         makeHoldableSpinnerWidgets({153,  52}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeWidget                ({  5,  70}, {300, 126}, WidgetType::groupbox, WindowColour::secondary, STR_WATER_RIVERS       ),
+        makeWidget                ({  5,  70}, {300, 162}, WidgetType::groupbox, WindowColour::secondary, STR_WATER_RIVERS       ),
         makeWidget                ({ 10,  86}, {136,  12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_ENABLE, STR_WATER_RIVERS_ENABLE),
         makeHoldableSpinnerWidgets({153, 104}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
         makeHoldableSpinnerWidgets({153, 122}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
         makeHoldableSpinnerWidgets({153, 140}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
         makeHoldableSpinnerWidgets({153, 158}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
         makeHoldableSpinnerWidgets({153, 176}, { 70,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
-        makeHoldableSpinnerWidgets({228, 176}, { 70,  12}, WidgetType::spinner,  WindowColour::secondary                         )  // NB: 3 widgets
+        makeHoldableSpinnerWidgets({228, 176}, { 70,  12}, WidgetType::spinner,  WindowColour::secondary                         ), // NB: 3 widgets
+        makeWidget                ({ 10, 194}, {300,  12}, WidgetType::checkbox, WindowColour::secondary, STR_WATER_RIVERS_FRACTIONAL_AGGREGATION), // NB: 3 widgets
+        makeHoldableSpinnerWidgets({153, 212}, {145,  12}, WidgetType::spinner,  WindowColour::secondary                         )  // NB: 3 widgets
     );
 
     static constexpr auto kTextureWidgets = makeWidgets(
@@ -3267,8 +3273,8 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsAreaToDisplayArea(MapGenerator::River::kRiverCatchmentThresholdMin));
                     ft.Add<int32_t>(tileUnitsAreaToDisplayArea(MapGenerator::River::kRiverCatchmentThresholdMax));
                     WindowTextInputOpen(
-                        this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft, STR_FORMAT_INTEGER,
-                        tileUnitsAreaToDisplayArea(_settings.river.catchmentThreshold), 8);
+                        this, WIDX_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT, STR_WATER_RIVERS_CATCHMENT_ENTER, ft,
+                        STR_FORMAT_INTEGER, tileUnitsAreaToDisplayArea(_settings.river.catchmentThreshold), 8);
                     break;
                 }
                 case WIDX_WATER_RIVERS_ENABLE:
@@ -3284,8 +3290,8 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverWidthMin));
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverWidthMax));
                     WindowTextInputOpen(
-                        this, WIDX_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX_ENTER, ft, STR_FORMAT_INTEGER,
-                        tileUnitsToDisplayLength(_settings.river.riverWidthMax), 4);
+                        this, WIDX_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX, STR_WATER_RIVERS_WIDTH_MAX_ENTER, ft,
+                        STR_FORMAT_INTEGER, tileUnitsToDisplayLength(_settings.river.riverWidthMax), 4);
                     break;
                 }
                 case WIDX_WATER_RIVERS_GROWTH_EXPONENT:
@@ -3294,8 +3300,9 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMin);
                     ft.Add<int32_t>(MapGenerator::River::kRiverGrowthExponentMax);
                     WindowTextInputOpen(
-                        this, WIDX_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32,
-                        _settings.river.riverGrowthExponent, 5);
+                        this, WIDX_WATER_RIVERS_GROWTH_EXPONENT, STR_WATER_RIVERS_GROWTH_EXPONENT,
+                        STR_WATER_RIVERS_GROWTH_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32, _settings.river.riverGrowthExponent,
+                        5);
                     break;
                 }
                 case WIDX_WATER_RIVERS_PRUNE_THRESHOLD:
@@ -3304,7 +3311,8 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverPruneLengthThresholdMin));
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverPruneLengthThresholdMin));
                     WindowTextInputOpen(
-                        this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
+                        this, WIDX_WATER_RIVERS_PRUNE_THRESHOLD, STR_WATER_RIVERS_PRUNE_THRESHOLD,
+                        STR_WATER_RIVERS_PRUNE_THRESHOLD_ENTER, ft, STR_FORMAT_INTEGER,
                         tileUnitsToDisplayLength(_settings.river.pruneThreshold), 3);
                     break;
                 }
@@ -3314,7 +3322,8 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverBreachLengthMin));
                     ft.Add<int32_t>(tileUnitsToDisplayLength(MapGenerator::River::kRiverBreachLengthMax));
                     WindowTextInputOpen(
-                        this, WIDX_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH_ENTER, ft, STR_FORMAT_INTEGER,
+                        this, WIDX_WATER_RIVERS_BREACH_LENGTH, STR_WATER_RIVERS_BREACH_LENGTH,
+                        STR_WATER_RIVERS_BREACH_LENGTH_ENTER, ft, STR_FORMAT_INTEGER,
                         tileUnitsToDisplayLength(_settings.river.breachMaxLength), 3);
                     break;
                 }
@@ -3324,8 +3333,27 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(heightUnitsToDisplayHeight(MapGenerator::River::kRiverBreachDepthMin));
                     ft.Add<int32_t>(heightUnitsToDisplayHeight(MapGenerator::River::kRiverBreachDepthMax));
                     WindowTextInputOpen(
-                        this, WIDX_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH_ENTER, ft, STR_FORMAT_INTEGER,
+                        this, WIDX_WATER_RIVERS_BREACH_DEPTH, STR_WATER_RIVERS_BREACH_DEPTH,
+                        STR_WATER_RIVERS_BREACH_DEPTH_ENTER, ft, STR_FORMAT_INTEGER,
                         heightUnitsToDisplayHeight(_settings.river.breachMaxDepth), 3);
+                    break;
+                }
+                case WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL:
+                {
+                    _settings.river.riverFlowAggregationFractional = !_settings.river.riverFlowAggregationFractional;
+                    invalidate();
+                    break;
+                }
+                case WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT:
+                {
+                    Formatter ft;
+                    ft.Add<int32_t>(MapGenerator::River::kRiverFlowAggregationSlopeExponentMin);
+                    ft.Add<int32_t>(MapGenerator::River::kRiverFlowAggregationSlopeExponentMax);
+                    WindowTextInputOpen(
+                        this, WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT,
+                        STR_WATER_RIVERS_FRACTIONAL_AGGREGATION_EXPONENT,
+                        STR_WATER_RIVERS_FRACTIONAL_AGGREGATION_EXPONENT_ENTER, ft, STR_FORMAT_COMMA2DP32,
+                        _settings.river.riverFlowAggregationSlopeExponent, 5);
                     break;
                 }
             }
@@ -3389,6 +3417,14 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN:
                     _settings.river.breachMaxDepth.decrement();
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT_UP:
+                    _settings.river.riverFlowAggregationSlopeExponent.increment();
+                    invalidate();
+                    break;
+                case WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT_DOWN:
+                    _settings.river.riverFlowAggregationSlopeExponent.decrement();
                     invalidate();
                     break;
             }
@@ -3504,6 +3540,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_RIVERS_BREACH_DEPTH:
                     _settings.river.breachMaxDepth = displayHeightToTileUnits(value);
                     break;
+                case WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT:
+                    _settings.river.riverFlowAggregationSlopeExponent = value;
+                    break;
             }
 
             invalidate();
@@ -3542,6 +3581,15 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH, !enableRiver);
             setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH_UP, !enableRiver);
             setWidgetDisabled(WIDX_WATER_RIVERS_BREACH_DEPTH_DOWN, !enableRiver);
+
+            setWidgetDisabled(WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL, !enableRiver);
+            setCheckboxValue(WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL, _settings.river.riverFlowAggregationFractional);
+
+            const bool enableFractionalFlowAgg = enableRiver && _settings.river.riverFlowAggregationFractional;
+
+            setWidgetDisabled(WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT, !enableFractionalFlowAgg);
+            setWidgetDisabled(WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT_UP, !enableFractionalFlowAgg);
+            setWidgetDisabled(WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT_DOWN, !enableFractionalFlowAgg);
         }
 
         void WaterDraw(RenderTarget& rt)
@@ -3630,6 +3678,21 @@ namespace OpenRCT2::Ui::Windows
             drawText(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].left + 1,
                 widgets[WIDX_WATER_RIVERS_BREACH_DEPTH].top + 1 }, STR_RIDE_LENGTH_ENTRY, ft, { valueColour });
+
+            // flow agg exponent
+            const auto flowAggExpValueColour = isWidgetDisabled(WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT)
+                ? disabledColour : textColour;
+
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT].top + 1 },
+                STR_WATER_RIVERS_FRACTIONAL_AGGREGATION_EXPONENT, { flowAggExpValueColour });
+
+            ft = Formatter();
+            ft.Add<int32_t>(_settings.river.riverFlowAggregationSlopeExponent);
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT].left + 1,
+                widgets[WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT].top + 1 }, STR_FORMAT_COMMA2DP32, ft,
+                { flowAggExpValueColour });
         }
 
 #pragma endregion
@@ -3831,7 +3894,8 @@ namespace OpenRCT2::Ui::Windows
             int32_t value{};
             if ((page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_SIMPLEX_BASE_FREQ)
                 || (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_BIAS_STRENGTH)
-                || (page == WINDOW_MAPGEN_PAGE_WATER && widgetIndex == WIDX_WATER_RIVERS_GROWTH_EXPONENT))
+                || (page == WINDOW_MAPGEN_PAGE_WATER && widgetIndex == WIDX_WATER_RIVERS_GROWTH_EXPONENT)
+                || (page == WINDOW_MAPGEN_PAGE_WATER && widgetIndex == WIDX_WATER_RIVERS_FLOW_AGGREGATION_FRACTIONAL_EXPONENT))
                 value = 100 * strtof(strText.c_str(), &end);
             else
                 value = strtol(strText.c_str(), &end, 10);

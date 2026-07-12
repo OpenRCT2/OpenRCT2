@@ -23,8 +23,6 @@
 
 namespace OpenRCT2::World::MapGenerator::River
 {
-    static constexpr float kP = 1.1f;
-
     /**
      * Fill up or breach out of depressions in the heightmap to ensure there is a monotonic downhill path for rivers to follow.
      *
@@ -154,7 +152,8 @@ namespace OpenRCT2::World::MapGenerator::River
     static float downSlope(const MapGenContext& ctx, const TileCoordsXY& from, const TileCoordsXY& to, const float distance)
     {
         const float slope = (ctx.heightMap[from] - ctx.heightMap[to]) / distance;
-        return std::max(0.0f, std::pow(slope, kP));
+        const float exponent = ctx.settings.river.riverFlowAggregationSlopeExponent * kRiverFlowAggregationSlopeExponentScaling;
+        return std::max(0.0f, std::pow(slope, exponent));
     }
 
     static float flowFraction(const MapGenContext& ctx, const TileCoordsXY& from, const TileCoordsXY& to, const float distance)
@@ -174,6 +173,29 @@ namespace OpenRCT2::World::MapGenerator::River
         return downSlope(ctx, from, to, distance) / sum;
     }
 
+    static float flowBinary(const MapGenContext& ctx, const TileCoordsXY& from, const TileCoordsXY& to)
+    {
+        const RiverContext& riverCtx = ctx.riverContext.value();
+
+        float slopeMax = 0.0f;
+        Reference slopeMaxPos = std::nullopt;
+        for (const auto& neighbour : kNeighbours)
+        {
+            const TileCoordsXY nPos{ from + neighbour.offset };
+            if (ctx.heightMap.inBounds(nPos) && riverCtx.flowsOut[from].has(neighbour.direction))
+            {
+                float slopeN = downSlope(ctx, from, nPos, neighbour.distance);
+                if (slopeN > slopeMax)
+                {
+                    slopeMax = slopeN;
+                    slopeMaxPos = nPos;
+                }
+            }
+        }
+
+        return slopeMaxPos.has_value() && slopeMaxPos.value() == to ? 1.0f : 0.0f;
+    }
+
     static float aggregateNeighbour(MapGenContext& ctx, const TileCoordsXY& pos)
     {
         RiverContext& riverCtx = ctx.riverContext.value();
@@ -182,14 +204,17 @@ namespace OpenRCT2::World::MapGenerator::River
         {
             riverCtx.catchment[pos] = isInWorldMap(ctx, pos)
                 ? 1.0f
-                : ctx.settings.river.offMapCatchment.get() * kRiverOffMapCatchmentScaling;
+                : ctx.settings.river.offMapCatchment * kRiverOffMapCatchmentScaling;
+
             for (const auto& neighbour : kNeighbours)
             {
                 const TileCoordsXY nPos{ pos + neighbour.offset };
                 if (riverCtx.flowsIn.inBounds(nPos) && riverCtx.flowsIn[pos].has(neighbour.direction))
                 {
-                    const float neighbourFraction = flowFraction(ctx, nPos, pos, neighbour.distance);
                     const float neighbourCatchment = aggregateNeighbour(ctx, nPos);
+                    const float neighbourFraction = ctx.settings.river.riverFlowAggregationFractional
+                        ? flowFraction(ctx, nPos, pos, neighbour.distance)
+                        : flowBinary(ctx, nPos, pos);
                     const float neighbourContribution = neighbourFraction * neighbourCatchment;
                     riverCtx.catchment[pos] += neighbourContribution;
                 }
@@ -227,9 +252,9 @@ namespace OpenRCT2::World::MapGenerator::River
 
     /**
      * Recursively calculates the catchment (drainage basin) of each tile, catchment is passed down to lower neighbouring tiles
-     * in proportion to slope.
+     * in proportion to slope if riverFlowAggregationFractional is true, otherwise it is only passed to the steepest neighbour.
      *
-     * based on
+     * Fractional aggregation based on
      *
      * Freeman, T.G., 1991. Calculating catchment area with divergent flow based on a regular grid. Computers & geosciences,
      * 17(3), pp.413-422.

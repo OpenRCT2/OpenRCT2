@@ -4016,3 +4016,6 @@ STR_7270    :SE
 STR_7271    :SW
 STR_7272    :??
 STR_7273    :Forest floor
+STR_7274    :Fractional aggregation
+STR_7275    :Fractional exponent
+STR_7276    :Enter fractional exponent between {COMMA2DP32} and {COMMA2DP32}
