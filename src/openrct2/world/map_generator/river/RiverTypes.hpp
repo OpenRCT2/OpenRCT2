@@ -21,7 +21,7 @@ namespace OpenRCT2::World::MapGenerator::River
     constexpr float kRiverOffMapCatchmentScaling = 0.1f;
     constexpr int32_t kRiverGrowthExponentMin = 1;   // * kRiverGrowthExponentScaling
     constexpr int32_t kRiverGrowthExponentMax = 800; // * kRiverGrowthExponentScaling
-    constexpr int32_t kRiverCatchmentThresholdMin = 2;
+    constexpr int32_t kRiverCatchmentThresholdMin = 4;
     constexpr int32_t kRiverCatchmentThresholdMax = 2 << 19;
     constexpr int32_t kRiverPruneLengthThresholdMin = 0;
     constexpr int32_t kRiverPruneLengthThresholdMax = 128;

@@ -328,7 +328,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                                      .edgeTexture = lookupObjectEntryIdxByIdentifier("rct2.terrain_edge.ice").value_or(0) } });
         settings.textureRules.push_back(
             TextureRule{
-                .enabled = true,
+                .enabled = false,
                 .isDefault = false,
                 .name = FormatStringID(STR_MAPGEN_RULE_FOREST_FLOOR),
                 .conditions = std::vector{ blendHeight(prng(), 54, 64), blendNoise(sharedOffset, 3.25f, 6, 0.60f, 0.80f),
