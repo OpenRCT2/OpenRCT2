@@ -68,7 +68,7 @@ public:
     ~FileWatcher();
 
 private:
-#if defined(_WIN32) || defined(__linux__)
+#if defined(__linux__)
     bool _finished{};
 #elif defined(__APPLE__)
     static void FSEventsCallback(
