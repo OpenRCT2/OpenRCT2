@@ -223,12 +223,19 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case HeightSource::SelfWater:
                 return localHeights.self.water;
 
+            case HeightSource::SelfClearance:
+                return localHeights.self.clearance;
+
             case HeightSource::NeighbourNWLand:
                 return localHeights.neighbourNW.has_value() ? std::make_optional(localHeights.neighbourNW.value().land)
                                                             : std::nullopt;
 
             case HeightSource::NeighbourNWWater:
                 return localHeights.neighbourNW.has_value() ? localHeights.neighbourNW.value().water : std::nullopt;
+
+            case HeightSource::NeighbourNWClearance:
+                return localHeights.neighbourNW.has_value() ? std::make_optional(localHeights.neighbourNW.value().clearance)
+                                                            : std::nullopt;
 
             case HeightSource::NeighbourNELand:
                 return localHeights.neighbourNE.has_value() ? std::make_optional(localHeights.neighbourNE.value().land)
@@ -237,6 +244,10 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case HeightSource::NeighbourNEWater:
                 return localHeights.neighbourNE.has_value() ? localHeights.neighbourNE.value().water : std::nullopt;
 
+            case HeightSource::NeighbourNEClearance:
+                return localHeights.neighbourNE.has_value() ? std::make_optional(localHeights.neighbourNE.value().clearance)
+                                                            : std::nullopt;
+
             case HeightSource::NeighbourSELand:
                 return localHeights.neighbourSE.has_value() ? std::make_optional(localHeights.neighbourSE.value().land)
                                                             : std::nullopt;
@@ -244,12 +255,20 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case HeightSource::NeighbourSEWater:
                 return localHeights.neighbourSE.has_value() ? localHeights.neighbourSE.value().water : std::nullopt;
 
+            case HeightSource::NeighbourSEClearance:
+                return localHeights.neighbourSE.has_value() ? std::make_optional(localHeights.neighbourSE.value().clearance)
+                                                            : std::nullopt;
+
             case HeightSource::NeighbourSWLand:
                 return localHeights.neighbourSW.has_value() ? std::make_optional(localHeights.neighbourSW.value().land)
                                                             : std::nullopt;
 
             case HeightSource::NeighbourSWWater:
                 return localHeights.neighbourSW.has_value() ? localHeights.neighbourSW.value().water : std::nullopt;
+
+            case HeightSource::NeighbourSWClearance:
+                return localHeights.neighbourSW.has_value() ? std::make_optional(localHeights.neighbourSW.value().clearance)
+                                                            : std::nullopt;
 
             case HeightSource::GlobalMin:
                 return localHeights.globalMin;
@@ -621,9 +640,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         const int32_t baseHeight = surfaceElement->baseHeight;
         const int32_t waterHeight = surfaceElement->GetWaterHeight() / kCoordsZStep;
+        const int32_t clearanceHeight = surfaceElement->clearanceHeight;
 
         return std::make_optional(
-            TileEvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt });
+            TileEvaluationHeights{ baseHeight, waterHeight > 0 ? std::make_optional(waterHeight) : std::nullopt,
+                                   clearanceHeight });
     }
 
     static EvaluationHeights getHeightsAt(const MapGenContext& genCtx, const TileCoordsXY& gameCoords)

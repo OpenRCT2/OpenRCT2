@@ -1462,22 +1462,32 @@ namespace OpenRCT2::Ui::Windows
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND;
                 case MapGenerator::Rule::HeightSource::SelfWater:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER;
+                case MapGenerator::Rule::HeightSource::SelfClearance:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_CLEARANCE;
                 case MapGenerator::Rule::HeightSource::NeighbourNWLand:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_LAND;
                 case MapGenerator::Rule::HeightSource::NeighbourNWWater:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourNWClearance:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NW_CLEARANCE;
                 case MapGenerator::Rule::HeightSource::NeighbourNELand:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_LAND;
                 case MapGenerator::Rule::HeightSource::NeighbourNEWater:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourNEClearance:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_NE_CLEARANCE;
                 case MapGenerator::Rule::HeightSource::NeighbourSELand:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_LAND;
                 case MapGenerator::Rule::HeightSource::NeighbourSEWater:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourSEClearance:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SE_CLEARANCE;
                 case MapGenerator::Rule::HeightSource::NeighbourSWLand:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_LAND;
                 case MapGenerator::Rule::HeightSource::NeighbourSWWater:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_WATER;
+                case MapGenerator::Rule::HeightSource::NeighbourSWClearance:
+                    return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_NEIGHBOUR_SW_CLEARANCE;
                 case MapGenerator::Rule::HeightSource::GlobalMin:
                     return STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_MIN;
                 case MapGenerator::Rule::HeightSource::GlobalMax:

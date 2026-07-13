@@ -4019,3 +4019,8 @@ STR_7273    :Forest floor
 STR_7274    :Fractional aggregation
 STR_7275    :Fractional exponent
 STR_7276    :Enter fractional exponent between {COMMA2DP32} and {COMMA2DP32}
+STR_7277    :Tile clearance
+STR_7278    :Tile NW clearance
+STR_7279    :Tile NE clearance
+STR_7280    :Tile SE clearance
+STR_7281    :Tile SW clearance

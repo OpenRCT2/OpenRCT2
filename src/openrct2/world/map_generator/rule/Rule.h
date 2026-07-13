@@ -76,6 +76,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         int32_t land;
         std::optional<int32_t> water;
+        int32_t clearance;
     };
 
     struct EvaluationHeights
@@ -174,18 +175,22 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         SelfLand,
         SelfWater,
+        SelfClearance,
         NeighbourNWLand,
         NeighbourNWWater,
+        NeighbourNWClearance,
         NeighbourNELand,
         NeighbourNEWater,
+        NeighbourNEClearance,
         NeighbourSELand,
         NeighbourSEWater,
+        NeighbourSEClearance,
         NeighbourSWLand,
         NeighbourSWWater,
+        NeighbourSWClearance,
         GlobalMin,
         GlobalMax,
         GlobalWaterLevel,
-        // TODO Clearance?
     };
 
     enum class Type : uint16_t
