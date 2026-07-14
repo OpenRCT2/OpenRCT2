@@ -47,7 +47,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkMarketingAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
+        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks <= 0 || _numWeeks >= 256)
         {
             return Result(Status::invalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
         }
