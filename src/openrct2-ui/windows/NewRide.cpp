@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/ride/Construction.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -216,8 +217,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GROUP_BY_TRACK_TYPE,
     };
 
-    static constexpr ScreenCoordsXY GroupByTrackTypeOrigin{ kWindowSize.width - 8 - GroupByTrackTypeWidth, 47 };
-    static constexpr ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
+    static constexpr ScreenCoordsXY kGroupByTrackTypeOrigin{ kWindowSize.width - 8 - GroupByTrackTypeWidth, 47 };
+    static constexpr ScreenSize kGroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
     // clang-format off
     static constexpr auto window_new_ride_widgets = makeWidgets(
@@ -237,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({265,  68},             { 24,  24},         WidgetType::flatBtn,  WindowColour::tertiary,  ImageId(SPR_FINANCE),             STR_FINANCES_RESEARCH_TIP    ),
         makeWidget({  4,  46},             {211, 14},          WidgetType::textBox,  WindowColour::secondary                                                                 ),
         makeWidget({218,  46},             { 70, 14},          WidgetType::button,   WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                        ),
-        makeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WidgetType::checkbox, WindowColour::secondary, STR_GROUP_BY_TRACK_TYPE,          STR_GROUP_BY_TRACK_TYPE_TIP  )
+        Widgets::Checkbox(kGroupByTrackTypeOrigin, kGroupTrackTypeSize, WindowColour::secondary, STR_GROUP_BY_TRACK_TYPE,          STR_GROUP_BY_TRACK_TYPE_TIP  )
     );
     // clang-format on
 
