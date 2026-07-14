@@ -9,6 +9,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -75,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kOptionsTabWidgets = makeWidgets(
         makeNewsWidgets(STR_NOTIFICATION_SETTINGS),
-        makeWidget({ 10, 49 }, { 380,  14 }, WidgetType::checkbox, WindowColour::secondary)
+        Widgets::Checkbox({ 10, 49 }, { 380,  14 }, WindowColour::secondary)
     );
     // clang-format on
 
@@ -180,9 +181,9 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Create checkbox widgets
-                Widget checkboxWidget = makeWidget(
-                    { baseCheckBox.left, y }, { baseCheckBox.width(), kListRowHeight + 3 }, WidgetType::checkbox,
-                    WindowColour::secondary, def.caption);
+                Widget checkboxWidget = Widgets::Checkbox(
+                    { baseCheckBox.left, y }, { baseCheckBox.width(), kListRowHeight + 3 }, WindowColour::secondary,
+                    def.caption);
 
                 checkboxWidgetsToInsert.emplace_back(checkboxWidget);
                 numGroupElements++;
