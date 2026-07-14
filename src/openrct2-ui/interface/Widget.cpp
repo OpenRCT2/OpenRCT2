@@ -48,7 +48,6 @@ namespace OpenRCT2::Ui
     static void WidgetProgressBarDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetHorizontalSeparatorDraw(RenderTarget& rt, WindowBase& w, const Widget& widget);
     static void WidgetGroupboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCheckboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetCloseboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetScrollDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetHScrollbarDraw(
@@ -122,9 +121,6 @@ namespace OpenRCT2::Ui
                 break;
             case WidgetType::scroll:
                 WidgetScrollDraw(rt, w, widgetIndex);
-                break;
-            case WidgetType::checkbox:
-                WidgetCheckboxDraw(rt, w, widgetIndex);
                 break;
             case WidgetType::textBox:
                 WidgetTextBoxDraw(rt, w, widgetIndex);
@@ -573,56 +569,6 @@ namespace OpenRCT2::Ui
             colour.flags.set(ColourFlag::inset, true);
 
         drawText(rt, crossMidPoint, widget.string, { colour, TextAlignment::centre });
-    }
-
-    /**
-     *
-     *  rct2: 0x006EBAD9
-     */
-    static void WidgetCheckboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
-    {
-        // Get the widget
-        const auto& widget = w.widgets[widgetIndex];
-
-        // Resolve the absolute ltb
-        ScreenCoordsXY topLeft = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
-        ScreenCoordsXY bottomRight = w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom };
-        ScreenCoordsXY midLeft = { topLeft.x, (topLeft.y + bottomRight.y) / 2 };
-
-        auto colour = w.colours[widget.colour];
-
-        // checkbox
-        Rectangle::fillInset(
-            rt, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, Rectangle::BorderStyle::inset,
-            Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
-
-        if (widgetIsDisabled(w, widgetIndex))
-        {
-            colour.flags.set(ColourFlag::inset, true);
-        }
-
-        // fill it when checkbox is pressed
-        if (widgetIsPressed(w, widgetIndex))
-        {
-            drawText(
-                rt, { midLeft - ScreenCoordsXY{ 0, 5 } }, kCheckMarkString,
-                { colour.withFlag(ColourFlag::translucent, false) });
-        }
-
-        // draw the text
-        if (widget.text == kStringIdNone)
-            return;
-
-        auto stringId = widget.text;
-        auto ft = Formatter();
-        if (widget.flags.has(WidgetFlag::textIsString))
-        {
-            stringId = STR_STRING;
-            ft.Add<utf8*>(widget.string);
-        }
-
-        drawTextEllipsised(
-            rt, w.windowPos + ScreenCoordsXY{ widget.left + 14, widget.textTop() }, widget.width() - 15, stringId, ft, colour);
     }
 
     /**

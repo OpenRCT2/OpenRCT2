@@ -9,6 +9,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
@@ -39,15 +40,15 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 200, 8 + (15 * 7) + 8 };
 
     // clang-format off
-    static constexpr Widget window_debug_paint_widgets[] = {
-        makeWidget({0,          0}, kWindowSize,                   WidgetType::frame,    WindowColour::primary                                        ),
-        makeWidget({8, 8 + 15 * 0}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
-        makeWidget({8, 8 + 15 * 1}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
-        makeWidget({8, 8 + 15 * 2}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
-        makeWidget({8, 8 + 15 * 3}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
-        makeWidget({8, 8 + 15 * 4}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
-        makeWidget({8, 8 + 15 * 5}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_STABLE_SORT  ),
-        makeWidget({8, 8 + 15 * 6}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_FORCE_REDRAW  ),
+    static constexpr Widget kWidgets[] = {
+        makeWidget({0, 0}, kWindowSize, WidgetType::frame, WindowColour::primary ),
+        Widgets::Checkbox({8, 8 + 15 * 0}, { 185, 12}, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
+        Widgets::Checkbox({8, 8 + 15 * 1}, { 185, 12}, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
+        Widgets::Checkbox({8, 8 + 15 * 2}, { 185, 12}, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
+        Widgets::Checkbox({8, 8 + 15 * 3}, { 185, 12}, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
+        Widgets::Checkbox({8, 8 + 15 * 4}, { 185, 12}, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
+        Widgets::Checkbox({8, 8 + 15 * 5}, { 185, 12}, WindowColour::secondary, STR_DEBUG_PAINT_STABLE_SORT         ),
+        Widgets::Checkbox({8, 8 + 15 * 6}, { 185, 12}, WindowColour::secondary, STR_DEBUG_PAINT_FORCE_REDRAW        ),
     };
     // clang-format on
 
@@ -59,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            setWidgets(window_debug_paint_widgets);
+            setWidgets(kWidgets);
 
             initScrollWidgets();
             WindowPushOthersBelow(*this);

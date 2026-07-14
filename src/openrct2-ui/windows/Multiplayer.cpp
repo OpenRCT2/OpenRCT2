@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
@@ -109,9 +110,9 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_multiplayer_options_widgets = makeWidgets(
         kMainMultiplayerWidgets,
-        makeWidget({3, 50}, {295, 12}, WidgetType::checkbox, WindowColour::secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
-        makeWidget({3, 64}, {295, 12}, WidgetType::checkbox, WindowColour::secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
-        makeWidget({3, 78}, {295, 12}, WidgetType::checkbox, WindowColour::secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP)
+        Widgets::Checkbox({3, 50}, {295, 12}, WindowColour::secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
+        Widgets::Checkbox({3, 64}, {295, 12}, WindowColour::secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
+        Widgets::Checkbox({3, 78}, {295, 12}, WindowColour::secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP)
     );
 
     static std::span<const Widget> window_multiplayer_page_widgets[] = {
