@@ -106,6 +106,10 @@ namespace OpenRCT2::Scripting
         static JSValue travelBy(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
         static JSValue moveToTrack(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+                
+        static JSValue orientation_get(JSContext* ctx, JSValue thisVal);
+        static JSValue orientation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
     };
 
 } // namespace OpenRCT2::Scripting

@@ -59,6 +59,15 @@ namespace OpenRCT2::Scripting
             { "stopped_by_block_brake", Vehicle::Status::stoppedByBlockBrakes },
         });
 
+    inline VehicleOrientation JSToVehicleOrientation(JSContext* ctx, JSValue val)
+    {
+        VehicleOrientation result{};
+        result.yaw = static_cast<uint8_t>(AsOrDefault(ctx, val, "yaw", 0));
+        result.pitch = static_cast<VehiclePitch>(AsOrDefault(ctx, val, "pitch", 0));
+        result.roll = static_cast<VehicleRoll>(AsOrDefault(ctx, val, "roll", 0));
+        return result;
+    }
+
     ScVehicle gScVehicle;
 
     JSValue ScVehicle::New(JSContext* ctx, EntityId entityId)
@@ -98,6 +107,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("peeps", &ScVehicle::guests_get, nullptr),
             JS_CGETSET_DEF("guests", &ScVehicle::guests_get, nullptr),
             JS_CGETSET_DEF("gForces", &ScVehicle::gForces_get, nullptr),
+            JS_CGETSET_DEF("orientation", &ScVehicle::orientation_get, &ScVehicle::orientation_set),
             JS_CFUNC_DEF("travelBy", 1, &ScVehicle::travelBy),
             JS_CFUNC_DEF("moveToTrack", 3, &ScVehicle::moveToTrack),
         };
@@ -624,6 +634,34 @@ namespace OpenRCT2::Scripting
 
         vehicle->UpdateTrackChange();
         EntityTweener::Get().RemoveEntity(vehicle);
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScVehicle::orientation_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto vehicle = GetVehicle(thisVal);
+        if (vehicle != nullptr)
+        {
+            auto orientation = vehicle->GetOrientation();
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "yaw", JS_NewInt32(ctx, orientation.yaw));
+            JS_SetPropertyStr(ctx, obj, "pitch", JS_NewInt32(ctx, static_cast<uint8_t>(orientation.pitch)));
+            JS_SetPropertyStr(ctx, obj, "roll", JS_NewInt32(ctx, static_cast<uint8_t>(orientation.roll)));
+            return obj;
+        }
+        return JS_NULL;
+    }
+
+    JSValue ScVehicle::orientation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
+    {
+        JS_UNPACK_OBJECT(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
+        if (vehicle != nullptr)
+        {
+            vehicle->SetOrientation(JSToVehicleOrientation(ctx, value));
+            vehicle->invalidate();
+        }
         return JS_UNDEFINED;
     }
 } // namespace OpenRCT2::Scripting
