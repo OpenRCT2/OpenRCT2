@@ -1206,6 +1206,7 @@ public:
         {
             const auto& widget = w.widgets[i];
 
+            // Group boxes may overlay previous widgets when shared. Given their appearance, we consider them empty overlays.
             if (widget.type == WidgetType::empty || widget.type == WidgetType::groupbox || !widget.isVisible())
                 continue;
 
