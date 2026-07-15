@@ -183,11 +183,7 @@ static const VehicleInfo* vehicle_get_move_info(
 
 VehicleOrientation Vehicle::GetOrientation()
 {
-    return VehicleOrientation{
-        .yaw = orientation,
-        .pitch = pitch,
-        .roll = roll
-    };
+    return VehicleOrientation{ .yaw = orientation, .pitch = pitch, .roll = roll };
 }
 
 void Vehicle::SetOrientation(VehicleOrientation info)

@@ -44,7 +44,6 @@ struct GForces
     int32_t lateralG{};
 };
 
-
 // Size: 0x03
 struct VehicleOrientation
 {
