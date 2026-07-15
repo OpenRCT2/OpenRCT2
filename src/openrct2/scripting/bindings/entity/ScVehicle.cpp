@@ -151,20 +151,11 @@ namespace OpenRCT2::Scripting
 
     JSValue ScVehicle::spriteType_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle(thisVal);
-        return JS_NewUint32(ctx, vehicle != nullptr ? EnumValue(vehicle->pitch) : 0);
+        return pitch_get(ctx, thisVal);
     }
     JSValue ScVehicle::spriteType_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        JS_UNPACK_UINT32(value, ctx, jsValue);
-        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        auto vehicle = GetVehicle(thisVal);
-        if (vehicle != nullptr)
-        {
-            vehicle->pitch = static_cast<VehiclePitch>(value);
-            vehicle->invalidate();
-        }
-        return JS_UNDEFINED;
+        return pitch_set(ctx, thisVal, jsValue);
     }
 
     JSValue ScVehicle::ride_get(JSContext* ctx, JSValue thisVal)
@@ -364,20 +355,11 @@ namespace OpenRCT2::Scripting
 
     JSValue ScVehicle::bankRotation_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle(thisVal);
-        return JS_NewUint32(ctx, vehicle != nullptr ? EnumValue(vehicle->roll) : 0);
+        return roll_get(ctx, thisVal);
     }
     JSValue ScVehicle::bankRotation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        JS_UNPACK_UINT32(value, ctx, jsValue);
-        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        auto vehicle = GetVehicle(thisVal);
-        if (vehicle != nullptr)
-        {
-            vehicle->roll = static_cast<VehicleRoll>(value);
-            vehicle->invalidate();
-        }
-        return JS_UNDEFINED;
+        return roll_set(ctx, thisVal, jsValue);
     }
 
     template<VehicleFlag flag>
@@ -651,7 +633,7 @@ namespace OpenRCT2::Scripting
     JSValue ScVehicle::pitch_get(JSContext* ctx, JSValue thisVal)
     {
         auto vehicle = GetVehicle(thisVal);
-        return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint32_t>(vehicle->pitch) : 0);
+        return JS_NewUint32(ctx, vehicle != nullptr ? EnumValue(vehicle->pitch) : 0);
     }
 
     JSValue ScVehicle::pitch_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
@@ -669,7 +651,7 @@ namespace OpenRCT2::Scripting
     JSValue ScVehicle::roll_get(JSContext* ctx, JSValue thisVal)
     {
         auto vehicle = GetVehicle(thisVal);
-        return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint32_t>(vehicle->roll) : 0);
+        return JS_NewUint32(ctx, vehicle != nullptr ? EnumValue(vehicle->roll) : 0);
     }
 
     JSValue ScVehicle::roll_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)

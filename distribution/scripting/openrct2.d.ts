@@ -2902,6 +2902,10 @@ declare global {
          */
         vehicleObject: number;
 
+
+		/** 
+		 * @deprecated since version 117, use pitch instead.
+		 */
         spriteType: number;
 
         /**
@@ -2950,6 +2954,7 @@ declare global {
 
         /**
          * The current tilt of the car in the X/Y axis.
+         * @deprecated since version 117, use roll instead.
          */
         bankRotation: number;
 
