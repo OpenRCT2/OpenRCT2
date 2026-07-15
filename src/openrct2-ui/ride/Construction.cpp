@@ -23,6 +23,7 @@
 #include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Map.h>
+#include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/tile_element/TrackElement.h>
 
 using namespace OpenRCT2::TrackMetadata;
@@ -450,16 +451,10 @@ namespace OpenRCT2
             if (MapIsLocationValid(nextLocation))
             {
                 // iterate over every element in the tile until we find what we want
-                auto* tileElement = MapGetFirstElementAt(nextLocation);
-                if (tileElement == nullptr)
-                    continue;
-                do
+                for (auto* trackElement : TileElementsView<TrackElement>(nextLocation))
                 {
-                    if (tileElement->getType() != TileElementType::track)
+                    if (trackElement->getBaseZ() != stationBaseZ)
                         continue;
-                    if (tileElement->getBaseZ() != stationBaseZ)
-                        continue;
-                    auto* trackElement = tileElement->asTrack();
                     if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
                     if (trackElement->GetTrackType() == TrackElemType::maze)
@@ -475,7 +470,7 @@ namespace OpenRCT2
                     gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
 
                     // get the ride entrance's side relative to the TrackElement
-                    Direction direction = (DirectionReverse(entranceExitCoords.direction) - tileElement->getDirection()) & 3;
+                    Direction direction = (DirectionReverse(entranceExitCoords.direction) - trackElement->getDirection()) & 3;
                     const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
                     auto connectionSides = ted.sequenceData.sequences[trackElement->GetSequenceIndex()]
                                                .getEntranceConnectionSides();
@@ -487,7 +482,7 @@ namespace OpenRCT2
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                         return entranceExitCoords;
                     }
-                } while (!(tileElement++)->isLastForTile());
+                }
             }
         }
         gRideEntranceExitPlaceDirection = kInvalidDirection;

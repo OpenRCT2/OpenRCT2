@@ -1206,13 +1206,14 @@ public:
         {
             const auto& widget = w.widgets[i];
 
-            if (widget.type != WidgetType::empty && widget.isVisible())
+            // Group boxes may overlay previous widgets when shared. Given their appearance, we consider them empty overlays.
+            if (widget.type == WidgetType::empty || widget.type == WidgetType::groupbox || !widget.isVisible())
+                continue;
+
+            if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
+                && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
             {
-                if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
-                    && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
-                {
-                    widget_index = i;
-                }
+                widget_index = i;
             }
         }
 

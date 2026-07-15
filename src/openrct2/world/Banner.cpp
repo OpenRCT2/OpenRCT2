@@ -104,25 +104,19 @@ void Banner::formatTextTo(Formatter& ft) const
  */
 static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 {
-    TileElement* tileElement = MapGetFirstElementAt(bannerCoords);
     RideId resultRideIndex = RideId::GetNull();
-    if (tileElement == nullptr)
-        return resultRideIndex;
-    do
+    for (auto* trackElement : TileElementsView<TrackElement>(bannerCoords))
     {
-        if (tileElement->getType() != TileElementType::track)
-            continue;
-
-        RideId rideIndex = tileElement->asTrack()->GetRideIndex();
+        RideId rideIndex = trackElement->GetRideIndex();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             continue;
 
-        if ((tileElement->getClearanceZ()) + (4 * kCoordsZStep) <= bannerCoords.z)
+        if ((trackElement->getClearanceZ()) + (4 * kCoordsZStep) <= bannerCoords.z)
             continue;
 
         resultRideIndex = rideIndex;
-    } while (!(tileElement++)->isLastForTile());
+    }
 
     return resultRideIndex;
 }

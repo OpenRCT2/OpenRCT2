@@ -21,6 +21,7 @@
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/TileElementsView.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
@@ -398,19 +399,13 @@ namespace OpenRCT2::PathFinding
     static PathSearchResult FootpathElementDestInDir(
         bool ignoreBanners, TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
     {
-        TileElement* tileElement;
         Direction direction;
 
         if (level > 25)
             return PathSearchResult::LimitReached;
 
         loc += TileDirectionDelta[chosenDirection];
-        tileElement = MapGetFirstElementAt(loc);
-        if (tileElement == nullptr)
-        {
-            return PathSearchResult::Failed;
-        }
-        do
+        for (auto* tileElement : TileElementsView(loc))
         {
             if (tileElement->isGhost())
                 continue;
@@ -490,7 +485,7 @@ namespace OpenRCT2::PathFinding
                 default:
                     break;
             }
-        } while (!(tileElement++)->isLastForTile());
+        }
 
         return PathSearchResult::Failed;
     }
