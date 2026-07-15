@@ -3545,7 +3545,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MODE_DROPDOWN].moveTo({ 297, startY + 1 });
             startY += 17;
 
-            if (ride->isBlockSectioned())
+            const bool poweredLaunch = ride->mode == RideMode::poweredLaunchBlockSectioned;
+            if (ride->isBlockSectioned() && !poweredLaunch)
             {
                 startY += 17;
             }
@@ -3671,6 +3672,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK].type = WidgetType::empty;
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::empty;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
+            }
+
+            if (ride->isBlockSectioned() && poweredLaunch)
+            {
+                startY += 17;
             }
 
             if (startY != initStartY + 15)
