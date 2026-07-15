@@ -107,8 +107,14 @@ namespace OpenRCT2::Scripting
 
         static JSValue moveToTrack(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
-        static JSValue orientation_get(JSContext* ctx, JSValue thisVal);
-        static JSValue orientation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+        static JSValue yaw_get(JSContext* ctx, JSValue thisVal);
+        static JSValue yaw_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue pitch_get(JSContext* ctx, JSValue thisVal);
+        static JSValue pitch_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue roll_get(JSContext* ctx, JSValue thisVal);
+        static JSValue roll_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
     };
 
 } // namespace OpenRCT2::Scripting

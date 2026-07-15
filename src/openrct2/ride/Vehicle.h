@@ -44,14 +44,6 @@ struct GForces
     int32_t lateralG{};
 };
 
-// Size: 0x03
-struct VehicleOrientation
-{
-    uint8_t yaw;        // 0x00
-    VehiclePitch pitch; // 0x01
-    VehicleRoll roll;   // 0x02
-};
-
 // Size: 0x09
 struct VehicleInfo
 {
@@ -335,8 +327,6 @@ struct Vehicle : OpenRCT2::EntityBase
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
     friend void UpdateRotatingEnterprise(Vehicle& vehicle);
-    VehicleOrientation GetOrientation();
-    void SetOrientation(VehicleOrientation);
 
 private:
     const VehicleInfo* GetMoveInfo() const;

@@ -2992,8 +2992,24 @@ declare global {
          * 5 bits when rendering.
          */
         spin: number;
-
-        /**
+		
+		/**
+		 * The current yaw or rotation of the car. (On flat ground
+		 * direction of forward travel) Values are 0-31.
+		 */
+		yaw: number;
+	
+		/**
+		 * The current pitch of the car. (Upwards/downwards, upside down) Values are not degrees, but a list of arbitrarily odered angles. See Angles.h.
+		 */
+		pitch: number;
+		 
+		/**
+		 * The current roll of the car. (Banking/rolling) Values are not degrees, but a list of arbitrarily odered angles. See Angles.h.
+		 */
+		roll: number
+        
+		/**
          * The location and direction of where the car is on the track.
          */
         readonly trackLocation: CarTrackLocation;

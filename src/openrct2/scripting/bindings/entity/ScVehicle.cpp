@@ -24,49 +24,39 @@ using namespace OpenRCT2::TrackMetadata;
 
 namespace OpenRCT2::Scripting
 {
-    static const EnumMap<Vehicle::Status> VehicleStatusMap(
-        {
-            { "moving_to_end_of_station", Vehicle::Status::movingToEndOfStation },
-            { "waiting_for_passengers", Vehicle::Status::waitingForPassengers },
-            { "waiting_to_depart", Vehicle::Status::waitingToDepart },
-            { "departing", Vehicle::Status::departing },
-            { "travelling", Vehicle::Status::travelling },
-            { "arriving", Vehicle::Status::arriving },
-            { "unloading_passengers", Vehicle::Status::unloadingPassengers },
-            { "travelling_boat", Vehicle::Status::travellingBoat },
-            { "crashing", Vehicle::Status::crashing },
-            { "crashed", Vehicle::Status::crashed },
-            { "travelling_dodgems", Vehicle::Status::travellingDodgems },
-            { "swinging", Vehicle::Status::swinging },
-            { "rotating", Vehicle::Status::rotating },
-            { "ferris_wheel_rotating", Vehicle::Status::ferrisWheelRotating },
-            { "simulator_operating", Vehicle::Status::simulatorOperating },
-            { "showing_film", Vehicle::Status::showingFilm },
-            { "space_rings_operating", Vehicle::Status::spaceRingsOperating },
-            { "top_spin_operating", Vehicle::Status::topSpinOperating },
-            { "haunted_house_operating", Vehicle::Status::hauntedHouseOperating },
-            { "doing_circus_show", Vehicle::Status::doingCircusShow },
-            { "crooked_house_operating", Vehicle::Status::crookedHouseOperating },
-            { "waiting_for_cable_lift", Vehicle::Status::waitingForCableLift },
-            { "travelling_cable_lift", Vehicle::Status::travellingCableLift },
-            { "stopping", Vehicle::Status::stopping },
-            { "waiting_for_passengers_17", Vehicle::Status::waitingForPassengers17 },
-            { "waiting_to_start", Vehicle::Status::waitingToStart },
-            { "starting", Vehicle::Status::starting },
-            { "operating_1a", Vehicle::Status::operating1A },
-            { "stopping_1b", Vehicle::Status::stopping1B },
-            { "unloading_passengers_1c", Vehicle::Status::unloadingPassengers1C },
-            { "stopped_by_block_brake", Vehicle::Status::stoppedByBlockBrakes },
-        });
-
-    inline VehicleOrientation JSToVehicleOrientation(JSContext* ctx, JSValue val)
-    {
-        VehicleOrientation result{};
-        result.yaw = static_cast<uint8_t>(AsOrDefault(ctx, val, "yaw", 0));
-        result.pitch = static_cast<VehiclePitch>(AsOrDefault(ctx, val, "pitch", 0));
-        result.roll = static_cast<VehicleRoll>(AsOrDefault(ctx, val, "roll", 0));
-        return result;
-    }
+    static const EnumMap<Vehicle::Status> VehicleStatusMap({
+        { "moving_to_end_of_station", Vehicle::Status::movingToEndOfStation },
+        { "waiting_for_passengers", Vehicle::Status::waitingForPassengers },
+        { "waiting_to_depart", Vehicle::Status::waitingToDepart },
+        { "departing", Vehicle::Status::departing },
+        { "travelling", Vehicle::Status::travelling },
+        { "arriving", Vehicle::Status::arriving },
+        { "unloading_passengers", Vehicle::Status::unloadingPassengers },
+        { "travelling_boat", Vehicle::Status::travellingBoat },
+        { "crashing", Vehicle::Status::crashing },
+        { "crashed", Vehicle::Status::crashed },
+        { "travelling_dodgems", Vehicle::Status::travellingDodgems },
+        { "swinging", Vehicle::Status::swinging },
+        { "rotating", Vehicle::Status::rotating },
+        { "ferris_wheel_rotating", Vehicle::Status::ferrisWheelRotating },
+        { "simulator_operating", Vehicle::Status::simulatorOperating },
+        { "showing_film", Vehicle::Status::showingFilm },
+        { "space_rings_operating", Vehicle::Status::spaceRingsOperating },
+        { "top_spin_operating", Vehicle::Status::topSpinOperating },
+        { "haunted_house_operating", Vehicle::Status::hauntedHouseOperating },
+        { "doing_circus_show", Vehicle::Status::doingCircusShow },
+        { "crooked_house_operating", Vehicle::Status::crookedHouseOperating },
+        { "waiting_for_cable_lift", Vehicle::Status::waitingForCableLift },
+        { "travelling_cable_lift", Vehicle::Status::travellingCableLift },
+        { "stopping", Vehicle::Status::stopping },
+        { "waiting_for_passengers_17", Vehicle::Status::waitingForPassengers17 },
+        { "waiting_to_start", Vehicle::Status::waitingToStart },
+        { "starting", Vehicle::Status::starting },
+        { "operating_1a", Vehicle::Status::operating1A },
+        { "stopping_1b", Vehicle::Status::stopping1B },
+        { "unloading_passengers_1c", Vehicle::Status::unloadingPassengers1C },
+        { "stopped_by_block_brake", Vehicle::Status::stoppedByBlockBrakes },
+    });
 
     ScVehicle gScVehicle;
 
@@ -107,7 +97,9 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("peeps", &ScVehicle::guests_get, nullptr),
             JS_CGETSET_DEF("guests", &ScVehicle::guests_get, nullptr),
             JS_CGETSET_DEF("gForces", &ScVehicle::gForces_get, nullptr),
-            JS_CGETSET_DEF("orientation", &ScVehicle::orientation_get, &ScVehicle::orientation_set),
+            JS_CGETSET_DEF("yaw", &ScVehicle::yaw_get, &ScVehicle::yaw_set),
+            JS_CGETSET_DEF("pitch", &ScVehicle::pitch_get, &ScVehicle::pitch_set),
+            JS_CGETSET_DEF("roll", &ScVehicle::roll_get, &ScVehicle::roll_set),
             JS_CFUNC_DEF("travelBy", 1, &ScVehicle::travelBy),
             JS_CFUNC_DEF("moveToTrack", 3, &ScVehicle::moveToTrack),
         };
@@ -637,30 +629,56 @@ namespace OpenRCT2::Scripting
         return JS_UNDEFINED;
     }
 
-    JSValue ScVehicle::orientation_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScVehicle::yaw_get(JSContext* ctx, JSValue thisVal)
     {
         auto vehicle = GetVehicle(thisVal);
-        if (vehicle != nullptr)
-        {
-            auto orientation = vehicle->GetOrientation();
-            JSValue obj = JS_NewObject(ctx);
-            JS_SetPropertyStr(ctx, obj, "yaw", JS_NewInt32(ctx, orientation.yaw));
-            JS_SetPropertyStr(ctx, obj, "pitch", JS_NewInt32(ctx, static_cast<uint8_t>(orientation.pitch)));
-            JS_SetPropertyStr(ctx, obj, "roll", JS_NewInt32(ctx, static_cast<uint8_t>(orientation.roll)));
-            return obj;
-        }
-        return JS_NULL;
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->orientation : 0);
     }
 
-    JSValue ScVehicle::orientation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
+    JSValue ScVehicle::yaw_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        JS_UNPACK_OBJECT(value, ctx, jsValue);
+        JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            vehicle->SetOrientation(JSToVehicleOrientation(ctx, value));
-            vehicle->invalidate();
+            vehicle->orientation = static_cast<uint8_t>(value);
+        }
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScVehicle::pitch_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint32_t>(vehicle->pitch) : 0);
+    }
+
+    JSValue ScVehicle::pitch_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
+    {
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
+        if (vehicle != nullptr)
+        {
+            vehicle->pitch = static_cast<VehiclePitch>(value);
+        }
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScVehicle::roll_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint32_t>(vehicle->roll) : 0);
+    }
+
+    JSValue ScVehicle::roll_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
+    {
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
+        if (vehicle != nullptr)
+        {
+            vehicle->roll = static_cast<VehicleRoll>(value);
         }
         return JS_UNDEFINED;
     }

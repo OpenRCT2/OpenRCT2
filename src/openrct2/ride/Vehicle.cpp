@@ -181,18 +181,6 @@ static const VehicleInfo* vehicle_get_move_info(
     return &gTrackVehicleInfo[EnumValue(trackSubposition)][typeAndDirection]->info[offset];
 }
 
-VehicleOrientation Vehicle::GetOrientation()
-{
-    return VehicleOrientation{ .yaw = orientation, .pitch = pitch, .roll = roll };
-}
-
-void Vehicle::SetOrientation(VehicleOrientation info)
-{
-    orientation = info.yaw;
-    pitch = info.pitch;
-    roll = info.roll;
-}
-
 const VehicleInfo* Vehicle::GetMoveInfo() const
 {
     return vehicle_get_move_info(TrackSubposition, GetTrackType(), GetTrackDirection(), track_progress);
