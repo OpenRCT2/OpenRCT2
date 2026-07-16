@@ -983,7 +983,7 @@ namespace OpenRCT2::Ui::Windows
                 if (_footpathPlaceShiftState)
                 {
                     int32_t mapZ = info.Element->getBaseZ();
-                    if (info.Element->getType() == TileElementType::Surface)
+                    if (info.Element->getType() == TileElementType::surface)
                     {
                         uint8_t slope = info.Element->asSurface()->GetSlope();
                         if (slope & kTileSlopeRaisedCornersMask)
