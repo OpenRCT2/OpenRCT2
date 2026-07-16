@@ -55,7 +55,6 @@ namespace OpenRCT2::Network
             case Command::objectsList:
             case Command::scriptsHeader:
             case Command::scriptsData:
-            case Command::mapRequest:
             case Command::heartbeat:
                 return false;
             default:
