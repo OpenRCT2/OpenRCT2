@@ -577,6 +577,9 @@ public:
             case INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE:
                 RideRemoveProvisionalTrackPiece();
                 break;
+            case INTENT_ACTION_REFRESH_PLAYER_LIST:
+                MultiplayerRefreshList();
+                break;
             default:
                 break;
         }
