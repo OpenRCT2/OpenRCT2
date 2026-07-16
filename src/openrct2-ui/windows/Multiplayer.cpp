@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
@@ -77,10 +78,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMainMultiplayerWidgets = makeWidgets(
         makeWindowShim(kStringIdNone, kWindowSize),
         makeWidget({  0, 43}, {340, 197}, WidgetType::resize, WindowColour::secondary                          ),
-        makeTab   ({  3, 17},                                                          STR_SHOW_SERVER_INFO_TIP),
-        makeTab   ({ 34, 17},                                                          STR_PLAYERS_TIP         ),
-        makeTab   ({ 65, 17},                                                          STR_GROUPS_TIP          ),
-        makeTab   ({ 96, 17},                                                          STR_OPTIONS_TIP         )
+        Widgets::Tab({  3, 17}, STR_SHOW_SERVER_INFO_TIP),
+        Widgets::Tab({ 34, 17}, STR_PLAYERS_TIP         ),
+        Widgets::Tab({ 65, 17}, STR_GROUPS_TIP          ),
+        Widgets::Tab({ 96, 17}, STR_OPTIONS_TIP         )
     );
 
     static constexpr auto window_multiplayer_information_widgets = makeWidgets(

@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -1417,7 +1418,7 @@ namespace OpenRCT2::Ui::Windows
             ScreenCoordsXY pos = { kTabMargin, widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin };
             for (const auto& tabInfo : _tabEntries)
             {
-                auto widget = makeTab(pos, STR_STRING_DEFINED_TOOLTIP);
+                auto widget = Widgets::Tab(pos, STR_STRING_DEFINED_TOOLTIP);
                 pos.x += kTabWidth;
 
                 if (tabInfo.IsMisc())

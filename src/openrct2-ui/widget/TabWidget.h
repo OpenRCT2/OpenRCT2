@@ -13,14 +13,14 @@
 
 namespace OpenRCT2::Ui::Widgets
 {
-    struct Checkbox : Widget
-    {
-        static constexpr auto kWidgetType = WidgetType::checkbox;
+    constexpr ScreenSize kTabSize = { 31, 27 };
 
-        constexpr Checkbox(
-            ScreenCoordsXY origin, ScreenSize size, WindowColour colour_, StringId content_ = kStringIdNone,
-            StringId tooltip_ = kStringIdNone)
-            : Widget(origin, size, kWidgetType, colour_, content_, tooltip_)
+    struct Tab : Widget
+    {
+        static constexpr auto kWidgetType = WidgetType::tab;
+
+        constexpr Tab(ScreenCoordsXY origin, StringId tooltip_ = kStringIdNone)
+            : Widget(origin, kTabSize, kWidgetType, WindowColour::secondary, kImageIndexUndefined, tooltip_)
         {
             events.draw = &draw;
         }

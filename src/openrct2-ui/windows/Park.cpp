@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
@@ -98,13 +99,13 @@ namespace OpenRCT2::Ui::Windows
         return makeWidgets(
             makeWindowShim(kWindowTitle, { width, kWindowHeight }),
             makeWidget({   0, 43 }, { width, 131 }, WidgetType::resize, WindowColour::secondary),
-            makeTab   ({   3, 17 }, STR_PARK_ENTRANCE_TAB_TIP                                  ),
-            makeTab   ({  34, 17 }, STR_PARK_RATING_TAB_TIP                                    ),
-            makeTab   ({  65, 17 }, STR_PARK_GUESTS_TAB_TIP                                    ),
-            makeTab   ({  96, 17 }, STR_PARK_PRICE_TAB_TIP                                     ),
-            makeTab   ({ 127, 17 }, STR_PARK_STATS_TAB_TIP                                     ),
-            makeTab   ({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP                                 ),
-            makeTab   ({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP                                    )
+            Widgets::Tab({   3, 17 }, STR_PARK_ENTRANCE_TAB_TIP ),
+            Widgets::Tab({  34, 17 }, STR_PARK_RATING_TAB_TIP   ),
+            Widgets::Tab({  65, 17 }, STR_PARK_GUESTS_TAB_TIP   ),
+            Widgets::Tab({  96, 17 }, STR_PARK_PRICE_TAB_TIP    ),
+            Widgets::Tab({ 127, 17 }, STR_PARK_STATS_TAB_TIP    ),
+            Widgets::Tab({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP),
+            Widgets::Tab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP   )
         );
     };
 

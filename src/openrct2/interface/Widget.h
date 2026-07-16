@@ -98,7 +98,7 @@ namespace OpenRCT2
     struct WidgetEventList
     {
         void (*draw)(
-            Drawing::RenderTarget& RenderTarget, const Widget& widget, const WidgetIndex widgetIndex, const WindowBase& window)
+            Drawing::RenderTarget& RenderTarget, Widget& widget, const WidgetIndex widgetIndex, const WindowBase& window)
             = nullptr;
     };
 
@@ -127,7 +127,7 @@ namespace OpenRCT2
         constexpr Widget() = default;
 
         constexpr Widget(
-            ScreenCoordsXY origin, ScreenSize size, WidgetType widgetType, WindowColour colour_, StringId content_,
+            ScreenCoordsXY origin, ScreenSize size, WidgetType widgetType, WindowColour colour_, uint32_t content_,
             StringId tooltip_)
         {
             this->left = origin.x;

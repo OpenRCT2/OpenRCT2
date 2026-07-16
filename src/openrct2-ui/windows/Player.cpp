@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
@@ -57,8 +58,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kCommonPlayerWidgets = makeWidgets(
         makeWindowShim(kStringIdNone, kWindowSize),
         makeWidget({ 0, 43}, {192, 114}, WidgetType::resize, WindowColour::secondary),
-        makeTab   ({ 3, 17}                                                         ),
-        makeTab   ({34, 17}                                                         )
+        Widgets::Tab({ 3, 17}),
+        Widgets::Tab({34, 17})
     );
 
     static constexpr auto window_player_overview_widgets = makeWidgets(
