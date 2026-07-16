@@ -21,6 +21,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <sstream>
 
 namespace OpenRCT2::CommandLine::Sprite
 {

@@ -18,6 +18,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <sstream>
 
 namespace OpenRCT2::CommandLine::Sprite
 {
