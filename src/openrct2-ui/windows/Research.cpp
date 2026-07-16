@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
@@ -71,8 +72,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto window_research_development_widgets = makeWidgets(
         makeWindowShim(STR_RESEARCH_AND_DEVELOPMENT, kWindowSizeDevelopment),
         makeWidget({  0,  43}, {     kWindowSizeDevelopment.width, 153}, WidgetType::resize,   WindowColour::secondary                                                                 ),
-        makeTab   ({  3,  17},                                                                                          STR_RESEARCH_AND_DEVELOPMENT_TIP                               ),
-        makeTab   ({ 34,  17},                                                                                          STR_FINANCES_RESEARCH_TIP                                      ),
+        Widgets::Tab({ 3, 17}, STR_RESEARCH_AND_DEVELOPMENT_TIP),
+        Widgets::Tab({34, 17}, STR_FINANCES_RESEARCH_TIP       ),
         makeWidget({  3,  47}, {kWindowSizeDevelopment.width - 10,  70}, WidgetType::groupbox, WindowColour::tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                   ),
         makeWidget({  3, 124}, {kWindowSizeDevelopment.width - 10,  65}, WidgetType::groupbox, WindowColour::tertiary,  STR_LAST_DEVELOPMENT                                           ),
         makeWidget({265, 161}, {                               24,  24}, WidgetType::flatBtn,  WindowColour::tertiary,  0xFFFFFFFF,                       STR_RESEARCH_SHOW_DETAILS_TIP)
@@ -81,8 +82,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto window_research_funding_widgets = makeWidgets(
         makeWindowShim(STR_RESEARCH_FUNDING, kWindowSizeFunding),
         makeWidget({  0,  43}, {     kWindowSizeFunding.width, 164}, WidgetType::resize,       WindowColour::secondary                                                                                   ),
-        makeTab   ({  3,  17},                                                                                         STR_RESEARCH_AND_DEVELOPMENT_TIP                                                  ),
-        makeTab   ({ 34,  17},                                                                                         STR_FINANCES_RESEARCH_TIP                                                         ),
+        Widgets::Tab({  3,  17}, STR_RESEARCH_AND_DEVELOPMENT_TIP),
+        Widgets::Tab({ 34,  17}, STR_FINANCES_RESEARCH_TIP       ),
         makeWidget({  3,  47}, { kWindowSizeFunding.width - 6,  45}, WidgetType::groupbox,     WindowColour::tertiary, STR_RESEARCH_FUNDING_                                                             ),
         makeWidget({  8,  59}, {                          160,  14}, WidgetType::dropdownMenu, WindowColour::tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
         makeWidget({156,  60}, {                           11,  12}, WidgetType::button,       WindowColour::tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),

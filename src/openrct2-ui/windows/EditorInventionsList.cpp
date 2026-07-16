@@ -10,6 +10,7 @@
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -57,7 +58,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _inventionListWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0,  43}, {600, 357}, WidgetType::resize,  WindowColour::secondary                                             ),
-        makeTab   ({  3,  17}                                                                                                       ),
+        Widgets::Tab({  3,  17}                                                                                                       ),
         makeWidget({  4,  56}, {368, 161}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
         makeWidget({  4, 231}, {368, 157}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
         makeWidget({431, 106}, {114, 114}, WidgetType::flatBtn, WindowColour::secondary                                             ),

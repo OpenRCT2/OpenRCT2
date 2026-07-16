@@ -18,6 +18,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/GameState.h>
@@ -269,14 +270,14 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMainOptionsWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({   0, 43 }, { kWindowSize.width, 289 }, WidgetType::resize, WindowColour::secondary),
-        makeTab   ({   3, 17 }, STR_OPTIONS_DISPLAY_TIP),
-        makeTab   ({  34, 17 }, STR_OPTIONS_RENDERING_TIP),
-        makeTab   ({  65, 17 }, STR_OPTIONS_CULTURE_TIP),
-        makeTab   ({  96, 17 }, STR_OPTIONS_AUDIO_TIP),
-        makeTab   ({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP),
-        makeTab   ({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP),
-        makeTab   ({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),
-        makeTab   ({ 220, 17 }, STR_OPTIONS_ADVANCED)
+        Widgets::Tab({   3, 17 }, STR_OPTIONS_DISPLAY_TIP),
+        Widgets::Tab({  34, 17 }, STR_OPTIONS_RENDERING_TIP),
+        Widgets::Tab({  65, 17 }, STR_OPTIONS_CULTURE_TIP),
+        Widgets::Tab({  96, 17 }, STR_OPTIONS_AUDIO_TIP),
+        Widgets::Tab({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP),
+        Widgets::Tab({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP),
+        Widgets::Tab({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),
+        Widgets::Tab({ 220, 17 }, STR_OPTIONS_ADVANCED)
     );
 
     static constexpr auto window_options_display_widgets = makeWidgets(

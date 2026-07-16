@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
@@ -122,10 +123,10 @@ namespace OpenRCT2::Ui::Windows
         return makeWidgets(
             makeWindowShim(title, kWindowSize),
             makeWidget({   0, 43 }, { kWindowSize.width, 177 }, WidgetType::resize, WindowColour::secondary),
-            makeTab   ({   3, 17 }),
-            makeTab   ({  34, 17 }),
-            makeTab   ({  65, 17 }),
-            makeTab   ({  96, 17 }),
+            Widgets::Tab({  3, 17 }),
+            Widgets::Tab({ 34, 17 }),
+            Widgets::Tab({ 65, 17 }),
+            Widgets::Tab({ 96, 17 }),
             makeWidget({ 185, 200 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
         );
     };

@@ -54,7 +54,6 @@ namespace OpenRCT2::Ui
         RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
     static void WidgetVScrollbarDraw(
         RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
-    static void WidgetDrawImage(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
     /**
      *
@@ -62,7 +61,7 @@ namespace OpenRCT2::Ui
      */
     void widgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
-        const auto* widget = getWidgetByIndex(w, widgetIndex);
+        auto* widget = getWidgetByIndex(w, widgetIndex);
         if (widget == nullptr)
         {
             LOG_ERROR("Tried drawing an out-of-bounds widget index!");
@@ -91,7 +90,6 @@ namespace OpenRCT2::Ui
                 break;
             case WidgetType::colourBtn:
             case WidgetType::trnBtn:
-            case WidgetType::tab:
                 WidgetTabDraw(rt, w, widgetIndex);
                 break;
             case WidgetType::flatBtn:
@@ -745,7 +743,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB951
      */
-    static void WidgetDrawImage(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
+    void WidgetDrawImage(RenderTarget& rt, const WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -759,8 +757,10 @@ namespace OpenRCT2::Ui
         auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
         if (widget.type == WidgetType::colourBtn || widget.type == WidgetType::trnBtn || widget.type == WidgetType::tab)
+        {
             if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
                 image = image.WithIndexOffset(1);
+        }
 
         const auto colour = w.colours[widget.colour].colour;
         if (widgetIsDisabled(w, widgetIndex))

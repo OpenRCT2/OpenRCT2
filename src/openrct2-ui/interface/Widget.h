@@ -24,7 +24,6 @@ namespace OpenRCT2::Ui
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
     constexpr auto kBarBlink = (1u << 31);
     constexpr uint8_t kScrollBarWidth = 10;
-    constexpr ScreenSize kTabSize = { 31, 27 };
 
     constexpr const char* kBlackUpArrowString = u8"{BLACK}▲";
     constexpr const char* kBlackDownArrowString = u8"{BLACK}▼";
@@ -72,16 +71,6 @@ namespace OpenRCT2::Ui
         StringId tooltip = kStringIdNone)
     {
         return makeWidget(origin, size, type, colour, ImageId(content, Drawing::FilterPaletteID::paletteNull), tooltip);
-    }
-
-    constexpr Widget makeTab(const ScreenCoordsXY& origin, StringId tooltip = kStringIdNone)
-    {
-        const ScreenSize size = kTabSize;
-        const WidgetType type = WidgetType::tab;
-        const WindowColour colour = WindowColour::secondary;
-        const auto content = ImageId(kImageIndexUndefined);
-
-        return makeWidget(origin, size, type, colour, content, tooltip);
     }
 
     constexpr Widget withFlag(Widget w, WidgetFlag flag)
@@ -265,6 +254,7 @@ namespace OpenRCT2::Ui
     };
 
     void widgetDraw(Drawing::RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    void WidgetDrawImage(Drawing::RenderTarget& rt, const WindowBase& w, WidgetIndex widgetIndex);
 
     bool widgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
     bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);

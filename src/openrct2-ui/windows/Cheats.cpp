@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -222,13 +223,13 @@ static constexpr int32_t kTabStart = 3;
 static constexpr auto kMainCheatWidgets = makeWidgets(
     makeWindowShim(kWindowTitle, kWindowSize),
     makeWidget({  0, 43}, {kWindowSize.width, 257}, WidgetType::resize, WindowColour::secondary), /* tab content panel */
-    makeTab   ({  3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */
-    makeTab   ({ 34, 17}, STR_DATE_CHEATS_TIP                           ), /* tab 2 */
-    makeTab   ({ 65, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 3 */
-    makeTab   ({ 96, 17}, STR_STAFF_CHEATS_TIP                          ), /* tab 5 */
-    makeTab   ({127, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 6 */
-    makeTab   ({158, 17}, STR_RIDE_CHEATS_TIP                           ), /* tab 4 */
-    makeTab   ({189, 17}, STR_WEATHER_NATURE_CHEATS_TIP                 )  /* tab 7 */
+    Widgets::Tab({  3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */
+    Widgets::Tab({ 34, 17}, STR_DATE_CHEATS_TIP                           ), /* tab 2 */
+    Widgets::Tab({ 65, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 3 */
+    Widgets::Tab({ 96, 17}, STR_STAFF_CHEATS_TIP                          ), /* tab 5 */
+    Widgets::Tab({127, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 6 */
+    Widgets::Tab({158, 17}, STR_RIDE_CHEATS_TIP                           ), /* tab 4 */
+    Widgets::Tab({189, 17}, STR_WEATHER_NATURE_CHEATS_TIP                 )  /* tab 7 */
 );
 
 static constexpr auto window_cheats_money_widgets = makeWidgets(

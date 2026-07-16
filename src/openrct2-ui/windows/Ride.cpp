@@ -18,6 +18,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
@@ -259,16 +260,16 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMainRideWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {kMinimumWindowWidth, 137}, WidgetType::resize, WindowColour::secondary),
-        makeTab({   3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
-        makeTab({  34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),
-        makeTab({  65, 17 }, STR_OPERATING_OPTIONS_TIP),
-        makeTab({  96, 17 }, STR_MAINTENANCE_OPTIONS_TIP),
-        makeTab({ 127, 17 }, STR_COLOUR_SCHEME_OPTIONS_TIP),
-        makeTab({ 158, 17 }, STR_SOUND_AND_MUSIC_OPTIONS_TIP),
-        makeTab({ 189, 17 }, STR_MEASUREMENTS_AND_TEST_DATA_TIP),
-        makeTab({ 220, 17 }, STR_GRAPHS_TIP),
-        makeTab({ 251, 17 }, STR_INCOME_AND_COSTS_TIP),
-        makeTab({ 282, 17 }, STR_CUSTOMER_INFORMATION_TIP)
+        Widgets::Tab({   3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
+        Widgets::Tab({  34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),
+        Widgets::Tab({  65, 17 }, STR_OPERATING_OPTIONS_TIP),
+        Widgets::Tab({  96, 17 }, STR_MAINTENANCE_OPTIONS_TIP),
+        Widgets::Tab({ 127, 17 }, STR_COLOUR_SCHEME_OPTIONS_TIP),
+        Widgets::Tab({ 158, 17 }, STR_SOUND_AND_MUSIC_OPTIONS_TIP),
+        Widgets::Tab({ 189, 17 }, STR_MEASUREMENTS_AND_TEST_DATA_TIP),
+        Widgets::Tab({ 220, 17 }, STR_GRAPHS_TIP),
+        Widgets::Tab({ 251, 17 }, STR_INCOME_AND_COSTS_TIP),
+        Widgets::Tab({ 282, 17 }, STR_CUSTOMER_INFORMATION_TIP)
     );
 
     // 0x009ADC34

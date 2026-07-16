@@ -98,6 +98,7 @@
     <ClInclude Include="scripting\UiExtensions.h" />
     <ClInclude Include="widget\CaptionWidget.h" />
     <ClInclude Include="widget\CheckboxWidget.h" />
+    <ClInclude Include="widget\TabWidget.h" />
     <ClInclude Include="ProvisionalElements.h" />
     <ClInclude Include="SDLException.h" />
     <ClInclude Include="TextComposition.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="widget\CaptionWidget.cpp" />
     <ClCompile Include="widget\CheckboxWidget.cpp" />
+    <ClCompile Include="widget\TabWidget.cpp" />
     <ClCompile Include="windows\About.cpp" />
     <ClCompile Include="windows\AssetPacks.cpp" />
     <ClCompile Include="windows\Banner.cpp" />

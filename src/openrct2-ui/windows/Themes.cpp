@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
@@ -88,15 +89,15 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _themesWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {320,  64},               WidgetType::resize,       WindowColour::secondary                                                                                ), // tab content panel
-        makeTab   ({  3, 17},                                                                              STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
-        makeTab   ({ 34, 17},                                                                              STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
-        makeTab   ({ 65, 17},                                                                              STR_THEMES_TAB_PARK_TIP                                                       ), // park tab
-        makeTab   ({ 96, 17},                                                                              STR_THEMES_TAB_TOOLS_TIP                                                      ), // tools tab
-        makeTab   ({127, 17},                                                                              STR_THEMES_TAB_RIDES_AND_GUESTS_TIP                                           ), // rides and peeps tab
-        makeTab   ({158, 17},                                                                              STR_THEMES_TAB_EDITORS_TIP                                                    ), // editors tab
-        makeTab   ({189, 17},                                                                              STR_THEMES_TAB_MISC_TIP                                                       ), // misc tab
-        makeTab   ({220, 17},                                                                              STR_THEMES_TAB_PROMPTS_TIP                                                    ), // prompts tab
-        makeTab   ({251, 17},                                                                              STR_THEMES_TAB_FEATURES_TIP                                                   ), // features tab
+        Widgets::Tab({  3, 17}, STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
+        Widgets::Tab({ 34, 17}, STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
+        Widgets::Tab({ 65, 17}, STR_THEMES_TAB_PARK_TIP            ), // park tab
+        Widgets::Tab({ 96, 17}, STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
+        Widgets::Tab({127, 17}, STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
+        Widgets::Tab({158, 17}, STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
+        Widgets::Tab({189, 17}, STR_THEMES_TAB_MISC_TIP            ), // misc tab
+        Widgets::Tab({220, 17}, STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
+        Widgets::Tab({251, 17}, STR_THEMES_TAB_FEATURES_TIP        ), // features tab
         makeWidget({  5, 46}, {kWindowHeaderWidth, 15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_WINDOW                                                      ), // Window header
         makeWidget({157, 46}, { 79,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_PALETTE                                                     ), // Palette header
         makeWidget({236, 46}, { 80,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_TRANSPARENCY                                                ), // Transparency header
