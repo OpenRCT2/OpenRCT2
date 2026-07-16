@@ -15,6 +15,7 @@
 
 #include <algorithm>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
@@ -206,12 +207,12 @@ namespace OpenRCT2::Ui::Windows
         return makeWidgets(
             makeWindowShim(title, size),
             makeWidget({  0, 43}, { size.width, 106 }, WidgetType::resize, WindowColour::secondary),
-            makeTab   ({  3, 17}, STR_SCENARIO_OPTIONS_OBJECTIVE_TIP             ),
-            makeTab   ({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_DETAILS_TIP      ),
-            makeTab   ({ 65, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ),
-            makeTab   ({ 96, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ),
-            makeTab   ({127, 17}, STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS_TIP     ),
-            makeTab   ({158, 17}, STR_SCENARIO_OPTIONS_PRESERVED_RIDES_TIP       )
+            Widgets::Tab({  3, 17}, STR_SCENARIO_OPTIONS_OBJECTIVE_TIP             ),
+            Widgets::Tab({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_DETAILS_TIP      ),
+            Widgets::Tab({ 65, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ),
+            Widgets::Tab({ 96, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ),
+            Widgets::Tab({127, 17}, STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS_TIP     ),
+            Widgets::Tab({158, 17}, STR_SCENARIO_OPTIONS_PRESERVED_RIDES_TIP       )
         );
     };
 

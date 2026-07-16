@@ -20,7 +20,7 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Widgets
 {
-    void Checkbox::draw(Drawing::RenderTarget& rt, const Widget& widget, const WidgetIndex widgetIndex, const WindowBase& w)
+    void Checkbox::draw(Drawing::RenderTarget& rt, Widget& widget, const WidgetIndex widgetIndex, const WindowBase& w)
     {
         // Resolve the absolute ltb
         ScreenCoordsXY topLeft = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };

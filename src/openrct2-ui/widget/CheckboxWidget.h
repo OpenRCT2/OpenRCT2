@@ -10,8 +10,6 @@
 #pragma once
 
 #include <openrct2-ui/interface/Window.h>
-#include <openrct2/drawing/FilterPaletteIds.h>
-#include <openrct2/interface/Widget.h>
 
 namespace OpenRCT2::Ui::Widgets
 {
@@ -28,7 +26,7 @@ namespace OpenRCT2::Ui::Widgets
         }
 
         static void draw(
-            Drawing::RenderTarget& RenderTarget, const Widget& widget, const WidgetIndex widgetIndex, const WindowBase& window);
+            Drawing::RenderTarget& RenderTarget, Widget& widget, const WidgetIndex widgetIndex, const WindowBase& window);
     };
 
 } // namespace OpenRCT2::Ui::Widgets

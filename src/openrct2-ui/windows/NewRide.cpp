@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -224,13 +225,13 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto window_new_ride_widgets = makeWidgets(
         makeWindowShim(WindowTitle, kWindowSize),
         makeWidget({  0,  43},             {601, 339},         WidgetType::resize,   WindowColour::secondary                                                                 ),
-        makeTab   ({  3,  17},                                                                                STR_TRANSPORT_RIDES_TIP                                        ),
-        makeTab   ({ 34,  17},                                                                                STR_GENTLE_RIDES_TIP                                           ),
-        makeTab   ({ 65,  17},                                                                                STR_ROLLER_COASTERS_TIP                                        ),
-        makeTab   ({ 96,  17},                                                                                STR_THRILL_RIDES_TIP                                           ),
-        makeTab   ({127,  17},                                                                                STR_WATER_RIDES_TIP                                            ),
-        makeTab   ({158,  17},                                                                                STR_SHOPS_STALLS_TIP                                           ),
-        makeTab   ({189,  17},                                                                                STR_RESEARCH_AND_DEVELOPMENT_TIP                               ),
+        Widgets::Tab(                      {  3,  17},                                                        STR_TRANSPORT_RIDES_TIP                                        ),
+        Widgets::Tab(                      { 34,  17},                                                        STR_GENTLE_RIDES_TIP                                           ),
+        Widgets::Tab(                      { 65,  17},                                                        STR_ROLLER_COASTERS_TIP                                        ),
+        Widgets::Tab(                      { 96,  17},                                                        STR_THRILL_RIDES_TIP                                           ),
+        Widgets::Tab(                      {127,  17},                                                        STR_WATER_RIDES_TIP                                            ),
+        Widgets::Tab(                      {158,  17},                                                        STR_SHOPS_STALLS_TIP                                           ),
+        Widgets::Tab(                      {189,  17},                                                        STR_RESEARCH_AND_DEVELOPMENT_TIP                               ),
         makeWidget({  3,  62},             {595, 256},         WidgetType::scroll,   WindowColour::secondary, SCROLL_VERTICAL                                                ),
         makeWidget({  3,  47},             {290,  70},         WidgetType::groupbox, WindowColour::tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                   ),
         makeWidget({  3, 124},             {290,  65},         WidgetType::groupbox, WindowColour::tertiary,  STR_LAST_DEVELOPMENT                                           ),
