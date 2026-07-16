@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "core/BackgroundWorker.hpp"
 #include "core/StringTypes.h"
 #include "interface/WindowClasses.h"
 #include "localisation/StringIdType.h"
@@ -31,6 +30,7 @@ namespace OpenRCT2
     enum class WindowView : uint8_t;
 
     class AssetPackManager;
+    class BackgroundWorker;
     class Formatter;
     class Intent;
     class ISceneManager;
