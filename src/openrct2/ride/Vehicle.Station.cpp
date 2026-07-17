@@ -1080,7 +1080,7 @@ void Vehicle::UpdateDeparting()
             if (velocity >= -131940)
                 acceleration = -3298;
             break;
-        case RideMode::poweredLaunchPasstrough:
+        case RideMode::poweredLaunchPassthrough:
         case RideMode::poweredLaunch:
         case RideMode::poweredLaunchBlockSectioned:
         case RideMode::limPoweredLaunch:
@@ -1501,7 +1501,7 @@ void Vehicle::UpdateTravelling()
         return;
     }
 
-    if (curRide->mode == RideMode::poweredLaunchPasstrough && velocity < 0)
+    if (curRide->mode == RideMode::poweredLaunchPassthrough && velocity < 0)
         return;
 
     SetState(Status::arriving);
