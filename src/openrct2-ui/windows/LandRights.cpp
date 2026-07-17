@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<money64>(_landRightsCost);
 
-                auto offset = widgets[WIDX_BUY_LAND_RIGHTS].type != WidgetType::empty ? 32 : 8;
+                auto offset = widgets[WIDX_BUY_LAND_RIGHTS].isVisible() ? 32 : 8;
 
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x,
                                  widgets[WIDX_PREVIEW].bottom + windowPos.y + offset };

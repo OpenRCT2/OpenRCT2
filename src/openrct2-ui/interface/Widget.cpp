@@ -72,6 +72,9 @@ namespace OpenRCT2::Ui
             return;
         }
 
+        if (!widget->isVisible())
+            return;
+
         switch (widget->type)
         {
             case WidgetType::frame:

@@ -1072,7 +1072,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto arg1StringId = kStringIdEmpty;
-            if (widgets[WIDX_OBJECTIVE_ARG_1_LABEL].type != WidgetType::empty)
+            if (widgets[WIDX_OBJECTIVE_ARG_1_LABEL].isVisible())
             {
                 // Objective argument 1 label
                 switch (gameState.scenarioOptions.objective.Type)
@@ -1125,7 +1125,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(ObjectiveDropdownOptionNames[EnumValue(scenarioOptions.objective.Type)]);
             drawText(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
-            if (widgets[WIDX_OBJECTIVE_ARG_1].type != WidgetType::empty)
+            if (widgets[WIDX_OBJECTIVE_ARG_1].isVisible())
             {
                 const auto wColour2 = colours[1];
                 StringId stringId = kStringIdEmpty;
@@ -1164,7 +1164,7 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, screenCoords, stringId, ft, wColour2);
             }
 
-            if (widgets[WIDX_OBJECTIVE_ARG_2].type != WidgetType::empty)
+            if (widgets[WIDX_OBJECTIVE_ARG_2].isVisible())
             {
                 // Objective argument 2 value
                 screenCoords = windowPos
@@ -1667,7 +1667,7 @@ namespace OpenRCT2::Ui::Windows
             const auto wColour2 = colours[1];
 
             const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
-            if (initialCashWidget.type != WidgetType::empty)
+            if (initialCashWidget.isVisible())
             {
                 screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top + 1 };
                 auto ft = Formatter();
@@ -1677,7 +1677,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
-            if (initialLoanWidget.type != WidgetType::empty)
+            if (initialLoanWidget.isVisible())
             {
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top + 1 };
                 auto ft = Formatter();
@@ -1687,7 +1687,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
-            if (maximumLoanWidget.type != WidgetType::empty)
+            if (maximumLoanWidget.isVisible())
             {
                 screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top + 1 };
                 auto ft = Formatter();
@@ -1697,7 +1697,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
-            if (interestRateWidget.type != WidgetType::empty)
+            if (interestRateWidget.isVisible())
             {
                 screenCoords = windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top + 1 };
 
@@ -1709,7 +1709,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
-            if (payForParkOrRidesWidget.type != WidgetType::empty)
+            if (payForParkOrRidesWidget.isVisible())
             {
                 // Pay for park or rides label
                 screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.left + 1, payForParkOrRidesWidget.top + 1 };
@@ -1729,7 +1729,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
-            if (entryPriceWidget.type != WidgetType::empty)
+            if (entryPriceWidget.isVisible())
             {
                 // Entry price value
                 screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top + 1 };
@@ -1953,7 +1953,7 @@ namespace OpenRCT2::Ui::Windows
             const auto wColour2 = colours[1];
 
             const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
-            if (cashPerGuestWidget.type != WidgetType::empty)
+            if (cashPerGuestWidget.isVisible())
             {
                 // Cash per guest value
                 screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top + 1 };
@@ -2156,7 +2156,7 @@ namespace OpenRCT2::Ui::Windows
             const auto wColour2 = colours[1];
 
             const auto& landCostWidget = widgets[WIDX_LAND_COST];
-            if (landCostWidget.type != WidgetType::empty)
+            if (landCostWidget.isVisible())
             {
                 // Cost to buy land value
                 screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top + 1 };
@@ -2167,7 +2167,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
-            if (constructionRightsCostWidget.type != WidgetType::empty)
+            if (constructionRightsCostWidget.isVisible())
             {
                 // Cost to buy construction rights value
                 screenCoords = windowPos

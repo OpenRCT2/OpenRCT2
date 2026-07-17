@@ -1016,7 +1016,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 const auto& widget = widgets[WIDX_TAB_1 + i];
-                if (widget.type != WidgetType::empty)
+                if (widget.isVisible())
                 {
                     auto image = ImageId(ObjectSelectionPages[i].Image);
                     auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
@@ -1084,7 +1084,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw sort button text
             const auto& listSortTypeWidget = widgets[WIDX_LIST_SORT_TYPE];
-            if (listSortTypeWidget.type != WidgetType::empty)
+            if (listSortTypeWidget.isVisible())
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
@@ -1094,7 +1094,7 @@ namespace OpenRCT2::Ui::Windows
                 drawTextEllipsised(rt, screenPos, listSortTypeWidget.width() - 1, STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
             }
             const auto& listSortRideWidget = widgets[WIDX_LIST_SORT_RIDE];
-            if (listSortRideWidget.type != WidgetType::empty)
+            if (listSortRideWidget.isVisible())
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)

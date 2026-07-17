@@ -1238,7 +1238,7 @@ namespace OpenRCT2::Ui::Windows
         void ApplyMapRotation()
         {
             // Set map button to the right image.
-            if (widgets[WIDX_MAP].type != WidgetType::empty)
+            if (widgets[WIDX_MAP].isVisible())
             {
                 static constexpr uint32_t _imageIdByRotation[] = {
                     SPR_G2_MAP_NORTH,
@@ -1364,7 +1364,7 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY screenPos{};
             // Draw staff button image (setting masks to the staff colours)
-            if (widgets[WIDX_STAFF].type != WidgetType::empty)
+            if (widgets[WIDX_STAFF].isVisible())
             {
                 screenPos = { windowPos.x + widgets[WIDX_STAFF].left, windowPos.y + widgets[WIDX_STAFF].top };
                 imgId = SPR_TOOLBAR_STAFF;
@@ -1375,7 +1375,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw fast forward button
-            if (widgets[WIDX_FASTFORWARD].type != WidgetType::empty)
+            if (widgets[WIDX_FASTFORWARD].isVisible())
             {
                 screenPos = { windowPos.x + widgets[WIDX_FASTFORWARD].left + 0,
                               windowPos.y + widgets[WIDX_FASTFORWARD].top + 0 };
@@ -1394,7 +1394,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw cheats button
-            if (widgets[WIDX_CHEATS].type != WidgetType::empty)
+            if (widgets[WIDX_CHEATS].isVisible())
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHEATS].left - 1, widgets[WIDX_CHEATS].top - 1 };
                 if (widgetIsPressed(*this, WIDX_CHEATS))
@@ -1412,7 +1412,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw chat button
-            if (widgets[WIDX_CHAT].type != WidgetType::empty)
+            if (widgets[WIDX_CHAT].isVisible())
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHAT].left, widgets[WIDX_CHAT].top - 2 };
                 if (widgetIsPressed(*this, WIDX_CHAT))
@@ -1421,7 +1421,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw debug button
-            if (widgets[WIDX_DEBUG].type != WidgetType::empty)
+            if (widgets[WIDX_DEBUG].isVisible())
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_DEBUG].left, widgets[WIDX_DEBUG].top - 1 };
                 if (widgetIsPressed(*this, WIDX_DEBUG))
@@ -1430,7 +1430,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw research button
-            if (widgets[WIDX_RESEARCH].type != WidgetType::empty)
+            if (widgets[WIDX_RESEARCH].isVisible())
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_RESEARCH].left - 1, widgets[WIDX_RESEARCH].top };
                 if (widgetIsPressed(*this, WIDX_RESEARCH))
@@ -1439,7 +1439,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw finances button
-            if (widgets[WIDX_FINANCES].type != WidgetType::empty)
+            if (widgets[WIDX_FINANCES].isVisible())
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_FINANCES].left + 3, widgets[WIDX_FINANCES].top + 1 };
                 if (widgetIsPressed(*this, WIDX_FINANCES))
@@ -1448,7 +1448,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw news button
-            if (widgets[WIDX_NEWS].type != WidgetType::empty)
+            if (widgets[WIDX_NEWS].isVisible())
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_NEWS].left + 3, widgets[WIDX_NEWS].top + 0 };
                 if (widgetIsPressed(*this, WIDX_NEWS))
@@ -1457,7 +1457,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw network button
-            if (widgets[WIDX_NETWORK].type != WidgetType::empty)
+            if (widgets[WIDX_NETWORK].isVisible())
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_NETWORK].left + 3, widgets[WIDX_NETWORK].top + 0 };
                 if (widgetIsPressed(*this, WIDX_NETWORK))
@@ -1474,7 +1474,7 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
             }
 
-            if (widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type != WidgetType::empty)
+            if (widgets[WIDX_ROTATE_ANTI_CLOCKWISE].isVisible())
             {
                 screenPos = windowPos
                     + ScreenCoordsXY{ widgets[WIDX_ROTATE_ANTI_CLOCKWISE].left + 2,

@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t x = 0;
             for (Widget* widget = widgets.data(); widget != &widgets[WIDX_NEW_VERSION]; widget++)
             {
-                if (widget->type != WidgetType::empty)
+                if (widget->isVisible())
                 {
                     widget->left = x;
                     widget->right = x + MenuButtonDims.width - 1;

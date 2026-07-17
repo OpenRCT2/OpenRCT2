@@ -760,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
                 auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
-                if (campaignButton->type != WidgetType::empty)
+                if (campaignButton->isVisible())
                 {
                     // Draw button text
                     screenCoords = windowPos + ScreenCoordsXY{ campaignButton->left, campaignButton->textTop() };

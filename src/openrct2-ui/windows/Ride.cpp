@@ -2425,13 +2425,13 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPEN_LIGHT].type = WidgetType::imgBtn;
 
                 widgetHeight = widgets[WIDX_PAGE_BACKGROUND].top + 19;
-                if (widgets[WIDX_SIMULATE_LIGHT].type != WidgetType::empty)
+                if (widgets[WIDX_SIMULATE_LIGHT].isVisible())
                 {
                     widgets[WIDX_SIMULATE_LIGHT].top = widgetHeight;
                     widgets[WIDX_SIMULATE_LIGHT].bottom = widgetHeight + 13;
                     widgetHeight += 14;
                 }
-                if (widgets[WIDX_TEST_LIGHT].type != WidgetType::empty)
+                if (widgets[WIDX_TEST_LIGHT].isVisible())
                 {
                     widgets[WIDX_TEST_LIGHT].top = widgetHeight;
                     widgets[WIDX_TEST_LIGHT].bottom = widgetHeight + 13;

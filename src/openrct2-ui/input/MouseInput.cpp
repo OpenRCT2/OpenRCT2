@@ -1063,6 +1063,10 @@ namespace OpenRCT2
 
         const auto& widget = w->widgets[widgetIndex];
 
+        // Invisible widgets are non-interactible
+        if (!widget.isVisible())
+            return;
+
         switch (widget.type)
         {
             case WidgetType::frame:

@@ -1024,7 +1024,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
-            if (widgets[widgetIndex].type != WidgetType::empty && !widgetIsDisabled(*this, widgetIndex))
+            if (widgets[widgetIndex].isVisible() && !widgetIsDisabled(*this, widgetIndex))
             {
                 int32_t frame = 0;
                 if (_currentTab == tab)

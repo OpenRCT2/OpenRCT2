@@ -3830,20 +3830,18 @@ namespace OpenRCT2::Ui::Windows
         switch (_currentlySelectedTrack.curve)
         {
             case TrackCurve::leftSmall:
-                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
                 break;
             case TrackCurve::left:
-                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
@@ -3853,18 +3851,16 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::leftLarge:
-                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
@@ -3874,22 +3870,20 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::none:
-                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
@@ -3899,27 +3893,24 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::rightLarge:
-                if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
@@ -3929,32 +3920,28 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::right:
-                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
@@ -3964,37 +3951,32 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::rightSmall:
-                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
@@ -4004,42 +3986,36 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::rightVerySmall:
-                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_VERY_SMALL) && w->widgets[WIDX_LEFT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_VERY_SMALL);
                 }
@@ -4068,21 +4044,18 @@ namespace OpenRCT2::Ui::Windows
         switch (_currentlySelectedTrack.curve)
         {
             case TrackCurve::rightSmall:
-                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
                 break;
             case TrackCurve::right:
-                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
@@ -4092,19 +4065,16 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::rightLarge:
-                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
@@ -4114,24 +4084,20 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::none:
-                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
@@ -4141,29 +4107,24 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::leftLarge:
-                if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
@@ -4173,33 +4134,28 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::left:
-                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
@@ -4209,38 +4165,32 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::leftSmall:
-                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
@@ -4250,42 +4200,36 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackCurve::leftVerySmall:
-                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_SMALL) && w->widgets[WIDX_LEFT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_SMALL);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE) && w->widgets[WIDX_LEFT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEFT_CURVE_LARGE) && w->widgets[WIDX_LEFT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_LEFT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_STRAIGHT);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE)
-                    && w->widgets[WIDX_RIGHT_CURVE_LARGE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_LARGE) && w->widgets[WIDX_RIGHT_CURVE_LARGE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_LARGE);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE) && w->widgets[WIDX_RIGHT_CURVE].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_SMALL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_RIGHT_CURVE_SMALL) && w->widgets[WIDX_RIGHT_CURVE_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_SMALL);
                 }
                 else if (
-                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL)
-                    && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type != WidgetType::empty)
+                    !widgetIsDisabled(*w, WIDX_RIGHT_CURVE_VERY_SMALL) && w->widgets[WIDX_RIGHT_CURVE_VERY_SMALL].isVisible())
                 {
                     w->onMouseDown(WIDX_RIGHT_CURVE_VERY_SMALL);
                 }
@@ -4308,23 +4252,22 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].type != WidgetType::empty)
+        if (!widgetIsDisabled(*w, WIDX_STRAIGHT) && w->widgets[WIDX_STRAIGHT].isVisible())
         {
             w->onMouseDown(WIDX_STRAIGHT);
         }
 
-        if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
+        if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].isVisible())
         {
             w->onMouseDown(WIDX_LEVEL);
         }
 
-        if (!widgetIsDisabled(*w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].type != WidgetType::empty
-            && _currentTrackHasLiftHill)
+        if (!widgetIsDisabled(*w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].isVisible() && _currentTrackHasLiftHill)
         {
             w->onMouseDown(WIDX_CHAIN_LIFT);
         }
 
-        if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WidgetType::empty)
+        if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].isVisible())
         {
             w->onMouseDown(WIDX_BANK_STRAIGHT);
         }
@@ -4343,19 +4286,19 @@ namespace OpenRCT2::Ui::Windows
         {
             case TrackPitch::down60:
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_VERTICAL)
-                    && w->widgets[WIDX_SLOPE_DOWN_VERTICAL].type != WidgetType::empty)
+                    && w->widgets[WIDX_SLOPE_DOWN_VERTICAL].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN_VERTICAL);
                 }
                 break;
             case TrackPitch::down25:
-                if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
                 break;
             case TrackPitch::none:
-                if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
@@ -4363,8 +4306,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return;
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
@@ -4374,16 +4316,15 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackPitch::up25:
-                if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEVEL);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
@@ -4393,15 +4334,15 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackPitch::up60:
-                if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEVEL);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
@@ -4409,8 +4350,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return;
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP) && w->widgets[WIDX_SLOPE_DOWN_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
@@ -4421,7 +4361,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
             case TrackPitch::up90:
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP)
-                    && w->widgets[WIDX_SLOPE_UP_VERTICAL].type != WidgetType::empty)
+                    && w->widgets[WIDX_SLOPE_UP_VERTICAL].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
@@ -4444,19 +4384,19 @@ namespace OpenRCT2::Ui::Windows
         {
             case TrackPitch::up60:
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_UP_VERTICAL)
-                    && w->widgets[WIDX_SLOPE_UP_VERTICAL].type != WidgetType::empty)
+                    && w->widgets[WIDX_SLOPE_UP_VERTICAL].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP_VERTICAL);
                 }
                 break;
             case TrackPitch::up25:
-                if (!widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
                 break;
             case TrackPitch::none:
-                if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP);
                 }
@@ -4464,8 +4404,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return;
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
@@ -4475,16 +4414,15 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackPitch::down25:
-                if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEVEL);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP);
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
@@ -4494,15 +4432,15 @@ namespace OpenRCT2::Ui::Windows
                 }
                 break;
             case TrackPitch::down60:
-                if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_LEVEL) && w->widgets[WIDX_LEVEL].isVisible())
                 {
                     w->onMouseDown(WIDX_LEVEL);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP);
                 }
@@ -4510,8 +4448,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return;
                 }
-                else if (
-                    !widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
@@ -4522,7 +4459,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
             case TrackPitch::down90:
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !widgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
-                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WidgetType::empty)
+                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].isVisible())
                 {
                     w->onMouseDown(WIDX_SLOPE_DOWN_STEEP);
                 }
@@ -4557,17 +4494,17 @@ namespace OpenRCT2::Ui::Windows
         switch (_currentTrackRollEnd)
         {
             case TrackRoll::none:
-                if (!widgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].isVisible())
                 {
                     w->onMouseDown(WIDX_BANK_LEFT);
                 }
                 break;
             case TrackRoll::right:
-                if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_BANK_STRAIGHT);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_BANK_LEFT) && w->widgets[WIDX_BANK_LEFT].isVisible())
                 {
                     w->onMouseDown(WIDX_BANK_LEFT);
                 }
@@ -4594,17 +4531,17 @@ namespace OpenRCT2::Ui::Windows
         switch (_currentTrackRollEnd)
         {
             case TrackRoll::none:
-                if (!widgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_BANK_RIGHT);
                 }
                 break;
             case TrackRoll::left:
-                if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].type != WidgetType::empty)
+                if (!widgetIsDisabled(*w, WIDX_BANK_STRAIGHT) && w->widgets[WIDX_BANK_STRAIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_BANK_STRAIGHT);
                 }
-                else if (!widgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].type != WidgetType::empty)
+                else if (!widgetIsDisabled(*w, WIDX_BANK_RIGHT) && w->widgets[WIDX_BANK_RIGHT].isVisible())
                 {
                     w->onMouseDown(WIDX_BANK_RIGHT);
                 }

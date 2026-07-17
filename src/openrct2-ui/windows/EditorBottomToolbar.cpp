@@ -128,8 +128,8 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(RenderTarget& rt) override
         {
-            auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WidgetType::empty;
-            auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WidgetType::empty;
+            auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].isVisible();
+            auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].isVisible();
 
             if (drawPreviousButton)
                 DrawLeftButtonBack(rt);

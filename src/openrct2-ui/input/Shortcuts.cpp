@@ -93,7 +93,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate scenery
     WindowBase* w = windowMgr->FindByClass(WindowClass::scenery);
     if (w != nullptr && !widgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
-        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WidgetType::empty)
+        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].isVisible())
     {
         w->onMouseUp(WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
         return;
@@ -102,7 +102,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate construction track piece
     w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && !widgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
-        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WidgetType::empty)
+        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].isVisible())
     {
         // Check if building a maze...
         if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
@@ -115,7 +115,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate track design preview
     w = windowMgr->FindByClass(WindowClass::trackDesignList);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WidgetType::empty)
+        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].isVisible())
     {
         w->onMouseUp(WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
         return;
@@ -124,7 +124,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate track design placement
     w = windowMgr->FindByClass(WindowClass::trackDesignPlace);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WidgetType::empty)
+        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].isVisible())
     {
         w->onMouseUp(WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
         return;
@@ -133,7 +133,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate park entrance
     w = windowMgr->FindByClass(WindowClass::editorParkEntrance);
     if (w != nullptr && !widgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
-        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WidgetType::empty)
+        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].isVisible())
     {
         w->onMouseUp(WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON);
         return;
@@ -142,7 +142,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate selected element in tile inspector
     w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
-        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WidgetType::empty)
+        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].isVisible())
     {
         w->onMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
         return;
@@ -480,7 +480,7 @@ static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::tileInspector);
-    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].isVisible())
     {
         w->onMouseUp(widgetIndex);
     }
@@ -490,7 +490,7 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::tileInspector);
-    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].isVisible())
     {
         w->onMouseDown(widgetIndex);
     }
@@ -563,7 +563,7 @@ static void ShortcutIncreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
                 break;
         }
-        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].isVisible())
             w->onMouseDown(action);
         return;
     }
@@ -603,7 +603,7 @@ static void ShortcutDecreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
                 break;
         }
-        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].isVisible())
             w->onMouseDown(action);
         return;
     }
