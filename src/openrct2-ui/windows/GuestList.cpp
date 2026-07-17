@@ -170,10 +170,9 @@ namespace OpenRCT2::Ui::Windows
             _selectedTab = TabId::Summarised;
             _selectedView = GuestViewType::Thoughts;
             _numPages = 1;
-            widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
-            widgets[WIDX_FILTER_BY_NAME].type = WidgetType::flatBtn;
-            widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::empty;
-            widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::empty;
+
+            widgets[WIDX_PAGE_DROPDOWN].setHidden();
+            widgets[WIDX_PAGE_DROPDOWN_BUTTON].setHidden();
 
             WindowSetResize(*this, kWindowSize, { 500, 450 });
 
@@ -311,23 +310,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_selectedFilter && _selectedTab == static_cast<TabId>(widgetIndex - WIDX_TAB_1))
                         break;
+
                     _selectedTab = static_cast<TabId>(widgetIndex - WIDX_TAB_1);
                     _selectedPage = 0;
                     _numPages = 1;
-                    widgets[WIDX_TRACKING].type = WidgetType::empty;
-                    if (_selectedTab == TabId::Summarised)
-                    {
-                        widgets[WIDX_FILTER_BY_NAME].type = WidgetType::empty;
-                        setWidgetPressed(WIDX_FILTER_BY_NAME, false);
-                        _filterName.clear();
-                    }
-                    else if (_selectedTab == TabId::Individual)
-                    {
-                        widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
-                        widgets[WIDX_FILTER_BY_NAME].type = WidgetType::flatBtn;
-                    }
-                    widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::empty;
-                    widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::empty;
+
                     _tabAnimationIndex = 0;
                     _selectedFilter = {};
                     invalidate();
@@ -404,9 +391,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab), true);
 
             widgets[WIDX_INFO_TYPE_DROPDOWN].text = GetViewName(_selectedView);
-            widgets[WIDX_MAP].type = WidgetType::empty;
-            if (_selectedTab == TabId::Individual && _selectedFilter)
-                widgets[WIDX_MAP].type = WidgetType::flatBtn;
+            widgets[WIDX_MAP].setVisible(_selectedTab == TabId::Individual && _selectedFilter);
 
             widgets[WIDX_GUEST_LIST].right = width - 4;
             widgets[WIDX_GUEST_LIST].bottom = height - 15;
@@ -417,17 +402,23 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TRACKING].left = 321 - kWindowSize.width + width;
             widgets[WIDX_TRACKING].right = 344 - kWindowSize.width + width;
 
-            if (_numPages > 1)
+            widgets[WIDX_TRACKING].setVisible(_selectedTab == TabId::Individual);
+            widgets[WIDX_FILTER_BY_NAME].setVisible(_selectedTab == TabId::Individual);
+
+            if (_selectedTab == TabId::Summarised)
             {
-                widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::dropdownMenu;
-                widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::button;
+                setWidgetPressed(WIDX_FILTER_BY_NAME, false);
+                _filterName.clear();
+            }
+
+            bool haveMultiplePages = _numPages > 1;
+            widgets[WIDX_PAGE_DROPDOWN].setVisible(haveMultiplePages);
+            widgets[WIDX_PAGE_DROPDOWN_BUTTON].setVisible(haveMultiplePages);
+
+            if (haveMultiplePages)
+            {
                 _pageDropdownCaption = FormatStringID(STR_PAGE_X, static_cast<uint16_t>(_selectedPage + 1));
                 widgets[WIDX_PAGE_DROPDOWN].setString(_pageDropdownCaption.c_str());
-            }
-            else
-            {
-                widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::empty;
-                widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::empty;
             }
         }
 
