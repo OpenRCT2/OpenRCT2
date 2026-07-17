@@ -531,9 +531,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_QUEUELINE_TYPE, gFootpathSelection.isQueueSelected);
 
             // Enable / disable construct button
-            widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PathConstructionMode::bridgeOrTunnel
-                ? WidgetType::imgBtn
-                : WidgetType::empty;
+            widgets[WIDX_CONSTRUCT].setVisible(_footpathConstructionMode == PathConstructionMode::bridgeOrTunnel);
 
 #ifndef DISABLE_NETWORK
             bool canDrag = true;
@@ -544,14 +542,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_CONSTRUCT_DRAG_AREA, !canDrag);
 #endif
 
-            if (gFootpathSelection.legacyPath == kObjectEntryIndexNull)
-            {
-                widgets[WIDX_RAILINGS_TYPE].type = WidgetType::flatBtn;
-            }
-            else
-            {
-                widgets[WIDX_RAILINGS_TYPE].type = WidgetType::empty;
-            }
+            widgets[WIDX_RAILINGS_TYPE].setVisible(gFootpathSelection.legacyPath == kObjectEntryIndexNull);
         }
 
         void onDraw(Drawing::RenderTarget& rt) override
@@ -1779,7 +1770,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutShortcutSlopeDown()
         {
             if (isWidgetDisabled(WIDX_SLOPEDOWN) || isWidgetDisabled(WIDX_LEVEL) || isWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WidgetType::empty)
+                || widgets[WIDX_LEVEL].isHidden())
             {
                 return;
             }
@@ -1801,7 +1792,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutSlopeUp()
         {
             if (isWidgetDisabled(WIDX_SLOPEDOWN) || isWidgetDisabled(WIDX_LEVEL) || isWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WidgetType::empty)
+                || widgets[WIDX_LEVEL].isHidden())
             {
                 return;
             }
@@ -1823,7 +1814,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutSlopeLevel()
         {
             if (isWidgetDisabled(WIDX_SLOPEDOWN) || isWidgetDisabled(WIDX_LEVEL) || isWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WidgetType::empty || _footpathConstructSlope == SlopePitch::flat)
+                || widgets[WIDX_LEVEL].isHidden() || _footpathConstructSlope == SlopePitch::flat)
             {
                 return;
             }
@@ -1833,7 +1824,7 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutDemolishCurrent()
         {
-            if (isWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WidgetType::empty
+            if (isWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].isHidden()
                 || (!getGameState().cheats.buildInPauseMode && GameIsPaused()))
             {
                 return;
@@ -1844,7 +1835,7 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutBuildCurrent()
         {
-            if (isWidgetDisabled(WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].type == WidgetType::empty)
+            if (isWidgetDisabled(WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].isHidden())
             {
                 return;
             }
