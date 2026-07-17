@@ -2866,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Antal forlystelser: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal butikker og boder: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal information kiosker og andre faciliteter: {BLACK}{COMMA16}
 STR_5810    :Deaktiver vogn begrænsninger
-STR_5811    :Hvis det er markeret, kan du have op til{NEWLINE}255 vogne per tog, og{newline}31 tog per tur
+STR_5811    :Hvis det er markeret, kan du have op til{NEWLINE}255 vogne per tog, og{newline}255 tog per tur
 STR_5812    :Vis multiplayer vindue
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

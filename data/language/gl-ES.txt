@@ -2867,7 +2867,7 @@ STR_5807    :{WINDOW_COLOUR_2}Número de atraccións: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de tendas e postos: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de quioscos de información e outras instalacións {BLACK}{COMMA16}
 STR_5810    :Desactivar límites de vehículos
-STR_5811    :Se está marcado, podes ter ata{NEWLINE}255 vagóns por tren e 31{NEWLINE}trens por atracción
+STR_5811    :Se está marcado, podes ter ata{NEWLINE}255 vagóns por tren e 255{NEWLINE}trens por atracción
 STR_5812    :Amosar xanela multixogador
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

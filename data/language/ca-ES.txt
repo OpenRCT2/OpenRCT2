@@ -2871,7 +2871,7 @@ STR_5807    :{WINDOW_COLOUR_2}Nombre d’atraccions: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Nombre d’estands i botigues: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Nombre de quioscos d’informació i altres instal·lacions: {BLACK}{COMMA16}
 STR_5810    :Desactiva els límits de vehicles
-STR_5811    :Si s’activa, podeu tenir{NEWLINE}fins a 255 vagons per tren{NEWLINE}i 31 trens per atracció.
+STR_5811    :Si s’activa, podeu tenir{NEWLINE}fins a 255 vagons per tren{NEWLINE}i 255 trens per atracció.
 STR_5812    :Mostra la finestra multijugador
 STR_5813    :«{STRING}»
 STR_5814    :{WINDOW_COLOUR_1}«{STRING}»

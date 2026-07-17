@@ -2872,7 +2872,7 @@ STR_5807    :{WINDOW_COLOUR_2}Nombre d’attractions : {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Nombre de stands et boutiques : {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Nombre de kiosques d’informations et autres services : {BLACK}{COMMA16}
 STR_5810    :Désactiver les limites des véhicules
-STR_5811    :Permet d’installer jusqu’à 255 voitures par train et 31 trains par attraction
+STR_5811    :Permet d’installer jusqu’à 255 voitures par train et 255 trains par attraction
 STR_5812    :Afficher la fenêtre multijoueurs
 STR_5813    :« {STRING} »
 STR_5814    :{WINDOW_COLOUR_1}« {STRING} »

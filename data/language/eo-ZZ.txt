@@ -2866,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Nombro de atrakcioj: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Nombro de vendejoj kaj budoj: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Nombro de informokioskoj kaj aliaj servoj: {BLACK}{COMMA16}
 STR_5810    :Malŝalti limojn de veturiloj
-STR_5811    :Se elektita, vi povas havi ĝis{NEWLINE}255 ĉarojn por ĉiu trajno kaj 31{NEWLINE}trajnojn por ĉiu atrakcio
+STR_5811    :Se elektita, vi povas havi ĝis{NEWLINE}255 ĉarojn por ĉiu trajno kaj 255{NEWLINE}trajnojn por ĉiu atrakcio
 STR_5812    :Montri plurludantan fenestron
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

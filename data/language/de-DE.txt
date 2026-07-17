@@ -2865,7 +2865,7 @@ STR_5807    :{WINDOW_COLOUR_2}Anzahl der Bahnen: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Anzahl der Läden und Stände: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Anzahl der Informationsstände und anderer Einrichtungen: {BLACK}{COMMA16}
 STR_5810    :Fahrzeuglimits deaktivieren
-STR_5811    :Dieser Cheat ermöglicht bis zu 255 Wagen{NEWLINE}pro Zug und 31 Züge pro Bahn
+STR_5811    :Dieser Cheat ermöglicht bis zu 255 Wagen{NEWLINE}pro Zug und 255 Züge pro Bahn
 STR_5812    :Mehrspielerstatus anzeigen
 STR_5813    :„{STRING}“
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}“

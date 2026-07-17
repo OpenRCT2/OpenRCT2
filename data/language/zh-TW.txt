@@ -2872,7 +2872,7 @@ STR_5807    :{WINDOW_COLOUR_2}遊樂設施數目: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}商店及攤販數目: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}訪客資訊中心及其他設施數目: {BLACK}{COMMA16}
 STR_5810    :去除有關列車的限制
-STR_5811    :勾選後, 你可以選擇高達每列車255車卡及每遊樂設施31輛列車/艘小船
+STR_5811    :勾選後, 你可以選擇高達每列車255車卡及每遊樂設施255輛列車/艘小船
 STR_5812    :顯示多人連線模式的視窗
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

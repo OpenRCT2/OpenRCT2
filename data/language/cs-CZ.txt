@@ -2870,7 +2870,7 @@ STR_5807    :{WINDOW_COLOUR_2}Počet atrakcí: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Počet obchodů a stánků: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Počet informačních kiosků a ostatních zařízení: {BLACK}{COMMA16}
 STR_5810    :Zrušit limit počtu vozů
-STR_5811    :Pokud zaškrtnete, vlaky budou {NEWLINE}moci mít až 255 vagonů a atrakce až 31 vlaků
+STR_5811    :Pokud zaškrtnete, vlaky budou {NEWLINE}moci mít až 255 vagonů a atrakce až 255 vlaků
 STR_5812    :Zobrazit okno Hry více hráčů
 STR_5813    :„{STRING}“
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}“

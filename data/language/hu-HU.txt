@@ -2866,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Játékok száma: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Boltok és bódék száma: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Információs bódék és egyéb létesítmények száma: {BLACK}{COMMA16}
 STR_5810    :Járműkorlátok feloldása
-STR_5811    :Ha ki van pipálva,{NEWLINE}255 kocsid is lehet vonatonként és 31{NEWLINE}vonatod játékokként
+STR_5811    :Ha ki van pipálva,{NEWLINE}255 kocsid is lehet vonatonként és 255{NEWLINE}vonatod játékokként
 STR_5812    :Többjátékos mód ablakának megjelenítése
 STR_5813    :„{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}”

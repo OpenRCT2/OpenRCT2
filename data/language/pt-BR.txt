@@ -2866,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Número de atrações: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de lojas e barracas: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de quiosques de informações e outras instalações: {BLACK}{COMMA16}
 STR_5810    :Desabilitar limites do veículo
-STR_5811    :Se selecionado, você pode ter até {NEWLINE}255 carros por trem e 31 {NEWLINE}trens por atração
+STR_5811    :Se selecionado, você pode ter até {NEWLINE}255 carros por trem e 255 {NEWLINE}trens por atração
 STR_5812    :Mostrar janela multijogador
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

@@ -2860,7 +2860,7 @@ STR_5807    :{WINDOW_COLOUR_2}Antall attraksjoner: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antall butikker og boder: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antall informasjonkiosker og andre fasiliteter: {BLACK}{COMMA16}
 STR_5810    :Skru av vognbegrensninger
-STR_5811    :Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 31{NEWLINE}tog per attraksjon
+STR_5811    :Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 255{NEWLINE}tog per attraksjon
 STR_5812    :Vis flerspillervindu
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

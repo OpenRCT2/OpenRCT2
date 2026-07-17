@@ -2810,7 +2810,7 @@ STR_5807    :{WINDOW_COLOUR_2}Số lượng trò chơi: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Số lượng cửa hàng và quầy hàng: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Số lượng ki-ốt thông tin và các tiện ích khác: {BLACK}{COMMA16}
 STR_5810    :Vô hiệu hóa giới hạn xe
-STR_5811    :Nếu được chọn, bạn có thể có tới 255 xe mỗi đoàn tàu và 31 đoàn tàu mỗi trò chơi
+STR_5811    :Nếu được chọn, bạn có thể có tới 255 xe mỗi đoàn tàu và 255 đoàn tàu mỗi trò chơi
 STR_5812    :Hiển thị cửa sổ nhiều người chơi
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

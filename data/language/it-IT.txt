@@ -2870,7 +2870,7 @@ STR_5807    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
 STR_5810    :Disabilita limiti veicoli
-STR_5811    :Se selezionato, si possono avere fino a{NEWLINE}255 carrelli per treno e 31{NEWLINE}treni per attrazione
+STR_5811    :Se selezionato, si possono avere fino a{NEWLINE}255 carrelli per treno e 255{NEWLINE}treni per attrazione
 STR_5812    :Mostra la finestra multigiocatore
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -3829,4 +3829,3 @@ STR_7027    :{MOVE_X}{29}{STRINGID}
 STR_7028    :Quarto di elica in su
 STR_7029    :Quarto di elica in giù
 STR_7030    :{WINDOW_COLOUR_2}Visitatori intrattenuti: {BLACK}{COMMA32}
-

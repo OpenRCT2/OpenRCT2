@@ -2872,7 +2872,7 @@ STR_5807    :{WINDOW_COLOUR_2}Antal åkturer: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal affärer och stånd: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal informationskiosker och toaletter: {BLACK}{COMMA16}
 STR_5810    :Avaktivera gränsen för vagnar per tåg
-STR_5811    :Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg och 31{NEWLINE}tåg per attraktion
+STR_5811    :Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg och 255{NEWLINE}tåg per attraktion
 STR_5812    :Visa flerspelarfönstret
 STR_5813    :”{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}”{STRING}”

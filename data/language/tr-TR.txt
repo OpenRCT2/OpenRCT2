@@ -2853,7 +2853,7 @@ STR_5807    :{WINDOW_COLOUR_2}Alet sayısı: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Dükkan/Stant sayısı: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Diğer tesis sayısı: {BLACK}{COMMA16}
 STR_5810    :Araç sınırlamasını sıra dışı bırak
-STR_5811    :Bu hile ile alet başı{NEWLINE}255 vagon ve 31 tren kadar{NEWLINE}araç kullanabilirsiniz
+STR_5811    :Bu hile ile alet başı{NEWLINE}255 vagon ve 255 tren kadar{NEWLINE}araç kullanabilirsiniz
 STR_5812    :Multiplayer penceresi
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

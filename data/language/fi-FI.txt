@@ -2870,7 +2870,7 @@ STR_5807    :{WINDOW_COLOUR_2}Laitteiden määrä: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Kojujen määrä: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Infokioskien ja muiden palveluiden määrä: {BLACK}{COMMA16}
 STR_5810    :Poista vaunurajat
-STR_5811    :Jos päällä, voit liittää jopa 255 vaunua per juna, ja 31 junaa per laite
+STR_5811    :Jos päällä, voit liittää jopa 255 vaunua per juna, ja 255 junaa per laite
 STR_5812    :Näytä moninpeli-ikkuna
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
