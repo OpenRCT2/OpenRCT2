@@ -278,22 +278,20 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
-            colourBtn.type = WidgetType::empty;
-
             auto* bannerEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
-            if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
-            {
-                colourBtn.type = WidgetType::colourBtn;
-            }
+            const bool visible = bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR);
+            widgets[WIDX_MAIN_COLOUR].setVisible(visible);
+
             const bool noEntry = banner->flags.has(BannerFlag::noEntry);
             setWidgetPressed(WIDX_BANNER_NO_ENTRY, noEntry);
             setWidgetDisabled(WIDX_BANNER_TEXT, noEntry);
             setWidgetDisabled(WIDX_TEXT_COLOUR_DROPDOWN, noEntry);
             setWidgetDisabled(WIDX_TEXT_COLOUR_DROPDOWN_BUTTON, noEntry);
-            colourBtn.image = getColourButtonImage(banner->colour);
-            Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-            dropDownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
+
+            widgets[WIDX_MAIN_COLOUR].image = getColourButtonImage(banner->colour);
+
+            Widget& dropdownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
+            dropdownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
         }
     };
 
