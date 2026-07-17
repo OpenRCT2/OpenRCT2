@@ -3399,7 +3399,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (ride.mode)
             {
-                case RideMode::poweredLaunchPasstrough:
+                case RideMode::poweredLaunchPassthrough:
                 case RideMode::poweredLaunch:
                 case RideMode::upwardLaunch:
                 case RideMode::poweredLaunchBlockSectioned:
@@ -3604,7 +3604,7 @@ namespace OpenRCT2::Ui::Windows
             StringId format, caption, tooltip;
             switch (ride->mode)
             {
-                case RideMode::poweredLaunchPasstrough:
+                case RideMode::poweredLaunchPassthrough:
                 case RideMode::poweredLaunch:
                 case RideMode::upwardLaunch:
                 case RideMode::poweredLaunchBlockSectioned:

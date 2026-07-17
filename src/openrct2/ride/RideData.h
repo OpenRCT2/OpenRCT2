@@ -616,7 +616,7 @@ constexpr const RideComponentName& GetRideComponentName(const RideComponentType 
 
 constexpr uint64_t kAllRideModesAvailable = EnumsToFlags(
     RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle,
-    RideMode::poweredLaunchPasstrough, RideMode::shuttle, RideMode::normal, RideMode::boatHire, RideMode::upwardLaunch,
+    RideMode::poweredLaunchPassthrough, RideMode::shuttle, RideMode::normal, RideMode::boatHire, RideMode::upwardLaunch,
     RideMode::rotatingLift, RideMode::stationToStation, RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission,
     RideMode::maze, RideMode::race, RideMode::dodgems, RideMode::swing, RideMode::shopStall, RideMode::rotation,
     RideMode::forwardRotation, RideMode::backwardRotation, RideMode::filmAvengingAviators, RideMode::mouseTails3DFilm,

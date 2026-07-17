@@ -74,7 +74,7 @@ enum
     PROXIMITY_OWN_STATION_TOUCH_ABOVE,      // 0x0138B5B8
     PROXIMITY_OWN_STATION_CLOSE_ABOVE,      // 0x0138B5BA
     PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP,  // 0x0138B5BC
-    PROXIMITY_PATH_TROUGH_VERTICAL_LOOP,    // 0x0138B5BE
+    PROXIMITY_PATH_THROUGH_VERTICAL_LOOP,   // 0x0138B5BE
     PROXIMITY_INTERSECTING_VERTICAL_LOOP,   // 0x0138B5C0
     PROXIMITY_THROUGH_VERTICAL_LOOP,        // 0x0138B5C2
     PROXIMITY_PATH_SIDE_CLOSE,              // 0x0138B5C4
@@ -648,7 +648,7 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateSt
                 - static_cast<int32_t>(coordsElement.element->baseHeight);
             if (zDiff >= 0 && zDiff <= 16)
             {
-                proximity_score_increment(state, PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
+                proximity_score_increment(state, PROXIMITY_PATH_THROUGH_VERTICAL_LOOP);
             }
         }
         else if (type == TileElementType::track)
@@ -1226,7 +1226,7 @@ static money64 RideComputeUpkeep(RideRating::UpdateState& state, const Ride& rid
     {
         upkeep += 30;
     }
-    else if (ride.mode == RideMode::poweredLaunchPasstrough)
+    else if (ride.mode == RideMode::poweredLaunchPassthrough)
     {
         upkeep += 160;
     }
@@ -1401,7 +1401,7 @@ static uint32_t ride_ratings_get_proximity_score(RideRating::UpdateState& state)
     result += get_proximity_score_helper_3(scores[PROXIMITY_OWN_STATION_TOUCH_ABOVE], 55);
     result += get_proximity_score_helper_3(scores[PROXIMITY_OWN_STATION_CLOSE_ABOVE], 25);
     result += get_proximity_score_helper_2(scores[PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP], 4, 6, 0x140000);
-    result += get_proximity_score_helper_2(scores[PROXIMITY_PATH_TROUGH_VERTICAL_LOOP], 4, 6, 0x0F0000);
+    result += get_proximity_score_helper_2(scores[PROXIMITY_PATH_THROUGH_VERTICAL_LOOP], 4, 6, 0x0F0000);
     result += get_proximity_score_helper_3(scores[PROXIMITY_INTERSECTING_VERTICAL_LOOP], 100);
     result += get_proximity_score_helper_2(scores[PROXIMITY_THROUGH_VERTICAL_LOOP], 4, 6, 0x0A0000);
     result += get_proximity_score_helper_2(scores[PROXIMITY_PATH_SIDE_CLOSE], 10, 20, 0x01C000);
