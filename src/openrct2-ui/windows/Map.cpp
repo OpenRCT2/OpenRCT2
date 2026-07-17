@@ -652,7 +652,7 @@ namespace OpenRCT2::Ui::Windows
             // Disable all scenario editor related widgets
             for (int32_t i = WIDX_MAP_SIZE_SPINNER_Y; i <= WIDX_MAP_GENERATOR; i++)
             {
-                widgets[i].type = WidgetType::empty;
+                widgets[i].setHidden();
             }
 
             if (isEditorOrSandbox())
@@ -1102,21 +1102,21 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowDefaultScenarioEditorButtons()
         {
-            widgets[WIDX_SET_LAND_RIGHTS].type = WidgetType::flatBtn;
-            widgets[WIDX_BUILD_PARK_ENTRANCE].type = WidgetType::flatBtn;
-            widgets[WIDX_PEOPLE_STARTING_POSITION].type = WidgetType::flatBtn;
+            widgets[WIDX_SET_LAND_RIGHTS].setVisible();
+            widgets[WIDX_BUILD_PARK_ENTRANCE].setVisible();
+            widgets[WIDX_PEOPLE_STARTING_POSITION].setVisible();
 
             // only show this in the scenario editor, even when in sandbox mode.
             if (gLegacyScene == LegacyScene::scenarioEditor)
-                widgets[WIDX_MAP_GENERATOR].type = WidgetType::flatBtn;
+                widgets[WIDX_MAP_GENERATOR].setVisible();
 
-            widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WidgetType::spinner;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].type = WidgetType::button;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].type = WidgetType::button;
-            widgets[WIDX_MAP_SIZE_LINK].type = WidgetType::flatBtn;
-            widgets[WIDX_MAP_SIZE_SPINNER_X].type = WidgetType::spinner;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].type = WidgetType::button;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WidgetType::button;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y].setVisible();
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].setVisible();
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].setVisible();
+            widgets[WIDX_MAP_SIZE_LINK].setVisible();
+            widgets[WIDX_MAP_SIZE_SPINNER_X].setVisible();
+            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].setVisible();
+            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].setVisible();
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
             auto& gameState = getGameState();
