@@ -1075,6 +1075,9 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_RIDE_PAGE_MAIN:
                     MainOnTextInput(widgetIndex, text);
                     break;
+                case WINDOW_RIDE_PAGE_VEHICLE:
+                    VehicleOnTextInput(widgetIndex, text);
+                    break;
                 case WINDOW_RIDE_PAGE_OPERATING:
                     OperatingOnTextInput(widgetIndex, text);
                     break;
@@ -2686,6 +2689,25 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX:
                     ride->setReversedTrains(!ride->flags.has(RideFlag::reversedTrains));
                     break;
+                case WIDX_VEHICLE_TRAINS:
+                {
+                    bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                    uint8_t minValue = 1;
+                    uint8_t maxValue = limit ? ride->maxTrains : Limits::kMaxTrainsPerRide;
+
+                    RideComponentType vehicleType = ride->getRideTypeDescriptor().NameConvention.vehicle;
+                    StringId title = GetRideComponentName(vehicleType).capitalised_plural;
+
+                    Formatter ft;
+                    ft.Add<int16_t>(minValue);
+                    ft.Add<int16_t>(maxValue);
+
+                    uint8_t value = ride->numTrains;
+                    std::string text = FormatStringID(STR_COMMA16, static_cast<int16_t>(value));
+
+                    WindowTextInputRawOpen(this, WIDX_VEHICLE_TRAINS, title, STR_ENTER_VALUE, ft, text.c_str(), 4);
+                    break;
+                }
                 case WIDX_VEHICLE_TRAINS_INCREASE:
                     if (ride->numTrains < Limits::kMaxTrainsPerRide)
                         ride->setNumTrains(ride->numTrains + 1);
@@ -2694,6 +2716,29 @@ namespace OpenRCT2::Ui::Windows
                     if (ride->numTrains > 1)
                         ride->setNumTrains(ride->numTrains - 1);
                     break;
+                case WIDX_VEHICLE_CARS_PER_TRAIN:
+                {
+                    bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                    auto rideEntry = ride->getRideEntry();
+                    int16_t minValue = (limit ? ride->minCarsPerTrain : 1) - rideEntry->zero_cars;
+                    int16_t maxValue;
+                    if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
+                        maxValue = (limit ? ride->maxCarsPerTrain : Limits::kMaxCarsPerTrain) - rideEntry->zero_cars;
+                    else
+                        maxValue = rideEntry->max_cars_in_train;
+
+                    StringId title = STR_CARS_PER_TRAIN;
+
+                    Formatter ft;
+                    ft.Add<int16_t>(minValue);
+                    ft.Add<int16_t>(maxValue);
+
+                    int16_t value = ride->numCarsPerTrain - rideEntry->zero_cars;
+                    std::string text = FormatStringID(STR_COMMA16, value);
+
+                    WindowTextInputRawOpen(this, WIDX_VEHICLE_CARS_PER_TRAIN, title, STR_ENTER_VALUE, ft, text.c_str(), 4);
+                    break;
+                }
                 case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
                     if (ride->numCarsPerTrain < Limits::kMaxCarsPerTrain)
                         ride->setNumCarsPerTrain(ride->numCarsPerTrain + 1);
@@ -2731,6 +2776,54 @@ namespace OpenRCT2::Ui::Windows
             currentFrame++;
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_2);
+        }
+
+        void VehicleOnTextInput(WidgetIndex widgetIndex, std::string_view text)
+        {
+            if (text.empty())
+                return;
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            if (widgetIndex == WIDX_VEHICLE_TRAINS)
+            {
+                bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                uint8_t minValue = 1;
+                uint8_t maxValue = limit ? ride->maxTrains : Limits::kMaxTrainsPerRide;
+                try
+                {
+                    int32_t input = std::stol(std::string(text));
+                    uint8_t value = std::clamp<int32_t>(input, minValue, maxValue);
+                    ride->setNumTrains(value);
+                }
+                catch (const std::logic_error&)
+                {
+                    // std::stol can throw std::out_of_range or std::invalid_argument
+                }
+            }
+            else if (widgetIndex == WIDX_VEHICLE_CARS_PER_TRAIN)
+            {
+                bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                auto rideEntry = ride->getRideEntry();
+                uint8_t minValue = limit ? ride->minCarsPerTrain : 1;
+                uint8_t maxValue;
+                if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
+                    maxValue = limit ? ride->maxCarsPerTrain : Limits::kMaxCarsPerTrain;
+                else
+                    maxValue = rideEntry->max_cars_in_train;
+                try
+                {
+                    int32_t input = std::stol(std::string(text)) + rideEntry->zero_cars;
+                    uint8_t value = std::clamp<int32_t>(input, minValue, maxValue);
+                    ride->setNumCarsPerTrain(value);
+                }
+                catch (const std::logic_error&)
+                {
+                    // std::stol can throw std::out_of_range or std::invalid_argument
+                }
+            }
         }
 
         StringWithArgs VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
@@ -3041,6 +3134,142 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Operating
 
+        static std::string formatSpeed(int32_t internalSpeed)
+        {
+            // Calculate unit-based measured speed.
+            int32_t measuredSpeed;
+            switch (Config::Get().general.measurementFormat)
+            {
+                default:
+                case MeasurementFormat::imperial:
+                    measuredSpeed = internalSpeed;
+                    break;
+                case MeasurementFormat::metric:
+                    measuredSpeed = MphToKmph(internalSpeed);
+                    break;
+                case MeasurementFormat::SI:
+                    measuredSpeed = MphToDmps(internalSpeed);
+                    break;
+            }
+
+            // Format measured speed to text.
+            switch (Config::Get().general.measurementFormat)
+            {
+                default:
+                case MeasurementFormat::imperial:
+                    return FormatStringID(STR_COMMA16, measuredSpeed);
+                case MeasurementFormat::metric:
+                    return FormatStringID(STR_COMMA16, measuredSpeed);
+                case MeasurementFormat::SI:
+                    return FormatStringID(STR_UNIT1DP_NO_SUFFIX, measuredSpeed);
+            }
+        }
+
+        static double parseDecimal(std::string_view text)
+        {
+            // Parse decimal number (similar to StringToMoney).
+            const char* decimalPoint = LanguageGetString(STR_LOCALE_DECIMAL_POINT);
+            char processedString[128] = {};
+
+            Guard::Assert(text.length() < sizeof(processedString));
+
+            uint32_t numNumbers = 0;
+            bool hasMinus = false;
+            bool hasDecSep = false;
+            const char* src_ptr = text.data();
+            char* dst_ptr = processedString;
+
+            // Process the string, keeping only numbers decimal, and minus sign(s).
+            while (*src_ptr != '\0')
+            {
+                if (*src_ptr >= '0' && *src_ptr <= '9')
+                {
+                    numNumbers++;
+                }
+                else if (*src_ptr == decimalPoint[0])
+                {
+                    if (hasDecSep)
+                        return 0;
+                    hasDecSep = true;
+
+                    // Replace localised decimal separator with an English one.
+                    *dst_ptr++ = '.';
+                    src_ptr++;
+                    continue;
+                }
+                else if (*src_ptr == '-')
+                {
+                    if (hasMinus)
+                        return 0;
+                    hasMinus = true;
+                }
+                else
+                {
+                    // Skip invalid characters.
+                    src_ptr++;
+                    continue;
+                }
+
+                // Copy numeric values.
+                *dst_ptr++ = *src_ptr;
+                src_ptr++;
+            }
+
+            // Terminate destination string.
+            *dst_ptr = '\0';
+
+            if (numNumbers == 0)
+                return 0;
+
+            if (hasMinus && processedString[0] != '-')
+            {
+                // If there is a minus sign, it has to be at position 0 in order to be valid.
+                return 0;
+            }
+
+            // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
+            // ".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
+            if (processedString[0] == decimalPoint[0])
+            {
+                for (size_t i = strlen(processedString); i >= 1; i--)
+                    processedString[i] = processedString[i - 1];
+                processedString[0] = '0';
+            }
+
+            try
+            {
+                return std::stod(processedString, nullptr);
+            }
+            catch (const std::logic_error&)
+            {
+                // std::stod can throw std::out_of_range or std::invalid_argument
+                return 0;
+            }
+        }
+
+        static int32_t parseSpeed(std::string_view text, double factor, int32_t minValue, int32_t maxValue)
+        {
+            double input = parseDecimal(text);
+
+            // Add 0.5 to properly round back truncated conversion to internal speed. Factors from UnitConversion.cpp.
+            int32_t internalSpeed;
+            switch (Config::Get().general.measurementFormat)
+            {
+                default:
+                case MeasurementFormat::imperial:
+                    internalSpeed = input * factor;
+                    break;
+                case MeasurementFormat::metric:
+                    internalSpeed = std::lround((input * factor + 0.5) / 1.609375);
+                    break;
+                case MeasurementFormat::SI:
+                    internalSpeed = std::lround((input * 10 * factor + 0.5) / 4.4704);
+                    break;
+            }
+
+            return std::clamp(internalSpeed, minValue, maxValue);
+        }
+
         void ModeTweakIncrease()
         {
             auto ride = GetRide(rideId);
@@ -3215,6 +3444,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MODE_TWEAK_DECREASE:
                     ModeTweakDecrease();
                     break;
+                case WIDX_LIFT_HILL_SPEED:
+                    OperatingLiftHillSpeedTextInput(*ride);
+                    break;
                 case WIDX_LIFT_HILL_SPEED_INCREASE:
                     upperBound = getGameState().cheats.unlockOperatingLimits
                         ? Limits::kCheatsMaxOperatingLimit
@@ -3277,6 +3509,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_LOAD_DROPDOWN:
                     LoadDropdown(&widgets[widgetIndex]);
                     break;
+                case WIDX_OPERATE_NUMBER_OF_CIRCUITS:
+                    OperatingNumberOfCircuitsTextInput(*ride);
+                    break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
                     upperBound = getGameState().cheats.unlockOperatingLimits ? Limits::kCheatsMaxOperatingLimit
                                                                              : Limits::kMaxCircuitsPerRide;
@@ -3325,29 +3560,98 @@ namespace OpenRCT2::Ui::Windows
                 case RideMode::poweredLaunch:
                 case RideMode::upwardLaunch:
                 case RideMode::poweredLaunchBlockSectioned:
-                case RideMode::stationToStation:
-                case RideMode::dodgems:
-                    return;
-                default:
+                {
+                    // Launch speed
+                    const bool limit = !getGameState().cheats.unlockOperatingLimits;
+                    const auto& operation = ride.getRideTypeDescriptor().OperatingSettings;
+                    const uint8_t minValue = limit ? operation.MinValue : 0;
+                    const uint8_t maxValue = limit ? operation.MaxValue : Limits::kCheatsMaxOperatingLimit;
+
+                    const auto& title = widgets[WIDX_MODE_TWEAK_LABEL].text;
+                    Formatter ft;
+                    ft.Add<int16_t>(minValue * 9 / 4);
+                    ft.Add<int16_t>(maxValue * 9 / 4);
+
+                    const auto text = formatSpeed(ride.launchSpeed * 9 / 4);
+                    WindowTextInputRawOpen(this, WIDX_MODE_TWEAK, title, STR_ENTER_VELOCITY, ft, text.c_str(), 10);
                     break;
+                }
+                case RideMode::stationToStation:
+                {
+                    // Ride speed
+                    const bool limit = !getGameState().cheats.unlockOperatingLimits;
+                    const auto& operation = ride.getRideTypeDescriptor().OperatingSettings;
+                    const uint8_t minValue = limit ? operation.MinValue : 0;
+                    const uint8_t maxValue = limit ? operation.MaxValue : Limits::kCheatsMaxOperatingLimit;
+
+                    const auto& title = widgets[WIDX_MODE_TWEAK_LABEL].text;
+                    Formatter ft;
+                    ft.Add<int16_t>(minValue * 9 / 4);
+                    ft.Add<int16_t>(maxValue * 9 / 4);
+
+                    const auto text = formatSpeed(ride.speed * 9 / 4);
+                    WindowTextInputRawOpen(this, WIDX_MODE_TWEAK, title, STR_ENTER_VELOCITY, ft, text.c_str(), 10);
+                    break;
+                }
+                case RideMode::dodgems:
+                {
+                    // TODO: Make time entry editable.
+                    break;
+                }
+                default:
+                {
+                    const auto& operatingSettings = ride.getRideTypeDescriptor().OperatingSettings;
+                    const auto& gameState = getGameState();
+                    int16_t maxValue = gameState.cheats.unlockOperatingLimits ? Limits::kCheatsMaxOperatingLimit
+                                                                              : operatingSettings.MaxValue;
+                    int16_t minValue = gameState.cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
+
+                    const auto& title = widgets[WIDX_MODE_TWEAK_LABEL].text;
+                    Formatter ft;
+                    ft.Add<int16_t>(minValue * operatingSettings.OperatingSettingMultiplier);
+                    ft.Add<int16_t>(maxValue * operatingSettings.OperatingSettingMultiplier);
+
+                    uint16_t currentValue = static_cast<uint16_t>(ride.operationOption)
+                        * operatingSettings.OperatingSettingMultiplier;
+                    char buffer[6]{};
+                    snprintf(buffer, std::size(buffer), "%u", currentValue);
+
+                    WindowTextInputRawOpen(this, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
+                    break;
+                }
             }
+        }
 
-            const auto& operatingSettings = ride.getRideTypeDescriptor().OperatingSettings;
-            const auto& gameState = getGameState();
-            int16_t maxValue = gameState.cheats.unlockOperatingLimits ? Limits::kCheatsMaxOperatingLimit
-                                                                      : operatingSettings.MaxValue;
-            int16_t minValue = gameState.cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
+        void OperatingLiftHillSpeedTextInput(const Ride& ride)
+        {
+            const bool limit = !getGameState().cheats.unlockOperatingLimits;
+            const auto& liftData = ride.getRideTypeDescriptor().LiftData;
+            const uint8_t minValue = limit ? liftData.minimum_speed : 0;
+            const uint8_t maxValue = limit ? liftData.maximum_speed : Limits::kCheatsMaxOperatingLimit;
 
-            const auto& title = widgets[WIDX_MODE_TWEAK_LABEL].text;
+            const auto& title = widgets[WIDX_LIFT_HILL_SPEED_LABEL].text;
             Formatter ft;
-            ft.Add<int16_t>(minValue * operatingSettings.OperatingSettingMultiplier);
-            ft.Add<int16_t>(maxValue * operatingSettings.OperatingSettingMultiplier);
+            ft.Add<uint16_t>(minValue);
+            ft.Add<uint16_t>(maxValue);
 
-            uint16_t currentValue = static_cast<uint16_t>(ride.operationOption) * operatingSettings.OperatingSettingMultiplier;
-            char buffer[6]{};
-            snprintf(buffer, std::size(buffer), "%u", currentValue);
+            const auto text = formatSpeed(ride.liftHillSpeed);
+            WindowTextInputRawOpen(this, WIDX_LIFT_HILL_SPEED, title, STR_ENTER_VELOCITY, ft, text.c_str(), 10);
+        }
 
-            WindowTextInputRawOpen(this, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
+        void OperatingNumberOfCircuitsTextInput(const Ride& ride)
+        {
+            const bool limit = !getGameState().cheats.unlockOperatingLimits;
+            const uint8_t minValue = 1;
+            const uint8_t maxValue = limit ? Limits::kMaxCircuitsPerRide : Limits::kCheatsMaxOperatingLimit;
+
+            const auto& title = widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].text;
+            Formatter ft;
+            ft.Add<uint16_t>(minValue);
+            ft.Add<uint16_t>(maxValue);
+
+            const auto text = std::to_string(ride.numCircuits);
+
+            WindowTextInputRawOpen(this, WIDX_OPERATE_NUMBER_OF_CIRCUITS, title, STR_ENTER_VALUE, ft, text.c_str(), 4);
         }
 
         void OperatingOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
@@ -3451,23 +3755,72 @@ namespace OpenRCT2::Ui::Windows
 
             if (widgetIndex == WIDX_MODE_TWEAK)
             {
-                const auto& operatingSettings = ride->getRideTypeDescriptor().OperatingSettings;
-                const auto& gameState = getGameState();
-                uint32_t maxValue = gameState.cheats.unlockOperatingLimits ? Limits::kCheatsMaxOperatingLimit
-                                                                           : operatingSettings.MaxValue;
-                uint32_t minValue = gameState.cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
-                auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
+                switch (ride->mode)
+                {
+                    case RideMode::poweredLaunchPassthrough:
+                    case RideMode::poweredLaunch:
+                    case RideMode::upwardLaunch:
+                    case RideMode::poweredLaunchBlockSectioned:
+                    case RideMode::stationToStation:
+                    {
+                        // Launch / ride speed
+                        const bool limit = !getGameState().cheats.unlockOperatingLimits;
+                        const auto& operation = ride->getRideTypeDescriptor().OperatingSettings;
+                        const uint8_t minValue = limit ? operation.MinValue : 0;
+                        const uint8_t maxValue = limit ? operation.MaxValue : Limits::kCheatsMaxOperatingLimit;
 
-                try
-                {
-                    uint32_t origSize = std::stol(std::string(text)) / multiplier;
-                    uint8_t size = static_cast<uint8_t>(std::clamp(origSize, minValue, maxValue));
-                    SetOperatingSetting(ride->id, GameActions::RideSetSetting::operation, size);
+                        int32_t value = parseSpeed(text, 4 / 9.0, minValue, maxValue);
+                        SetOperatingSetting(ride->id, GameActions::RideSetSetting::operation, value);
+                        break;
+                    }
+                    case RideMode::dodgems:
+                    {
+                        // TODO: Make time entry editable.
+                        break;
+                    }
+                    default:
+                    {
+                        const auto& operatingSettings = ride->getRideTypeDescriptor().OperatingSettings;
+                        const auto& gameState = getGameState();
+                        uint32_t maxValue = gameState.cheats.unlockOperatingLimits ? Limits::kCheatsMaxOperatingLimit
+                                                                                   : operatingSettings.MaxValue;
+                        uint32_t minValue = gameState.cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
+                        auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
+
+                        try
+                        {
+                            uint32_t origSize = std::stol(std::string(text)) / multiplier;
+                            uint8_t size = static_cast<uint8_t>(std::clamp(origSize, minValue, maxValue));
+                            SetOperatingSetting(ride->id, GameActions::RideSetSetting::operation, size);
+                        }
+                        catch (const std::logic_error&)
+                        {
+                            // std::stol can throw std::out_of_range or std::invalid_argument
+                        }
+                        break;
+                    }
                 }
-                catch (const std::logic_error&)
-                {
-                    // std::stol can throw std::out_of_range or std::invalid_argument
-                }
+            }
+            else if (widgetIndex == WIDX_LIFT_HILL_SPEED)
+            {
+                const bool limit = !getGameState().cheats.unlockOperatingLimits;
+                const auto& liftData = ride->getRideTypeDescriptor().LiftData;
+                const uint8_t minValue = limit ? liftData.minimum_speed : 0;
+                const uint8_t maxValue = limit ? liftData.maximum_speed : Limits::kCheatsMaxOperatingLimit;
+
+                int32_t value = parseSpeed(text, 1, minValue, maxValue);
+                SetOperatingSetting(ride->id, GameActions::RideSetSetting::liftHillSpeed, value);
+            }
+            else if (widgetIndex == WIDX_OPERATE_NUMBER_OF_CIRCUITS)
+            {
+                const bool limit = !getGameState().cheats.unlockOperatingLimits;
+                const uint8_t minValue = 1;
+                const uint8_t maxValue = limit ? Limits::kMaxCircuitsPerRide : Limits::kCheatsMaxOperatingLimit;
+
+                int32_t value = std::stol(std::string(text));
+                value = std::clamp<int32_t>(value, minValue, maxValue);
+
+                SetOperatingSetting(ride->id, GameActions::RideSetSetting::numCircuits, value);
             }
             else if (widgetIndex == WIDX_MINIMUM_LENGTH || widgetIndex == WIDX_MAXIMUM_LENGTH)
             {
