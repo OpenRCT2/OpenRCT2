@@ -130,7 +130,7 @@ namespace OpenRCT2::Ui::Windows
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, { kMaximumWindowWidth, kMaximumWindowHeight });
 
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::empty;
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].setHidden();
 
             RefreshList();
         }
@@ -255,11 +255,11 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(_selectedTab + WIDX_STAFF_LIST_HANDYMEN_TAB, true);
 
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = GetStaffNamingConvention(GetSelectedStaffType()).ActionHire;
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::empty;
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].setHidden();
 
             if (GetSelectedStaffType() != StaffType::entertainer)
             {
-                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::colourBtn;
+                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].setVisible();
                 widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = getColourButtonImage(
                     StaffGetColour(GetSelectedStaffType()));
             }
