@@ -866,12 +866,12 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 titleWidget.setString(STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE);
-                installTrackWidget.type = WidgetType::button;
+                installTrackWidget.setVisible();
             }
             else if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 titleWidget.setString(STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES);
-                installTrackWidget.type = WidgetType::empty;
+                installTrackWidget.setHidden();
             }
             else
             {
@@ -884,7 +884,7 @@ namespace OpenRCT2::Ui::Windows
 
                 _windowTitle = FormatStringID(STR_OBJECT_SELECTION, stringId);
                 titleWidget.setString(_windowTitle.c_str());
-                installTrackWidget.type = WidgetType::empty;
+                installTrackWidget.setHidden();
             }
 
             // Set filter dropdown caption
@@ -917,27 +917,22 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 auto& widget = widgets[WIDX_TAB_1 + i];
-                if (ObjectSelectionPages[i].Image != kImageIndexUndefined)
+                widget.setVisible(ObjectSelectionPages[i].Image != kImageIndexUndefined);
+                if (widget.isVisible())
                 {
-                    widget.type = WidgetType::tab;
                     widget.left = x;
                     widget.right = x + 30;
                     x += 31;
                 }
-                else
-                    widget.type = WidgetType::empty;
             }
 
-            if (Config::Get().general.debuggingTools)
-                widgets[WIDX_RELOAD_OBJECT].type = WidgetType::imgBtn;
-            else
-                widgets[WIDX_RELOAD_OBJECT].type = WidgetType::empty;
+            widgets[WIDX_RELOAD_OBJECT].setVisible(Config::Get().general.debuggingTools);
 
             if (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::trackDesigner)
             {
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
-                    widgets[WIDX_TAB_1 + i].type = WidgetType::empty;
+                    widgets[WIDX_TAB_1 + i].setHidden();
                 }
             }
 
@@ -961,18 +956,14 @@ namespace OpenRCT2::Ui::Windows
             for (int8_t i = 0; i <= 6; i++)
             {
                 widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
-                widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WidgetType::tab : WidgetType::empty;
+                widgets[WIDX_SUB_TAB_0 + i].setVisible(i < numSubTabs);
                 setWidgetPressed(WIDX_SUB_TAB_0 + i, false);
             }
 
             // Mark current sub-tab as active, and toggle tab frame
+            widgets[WIDX_FILTER_RIDE_TAB_FRAME].setVisible(hasSubTabs);
             if (hasSubTabs)
-            {
                 setWidgetPressed(WIDX_SUB_TAB_0 + _selectedSubTab, true);
-                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::imgBtn;
-            }
-            else
-                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::empty;
 
             // The ride tab has two headers for the list
             bool isRideTab = GetSelectedObjectType() == ObjectType::ride;
@@ -980,13 +971,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 int32_t width_limit = (widgets[WIDX_LIST].width() - 16) / 2;
 
-                widgets[WIDX_LIST_SORT_TYPE].type = WidgetType::tableHeader;
+                widgets[WIDX_LIST_SORT_TYPE].setVisible();
                 widgets[WIDX_LIST_SORT_TYPE].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 3;
                 widgets[WIDX_LIST_SORT_TYPE].bottom = widgets[WIDX_LIST_SORT_TYPE].top + 13;
                 widgets[WIDX_LIST_SORT_TYPE].left = 4;
                 widgets[WIDX_LIST_SORT_TYPE].right = widgets[WIDX_LIST_SORT_TYPE].left + width_limit;
 
-                widgets[WIDX_LIST_SORT_RIDE].type = WidgetType::tableHeader;
+                widgets[WIDX_LIST_SORT_RIDE].setVisible();
                 widgets[WIDX_LIST_SORT_RIDE].top = widgets[WIDX_LIST_SORT_TYPE].top;
                 widgets[WIDX_LIST_SORT_RIDE].bottom = widgets[WIDX_LIST_SORT_TYPE].bottom;
                 widgets[WIDX_LIST_SORT_RIDE].left = widgets[WIDX_LIST_SORT_TYPE].right + 1;
@@ -996,8 +987,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_LIST_SORT_TYPE].type = WidgetType::empty;
-                widgets[WIDX_LIST_SORT_RIDE].type = WidgetType::empty;
+                widgets[WIDX_LIST_SORT_TYPE].setHidden();
+                widgets[WIDX_LIST_SORT_RIDE].setHidden();
 
                 widgets[WIDX_LIST].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 2;
             }
@@ -1035,7 +1026,7 @@ namespace OpenRCT2::Ui::Windows
                 for (auto i = 0u; i < currentPage.subTabs.size(); i++)
                 {
                     const auto& widget = widgets[WIDX_SUB_TAB_0 + i];
-                    if (widget.type == WidgetType::empty)
+                    if (widget.isHidden())
                         continue;
 
                     auto& subTabDef = currentPage.subTabs[i];
