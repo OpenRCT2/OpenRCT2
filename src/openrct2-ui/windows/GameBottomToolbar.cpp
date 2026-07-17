@@ -63,8 +63,8 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_game_bottom_toolbar_widgets[] =
     {
-        makeWidget({  0,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left outset panel
-        makeWidget({  2,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left inset panel
+        makeWidget({  0,  0}, {142, 34}, WidgetType::empty,       WindowColour::primary                                                     ), // Left outset panel
+        makeWidget({  2,  2}, {138, 30}, WidgetType::empty,       WindowColour::primary                                                     ), // Left inset panel
         makeWidget({  2,  1}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
         makeWidget({  2, 11}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary                                                     ), // Guests window
         makeWidget({  2, 21}, {138, 11}, WidgetType::hiddenButton,WindowColour::primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
-            widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::empty;
+            widgets[WIDX_MIDDLE_OUTSET].setHidden();
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -530,7 +530,7 @@ namespace OpenRCT2::Ui::Windows
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
             if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
             {
-                widgets[WIDX_MONEY].type = WidgetType::empty;
+                widgets[WIDX_MONEY].setHidden();
                 widgets[WIDX_GUESTS].top = 1;
                 widgets[WIDX_GUESTS].bottom = line_height + 7;
                 widgets[WIDX_PARK_RATING].top = line_height + 8;
@@ -538,7 +538,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_MONEY].type = WidgetType::hiddenButton;
+                widgets[WIDX_MONEY].setVisible();
                 widgets[WIDX_MONEY].bottom = widgets[WIDX_MONEY].top + line_height;
                 widgets[WIDX_GUESTS].top = widgets[WIDX_MONEY].bottom + 1;
                 widgets[WIDX_GUESTS].bottom = widgets[WIDX_GUESTS].top + line_height;
@@ -571,24 +571,16 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DATE].left = widgets[WIDX_RIGHT_OUTSET].left + 2;
             widgets[WIDX_DATE].right = widgets[WIDX_RIGHT_OUTSET].right - 2;
 
-            widgets[WIDX_LEFT_INSET].type = WidgetType::empty;
-            widgets[WIDX_RIGHT_INSET].type = WidgetType::empty;
-
             if (News::IsQueueEmpty())
             {
-                if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
+                bool useFullToolbar = ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR;
+                widgets[WIDX_MIDDLE_OUTSET].setVisible(useFullToolbar);
+                widgets[WIDX_MIDDLE_INSET].setVisible(useFullToolbar);
+                widgets[WIDX_NEWS_SUBJECT].setHidden();
+                widgets[WIDX_NEWS_LOCATE].setHidden();
+
+                if (useFullToolbar)
                 {
-                    widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::empty;
-                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::empty;
-                    widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
-                    widgets[WIDX_NEWS_LOCATE].type = WidgetType::empty;
-                }
-                else
-                {
-                    widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
-                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::hiddenButton;
-                    widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
-                    widgets[WIDX_NEWS_LOCATE].type = WidgetType::empty;
                     widgets[WIDX_MIDDLE_OUTSET].colour = 0;
                     widgets[WIDX_MIDDLE_INSET].colour = 0;
                 }
@@ -596,10 +588,10 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 News::Item* newsItem = News::GetItem(0);
-                widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
-                widgets[WIDX_MIDDLE_INSET].type = WidgetType::hiddenButton;
-                widgets[WIDX_NEWS_SUBJECT].type = WidgetType::flatBtn;
-                widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
+                widgets[WIDX_MIDDLE_OUTSET].setVisible();
+                widgets[WIDX_MIDDLE_INSET].setVisible();
+                widgets[WIDX_NEWS_SUBJECT].setVisible();
+                widgets[WIDX_NEWS_LOCATE].setVisible();
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;
                 widgets[WIDX_MIDDLE_INSET].colour = 2;
                 setWidgetDisabled(WIDX_NEWS_SUBJECT, false);
@@ -614,7 +606,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!(newsItem->typeHasSubject()))
                 {
                     setWidgetDisabled(WIDX_NEWS_SUBJECT, true);
-                    widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
+                    widgets[WIDX_NEWS_SUBJECT].setHidden();
                 }
 
                 if (newsItem->hasButton())
