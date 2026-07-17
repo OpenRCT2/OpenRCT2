@@ -626,6 +626,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->orientation = static_cast<uint8_t>(value);
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -644,6 +645,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->pitch = static_cast<VehiclePitch>(value);
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
@@ -662,6 +664,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->roll = static_cast<VehicleRoll>(value);
+            vehicle->invalidate();
         }
         return JS_UNDEFINED;
     }
