@@ -3005,7 +3005,7 @@ declare global {
 		yaw: number;
 	
 		/**
-		 * The current pitch of the car. (Upwards/downwards, upside down) Values are not degrees, but a list of arbitrarily odered angles. See Angles.h.
+		 * The current pitch of the car. (Upwards/downwards, upside down) Values are not degrees, but a list of arbitrarily ordered angles. See Angles.h.
 		 */
 		pitch: number;
 		 
