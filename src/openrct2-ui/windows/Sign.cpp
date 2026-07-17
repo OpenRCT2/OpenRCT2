@@ -247,50 +247,50 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            Widget* main_colour_btn = &widgets[WIDX_MAIN_COLOUR];
-            Widget* text_colour_btn = &widgets[WIDX_TEXT_COLOUR];
+            auto& mainColourButton = widgets[WIDX_MAIN_COLOUR];
+            auto& textColourButotn = widgets[WIDX_TEXT_COLOUR];
 
             if (_isSmall)
             {
-                auto* wallEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
+                auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
 
-                main_colour_btn->type = WidgetType::empty;
-                text_colour_btn->type = WidgetType::empty;
+                mainColourButton.setHidden();
+                textColourButotn.setHidden();
                 if (wallEntry == nullptr)
                 {
                     return;
                 }
                 if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
                 {
-                    main_colour_btn->type = WidgetType::colourBtn;
+                    mainColourButton.setVisible();
                 }
                 if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
                 {
-                    text_colour_btn->type = WidgetType::colourBtn;
+                    textColourButotn.setVisible();
                 }
             }
             else
             {
-                auto* sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
+                auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
-                main_colour_btn->type = WidgetType::empty;
-                text_colour_btn->type = WidgetType::empty;
+                mainColourButton.setHidden();
+                textColourButotn.setHidden();
                 if (sceneryEntry == nullptr)
                 {
                     return;
                 }
                 if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
                 {
-                    main_colour_btn->type = WidgetType::colourBtn;
+                    mainColourButton.setVisible();
                 }
                 if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
                 {
-                    text_colour_btn->type = WidgetType::colourBtn;
+                    textColourButotn.setVisible();
                 }
             }
 
-            main_colour_btn->image = getColourButtonImage(_mainColour);
-            text_colour_btn->image = getColourButtonImage(_textColour);
+            mainColourButton.image = getColourButtonImage(_mainColour);
+            textColourButotn.image = getColourButtonImage(_textColour);
         }
 
         void onDraw(Drawing::RenderTarget& rt) override
