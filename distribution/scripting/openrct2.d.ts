@@ -3010,7 +3010,7 @@ declare global {
 		pitch: number;
 		 
 		/**
-		 * The current roll of the car. (Banking/rolling) Values are not degrees, but a list of arbitrarily odered angles. See Angles.h.
+		 * The current roll of the car. (Banking/rolling) Values are not degrees, but a list of arbitrarily ordered angles. See Angles.h.
 		 */
 		roll: number
         
