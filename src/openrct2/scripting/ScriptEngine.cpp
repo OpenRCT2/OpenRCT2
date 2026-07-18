@@ -16,7 +16,6 @@
     #include "../actions/GameAction.hpp"
     #include "../actions/general/CustomAction.h"
     #include "../actions/peep/StaffHireNewAction.h"
-    #include "../actions/ride/RideDemolishAction.h"
     #include "../actions/scenery/BannerPlaceAction.h"
     #include "../actions/scenery/LargeSceneryPlaceAction.h"
     #include "../actions/scenery/WallPlaceAction.h"

@@ -25,7 +25,6 @@
     #include "../../../ride/RideManager.hpp"
     #include "../../../ride/TrainManager.h"
     #include "../../../ride/Vehicle.h"
-    #include "../../ScriptUtil.hpp"
     #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"
     #include "../entity/ScGuest.hpp"
