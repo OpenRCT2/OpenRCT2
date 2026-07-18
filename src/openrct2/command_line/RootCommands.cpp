@@ -15,10 +15,8 @@
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
-#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../localisation/Language.h"
 #include "../network/Network.h"
 #include "../object/ObjectRepository.h"
 #include "../park/ParkFile.h"
@@ -28,7 +26,6 @@
 #include "CommandLine.hpp"
 
 #include <ctime>
-#include <iterator>
 #include <string>
 
 #ifdef USE_BREAKPAD

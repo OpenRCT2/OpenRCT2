@@ -7,20 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../Context.h"
-#include "../../core/FileStream.h"
 #include "../../core/Json.hpp"
 #include "../../core/Path.hpp"
 #include "../../core/StringTypes.h"
-#include "../../drawing/Drawing.h"
-#include "../../object/Object.h"
-#include "../../object/ObjectFactory.h"
 #include "SpriteCommands.h"
 #include "SpriteFile.h"
 
 #include <cmath>
 #include <cstdint>
-#include <cstring>
 #include <sstream>
 
 namespace OpenRCT2::CommandLine::Sprite
