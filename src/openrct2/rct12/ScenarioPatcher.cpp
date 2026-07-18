@@ -10,6 +10,7 @@
 #include "ScenarioPatcher.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/GameActionResult.h"

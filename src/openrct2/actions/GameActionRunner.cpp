@@ -25,6 +25,8 @@
 #include "../ui/WindowManager.h"
 #include "../world/Scenery.h"
 
+#include <set>
+
 namespace OpenRCT2::GameActions
 {
     struct QueuedGameAction

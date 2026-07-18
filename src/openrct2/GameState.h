@@ -15,7 +15,6 @@
 #include "core/Random.hpp"
 #include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
-#include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"

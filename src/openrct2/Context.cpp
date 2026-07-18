@@ -14,6 +14,7 @@
 
 #include "AssetPackManager.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
@@ -50,7 +51,6 @@
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
-#include "localisation/Localisation.Date.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/Network.h"
@@ -68,12 +68,8 @@
 #include "scenario/ScenarioRepository.h"
 #include "scenes/SceneManager.h"
 #include "scenes/editor/EditorScene.h"
-#include "scenes/game/GameScene.h"
-#include "scenes/intro/IntroScene.h"
 #include "scenes/preloader/PreloaderScene.h"
-#include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequenceManager.h"
-#include "scripting/HookEngine.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
@@ -84,7 +80,6 @@
 #include <cmath>
 #include <exception>
 #include <future>
-#include <iterator>
 #include <memory>
 #include <string>
 

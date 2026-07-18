@@ -12,14 +12,7 @@
 #include "GameState.h"
 #include "actions/GameActionRunner.h"
 #include "actions/cheats/CheatSetAction.h"
-#include "actions/park/ParkSetLoanAction.h"
 #include "core/DataSerialiser.h"
-#include "network/Network.h"
-#include "ride/Ride.h"
-#include "world/Footpath.h"
-#include "world/Park.h"
-#include "world/Scenery.h"
-#include "world/Weather.h"
 
 using namespace OpenRCT2;
 
