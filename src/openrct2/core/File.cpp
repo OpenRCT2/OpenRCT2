@@ -12,8 +12,6 @@
         #define WIN32_LEAN_AND_MEAN
     #endif
     #include <windows.h>
-#else
-    #include <sys/stat.h>
 #endif
 
 #include "../Diagnostic.h"
@@ -21,8 +19,6 @@
 #include "File.h"
 #include "FileStream.h"
 #include "String.hpp"
-
-#include <fstream>
 
 namespace OpenRCT2::File
 {

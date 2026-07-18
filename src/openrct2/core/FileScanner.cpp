@@ -15,8 +15,6 @@
 #elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__)
     #include <dirent.h>
     #include <sys/stat.h>
-    #include <sys/types.h>
-    #include <unistd.h>
 #endif
 
 #include "../platform/Platform.h"

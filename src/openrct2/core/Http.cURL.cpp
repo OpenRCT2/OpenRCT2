@@ -12,12 +12,10 @@
     #include "Http.h"
 
     #include "../Version.h"
-    #include "../core/Console.hpp"
 
     #include <cstring>
     #include <memory>
     #include <stdexcept>
-    #include <thread>
 
     #if defined(_WIN32) && !defined(WIN32_LEAN_AND_MEAN)
         // cURL includes windows.h, but we don't need all of it.

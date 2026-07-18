@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "StringTypes.h"
-
 #include <istream>
 #include <memory>
 #include <stdexcept>
