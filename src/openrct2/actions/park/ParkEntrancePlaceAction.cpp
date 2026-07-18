@@ -32,6 +32,7 @@ namespace OpenRCT2::GameActions
         : _loc(location)
         , _pathType(pathType)
         , _entranceType(entranceType)
+        , _pathTypeIsLegacy(pathTypeIsLegacy)
     {
     }
 
