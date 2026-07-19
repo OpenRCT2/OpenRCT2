@@ -20,7 +20,6 @@
 #ifndef _WIN32
     #if defined(__linux__) || defined(__sun)
         #include <alloca.h>
-    #else
     #endif
     #include <unicode/unistr.h>
     #include <unicode/utypes.h>
