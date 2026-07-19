@@ -9,6 +9,12 @@
 
 #include "DefaultObjects.h"
 
+#include "ObjectLimits.h"
+#include "ObjectManager.h"
+#include "StationObject.h"
+
+using ObjectEntryIndex = uint16_t;
+
 namespace OpenRCT2
 {
     constexpr std::array<std::string_view, 3> kMinimumRequiredObjects = {
@@ -163,4 +169,23 @@ namespace OpenRCT2
         "rct2.terrain_edge.wood_black",
         "rct2.terrain_edge.ice",
     };
+
+    ObjectEntryIndex GetDefaultStationObject(IObjectManager& objectManager)
+    {
+        auto stationObjectIndex = objectManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+        if (stationObjectIndex != kObjectEntryIndexNull)
+        {
+            return stationObjectIndex;
+        }
+
+        for (ObjectEntryIndex i = 0; i < kMaxStationObjects; i++)
+        {
+            if (objectManager.GetLoadedObject<StationObject>(i) != nullptr)
+            {
+                return i;
+            }
+        }
+
+        return kObjectEntryIndexNull;
+    }
 } // namespace OpenRCT2

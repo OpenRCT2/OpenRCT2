@@ -267,6 +267,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Michael Hlas (mhlas7)
 * (byteraidhost)
 * Ray (RayKoopa)
+* James Cranston (jcranston)
 
 ## Toolchain
 * (Balletie) - macOS

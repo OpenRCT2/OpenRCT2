@@ -12,6 +12,7 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/CircularBuffer.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/CLITests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/CryptTests.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/DefaultObjectsTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Endianness.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/EnumMapTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/FormattingTests.cpp"
