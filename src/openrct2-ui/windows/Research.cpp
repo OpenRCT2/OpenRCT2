@@ -325,16 +325,16 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = getGameState();
         // Offset the widget index to allow reuse from other windows
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
-        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WidgetType::empty;
+        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].setHidden();
 
         // Display button to link to the last development, if there is one
+        const auto& gameState = getGameState();
         if (gameState.researchLastItem.has_value())
         {
             auto type = gameState.researchLastItem->type;
-            w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WidgetType::flatBtn;
+            w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].setVisible();
             const auto image = type == Research::EntryType::ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
             w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].image = ImageId(image);
         }
@@ -533,13 +533,13 @@ namespace OpenRCT2::Ui::Windows
 
         if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
         {
-            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WidgetType::empty;
-            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WidgetType::empty;
+            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].setHidden();
+            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].setHidden();
         }
         else
         {
-            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WidgetType::dropdownMenu;
-            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WidgetType::button;
+            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].setVisible();
+            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].setVisible();
         }
 
         // Current funding
