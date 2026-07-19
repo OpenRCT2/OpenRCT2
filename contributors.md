@@ -265,6 +265,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Alex Harvey (loonyduck1)
 * Daniel Rödl (danielroedl)
 * Michael Hlas (mhlas7)
+* (byteraidhost)
 
 ## Toolchain
 * (Balletie) - macOS
