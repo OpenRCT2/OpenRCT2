@@ -140,6 +140,10 @@ namespace OpenRCT2
         try
         {
             auto exporter = std::make_unique<ParkFileExporter>();
+            if (Config::Get().general.savePluginData)
+            {
+                exporter->ExportObjectsList = objManager.GetPackableObjects();
+            }
 
             // HACK remove the main window so it saves the park with the
             //      correct initial view
