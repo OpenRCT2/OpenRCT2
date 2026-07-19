@@ -2715,6 +2715,7 @@ namespace OpenRCT2
     void ParkFileExporter::Export(GameState_t& gameState, std::string_view path, int16_t compressionLevel)
     {
         auto parkFile = std::make_unique<ParkFile>();
+        parkFile->ExportObjectsList = ExportObjectsList;
         parkFile->Save(gameState, path, compressionLevel);
     }
 
