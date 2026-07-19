@@ -676,10 +676,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
 
-                    if (Network::GetMode() == Network::Mode::client)
-                    {
-                        widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WidgetType::empty;
-                    }
+                    widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].setHidden(Network::GetMode() == Network::Mode::client);
 
                     setCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, Config::Get().network.logChat);
                     setCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, Config::Get().network.logServerActions);
