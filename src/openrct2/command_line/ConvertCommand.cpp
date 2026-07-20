@@ -12,8 +12,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
-#include "../PlatformEnvironment.h"
-#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -23,8 +21,6 @@
 #include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 
-#include <cassert>
-#include <limits>
 #include <memory>
 
 using namespace OpenRCT2::CommandLine;

@@ -14,8 +14,6 @@
 #include "FileSystem.hpp"
 #include "String.hpp"
 
-#include <iterator>
-
 namespace OpenRCT2::Path
 {
     u8string Combine(u8string_view a, u8string_view b)

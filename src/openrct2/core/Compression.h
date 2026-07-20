@@ -9,11 +9,12 @@
 
 #pragma once
 
-#include "IStream.hpp"
-
 #include <cstdint>
-#include <cstdio>
-#include <vector>
+
+namespace OpenRCT2
+{
+    struct IStream;
+}
 
 namespace OpenRCT2::Compression
 {

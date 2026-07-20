@@ -12,9 +12,7 @@
 #include "StringTypes.h"
 
 #include <functional>
-#include <string>
 #include <thread>
-#include <vector>
 
 #ifdef _WIN32
     #include "FileSystem.hpp"

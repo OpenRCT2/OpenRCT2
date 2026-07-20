@@ -28,14 +28,11 @@
 
 #include "../Version.h"
 #include "Console.hpp"
-#include "Diagnostics.hpp"
 #include "Guard.hpp"
 #include "String.hpp"
 #include "StringBuilder.h"
 
 #include <cassert>
-#include <cstdarg>
-#include <cstdio>
 #include <cstdlib>
 #include <sstream>
 

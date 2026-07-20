@@ -22,7 +22,6 @@ struct IGameStateSnapshots;
 struct IScenarioRepository;
 struct ITrackDesignRepository;
 struct NewVersionInfo;
-struct TTFFontDescriptor;
 
 namespace OpenRCT2
 {
@@ -31,7 +30,6 @@ namespace OpenRCT2
 
     class AssetPackManager;
     class BackgroundWorker;
-    class Formatter;
     class Intent;
     class ISceneManager;
 

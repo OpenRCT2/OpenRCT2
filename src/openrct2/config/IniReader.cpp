@@ -14,7 +14,6 @@
 #include "../core/StringBuilder.h"
 
 #include <cctype>
-#include <initializer_list>
 #include <string>
 #include <unordered_map>
 #include <vector>
