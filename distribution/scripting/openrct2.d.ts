@@ -224,6 +224,11 @@ declare global {
         readonly mode: GameMode;
 
         /**
+         * Current game speed (0=normal, 1=fast, 2=turbo, 3=super fast, 4=hyper). Matches gamesetspeed action.
+         */
+        readonly gameSpeed: number;
+
+        /**
          * Whether the game is currently paused or not. Readonly in network mode.
          */
         paused: boolean;
@@ -1842,8 +1847,13 @@ declare global {
         station: number | null;
 
         addition: number | null;
+        /**
+         * Raw path addition status: 2-bit slot per edge (3 = empty, 0 = full), 255 = all empty.
+         */
         additionStatus: number | null;
         isAdditionBroken: boolean | null;
+        /** True when a litter bin has a fully-filled slot (visibly full / emptiable). Null if not a bin. */
+        readonly isAdditionFull: boolean | null;
         isAdditionGhost: boolean | null;
     }
 
@@ -2464,6 +2474,25 @@ declare global {
         readonly downtime: number;
 
         /**
+         * Reliability percentage shown on the Maintenance tab (0–100).
+         */
+        readonly reliability: number;
+
+        /**
+         * Number of guests currently on the ride (vehicles and queue cars).
+         */
+        readonly guestCount: number;
+
+        /** True when no guests are currently on the ride. */
+        readonly isEmpty: boolean;
+
+        /** Current hourly income shown on the ride Finance tab. */
+        readonly incomePerHour: number;
+
+        /** Current hourly profit shown on the ride Finance tab. */
+        readonly profit: number;
+
+        /**
          * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert speed values to a localised value/unit string. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
          */
         liftHillSpeed: number;
@@ -2584,6 +2613,8 @@ declare global {
         length: number;
         entrance: CoordsXYZD;
         exit: CoordsXYZD;
+        /** Queue wait time in minutes for this station. */
+        readonly queueTime: number;
     }
 
     interface TrackSegment {

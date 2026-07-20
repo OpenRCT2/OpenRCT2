@@ -16,6 +16,7 @@
     #include "../../../drawing/ScrollingText.h"
     #include "../../../entity/EntityRegistry.h"
     #include "../../../object/LargeSceneryEntry.h"
+    #include "../../../object/PathAdditionEntry.h"
     #include "../../../object/WallSceneryEntry.h"
     #include "../../../ride/Ride.h"
     #include "../../../ride/RideData.h"
@@ -2090,6 +2091,31 @@ namespace OpenRCT2::Scripting
         return JS_UNDEFINED;
     }
 
+    JSValue ScTileElement::isAdditionFull_get(JSContext* ctx, JSValue thisValue)
+    {
+        auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
+        auto* el = data->element->asPath();
+        if (el == nullptr || !el->HasAddition() || el->IsQueue())
+            return JS_NULL;
+
+        const auto* additionEntry = el->GetAdditionEntry();
+        if (additionEntry == nullptr || !(additionEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
+            return JS_NULL;
+
+        // Each path edge has a 2-bit slot (0 = full, 3 = empty); a bin is only "full" once a
+        // slot on an open edge reaches 0. Matches Staff::updatePatrollingFindBin.
+        uint8_t binEdges = el->GetEdges();
+        uint8_t binStatus = el->GetAdditionStatus();
+        for (int32_t i = 0; i < 4; ++i)
+        {
+            if (!(binEdges & 1) && !(binStatus & 3))
+                return JS_NewBool(ctx, true);
+            binEdges >>= 1;
+            binStatus >>= 2;
+        }
+        return JS_NewBool(ctx, false);
+    }
+
     JSValue ScTileElement::isAdditionGhost_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
@@ -2486,6 +2512,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("addition", ScTileElement::addition_get, ScTileElement::addition_set),
             JS_CGETSET_DEF("additionStatus", ScTileElement::additionStatus_get, ScTileElement::additionStatus_set),
             JS_CGETSET_DEF("isAdditionBroken", ScTileElement::isAdditionBroken_get, ScTileElement::isAdditionBroken_set),
+            JS_CGETSET_DEF("isAdditionFull", ScTileElement::isAdditionFull_get, nullptr),
             JS_CGETSET_DEF("isAdditionGhost", ScTileElement::isAdditionGhost_get, ScTileElement::isAdditionGhost_set),
 
             // Track only
