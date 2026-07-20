@@ -9,7 +9,6 @@
 
 #include "../core/Guard.hpp"
 #include "Drawing.h"
-#include "PaletteIndex.h"
 
 using OpenRCT2::Drawing::PaletteIndex;
 

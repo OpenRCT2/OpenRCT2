@@ -23,15 +23,18 @@
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/Weather.h"
+#include "Drawing.Sprite.h"
+#include "FilterPaletteIds.h"
 #include "Font.h"
 #include "LightFX.h"
+#include "NewDrawing.h"
 #include "Rectangle.h"
+#include "RenderTarget.h"
 #include "Text.h"
 
 #include <array>
 #include <cassert>
 #include <cstring>
-#include <numeric>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

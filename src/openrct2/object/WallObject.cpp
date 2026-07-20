@@ -17,6 +17,7 @@
 #include "../drawing/ScrollingText.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "../world/Location.hpp"
 
 namespace OpenRCT2
 {

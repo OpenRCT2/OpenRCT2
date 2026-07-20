@@ -15,6 +15,7 @@
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
+#include "RenderTarget.h"
 
 using OpenRCT2::Drawing::IDrawingContext;
 

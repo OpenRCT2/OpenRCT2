@@ -21,7 +21,7 @@
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/ImageImporter.h"
 #include "Object.h"
 #include "ObjectFactory.h"

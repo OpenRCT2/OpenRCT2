@@ -24,8 +24,10 @@
 #include <openrct2/actions/peep/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/terraform/SurfaceSetStyleAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityList.h>

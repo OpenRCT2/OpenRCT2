@@ -19,10 +19,11 @@
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
-#include "../platform/Platform.h"
+#include "../interface/ZoomLevel.h"
 #include "../rct1/Csg.h"
 #include "../ui/UiContext.h"
 #include "Drawing.h"
+#include "RenderTarget.h"
 #include "ScrollingText.h"
 
 #include <cassert>

@@ -16,6 +16,7 @@
 #include "../core/UTF8.h"
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/FilterPaletteIds.h"
 #include "../drawing/Rectangle.h"
 #include "../drawing/Text.h"
 #include "../interface/ColourWithFlags.h"

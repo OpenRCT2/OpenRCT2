@@ -7,13 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../drawing/Drawing.String.h"
+#include "Drawing.String.h"
 
-#include "../Context.h"
-#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/CodepointView.hpp"
-#include "../core/String.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
 #include "../drawing/ColourMap.h"
@@ -22,10 +19,12 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
 #include "../interface/ColourWithFlags.h"
-#include "../interface/Viewport.h"
+#include "../interface/Window.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"
+#include "Drawing.Sprite.h"
+#include "RenderTarget.h"
 #include "TTF.h"
 
 namespace OpenRCT2::Drawing

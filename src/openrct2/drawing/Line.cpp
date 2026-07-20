@@ -8,9 +8,9 @@
  *****************************************************************************/
 
 #include "Drawing.h"
+#include "RenderTarget.h"
 
 #include <cmath>
-#include <cstdlib>
 
 using namespace OpenRCT2::Drawing;
 

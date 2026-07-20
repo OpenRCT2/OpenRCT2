@@ -12,10 +12,8 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "../drawing/G1Element.h"
 #include "../world/Location.hpp"
-
-struct Image;
+#include "G1Element.h"
 
 namespace OpenRCT2::Drawing
 {

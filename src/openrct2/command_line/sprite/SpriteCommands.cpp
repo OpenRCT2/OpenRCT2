@@ -10,8 +10,10 @@
 #include "SpriteCommands.h"
 
 #include "../../OpenRCT2.h"
+#include "../../core/Imaging.h"
 #include "../../core/String.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Sprite.h"
+#include "../../drawing/RenderTarget.h"
 #include "../CommandLine.hpp"
 
 #include <cstring>
