@@ -36,6 +36,7 @@
     #include <openrct2/drawing/IDrawingEngine.h>
     #include <openrct2/drawing/InvalidationGrid.h>
     #include <openrct2/drawing/LightFX.h>
+    #include <openrct2/drawing/TTF.h>
     #include <openrct2/drawing/WeatherDrawer.h>
     #include <openrct2/interface/Screenshot.h>
     #include <openrct2/ui/UiContext.h>
