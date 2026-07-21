@@ -14,6 +14,8 @@ using OpenRCT2::Drawing::PaletteIndex;
 
 #ifdef __SSE4_1__
 
+    #include "Drawing.Sprite.h"
+
     #include <immintrin.h>
 
 void MaskSse4_1(

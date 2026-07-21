@@ -14,6 +14,8 @@ using OpenRCT2::Drawing::PaletteIndex;
 
 #ifdef __AVX2__
 
+    #include "Drawing.Sprite.h"
+
     #include <immintrin.h>
 
 void MaskAvx2(
