@@ -8,13 +8,12 @@
  *****************************************************************************/
 
 #include "../core/Guard.hpp"
-#include "Drawing.h"
+#include "Drawing.Sprite.h"
+#include "PaletteIndex.h"
 
 using OpenRCT2::Drawing::PaletteIndex;
 
 #ifdef __AVX2__
-
-    #include "Drawing.Sprite.h"
 
     #include <immintrin.h>
 

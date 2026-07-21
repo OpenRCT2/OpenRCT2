@@ -19,7 +19,6 @@
 #include "../core/Guard.hpp"
 #include "../object/ObjectEntryManager.h"
 #include "../object/WaterEntry.h"
-#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/Weather.h"
@@ -476,34 +475,6 @@ ImageCatalogue ImageId::GetCatalogue() const
         return ImageCatalogue::OBJECT;
     }
     return ImageCatalogue::UNKNOWN;
-}
-
-static auto GetMaskFunction()
-{
-    if (Platform::AVX2Available())
-    {
-        LOG_VERBOSE("registering AVX2 mask function");
-        return MaskAvx2;
-    }
-    else if (Platform::SSE41Available())
-    {
-        LOG_VERBOSE("registering SSE4.1 mask function");
-        return MaskSse4_1;
-    }
-    else
-    {
-        LOG_VERBOSE("registering scalar mask function");
-        return MaskScalar;
-    }
-}
-
-static const auto MaskFunc = GetMaskFunction();
-
-void MaskFn(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
-{
-    MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
 void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
