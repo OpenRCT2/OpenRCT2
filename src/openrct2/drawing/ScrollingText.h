@@ -19,11 +19,6 @@ using StringId = uint16_t;
 
 constexpr uint8_t kScrollingModeNone = 255;
 
-namespace OpenRCT2
-{
-    class Formatter;
-}
-
 namespace OpenRCT2::Drawing
 {
     enum class PaletteIndex : uint8_t;

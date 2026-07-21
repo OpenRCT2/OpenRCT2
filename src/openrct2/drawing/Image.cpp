@@ -12,9 +12,9 @@
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../core/Console.hpp"
 #include "../core/Guard.hpp"
-#include "Drawing.h"
+#include "Drawing.Sprite.h"
+#include "NewDrawing.h"
 
 #include <algorithm>
 #include <list>

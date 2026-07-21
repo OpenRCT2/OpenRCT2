@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ZoomLevel.h"
 #include "Drawing.Sprite.h"
+#include "RenderTarget.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

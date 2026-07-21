@@ -14,7 +14,6 @@
 #include "ImageId.hpp"
 #include "PaletteIndex.h"
 #include "PaletteMap.h"
-#include "RenderTarget.h"
 
 #include <cstdint>
 #include <optional>
@@ -26,6 +25,11 @@ namespace OpenRCT2
 {
     struct IPlatformEnvironment;
 } // namespace OpenRCT2
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+} // namespace OpenRCT2::Drawing
 
 using DrawBlendOp = uint8_t;
 

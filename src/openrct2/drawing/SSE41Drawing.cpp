@@ -9,11 +9,12 @@
 
 #include "../core/Guard.hpp"
 #include "Drawing.h"
-#include "PaletteIndex.h"
 
 using OpenRCT2::Drawing::PaletteIndex;
 
 #ifdef __SSE4_1__
+
+    #include "Drawing.Sprite.h"
 
     #include <immintrin.h>
 

@@ -9,7 +9,8 @@
 
 #include "CarEntry.h"
 
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Sprite.h"
+#include "../drawing/RenderTarget.h"
 #include "../entity/Yaw.hpp"
 
 #include <cstdint>

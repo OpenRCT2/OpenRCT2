@@ -18,7 +18,6 @@
 #include <cstdint>
 
 using StringId = uint16_t;
-struct ScreenCoordsXY;
 
 enum class FontStyle : uint8_t;
 enum class TextDarkness : uint8_t;

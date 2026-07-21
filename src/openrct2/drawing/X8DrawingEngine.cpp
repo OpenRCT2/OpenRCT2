@@ -9,22 +9,21 @@
 
 #include "X8DrawingEngine.h"
 
-#include "../Context.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
+#include "../interface/ColourWithFlags.h"
 #include "../interface/Screenshot.h"
-#include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../scenes/intro/IntroScene.h"
-#include "../ui/UiContext.h"
 #include "BlendColourMap.h"
+#include "Drawing.Sprite.h"
 #include "Drawing.String.h"
 #include "Drawing.h"
-#include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "InvalidationGrid.h"
 #include "LightFX.h"
+#include "TTF.h"
 #include "WeatherDrawer.h"
 
 #include <algorithm>

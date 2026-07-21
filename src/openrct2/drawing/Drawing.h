@@ -10,39 +10,24 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
-#include "../core/StringTypes.h"
-#include "../interface/ZoomLevel.h"
-#include "../world/Location.hpp"
+#include "Colour.h"
 #include "ColourPalette.h"
-#include "Drawing.Sprite.h"
-#include "FilterPaletteIds.h"
-#include "G1Element.h"
 #include "ImageId.hpp"
 #include "PaletteMap.h"
-#include "RenderTarget.h"
 
-#include <array>
-#include <memory>
 #include <optional>
 #include <span>
-#include <vector>
 
 struct ScreenCoordsXY;
 struct ScreenLine;
 struct ScreenRect;
 
-namespace OpenRCT2
-{
-    struct ColourWithFlags;
-    struct IPlatformEnvironment;
-    struct IStream;
-} // namespace OpenRCT2
-
 namespace OpenRCT2::Drawing
 {
-    struct IDrawingEngine;
     enum class FilterPaletteID : int32_t;
     enum class PaletteIndex : uint8_t;
+
+    struct RenderTarget;
 } // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::Drawing
@@ -123,5 +108,3 @@ void RefreshVideo();
 void ToggleWindowedMode();
 
 void DebugRT(OpenRCT2::Drawing::RenderTarget& rt);
-
-#include "NewDrawing.h"

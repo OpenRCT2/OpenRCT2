@@ -18,6 +18,7 @@
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/RenderTarget.h"
 #include "../interface/Cursors.h"
 #include "../ride/RideAudio.h"
 #include "../ui/UiContext.h"

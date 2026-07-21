@@ -41,6 +41,7 @@
 #include "core/String.hpp"
 #include "core/Timer.hpp"
 #include "drawing/ColourMap.h"
+#include "drawing/Drawing.Sprite.h"
 #include "drawing/Drawing.h"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
