@@ -28,6 +28,7 @@
 
 #include "../Version.h"
 #include "Console.hpp"
+#include "Diagnostics.hpp"
 #include "Guard.hpp"
 #include "String.hpp"
 #include "StringBuilder.h"
