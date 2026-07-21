@@ -326,28 +326,33 @@ namespace OpenRCT2::GameActions
                         Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
                 }
 
-                auto waterHeight = surfaceElement->GetWaterHeight();
-                if (waterHeight == 0)
+                if (!gameState.cheats.disableClearanceChecks)
                 {
-                    return Result(
-                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
-                }
-
-                if (waterHeight != baseZ)
-                {
-                    return Result(
-                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
-                }
-                waterHeight -= kLandHeightStep;
-                if (waterHeight == surfaceElement->getBaseZ())
-                {
-                    uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
-                    if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
-                        || slope == kTileSlopeNCornerDown)
+                    auto waterHeight = surfaceElement->GetWaterHeight();
+                    if (waterHeight == 0)
                     {
                         return Result(
                             Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                             STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                    }
+
+                    if (waterHeight != baseZ)
+                    {
+                        return Result(
+                            Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                            STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                    }
+                    waterHeight -= kLandHeightStep;
+                    if (waterHeight == surfaceElement->getBaseZ())
+                    {
+                        uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
+                        if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
+                            || slope == kTileSlopeNCornerDown)
+                        {
+                            return Result(
+                                Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                                STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                        }
                     }
                 }
             }
