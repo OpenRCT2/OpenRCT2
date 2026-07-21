@@ -101,7 +101,7 @@ namespace OpenRCT2::GameActions
         {
             return res2;
         }
-        if (surfaceElement->HasTrackThatNeedsWater())
+        if (surfaceElement->HasTrackThatNeedsWater() && !gameState.cheats.disableClearanceChecks)
         {
             return Result(Status::disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
         }

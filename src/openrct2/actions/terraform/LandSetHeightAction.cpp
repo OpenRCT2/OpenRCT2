@@ -116,16 +116,16 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
         }
 
-        TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
-        if (tileElement != nullptr)
-        {
-            auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
-            MapGetObstructionErrorText(tileElement, res);
-            return res;
-        }
-
         if (!gameState.cheats.disableClearanceChecks)
         {
+            TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
+            if (tileElement != nullptr)
+            {
+                auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
+                MapGetObstructionErrorText(tileElement, res);
+                return res;
+            }
+
             uint8_t zCorner = _height;
             if (_style & kTileSlopeRaisedCornersMask)
             {
