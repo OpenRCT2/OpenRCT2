@@ -5,7 +5,6 @@
 
 namespace OpenRCT2
 {
-    class DataSerialiser;
 
     enum class EntityType : uint8_t
     {

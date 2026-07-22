@@ -9,15 +9,11 @@
 
 #include "Balloon.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
-#include "../network/Network.h"
-#include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
-#include "../world/Map.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"

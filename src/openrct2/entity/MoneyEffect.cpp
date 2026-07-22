@@ -14,7 +14,6 @@
 #include "../OpenRCT2.h"
 #include "../core/DataSerialiser.h"
 #include "../drawing/Drawing.String.h"
-#include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Formatting.h"

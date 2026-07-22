@@ -12,8 +12,7 @@
 #include "../Identifiers.h"
 #include "../entity/EntityBase.h"
 #include "../localisation/StringIdType.h"
-#include "../ride/RideTypes.h"
-#include "../ride/Station.h"
+#include "../object/ObjectTypes.h"
 #include "../world/Location.hpp"
 
 #include <array>
@@ -34,7 +33,6 @@ namespace OpenRCT2::Drawing
 
 namespace OpenRCT2
 {
-    class DataSerialiser;
     class Formatter;
     struct TileElement;
 
@@ -304,7 +302,6 @@ namespace OpenRCT2
     };
 
     struct Guest;
-    struct Staff;
 
     struct Peep : EntityBase
     {

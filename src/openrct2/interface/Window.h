@@ -33,7 +33,6 @@ namespace OpenRCT2
     struct WindowBase;
     struct WindowCloseModifier;
 
-
     struct WindowIdentifier
     {
         WindowClass classification;
