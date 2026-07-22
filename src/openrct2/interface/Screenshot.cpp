@@ -15,10 +15,8 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../actions/cheats/CheatSetAction.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
-#include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/File.h"
 #include "../core/Imaging.h"
@@ -28,18 +26,16 @@
 #include "../drawing/NewDrawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
-#include "../paint/Painter.h"
 #include "../paint/tile_element/Paint.TileElement.h"
+#include "../paint/Paint.h"
 #include "../platform/Platform.h"
 #include "../world/Map.h"
-#include "../world/Park.h"
 #include "../world/TileElementsView.h"
 #include "../world/Weather.h"
 #include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "Viewport.h"
 
-#include <cctype>
-#include <chrono>
 #include <cstdlib>
 #include <memory>
 #include <optional>

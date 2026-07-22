@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
@@ -47,7 +46,6 @@
 
 #include <cstring>
 #include <list>
-#include <unordered_map>
 
 namespace OpenRCT2
 {

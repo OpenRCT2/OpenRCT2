@@ -16,6 +16,16 @@
 #include <openrct2/world/Location.hpp>
 #include <vector>
 
+namespace OpenRCT2
+{
+    struct TextInputSession;
+}
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
+
 namespace OpenRCT2::Ui
 {
     class InGameConsole final : public InteractiveConsole
