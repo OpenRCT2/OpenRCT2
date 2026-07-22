@@ -15,6 +15,7 @@
 #include "Object.h"
 
 struct CoordsXY;
+struct ImageId;
 
 namespace OpenRCT2
 {

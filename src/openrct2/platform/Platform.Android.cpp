@@ -16,6 +16,7 @@
     #include "../core/Guard.hpp"
     #include "../core/IStream.hpp"
     #include "../core/String.hpp"
+    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
     #include <SDL.h>

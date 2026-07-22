@@ -14,6 +14,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
+#include "../drawing/Colour.h"
 #include "../entity/JumpingFountain.h"
 #include "../management/Research.h"
 #include "../object/Object.h"

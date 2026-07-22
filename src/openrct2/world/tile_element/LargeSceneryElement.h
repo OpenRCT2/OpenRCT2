@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../drawing/Colour.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/LargeSceneryObject.h"
 #include "TileElementBase.h"
