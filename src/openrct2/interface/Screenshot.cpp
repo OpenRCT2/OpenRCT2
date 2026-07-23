@@ -26,6 +26,7 @@
 #include "../drawing/NewDrawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/StringIds.h"
 #include "../paint/Paint.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../platform/Platform.h"

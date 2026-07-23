@@ -10,6 +10,7 @@
 #include "Award.h"
 
 #include "../GameState.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
