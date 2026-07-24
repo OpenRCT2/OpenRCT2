@@ -32,6 +32,7 @@ static const EnumMap<HookType> HooksLookupTable(
         { "vehicle.crash", HookType::vehicleCrash },
         { "map.change", HookType::mapChange },
         { "map.changed", HookType::mapChanged },
+        { "map.resize", HookType::mapResize },
         { "map.save", HookType::mapSave },
         { "park.guest.softcap.calculate", HookType::parkCalculateGuestCap },
         { "ride.breakdown", HookType::rideBreakDown },

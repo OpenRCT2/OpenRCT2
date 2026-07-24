@@ -39,6 +39,7 @@ namespace OpenRCT2::Scripting
         vehicleCrash,
         mapChange,
         mapChanged,
+        mapResize,
         mapSave,
         parkCalculateGuestCap,
         rideBreakDown,
