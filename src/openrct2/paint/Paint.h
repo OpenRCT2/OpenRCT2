@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../core/Money.hpp"
 #include "../drawing/FilterPaletteIds.h"
 #include "../drawing/ImageId.hpp"
@@ -158,6 +159,7 @@ struct PaintSessionCore
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
+    sfl::static_vector<EntityId, 256> ActiveSplashBoatPaintVehicleIds;
     sfl::static_vector<TunnelEntry, kTunnelMaxCount> LeftTunnels;
     sfl::static_vector<TunnelEntry, kTunnelMaxCount> RightTunnels;
     uint8_t VerticalTunnelHeight;

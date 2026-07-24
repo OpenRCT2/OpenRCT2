@@ -187,6 +187,7 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
     session->LastPSString = nullptr;
     session->WoodenSupportsPrependTo = nullptr;
     session->CurrentlyDrawnEntity = nullptr;
+    session->ActiveSplashBoatPaintVehicleIds.clear();
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
     session->SelectedElement = TileInspector::GetSelectedElement();

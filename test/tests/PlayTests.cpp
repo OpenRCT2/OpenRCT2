@@ -9,6 +9,7 @@
 
 #include "TestData.h"
 
+#include <array>
 #include <gtest/gtest.h>
 #include <memory>
 #include <openrct2/Context.h>
@@ -23,12 +24,17 @@
 #include <openrct2/actions/ride/RideSetPriceAction.h>
 #include <openrct2/actions/ride/RideSetStatusAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/RenderTarget.h>
+#include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/paint/Paint.h>
+#include <openrct2/paint/entity/Paint.Vehicle.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideManager.hpp>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
 #include <string>
@@ -210,4 +216,100 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
         ASSERT_LE(numRiding, 2);
         gameStateUpdateLogic();
     }
+}
+
+TEST_F(PlayTests, MalformedSplashBoatsCanBePainted)
+{
+    struct OpenRCT2FlagsGuard
+    {
+        bool Headless;
+        bool NoGraphics;
+
+        ~OpenRCT2FlagsGuard()
+        {
+            gOpenRCT2Headless = Headless;
+            gOpenRCT2NoGraphics = NoGraphics;
+        }
+    } flagsGuard{ gOpenRCT2Headless, gOpenRCT2NoGraphics };
+
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
+
+    auto context = CreateContext();
+    ASSERT_TRUE(context->Initialise());
+    ASSERT_TRUE(GetContext()->LoadParkFromFile(TestData::GetParkPath("issue26802_splash_boats_recursion.park")));
+    GameLoadInit();
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
+    {
+        execute<GameActions::RideSetStatusAction>(ride.id, RideStatus::testing);
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        gameStateUpdateLogic();
+    }
+
+    std::array<OpenRCT2::Drawing::PaletteIndex, 1024> pixels{};
+    OpenRCT2::Drawing::RenderTarget rt{};
+    rt.bits = pixels.data();
+    rt.width = 32;
+    rt.height = 32;
+    rt.cullingWidth = rt.width;
+    rt.cullingHeight = rt.height;
+
+    std::unique_ptr<PaintSession, decltype(&PaintSessionFree)> session(PaintSessionAlloc(rt, 0, 0), PaintSessionFree);
+    ASSERT_NE(session.get(), nullptr);
+
+    size_t paintedVehicles = 0;
+    bool foundSplashBoatPaintCycle = false;
+    for (auto* vehicle : EntityList<Vehicle>())
+    {
+        auto* rideEntry = vehicle->GetRideEntry();
+        ASSERT_NE(rideEntry, nullptr);
+
+        auto carEntryIndex = vehicle->vehicle_type;
+        if (vehicle->flags.has(VehicleFlag::carIsInverted))
+        {
+            carEntryIndex++;
+        }
+        ASSERT_LT(carEntryIndex, std::size(rideEntry->Cars));
+        const auto& carEntry = rideEntry->Cars[carEntryIndex];
+
+        if (carEntry.PaintStyle == VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER)
+        {
+            auto& entityRegistry = getGameState().entities;
+            auto* vehicleToPaint = vehicle->IsHead() ? entityRegistry.GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
+                                                     : entityRegistry.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            if (vehicleToPaint != nullptr)
+            {
+                auto* nextRideEntry = vehicleToPaint->GetRideEntry();
+                ASSERT_NE(nextRideEntry, nullptr);
+
+                auto nextCarEntryIndex = vehicleToPaint->vehicle_type;
+                if (vehicleToPaint->flags.has(VehicleFlag::carIsInverted))
+                {
+                    nextCarEntryIndex++;
+                }
+                ASSERT_LT(nextCarEntryIndex, std::size(nextRideEntry->Cars));
+
+                auto* nextVehicleToPaint = vehicleToPaint->IsHead()
+                    ? entityRegistry.GetEntity<Vehicle>(vehicleToPaint->next_vehicle_on_ride)
+                    : entityRegistry.GetEntity<Vehicle>(vehicleToPaint->prev_vehicle_on_ride);
+                foundSplashBoatPaintCycle |= nextVehicleToPaint == vehicle
+                    && nextRideEntry->Cars[nextCarEntryIndex].PaintStyle == VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER;
+            }
+        }
+
+        session->CurrentlyDrawnEntity = vehicle;
+        session->SpritePosition.x = vehicle->x;
+        session->SpritePosition.y = vehicle->y;
+
+        const auto imageDirection = (vehicle->orientation & 0x1F);
+        PaintVehicle(*session, *vehicle, imageDirection);
+        paintedVehicles++;
+    }
+
+    ASSERT_GT(paintedVehicles, 0u);
+    ASSERT_TRUE(foundSplashBoatPaintCycle);
 }
