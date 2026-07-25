@@ -427,6 +427,7 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
 
 [[nodiscard]] Vehicle::UpdateMiniGolfSubroutineStatus Vehicle::Loc6DCA9A(const Ride& curRide)
 {
+    bool stuck = false;
     while (true)
     {
         if (track_progress == 0)
@@ -440,8 +441,12 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
                 remaining_distance = -1;
                 acceleration += Geometry::getAccelerationFromPitch(pitch);
                 _vehicleUnkF64E10++;
+                if (stuck)
+                    return UpdateMiniGolfSubroutineStatus::stop;
+                stuck = true;
                 continue;
             }
+            stuck = false;
             CoordsXYZ trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
             auto direction = trackBeginEnd.begin_direction;
             tileElement = trackBeginEnd.begin_element;
