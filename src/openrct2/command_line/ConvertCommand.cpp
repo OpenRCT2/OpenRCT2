@@ -28,11 +28,13 @@ using namespace OpenRCT2::CommandLine;
 namespace OpenRCT2
 {
     static int32_t _compressLevel = kParkFileSaveCompressionLevel;
+    static bool _stripObjects = false;
 
     // clang-format off
     static constexpr CommandLineOptionDefinition kConvertOptions[]
     {
         { CMDLINE_TYPE_INTEGER, &_compressLevel, 'l', "compress-level", "The compression level to use when writing the converted file" },
+        { CMDLINE_TYPE_SWITCH, &_stripObjects, kNAC, "strip-objects", "do not pack custom objects into the converted file" },
         kOptionTableEnd
     };
 
@@ -140,7 +142,7 @@ namespace OpenRCT2
         try
         {
             auto exporter = std::make_unique<ParkFileExporter>();
-            if (Config::Get().general.savePluginData)
+            if (!_stripObjects)
             {
                 exporter->ExportObjectsList = objManager.GetPackableObjects();
             }
