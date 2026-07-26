@@ -47,3 +47,9 @@ void TwisterRCTrackLeftLargeHalfLoopDown(
 void TwisterRCTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const OpenRCT2::TrackElement& trackElement, SupportType supportType);
+void TwisterRCTrack90DegToInvertedFlatQuarterLoopUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
+void TwisterRCTrackInvertedFlatTo90DegQuarterLoopDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
