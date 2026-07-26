@@ -620,6 +620,8 @@ bool ClipRenderTarget(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY
     return false;
 }
 
+constexpr std::array<int8_t, 3> kPickedUpPeepYOffsets = { 0, 16, 48 };
+
 void GfxInvalidatePickedUpPeep()
 {
     auto imageId = gPickupPeepImage;
@@ -628,10 +630,14 @@ void GfxInvalidatePickedUpPeep()
         auto* g1 = GfxGetG1Element(imageId);
         if (g1 != nullptr)
         {
-            int32_t left = gPickupPeepX + g1->xOffset;
-            int32_t top = gPickupPeepY + g1->yOffset;
-            int32_t right = left + g1->width;
-            int32_t bottom = top + g1->height;
+            auto zoom = gPickupPeepZoom;
+            auto xOffset = -int8_t(gPickupPeepZoom);
+            auto yOffset = kPickedUpPeepYOffsets[xOffset];
+
+            int32_t left = zoom.ApplyTo(gPickupPeepX + g1->xOffset + xOffset);
+            int32_t top = zoom.ApplyTo(gPickupPeepY + g1->yOffset + yOffset);
+            int32_t right = left + zoom.ApplyTo(g1->width);
+            int32_t bottom = top + zoom.ApplyTo(g1->height);
             GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
         }
     }
@@ -644,11 +650,9 @@ void GfxDrawPickedUpPeep(RenderTarget& rt)
 
     assert(rt.zoom_level == ZoomLevel{ 0 });
 
-    constexpr std::array<int8_t, 3> kYOffset = { 0, 16, 48 };
-
     auto zoom = gPickupPeepZoom;
     auto xOffset = -int8_t(gPickupPeepZoom);
-    auto yOffset = kYOffset[xOffset];
+    auto yOffset = kPickedUpPeepYOffsets[xOffset];
 
     auto pos = ScreenCoordsXY{ zoom.ApplyTo(gPickupPeepX + xOffset), zoom.ApplyTo(gPickupPeepY + yOffset) };
 
