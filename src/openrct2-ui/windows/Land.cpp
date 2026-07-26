@@ -80,6 +80,8 @@ namespace OpenRCT2::Ui::Windows
         bool _landToolBlocked = false;
         bool _landToolMountainMode = false;
         bool _landToolPaintMode = false;
+        bool _landToolPaintDragging{};
+        uint8_t _landToolPaintSide{};
 
         money64 _landToolRaiseCost = kMoney64Undefined;
         money64 _landToolLowerCost = kMoney64Undefined;
@@ -454,11 +456,24 @@ namespace OpenRCT2::Ui::Windows
 
         int8_t ToolUpdateLandPaint(const ScreenCoordsXY& screenPos)
         {
+            const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
+            uint8_t side{};
+
             uint8_t state_changed = 0;
 
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
-            auto mapTile = ScreenGetMapXY(screenPos, nullptr);
+            auto mapTile = ScreenGetMapXYSide(screenPos, &side);
+
+            // Retain paint side while dragging
+            if (_landToolPaintDragging)
+            {
+                side = _landToolPaintSide;
+            }
+            else
+            {
+                _landToolPaintSide = side;
+            }
 
             if (!mapTile.has_value())
             {
@@ -477,13 +492,38 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
+            MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+            if (gMapSelectType != selectedSide && mapCtrlPressed)
+            {
+                gMapSelectType = selectedSide;
+                state_changed++;
+            }
+
             int16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
             int16_t tool_length = (tool_size - 1) * 32;
 
-            // Move to tool bottom left
-            mapTile->x -= (tool_size - 1) * 16;
-            mapTile->y -= (tool_size - 1) * 16;
-            mapTile = mapTile->ToTileStart();
+            // Decide on shape of the brush for bigger selection size
+            switch (gMapSelectType)
+            {
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
+                    // Line
+                    mapTile->y -= (tool_size - 1) * 16;
+                    mapTile->y = mapTile->ToTileStart().y;
+                    break;
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
+                    // Line
+                    mapTile->x -= (tool_size - 1) * 16;
+                    mapTile->x = mapTile->ToTileStart().x;
+                    break;
+                default:
+                    // Move to tool bottom left
+                    mapTile->x -= (tool_size - 1) * 16;
+                    mapTile->y -= (tool_size - 1) * 16;
+                    mapTile = mapTile->ToTileStart();
+                    break;
+            }
 
             if (gMapSelectPositionA.x != mapTile->x)
             {
@@ -497,8 +537,26 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            mapTile->x += tool_length;
-            mapTile->y += tool_length;
+            // Go to other side
+            switch (gMapSelectType)
+            {
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
+                    // Line
+                    mapTile->y += tool_length;
+                    gMapSelectType = MapSelectType::full;
+                    break;
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
+                    // Line
+                    mapTile->x += tool_length;
+                    gMapSelectType = MapSelectType::full;
+                    break;
+                default:
+                    mapTile->x += tool_length;
+                    mapTile->y += tool_length;
+                    break;
+            }
 
             if (gMapSelectPositionB.x != mapTile->x)
             {
@@ -561,6 +619,7 @@ namespace OpenRCT2::Ui::Windows
                     // Custom setting to only change land style instead of raising or lowering land
                     if (_landToolPaintMode)
                     {
+                        _landToolPaintDragging = true;
                         if (gMapSelectFlags.has(MapSelectFlag::enable))
                         {
                             auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
@@ -594,6 +653,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::digDown;
+                    _landToolPaintDragging = false;
                     break;
             }
         }

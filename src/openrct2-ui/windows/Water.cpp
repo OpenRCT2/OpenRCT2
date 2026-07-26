@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -294,8 +296,11 @@ namespace OpenRCT2::Ui::Windows
          */
         void ToolUpdateWater(const ScreenCoordsXY& screenPos)
         {
+            const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
             auto* windowMgr = GetWindowManager();
+
             auto& gameState = getGameState();
+            uint8_t side{};
 
             if (gCurrentToolId == Tool::upDownArrow)
             {
@@ -344,6 +349,8 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
+            ScreenGetMapXYSide(screenPos, &side);
+
             if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
@@ -356,13 +363,38 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
+            MapSelectType selectedSide = getMapSelectEdge(side & 0xFF);
+            if (gMapSelectType != selectedSide && mapCtrlPressed)
+            {
+                gMapSelectType = selectedSide;
+                state_changed++;
+            }
+
             uint16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
             uint16_t tool_length = (tool_size - 1) * kCoordsXYStep;
 
-            // Move to tool bottom left
-            mapTile.x -= tool_length / 2;
-            mapTile.y -= tool_length / 2;
-            mapTile = mapTile.ToTileStart();
+            // Decide on shape of the brush for bigger selection size
+            switch (gMapSelectType)
+            {
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
+                    // Line
+                    mapTile.y -= tool_length / 2;
+                    mapTile.y = mapTile.ToTileStart().y;
+                    break;
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
+                    // Line
+                    mapTile.x -= tool_length / 2;
+                    mapTile.x = mapTile.ToTileStart().x;
+                    break;
+                default:
+                    // Move to tool bottom left
+                    mapTile.x -= tool_length / 2;
+                    mapTile.y -= tool_length / 2;
+                    mapTile = mapTile.ToTileStart();
+                    break;
+            }
 
             if (gMapSelectPositionA.x != mapTile.x)
             {
@@ -376,8 +408,26 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            mapTile.x += tool_length;
-            mapTile.y += tool_length;
+            // Go to other side
+            switch (gMapSelectType)
+            {
+                case MapSelectType::edge0:
+                case MapSelectType::edge2:
+                    // Line
+                    mapTile.y += tool_length;
+                    gMapSelectType = MapSelectType::fullWater;
+                    break;
+                case MapSelectType::edge1:
+                case MapSelectType::edge3:
+                    // Line
+                    mapTile.x += tool_length;
+                    gMapSelectType = MapSelectType::fullWater;
+                    break;
+                default:
+                    mapTile.x += tool_length;
+                    mapTile.y += tool_length;
+                    break;
+            }
 
             if (gMapSelectPositionB.x != mapTile.x)
             {
