@@ -102,6 +102,7 @@ uint32_t gPaletteEffectFrame;
 ImageId gPickupPeepImage;
 int32_t gPickupPeepX;
 int32_t gPickupPeepY;
+ZoomLevel gPickupPeepZoom;
 
 bool gPaintForceRedraw{ false };
 
@@ -638,10 +639,26 @@ void GfxInvalidatePickedUpPeep()
 
 void GfxDrawPickedUpPeep(RenderTarget& rt)
 {
-    if (gPickupPeepImage.HasValue())
-    {
-        GfxDrawSprite(rt, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
-    }
+    if (!gPickupPeepImage.HasValue())
+        return;
+
+    assert(rt.zoom_level == ZoomLevel{ 0 });
+
+    constexpr std::array<int8_t, 3> kYOffset = { 0, 16, 48 };
+
+    auto zoom = gPickupPeepZoom;
+    auto xOffset = -int8_t(gPickupPeepZoom);
+    auto yOffset = kYOffset[xOffset];
+
+    auto pos = ScreenCoordsXY{ zoom.ApplyTo(gPickupPeepX + xOffset), zoom.ApplyTo(gPickupPeepY + yOffset) };
+
+    rt.zoom_level = zoom;
+    rt.pitch = zoom.ApplyTo(rt.pitch);
+
+    GfxDrawSprite(rt, gPickupPeepImage, pos);
+
+    rt.pitch = zoom.ApplyInversedTo(rt.pitch);
+    rt.zoom_level = ZoomLevel{ 0 };
 }
 
 std::optional<uint32_t> GetPaletteG1Index(FilterPaletteID paletteId)

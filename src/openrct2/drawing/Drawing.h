@@ -21,6 +21,7 @@
 struct ScreenCoordsXY;
 struct ScreenLine;
 struct ScreenRect;
+struct ZoomLevel;
 
 namespace OpenRCT2::Drawing
 {
@@ -51,6 +52,8 @@ extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalet
 extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
+extern ZoomLevel gPickupPeepZoom;
+
 extern bool gPaintForceRedraw;
 
 bool ClipRenderTarget(
