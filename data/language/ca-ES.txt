@@ -831,10 +831,10 @@ STR_1460    :Via oberta en forma d’«U»
 STR_1461    :Via tancada en forma d’«O»
 STR_1462    :Massa inclinat per a fer servir cadenes d’elevació
 STR_1463    :Visitants
-STR_1464    :Hèlix amunt (petita)
-STR_1465    :Hèlix amunt (gran)
-STR_1466    :Hèlix avall (petita)
-STR_1467    :Hèlix avall (gran)
+STR_1464    :Mitja hèlix cap amunt (petita)
+STR_1465    :Mitja hèlix cap amunt (gran)
+STR_1466    :Mitja hèlix cap avall (petita)
+STR_1467    :Mitja hèlix cap avall (gran)
 STR_1468    :Personal
 STR_1469    :L’atracció ha de començar i acabar amb andanes.
 STR_1470    :L’andana no és prou llarga
@@ -1043,10 +1043,10 @@ STR_1674    :Velocitat dels frens
 STR_1676    :Estableix el límit de velocitat per als frens.
 STR_1677    :{WINDOW_COLOUR_2}Popularitat: {BLACK}desconeguda
 STR_1678    :{WINDOW_COLOUR_2}Popularitat: {BLACK}{COMMA16} %
-STR_1679    :Hèlix cap amunt (a l’esquerra)
-STR_1680    :Hèlix cap amunt (a la dreta)
-STR_1681    :Hèlix cap avall (a l’esquerra)
-STR_1682    :Hèlix cap avall (a la dreta)
+STR_1679    :Quart d’hèlix cap amunt (a l’esquerra)
+STR_1680    :Quart d’hèlix cap amunt (a la dreta)
+STR_1681    :Quart d’hèlix cap avall (a l’esquerra)
+STR_1682    :Quart d’hèlix cap avall (a la dreta)
 STR_1683    :Mida de base 2 × 2
 STR_1684    :Mida de base 4 × 4
 STR_1685    :Mida de base 2 × 4
@@ -3816,3 +3816,18 @@ STR_7014    :Tinc el joc a l’Steam, però no el tinc instal·lat.
 STR_7015    :Tanqueu l'Steam si està en execució i després premeu «D’acord».
 STR_7016    :L’OpenRCT2 ha intentat executar una descàrrega a l’Steam. Executeu l’Steam i deixeu que descarregui el joc. Quan hagi acabat, premeu «D’acord».
 STR_7017    :Surt
+STR_7023    :Fes invisible
+STR_7024    :Fa que tota l’atracció sigui invisible.
+STR_7025    :Fes visible
+STR_7026    :Fa que tota l’atracció sigui visible.
+STR_7028    :Quart d’hèlix cap amunt
+STR_7029    :Quart d’hèlix cap avall
+STR_7030    :{WINDOW_COLOUR_2}Visitants entretinguts: {BLACK}{COMMA32}
+STR_7031    :Desactiva el creixement de l’herba
+STR_7032    :Desactiva l’envelliment de l’herba i no creixerà.
+STR_7033    :Estil de via
+STR_7034    :Estil de laberint
+STR_7035    :Estil de botiga
+STR_7036    :Estil de vehicle
+STR_7037    :Mode d’operació
+STR_7038    :Espera i carrega
