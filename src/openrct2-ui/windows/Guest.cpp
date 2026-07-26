@@ -995,6 +995,12 @@ namespace OpenRCT2::Ui::Windows
             gPickupPeepX = screenCoords.x - 1;
             gPickupPeepY = screenCoords.y + 16;
 
+            auto* mainWindow = WindowGetMain();
+            if (mainWindow != nullptr)
+            {
+                gPickupPeepZoom = std::min(mainWindow->viewport->zoom, ZoomLevel{ 0 });
+            }
+
             const auto peep = GetGuest();
             if (peep == nullptr)
             {

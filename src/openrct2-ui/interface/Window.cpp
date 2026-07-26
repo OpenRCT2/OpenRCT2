@@ -155,11 +155,6 @@ namespace OpenRCT2::Ui
             Windows::WindowZoomIn(w, true);
         else if (wheel > 0)
             Windows::WindowZoomOut(w, true);
-
-        if (w.classification == WindowClass::mainWindow && gPickupPeepImage.HasValue())
-        {
-            gPickupPeepZoom = std::min(w.viewport->zoom, ZoomLevel{ 0 });
-        }
     }
 
     static bool isSpinnerGroup(WindowBase& w, WidgetIndex index, WidgetType buttonType)
