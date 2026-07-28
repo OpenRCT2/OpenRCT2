@@ -14,6 +14,7 @@
 #include "../config/Config.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
+#include "../entity/Staff.h"
 #include "../localisation/Formatter.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -281,8 +282,16 @@ static bool AwardIsDeservedBestStaff(GameState_t& gameState, Park::ParkData& par
 
     auto staffCount = gameState.entities.GetEntityListCount(EntityType::staff);
     auto peepCount = gameState.entities.GetEntityListCount(EntityType::guest);
+    FlagHolder<uint8_t, StaffType> foundStaffTypes{};
 
-    return ((staffCount != 0) && staffCount >= 20 && staffCount >= peepCount / 32);
+    for (auto* staff : EntityList<Staff>())
+    {
+        foundStaffTypes.set(staff->assignedStaffType);
+    }
+
+    return (
+        foundStaffTypes.hasAll(StaffType::handyman, StaffType::mechanic, StaffType::security, StaffType::entertainer)
+        && staffCount >= 20 && staffCount >= peepCount / 32);
 }
 
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
