@@ -53,27 +53,27 @@ static constexpr uint8_t Byte97B444[] = {
 static constexpr CoordsXY viewport_surface_paint_data[][4] = {
     {
         { 32, 0 },
-        { -32, 32 },
-        { -64, -32 },
-        { 0, -64 },
+        { 0, 32 },
+        { -32, 0 },
+        { 0, -32 },
     },
     {
         { 0, 32 },
-        { -64, 0 },
-        { -32, -64 },
-        { 32, -32 },
+        { -32, 0 },
+        { 0, -32 },
+        { 32, 0 },
     },
     {
         { 0, -32 },
-        { 0, 0 },
+        { 32, 0 },
+        { 0, 32 },
         { -32, 0 },
-        { -32, -32 },
     },
     {
         { -32, 0 },
-        { -32, -32 },
         { 0, -32 },
-        { 0, 0 },
+        { 32, 0 },
+        { 0, 32 },
     },
 };
 
@@ -937,7 +937,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const auto zoomLevel = session.rt.zoom_level;
     const uint8_t rotation = session.CurrentRotation;
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
-    const CoordsXY& base = session.SpritePosition;
+    const CoordsXY& base = session.MapPosition;
     const auto cornerHeights = GetSlopeRelativeCornerHeights(surfaceShape);
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
