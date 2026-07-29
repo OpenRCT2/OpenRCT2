@@ -624,23 +624,23 @@ constexpr std::array<int8_t, 3> kPickedUpPeepYOffsets = { 0, 16, 48 };
 
 void GfxInvalidatePickedUpPeep()
 {
-    auto imageId = gPickupPeepImage;
-    if (imageId.HasValue())
-    {
-        auto* g1 = GfxGetG1Element(imageId);
-        if (g1 != nullptr)
-        {
-            auto zoom = gPickupPeepZoom;
-            auto xOffset = -int8_t(gPickupPeepZoom);
-            auto yOffset = kPickedUpPeepYOffsets[xOffset];
+    if (!gPickupPeepImage.HasValue())
+        return;
 
-            int32_t left = zoom.ApplyTo(gPickupPeepX + g1->xOffset + xOffset);
-            int32_t top = zoom.ApplyTo(gPickupPeepY + g1->yOffset + yOffset);
-            int32_t right = left + zoom.ApplyTo(g1->width);
-            int32_t bottom = top + zoom.ApplyTo(g1->height);
-            GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
-        }
-    }
+    auto* g1 = GfxGetG1Element(gPickupPeepImage);
+    if (g1 == nullptr)
+        return;
+
+    auto zoom = gPickupPeepZoom;
+    auto xOffset = -int8_t(gPickupPeepZoom);
+    auto yOffset = kPickedUpPeepYOffsets[xOffset];
+
+    int32_t left = gPickupPeepX + zoom.ApplyInversedTo(g1->xOffset) + xOffset;
+    int32_t top = gPickupPeepY + zoom.ApplyInversedTo(g1->yOffset) + yOffset;
+    int32_t right = left + zoom.ApplyInversedTo(g1->width);
+    int32_t bottom = top + zoom.ApplyInversedTo(g1->height);
+
+    GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
 }
 
 void GfxDrawPickedUpPeep(RenderTarget& rt)
