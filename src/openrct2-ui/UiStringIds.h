@@ -836,6 +836,7 @@ namespace OpenRCT2
         STR_LAND_TOOL_SIZE_VALUE = 5486,
         STR_LOWER_COST_AMOUNT = 985,
         STR_RAISE_COST_AMOUNT = 984,
+        STR_STYLE_EYEDROPPER_TIP = 7043,
 
         // Window: LandRights
         STR_ADJUST_LARGER_LAND_RIGHTS_TIP = 5134,
