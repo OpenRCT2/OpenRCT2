@@ -3877,3 +3877,4 @@ STR_7083    :Track design was already installed
 STR_7084    :Land style picker. Click any tile on the map to select the same style for terraforming.
 STR_7085    :Join multiplayer server
 STR_7086    :Host new server
+STR_7087    :Footpath picker. Click any footpath on the map to select the same surface and railings for construction.
