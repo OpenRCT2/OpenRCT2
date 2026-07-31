@@ -166,6 +166,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_FOOTPATH_TYPE,
         WIDX_QUEUELINE_TYPE,
         WIDX_RAILINGS_TYPE,
+        WIDX_EYEDROPPER,
 
         WIDX_DIRECTION_GROUP,
         WIDX_DIRECTION_NW,
@@ -195,6 +196,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 6,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                             STR_FOOTPATH_TIP                                   ),
         makeWidget({53,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                             STR_QUEUE_LINE_PATH_TIP                            ),
         makeWidget({29,  69}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                             STR_OBJECT_SELECTION_FOOTPATH_RAILINGS             ),
+        makeWidget({76,  81}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_EYEDROPPER),             STR_FOOTPATH_EYEDROPPER_TIP                        ),
 
         // Direction group
         makeWidget({ 3, 115}, {100, 77}, WidgetType::groupbox, WindowColour::primary  , STR_DIRECTION                                                                              ),
@@ -255,6 +257,9 @@ namespace OpenRCT2::Ui::Windows
 
         CoordsXY _dragStartPos;
 
+        bool _eyedropperEnabled = false;
+        bool _eyedropperBlocked = false;
+
     public:
 #pragma region Window Override Events
 
@@ -267,12 +272,7 @@ namespace OpenRCT2::Ui::Windows
             WindowPushOthersRight(*this);
             ShowGridlines();
 
-            ToolCancel();
-            _footpathConstructionMode = PathConstructionMode::onLand;
-            ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
-            gInputFlags.set(InputFlag::allowRightMouseRemoval);
-            _footpathErrorOccured = false;
-            WindowFootpathSetEnabledAndPressedWidgets();
+            enableOnLandMode();
 
             _footpathPlaceCtrlState = false;
             _footpathPlaceShiftState = false;
@@ -302,25 +302,28 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Check tool
-            switch (_footpathConstructionMode)
+            if (!_eyedropperEnabled)
             {
-                case PathConstructionMode::onLand:
-                    if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_ON_LAND))
-                        close();
-                    break;
-                case PathConstructionMode::dragArea:
-                    // If another window has enabled a tool, close ours.
-                    // If the user merely pressed Escape, we cancel the tool but don’t close the window.
-                    if (gInputFlags.has(InputFlag::toolActive)
-                        && gCurrentToolWidget.windowClassification != WindowClass::footpath)
-                        close();
-                    break;
-                case PathConstructionMode::bridgeOrTunnelPick:
-                    if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
-                        close();
-                    break;
-                case PathConstructionMode::bridgeOrTunnel:
-                    break;
+                switch (_footpathConstructionMode)
+                {
+                    case PathConstructionMode::onLand:
+                        if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_ON_LAND))
+                            close();
+                        break;
+                    case PathConstructionMode::dragArea:
+                        // If another window has enabled a tool, close ours.
+                        // If the user merely pressed Escape, we cancel the tool but don’t close the window.
+                        if (gInputFlags.has(InputFlag::toolActive)
+                            && gCurrentToolWidget.windowClassification != WindowClass::footpath)
+                            close();
+                        break;
+                    case PathConstructionMode::bridgeOrTunnelPick:
+                        if (!isToolActive(WindowClass::footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
+                            close();
+                        break;
+                    case PathConstructionMode::bridgeOrTunnel:
+                        break;
+                }
             }
         }
 
@@ -367,19 +370,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void enableDragAreaMode()
-        {
-            _windowFootpathCost = kMoney64Undefined;
-            ToolCancel();
-            FootpathUpdateProvisional();
-            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
-            _footpathConstructionMode = PathConstructionMode::dragArea;
-            ToolSet(*this, WIDX_CONSTRUCT_DRAG_AREA, Tool::pathDown);
-            gInputFlags.set(InputFlag::allowRightMouseRemoval);
-            _footpathErrorOccured = false;
-            WindowFootpathSetEnabledAndPressedWidgets();
-        }
-
         void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
@@ -387,47 +377,26 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLOSE:
                     close();
                     break;
+                case WIDX_EYEDROPPER:
+                    toggleEyedropper(!_eyedropperEnabled);
+                    break;
                 case WIDX_CONSTRUCT_ON_LAND:
-                    if (_footpathConstructionMode == PathConstructionMode::onLand)
-                    {
-                        break;
-                    }
-
-                    _windowFootpathCost = kMoney64Undefined;
-                    ToolCancel();
-                    FootpathUpdateProvisional();
-                    gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
-                    _footpathConstructionMode = PathConstructionMode::onLand;
-                    ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
-                    gInputFlags.set(InputFlag::allowRightMouseRemoval);
-                    _footpathErrorOccured = false;
-                    WindowFootpathSetEnabledAndPressedWidgets();
+                    if (_footpathConstructionMode != PathConstructionMode::onLand)
+                        enableOnLandMode();
                     break;
                 case WIDX_CONSTRUCT_DRAG_AREA:
-                    if (_footpathConstructionMode == PathConstructionMode::dragArea)
-                    {
-                        break;
-                    }
-
-                    enableDragAreaMode();
+                    if (_footpathConstructionMode != PathConstructionMode::dragArea)
+                        enableDragAreaMode();
                     break;
                 case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
-                    if (_footpathConstructionMode == PathConstructionMode::bridgeOrTunnelPick)
-                    {
-                        break;
-                    }
-
-                    _windowFootpathCost = kMoney64Undefined;
-                    ToolCancel();
-                    FootpathUpdateProvisional();
-                    gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
-                    _footpathConstructionMode = PathConstructionMode::bridgeOrTunnelPick;
-                    ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
-                    gInputFlags.set(InputFlag::allowRightMouseRemoval);
-                    _footpathErrorOccured = false;
-                    WindowFootpathSetEnabledAndPressedWidgets();
+                    if (_footpathConstructionMode != PathConstructionMode::bridgeOrTunnelPick)
+                        enableBridgeOrTunnelMode();
                     break;
             }
+
+            // Disable picking when interacting with any other widget
+            if (widgetIndex != WIDX_EYEDROPPER)
+                toggleEyedropper(false);
         }
 
         void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -492,9 +461,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY&) override
+        void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+            if (widgetIndex == WIDX_EYEDROPPER)
+            {
+                toggleEyedropper(false);
+            }
+            else if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
                 _footpathErrorOccured = false;
             }
@@ -507,7 +480,12 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+            if (widgetIndex == WIDX_EYEDROPPER)
+            {
+                _eyedropperBlocked = true;
+                FootpathPickAt(screenCoords);
+            }
+            else if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
                 WindowFootpathPlacePathAtPoint(screenCoords);
             }
@@ -523,7 +501,12 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+            if (widgetIndex == WIDX_EYEDROPPER)
+            {
+                if (_eyedropperBlocked)
+                    FootpathPickAt(screenCoords);
+            }
+            else if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
                 WindowFootpathPlacePathAtPoint(screenCoords);
             }
@@ -637,6 +620,75 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     private:
+        void enableMode(const PathConstructionMode mode, const WindowFootpathWidgetIdx widget, const Tool tool)
+        {
+            ToolCancel();
+            FootpathUpdateProvisional();
+            gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+
+            _footpathConstructionMode = mode;
+            ToolSet(*this, widget, tool);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
+            _footpathErrorOccured = false;
+            WindowFootpathSetEnabledAndPressedWidgets();
+        }
+
+        void enableOnLandMode()
+        {
+            enableMode(PathConstructionMode::onLand, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
+        }
+
+        void enableBridgeOrTunnelMode()
+        {
+            _windowFootpathCost = kMoney64Undefined;
+            enableMode(PathConstructionMode::bridgeOrTunnelPick, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
+        }
+
+        void enableDragAreaMode()
+        {
+            _windowFootpathCost = kMoney64Undefined;
+            enableMode(PathConstructionMode::dragArea, WIDX_CONSTRUCT_DRAG_AREA, Tool::pathDown);
+        }
+
+        void toggleEyedropper(const bool enabled)
+        {
+            if (_eyedropperEnabled == enabled)
+                return;
+
+            if (enabled)
+            {
+                _eyedropperEnabled = true;
+                ToolSet(*this, WIDX_EYEDROPPER, Tool::crosshair);
+            }
+            else
+            {
+                _eyedropperEnabled = false;
+                switch (_footpathConstructionMode)
+                {
+                    case PathConstructionMode::onLand:
+                        ToolCancel();
+                        enableOnLandMode();
+                        break;
+                    case PathConstructionMode::dragArea:
+                        ToolCancel();
+                        enableDragAreaMode();
+                        break;
+                    case PathConstructionMode::bridgeOrTunnel:
+                    {
+                        // Retain map selection after cancelling picker tool
+                        const MapSelectFlags prevMapSelectFlags = gMapSelectFlags;
+                        ToolCancel();
+                        gMapSelectFlags = prevMapSelectFlags;
+                        break;
+                    }
+                    case PathConstructionMode::bridgeOrTunnelPick:
+                        ToolCancel();
+                        enableBridgeOrTunnelMode();
+                        break;
+                }
+            }
+        }
+
         /**
          *
          *  rct2: 0x006A7760
@@ -1825,6 +1877,51 @@ namespace OpenRCT2::Ui::Windows
                 type = gFootpathSelection.legacyPath;
             }
             return pathConstructFlags;
+        }
+
+        void FootpathPickAt(const ScreenCoordsXY& screenCoords)
+        {
+            auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
+            if (!mapPos)
+                return;
+
+            auto placement = WindowFootpathGetPlacementFromScreenCoords(screenCoords);
+            auto tileElement = MapGetFootpathElementWithSlope({ *mapPos, placement.baseZ }, placement.slope);
+            if (!tileElement)
+                return;
+
+            // Update only if necessary (allows new style to appear during bridge/tunnel construction)
+            bool changed;
+            FootpathSelection picked = gFootpathSelection;
+            picked.legacyPath = tileElement->getLegacyPathEntryIndex();
+            picked.isQueueSelected = tileElement->isQueue();
+            if (picked.legacyPath == kObjectEntryIndexNull)
+            {
+                if (picked.isQueueSelected)
+                    picked.queueSurface = tileElement->getSurfaceEntryIndex();
+                else
+                    picked.normalSurface = tileElement->getSurfaceEntryIndex();
+                picked.railings = tileElement->getRailingsEntryIndex();
+
+                changed = gFootpathSelection.legacyPath != picked.legacyPath
+                    || gFootpathSelection.isQueueSelected != picked.isQueueSelected
+                    || gFootpathSelection.getSelectedSurface() != picked.getSelectedSurface()
+                    || gFootpathSelection.railings != picked.railings;
+            }
+            else
+            {
+                changed = gFootpathSelection.legacyPath != picked.legacyPath
+                    || gFootpathSelection.isQueueSelected != picked.isQueueSelected;
+            }
+
+            if (changed)
+            {
+                gFootpathSelection = picked;
+
+                FootpathUpdateProvisional();
+                _windowFootpathCost = kMoney64Undefined;
+                invalidate();
+            }
         }
 
 #pragma region Keyboard Shortcuts Events
