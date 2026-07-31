@@ -519,22 +519,4 @@ namespace OpenRCT2::GameActions
         FootpathUpdateQueueChains();
         MapInvalidateTileFull(_loc);
     }
-
-    PathElement* FootpathPlaceAction::MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope) const
-    {
-        const bool isSloped = slope.type == FootpathSlopeType::sloped;
-
-        for (auto* pathElement : TileElementsView<PathElement>(footpathPos))
-        {
-            if (pathElement->getBaseZ() != footpathPos.z)
-                continue;
-            if (pathElement->isSloped() != isSloped)
-                continue;
-            if (isSloped && pathElement->getSlopeDirection() != slope.direction)
-                continue;
-            return pathElement;
-        }
-
-        return nullptr;
-    }
 } // namespace OpenRCT2::GameActions

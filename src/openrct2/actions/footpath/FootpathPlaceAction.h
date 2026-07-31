@@ -44,7 +44,6 @@ namespace OpenRCT2::GameActions
         Result ElementInsertExecute(GameState_t& gameState, Result res) const;
         void AutomaticallySetPeepSpawn(GameState_t& gameState) const;
         void RemoveIntersectingWalls(PathElement* pathElement) const;
-        PathElement* MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope) const;
         bool IsSameAsPathElement(const PathElement* pathElement) const;
         bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
     };
