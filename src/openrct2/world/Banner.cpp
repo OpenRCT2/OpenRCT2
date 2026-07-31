@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../core/String.hpp"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../management/Finance.h"

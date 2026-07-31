@@ -2,7 +2,6 @@
 
 #include "../System.hpp"
 #include "../actions/GameAction.hpp"
-#include "../scenario/Scenario.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"
@@ -10,7 +9,6 @@
 #include "NetworkTypes.h"
 #include "NetworkUser.h"
 
-#include <chrono>
 #include <fstream>
 #include <list>
 #include <memory>

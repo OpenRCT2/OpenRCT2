@@ -17,8 +17,6 @@
 #include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 
-#include <iterator>
-
 namespace OpenRCT2
 {
     template<>

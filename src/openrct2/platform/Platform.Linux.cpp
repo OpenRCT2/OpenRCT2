@@ -35,6 +35,7 @@
     #include "../Date.h"
     #include "../OpenRCT2.h"
     #include "../core/Path.hpp"
+    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
     #include "Platform.h"
 

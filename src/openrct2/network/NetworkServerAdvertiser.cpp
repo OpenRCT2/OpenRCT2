@@ -19,11 +19,7 @@
     #include "../core/Http.h"
     #include "../core/Json.hpp"
     #include "../core/String.hpp"
-    #include "../entity/Guest.h"
-    #include "../localisation/Localisation.Date.h"
-    #include "../management/Finance.h"
     #include "../platform/Platform.h"
-    #include "../world/Park.h"
     #include "Network.h"
     #include "Socket.h"
 

@@ -1,13 +1,9 @@
 #include "Litter.h"
 
 #include "../Cheats.h"
-#include "../Game.h"
 #include "../GameState.h"
-#include "../SpriteIds.h"
 #include "../core/DataSerialiser.h"
 #include "../localisation/StringIds.h"
-#include "../paint/Paint.h"
-#include "../profiling/Profiling.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/tile_element/PathElement.h"

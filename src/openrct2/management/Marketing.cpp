@@ -10,19 +10,17 @@
 #include "Marketing.h"
 
 #include "../Cheats.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/StringIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
-#include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
-#include "Finance.h"
 #include "NewsItem.h"
 
 using namespace OpenRCT2;

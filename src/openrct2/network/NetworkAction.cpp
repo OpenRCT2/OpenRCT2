@@ -11,7 +11,6 @@
 
     #include "NetworkAction.h"
 
-    #include "../Game.h"
     #include "../localisation/StringIds.h"
 
     #include <algorithm>

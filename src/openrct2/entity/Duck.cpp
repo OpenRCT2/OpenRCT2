@@ -9,14 +9,11 @@
 
 #include "Duck.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../SpriteIds.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityList.h"
-#include "../paint/Paint.h"
-#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"

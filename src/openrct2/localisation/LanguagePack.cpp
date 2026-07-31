@@ -18,7 +18,6 @@
 #include "../core/StringReader.h"
 #include "Language.h"
 #include "LocalisationService.h"
-#include "StringIds.h"
 
 #include <memory>
 #include <string>

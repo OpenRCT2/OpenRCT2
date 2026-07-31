@@ -13,8 +13,6 @@
 
     #include "../core/Timer.hpp"
 
-    #include <limits>
-
 namespace OpenRCT2::Network
 {
     class DiscordService final

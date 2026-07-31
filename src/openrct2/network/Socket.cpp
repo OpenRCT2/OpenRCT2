@@ -13,16 +13,12 @@
 
     #include <atomic>
     #include <chrono>
-    #include <cmath>
     #include <cstring>
     #include <future>
     #include <string>
     #include <thread>
 
 // clang-format off
-// MSVC: include <math.h> here otherwise PI gets defined twice
-#include <cmath>
-
 #ifdef _WIN32
     #pragma comment(lib, "Ws2_32.lib")
 
@@ -57,7 +53,6 @@
     #include <sys/ioctl.h>
     #include <sys/select.h>
     #include <sys/socket.h>
-    #include <sys/time.h>
     #include <unistd.h>
 
     using SOCKET = int32_t;

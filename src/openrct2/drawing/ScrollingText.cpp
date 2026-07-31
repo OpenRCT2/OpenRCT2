@@ -17,6 +17,7 @@
 #include "../core/String.hpp"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
+#include "../localisation/StringIds.h"
 #include "../paint/Paint.h"
 #include "BlendColourMap.h"
 #include "Drawing.Sprite.h"

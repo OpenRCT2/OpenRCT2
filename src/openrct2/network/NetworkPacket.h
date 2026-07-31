@@ -12,9 +12,7 @@
 #include "../core/DataSerialiser.h"
 #include "NetworkTypes.h"
 
-#include <memory>
 #include <sfl/small_vector.hpp>
-#include <vector>
 
 namespace OpenRCT2::Network
 {

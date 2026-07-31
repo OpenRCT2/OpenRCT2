@@ -43,6 +43,7 @@
 #include "drawing/ColourMap.h"
 #include "drawing/Drawing.Sprite.h"
 #include "drawing/Drawing.h"
+#include "drawing/Font.h"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"

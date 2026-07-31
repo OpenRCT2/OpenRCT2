@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "../world/Location.hpp"
 #include "EntityBase.h"
 
 namespace OpenRCT2

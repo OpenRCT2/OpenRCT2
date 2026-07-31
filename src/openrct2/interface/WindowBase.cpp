@@ -2,8 +2,6 @@
 
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
-#include "../entity/EntityList.h"
-#include "../entity/EntityRegistry.h"
 #include "Cursors.h"
 #include "Viewport.h"
 
