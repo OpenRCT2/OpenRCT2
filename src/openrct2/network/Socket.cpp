@@ -13,69 +13,63 @@
 
     #include <atomic>
     #include <chrono>
-    #include <cmath>
     #include <cstring>
     #include <future>
     #include <string>
     #include <thread>
 
-// clang-format off
-// MSVC: include <math.h> here otherwise PI gets defined twice
-#include <cmath>
+    #ifdef _WIN32
+        #pragma comment(lib, "Ws2_32.lib")
 
-#ifdef _WIN32
-    #pragma comment(lib, "Ws2_32.lib")
+        #ifndef WIN32_LEAN_AND_MEAN
+            #define WIN32_LEAN_AND_MEAN
+        #endif
+        // winsock2 must be included before windows.h
+        #include <winsock2.h>
+        #include <ws2tcpip.h>
 
-    #ifndef WIN32_LEAN_AND_MEAN
-        #define WIN32_LEAN_AND_MEAN
-    #endif
-    // winsock2 must be included before windows.h
-    #include <winsock2.h>
-    #include <ws2tcpip.h>
-
-    #define LAST_SOCKET_ERROR() WSAGetLastError()
-    #undef EWOULDBLOCK
-    #define EWOULDBLOCK WSAEWOULDBLOCK
-    #ifndef SHUT_RD
-        #define SHUT_RD SD_RECEIVE
-    #endif
-    #ifndef SHUT_WR
-        #define SHUT_WR SD_SEND
-    #endif
-    #ifndef SHUT_RDWR
-        #define SHUT_RDWR SD_BOTH
-    #endif
-    #define FLAG_NO_PIPE 0
-#else
-    #include <arpa/inet.h>
-    #include <cerrno>
-    #include <fcntl.h>
-    #include <net/if.h>
-    #include <netdb.h>
-    #include <netinet/in.h>
-    #include <netinet/tcp.h>
-    #include <sys/ioctl.h>
-    #include <sys/select.h>
-    #include <sys/socket.h>
-    #include <sys/time.h>
-    #include <unistd.h>
-
-    using SOCKET = int32_t;
-    #define SOCKET_ERROR -1
-    #define INVALID_SOCKET -1
-    #define LAST_SOCKET_ERROR() errno
-    #define closesocket close
-    #define ioctlsocket ioctl
-    #if defined(__linux__)
-        #define FLAG_NO_PIPE MSG_NOSIGNAL
-    #else
+        #define LAST_SOCKET_ERROR() WSAGetLastError()
+        #undef EWOULDBLOCK
+        #define EWOULDBLOCK WSAEWOULDBLOCK
+        #ifndef SHUT_RD
+            #define SHUT_RD SD_RECEIVE
+        #endif
+        #ifndef SHUT_WR
+            #define SHUT_WR SD_SEND
+        #endif
+        #ifndef SHUT_RDWR
+            #define SHUT_RDWR SD_BOTH
+        #endif
         #define FLAG_NO_PIPE 0
-    #endif // defined(__linux__)
-#endif // _WIN32
+    #else
+        #include <arpa/inet.h>
+        #include <cerrno>
+        #include <fcntl.h>
+        #include <net/if.h>
+        #include <netdb.h>
+        #include <netinet/in.h>
+        #include <netinet/tcp.h>
+        #include <sys/ioctl.h>
+        #include <sys/select.h>
+        #include <sys/socket.h>
+        #include <unistd.h>
 
-#ifdef __HAIKU__
-    #include <sys/sockio.h>
-#endif
+using SOCKET = int32_t;
+        #define SOCKET_ERROR -1
+        #define INVALID_SOCKET -1
+        #define LAST_SOCKET_ERROR() errno
+        #define closesocket close
+        #define ioctlsocket ioctl
+        #if defined(__linux__)
+            #define FLAG_NO_PIPE MSG_NOSIGNAL
+        #else
+            #define FLAG_NO_PIPE 0
+        #endif // defined(__linux__)
+    #endif     // _WIN32
+
+    #ifdef __HAIKU__
+        #include <sys/sockio.h>
+    #endif
 // clang-format on
 
     #include "Socket.h"

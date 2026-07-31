@@ -32,7 +32,6 @@
 #include "../localisation/LocalisationService.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -65,9 +64,7 @@ static constexpr uint32_t kChunkSize = 1024 * 63;
 // This limit is per connection, the current value was determined by tests with fuzzing.
 static constexpr uint32_t kMaxPacketsPerTick = 100;
 
-    #include "../Cheats.h"
     #include "../ParkImporter.h"
-    #include "../Version.h"
     #include "../actions/GameAction.hpp"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
@@ -77,10 +74,9 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../interface/Chat.h"
-    #include "../localisation/Localisation.Date.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
-    #include "../world/Park.h"
+    #include "../scenario/Scenario.h"
     #include "NetworkAction.h"
     #include "NetworkConnection.h"
     #include "NetworkGroup.h"
@@ -92,14 +88,11 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "Socket.h"
 
     #include <array>
-    #include <cerrno>
-    #include <cmath>
     #include <fstream>
     #include <functional>
     #include <list>
     #include <map>
     #include <memory>
-    #include <set>
     #include <string>
     #include <vector>
 
