@@ -718,6 +718,7 @@ namespace OpenRCT2
         STR_SLOPE_DOWN_TIP = 1186,
         STR_SLOPE_UP_TIP = 1188,
         STR_TYPE = 1182,
+        STR_FOOTPATH_EYEDROPPER_TIP = 7043,
 
         // Window: GameBottomToolbar
         STR_BOTTOM_TOOLBAR_CASH = 1390,

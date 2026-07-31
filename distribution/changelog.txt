@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
+- Feature: [#26846] Footpath styles and railings can be picked from existing footpaths on the map.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.
 - Improved: [#23872] Loading a park outside the game now sets the folder of the load/save window, as loading one in-game does.
 - Improved: [#25362] When dragging footpaths, they will now properly adapt to uneven terrain.
