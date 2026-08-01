@@ -11,8 +11,6 @@
 
 #include "Object.h"
 
-#include <string>
-
 namespace OpenRCT2
 {
     class SceneryObject : public Object

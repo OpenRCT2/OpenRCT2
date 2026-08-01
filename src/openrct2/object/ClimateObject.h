@@ -14,7 +14,6 @@
 
 namespace OpenRCT2
 {
-    struct IReadObjectContext;
 
     using YearlyDistribution = std::array<uint8_t, EnumValue(Weather::Type::Count)>;
 

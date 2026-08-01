@@ -18,8 +18,6 @@
 #include "ObjectTypes.h"
 #include "StringTable.h"
 
-#include <memory>
-#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -133,9 +131,7 @@ namespace OpenRCT2
         static ObjectEntryDescriptor Parse(std::string_view identifier);
     };
 
-    struct IObjectRepository;
     struct IStream;
-    struct ObjectRepositoryItem;
 
     enum class ObjectError : uint32_t
     {

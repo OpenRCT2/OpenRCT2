@@ -11,19 +11,13 @@
 
 #include "../AssetPackManager.h"
 #include "../Context.h"
-#include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../audio/AudioContext.h"
 #include "../audio/AudioSource.h"
-#include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../core/Path.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../drawing/Text.h"
-#include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
-#include "../ride/Ride.h"
 #include "RideObject.h"
 
 #include <memory>

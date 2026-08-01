@@ -11,14 +11,12 @@
 
 #include "RideObject.h"
 
-#include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../core/EnumMap.hpp"
 #include "../core/FlagHolder.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Numerics.hpp"
-#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Yaw.hpp"
 #include "../localisation/Language.h"
@@ -32,7 +30,6 @@
 #include "ObjectRepository.h"
 
 #include <iterator>
-#include <unordered_map>
 
 namespace OpenRCT2
 {

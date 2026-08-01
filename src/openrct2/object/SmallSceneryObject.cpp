@@ -14,11 +14,10 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
-#include "../world/Scenery.h"
+#include "../world/Location.hpp"
 
 namespace OpenRCT2
 {

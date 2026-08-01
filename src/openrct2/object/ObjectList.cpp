@@ -10,13 +10,10 @@
 #include "ObjectList.h"
 
 #include "../Context.h"
-#include "../Game.h"
 #include "../core/EnumUtils.hpp"
 #include "../object/Object.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
-#include "ObjectRepository.h"
 
 #include <array>
 #include <cstring>

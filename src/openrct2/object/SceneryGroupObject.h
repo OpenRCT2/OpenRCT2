@@ -16,7 +16,6 @@
 
 namespace OpenRCT2
 {
-    struct ObjectRepositoryItem;
 
     class SceneryGroupObject final : public Object
     {

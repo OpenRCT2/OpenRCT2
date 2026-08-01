@@ -11,7 +11,6 @@
 
 #include "../audio/AudioSource.h"
 #include "../core/JsonFwd.hpp"
-#include "Object.h"
 #include "ObjectAsset.h"
 #include "ResourceTable.h"
 

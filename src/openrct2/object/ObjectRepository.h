@@ -9,24 +9,17 @@
 
 #pragma once
 
-#include "ObjectTypes.h"
-#include "RideObject.h"
+#include "../rct2/DATLimits.h"
+#include "../ride/RideTypes.h"
+#include "Object.h"
 
 #include <memory>
 #include <vector>
-
-enum class RideCategory : uint8_t;
-
-namespace OpenRCT2::Localisation
-{
-    class LocalisationService;
-}
 
 namespace OpenRCT2
 {
     struct IStream;
     struct IPlatformEnvironment;
-    class Object;
 
     enum ObjectItemFlags : uint8_t
     {
@@ -94,8 +87,7 @@ namespace OpenRCT2
 
         virtual void AddObject(const RCTObjectEntry* objectEntry, const void* data, size_t dataSize) = 0;
         virtual void AddObjectFromFile(
-            ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize)
-            = 0;
+            ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) = 0;
 
         virtual void ExportPackedObject(IStream* stream) = 0;
     };
