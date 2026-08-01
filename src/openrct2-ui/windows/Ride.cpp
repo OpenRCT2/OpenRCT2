@@ -3620,6 +3620,11 @@ namespace OpenRCT2::Ui::Windows
                     caption = STR_NUMBER_OF_ROTATIONS;
                     tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
                     break;
+                case RideMode::shopStall:
+                    format = kStringIdEmpty;
+                    caption = kStringIdEmpty;
+                    tooltip = kStringIdEmpty;
+                    break;
                 default:
                     format = STR_COMMA16;
                     caption = STR_MAX_PEOPLE_ON_RIDE;
@@ -5188,7 +5193,7 @@ namespace OpenRCT2::Ui::Windows
         void ColourOnDrawShopBuildingPreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
         {
             const auto rideEntry = ride->getRideEntry();
-            const ImageIndex previewImage = rideEntry->images_offset + 3 + 1;
+            const ImageIndex previewImage = rideEntry->images_offset + 4;
 
             auto* image = GfxGetG1Element(previewImage);
             if (image == nullptr)
