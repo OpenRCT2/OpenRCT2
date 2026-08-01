@@ -63,7 +63,7 @@ namespace OpenRCT2::Scripting
             JS_SetLength(ctx, array, currentNumElements);
             for (size_t i = 0; i < currentNumElements; i++)
             {
-                JS_SetPropertyInt64(ctx, array, i, gScTileElement.New(ctx, &first[i], coords));
+                JS_SetPropertyInt64(ctx, array, i, gScTileElement.New(ctx, coords, i));
             }
         }
         return array;
@@ -138,7 +138,7 @@ namespace OpenRCT2::Scripting
         auto first = MapGetFirstElementAt(coords);
         if (static_cast<size_t>(index) < GetNumElements(first))
         {
-            return gScTileElement.New(ctx, &first[index], coords);
+            return gScTileElement.New(ctx, coords, index);
         }
         return JS_UNDEFINED;
     }
@@ -182,7 +182,7 @@ namespace OpenRCT2::Scripting
             }
             first[origNumElements].setLastForTile(true);
             MapInvalidateTileFull(coords);
-            return gScTileElement.New(ctx, &first[index], coords);
+            return gScTileElement.New(ctx, coords, index);
         }
         else
         {
