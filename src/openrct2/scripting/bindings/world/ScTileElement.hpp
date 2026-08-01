@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
         static const LargeSceneryElement* GetOtherLargeSceneryElement(
             const CoordsXY& loc, const LargeSceneryElement* largeScenery);
 
-        JSValue New(JSContext* ctx, TileElement* element, CoordsXY& coords);
+        JSValue New(JSContext* ctx, const CoordsXY& coords, size_t index);
         void Register(JSContext* ctx);
 
     private:
