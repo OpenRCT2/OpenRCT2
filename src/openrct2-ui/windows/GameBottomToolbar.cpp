@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_game_bottom_toolbar_widgets[] =
     {
-        makeWidget({  0,  0}, {142, 34}, WidgetType::empty,       WindowColour::primary                                                     ), // Left outset panel
+        makeWidget({  0,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left outset panel
         makeWidget({  2,  2}, {138, 30}, WidgetType::empty,       WindowColour::primary                                                     ), // Left inset panel
         makeWidget({  2,  1}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
         makeWidget({  2, 11}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary                                                     ), // Guests window
@@ -75,7 +75,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({469,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP      ), // Scroll to news item target
 
         makeWidget({498,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right outset panel
-        makeWidget({500,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right inset panel
+        makeWidget({500,  2}, {138, 30}, WidgetType::empty,       WindowColour::primary                                                     ), // Right inset panel
         makeWidget({500,  2}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary                                                     ), // Date
     };
     // clang-format on
