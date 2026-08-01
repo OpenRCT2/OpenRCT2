@@ -146,6 +146,11 @@ namespace OpenRCT2::GameActions
                     LOG_ERROR("Arbitrary ride type changes not allowed.");
                     return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
                 }
+                if (_value >= RIDE_TYPE_COUNT)
+                {
+                    LOG_ERROR("Invalid ride type: %u", _value);
+                    return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
+                }
                 break;
             default:
                 LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));

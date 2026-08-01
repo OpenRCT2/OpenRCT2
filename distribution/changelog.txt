@@ -13,6 +13,7 @@
 - Fix: [#26758] [Plugin] IPv6 addresses are reported incorrectly.
 - Fix: [#26775] Maze gets wrong intensity boost from size (0.02 per tile instead of 0.01 per 2 tiles).
 - Fix: [#26805] Park entrance path is sometimes invisible when placed.
+- Fix: [#26826] Invalid ride types can be set when the “Allow arbitrary ride type changes” cheat is enabled.
 
 0.5.3 (2026-07-05)
 ------------------------------------------------------------------------
