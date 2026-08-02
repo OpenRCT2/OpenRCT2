@@ -5174,7 +5174,10 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                ColourOnDrawShopBuildingPreview(rt, ride, widget);
+                if (ride->getRideTypeDescriptor().flags.has(RtdFlag::guestsShouldGoInsideFacility))
+                    ColourOnDrawFacilityBuildingPreview(rt, *ride, widget);
+                else
+                    ColourOnDrawShopBuildingPreview(rt, *ride, widget);
             }
         }
 
@@ -5194,9 +5197,9 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(rt, ImageId(shopItem.Image, spriteColour), screenCoords);
         }
 
-        void ColourOnDrawShopBuildingPreview(RenderTarget& rt, const Ride* ride, const Widget& widget)
+        void ColourOnDrawShopBuildingPreview(RenderTarget& rt, const Ride& ride, const Widget& widget)
         {
-            const auto rideEntry = ride->getRideEntry();
+            const auto rideEntry = ride.getRideEntry();
             const ImageIndex previewImage = rideEntry->images_offset + 4;
 
             auto* image = GfxGetG1Element(previewImage);
@@ -5209,7 +5212,27 @@ namespace OpenRCT2::Ui::Windows
             auto imageLocationX = (clipWidth / 2) - (image->width / 2) - image->xOffset;
             auto imageLocationY = (clipHeight / 2) - (image->height / 2) - image->yOffset;
 
-            GfxDrawSprite(rt, ImageId(previewImage, ride->trackColours[0].main), { imageLocationX, imageLocationY });
+            GfxDrawSprite(rt, ImageId(previewImage, ride.trackColours[0].main), { imageLocationX, imageLocationY });
+        }
+
+        void ColourOnDrawFacilityBuildingPreview(RenderTarget& rt, const Ride& ride, const Widget& widget)
+        {
+            const auto rideEntry = ride.getRideEntry();
+            ImageIndex previewImage = rideEntry->images_offset + 6;
+
+            const auto* image = GfxGetG1Element(previewImage);
+            if (image == nullptr)
+                return;
+
+            const auto clipWidth = widget.width() - 2;
+            const auto clipHeight = widget.height() - 1;
+
+            auto imageLocationX = (clipWidth / 2) - (image->width / 2) - image->xOffset + 20;
+            auto imageLocationY = (clipHeight / 2) - (image->height / 2) - image->yOffset;
+
+            const auto imageId = ImageId(previewImage, ride.trackColours[0].main);
+            GfxDrawSprite(rt, imageId, { imageLocationX, imageLocationY });
+            GfxDrawSprite(rt, imageId.WithIndexOffset(2), { imageLocationX, imageLocationY });
         }
 
         void ColourOnDrawSecondaryPreview(RenderTarget& rt, const Ride* ride)
