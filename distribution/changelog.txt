@@ -1,3 +1,6 @@
+0.5.5 (in development)
+------------------------------------------------------------------------
+
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
 - Improved: [#26560] [Plugin] Scripts can now be used to trigger saving a game (limited to the user save folder).
