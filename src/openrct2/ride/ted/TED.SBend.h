@@ -28,6 +28,26 @@ namespace OpenRCT2::TrackMetadata
         return (progress < 48) ? -98 : 98;
     }
 
+    static int32_t EvaluatorBankedSBendLeftLateral(const int16_t progress)
+    {
+        return (progress < 48) ? 160 : -160;
+    }
+
+    static int32_t EvaluatorBankedSBendRightLateral(const int16_t progress)
+    {
+        return (progress < 48) ? -160 : 160;
+    }
+
+    static int32_t EvaluatorBankedSBendLeftVertical(const int16_t progress)
+    {
+        return (progress < 48) ? 200 : -200;
+    }
+
+    static int32_t EvaluatorBankedSBendRightVertical(const int16_t progress)
+    {
+        return (progress < 48) ? -200 : 200;
+    }
+
     static constexpr SequenceDescriptor kSBendLeftSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
@@ -208,4 +228,35 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 4,
                           { kSBendRightCoveredSeq0, kSBendRightCoveredSeq1, kSBendRightCoveredSeq2, kSBendRightCoveredSeq3 } },
     };
+
+    constexpr auto kTEDBankedSBendLeft = TrackElementDescriptor{
+        .description = STR_S_BEND_LEFT,
+        .coordinates = { 0, 0, 0, 0, -64, -32 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 243712,
+        .mirrorElement = TrackElemType::bankedSBendRight,
+        .flags = {},
+        .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::right, TrackRoll::left, 0 },
+        .spinFunction = SpinFunction::lr,
+        .verticalFactor = EvaluatorBankedSBendLeftVertical,
+        .lateralFactor = EvaluatorBankedSBendLeftLateral,
+        .sequenceData = { 4, { kSBendLeftSeq0, kSBendLeftSeq1, kSBendLeftSeq2, kSBendLeftSeq3 } },
+    };
+
+    constexpr auto kTEDBankedSBendRight = TrackElementDescriptor{
+        .description = STR_S_BEND_RIGHT,
+        .coordinates = { 0, 0, 0, 0, -64, 32 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 243712,
+        .mirrorElement = TrackElemType::bankedSBendLeft,
+        .flags = {},
+        .definition = { TrackGroup::bankedSBend, TrackPitch::none, TrackPitch::none, TrackRoll::left, TrackRoll::right, 0 },
+        .spinFunction = SpinFunction::rl,
+        .verticalFactor = EvaluatorBankedSBendRightVertical,
+        .lateralFactor = EvaluatorBankedSBendRightLateral,
+        .sequenceData = { 4, { kSBendRightSeq0, kSBendRightSeq1, kSBendRightSeq2, kSBendRightSeq3 } },
+    };
+
 } // namespace OpenRCT2::TrackMetadata

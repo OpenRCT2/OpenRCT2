@@ -449,4 +449,67 @@ namespace OpenRCT2::TrackMetadata
                           { kRightLargeZeroGRollDownSeq0, kRightLargeZeroGRollDownSeq1, kRightLargeZeroGRollDownSeq2,
                             kRightLargeZeroGRollDownSeq3 } },
     };
+
+    constexpr auto kTEDLeftZeroGRollUpBanked = TrackElementDescriptor{
+        .description = STR_BANKED_ZERO_G_ROLL_LEFT,
+        .coordinates = { 0, 0, 0, 56, -64, 0 },
+        .pieceLength = 96,
+        .curveChain = { TrackElemType::leftZeroGRollDown, TrackCurve::none },
+        .priceModifier = 229376,
+        .mirrorElement = TrackElemType::rightZeroGRollUpBanked,
+        .flags = { TrackElementFlag::banked, TrackElementFlag::up, TrackElementFlag::normalToInversion,
+                   TrackElementFlag::startsAtHalfHeight, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::zeroGRollBanked, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown, TrackRoll::left,
+                        0 },
+        .verticalFactor = EvaluatorConst<250>,
+        .lateralFactor = EvaluatorZeroGRollUpLeft,
+        .sequenceData = { 3, { kLeftZeroGRollUpSeq0, kLeftZeroGRollUpSeq1, kLeftZeroGRollUpSeq2 } },
+    };
+
+    constexpr auto kTEDRightZeroGRollUpBanked = TrackElementDescriptor{
+        .description = STR_BANKED_ZERO_G_ROLL_RIGHT,
+        .coordinates = { 0, 0, 0, 56, -64, 0 },
+        .pieceLength = 96,
+        .curveChain = { TrackElemType::rightZeroGRollDownBanked, TrackCurve::none },
+        .priceModifier = 229376,
+        .mirrorElement = TrackElemType::leftZeroGRollUpBanked,
+        .flags = { TrackElementFlag::banked, TrackElementFlag::up, TrackElementFlag::normalToInversion,
+                   TrackElementFlag::startsAtHalfHeight, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::zeroGRollBanked, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown,
+                        TrackRoll::right, 0 },
+        .verticalFactor = EvaluatorConst<250>,
+        .lateralFactor = EvaluatorZeroGRollUpRight,
+        .sequenceData = { 3, { kRightZeroGRollUpSeq0, kRightZeroGRollUpSeq1, kRightZeroGRollUpSeq2 } },
+    };
+
+    constexpr auto kTEDLeftZeroGRollDownBanked = TrackElementDescriptor{
+        .description = STR_BANKED_ZERO_G_ROLL_LEFT,
+        .coordinates = { 0, 0, 0, -56, -64, 0 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackElemType::leftZeroGRollUp },
+        .priceModifier = 229376,
+        .mirrorElement = TrackElemType::rightZeroGRollDownBanked,
+        .flags = { TrackElementFlag::banked, TrackElementFlag::down, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::zeroGRollBanked, TrackPitch::down25, TrackPitch::none, TrackRoll::right,
+                        TrackRoll::upsideDown, 0 },
+        .verticalFactor = EvaluatorConst<250>,
+        .lateralFactor = EvaluatorZeroGRollDownLeft,
+        .sequenceData = { 3, { kLeftZeroGRollDownSeq0, kLeftZeroGRollDownSeq1, kLeftZeroGRollDownSeq2 } },
+    };
+
+    constexpr auto kTEDRightZeroGRollDownBanked = TrackElementDescriptor{
+        .description = STR_BANKED_ZERO_G_ROLL_RIGHT,
+        .coordinates = { 0, 0, 0, -56, -64, 0 },
+        .pieceLength = 96,
+        .curveChain = { TrackCurve::none, TrackElemType::rightZeroGRollUp },
+        .priceModifier = 229376,
+        .mirrorElement = TrackElemType::leftZeroGRollDownBanked,
+        .flags = { TrackElementFlag::banked, TrackElementFlag::down, TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::zeroGRollBanked, TrackPitch::down25, TrackPitch::none, TrackRoll::left,
+                        TrackRoll::upsideDown, 0 },
+        .verticalFactor = EvaluatorConst<250>,
+        .lateralFactor = EvaluatorZeroGRollDownRight,
+        .sequenceData = { 3, { kRightZeroGRollDownSeq0, kRightZeroGRollDownSeq1, kRightZeroGRollDownSeq2 } },
+    };
+
 } // namespace OpenRCT2::TrackMetadata

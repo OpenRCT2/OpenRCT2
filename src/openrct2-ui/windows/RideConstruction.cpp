@@ -377,9 +377,12 @@ namespace OpenRCT2::Ui::Windows
             // Disable large curves if the start or end of the track is sloped and large sloped curves are not available
             if ((_previousTrackPitchEnd != TrackPitch::none || _currentTrackPitchEnd != TrackPitch::none))
             {
-                if (!IsTrackEnabled(TrackGroup::slopeCurveLarge)
-                    || !(_previousTrackPitchEnd == TrackPitch::up25 || _previousTrackPitchEnd == TrackPitch::down25)
-                    || !(_currentTrackPitchEnd == TrackPitch::up25 || _currentTrackPitchEnd == TrackPitch::down25))
+                if ((!IsTrackEnabled(TrackGroup::slopeCurveLarge)
+                     || !(_previousTrackPitchEnd == TrackPitch::up25 || _previousTrackPitchEnd == TrackPitch::down25)
+                     || !(_currentTrackPitchEnd == TrackPitch::up25 || _currentTrackPitchEnd == TrackPitch::down25))
+                    && (!IsTrackEnabled(TrackGroup::slopeCurveSteepLarge)
+                        || !(_previousTrackPitchEnd == TrackPitch::up60 || _previousTrackPitchEnd == TrackPitch::down60)
+                        || !(_currentTrackPitchEnd == TrackPitch::up60 || _currentTrackPitchEnd == TrackPitch::down60)))
                 {
                     newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
                 }
@@ -520,11 +523,14 @@ namespace OpenRCT2::Ui::Windows
                 {
                     case TrackPitch::up60:
                     case TrackPitch::down60:
-                        newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_LEFT_CURVE)
-                            | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
+                        newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
                         if (!IsTrackEnabled(TrackGroup::slopeCurveSteep))
                         {
                             newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE_SMALL);
+                        }
+                        if (!IsTrackEnabled(TrackGroup::slopeCurveSteepLarge))
+                        {
+                            newDisabledWidgets |= (1uLL << WIDX_LEFT_CURVE) | (1uLL << WIDX_RIGHT_CURVE);
                         }
                         break;
                     case TrackPitch::up90:
@@ -698,7 +704,10 @@ namespace OpenRCT2::Ui::Windows
                             newDisabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                         }
                     }
-                    else
+                    else if (!(IsTrackEnabled(TrackGroup::steepToBank)
+                               && ((_currentTrackPitchEnd == TrackPitch::up25 && _previousTrackPitchEnd == TrackPitch::up60)
+                                   || (_currentTrackPitchEnd == TrackPitch::down25
+                                       && _previousTrackPitchEnd == TrackPitch::down60))))
                     {
                         if (_currentTrackPitchEnd != _previousTrackPitchEnd)
                         {
@@ -720,8 +729,9 @@ namespace OpenRCT2::Ui::Windows
             }
             if (_currentTrackRollEnd != TrackRoll::none || _previousTrackRollEnd != TrackRoll::none)
             {
-                newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP)
-                    | (1uLL << WIDX_CHAIN_LIFT);
+                if (!IsTrackEnabled(TrackGroup::steepToBank) || _currentTrackRollEnd != TrackRoll::none)
+                    newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                newDisabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
             }
             if (_currentlySelectedTrack != TrackCurve::none)
             {

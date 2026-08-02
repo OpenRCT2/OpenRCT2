@@ -3835,3 +3835,9 @@ STR_7035    :Shop style
 STR_7036    :Vehicle style
 STR_7037    :Operating mode
 STR_7038    :Wait and load
+STR_7039    :Banked In-line Twist (left)
+STR_7040    :Banked In-line Twist (right)
+STR_7041    :Banked Barrel Roll (left)
+STR_7042    :Banked Barrel Roll (right)
+STR_7043    :Banked Zero G Roll (left)
+STR_7044    :Banked Zero G Roll (right)

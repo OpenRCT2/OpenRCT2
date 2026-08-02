@@ -34,6 +34,21 @@ namespace OpenRCT2::TrackMetadata
         return (progress / 2) + 28;
     }
 
+    static int32_t EvaluatorDiagVerticalLoop(const int16_t progress)
+    {
+        return (abs(progress - 169) / 2) + 31;
+    }
+
+    static int32_t EvaluatorDiagHalfLoopUp(const int16_t progress)
+    {
+        return ((static_cast<uint16_t>(-(progress - 169))) / 2) + 31;
+    }
+
+    static int32_t EvaluatorDiagHalfLoopDown(const int16_t progress)
+    {
+        return (progress / 2) + 31;
+    }
+
     static int32_t EvaluatorMediumHalfLoopUp(const int16_t progress)
     {
         return (244 - progress) / 4 + 51;
@@ -1294,6 +1309,223 @@ namespace OpenRCT2::TrackMetadata
         .blockedSegments = kFlyerHalfLoopUninvertedUpSeq0.blockedSegments,
     };
 
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq1 = {
+        .clearance = { 0, 32, 8, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq2 = {
+        .clearance = { -32, 0, 8, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq3 = {
+        .clearance = { -32, 32, 8, 40, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq4 = {
+        .clearance = { -32, 64, 48, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq5 = {
+        .clearance = { -64, 32, 48, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq6 = {
+        .clearance = { -64, 64, 48, 80, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq7 = {
+        .clearance = { -32, 64, 120, 24, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq8 = {
+        .clearance = { -64, 32, 120, 24, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopUpSeq9 = {
+        .clearance = { -32, 32, 136, 8, { 0b1101, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq0 = {
+        .clearance = { 0, 0, 136, 8, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq1 = {
+        .clearance = { -32, 0, 120, 24, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq2 = {
+        .clearance = { 0, 32, 120, 24, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq3 = {
+        .clearance = { -32, 32, 48, 80, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq4 = {
+        .clearance = { -32, 0, 48, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq5 = {
+        .clearance = { 0, 32, 48, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq6 = {
+        .clearance = { 0, 0, 8, 40, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq7 = {
+        .clearance = { 0, -32, 8, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq8 = {
+        .clearance = { 32, 0, 8, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagHalfLoopDownSeq9 = {
+        .clearance = { 32, -32, 0, 8, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq1 = {
+        .clearance = { 0, 32, 8, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq2 = {
+        .clearance = { -32, 32, 8, 40, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq3 = {
+        .clearance = { -32, 64, 48, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq4 = {
+        .clearance = { -64, 32, 48, 64, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b0001,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq5 = {
+        .clearance = { -64, 64, 48, 80, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq6 = {
+        .clearance = { -64, 32, 136, 8, { 0b0011, 0 }, {} },
+        .allowedWallEdges = 0b0001,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq7 = {
+        .clearance = { -32, 32, 136, 8, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq8 = {
+        .clearance = { -32, 0, 136, 8, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq9 = {
+        .clearance = { 0, 0, 136, 8, { 0b1100, 0 }, {} },
+        .allowedWallEdges = 0b0100,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq10 = {
+        .clearance = { 0, -32, 48, 80, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq11 = {
+        .clearance = { 0, 0, 48, 64, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0100,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq12 = {
+        .clearance = { -32, -32, 48, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq13 = {
+        .clearance = { -32, 0, 8, 40, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq14 = {
+        .clearance = { -64, 0, 8, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagLeftVerticalLoopSeq15 = {
+        .clearance = { -64, 32, 0, 8, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq1 = {
+        .clearance = { -32, 0, 8, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq2 = {
+        .clearance = { -32, 32, 8, 40, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq3 = {
+        .clearance = { -64, 32, 48, 16, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq4 = {
+        .clearance = { -32, 64, 48, 64, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq5 = {
+        .clearance = { -64, 64, 48, 80, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq6 = {
+        .clearance = { -32, 64, 136, 8, { 0b0110, 0 }, {} },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq7 = {
+        .clearance = { -32, 32, 136, 8, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq8 = {
+        .clearance = { 0, 32, 136, 8, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq9 = {
+        .clearance = { 0, 0, 136, 8, { 0b1001, 0 }, {} },
+        .allowedWallEdges = 0b1000,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq10 = {
+        .clearance = { 32, 0, 48, 80, { 0b1000, 0 }, {} },
+        .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq11 = {
+        .clearance = { 0, 0, 48, 64, { 0b0001, 0 }, {} },
+        .allowedWallEdges = 0b1000,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq12 = {
+        .clearance = { 32, 32, 48, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq13 = {
+        .clearance = { 0, 32, 8, 40, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq14 = {
+        .clearance = { 0, 64, 8, 16, { 0b0100, 0 }, {} },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagRightVerticalLoopSeq15 = {
+        .clearance = { -32, 64, 0, 8, { 0b0010, 0 }, {} },
+        .allowedWallEdges = 0b0000,
+        .flags = { SequenceFlag::hasHeightMarker },
+    };
+
     constexpr auto kTEDLeftVerticalLoop = TrackElementDescriptor{
         .description = STR_VERTICAL_LOOP_LEFT,
         .coordinates = { 0, 0, 0, 0, -32, -32 },
@@ -1699,6 +1931,83 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 4,
                           { kFlyerHalfLoopUninvertedDownSeq0, kFlyerHalfLoopUninvertedDownSeq1,
                             kFlyerHalfLoopUninvertedDownSeq2, kFlyerHalfLoopUninvertedDownSeq3 } },
+    };
+
+    constexpr auto kTEDDiagLeftVerticalLoop = TrackElementDescriptor{
+        .description = STR_VERTICAL_LOOP_LEFT,
+        .coordinates = { 4, 4, 0, 0, -64, 32 },
+        .pieceLength = 120,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 614400,
+        .mirrorElement = TrackElemType::diagRightVerticalLoop,
+        .flags = { TrackElementFlag::normalToInversion, TrackElementFlag::startsAtHalfHeight,
+                   TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::diagVerticalLoop, TrackPitch::down25, TrackPitch::up25, TrackRoll::none, TrackRoll::none,
+                        -48 },
+        .verticalFactor = EvaluatorDiagVerticalLoop,
+        .sequenceData = { 16,
+                          { kDiagLeftVerticalLoopSeq0, kDiagLeftVerticalLoopSeq1, kDiagLeftVerticalLoopSeq2,
+                            kDiagLeftVerticalLoopSeq3, kDiagLeftVerticalLoopSeq4, kDiagLeftVerticalLoopSeq5,
+                            kDiagLeftVerticalLoopSeq6, kDiagLeftVerticalLoopSeq7, kDiagLeftVerticalLoopSeq8,
+                            kDiagLeftVerticalLoopSeq9, kDiagLeftVerticalLoopSeq10, kDiagLeftVerticalLoopSeq11,
+                            kDiagLeftVerticalLoopSeq12, kDiagLeftVerticalLoopSeq13, kDiagLeftVerticalLoopSeq14,
+                            kDiagLeftVerticalLoopSeq15 } }
+    };
+
+    constexpr auto kTEDDiagRightVerticalLoop = TrackElementDescriptor{
+        .description = STR_VERTICAL_LOOP_RIGHT,
+        .coordinates = { 4, 4, 0, 0, -32, 64 },
+        .pieceLength = 120,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 614400,
+        .mirrorElement = TrackElemType::diagLeftVerticalLoop,
+        .flags = { TrackElementFlag::normalToInversion, TrackElementFlag::startsAtHalfHeight,
+                   TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::diagVerticalLoop, TrackPitch::down25, TrackPitch::up25, TrackRoll::none, TrackRoll::none,
+                        -48 },
+        .verticalFactor = EvaluatorDiagVerticalLoop,
+        .sequenceData = { 16,
+                          { kDiagRightVerticalLoopSeq0, kDiagRightVerticalLoopSeq1, kDiagRightVerticalLoopSeq2,
+                            kDiagRightVerticalLoopSeq3, kDiagRightVerticalLoopSeq4, kDiagRightVerticalLoopSeq5,
+                            kDiagRightVerticalLoopSeq6, kDiagRightVerticalLoopSeq7, kDiagRightVerticalLoopSeq8,
+                            kDiagRightVerticalLoopSeq9, kDiagRightVerticalLoopSeq10, kDiagRightVerticalLoopSeq11,
+                            kDiagRightVerticalLoopSeq12, kDiagRightVerticalLoopSeq13, kDiagRightVerticalLoopSeq14,
+                            kDiagRightVerticalLoopSeq15 } }
+    };
+
+    constexpr auto kTEDDiagHalfLoopUp = TrackElementDescriptor{
+        .description = STR_HALF_LOOP,
+        .coordinates = { 4, 6, 0, 168, -32, 32 },
+        .pieceLength = 60,
+        .curveChain = { TrackElemType::diagHalfLoopDown, TrackCurve::none },
+        .priceModifier = 368640,
+        .mirrorElement = TrackElemType::diagHalfLoopUp,
+        .flags = { TrackElementFlag::up, TrackElementFlag::normalToInversion, TrackElementFlag::startsAtHalfHeight,
+                   TrackElementFlag::inversionToNormal },
+        .definition = { TrackGroup::diagHalfLoop, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown, TrackRoll::none,
+                        64 },
+        .verticalFactor = EvaluatorDiagHalfLoopUp,
+        .sequenceData = { 10,
+                          { kDiagHalfLoopUpSeq0, kDiagHalfLoopUpSeq1, kDiagHalfLoopUpSeq2, kDiagHalfLoopUpSeq3,
+                            kDiagHalfLoopUpSeq4, kDiagHalfLoopUpSeq5, kDiagHalfLoopUpSeq6, kDiagHalfLoopUpSeq7,
+                            kDiagHalfLoopUpSeq8, kDiagHalfLoopUpSeq9 } }
+    };
+
+    constexpr auto kTEDDiagHalfLoopDown = TrackElementDescriptor{
+        .description = STR_HALF_LOOP,
+        .coordinates = { 4, 6, 168, 0, 32, -32 },
+        .pieceLength = 60,
+        .curveChain = { TrackCurve::none, TrackElemType::diagHalfLoopUp },
+        .priceModifier = 368640,
+        .mirrorElement = TrackElemType::diagHalfLoopDown,
+        .flags = { TrackElementFlag::down, TrackElementFlag::inversionToNormal, TrackElementFlag::startsAtHalfHeight },
+        .definition = { TrackGroup::diagHalfLoop, TrackPitch::down25, TrackPitch::none, TrackRoll::none, TrackRoll::upsideDown,
+                        -64 },
+        .verticalFactor = EvaluatorDiagHalfLoopDown,
+        .sequenceData = { 10,
+                          { kDiagHalfLoopDownSeq0, kDiagHalfLoopDownSeq1, kDiagHalfLoopDownSeq2, kDiagHalfLoopDownSeq3,
+                            kDiagHalfLoopDownSeq4, kDiagHalfLoopDownSeq5, kDiagHalfLoopDownSeq6, kDiagHalfLoopDownSeq7,
+                            kDiagHalfLoopDownSeq8, kDiagHalfLoopDownSeq9 } },
     };
 
 } // namespace OpenRCT2::TrackMetadata

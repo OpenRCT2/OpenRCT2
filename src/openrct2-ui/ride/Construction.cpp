@@ -89,7 +89,9 @@ namespace OpenRCT2
 
         // S-Bends
         TrackElemType::sBendLeft,
+        TrackElemType::bankedSBendLeft,
         TrackElemType::sBendRight,
+        TrackElemType::bankedSBendRight,
         kSeparator,
 
         // Helixes
@@ -144,23 +146,35 @@ namespace OpenRCT2
         // Corkscrews
         TrackElemType::leftCorkscrewUp,
         TrackElemType::leftCorkscrewDown,
+        TrackElemType::diagLeftCorkscrewUp,
+        TrackElemType::diagLeftCorkscrewDown,
         TrackElemType::rightCorkscrewUp,
         TrackElemType::rightCorkscrewDown,
+        TrackElemType::diagRightCorkscrewUp,
+        TrackElemType::diagRightCorkscrewDown,
         TrackElemType::leftFlyerCorkscrewUp,
         TrackElemType::leftFlyerCorkscrewDown,
         TrackElemType::rightFlyerCorkscrewUp,
         TrackElemType::rightFlyerCorkscrewDown,
         TrackElemType::leftLargeCorkscrewUp,
         TrackElemType::leftLargeCorkscrewDown,
+        TrackElemType::diagLeftLargeCorkscrewUp,
+        TrackElemType::diagLeftLargeCorkscrewDown,
         TrackElemType::rightLargeCorkscrewUp,
         TrackElemType::rightLargeCorkscrewDown,
+        TrackElemType::diagRightLargeCorkscrewUp,
+        TrackElemType::diagRightLargeCorkscrewDown,
         kSeparator,
 
         // Loops
         TrackElemType::leftVerticalLoop,
+        TrackElemType::diagLeftVerticalLoop,
         TrackElemType::rightVerticalLoop,
+        TrackElemType::diagRightVerticalLoop,
         TrackElemType::halfLoopUp,
+        TrackElemType::diagHalfLoopUp,
         TrackElemType::halfLoopDown,
+        TrackElemType::diagHalfLoopDown,
         TrackElemType::flyerHalfLoopUninvertedUp,
         TrackElemType::flyerHalfLoopInvertedDown,
         TrackElemType::flyerHalfLoopInvertedUp,
@@ -194,6 +208,10 @@ namespace OpenRCT2
         TrackElemType::leftZeroGRollDown,
         TrackElemType::rightZeroGRollUp,
         TrackElemType::rightZeroGRollDown,
+        TrackElemType::leftZeroGRollUpBanked,
+        TrackElemType::leftZeroGRollDownBanked,
+        TrackElemType::rightZeroGRollUpBanked,
+        TrackElemType::rightZeroGRollDownBanked,
         TrackElemType::leftLargeZeroGRollUp,
         TrackElemType::leftLargeZeroGRollDown,
         TrackElemType::rightLargeZeroGRollUp,
@@ -209,6 +227,10 @@ namespace OpenRCT2
         TrackElemType::leftBarrelRollDownToUp,
         TrackElemType::rightBarrelRollUpToDown,
         TrackElemType::rightBarrelRollDownToUp,
+        TrackElemType::leftBarrelRollUpToDownBanked,
+        TrackElemType::leftBarrelRollDownToUpBanked,
+        TrackElemType::rightBarrelRollUpToDownBanked,
+        TrackElemType::rightBarrelRollDownToUpBanked,
         kSeparator,
 
         // Twists
@@ -220,10 +242,14 @@ namespace OpenRCT2
         TrackElemType::leftFlyerTwistDown,
         TrackElemType::rightFlyerTwistUp,
         TrackElemType::rightFlyerTwistDown,
+        TrackElemType::leftTwistDownToUpBanked,
+        TrackElemType::leftTwistUpToDownBanked,
+        TrackElemType::rightTwistDownToUpBanked,
+        TrackElemType::rightTwistUpToDownBanked,
     };
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(EnumValue(TrackElemType::count) == 350, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::count) == 404, "Reminder to add new track element to special dropdown list");
 
     /**
      *

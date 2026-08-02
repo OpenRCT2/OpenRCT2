@@ -1528,6 +1528,32 @@ TrackPaintFunction GetTrackPaintFunctionClassicStandUpRC(TrackElemType trackType
         case TrackElemType::rightQuarterBankedHelixLargeUp:
         case TrackElemType::leftQuarterBankedHelixLargeDown:
         case TrackElemType::rightQuarterBankedHelixLargeDown:
+        case TrackElemType::bankedSBendLeft:
+        case TrackElemType::bankedSBendRight:
+        case TrackElemType::leftBankedUp25ToUp60:
+        case TrackElemType::rightBankedUp25ToUp60:
+        case TrackElemType::up60ToLeftBankedUp25:
+        case TrackElemType::up60ToRightBankedUp25:
+        case TrackElemType::leftBankedDown25ToDown60:
+        case TrackElemType::rightBankedDown25ToDown60:
+        case TrackElemType::down60ToLeftBankedDown25:
+        case TrackElemType::down60ToRightBankedDown25:
+        case TrackElemType::diagLeftBankedUp25ToUp60:
+        case TrackElemType::diagRightBankedUp25ToUp60:
+        case TrackElemType::diagUp60ToLeftBankedUp25:
+        case TrackElemType::diagUp60ToRightBankedUp25:
+        case TrackElemType::diagLeftBankedDown25ToDown60:
+        case TrackElemType::diagRightBankedDown25ToDown60:
+        case TrackElemType::diagLeftBankedDown60ToDown25:
+        case TrackElemType::diagRightBankedDown60ToDown25:
+        case TrackElemType::leftBarrelRollUpToDownBanked:
+        case TrackElemType::rightBarrelRollUpToDownBanked:
+        case TrackElemType::leftBarrelRollDownToUpBanked:
+        case TrackElemType::rightBarrelRollDownToUpBanked:
+        case TrackElemType::leftZeroGRollUpBanked:
+        case TrackElemType::rightZeroGRollUpBanked:
+        case TrackElemType::leftZeroGRollDownBanked:
+        case TrackElemType::rightZeroGRollDownBanked:
             return TrackPaintFunctionDummy;
 
         default:

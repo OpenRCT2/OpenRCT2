@@ -422,7 +422,6 @@ namespace OpenRCT2::HybridRC
                     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_STEEP + 9),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_STEEP + 10),
                         { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
@@ -14618,6 +14617,2076 @@ namespace OpenRCT2::HybridRC
         }
     }
 
+    static void TrackDiagFlatTo60DegUpLongBase(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 9)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 6)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 3)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 10)),
+                            { -16, -16, height }, { { -20, -20, height + 8 }, { 24, 24, 1 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
+                break;
+            case 4:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 5:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 7)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 6:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 4)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 11)),
+                            { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 96);
+                break;
+            case 7:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 2)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 120);
+                break;
+            case 8:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 8)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 120);
+                break;
+            case 9:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 5)),
+                            { -16, -16, height }, { { -16, -16, height + 80 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 136);
+                break;
+        }
+    }
+
+    static void TrackDiag60DegUpToFlatLongBase(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 21)),
+                            { -16, -16, height }, { { -8, -8, height + 0 }, { 16, 16, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 96);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 12)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 18)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 15)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 22)),
+                            { -16, -16, height }, { { -8, -8, height + 56 }, { 16, 16, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 112);
+                break;
+            case 4:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 13)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
+                break;
+            case 5:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 19)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
+                break;
+            case 6:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 16)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 23)),
+                            { -16, -16, height }, { { -16, -16, height + 24 }, { 24, 24, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+            case 7:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 14)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+            case 8:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 20)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+            case 9:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 17)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+        }
+    }
+
+    static void TrackDiagFlatTo60DegDownLongBase(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 17)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 20)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 14)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 23)),
+                            { -16, -16, height }, { { -16, -16, height + 24 }, { 24, 24, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 16)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 40);
+                break;
+            case 4:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 19)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
+                break;
+            case 5:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 13)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
+                break;
+            case 6:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 22)),
+                            { -16, -16, height }, { { -8, -8, height + 56 }, { 16, 16, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 15)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 112);
+                break;
+            case 7:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 18)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
+                break;
+            case 8:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 12)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 104);
+                break;
+            case 9:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 21)),
+                            { -16, -16, height }, { { -8, -8, height + 0 }, { 16, 16, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 96);
+                break;
+        }
+    }
+
+    static void TrackDiag60DegDownToFlatLongBase(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 5)),
+                            { -16, -16, height }, { { -16, -16, height + 80 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 136);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 8)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 120);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 2)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 120);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 11)),
+                            { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 4)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 96);
+                break;
+            case 4:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 7)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 5:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 6:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 10)),
+                            { -16, -16, height }, { { -8, -8, height + 8 }, { 24, 24, 1 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 3)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre,
+                            PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 64);
+                break;
+            case 7:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 6)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
+                break;
+            case 8:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 48);
+                break;
+            case 9:
+                switch (direction)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_FLAT_TO_STEEP_DIAGONAL + 9)),
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+        }
+    }
+
+    static void TrackBankedSBendLeft(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        if (direction > 1)
+        {
+            trackSequence = 3 - trackSequence;
+            direction = (direction + 2) & 3;
+        }
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 3 } },  { { 0, 6, 0 + height }, { 32, 20, 3 } },
+                                        { { 0, 6, 0 + height }, { 32, 20, 3 } },  { { 0, 6, 0 + height }, { 32, 20, 3 } },
+                                        { { 0, 31, 0 + height }, { 32, 1, 26 } }, { { 0, 31, 0 + height }, { 32, 1, 26 } },
+                                        { { 0, 0, 0 + height }, { 32, 1, 26 } },  { { 0, 0, 0 + height }, { 32, 1, 26 } },
+                                        { { 0, 0, 0 + height }, { 32, 26, 3 } },  { { 0, 0, 0 + height }, { 32, 26, 3 } },
+                                        { { 0, 6, 0 + height }, { 32, 26, 3 } },  { { 0, 6, 0 + height }, { 32, 26, 3 } },
+                                        { { 0, 6, 0 + height }, { 32, 26, 3 } },  { { 0, 6, 0 + height }, { 32, 26, 3 } },
+                                        { { 0, 0, 0 + height }, { 32, 26, 3 } },  { { 0, 0, 0 + height }, { 32, 26, 3 } } };
+
+        WoodenSupportSubType supports[4] = { WoodenSupportSubType::corner3, WoodenSupportSubType::corner0,
+                                             WoodenSupportSubType::corner1, WoodenSupportSubType::corner2 };
+
+        switch (trackSequence)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 5 * direction + 0)),
+                    { 0, 0, height }, boundingBoxes[direction + 0]);
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 5 * direction + 1)),
+                    { 0, 0, height }, boundingBoxes[direction + 4]);
+                WoodenASupportsPaintSetup(
+                    session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                if (direction == 0 || direction == 3)
+                {
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::top, PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 5 * direction + 2)),
+                    { 0, 0, height }, boundingBoxes[direction + 8]);
+                WoodenASupportsPaintSetup(session, supportType.wooden, supports[direction], height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
+                            PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 5 * direction + 3)),
+                    { 0, 0, height }, boundingBoxes[direction + 12]);
+                WoodenASupportsPaintSetup(
+                    session, supportType.wooden, supports[(direction + 2) & 3], height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                            PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 5 * (direction & 1) + 4)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                WoodenASupportsPaintSetup(
+                    session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                if (direction == 1 || direction == 2)
+                {
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+        }
+    }
+
+    static void TrackBankedSBendRight(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        if (direction > 1)
+        {
+            trackSequence = 3 - trackSequence;
+            direction = (direction + 2) & 3;
+        }
+
+        WoodenSupportSubType supports[4] = { WoodenSupportSubType::corner2, WoodenSupportSubType::corner3,
+                                             WoodenSupportSubType::corner0, WoodenSupportSubType::corner1 };
+
+        switch (trackSequence)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 5 * (direction & 1) + 10)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                WoodenASupportsPaintSetup(
+                    session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                if (direction == 0 || direction == 3)
+                {
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 11)),
+                            { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 26, 3 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 16)),
+                            { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 26, 3 } });
+                        break;
+                }
+                WoodenASupportsPaintSetup(session, supportType.wooden, supports[direction], height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                            PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 12)),
+                            { 0, 0, height }, { { 0, 0, height + 0 }, { 32, 26, 3 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 17)),
+                            { 0, 0, height }, { { 0, 0, height + 0 }, { 32, 26, 3 } });
+                        break;
+                }
+                WoodenASupportsPaintSetup(
+                    session, supportType.wooden, supports[(direction + 2) & 3], height, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
+                            PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 13)),
+                            { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 14)),
+                            { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 26 } });
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 18)),
+                            { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_BANKED_S_BEND + 19)),
+                            { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 26 } });
+                        break;
+                }
+                WoodenASupportsPaintSetup(
+                    session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours);
+                if (direction == 1 || direction == 2)
+                {
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32);
+                break;
+        }
+    }
+
+    static void TrackLeftBankedUp25ToUp60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 0)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 1)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 2)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 3)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 4)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+        }
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+            WoodenSupportTransitionType::up25DegToUp60Deg);
+        if (direction == 0 || direction == 3)
+        {
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        }
+        else
+        {
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        }
+        PaintUtilSetSegmentSupportHeight(
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+            0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
+    }
+
+    static void TrackRightBankedUp25ToUp60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 5)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 6)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 7)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 8)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 9)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+        }
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+            WoodenSupportTransitionType::up25DegToUp60Deg);
+        if (direction == 0 || direction == 3)
+        {
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        }
+        if (direction == 1 || direction == 2)
+        {
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        }
+        PaintUtilSetSegmentSupportHeight(
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+            0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
+    }
+
+    static void TrackUp60ToLeftBankedUp25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 10)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 11)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 12)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 13)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 14)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+        }
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+            WoodenSupportTransitionType::up60DegToUp25Deg);
+        if (direction == 0 || direction == 3)
+        {
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        }
+        else
+        {
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        }
+        PaintUtilSetSegmentSupportHeight(
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+            0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
+    }
+
+    static void TrackUp60ToRightBankedUp25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 15)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 16)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 17)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 18)),
+                    { 0, 0, height }, { { 0, 31, height + 0 }, { 32, 1, 58 } });
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 19)),
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 3 } });
+                break;
+        }
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
+            WoodenSupportTransitionType::up60DegToUp25Deg);
+        if (direction == 0 || direction == 3)
+        {
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        }
+        if (direction == 1 || direction == 2)
+        {
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+        }
+        PaintUtilSetSegmentSupportHeight(
+            session,
+            PaintUtilRotateSegments(
+                EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+            0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 72);
+    }
+
+    static void TrackDown60ToRightBankedDown25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        TrackLeftBankedUp25ToUp60(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+    }
+
+    static void TrackDown60ToLeftBankedDown25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        TrackRightBankedUp25ToUp60(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+    }
+
+    static void TrackRightBankedDown25ToDown60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        TrackUp60ToLeftBankedUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+    }
+
+    static void TrackLeftBankedDown25ToDown60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        TrackUp60ToRightBankedUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+    }
+
+    static void TrackDiagLeftBankedUp25ToUp60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 25)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 20)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 21)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 24)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 22)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 23)),
+                        { -16, -16, height }, { { 16, 16, height + 66 }, { 32, 32, 0 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
+    static void TrackDiagRightBankedUp25ToUp60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 31)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 26)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 29)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 30)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 27)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 28)),
+                        { -16, -16, height }, { { 16, 16, height + 66 }, { 32, 32, 0 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
+    static void TrackDiagUp60ToLeftBankedUp25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 36)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 32)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 33)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 35)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 34)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
+    static void TrackDiagUp60ToRightBankedUp25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 41)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 37)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 39)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 40)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 38)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
+    static void TrackDiagDown60ToRightBankedDown25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 22)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 23)),
+                        { -16, -16, height }, { { 16, 16, height + 66 }, { 32, 32, 0 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 24)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 20)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 21)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 25)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
+    static void TrackDiagDown60ToLeftBankedDown25(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 27)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 28)),
+                        { -16, -16, height }, { { 16, 16, height + 66 }, { 32, 32, 0 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 29)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 30)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 26)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 31)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
+    static void TrackDiagRightBankedDown25ToDown60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 34)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 35)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 32)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 33)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner1, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 36)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
+    static void TrackDiagLeftBankedDown25ToDown60(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                if (direction == 3)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 38)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 1:
+                if (direction == 0)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 39)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 40)),
+                        { -16, -16, height }, { { -16, -16, height + 66 }, { 32, 32, 0 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 2:
+                if (direction == 2)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 37)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::corner1, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+            case 3:
+                if (direction == 1)
+                {
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        GetTrackColour(session).WithIndex((SPR_TRACKS_HYBRID_TRACK_STEEP_BANK_TRANSITION + 41)),
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 72);
+                break;
+        }
+    }
+
     TrackPaintFunction GetTrackPaintFunction(TrackElemType trackType)
     {
         switch (trackType)
@@ -14712,6 +16781,10 @@ namespace OpenRCT2::HybridRC
                 return TrackSBendLeft;
             case TrackElemType::sBendRight:
                 return TrackSBendRight;
+            case TrackElemType::bankedSBendLeft:
+                return TrackBankedSBendLeft;
+            case TrackElemType::bankedSBendRight:
+                return TrackBankedSBendRight;
             case TrackElemType::leftQuarterTurn3Tiles:
                 return TrackLeftQuarterTurn3;
             case TrackElemType::rightQuarterTurn3Tiles:
@@ -15054,6 +17127,7 @@ namespace OpenRCT2::HybridRC
                 return Track25DegDownBrakes;
             case TrackElemType::diagDown25Brakes:
                 return TrackDiag25DegDownBrakes;
+
             case TrackElemType::leftQuarterHelixLargeUp:
                 return OpenRCT2::trackPaintLeftQuarterHelixLargeUp<
                     SPR_TRACKS_HYBRID_TRACK_QUARTER_HELIX_LEFT, kLeftQuarterHelixLargeUpSpriteMap, true,
@@ -15086,6 +17160,47 @@ namespace OpenRCT2::HybridRC
                 return OpenRCT2::trackPaintRightQuarterBankedHelixLargeDown<
                     SPR_TRACKS_HYBRID_TRACK_QUARTER_HELIX_LEFT_BANKED, kLeftQuarterBankedHelixLargeUpSpriteMap, true,
                     kQuarterHelixSupportHeights, OpenRCT2::BlockedSegmentsType::wide, kTunnelGroup, true>;
+
+            case TrackElemType::diagFlatToUp60LongBase:
+                return TrackDiagFlatTo60DegUpLongBase;
+            case TrackElemType::diagUp60ToFlatLongBase:
+                return TrackDiag60DegUpToFlatLongBase;
+            case TrackElemType::diagFlatToDown60LongBase:
+                return TrackDiagFlatTo60DegDownLongBase;
+            case TrackElemType::diagDown60ToFlatLongBase:
+                return TrackDiag60DegDownToFlatLongBase;
+            case TrackElemType::leftBankedUp25ToUp60:
+                return TrackLeftBankedUp25ToUp60;
+            case TrackElemType::rightBankedUp25ToUp60:
+                return TrackRightBankedUp25ToUp60;
+            case TrackElemType::up60ToLeftBankedUp25:
+                return TrackUp60ToLeftBankedUp25;
+            case TrackElemType::up60ToRightBankedUp25:
+                return TrackUp60ToRightBankedUp25;
+            case TrackElemType::leftBankedDown25ToDown60:
+                return TrackLeftBankedDown25ToDown60;
+            case TrackElemType::rightBankedDown25ToDown60:
+                return TrackRightBankedDown25ToDown60;
+            case TrackElemType::down60ToLeftBankedDown25:
+                return TrackDown60ToLeftBankedDown25;
+            case TrackElemType::down60ToRightBankedDown25:
+                return TrackDown60ToRightBankedDown25;
+            case TrackElemType::diagLeftBankedUp25ToUp60:
+                return TrackDiagLeftBankedUp25ToUp60;
+            case TrackElemType::diagRightBankedUp25ToUp60:
+                return TrackDiagRightBankedUp25ToUp60;
+            case TrackElemType::diagUp60ToLeftBankedUp25:
+                return TrackDiagUp60ToLeftBankedUp25;
+            case TrackElemType::diagUp60ToRightBankedUp25:
+                return TrackDiagUp60ToRightBankedUp25;
+            case TrackElemType::diagLeftBankedDown25ToDown60:
+                return TrackDiagLeftBankedDown25ToDown60;
+            case TrackElemType::diagRightBankedDown25ToDown60:
+                return TrackDiagRightBankedDown25ToDown60;
+            case TrackElemType::diagLeftBankedDown60ToDown25:
+                return TrackDiagDown60ToLeftBankedDown25;
+            case TrackElemType::diagRightBankedDown60ToDown25:
+                return TrackDiagDown60ToRightBankedDown25;
             default:
                 return TrackPaintFunctionDummy;
         }

@@ -1767,6 +1767,13 @@ enum : StringId
 
     STR_CHEAT_DISABLE_GRASS_GROWING = 7031,
 
+    STR_BANKED_IN_LINE_TWIST_LEFT = 7039,
+    STR_BANKED_IN_LINE_TWIST_RIGHT = 7040,
+    STR_BANKED_BARREL_ROLL_LEFT = 7041,
+    STR_BANKED_BARREL_ROLL_RIGHT = 7042,
+    STR_BANKED_ZERO_G_ROLL_LEFT = 7043,
+    STR_BANKED_ZERO_G_ROLL_RIGHT = 7044,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
