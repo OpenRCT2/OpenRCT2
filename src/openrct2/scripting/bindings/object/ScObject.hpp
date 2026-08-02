@@ -307,7 +307,7 @@ namespace OpenRCT2::Scripting
             auto carEntry = GetEntry(thisVal);
             if (carEntry != nullptr)
             {
-                for (std::underlying_type_t<SpriteGroupType> g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::Count); g++)
+                for (std::underlying_type_t<SpriteGroupType> g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::count); g++)
                 {
                     auto group = carEntry->SpriteGroups[g];
                     if (group.Enabled())

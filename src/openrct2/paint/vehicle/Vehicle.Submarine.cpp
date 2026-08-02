@@ -21,18 +21,18 @@ namespace OpenRCT2
         uint32_t result = imageDirection;
         if (vehicle->restraints_position >= 64)
         {
-            if ((carEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
+            if ((carEntry->GroupEnabled(SpriteGroupType::restraintAnimation)) && !(imageDirection & 3))
             {
                 auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
-                result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
+                result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::restraintAnimation) + restraintFrame)
                         * carEntry->base_num_frames
-                    + carEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
+                    + carEntry->GroupImageId(SpriteGroupType::restraintAnimation);
             }
         }
         else
         {
-            result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * carEntry->base_num_frames)
-                + carEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
+            result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::slopeFlat) * carEntry->base_num_frames)
+                + carEntry->GroupImageId(SpriteGroupType::slopeFlat) + vehicle->SwingSprite;
         }
         return result;
     }

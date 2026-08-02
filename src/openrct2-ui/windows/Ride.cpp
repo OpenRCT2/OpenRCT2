@@ -1346,7 +1346,7 @@ namespace OpenRCT2::Ui::Windows
                 auto imageIndex = Entity::Yaw::YawFrom4(2) * 2;
                 if (page == WINDOW_RIDE_PAGE_VEHICLE)
                     imageIndex += currentFrame;
-                imageIndex = carEntry.SpriteByYaw(imageIndex / 2, SpriteGroupType::SlopeFlat);
+                imageIndex = carEntry.SpriteByYaw(imageIndex / 2, SpriteGroupType::slopeFlat);
                 imageIndex &= carEntry.TabRotationMask;
                 imageIndex *= carEntry.base_num_frames;
                 imageIndex += carEntry.base_image_id;
@@ -2941,13 +2941,13 @@ namespace OpenRCT2::Ui::Windows
 
             VehicleColour vehicleColour = RideGetVehicleColour(ride, vehicleColourIndex);
 
-            ImageIndex imageIndex = carEntry.SpriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::SlopeFlat);
+            ImageIndex imageIndex = carEntry.SpriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::slopeFlat);
 
             if (isReversed)
             {
-                auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
+                auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::slopeFlat);
                 imageIndex = carEntry.SpriteByYaw(
-                    (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
+                    (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::slopeFlat);
             }
 
             imageIndex &= carEntry.TabRotationMask;
@@ -5271,7 +5271,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw the coloured spinning vehicle
             // currentFrame represents a SpritePrecision of 64
-            ImageIndex imageIndex = carEntry.SpriteByYaw(currentFrame / 2, SpriteGroupType::SlopeFlat);
+            ImageIndex imageIndex = carEntry.SpriteByYaw(currentFrame / 2, SpriteGroupType::slopeFlat);
             imageIndex &= carEntry.TabRotationMask;
             imageIndex *= carEntry.base_num_frames;
             imageIndex += carEntry.base_image_id;
