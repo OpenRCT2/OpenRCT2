@@ -25,7 +25,7 @@ namespace OpenRCT2::Audio
     private:
         AudioSource_* _source = nullptr;
 
-        MixerGroup _group = MixerGroup::Sound;
+        MixerGroup _group = MixerGroup::sound;
         double _rate = 0;
         uint64_t _offset = 0;
         int32_t _loop = 0;
