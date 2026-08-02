@@ -257,7 +257,7 @@ namespace OpenRCT2::TrackMetadata
     struct SequenceTunnelInfo
     {
         int8_t height = 0;
-        TunnelSubType type = TunnelSubType::Flat;
+        TunnelSubType type = TunnelSubType::flat;
     };
 
     struct SequenceTunnel

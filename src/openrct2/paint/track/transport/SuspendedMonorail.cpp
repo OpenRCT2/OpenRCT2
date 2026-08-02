@@ -132,11 +132,11 @@ static void SuspendedMonorailTrack25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::square, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::square, TunnelSubType::slopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::square, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::square, TunnelSubType::slopeEnd);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -200,7 +200,7 @@ static void SuspendedMonorailTrackFlatTo25DegUp(
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::square, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::square, TunnelSubType::slopeEnd);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
