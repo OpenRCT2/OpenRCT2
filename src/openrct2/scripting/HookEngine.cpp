@@ -102,7 +102,7 @@ bool HookEngine::HasSubscriptions(HookType type) const
 
 bool HookEngine::IsValidHookForPlugin(HookType type, Plugin& plugin) const
 {
-    if (type == HookType::mapChanged && plugin.GetMetadata().Type != PluginType::Intransient)
+    if (type == HookType::mapChanged && plugin.GetMetadata().Type != PluginType::intransient)
     {
         return false;
     }

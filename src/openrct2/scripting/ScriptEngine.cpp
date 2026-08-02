@@ -1134,7 +1134,7 @@ bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
     {
         // Only client plugins and plugins downloaded from server should be started
         const auto& metadata = plugin->GetMetadata();
-        if (metadata.Type == PluginType::Remote && plugin->HasPath())
+        if (metadata.Type == PluginType::remote && plugin->HasPath())
         {
             LogPluginInfo(plugin, "Remote plugin not started");
             return false;

@@ -216,11 +216,11 @@ void Plugin::SetMetadata(const JSValue obj)
 PluginType Plugin::ParsePluginType(std::string_view type)
 {
     if (type == "local")
-        return PluginType::Local;
+        return PluginType::local;
     if (type == "remote")
-        return PluginType::Remote;
+        return PluginType::remote;
     if (type == "intransient")
-        return PluginType::Intransient;
+        return PluginType::intransient;
     throw std::invalid_argument("Unknown plugin type.");
 }
 
@@ -235,7 +235,7 @@ int32_t Plugin::GetTargetAPIVersion() const
 
 bool Plugin::IsTransient() const
 {
-    return _metadata.Type != PluginType::Intransient;
+    return _metadata.Type != PluginType::intransient;
 }
 
 #endif
