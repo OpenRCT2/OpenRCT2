@@ -545,7 +545,7 @@ namespace OpenRCT2::Ui::FileBrowser
         StringId title = GetTitleStringId(type, isSave);
 
         FileDialogDesc desc = {
-            .Type = isSave ? FileDialogType::Save : FileDialogType::Open,
+            .Type = isSave ? FileDialogType::save : FileDialogType::open,
             .Title = LanguageGetString(title),
             .InitialDirectory = defaultDirectory,
             .DefaultFilename = isSave ? path : u8string(),
