@@ -1,4 +1,4 @@
-0.5.4 (in development)
+0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
 - Improved: [#26560] [Plugin] Scripts can now be used to trigger saving a game (limited to the user save folder).
 - Improved: [#26638] Guests will no longer watch rides while they’re underground.
