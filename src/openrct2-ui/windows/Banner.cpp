@@ -167,8 +167,8 @@ namespace OpenRCT2::Ui::Windows
                     widget--;
 
                     WindowDropdownShowTextCustomWidth(
-                        { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height(), colours[1], 0,
-                        Dropdown::Flag::StayOpen, numItems, widget->width() - 1 + 3);
+                        { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height(), colours[1], 0, {},
+                        numItems, widget->width() - 1 + 3);
 
                     gDropdown.items[EnumValue(banner->textColour) - 1].setChecked(true);
                     break;

@@ -899,8 +899,8 @@ namespace OpenRCT2::Ui::Windows
                             gDropdown.items[1] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_SLOPED_LEFT);
                             gDropdown.items[2] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT);
                             WindowDropdownShowTextCustomWidth(
-                                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
-                                Dropdown::Flag::StayOpen, 3, widget->width() - 4);
+                                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, {},
+                                3, widget->width() - 4);
 
                             // Set current value as checked
                             gDropdown.items[tileElement->asWall()->GetSlope()].setChecked(true);

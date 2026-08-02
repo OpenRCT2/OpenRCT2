@@ -78,8 +78,8 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
     uint32_t surfaceCount = itemIndex;
 
     WindowDropdownShowImage(
-        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2], 0, surfaceCount, 47,
-        36, DropdownGetAppropriateImageDropdownItemsPerRow(surfaceCount));
+        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2],
+        { Dropdown::Flag::autoClose }, surfaceCount, 47, 36, DropdownGetAppropriateImageDropdownItemsPerRow(surfaceCount));
 
     gDropdown.hasTooltips = true;
     gDropdown.defaultIndex = defaultIndex;
@@ -129,8 +129,8 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
     auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(edgeCount);
 
     WindowDropdownShowImage(
-        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2], 0, edgeCount, 47, 36,
-        itemsPerRow);
+        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2],
+        { Dropdown::Flag::autoClose }, edgeCount, 47, 36, itemsPerRow);
 
     gDropdown.hasTooltips = true;
     gDropdown.defaultIndex = defaultIndex;

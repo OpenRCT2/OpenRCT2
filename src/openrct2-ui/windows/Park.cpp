@@ -446,7 +446,8 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[0] = Dropdown::MenuLabel(STR_CLOSE_PARK);
                 gDropdown.items[1] = Dropdown::MenuLabel(STR_OPEN_PARK);
                 WindowDropdownShowText(
-                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
+                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1],
+                    { Dropdown::Flag::autoClose }, 2);
 
                 if (Park::IsOpen(getGameState().park))
                 {
