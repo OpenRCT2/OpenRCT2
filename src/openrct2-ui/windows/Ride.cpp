@@ -4720,41 +4720,31 @@ namespace OpenRCT2::Ui::Windows
             auto& trackColour = ride->trackColours[colourScheme];
 
             const auto& rtd = ride->getRideTypeDescriptor();
+            const bool isMaze = rtd.specialType == RtdSpecialType::maze;
+            const bool isShop = rtd.Category == RideCategory::shop;
 
             // Maze style
-            if (rtd.specialType == RtdSpecialType::maze)
+            widgets[WIDX_MAZE_STYLE].setVisible(isMaze);
+            widgets[WIDX_MAZE_STYLE_DROPDOWN].setVisible(isMaze);
+            if (isMaze)
             {
                 widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = STR_MAZE_STYLE_GROUP;
-                widgets[WIDX_MAZE_STYLE].setVisible();
-                widgets[WIDX_MAZE_STYLE_DROPDOWN].setVisible();
                 widgets[WIDX_MAZE_STYLE].text = MazeOptions[EnumValue(trackColour.supports)].text;
             }
             else
             {
-                bool isShop = rtd.Category == RideCategory::shop;
                 widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = isShop ? STR_SHOP_STYLE_GROUP : STR_TRACK_STYLE_GROUP;
-                widgets[WIDX_MAZE_STYLE].setHidden();
-                widgets[WIDX_MAZE_STYLE_DROPDOWN].setHidden();
             }
 
             // Track, multiple colour schemes
-            bool rideCheats = getGameState().cheats.allowArbitraryRideTypeChanges;
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsMultipleColourSchemes))
-            {
-                widgets[WIDX_PRIMARY_PREVIEW_GROUP].setVisible();
-                widgets[WIDX_TRACK_COLOUR_SCHEME].setVisible();
-                widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].setVisible();
-                widgets[WIDX_PAINT_INDIVIDUAL_AREA].setVisible();
-            }
-            else
-            {
-                widgets[WIDX_PRIMARY_PREVIEW_GROUP].setHidden();
-                widgets[WIDX_TRACK_COLOUR_SCHEME].setHidden();
-                widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].setHidden();
-                widgets[WIDX_PAINT_INDIVIDUAL_AREA].setHidden();
-            }
+            const bool supportsMultipleColourSchemes = rtd.flags.has(RtdFlag::supportsMultipleColourSchemes);
+            widgets[WIDX_PRIMARY_PREVIEW_GROUP].setVisible(supportsMultipleColourSchemes);
+            widgets[WIDX_TRACK_COLOUR_SCHEME].setVisible(supportsMultipleColourSchemes);
+            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].setVisible(supportsMultipleColourSchemes);
+            widgets[WIDX_PAINT_INDIVIDUAL_AREA].setVisible(supportsMultipleColourSchemes);
 
             // Ride cheats on? Show visibility dropdown
+            bool rideCheats = getGameState().cheats.allowArbitraryRideTypeChanges;
             widgets[WIDX_VISIBILITY_DROPDOWN].setVisible(rideCheats);
 
             // Set colour scheme caption
