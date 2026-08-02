@@ -176,14 +176,14 @@ namespace OpenRCT2::Ui::Windows
         void onResize() override
         {
             uint64_t newDisabledWidgets = 0;
-            if (_rideConstructionState == RideConstructionState::Place)
+            if (_rideConstructionState == RideConstructionState::place)
             {
                 newDisabledWidgets
                     |= ((1uLL << WIDX_MAZE_BUILD_MODE) | (1uLL << WIDX_MAZE_MOVE_MODE) | (1uLL << WIDX_MAZE_FILL_MODE)
                         | (1uLL << WIDX_MAZE_DIRECTION_NW) | (1uLL << WIDX_MAZE_DIRECTION_NE) | (1uLL << WIDX_MAZE_DIRECTION_SW)
                         | (1uLL << WIDX_MAZE_DIRECTION_SE));
             }
-            else if (_rideConstructionState == RideConstructionState::EntranceExit)
+            else if (_rideConstructionState == RideConstructionState::entranceExit)
             {
                 newDisabledWidgets = (1uLL << WIDX_MAZE_DIRECTION_NW) | (1uLL << WIDX_MAZE_DIRECTION_NE)
                     | (1uLL << WIDX_MAZE_DIRECTION_SW) | (1uLL << WIDX_MAZE_DIRECTION_SE);
@@ -207,13 +207,13 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MAZE_BUILD_MODE:
-                    WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeBuild);
+                    WindowMazeConstructionBuildModeMousedown(RideConstructionState::mazeBuild);
                     break;
                 case WIDX_MAZE_MOVE_MODE:
-                    WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeMove);
+                    WindowMazeConstructionBuildModeMousedown(RideConstructionState::mazeMove);
                     break;
                 case WIDX_MAZE_FILL_MODE:
-                    WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeFill);
+                    WindowMazeConstructionBuildModeMousedown(RideConstructionState::mazeFill);
                     break;
             }
         }
@@ -229,14 +229,14 @@ namespace OpenRCT2::Ui::Windows
 
             switch (_rideConstructionState)
             {
-                case RideConstructionState::Place:
+                case RideConstructionState::place:
                     if (!isToolActive(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                     {
                         close();
                         return;
                     }
                     break;
-                case RideConstructionState::EntranceExit:
+                case RideConstructionState::entranceExit:
                     if (!isToolActive(*this, WIDX_MAZE_ENTRANCE) && !isToolActive(*this, WIDX_MAZE_EXIT))
                     {
                         _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
@@ -249,9 +249,9 @@ namespace OpenRCT2::Ui::Windows
 
             switch (_rideConstructionState)
             {
-                case RideConstructionState::Front:
-                case RideConstructionState::Back:
-                case RideConstructionState::Selected:
+                case RideConstructionState::front:
+                case RideConstructionState::back:
+                case RideConstructionState::selected:
                     if (isToolActive(WindowClass::rideConstruction))
                     {
                         ToolCancel();
@@ -324,18 +324,18 @@ namespace OpenRCT2::Ui::Windows
 
             RideConstructionInvalidateCurrentTrack();
 
-            if (_rideConstructionState != RideConstructionState::EntranceExit)
+            if (_rideConstructionState != RideConstructionState::entranceExit)
             {
                 gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
             }
-            _rideConstructionState = RideConstructionState::EntranceExit;
+            _rideConstructionState = RideConstructionState::entranceExit;
 
             WindowMazeConstructionUpdatePressedWidgets();
         }
 
         void WindowMazeConstructionBuildModeMousedown(RideConstructionState rideConstructionState)
         {
-            if (_rideConstructionState == RideConstructionState::EntranceExit)
+            if (_rideConstructionState == RideConstructionState::entranceExit)
             {
                 ToolCancel();
             }
@@ -414,15 +414,15 @@ namespace OpenRCT2::Ui::Windows
             z = _currentTrackBegin.z;
             switch (_rideConstructionState)
             {
-                case RideConstructionState::MazeBuild:
+                case RideConstructionState::mazeBuild:
                     mode = MazeBuildMode::build;
                     break;
-                case RideConstructionState::MazeMove:
+                case RideConstructionState::mazeMove:
                     mode = MazeBuildMode::move;
                     actionFlags = { CommandFlag::allowDuringPaused };
                     break;
                 default:
-                case RideConstructionState::MazeFill:
+                case RideConstructionState::mazeFill:
                     mode = MazeBuildMode::fill;
                     break;
             }
@@ -438,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
 
             _currentTrackBegin.x = x;
             _currentTrackBegin.y = y;
-            if (_rideConstructionState != RideConstructionState::MazeMove)
+            if (_rideConstructionState != RideConstructionState::mazeMove)
             {
                 Audio::Play3D(Audio::SoundId::placeItem, { x, y, z });
             }
@@ -459,12 +459,12 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
             return;
 
-        const bool isEntranceExit = _rideConstructionState == RideConstructionState::EntranceExit;
+        const bool isEntranceExit = _rideConstructionState == RideConstructionState::entranceExit;
         const bool entranceToolActive = isToolActive(WindowClass::rideConstruction, WIDX_MAZE_ENTRANCE);
 
-        widgetSetPressed(*w, WIDX_MAZE_BUILD_MODE, _rideConstructionState == RideConstructionState::MazeBuild);
-        widgetSetPressed(*w, WIDX_MAZE_MOVE_MODE, _rideConstructionState == RideConstructionState::MazeMove);
-        widgetSetPressed(*w, WIDX_MAZE_FILL_MODE, _rideConstructionState == RideConstructionState::MazeFill);
+        widgetSetPressed(*w, WIDX_MAZE_BUILD_MODE, _rideConstructionState == RideConstructionState::mazeBuild);
+        widgetSetPressed(*w, WIDX_MAZE_MOVE_MODE, _rideConstructionState == RideConstructionState::mazeMove);
+        widgetSetPressed(*w, WIDX_MAZE_FILL_MODE, _rideConstructionState == RideConstructionState::mazeFill);
         widgetSetPressed(*w, WIDX_MAZE_ENTRANCE, isEntranceExit && entranceToolActive);
         widgetSetPressed(*w, WIDX_MAZE_EXIT, isEntranceExit && !entranceToolActive);
 

@@ -2456,7 +2456,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
 
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::state0 && _currentRideIndex == rideIndex)
         RideConstructionInvalidateCurrentTrack();
 
     TrackCircuitIterator it;
@@ -2521,7 +2521,7 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
 
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::state0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
@@ -2582,7 +2582,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
 
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::state0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
@@ -2624,7 +2624,7 @@ static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
 {
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0
+    if (w != nullptr && _rideConstructionState != RideConstructionState::state0
         && _currentRideIndex == input.element->asTrack()->GetRideIndex())
     {
         RideConstructionInvalidateCurrentTrack();
@@ -2687,7 +2687,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
 
     auto* windowMgr = Ui::GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::state0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
@@ -4778,7 +4778,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
 
     auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::state0 && _currentRideIndex == rideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
     }
