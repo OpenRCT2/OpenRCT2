@@ -11,7 +11,6 @@
 
 #include "../../GameState.h"
 #include "../../entity/EntityRegistry.h"
-#include "../../ride/Ride.h"
 #include "../Paint.h"
 #include "../entity/Paint.Vehicle.h"
 #include "VehiclePaint.h"

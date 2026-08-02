@@ -14,10 +14,7 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
-#include "ObjectList.h"
-#include "ObjectRepository.h"
-
-#include <unordered_map>
+#include "../world/Location.hpp"
 
 namespace OpenRCT2
 {

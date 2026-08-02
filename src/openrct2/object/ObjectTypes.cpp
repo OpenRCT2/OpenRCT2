@@ -10,7 +10,6 @@
 #include "ObjectTypes.h"
 
 #include "../core/EnumUtils.hpp"
-#include "Object.h"
 
 #include <algorithm>
 

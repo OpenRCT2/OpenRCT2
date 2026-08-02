@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../Input.h"
 #include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -24,7 +23,6 @@
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "Paint.h"
-#include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <limits>

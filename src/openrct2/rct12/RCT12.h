@@ -22,6 +22,7 @@
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
+#include <optional>
 #include <span>
 #include <stdexcept>
 #include <string>

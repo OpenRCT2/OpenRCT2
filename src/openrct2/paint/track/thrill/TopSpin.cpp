@@ -8,17 +8,14 @@
  *****************************************************************************/
 
 #include "../../../GameState.h"
-#include "../../../SpriteIds.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
-#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 

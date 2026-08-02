@@ -7,16 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../ride/RideData.h"
+#include "../../../ride/Ride.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/Vehicle.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
-
-#include <cassert>
 
 using namespace OpenRCT2;
 

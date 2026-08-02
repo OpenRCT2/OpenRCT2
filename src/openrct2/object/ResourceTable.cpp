@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
-#include "../core/Path.hpp"
 #include "../core/String.hpp"
 
 namespace OpenRCT2

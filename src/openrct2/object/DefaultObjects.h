@@ -9,9 +9,8 @@
 
 #pragma once
 
-#include "Object.h"
-
 #include <array>
+#include <string_view>
 
 namespace OpenRCT2
 {

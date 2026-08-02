@@ -13,7 +13,6 @@
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
-#include "../core/Guard.hpp"
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"

@@ -26,6 +26,7 @@
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/Entrance.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
 #include <openrct2/world/tile_element/EntranceElement.h>

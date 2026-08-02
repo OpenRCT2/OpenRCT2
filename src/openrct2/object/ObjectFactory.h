@@ -16,7 +16,6 @@
 
 namespace OpenRCT2
 {
-    struct IObjectRepository;
     class Object;
     struct RCTObjectEntry;
     enum class ObjectType : uint8_t;

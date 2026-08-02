@@ -9,13 +9,9 @@
 
 #pragma once
 
-#include "../../world/Location.hpp"
+#include <cstdint>
 
-namespace OpenRCT2
-{
-    struct TrackElement;
-}
-
+struct CoordsXY;
 struct PaintSession;
 
 enum edge_t

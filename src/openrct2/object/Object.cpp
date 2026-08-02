@@ -9,16 +9,12 @@
 
 #include "Object.h"
 
-#include "../Context.h"
 #include "../Diagnostic.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/String.hpp"
 #include "../core/ZipStream.hpp"
 #include "../drawing/Image.h"
-#include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
-#include "../world/Scenery.h"
 #include "ObjectLimits.h"
 #include "ObjectRepository.h"
 

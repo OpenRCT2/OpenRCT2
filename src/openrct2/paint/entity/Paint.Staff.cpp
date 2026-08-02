@@ -12,7 +12,6 @@
 #include "../../drawing/LightFX.h"
 #include "../../entity/Staff.h"
 #include "../../profiling/Profiling.h"
-#include "../../profiling/ProfilingMacros.hpp"
 #include "../Paint.h"
 #include "Paint.Peep.h"
 

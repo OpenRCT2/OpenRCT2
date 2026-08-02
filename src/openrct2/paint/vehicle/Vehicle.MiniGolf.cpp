@@ -13,7 +13,6 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../ride/Ride.h"
-#include "../../ride/TrackPaint.h"
 #include "../../ride/Vehicle.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"

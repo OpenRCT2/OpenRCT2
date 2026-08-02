@@ -15,8 +15,7 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../object/Object.h"
-#include "../object/ObjectRepository.h"
-#include "ObjectList.h"
+#include "../world/Location.hpp"
 
 namespace OpenRCT2
 {

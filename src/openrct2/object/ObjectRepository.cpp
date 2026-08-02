@@ -20,23 +20,15 @@
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
-#include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
-#include "../object/Object.h"
 #include "../park/Legacy.h"
-#include "../platform/Platform.h"
 #include "../sawyer_coding/SawyerChunkReader.h"
-#include "../sawyer_coding/SawyerChunkWriter.h"
 #include "../sawyer_coding/SawyerCoding.h"
-#include "../scenario/ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
-#include "ObjectList.h"
-#include "ObjectManager.h"
-#include "RideObject.h"
 
 #include <memory>
 #include <unordered_map>

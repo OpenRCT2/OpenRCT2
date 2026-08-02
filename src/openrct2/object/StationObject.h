@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../drawing/ImageId.hpp"
 #include "Object.h"
 
 namespace OpenRCT2

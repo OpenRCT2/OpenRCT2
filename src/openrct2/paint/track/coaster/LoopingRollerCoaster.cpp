@@ -9,7 +9,6 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.Sprite.h"
-#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"

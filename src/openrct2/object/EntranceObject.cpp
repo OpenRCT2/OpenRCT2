@@ -12,10 +12,8 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
-#include "../paint/tile_element/Paint.TileElement.h"
 
 namespace OpenRCT2
 {

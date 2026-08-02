@@ -17,7 +17,6 @@
 #include "../../core/Numerics.hpp"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
-#include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
 #include "../../object/TerrainEdgeObject.h"

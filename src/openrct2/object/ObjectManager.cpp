@@ -19,25 +19,24 @@
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
-#include "../ui/WindowManager.h"
 #include "BannerSceneryEntry.h"
-#include "LargeSceneryObject.h"
+#include "LargeSceneryEntry.h"
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
-#include "PathAdditionObject.h"
+#include "PathAdditionEntry.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
-#include "SmallSceneryObject.h"
-#include "WallObject.h"
+#include "SceneryObject.h"
+#include "SmallSceneryEntry.h"
+#include "WallSceneryEntry.h"
 
 #include <algorithm>
 #include <array>
 #include <atomic>
 #include <memory>
 #include <mutex>
-#include <thread>
 #include <unordered_set>
 
 namespace OpenRCT2

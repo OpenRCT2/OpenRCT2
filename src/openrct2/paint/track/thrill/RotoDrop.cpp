@@ -9,17 +9,12 @@
 
 #include "../../../ride/Ride.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/Vehicle.h"
 #include "../../../world/tile_element/TileElement.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
-
-#include <cassert>
-#include <cstring>
 
 using namespace OpenRCT2;
 

@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../core/IStream.hpp"
-#include "../drawing/ImageId.hpp"
 #include "../ride/RideEntry.h"
 #include "../ride/RideTypes.h"
 #include "Object.h"
