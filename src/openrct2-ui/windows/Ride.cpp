@@ -4254,6 +4254,9 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
+            if (stationObjFlags == 0 && ride.getRideEntry()->flags.has(RideEntryFlag::disableColourTab))
+                return 0;
+
             switch (trackColour)
             {
                 case 0:
