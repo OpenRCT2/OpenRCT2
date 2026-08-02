@@ -6,6 +6,7 @@
 - Improved: [#26763] The ride colour/appearance tab now visually separates fields using group boxes.
 - Improved: [#26765] The ride operations tab now visually separates fields using group boxes.
 - Improved: [#26839] Magnify picked-up peeps when viewport is in double or quadruple zoom.
+- Fix: [#26288] Land bordering map edges does not blend at certain angles.
 - Fix: [#26610] Player list is not updated automatically when a player joins or leaves.
 - Fix: [#26639] Handymen could begin a task while another handyman was already doing the exact same task.
 - Fix: [#26752] The Cut-away View window doesn’t display negative height values correctly on some platforms.

@@ -50,30 +50,30 @@ static constexpr uint8_t Byte97B444[] = {
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-static constexpr CoordsXY viewport_surface_paint_data[][4] = {
+static constexpr CoordsXY kNeighbouringTileCoordOffsets[4][kNumOrthogonalDirections] = {
     {
         { 32, 0 },
-        { -32, 32 },
-        { -64, -32 },
-        { 0, -64 },
+        { 0, 32 },
+        { -32, 0 },
+        { 0, -32 },
     },
     {
         { 0, 32 },
-        { -64, 0 },
-        { -32, -64 },
-        { 32, -32 },
+        { -32, 0 },
+        { 0, -32 },
+        { 32, 0 },
     },
     {
         { 0, -32 },
-        { 0, 0 },
+        { 32, 0 },
+        { 0, 32 },
         { -32, 0 },
-        { -32, -32 },
     },
     {
         { -32, 0 },
-        { -32, -32 },
         { 0, -32 },
-        { 0, 0 },
+        { 32, 0 },
+        { 0, 32 },
     },
 };
 
@@ -937,7 +937,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const auto zoomLevel = session.rt.zoom_level;
     const uint8_t rotation = session.CurrentRotation;
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
-    const CoordsXY& base = session.SpritePosition;
+    const CoordsXY& base = session.MapPosition;
     const auto cornerHeights = GetSlopeRelativeCornerHeights(surfaceShape);
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
@@ -959,9 +959,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     TileDescriptor tileDescriptors[4];
 
-    for (std::size_t i = 0; i < std::size(viewport_surface_paint_data); i++)
+    for (std::size_t i = 0; i < std::size(kNeighbouringTileCoordOffsets); i++)
     {
-        const CoordsXY& offset = viewport_surface_paint_data[i][rotation];
+        const CoordsXY& offset = kNeighbouringTileCoordOffsets[i][rotation];
         const CoordsXY position = base + offset;
 
         TileDescriptor& descriptor = tileDescriptors[i];
