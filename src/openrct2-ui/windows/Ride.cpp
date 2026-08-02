@@ -1779,7 +1779,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, 0, numItems, widget->right - dropdownWidget->left);
+                0, { Dropdown::Flag::autoClose }, numItems, widget->right - dropdownWidget->left);
 
             // First item
             gDropdown.items[0] = Dropdown::MenuLabel(STR_OVERALL_VIEW);
@@ -1884,7 +1884,8 @@ namespace OpenRCT2::Ui::Windows
             SetDropdown(info, RideStatus::testing, STR_TEST_RIDE);
             SetDropdown(info, RideStatus::open, STR_OPEN_RIDE);
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, info.NumItems);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1],
+                { Dropdown::Flag::autoClose }, info.NumItems);
             if (info.CheckedIndex != -1)
             {
                 gDropdown.items[info.CheckedIndex].setChecked(true);
@@ -1949,7 +1950,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* dropdownWidget = widget - 1;
             WindowDropdownShowText(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                Dropdown::Flag::StayOpen, RIDE_TYPE_COUNT);
+                {}, RIDE_TYPE_COUNT);
 
             // Find the current ride type in the ordered list.
             int32_t pos = 0;
@@ -1981,7 +1982,8 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, 2);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1],
+                { Dropdown::Flag::autoClose }, 2);
             gDropdown.defaultIndex = 0;
             if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack) || _viewIndex == 0 || _viewIndex > ride->numTrains)
             {
@@ -2100,7 +2102,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* dropdownWidget = widget - 1;
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 3);
+                0, {}, numItems, dropdownWidget->width() - 3);
 
             // Find the current vehicle type in the ordered list.
             int32_t pos = 0;
@@ -2217,8 +2219,8 @@ namespace OpenRCT2::Ui::Windows
             };
 
             WindowDropdownShowCustom(
-                windowPos + ScreenCoordsXY{ dropdownWidget.left, dropdownWidget.top }, dropdownWidget.height(), colours[1],
-                Dropdown::Flag::StayOpen, drawingFunction, numItems, previewWidth, previewHeight, itemsPerRow);
+                windowPos + ScreenCoordsXY{ dropdownWidget.left, dropdownWidget.top }, dropdownWidget.height(), colours[1], {},
+                drawingFunction, numItems, previewWidth, previewHeight, itemsPerRow);
         }
 
         void MainOnMouseDown(WidgetIndex widgetIndex)
@@ -3116,7 +3118,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, Dropdown::Flag::StayOpen, numAvailableModes, widget->right - dropdownWidget->left);
+                0, {}, numAvailableModes, widget->right - dropdownWidget->left);
 
             if (checkedIndex != -1)
             {
@@ -3137,7 +3139,7 @@ namespace OpenRCT2::Ui::Windows
             }
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, Dropdown::Flag::StayOpen, 5, widget->right - dropdownWidget->left);
+                0, {}, 5, widget->right - dropdownWidget->left);
 
             gDropdown.items[ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK].setChecked(true);
         }
@@ -3898,7 +3900,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, 7, widgets[widgetIndex].right - dropdownWidget->left);
+                        colours[1], 0, {}, 7, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[EnumValue(ride->inspectionInterval)].setChecked(true);
                     break;
@@ -3933,7 +3935,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         WindowDropdownShowText(
                             { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                            colours[1], Dropdown::Flag::StayOpen, numItems);
+                            colours[1], {}, numItems);
 
                         numItems = 1;
                         auto breakdownReason = ride->breakdownReasonPending;
@@ -4402,9 +4404,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_MAKE_INVISIBLE);
             gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_MAKE_VISIBLE);
 
-            WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], Dropdown::Flag::StayOpen,
-                2);
+            WindowDropdownShowText({ windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], {}, 2);
         }
 
         void ColourOnMouseDown(WidgetIndex widgetIndex)
@@ -4435,7 +4435,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
+                        colours[1], 0, {}, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[colourSchemeIndex].setChecked(true);
                     break;
@@ -4461,7 +4461,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
+                        colours[1], 0, {}, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[EnumValue(ride->trackColours[colourSchemeIndex].supports)].setChecked(true);
                     break;
@@ -4488,8 +4488,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, numDropdownItems,
-                        widgets[widgetIndex].right - dropdownWidget->left);
+                        colours[1], 0, {}, numDropdownItems, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[EnumValue(ride->vehicleColourSettings)].setChecked(true);
                     break;
@@ -4530,8 +4529,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, dropdownIndex,
-                        widgets[widgetIndex].right - dropdownWidget->left);
+                        colours[1], 0, {}, dropdownIndex, widgets[widgetIndex].right - dropdownWidget->left);
 
                     gDropdown.items[carIndexToDropdownIndex(_vehicleIndex)].setChecked(true);
                     break;
@@ -5413,7 +5411,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, Dropdown::Flag::StayOpen, numItems, widgets[widgetIndex].right - dropdownWidget->left);
+                0, {}, numItems, widgets[widgetIndex].right - dropdownWidget->left);
 
             // Set currently checked item
             for (size_t i = 0; i < numItems; i++)
@@ -5790,7 +5788,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowText(
                 { windowPos.x + widgets[widgetIndex].left, windowPos.y + widgets[widgetIndex].top },
-                widgets[widgetIndex].height(), colours[1], Dropdown::Flag::StayOpen, 2);
+                widgets[widgetIndex].height(), colours[1], {}, 2);
             gDropdown.defaultIndex = 0;
             if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
             {

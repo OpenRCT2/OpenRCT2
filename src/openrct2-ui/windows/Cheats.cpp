@@ -973,7 +973,7 @@ static StringId window_cheats_page_titles[] = {
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 4);
+                        colours[1], 0, {}, 3, dropdownWidget->width() - 4);
                     gDropdown.items[EnumValue(gameState.cheats.selectedStaffSpeed)].setChecked(true);
                 }
             }
@@ -1015,7 +1015,7 @@ static StringId window_cheats_page_titles[] = {
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], itemHeight,
-                        Dropdown::Flag::CustomHeight | Dropdown::Flag::StayOpen, std::size(kWeatherTypes), itemWidth);
+                        { Dropdown::Flag::customHeight }, std::size(kWeatherTypes), itemWidth);
                 }
             }
         }

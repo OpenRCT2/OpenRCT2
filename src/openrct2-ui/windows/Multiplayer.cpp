@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowTextCustomWidth(
                 windowPos + ScreenCoordsXY{ dropdownWidget->left, dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, 0, numItems, widget->right - dropdownWidget->left);
+                0, { Dropdown::Flag::autoClose }, numItems, widget->right - dropdownWidget->left);
 
             for (auto i = 0; i < Network::GetNumGroups(); i++)
             {

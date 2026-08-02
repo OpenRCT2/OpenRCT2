@@ -540,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget.left, windowPos.y + ddWidget.top }, ddWidget.height(),
-                        colours[ddWidget.colour], Dropdown::Flag::StayOpen, _numSourceGameItems + numSelectionItems);
+                        colours[ddWidget.colour], {}, _numSourceGameItems + numSelectionItems);
 
                     for (int32_t i = 0; i < _numSourceGameItems; i++)
                     {

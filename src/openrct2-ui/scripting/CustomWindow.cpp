@@ -644,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[widget->colour], 0,
-                        Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
+                        {}, numItems, widget->width() - 4);
 
                     if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(numItems))
                         gDropdown.items[selectedIndex].setChecked(true);

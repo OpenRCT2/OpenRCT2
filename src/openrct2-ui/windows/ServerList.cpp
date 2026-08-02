@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
                     windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].contentOffsetX,
                     windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].contentOffsetY
                 };
-                WindowDropdownShowText(dropdownPos, 0, { Drawing::Colour::grey }, 0, dropdownItems);
+                WindowDropdownShowText(dropdownPos, 0, { Drawing::Colour::grey }, { Dropdown::Flag::autoClose }, dropdownItems);
             }
         }
 

@@ -1353,7 +1353,7 @@ namespace OpenRCT2
                             else
                             {
                                 dropdown_index = -1;
-                                if (gInputFlags.has(InputFlag::dropdownStayOpen))
+                                if (!gInputFlags.has(InputFlag::dropdownAutoclose))
                                 {
                                     if (!gInputFlags.has(InputFlag::dropdownMouseUp))
                                     {

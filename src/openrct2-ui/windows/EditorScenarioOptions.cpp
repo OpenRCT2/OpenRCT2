@@ -734,7 +734,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* dropdownWidget = &widgets[WIDX_OBJECTIVE];
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 4);
+                0, {}, numItems, dropdownWidget->width() - 4);
         }
 
         void ShowCategoryDropdown()
@@ -747,7 +747,7 @@ namespace OpenRCT2::Ui::Windows
             Widget* dropdownWidget = &widgets[WIDX_CATEGORY];
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 4);
+                0, {}, 5, dropdownWidget->width() - 4);
 
             gDropdown.items[EnumValue(getGameState().scenarioOptions.category)].setChecked(true);
         }
@@ -1524,7 +1524,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 2,
-                        colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 4);
+                        colours[1], 0, {}, 3, dropdownWidget->width() - 4);
 
                     if (gameState.park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
                         gDropdown.items[2].setChecked(true);
@@ -1856,7 +1856,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 2,
-                        colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget.width() - 4);
+                        colours[1], 0, {}, 4, dropdownWidget.width() - 4);
 
                     const auto preferLess = gameState.park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
                     const auto preferMore = gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES;

@@ -438,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
                     int32_t extraHeight = widget->height();
-                    WindowDropdownShowText(ddPos, extraHeight, colours[1], 0, 2);
+                    WindowDropdownShowText(ddPos, extraHeight, colours[1], { Dropdown::Flag::autoClose }, 2);
                     gDropdown.defaultIndex = 0;
 
                     auto staff = GetStaff();
@@ -809,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
             auto ddPos = ScreenCoordsXY{ ddWidget->left + windowPos.x, ddWidget->top + windowPos.y };
             int32_t ddHeight = ddWidget->height();
             int32_t ddWidth = ddWidget->width() - 4;
-            WindowDropdownShowTextCustomWidth(ddPos, ddHeight, colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, ddWidth);
+            WindowDropdownShowTextCustomWidth(ddPos, ddHeight, colours[1], 0, {}, numCostumes, ddWidth);
 
             // Set selection
             if (checkedIndex != -1)
@@ -1184,7 +1184,8 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, 2);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1],
+                { Dropdown::Flag::autoClose }, 2);
             gDropdown.defaultIndex = 0;
         }
 

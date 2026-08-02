@@ -219,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
 
                 WindowDropdownShowText(
                     windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height(),
-                    colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, i);
+                    colours[0].withFlag(ColourFlag::translucent, true), {}, i);
             }
         }
 
