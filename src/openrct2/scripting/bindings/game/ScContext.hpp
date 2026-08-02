@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue sharedStorage_get(JSContext* ctx, JSValue thisVal)
         {
-            return gScConfiguration.New(ctx, ScConfigurationKind::Shared);
+            return gScConfiguration.New(ctx, ScConfigurationKind::shared);
         }
 
         static JSValue getParkStorage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -66,7 +66,7 @@ namespace OpenRCT2::Scripting
                 {
                     return JS_ThrowPlainError(ctx, "Plugin name is empty");
                 }
-                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, pluginName);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::park, pluginName);
             }
             else if (JS_IsUndefined(jsPluginName))
             {
@@ -75,7 +75,7 @@ namespace OpenRCT2::Scripting
                 {
                     return JS_ThrowPlainError(ctx, "Plugin name must be specified when used from console.");
                 }
-                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, plugin->GetMetadata().Name);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::park, plugin->GetMetadata().Name);
             }
             else
             {
