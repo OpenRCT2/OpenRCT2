@@ -514,7 +514,7 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             windowTileInspectorSelectedIndex = -1;
-            setPage(TileInspectorPage::Default);
+            setPage(TileInspectorPage::standard);
             WindowInitScrollWidgets(*this);
             _tileSelected = false;
 
@@ -575,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // only element-specific widgets from now on
-            if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
+            if (tileInspectorPage == TileInspectorPage::standard || windowTileInspectorSelectedIndex == -1)
                 return;
 
             const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
@@ -794,7 +794,7 @@ namespace OpenRCT2::Ui::Windows
             } // switch widget index
 
             // only element-specific widgets from now on
-            if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
+            if (tileInspectorPage == TileInspectorPage::standard || windowTileInspectorSelectedIndex == -1)
                 return;
 
             const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
@@ -954,7 +954,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             // Get selected element
             const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
-            if (tileInspectorPage == TileInspectorPage::Wall)
+            if (tileInspectorPage == TileInspectorPage::wall)
             {
                 Guard::Assert(tileElement->getType() == TileElementType::wall, "Element is not a wall");
                 if (widgetIndex == WIDX_WALL_DROPDOWN_SLOPE_BUTTON)
@@ -1772,13 +1772,13 @@ namespace OpenRCT2::Ui::Windows
 
             invalidate();
             // subtract current page height, then add new page height
-            if (tileInspectorPage != TileInspectorPage::Default)
+            if (tileInspectorPage != TileInspectorPage::standard)
             {
                 auto index = EnumValue(tileInspectorPage) - 1;
                 height -= kPageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
                 minHeight -= kPageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
             }
-            if (p != TileInspectorPage::Default)
+            if (p != TileInspectorPage::standard)
             {
                 auto index = EnumValue(p) - 1;
                 height += kPageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
@@ -2091,41 +2091,41 @@ namespace OpenRCT2::Ui::Windows
             const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
 
             // Set the correct page automatically
-            TileInspectorPage p = TileInspectorPage::Default;
+            TileInspectorPage p = TileInspectorPage::standard;
             if (tileElement != nullptr)
             {
                 switch (tileElement->getType())
                 {
                     case TileElementType::surface:
-                        p = TileInspectorPage::Surface;
+                        p = TileInspectorPage::surface;
                         break;
 
                     case TileElementType::path:
-                        p = TileInspectorPage::Path;
+                        p = TileInspectorPage::path;
                         break;
 
                     case TileElementType::track:
-                        p = TileInspectorPage::Track;
+                        p = TileInspectorPage::track;
                         break;
 
                     case TileElementType::smallScenery:
-                        p = TileInspectorPage::Scenery;
+                        p = TileInspectorPage::scenery;
                         break;
 
                     case TileElementType::entrance:
-                        p = TileInspectorPage::Entrance;
+                        p = TileInspectorPage::entrance;
                         break;
 
                     case TileElementType::wall:
-                        p = TileInspectorPage::Wall;
+                        p = TileInspectorPage::wall;
                         break;
 
                     case TileElementType::largeScenery:
-                        p = TileInspectorPage::LargeScenery;
+                        p = TileInspectorPage::largeScenery;
                         break;
 
                     case TileElementType::banner:
-                        p = TileInspectorPage::Banner;
+                        p = TileInspectorPage::banner;
                         break;
                 }
             }
@@ -2163,7 +2163,7 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_BACKGROUND].bottom = height - 1;
 
-            if (tileInspectorPage == TileInspectorPage::Default)
+            if (tileInspectorPage == TileInspectorPage::standard)
             {
                 widgets[WIDX_GROUPBOX_DETAILS].setHidden();
                 widgets[WIDX_GROUPBOX_PROPERTIES].setHidden();
@@ -2185,7 +2185,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // The default page doesn't need further invalidation
-            if (tileInspectorPage == TileInspectorPage::Default)
+            if (tileInspectorPage == TileInspectorPage::standard)
                 return;
 
             // Using a switch, because I don't think giving each page their own callbacks is

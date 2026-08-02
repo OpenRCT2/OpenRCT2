@@ -15,15 +15,15 @@ struct TileCoordsXY;
 
 enum class TileInspectorPage : int16_t
 {
-    Default = 0,
-    Surface,
-    Path,
-    Track,
-    Scenery,
-    Entrance,
-    Wall,
-    LargeScenery,
-    Banner,
+    standard = 0,
+    surface,
+    path,
+    track,
+    scenery,
+    entrance,
+    wall,
+    largeScenery,
+    banner,
 };
 
 extern TileCoordsXY windowTileInspectorTile;
