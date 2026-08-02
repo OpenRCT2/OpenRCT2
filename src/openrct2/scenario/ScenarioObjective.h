@@ -47,9 +47,9 @@ namespace OpenRCT2::Scenario
 
     enum class ObjectiveStatus : uint8_t
     {
-        Undecided,
-        Success,
-        Failure,
+        undecided,
+        success,
+        failure,
     };
 
     struct Objective
