@@ -23,7 +23,6 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
-
 namespace OpenRCT2
 {
     // Example entry: "$DAT:09F55406|00STBEN "

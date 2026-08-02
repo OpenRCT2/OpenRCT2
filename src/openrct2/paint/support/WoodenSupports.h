@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../drawing/ImageId.hpp"
 #include "../../world/Location.hpp"
 
 #include <cstdint>
@@ -64,6 +63,7 @@ enum class WoodenSupportTransitionType : uint8_t
 };
 constexpr int32_t kWoodenSupportTransitionTypeCount = 21;
 
+struct ImageId;
 struct PaintSession;
 
 namespace OpenRCT2

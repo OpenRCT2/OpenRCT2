@@ -11,8 +11,8 @@
 
 #include "WaterObject.h"
 
-#include "../core/IStream.hpp"
 #include "../core/Guard.hpp"
+#include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
@@ -20,7 +20,6 @@
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 #include "../world/Location.hpp"
-
 
 namespace OpenRCT2
 {

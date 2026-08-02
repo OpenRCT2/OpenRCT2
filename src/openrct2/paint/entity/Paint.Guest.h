@@ -17,7 +17,6 @@ namespace OpenRCT2
     enum class PeepAnimationType : uint8_t;
 } // namespace OpenRCT2
 
-struct BoundBoxXYZ;
 struct PaintSession;
 using Direction = uint8_t;
 

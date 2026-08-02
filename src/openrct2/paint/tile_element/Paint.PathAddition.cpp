@@ -13,6 +13,7 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../object/PathAdditionEntry.h"
+#include "../../paint/Paint.h"
 #include "../../profiling/Profiling.h"
 #include "../../world/tile_element/PathElement.h"
 #include "Paint.TileElement.h"

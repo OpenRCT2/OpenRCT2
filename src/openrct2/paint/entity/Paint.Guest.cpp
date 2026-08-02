@@ -13,7 +13,6 @@
 #include "../../entity/Guest.h"
 #include "../../peep/PeepSpriteIds.h"
 #include "../../profiling/Profiling.h"
-#include "../../profiling/ProfilingMacros.hpp"
 #include "../Paint.h"
 #include "Paint.Peep.h"
 

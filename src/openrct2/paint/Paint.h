@@ -19,11 +19,9 @@
 #include "Boundbox.h"
 #include "tile_element/Paint.Tunnel.h"
 
-#include <mutex>
 #include <optional>
 #include <sfl/segmented_vector.hpp>
 #include <sfl/static_vector.hpp>
-#include <thread>
 
 enum class ViewportInteractionItem : uint8_t;
 
@@ -34,7 +32,6 @@ namespace OpenRCT2
     struct TileElement;
     struct SurfaceElement;
 
-    enum class RailingEntrySupportType : uint8_t;
 } // namespace OpenRCT2
 
 struct AttachedPaintStruct

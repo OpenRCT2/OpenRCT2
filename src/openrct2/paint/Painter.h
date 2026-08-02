@@ -12,7 +12,6 @@
 #include "Paint.h"
 
 #include <ctime>
-#include <memory>
 #include <sfl/segmented_vector.hpp>
 #include <vector>
 

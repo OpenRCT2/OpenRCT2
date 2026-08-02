@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include "../../drawing/ImageId.hpp"
-#include "../../localisation/StringIdType.h"
-#include "../Paint.h"
-
 #include <cstdint>
+
+struct ImageId;
+struct PaintSession;
 
 namespace OpenRCT2
 {

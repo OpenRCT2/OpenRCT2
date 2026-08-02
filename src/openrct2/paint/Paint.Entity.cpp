@@ -9,22 +9,14 @@
 
 #include "Paint.Entity.h"
 
-#include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
-#include "../entity/Duck.h"
 #include "../entity/EntityList.h"
-#include "../entity/JumpingFountain.h"
-#include "../entity/MoneyEffect.h"
-#include "../entity/Particle.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../profiling/Profiling.h"
-#include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
-#include "../ride/Vehicle.h"
 #include "../world/Map.h"
-#include "../world/Park.h"
-#include "../world/Weather.h"
+#include "Paint.h"
 #include "entity/Paint.Balloon.h"
 #include "entity/Paint.CrashSplashParticle.h"
 #include "entity/Paint.Duck.h"
@@ -38,7 +30,6 @@
 #include "entity/Paint.SteamParticle.h"
 #include "entity/Paint.Vehicle.h"
 #include "entity/Paint.VehicleCrashParticle.h"
-#include "vehicle/VehiclePaint.h"
 
 #include <cassert>
 

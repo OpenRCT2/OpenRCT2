@@ -9,7 +9,6 @@
 
 #include "../Paint.h"
 
-#include "../../Game.h"
 #include "../../GameState.h"
 #include "../../core/EnumUtils.hpp"
 #include "../../interface/Viewport.h"
@@ -17,7 +16,6 @@
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Scenery.h"
-#include "../../world/TileInspector.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.SmallScenery.h"

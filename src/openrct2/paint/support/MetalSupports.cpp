@@ -10,7 +10,6 @@
 #include "MetalSupports.h"
 
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../world/Footpath.h"
 #include "../../world/tile_element/Slope.h"
