@@ -16,9 +16,7 @@
 #include "../entity/Staff.h"
 #include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
-#include "../ride/Station.h"
 #include "../scenario/Scenario.h"
-#include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/TileElementsView.h"
@@ -30,7 +28,6 @@
 #include "../world/tile_element/TrackElement.h"
 
 #include <bit>
-#include <bitset>
 #include <cassert>
 #include <cstring>
 

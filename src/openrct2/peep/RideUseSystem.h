@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #pragma once
+
 #include "../core/GroupVector.hpp"
 #include "../ride/RideTypes.h"
 
