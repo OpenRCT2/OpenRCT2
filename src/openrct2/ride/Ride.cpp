@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Editor.h"
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
@@ -89,7 +88,7 @@ static constexpr auto kRideModeBlockSectionedCounterpart = std::to_array(
         RideMode::normal,                          // RideMode::normal,
         RideMode::continuousCircuitBlockSectioned, // RideMode::continuousCircuit,
         RideMode::reverseInclineLaunchedShuttle,   // RideMode::reverseInclineLaunchedShuttle,
-        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunchPasstrough,
+        RideMode::poweredLaunchBlockSectioned,     // RideMode::poweredLaunchPassthrough,
         RideMode::shuttle,                         // RideMode::shuttle,
         RideMode::boatHire,                        // RideMode::boatHire,
         RideMode::upwardLaunch,                    // RideMode::upwardLaunch,
@@ -491,7 +490,7 @@ bool RideTryGetOriginElement(const Ride& ride, CoordsXYE* output)
     TileElementIteratorBegin(&it);
     do
     {
-        if (it.element->getType() != TileElementType::Track)
+        if (it.element->getType() != TileElementType::track)
             continue;
         if (it.element->asTrack()->GetRideIndex() != ride.id)
             continue;
@@ -612,7 +611,7 @@ bool Ride::canHaveMultipleCircuits() const
 
     // Only allow circuit or launch modes
     if (mode != RideMode::continuousCircuit && mode != RideMode::reverseInclineLaunchedShuttle
-        && mode != RideMode::poweredLaunchPasstrough)
+        && mode != RideMode::poweredLaunchPassthrough)
     {
         return false;
     }
@@ -2093,7 +2092,7 @@ static void RideShopConnected(const Ride& ride)
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->getType() == TileElementType::Track && tileElement->asTrack()->GetRideIndex() == ride.id)
+        if (tileElement->getType() == TileElementType::track && tileElement->asTrack()->GetRideIndex() == ride.id)
         {
             trackElement = tileElement->asTrack();
             break;
@@ -2271,11 +2270,11 @@ static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
 
 void RideSetMapTooltip(const TileElement& tileElement)
 {
-    if (tileElement.getType() == TileElementType::Entrance)
+    if (tileElement.getType() == TileElementType::entrance)
     {
         RideEntranceSetMapTooltip(*tileElement.asEntrance());
     }
-    else if (tileElement.getType() == TileElementType::Track)
+    else if (tileElement.getType() == TileElementType::track)
     {
         const auto* trackElement = tileElement.asTrack();
         if (trackElement->IsStation())
@@ -2287,7 +2286,7 @@ void RideSetMapTooltip(const TileElement& tileElement)
             RideTrackSetMapTooltip(*trackElement);
         }
     }
-    else if (tileElement.getType() == TileElementType::Path)
+    else if (tileElement.getType() == TileElementType::path)
     {
         RideQueueBannerSetMapTooltip(*tileElement.asPath());
     }
@@ -2313,7 +2312,7 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
     switch (ride.mode)
     {
         case RideMode::reverseInclineLaunchedShuttle:
-        case RideMode::poweredLaunchPasstrough:
+        case RideMode::poweredLaunchPassthrough:
         case RideMode::poweredLaunch:
         case RideMode::limPoweredLaunch:
             if (numStations <= 1)
@@ -2432,7 +2431,7 @@ void Ride::chainQueues() const
         {
             do
             {
-                if (tileElement->getType() != TileElementType::Entrance)
+                if (tileElement->getType() != TileElementType::entrance)
                     continue;
                 if (tileElement->getBaseZ() != mapLocation.z)
                     continue;
@@ -2450,7 +2449,7 @@ void Ride::chainQueues() const
  */
 static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE* output, bool shouldCheckCompleteCircuit)
 {
-    if (input.element == nullptr || input.element->getType() != TileElementType::Track)
+    if (input.element == nullptr || input.element->getType() != TileElementType::track)
         return { false };
 
     RideId rideIndex = input.element->asTrack()->GetRideIndex();
@@ -2784,7 +2783,7 @@ static void RideSetMazeEntranceExitPoints(Ride& ride)
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->getType() != TileElementType::Entrance)
+            if (tileElement->getType() != TileElementType::entrance)
                 continue;
             if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE
                 && tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
@@ -3767,7 +3766,7 @@ TrackElement* Ride::getOriginElement(StationIndex stationIndex) const
         return nullptr;
     do
     {
-        if (tileElement->getType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::track)
             continue;
 
         auto* trackElement = tileElement->asTrack();
@@ -4360,7 +4359,7 @@ bool Ride::hasWhirlpool() const
 
 bool Ride::isPoweredLaunched() const
 {
-    return mode == RideMode::poweredLaunchPasstrough || mode == RideMode::poweredLaunch
+    return mode == RideMode::poweredLaunchPassthrough || mode == RideMode::poweredLaunch
         || mode == RideMode::poweredLaunchBlockSectioned;
 }
 
@@ -4376,7 +4375,7 @@ bool RideHasAnyTrackElements(const Ride& ride)
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
-        if (it.element->getType() != TileElementType::Track)
+        if (it.element->getType() != TileElementType::track)
             continue;
         if (it.element->asTrack()->GetRideIndex() != ride.id)
             continue;
@@ -4754,7 +4753,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
             continue;
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
 
             trackType = tileElement->asTrack()->GetTrackType();
@@ -4876,7 +4875,7 @@ void Ride::updateMaxVehicles()
                 maxNumTrains = std::clamp<int32_t>(numStations + numBlockBrakes - 1, 1, Limits::kMaxTrainsPerRide);
                 break;
             case RideMode::reverseInclineLaunchedShuttle:
-            case RideMode::poweredLaunchPasstrough:
+            case RideMode::poweredLaunchPassthrough:
             case RideMode::shuttle:
             case RideMode::limPoweredLaunch:
             case RideMode::poweredLaunch:
@@ -5120,7 +5119,7 @@ TileElement* GetStationPlatform(const CoordsXYRangedZ& coords)
     {
         do
         {
-            if (tileElement->getType() != TileElementType::Track)
+            if (tileElement->getType() != TileElementType::track)
                 continue;
             /* Check if tileElement is a station platform. */
             if (!tileElement->asTrack()->IsStation())
@@ -5382,7 +5381,7 @@ void DetermineRideEntranceAndExitLocations()
                     {
                         do
                         {
-                            if (tileElement->getType() != TileElementType::Entrance)
+                            if (tileElement->getType() != TileElementType::entrance)
                             {
                                 continue;
                             }
@@ -5543,7 +5542,7 @@ void Ride::updateRideTypeForAllPieces()
 
             do
             {
-                if (tileElement->getType() != TileElementType::Track)
+                if (tileElement->getType() != TileElementType::track)
                     continue;
 
                 auto* trackElement = tileElement->asTrack();

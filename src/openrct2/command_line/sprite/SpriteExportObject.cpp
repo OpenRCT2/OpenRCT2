@@ -11,13 +11,13 @@
 #include "../../core/FileStream.h"
 #include "../../core/Path.hpp"
 #include "../../core/StringTypes.h"
-#include "../../drawing/Drawing.h"
 #include "../../object/Object.h"
 #include "../../object/ObjectFactory.h"
 #include "SpriteCommands.h"
 
 #include <cmath>
 #include <cstdint>
+#include <sstream>
 
 namespace OpenRCT2::CommandLine::Sprite
 {

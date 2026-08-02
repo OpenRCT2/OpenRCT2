@@ -52,7 +52,7 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct PathElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::Path;
+        static constexpr TileElementType kElementType = TileElementType::path;
 
     private:
         ObjectEntryIndex SurfaceIndex;  // 5

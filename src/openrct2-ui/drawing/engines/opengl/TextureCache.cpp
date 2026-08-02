@@ -15,7 +15,10 @@
     #include <openrct2/Diagnostic.h>
     #include <openrct2/core/EnumUtils.hpp>
     #include <openrct2/drawing/BlendColourMap.h>
+    #include <openrct2/drawing/Drawing.Sprite.h>
     #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/drawing/FilterPaletteIds.h>
+    #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/world/Location.hpp>
     #include <stdexcept>
     #include <vector>

@@ -12,12 +12,10 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../actions/peep/StaffSetOrdersAction.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
-#include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
@@ -30,7 +28,6 @@
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
-#include "../windows/Intent.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
@@ -156,7 +153,7 @@ namespace OpenRCT2
             bool widefound = false;
             do
             {
-                if (test_element->getType() != TileElementType::Path)
+                if (test_element->getType() != TileElementType::path)
                 {
                     continue;
                 }
@@ -362,7 +359,7 @@ namespace OpenRCT2
         {
             if (tileElement->baseHeight != nextZ)
                 continue;
-            if (tileElement->getType() == TileElementType::Entrance || tileElement->getType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::entrance || tileElement->getType() == TileElementType::track)
             {
                 return kInvalidDirection;
             }
@@ -378,13 +375,35 @@ namespace OpenRCT2
         {
             if (tileElement->baseHeight != nextZ)
                 continue;
-            if (tileElement->getType() == TileElementType::Entrance || tileElement->getType() == TileElementType::Track)
+            if (tileElement->getType() == TileElementType::entrance || tileElement->getType() == TileElementType::track)
             {
                 return kInvalidDirection;
             }
         } while (!(tileElement++)->isLastForTile());
 
         return nextDirection;
+    }
+
+    static bool isHandymanAlreadyServicingTile(const CoordsXY& tile, PeepState state)
+    {
+        if (state == PeepState::watering)
+        {
+            for (auto* staff : EntityList<Staff>())
+            {
+                if (staff->State == PeepState::watering
+                    && CoordsXY{ staff->NextLoc } + CoordsDirectionDelta[staff->Var37] == tile)
+                    return true;
+            }
+        }
+        else
+        {
+            for (auto* staff : EntityTileList<Staff>(tile))
+            {
+                if (staff->State == state)
+                    return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -433,7 +452,8 @@ namespace OpenRCT2
                 {
                     if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                     {
-                        return chosenDirection;
+                        if (!isHandymanAlreadyServicingTile(chosenTile, PeepState::mowing))
+                            return chosenDirection;
                     }
                 }
             }
@@ -1099,7 +1119,7 @@ namespace OpenRCT2
 
             do
             {
-                if (tile_element->getType() != TileElementType::SmallScenery)
+                if (tile_element->getType() != TileElementType::smallScenery)
                     continue;
 
                 if (abs(NextLoc.z - tile_element->getBaseZ()) > 4 * kCoordsZStep)
@@ -1165,7 +1185,7 @@ namespace OpenRCT2
 
             for (;; tile_element++)
             {
-                if (tile_element->getType() == TileElementType::Path)
+                if (tile_element->getType() == TileElementType::path)
                 {
                     if (NextLoc.z == tile_element->getBaseZ())
                         break;
@@ -1475,7 +1495,7 @@ namespace OpenRCT2
 
             do
             {
-                if (tile_element->getType() != TileElementType::SmallScenery)
+                if (tile_element->getType() != TileElementType::smallScenery)
                 {
                     continue;
                 }
@@ -1506,6 +1526,9 @@ namespace OpenRCT2
                         continue;
                     }
                 }
+
+                if (isHandymanAlreadyServicingTile(chosenLoc, PeepState::watering))
+                    continue;
 
                 SetState(PeepState::watering);
                 Var37 = chosen_position;
@@ -1538,7 +1561,7 @@ namespace OpenRCT2
 
         for (;; tileElement++)
         {
-            if (tileElement->getType() == TileElementType::Path && (tileElement->getBaseZ() == NextLoc.z))
+            if (tileElement->getType() == TileElementType::path && (tileElement->getBaseZ() == NextLoc.z))
                 break;
 
             if (tileElement->isLastForTile())
@@ -1575,6 +1598,9 @@ namespace OpenRCT2
         if (chosen_position == 4)
             return false;
 
+        if (isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::emptyingBin))
+            return false;
+
         Var37 = chosen_position;
         SetState(PeepState::emptyingBin);
 
@@ -1602,7 +1628,8 @@ namespace OpenRCT2
         auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
-            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
+            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1
+                && !isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::mowing))
             {
                 SetState(PeepState::mowing);
                 Var37 = 0;
@@ -1630,6 +1657,9 @@ namespace OpenRCT2
             uint16_t z_diff = abs(z - litter->z);
 
             if (z_diff >= 16)
+                continue;
+
+            if (isHandymanAlreadyServicingTile(litter->getLocation(), PeepState::sweeping))
                 continue;
 
             SetState(PeepState::sweeping);

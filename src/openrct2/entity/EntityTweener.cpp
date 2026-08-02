@@ -14,7 +14,6 @@
 #include "../interface/Window.h"
 #include "../ride/Vehicle.h"
 #include "EntityList.h"
-#include "EntityRegistry.h"
 
 #include <algorithm>
 #include <cmath>

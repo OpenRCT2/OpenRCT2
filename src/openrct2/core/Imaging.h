@@ -13,7 +13,6 @@
 
 #include <functional>
 #include <istream>
-#include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>

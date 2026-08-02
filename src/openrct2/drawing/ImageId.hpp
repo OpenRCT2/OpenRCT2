@@ -14,7 +14,6 @@
 
 #include <cassert>
 #include <cstdint>
-#include <limits>
 
 namespace OpenRCT2::Drawing
 {

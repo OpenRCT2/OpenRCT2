@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "Diagnostic.h"
 #include "core/StringTypes.h"
 
 #include <memory>

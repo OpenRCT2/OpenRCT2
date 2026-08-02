@@ -2866,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}游乐设施数量：{BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}商店及摊贩数量：{BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}信息亭及其他设施数量：{BLACK}{COMMA16}
 STR_5810    :禁用车辆限制
-STR_5811    :若选中此选项，每列车将最多{NEWLINE}有255辆车厢以且每个游乐设施最多有31辆列车
+STR_5811    :若选中此选项，每列车将最多{NEWLINE}有255辆车厢以且每个游乐设施最多有255辆列车
 STR_5812    :显示多人模式窗口
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

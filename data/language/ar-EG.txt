@@ -2865,7 +2865,7 @@ STR_5807    :{WINDOW_COLOUR_2}عدد الرحلات: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
 STR_5810    :Disable vehicle limits
-STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
+STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 255{NEWLINE}trains per ride
 STR_5812    :أظهر نافذة اللعب الجماعي
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”

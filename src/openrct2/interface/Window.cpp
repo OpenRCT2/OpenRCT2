@@ -10,16 +10,14 @@
 #include "Window.h"
 
 #include "../Context.h"
-#include "../Diagnostic.h"
-#include "../Editor.h"
 #include "../Game.h"
-#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
-#include "../interface/Cursors.h"
+#include "../drawing/RenderTarget.h"
+#include "../entity/EntityRegistry.h"
 #include "../ride/RideAudio.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
@@ -30,10 +28,8 @@
 #include "WindowBase.h"
 
 #include <cassert>
-#include <cmath>
 #include <functional>
 #include <iterator>
-#include <list>
 
 namespace OpenRCT2
 {

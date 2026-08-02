@@ -25,6 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
@@ -460,14 +461,15 @@ namespace OpenRCT2::Ui
         widgets[widgetIndex].right = right;
         widgets[widgetIndex].bottom = bottom;
 
-        widgets[widgetIndex + 1].left = right - size.height; // subtract height to maintain aspect ratio
+        auto buttonHeight = size.height - 2;
+        widgets[widgetIndex + 1].left = right - buttonHeight; // subtract height to maintain aspect ratio
         widgets[widgetIndex + 1].top = origin.y + 1;
         widgets[widgetIndex + 1].right = right - 1;
         widgets[widgetIndex + 1].bottom = bottom - 1;
 
-        widgets[widgetIndex + 2].left = right - size.height * 2;
+        widgets[widgetIndex + 2].left = right - buttonHeight * 2;
         widgets[widgetIndex + 2].top = origin.y + 1;
-        widgets[widgetIndex + 2].right = right - size.height - 1;
+        widgets[widgetIndex + 2].right = right - buttonHeight - 1;
         widgets[widgetIndex + 2].bottom = bottom - 1;
     }
 
@@ -480,7 +482,8 @@ namespace OpenRCT2::Ui
         widgets[widgetIndex].right = right;
         widgets[widgetIndex].bottom = bottom;
 
-        widgets[widgetIndex + 1].left = right - size.height + 1; // subtract height to maintain aspect ratio
+        auto buttonHeight = size.height - 2;
+        widgets[widgetIndex + 1].left = right - buttonHeight + 1; // subtract height to maintain aspect ratio
         widgets[widgetIndex + 1].top = origin.y + 1;
         widgets[widgetIndex + 1].right = right - 1;
         widgets[widgetIndex + 1].bottom = bottom - 1;

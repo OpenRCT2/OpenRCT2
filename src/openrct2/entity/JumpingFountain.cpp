@@ -9,16 +9,12 @@
 
 #include "JumpingFountain.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../core/DataSerialiser.h"
 #include "../object/PathAdditionEntry.h"
-#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
-#include "../world/Scenery.h"
 #include "../world/tile_element/PathElement.h"
 #include "EntityRegistry.h"
 
@@ -264,7 +260,7 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->getType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::path)
                 continue;
             if (tileElement->getBaseZ() != newLoc.z)
                 continue;

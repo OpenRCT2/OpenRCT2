@@ -18,11 +18,6 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "actions/GameActionRunner.h"
-#include "actions/cheats/CheatSetAction.h"
-#include "actions/footpath/FootpathPlaceAction.h"
-#include "actions/general/TileModifyAction.h"
-#include "actions/ride/RideEntranceExitPlaceAction.h"
-#include "actions/track/TrackPlaceAction.h"
 #include "config/Config.h"
 #include "core/Compression.h"
 #include "core/DataSerialiser.h"
@@ -31,7 +26,6 @@
 #include "core/FileSystem.hpp"
 #include "core/Guard.hpp"
 #include "core/Path.hpp"
-#include "core/String.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Window.h"
@@ -39,14 +33,13 @@
 #include "localisation/StringIds.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
-#include "object/ObjectRepository.h"
 #include "park/ParkFile.h"
 #include "scenario/Scenario.h"
-#include "world/Park.h"
 
 #include <chrono>
 #include <exception>
 #include <memory>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -552,7 +545,7 @@ namespace OpenRCT2
                 DataSerialiser parkParamsDs(false, data.parkParams);
                 SerialiseParkParameters(parkParamsDs);
 
-                GameLoadInit();
+                GameLoadInit(); // NB: calls `setActiveScene`
                 FixInvalidVehicleSpriteSizes();
             }
             catch (const std::exception& ex)

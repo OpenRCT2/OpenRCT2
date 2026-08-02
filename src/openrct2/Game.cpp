@@ -9,16 +9,12 @@
 
 #include "Game.h"
 
-#include "Cheats.h"
 #include "Context.h"
 #include "Diagnostic.h"
-#include "Editor.h"
-#include "FileClassifier.h"
 #include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
-#include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "actions/GameActionRunner.h"
@@ -29,7 +25,7 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
-#include "core/Money.hpp"
+#include "core/FileSystem.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "drawing/Drawing.h"
@@ -38,45 +34,25 @@
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
-#include "entity/Staff.h"
-#include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
-#include "management/Finance.h"
-#include "management/Marketing.h"
 #include "management/Research.h"
 #include "network/Network.h"
-#include "object/Object.h"
-#include "object/ObjectEntryManager.h"
-#include "object/ObjectList.h"
-#include "object/WaterEntry.h"
 #include "platform/Platform.h"
 #include "rct12/CSStringConverter.h"
 #include "ride/Ride.h"
-#include "ride/RideRatings.h"
 #include "ride/Station.h"
-#include "ride/TrackDesign.h"
-#include "ride/Vehicle.h"
-#include "sawyer_coding/SawyerCoding.h"
 #include "scenario/Scenario.h"
 #include "scenes/SceneManager.h"
-#include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
 #include "world/Entrance.h"
-#include "world/Footpath.h"
 #include "world/Map.h"
-#include "world/MapAnimation.h"
-#include "world/Park.h"
-#include "world/Scenery.h"
-#include "world/Weather.h"
 #include "world/tile_element/SurfaceElement.h"
 
-#include <cstdio>
-#include <iterator>
 #include <memory>
 
 #ifdef __EMSCRIPTEN__
@@ -362,8 +338,10 @@ void GameLoadInit()
     IGameStateSnapshots* snapshots = context->GetGameStateSnapshots();
     snapshots->Reset();
 
+    // TODO: move this to caller sites??
     auto* sceneMgr = context->GetSceneManager();
-    sceneMgr->setActiveScene(sceneMgr->getGameScene());
+    if (sceneMgr->getActiveScene() != sceneMgr->getScenarioEditorScene()) // HACK
+        sceneMgr->setActiveScene(sceneMgr->getGameScene());
 
     // Invalidate scrolling text cache to prevent stale text from previous park
     // being displayed due to pointer value reuse in the cache matching logic
@@ -494,9 +472,23 @@ void SaveGameCmd(u8string_view name /* = {} */)
     }
     else
     {
+        if (!Platform::IsFilenameValid(name))
+        {
+            LOG_ERROR("Cannot save game: filename contains invalid characters.");
+            return;
+        }
+
         auto& env = GetContext()->GetPlatformEnvironment();
-        auto savePath = Path::Combine(env.GetDirectoryPath(DirBase::user, DirId::saves), u8string(name) + u8".park");
-        SaveGameWithName(savePath);
+        auto savesDir = fs::canonical(env.GetDirectoryPath(DirBase::user, DirId::saves));
+        auto savePath = savesDir / fs::u8path(u8string(name) + u8".park");
+
+        if (!fs::weakly_canonical(savePath).u8string().starts_with(savesDir.u8string()))
+        {
+            LOG_ERROR("Save filename must resolve to a path inside the saves directory.");
+            return;
+        }
+
+        SaveGameWithName(savePath.u8string());
     }
 }
 

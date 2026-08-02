@@ -2810,7 +2810,7 @@ STR_5807    :{WINDOW_COLOUR_2}Số lượng trò chơi: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Số lượng cửa hàng và quầy hàng: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Số lượng ki-ốt thông tin và các tiện ích khác: {BLACK}{COMMA16}
 STR_5810    :Vô hiệu hóa giới hạn xe
-STR_5811    :Nếu được chọn, bạn có thể có tới 255 xe mỗi đoàn tàu và 31 đoàn tàu mỗi trò chơi
+STR_5811    :Nếu được chọn, bạn có thể có tới 255 xe mỗi đoàn tàu và 255 đoàn tàu mỗi trò chơi
 STR_5812    :Hiển thị cửa sổ nhiều người chơi
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -3223,7 +3223,7 @@ STR_6271    :Các cạnh địa hình
 STR_6272    :Nhà ga
 STR_6273    :Âm nhạc
 STR_6274    :Không thể đặt bảng màu…
-STR_6275    :{WINDOW_COLOUR_2}Kiểu nhà ga:
+STR_6275    :Kiểu nhà ga
 STR_6276    :{RED}{STRINGID} có khách bị kẹt, có thể do loại trò chơi hoặc chế độ vận hành không hợp lệ.
 STR_6277    :Chỉ mục nhà ga: {BLACK}{STRINGID}
 STR_6278    :Số lượng tự động lưu

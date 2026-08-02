@@ -13,7 +13,6 @@
 
 #include "../Diagnostic.h"
 #include "../Version.h"
-#include "../drawing/Drawing.h"
 #include "FileSystem.hpp"
 #include "Guard.hpp"
 #include "IStream.hpp"

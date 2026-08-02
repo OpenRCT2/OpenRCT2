@@ -24,8 +24,10 @@
 #include <openrct2/actions/peep/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/terraform/SurfaceSetStyleAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityList.h>
@@ -465,7 +467,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             int32_t mapZ = tileElement->getBaseZ();
-            if (tileElement->getType() == TileElementType::Surface)
+            if (tileElement->getType() == TileElementType::surface)
             {
                 if ((tileElement->asSurface()->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
                     mapZ += 16;
@@ -877,7 +879,7 @@ namespace OpenRCT2::Ui::Windows
                 auto tileElementType = tileElement->getType();
                 if (EnumValue(tileElementType) >= maxSupportedTileElementType)
                 {
-                    tileElementType = TileElementType::Surface;
+                    tileElementType = TileElementType::surface;
                 }
                 const auto overwriteColours = kElementTypeOverwriteColour[EnumValue(tileElementType)];
                 if (overwriteColours.a != PaletteIndex::transparent)
@@ -913,17 +915,17 @@ namespace OpenRCT2::Ui::Windows
 
                 switch (tileElement->getType())
                 {
-                    case TileElementType::Surface:
+                    case TileElementType::surface:
                         if (tileElement->asSurface()->GetWaterHeight() > 0)
                             // Why is this a different water colour as above (195)?
                             colourB = ColourPair(PaletteIndex::pi194);
                         if (!(tileElement->asSurface()->GetOwnership() & OWNERSHIP_OWNED))
                             colourB = MapColourUnowned(colourB);
                         break;
-                    case TileElementType::Path:
+                    case TileElementType::path:
                         colourA = ColourPair(PaletteIndex::pi14); // lighter grey
                         break;
-                    case TileElementType::Entrance:
+                    case TileElementType::entrance:
                     {
                         if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                             break;
@@ -935,7 +937,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                         break;
                     }
-                    case TileElementType::Track:
+                    case TileElementType::track:
                     {
                         Ride* targetRide = GetRide(tileElement->asTrack()->GetRideIndex());
                         if (targetRide != nullptr)

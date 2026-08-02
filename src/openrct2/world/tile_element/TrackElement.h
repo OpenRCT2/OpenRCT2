@@ -51,7 +51,7 @@ namespace OpenRCT2
 
     struct TrackElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::Track;
+        static constexpr TileElementType kElementType = TileElementType::track;
 
     private:
         TrackElemType TrackType;

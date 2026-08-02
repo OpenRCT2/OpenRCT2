@@ -1192,10 +1192,10 @@ bool RideModify(const CoordsXYE& input)
     }
 
     // Check if element is a station entrance or exit
-    if (tileElement.element->getType() == TileElementType::Entrance)
+    if (tileElement.element->getType() == TileElementType::entrance)
         return ride_modify_entrance_or_exit(tileElement);
 
-    if (tileElement.element->getType() != TileElementType::Track)
+    if (tileElement.element->getType() != TileElementType::track)
         return false;
 
     if (ride->getRideTypeDescriptor().flags.has(RtdFlag::cannotHaveGaps))
@@ -1419,7 +1419,7 @@ void Ride::validateStations()
                 {
                     if (tileElement->getBaseZ() != location.z)
                         continue;
-                    if (tileElement->getType() != TileElementType::Track)
+                    if (tileElement->getType() != TileElementType::track)
                         continue;
                     if (tileElement->asTrack()->GetRideIndex() != id)
                         continue;
@@ -1474,7 +1474,7 @@ void Ride::validateStations()
                 {
                     if (blockLocation.z != tileElement->getBaseZ())
                         continue;
-                    if (tileElement->getType() != TileElementType::Track)
+                    if (tileElement->getType() != TileElementType::track)
                         continue;
 
                     const auto& ted2 = GetTrackElementDescriptor(tileElement->asTrack()->GetTrackType());
@@ -1543,7 +1543,7 @@ void Ride::validateStations()
             continue;
         do
         {
-            if (tileElement->getType() != TileElementType::Entrance)
+            if (tileElement->getType() != TileElementType::entrance)
                 continue;
             if (tileElement->baseHeight != locationCoords.z)
                 continue;
@@ -1565,7 +1565,7 @@ void Ride::validateStations()
                 continue;
             do
             {
-                if (trackElement->getType() != TileElementType::Track)
+                if (trackElement->getType() != TileElementType::track)
                     continue;
                 if (trackElement->asTrack()->GetRideIndex() != id)
                     continue;

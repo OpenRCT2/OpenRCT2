@@ -12,19 +12,13 @@
 #include "../Identifiers.h"
 #include "../core/EnumUtils.hpp"
 #include "../windows/TileInspectorGlobals.h"
-#include "../world/Location.hpp"
 #include "Widget.h"
 #include "WindowClasses.h"
 #include "ZoomLevel.h"
 
 #include <functional>
-#include <list>
 #include <memory>
 
-struct TrackDesignFileRef;
-struct ScenarioIndexEntry;
-
-enum class CursorID : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
 namespace OpenRCT2::Drawing
@@ -38,8 +32,6 @@ namespace OpenRCT2
 
     struct WindowBase;
     struct WindowCloseModifier;
-
-    enum class RideConstructionState : uint8_t;
 
     struct WindowIdentifier
     {

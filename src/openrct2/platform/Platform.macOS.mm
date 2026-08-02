@@ -14,6 +14,7 @@
     #include "../OpenRCT2.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
+    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
     #include <CoreText/CoreText.h>

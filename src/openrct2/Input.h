@@ -11,7 +11,7 @@
 
 #include "core/FlagHolder.hpp"
 #include "core/StringTypes.h"
-#include "interface/Window.h"
+#include "world/Location.hpp"
 
 namespace OpenRCT2
 {
@@ -74,6 +74,8 @@ namespace OpenRCT2
         CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
         CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
     };
+
+    struct WidgetRef;
 
     extern WidgetRef gHoverWidget;
     extern WidgetRef gPressedWidget;

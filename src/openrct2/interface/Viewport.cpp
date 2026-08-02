@@ -11,15 +11,16 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/JobPool.h"
 #include "../core/Numerics.hpp"
+#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/NewDrawing.h"
 #include "../drawing/Rectangle.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -45,7 +46,6 @@
 
 #include <cstring>
 #include <list>
-#include <unordered_map>
 
 namespace OpenRCT2
 {
@@ -1307,7 +1307,7 @@ namespace OpenRCT2
     {
         switch (tileElement->getType())
         {
-            case TileElementType::SmallScenery:
+            case TileElementType::smallScenery:
             {
                 auto sceneryItem = tileElement->asSmallScenery();
                 auto sceneryEntry = sceneryItem->GetEntry();
@@ -1318,7 +1318,7 @@ namespace OpenRCT2
                 }
                 break;
             }
-            case TileElementType::LargeScenery:
+            case TileElementType::largeScenery:
             {
                 auto sceneryItem = tileElement->asLargeScenery();
                 auto sceneryEntry = sceneryItem->GetEntry();
@@ -1328,7 +1328,7 @@ namespace OpenRCT2
                 }
                 break;
             }
-            case TileElementType::Wall:
+            case TileElementType::wall:
             {
                 auto sceneryItem = tileElement->asWall();
                 auto sceneryEntry = sceneryItem->GetEntry();

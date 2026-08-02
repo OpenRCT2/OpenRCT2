@@ -2866,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Liczba sklepów i kiosków: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Liczba kiosków informacyjnych i innych obiektów: {BLACK}{COMMA16}
 STR_5810    :Wyłącz limit pojazdów
-STR_5811    :Umożliwia ustawienie do 255 wagoników na pociąg i 31 pociągów na atrakcję
+STR_5811    :Umożliwia ustawienie do 255 wagoników na pociąg i 255 pociągów na atrakcję
 STR_5812    :Pokaż okienko gry sieciowej
 STR_5813    :„{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}”
@@ -3281,7 +3281,7 @@ STR_6271    :Krawędzie terenu
 STR_6272    :Stacje
 STR_6273    :Muzyka
 STR_6274    :Nie można ustawić schematu kolorów…
-STR_6275    :{WINDOW_COLOUR_2}Styl stacji:
+STR_6275    :Styl stacji
 STR_6276    :Na {RED}{STRINGID} utykają goście, prawdopodobnie z powodu nieprawidłowego typu atrakcji albo trybu operowania.
 STR_6277    :Numer stacji: {BLACK}{STRINGID}
 STR_6278    :Liczba autozapisów:

@@ -13,6 +13,7 @@
 #include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../drawing/Drawing.h"
+#include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"

@@ -11,7 +11,6 @@
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Editor.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
@@ -30,6 +29,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
+#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 

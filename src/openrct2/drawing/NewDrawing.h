@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../localisation/StringIdType.h"
 #include "ColourPalette.h"
 
 namespace OpenRCT2::Drawing

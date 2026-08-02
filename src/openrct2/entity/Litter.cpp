@@ -1,15 +1,12 @@
 #include "Litter.h"
 
 #include "../Cheats.h"
-#include "../Game.h"
 #include "../GameState.h"
-#include "../SpriteIds.h"
 #include "../core/DataSerialiser.h"
 #include "../localisation/StringIds.h"
-#include "../paint/Paint.h"
-#include "../profiling/Profiling.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
@@ -33,11 +30,12 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->getType() != TileElementType::Path)
+            if (tileElement->getType() != TileElementType::path)
                 continue;
 
-            int32_t pathZ = tileElement->getBaseZ();
-            if (pathZ < mapPos.z || pathZ >= mapPos.z + kPathClearance)
+            int32_t pathBaseZ = tileElement->getBaseZ();
+            int32_t pathTopZ = pathBaseZ + (tileElement->asPath()->IsSloped() ? kPathHeightStep : 0);
+            if (!(pathBaseZ <= mapPos.z && pathTopZ >= mapPos.z))
                 continue;
 
             return !TileElementIsUnderground(tileElement);

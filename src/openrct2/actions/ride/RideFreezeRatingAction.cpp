@@ -10,6 +10,7 @@
 #include "RideFreezeRatingAction.h"
 
 #include "../../Diagnostic.h"
+#include "../../ride/Ride.h"
 #include "../../ui/WindowManager.h"
 
 namespace OpenRCT2::GameActions

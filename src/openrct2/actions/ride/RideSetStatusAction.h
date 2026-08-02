@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../ride/Ride.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions

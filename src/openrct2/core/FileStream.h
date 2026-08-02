@@ -11,6 +11,7 @@
 
 #include "FileSystem.hpp"
 #include "IStream.hpp"
+#include "StringTypes.h"
 
 namespace OpenRCT2
 {

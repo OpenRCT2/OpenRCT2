@@ -12,7 +12,6 @@
 #include "EntityBase.h"
 
 struct CoordsXY;
-struct PaintSession;
 
 namespace OpenRCT2
 {

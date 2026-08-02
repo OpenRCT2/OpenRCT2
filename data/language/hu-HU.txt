@@ -519,11 +519,11 @@ STR_1166    :Nem süllyesztheted le itt a vízszintet….
 STR_1167    :Nem emelheted fel itt a vízszintet….
 STR_1146    :Még nem épült bejárat
 STR_1147    :Még nem épült kijárat
-STR_1148    :Negyed terhelés
-STR_1149    :Fél terhelés
-STR_1150    :Háromnegyed terhelés
-STR_1151    :Teljes terhelés
-STR_1152    :Bármekkora terhelés
+STR_1148    :Negyedig tele
+STR_1149    :Félig tele
+STR_1150    :Háromnegyedig tele
+STR_1151    :Teljesen tele
+STR_1152    :Bármennyire tele
 STR_1153    :Magasságjelzők a játékpályákon
 STR_1154    :Magasságjelzők a talajon
 STR_1155    :Magasságjelzők az utakon
@@ -2866,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Játékok száma: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Boltok és bódék száma: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Információs bódék és egyéb létesítmények száma: {BLACK}{COMMA16}
 STR_5810    :Járműkorlátok feloldása
-STR_5811    :Ha ki van pipálva,{NEWLINE}255 kocsid is lehet vonatonként és 31{NEWLINE}vonatod játékokként
+STR_5811    :Ha ki van pipálva,{NEWLINE}255 kocsid is lehet vonatonként és 255{NEWLINE}vonatod játékokként
 STR_5812    :Többjátékos mód ablakának megjelenítése
 STR_5813    :„{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}”
@@ -3281,7 +3281,7 @@ STR_6271    :Terepszegélyek
 STR_6272    :Állomások
 STR_6273    :Zene
 STR_6274    :Nem állítható be színséma…
-STR_6275    :{WINDOW_COLOUR_2}Állomás stílusa:
+STR_6275    :Állomás stílusa
 STR_6276    :A vendégek beragadnak itt: {RED}{STRINGID}. Lehet, hogy érvénytelen játéktípus vagy működési mód okozza.
 STR_6277    :Állomás index: {BLACK}{STRINGID}
 STR_6278    :Automentések száma
@@ -3820,3 +3820,9 @@ STR_7029    :Negyed spirál lefelé
 STR_7030    :{WINDOW_COLOUR_2}Szórakoztatott vendégek: {BLACK}{COMMA32}
 STR_7031    :Fű növekedésének kikapcsolása
 STR_7032    :Fű öregedésének kikapcsolása, hogy ne növekedjen tovább.
+STR_7033    :Pálya stílusa
+STR_7034    :Útvesztő stílusa
+STR_7035    :Bolt stílusa
+STR_7036    :Jármű stílusa
+STR_7037    :Üzemmód
+STR_7038    :Várakozás és beszállás

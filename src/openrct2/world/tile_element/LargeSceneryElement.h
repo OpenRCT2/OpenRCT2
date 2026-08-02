@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../drawing/Colour.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/LargeSceneryObject.h"
 #include "TileElementBase.h"
@@ -26,7 +27,7 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct LargeSceneryElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::LargeScenery;
+        static constexpr TileElementType kElementType = TileElementType::largeScenery;
 
     private:
         ObjectEntryIndex EntryIndex;

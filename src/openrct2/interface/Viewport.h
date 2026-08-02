@@ -13,13 +13,12 @@
 #include "Window.h"
 
 #include <limits>
+#include <list>
 #include <optional>
 #include <sfl/static_vector.hpp>
-#include <vector>
 
 struct PaintSession;
 struct PaintStruct;
-struct PaintEntry;
 
 namespace OpenRCT2::Drawing
 {
@@ -30,7 +29,6 @@ namespace OpenRCT2
 {
     struct EntityBase;
     struct Guest;
-    struct Staff;
     struct TileElement;
     struct WindowBase;
 

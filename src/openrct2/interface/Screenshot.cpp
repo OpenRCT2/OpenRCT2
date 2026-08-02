@@ -15,29 +15,28 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../actions/cheats/CheatSetAction.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
-#include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/File.h"
 #include "../core/Imaging.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/NewDrawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
-#include "../paint/Painter.h"
+#include "../localisation/StringIds.h"
+#include "../paint/Paint.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../platform/Platform.h"
 #include "../world/Map.h"
-#include "../world/Park.h"
+#include "../world/TileElementsView.h"
 #include "../world/Weather.h"
 #include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "Viewport.h"
 
-#include <cctype>
-#include <chrono>
 #include <cstdlib>
 #include <memory>
 #include <optional>
@@ -194,19 +193,17 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
-    auto element = MapGetFirstElementAt(location);
-    if (element != nullptr)
+
+    for (const auto* tileElement : TileElementsView(location))
     {
-        do
+        if (useViewClipping && (tileElement->getBaseZ() > gClipHeight * kCoordsZStep))
         {
-            if (useViewClipping && (element->getBaseZ() > gClipHeight * kCoordsZStep))
-            {
-                continue;
-            }
-            z = std::max<int32_t>(z, element->getBaseZ());
-            z = std::max<int32_t>(z, element->getClearanceZ());
-        } while (!(element++)->isLastForTile());
+            continue;
+        }
+        z = std::max<int32_t>(z, tileElement->getBaseZ());
+        z = std::max<int32_t>(z, tileElement->getClearanceZ());
     }
+
     return z;
 }
 

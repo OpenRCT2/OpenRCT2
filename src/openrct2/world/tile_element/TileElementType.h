@@ -15,13 +15,13 @@ namespace OpenRCT2
 {
     enum class TileElementType : uint8_t
     {
-        Surface = 0,
-        Path = 1,
-        Track = 2,
-        SmallScenery = 3,
-        Entrance = 4,
-        Wall = 5,
-        LargeScenery = 6,
-        Banner = 7,
+        surface = 0,
+        path = 1,
+        track = 2,
+        smallScenery = 3,
+        entrance = 4,
+        wall = 5,
+        largeScenery = 6,
+        banner = 7,
     };
 }

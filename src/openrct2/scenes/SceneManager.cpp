@@ -10,6 +10,9 @@
 #include "SceneManager.h"
 
 #include "../Context.h"
+#include "editor/EditorScene.h"
+#include "editor/TrackDesignerScene.h"
+#include "editor/TrackManagerScene.h"
 #include "game/GameScene.h"
 #include "intro/IntroScene.h"
 #include "preloader/PreloaderScene.h"
@@ -25,7 +28,10 @@ namespace OpenRCT2
         std::unique_ptr<GameScene> _gameScene;
         std::unique_ptr<IntroScene> _introScene;
         std::unique_ptr<PreloaderScene> _preloaderScene;
+        std::unique_ptr<EditorScene> _scenarioEditorScene;
         std::unique_ptr<TitleScene> _titleScene;
+        std::unique_ptr<TrackDesignerScene> _trackDesignerScene;
+        std::unique_ptr<TrackManagerScene> _trackManagerScene;
 
     public:
         explicit SceneManager(IContext* context)
@@ -36,12 +42,6 @@ namespace OpenRCT2
         IScene* getActiveScene() override
         {
             return _activeScene;
-        }
-
-        IScene* getEditorScene() override
-        {
-            // TODO: Implement me.
-            return nullptr;
         }
 
         IScene* getGameScene() override
@@ -71,6 +71,15 @@ namespace OpenRCT2
             return _preloaderScene.get();
         }
 
+        IScene* getScenarioEditorScene() override
+        {
+            if (auto* scene = _scenarioEditorScene.get())
+                return scene;
+
+            _scenarioEditorScene = std::make_unique<EditorScene>(*_sceneContext);
+            return _scenarioEditorScene.get();
+        }
+
         IScene* getTitleScene() override
         {
             if (auto* scene = _titleScene.get())
@@ -80,11 +89,32 @@ namespace OpenRCT2
             return _titleScene.get();
         }
 
-        void setActiveScene(IScene* screen) override
+        IScene* getTrackDesignerScene() override
         {
+            if (auto* scene = _trackDesignerScene.get())
+                return scene;
+
+            _trackDesignerScene = std::make_unique<TrackDesignerScene>(*_sceneContext);
+            return _trackDesignerScene.get();
+        }
+
+        IScene* getTrackManagerScene() override
+        {
+            if (auto* scene = _trackManagerScene.get())
+                return scene;
+
+            _trackManagerScene = std::make_unique<TrackManagerScene>(*_sceneContext);
+            return _trackManagerScene.get();
+        }
+
+        void setActiveScene(IScene* scene) override
+        {
+            if (_activeScene == scene)
+                return;
+
             if (_activeScene != nullptr)
                 _activeScene->Stop();
-            _activeScene = screen;
+            _activeScene = scene;
             if (_activeScene)
                 _activeScene->Load();
         }

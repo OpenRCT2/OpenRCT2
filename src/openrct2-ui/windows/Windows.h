@@ -19,6 +19,7 @@ struct StringWithArgs;
 struct Ride;
 struct RideSelection;
 struct TrackDesign;
+struct TrackDesignFileRef;
 struct Vehicle;
 
 enum class GuestListFilterType : int32_t;
@@ -160,8 +161,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MazeConstructionOpen();
     void WindowMazeConstructionUpdatePressedWidgets();
 
-    // Multiplatyer
+    // Multiplayer
     WindowBase* MultiplayerOpen();
+    void MultiplayerRefreshList();
 
     // NewCampaign
     WindowBase* NewCampaignOpen(int16_t campaignType);
@@ -352,12 +354,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TopToolbarOpen();
 
     // TrackDesignPlace
-    WindowBase* TrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
+    WindowBase* TrackPlaceOpen(const TrackDesignFileRef* tdFileRef);
     void TrackPlaceClearProvisionalTemporarily();
     void TrackPlaceRestoreProvisional();
 
     // TrackDesignManage
-    WindowBase* TrackManageOpen(struct TrackDesignFileRef* tdFileRef);
+    WindowBase* TrackManageOpen(TrackDesignFileRef* tdFileRef);
 
     // TrackList
     // rct2: 0x00F635EE

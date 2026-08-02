@@ -179,6 +179,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue isAdditionBroken_get(JSContext* ctx, JSValue thisValue);
         static JSValue isAdditionBroken_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);
+        static JSValue isAdditionFull_get(JSContext* ctx, JSValue thisValue);
 
         static JSValue isAdditionGhost_get(JSContext* ctx, JSValue thisValue);
         static JSValue isAdditionGhost_set(JSContext* ctx, JSValue thisValue, JSValue jsValue);

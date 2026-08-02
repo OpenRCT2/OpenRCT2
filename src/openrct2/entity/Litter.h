@@ -14,7 +14,6 @@
 
 struct CoordsXYZ;
 struct CoordsXYZD;
-struct PaintSession;
 
 namespace OpenRCT2
 {

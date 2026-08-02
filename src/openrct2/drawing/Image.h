@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "ImageId.hpp"
+#include "ImageIndexType.h"
 
 #include <cstddef>
 #include <cstdint>

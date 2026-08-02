@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Editor.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/ride/RideSetStatusAction.h"
@@ -1038,7 +1037,7 @@ bool Vehicle::CurrentTowerElementIsTop()
         if (tileElement->isGhost())
             continue;
 
-        if (tileElement->getType() != TileElementType::Track)
+        if (tileElement->getType() != TileElementType::track)
             continue;
 
         const auto* trackElement = tileElement->asTrack();

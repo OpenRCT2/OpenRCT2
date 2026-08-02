@@ -11,6 +11,7 @@
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/Map.h"
+#include "../../../world/TileElementsView.h"
 #include "../../../world/tile_element/TileElement.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -126,23 +127,15 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
 static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
     int32_t x, int32_t y, int32_t z, const Ride& ride)
 {
-    const TileElement* tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
-    if (tileElement == nullptr)
+    for (auto* trackElement : TileElementsView<TrackElement>(CoordsXY(x, y)))
     {
-        return nullptr;
+        if (trackElement->GetRideIndex() != ride.id)
+            continue;
+        if (trackElement->baseHeight != z && trackElement->baseHeight != z - 1)
+            continue;
+
+        return trackElement;
     }
-
-    do
-    {
-        if (tileElement->getType() != TileElementType::Track)
-            continue;
-        if (tileElement->GetRideIndex() != ride.id)
-            continue;
-        if (tileElement->baseHeight != z && tileElement->baseHeight != z - 1)
-            continue;
-
-        return tileElement->asTrack();
-    } while (!(tileElement++)->isLastForTile());
 
     return nullptr;
 }

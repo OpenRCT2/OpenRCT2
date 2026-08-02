@@ -10,13 +10,13 @@
 #pragma once
 
 #include "../interface/Window.h"
-#include "EntityBase.h"
 
 #include <sfl/static_vector.hpp>
 #include <vector>
 
 namespace OpenRCT2
 {
+    struct EntityBase;
     struct Viewport;
 
     // TODO: Move this to somewhere else, currently filters also by zoom.

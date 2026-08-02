@@ -44,7 +44,7 @@ namespace OpenRCT2
 
     struct EntranceElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::Entrance;
+        static constexpr TileElementType kElementType = TileElementType::entrance;
 
     private:
         uint8_t entranceType;        // 5

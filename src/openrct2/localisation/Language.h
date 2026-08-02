@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../drawing/Font.h"
+#include "../core/StringTypes.h"
 #include "../interface/FontFamilies.h"
 #include "../localisation/StringIdType.h"
 

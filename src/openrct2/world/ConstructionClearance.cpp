@@ -41,7 +41,7 @@ using OpenRCT2::GameActions::CommandFlags;
 static bool MapPlaceClearFunc(
     TileElement** tile_element, const CoordsXY& coords, CommandFlags flags, money64* price, bool is_scenery)
 {
-    if ((*tile_element)->getType() != TileElementType::SmallScenery)
+    if ((*tile_element)->getType() != TileElementType::smallScenery)
         return false;
 
     if (is_scenery && !flags.has(CommandFlag::trackDesign))
@@ -135,7 +135,7 @@ static bool MapLoc68BABCShouldContinue(
 
     const TileElement* const tileElement = *tileElementPtr;
 
-    if (slope != kTileSlopeFlat && tileElement->getType() == TileElementType::Track)
+    if (slope != kTileSlopeFlat && tileElement->getType() == TileElementType::track)
     {
         if (landSlopeFitsUnderTrack(pos.baseZ, slope, *tileElement->asTrack()))
         {
@@ -143,7 +143,7 @@ static bool MapLoc68BABCShouldContinue(
         }
     }
 
-    if (slope != kTileSlopeFlat && tileElement->getType() == TileElementType::Path && tileElement->asPath()->IsSloped())
+    if (slope != kTileSlopeFlat && tileElement->getType() == TileElementType::path && tileElement->asPath()->IsSloped())
     {
         if (landSlopeFitsUnderPath(pos.baseZ, slope, *tileElement->asPath()))
         {
@@ -151,14 +151,14 @@ static bool MapLoc68BABCShouldContinue(
         }
     }
 
-    if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->getType() == TileElementType::Path
+    if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->getType() == TileElementType::path
         && tileElement->getBaseZ() == pos.baseZ && !tileElement->asPath()->IsQueue() && !tileElement->asPath()->IsSloped())
     {
         return true;
     }
     else if (
         crossingMode == CreateCrossingMode::pathOverTrack && canBuildCrossing
-        && tileElement->getType() == TileElementType::Track && tileElement->getBaseZ() == pos.baseZ
+        && tileElement->getType() == TileElementType::track && tileElement->getBaseZ() == pos.baseZ
         && tileElement->asTrack()->GetTrackType() == TrackElemType::flat)
     {
         auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
@@ -214,10 +214,10 @@ GameActions::Result MapCanConstructWithClearAt(
 
     do
     {
-        if (tileElement->getType() != TileElementType::Surface)
+        if (tileElement->getType() != TileElementType::surface)
         {
             // Skip track elements belonging to the ride that's being ignored for rides that intersect themselves.
-            if (!ignoreRideId.IsNull() && tileElement->getType() == TileElementType::Track
+            if (!ignoreRideId.IsNull() && tileElement->getType() == TileElementType::track
                 && tileElement->asTrack()->GetRideIndex() == ignoreRideId)
             {
                 continue;
@@ -270,7 +270,7 @@ GameActions::Result MapCanConstructWithClearAt(
         }
 
         // Only allow building crossings directly on a flat surface tile.
-        if (tileElement->getType() == TileElementType::Surface && (tileElement->asSurface()->GetSlope()) == kTileSlopeFlat
+        if (tileElement->getType() == TileElementType::surface && (tileElement->asSurface()->GetSlope()) == kTileSlopeFlat
             && tileElement->getBaseZ() == pos.baseZ)
         {
             canBuildCrossing = true;
@@ -340,13 +340,13 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
     res.errorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->getType())
     {
-        case TileElementType::Surface:
+        case TileElementType::surface:
             res.errorMessage = STR_RAISE_OR_LOWER_LAND_FIRST;
             break;
-        case TileElementType::Path:
+        case TileElementType::path:
             res.errorMessage = STR_FOOTPATH_IN_THE_WAY;
             break;
-        case TileElementType::Track:
+        case TileElementType::track:
             ride = GetRide(tileElement->asTrack()->GetRideIndex());
             if (ride != nullptr)
             {
@@ -356,7 +356,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
                 ride->formatNameTo(ft);
             }
             break;
-        case TileElementType::SmallScenery:
+        case TileElementType::smallScenery:
         {
             auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
@@ -365,7 +365,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             ft.Add<StringId>(stringId);
             break;
         }
-        case TileElementType::Entrance:
+        case TileElementType::entrance:
             switch (tileElement->asEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
@@ -379,7 +379,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
                     break;
             }
             break;
-        case TileElementType::Wall:
+        case TileElementType::wall:
         {
             auto* wallEntry = tileElement->asWall()->GetEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
@@ -388,7 +388,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             ft.Add<StringId>(stringId);
             break;
         }
-        case TileElementType::LargeScenery:
+        case TileElementType::largeScenery:
         {
             auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
@@ -397,7 +397,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             ft.Add<StringId>(stringId);
             break;
         }
-        case TileElementType::Banner:
+        case TileElementType::banner:
             break;
     }
 }

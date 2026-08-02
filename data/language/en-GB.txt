@@ -2867,7 +2867,7 @@ STR_5807    :{WINDOW_COLOUR_2}Number of rides: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
 STR_5810    :Disable vehicle limits
-STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
+STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 255{NEWLINE}trains per ride
 STR_5812    :Show multiplayer window
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -3282,7 +3282,7 @@ STR_6271    :Terrain Edges
 STR_6272    :Stations
 STR_6273    :Music
 STR_6274    :Can’t set colour scheme…
-STR_6275    :{WINDOW_COLOUR_2}Station style:
+STR_6275    :Station style
 STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid ride type or operating mode.
 STR_6277    :Station index: {BLACK}{STRINGID}
 STR_6278    :Autosave amount
@@ -3829,3 +3829,9 @@ STR_7029    :Quarter Helix down
 STR_7030    :{WINDOW_COLOUR_2}Guests entertained: {BLACK}{COMMA32}
 STR_7031    :Disable grass growing
 STR_7032    :Disable grass ageing so that it doesn't grow.
+STR_7033    :Track style
+STR_7034    :Maze style
+STR_7035    :Shop style
+STR_7036    :Vehicle style
+STR_7037    :Operating mode
+STR_7038    :Wait and load

@@ -15,6 +15,7 @@
 #include "../../management/Finance.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/TileElementsView.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
 #include "../GameActionRunner.h"
@@ -138,7 +139,7 @@ namespace OpenRCT2::GameActions
 
                 switch (tileElement->getType())
                 {
-                    case TileElementType::Path:
+                    case TileElementType::path:
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryFootpath)
                         {
                             auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->getBaseZ() });
@@ -158,7 +159,7 @@ namespace OpenRCT2::GameActions
                             }
                         }
                         break;
-                    case TileElementType::SmallScenery:
+                    case TileElementType::smallScenery:
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
                             auto removeSceneryAction = SmallSceneryRemoveAction(
@@ -180,7 +181,7 @@ namespace OpenRCT2::GameActions
                             }
                         }
                         break;
-                    case TileElementType::Wall:
+                    case TileElementType::wall:
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
                             CoordsXYZD wallLocation = { tilePos, tileElement->getBaseZ(), tileElement->getDirection() };
@@ -201,7 +202,7 @@ namespace OpenRCT2::GameActions
                             }
                         }
                         break;
-                    case TileElementType::LargeScenery:
+                    case TileElementType::largeScenery:
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
                         {
                             auto removeSceneryAction = LargeSceneryRemoveAction(
@@ -239,16 +240,10 @@ namespace OpenRCT2::GameActions
         {
             for (int32_t x = 0; x < gameState.mapSize.x; x++)
             {
-                auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
-                do
+                for (auto* sceneryElement : TileElementsView<LargeSceneryElement>(TileCoordsXY{ x, y }))
                 {
-                    if (tileElement == nullptr)
-                        break;
-                    if (tileElement->getType() == TileElementType::LargeScenery)
-                    {
-                        tileElement->asLargeScenery()->SetIsAccounted(false);
-                    }
-                } while (!(tileElement++)->isLastForTile());
+                    sceneryElement->SetIsAccounted(false);
+                }
             }
         }
     }

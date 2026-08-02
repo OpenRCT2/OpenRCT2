@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
                  RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                               RtdFlag::allowMultipleCircuits, RtdFlag::isSuspended, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
-    .DefaultMode = RideMode::poweredLaunchPasstrough,
+    .RideModes = EnumsToFlags(RideMode::poweredLaunchPassthrough, RideMode::poweredLaunch),
+    .DefaultMode = RideMode::poweredLaunchPassthrough,
     .OperatingSettings = { 10, 33 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },

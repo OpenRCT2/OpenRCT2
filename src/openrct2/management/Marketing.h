@@ -9,10 +9,8 @@
 
 #pragma once
 
-#include "../Cheats.h"
 #include "../core/FlagHolder.hpp"
 #include "../localisation/StringIdType.h"
-#include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
 
 enum

@@ -42,6 +42,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
@@ -154,7 +155,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
         WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE,
 
-        WIDX_MODE = 14,
+        WIDX_MODE_GROUP = 14,
+        WIDX_MODE,
         WIDX_MODE_DROPDOWN,
         WIDX_MODE_TWEAK_LABEL,
         WIDX_MODE_TWEAK,
@@ -168,6 +170,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OPERATE_NUMBER_OF_CIRCUITS,
         WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE,
         WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE,
+        WIDX_LOAD_GROUP,
         WIDX_LOAD_CHECKBOX,
         WIDX_LOAD,
         WIDX_LOAD_DROPDOWN,
@@ -190,20 +193,24 @@ namespace OpenRCT2::Ui::Windows
         WIDX_REFURBISH_RIDE,
         WIDX_FORCE_BREAKDOWN,
 
-        WIDX_PRIMARY_PREVIEW = 14,
+        WIDX_PRIMARY_PREVIEW_GROUP = 14,
+        WIDX_PRIMARY_PREVIEW,
         WIDX_TRACK_COLOUR_SCHEME,
         WIDX_TRACK_COLOUR_SCHEME_DROPDOWN,
         WIDX_TRACK_MAIN_COLOUR,
         WIDX_TRACK_ADDITIONAL_COLOUR,
         WIDX_TRACK_SUPPORT_COLOUR,
+        WIDX_PAINT_INDIVIDUAL_AREA,
         WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
         WIDX_MAZE_STYLE,
         WIDX_MAZE_STYLE_DROPDOWN,
-        WIDX_PAINT_INDIVIDUAL_AREA,
+
+        WIDX_SECONDARY_PREVIEW_GROUP,
         WIDX_SECONDARY_PREVIEW,
-        WIDX_ENTRANCE_STYLE_LABEL,
         WIDX_ENTRANCE_STYLE,
         WIDX_ENTRANCE_STYLE_DROPDOWN,
+
+        WIDX_VEHICLE_PREVIEW_GROUP,
         WIDX_VEHICLE_PREVIEW,
         WIDX_VEHICLE_COLOUR_SCHEME,
         WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN,
@@ -302,23 +309,28 @@ namespace OpenRCT2::Ui::Windows
     // 0x009ADEFC
     static constexpr auto _operatingWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget        ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
-        makeWidget        ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
-        makeWidget        ({ 21,  62}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
-        makeHoldableSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget                ({ 21,  78}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                   ),
-        makeHoldableSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget                ({ 21,  94}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP          ),
-        makeHoldableSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget        ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
-        makeWidget        ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
-        makeWidget        ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
-        makeWidget        ({  7, 135}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
-        makeWidget        ({  7, 151}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeHoldableSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
+        // Operating mode group
+        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_OPERATING_MODE_GROUP                                                            ),
+        makeWidget                ({  7,  47}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kWidgetContentEmpty,                    STR_SELECT_OPERATING_MODE                   ),
+        makeWidget                ({297,  48}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
+        makeWidget                ({ 21,  62}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
+        makeHoldableSpinnerWidgets({157,  62}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+        makeWidget                ({ 21,  78}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
+        makeHoldableSpinnerWidgets({157,  77}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+        makeWidget                ({ 21,  94}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
+        makeHoldableSpinnerWidgets({157,  93}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+
+        // Load/wait/sync group
+        makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_WAIT_AND_LOAD_GROUP                                                             ),
+        makeWidget                ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
+        makeWidget                ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
+        makeWidget                ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
+        makeWidget                ({  7, 135}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
+        makeWidget                ({  7, 151}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+        makeHoldableSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
         makeWidget                ({  7, 168}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeHoldableSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                         ), // NB: 3 widgets
-        makeWidget        ({  7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
+        makeHoldableSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
+        makeWidget                ({  7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
     );
 
     // 0x009AE190
@@ -336,28 +348,36 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE2A4
     static constexpr auto _colourWidgets = makeWidgets(
         kMainRideWidgets,
+
+        // Primary preview area (tracks, mazes, shops)
+        makeWidget({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_TRACK_STYLE_GROUP                                                       ),
         makeWidget({  3,  49}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
-        makeWidget({ 74,  49}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                         ),
+        makeWidget({ 74,  49}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                           ),
         makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_COLOUR_SCHEME_TO_CHANGE_TIP              ),
         makeWidget({ 79,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
         makeWidget({119,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
-        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
-
-        makeWidget({ 74,  49}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
-        makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                          ),
-
         makeWidget({289,  68}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_PAINTBRUSH),       STR_PAINT_INDIVIDUAL_AREA_TIP                ),
 
+        // Shops only
+        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
+
+        // Mazes only
+        makeWidget({ 74,  49}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                           ),
+        makeWidget({301,  50}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                          ),
+
+        // Secondary preview area (stations)
+        makeWidget({  3,   0}, {310, 69}, WidgetType::groupbox,     WindowColour::secondary, STR_STATION_STYLE                                                           ),
         makeWidget({245, 101}, { 68, 49}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
-        makeWidget({  3, 104}, { 97, 12}, WidgetType::label,        WindowColour::secondary, STR_STATION_STYLE                                                           ),
-        makeWidget({103, 102}, {139, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
+        makeWidget({103, 102}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
         makeWidget({230, 103}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
 
+        // Ternary preview area (vehicles)
+        makeWidget({  3,   0}, {310, 69}, WidgetType::groupbox,     WindowColour::secondary, STR_VEHICLE_STYLE_GROUP                                                     ),
         makeWidget({  3, 157}, { 68, 49}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                                              ),
-        makeWidget({ 74, 157}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                          ),
+        makeWidget({ 74, 157}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
         makeWidget({301, 158}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP         ),
-        makeWidget({ 74, 173}, {239, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
+        makeWidget({ 74, 173}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
         makeWidget({301, 174}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_TO_MODIFY_TIP             ),
         makeWidget({ 79, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
         makeWidget({ 99, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
@@ -641,6 +661,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<VehicleTypeLabel> _vehicleDropdownData;
         int16_t _vehicleIndex = 0;
         uint16_t _rideColour = 0;
+        int32_t _operatingPanelHeight = kWindowSize.height;
         int32_t _colourPanelHeight = kWindowSize.height;
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
@@ -1418,7 +1439,7 @@ namespace OpenRCT2::Ui::Windows
 
             while (TileElementIteratorNext(&it))
             {
-                if (it.element->getType() != TileElementType::Track)
+                if (it.element->getType() != TileElementType::track)
                     continue;
 
                 if (it.element->asTrack()->GetRideIndex() != ride.id)
@@ -3254,7 +3275,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingResize()
         {
-            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6 - getTitleBarDiffNormal();
+            auto bottom = _operatingPanelHeight - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -3379,7 +3400,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (ride.mode)
             {
-                case RideMode::poweredLaunchPasstrough:
+                case RideMode::poweredLaunchPassthrough:
                 case RideMode::poweredLaunch:
                 case RideMode::upwardLaunch:
                 case RideMode::poweredLaunchBlockSectioned:
@@ -3511,23 +3532,27 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OperatingOnPrepareDraw()
+        uint16_t operatingOnPrepareDrawMode(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
         {
-            StringId format, caption, tooltip;
+            const auto initStartY = startY;
 
-            auto ride = GetRide(rideId);
-            if (ride == nullptr)
-                return;
+            widgets[WIDX_MODE_GROUP].type = WidgetType::groupbox;
+            widgets[WIDX_MODE_GROUP].moveTo({ 3, startY });
+            startY += 15;
 
-            // Widget setup
-            setWidgetPressed(WIDX_LOAD_CHECKBOX, false);
-            setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
-            setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, false);
-            setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, false);
-            setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, false);
+            // Mode
+            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
+            widgets[WIDX_MODE].moveTo({ 7, startY });
+            widgets[WIDX_MODE_DROPDOWN].moveTo({ 297, startY + 1 });
+            startY += 17;
+
+            const bool poweredLaunch = ride->mode == RideMode::poweredLaunchBlockSectioned;
+            if (ride->isBlockSectioned() && !poweredLaunch)
+            {
+                startY += 17;
+            }
 
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
-            const auto& rtd = ride->getRideTypeDescriptor();
             bool hasAlternativeType = rtd.flags.has(RtdFlag::hasInvertedVariant);
             if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)
                 || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)))
@@ -3538,6 +3563,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WidgetType::button;
                 _spinnerCaption1 = FormatStringID(STR_VELOCITY, static_cast<uint16_t>(ride->liftHillSpeed));
                 widgets[WIDX_LIFT_HILL_SPEED].setString(_spinnerCaption1.c_str());
+
+                widgets[WIDX_LIFT_HILL_SPEED_LABEL].moveTo({ 21, startY + 1 });
+                resizeSpinner(WIDX_LIFT_HILL_SPEED, { 157, startY }, { 152, 14 });
+                startY += 17;
             }
             else
             {
@@ -3556,6 +3585,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WidgetType::button;
                 _spinnerCaption2 = std::to_string(ride->numCircuits);
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].setString(_spinnerCaption2.c_str());
+
+                widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].moveTo({ 21, startY + 1 });
+                resizeSpinner(WIDX_OPERATE_NUMBER_OF_CIRCUITS, { 157, startY }, { 152, 14 });
+                startY += 17;
             }
             else
             {
@@ -3565,96 +3598,14 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WidgetType::empty;
             }
 
-            // Leave if another vehicle arrives at station
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
-                && ride->numTrains > 1 && !ride->isBlockSectioned())
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->getRideTypeDescriptor().NameConvention.vehicle
-                        == RideComponentType::Boat
-                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
-                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
-            }
-            else
-            {
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
-            }
-
-            // Synchronise with adjacent stations
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
-            {
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
-            }
-            else
-            {
-                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
-            }
-
-            // Mode
-            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
-
-            // Waiting
-            widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
-            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLoadOptions))
-            {
-                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_LOAD].type = WidgetType::dropdownMenu;
-                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::button;
-
-                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::spinner;
-                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::button;
-                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::button;
-
-                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
-                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::spinner;
-                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::button;
-                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::button;
-
-                _spinnerCaption3 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->minWaitingTime));
-                widgets[WIDX_MINIMUM_LENGTH].setString(_spinnerCaption3.c_str());
-                _spinnerCaption4 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->maxWaitingTime));
-                widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
-
-                if (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD)
-                    setWidgetPressed(WIDX_LOAD_CHECKBOX, true);
-            }
-            else
-            {
-                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::empty;
-                widgets[WIDX_LOAD].type = WidgetType::empty;
-                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::empty;
-
-                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
-                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::empty;
-                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::empty;
-                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::empty;
-
-                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
-                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::empty;
-                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::empty;
-                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::empty;
-            }
-
-            if (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
-                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-                setWidgetPressed(WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
-                setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, true);
-            if (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
-                setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, true);
-
             // Mode specific functionality
-            auto multiplier = ride->getRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
+            auto multiplier = rtd.OperatingSettings.OperatingSettingMultiplier;
             uint16_t tweakValue = static_cast<uint16_t>(ride->operationOption) * multiplier;
 
+            StringId format, caption, tooltip;
             switch (ride->mode)
             {
-                case RideMode::poweredLaunchPasstrough:
+                case RideMode::poweredLaunchPassthrough:
                 case RideMode::poweredLaunch:
                 case RideMode::upwardLaunch:
                 case RideMode::poweredLaunchBlockSectioned:
@@ -3696,7 +3647,7 @@ namespace OpenRCT2::Ui::Windows
                     format = STR_COMMA16;
                     caption = STR_MAX_PEOPLE_ON_RIDE;
                     tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
-                    if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
+                    if (!rtd.flags.has(RtdFlag::noVehicles))
                         format = kStringIdEmpty;
                     break;
             }
@@ -3711,7 +3662,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK].setString(_spinnerCaption0.c_str());
                 widgets[WIDX_MODE_TWEAK_INCREASE].type = WidgetType::button;
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::button;
-                setWidgetPressed(WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX, false);
+
+                widgets[WIDX_MODE_TWEAK_LABEL].moveTo({ 21, startY + 1 });
+                resizeSpinner(WIDX_MODE_TWEAK, { 157, startY }, { 152, 14 });
+                startY += 17;
             }
             else
             {
@@ -3721,7 +3675,164 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WidgetType::empty;
             }
 
+            if (ride->isBlockSectioned() && poweredLaunch)
+            {
+                startY += 17;
+            }
+
+            if (startY != initStartY + 15)
+            {
+                widgets[WIDX_MODE_GROUP].bottom = startY + 2;
+                return startY + 7;
+            }
+            else
+            {
+                widgets[WIDX_MODE_GROUP].type = WidgetType::empty;
+                return initStartY;
+            }
+        }
+
+        uint16_t operatingOnPrepareDrawLoad(uint16_t startY, const Ride* ride, const RideTypeDescriptor& rtd)
+        {
+            const auto initStartY = startY;
+
+            widgets[WIDX_LOAD_GROUP].type = WidgetType::groupbox;
+            widgets[WIDX_LOAD_GROUP].moveTo({ 3, startY });
+            startY += 15;
+
+            // Waiting
+            if (rtd.flags.has(RtdFlag::hasLoadOptions))
+            {
+                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_LOAD].type = WidgetType::dropdownMenu;
+                widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
+                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::button;
+
+                setWidgetPressed(WIDX_LOAD_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD) != 0);
+
+                widgets[WIDX_LOAD_CHECKBOX].moveTo({ 7, startY + 1 });
+                resizeDropdown(WIDX_LOAD, { 87, startY }, { 222, 14 });
+                startY += 17;
+            }
+            else
+            {
+                widgets[WIDX_LOAD_CHECKBOX].type = WidgetType::empty;
+                widgets[WIDX_LOAD].type = WidgetType::empty;
+                widgets[WIDX_LOAD_DROPDOWN].type = WidgetType::empty;
+            }
+
+            // Leave if another vehicle arrives at station
+            if (rtd.flags.has(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation) && ride->numTrains > 1
+                && !ride->isBlockSectioned())
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = rtd.NameConvention.vehicle == RideComponentType::Boat
+                    ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
+                    : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
+
+                setWidgetPressed(
+                    WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX,
+                    (ride->departFlags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES) != 0);
+
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].moveTo({ 7, startY });
+                startY += 17;
+            }
+            else
+            {
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WidgetType::empty;
+            }
+
+            // Min/max waiting length
+            if (rtd.flags.has(RtdFlag::hasLoadOptions))
+            {
+                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::spinner;
+                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::button;
+                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::button;
+
+                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::spinner;
+                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::button;
+                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::button;
+
+                _spinnerCaption3 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->minWaitingTime));
+                widgets[WIDX_MINIMUM_LENGTH].setString(_spinnerCaption3.c_str());
+                _spinnerCaption4 = FormatStringID(STR_FORMAT_SECONDS, static_cast<uint16_t>(ride->maxWaitingTime));
+                widgets[WIDX_MAXIMUM_LENGTH].setString(_spinnerCaption4.c_str());
+
+                setWidgetPressed(WIDX_MINIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH) != 0);
+                setWidgetPressed(WIDX_MAXIMUM_LENGTH_CHECKBOX, (ride->departFlags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH) != 0);
+
+                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1 });
+                resizeSpinner(WIDX_MINIMUM_LENGTH, { 157, startY }, { 152, 14 });
+                startY += 17;
+
+                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].moveTo({ 7, startY + 1 });
+                resizeSpinner(WIDX_MAXIMUM_LENGTH, { 157, startY }, { 152, 14 });
+                startY += 17;
+            }
+            else
+            {
+                widgets[WIDX_MINIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
+                widgets[WIDX_MINIMUM_LENGTH].type = WidgetType::empty;
+                widgets[WIDX_MINIMUM_LENGTH_INCREASE].type = WidgetType::empty;
+                widgets[WIDX_MINIMUM_LENGTH_DECREASE].type = WidgetType::empty;
+
+                widgets[WIDX_MAXIMUM_LENGTH_CHECKBOX].type = WidgetType::empty;
+                widgets[WIDX_MAXIMUM_LENGTH].type = WidgetType::empty;
+                widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WidgetType::empty;
+                widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WidgetType::empty;
+            }
+
+            // Synchronise with adjacent stations
+            if (rtd.flags.has(RtdFlag::canSynchroniseWithAdjacentStations))
+            {
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::checkbox;
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
+
+                setWidgetPressed(
+                    WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX,
+                    (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) != 0);
+
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].moveTo({ 7, startY + 1 });
+                startY += 17;
+            }
+            else
+            {
+                widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WidgetType::empty;
+            }
+
+            if (startY != initStartY + 15)
+            {
+                widgets[WIDX_LOAD_GROUP].bottom = startY + 2;
+                return startY + 7;
+            }
+            else
+            {
+                widgets[WIDX_LOAD_GROUP].type = WidgetType::empty;
+                return initStartY;
+            }
+        }
+
+        void OperatingOnPrepareDraw()
+        {
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            const auto& rtd = ride->getRideTypeDescriptor();
+
+            auto startY = 49 + getTitleBarDiffNormal();
+            startY = operatingOnPrepareDrawMode(startY, ride, rtd);
+            startY = operatingOnPrepareDrawLoad(startY, ride, rtd);
+
+            _operatingPanelHeight = startY;
+            if (_operatingPanelHeight != height)
+                onResize();
         }
 
         void OperatingOnDraw(RenderTarget& rt)
@@ -3733,22 +3844,17 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            // Horizontal rule between mode settings and depart settings
-            auto ruleStart = widgets[WIDX_LOAD_DROPDOWN].top - 7;
-            Rectangle::fillInset(
-                rt,
-                { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, ruleStart },
-                  windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, ruleStart + 1 } },
-                colours[1], Rectangle::BorderStyle::inset);
-
             // Number of block sections
             if (ride->isBlockSectioned())
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(ride->numBlockBrakes + ride->numStations);
-                auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
+
+                bool poweredLaunch = ride->mode == RideMode::poweredLaunchBlockSectioned;
+                auto& refWidget = widgets[poweredLaunch ? WIDX_MODE_TWEAK : WIDX_MODE];
+                auto& labelWidget = widgets[WIDX_MODE_TWEAK_LABEL];
                 drawText(
-                    rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
+                    rt, windowPos + ScreenCoordsXY{ labelWidget.left + 1, refWidget.bottom + 6 }, STR_BLOCK_SECTIONS, ft,
                     { Drawing::Colour::black });
             }
         }
@@ -4213,7 +4319,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (info.interactionType != ViewportInteractionItem::ride)
                 return;
-            if (info.Element->getType() != TileElementType::Track)
+            if (info.Element->getType() != TileElementType::track)
                 return;
             if (info.Element->asTrack()->GetRideIndex() != rideId)
                 return;
@@ -4589,7 +4695,6 @@ namespace OpenRCT2::Ui::Windows
         void ColourUpdate()
         {
             currentFrame++;
-            onPrepareDraw();
             invalidateWidget(WIDX_TAB_5);
             invalidateWidget(WIDX_VEHICLE_PREVIEW);
         }
@@ -4631,19 +4736,22 @@ namespace OpenRCT2::Ui::Windows
         int32_t colourOnPrepareDrawTrack(int32_t startY, const Ride* ride, const RideObjectEntry* rideEntry)
         {
             int32_t colourScheme = _rideColour;
-            TrackColour trackColour = ride->trackColours[colourScheme];
+            auto& trackColour = ride->trackColours[colourScheme];
 
             const auto& rtd = ride->getRideTypeDescriptor();
 
             // Maze style
             if (rtd.specialType == RtdSpecialType::maze)
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = STR_MAZE_STYLE_GROUP;
                 widgets[WIDX_MAZE_STYLE].type = WidgetType::dropdownMenu;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WidgetType::button;
                 widgets[WIDX_MAZE_STYLE].text = MazeOptions[EnumValue(trackColour.supports)].text;
             }
             else
             {
+                bool isShop = rtd.Category == RideCategory::shop;
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].text = isShop ? STR_SHOP_STYLE_GROUP : STR_TRACK_STYLE_GROUP;
                 widgets[WIDX_MAZE_STYLE].type = WidgetType::empty;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WidgetType::empty;
             }
@@ -4651,12 +4759,14 @@ namespace OpenRCT2::Ui::Windows
             // Track, multiple colour schemes
             if (ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsMultipleColourSchemes))
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].type = WidgetType::groupbox;
                 widgets[WIDX_TRACK_COLOUR_SCHEME].type = WidgetType::dropdownMenu;
                 widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WidgetType::button;
                 widgets[WIDX_PAINT_INDIVIDUAL_AREA].type = WidgetType::flatBtn;
             }
             else
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].type = WidgetType::empty;
                 widgets[WIDX_TRACK_COLOUR_SCHEME].type = WidgetType::empty;
                 widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
                 widgets[WIDX_PAINT_INDIVIDUAL_AREA].type = WidgetType::empty;
@@ -4718,22 +4828,24 @@ namespace OpenRCT2::Ui::Windows
                 return startY;
             }
 
+            widgets[WIDX_PRIMARY_PREVIEW_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_PRIMARY_PREVIEW].type = WidgetType::spinner;
 
             // clang-format off
-            widgets[WIDX_PRIMARY_PREVIEW].moveTo                 ({  3, startY + 0});
-            widgets[WIDX_TRACK_COLOUR_SCHEME].moveTo             ({ 74, startY + 0});
-            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].moveTo    ({301, startY + 1});
-            widgets[WIDX_TRACK_MAIN_COLOUR].moveTo               ({ 79, startY + 25});
-            widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo         ({ 99, startY + 25});
-            widgets[WIDX_TRACK_SUPPORT_COLOUR].moveTo            ({119, startY + 25});
-            widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].moveTo({100, startY + 25});
-            widgets[WIDX_MAZE_STYLE].moveTo                      ({ 74, startY + 0});
-            widgets[WIDX_MAZE_STYLE_DROPDOWN].moveTo             ({301, startY + 1});
-            widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({289, startY + 19});
+            widgets[WIDX_PRIMARY_PREVIEW_GROUP].moveTo           ({  3, startY + 0});
+            widgets[WIDX_PRIMARY_PREVIEW].moveTo                 ({  8, startY + 14});
+            widgets[WIDX_TRACK_COLOUR_SCHEME].moveTo             ({ 79, startY + 14});
+            widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].moveTo    ({296, startY + 15});
+            widgets[WIDX_TRACK_MAIN_COLOUR].moveTo               ({ 84, startY + 39});
+            widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo         ({104, startY + 39});
+            widgets[WIDX_TRACK_SUPPORT_COLOUR].moveTo            ({124, startY + 39});
+            widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].moveTo({105, startY + 39});
+            widgets[WIDX_MAZE_STYLE].moveTo                      ({ 79, startY + 14});
+            widgets[WIDX_MAZE_STYLE_DROPDOWN].moveTo             ({296, startY + 15});
+            widgets[WIDX_PAINT_INDIVIDUAL_AREA].moveTo           ({285, startY + 33});
             // clang-format on
 
-            return startY + 52;
+            return startY + 71;
         }
 
         int32_t colourOnPrepareDrawEntrance(int32_t startY, const Ride* ride)
@@ -4741,27 +4853,59 @@ namespace OpenRCT2::Ui::Windows
             // Entrance style
             if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasEntranceAndExit))
             {
+                widgets[WIDX_SECONDARY_PREVIEW_GROUP].type = WidgetType::empty;
                 widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::empty;
-                widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::empty;
                 widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::empty;
 
                 return startY;
             }
 
+            widgets[WIDX_SECONDARY_PREVIEW_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_SECONDARY_PREVIEW].type = WidgetType::spinner;
-            widgets[WIDX_ENTRANCE_STYLE_LABEL].type = WidgetType::label;
             widgets[WIDX_ENTRANCE_STYLE].type = WidgetType::dropdownMenu;
             widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WidgetType::button;
 
             // clang-format off
-            widgets[WIDX_SECONDARY_PREVIEW].moveTo      ({245, startY + 0});
-            widgets[WIDX_ENTRANCE_STYLE_LABEL].moveTo   ({  3, startY + 3});
-            widgets[WIDX_ENTRANCE_STYLE].moveTo         ({103, startY + 1});
-            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({230, startY + 2});
+            widgets[WIDX_SECONDARY_PREVIEW_GROUP].moveTo({  3, startY + 0});
+            widgets[WIDX_SECONDARY_PREVIEW].moveTo      ({240, startY + 14});
+            widgets[WIDX_ENTRANCE_STYLE].moveTo         ({  8, startY + 14});
+            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].moveTo({225, startY + 15});
             // clang-format on
 
-            return startY + 56;
+            // If ride does not support track colour styles, reuse track colours for entrances
+            if (!ride->getRideTypeDescriptor().flags.hasAny(
+                    RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports))
+            {
+                int32_t colourScheme = _rideColour;
+                auto& trackColour = ride->trackColours[colourScheme];
+
+                // Main colour
+                if (HasTrackColour(*ride, 0))
+                {
+                    widgets[WIDX_TRACK_MAIN_COLOUR].type = WidgetType::colourBtn;
+                    widgets[WIDX_TRACK_MAIN_COLOUR].image = getColourButtonImage(trackColour.main);
+                    widgets[WIDX_TRACK_MAIN_COLOUR].moveTo({ 84, startY + 39 });
+                }
+                else
+                {
+                    widgets[WIDX_TRACK_MAIN_COLOUR].type = WidgetType::empty;
+                }
+
+                // Additional colour
+                if (HasTrackColour(*ride, 1))
+                {
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WidgetType::colourBtn;
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = getColourButtonImage(trackColour.additional);
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].moveTo({ 104, startY + 39 });
+                }
+                else
+                {
+                    widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WidgetType::empty;
+                }
+            }
+
+            return startY + 74;
         }
 
         int32_t colourOnPrepareDrawVehicles(int32_t startY, const Ride* ride, const RideObjectEntry* rideEntry)
@@ -4769,6 +4913,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& rtd = ride->getRideTypeDescriptor();
 
             auto disableVehicleRecolour = [this]() {
+                widgets[WIDX_VEHICLE_PREVIEW_GROUP].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WidgetType::empty;
                 widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WidgetType::empty;
@@ -4798,6 +4943,7 @@ namespace OpenRCT2::Ui::Windows
 
             VehicleColour vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
+            widgets[WIDX_VEHICLE_PREVIEW_GROUP].type = WidgetType::groupbox;
             widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::scroll;
             widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
             widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
@@ -4886,18 +5032,19 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // clang-format off
-            widgets[WIDX_VEHICLE_PREVIEW].moveTo               ({  3, startY + 0});
-            widgets[WIDX_VEHICLE_COLOUR_SCHEME].moveTo         ({ 74, startY + 0});
-            widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].moveTo({301, startY + 1});
-            widgets[WIDX_VEHICLE_COLOUR_INDEX].moveTo          ({ 74, startY + 16});
-            widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].moveTo ({301, startY + 17});
-            widgets[WIDX_VEHICLE_BODY_COLOUR].moveTo           ({ 79, startY + 33});
-            widgets[WIDX_VEHICLE_TRIM_COLOUR].moveTo           ({ 99, startY + 33});
-            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].moveTo       ({119, startY + 33});
-            widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].moveTo     ({139, startY + 33});
+            widgets[WIDX_VEHICLE_PREVIEW_GROUP].moveTo         ({  3, startY + 0});
+            widgets[WIDX_VEHICLE_PREVIEW].moveTo               ({  8, startY + 15});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME].moveTo         ({ 79, startY + 15});
+            widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].moveTo({296, startY + 16});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX].moveTo          ({ 79, startY + 31});
+            widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].moveTo ({296, startY + 32});
+            widgets[WIDX_VEHICLE_BODY_COLOUR].moveTo           ({ 84, startY + 48});
+            widgets[WIDX_VEHICLE_TRIM_COLOUR].moveTo           ({104, startY + 48});
+            widgets[WIDX_VEHICLE_TERTIARY_COLOUR].moveTo       ({124, startY + 48});
+            widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].moveTo     ({144, startY + 48});
             // clang-format on
 
-            return startY + 53;
+            return startY + 73;
         }
 
         void ColourOnDraw(RenderTarget& rt)
@@ -5280,19 +5427,7 @@ namespace OpenRCT2::Ui::Windows
         void MusicUpdate()
         {
             currentFrame++;
-            onPrepareDraw();
             invalidateWidget(WIDX_TAB_6);
-
-            if (auto ride = GetRide(rideId); ride != nullptr && ride->windowInvalidateFlags.has(RideInvalidateFlag::music))
-            {
-                ride->windowInvalidateFlags.unset(RideInvalidateFlag::music);
-                invalidate();
-                onResize();
-                onPrepareDraw();
-                invalidate();
-            }
-
-            widgetScrollUpdateThumbs(*this, WIDX_MUSIC_DATA);
         }
 
         ScreenSize MusicScrollGetSize(int32_t scrollIndex)
@@ -5338,6 +5473,14 @@ namespace OpenRCT2::Ui::Windows
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
+
+            if (ride->windowInvalidateFlags.has(RideInvalidateFlag::music))
+            {
+                ride->windowInvalidateFlags.unset(RideInvalidateFlag::music);
+                invalidate();
+                onResize();
+                invalidate();
+            }
 
             // Align music dropdown
             widgets[WIDX_MUSIC].right = width - 8;
@@ -7176,14 +7319,14 @@ namespace OpenRCT2::Ui::Windows
             if (ride != nullptr)
             {
                 const auto type = tileElement->getType();
-                if (type == TileElementType::Entrance)
+                if (type == TileElementType::entrance)
                 {
                     // Open ride window in station view
                     auto entranceElement = tileElement->asEntrance();
                     auto stationIndex = entranceElement->GetStationIndex();
                     return WindowRideOpenStation(*ride, stationIndex);
                 }
-                else if (type == TileElementType::Track)
+                else if (type == TileElementType::track)
                 {
                     // Open ride window in station view
                     auto trackElement = tileElement->asTrack();

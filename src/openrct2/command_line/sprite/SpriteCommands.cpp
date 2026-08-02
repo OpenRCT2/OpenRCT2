@@ -9,18 +9,15 @@
 
 #include "SpriteCommands.h"
 
-#include "../../Context.h"
 #include "../../OpenRCT2.h"
+#include "../../core/Imaging.h"
 #include "../../core/String.hpp"
-#include "../../drawing/Drawing.h"
-#include "../../object/ObjectFactory.h"
+#include "../../drawing/Drawing.Sprite.h"
+#include "../../drawing/RenderTarget.h"
 #include "../CommandLine.hpp"
 
 #include <cstring>
 #include <optional>
-
-// TODO: Remove when C++20 is enabled and std::format can be used
-#include <iomanip>
 #include <sstream>
 
 // FIXME: replace with a constexpr that will also work for string interpolation.

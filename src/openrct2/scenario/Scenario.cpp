@@ -79,7 +79,7 @@ static void ScenarioCheckObjective(GameState_t& gameState);
 
 void ScenarioBegin(GameState_t& gameState)
 {
-    GameLoadInit();
+    GameLoadInit(); // NB: calls `setActiveScene`
     ScenarioReset(gameState);
 
     if (gameState.scenarioOptions.objective.Type != ObjectiveType::none && !gLoadKeepWindowsOpen)
@@ -558,7 +558,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
     TileElementIteratorBegin(&it);
     do
     {
-        if (it.element->getType() == TileElementType::Track)
+        if (it.element->getType() == TileElementType::track)
         {
             markTrackAsIndestructible = false;
 

@@ -14,7 +14,7 @@
 
 #include "AssetPackManager.h"
 #include "Context.h"
-#include "Editor.h"
+#include "Diagnostic.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
@@ -29,6 +29,7 @@
 #include "audio/Audio.h"
 #include "audio/AudioContext.h"
 #include "config/Config.h"
+#include "core/BackgroundWorker.hpp"
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
@@ -40,7 +41,9 @@
 #include "core/String.hpp"
 #include "core/Timer.hpp"
 #include "drawing/ColourMap.h"
+#include "drawing/Drawing.Sprite.h"
 #include "drawing/Drawing.h"
+#include "drawing/Font.h"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
@@ -50,7 +53,6 @@
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
-#include "localisation/Localisation.Date.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/Network.h"
@@ -67,12 +69,9 @@
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/SceneManager.h"
-#include "scenes/game/GameScene.h"
-#include "scenes/intro/IntroScene.h"
+#include "scenes/editor/EditorScene.h"
 #include "scenes/preloader/PreloaderScene.h"
-#include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequenceManager.h"
-#include "scripting/HookEngine.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
@@ -83,7 +82,6 @@
 #include <cmath>
 #include <exception>
 #include <future>
-#include <iterator>
 #include <memory>
 #include <string>
 
@@ -809,7 +807,7 @@ namespace OpenRCT2
                         _network.Close();
                     }
 #endif
-                    GameLoadInit();
+                    GameLoadInit(); // NB: calls `setActiveScene`
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == Network::Mode::server)
                     {
@@ -1086,14 +1084,15 @@ namespace OpenRCT2
 
                 case StartupAction::edit:
                 {
+                    auto* editorScene = static_cast<EditorScene*>(_sceneManager->getScenarioEditorScene());
+                    _sceneManager->setActiveScene(editorScene);
                     if (String::sizeOf(gOpenRCT2StartupActionPath) == 0)
                     {
-                        Editor::Load();
-                        nextScene = _sceneManager->getGameScene();
+                        nextScene = editorScene;
                     }
-                    else if (Editor::LoadLandscape(gOpenRCT2StartupActionPath))
+                    else if (editorScene->LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        nextScene = _sceneManager->getGameScene();
+                        nextScene = editorScene;
                     }
                     else
                     {

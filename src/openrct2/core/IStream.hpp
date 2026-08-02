@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "StringTypes.h"
-
+#include <cstdint>
 #include <istream>
 #include <memory>
 #include <stdexcept>

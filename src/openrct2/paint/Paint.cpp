@@ -14,6 +14,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Money.hpp"
 #include "../core/Numerics.hpp"
+#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"

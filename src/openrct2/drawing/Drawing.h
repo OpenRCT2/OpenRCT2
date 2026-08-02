@@ -10,39 +10,25 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
-#include "../core/StringTypes.h"
-#include "../interface/ZoomLevel.h"
-#include "../world/Location.hpp"
+#include "Colour.h"
 #include "ColourPalette.h"
-#include "Drawing.Sprite.h"
-#include "FilterPaletteIds.h"
-#include "G1Element.h"
 #include "ImageId.hpp"
 #include "PaletteMap.h"
-#include "RenderTarget.h"
 
-#include <array>
-#include <memory>
 #include <optional>
 #include <span>
-#include <vector>
 
 struct ScreenCoordsXY;
 struct ScreenLine;
 struct ScreenRect;
-
-namespace OpenRCT2
-{
-    struct ColourWithFlags;
-    struct IPlatformEnvironment;
-    struct IStream;
-} // namespace OpenRCT2
+struct ZoomLevel;
 
 namespace OpenRCT2::Drawing
 {
-    struct IDrawingEngine;
     enum class FilterPaletteID : int32_t;
     enum class PaletteIndex : uint8_t;
+
+    struct RenderTarget;
 } // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::Drawing
@@ -66,6 +52,8 @@ extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalet
 extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
+extern ZoomLevel gPickupPeepZoom;
+
 extern bool gPaintForceRedraw;
 
 bool ClipRenderTarget(
@@ -102,17 +90,6 @@ void FASTCALL GfxDrawSpriteSolid(
 void FASTCALL GfxDrawSpriteRawMasked(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, ImageId maskImage, ImageId colourImage);
 
-void MaskSse4_1(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    OpenRCT2::Drawing::PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-void MaskAvx2(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    OpenRCT2::Drawing::PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-
-void MaskFn(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    OpenRCT2::Drawing::PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-
 std::optional<uint32_t> GetPaletteG1Index(OpenRCT2::Drawing::FilterPaletteID paletteId);
 std::optional<OpenRCT2::Drawing::PaletteMap> GetPaletteMapForColour(OpenRCT2::Drawing::FilterPaletteID paletteId);
 void UpdatePalette(
@@ -123,5 +100,3 @@ void RefreshVideo();
 void ToggleWindowedMode();
 
 void DebugRT(OpenRCT2::Drawing::RenderTarget& rt);
-
-#include "NewDrawing.h"

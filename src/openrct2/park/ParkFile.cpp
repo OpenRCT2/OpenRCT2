@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -59,6 +58,7 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "../world/Weather.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
@@ -1215,7 +1215,7 @@ namespace OpenRCT2
                     TileElementIteratorBegin(&it);
                     while (TileElementIteratorNext(&it))
                     {
-                        if (it.element->getType() == TileElementType::Path)
+                        if (it.element->getType() == TileElementType::path)
                         {
                             auto* pathElement = it.element->asPath();
                             if (pathElement->HasLegacyPathEntry())
@@ -1232,7 +1232,7 @@ namespace OpenRCT2
                                 }
                             }
                         }
-                        else if (it.element->getType() == TileElementType::Track)
+                        else if (it.element->getType() == TileElementType::track)
                         {
                             auto* trackElement = it.element->asTrack();
                             auto trackType = trackElement->GetTrackType();
@@ -1248,7 +1248,7 @@ namespace OpenRCT2
                                     trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
-                        else if (it.element->getType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
+                        else if (it.element->getType() == TileElementType::smallScenery && os.getHeader().targetVersion < 23)
                         {
                             auto* sceneryElement = it.element->asSmallScenery();
                             // Previous formats stored the needs supports flag in the primary colour
@@ -1280,22 +1280,14 @@ namespace OpenRCT2
             {
                 for (int32_t x = 0; x < gameState.mapSize.x; x++)
                 {
-                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
-                    if (tileElement == nullptr)
-                        continue;
-                    do
+                    for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY{ x, y }))
                     {
-                        if (tileElement->getType() != TileElementType::Track)
-                            continue;
-
-                        auto* trackElement = tileElement->asTrack();
                         const auto* ride = GetRide(trackElement->GetRideIndex());
                         if (ride != nullptr)
                         {
                             trackElement->SetRideType(ride->type);
                         }
-
-                    } while (!(tileElement++)->isLastForTile());
+                    }
                 }
             }
         }

@@ -37,7 +37,7 @@ public:
 
         std::string parkPath = TestData::GetParkPath("pathfinding-tests.sv6");
         GetContext()->LoadParkFromFile(parkPath);
-        GameLoadInit();
+        GameLoadInit(); // NB: calls `setActiveScene`
     }
 
     void SetUp() override

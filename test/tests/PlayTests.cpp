@@ -17,6 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/actions/park/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/park/ParkSetParameterAction.h>
 #include <openrct2/actions/ride/RideSetPriceAction.h>
@@ -84,6 +85,17 @@ static void execute(Args&&... args)
 {
     GA ga(std::forward<Args>(args)...);
     GameActions::Execute(&ga, getGameState());
+}
+
+TEST_F(PlayTests, NegativeMarketingCampaignDurationIsRejected)
+{
+    auto context = localStartGame(TestData::GetParkPath("small_park_with_ferris_wheel.sv6"));
+    ASSERT_NE(context.get(), nullptr);
+
+    GameActions::ParkMarketingAction action(ADVERTISING_CAMPAIGN_PARK, 0, -1);
+    const auto result = GameActions::Query(&action, getGameState());
+
+    ASSERT_EQ(result.error, GameActions::Status::invalidParameters);
 }
 
 TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)

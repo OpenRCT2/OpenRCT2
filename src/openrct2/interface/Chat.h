@@ -23,8 +23,6 @@ constexpr int16_t kChatInputSize = 1024;
 constexpr uint8_t kChatMaxMessageLength = 200;
 constexpr int16_t kChatMaxWindowWidth = 600;
 
-struct ScreenCoordsXY;
-
 enum class ChatInput : uint8_t
 {
     none,

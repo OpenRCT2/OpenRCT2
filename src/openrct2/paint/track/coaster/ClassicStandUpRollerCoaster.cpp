@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
-#include "../../../drawing/Drawing.h"
+#include "../../../drawing/Drawing.Sprite.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/ted/TrackElemType.h"

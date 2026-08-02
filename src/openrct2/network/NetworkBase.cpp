@@ -32,7 +32,6 @@
 #include "../localisation/LocalisationService.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -48,7 +47,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 0;
+constexpr uint8_t kStreamVersion = 4;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -65,9 +64,7 @@ static constexpr uint32_t kChunkSize = 1024 * 63;
 // This limit is per connection, the current value was determined by tests with fuzzing.
 static constexpr uint32_t kMaxPacketsPerTick = 100;
 
-    #include "../Cheats.h"
     #include "../ParkImporter.h"
-    #include "../Version.h"
     #include "../actions/GameAction.hpp"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
@@ -77,10 +74,9 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../interface/Chat.h"
-    #include "../localisation/Localisation.Date.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
-    #include "../world/Park.h"
+    #include "../scenario/Scenario.h"
     #include "NetworkAction.h"
     #include "NetworkConnection.h"
     #include "NetworkGroup.h"
@@ -92,14 +88,11 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "Socket.h"
 
     #include <array>
-    #include <cerrno>
-    #include <cmath>
     #include <fstream>
     #include <functional>
     #include <list>
     #include <map>
     #include <memory>
-    #include <set>
     #include <string>
     #include <vector>
 
@@ -1978,6 +1971,13 @@ namespace OpenRCT2::Network
             {
                 _playerListInvalidated = false;
                 ServerSendPlayerList();
+
+                if (!gOpenRCT2Headless)
+                {
+                    // Update player list window
+                    auto intent = Intent(INTENT_ACTION_REFRESH_PLAYER_LIST);
+                    ContextBroadcastIntent(&intent);
+                }
             }
         }
         else
@@ -1985,74 +1985,82 @@ namespace OpenRCT2::Network
             // As client we have to keep things in order so the update is tick bound.
             // Commands/Actions reference players and so this list needs to be in sync with those.
             auto itPending = _pendingPlayerLists.begin();
-            while (itPending != _pendingPlayerLists.end())
+            if (itPending != _pendingPlayerLists.end())
             {
-                if (itPending->first > getGameState().currentTicks)
-                    break;
-
-                // List of active players found in the list.
-                std::vector<uint8_t> activePlayerIds;
-                std::vector<uint8_t> newPlayers;
-                std::vector<uint8_t> removedPlayers;
-
-                for (const auto& pendingPlayer : itPending->second.players)
+                while (itPending != _pendingPlayerLists.end())
                 {
-                    activePlayerIds.push_back(pendingPlayer.id);
+                    if (itPending->first > getGameState().currentTicks)
+                        break;
 
-                    auto* player = GetPlayerByID(pendingPlayer.id);
-                    if (player == nullptr)
+                    // List of active players found in the list.
+                    std::vector<uint8_t> activePlayerIds;
+                    std::vector<uint8_t> newPlayers;
+                    std::vector<uint8_t> removedPlayers;
+
+                    for (const auto& pendingPlayer : itPending->second.players)
                     {
-                        // Add new player.
-                        player = AddPlayer("", "");
-                        if (player != nullptr)
+                        activePlayerIds.push_back(pendingPlayer.id);
+
+                        auto* player = GetPlayerByID(pendingPlayer.id);
+                        if (player == nullptr)
                         {
-                            *player = pendingPlayer;
-                            if (player->flags & PlayerFlags::kIsServer)
+                            // Add new player.
+                            player = AddPlayer("", "");
+                            if (player != nullptr)
                             {
-                                _serverConnection->player = player;
+                                *player = pendingPlayer;
+                                if (player->flags & PlayerFlags::kIsServer)
+                                {
+                                    _serverConnection->player = player;
+                                }
+                                newPlayers.push_back(player->id);
                             }
-                            newPlayers.push_back(player->id);
+                        }
+                        else
+                        {
+                            // Update.
+                            *player = pendingPlayer;
                         }
                     }
-                    else
+
+                    // Remove any players that are not in newly received list
+                    for (const auto& player : player_list)
                     {
-                        // Update.
-                        *player = pendingPlayer;
+                        if (std::find(activePlayerIds.begin(), activePlayerIds.end(), player->id) == activePlayerIds.end())
+                        {
+                            removedPlayers.push_back(player->id);
+                        }
                     }
-                }
 
-                // Remove any players that are not in newly received list
-                for (const auto& player : player_list)
-                {
-                    if (std::find(activePlayerIds.begin(), activePlayerIds.end(), player->id) == activePlayerIds.end())
+                    // Run player removed hooks (must be before players removed from list)
+                    for (auto playerId : removedPlayers)
                     {
-                        removedPlayers.push_back(player->id);
+                        ProcessPlayerLeftPluginHooks(playerId);
                     }
+
+                    // Run player joined hooks (must be after players added to list)
+                    for (auto playerId : newPlayers)
+                    {
+                        ProcessPlayerJoinedPluginHooks(playerId);
+                    }
+
+                    // Now actually remove removed players from player list
+                    player_list.erase(
+                        std::remove_if(
+                            player_list.begin(), player_list.end(),
+                            [&removedPlayers](const std::unique_ptr<Player>& player) {
+                                return std::find(removedPlayers.begin(), removedPlayers.end(), player->id)
+                                    != removedPlayers.end();
+                            }),
+                        player_list.end());
+
+                    _pendingPlayerLists.erase(itPending);
+                    itPending = _pendingPlayerLists.begin();
                 }
 
-                // Run player removed hooks (must be before players removed from list)
-                for (auto playerId : removedPlayers)
-                {
-                    ProcessPlayerLeftPluginHooks(playerId);
-                }
-
-                // Run player joined hooks (must be after players added to list)
-                for (auto playerId : newPlayers)
-                {
-                    ProcessPlayerJoinedPluginHooks(playerId);
-                }
-
-                // Now actually remove removed players from player list
-                player_list.erase(
-                    std::remove_if(
-                        player_list.begin(), player_list.end(),
-                        [&removedPlayers](const std::unique_ptr<Player>& player) {
-                            return std::find(removedPlayers.begin(), removedPlayers.end(), player->id) != removedPlayers.end();
-                        }),
-                    player_list.end());
-
-                _pendingPlayerLists.erase(itPending);
-                itPending = _pendingPlayerLists.begin();
+                // Update player list window
+                auto intent = Intent(INTENT_ACTION_REFRESH_PLAYER_LIST);
+                ContextBroadcastIntent(&intent);
             }
         }
     }
@@ -2824,7 +2832,7 @@ namespace OpenRCT2::Network
         auto ms = MemoryStream(packet.data.data(), packet.data.size());
         if (LoadMap(&ms))
         {
-            GameLoadInit();
+            GameLoadInit(); // NB: calls `setActiveScene`
             GameLoadScripts();
             GameNotifyMapChanged();
 

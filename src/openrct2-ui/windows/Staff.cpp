@@ -26,6 +26,7 @@
 #include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/PatrolArea.h>
@@ -688,6 +689,12 @@ namespace OpenRCT2::Ui::Windows
 
             gPickupPeepX = screenCoords.x - 1;
             gPickupPeepY = screenCoords.y + 16;
+
+            auto* mainWindow = WindowGetMain();
+            if (mainWindow != nullptr)
+            {
+                gPickupPeepZoom = std::min(mainWindow->viewport->zoom, ZoomLevel{ 0 });
+            }
 
             auto staff = GetStaff();
             if (staff == nullptr)

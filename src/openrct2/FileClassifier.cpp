@@ -18,7 +18,6 @@
 #include "rct2/RCT2.h"
 #include "sawyer_coding/SawyerChunkReader.h"
 #include "sawyer_coding/SawyerCoding.h"
-#include "scenario/Scenario.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::SawyerCoding;

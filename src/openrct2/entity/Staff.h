@@ -9,12 +9,10 @@
 
 #pragma once
 
-#include "../core/EnumUtils.hpp"
 #include "../core/Money.hpp"
 #include "Peep.h"
 
 #include <cstdint>
-#include <vector>
 
 struct Ride;
 

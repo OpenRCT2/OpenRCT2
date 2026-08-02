@@ -14,7 +14,9 @@
 #include "../OpenRCT2.h"
 #include "../SpriteIds.h"
 #include "../core/Numerics.hpp"
+#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/NewDrawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
@@ -71,7 +73,7 @@ namespace OpenRCT2
         {
             switch (tileElement->getType())
             {
-                case TileElementType::Surface:
+                case TileElementType::surface:
                 {
                     auto* surfaceElement = tileElement->asSurface();
                     if (surfaceElement == nullptr)
@@ -97,20 +99,20 @@ namespace OpenRCT2
                     break;
                 }
 
-                case TileElementType::Path:
+                case TileElementType::path:
                     paletteIndex = PaletteIndex::pi17;
                     break;
 
-                case TileElementType::Track:
+                case TileElementType::track:
                     paletteIndex = PaletteIndex::pi183;
                     break;
 
-                case TileElementType::SmallScenery:
-                case TileElementType::LargeScenery:
+                case TileElementType::smallScenery:
+                case TileElementType::largeScenery:
                     paletteIndex = PaletteIndex::pi99;
                     break;
 
-                case TileElementType::Entrance:
+                case TileElementType::entrance:
                     paletteIndex = PaletteIndex::pi186;
                     break;
 

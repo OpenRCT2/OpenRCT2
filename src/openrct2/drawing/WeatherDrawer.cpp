@@ -9,14 +9,12 @@
 
 #include "WeatherDrawer.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../ride/TrackDesign.h"
 #include "../ui/UiContext.h"
 #include "../world/Weather.h"
-#include "Drawing.h"
 #include "IDrawingEngine.h"
 
 using namespace OpenRCT2;

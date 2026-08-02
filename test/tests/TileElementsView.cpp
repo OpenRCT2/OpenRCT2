@@ -42,7 +42,7 @@ protected:
         ASSERT_TRUE(initialised);
 
         GetContext()->LoadParkFromFile(parkPath);
-        GameLoadInit();
+        GameLoadInit(); // NB: calls `setActiveScene`
 
         // Changed in some tests. Store to restore its value
         _gLegacyScene = gLegacyScene;

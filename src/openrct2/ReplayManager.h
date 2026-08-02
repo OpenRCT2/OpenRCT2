@@ -11,7 +11,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <set>
 #include <string>
 
 namespace OpenRCT2::GameActions
