@@ -519,10 +519,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_OPEN_LIGHT, disableOpenClose);
 
             // only allow purchase of land when there is money
-            if (_parkData.flags & PARK_FLAGS_NO_MONEY)
-                widgets[WIDX_BUY_LAND_RIGHTS].type = WidgetType::empty;
-            else
-                widgets[WIDX_BUY_LAND_RIGHTS].type = WidgetType::flatBtn;
+            widgets[WIDX_BUY_LAND_RIGHTS].setHidden(_parkData.flags & PARK_FLAGS_NO_MONEY);
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
 
@@ -536,24 +533,20 @@ namespace OpenRCT2::Ui::Windows
             auto y = 0;
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
             {
-                widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::empty;
-                if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating)
-                {
-                    widgets[WIDX_CLOSE_LIGHT].type = WidgetType::flatBtn;
-                    widgets[WIDX_OPEN_LIGHT].type = WidgetType::flatBtn;
-                }
-                else
-                {
-                    widgets[WIDX_CLOSE_LIGHT].type = WidgetType::imgBtn;
-                    widgets[WIDX_OPEN_LIGHT].type = WidgetType::imgBtn;
-                }
+                widgets[WIDX_OPEN_OR_CLOSE].setHidden();
+                widgets[WIDX_CLOSE_LIGHT].setVisible();
+                widgets[WIDX_OPEN_LIGHT].setVisible();
                 y = widgets[WIDX_OPEN_LIGHT].bottom + 5;
+
+                const bool forcedOpen = gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating;
+                widgets[WIDX_CLOSE_LIGHT].type = forcedOpen ? WidgetType::flatBtn : WidgetType::imgBtn;
+                widgets[WIDX_OPEN_LIGHT].type = forcedOpen ? WidgetType::flatBtn : WidgetType::imgBtn;
             }
             else
             {
-                widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::flatBtn;
-                widgets[WIDX_CLOSE_LIGHT].type = WidgetType::empty;
-                widgets[WIDX_OPEN_LIGHT].type = WidgetType::empty;
+                widgets[WIDX_OPEN_OR_CLOSE].setVisible();
+                widgets[WIDX_CLOSE_LIGHT].setHidden();
+                widgets[WIDX_OPEN_LIGHT].setHidden();
                 y = widgets[WIDX_PAGE_BACKGROUND].top + 6;
             }
 
@@ -564,7 +557,7 @@ namespace OpenRCT2::Ui::Windows
             }
             for (int32_t i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++)
             {
-                if (widgets[i].type == WidgetType::empty)
+                if (widgets[i].isHidden())
                     continue;
 
                 widgets[i].left = width - 25;
@@ -860,14 +853,14 @@ namespace OpenRCT2::Ui::Windows
             if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked(park))
             {
                 widgets[WIDX_PRICE].type = WidgetType::labelCentred;
-                widgets[WIDX_INCREASE_PRICE].type = WidgetType::empty;
-                widgets[WIDX_DECREASE_PRICE].type = WidgetType::empty;
+                widgets[WIDX_INCREASE_PRICE].setHidden();
+                widgets[WIDX_DECREASE_PRICE].setHidden();
             }
             else
             {
                 widgets[WIDX_PRICE].type = WidgetType::spinner;
-                widgets[WIDX_INCREASE_PRICE].type = WidgetType::button;
-                widgets[WIDX_DECREASE_PRICE].type = WidgetType::button;
+                widgets[WIDX_INCREASE_PRICE].setVisible();
+                widgets[WIDX_DECREASE_PRICE].setVisible();
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
@@ -1050,12 +1043,12 @@ namespace OpenRCT2::Ui::Windows
             // Show name input button on scenario completion.
             if (getGameState().park.flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
             {
-                widgets[WIDX_ENTER_NAME].type = WidgetType::button;
+                widgets[WIDX_ENTER_NAME].setVisible();
                 widgets[WIDX_ENTER_NAME].top = height - 19;
                 widgets[WIDX_ENTER_NAME].bottom = height - 6;
             }
             else
-                widgets[WIDX_ENTER_NAME].type = WidgetType::empty;
+                widgets[WIDX_ENTER_NAME].setHidden();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }

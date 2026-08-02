@@ -843,12 +843,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 case StaffType::entertainer:
                 {
-                    widgets[WIDX_CHECKBOX_1].type = WidgetType::empty;
-                    widgets[WIDX_CHECKBOX_2].type = WidgetType::empty;
-                    widgets[WIDX_CHECKBOX_3].type = WidgetType::empty;
-                    widgets[WIDX_CHECKBOX_4].type = WidgetType::empty;
-                    widgets[WIDX_COSTUME_BOX].type = WidgetType::dropdownMenu;
-                    widgets[WIDX_COSTUME_BTN].type = WidgetType::button;
+                    widgets[WIDX_CHECKBOX_1].setHidden();
+                    widgets[WIDX_CHECKBOX_2].setHidden();
+                    widgets[WIDX_CHECKBOX_3].setHidden();
+                    widgets[WIDX_CHECKBOX_4].setHidden();
+                    widgets[WIDX_COSTUME_BOX].setVisible();
+                    widgets[WIDX_COSTUME_BTN].setVisible();
 
                     auto pos = std::find_if(_availableCostumes.begin(), _availableCostumes.end(), [staff](auto costume) {
                         return costume.index == staff->AnimationObjectIndex;
@@ -868,28 +868,28 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case StaffType::handyman:
-                    widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
+                    widgets[WIDX_CHECKBOX_1].setVisible();
                     widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
-                    widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
+                    widgets[WIDX_CHECKBOX_2].setVisible();
                     widgets[WIDX_CHECKBOX_2].text = STR_STAFF_OPTION_WATER_GARDENS;
-                    widgets[WIDX_CHECKBOX_3].type = WidgetType::checkbox;
+                    widgets[WIDX_CHECKBOX_3].setVisible();
                     widgets[WIDX_CHECKBOX_3].text = STR_STAFF_OPTION_EMPTY_LITTER;
-                    widgets[WIDX_CHECKBOX_4].type = WidgetType::checkbox;
+                    widgets[WIDX_CHECKBOX_4].setVisible();
                     widgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
-                    widgets[WIDX_COSTUME_BOX].type = WidgetType::empty;
-                    widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
+                    widgets[WIDX_COSTUME_BOX].setHidden();
+                    widgets[WIDX_COSTUME_BTN].setHidden();
                     OptionsSetCheckboxValues();
                     break;
                 case StaffType::mechanic:
-                    widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
+                    widgets[WIDX_CHECKBOX_1].setVisible();
                     widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
-                    widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
+                    widgets[WIDX_CHECKBOX_2].setVisible();
                     widgets[WIDX_CHECKBOX_2].text = STR_FIX_RIDES;
-                    widgets[WIDX_CHECKBOX_3].type = WidgetType::empty;
-                    widgets[WIDX_CHECKBOX_4].type = WidgetType::empty;
-                    widgets[WIDX_COSTUME_BOX].type = WidgetType::empty;
-                    widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
-                    widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
+                    widgets[WIDX_CHECKBOX_3].setHidden();
+                    widgets[WIDX_CHECKBOX_4].setHidden();
+                    widgets[WIDX_COSTUME_BOX].setHidden();
+                    widgets[WIDX_COSTUME_BTN].setHidden();
+                    widgets[WIDX_COSTUME_BTN].setHidden();
                     OptionsSetCheckboxValues();
                     break;
                 case StaffType::security:

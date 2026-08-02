@@ -512,28 +512,24 @@ namespace OpenRCT2::Ui::Windows
 
         void ToggleSimplexWidgets(bool state)
         {
-            // clang-format off
-            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WidgetType::groupbox : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WidgetType::button   : WidgetType::empty;
-            // clang-format on
+            widgets[WIDX_SIMPLEX_GROUP].setVisible(state);
+            widgets[WIDX_SIMPLEX_BASE_FREQ].setVisible(state);
+            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].setVisible(state);
+            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].setVisible(state);
+            widgets[WIDX_SIMPLEX_OCTAVES].setVisible(state);
+            widgets[WIDX_SIMPLEX_OCTAVES_UP].setVisible(state);
+            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].setVisible(state);
         }
 
         void ToggleHeightmapWidgets(bool state)
         {
-            // clang-format off
-            widgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WidgetType::groupbox : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WidgetType::checkbox : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WidgetType::checkbox : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WidgetType::button   : WidgetType::empty;
-            // clang-format on
+            widgets[WIDX_HEIGHTMAP_GROUP].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_BROWSE].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_NORMALIZE].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_STRENGTH].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].setVisible(state);
         }
 
         void BaseDraw(RenderTarget& rt)

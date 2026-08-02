@@ -449,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
+            widgets[WIDX_CLOSE].setHidden(gLegacyScene == LegacyScene::scenarioEditor);
 
             int16_t scrollListHeight = (height - 88) / 2;
 

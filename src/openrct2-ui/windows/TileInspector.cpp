@@ -2165,14 +2165,14 @@ namespace OpenRCT2::Ui::Windows
 
             if (tileInspectorPage == TileInspectorPage::Default)
             {
-                widgets[WIDX_GROUPBOX_DETAILS].type = WidgetType::empty;
-                widgets[WIDX_GROUPBOX_PROPERTIES].type = WidgetType::empty;
+                widgets[WIDX_GROUPBOX_DETAILS].setHidden();
+                widgets[WIDX_GROUPBOX_PROPERTIES].setHidden();
                 widgets[WIDX_LIST].bottom = height - kBottomPadding;
             }
             else
             {
-                widgets[WIDX_GROUPBOX_DETAILS].type = WidgetType::groupbox;
-                widgets[WIDX_GROUPBOX_PROPERTIES].type = WidgetType::groupbox;
+                widgets[WIDX_GROUPBOX_DETAILS].setVisible();
+                widgets[WIDX_GROUPBOX_PROPERTIES].setVisible();
 
                 auto pageIndex = EnumValue(tileInspectorPage) - 1;
                 auto& settings = kPageGroupBoxSettings[pageIndex];

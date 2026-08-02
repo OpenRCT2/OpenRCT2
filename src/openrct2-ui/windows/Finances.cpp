@@ -681,18 +681,18 @@ namespace OpenRCT2::Ui::Windows
             y += 3;
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
-                auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
-                auto marketingCampaign = MarketingGetCampaign(i);
+                auto& campaignButton = widgets[WIDX_CAMPAIGN_1 + i];
+                auto* marketingCampaign = MarketingGetCampaign(i);
                 if (marketingCampaign == nullptr && MarketingIsCampaignTypeApplicable(i))
                 {
-                    campaignButton->type = WidgetType::button;
-                    campaignButton->top = y;
-                    campaignButton->bottom = y + kButtonFaceHeight + 1;
+                    campaignButton.setVisible();
+                    campaignButton.top = y;
+                    campaignButton.bottom = y + kButtonFaceHeight + 1;
                     y += kButtonFaceHeight + 2;
                 }
                 else
                 {
-                    campaignButton->type = WidgetType::empty;
+                    campaignButton.setHidden();
                 }
             }
         }
@@ -760,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
                 auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
-                if (campaignButton->type != WidgetType::empty)
+                if (campaignButton->isVisible())
                 {
                     // Draw button text
                     screenCoords = windowPos + ScreenCoordsXY{ campaignButton->left, campaignButton->textTop() };

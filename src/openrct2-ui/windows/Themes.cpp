@@ -332,66 +332,37 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_THEMES_LIST].right = width - 4;
             widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
 
-            if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS)
-            {
-                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
-                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
-                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::empty;
-                widgets[WIDX_THEMES_LIST].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
-                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::button;
-                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::button;
-                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::button;
-                widgets[WIDX_THEMES_PRESETS].type = WidgetType::dropdownMenu;
-                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::button;
-                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
-            }
-            else if (_selectedTab == WINDOW_THEMES_TAB_FEATURES)
-            {
-                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
-                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
-                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::empty;
-                widgets[WIDX_THEMES_LIST].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::checkbox;
-                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::checkbox;
-                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::checkbox;
-                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::checkbox;
-                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::checkbox;
-                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_THEMES_PRESETS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
-                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
+            const bool isSettings = _selectedTab == WINDOW_THEMES_TAB_SETTINGS;
+            const bool isFeatures = _selectedTab == WINDOW_THEMES_TAB_FEATURES;
+            const bool isOther = !(isSettings || isFeatures);
 
+            widgets[WIDX_THEMES_HEADER_WINDOW].setVisible(isOther);
+            widgets[WIDX_THEMES_HEADER_PALETTE].setVisible(isOther);
+            widgets[WIDX_THEMES_HEADER_TRANSPARENCY].setVisible(isOther);
+            widgets[WIDX_THEMES_LIST].setVisible(isOther);
+
+            widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].setVisible(isFeatures);
+            widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].setVisible(isFeatures);
+            widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].setVisible(isFeatures);
+            widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].setVisible(isFeatures);
+            widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].setVisible(isFeatures);
+
+            widgets[WIDX_THEMES_DUPLICATE_BUTTON].setVisible(isSettings);
+            widgets[WIDX_THEMES_DELETE_BUTTON].setVisible(isSettings);
+            widgets[WIDX_THEMES_RENAME_BUTTON].setVisible(isSettings);
+            widgets[WIDX_THEMES_PRESETS].setVisible(isSettings);
+            widgets[WIDX_THEMES_PRESETS_DROPDOWN].setVisible(isSettings);
+
+            widgets[WIDX_THEMES_COLOURBTN_MASK].setHidden();
+
+            if (isFeatures)
+            {
                 setCheckboxValue(WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
                 setCheckboxValue(WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
                 setCheckboxValue(
                     WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
                 setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
                 setCheckboxValue(WIDX_THEMES_USE_3D_IMAGE_BUTTONS, ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
-            }
-            else
-            {
-                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::tableHeader;
-                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::tableHeader;
-                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::tableHeader;
-                widgets[WIDX_THEMES_LIST].type = WidgetType::scroll;
-                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
-                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_THEMES_PRESETS].type = WidgetType::empty;
-                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
-                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
             }
         }
 
@@ -683,14 +654,13 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::colourBtn;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + widgets[WIDX_THEMES_LIST].left
-                                + _button_size;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2)
-                                - _button_offset_y - 4 + _button_size * _buttonIndex - scrolls[0].contentOffsetY
-                                + widgets[WIDX_THEMES_LIST].top;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
+                            auto& colourButton = widgets[WIDX_THEMES_COLOURBTN_MASK];
+                            colourButton.setVisible();
+                            colourButton.left = _button_offset_x + widgets[WIDX_THEMES_LIST].left + _button_size;
+                            colourButton.top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2) - _button_offset_y - 4
+                                + _button_size * _buttonIndex - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
+                            colourButton.right = colourButton.left + 12;
+                            colourButton.bottom = colourButton.top + 12;
 
                             auto colour = ThemeGetColour(wc, _buttonIndex);
                             WindowDropdownShowColour(

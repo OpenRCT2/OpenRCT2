@@ -416,17 +416,11 @@ namespace OpenRCT2::Ui::Windows
             const bool showPreview = (gLegacyScene == LegacyScene::trackDesignsManager) || selectedListItem != 0;
             setWidgetPressed(WIDX_TRACK_PREVIEW, showPreview);
             setWidgetDisabled(WIDX_TRACK_PREVIEW, !showPreview);
+
+            widgets[WIDX_ROTATE].setVisible(showPreview);
+            widgets[WIDX_TOGGLE_SCENERY].setVisible(showPreview);
             if (showPreview)
-            {
-                widgets[WIDX_ROTATE].type = WidgetType::flatBtn;
-                widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::flatBtn;
                 setWidgetPressed(WIDX_TOGGLE_SCENERY, !gTrackDesignSceneryToggle);
-            }
-            else
-            {
-                widgets[WIDX_ROTATE].type = WidgetType::empty;
-                widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::empty;
-            }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
             const int32_t bottomMargin = Config::Get().general.debuggingTools ? (kWindowPadding + kDebugPathHeight)

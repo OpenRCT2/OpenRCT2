@@ -414,11 +414,9 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_GROUP_BY_TRACK_TYPE, !Config::Get().interface.listRideVehiclesSeparately);
 
             widgets[WIDX_TITLE].text = RideTitles[_currentTab];
-            widgets[WIDX_TAB_7].type = WidgetType::tab;
             widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
-            if (gLegacyScene == LegacyScene::trackDesigner)
-                widgets[WIDX_TAB_7].type = WidgetType::empty;
+            widgets[WIDX_TAB_7].setHidden(gLegacyScene == LegacyScene::trackDesigner);
 
             if (_currentTab == RESEARCH_TAB)
             {
@@ -822,45 +820,22 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgetDisabled(WIDX_GROUP_BY_TRACK_TYPE, _currentTab >= SHOP_TAB);
 
+            const bool isResearchTab = _currentTab == RESEARCH_TAB;
+            const bool moneyEnabled = !(getGameState().park.flags & PARK_FLAGS_NO_MONEY);
+
             // Show or hide unrelated widgets
+            widgets[WIDX_GROUP_BY_TRACK_TYPE].setHidden(isResearchTab);
+            widgets[WIDX_RIDE_LIST].setHidden(isResearchTab);
+            widgets[WIDX_FILTER_TEXT_BOX].setHidden(isResearchTab);
+            widgets[WIDX_FILTER_CLEAR_BUTTON].setHidden(isResearchTab);
 
-            if (_currentTab < RESEARCH_TAB)
-            {
-                widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WidgetType::checkbox;
-            }
-            else
-            {
-                widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WidgetType::empty;
-            }
+            widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].setVisible(isResearchTab);
+            widgets[WIDX_LAST_DEVELOPMENT_GROUP].setVisible(isResearchTab);
+            widgets[WIDX_LAST_DEVELOPMENT_BUTTON].setVisible(isResearchTab);
+            widgets[WIDX_RESEARCH_FUNDING_BUTTON].setVisible(isResearchTab && moneyEnabled);
 
-            ScreenSize newMinSize{}, newMaxSize{};
-            if (_currentTab != RESEARCH_TAB)
-            {
-                widgets[WIDX_RIDE_LIST].type = WidgetType::scroll;
-                widgets[WIDX_FILTER_TEXT_BOX].type = WidgetType::textBox;
-                widgets[WIDX_FILTER_CLEAR_BUTTON].type = WidgetType::button;
-                widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WidgetType::empty;
-                widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WidgetType::empty;
-                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WidgetType::empty;
-
-                newMinSize = kWindowSize;
-                newMaxSize = kWindowMaxSize;
-            }
-            else
-            {
-                widgets[WIDX_RIDE_LIST].type = WidgetType::empty;
-                widgets[WIDX_FILTER_TEXT_BOX].type = WidgetType::empty;
-                widgets[WIDX_FILTER_CLEAR_BUTTON].type = WidgetType::empty;
-                widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WidgetType::groupbox;
-                widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WidgetType::groupbox;
-                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WidgetType::flatBtn;
-                if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
-                    widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WidgetType::flatBtn;
-
-                newMinSize = { 300, kWindowHeightResearch };
-                newMaxSize = newMinSize;
-            }
+            auto newMinSize = !isResearchTab ? kWindowSize : ScreenSize{ 300, kWindowHeightResearch };
+            auto newMaxSize = !isResearchTab ? kWindowMaxSize : newMinSize;
 
             // Handle new window size
             if (width != newMinSize.width || height != newMinSize.height)
@@ -1024,7 +999,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
-            if (widgets[widgetIndex].type != WidgetType::empty && !widgetIsDisabled(*this, widgetIndex))
+            if (widgets[widgetIndex].isVisible() && !widgetIsDisabled(*this, widgetIndex))
             {
                 int32_t frame = 0;
                 if (_currentTab == tab)
