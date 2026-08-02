@@ -3835,3 +3835,4 @@ STR_7035    :Shop style
 STR_7036    :Vehicle style
 STR_7037    :Operating mode
 STR_7038    :Wait and load
+STR_7039    :Ride type
