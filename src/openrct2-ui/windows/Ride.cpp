@@ -4799,7 +4799,7 @@ namespace OpenRCT2::Ui::Windows
             // Track preview
             if (!rtd.flags.hasAny(
                     RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports)
-                && !rideCheats)
+                && !(rideCheats && isShop))
             {
                 widgets[WIDX_PRIMARY_PREVIEW].setHidden();
                 return startY;
