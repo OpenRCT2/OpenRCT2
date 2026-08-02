@@ -11,7 +11,6 @@
 
 #include "../core/FlagHolder.hpp"
 #include "../object/ObjectTypes.h"
-#include "../ride/Track.h"
 
 #include <cstdint>
 #include <optional>
