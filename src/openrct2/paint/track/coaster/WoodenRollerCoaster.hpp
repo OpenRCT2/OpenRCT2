@@ -20,7 +20,7 @@
 
 #include <cstdint>
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 namespace OpenRCT2::WoodenRC
 {

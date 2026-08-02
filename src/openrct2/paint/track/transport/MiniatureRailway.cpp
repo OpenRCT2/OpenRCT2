@@ -20,7 +20,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 enum
 {

@@ -17,7 +17,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
 
 /** rct2: 0x0087694C */
 static void HeartlineTwisterRCTrackFlat(

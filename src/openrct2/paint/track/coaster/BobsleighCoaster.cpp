@@ -18,7 +18,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
 
 static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN = 14586;
 static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN = 14587;

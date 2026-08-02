@@ -17,7 +17,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 constexpr int32_t kSideFriction60DegUpDir0B = 21658;
 constexpr int32_t kSideFriction60DegUpDir1A = 21647;

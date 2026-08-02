@@ -17,7 +17,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Inverted;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::inverted;
 
 static constexpr ImageIndex kSuspendedSwingingRCDiagFlatImages[2][kNumOrthogonalDirections] = {
     { 26183, 26184, 26185, 26186 },

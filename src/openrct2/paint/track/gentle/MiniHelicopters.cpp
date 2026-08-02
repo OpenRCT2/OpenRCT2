@@ -16,7 +16,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
 
 /** rct2: 0x */
 static void PaintMiniHelicoptersTrackStation(

@@ -17,7 +17,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Inverted;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::inverted;
 
 /** rct2: 0x008B0460 */
 static void InvertedImpulseRCTrackFlat(

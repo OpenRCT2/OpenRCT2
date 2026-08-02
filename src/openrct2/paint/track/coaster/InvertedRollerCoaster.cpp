@@ -17,7 +17,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Inverted;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::inverted;
 static constexpr uint8_t kInvertedSpriteOffset = 29;
 static constexpr uint8_t kSupportHeight = 44;
 

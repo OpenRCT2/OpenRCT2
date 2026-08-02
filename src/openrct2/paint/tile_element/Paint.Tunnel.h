@@ -53,9 +53,9 @@ constexpr uint8_t kTunnelTypeCount = 26;
 
 enum class TunnelGroup : uint8_t
 {
-    Standard = 0,
-    Square = 1,
-    Inverted = 2,
+    standard = 0,
+    square = 1,
+    inverted = 2,
 };
 constexpr uint8_t kTunnelGroupCount = 3;
 

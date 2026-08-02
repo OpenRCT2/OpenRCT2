@@ -18,7 +18,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::standard;
 
 enum
 {

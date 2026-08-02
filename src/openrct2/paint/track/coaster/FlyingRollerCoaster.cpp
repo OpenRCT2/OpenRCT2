@@ -19,7 +19,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 /** rct2: 0x007C7244, 0x007C7254, 0x007C7264 */
 static void FlyingRCTrackStation(

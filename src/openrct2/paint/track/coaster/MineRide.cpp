@@ -19,7 +19,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 static constexpr std::array<std::array<int8_t, kNumOrthogonalDirections>, kQuarterHelixSequenceCount>
     kLeftQuarterHelixSupportHeights = { { { 7, 6, 6, 8 }, {}, {}, {}, {}, {}, { 8, 10, 10, 8 } } };

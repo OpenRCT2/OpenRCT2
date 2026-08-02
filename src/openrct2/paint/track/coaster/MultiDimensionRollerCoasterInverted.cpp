@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::MultiDimensionRCInverted
 {
-    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
     static constexpr ImageIndex MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 26551;
     static constexpr ImageIndex MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 26552;
@@ -2234,7 +2234,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(
-                        session, direction, height - 8, TunnelGroup::Inverted, TunnelSubType::SlopeStart);
+                        session, direction, height - 8, TunnelGroup::inverted, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
@@ -2283,10 +2283,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 1:
-                PaintUtilPushTunnelRight(session, height + 48, TunnelGroup::Inverted, TunnelSubType::SlopeEnd);
+                PaintUtilPushTunnelRight(session, height + 48, TunnelGroup::inverted, TunnelSubType::SlopeEnd);
                 break;
             case 2:
-                PaintUtilPushTunnelLeft(session, height + 48, TunnelGroup::Inverted, TunnelSubType::SlopeEnd);
+                PaintUtilPushTunnelLeft(session, height + 48, TunnelGroup::inverted, TunnelSubType::SlopeEnd);
                 break;
         }
         PaintUtilSetSegmentSupportHeight(
@@ -2326,7 +2326,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 48, TunnelGroup::Inverted, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction, height + 48, TunnelGroup::inverted, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);

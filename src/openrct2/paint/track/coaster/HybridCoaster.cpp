@@ -19,7 +19,7 @@
 
 namespace OpenRCT2::HybridRC
 {
-    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
     static constexpr bool kLeftQuarterHelixLargeUpSpriteMapArray[kNumOrthogonalDirections][kQuarterHelixSequenceCount]
                                                                 [kQuarterHelixSequenceSpriteCount]

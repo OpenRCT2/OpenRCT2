@@ -17,7 +17,7 @@
 #include "../../track/Support.h"
 #include "../../track_pieces/QuarterHelix.h"
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
 
 namespace OpenRCT2::SingleRailRC
 {

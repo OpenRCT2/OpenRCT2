@@ -458,11 +458,11 @@ void TrackPaintUtilDrawPier(
     Direction direction, int32_t height, const OpenRCT2::TrackElement& trackElement, uint8_t rotation);
 inline void TrackPaintUtilDrawStationTunnel(PaintSession& session, Direction direction, int32_t height)
 {
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::square, TunnelSubType::Flat);
 }
 inline void TrackPaintUtilDrawStationTunnelTall(PaintSession& session, Direction direction, int32_t height)
 {
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Tall);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::square, TunnelSubType::Tall);
 }
 
 void TrackPaintUtilRightQuarterTurn5TilesPaint(

@@ -22,7 +22,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 static constexpr uint32_t kTwisterBlockBrakeSwNeOpen = 17150;
 static constexpr uint32_t kTwisterBlockBrakeNwSeOpen = 17151;
