@@ -4881,6 +4881,12 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widgets[WIDX_TRACK_ADDITIONAL_COLOUR].setHidden();
                 }
+
+                // Move visiblity button as well, if ride type cheats are on
+                bool rideCheats = getGameState().cheats.allowArbitraryRideTypeChanges;
+                widgets[WIDX_VISIBILITY_DROPDOWN].setVisible(rideCheats);
+                widgets[WIDX_VISIBILITY_DROPDOWN].moveTo(
+                    { widgets[WIDX_SECONDARY_PREVIEW].left - 28, widgets[WIDX_SECONDARY_PREVIEW].bottom - 28 });
             }
 
             return startY + 74;
