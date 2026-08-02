@@ -34,7 +34,7 @@ namespace OpenRCT2
     static constexpr CommandLineOptionDefinition kConvertOptions[]
     {
         { CMDLINE_TYPE_INTEGER, &_compressLevel, 'l', "compress-level", "The compression level to use when writing the converted file" },
-        { CMDLINE_TYPE_SWITCH, &_stripObjects, kNAC, "strip-objects", "do not pack custom objects into the converted file" },
+        { CMDLINE_TYPE_SWITCH, &_stripObjects, kNAC, "strip-objects", "Do not pack custom objects into the converted file" },
         kOptionTableEnd
     };
 
