@@ -3033,7 +3033,7 @@ static Vehicle* VehicleCreateCar(
     if (carEntry.flags.has(CarEntryFlag::useDodgemCarPlacement))
     {
         // Loc6DDCA4:
-        vehicle->TrackSubposition = VehicleTrackSubposition::Default;
+        vehicle->TrackSubposition = VehicleTrackSubposition::standard;
         int32_t direction = trackElement->getDirection();
         auto dodgemPos = carPosition + CoordsXYZ{ word_9A3AB4[direction], 0 };
         vehicle->TrackLocation = dodgemPos;
@@ -3066,24 +3066,24 @@ static Vehicle* VehicleCreateCar(
     }
     else
     {
-        VehicleTrackSubposition subposition = VehicleTrackSubposition::Default;
+        VehicleTrackSubposition subposition = VehicleTrackSubposition::standard;
         if (carEntry.flags.has(CarEntryFlag::isChairlift))
         {
-            subposition = VehicleTrackSubposition::ChairliftGoingOut;
+            subposition = VehicleTrackSubposition::chairliftGoingOut;
         }
 
         if (carEntry.flags.has(CarEntryFlag::isGoKart))
         {
             // Choose which lane Go Kart should start in
-            subposition = VehicleTrackSubposition::GoKartsLeftLane;
+            subposition = VehicleTrackSubposition::goKartsLeftLane;
             if (vehicleIndex & 1)
             {
-                subposition = VehicleTrackSubposition::GoKartsRightLane;
+                subposition = VehicleTrackSubposition::goKartsRightLane;
             }
         }
         if (carEntry.flags.has(CarEntryFlag::isMiniGolf))
         {
-            subposition = VehicleTrackSubposition::MiniGolfStart9;
+            subposition = VehicleTrackSubposition::miniGolfStart9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
             vehicle->miniGolfFlags.clearAll();
@@ -3092,12 +3092,12 @@ static Vehicle* VehicleCreateCar(
         {
             if (vehicle->IsHead())
             {
-                subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
+                subposition = VehicleTrackSubposition::reverserRCFrontBogie;
             }
         }
         if (carEntry.flags.has(CarEntryFlag::isReverserCoasterPassengerCar))
         {
-            subposition = VehicleTrackSubposition::ReverserRCRearBogie;
+            subposition = VehicleTrackSubposition::reverserRCRearBogie;
         }
         vehicle->TrackSubposition = subposition;
 

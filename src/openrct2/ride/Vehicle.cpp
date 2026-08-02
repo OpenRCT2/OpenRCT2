@@ -123,35 +123,35 @@ static bool vehicle_move_info_valid(
     int32_t size = 0;
     switch (trackSubposition)
     {
-        case VehicleTrackSubposition::Default:
+        case VehicleTrackSubposition::standard:
             size = VehicleTrackSubpositionSizeDefault;
             break;
-        case VehicleTrackSubposition::ChairliftGoingOut:
+        case VehicleTrackSubposition::chairliftGoingOut:
             size = 692;
             break;
-        case VehicleTrackSubposition::ChairliftGoingBack:
-        case VehicleTrackSubposition::ChairliftEndBullwheel:
-        case VehicleTrackSubposition::ChairliftStartBullwheel:
+        case VehicleTrackSubposition::chairliftGoingBack:
+        case VehicleTrackSubposition::chairliftEndBullwheel:
+        case VehicleTrackSubposition::chairliftStartBullwheel:
             size = 404;
             break;
-        case VehicleTrackSubposition::GoKartsLeftLane:
-        case VehicleTrackSubposition::GoKartsRightLane:
+        case VehicleTrackSubposition::goKartsLeftLane:
+        case VehicleTrackSubposition::goKartsRightLane:
             size = 1204;
             break;
-        case VehicleTrackSubposition::GoKartsMovingToRightLane:
-        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
+        case VehicleTrackSubposition::goKartsMovingToRightLane:
+        case VehicleTrackSubposition::goKartsMovingToLeftLane:
             size = 568;
             break;
-        case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
-        case VehicleTrackSubposition::MiniGolfBallPathA10:
-        case VehicleTrackSubposition::MiniGolfPathB11:
-        case VehicleTrackSubposition::MiniGolfBallPathB12:
-        case VehicleTrackSubposition::MiniGolfPathC13:
-        case VehicleTrackSubposition::MiniGolfBallPathC14:
+        case VehicleTrackSubposition::miniGolfPathA9: // VehicleTrackSubposition::miniGolfStart9
+        case VehicleTrackSubposition::miniGolfBallPathA10:
+        case VehicleTrackSubposition::miniGolfPathB11:
+        case VehicleTrackSubposition::miniGolfBallPathB12:
+        case VehicleTrackSubposition::miniGolfPathC13:
+        case VehicleTrackSubposition::miniGolfBallPathC14:
             size = 824;
             break;
-        case VehicleTrackSubposition::ReverserRCFrontBogie:
-        case VehicleTrackSubposition::ReverserRCRearBogie:
+        case VehicleTrackSubposition::reverserRCFrontBogie:
+        case VehicleTrackSubposition::reverserRCRearBogie:
             size = 868;
             break;
         default:

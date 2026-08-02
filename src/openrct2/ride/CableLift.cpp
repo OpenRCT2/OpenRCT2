@@ -70,7 +70,7 @@ Vehicle* CableLiftSegmentCreate(
     {
         peep = EntityId::GetNull();
     }
-    current->TrackSubposition = VehicleTrackSubposition::Default;
+    current->TrackSubposition = VehicleTrackSubposition::standard;
     current->orientation = direction << 3;
 
     z = z * kCoordsZStep;

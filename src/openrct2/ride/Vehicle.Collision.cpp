@@ -137,7 +137,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             VehicleTrackSubposition ch = std::max(TrackSubposition, vehicle2->TrackSubposition);
             if (cl != ch)
             {
-                if (cl == VehicleTrackSubposition::GoKartsLeftLane && ch == VehicleTrackSubposition::GoKartsRightLane)
+                if (cl == VehicleTrackSubposition::goKartsLeftLane && ch == VehicleTrackSubposition::goKartsRightLane)
                     continue;
             }
 
