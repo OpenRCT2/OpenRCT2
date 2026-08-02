@@ -831,10 +831,10 @@ STR_1460    :U-formad öppen bana
 STR_1461    :O-formad stängd bana
 STR_1462    :För brant för uppskjutskulle
 STR_1463    :Besökare
-STR_1464    :Helix uppåt (liten)
-STR_1465    :Helix uppåt (stor)
-STR_1466    :Helix nedåt (liten)
-STR_1467    :Helix nedåt (stor)
+STR_1464    :Halv helix uppåt (liten)
+STR_1465    :Halv helix uppåt (stor)
+STR_1466    :Halv helix nedåt (liten)
+STR_1467    :Halv helix nedåt (stor)
 STR_1468    :Personal
 STR_1469    :Åkturen måste påbörjas och avslutas med stationer
 STR_1470    :Stationen är inte tillräckligt lång
@@ -1043,10 +1043,10 @@ STR_1674    :Bromshastighet
 STR_1676    :Sätt hastighetsgräns för bromsar
 STR_1677    :{WINDOW_COLOUR_2}Popularitet: {BLACK}Okänd
 STR_1678    :{WINDOW_COLOUR_2}Popularitet: {BLACK}{COMMA16}%
-STR_1679    :Helix uppåt (vänster)
-STR_1680    :Helix uppåt (höger)
-STR_1681    :Helix nedåt (vänster)
-STR_1682    :Helix nedåt (höger)
+STR_1679    :Kvarts helix uppåt (vänster)
+STR_1680    :Kvarts helix uppåt (höger)
+STR_1681    :Kvarts helix nedåt (vänster)
+STR_1682    :Kvarts helix nedåt (höger)
 STR_1683    :Basstorlek 2 × 2
 STR_1684    :Basstorlek 4 × 4
 STR_1685    :Basstorlek 2 × 4
@@ -3817,3 +3817,18 @@ STR_7014    :Jag äger spelet på Steam, men jag har inte installerat det än.
 STR_7015    :Var snäll och stäng Steam ifall Steam körs, tryck sedan på 'OK'.
 STR_7016    :OpenRCT2 har försökt påbörja nedladdning i Steam. Öppna Steam och låt det ladda ner spelet. När Steam slutfört nedladdningen, tryck 'OK'.
 STR_7017    :Avsluta
+STR_7023    :Gör osynlig
+STR_7024    :Gör hela åkturen osynlig
+STR_7025    :Gör synlig
+STR_7026    :Gör hela åkturen synlig
+STR_7028    :Kvarts helix uppåt
+STR_7029    :Kvarts helix nedåt
+STR_7030    :{WINDOW_COLOUR_2}Underhållna gäster: {BLACK}{COMMA32}
+STR_7031    :Avaktivera växande gräs
+STR_7032    :Avaktiverar att gräs åldras så att det inte växer.
+STR_7033    :Spårstil
+STR_7034    :Labyrintstil
+STR_7035    :Affärsstil
+STR_7036    :Fordonsstil
+STR_7037    :Körläge
+STR_7038    :väntetid och last
