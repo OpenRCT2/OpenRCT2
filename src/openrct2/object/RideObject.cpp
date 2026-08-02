@@ -60,14 +60,14 @@ namespace OpenRCT2
     constexpr uint8_t DefaultSteamSpawnPosition[] = { 11, 22 };
 
     static const EnumMap<CarEntryAnimation> AnimationNameLookup{
-        { "none", CarEntryAnimation::None },
-        { "simpleVehicle", CarEntryAnimation::SimpleVehicle },
-        { "steamLocomotive", CarEntryAnimation::SteamLocomotive },
-        { "swanBoat", CarEntryAnimation::SwanBoat },
-        { "monorailCycle", CarEntryAnimation::MonorailCycle },
-        { "MultiDimension", CarEntryAnimation::MultiDimension },
-        { "observationTower", CarEntryAnimation::ObservationTower },
-        { "animalFlying", CarEntryAnimation::AnimalFlying },
+        { "none", CarEntryAnimation::none },
+        { "simpleVehicle", CarEntryAnimation::simpleVehicle },
+        { "steamLocomotive", CarEntryAnimation::steamLocomotive },
+        { "swanBoat", CarEntryAnimation::swanBoat },
+        { "monorailCycle", CarEntryAnimation::monorailCycle },
+        { "MultiDimension", CarEntryAnimation::multiDimension },
+        { "observationTower", CarEntryAnimation::observationTower },
+        { "animalFlying", CarEntryAnimation::animalFlying },
     };
 
     constexpr auto NumLegacyAnimationTypes = 11;
@@ -80,24 +80,24 @@ namespace OpenRCT2
     };
 
     constexpr LegacyAnimationParameters VehicleEntryDefaultAnimation[] = {
-        { 0, 1, CarEntryAnimation::None },                  // None
-        { 1 << 12, 4, CarEntryAnimation::SteamLocomotive }, // Miniature Railway Locomotive
-        { 1 << 10, 2, CarEntryAnimation::SwanBoat },        // Swan Boat
-        { 1 << 11, 6, CarEntryAnimation::SimpleVehicle },   // Canoe
-        { 1 << 11, 7, CarEntryAnimation::SimpleVehicle },   // Rowboat
-        { 1 << 10, 2, CarEntryAnimation::SimpleVehicle },   // Water Tricycle
-        { 0x3333, 8, CarEntryAnimation::ObservationTower }, // Observation Tower
-        { 1 << 10, 4, CarEntryAnimation::SimpleVehicle },   // Mini Helicopter
-        { 1 << 11, 4, CarEntryAnimation::MonorailCycle },   // Monorail Cycle
-        { 0x3333, 8, CarEntryAnimation::MultiDimension },   // Multi Dimension Coaster
-        { 24, 4, CarEntryAnimation::AnimalFlying },         // Animal Flying
+        { 0, 1, CarEntryAnimation::none },                  // None
+        { 1 << 12, 4, CarEntryAnimation::steamLocomotive }, // Miniature Railway Locomotive
+        { 1 << 10, 2, CarEntryAnimation::swanBoat },        // Swan Boat
+        { 1 << 11, 6, CarEntryAnimation::simpleVehicle },   // Canoe
+        { 1 << 11, 7, CarEntryAnimation::simpleVehicle },   // Rowboat
+        { 1 << 10, 2, CarEntryAnimation::simpleVehicle },   // Water Tricycle
+        { 0x3333, 8, CarEntryAnimation::observationTower }, // Observation Tower
+        { 1 << 10, 4, CarEntryAnimation::simpleVehicle },   // Mini Helicopter
+        { 1 << 11, 4, CarEntryAnimation::monorailCycle },   // Monorail Cycle
+        { 0x3333, 8, CarEntryAnimation::multiDimension },   // Multi Dimension Coaster
+        { 24, 4, CarEntryAnimation::animalFlying },         // Animal Flying
     };
     static_assert(std::size(VehicleEntryDefaultAnimation) == NumLegacyAnimationTypes);
 
     static CarEntryAnimation GetAnimationTypeFromString(const std::string& s)
     {
         auto result = AnimationNameLookup.find(s);
-        return (result != AnimationNameLookup.end()) ? result->second : CarEntryAnimation::None;
+        return (result != AnimationNameLookup.end()) ? result->second : CarEntryAnimation::none;
     }
 
     static LegacyAnimationParameters GetDefaultAnimationParameters(uint8_t legacyAnimationType)
@@ -486,7 +486,7 @@ namespace OpenRCT2
             if (!carEntry.flags.has(CarEntryFlag::hasSpinningCombinedWithNonSpinning))
             {
                 if (carEntry.flags.has(CarEntryFlag::hasVehicleAnimation)
-                    && carEntry.animation != CarEntryAnimation::ObservationTower)
+                    && carEntry.animation != CarEntryAnimation::observationTower)
                 {
                     if (!carEntry.flags.has(CarEntryFlag::hasDodgemInUseLights))
                     {

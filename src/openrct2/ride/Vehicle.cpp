@@ -366,7 +366,7 @@ bool Vehicle::OpenRestraints()
                 continue;
             }
         }
-        if (carEntry.animation == CarEntryAnimation::ObservationTower && vehicle->animation_frame != 0)
+        if (carEntry.animation == CarEntryAnimation::observationTower && vehicle->animation_frame != 0)
         {
             if (vehicle->animationState <= 0xCCCC)
             {
@@ -382,7 +382,7 @@ bool Vehicle::OpenRestraints()
             restraintsOpen = false;
             continue;
         }
-        if (carEntry.animation == CarEntryAnimation::AnimalFlying
+        if (carEntry.animation == CarEntryAnimation::animalFlying
             && (vehicle->animation_frame != 0 || vehicle->animationState > 0))
         {
             vehicle->UpdateAnimationAnimalFlying();

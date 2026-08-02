@@ -28,15 +28,15 @@ enum class SoundRange : uint8_t;
 
 enum class CarEntryAnimation : uint8_t
 {
-    None = 0,
-    SimpleVehicle,
-    SteamLocomotive,
-    SwanBoat,
-    MonorailCycle,
-    MultiDimension,
-    ObservationTower,
-    AnimalFlying,
-    Count,
+    none = 0,
+    simpleVehicle,
+    steamLocomotive,
+    swanBoat,
+    monorailCycle,
+    multiDimension,
+    observationTower,
+    animalFlying,
+    count,
 };
 
 enum class CarEntryFlag : uint8_t
