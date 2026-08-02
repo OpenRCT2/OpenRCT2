@@ -200,26 +200,26 @@ FileExtension GetFileExtensionType(u8string_view path)
 {
     auto extension = Path::GetExtension(path);
     if (String::iequals(extension, ".dat") || String::iequals(extension, ".pob"))
-        return FileExtension::DAT;
+        return FileExtension::dat;
     if (String::iequals(extension, ".sc4"))
-        return FileExtension::SC4;
+        return FileExtension::sc4;
     if (String::iequals(extension, ".sv4"))
-        return FileExtension::SV4;
+        return FileExtension::sv4;
     if (String::iequals(extension, ".td4"))
-        return FileExtension::TD4;
+        return FileExtension::td4;
     if (String::iequals(extension, ".sc6"))
-        return FileExtension::SC6;
+        return FileExtension::sc6;
     if (String::iequals(extension, ".sea"))
-        return FileExtension::SC6;
+        return FileExtension::sc6;
     if (String::iequals(extension, ".sv6"))
-        return FileExtension::SV6;
+        return FileExtension::sv6;
     if (String::iequals(extension, ".sv7"))
-        return FileExtension::SV6;
+        return FileExtension::sv6;
     if (String::iequals(extension, ".td6"))
-        return FileExtension::TD6;
+        return FileExtension::td6;
     if (String::iequals(extension, ".td7"))
-        return FileExtension::TD6;
+        return FileExtension::td6;
     if (String::iequals(extension, ".park"))
-        return FileExtension::PARK;
-    return FileExtension::Unknown;
+        return FileExtension::park;
+    return FileExtension::unknown;
 }
