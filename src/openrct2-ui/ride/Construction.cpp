@@ -258,8 +258,8 @@ namespace OpenRCT2
         SpecialElementsDropdownState list;
 
         // if it's building neither forwards nor backwards, no list is available
-        if (state != RideConstructionState::Front && state != RideConstructionState::Place
-            && state != RideConstructionState::Back)
+        if (state != RideConstructionState::front && state != RideConstructionState::place
+            && state != RideConstructionState::back)
             return list;
 
         auto& elements = list.Elements;
@@ -272,7 +272,7 @@ namespace OpenRCT2
 
             // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
             bool entryIsDisabled;
-            if (state == RideConstructionState::Back)
+            if (state == RideConstructionState::back)
             {
                 entryIsDisabled = ted.definition.pitchEnd != buildSlope || ted.definition.rollEnd != buildBank
                     || TrackPieceDirectionIsDiagonal(ted.coordinates.rotationEnd) != buildDirectionIsDiagonal;

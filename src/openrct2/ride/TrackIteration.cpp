@@ -457,7 +457,7 @@ namespace OpenRCT2
 
         auto* windowMgr = Ui::GetWindowManager();
         const WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-        if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride.id)
+        if (w != nullptr && _rideConstructionState != RideConstructionState::state0 && _currentRideIndex == ride.id)
         {
             RideConstructionInvalidateCurrentTrack();
         }

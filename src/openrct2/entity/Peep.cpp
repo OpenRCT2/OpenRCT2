@@ -1223,7 +1223,7 @@ namespace OpenRCT2
                 _crowdSoundChannel = CreateAudioChannel(SoundId::crowdAmbience, true, 0);
                 if (_crowdSoundChannel != nullptr)
                 {
-                    _crowdSoundChannel->SetGroup(MixerGroup::Sound);
+                    _crowdSoundChannel->SetGroup(MixerGroup::sound);
                 }
             }
             if (_crowdSoundChannel != nullptr)

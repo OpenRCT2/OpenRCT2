@@ -23,28 +23,28 @@ struct VehicleInfo;
 
 enum class VehicleTrackSubposition : uint8_t
 {
-    Default,
+    standard,
     // Going out means "moving away from the start". Viewed from Station 1, this is the left hand side of the track.
-    ChairliftGoingOut,
-    ChairliftGoingBack,
+    chairliftGoingOut,
+    chairliftGoingBack,
     // End and start bullwheel as viewed from Station 1.
-    ChairliftEndBullwheel,
-    ChairliftStartBullwheel,
-    GoKartsLeftLane,
-    GoKartsRightLane,
-    GoKartsMovingToRightLane,
-    GoKartsMovingToLeftLane,
-    MiniGolfStart9 = 9,
-    MiniGolfPathA9 = 9,
-    MiniGolfBallPathA10,
-    MiniGolfPathB11,
-    MiniGolfBallPathB12,
-    MiniGolfPathC13,
-    MiniGolfBallPathC14,
-    ReverserRCFrontBogie,
-    ReverserRCRearBogie,
+    chairliftEndBullwheel,
+    chairliftStartBullwheel,
+    goKartsLeftLane,
+    goKartsRightLane,
+    goKartsMovingToRightLane,
+    goKartsMovingToLeftLane,
+    miniGolfStart9 = 9,
+    miniGolfPathA9 = 9,
+    miniGolfBallPathA10,
+    miniGolfPathB11,
+    miniGolfBallPathB12,
+    miniGolfPathC13,
+    miniGolfBallPathC14,
+    reverserRCFrontBogie,
+    reverserRCRearBogie,
 
-    Count,
+    count,
 };
 
 struct VehicleInfoList
@@ -53,4 +53,4 @@ struct VehicleInfoList
     const VehicleInfo* info;
 };
 
-extern const VehicleInfoList* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];
+extern const VehicleInfoList* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::count)];

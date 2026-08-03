@@ -134,7 +134,7 @@ namespace OpenRCT2::Ui
             {
                 CLSID dialogId = CLSID_FileOpenDialog;
                 DWORD flagsToSet = FOS_FORCEFILESYSTEM;
-                if (desc.Type == FileDialogType::Save)
+                if (desc.Type == FileDialogType::save)
                 {
                     dialogId = CLSID_FileSaveDialog;
                     flagsToSet |= FOS_OVERWRITEPROMPT | FOS_CREATEPROMPT | FOS_STRICTFILETYPES;

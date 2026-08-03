@@ -1615,9 +1615,9 @@ namespace OpenRCT2::TrackMetadata
             SequenceTunnel{
                 .direction = 0,
                 .tunnelInfo = {
-                    SequenceTunnelInfo{ 0, TunnelSubType::Flat }, // upright
-                    SequenceTunnelInfo{ 0, TunnelSubType::Flat }, // inverted
-                    SequenceTunnelInfo{ 0, TunnelSubType::Tall }, // invertedFlying
+                    SequenceTunnelInfo{ 0, TunnelSubType::flat }, // upright
+                    SequenceTunnelInfo{ 0, TunnelSubType::flat }, // inverted
+                    SequenceTunnelInfo{ 0, TunnelSubType::tall }, // invertedFlying
                 },
             },
         },
@@ -1695,9 +1695,9 @@ namespace OpenRCT2::TrackMetadata
             SequenceTunnel{
                 .direction = 3,
                 .tunnelInfo = {
-                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::FlatTo25Deg }, // upright
-                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::Flat },        // inverted
-                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::Tall },        // invertedFlying
+                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::flatTo25Deg }, // upright
+                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::flat },        // inverted
+                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::tall },        // invertedFlying
                 },
             },
         },

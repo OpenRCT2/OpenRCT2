@@ -71,15 +71,15 @@ namespace OpenRCT2
 {
     enum class RideConstructionState : uint8_t
     {
-        State0,
-        Front,
-        Back,
-        Selected,
-        Place,
-        EntranceExit,
-        MazeBuild,
-        MazeMove,
-        MazeFill
+        state0,
+        front,
+        back,
+        selected,
+        place,
+        entranceExit,
+        mazeBuild,
+        mazeMove,
+        mazeFill
     };
 
     enum class AlternativeTrackFlag : uint8_t

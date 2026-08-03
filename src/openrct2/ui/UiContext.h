@@ -71,8 +71,8 @@ namespace OpenRCT2
 
         enum class FileDialogType : uint8_t
         {
-            Open,
-            Save
+            open,
+            save
         };
 
         struct FileDialogDesc
@@ -89,7 +89,7 @@ namespace OpenRCT2
                 }
             };
 
-            FileDialogType Type = FileDialogType::Open;
+            FileDialogType Type = FileDialogType::open;
             u8string Title;
             u8string InitialDirectory;
             u8string DefaultFilename;

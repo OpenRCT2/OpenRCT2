@@ -22,9 +22,9 @@ namespace OpenRCT2::Audio
 
     enum class MixerGroup : int32_t
     {
-        Sound,
-        RideMusic,
-        TitleMusic,
+        sound,
+        rideMusic,
+        titleMusic,
     };
 
     struct IAudioSource;

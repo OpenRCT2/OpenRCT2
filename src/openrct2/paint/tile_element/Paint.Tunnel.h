@@ -53,19 +53,19 @@ constexpr uint8_t kTunnelTypeCount = 26;
 
 enum class TunnelGroup : uint8_t
 {
-    Standard = 0,
-    Square = 1,
-    Inverted = 2,
+    standard = 0,
+    square = 1,
+    inverted = 2,
 };
 constexpr uint8_t kTunnelGroupCount = 3;
 
 enum class TunnelSubType : uint8_t
 {
-    Flat = 0,
-    SlopeStart = 1,
-    SlopeEnd = 2,
-    FlatTo25Deg = 3,
-    Tall = 4,
+    flat = 0,
+    slopeStart = 1,
+    slopeEnd = 2,
+    flatTo25Deg = 3,
+    tall = 4,
 };
 constexpr uint8_t kTunnelSubTypeCount = 5;
 

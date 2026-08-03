@@ -840,7 +840,7 @@ namespace OpenRCT2::Config
     static u8string SelectGogInstaller()
     {
         FileDialogDesc desc{};
-        desc.Type = FileDialogType::Open;
+        desc.Type = FileDialogType::open;
         desc.Title = LanguageGetString(STR_SELECT_GOG_INSTALLER);
         desc.Filters.emplace_back(LanguageGetString(STR_GOG_INSTALLER), "*.exe");
         desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");

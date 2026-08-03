@@ -28,15 +28,15 @@ enum class SoundRange : uint8_t;
 
 enum class CarEntryAnimation : uint8_t
 {
-    None = 0,
-    SimpleVehicle,
-    SteamLocomotive,
-    SwanBoat,
-    MonorailCycle,
-    MultiDimension,
-    ObservationTower,
-    AnimalFlying,
-    Count,
+    none = 0,
+    simpleVehicle,
+    steamLocomotive,
+    swanBoat,
+    monorailCycle,
+    multiDimension,
+    observationTower,
+    animalFlying,
+    count,
 };
 
 enum class CarEntryFlag : uint8_t
@@ -114,47 +114,47 @@ using CarEntryFlags = FlagHolder<uint64_t, CarEntryFlag>;
  */
 enum class SpriteGroupType : uint8_t
 {
-    SlopeFlat = 0,
-    Slopes12,
-    Slopes25,
-    Slopes42,
-    Slopes60,
-    Slopes75,
-    Slopes90,
-    SlopesLoop,
-    SlopeInverted,
-    Slopes8,
-    Slopes16,
-    Slopes50,
-    FlatBanked22,
-    FlatBanked45,
-    FlatBanked67,
-    FlatBanked90,
-    InlineTwists,
-    Slopes12Banked22,
-    Slopes8Banked22,
-    Slopes25Banked22,
-    Slopes8Banked45,
-    Slopes16Banked22,
-    Slopes16Banked45,
-    Slopes25Banked45,
-    Slopes12Banked45,
-    Slopes25Banked67,
-    Slopes25Banked90,
-    Slopes25InlineTwists,
-    Slopes42Banked22,
-    Slopes42Banked45,
-    Slopes42Banked67,
-    Slopes42Banked90,
-    Slopes60Banked22,
-    Slopes50Banked45,
-    Slopes50Banked67,
-    Slopes50Banked90,
-    Corkscrews,
-    RestraintAnimation,
-    CurvedLiftHillUp,
-    CurvedLiftHillDown,
-    Count
+    slopeFlat = 0,
+    slopes12,
+    slopes25,
+    slopes42,
+    slopes60,
+    slopes75,
+    slopes90,
+    slopesLoop,
+    slopeInverted,
+    slopes8,
+    slopes16,
+    slopes50,
+    flatBanked22,
+    flatBanked45,
+    flatBanked67,
+    flatBanked90,
+    inlineTwists,
+    slopes12Banked22,
+    slopes8Banked22,
+    slopes25Banked22,
+    slopes8Banked45,
+    slopes16Banked22,
+    slopes16Banked45,
+    slopes25Banked45,
+    slopes12Banked45,
+    slopes25Banked67,
+    slopes25Banked90,
+    slopes25InlineTwists,
+    slopes42Banked22,
+    slopes42Banked45,
+    slopes42Banked67,
+    slopes42Banked90,
+    slopes60Banked22,
+    slopes50Banked45,
+    slopes50Banked67,
+    slopes50Banked90,
+    corkscrews,
+    restraintAnimation,
+    curvedLiftHillUp,
+    curvedLiftHillDown,
+    count
 };
 
 static constexpr const char* SpriteGroupNames[] = { "slopeFlat",        "slopes12",
@@ -177,7 +177,7 @@ static constexpr const char* SpriteGroupNames[] = { "slopeFlat",        "slopes1
                                                     "slopes50Banked67", "slopes50Banked90",
                                                     "corkscrews",       "restraintAnimation",
                                                     "curvedLiftHillUp", "curvedLiftHillDown" };
-static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
+static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::count));
 
 struct VehicleSpriteGroup
 {
@@ -206,7 +206,7 @@ struct CarEntry
     CarEntryFlags flags;
     uint16_t base_num_frames; // The number of sprites of animation or swinging per rotation frame
     uint32_t base_image_id;
-    VehicleSpriteGroup SpriteGroups[EnumValue(SpriteGroupType::Count)];
+    VehicleSpriteGroup SpriteGroups[EnumValue(SpriteGroupType::count)];
     uint32_t NumCarImages;
     uint8_t no_seating_rows;
     uint8_t spinning_inertia;

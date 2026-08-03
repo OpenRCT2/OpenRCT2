@@ -161,7 +161,7 @@ namespace OpenRCT2::Ui
             {
                 case DialogType::kdialog:
                 {
-                    std::string action = (desc.Type == FileDialogType::Open) ? "--getopenfilename" : "--getsavefilename";
+                    std::string action = (desc.Type == FileDialogType::open) ? "--getopenfilename" : "--getsavefilename";
                     std::vector<std::string> filters = GetKDialogFilterString(desc.Filters);
                     std::vector<std::string> argsVec = { executablePath, "--title", desc.Title, action, directory };
                     for (const auto& filter : filters)
@@ -188,7 +188,7 @@ namespace OpenRCT2::Ui
                     std::vector<std::string> filters = GetZenityFilterString(desc.Filters);
                     u8string directoryarg = String::stdFormat("--filename=%s", directory.c_str());
                     std::vector<std::string> argsVec = { executablePath, action, directoryarg };
-                    if (desc.Type == FileDialogType::Save)
+                    if (desc.Type == FileDialogType::save)
                     {
                         argsVec.push_back("--confirm-overwrite");
                         argsVec.push_back("--save");
@@ -210,7 +210,7 @@ namespace OpenRCT2::Ui
                     std::string output;
                     if (Platform::Execute(args.data(), &output) == 0)
                     {
-                        if (desc.Type == FileDialogType::Save)
+                        if (desc.Type == FileDialogType::save)
                         {
                             // The default file extension is taken from the **first** available filter, since
                             // we cannot obtain it from zenity's output. This means that the FileDialogDesc::Filters
@@ -242,14 +242,14 @@ namespace OpenRCT2::Ui
 
             if (!result.empty())
             {
-                if (desc.Type == FileDialogType::Open && access(result.c_str(), F_OK) == -1)
+                if (desc.Type == FileDialogType::open && access(result.c_str(), F_OK) == -1)
                 {
                     std::string msg = String::stdFormat(
                         "\"%s\" not found: %s, please choose another file\n", result.c_str(), strerror(errno));
                     ShowMessageBox(window, msg);
                     return ShowFileDialog(window, desc);
                 }
-                if (desc.Type == FileDialogType::Save && access(result.c_str(), F_OK) != -1 && dtype == DialogType::kdialog)
+                if (desc.Type == FileDialogType::save && access(result.c_str(), F_OK) != -1 && dtype == DialogType::kdialog)
                 {
                     u8string overwrite = String::stdFormat("Overwrite %s?", result.c_str());
                     const char* args[] = { executablePath.c_str(), "--yesno", overwrite.c_str(), nullptr };

@@ -402,7 +402,7 @@ namespace OpenRCT2::Scripting
 
             auto& execInfo = scriptEngine->GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
-            if (owner->GetMetadata().Type == PluginType::Intransient)
+            if (owner->GetMetadata().Type == PluginType::intransient)
             {
                 CustomMenuItems.emplace_back(
                     owner, CustomToolbarMenuItemKind::Toolbox, JSToStdString(ctx, argv[0]), JSCallback(ctx, argv[1]));

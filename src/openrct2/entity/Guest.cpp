@@ -4287,7 +4287,7 @@ namespace OpenRCT2
                         specialDirection = ((vehicle->orientation + 3) / 8) + 1;
                         specialDirection &= 3;
 
-                        if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
+                        if (vehicle->TrackSubposition == VehicleTrackSubposition::goKartsRightLane)
                             specialDirection = DirectionReverse(specialDirection);
                     }
                 }

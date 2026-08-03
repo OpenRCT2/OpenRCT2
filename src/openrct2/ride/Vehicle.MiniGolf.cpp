@@ -276,7 +276,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 {
                     TrackSubposition = prevVehicle->TrackSubposition;
                 }
-                if (TrackSubposition != VehicleTrackSubposition::MiniGolfStart9)
+                if (TrackSubposition != VehicleTrackSubposition::miniGolfStart9)
                 {
                     TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(
                         static_cast<uint8_t>(TrackSubposition) - 1u) };
@@ -320,13 +320,13 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     else
                     {
                         uint16_t rand16 = ScenarioRand() & 0xFFFF;
-                        VehicleTrackSubposition nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathC14;
+                        VehicleTrackSubposition nextTrackSubposition = VehicleTrackSubposition::miniGolfBallPathC14;
                         if (rand16 <= 0xA000)
                         {
-                            nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathB12;
+                            nextTrackSubposition = VehicleTrackSubposition::miniGolfBallPathB12;
                             if (rand16 <= 0x900)
                             {
-                                nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathA10;
+                                nextTrackSubposition = VehicleTrackSubposition::miniGolfBallPathA10;
                             }
                         }
                         TrackSubposition = nextTrackSubposition;
@@ -589,7 +589,7 @@ void Vehicle::Loc6DCDE4(const Ride& curRide)
 void Vehicle::Loc6DCE02(const Ride& curRide)
 {
     acceleration /= _vehicleUnkF64E10;
-    if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
+    if (TrackSubposition == VehicleTrackSubposition::chairliftGoingBack)
     {
         return;
     }

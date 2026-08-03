@@ -29,16 +29,16 @@ namespace OpenRCT2::Scenario
         {
             if (parkRating >= 600 && park.numGuestsInPark >= NumGuests)
             {
-                return ObjectiveStatus::Success;
+                return ObjectiveStatus::success;
             }
 
             if (currentMonthYear == MONTH_COUNT * Year)
             {
-                return ObjectiveStatus::Failure;
+                return ObjectiveStatus::failure;
             }
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     ObjectiveStatus Objective::CheckParkValueBy(Park::ParkData& park, GameState_t& gameState) const
@@ -51,16 +51,16 @@ namespace OpenRCT2::Scenario
         {
             if (parkValue >= objectiveParkValue)
             {
-                return ObjectiveStatus::Success;
+                return ObjectiveStatus::success;
             }
 
             if (currentMonthYear == MONTH_COUNT * Year)
             {
-                return ObjectiveStatus::Failure;
+                return ObjectiveStatus::failure;
             }
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     /**
@@ -90,10 +90,10 @@ namespace OpenRCT2::Scenario
         }
         if (rcs >= 10)
         {
-            return ObjectiveStatus::Success;
+            return ObjectiveStatus::success;
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     /**
@@ -139,7 +139,7 @@ namespace OpenRCT2::Scenario
                 News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
                 park.flags &= ~PARK_FLAGS_PARK_OPEN;
                 gameState.scenarioOptions.guestInitialHappiness = 50;
-                return ObjectiveStatus::Failure;
+                return ObjectiveStatus::failure;
             }
         }
         else if (gameState.scenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
@@ -149,9 +149,9 @@ namespace OpenRCT2::Scenario
 
         if (park.rating >= 700)
             if (park.numGuestsInPark >= NumGuests)
-                return ObjectiveStatus::Success;
+                return ObjectiveStatus::success;
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     ObjectiveStatus Objective::CheckMonthlyRideIncome(Park::ParkData& park, GameState_t& gameState) const
@@ -159,10 +159,10 @@ namespace OpenRCT2::Scenario
         money64 lastMonthRideIncome = park.expenditureTable[1][EnumValue(ExpenditureType::parkRideTickets)];
         if (lastMonthRideIncome >= Currency)
         {
-            return ObjectiveStatus::Success;
+            return ObjectiveStatus::success;
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     /**
@@ -195,10 +195,10 @@ namespace OpenRCT2::Scenario
         }
         if (rcs >= 10)
         {
-            return ObjectiveStatus::Success;
+            return ObjectiveStatus::success;
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     ObjectiveStatus Objective::CheckFinish5RollerCoasters(Park::ParkData& park, GameState_t& gameState) const
@@ -223,10 +223,10 @@ namespace OpenRCT2::Scenario
         }
         if (rcs >= 5)
         {
-            return ObjectiveStatus::Success;
+            return ObjectiveStatus::success;
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     ObjectiveStatus Objective::CheckRepayLoanAndParkValue(Park::ParkData& park, GameState_t& gameState) const
@@ -236,10 +236,10 @@ namespace OpenRCT2::Scenario
 
         if (currentLoan <= 0 && parkValue >= Currency)
         {
-            return ObjectiveStatus::Success;
+            return ObjectiveStatus::success;
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     ObjectiveStatus Objective::CheckMonthlyFoodIncome(Park::ParkData& park, GameState_t& gameState) const
@@ -252,10 +252,10 @@ namespace OpenRCT2::Scenario
 
         if (lastMonthProfit >= Currency)
         {
-            return ObjectiveStatus::Success;
+            return ObjectiveStatus::success;
         }
 
-        return ObjectiveStatus::Undecided;
+        return ObjectiveStatus::undecided;
     }
 
     /**
@@ -266,7 +266,7 @@ namespace OpenRCT2::Scenario
     {
         if (gameState.scenarioCompletedCompanyValue != kMoney64Undefined)
         {
-            return ObjectiveStatus::Undecided;
+            return ObjectiveStatus::undecided;
         }
 
         switch (Type)
@@ -290,7 +290,7 @@ namespace OpenRCT2::Scenario
             case ObjectiveType::monthlyFoodIncome:
                 return CheckMonthlyFoodIncome(park, gameState);
             default:
-                return ObjectiveStatus::Undecided;
+                return ObjectiveStatus::undecided;
         }
     }
 

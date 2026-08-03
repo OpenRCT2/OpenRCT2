@@ -622,11 +622,11 @@ static void ScenarioCheckObjective(GameState_t& gameState)
 {
     auto& park = gameState.park;
     auto status = gameState.scenarioOptions.objective.Check(park, gameState);
-    if (status == ObjectiveStatus::Success)
+    if (status == ObjectiveStatus::success)
     {
         ScenarioSuccess(gameState);
     }
-    else if (status == ObjectiveStatus::Failure)
+    else if (status == ObjectiveStatus::failure)
     {
         ScenarioFailure(gameState);
     }
