@@ -3825,3 +3825,4 @@ STR_7035    :Winkelstijl
 STR_7036    :Voertuigstijl
 STR_7037    :Bedrijfsmodus
 STR_7038    :Wacht- en laadinstellingen
+STR_7039    :Attractietype
