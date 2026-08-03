@@ -14,7 +14,6 @@
     #include "../Diagnostic.h"
     #include "../core/File.h"
     #include "../core/Guard.hpp"
-    #include "../core/IStream.hpp"
     #include "../core/String.hpp"
     #include "../drawing/Font.h"
     #include "../localisation/Language.h"
@@ -25,7 +24,6 @@
     #include <android/asset_manager_jni.h>
     #include <jni.h>
     #include <memory>
-    #include <mutex>
     #include <sys/stat.h>
 
 AndroidClassLoader::~AndroidClassLoader()
