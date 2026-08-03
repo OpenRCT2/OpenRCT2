@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Improved: [#26099] The ride type selection cheat has been moved into the ride operations tab.
 - Improved: [#26099] The ride visiblity cheat has been moved into the ride colour/appearance tab.
+- Improved: [#26862] Add a Liquid Glass app icon for macOS 26 and later.
 - Fix: [#25169] The convert command strips custom objects from the resulting park.
 
 0.5.4 (2026-08-02)
