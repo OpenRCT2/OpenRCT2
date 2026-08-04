@@ -142,10 +142,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP,
         WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN,
         WIDX_SIMULATE,
-        WIDX_SPEED_GROUPBOX = WIDX_BANKING_GROUPBOX,
-        WIDX_SPEED_SETTING_SPINNER = WIDX_BANK_LEFT,
-        WIDX_SPEED_SETTING_SPINNER_UP = WIDX_BANK_STRAIGHT,
-        WIDX_SPEED_SETTING_SPINNER_DOWN = WIDX_BANK_RIGHT,
+        WIDX_SPEED_GROUPBOX,
+        WIDX_SPEED_SETTING_SPINNER,
+        WIDX_SPEED_SETTING_SPINNER_UP,
+        WIDX_SPEED_SETTING_SPINNER_DOWN,
     };
 
     VALIDATE_GLOBAL_WIDX(WC_RIDE_CONSTRUCTION, WIDX_CONSTRUCT);
@@ -155,44 +155,53 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kRideConstructionWidgets = makeWidgets(
-        makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget        ({  3,  17}, {     kGroupWidth,  57}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
-        makeWidget        ({  3,  76}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
-        makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
-        makeWidget        ({  6,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_VERY_SMALL_TIP     ),
-        makeWidget        ({ 28,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_LEFT),           STR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL_TIP          ),
-        makeWidget        ({ 50,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE),        STR_RIDE_CONSTRUCTION_LEFT_CURVE_TIP                ),
-        makeWidget        ({ 72,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE_TIP          ),
-        makeWidget        ({ 94,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_STRAIGHT),          STR_RIDE_CONSTRUCTION_STRAIGHT_TIP                  ),
-        makeWidget        ({116,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE_TIP         ),
-        makeWidget        ({138,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE),       STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP               ),
-        makeWidget        ({160,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_RIGHT),          STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
-        makeWidget        ({182,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
-        makeWidget        ({  6,  55}, { kGroupWidth - 6,  14}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
-        makeWidget        ({  6,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_DROP),     STR_RIDE_CONSTRUCTION_VERTICAL_DROP_TIP             ),
-        makeWidget        ({ 30,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP),  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
-        makeWidget        ({ 54,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
-        makeWidget        ({ 78,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL),       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
-        makeWidget        ({102,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),          STR_RIDE_CONSTRUCTION_SLOPE_UP_TIP                  ),
-        makeWidget        ({126,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
-        makeWidget        ({150,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_RISE),     STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP             ),
-        makeWidget        ({178,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CHAIN_LIFT),                          STR_RIDE_CONSTRUCTION_CHAIN_LIFT_TIP                ),
-        makeWidget        ({ 69, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
-        makeWidget        ({ 93, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
-        makeWidget        ({117, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
-        makeWidget        ({  3, 164}, {     kGroupWidth, 170}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                                       STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP),
-        makeWidget        ({ 82, 338}, {              46,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),            STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP),
-        makeWidget        ({ 52, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_PREVIOUS),                            STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP  ),
-        makeWidget        ({134, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_NEXT),                                STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP      ),
-        makeWidget        ({  3, 362}, {     kGroupWidth,  28}, WidgetType::groupbox, WindowColour::primary                                                                                                          ),
-        makeWidget        ({ 31, 372}, {              70,  12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_ENTRANCE,                   STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                  ),
-        makeWidget        ({109, 372}, {              70,  12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_EXIT,                       STR_RIDE_CONSTRUCTION_EXIT_TIP                      ),
-        makeWidget        ({ 94, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_ROTATE_ARROW),                        STR_ROTATE_90_TIP                                   ),
-        makeWidget        ({ 41, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP       ),
-        makeWidget        ({144, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP   ),
-        makeWidget        ({118, 120}, {              89,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
-        makeSpinnerWidgets({123, 138}, {              58,  12}, WidgetType::spinner,  WindowColour::secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
-        makeWidget        ({161, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               )
+/*WIDX_BACKGROUND*/                       makeWindowShim(kWindowTitle, kWindowSize),
+/*WIDX_TITLE*/
+/*WIDX_CLOSE*/
+/*WIDX_DIRECTION_GROUPBOX*/               makeWidget        ({  3,  17}, {     kGroupWidth,  57}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
+/*WIDX_SLOPE_GROUPBOX*/                   makeWidget        ({  3,  76}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
+/*WIDX_BANKING_GROUPBOX*/                 makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
+/*WIDX_LEFT_CURVE_VERY_SMALL*/            makeWidget        ({  6,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_VERY_SMALL_TIP     ),
+/*WIDX_LEFT_CURVE_SMALL*/                 makeWidget        ({ 28,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_LEFT),           STR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL_TIP          ),
+/*WIDX_LEFT_CURVE*/                       makeWidget        ({ 50,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE),        STR_RIDE_CONSTRUCTION_LEFT_CURVE_TIP                ),
+/*WIDX_LEFT_CURVE_LARGE*/                 makeWidget        ({ 72,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE_TIP          ),
+/*WIDX_STRAIGHT*/                         makeWidget        ({ 94,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_STRAIGHT),          STR_RIDE_CONSTRUCTION_STRAIGHT_TIP                  ),
+/*WIDX_RIGHT_CURVE_LARGE*/                makeWidget        ({116,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE_TIP         ),
+/*WIDX_RIGHT_CURVE*/                      makeWidget        ({138,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE),       STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP               ),
+/*WIDX_RIGHT_CURVE_SMALL*/                makeWidget        ({160,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_RIGHT),          STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
+/*WIDX_RIGHT_CURVE_VERY_SMALL*/           makeWidget        ({182,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
+/*WIDX_SPECIAL_TRACK_DROPDOWN*/           makeWidget        ({  6,  55}, { kGroupWidth - 6,  14}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
+/*WIDX_SLOPE_DOWN_VERTICAL*/              makeWidget        ({  6,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_DROP),     STR_RIDE_CONSTRUCTION_VERTICAL_DROP_TIP             ),
+/*WIDX_SLOPE_DOWN_STEEP*/                 makeWidget        ({ 30,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP),  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
+/*WIDX_SLOPE_DOWN*/                       makeWidget        ({ 54,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
+/*WIDX_LEVEL*/                            makeWidget        ({ 78,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL),       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
+/*WIDX_SLOPE_UP*/                         makeWidget        ({102,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),          STR_RIDE_CONSTRUCTION_SLOPE_UP_TIP                  ),
+/*WIDX_SLOPE_UP_STEEP*/                   makeWidget        ({126,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
+/*WIDX_SLOPE_UP_VERTICAL*/                makeWidget        ({150,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_RISE),     STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP             ),
+/*WIDX_CHAIN_LIFT*/                       makeWidget        ({178,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CHAIN_LIFT),                          STR_RIDE_CONSTRUCTION_CHAIN_LIFT_TIP                ),
+/*WIDX_BANK_LEFT*/                        makeWidget        ({ 69, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
+/*WIDX_BANK_STRAIGHT*/                    makeWidget        ({ 93, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
+/*WIDX_BANK_RIGHT*/                       makeWidget        ({117, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
+/*WIDX_CONSTRUCT*/                        makeWidget        ({  3, 164}, {     kGroupWidth, 170}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                                       STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP),
+/*WIDX_DEMOLISH*/                         makeWidget        ({ 82, 338}, {              46,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),            STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP),
+/*WIDX_PREVIOUS_SECTION*/                 makeWidget        ({ 52, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_PREVIOUS),                            STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP  ),
+/*WIDX_NEXT_SECTION*/                     makeWidget        ({134, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_NEXT),                                STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP      ),
+/*WIDX_ENTRANCE_EXIT_GROUPBOX*/           makeWidget        ({  3, 362}, {     kGroupWidth,  28}, WidgetType::groupbox, WindowColour::primary                                                                                                          ),
+/*WIDX_ENTRANCE*/                         makeWidget        ({ 31, 372}, {              70,  12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_ENTRANCE,                   STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                  ),
+/*WIDX_EXIT*/                             makeWidget        ({109, 372}, {              70,  12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_EXIT,                       STR_RIDE_CONSTRUCTION_EXIT_TIP                      ),
+/*WIDX_ROTATE*/                           makeWidget        ({ 94, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_ROTATE_ARROW),                        STR_ROTATE_90_TIP                                   ),
+/*WIDX_U_TRACK*/                          makeWidget        ({ 41, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP       ),
+/*WIDX_O_TRACK*/                          makeWidget        ({144, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP   ),
+/*WIDX_SEAT_ROTATION_GROUPBOX*/           makeWidget        ({118, 120}, {              89,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
+/*WIDX_SEAT_ROTATION_ANGLE_SPINNER*/      makeSpinnerWidgets({123, 138}, {              58,  12}, WidgetType::spinner,  WindowColour::secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
+/*WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP*/
+/*WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN*/
+/*WIDX_SIMULATE*/                         makeWidget        ({161, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               ),
+/*WIDX_SPEED_GROUPBOX*/                   makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_BRAKE_SPEED                                                                     ),
+/*WIDX_SPEED_SETTING_SPINNER*/            makeWidget        ({ 12, 132}, {              85,  14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         ),
+/*WIDX_SPEED_SETTING_SPINNER_UP*/         makeWidget        ({ 84, 133}, {              12,  12}, WidgetType::button,   WindowColour::secondary, STR_NUMERIC_UP,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         ),
+/*WIDX_SPEED_SETTING_SPINNER_DOWN*/       makeWidget        ({ 72, 133}, {              12,  12}, WidgetType::button,   WindowColour::secondary, STR_NUMERIC_DOWN,                                 STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         )
+
     );
     // clang-format on
 
@@ -1902,32 +1911,17 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            auto top = 118 + widgets[WIDX_TITLE].bottom;
-            auto bottom = top + 23;
-            widgets[WIDX_BANKING_GROUPBOX].image = ImageId(STR_RIDE_CONSTRUCTION_ROLL_BANKING);
-            widgets[WIDX_BANK_LEFT].image = ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK);
-            widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP;
-            widgets[WIDX_BANK_LEFT].left = 69;
-            widgets[WIDX_BANK_LEFT].right = 92;
-            widgets[WIDX_BANK_LEFT].top = top;
-            widgets[WIDX_BANK_LEFT].bottom = bottom;
-            widgets[WIDX_BANK_STRAIGHT].image = ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK);
-            widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_NO_ROLL_TIP;
-            widgets[WIDX_BANK_STRAIGHT].left = 93;
-            widgets[WIDX_BANK_STRAIGHT].right = 116;
-            widgets[WIDX_BANK_STRAIGHT].top = top;
-            widgets[WIDX_BANK_STRAIGHT].bottom = bottom;
-            widgets[WIDX_BANK_RIGHT].image = ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK);
-            widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP;
-            widgets[WIDX_BANK_RIGHT].left = 117;
-            widgets[WIDX_BANK_RIGHT].right = 140;
-            widgets[WIDX_BANK_RIGHT].top = top;
-            widgets[WIDX_BANK_RIGHT].bottom = bottom;
+            widgets[WIDX_BANKING_GROUPBOX].setVisible();
             widgets[WIDX_BANK_LEFT].setHidden();
             widgets[WIDX_BANK_STRAIGHT].setHidden();
             widgets[WIDX_BANK_RIGHT].setHidden();
             widgets[WIDX_U_TRACK].setHidden();
             widgets[WIDX_O_TRACK].setHidden();
+
+            widgets[WIDX_SPEED_GROUPBOX].setHidden();
+            widgets[WIDX_SPEED_SETTING_SPINNER].setHidden();
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].setHidden();
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].setHidden();
 
             const bool trackHasSpeedSetting = trackTypeHasSpeedSetting(_selectedTrackType)
                 || trackTypeHasSpeedSetting(_currentlySelectedTrack.trackType);
@@ -1943,20 +1937,24 @@ namespace OpenRCT2::Ui::Windows
 
             if (!trackHasSpeedSetting)
             {
-                if (IsTrackEnabled(TrackGroup::flatRollBanking))
-                {
-                    // TODO: unwrangle these from WIDX_SPEED_SETTING_SPINNER{,_UP,_DOWN}
-                    widgets[WIDX_BANK_LEFT].type = WidgetType::flatBtn;
-                    widgets[WIDX_BANK_STRAIGHT].type = WidgetType::flatBtn;
-                    widgets[WIDX_BANK_RIGHT].type = WidgetType::flatBtn;
-                    widgets[WIDX_BANK_LEFT].setVisible();
-                    widgets[WIDX_BANK_STRAIGHT].setVisible();
-                    widgets[WIDX_BANK_RIGHT].setVisible();
-                }
+                const bool hasFlatRollBanking = IsTrackEnabled(TrackGroup::flatRollBanking);
+                widgets[WIDX_BANK_LEFT].setVisible(hasFlatRollBanking);
+                widgets[WIDX_BANK_STRAIGHT].setVisible(hasFlatRollBanking);
+                widgets[WIDX_BANK_RIGHT].setVisible(hasFlatRollBanking);
                 onDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
             }
             else
             {
+                widgets[WIDX_BANKING_GROUPBOX].setHidden();
+                widgets[WIDX_SPEED_GROUPBOX].setVisible();
+                widgets[WIDX_SPEED_SETTING_SPINNER].setVisible();
+                widgets[WIDX_SPEED_SETTING_SPINNER_UP].setVisible();
+                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].setVisible();
+
+                widgetsSetHoldable(*this, { WIDX_SPEED_SETTING_SPINNER_UP, WIDX_SPEED_SETTING_SPINNER_DOWN });
+
+                _currentlyShowingBrakeOrBoosterSpeed = true;
+
                 if (!boosterTrackSelected)
                 {
                     widgets[WIDX_SPEED_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
@@ -1971,24 +1969,6 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SPEED_SETTING_SPINNER_UP].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
                     widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
                 }
-
-                _currentlyShowingBrakeOrBoosterSpeed = true;
-
-                // TODO: unwrangle these from WIDX_BANK_{LEFT,RIGHT,STRAIGHT}
-                widgets[WIDX_SPEED_SETTING_SPINNER].type = WidgetType::spinner;
-                widgets[WIDX_SPEED_SETTING_SPINNER_UP].type = WidgetType::button;
-                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WidgetType::button;
-
-                widgets[WIDX_SPEED_SETTING_SPINNER].setVisible();
-                widgets[WIDX_SPEED_SETTING_SPINNER_UP].setVisible();
-                widgets[WIDX_SPEED_SETTING_SPINNER_UP].text = STR_NUMERIC_UP;
-                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].setVisible();
-                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
-
-                auto spinnerStart = 124 + widgets[WIDX_TITLE].bottom;
-                resizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, spinnerStart }, { 85, kSpinnerHeight });
-
-                widgetsSetHoldable(*this, { WIDX_SPEED_SETTING_SPINNER_UP, WIDX_SPEED_SETTING_SPINNER_DOWN });
             }
 
             constexpr int16_t bankingGroupboxRightNoSeatRotation = kGroupWidth;
