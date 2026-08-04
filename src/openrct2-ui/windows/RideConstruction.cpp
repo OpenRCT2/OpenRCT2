@@ -191,10 +191,10 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({ 41, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP       ),
         makeWidget        ({144, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP   ),
         makeWidget        ({118, 120}, {              89,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
-        makeSpinnerWidgets({123, 138}, {              58,  12}, WidgetType::spinner,  WindowColour::secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
+        makeSpinnerWidgets({123, 136}, {              58,  14}, WidgetType::spinner,  WindowColour::secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
         makeWidget        ({161, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               ),
         makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_BRAKE_SPEED                                                                     ),
-        makeSpinnerWidgets({ 12, 132}, {              85,  14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         ),
+        makeSpinnerWidgets({ 12, 136}, {              85,  14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         )
     );
     // clang-format on
 
@@ -1983,7 +1983,7 @@ namespace OpenRCT2::Ui::Windows
                 // squishes the track speed spinner slightly to make room for the seat rotation widgets
                 if (trackHasSpeedSetting)
                 {
-                    auto spinnerStart = 124 + widgets[WIDX_TITLE].bottom;
+                    auto spinnerStart = 136 + widgets[WIDX_TITLE].bottom;
                     resizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 8, spinnerStart }, { 85 - 12, kSpinnerHeight });
                 }
                 // moves banking buttons to the left to make room for the seat rotation widgets
