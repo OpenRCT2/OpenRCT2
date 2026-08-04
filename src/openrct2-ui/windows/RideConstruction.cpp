@@ -194,9 +194,7 @@ namespace OpenRCT2::Ui::Windows
         makeSpinnerWidgets({123, 138}, {              58,  12}, WidgetType::spinner,  WindowColour::secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
         makeWidget        ({161, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               ),
         makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_BRAKE_SPEED                                                                     ),
-        makeWidget        ({ 12, 132}, {              85,  14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         ),
-        makeWidget        ({ 84, 133}, {              12,  12}, WidgetType::button,   WindowColour::secondary, STR_NUMERIC_UP,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         ),
-        makeWidget        ({ 72, 133}, {              12,  12}, WidgetType::button,   WindowColour::secondary, STR_NUMERIC_DOWN,                                 STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         )
+        makeSpinnerWidgets({ 12, 132}, {              85,  14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         ),
     );
     // clang-format on
 
