@@ -179,9 +179,9 @@ namespace OpenRCT2::Ui::Windows
 /*WIDX_SLOPE_UP_STEEP*/                   makeWidget        ({126,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
 /*WIDX_SLOPE_UP_VERTICAL*/                makeWidget        ({150,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_RISE),     STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP             ),
 /*WIDX_CHAIN_LIFT*/                       makeWidget        ({178,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CHAIN_LIFT),                          STR_RIDE_CONSTRUCTION_CHAIN_LIFT_TIP                ),
-/*WIDX_BANK_LEFT*/                        makeWidget        ({ 69, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
-/*WIDX_BANK_STRAIGHT*/                    makeWidget        ({ 93, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
-/*WIDX_BANK_RIGHT*/                       makeWidget        ({117, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
+/*WIDX_BANK_LEFT*/                        makeWidget        ({ 54, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
+/*WIDX_BANK_STRAIGHT*/                    makeWidget        ({ 78, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
+/*WIDX_BANK_RIGHT*/                       makeWidget        ({102, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
 /*WIDX_CONSTRUCT*/                        makeWidget        ({  3, 164}, {     kGroupWidth, 170}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                                       STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP),
 /*WIDX_DEMOLISH*/                         makeWidget        ({ 82, 338}, {              46,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),            STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP),
 /*WIDX_PREVIOUS_SECTION*/                 makeWidget        ({ 52, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_PREVIOUS),                            STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP  ),
@@ -1990,20 +1990,18 @@ namespace OpenRCT2::Ui::Windows
                 // squishes the track speed spinner slightly to make room for the seat rotation widgets
                 if (trackHasSpeedSetting)
                 {
-                    widgets[WIDX_SPEED_SETTING_SPINNER].left -= 4;
-                    widgets[WIDX_SPEED_SETTING_SPINNER].right -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_UP].right -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].right -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_UP].left -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].left -= 8;
+                    auto spinnerStart = 124 + widgets[WIDX_TITLE].bottom;
+                    resizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 8, spinnerStart }, { 85 - 12, kSpinnerHeight });
                 }
                 // moves banking buttons to the left to make room for the seat rotation widgets
                 else if (IsTrackEnabled(TrackGroup::flatRollBanking))
                 {
+                    auto startX = 25;
                     for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
                     {
-                        widgets[i].left -= 36;
-                        widgets[i].right -= 36;
+                        widgets[i].left = startX;
+                        startX += 24;
+                        widgets[i].right = startX;
                     }
                 }
             }
