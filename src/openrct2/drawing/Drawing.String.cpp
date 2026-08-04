@@ -30,6 +30,9 @@
 namespace OpenRCT2::Drawing
 {
     static TextColours _savedTextPalette{};
+
+    Drawing::Colour gCurrentWindowColours[3];
+
     /**
      *
      *  rct2: 0x006C23B1
