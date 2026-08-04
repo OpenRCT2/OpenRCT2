@@ -1963,10 +1963,10 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            constexpr int16_t bankingGroupboxRightNoSeatRotation = kGroupWidth;
-            constexpr int16_t bankingGroupboxRightWithSeatRotation = 114;
+            constexpr int16_t kBankingGroupboxRightNoSeatRotation = kGroupWidth;
+            constexpr int16_t kBankingGroupboxRightWithSeatRotation = 114;
 
-            widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightNoSeatRotation;
+            widgets[WIDX_BANKING_GROUPBOX].right = kBankingGroupboxRightNoSeatRotation;
             widgets[WIDX_SEAT_ROTATION_GROUPBOX].setHidden();
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].setHidden();
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].setHidden();
@@ -1980,7 +1980,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].setVisible();
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].setVisible();
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].setVisible();
-                widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightWithSeatRotation;
+                widgets[WIDX_BANKING_GROUPBOX].right = kBankingGroupboxRightWithSeatRotation;
 
                 // squishes the track speed spinner slightly to make room for the seat rotation widgets
                 if (trackHasSpeedSetting)
