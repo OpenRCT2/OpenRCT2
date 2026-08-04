@@ -1734,6 +1734,7 @@ namespace OpenRCT2::Ui::Windows
             auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             widgetsSetHoldable(*this, { WIDX_CONSTRUCT, WIDX_DEMOLISH, WIDX_NEXT_SECTION, WIDX_PREVIOUS_SECTION });
+
             const bool showEntranceExit = !rtd.flags.has(RtdFlag::isShopOrFacility) && currentRide->hasStation();
             widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].setVisible(showEntranceExit);
             widgets[WIDX_ENTRANCE].setVisible(showEntranceExit);
@@ -1741,29 +1742,27 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_SPECIAL_TRACK_DROPDOWN].setVisible(_specialElementDropdownState.HasActiveElements);
 
+            // Directional arrows
             widgets[WIDX_STRAIGHT].setVisible(IsTrackEnabled(TrackGroup::straight));
-
             widgets[WIDX_LEFT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
             widgets[WIDX_RIGHT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
-
             widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
-
             widgets[WIDX_LEFT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
             widgets[WIDX_RIGHT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
-
             widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
             widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
-
             widgets[WIDX_LEFT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
             widgets[WIDX_RIGHT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
 
+            // Slope arrows
             widgets[WIDX_SLOPE_DOWN_STEEP].setHidden();
             widgets[WIDX_SLOPE_DOWN].setHidden();
             widgets[WIDX_LEVEL].setHidden();
             widgets[WIDX_SLOPE_UP].setHidden();
             widgets[WIDX_SLOPE_UP_STEEP].setHidden();
 
+            // NB: these particular ones can be shared with helixes
             widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP);
             widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
             widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP);
