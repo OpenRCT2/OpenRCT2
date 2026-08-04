@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2/interface/Window.h>
+#include <openrct2/world/Location.hpp>
 
 namespace OpenRCT2
 {

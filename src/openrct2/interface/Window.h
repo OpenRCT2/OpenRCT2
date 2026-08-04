@@ -11,7 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../core/EnumUtils.hpp"
-#include "Widget.h"
+#include "../core/FlagHolder.hpp"
 #include "WindowClasses.h"
 #include "ZoomLevel.h"
 
@@ -19,6 +19,8 @@
 #include <memory>
 
 enum class CloseWindowModifier : uint8_t;
+
+struct CoordsXYZ;
 
 namespace OpenRCT2::Drawing
 {
@@ -28,6 +30,7 @@ namespace OpenRCT2::Drawing
 namespace OpenRCT2
 {
     using WindowNumber = int16_t;
+    using WidgetIndex = uint16_t;
 
     struct WindowBase;
     struct WindowCloseModifier;
