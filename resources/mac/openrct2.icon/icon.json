@@ -18,19 +18,19 @@
   },
   "groups" : [
     {
+      "blur-material" : null,
       "layers" : [
         {
-          "glass" : true,
-          "hidden-specializations" : [
-            {
-              "idiom" : "square",
-              "value" : false
-            }
-          ],
           "image-name" : "Slide.png",
           "name" : "Slide"
         }
       ],
+      "lighting" : "individual",
+      "refractivity" : {
+        "depth" : 0,
+        "enabled" : false,
+        "strength" : 0.5
+      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.6
