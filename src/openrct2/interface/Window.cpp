@@ -26,6 +26,7 @@
 #include "../world/MapSelection.h"
 #include "Viewport.h"
 #include "Widget.h"
+#include "WidgetIndexGlobals.h"
 #include "WindowBase.h"
 
 #include <cassert>
@@ -34,7 +35,6 @@
 
 namespace OpenRCT2
 {
-
     std::vector<std::unique_ptr<WindowBase>> gWindowList;
     WindowBase* gWindowAudioExclusive;
 

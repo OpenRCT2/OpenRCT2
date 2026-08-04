@@ -27,6 +27,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ride/RideConstruction.h>
