@@ -1724,14 +1724,14 @@ namespace OpenRCT2::Ui::Windows
 
         void updateWidgets()
         {
-            auto currentRide = GetRide(_currentRideIndex);
+            const auto* currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
             {
                 return;
             }
 
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
-            auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
+            const auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             widgetsSetHoldable(*this, { WIDX_CONSTRUCT, WIDX_DEMOLISH, WIDX_NEXT_SECTION, WIDX_PREVIOUS_SECTION });
 
@@ -1929,17 +1929,17 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_U_TRACK].setHidden();
             widgets[WIDX_O_TRACK].setHidden();
 
-            bool trackHasSpeedSetting = trackTypeHasSpeedSetting(_selectedTrackType)
+            const bool trackHasSpeedSetting = trackTypeHasSpeedSetting(_selectedTrackType)
                 || trackTypeHasSpeedSetting(_currentlySelectedTrack.trackType);
-            bool boosterTrackSelected = trackTypeIsBooster(_selectedTrackType)
+            const bool boosterTrackSelected = trackTypeIsBooster(_selectedTrackType)
                 || trackTypeIsBooster(_currentlySelectedTrack.trackType);
 
             // only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
-            bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::blockBrakes
+            const bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::blockBrakes
                 || _currentlySelectedTrack == TrackElemType::blockBrakes || _selectedTrackType > TrackElemType::highestAlias
                 || _currentlySelectedTrack.trackType > TrackElemType::highestAlias;
 
-            bool rideHasSeatRotation = rtd.flags.has(RtdFlag::hasSeatRotation);
+            const bool rideHasSeatRotation = rtd.flags.has(RtdFlag::hasSeatRotation);
 
             if (!trackHasSpeedSetting)
             {
@@ -1991,8 +1991,8 @@ namespace OpenRCT2::Ui::Windows
                 widgetsSetHoldable(*this, { WIDX_SPEED_SETTING_SPINNER_UP, WIDX_SPEED_SETTING_SPINNER_DOWN });
             }
 
-            static constexpr int16_t bankingGroupboxRightNoSeatRotation = kGroupWidth;
-            static constexpr int16_t bankingGroupboxRightWithSeatRotation = 114;
+            constexpr int16_t bankingGroupboxRightNoSeatRotation = kGroupWidth;
+            constexpr int16_t bankingGroupboxRightWithSeatRotation = 114;
 
             widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightNoSeatRotation;
             widgets[WIDX_SEAT_ROTATION_GROUPBOX].setHidden();
