@@ -1001,14 +1001,16 @@ namespace OpenRCT2::Ui::Windows
                     | (1uLL << WIDX_SPECIAL_TRACK_DROPDOWN) | (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN)
                     | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP) | (1uLL << WIDX_CHAIN_LIFT)
                     | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT)
-                    | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
+                    | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE) | (1uLL << WIDX_SPEED_GROUPBOX)
+                    | (1uLL << WIDX_SPEED_SETTING_SPINNER) | (1uLL << WIDX_SPEED_SETTING_SPINNER_UP)
+                    | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
             if (_currentlyShowingBrakeOrBoosterSpeed)
             {
-                newDisabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
-                newDisabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
-                newDisabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
-                newDisabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_GROUPBOX);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_SETTING_SPINNER);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_SETTING_SPINNER_UP);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
 
             // If chain lift cheat is enabled then show the chain lift widget no matter what
@@ -1438,71 +1440,66 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_BANK_LEFT:
                     RideConstructionInvalidateCurrentTrack();
-                    if (!_currentlyShowingBrakeOrBoosterSpeed)
-                    {
-                        _currentTrackRollEnd = TrackRoll::left;
-                        _currentTrackPrice = kMoney64Undefined;
-                        WindowRideConstructionUpdateActiveElements();
-                    }
+                    _currentTrackRollEnd = TrackRoll::left;
+                    _currentTrackPrice = kMoney64Undefined;
+                    WindowRideConstructionUpdateActiveElements();
                     break;
                 case WIDX_BANK_STRAIGHT:
                     RideConstructionInvalidateCurrentTrack();
-                    if (!_currentlyShowingBrakeOrBoosterSpeed)
-                    {
-                        _currentTrackRollEnd = TrackRoll::none;
-                        _currentTrackPrice = kMoney64Undefined;
-                        WindowRideConstructionUpdateActiveElements();
-                    }
-                    else
-                    {
-                        auto trackSpeedMaximum = kMaximumTrackSpeed;
-                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
-                        uint8_t brakesSpeed = std::min<int16_t>(trackSpeedMaximum, _currentBrakeSpeed + trackSpeedIncrement);
-                        if (brakesSpeed != _currentBrakeSpeed)
-                        {
-                            if (_rideConstructionState == RideConstructionState::selected)
-                            {
-                                SetBrakeSpeed(brakesSpeed);
-                            }
-                            else
-                            {
-                                _currentBrakeSpeed = brakesSpeed;
-                                WindowRideConstructionUpdateActiveElements();
-                            }
-                        }
-                    }
+                    _currentTrackRollEnd = TrackRoll::none;
+                    _currentTrackPrice = kMoney64Undefined;
+                    WindowRideConstructionUpdateActiveElements();
                     break;
                 case WIDX_BANK_RIGHT:
                     RideConstructionInvalidateCurrentTrack();
-                    if (!_currentlyShowingBrakeOrBoosterSpeed)
+                    _currentTrackRollEnd = TrackRoll::right;
+                    _currentTrackPrice = kMoney64Undefined;
+                    WindowRideConstructionUpdateActiveElements();
+                    break;
+                case WIDX_SPEED_SETTING_SPINNER_UP:
+                {
+                    RideConstructionInvalidateCurrentTrack();
+                    auto trackSpeedMaximum = kMaximumTrackSpeed;
+                    auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                    uint8_t brakesSpeed = std::min<int16_t>(trackSpeedMaximum, _currentBrakeSpeed + trackSpeedIncrement);
+                    if (brakesSpeed != _currentBrakeSpeed)
                     {
-                        _currentTrackRollEnd = TrackRoll::right;
-                        _currentTrackPrice = kMoney64Undefined;
-                        WindowRideConstructionUpdateActiveElements();
-                    }
-                    else
-                    {
-                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
-                        auto trackSpeedMinimum = kDefaultMinimumSpeed;
-                        if (getGameState().cheats.unlockOperatingLimits)
+                        if (_rideConstructionState == RideConstructionState::selected)
                         {
-                            trackSpeedMinimum = 0;
+                            SetBrakeSpeed(brakesSpeed);
                         }
-                        uint8_t brakesSpeed = std::max<int16_t>(trackSpeedMinimum, _currentBrakeSpeed - trackSpeedIncrement);
-                        if (brakesSpeed != _currentBrakeSpeed)
+                        else
                         {
-                            if (_rideConstructionState == RideConstructionState::selected)
-                            {
-                                SetBrakeSpeed(brakesSpeed);
-                            }
-                            else
-                            {
-                                _currentBrakeSpeed = brakesSpeed;
-                                WindowRideConstructionUpdateActiveElements();
-                            }
+                            _currentBrakeSpeed = brakesSpeed;
+                            WindowRideConstructionUpdateActiveElements();
                         }
                     }
                     break;
+                }
+                case WIDX_SPEED_SETTING_SPINNER_DOWN:
+                {
+                    RideConstructionInvalidateCurrentTrack();
+                    auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                    auto trackSpeedMinimum = kDefaultMinimumSpeed;
+                    if (getGameState().cheats.unlockOperatingLimits)
+                    {
+                        trackSpeedMinimum = 0;
+                    }
+                    uint8_t brakesSpeed = std::max<int16_t>(trackSpeedMinimum, _currentBrakeSpeed - trackSpeedIncrement);
+                    if (brakesSpeed != _currentBrakeSpeed)
+                    {
+                        if (_rideConstructionState == RideConstructionState::selected)
+                        {
+                            SetBrakeSpeed(brakesSpeed);
+                        }
+                        else
+                        {
+                            _currentBrakeSpeed = brakesSpeed;
+                            WindowRideConstructionUpdateActiveElements();
+                        }
+                    }
+                    break;
+                }
                 case WIDX_SPECIAL_TRACK_DROPDOWN:
                     ShowSpecialTrackDropdown(widgets[widgetIndex]);
                     break;
