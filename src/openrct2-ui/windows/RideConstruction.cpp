@@ -1992,9 +1992,9 @@ namespace OpenRCT2::Ui::Windows
                     auto startX = 25;
                     for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
                     {
-                        widgets[i].left = startX;
-                        startX += 24;
-                        widgets[i].right = startX;
+                        auto& widget = widgets[i];
+                        widget.moveToX(startX);
+                        startX += widget.width();
                     }
                 }
             }
