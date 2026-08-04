@@ -3835,3 +3835,4 @@ STR_7035    :Estilo de tienda
 STR_7036    :Estilo de vehículo
 STR_7037    :Modo de funcionamiento
 STR_7038    :Esperar y cargar
+STR_7039    :Tipo de atracción

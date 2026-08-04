@@ -3826,3 +3826,4 @@ STR_7035    :Estilo da Loja
 STR_7036    :Estilo do Veículo
 STR_7037    :Modo de operação
 STR_7038    :Espera e carregamento
+STR_7039    :Tipo de atração
