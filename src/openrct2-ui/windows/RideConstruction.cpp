@@ -223,7 +223,6 @@ namespace OpenRCT2::Ui::Windows
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, TrackElemType type);
     static void WindowRideConstructionUpdateActiveElements();
 
-    /* move to ride.c */
     static void CloseRideWindowForConstruction(RideId rideId)
     {
         auto* windowMgr = GetWindowManager();
@@ -1947,6 +1946,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (IsTrackEnabled(TrackGroup::flatRollBanking))
                 {
+                    // TODO: unwrangle these from WIDX_SPEED_SETTING_SPINNER{,_UP,_DOWN}
+                    widgets[WIDX_BANK_LEFT].type = WidgetType::flatBtn;
+                    widgets[WIDX_BANK_STRAIGHT].type = WidgetType::flatBtn;
+                    widgets[WIDX_BANK_RIGHT].type = WidgetType::flatBtn;
                     widgets[WIDX_BANK_LEFT].setVisible();
                     widgets[WIDX_BANK_STRAIGHT].setVisible();
                     widgets[WIDX_BANK_RIGHT].setVisible();
@@ -1971,6 +1974,11 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 _currentlyShowingBrakeOrBoosterSpeed = true;
+
+                // TODO: unwrangle these from WIDX_BANK_{LEFT,RIGHT,STRAIGHT}
+                widgets[WIDX_SPEED_SETTING_SPINNER].type = WidgetType::spinner;
+                widgets[WIDX_SPEED_SETTING_SPINNER_UP].type = WidgetType::button;
+                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WidgetType::button;
 
                 widgets[WIDX_SPEED_SETTING_SPINNER].setVisible();
                 widgets[WIDX_SPEED_SETTING_SPINNER_UP].setVisible();
