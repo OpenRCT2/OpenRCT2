@@ -28,11 +28,11 @@ namespace OpenRCT2::Scripting
 {
     enum class PixelDataKind
     {
-        Unknown,
-        Raw,
-        Rle,
-        Palette,
-        Png
+        unknown,
+        raw,
+        rle,
+        palette,
+        png
     };
 
     enum class PixelDataPaletteKind
@@ -270,7 +270,7 @@ namespace OpenRCT2::Scripting
         std::vector<uint8_t> imageData;
         switch (pixelData.Type)
         {
-            case PixelDataKind::Raw:
+            case PixelDataKind::raw:
             {
                 auto data = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 if (pixelData.Stride != pixelData.Width)
@@ -285,12 +285,12 @@ namespace OpenRCT2::Scripting
                 imageData = std::move(data);
                 break;
             }
-            case PixelDataKind::Rle:
+            case PixelDataKind::rle:
             {
                 imageData = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 break;
             }
-            case PixelDataKind::Png:
+            case PixelDataKind::png:
             {
                 auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageFormat::png : ImageFormat::png32;
                 auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? Palette::KeepIndices : Palette::OpenRCT2;
@@ -303,7 +303,7 @@ namespace OpenRCT2::Scripting
                 ImageImporter importer;
                 auto importResult = importer.Import(image, meta);
 
-                pixelData.Type = PixelDataKind::Rle;
+                pixelData.Type = PixelDataKind::rle;
                 pixelData.Width = importResult.Element.width;
                 pixelData.Height = importResult.Element.height;
 
@@ -319,14 +319,14 @@ namespace OpenRCT2::Scripting
     static PixelDataKind PixelDataKindFromJS(const std::string& s)
     {
         if (s == "raw")
-            return PixelDataKind::Raw;
+            return PixelDataKind::raw;
         if (s == "rle")
-            return PixelDataKind::Rle;
+            return PixelDataKind::rle;
         if (s == "palette")
-            return PixelDataKind::Palette;
+            return PixelDataKind::palette;
         if (s == "png")
-            return PixelDataKind::Png;
-        return PixelDataKind::Unknown;
+            return PixelDataKind::png;
+        return PixelDataKind::unknown;
     }
 
     static PixelDataPaletteKind PixelDataPaletteKindFromJS(const std::string& s)
@@ -372,7 +372,7 @@ namespace OpenRCT2::Scripting
         el.width = pixelData.Width;
         el.height = pixelData.Height;
         el.flags = {};
-        if (pixelData.Type == PixelDataKind::Rle)
+        if (pixelData.Type == PixelDataKind::rle)
         {
             el.flags.set(G1Flag::hasRLECompression);
         }
