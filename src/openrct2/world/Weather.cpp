@@ -46,7 +46,7 @@ namespace OpenRCT2::Weather
     };
 
     // clang-format off
-    constexpr std::array<Trait, EnumValue(Type::Count)> kWeatherTraits = { {
+    constexpr std::array<Trait, EnumValue(Type::count)> kWeatherTraits = { {
         {  10, EffectType::None,     0, Level::None,  SPR_WEATHER_SUN          }, // Sunny
         {   5, EffectType::None,     0, Level::None,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
         {   0, EffectType::None,     0, Level::None,  SPR_WEATHER_CLOUD        }, // Cloudy
@@ -116,7 +116,7 @@ namespace OpenRCT2::Weather
         int32_t month = GetDate().GetMonth();
         const Weather::Pattern& pattern = climateObj->getPatternForMonth(month);
 
-        auto weather = Weather::Type::PartiallyCloudy;
+        auto weather = Weather::Type::partiallyCloudy;
         const Weather::Trait& trait = kWeatherTraits[EnumValue(weather)];
 
         auto& gameState = getGameState();
@@ -271,31 +271,31 @@ namespace OpenRCT2::Weather
     bool isDry()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::Sunny || weather == Type::PartiallyCloudy || weather == Type::Cloudy;
+        return weather == Type::sunny || weather == Type::partiallyCloudy || weather == Type::cloudy;
     }
 
     bool isRaining()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::Rain || weather == Type::HeavyRain || weather == Type::Thunder;
+        return weather == Type::rain || weather == Type::heavyRain || weather == Type::thunder;
     }
 
     bool isSnowing()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::Snow || weather == Type::HeavySnow || weather == Type::Blizzard;
+        return weather == Type::snow || weather == Type::heavySnow || weather == Type::blizzard;
     }
 
     bool isTransitioningToSnow()
     {
         auto& weather = getGameState().weatherNext.weatherType;
-        return weather == Type::Snow || weather == Type::HeavySnow || weather == Type::Blizzard;
+        return weather == Type::snow || weather == Type::heavySnow || weather == Type::blizzard;
     }
 
     bool isSnowingHeavily()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::HeavySnow || weather == Type::Blizzard;
+        return weather == Type::heavySnow || weather == Type::blizzard;
     }
 
     bool isPrecipitating()

@@ -393,7 +393,7 @@ namespace OpenRCT2::GameActions
             case CheatType::setStaffSpeed:
                 return { { 0, 255 }, { 0, 0 } };
             case CheatType::forceWeather:
-                return { { 0, EnumValue(Weather::Type::Count) - 1 }, { 0, 0 } };
+                return { { 0, EnumValue(Weather::Type::count) - 1 }, { 0, 0 } };
             case CheatType::setForcedParkRating:
                 return { { -1, 999 }, { 0, 0 } };
             case CheatType::createDucks:

@@ -23,19 +23,19 @@ namespace OpenRCT2::Weather
 {
     enum class Type : uint8_t
     {
-        Sunny,
-        PartiallyCloudy,
-        Cloudy,
-        Rain,
-        HeavyRain,
-        Thunder,
-        Snow,
-        HeavySnow,
-        Blizzard,
-        Count
+        sunny,
+        partiallyCloudy,
+        cloudy,
+        rain,
+        heavyRain,
+        thunder,
+        snow,
+        heavySnow,
+        blizzard,
+        count
     };
 
-    static constexpr auto kNumWeatherTypes = EnumValue(Type::Count);
+    static constexpr auto kNumWeatherTypes = EnumValue(Type::count);
     static constexpr auto kNumClimateMonths = 8;
     static constexpr auto kWeatherDistSize = 23;
 

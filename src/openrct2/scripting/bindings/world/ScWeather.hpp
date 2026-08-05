@@ -74,25 +74,25 @@ namespace OpenRCT2::Scripting
         {
             switch (token)
             {
-                case Weather::Type::Sunny:
+                case Weather::Type::sunny:
                     return "sunny";
-                case Weather::Type::PartiallyCloudy:
+                case Weather::Type::partiallyCloudy:
                     return "partiallyCloudy";
-                case Weather::Type::Cloudy:
+                case Weather::Type::cloudy:
                     return "cloudy";
-                case Weather::Type::Rain:
+                case Weather::Type::rain:
                     return "rain";
-                case Weather::Type::HeavyRain:
+                case Weather::Type::heavyRain:
                     return "heavyRain";
-                case Weather::Type::Thunder:
+                case Weather::Type::thunder:
                     return "thunder";
-                case Weather::Type::Snow:
+                case Weather::Type::snow:
                     return "snow";
-                case Weather::Type::HeavySnow:
+                case Weather::Type::heavySnow:
                     return "heavySnow";
-                case Weather::Type::Blizzard:
+                case Weather::Type::blizzard:
                     return "blizzard";
-                case Weather::Type::Count:
+                case Weather::Type::count:
                     return {};
             }
             return {};
