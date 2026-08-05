@@ -170,9 +170,9 @@ namespace OpenRCT2::Json
     enum class FlagType : uint8_t
     {
         // Flag is turned on if the key is true
-        Normal,
+        normal,
         // Flag is turned on if the key is false
-        Inverted
+        inverted
     };
 
     /**
@@ -191,7 +191,7 @@ namespace OpenRCT2::Json
         T flags{};
         for (const auto& item : list)
         {
-            if (std::get<2>(item) == FlagType::Normal)
+            if (std::get<2>(item) == FlagType::normal)
             {
                 if (jsonObj.contains(std::get<0>(item)) && Json::GetBoolean(jsonObj[std::get<0>(item)]))
                 {

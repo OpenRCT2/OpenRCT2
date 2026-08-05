@@ -116,16 +116,16 @@ namespace OpenRCT2
         _legacyType.flags = Json::GetFlags<uint8_t>(
             properties,
             {
-                { "hasPrimaryColour",       WALL_SCENERY_HAS_PRIMARY_COLOUR,    Json::FlagType::Normal },
-                { "isAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::Inverted },
-                { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::Normal },
-                { "hasTertiaryColour",      WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::Normal },
-                { "hasTernaryColour",       WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::Normal },
-                { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::Normal },
-                { "isBanner",               WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
-                { "isDoubleSided",          WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
-                { "isDoor",                 WALL_SCENERY_IS_DOOR,               Json::FlagType::Normal },
-                { "isLongDoorAnimation",    WALL_SCENERY_LONG_DOOR_ANIMATION,   Json::FlagType::Normal },
+                { "hasPrimaryColour",       WALL_SCENERY_HAS_PRIMARY_COLOUR,    Json::FlagType::normal },
+                { "isAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::inverted },
+                { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::normal },
+                { "hasTertiaryColour",      WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::normal },
+                { "hasTernaryColour",       WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::normal },
+                { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::normal },
+                { "isBanner",               WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::normal },
+                { "isDoubleSided",          WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::normal },
+                { "isDoor",                 WALL_SCENERY_IS_DOOR,               Json::FlagType::normal },
+                { "isLongDoorAnimation",    WALL_SCENERY_LONG_DOOR_ANIMATION,   Json::FlagType::normal },
             });
             // clang-format on
 
