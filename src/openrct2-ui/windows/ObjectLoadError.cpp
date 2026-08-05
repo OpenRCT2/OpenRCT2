@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 Console::WriteLine("Downloading %s", url.c_str());
                 Http::Request req;
-                req.method = Http::Method::GET;
+                req.method = Http::Method::get;
                 req.url = url;
                 Http::DoAsync(req, [this, entry, name](Http::Response response) {
                     if (response.status == Http::Status::ok)
@@ -222,7 +222,7 @@ namespace OpenRCT2::Ui::Windows
             try
             {
                 Http::Request req;
-                req.method = Http::Method::GET;
+                req.method = Http::Method::get;
                 req.url = kOpenRCT2ApiLegacyObjectURL + name;
                 Http::DoAsync(req, [this, entry, name](Http::Response response) {
                     if (response.status == Http::Status::ok)

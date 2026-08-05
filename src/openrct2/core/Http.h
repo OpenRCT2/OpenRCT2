@@ -28,9 +28,9 @@ namespace OpenRCT2::Http
 
     enum class Method
     {
-        GET,
-        POST,
-        PUT
+        get,
+        post,
+        put
     };
 
     struct Response
@@ -46,7 +46,7 @@ namespace OpenRCT2::Http
     {
         std::string url;
         std::map<std::string, std::string> header;
-        Method method = Method::GET;
+        Method method = Method::get;
         std::string body;
         bool forceIPv4{};
     };

@@ -184,7 +184,7 @@ namespace OpenRCT2::Network
             // Send the registration request
             Http::Request request;
             request.url = getMasterServerUrl();
-            request.method = Http::Method::POST;
+            request.method = Http::Method::post;
             request.forceIPv4 = forceIPv4;
 
             json_t body = {
@@ -221,7 +221,7 @@ namespace OpenRCT2::Network
         {
             Http::Request request;
             request.url = getMasterServerUrl();
-            request.method = Http::Method::PUT;
+            request.method = Http::Method::put;
 
             json_t body = getHeartbeatJson();
             request.body = body.dump();

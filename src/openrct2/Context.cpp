@@ -1489,7 +1489,7 @@ namespace OpenRCT2
             // Download park to buffer in memory
             Http::Request request;
             request.url = url;
-            request.method = Http::Method::GET;
+            request.method = Http::Method::get;
 
             Http::Response res;
             try

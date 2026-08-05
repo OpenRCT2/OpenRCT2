@@ -93,7 +93,7 @@ namespace OpenRCT2::Http
             Response res;
             WriteThis wt;
 
-            if (req.method == Method::POST || req.method == Method::PUT)
+            if (req.method == Method::post || req.method == Method::put)
             {
                 wt.readptr = req.body.c_str();
                 wt.sizeleft = req.body.size();
@@ -106,10 +106,10 @@ namespace OpenRCT2::Http
             if (req.forceIPv4)
                 curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
-            if (req.method == Method::POST)
+            if (req.method == Method::post)
                 curl_easy_setopt(curl, CURLOPT_POST, 1L);
 
-            if (req.method == Method::PUT)
+            if (req.method == Method::put)
                 curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
             curl_easy_setopt(curl, CURLOPT_URL, req.url.c_str());

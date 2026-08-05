@@ -370,7 +370,7 @@ namespace OpenRCT2::Network
 
         Http::Request request;
         request.url = std::move(masterServerUrl);
-        request.method = Http::Method::GET;
+        request.method = Http::Method::get;
         request.header["Accept"] = "application/json";
         Http::DoAsync(request, [p](Http::Response& response) -> void {
             json_t root;
