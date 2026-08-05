@@ -9,7 +9,11 @@
 
 #include "VehicleGeometry.h"
 
-#include <cstddef>
+#include "../core/EnumUtils.hpp"
+#include "../world/Location.hpp"
+#include "Angles.h"
+
+#include <array>
 
 namespace OpenRCT2::RideVehicle::Geometry
 {

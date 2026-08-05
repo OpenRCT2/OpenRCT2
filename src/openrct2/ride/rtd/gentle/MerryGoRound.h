@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -26,7 +26,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, 
+    .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::ride,
     .Name = "merry_go_round",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(0, 60), RideRating::make(0, 15), RideRating::make(0, 30) },

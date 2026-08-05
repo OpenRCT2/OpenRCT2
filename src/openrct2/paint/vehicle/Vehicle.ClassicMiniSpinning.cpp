@@ -9,7 +9,9 @@
 
 #include "../../ride/Vehicle.h"
 
+#include "../../entity/Yaw.hpp"
 #include "../../ride/Angles.h"
+#include "../../ride/CarEntry.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 

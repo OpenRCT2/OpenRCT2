@@ -9,6 +9,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../track/Segment.h"
 
 namespace OpenRCT2::MultiDimensionRCInverted

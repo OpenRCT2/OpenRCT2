@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -34,7 +35,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
         .extraTrackGroups = {TrackGroup::flyingLargeHalfLoopInvertedUp, TrackGroup::flyingHalfLoopInvertedUp},
     }),
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
-        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant, 
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::startConstructionInverted),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
@@ -66,7 +67,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "flying_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },
@@ -99,7 +100,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
 {
     .Category = RideCategory::none,
     .StartTrackPiece = TrackElemType::endStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor({ 
+    .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
@@ -137,7 +138,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "flying_rc_alt",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },

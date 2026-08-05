@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -53,7 +54,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "roto_drop",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(2, 80), RideRating::make(3, 50), RideRating::make(3, 50) },

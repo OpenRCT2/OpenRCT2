@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -51,7 +52,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "mini_golf",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(1, 50), RideRating::make(0, 90), RideRating::make(0, 00) },

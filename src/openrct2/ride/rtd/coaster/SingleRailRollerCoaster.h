@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 
 // clang-format off
 namespace OpenRCT2

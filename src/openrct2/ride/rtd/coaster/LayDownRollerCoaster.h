@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -36,7 +37,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
             .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
         }
     ),
-    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
@@ -65,7 +66,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "lay_down_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },
@@ -98,7 +99,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
 {
     .Category = RideCategory::none,
     .StartTrackPiece = TrackElemType::endStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor({ 
+    .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
@@ -108,7 +109,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
     }),
-    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::isDummyType),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
@@ -136,7 +137,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "lay_down_rc_alt",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },

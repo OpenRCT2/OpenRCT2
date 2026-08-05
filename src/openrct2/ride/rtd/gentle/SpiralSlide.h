@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -56,7 +57,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_SLIDE_TRACK, 0 },
     .ColourKey = RideColourKey::ride,
     .Name = "spiral_slide",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(1, 50), RideRating::make(1, 40), RideRating::make(0, 90) },

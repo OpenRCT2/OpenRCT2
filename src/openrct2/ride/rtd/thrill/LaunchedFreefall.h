@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -53,7 +54,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "launched_freefall",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(2, 70), RideRating::make(3, 00), RideRating::make(3, 50) },

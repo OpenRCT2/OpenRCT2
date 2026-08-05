@@ -12,7 +12,6 @@
 #include "../Limits.h"
 #include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
-#include "../core/EnumUtils.hpp"
 #include "../drawing/Colour.h"
 #include "../object/Object.h"
 #include "../rct12/TD46.h"
@@ -22,11 +21,6 @@
 #include "VehicleColour.h"
 
 #include <memory>
-
-namespace OpenRCT2::RCT12
-{
-    enum class TD46Version : uint8_t;
-}
 struct Ride;
 struct ResultWithMessage;
 enum class ViewportInteractionItem : uint8_t;

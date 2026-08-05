@@ -12,6 +12,7 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -57,7 +58,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_TRACK, SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "chairlift",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(1, 60), RideRating::make(0, 40), RideRating::make(0, 50) },

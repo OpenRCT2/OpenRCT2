@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -49,7 +50,7 @@ constexpr RideTypeDescriptor TwistRTD =
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::ride,
     .Name = "twist",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(1, 13), RideRating::make(0, 97), RideRating::make(1, 90) },

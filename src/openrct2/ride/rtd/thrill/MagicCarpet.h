@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -55,7 +56,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "magic_carpet",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(2, 45), RideRating::make(1, 60), RideRating::make(2, 60) },

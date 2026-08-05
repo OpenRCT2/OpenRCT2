@@ -12,6 +12,7 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -58,7 +59,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK, SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "dodgems",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(1, 30), RideRating::make(0, 50), RideRating::make(0, 35) },

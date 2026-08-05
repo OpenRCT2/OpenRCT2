@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::ride,
     .Name = "haunted_house",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(3, 41), RideRating::make(1, 53), RideRating::make(0, 10) },

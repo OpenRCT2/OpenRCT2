@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -54,7 +55,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FERRIS_WHEEL_TRACK, 0 },
     .ColourKey = RideColourKey::ride,
     .Name = "ferris_wheel",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(0, 60), RideRating::make(0, 25), RideRating::make(0, 30) },

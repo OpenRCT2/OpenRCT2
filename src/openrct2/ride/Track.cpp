@@ -10,12 +10,7 @@
 #include "Track.h"
 
 #include "../Diagnostic.h"
-#include "../GameState.h"
 #include "../actions/ResultWithMessage.h"
-#include "../audio/Audio.h"
-#include "../interface/Viewport.h"
-#include "../network/Network.h"
-#include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
@@ -24,7 +19,6 @@
 #include "RideData.h"
 #include "Station.h"
 #include "TrackData.h"
-#include "TrackDesign.h"
 #include "ted/TrackElementDescriptor.h"
 
 #include <cassert>

@@ -9,6 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
+#include "../../ride/CarEntry.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 

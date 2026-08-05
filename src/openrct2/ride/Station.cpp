@@ -9,7 +9,6 @@
 
 #include "Station.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../entity/Guest.h"
 #include "../scenario/Scenario.h"

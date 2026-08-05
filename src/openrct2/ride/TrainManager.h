@@ -10,7 +10,6 @@
 
 #include "../Identifiers.h"
 
-#include <cstdint>
 #include <list>
 
 struct Vehicle;

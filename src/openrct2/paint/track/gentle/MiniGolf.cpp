@@ -9,6 +9,7 @@
 
 #include "../../../ride/Ride.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/Slope.h"
 #include "../../../world/tile_element/SurfaceElement.h"
 #include "../../../world/tile_element/TrackElement.h"

@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"

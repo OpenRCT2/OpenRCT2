@@ -12,6 +12,7 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -31,7 +32,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
                      RtdFlag::trackMustBeOnWater, RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain,
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
-                     RtdFlag::allowMusic, RtdFlag::checkGForces, RtdFlag::hasEntranceAndExit, 
+                     RtdFlag::allowMusic, RtdFlag::checkGForces, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits),
     .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
@@ -54,7 +55,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "submarine_ride",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(2, 20), RideRating::make(1, 80), RideRating::make(1, 40) },

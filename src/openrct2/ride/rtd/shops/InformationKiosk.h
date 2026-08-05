@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -48,7 +49,7 @@ constexpr RideTypeDescriptor InformationKioskRTD =
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::infoKiosk,
     .Name = "information_kiosk",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::stall,
         { 1, 1, 1 },

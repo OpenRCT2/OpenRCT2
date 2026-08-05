@@ -12,7 +12,6 @@
 #include "../Identifiers.h"
 
 struct Ride;
-struct TileCoordsXYZD;
 
 void RideUpdateStation(Ride& ride, StationIndex stationIndex);
 StationIndex RideGetFirstValidStationExit(const Ride& ride);
