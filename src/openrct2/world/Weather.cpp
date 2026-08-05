@@ -47,15 +47,15 @@ namespace OpenRCT2::Weather
 
     // clang-format off
     constexpr std::array<Trait, EnumValue(Type::count)> kWeatherTraits = { {
-        {  10, EffectType::none,     0, Level::None,  SPR_WEATHER_SUN          }, // Sunny
-        {   5, EffectType::none,     0, Level::None,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
-        {   0, EffectType::none,     0, Level::None,  SPR_WEATHER_CLOUD        }, // Cloudy
-        {  -2, EffectType::rain,     1, Level::Light, SPR_WEATHER_LIGHT_RAIN   }, // Rain
-        {  -4, EffectType::rain,     2, Level::Heavy, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
-        {   2, EffectType::storm,    2, Level::Heavy, SPR_WEATHER_STORM        }, // Thunderstorm
-        { -10, EffectType::snow,     1, Level::Light, SPR_G2_WEATHER_SNOW      }, // Snow
-        { -15, EffectType::snow,     2, Level::Heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
-        { -20, EffectType::blizzard, 2, Level::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
+        {  10, EffectType::none,     0, Level::none,  SPR_WEATHER_SUN          }, // Sunny
+        {   5, EffectType::none,     0, Level::none,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
+        {   0, EffectType::none,     0, Level::none,  SPR_WEATHER_CLOUD        }, // Cloudy
+        {  -2, EffectType::rain,     1, Level::light, SPR_WEATHER_LIGHT_RAIN   }, // Rain
+        {  -4, EffectType::rain,     2, Level::heavy, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
+        {   2, EffectType::storm,    2, Level::heavy, SPR_WEATHER_STORM        }, // Thunderstorm
+        { -10, EffectType::snow,     1, Level::light, SPR_G2_WEATHER_SNOW      }, // Snow
+        { -15, EffectType::snow,     2, Level::heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
+        { -20, EffectType::blizzard, 2, Level::heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
     } };
     // clang-format on
 
@@ -179,7 +179,7 @@ namespace OpenRCT2::Weather
                             auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                             ContextBroadcastIntent(&intent);
                         }
-                        else if (gameState.weatherNext.level <= Weather::Level::Heavy)
+                        else if (gameState.weatherNext.level <= Weather::Level::heavy)
                         {
                             gameState.weatherCurrent.level = static_cast<Weather::Level>(stepWeatherLevel(
                                 static_cast<int8_t>(gameState.weatherCurrent.level),
@@ -307,7 +307,7 @@ namespace OpenRCT2::Weather
     {
         const auto& weatherCurrent = getGameState().weatherCurrent;
         // The game starts drawing rain whenever this level is not none.
-        return weatherCurrent.level != Weather::Level::None;
+        return weatherCurrent.level != Weather::Level::none;
     }
 
     FilterPaletteID getWeatherGloomPaletteId(const State& state)

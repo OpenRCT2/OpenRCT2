@@ -69,9 +69,9 @@ namespace OpenRCT2::Weather
 
     enum class Level
     {
-        None,
-        Light,
-        Heavy,
+        none,
+        light,
+        heavy,
     };
 
     struct State
