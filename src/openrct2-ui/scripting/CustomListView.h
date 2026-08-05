@@ -34,9 +34,9 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ColumnSortOrder
     {
-        None,
-        Ascending,
-        Descending,
+        none,
+        ascending,
+        descending,
     };
 
     struct ListViewColumn

@@ -41,20 +41,20 @@ namespace OpenRCT2::Scripting
         {
             auto s = JSToStdString(ctx, d);
             if (s == "ascending")
-                return ColumnSortOrder::Ascending;
+                return ColumnSortOrder::ascending;
             if (s == "descending")
-                return ColumnSortOrder::Descending;
+                return ColumnSortOrder::descending;
         }
-        return ColumnSortOrder::None;
+        return ColumnSortOrder::none;
     }
 
     static JSValue ColumnSortOrderToJS(JSContext* ctx, ColumnSortOrder value)
     {
         switch (value)
         {
-            case ColumnSortOrder::Ascending:
+            case ColumnSortOrder::ascending:
                 return JSFromStdString(ctx, "ascending");
-            case ColumnSortOrder::Descending:
+            case ColumnSortOrder::descending:
                 return JSFromStdString(ctx, "descending");
             default:
                 return JSFromStdString(ctx, "none");
@@ -248,7 +248,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SelectedCell = std::nullopt;
     Columns = columns;
     LastKnownSize = {};
-    SortItems(0, ColumnSortOrder::None);
+    SortItems(0, ColumnSortOrder::none);
     if (!initialising)
     {
         WindowUpdateScrollWidgets(*ParentWindow);
@@ -265,7 +265,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
 {
     SelectedCell = std::nullopt;
     Items = items;
-    SortItems(0, ColumnSortOrder::None);
+    SortItems(0, ColumnSortOrder::none);
     if (!initialising)
     {
         WindowUpdateScrollWidgets(*ParentWindow);
@@ -276,7 +276,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
 void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialising)
 {
     Items = std::move(items);
-    SortItems(0, ColumnSortOrder::None);
+    SortItems(0, ColumnSortOrder::none);
     if (!initialising)
     {
         WindowUpdateScrollWidgets(*ParentWindow);
@@ -293,16 +293,16 @@ bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
 
 void CustomListView::SortItems(int32_t column)
 {
-    auto sortOrder = ColumnSortOrder::Ascending;
+    auto sortOrder = ColumnSortOrder::ascending;
     if (CurrentSortColumn == column)
     {
-        if (CurrentSortOrder == ColumnSortOrder::Ascending)
+        if (CurrentSortOrder == ColumnSortOrder::ascending)
         {
-            sortOrder = ColumnSortOrder::Descending;
+            sortOrder = ColumnSortOrder::descending;
         }
-        else if (CurrentSortOrder == ColumnSortOrder::Descending)
+        else if (CurrentSortOrder == ColumnSortOrder::descending)
         {
-            sortOrder = ColumnSortOrder::None;
+            sortOrder = ColumnSortOrder::none;
         }
     }
     SortItems(column, sortOrder);
@@ -317,11 +317,11 @@ void CustomListView::SortItems(int32_t column, ColumnSortOrder order)
         SortedItems[i] = i;
     }
 
-    if (order != ColumnSortOrder::None)
+    if (order != ColumnSortOrder::none)
     {
         std::sort(
             SortedItems.begin(), SortedItems.end(), [this, column](size_t a, size_t b) { return SortItem(a, b, column); });
-        if (order == ColumnSortOrder::Descending)
+        if (order == ColumnSortOrder::descending)
         {
             std::reverse(SortedItems.begin(), SortedItems.end());
         }
@@ -639,7 +639,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
             auto columnWidth = column.Width;
             if (columnWidth != 0)
             {
-                auto sortOrder = ColumnSortOrder::None;
+                auto sortOrder = ColumnSortOrder::none;
                 if (CurrentSortColumn == j)
                 {
                     sortOrder = CurrentSortOrder;
@@ -668,13 +668,13 @@ void CustomListView::PaintHeading(
         PaintCell(rt, pos, size, text.c_str(), false);
     }
 
-    if (sortOrder == ColumnSortOrder::Ascending)
+    if (sortOrder == ColumnSortOrder::ascending)
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_UP);
         drawText(rt, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::right });
     }
-    else if (sortOrder == ColumnSortOrder::Descending)
+    else if (sortOrder == ColumnSortOrder::descending)
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_DOWN);
