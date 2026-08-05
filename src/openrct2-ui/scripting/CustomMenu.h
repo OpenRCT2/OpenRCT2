@@ -24,8 +24,8 @@ namespace OpenRCT2::Scripting
 {
     enum class CustomToolbarMenuItemKind
     {
-        Standard,
-        Toolbox,
+        standard,
+        toolbox,
     };
 
     class CustomToolbarMenuItem

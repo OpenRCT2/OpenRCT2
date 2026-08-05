@@ -380,7 +380,7 @@ namespace OpenRCT2::Scripting
             auto& execInfo = scriptEngine->GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
             std::string text = JSToStdString(ctx, argv[0]);
-            CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Standard, text, JSCallback(ctx, argv[1]));
+            CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::standard, text, JSCallback(ctx, argv[1]));
             std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
 
             return JS_UNDEFINED;
@@ -405,7 +405,7 @@ namespace OpenRCT2::Scripting
             if (owner->GetMetadata().Type == PluginType::intransient)
             {
                 CustomMenuItems.emplace_back(
-                    owner, CustomToolbarMenuItemKind::Toolbox, JSToStdString(ctx, argv[0]), JSCallback(ctx, argv[1]));
+                    owner, CustomToolbarMenuItemKind::toolbox, JSToStdString(ctx, argv[0]), JSCallback(ctx, argv[1]));
                 std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
             }
             else
