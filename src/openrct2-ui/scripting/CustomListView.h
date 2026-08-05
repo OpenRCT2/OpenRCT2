@@ -26,10 +26,10 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ScrollbarType
     {
-        None,
-        Horizontal,
-        Vertical,
-        Both
+        none,
+        horizontal,
+        vertical,
+        both
     };
 
     enum class ColumnSortOrder
@@ -99,7 +99,7 @@ namespace OpenRCT2::Ui::Windows
         size_t ScrollIndex{};
         std::vector<ListViewColumn> Columns;
         std::vector<ListViewItem> Items;
-        ScrollbarType Scrollbars = ScrollbarType::Vertical;
+        ScrollbarType Scrollbars = ScrollbarType::vertical;
 
     public:
         std::shared_ptr<Plugin> Owner;

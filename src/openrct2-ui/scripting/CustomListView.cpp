@@ -178,12 +178,12 @@ namespace OpenRCT2::Scripting
     {
         auto value = JSToStdString(ctx, d);
         if (value == "horizontal")
-            return ScrollbarType::Horizontal;
+            return ScrollbarType::horizontal;
         if (value == "vertical")
-            return ScrollbarType::Vertical;
+            return ScrollbarType::vertical;
         if (value == "both")
-            return ScrollbarType::Both;
-        return ScrollbarType::None;
+            return ScrollbarType::both;
+        return ScrollbarType::none;
     }
 
     JSValue ScrollbarTypeToJS(JSContext* ctx, const ScrollbarType value)
@@ -191,13 +191,13 @@ namespace OpenRCT2::Scripting
         switch (value)
         {
             default:
-            case ScrollbarType::None:
+            case ScrollbarType::none:
                 return JSFromStdString(ctx, "none");
-            case ScrollbarType::Horizontal:
+            case ScrollbarType::horizontal:
                 return JSFromStdString(ctx, "horizontal");
-            case ScrollbarType::Vertical:
+            case ScrollbarType::vertical:
                 return JSFromStdString(ctx, "vertical");
-            case ScrollbarType::Both:
+            case ScrollbarType::both:
                 return JSFromStdString(ctx, "both");
         }
     }
@@ -224,11 +224,11 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
         auto widget = GetWidget();
         if (widget != nullptr)
         {
-            if (value == ScrollbarType::Horizontal)
+            if (value == ScrollbarType::horizontal)
                 widget->content = SCROLL_HORIZONTAL;
-            else if (value == ScrollbarType::Vertical)
+            else if (value == ScrollbarType::vertical)
                 widget->content = SCROLL_VERTICAL;
-            else if (value == ScrollbarType::Both)
+            else if (value == ScrollbarType::both)
                 widget->content = SCROLL_BOTH;
             else
                 widget->content = 0;
@@ -355,7 +355,7 @@ void CustomListView::Resize(const ScreenSize& size)
     }
 
     // Calculate column widths
-    bool hasHorizontalScroll = Scrollbars == ScrollbarType::Horizontal || Scrollbars == ScrollbarType::Both;
+    bool hasHorizontalScroll = Scrollbars == ScrollbarType::horizontal || Scrollbars == ScrollbarType::both;
     int32_t widthRemaining = size.width;
     for (size_t c = 0; c < Columns.size(); c++)
     {
@@ -401,7 +401,7 @@ ScreenSize CustomListView::GetSize()
     IsMouseDown = false;
 
     ScreenSize result;
-    if (Scrollbars == ScrollbarType::Horizontal || Scrollbars == ScrollbarType::Both)
+    if (Scrollbars == ScrollbarType::horizontal || Scrollbars == ScrollbarType::both)
     {
         result.width = std::accumulate(
             Columns.begin(), Columns.end(), 0, [](int32_t acc, const ListViewColumn& column) { return acc + column.Width; });
@@ -409,7 +409,7 @@ ScreenSize CustomListView::GetSize()
         // Fixes an off-by-one error that causes the scrollbar thumb to not fill when the widget is wide enough
         result.width--;
     }
-    if (Scrollbars == ScrollbarType::Vertical || Scrollbars == ScrollbarType::Both)
+    if (Scrollbars == ScrollbarType::vertical || Scrollbars == ScrollbarType::both)
     {
         result.height = static_cast<int32_t>(Items.size() * kListRowHeight);
         if (ShowColumnHeaders)
