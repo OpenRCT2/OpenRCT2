@@ -33,14 +33,14 @@ namespace OpenRCT2::Drawing
 
     enum class Palette : uint8_t
     {
-        OpenRCT2,
-        KeepIndices,
+        openRCT2,
+        keepIndices,
     };
 
     struct ImageImportMeta
     {
         ScreenCoordsXY offset{};
-        Palette palette = Palette::OpenRCT2;
+        Palette palette = Palette::openRCT2;
         ImportFlags importFlags = { ImportFlag::rle };
         ImportMode importMode = ImportMode::standard;
         ScreenCoordsXY srcOffset{};

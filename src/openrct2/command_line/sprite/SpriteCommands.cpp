@@ -163,7 +163,7 @@ namespace OpenRCT2::CommandLine::Sprite
         try
         {
             auto format = ImageFormat::png32;
-            if (meta.palette == Palette::KeepIndices)
+            if (meta.palette == Palette::keepIndices)
             {
                 format = ImageFormat::png;
             }

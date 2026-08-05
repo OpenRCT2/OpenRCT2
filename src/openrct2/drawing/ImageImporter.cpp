@@ -34,7 +34,7 @@ namespace OpenRCT2::Drawing
             throw std::invalid_argument("Only images 300x300 or less are supported.");
         }
 
-        if (meta.palette == Palette::KeepIndices && image.Depth != 8)
+        if (meta.palette == Palette::keepIndices && image.Depth != 8)
         {
             throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
         }
@@ -120,13 +120,13 @@ namespace OpenRCT2::Drawing
         // A larger range is needed for proper dithering
         auto palettedSrc = pixels;
         std::unique_ptr<int16_t[]> rgbaSrcBuffer;
-        if (meta.palette != Palette::KeepIndices)
+        if (meta.palette != Palette::keepIndices)
         {
             rgbaSrcBuffer = std::make_unique<int16_t[]>(meta.srcSize.height * meta.srcSize.width * 4);
         }
 
         auto rgbaSrc = rgbaSrcBuffer.get();
-        if (meta.palette != Palette::KeepIndices)
+        if (meta.palette != Palette::keepIndices)
         {
             auto src = pixels + (meta.srcOffset.y * image.Stride) + (meta.srcOffset.x * 4);
             auto dst = rgbaSrc;
@@ -142,7 +142,7 @@ namespace OpenRCT2::Drawing
             }
         }
 
-        if (meta.palette == Palette::KeepIndices)
+        if (meta.palette == Palette::keepIndices)
         {
             palettedSrc += meta.srcOffset.x + meta.srcOffset.y * image.Stride;
             for (auto y = 0; y < meta.srcSize.height; y++)
@@ -443,7 +443,7 @@ namespace OpenRCT2::Drawing
         auto xOffset = Json::GetNumber<int16_t>(input["x"]);
         auto yOffset = Json::GetNumber<int16_t>(input["y"]);
         auto keepPalette = Json::GetString(input["palette"]) == "keep";
-        auto palette = keepPalette ? Palette::KeepIndices : Palette::OpenRCT2;
+        auto palette = keepPalette ? Palette::keepIndices : Palette::openRCT2;
         ImportFlags flags = {};
 
         auto raw = Json::GetString(input["format"]) == "raw";

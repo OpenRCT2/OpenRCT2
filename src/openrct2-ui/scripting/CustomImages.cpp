@@ -293,7 +293,7 @@ namespace OpenRCT2::Scripting
             case PixelDataKind::png:
             {
                 auto imageFormat = pixelData.Palette == PixelDataPaletteKind::keep ? ImageFormat::png : ImageFormat::png32;
-                auto palette = pixelData.Palette == PixelDataPaletteKind::keep ? Palette::KeepIndices : Palette::OpenRCT2;
+                auto palette = pixelData.Palette == PixelDataPaletteKind::keep ? Palette::keepIndices : Palette::openRCT2;
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
