@@ -255,13 +255,13 @@ namespace OpenRCT2::Scripting
         switch (palette)
         {
             case PixelDataPaletteKind::closest:
-                return ImportMode::Closest;
+                return ImportMode::closest;
             case PixelDataPaletteKind::dither:
-                return ImportMode::Dithering;
+                return ImportMode::dithering;
             case PixelDataPaletteKind::none:
             case PixelDataPaletteKind::keep:
             default:
-                return ImportMode::Default;
+                return ImportMode::standard;
         }
     }
 

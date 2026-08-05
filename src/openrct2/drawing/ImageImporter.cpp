@@ -291,10 +291,10 @@ namespace OpenRCT2::Drawing
     {
         auto& palette = StandardPalette;
         auto paletteIndex = GetPaletteIndex(palette, rgbaSrc);
-        if ((mode == ImportMode::Closest || mode == ImportMode::Dithering) && !IsInPalette(palette, rgbaSrc))
+        if ((mode == ImportMode::closest || mode == ImportMode::dithering) && !IsInPalette(palette, rgbaSrc))
         {
             paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
-            if (mode == ImportMode::Dithering)
+            if (mode == ImportMode::dithering)
             {
                 auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].red);
                 auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].green);
@@ -459,7 +459,7 @@ namespace OpenRCT2::Drawing
         auto srcHeight = Json::GetNumber<int16_t>(input["srcHeight"]);
         auto zoomedOffset = Json::GetNumber<int32_t>(input["zoom"]);
 
-        return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::Default, { srcX, srcY },
+        return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::standard, { srcX, srcY },
                                 { srcWidth, srcHeight }, zoomedOffset };
     }
 } // namespace OpenRCT2::Drawing

@@ -75,7 +75,7 @@ TEST_F(CommandLineTests, command_line_for_sprite_build)
     std::string outputfilePath = BuildOutputfilePath();
     const char* buildCmd[3] = { "build", outputfilePath.c_str(), manifestFilePath.c_str() };
 
-    auto result = build(buildCmd, 3, ImportMode::Default);
+    auto result = build(buildCmd, 3, ImportMode::standard);
     ASSERT_EQ(result, ExitCode::ok);
     // compare the resulting output file and assert its identical to expected
     ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
@@ -87,14 +87,14 @@ TEST_F(CommandLineTests, command_line_for_sprite_failed_build)
     std::string manifestFilePath = ManifestFilePath();
     std::string outputfilePath = BuildOutputfilePath();
     const char* buildCmd[3] = { "build", outputfilePath.c_str(), manifestFilePath.c_str() };
-    auto result = build(buildCmd, 3, ImportMode::Default);
+    auto result = build(buildCmd, 3, ImportMode::standard);
     ASSERT_EQ(result, ExitCode::ok);
     ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
 
     // now use bad manifest and make sure output file is not edited
     std::string badManifestFilePath = BadManifestFilePath();
     buildCmd[2] = badManifestFilePath.c_str();
-    result = build(buildCmd, 3, ImportMode::Default);
+    result = build(buildCmd, 3, ImportMode::standard);
     // check the command failed
     ASSERT_EQ(result, ExitCode::fail);
     // validate the target file was unchanged

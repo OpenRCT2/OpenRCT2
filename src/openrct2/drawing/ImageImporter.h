@@ -19,9 +19,9 @@ namespace OpenRCT2::Drawing
 {
     enum class ImportMode : uint8_t
     {
-        Default,
-        Closest,
-        Dithering,
+        standard,
+        closest,
+        dithering,
     };
 
     enum class ImportFlag : uint8_t
@@ -42,7 +42,7 @@ namespace OpenRCT2::Drawing
         ScreenCoordsXY offset{};
         Palette palette = Palette::OpenRCT2;
         ImportFlags importFlags = { ImportFlag::rle };
-        ImportMode importMode = ImportMode::Default;
+        ImportMode importMode = ImportMode::standard;
         ScreenCoordsXY srcOffset{};
         ScreenSize srcSize{};
         int32_t zoomedOffset{};
