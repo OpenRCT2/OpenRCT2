@@ -305,9 +305,11 @@
     <ClInclude Include="interface\ScrollArea.h" />
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
+    <ClInclude Include="interface\WidgetIndexGlobals.h" />
     <ClInclude Include="interface\Window.h" />
     <ClInclude Include="interface\WindowBase.h" />
     <ClInclude Include="interface\WindowClasses.h" />
+    <ClInclude Include="interface\WindowFlags.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\Currency.h" />

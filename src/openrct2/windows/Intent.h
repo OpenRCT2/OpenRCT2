@@ -11,6 +11,8 @@
 
 #include "../core/Identifier.hpp"
 #include "../interface/Window.h"
+#include "../interface/WindowClasses.h"
+#include "../interface/WindowFlags.h"
 
 #include <map>
 #include <sfl/static_vector.hpp>

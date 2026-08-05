@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
 #include "Window.h"
 
