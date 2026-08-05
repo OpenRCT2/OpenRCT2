@@ -5211,6 +5211,9 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw entrance label
             auto* stationObj = ride->getStationObject();
+            if (stationObj == nullptr)
+                return;
+
             Formatter ft;
             ft.Add<StringId>(stationObj->NameStringId);
             drawTextEllipsised(clippedRT, { 19, 1 }, widget.width() - 12 - 19, STR_WINDOW_COLOUR_2_STRINGID, ft);
