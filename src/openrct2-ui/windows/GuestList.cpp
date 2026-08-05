@@ -93,9 +93,9 @@ namespace OpenRCT2::Ui::Windows
 
         enum class GuestFilterType
         {
-            Guests,
-            GuestsThinking,
-            GuestsThinkingAbout,
+            guests,
+            guestsThinking,
+            guestsThinkingAbout,
         };
 
         struct FilterArguments
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
                                                                                                     : STR_ON_RIDE);
                         guestRide->formatNameTo(ft);
 
-                        _selectedFilter = GuestFilterType::Guests;
+                        _selectedFilter = GuestFilterType::guests;
                         _highlightedIndex = {};
                         _selectedTab = TabId::individual;
                         _selectedView = GuestViewType::thoughts;
@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(STR_QUEUING_FOR);
                         guestRide->formatNameTo(ft);
 
-                        _selectedFilter = GuestFilterType::Guests;
+                        _selectedFilter = GuestFilterType::guests;
                         _highlightedIndex = {};
                         _selectedTab = TabId::individual;
                         _selectedView = GuestViewType::thoughts;
@@ -230,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(kStringIdNone);
                         guestRide->formatNameTo(ft);
 
-                        _selectedFilter = GuestFilterType::GuestsThinking;
+                        _selectedFilter = GuestFilterType::guestsThinking;
                         _highlightedIndex = {};
                         _selectedTab = TabId::individual;
                         _selectedView = GuestViewType::thoughts;
@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ft.Add<StringId>(kPeepThoughtIds[index & 0xFF]);
 
-                    _selectedFilter = GuestFilterType::GuestsThinking;
+                    _selectedFilter = GuestFilterType::guestsThinking;
                     _highlightedIndex = {};
                     _selectedTab = TabId::individual;
                     _selectedView = GuestViewType::thoughts;
@@ -554,8 +554,8 @@ namespace OpenRCT2::Ui::Windows
                     if (i < _groups.size())
                     {
                         _filterArguments = _groups[i].Arguments;
-                        _selectedFilter = _selectedView == GuestViewType::actions ? GuestFilterType::Guests
-                                                                                  : GuestFilterType::GuestsThinking;
+                        _selectedFilter = _selectedView == GuestViewType::actions ? GuestFilterType::guests
+                                                                                  : GuestFilterType::guestsThinking;
                         _selectedTab = TabId::individual;
                         widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
                         invalidate();
@@ -781,9 +781,9 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsPeepInFilter(const Guest& peep)
         {
-            auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::actions : GuestViewType::thoughts;
+            auto guestViewType = _selectedFilter == GuestFilterType::guests ? GuestViewType::actions : GuestViewType::thoughts;
             auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
-            if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::GuestsThinking)
+            if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::guestsThinking)
             {
                 Formatter(peepArgs.args).Add<StringId>(kStringIdNone);
             }
@@ -901,11 +901,11 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 default:
-                case GuestFilterType::Guests:
+                case GuestFilterType::guests:
                     return STR_GUESTS_FILTER;
-                case GuestFilterType::GuestsThinking:
+                case GuestFilterType::guestsThinking:
                     return STR_GUESTS_FILTER_THINKING;
-                case GuestFilterType::GuestsThinkingAbout:
+                case GuestFilterType::guestsThinkingAbout:
                     return STR_GUESTS_FILTER_THINKING_ABOUT;
             }
         }
