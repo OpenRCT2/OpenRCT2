@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../entity/Peep.h"
-#include "RCT1.h"
+#include "../drawing/Colour.h"
+#include "../rct12/RCT12.h"
 
 #include <vector>
 
@@ -21,8 +21,10 @@ namespace OpenRCT2::RCT1
         Drawing::Colour colour1, colour2, colour3;
     };
 
-    enum class RideType : uint8_t;
+    enum class BannerType : uint8_t;
     enum class PeepAnimationGroup : uint8_t;
+    enum class RideType : uint8_t;
+    enum class VehicleType : uint8_t;
 
     Drawing::Colour GetColour(uint8_t colour);
     RCT12PeepAnimationGroup GetPeepAnimationGroup(PeepAnimationGroup rct1AnimationGroup);

@@ -9,12 +9,10 @@
 
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
-#include "../core/Path.hpp"
 #include "RCT2.h"
 
 #include <cstdint>
 #include <cstring>
-#include <memory>
 #include <string_view>
 
 using namespace OpenRCT2;

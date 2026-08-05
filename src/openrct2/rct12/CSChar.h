@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <cstdint>
-
 namespace OpenRCT2::CSChar
 {
     constexpr char32_t quote_close = 0x22;

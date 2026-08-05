@@ -11,7 +11,7 @@
 
 #include "../core/CodepointView.hpp"
 #include "../core/String.hpp"
-#include "../localisation/Formatting.h"
+#include "../localisation/FormatCodes.h"
 #include "../object/ObjectList.h"
 #include "../rct1/Tables.h"
 #include "../rct12/CSStringConverter.h"
@@ -19,7 +19,6 @@
 #include "../ride/Ride.h"
 #include "../ride/ted/TrackElemType.h"
 #include "../scenario/Scenario.h"
-#include "../world/Footpath.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"

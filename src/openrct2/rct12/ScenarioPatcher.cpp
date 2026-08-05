@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/GameActionResult.h"
 #include "../actions/footpath/FootpathPlaceAction.h"
@@ -31,10 +30,7 @@
 #include "../world/Map.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
-#include "../world/tile_element/PathElement.h"
-#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
-#include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TileElementType.h"
 #include "../world/tile_element/TrackElement.h"
 
@@ -43,8 +39,6 @@
 #else
     #include "../core/Crypt.h"
 #endif
-
-#include <iostream>
 
 using namespace OpenRCT2;
 using OpenRCT2::GameActions::CommandFlag;

@@ -11,7 +11,6 @@
 
 #include "../Diagnostic.h"
 #include "../core/Guard.hpp"
-#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "RCT1.h"
