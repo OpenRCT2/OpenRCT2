@@ -128,7 +128,7 @@ namespace OpenRCT2
         Network::NetworkBase _network;
 #endif
 
-        DrawingEngine _drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
+        DrawingEngine _drawingEngineType = DrawingEngine::softwareWithHardwareDisplay;
         std::unique_ptr<Drawing::IDrawingEngine> _drawingEngine;
         std::unique_ptr<Paint::Painter> _painter;
 
@@ -606,9 +606,9 @@ namespace OpenRCT2
                 else
                 {
                     // If the drawing engine creation failed, try to create a software engine.
-                    if (drawingEngineType == DrawingEngine::OpenGL)
+                    if (drawingEngineType == DrawingEngine::openGL)
                     {
-                        drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
+                        drawingEngineType = DrawingEngine::softwareWithHardwareDisplay;
                         LOG_ERROR("Trying fallback back to software...");
 
                         drawingEngine = initializeEngine(drawingEngineType);

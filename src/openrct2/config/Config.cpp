@@ -108,8 +108,8 @@ namespace OpenRCT2::Config
     });
 
     static const auto Enum_DrawingEngine = ConfigEnum<DrawingEngine>({
-        ConfigEnumEntry<DrawingEngine>("SOFTWARE_HWD", DrawingEngine::SoftwareWithHardwareDisplay),
-        ConfigEnumEntry<DrawingEngine>("OPENGL", DrawingEngine::OpenGL),
+        ConfigEnumEntry<DrawingEngine>("SOFTWARE_HWD", DrawingEngine::softwareWithHardwareDisplay),
+        ConfigEnumEntry<DrawingEngine>("OPENGL", DrawingEngine::openGL),
     });
 
     static const auto Enum_Temperature = ConfigEnum<TemperatureUnit>({
@@ -213,7 +213,7 @@ namespace OpenRCT2::Config
             model->windowWidth = reader->GetInt32("window_width", -1);
             model->defaultDisplay = reader->GetInt32("default_display", 0);
             model->drawingEngine = reader->GetEnum<DrawingEngine>(
-                "drawing_engine", DrawingEngine::SoftwareWithHardwareDisplay, Enum_DrawingEngine);
+                "drawing_engine", DrawingEngine::softwareWithHardwareDisplay, Enum_DrawingEngine);
             model->uncapFPS = reader->GetBoolean("uncap_fps", false);
             model->useVSync = reader->GetBoolean("use_vsync", true);
             model->virtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
@@ -232,7 +232,7 @@ namespace OpenRCT2::Config
 
             // Default config setting is false until the games canvas can be separated from the effect
             model->dayNightCycle = reader->GetBoolean("day_night_cycle", false);
-            const bool supportsLightFx = model->drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay;
+            const bool supportsLightFx = model->drawingEngine == DrawingEngine::softwareWithHardwareDisplay;
             model->enableLightFx = supportsLightFx && reader->GetBoolean("enable_light_fx", false);
             model->enableLightFxForVehicles = supportsLightFx && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->upperCaseBanners = reader->GetBoolean("upper_case_banners", false);

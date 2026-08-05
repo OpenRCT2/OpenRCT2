@@ -18,10 +18,10 @@
 
 enum class DrawingEngine : int32_t
 {
-    None = -1,
-    SoftwareWithHardwareDisplay,
-    OpenGL,
-    Count,
+    none = -1,
+    softwareWithHardwareDisplay,
+    openGL,
+    count,
 };
 
 enum DrawingEngineFlag
