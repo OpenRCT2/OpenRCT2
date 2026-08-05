@@ -23,12 +23,12 @@ namespace OpenRCT2::Drawing
 
 enum class ImageCatalogue
 {
-    UNKNOWN,
-    G1,
-    G2,
-    CSG,
-    OBJECT,
-    TEMPORARY,
+    unknown,
+    g1,
+    g2,
+    csg,
+    object,
+    temporary,
 };
 
 OpenRCT2::Drawing::FilterPaletteID GetGlassPaletteId(OpenRCT2::Drawing::Colour);
