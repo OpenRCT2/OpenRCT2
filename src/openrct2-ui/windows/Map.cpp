@@ -240,10 +240,10 @@ namespace OpenRCT2::Ui::Windows
 
         enum class ResizeDirection
         {
-            Both,
-            X,
-            Y,
-        } _resizeDirection{ ResizeDirection::Both };
+            both,
+            x,
+            y,
+        } _resizeDirection{ ResizeDirection::both };
         uint16_t _flashingFlags = 0;
 
         u8string _xSpinnerCaption{};
@@ -349,19 +349,19 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MAP_SIZE_SPINNER_Y_UP:
-                    _resizeDirection = ResizeDirection::Y;
+                    _resizeDirection = ResizeDirection::y;
                     IncreaseMapSize();
                     break;
                 case WIDX_MAP_SIZE_SPINNER_Y_DOWN:
-                    _resizeDirection = ResizeDirection::Y;
+                    _resizeDirection = ResizeDirection::y;
                     DecreaseMapSize();
                     break;
                 case WIDX_MAP_SIZE_SPINNER_X_UP:
-                    _resizeDirection = ResizeDirection::X;
+                    _resizeDirection = ResizeDirection::x;
                     IncreaseMapSize();
                     break;
                 case WIDX_MAP_SIZE_SPINNER_X_DOWN:
-                    _resizeDirection = ResizeDirection::X;
+                    _resizeDirection = ResizeDirection::x;
                     DecreaseMapSize();
                     break;
             }
@@ -523,9 +523,9 @@ namespace OpenRCT2::Ui::Windows
                             size, static_cast<int>(kMinimumMapSizeTechnical), static_cast<int>(kMaximumMapSizeTechnical));
 
                         TileCoordsXY newMapSize = getGameState().mapSize;
-                        if (_resizeDirection != ResizeDirection::X)
+                        if (_resizeDirection != ResizeDirection::x)
                             newMapSize.y = size;
-                        if (_resizeDirection != ResizeDirection::Y)
+                        if (_resizeDirection != ResizeDirection::y)
                             newMapSize.x = size;
 
                         auto mapChangeSizeAction = GameActions::MapChangeSizeAction(newMapSize);
@@ -764,9 +764,9 @@ namespace OpenRCT2::Ui::Windows
         void IncreaseMapSize()
         {
             auto newMapSize = getGameState().mapSize;
-            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::y)
                 newMapSize.y++;
-            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::x)
                 newMapSize.x++;
 
             auto increaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
@@ -776,9 +776,9 @@ namespace OpenRCT2::Ui::Windows
         void DecreaseMapSize()
         {
             auto newMapSize = getGameState().mapSize;
-            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::y)
                 newMapSize.y--;
-            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            if (isWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::x)
                 newMapSize.x--;
 
             auto decreaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
@@ -1129,9 +1129,9 @@ namespace OpenRCT2::Ui::Windows
         void InputMapSize(WidgetIndex callingWidget)
         {
             if (isWidgetPressed(WIDX_MAP_SIZE_LINK))
-                _resizeDirection = ResizeDirection::Both;
+                _resizeDirection = ResizeDirection::both;
             else
-                _resizeDirection = (callingWidget == WIDX_MAP_SIZE_SPINNER_Y) ? ResizeDirection::Y : ResizeDirection::X;
+                _resizeDirection = (callingWidget == WIDX_MAP_SIZE_SPINNER_Y) ? ResizeDirection::y : ResizeDirection::x;
 
             Formatter ft;
             ft.Add<int16_t>(kMinimumMapSizePractical);
