@@ -15,16 +15,18 @@
 #include <openrct2/Limits.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/StringTypes.h>
+#include <openrct2/drawing/Colour.h>
+#include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/interface/Window.h>
+#include <openrct2/world/Location.hpp>
 #include <optional>
 #include <span>
-
-struct ImageId;
 
 namespace OpenRCT2
 {
     struct ColourWithFlags;
     class Formatter;
+    struct Widget;
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Dropdown

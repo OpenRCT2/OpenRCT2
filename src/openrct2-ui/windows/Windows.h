@@ -10,11 +10,14 @@
 #pragma once
 
 #include <openrct2/Identifiers.h>
+#include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/Window.h>
+#include <openrct2/localisation/StringIdType.h>
 #include <openrct2/world/ScenerySelection.h>
 #include <optional>
 #include <string_view>
 
+struct ScreenCoordsXY;
 struct StringWithArgs;
 struct Ride;
 struct RideSelection;
@@ -35,6 +38,11 @@ namespace OpenRCT2
     struct Peep;
     struct TileElement;
 } // namespace OpenRCT2
+
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
 
 namespace OpenRCT2::Ui::Windows
 {

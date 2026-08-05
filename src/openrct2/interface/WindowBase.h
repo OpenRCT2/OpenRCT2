@@ -13,6 +13,7 @@
 #include "ColourWithFlags.h"
 #include "Cursors.h"
 #include "ScrollArea.h"
+#include "Widget.h"
 #include "Window.h"
 
 #include <memory>

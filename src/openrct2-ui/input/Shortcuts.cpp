@@ -33,6 +33,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/platform/Platform.h>
