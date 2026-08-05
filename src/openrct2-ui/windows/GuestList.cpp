@@ -87,8 +87,8 @@ namespace OpenRCT2::Ui::Windows
 
         enum class GuestViewType
         {
-            Actions,
-            Thoughts,
+            actions,
+            thoughts,
         };
 
         enum class GuestFilterType
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
             WindowInitScrollWidgets(*this);
 
             _selectedTab = TabId::summarised;
-            _selectedView = GuestViewType::Thoughts;
+            _selectedView = GuestViewType::thoughts;
             _numPages = 1;
 
             widgets[WIDX_PAGE_DROPDOWN].setHidden();
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
                         _selectedFilter = GuestFilterType::Guests;
                         _highlightedIndex = {};
                         _selectedTab = TabId::individual;
-                        _selectedView = GuestViewType::Thoughts;
+                        _selectedView = GuestViewType::thoughts;
                     }
                     break;
                 }
@@ -218,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
                         _selectedFilter = GuestFilterType::Guests;
                         _highlightedIndex = {};
                         _selectedTab = TabId::individual;
-                        _selectedView = GuestViewType::Thoughts;
+                        _selectedView = GuestViewType::thoughts;
                     }
                     break;
                 }
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
                         _selectedFilter = GuestFilterType::GuestsThinking;
                         _highlightedIndex = {};
                         _selectedTab = TabId::individual;
-                        _selectedView = GuestViewType::Thoughts;
+                        _selectedView = GuestViewType::thoughts;
                     }
                     break;
                 }
@@ -244,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
                     _selectedFilter = GuestFilterType::GuestsThinking;
                     _highlightedIndex = {};
                     _selectedTab = TabId::individual;
-                    _selectedView = GuestViewType::Thoughts;
+                    _selectedView = GuestViewType::thoughts;
                     break;
                 }
             }
@@ -341,8 +341,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
                 {
-                    gDropdown.items[0] = Dropdown::MenuLabel(GetViewName(GuestViewType::Actions));
-                    gDropdown.items[1] = Dropdown::MenuLabel(GetViewName(GuestViewType::Thoughts));
+                    gDropdown.items[0] = Dropdown::MenuLabel(GetViewName(GuestViewType::actions));
+                    gDropdown.items[1] = Dropdown::MenuLabel(GetViewName(GuestViewType::thoughts));
 
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
@@ -554,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
                     if (i < _groups.size())
                     {
                         _filterArguments = _groups[i].Arguments;
-                        _selectedFilter = _selectedView == GuestViewType::Actions ? GuestFilterType::Guests
+                        _selectedFilter = _selectedView == GuestViewType::actions ? GuestFilterType::Guests
                                                                                   : GuestFilterType::GuestsThinking;
                         _selectedTab = TabId::individual;
                         widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
@@ -669,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
 
                     switch (_selectedView)
                     {
-                        case GuestViewType::Actions:
+                        case GuestViewType::actions:
                             // Guest face
                             GfxDrawSprite(rt, ImageId(GetPeepFaceSpriteSmall(peep)), { 118, y + 1 });
 
@@ -682,7 +682,7 @@ namespace OpenRCT2::Ui::Windows
                             peep->FormatActionTo(ft);
                             drawTextEllipsised(rt, { 133, y }, 314, format, ft);
                             break;
-                        case GuestViewType::Thoughts:
+                        case GuestViewType::thoughts:
                             // For each thought
                             for (const auto& thought : peep->thoughts)
                             {
@@ -738,7 +738,7 @@ namespace OpenRCT2::Ui::Windows
                     // Draw action/thoughts
                     Formatter ft(group.Arguments.args);
                     // Draw small font if displaying guests
-                    if (_selectedView == GuestViewType::Thoughts)
+                    if (_selectedView == GuestViewType::thoughts)
                     {
                         drawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::small });
                     }
@@ -781,7 +781,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsPeepInFilter(const Guest& peep)
         {
-            auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::Actions : GuestViewType::Thoughts;
+            auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::actions : GuestViewType::thoughts;
             auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
             if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::GuestsThinking)
             {
@@ -868,10 +868,10 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft(result.args);
             switch (type)
             {
-                case GuestViewType::Actions:
+                case GuestViewType::actions:
                     peep.FormatActionTo(ft);
                     break;
-                case GuestViewType::Thoughts:
+                case GuestViewType::thoughts:
                 {
                     const auto& thought = peep.thoughts[0];
                     if (thought.type != PeepThoughtType::none && thought.freshness <= 5)
@@ -889,9 +889,9 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 default:
-                case GuestViewType::Actions:
+                case GuestViewType::actions:
                     return STR_ACTIONS;
-                case GuestViewType::Thoughts:
+                case GuestViewType::thoughts:
                     return STR_THOUGHTS;
             }
         }
