@@ -20,10 +20,10 @@ namespace OpenRCT2::Http
 {
     enum class Status
     {
-        Invalid = 0,
-        Error = 1,
-        Ok = 200,
-        NotFound = 404
+        invalid = 0,
+        error = 1,
+        ok = 200,
+        notFound = 404
     };
 
     enum class Method

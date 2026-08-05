@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
                 req.method = Http::Method::GET;
                 req.url = url;
                 Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                    if (response.status == Http::Status::Ok)
+                    if (response.status == Http::Status::ok)
                     {
                         // Check that download operation hasn't been cancelled
                         if (_downloadingObjects)
@@ -225,7 +225,7 @@ namespace OpenRCT2::Ui::Windows
                 req.method = Http::Method::GET;
                 req.url = kOpenRCT2ApiLegacyObjectURL + name;
                 Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                    if (response.status == Http::Status::Ok)
+                    if (response.status == Http::Status::ok)
                     {
                         auto jresponse = Json::FromString(response.body);
                         if (jresponse.is_object())
@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
-                    else if (response.status == Http::Status::NotFound)
+                    else if (response.status == Http::Status::notFound)
                     {
                         Console::Error::WriteLine("  %s not found", name.c_str());
                         QueueNextDownload();

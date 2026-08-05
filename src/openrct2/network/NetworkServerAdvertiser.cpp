@@ -201,7 +201,7 @@ namespace OpenRCT2::Network
             request.header["Content-Type"] = "application/json";
 
             _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
-                                  if (response.status != Http::Status::Ok)
+                                  if (response.status != Http::Status::ok)
                                   {
                                       Console::Error::WriteLine(
                                           "Unable to connect to master server, retrying in %d seconds",
@@ -230,7 +230,7 @@ namespace OpenRCT2::Network
             _lastHeartbeatTime = Platform::GetTicks();
 
             _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
-                                  if (response.status != Http::Status::Ok)
+                                  if (response.status != Http::Status::ok)
                                   {
                                       Console::Error::WriteLine(
                                           "Unable to connect to master server, retrying in %d seconds",

@@ -1495,7 +1495,7 @@ namespace OpenRCT2
             try
             {
                 res = Do(request);
-                if (res.status != Http::Status::Ok)
+                if (res.status != Http::Status::ok)
                     throw std::runtime_error("bad http status");
             }
             catch (std::exception& e)

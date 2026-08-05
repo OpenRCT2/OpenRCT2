@@ -163,7 +163,7 @@ namespace OpenRCT2::Http
         catch (const std::exception& e)
         {
             Response response;
-            response.status = Status::Error;
+            response.status = Status::error;
             response.error = e.what();
             return response;
         }

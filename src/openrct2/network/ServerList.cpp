@@ -376,7 +376,7 @@ namespace OpenRCT2::Network
             json_t root;
             try
             {
-                if (response.status != Http::Status::Ok)
+                if (response.status != Http::Status::ok)
                 {
                     throw MasterServerException(STR_SERVER_LIST_NO_CONNECTION);
                 }
