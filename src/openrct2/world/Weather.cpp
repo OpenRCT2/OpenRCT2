@@ -47,15 +47,15 @@ namespace OpenRCT2::Weather
 
     // clang-format off
     constexpr std::array<Trait, EnumValue(Type::count)> kWeatherTraits = { {
-        {  10, EffectType::None,     0, Level::None,  SPR_WEATHER_SUN          }, // Sunny
-        {   5, EffectType::None,     0, Level::None,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
-        {   0, EffectType::None,     0, Level::None,  SPR_WEATHER_CLOUD        }, // Cloudy
-        {  -2, EffectType::Rain,     1, Level::Light, SPR_WEATHER_LIGHT_RAIN   }, // Rain
-        {  -4, EffectType::Rain,     2, Level::Heavy, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
-        {   2, EffectType::Storm,    2, Level::Heavy, SPR_WEATHER_STORM        }, // Thunderstorm
-        { -10, EffectType::Snow,     1, Level::Light, SPR_G2_WEATHER_SNOW      }, // Snow
-        { -15, EffectType::Snow,     2, Level::Heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
-        { -20, EffectType::Blizzard, 2, Level::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
+        {  10, EffectType::none,     0, Level::None,  SPR_WEATHER_SUN          }, // Sunny
+        {   5, EffectType::none,     0, Level::None,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
+        {   0, EffectType::none,     0, Level::None,  SPR_WEATHER_CLOUD        }, // Cloudy
+        {  -2, EffectType::rain,     1, Level::Light, SPR_WEATHER_LIGHT_RAIN   }, // Rain
+        {  -4, EffectType::rain,     2, Level::Heavy, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
+        {   2, EffectType::storm,    2, Level::Heavy, SPR_WEATHER_STORM        }, // Thunderstorm
+        { -10, EffectType::snow,     1, Level::Light, SPR_G2_WEATHER_SNOW      }, // Snow
+        { -15, EffectType::snow,     2, Level::Heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
+        { -20, EffectType::blizzard, 2, Level::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
     } };
     // clang-format on
 
@@ -211,9 +211,9 @@ namespace OpenRCT2::Weather
         else
         {
             uint32_t thunderChance;
-            if (gameState.weatherCurrent.weatherEffect == EffectType::Storm)
+            if (gameState.weatherCurrent.weatherEffect == EffectType::storm)
                 thunderChance = 0x1B4;
-            else if (gameState.weatherCurrent.weatherEffect == EffectType::Blizzard)
+            else if (gameState.weatherCurrent.weatherEffect == EffectType::blizzard)
                 thunderChance = 0x6D;
             else
                 return;
@@ -371,8 +371,8 @@ namespace OpenRCT2::Weather
 
     static void updateWeatherSound()
     {
-        if (getGameState().weatherCurrent.weatherEffect == EffectType::Rain
-            || getGameState().weatherCurrent.weatherEffect == EffectType::Storm)
+        if (getGameState().weatherCurrent.weatherEffect == EffectType::rain
+            || getGameState().weatherCurrent.weatherEffect == EffectType::storm)
         {
             // Start playing the weather sound
             if (_weatherSoundChannel == nullptr || _weatherSoundChannel->IsDone())

@@ -2384,14 +2384,14 @@ namespace OpenRCT2::RCT1
             gameState.weatherCurrent = {
                 .weatherType = Weather::Type{ _s4.Weather },
                 .temperature = static_cast<int8_t>(_s4.Temperature),
-                .weatherEffect = Weather::EffectType::None,
+                .weatherEffect = Weather::EffectType::none,
                 .weatherGloom = _s4.WeatherGloom,
                 .level = static_cast<Weather::Level>(_s4.Rain),
             };
             gameState.weatherNext = {
                 .weatherType = Weather::Type{ _s4.TargetWeather },
                 .temperature = static_cast<int8_t>(_s4.TargetTemperature),
-                .weatherEffect = Weather::EffectType::None,
+                .weatherEffect = Weather::EffectType::none,
                 .weatherGloom = _s4.TargetWeatherGloom,
                 .level = static_cast<Weather::Level>(_s4.TargetRain),
             };

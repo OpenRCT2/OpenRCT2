@@ -60,11 +60,11 @@ namespace OpenRCT2::Weather
 
     enum class EffectType : uint8_t
     {
-        None,
-        Rain,
-        Storm,
-        Snow,
-        Blizzard,
+        none,
+        rain,
+        storm,
+        snow,
+        blizzard,
     };
 
     enum class Level
