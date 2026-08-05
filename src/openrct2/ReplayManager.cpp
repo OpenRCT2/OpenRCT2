@@ -150,7 +150,7 @@ namespace OpenRCT2
 
         virtual bool ShouldDisplayNotice() const override
         {
-            return IsRecording() && _recordType == RecordType::NORMAL;
+            return IsRecording() && _recordType == RecordType::normal;
         }
 
         virtual void AddGameAction(uint32_t tick, const GameAction* action) override
@@ -241,7 +241,7 @@ namespace OpenRCT2
         {
             // If using silent recording, discard whatever recording there is going on, even if a new silent recording is to be
             // started.
-            if (_mode == ReplayMode::recording && _recordType == RecordType::SILENT)
+            if (_mode == ReplayMode::recording && _recordType == RecordType::silent)
                 StopRecording(true);
 
             if (_mode != ReplayMode::none && _mode != ReplayMode::normalisation)
@@ -498,7 +498,7 @@ namespace OpenRCT2
                 return false;
             }
 
-            if (!StartRecording(outFile, k_MaxReplayTicks, RecordType::NORMAL))
+            if (!StartRecording(outFile, k_MaxReplayTicks, RecordType::normal))
             {
                 StopPlayback();
                 return false;
@@ -515,9 +515,9 @@ namespace OpenRCT2
             switch (_recordType)
             {
                 default:
-                case RecordType::NORMAL:
+                case RecordType::normal:
                     return kNormalRecordingChecksumTicks;
-                case RecordType::SILENT:
+                case RecordType::silent:
                     return kSilentRecordingChecksumTicks;
             }
         }
@@ -879,7 +879,7 @@ namespace OpenRCT2
         uint32_t _commandId = 0;
         uint32_t _nextChecksumTick = 0;
         uint32_t _nextReplayTick = 0;
-        RecordType _recordType = RecordType::NORMAL;
+        RecordType _recordType = RecordType::normal;
     };
 
     std::unique_ptr<IReplayManager> CreateReplayManager()
