@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../interface/Widget.h"
+#include "../interface/ZoomLevel.h"
 #include "WindowManager.h"
 
 namespace OpenRCT2::Ui

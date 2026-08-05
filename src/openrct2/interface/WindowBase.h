@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include "../interface/WindowClasses.h"
+#include "../interface/WindowFlags.h"
+#include "../interface/ZoomLevel.h"
 #include "../localisation/StringWithArgs.h"
 #include "ColourWithFlags.h"
 #include "Cursors.h"

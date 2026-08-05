@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../interface/Window.h"
+#include "../interface/WindowFlags.h"
 #include "../localisation/StringIdType.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"

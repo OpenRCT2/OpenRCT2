@@ -11,16 +11,15 @@
 
 #include "../Identifiers.h"
 #include "../core/EnumUtils.hpp"
-#include "../core/FlagHolder.hpp"
-#include "WindowClasses.h"
-#include "ZoomLevel.h"
 
 #include <functional>
 #include <memory>
 
 enum class CloseWindowModifier : uint8_t;
+enum class WindowClass : uint8_t;
 
 struct CoordsXYZ;
+struct ZoomLevel;
 
 namespace OpenRCT2::Drawing
 {
@@ -56,40 +55,6 @@ namespace OpenRCT2
     };
 
     struct Viewport;
-
-    enum class WindowFlag : uint8_t
-    {
-        stickToBack,
-        stickToFront,
-        /**
-         * User is unable to scroll this viewport
-         */
-        noScrolling,
-        scrollingToLocation,
-        transparent,
-        /**
-         * Instead of half transparency, completely remove the window background
-         */
-        noBackground,
-        /**
-         * Window is closed and will be deleted in the next update.
-         */
-        dead,
-        resizable,
-        /**
-         * Don't auto close this window if too many windows are open
-         */
-        noAutoClose,
-        // TODO: investigate why exactly this is used.
-        higherContrastOnPress,
-        noTitleBar,
-        noSnapping,
-
-        // *ONLY* create only flags below
-        autoPosition,
-        centreScreen,
-    };
-    using WindowFlags = FlagHolder<uint16_t, WindowFlag>;
 
     enum class WindowView : uint8_t
     {
