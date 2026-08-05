@@ -354,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             auto* researchItem = GetItemFromScrollY(isInvented, screenCoords.y);
             if (researchItem != nullptr && !researchItem->isAlwaysResearched())
             {
-                return CursorID::HandOpen;
+                return CursorID::handOpen;
             }
             return fallback;
         }
@@ -626,7 +626,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            return CursorID::HandClosed;
+            return CursorID::handClosed;
         }
 
         void onMoved(const ScreenCoordsXY& screenCoords) override

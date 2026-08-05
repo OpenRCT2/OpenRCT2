@@ -104,7 +104,7 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::FenceDown);
+            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::fenceDown);
             _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
             _legacyType.price = Json::GetNumber<money64>(properties["price"]);
 

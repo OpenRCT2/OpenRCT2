@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
         scriptEngine.ExecutePluginCall(Owner, Callback.callback, {}, false);
     }
 
-    static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
+    static constexpr std::array<std::string_view, EnumValue(CursorID::count)> CursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
         "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
         "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
@@ -86,7 +86,7 @@ namespace OpenRCT2::Scripting
         if (JS_IsString(value))
         {
             std::string valueStr = JSToStdString(ctx, value);
-            for (uint8_t i = 0; i < EnumValue(CursorID::Count); i++)
+            for (uint8_t i = 0; i < EnumValue(CursorID::count); i++)
             {
                 if (CursorNames[i] == valueStr)
                 {
@@ -94,7 +94,7 @@ namespace OpenRCT2::Scripting
                 }
             }
         }
-        return CursorID::Arrow;
+        return CursorID::arrow;
     }
 
     static const EnumMap<ViewportInteractionItem> ToolFilterMap{

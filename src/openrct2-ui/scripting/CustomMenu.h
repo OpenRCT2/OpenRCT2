@@ -78,7 +78,7 @@ namespace OpenRCT2::Scripting
     {
         std::shared_ptr<Plugin> Owner;
         std::string Id;
-        CursorID Cursor = CursorID::Undefined;
+        CursorID Cursor = CursorID::undefined;
         uint32_t Filter{};
         bool MouseDown{};
 

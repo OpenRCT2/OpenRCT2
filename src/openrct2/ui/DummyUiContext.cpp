@@ -125,7 +125,7 @@ namespace OpenRCT2::Ui
         }
         CursorID GetCursor() override
         {
-            return CursorID::Arrow;
+            return CursorID::arrow;
         }
         void SetCursor(CursorID /*cursor*/) override
         {
