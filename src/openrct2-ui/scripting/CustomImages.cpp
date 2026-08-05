@@ -37,10 +37,10 @@ namespace OpenRCT2::Scripting
 
     enum class PixelDataPaletteKind
     {
-        None,
-        Keep,
-        Closest,
-        Dither
+        none,
+        keep,
+        closest,
+        dither
     };
 
     struct PixelData
@@ -254,12 +254,12 @@ namespace OpenRCT2::Scripting
     {
         switch (palette)
         {
-            case PixelDataPaletteKind::Closest:
+            case PixelDataPaletteKind::closest:
                 return ImportMode::Closest;
-            case PixelDataPaletteKind::Dither:
+            case PixelDataPaletteKind::dither:
                 return ImportMode::Dithering;
-            case PixelDataPaletteKind::None:
-            case PixelDataPaletteKind::Keep:
+            case PixelDataPaletteKind::none:
+            case PixelDataPaletteKind::keep:
             default:
                 return ImportMode::Default;
         }
@@ -292,8 +292,8 @@ namespace OpenRCT2::Scripting
             }
             case PixelDataKind::png:
             {
-                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageFormat::png : ImageFormat::png32;
-                auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? Palette::KeepIndices : Palette::OpenRCT2;
+                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::keep ? ImageFormat::png : ImageFormat::png32;
+                auto palette = pixelData.Palette == PixelDataPaletteKind::keep ? Palette::KeepIndices : Palette::OpenRCT2;
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
@@ -332,12 +332,12 @@ namespace OpenRCT2::Scripting
     static PixelDataPaletteKind PixelDataPaletteKindFromJS(const std::string& s)
     {
         if (s == "keep")
-            return PixelDataPaletteKind::Keep;
+            return PixelDataPaletteKind::keep;
         if (s == "closest")
-            return PixelDataPaletteKind::Closest;
+            return PixelDataPaletteKind::closest;
         if (s == "dither")
-            return PixelDataPaletteKind::Dither;
-        return PixelDataPaletteKind::None;
+            return PixelDataPaletteKind::dither;
+        return PixelDataPaletteKind::none;
     }
 
     static PixelData GetPixelDataFromJS(JSContext* ctx, JSValue jsPixelData)
