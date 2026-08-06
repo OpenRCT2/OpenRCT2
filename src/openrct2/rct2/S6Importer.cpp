@@ -2282,8 +2282,8 @@ namespace OpenRCT2::RCT2
         dst->TargetY = src->TargetY;
         dst->Iteration = src->Iteration;
         dst->FountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::jumpingFountainSnow
-            ? ::JumpingFountainType::Snow
-            : ::JumpingFountainType::Water;
+            ? ::JumpingFountainType::snow
+            : ::JumpingFountainType::water;
     }
 
     template<>

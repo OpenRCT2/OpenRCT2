@@ -173,7 +173,7 @@ namespace OpenRCT2
 
         switch (FountainType)
         {
-            case JumpingFountainType::Water:
+            case JumpingFountainType::water:
                 if (frame == 11 && fountainFlags.has(FountainFlag::fast))
                 {
                     AdvanceAnimation();
@@ -183,7 +183,7 @@ namespace OpenRCT2
                     AdvanceAnimation();
                 }
                 break;
-            case JumpingFountainType::Snow:
+            case JumpingFountainType::snow:
                 if (frame == 16)
                 {
                     AdvanceAnimation();
@@ -252,7 +252,7 @@ namespace OpenRCT2
 
     bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
     {
-        const int32_t pathAdditionFlagMask = newType == JumpingFountainType::Snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
+        const int32_t pathAdditionFlagMask = newType == JumpingFountainType::snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
                                                                                   : PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER;
 
         TileElement* tileElement = MapGetFirstElementAt(newLoc);

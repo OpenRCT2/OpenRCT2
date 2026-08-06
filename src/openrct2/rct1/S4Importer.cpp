@@ -3116,9 +3116,9 @@ namespace OpenRCT2::RCT1
         auto* dst = getGameState().entities.CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityJumpingFountain*>(&srcBase);
 
-        auto fountainType = JumpingFountainType::Water;
+        auto fountainType = JumpingFountainType::water;
         if (RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::jumpingFountainSnow)
-            fountainType = JumpingFountainType::Snow;
+            fountainType = JumpingFountainType::snow;
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
