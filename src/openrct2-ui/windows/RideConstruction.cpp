@@ -1961,10 +1961,9 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            constexpr int16_t kBankingGroupboxRightNoSeatRotation = kGroupWidth;
-            constexpr int16_t kBankingGroupboxRightWithSeatRotation = 114;
+            constexpr int16_t kGroupboxRightNoSeatRotation = kGroupWidth + 2;
+            constexpr int16_t kGroupboxRightWithSeatRotation = 114;
 
-            widgets[WIDX_BANKING_GROUPBOX].right = kBankingGroupboxRightNoSeatRotation;
             widgets[WIDX_SEAT_ROTATION_GROUPBOX].setHidden();
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].setHidden();
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].setHidden();
@@ -1978,17 +1977,20 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].setVisible();
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].setVisible();
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].setVisible();
-                widgets[WIDX_BANKING_GROUPBOX].right = kBankingGroupboxRightWithSeatRotation;
 
                 // squishes the track speed spinner slightly to make room for the seat rotation widgets
                 if (trackHasSpeedSetting)
                 {
-                    auto spinnerStart = 136 + widgets[WIDX_TITLE].bottom;
+                    widgets[WIDX_SPEED_GROUPBOX].right = kGroupboxRightWithSeatRotation;
+
+                    auto spinnerStart = 123 + widgets[WIDX_TITLE].bottom;
                     resizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 8, spinnerStart }, { 85 - 12, kSpinnerHeight });
                 }
                 // moves banking buttons to the left to make room for the seat rotation widgets
                 else if (IsTrackEnabled(TrackGroup::flatRollBanking))
                 {
+                    widgets[WIDX_BANKING_GROUPBOX].right = kGroupboxRightWithSeatRotation;
+
                     auto startX = 25;
                     for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
                     {
@@ -1997,6 +1999,11 @@ namespace OpenRCT2::Ui::Windows
                         startX += widget.width();
                     }
                 }
+            }
+            else
+            {
+                widgets[WIDX_BANKING_GROUPBOX].right = kGroupboxRightNoSeatRotation;
+                widgets[WIDX_SPEED_GROUPBOX].right = kGroupboxRightNoSeatRotation;
             }
 
             uint64_t newPressedWidgets = 0;
