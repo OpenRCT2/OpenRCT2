@@ -3826,3 +3826,4 @@ STR_7035    :Vendejostilo
 STR_7036    :Veturilostilo
 STR_7037    :Reĝimo de funkciado
 STR_7038    :Atendo kaj ŝarĝo
+STR_7039    :Atrakciotipo
