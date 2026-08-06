@@ -74,7 +74,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceMaze,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Maze,
+    .ConstructionWindowContext = RideConstructionWindowContext::maze,
     .specialType = RtdSpecialType::maze,
 };
 } // namespace OpenRCT2

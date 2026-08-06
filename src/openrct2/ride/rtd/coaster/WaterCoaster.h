@@ -107,7 +107,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Default,
+    .ConstructionWindowContext = RideConstructionWindowContext::standard,
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_WaterCoaster,
 };

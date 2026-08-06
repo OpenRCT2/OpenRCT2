@@ -77,7 +77,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceSpiralSlide,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Default,
+    .ConstructionWindowContext = RideConstructionWindowContext::standard,
     .RideUpdate = updateSpiralSlide,
     .specialType = RtdSpecialType::spiralSlide,
 };

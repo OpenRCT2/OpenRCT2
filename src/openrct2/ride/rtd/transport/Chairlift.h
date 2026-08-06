@@ -88,7 +88,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Default,
+    .ConstructionWindowContext = RideConstructionWindowContext::standard,
     .RideUpdate = updateChairlift,
 };
 } // namespace OpenRCT2

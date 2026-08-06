@@ -288,8 +288,8 @@ using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& e
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
 {
-    Default,
-    Maze,
+    standard,
+    maze,
 };
 
 struct TrackDrawerEntry
@@ -550,7 +550,7 @@ struct RideTypeDescriptor
 
     RideLocationFunction GetGuestWaypointLocation = OpenRCT2::GetGuestWaypointLocationDefault;
 
-    RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::Default;
+    RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::standard;
     RideUpdateFunction RideUpdate = nullptr;
 
     RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
