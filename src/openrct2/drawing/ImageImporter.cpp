@@ -391,7 +391,7 @@ namespace OpenRCT2::Drawing
     bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
     {
         PaletteIndexType entryType = GetPaletteIndexType(paletteIndex);
-        return entryType != PaletteIndexType::Special && entryType != PaletteIndexType::PrimaryRemap;
+        return entryType != PaletteIndexType::special && entryType != PaletteIndexType::primaryRemap;
     }
 
     /**
@@ -400,18 +400,18 @@ namespace OpenRCT2::Drawing
     ImageImporter::PaletteIndexType ImageImporter::GetPaletteIndexType(int32_t paletteIndex)
     {
         if (paletteIndex <= 9)
-            return PaletteIndexType::Special;
+            return PaletteIndexType::special;
         if (paletteIndex >= 230 && paletteIndex <= 239)
-            return PaletteIndexType::Special;
+            return PaletteIndexType::special;
         if (paletteIndex == 255)
-            return PaletteIndexType::Special;
+            return PaletteIndexType::special;
         if (paletteIndex >= 243 && paletteIndex <= 254)
-            return PaletteIndexType::PrimaryRemap;
+            return PaletteIndexType::primaryRemap;
         if (paletteIndex >= 202 && paletteIndex <= 213)
-            return PaletteIndexType::SecondaryRemap;
+            return PaletteIndexType::secondaryRemap;
         if (paletteIndex >= 46 && paletteIndex <= 57)
-            return PaletteIndexType::TertiaryRemap;
-        return PaletteIndexType::Normal;
+            return PaletteIndexType::tertiaryRemap;
+        return PaletteIndexType::normal;
     }
 
     int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour)

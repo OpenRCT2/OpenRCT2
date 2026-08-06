@@ -71,11 +71,11 @@ namespace OpenRCT2::Drawing
     private:
         enum class PaletteIndexType : uint8_t
         {
-            Normal,
-            PrimaryRemap,
-            SecondaryRemap,
-            TertiaryRemap,
-            Special,
+            normal,
+            primaryRemap,
+            secondaryRemap,
+            tertiaryRemap,
+            special,
         };
 
         static std::vector<int32_t> GetPixels(const Image& image, const ImageImportMeta& meta);
