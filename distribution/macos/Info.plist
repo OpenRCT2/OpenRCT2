@@ -24,6 +24,8 @@
 	<true/>
 	<key>CFBundleIconFile</key>
 	<string>openrct2.icns</string>
+	<key>CFBundleIconName</key>
+	<string>openrct2</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 </dict>
