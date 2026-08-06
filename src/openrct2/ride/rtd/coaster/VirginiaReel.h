@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
         { Drawing::Colour::darkBrown, Drawing::Colour::bordeauxRed, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_VIRGINIA_REEL_TRACK, SPR_RIDE_DESIGN_PREVIEW_VIRGINIA_REEL_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "virginia_reel",
     .RatingsData =
     {

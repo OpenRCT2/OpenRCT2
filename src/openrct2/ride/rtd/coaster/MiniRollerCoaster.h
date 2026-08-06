@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
         { Drawing::Colour::salmonPink, Drawing::Colour::salmonPink, Drawing::Colour::bordeauxRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "mini_rc",
     .RatingsData =
     {

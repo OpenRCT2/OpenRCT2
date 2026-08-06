@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
         { Drawing::Colour::darkGreen, Drawing::Colour::darkGreen, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "suspended_monorail",
     .RatingsData =
     {

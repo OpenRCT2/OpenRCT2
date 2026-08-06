@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor ToiletsRTD =
     .BonusValue = 5,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Toilets,
+    .ColourKey = RideColourKey::toilets,
     .Name = "toilets",
     .RatingsData = 
     {

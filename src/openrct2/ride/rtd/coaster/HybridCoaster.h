@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
         { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::black }, // Wildcat's Revenge
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "hybrid_rc",
     .RatingsData =
     {

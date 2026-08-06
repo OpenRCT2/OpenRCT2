@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_SUSPENDED_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_SUSPENDED_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "mini_suspended_rc",
     .RatingsData =
     {

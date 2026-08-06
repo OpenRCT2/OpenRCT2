@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
         { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::bordeauxRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "spiral_rc",
     .RatingsData = 
     {

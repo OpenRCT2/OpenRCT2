@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor DrinkStallRTD =
     .BonusValue = 15,
     .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Drink,
+    .ColourKey = RideColourKey::drink,
     .Name = "drink_stall",
     .RatingsData = 
     {

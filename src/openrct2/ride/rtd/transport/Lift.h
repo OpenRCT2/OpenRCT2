@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor LiftRTD =
         { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LIFT_TRACK, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "lift",
     .RatingsData =
     {

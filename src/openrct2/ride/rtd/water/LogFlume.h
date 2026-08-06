@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
         { Drawing::Colour::oliveGreen, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "log_flume",
     .RatingsData =
     {

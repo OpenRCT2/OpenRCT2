@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
         { Drawing::Colour::brightYellow, Drawing::Colour::brightYellow, Drawing::Colour::darkWater }, // Wicked Twister
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "inverted_impulse_rc",
     .RatingsData = 
     {

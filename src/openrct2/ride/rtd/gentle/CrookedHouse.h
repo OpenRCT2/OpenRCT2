@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "crooked_house",
     .RatingsData = 
     {

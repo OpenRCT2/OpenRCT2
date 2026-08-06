@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
         { Drawing::Colour::darkPink, Drawing::Colour::darkPink, Drawing::Colour::violet }, // Banshee (Renders)
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "inverted_rc",
     .RatingsData =
     {

@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
         { Drawing::Colour::chartreuse, Drawing::Colour::limeGreen, Drawing::Colour::deepWater }, // Mindbender
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LOOPING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOOPING_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "looping_rc",
     .RatingsData = 
     {

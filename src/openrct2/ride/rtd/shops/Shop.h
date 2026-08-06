@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor ShopRTD =
     .BonusValue = 15,
     .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Shop,
+    .ColourKey = RideColourKey::shop,
     .Name = "shop",
     .RatingsData = 
     {

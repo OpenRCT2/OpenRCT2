@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
         { Drawing::Colour::white, Drawing::Colour::black, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "river_rapids",
     .RatingsData =
     {

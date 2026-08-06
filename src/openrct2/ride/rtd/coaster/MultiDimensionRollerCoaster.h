@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
         { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::grey }, // Eejanaika
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "multi_dimension_rc",
     .RatingsData = 
     {
@@ -134,7 +134,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
         { Drawing::Colour::bordeauxRed, Drawing::Colour::white, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "multi_dimension_rc_alt",
     .RatingsData = 
     {

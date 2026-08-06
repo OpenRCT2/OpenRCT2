@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
         { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_TRACK, SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "ghost_train",
     .RatingsData =
     {

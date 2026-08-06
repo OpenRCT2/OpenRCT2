@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .BonusValue = 39,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "circus",
     .RatingsData =
     {

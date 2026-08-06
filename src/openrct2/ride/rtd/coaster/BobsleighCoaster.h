@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
         { Drawing::Colour::sepia, Drawing::Colour::darkOrange, Drawing::Colour::beige }, // Reptilian
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_BOBSLEIGH_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOBSLEIGH_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "bobsleigh_rc",
     .RatingsData =
     {

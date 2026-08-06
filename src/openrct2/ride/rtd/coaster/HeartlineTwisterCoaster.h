@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
         { Drawing::Colour::darkPurple, Drawing::Colour::white, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "heartline_twister_rc",
     .RatingsData = 
     {

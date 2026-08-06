@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
         { Drawing::Colour::black, Drawing::Colour::lightBlue, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "junior_rc",
     .RatingsData =
     {

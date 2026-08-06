@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
         { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "lay_down_rc",
     .RatingsData = 
     {
@@ -134,7 +134,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
         { Drawing::Colour::yellow, Drawing::Colour::yellow, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "lay_down_rc_alt",
     .RatingsData = 
     {

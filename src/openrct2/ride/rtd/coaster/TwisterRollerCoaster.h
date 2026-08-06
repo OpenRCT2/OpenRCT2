@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
         { Drawing::Colour::darkOrange, Drawing::Colour::darkOrange, Drawing::Colour::black }, // Rougarou
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "twister_rc",
     .RatingsData = 
     {

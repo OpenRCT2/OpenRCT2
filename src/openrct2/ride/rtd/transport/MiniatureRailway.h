@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::white, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "miniature_railway",
     .RatingsData =
     {

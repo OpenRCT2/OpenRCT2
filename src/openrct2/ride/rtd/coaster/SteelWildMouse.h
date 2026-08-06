@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor SteelWildMouseRTD =
         { Drawing::Colour::lightBrown, Drawing::Colour::lightBrown, Drawing::Colour::bordeauxRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WILD_MOUSE_TRACK, SPR_RIDE_DESIGN_PREVIEW_WILD_MOUSE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "steel_wild_mouse",
     .RatingsData =
     {

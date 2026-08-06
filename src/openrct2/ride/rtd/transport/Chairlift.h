@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
         { Drawing::Colour::lightBrown, Drawing::Colour::lightBrown, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_TRACK, SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "chairlift",
     .RatingsData = 
     {

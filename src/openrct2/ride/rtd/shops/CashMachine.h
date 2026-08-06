@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .BonusValue = 5,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::CashMachine,
+    .ColourKey = RideColourKey::cashMachine,
     .Name = "cash_machine",
     .RatingsData = 
     {

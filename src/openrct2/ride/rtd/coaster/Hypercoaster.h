@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor HypercoasterRTD =
         { Drawing::Colour::violet, Drawing::Colour::violet, Drawing::Colour::black }, // Phantom's Revenge (New)
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "hypercoaster",
     .RatingsData = 
     {

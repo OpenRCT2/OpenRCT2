@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
         { Drawing::Colour::beige, Drawing::Colour::saturatedRed, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_SLIDE_TRACK, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "spiral_slide",
     .RatingsData = 
     {

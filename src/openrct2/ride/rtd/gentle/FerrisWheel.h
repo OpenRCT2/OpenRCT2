@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
         { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FERRIS_WHEEL_TRACK, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "ferris_wheel",
     .RatingsData = 
     {

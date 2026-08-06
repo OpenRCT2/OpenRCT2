@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
         { Drawing::Colour::saturatedGreen, Drawing::Colour::saturatedBrown, Drawing::Colour::saturatedBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK, SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "dodgems",
     .RatingsData = 
     {

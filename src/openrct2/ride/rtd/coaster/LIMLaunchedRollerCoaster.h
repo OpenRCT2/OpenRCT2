@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
         { Drawing::Colour::grey, Drawing::Colour::darkBrown , Drawing::Colour::black}, // Flight of Fear
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "lim_launched_rc",
     .RatingsData = 
     {

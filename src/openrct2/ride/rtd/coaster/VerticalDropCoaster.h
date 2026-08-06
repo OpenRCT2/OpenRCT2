@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
         { Drawing::Colour::grey, Drawing::Colour::brightRed, Drawing::Colour::yellow }, // Dr. Diabolical's Cliffhanger
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "vertical_drop_rc",
     .RatingsData = 
     {

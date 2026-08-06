@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
         { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::yellow },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_INVERTED_HAIRPIN_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_HAIRPIN_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "inverted_hairpin_rc",
     .RatingsData =
     {

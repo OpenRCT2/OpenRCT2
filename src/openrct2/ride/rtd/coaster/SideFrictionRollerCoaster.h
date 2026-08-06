@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
         { Drawing::Colour::white, Drawing::Colour::viridian, Drawing::Colour::white }, // Leap-The-Dips
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SIDE_FRICTION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SIDE_FRICTION_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "side_friction_rc",
     .RatingsData = 
     {

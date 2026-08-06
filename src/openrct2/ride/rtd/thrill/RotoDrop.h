@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
         { Drawing::Colour::black, Drawing::Colour::lightBlue, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "roto_drop",
     .RatingsData = 
     {

@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
         { Drawing::Colour::grey, Drawing::Colour::salmonPink, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "reverse_freefall_rc",
     .RatingsData = 
     {

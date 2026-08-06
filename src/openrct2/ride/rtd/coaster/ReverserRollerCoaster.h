@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor ReverserRollerCoasterRTD =
         { Drawing::Colour::saturatedBrown, Drawing::Colour::bordeauxRed, Drawing::Colour::saturatedBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "reverser_rc",
     .RatingsData =
     {

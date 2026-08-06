@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
         { Drawing::Colour::icyBlue, Drawing::Colour::white, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_SAUCERS_TRACK, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "flying_saucers",
     .RatingsData = 
     {

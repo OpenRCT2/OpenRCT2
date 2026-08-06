@@ -83,14 +83,14 @@ enum class RideComponentType
 
 enum class RideColourKey : uint8_t
 {
-    Ride,
-    Food,
-    Drink,
-    Shop,
-    InfoKiosk,
-    FirstAid,
-    CashMachine,
-    Toilets
+    ride,
+    food,
+    drink,
+    shop,
+    infoKiosk,
+    firstAid,
+    cashMachine,
+    toilets
 };
 
 enum class TrackDesignCreateMode : uint_fast8_t
@@ -660,7 +660,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .BonusValue = 0,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { kImageIndexUndefined, kImageIndexUndefined },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "invalid",
 	.RatingsData =
     {

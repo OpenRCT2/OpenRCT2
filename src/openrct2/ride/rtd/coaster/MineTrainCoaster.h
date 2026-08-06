@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor MineTrainCoasterRTD =
         { Drawing::Colour::darkBrown, Drawing::Colour::grey, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "mine_train_rc",
     .RatingsData =
     {

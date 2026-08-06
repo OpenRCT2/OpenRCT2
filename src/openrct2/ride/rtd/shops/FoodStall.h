@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor FoodStallRTD =
     .BonusValue = 15,
     .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Food,
+    .ColourKey = RideColourKey::food,
     .Name = "food_stall",
     .RatingsData = 
     {

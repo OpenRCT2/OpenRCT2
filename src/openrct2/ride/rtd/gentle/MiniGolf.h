@@ -49,7 +49,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
         { Drawing::Colour::mossGreen, Drawing::Colour::bordeauxRed, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "mini_golf",
     .RatingsData = 
     {

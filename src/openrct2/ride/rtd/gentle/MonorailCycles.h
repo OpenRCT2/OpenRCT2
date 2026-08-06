@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
         { Drawing::Colour::grey, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "monorail_cycles",
     .RatingsData =
     {

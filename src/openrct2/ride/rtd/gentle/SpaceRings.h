@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
     .BonusValue = 30,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "space_rings",
     .RatingsData = 
     {

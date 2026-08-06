@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
         { Drawing::Colour::brightYellow, Drawing::Colour::yellow, Drawing::Colour::darkGreen }, // Mega-Lite / 蓝月飞车
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GIGA_RC, SPR_RIDE_DESIGN_PREVIEW_GIGA_RC_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "giga_rc",
     .RatingsData = 
     {

@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor TwistRTD =
     .BonusValue = 40,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "twist",
     .RatingsData = 
     {

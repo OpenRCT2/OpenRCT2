@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor CinemaRTD =
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "3d_cinema",
     .RatingsData = 
     {

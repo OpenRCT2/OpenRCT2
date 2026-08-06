@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "merry_go_round",
     .RatingsData = 
     {

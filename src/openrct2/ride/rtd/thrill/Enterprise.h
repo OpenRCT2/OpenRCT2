@@ -48,7 +48,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "enterprise",
     .RatingsData = 
     {

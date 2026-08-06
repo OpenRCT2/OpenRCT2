@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
         { Drawing::Colour::brightPink, Drawing::Colour::brightPink, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_STEEPLECHASE_TRACK, SPR_RIDE_DESIGN_PREVIEW_STEEPLECHASE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "steeplechase",
     .RatingsData =
     {

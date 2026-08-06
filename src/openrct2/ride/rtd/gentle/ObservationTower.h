@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
         { Drawing::Colour::white, Drawing::Colour::yellow, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_TRACK, SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "observation_tower",
     .RatingsData =
     {

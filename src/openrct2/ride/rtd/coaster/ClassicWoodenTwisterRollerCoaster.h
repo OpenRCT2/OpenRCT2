@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
             { Drawing::Colour::lightBlue, Drawing::Colour::black, Drawing::Colour::black },
         ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "classic_wooden_twister_rc",
         .RatingsData =
         {

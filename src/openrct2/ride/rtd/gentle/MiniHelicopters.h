@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
         { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_HELICOPTERS_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_HELICOPTERS_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "mini_helicopters",
     .RatingsData =
     {

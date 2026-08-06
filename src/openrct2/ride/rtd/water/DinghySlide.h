@@ -69,7 +69,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::grey, Drawing::Colour::saturatedRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "dinghy_slide",
     .RatingsData =
     {

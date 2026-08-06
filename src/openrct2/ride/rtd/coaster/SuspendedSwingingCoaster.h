@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
         { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::oliveGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_SWINGING_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_SWINGING_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "suspended_swinging_rc",
     .RatingsData =
     {

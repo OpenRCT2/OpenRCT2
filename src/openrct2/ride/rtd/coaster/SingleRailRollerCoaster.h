@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
         { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::darkGreen }
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SINGLE_RAIL_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SINGLE_RAIL_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "single_rail_rc",
     .RatingsData =
     {

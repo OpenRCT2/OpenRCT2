@@ -69,7 +69,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         { Drawing::Colour::beige, Drawing::Colour::beige, Drawing::Colour::darkBrown }, // De Vliegende Hollander
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WATER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WATER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "water_coaster",
     .RatingsData =
     {

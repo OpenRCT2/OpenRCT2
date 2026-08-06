@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor HyperTwisterRTD =
         { Drawing::Colour::darkPurple, Drawing::Colour::violet, Drawing::Colour::deepWater }, // Mako
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "hyper_twister",
     .RatingsData = 
     {

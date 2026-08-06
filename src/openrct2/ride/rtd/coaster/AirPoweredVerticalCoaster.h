@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         { Drawing::Colour::lightOrange, Drawing::Colour::brightRed, Drawing::Colour::brightYellow },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "air_powered_vertical_rc",
     .RatingsData = 
     {

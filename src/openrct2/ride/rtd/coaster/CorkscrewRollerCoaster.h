@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
         { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "corkscrew_rc",
     .RatingsData = 
     {

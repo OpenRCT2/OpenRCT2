@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
         { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "monster_trucks",
         .RatingsData =
     {

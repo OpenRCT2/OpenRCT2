@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
         { Drawing::Colour::darkBrown, Drawing::Colour::darkBrown, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "swinging_ship",
     .RatingsData = 
     {

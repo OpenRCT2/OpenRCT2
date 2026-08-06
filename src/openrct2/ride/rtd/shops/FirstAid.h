@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .BonusValue = 5,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::FirstAid,
+    .ColourKey = RideColourKey::firstAid,
     .Name = "first_aid",
     .RatingsData = 
     {

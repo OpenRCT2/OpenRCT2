@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
         { Drawing::Colour::white, Drawing::Colour::white, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_COMPACT_INVERTED_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_COMPACT_INVERTED_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "compact_inverted_rc",
     .RatingsData = 
     {

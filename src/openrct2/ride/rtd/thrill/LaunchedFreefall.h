@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
         { Drawing::Colour::darkGreen, Drawing::Colour::yellow, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "launched_freefall",
     .RatingsData = 
     {

@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
         { Drawing::Colour::darkBrown, Drawing::Colour::darkBrown, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GO_KARTS_TRACK, SPR_RIDE_DESIGN_PREVIEW_GO_KARTS_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "go_karts",
     .RatingsData = 
     {

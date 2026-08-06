@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
         { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::saturatedBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "wooden_wild_mouse",
     .RatingsData =
     {

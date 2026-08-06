@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
         { Drawing::Colour::darkGreen, Drawing::Colour::darkGreen, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_TRACK, SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "splash_boats",
     .RatingsData =
     {

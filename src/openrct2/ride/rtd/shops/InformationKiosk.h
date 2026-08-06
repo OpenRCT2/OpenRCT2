@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor InformationKioskRTD =
     .BonusValue = 15,
     .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::InfoKiosk,
+    .ColourKey = RideColourKey::infoKiosk,
     .Name = "information_kiosk",
     .RatingsData = 
     {

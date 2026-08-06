@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
         { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::umber}, // Taron
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GIGA_RC, SPR_RIDE_DESIGN_PREVIEW_GIGA_RC_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "lsm_rc",
     .RatingsData = 
     {

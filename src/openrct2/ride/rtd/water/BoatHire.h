@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
         { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "boat_hire",
     .RatingsData =
     {

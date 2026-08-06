@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::yellow, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "magic_carpet",
     .RatingsData = 
     {
