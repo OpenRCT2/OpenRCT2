@@ -16,6 +16,7 @@
 #include "../world/Location.hpp"
 #include "Angles.h"
 #include "VehicleColour.h"
+#include "VehicleFlags.h"
 #include "VehicleSubpositionData.h"
 #include "ted/PitchAndRoll.h"
 
@@ -65,33 +66,6 @@ struct SoundIdVolume
 
 static constexpr uint16_t kVehicleTrackDirectionMask = 0b0000000000000011;
 static constexpr uint16_t kVehicleTrackTypeMask = 0b1111111111111100;
-
-enum class VehicleFlag : uint8_t
-{
-    onLiftHill,
-    collisionDisabled,
-    waitingOnAdjacentStation,
-    poweredCarInReverse,
-    readyToDepart,
-    testing,
-    // When go-karts are colliding, they have a higher chance of changing lanes
-    currentlyColliding,
-    // Used on vehicles when a safety cut-out stops them, such as RCs on a lift hill and powered rides
-    stoppedBySafetyCutout,
-    carIsBroken,
-    trainIsBroken,
-    stoppedOnHoldingBrake,
-    // Used on vehicles that can run inverted for extended periods of time, i.e. the Flying, Lay-down and Multi-Dimension trains
-    carIsInverted,
-    // Set when the vehicle travels backwards through the station for the first time
-    reverseInclineCompletedLap,
-    spinningIsLocked, // After passing a rotation toggle track piece this will enable
-    // OpenRCT2 Flag: Used to override UpdateMotion to move the position of an individual car on a train
-    moveSingleCar,
-    crashed,       // Car displays as smoke plume
-    carIsReversed, // Car is displayed running backwards
-};
-using VehicleFlags = FlagHolder<uint32_t, VehicleFlag>;
 
 enum class MiniGolfAnimation : uint8_t;
 
@@ -190,7 +164,7 @@ struct Vehicle : OpenRCT2::EntityBase
 
     uint16_t var_44;
     uint16_t mass;
-    VehicleFlags flags;
+    OpenRCT2::VehicleFlags flags;
     uint8_t SwingSprite;
     StationIndex current_station;
     union
