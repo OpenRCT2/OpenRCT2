@@ -19,7 +19,10 @@
 constexpr const size_t VehicleTrackSubpositionSizeDefault = EnumValue(OpenRCT2::TrackElemType::count)
     * kNumOrthogonalDirections;
 
-struct VehicleInfo;
+namespace OpenRCT2
+{
+    struct VehicleInfo;
+}
 
 enum class VehicleTrackSubposition : uint8_t
 {
@@ -50,7 +53,7 @@ enum class VehicleTrackSubposition : uint8_t
 struct VehicleInfoList
 {
     uint16_t size;
-    const VehicleInfo* info;
+    const OpenRCT2::VehicleInfo* info;
 };
 
 extern const VehicleInfoList* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::count)];

@@ -16,10 +16,10 @@
 #include "../tile_element/Paint.TileElement.h"
 #include "Support.h"
 
-struct Ride;
-
 namespace OpenRCT2
 {
+    struct Ride;
+
     ImageId getPrimaryTrackColourWithSecondarySupportColour(const PaintSession& session);
 
     template<const bool flipXAxis, const size_t sequenceCount, const size_t spriteCount>

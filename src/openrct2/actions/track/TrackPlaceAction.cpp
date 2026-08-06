@@ -15,6 +15,7 @@
 #include "../../core/Money.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../management/Finance.h"
+#include "../../ride/RideColour.h"
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackData.h"

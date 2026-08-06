@@ -12,9 +12,10 @@
 #include "../core/Money.hpp"
 
 struct CoordsXYZ;
-struct Ride;
 
 namespace OpenRCT2
 {
+    struct Ride;
+
     money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const CoordsXYZ& loc);
-}
+} // namespace OpenRCT2

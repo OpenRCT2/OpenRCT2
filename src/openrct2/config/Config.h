@@ -19,7 +19,10 @@
     #undef interface
 #endif
 
-enum class RideInspection : uint8_t;
+namespace OpenRCT2
+{
+    enum class RideInspection : uint8_t;
+}
 
 namespace OpenRCT2::Config
 {

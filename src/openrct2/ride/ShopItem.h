@@ -12,12 +12,12 @@
 #include "../core/Money.hpp"
 #include "../entity/Litter.h"
 
-struct Ride;
-
 namespace OpenRCT2
 {
     enum class PeepThoughtType : uint8_t;
-}
+
+    struct Ride;
+} // namespace OpenRCT2
 
 enum class ShopItem : uint8_t
 {
@@ -131,7 +131,7 @@ enum
     SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
-money64 ShopItemGetCommonPrice(Ride* forRide, ShopItem shopItem);
+money64 ShopItemGetCommonPrice(OpenRCT2::Ride* forRide, ShopItem shopItem);
 bool ShopItemHasCommonPrice(ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

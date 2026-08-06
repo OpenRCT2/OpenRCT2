@@ -14,10 +14,11 @@
 #include "Peep.h"
 
 struct CarEntry;
-struct Vehicle;
 
 namespace OpenRCT2
 {
+    struct Vehicle;
+
     constexpr int8_t kPeepMaxThoughts = 5;
 
     constexpr int8_t kPeepHungerWarningThreshold = 25;

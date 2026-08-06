@@ -15,10 +15,10 @@
 
 #include <vector>
 
-enum class RideCategory : uint8_t;
-
 namespace OpenRCT2
 {
+    enum class RideCategory : uint8_t;
+
     class RideObject final : public Object
     {
     private:

@@ -87,7 +87,7 @@ void ParkEntranceReset()
     getGameState().park.entrances.clear();
 }
 
-void RideEntranceExitPlaceProvisionalGhost()
+void OpenRCT2::RideEntranceExitPlaceProvisionalGhost()
 {
     if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
@@ -97,7 +97,7 @@ void RideEntranceExitPlaceProvisionalGhost()
     }
 }
 
-void RideEntranceExitRemoveGhost()
+void OpenRCT2::RideEntranceExitRemoveGhost()
 {
     if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
@@ -114,7 +114,7 @@ void RideEntranceExitRemoveGhost()
  *
  *  rct2: 0x006CA28C
  */
-money64 RideEntranceExitPlaceGhost(
+money64 OpenRCT2::RideEntranceExitPlaceGhost(
     const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
     RideConstructionRemoveGhosts();
