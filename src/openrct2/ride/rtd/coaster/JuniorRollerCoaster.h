@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
     .Name = "junior_rc",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 40), RideRating::make(2, 50), RideRating::make(1, 80) },
         13,
         kDynamicRideShelterRating,

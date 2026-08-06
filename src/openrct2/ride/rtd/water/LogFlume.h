@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .Name = "log_flume",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 50), RideRating::make(0, 55), RideRating::make(0, 30) },
         15,
         kDynamicRideShelterRating,

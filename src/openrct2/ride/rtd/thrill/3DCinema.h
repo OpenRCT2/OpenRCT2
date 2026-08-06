@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor CinemaRTD =
     .Name = "3d_cinema",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         21,
         7,

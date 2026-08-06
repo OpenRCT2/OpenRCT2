@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
     .Name = "compact_inverted_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 15), RideRating::make(2, 80), RideRating::make(3, 20) },
         21,
         kDynamicRideShelterRating,

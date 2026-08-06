@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
     .Name = "flying_saucers",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 40), RideRating::make(0, 55), RideRating::make(0, 39) },
         32,
         0,

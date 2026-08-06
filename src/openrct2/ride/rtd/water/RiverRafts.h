@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .Name = "river_rafts",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 45), RideRating::make(0, 25), RideRating::make(0, 34) },
         12,
         kDynamicRideShelterRating,

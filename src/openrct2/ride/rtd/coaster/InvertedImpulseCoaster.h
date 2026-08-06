@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .Name = "inverted_impulse_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(4, 00), RideRating::make(3, 00), RideRating::make(3, 20) },
         20,
         kDynamicRideShelterRating,

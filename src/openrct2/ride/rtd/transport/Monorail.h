@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .Name = "monorail",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 00), RideRating::make(0, 00), RideRating::make(0, 00) },
         14,
         kDynamicRideShelterRating,

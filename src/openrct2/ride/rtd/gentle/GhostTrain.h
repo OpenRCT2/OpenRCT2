@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     .Name = "ghost_train",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 00), RideRating::make(0, 20), RideRating::make(0, 03) },
         12,
         kDynamicRideShelterRating,

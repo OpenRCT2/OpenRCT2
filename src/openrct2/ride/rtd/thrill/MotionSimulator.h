@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .Name = "motion_simulator",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         21,
         7,

@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .Name = "launched_freefall",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 70), RideRating::make(3, 00), RideRating::make(3, 50) },
         16,
         kDynamicRideShelterRating,

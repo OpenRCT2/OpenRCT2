@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .Name = "enterprise",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(3, 60), RideRating::make(4, 55), RideRating::make(5, 72) },
         22,
         3,

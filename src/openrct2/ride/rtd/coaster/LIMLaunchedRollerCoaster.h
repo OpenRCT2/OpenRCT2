@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     .Name = "lim_launched_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 90), RideRating::make(1, 50), RideRating::make(2, 20) },
         25,
         kDynamicRideShelterRating,

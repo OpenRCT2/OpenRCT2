@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .Name = "air_powered_vertical_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(4, 13), RideRating::make(2, 50), RideRating::make(2, 80) },
         28,
         kDynamicRideShelterRating,

@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
     .Name = "wooden_wild_mouse",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 90), RideRating::make(2, 90), RideRating::make(2, 10) },
         14,
         kDynamicRideShelterRating,

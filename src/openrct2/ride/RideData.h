@@ -101,9 +101,9 @@ enum class TrackDesignCreateMode : uint_fast8_t
 
 enum class RatingsCalculationType : uint8_t
 {
-    Normal,
-    FlatRide,
-    Stall,
+    normal,
+    flatRide,
+    stall,
 };
 
 enum class RatingsModifierType : uint8_t
@@ -664,7 +664,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .Name = "invalid",
 	.RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { OpenRCT2::RideRating::make(1, 00), OpenRCT2::RideRating::make(1, 00), OpenRCT2::RideRating::make(1, 00) },
         1,
         -1,

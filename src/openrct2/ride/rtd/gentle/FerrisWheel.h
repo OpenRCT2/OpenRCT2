@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .Name = "ferris_wheel",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(0, 60), RideRating::make(0, 25), RideRating::make(0, 30) },
         16,
         0,

@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
     .Name = "twister_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 50), RideRating::make(0, 40), RideRating::make(0, 30) },
         15,
         kDynamicRideShelterRating,

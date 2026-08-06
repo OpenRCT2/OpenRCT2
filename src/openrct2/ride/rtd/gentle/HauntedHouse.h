@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
     .Name = "haunted_house",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(3, 41), RideRating::make(1, 53), RideRating::make(0, 10) },
         8,
         7,

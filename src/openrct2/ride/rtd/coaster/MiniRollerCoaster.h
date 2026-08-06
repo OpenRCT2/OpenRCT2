@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
     .Name = "mini_rc",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 55), RideRating::make(2, 40), RideRating::make(1, 85) },
         13,
         kDynamicRideShelterRating,

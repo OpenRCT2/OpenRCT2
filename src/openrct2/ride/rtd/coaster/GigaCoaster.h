@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
     .Name = "giga_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 85), RideRating::make(0, 40), RideRating::make(0, 35) },
         14,
         kDynamicRideShelterRating,

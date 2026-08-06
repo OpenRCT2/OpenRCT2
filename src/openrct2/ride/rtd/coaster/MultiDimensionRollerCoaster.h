@@ -67,7 +67,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .Name = "multi_dimension_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 75), RideRating::make(1, 95), RideRating::make(4, 79) },
         18,
         kDynamicRideShelterRating,
@@ -138,7 +138,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     .Name = "multi_dimension_rc_alt",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 75), RideRating::make(1, 95), RideRating::make(4, 79) },
         18,
         kDynamicRideShelterRating,

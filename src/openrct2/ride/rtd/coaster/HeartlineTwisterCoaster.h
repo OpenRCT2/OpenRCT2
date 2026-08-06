@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .Name = "heartline_twister_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 00), RideRating::make(1, 70), RideRating::make(1, 65) },
         18,
         kDynamicRideShelterRating,

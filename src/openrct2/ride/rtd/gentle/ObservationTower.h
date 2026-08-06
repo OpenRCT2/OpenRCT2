@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .Name = "observation_tower",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 50), RideRating::make(0, 00), RideRating::make(0, 10) },
         15,
         7,

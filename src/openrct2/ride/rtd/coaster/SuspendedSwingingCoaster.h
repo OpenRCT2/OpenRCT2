@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
     .Name = "suspended_swinging_rc",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 30), RideRating::make(2, 90), RideRating::make(3, 50) },
         18,
         kDynamicRideShelterRating,

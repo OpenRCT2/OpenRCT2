@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .Name = "spiral_slide",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(1, 50), RideRating::make(1, 40), RideRating::make(0, 90) },
         8,
         2,

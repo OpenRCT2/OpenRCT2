@@ -49,7 +49,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .Name = "cash_machine",
     .RatingsData = 
     {
-        RatingsCalculationType::Stall,
+        RatingsCalculationType::stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,

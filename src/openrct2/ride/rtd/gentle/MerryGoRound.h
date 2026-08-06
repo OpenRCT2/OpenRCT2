@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .Name = "merry_go_round",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(0, 60), RideRating::make(0, 15), RideRating::make(0, 30) },
         16,
         7,

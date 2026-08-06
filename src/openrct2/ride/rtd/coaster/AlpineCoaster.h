@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .Name = "alpine_rc",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 30), RideRating::make(2, 10), RideRating::make(1, 4) },
         7,
         kDynamicRideShelterRating,

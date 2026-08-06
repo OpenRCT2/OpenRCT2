@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor HypercoasterRTD =
     .Name = "hypercoaster",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 00), RideRating::make(0, 50), RideRating::make(0, 20) },
         16,
         kDynamicRideShelterRating,

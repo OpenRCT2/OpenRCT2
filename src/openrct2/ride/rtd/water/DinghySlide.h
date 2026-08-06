@@ -73,7 +73,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .Name = "dinghy_slide",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 70), RideRating::make(2, 00), RideRating::make(1, 50) },
         13,
         kDynamicRideShelterRating,

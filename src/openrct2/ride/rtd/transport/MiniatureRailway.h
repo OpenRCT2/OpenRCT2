@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .Name = "miniature_railway",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 50), RideRating::make(0, 00), RideRating::make(0, 00) },
         11,
         kDynamicRideShelterRating,

@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .Name = "boat_hire",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 90), RideRating::make(0, 80), RideRating::make(0, 90) },
         7,
         0,

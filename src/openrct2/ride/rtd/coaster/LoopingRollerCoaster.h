@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
     .Name = "looping_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 00), RideRating::make(0, 50), RideRating::make(0, 20) },
         15,
         kDynamicRideShelterRating,

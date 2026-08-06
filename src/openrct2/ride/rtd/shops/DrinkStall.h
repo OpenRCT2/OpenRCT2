@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor DrinkStallRTD =
     .Name = "drink_stall",
     .RatingsData = 
     {
-        RatingsCalculationType::Stall,
+        RatingsCalculationType::stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,

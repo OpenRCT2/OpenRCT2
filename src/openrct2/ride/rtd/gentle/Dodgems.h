@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .Name = "dodgems",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(1, 30), RideRating::make(0, 50), RideRating::make(0, 35) },
         16,
         7,

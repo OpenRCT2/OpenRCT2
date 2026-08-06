@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .Name = "go_karts",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 42), RideRating::make(1, 73), RideRating::make(0, 40) },
         16,
         kDynamicRideShelterRating,

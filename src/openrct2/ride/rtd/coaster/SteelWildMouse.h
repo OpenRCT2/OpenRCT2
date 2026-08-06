@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor SteelWildMouseRTD =
     .Name = "steel_wild_mouse",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 80), RideRating::make(2, 50), RideRating::make(2, 10) },
         14,
         kDynamicRideShelterRating,

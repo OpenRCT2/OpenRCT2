@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
     .Name = "classic_wooden_twister_rc",
         .RatingsData =
         {
-            RatingsCalculationType::Normal,
+            RatingsCalculationType::normal,
             { RideRating::make(3, 20), RideRating::make(2, 60), RideRating::make(2, 00) },
             19,
             kDynamicRideShelterRating,

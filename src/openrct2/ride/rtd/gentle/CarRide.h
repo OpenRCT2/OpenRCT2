@@ -66,7 +66,7 @@ constexpr RideTypeDescriptor CarRideRTD =
     .Name = "car_ride",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 00), RideRating::make(0, 50), RideRating::make(0, 00) },
         12,
         kDynamicRideShelterRating,

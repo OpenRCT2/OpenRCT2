@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
     .Name = "steeplechase",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 70), RideRating::make(2, 40), RideRating::make(1, 80) },
         14,
         kDynamicRideShelterRating,

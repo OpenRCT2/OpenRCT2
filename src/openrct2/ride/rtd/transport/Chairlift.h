@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .Name = "chairlift",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 60), RideRating::make(0, 40), RideRating::make(0, 50) },
         14,
         kDynamicRideShelterRating,

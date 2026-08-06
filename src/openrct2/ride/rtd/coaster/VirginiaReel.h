@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
     .Name = "virginia_reel",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 10), RideRating::make(1, 90), RideRating::make(3, 70) },
         19,
         kDynamicRideShelterRating,

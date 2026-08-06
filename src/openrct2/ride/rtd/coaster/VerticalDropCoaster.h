@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .Name = "vertical_drop_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 20), RideRating::make(0, 80), RideRating::make(0, 30) },
         16,
         kDynamicRideShelterRating,

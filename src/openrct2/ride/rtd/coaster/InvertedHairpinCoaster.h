@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
     .Name = "inverted_hairpin_rc",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 00), RideRating::make(2, 65), RideRating::make(2, 25) },
         14,
         kDynamicRideShelterRating,

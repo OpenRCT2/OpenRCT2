@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .Name = "mini_golf",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 50), RideRating::make(0, 90), RideRating::make(0, 00) },
         0,
         kDynamicRideShelterRating,

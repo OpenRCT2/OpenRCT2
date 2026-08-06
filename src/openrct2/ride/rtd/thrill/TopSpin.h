@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
     .Name = "top_spin",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         19,
         0,

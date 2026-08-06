@@ -68,7 +68,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .Name = "flying_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },
         17,
         kDynamicRideShelterRating,
@@ -139,7 +139,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .Name = "flying_rc_alt",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },
         17,
         kDynamicRideShelterRating,

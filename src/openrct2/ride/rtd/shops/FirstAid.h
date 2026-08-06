@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .Name = "first_aid",
     .RatingsData = 
     {
-        RatingsCalculationType::Stall,
+        RatingsCalculationType::stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,

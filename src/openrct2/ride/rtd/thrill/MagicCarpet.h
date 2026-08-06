@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .Name = "magic_carpet",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 45), RideRating::make(1, 60), RideRating::make(2, 60) },
         16,
         0,

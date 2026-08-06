@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .Name = "splash_boats",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 46), RideRating::make(0, 35), RideRating::make(0, 30) },
         15,
         kDynamicRideShelterRating,

@@ -67,7 +67,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .Name = "lay_down_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },
         18,
         kDynamicRideShelterRating,
@@ -138,7 +138,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .Name = "lay_down_rc_alt",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 85), RideRating::make(1, 15), RideRating::make(2, 75) },
         18,
         kDynamicRideShelterRating,

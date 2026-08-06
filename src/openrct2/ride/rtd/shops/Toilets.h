@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor ToiletsRTD =
     .Name = "toilets",
     .RatingsData = 
     {
-        RatingsCalculationType::Stall,
+        RatingsCalculationType::stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,

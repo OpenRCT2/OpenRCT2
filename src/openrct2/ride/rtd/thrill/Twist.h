@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor TwistRTD =
     .Name = "twist",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(1, 13), RideRating::make(0, 97), RideRating::make(1, 90) },
         16,
         0,

@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .Name = "side_friction_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 50), RideRating::make(2, 00), RideRating::make(1, 50) },
         19,
         kDynamicRideShelterRating,

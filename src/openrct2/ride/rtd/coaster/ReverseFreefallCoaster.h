@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .Name = "reverse_freefall_rc",
     .RatingsData = 
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 00), RideRating::make(3, 20), RideRating::make(2, 80) },
         25,
         kDynamicRideShelterRating,

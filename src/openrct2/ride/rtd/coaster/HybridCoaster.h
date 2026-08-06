@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .Name = "hybrid_rc",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(3, 80), RideRating::make(1, 00), RideRating::make(0, 45) },
         16,
         kDynamicRideShelterRating,

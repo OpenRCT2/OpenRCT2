@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .Name = "swinging_inverter_ship",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 50), RideRating::make(2, 70), RideRating::make(2, 74) },
         16,
         0,

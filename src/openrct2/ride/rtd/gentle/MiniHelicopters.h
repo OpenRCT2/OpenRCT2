@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
     .Name = "mini_helicopters",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 60), RideRating::make(0, 40), RideRating::make(0, 00) },
         12,
         6,
