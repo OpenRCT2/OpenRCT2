@@ -459,13 +459,13 @@ struct TrainReference
 
 enum class MiniGolfState : int16_t
 {
-    Unk0,
-    Unk1, // Unused
-    Unk2,
-    Unk3,
-    Unk4,
-    Unk5,
-    Unk6,
+    unk0,
+    unk1, // Unused
+    unk2,
+    unk3,
+    unk4,
+    unk5,
+    unk6,
 };
 
 enum class MiniGolfAnimation : uint8_t

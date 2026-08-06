@@ -312,7 +312,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             }
             switch (MiniGolfState(moveInfo->y))
             {
-                case MiniGolfState::Unk0: // Loc6DC7B4
+                case MiniGolfState::unk0: // Loc6DC7B4
                     if (!IsHead())
                     {
                         miniGolfFlags.set(MiniGolfFlag::flag3);
@@ -333,21 +333,21 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     }
                     track_progress++;
                     break;
-                case MiniGolfState::Unk1: // Loc6DC7ED
+                case MiniGolfState::unk1: // Loc6DC7ED
                     LOG_ERROR("Unused move info...");
                     assert(false);
                     var_D3 = static_cast<uint8_t>(moveInfo->z);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk2: // Loc6DC800
+                case MiniGolfState::unk2: // Loc6DC800
                     miniGolfFlags.set(MiniGolfFlag::flag0);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk3: // Loc6DC810
+                case MiniGolfState::unk3: // Loc6DC810
                     miniGolfFlags.set(MiniGolfFlag::flag1);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk4: // Loc6DC820
+                case MiniGolfState::unk4: // Loc6DC820
                 {
                     auto animation = MiniGolfAnimation(moveInfo->z);
                     // When the ride is closed occasionally the peep is removed
@@ -376,11 +376,11 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     track_progress++;
                     break;
                 }
-                case MiniGolfState::Unk5: // Loc6DC87A
+                case MiniGolfState::unk5: // Loc6DC87A
                     miniGolfFlags.set(MiniGolfFlag::flag2);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk6: // Loc6DC88A
+                case MiniGolfState::unk6: // Loc6DC88A
                     miniGolfFlags.unset(MiniGolfFlag::flag4);
                     miniGolfFlags.set(MiniGolfFlag::flag5);
                     track_progress++;
