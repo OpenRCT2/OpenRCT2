@@ -14544,11 +14544,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::squareSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::squareSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);

@@ -6000,7 +6000,7 @@ static void WoodenRCTrackOnRidePhoto(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
     TrackPaintUtilOnridePhotoSmallPaint(session, direction, height + 16, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::invertedSquare);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
