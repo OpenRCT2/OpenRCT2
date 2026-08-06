@@ -126,7 +126,7 @@ namespace OpenRCT2
             Console::WriteLine("ObjectType: %s, Number of Objects: %d", typeToName[EnumValue(objType)], list.size());
             for (auto& obj : list)
             {
-                if (obj.Generation == ObjectGeneration::JSON && obj.Identifier.empty())
+                if (obj.Generation == ObjectGeneration::json && obj.Identifier.empty())
                 {
                     // Empty object slot don't output anything
                     continue;
@@ -135,7 +135,7 @@ namespace OpenRCT2
                 Console::WriteFormat("%s Object: ", sourceGameToName[EnumValue(ori->GetFirstSourceGame())]);
 
                 std::string name{ obj.GetName() };
-                if (obj.Generation == ObjectGeneration::DAT)
+                if (obj.Generation == ObjectGeneration::dat)
                 {
                     Console::WriteLine("%08X|%s|%08X", obj.Entry.flags, name.c_str(), obj.Entry.checksum);
                 }

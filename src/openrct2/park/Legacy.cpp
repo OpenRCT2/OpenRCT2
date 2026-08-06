@@ -2230,7 +2230,7 @@ const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& des
 
     // GetFootpathSurfaceId expects an old-style DAT identifier. In early versions of the NSF,
     // we used JSON ids for legacy paths, so we have to map those to old DAT identifiers first.
-    if (desc.Generation == ObjectGeneration::JSON)
+    if (desc.Generation == ObjectGeneration::json)
     {
         auto datPathName = GetDATPathName(desc.Identifier);
         if (datPathName.has_value())

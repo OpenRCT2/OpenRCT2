@@ -462,7 +462,7 @@ namespace OpenRCT2
                         {
                             if (entry.HasValue())
                             {
-                                if (entry.Generation == ObjectGeneration::JSON)
+                                if (entry.Generation == ObjectGeneration::json)
                                 {
                                     cs.write(kDescriptorJson);
                                     cs.write(entry.Identifier);
@@ -804,7 +804,7 @@ namespace OpenRCT2
                             if (objRepository.FindObjectLegacy(legacyIdentifier) == nullptr)
                             {
                                 objRepository.AddObjectFromFile(
-                                    ObjectGeneration::DAT, legacyIdentifier, data.data(), data.size());
+                                    ObjectGeneration::dat, legacyIdentifier, data.data(), data.size());
                             }
                         }
                         else if (type == kDescriptorParkObj)
@@ -816,7 +816,7 @@ namespace OpenRCT2
                             cs.read(data.data(), data.size());
                             if (objRepository.FindObject(identifier) == nullptr)
                             {
-                                objRepository.AddObjectFromFile(ObjectGeneration::JSON, identifier, data.data(), data.size());
+                                objRepository.AddObjectFromFile(ObjectGeneration::json, identifier, data.data(), data.size());
                             }
                         }
                         else

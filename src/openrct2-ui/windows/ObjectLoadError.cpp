@@ -184,7 +184,7 @@ namespace OpenRCT2::Ui::Windows
                             auto dataLen = response.body.size();
 
                             auto& objRepo = GetContext()->GetObjectRepository();
-                            objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
+                            objRepo.AddObjectFromFile(ObjectGeneration::dat, name, data, dataLen);
 
                             std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
                             _downloadedEntries.push_back(entry);
@@ -548,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
 
                 drawText(rt, screenCoords, entry.GetName(), { Colour::darkGreen });
 
-                if (entry.Generation == ObjectGeneration::DAT)
+                if (entry.Generation == ObjectGeneration::dat)
                 {
                     // ... source game ...
                     const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
