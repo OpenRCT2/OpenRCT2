@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         constexpr ClearableItems kSceneryFootpath = 1 << 2;
     } // namespace CLEARABLE_ITEMS
 
-    class ClearAction final : public GameActionBase<GameCommand::ClearScenery>
+    class ClearAction final : public GameActionBase<GameCommand::clearScenery>
     {
     private:
         MapRange _range;

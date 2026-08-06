@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ParkMarketingAction final : public GameActionBase<GameCommand::StartMarketingCampaign>
+    class ParkMarketingAction final : public GameActionBase<GameCommand::startMarketingCampaign>
     {
     private:
         int32_t _type{};

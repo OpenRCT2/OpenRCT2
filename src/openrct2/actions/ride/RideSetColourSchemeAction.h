@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class RideSetColourSchemeAction final : public GameActionBase<GameCommand::SetColourScheme>
+    class RideSetColourSchemeAction final : public GameActionBase<GameCommand::setColourScheme>
     {
     private:
         CoordsXYZD _loc;

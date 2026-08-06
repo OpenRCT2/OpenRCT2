@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         BannerIndex bannerId = BannerIndex::GetNull();
     };
 
-    class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>
+    class BannerPlaceAction final : public GameActionBase<GameCommand::placeBanner>
     {
     private:
         CoordsXYZD _loc;

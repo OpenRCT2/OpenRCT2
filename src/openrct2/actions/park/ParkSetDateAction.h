@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ParkSetDateAction final : public GameActionBase<GameCommand::SetDate>
+    class ParkSetDateAction final : public GameActionBase<GameCommand::setDate>
     {
     private:
         int32_t _year{};

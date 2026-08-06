@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class RideEntranceExitRemoveAction final : public GameActionBase<GameCommand::RemoveRideEntranceOrExit>
+    class RideEntranceExitRemoveAction final : public GameActionBase<GameCommand::removeRideEntranceOrExit>
     {
     private:
         CoordsXY _loc;

@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class PeepSpawnPlaceAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
+    class PeepSpawnPlaceAction final : public GameActionBase<GameCommand::placePeepSpawn>
     {
     private:
         CoordsXYZD _location;

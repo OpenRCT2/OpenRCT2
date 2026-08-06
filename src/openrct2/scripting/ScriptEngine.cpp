@@ -1490,13 +1490,13 @@ JSValue ScriptEngine::GameActionResultToJS(
     if (result.error == GameActions::Status::ok)
     {
         // RideCreateAction only
-        if (action.GetType() == GameCommand::CreateRide)
+        if (action.GetType() == GameCommand::createRide)
         {
             const auto rideIndex = result.getData<RideId>();
             JS_SetPropertyStr(ctx, obj, "ride", JS_NewInt32(ctx, rideIndex.ToUnderlying()));
         }
         // StaffHireNewAction only
-        else if (action.GetType() == GameCommand::HireNewStaffMember)
+        else if (action.GetType() == GameCommand::hireNewStaffMember)
         {
             const auto actionResult = result.getData<GameActions::StaffHireNewActionResult>();
             if (!actionResult.StaffEntityId.IsNull())
@@ -1508,13 +1508,13 @@ JSValue ScriptEngine::GameActionResultToJS(
         auto bannerId = BannerIndex::GetNull();
         switch (action.GetType())
         {
-            case GameCommand::PlaceBanner:
+            case GameCommand::placeBanner:
                 bannerId = result.getData<GameActions::BannerPlaceActionResult>().bannerId;
                 break;
-            case GameCommand::PlaceLargeScenery:
+            case GameCommand::placeLargeScenery:
                 bannerId = result.getData<GameActions::LargeSceneryPlaceActionResult>().bannerId;
                 break;
-            case GameCommand::PlaceWall:
+            case GameCommand::placeWall:
                 bannerId = result.getData<GameActions::WallPlaceActionResult>().BannerId;
                 break;
             default:
@@ -1643,87 +1643,87 @@ public:
 
 // clang-format off
 const static EnumMap<GameCommand> ActionNameToType = {
-    { "balloonpress", GameCommand::BalloonPress },
-    { "bannerplace", GameCommand::PlaceBanner },
-    { "bannerremove", GameCommand::RemoveBanner },
-    { "bannersetcolour", GameCommand::SetBannerColour },
-    { "bannersetname", GameCommand::SetBannerName },
-    { "bannersetstyle", GameCommand::SetBannerStyle },
-    { "clearscenery", GameCommand::ClearScenery },
-    { "footpathplace", GameCommand::PlacePath },
-    { "footpathlayoutplace", GameCommand::PlacePathLayout },
-    { "footpathremove", GameCommand::RemovePath },
-    { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
-    { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
-    { "gamesetspeed", GameCommand::SetGameSpeed },
-    { "guestsetflags", GameCommand::GuestSetFlags },
-    { "guestsetname", GameCommand::SetGuestName },
-    { "landbuyrights", GameCommand::BuyLandRights },
-    { "landlower", GameCommand::LowerLand },
-    { "landraise", GameCommand::RaiseLand },
-    { "landsetheight", GameCommand::SetLandHeight },
-    { "landsetrights", GameCommand::SetLandOwnership },
-    { "landsmooth", GameCommand::EditLandSmooth },
-    { "largesceneryplace", GameCommand::PlaceLargeScenery },
-    { "largesceneryremove", GameCommand::RemoveLargeScenery },
-    { "largescenerysetcolour", GameCommand::SetLargeSceneryColour },
-    { "loadorquit", GameCommand::LoadOrQuit },
-    { "mapchangesize", GameCommand::ChangeMapSize },
-    { "mazeplacetrack", GameCommand::PlaceMazeDesign },
-    { "mazesettrack", GameCommand::SetMazeTrack },
-    { "networkmodifygroup", GameCommand::ModifyGroups },
-    { "parkentranceplace", GameCommand::PlaceParkEntrance },
-    { "parkentranceremove", GameCommand::RemoveParkEntrance },
-    { "parkmarketing", GameCommand::StartMarketingCampaign },
-    { "parksetdate", GameCommand::SetDate },
-    { "parksetentrancefee", GameCommand::SetParkEntranceFee },
-    { "parksetloan", GameCommand::SetCurrentLoan },
-    { "parksetname", GameCommand::SetParkName },
-    { "parksetparameter", GameCommand::SetParkOpen },
-    { "parksetresearchfunding", GameCommand::SetResearchFunding },
-    { "pausetoggle", GameCommand::TogglePause },
-    { "peeppickup", GameCommand::PickupGuest },
-    { "peepspawnplace", GameCommand::PlacePeepSpawn },
-    { "playerkick", GameCommand::KickPlayer },
-    { "playersetgroup", GameCommand::SetPlayerGroup },
-    { "ridecreate", GameCommand::CreateRide },
-    { "ridedemolish", GameCommand::DemolishRide },
-    { "rideentranceexitplace", GameCommand::PlaceRideEntranceOrExit },
-    { "rideentranceexitremove", GameCommand::RemoveRideEntranceOrExit },
-    { "ridefreezerating", GameCommand::FreezeRideRating },
-    { "ridesetappearance", GameCommand::SetRideAppearance },
-    { "ridesetcolourscheme", GameCommand::SetColourScheme },
-    { "ridesetname", GameCommand::SetRideName },
-    { "ridesetprice", GameCommand::SetRidePrice },
-    { "ridesetsetting", GameCommand::SetRideSetting },
-    { "ridesetstatus", GameCommand::SetRideStatus },
-    { "ridesetvehicle", GameCommand::SetRideVehicles },
-    { "scenariosetsetting", GameCommand::EditScenarioOptions },
-    { "cheatset", GameCommand::Cheat },
-    { "signsetname", GameCommand::SetSignName },
-    { "signsetstyle", GameCommand::SetSignStyle },
-    { "smallsceneryplace", GameCommand::PlaceScenery },
-    { "smallsceneryremove", GameCommand::RemoveScenery },
-    { "smallscenerysetcolour", GameCommand::SetSceneryColour},
-    { "stafffire", GameCommand::FireStaffMember },
-    { "staffhire", GameCommand::HireNewStaffMember },
-    { "staffsetcolour", GameCommand::SetStaffColour },
-    { "staffsetcostume", GameCommand::SetStaffCostume },
-    { "staffsetname", GameCommand::SetStaffName },
-    { "staffsetorders", GameCommand::SetStaffOrders },
-    { "staffsetpatrolarea", GameCommand::SetStaffPatrol },
-    { "surfacesetstyle", GameCommand::ChangeSurfaceStyle },
-    { "tilemodify", GameCommand::ModifyTile },
-    { "trackdesign", GameCommand::PlaceTrackDesign },
-    { "trackplace", GameCommand::PlaceTrack },
-    { "trackremove", GameCommand::RemoveTrack },
-    { "tracksetbrakespeed", GameCommand::SetBrakesSpeed },
-    { "wallplace", GameCommand::PlaceWall },
-    { "wallremove", GameCommand::RemoveWall },
-    { "wallsetcolour", GameCommand::SetWallColour },
-    { "waterlower", GameCommand::LowerWater },
-    { "waterraise", GameCommand::RaiseWater },
-    { "watersetheight", GameCommand::SetWaterHeight }
+    { "balloonpress", GameCommand::balloonPress },
+    { "bannerplace", GameCommand::placeBanner },
+    { "bannerremove", GameCommand::removeBanner },
+    { "bannersetcolour", GameCommand::setBannerColour },
+    { "bannersetname", GameCommand::setBannerName },
+    { "bannersetstyle", GameCommand::setBannerStyle },
+    { "clearscenery", GameCommand::clearScenery },
+    { "footpathplace", GameCommand::placePath },
+    { "footpathlayoutplace", GameCommand::placePathLayout },
+    { "footpathremove", GameCommand::removePath },
+    { "footpathadditionplace", GameCommand::placeFootpathAddition },
+    { "footpathadditionremove", GameCommand::removeFootpathAddition },
+    { "gamesetspeed", GameCommand::setGameSpeed },
+    { "guestsetflags", GameCommand::guestSetFlags },
+    { "guestsetname", GameCommand::setGuestName },
+    { "landbuyrights", GameCommand::buyLandRights },
+    { "landlower", GameCommand::lowerLand },
+    { "landraise", GameCommand::raiseLand },
+    { "landsetheight", GameCommand::setLandHeight },
+    { "landsetrights", GameCommand::setLandOwnership },
+    { "landsmooth", GameCommand::editLandSmooth },
+    { "largesceneryplace", GameCommand::placeLargeScenery },
+    { "largesceneryremove", GameCommand::removeLargeScenery },
+    { "largescenerysetcolour", GameCommand::setLargeSceneryColour },
+    { "loadorquit", GameCommand::loadOrQuit },
+    { "mapchangesize", GameCommand::changeMapSize },
+    { "mazeplacetrack", GameCommand::placeMazeDesign },
+    { "mazesettrack", GameCommand::setMazeTrack },
+    { "networkmodifygroup", GameCommand::modifyGroups },
+    { "parkentranceplace", GameCommand::placeParkEntrance },
+    { "parkentranceremove", GameCommand::removeParkEntrance },
+    { "parkmarketing", GameCommand::startMarketingCampaign },
+    { "parksetdate", GameCommand::setDate },
+    { "parksetentrancefee", GameCommand::setParkEntranceFee },
+    { "parksetloan", GameCommand::setCurrentLoan },
+    { "parksetname", GameCommand::setParkName },
+    { "parksetparameter", GameCommand::setParkOpen },
+    { "parksetresearchfunding", GameCommand::setResearchFunding },
+    { "pausetoggle", GameCommand::togglePause },
+    { "peeppickup", GameCommand::pickupGuest },
+    { "peepspawnplace", GameCommand::placePeepSpawn },
+    { "playerkick", GameCommand::kickPlayer },
+    { "playersetgroup", GameCommand::setPlayerGroup },
+    { "ridecreate", GameCommand::createRide },
+    { "ridedemolish", GameCommand::demolishRide },
+    { "rideentranceexitplace", GameCommand::placeRideEntranceOrExit },
+    { "rideentranceexitremove", GameCommand::removeRideEntranceOrExit },
+    { "ridefreezerating", GameCommand::freezeRideRating },
+    { "ridesetappearance", GameCommand::setRideAppearance },
+    { "ridesetcolourscheme", GameCommand::setColourScheme },
+    { "ridesetname", GameCommand::setRideName },
+    { "ridesetprice", GameCommand::setRidePrice },
+    { "ridesetsetting", GameCommand::setRideSetting },
+    { "ridesetstatus", GameCommand::setRideStatus },
+    { "ridesetvehicle", GameCommand::setRideVehicles },
+    { "scenariosetsetting", GameCommand::editScenarioOptions },
+    { "cheatset", GameCommand::cheat },
+    { "signsetname", GameCommand::setSignName },
+    { "signsetstyle", GameCommand::setSignStyle },
+    { "smallsceneryplace", GameCommand::placeScenery },
+    { "smallsceneryremove", GameCommand::removeScenery },
+    { "smallscenerysetcolour", GameCommand::setSceneryColour},
+    { "stafffire", GameCommand::fireStaffMember },
+    { "staffhire", GameCommand::hireNewStaffMember },
+    { "staffsetcolour", GameCommand::setStaffColour },
+    { "staffsetcostume", GameCommand::setStaffCostume },
+    { "staffsetname", GameCommand::setStaffName },
+    { "staffsetorders", GameCommand::setStaffOrders },
+    { "staffsetpatrolarea", GameCommand::setStaffPatrol },
+    { "surfacesetstyle", GameCommand::changeSurfaceStyle },
+    { "tilemodify", GameCommand::modifyTile },
+    { "trackdesign", GameCommand::placeTrackDesign },
+    { "trackplace", GameCommand::placeTrack },
+    { "trackremove", GameCommand::removeTrack },
+    { "tracksetbrakespeed", GameCommand::setBrakesSpeed },
+    { "wallplace", GameCommand::placeWall },
+    { "wallremove", GameCommand::removeWall },
+    { "wallsetcolour", GameCommand::setWallColour },
+    { "waterlower", GameCommand::lowerWater },
+    { "waterraise", GameCommand::raiseWater },
+    { "watersetheight", GameCommand::setWaterHeight }
 };
 // clang-format on
 
@@ -1756,7 +1756,7 @@ void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, Gam
         JSValue obj = JS_NewObject(ctx);
 
         auto actionId = action.GetType();
-        if (action.GetType() == GameCommand::Custom)
+        if (action.GetType() == GameCommand::custom)
         {
             auto customAction = static_cast<const GameActions::CustomAction&>(action);
             JS_SetPropertyStr(ctx, obj, "action", JSFromStdString(ctx, customAction.GetId()));

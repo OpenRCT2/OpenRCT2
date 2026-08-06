@@ -15,7 +15,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class TrackDesignAction final : public GameActionBase<GameCommand::PlaceTrackDesign>
+    class TrackDesignAction final : public GameActionBase<GameCommand::placeTrackDesign>
     {
     private:
         CoordsXYZD _loc;

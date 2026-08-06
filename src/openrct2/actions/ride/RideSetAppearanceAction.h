@@ -27,7 +27,7 @@ namespace OpenRCT2::GameActions
         sellingItemColourIsRandom
     };
 
-    class RideSetAppearanceAction final : public GameActionBase<GameCommand::SetRideAppearance>
+    class RideSetAppearanceAction final : public GameActionBase<GameCommand::setRideAppearance>
     {
     private:
         RideId _rideIndex{ RideId::GetNull() };

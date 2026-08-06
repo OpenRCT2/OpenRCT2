@@ -14,7 +14,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class MapChangeSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
+    class MapChangeSizeAction final : public GameActionBase<GameCommand::changeMapSize>
     {
     public:
         MapChangeSizeAction() = default;
