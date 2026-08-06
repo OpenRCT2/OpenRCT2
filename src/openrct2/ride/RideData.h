@@ -64,21 +64,21 @@ struct RideComponentName
 
 enum class RideComponentType
 {
-    Train,
-    Boat,
-    Track,
-    DockingPlatform,
-    Station,
-    Car,
-    Building,
-    Structure,
-    Ship,
-    Cabin,
-    Wheel,
-    Ring,
-    Player,
-    Course,
-    Count
+    train,
+    boat,
+    track,
+    dockingPlatform,
+    station,
+    car,
+    building,
+    structure,
+    ship,
+    cabin,
+    wheel,
+    ring,
+    player,
+    course,
+    count
 };
 
 enum class RideColourKey : uint8_t
@@ -646,7 +646,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .BoosterSettings = {},
     .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
     .availableBreakdowns = {},
     .Heights = { 12, 64, 0, 0, },
     .MaxMass = 255,
