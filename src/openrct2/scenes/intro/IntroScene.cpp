@@ -76,16 +76,16 @@ namespace OpenRCT2
     private:
         enum class IntroState : uint8_t
         {
-            None,
-            PublisherBegin,
-            PublisherScroll,
-            DeveloperBegin,
-            DeveloperScroll,
-            LogoFadeIn,
-            LogoWait,
-            LogoFadeOut,
-            Clear = 254,
-            Finish = 255,
+            none,
+            publisherBegin,
+            publisherScroll,
+            developerBegin,
+            developerScroll,
+            logoFadeIn,
+            logoWait,
+            logoFadeOut,
+            clear = 254,
+            finish = 255,
         };
 
         IntroState _introState;
@@ -109,17 +109,17 @@ namespace OpenRCT2
 
     bool IntroSceneImpl::IntroIsPlaying()
     {
-        return _introState != IntroState::None;
+        return _introState != IntroState::none;
     }
 
     void IntroSceneImpl::Load()
     {
-        _introState = IntroState::PublisherBegin;
+        _introState = IntroState::publisherBegin;
     }
 
     void IntroSceneImpl::Stop()
     {
-        _introState = IntroState::None;
+        _introState = IntroState::none;
         LoadPalette();
     }
 
@@ -131,7 +131,7 @@ namespace OpenRCT2
 
         switch (_introState)
         {
-            case IntroState::PublisherBegin:
+            case IntroState::publisherBegin:
                 LoadPalette();
 
                 // Set the Y for the Infogrames logo
@@ -140,9 +140,9 @@ namespace OpenRCT2
                 // Play the chain lift sound
                 _soundChannel = Audio::CreateAudioChannel(SoundId::liftBM, true);
                 _chainLiftFinished = false;
-                _introState = IntroState::PublisherScroll;
+                _introState = IntroState::publisherScroll;
                 break;
-            case IntroState::PublisherScroll:
+            case IntroState::publisherScroll:
                 // Move the Infogrames logo down
                 _introStateCounter += 5;
 
@@ -150,17 +150,17 @@ namespace OpenRCT2
                 if (_introStateCounter > ContextGetHeight())
                 {
                     _introStateCounter = -116;
-                    _introState = IntroState::DeveloperBegin;
+                    _introState = IntroState::developerBegin;
                 }
 
                 break;
-            case IntroState::DeveloperBegin:
+            case IntroState::developerBegin:
                 // Set the Y for the Chris Sawyer logo
                 _introStateCounter = -116;
 
-                _introState = IntroState::DeveloperScroll;
+                _introState = IntroState::developerScroll;
                 break;
-            case IntroState::DeveloperScroll:
+            case IntroState::developerScroll:
                 _introStateCounter += 5;
 
                 // Check if logo is almost scrolled to the bottom
@@ -193,20 +193,20 @@ namespace OpenRCT2
                     // Play long peep scream sound
                     _soundChannel = Audio::CreateAudioChannel(SoundId::scream1);
 
-                    _introState = IntroState::LogoFadeIn;
+                    _introState = IntroState::logoFadeIn;
                     _introStateCounter = 0;
                 }
                 break;
-            case IntroState::LogoFadeIn:
+            case IntroState::logoFadeIn:
                 // Fade in, add 4 / 256 to fading
                 _introStateCounter += 0x400;
                 if (_introStateCounter > 0xFF00)
                 {
-                    _introState = IntroState::LogoWait;
+                    _introState = IntroState::logoWait;
                     _introStateCounter = 0;
                 }
                 break;
-            case IntroState::LogoWait:
+            case IntroState::logoWait:
                 // Wait 80 game ticks
                 _introStateCounter++;
                 if (_introStateCounter >= 80)
@@ -214,18 +214,18 @@ namespace OpenRCT2
                     // Set fading to 256
                     _introStateCounter = 0xFF00;
 
-                    _introState = IntroState::LogoFadeOut;
+                    _introState = IntroState::logoFadeOut;
                 }
                 break;
-            case IntroState::LogoFadeOut:
+            case IntroState::logoFadeOut:
                 // Fade out, subtract 4 / 256 from fading
                 _introStateCounter -= 0x400;
                 if (_introStateCounter < 0)
                 {
-                    _introState = IntroState::Clear;
+                    _introState = IntroState::clear;
                 }
                 break;
-            case IntroState::Clear:
+            case IntroState::clear:
                 // Stop any playing sound
                 if (_soundChannel != nullptr)
                 {
@@ -236,11 +236,11 @@ namespace OpenRCT2
                 if (gOpenRCT2Headless)
                 {
                     // Move to next part
-                    _introState = IntroState::Finish;
+                    _introState = IntroState::finish;
                     _introStateCounter = 0;
                 }
                 break;
-            case IntroState::Finish:
+            case IntroState::finish:
             {
                 auto* sceneMgr = sceneContext.GetSceneManager();
                 sceneMgr->setActiveScene(sceneMgr->getTitleScene());
@@ -265,10 +265,10 @@ namespace OpenRCT2
 
         switch (_introState)
         {
-            case IntroState::PublisherBegin:
+            case IntroState::publisherBegin:
                 GfxClear(rt, kBackgroundColourDark);
                 break;
-            case IntroState::PublisherScroll:
+            case IntroState::publisherScroll:
             {
                 GfxClear(rt, kBackgroundColourDark);
 
@@ -285,18 +285,18 @@ namespace OpenRCT2
                 GfxDrawSprite(rt, ImageId(kSpriteInfogramesLogo11), leftTopLogo + ScreenCoordsXY(250, 250));
                 break;
             }
-            case IntroState::DeveloperBegin:
+            case IntroState::developerBegin:
                 GfxClear(rt, kBackgroundColourDark);
                 GfxTransposePalette(kPaletteChrisSawyerLogo, 255);
                 break;
-            case IntroState::DeveloperScroll:
+            case IntroState::developerScroll:
                 GfxClear(rt, kBackgroundColourDark);
 
                 // Draw Chris Sawyer logo
                 GfxDrawSprite(rt, ImageId(kSpriteChrisSawyerLogo00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
                 GfxDrawSprite(rt, ImageId(kSpriteChrisSawyerLogo10), { (screenWidth / 2) - 320 + 320, _introStateCounter });
                 break;
-            case IntroState::LogoFadeIn:
+            case IntroState::logoFadeIn:
                 if (_introStateCounter <= 0xFF00)
                 {
                     GfxTransposePalette(kPaletteRCT2Logo, (_introStateCounter >> 8) & 0xFF);
@@ -307,10 +307,10 @@ namespace OpenRCT2
                 }
                 ScreenIntroDrawLogo(rt);
                 break;
-            case IntroState::LogoWait:
+            case IntroState::logoWait:
                 ScreenIntroDrawLogo(rt);
                 break;
-            case IntroState::LogoFadeOut:
+            case IntroState::logoFadeOut:
                 if (_introStateCounter >= 0)
                 {
                     GfxTransposePalette(kPaletteRCT2Logo, (_introStateCounter >> 8) & 0xFF);
@@ -321,11 +321,11 @@ namespace OpenRCT2
                 }
                 ScreenIntroDrawLogo(rt);
                 break;
-            case IntroState::Clear:
+            case IntroState::clear:
                 GfxClear(rt, kBackgroundColourDark);
 
                 // Move to next part. Has to be done here to ensure the screen is cleared.
-                _introState = IntroState::Finish;
+                _introState = IntroState::finish;
                 _introStateCounter = 0;
                 break;
             default:
@@ -362,10 +362,10 @@ namespace OpenRCT2
     {
         switch (_introState)
         {
-            case IntroState::None:
+            case IntroState::none:
                 break;
             default:
-                _introState = IntroState::Clear;
+                _introState = IntroState::clear;
                 break;
         }
     }
