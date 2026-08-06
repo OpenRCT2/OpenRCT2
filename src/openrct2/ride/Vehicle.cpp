@@ -968,7 +968,7 @@ namespace OpenRCT2
         ride.maxPositiveVerticalG = MakeFixed16_2dp(1, 0);
         ride.maxNegativeVerticalG = MakeFixed16_2dp(1, 0);
         ride.maxLateralG = 0;
-        ride.previousVerticalG = 0;
+        ride.previousVerticalG = MakeFixed16_2dp(1, 0);
         ride.previousLateralG = 0;
         ride.testingFlags.clearAll();
         ride.curTestTrackLocation.SetNull();
