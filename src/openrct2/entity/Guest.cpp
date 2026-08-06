@@ -3033,11 +3033,11 @@ namespace OpenRCT2
                             if (musicObject == nullptr)
                                 break;
 
-                            if (musicObject->GetNiceFactor() == MusicNiceFactor::Nice)
+                            if (musicObject->GetNiceFactor() == MusicNiceFactor::nice)
                             {
                                 nearby_music |= 1;
                             }
-                            else if (musicObject->GetNiceFactor() == MusicNiceFactor::Overbearing)
+                            else if (musicObject->GetNiceFactor() == MusicNiceFactor::overbearing)
                             {
                                 nearby_music |= 2;
                             }

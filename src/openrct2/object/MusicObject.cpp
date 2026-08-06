@@ -104,7 +104,7 @@ namespace OpenRCT2
         _originalStyleId = {};
         _rideTypes.clear();
         _tracks.clear();
-        _niceFactor = MusicNiceFactor::Neutral;
+        _niceFactor = MusicNiceFactor::neutral;
 
         auto& properties = root["properties"];
         if (properties != nullptr)
