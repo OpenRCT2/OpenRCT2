@@ -143,10 +143,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP,
         WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN,
         WIDX_SIMULATE,
-        WIDX_SPEED_GROUPBOX = WIDX_BANKING_GROUPBOX,
-        WIDX_SPEED_SETTING_SPINNER = WIDX_BANK_LEFT,
-        WIDX_SPEED_SETTING_SPINNER_UP = WIDX_BANK_STRAIGHT,
-        WIDX_SPEED_SETTING_SPINNER_DOWN = WIDX_BANK_RIGHT,
+        WIDX_SPEED_GROUPBOX,
+        WIDX_SPEED_SETTING_SPINNER,
+        WIDX_SPEED_SETTING_SPINNER_UP,
+        WIDX_SPEED_SETTING_SPINNER_DOWN,
     };
 
     VALIDATE_GLOBAL_WIDX(WC_RIDE_CONSTRUCTION, WIDX_CONSTRUCT);
@@ -157,9 +157,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto kRideConstructionWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget        ({  3,  17}, {     kGroupWidth,  57}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
-        makeWidget        ({  3,  76}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
-        makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
+        makeWidget        ({  3,  17}, {     kGroupWidth,  57}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
+        makeWidget        ({  3,  76}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
+        makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
         makeWidget        ({  6,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_VERY_SMALL_TIP     ),
         makeWidget        ({ 28,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_LEFT),           STR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL_TIP          ),
         makeWidget        ({ 50,  29}, {              22,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE),        STR_RIDE_CONSTRUCTION_LEFT_CURVE_TIP                ),
@@ -178,9 +178,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({126,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
         makeWidget        ({150,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_RISE),     STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP             ),
         makeWidget        ({178,  88}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CHAIN_LIFT),                          STR_RIDE_CONSTRUCTION_CHAIN_LIFT_TIP                ),
-        makeWidget        ({ 69, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
-        makeWidget        ({ 93, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
-        makeWidget        ({117, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
+        makeWidget        ({ 54, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
+        makeWidget        ({ 78, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
+        makeWidget        ({102, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
         makeWidget        ({  3, 164}, {     kGroupWidth, 170}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                                       STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP),
         makeWidget        ({ 82, 338}, {              46,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),            STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP),
         makeWidget        ({ 52, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_PREVIOUS),                            STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP  ),
@@ -191,9 +191,11 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({ 94, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_ROTATE_ARROW),                        STR_ROTATE_90_TIP                                   ),
         makeWidget        ({ 41, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP       ),
         makeWidget        ({144, 132}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP   ),
-        makeWidget        ({118, 120}, {              89,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
-        makeSpinnerWidgets({123, 138}, {              58,  12}, WidgetType::spinner,  WindowColour::secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
-        makeWidget        ({161, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               )
+        makeWidget        ({118, 120}, {              89,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
+        makeSpinnerWidgets({123, 136}, {              58,  14}, WidgetType::spinner,  WindowColour::secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
+        makeWidget        ({161, 338}, {              24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               ),
+        makeWidget        ({  3, 120}, {     kGroupWidth,  41}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_BRAKE_SPEED                                                                     ),
+        makeSpinnerWidgets({ 12, 136}, {              85,  14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty,                                   STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP         )
     );
     // clang-format on
 
@@ -993,14 +995,16 @@ namespace OpenRCT2::Ui::Windows
                     | (1uLL << WIDX_SPECIAL_TRACK_DROPDOWN) | (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN)
                     | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP) | (1uLL << WIDX_CHAIN_LIFT)
                     | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_STRAIGHT) | (1uLL << WIDX_BANK_RIGHT)
-                    | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
+                    | (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE) | (1uLL << WIDX_SPEED_GROUPBOX)
+                    | (1uLL << WIDX_SPEED_SETTING_SPINNER) | (1uLL << WIDX_SPEED_SETTING_SPINNER_UP)
+                    | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
             if (_currentlyShowingBrakeOrBoosterSpeed)
             {
-                newDisabledWidgets &= ~(1uLL << WIDX_BANKING_GROUPBOX);
-                newDisabledWidgets &= ~(1uLL << WIDX_BANK_LEFT);
-                newDisabledWidgets &= ~(1uLL << WIDX_BANK_STRAIGHT);
-                newDisabledWidgets &= ~(1uLL << WIDX_BANK_RIGHT);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_GROUPBOX);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_SETTING_SPINNER);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_SETTING_SPINNER_UP);
+                newDisabledWidgets &= ~(1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
 
             // If chain lift cheat is enabled then show the chain lift widget no matter what
@@ -1430,71 +1434,66 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_BANK_LEFT:
                     RideConstructionInvalidateCurrentTrack();
-                    if (!_currentlyShowingBrakeOrBoosterSpeed)
-                    {
-                        _currentTrackRollEnd = TrackRoll::left;
-                        _currentTrackPrice = kMoney64Undefined;
-                        WindowRideConstructionUpdateActiveElements();
-                    }
+                    _currentTrackRollEnd = TrackRoll::left;
+                    _currentTrackPrice = kMoney64Undefined;
+                    WindowRideConstructionUpdateActiveElements();
                     break;
                 case WIDX_BANK_STRAIGHT:
                     RideConstructionInvalidateCurrentTrack();
-                    if (!_currentlyShowingBrakeOrBoosterSpeed)
-                    {
-                        _currentTrackRollEnd = TrackRoll::none;
-                        _currentTrackPrice = kMoney64Undefined;
-                        WindowRideConstructionUpdateActiveElements();
-                    }
-                    else
-                    {
-                        auto trackSpeedMaximum = kMaximumTrackSpeed;
-                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
-                        uint8_t brakesSpeed = std::min<int16_t>(trackSpeedMaximum, _currentBrakeSpeed + trackSpeedIncrement);
-                        if (brakesSpeed != _currentBrakeSpeed)
-                        {
-                            if (_rideConstructionState == RideConstructionState::selected)
-                            {
-                                SetBrakeSpeed(brakesSpeed);
-                            }
-                            else
-                            {
-                                _currentBrakeSpeed = brakesSpeed;
-                                WindowRideConstructionUpdateActiveElements();
-                            }
-                        }
-                    }
+                    _currentTrackRollEnd = TrackRoll::none;
+                    _currentTrackPrice = kMoney64Undefined;
+                    WindowRideConstructionUpdateActiveElements();
                     break;
                 case WIDX_BANK_RIGHT:
                     RideConstructionInvalidateCurrentTrack();
-                    if (!_currentlyShowingBrakeOrBoosterSpeed)
+                    _currentTrackRollEnd = TrackRoll::right;
+                    _currentTrackPrice = kMoney64Undefined;
+                    WindowRideConstructionUpdateActiveElements();
+                    break;
+                case WIDX_SPEED_SETTING_SPINNER_UP:
+                {
+                    RideConstructionInvalidateCurrentTrack();
+                    auto trackSpeedMaximum = kMaximumTrackSpeed;
+                    auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                    uint8_t brakesSpeed = std::min<int16_t>(trackSpeedMaximum, _currentBrakeSpeed + trackSpeedIncrement);
+                    if (brakesSpeed != _currentBrakeSpeed)
                     {
-                        _currentTrackRollEnd = TrackRoll::right;
-                        _currentTrackPrice = kMoney64Undefined;
-                        WindowRideConstructionUpdateActiveElements();
-                    }
-                    else
-                    {
-                        auto trackSpeedIncrement = kDefaultSpeedIncrement;
-                        auto trackSpeedMinimum = kDefaultMinimumSpeed;
-                        if (getGameState().cheats.unlockOperatingLimits)
+                        if (_rideConstructionState == RideConstructionState::selected)
                         {
-                            trackSpeedMinimum = 0;
+                            SetBrakeSpeed(brakesSpeed);
                         }
-                        uint8_t brakesSpeed = std::max<int16_t>(trackSpeedMinimum, _currentBrakeSpeed - trackSpeedIncrement);
-                        if (brakesSpeed != _currentBrakeSpeed)
+                        else
                         {
-                            if (_rideConstructionState == RideConstructionState::selected)
-                            {
-                                SetBrakeSpeed(brakesSpeed);
-                            }
-                            else
-                            {
-                                _currentBrakeSpeed = brakesSpeed;
-                                WindowRideConstructionUpdateActiveElements();
-                            }
+                            _currentBrakeSpeed = brakesSpeed;
+                            WindowRideConstructionUpdateActiveElements();
                         }
                     }
                     break;
+                }
+                case WIDX_SPEED_SETTING_SPINNER_DOWN:
+                {
+                    RideConstructionInvalidateCurrentTrack();
+                    auto trackSpeedIncrement = kDefaultSpeedIncrement;
+                    auto trackSpeedMinimum = kDefaultMinimumSpeed;
+                    if (getGameState().cheats.unlockOperatingLimits)
+                    {
+                        trackSpeedMinimum = 0;
+                    }
+                    uint8_t brakesSpeed = std::max<int16_t>(trackSpeedMinimum, _currentBrakeSpeed - trackSpeedIncrement);
+                    if (brakesSpeed != _currentBrakeSpeed)
+                    {
+                        if (_rideConstructionState == RideConstructionState::selected)
+                        {
+                            SetBrakeSpeed(brakesSpeed);
+                        }
+                        else
+                        {
+                            _currentBrakeSpeed = brakesSpeed;
+                            WindowRideConstructionUpdateActiveElements();
+                        }
+                    }
+                    break;
+                }
                 case WIDX_SPECIAL_TRACK_DROPDOWN:
                     ShowSpecialTrackDropdown(widgets[widgetIndex]);
                     break;
@@ -1725,16 +1724,17 @@ namespace OpenRCT2::Ui::Windows
 
         void updateWidgets()
         {
-            auto currentRide = GetRide(_currentRideIndex);
+            const auto* currentRide = GetRide(_currentRideIndex);
             if (currentRide == nullptr)
             {
                 return;
             }
 
             const auto& rtd = GetRideTypeDescriptor(currentRide->type);
-            auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
+            const auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             widgetsSetHoldable(*this, { WIDX_CONSTRUCT, WIDX_DEMOLISH, WIDX_NEXT_SECTION, WIDX_PREVIOUS_SECTION });
+
             const bool showEntranceExit = !rtd.flags.has(RtdFlag::isShopOrFacility) && currentRide->hasStation();
             widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].setVisible(showEntranceExit);
             widgets[WIDX_ENTRANCE].setVisible(showEntranceExit);
@@ -1742,29 +1742,27 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_SPECIAL_TRACK_DROPDOWN].setVisible(_specialElementDropdownState.HasActiveElements);
 
+            // Directional arrows
             widgets[WIDX_STRAIGHT].setVisible(IsTrackEnabled(TrackGroup::straight));
-
             widgets[WIDX_LEFT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
             widgets[WIDX_RIGHT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
-
             widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
-
             widgets[WIDX_LEFT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
             widgets[WIDX_RIGHT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
-
             widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
             widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
-
             widgets[WIDX_LEFT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
             widgets[WIDX_RIGHT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
 
+            // Slope arrows
             widgets[WIDX_SLOPE_DOWN_STEEP].setHidden();
             widgets[WIDX_SLOPE_DOWN].setHidden();
             widgets[WIDX_LEVEL].setHidden();
             widgets[WIDX_SLOPE_UP].setHidden();
             widgets[WIDX_SLOPE_UP_STEEP].setHidden();
 
+            // NB: these particular ones can be shared with helixes
             widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP);
             widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
             widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP);
@@ -1904,61 +1902,50 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            auto top = 118 + widgets[WIDX_TITLE].bottom;
-            auto bottom = top + 23;
-            widgets[WIDX_BANKING_GROUPBOX].image = ImageId(STR_RIDE_CONSTRUCTION_ROLL_BANKING);
-            widgets[WIDX_BANK_LEFT].image = ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK);
-            widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP;
-            widgets[WIDX_BANK_LEFT].left = 69;
-            widgets[WIDX_BANK_LEFT].right = 92;
-            widgets[WIDX_BANK_LEFT].top = top;
-            widgets[WIDX_BANK_LEFT].bottom = bottom;
-            widgets[WIDX_BANK_STRAIGHT].image = ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK);
-            widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_NO_ROLL_TIP;
-            widgets[WIDX_BANK_STRAIGHT].left = 93;
-            widgets[WIDX_BANK_STRAIGHT].right = 116;
-            widgets[WIDX_BANK_STRAIGHT].top = top;
-            widgets[WIDX_BANK_STRAIGHT].bottom = bottom;
-            widgets[WIDX_BANK_RIGHT].image = ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK);
-            widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP;
-            widgets[WIDX_BANK_RIGHT].left = 117;
-            widgets[WIDX_BANK_RIGHT].right = 140;
-            widgets[WIDX_BANK_RIGHT].top = top;
-            widgets[WIDX_BANK_RIGHT].bottom = bottom;
+            widgets[WIDX_BANKING_GROUPBOX].setVisible();
             widgets[WIDX_BANK_LEFT].setHidden();
             widgets[WIDX_BANK_STRAIGHT].setHidden();
             widgets[WIDX_BANK_RIGHT].setHidden();
             widgets[WIDX_U_TRACK].setHidden();
             widgets[WIDX_O_TRACK].setHidden();
 
-            bool trackHasSpeedSetting = trackTypeHasSpeedSetting(_selectedTrackType)
+            widgets[WIDX_SPEED_GROUPBOX].setHidden();
+            widgets[WIDX_SPEED_SETTING_SPINNER].setHidden();
+            widgets[WIDX_SPEED_SETTING_SPINNER_UP].setHidden();
+            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].setHidden();
+
+            const bool trackHasSpeedSetting = trackTypeHasSpeedSetting(_selectedTrackType)
                 || trackTypeHasSpeedSetting(_currentlySelectedTrack.trackType);
-            bool boosterTrackSelected = trackTypeIsBooster(_selectedTrackType)
+            const bool boosterTrackSelected = trackTypeIsBooster(_selectedTrackType)
                 || trackTypeIsBooster(_currentlySelectedTrack.trackType);
 
             // only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
-            bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::blockBrakes
+            const bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::blockBrakes
                 || _currentlySelectedTrack == TrackElemType::blockBrakes || _selectedTrackType > TrackElemType::highestAlias
                 || _currentlySelectedTrack.trackType > TrackElemType::highestAlias;
 
-            bool rideHasSeatRotation = rtd.flags.has(RtdFlag::hasSeatRotation);
+            const bool rideHasSeatRotation = rtd.flags.has(RtdFlag::hasSeatRotation);
 
             if (!trackHasSpeedSetting)
             {
-                if (IsTrackEnabled(TrackGroup::flatRollBanking))
-                {
-                    // TODO: unwrangle these from WIDX_SPEED_SETTING_SPINNER{,_UP,_DOWN}
-                    widgets[WIDX_BANK_LEFT].type = WidgetType::flatBtn;
-                    widgets[WIDX_BANK_STRAIGHT].type = WidgetType::flatBtn;
-                    widgets[WIDX_BANK_RIGHT].type = WidgetType::flatBtn;
-                    widgets[WIDX_BANK_LEFT].setVisible();
-                    widgets[WIDX_BANK_STRAIGHT].setVisible();
-                    widgets[WIDX_BANK_RIGHT].setVisible();
-                }
+                const bool hasFlatRollBanking = IsTrackEnabled(TrackGroup::flatRollBanking);
+                widgets[WIDX_BANK_LEFT].setVisible(hasFlatRollBanking);
+                widgets[WIDX_BANK_STRAIGHT].setVisible(hasFlatRollBanking);
+                widgets[WIDX_BANK_RIGHT].setVisible(hasFlatRollBanking);
                 onDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
             }
             else
             {
+                widgets[WIDX_BANKING_GROUPBOX].setHidden();
+                widgets[WIDX_SPEED_GROUPBOX].setVisible();
+                widgets[WIDX_SPEED_SETTING_SPINNER].setVisible();
+                widgets[WIDX_SPEED_SETTING_SPINNER_UP].setVisible();
+                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].setVisible();
+
+                widgetsSetHoldable(*this, { WIDX_SPEED_SETTING_SPINNER_UP, WIDX_SPEED_SETTING_SPINNER_DOWN });
+
+                _currentlyShowingBrakeOrBoosterSpeed = true;
+
                 if (!boosterTrackSelected)
                 {
                     widgets[WIDX_SPEED_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
@@ -1973,30 +1960,11 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SPEED_SETTING_SPINNER_UP].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
                     widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
                 }
-
-                _currentlyShowingBrakeOrBoosterSpeed = true;
-
-                // TODO: unwrangle these from WIDX_BANK_{LEFT,RIGHT,STRAIGHT}
-                widgets[WIDX_SPEED_SETTING_SPINNER].type = WidgetType::spinner;
-                widgets[WIDX_SPEED_SETTING_SPINNER_UP].type = WidgetType::button;
-                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WidgetType::button;
-
-                widgets[WIDX_SPEED_SETTING_SPINNER].setVisible();
-                widgets[WIDX_SPEED_SETTING_SPINNER_UP].setVisible();
-                widgets[WIDX_SPEED_SETTING_SPINNER_UP].text = STR_NUMERIC_UP;
-                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].setVisible();
-                widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
-
-                auto spinnerStart = 124 + widgets[WIDX_TITLE].bottom;
-                resizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, spinnerStart }, { 85, kSpinnerHeight });
-
-                widgetsSetHoldable(*this, { WIDX_SPEED_SETTING_SPINNER_UP, WIDX_SPEED_SETTING_SPINNER_DOWN });
             }
 
-            static constexpr int16_t bankingGroupboxRightNoSeatRotation = kGroupWidth;
-            static constexpr int16_t bankingGroupboxRightWithSeatRotation = 114;
+            constexpr int16_t kGroupboxRightNoSeatRotation = kGroupWidth + 2;
+            constexpr int16_t kGroupboxRightWithSeatRotation = 114;
 
-            widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightNoSeatRotation;
             widgets[WIDX_SEAT_ROTATION_GROUPBOX].setHidden();
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].setHidden();
             widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].setHidden();
@@ -2010,27 +1978,33 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].setVisible();
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].setVisible();
                 widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].setVisible();
-                widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightWithSeatRotation;
 
                 // squishes the track speed spinner slightly to make room for the seat rotation widgets
                 if (trackHasSpeedSetting)
                 {
-                    widgets[WIDX_SPEED_SETTING_SPINNER].left -= 4;
-                    widgets[WIDX_SPEED_SETTING_SPINNER].right -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_UP].right -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].right -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_UP].left -= 8;
-                    widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].left -= 8;
+                    widgets[WIDX_SPEED_GROUPBOX].right = kGroupboxRightWithSeatRotation;
+
+                    auto spinnerStart = 123 + widgets[WIDX_TITLE].bottom;
+                    resizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 8, spinnerStart }, { 85 - 12, kSpinnerHeight });
                 }
                 // moves banking buttons to the left to make room for the seat rotation widgets
                 else if (IsTrackEnabled(TrackGroup::flatRollBanking))
                 {
+                    widgets[WIDX_BANKING_GROUPBOX].right = kGroupboxRightWithSeatRotation;
+
+                    auto startX = 25;
                     for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
                     {
-                        widgets[i].left -= 36;
-                        widgets[i].right -= 36;
+                        auto& widget = widgets[i];
+                        widget.moveToX(startX);
+                        startX += widget.width();
                     }
                 }
+            }
+            else
+            {
+                widgets[WIDX_BANKING_GROUPBOX].right = kGroupboxRightNoSeatRotation;
+                widgets[WIDX_SPEED_GROUPBOX].right = kGroupboxRightNoSeatRotation;
             }
 
             uint64_t newPressedWidgets = 0;

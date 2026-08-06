@@ -221,8 +221,8 @@ namespace OpenRCT2
     constexpr uint8_t kListRowHeight = 12;
     constexpr uint8_t kTableCellHeight = 12;
     constexpr uint8_t kButtonFaceHeight = 12;
-    constexpr uint8_t kSpinnerHeight = 12;
-    constexpr uint8_t kDropdownHeight = 12;
+    constexpr uint8_t kSpinnerHeight = 14;
+    constexpr uint8_t kDropdownHeight = 14;
 
     constexpr uint16_t kTextInputSize = 1024;
     constexpr uint16_t kTopToolbarHeight = 27;
