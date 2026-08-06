@@ -70,7 +70,7 @@ namespace OpenRCT2::Ui::Windows
 
             gWindowSceneryScatterEnabled = true;
             gWindowSceneryScatterSize = 16;
-            gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+            gWindowSceneryScatterDensity = ScatterToolDensity::mediumDensity;
         }
 
         void onClose() override
@@ -108,15 +108,15 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_DENSITY_LOW:
-                    gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
+                    gWindowSceneryScatterDensity = ScatterToolDensity::lowDensity;
                     break;
 
                 case WIDX_DENSITY_MEDIUM:
-                    gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+                    gWindowSceneryScatterDensity = ScatterToolDensity::mediumDensity;
                     break;
 
                 case WIDX_DENSITY_HIGH:
-                    gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
+                    gWindowSceneryScatterDensity = ScatterToolDensity::highDensity;
                     break;
             }
         }
@@ -165,13 +165,13 @@ namespace OpenRCT2::Ui::Windows
             WidgetIndex pressedDensity = WIDX_DENSITY_HIGH;
             switch (gWindowSceneryScatterDensity)
             {
-                case ScatterToolDensity::LowDensity:
+                case ScatterToolDensity::lowDensity:
                     pressedDensity = WIDX_DENSITY_LOW;
                     break;
-                case ScatterToolDensity::MediumDensity:
+                case ScatterToolDensity::mediumDensity:
                     pressedDensity = WIDX_DENSITY_MEDIUM;
                     break;
-                case ScatterToolDensity::HighDensity:
+                case ScatterToolDensity::highDensity:
                     pressedDensity = WIDX_DENSITY_HIGH;
                     break;
             }
