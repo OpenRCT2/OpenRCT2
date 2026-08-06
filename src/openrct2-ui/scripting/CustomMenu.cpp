@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
         scriptEngine.ExecutePluginCall(Owner, Callback.callback, {}, false);
     }
 
-    static constexpr std::array<std::string_view, EnumValue(CursorID::count)> CursorNames = {
+    static constexpr std::array<std::string_view, EnumValue(CursorID::count)> kCursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
         "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
         "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
@@ -74,9 +74,9 @@ namespace OpenRCT2::Scripting
     JSValue CursorIDToJSValue(JSContext* ctx, CursorID id)
     {
         auto idVal = EnumValue(id);
-        if (idVal < CursorNames.size())
+        if (idVal < kCursorNames.size())
         {
-            return JSFromStdString(ctx, CursorNames[idVal]);
+            return JSFromStdString(ctx, kCursorNames[idVal]);
         }
         return JS_UNDEFINED;
     }
@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
             std::string valueStr = JSToStdString(ctx, value);
             for (uint8_t i = 0; i < EnumValue(CursorID::count); i++)
             {
-                if (CursorNames[i] == valueStr)
+                if (kCursorNames[i] == valueStr)
                 {
                     return static_cast<CursorID>(i);
                 }
