@@ -470,15 +470,15 @@ enum class MiniGolfState : int16_t
 
 enum class MiniGolfAnimation : uint8_t
 {
-    Walk,
-    PlaceBallDown,
-    SwingLeft,
-    PickupBall,
-    Jump,
-    PlaceBallUp,
-    PuttLeft,
-    Swing,
-    Putt,
+    walk,
+    placeBallDown,
+    swingLeft,
+    pickupBall,
+    jump,
+    placeBallUp,
+    puttLeft,
+    swing,
+    putt,
 };
 
 enum BoatHireSubState : uint8_t

@@ -356,18 +356,18 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     auto* curPeep = getGameState().entities.TryGetEntity<Guest>(peep[0]);
                     if (curPeep != nullptr)
                     {
-                        if (animation == MiniGolfAnimation::SwingLeft)
+                        if (animation == MiniGolfAnimation::swingLeft)
                         {
                             if (curPeep->PeepId & 7)
                             {
-                                animation = MiniGolfAnimation::Swing;
+                                animation = MiniGolfAnimation::swing;
                             }
                         }
-                        if (animation == MiniGolfAnimation::PuttLeft)
+                        if (animation == MiniGolfAnimation::puttLeft)
                         {
                             if (curPeep->PeepId & 7)
                             {
-                                animation = MiniGolfAnimation::Putt;
+                                animation = MiniGolfAnimation::putt;
                             }
                         }
                     }

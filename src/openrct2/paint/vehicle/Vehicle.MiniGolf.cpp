@@ -135,7 +135,7 @@ namespace OpenRCT2
     void VehicleVisualMiniGolfBall(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
     {
-        if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDown)
+        if (vehicle->mini_golf_current_animation != MiniGolfAnimation::placeBallDown)
         {
             return;
         }
