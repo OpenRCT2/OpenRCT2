@@ -131,9 +131,9 @@ enum class RideMode : uint8_t;
 
 enum class TrackDesignGameStateFlag
 {
-    SceneryUnavailable,
-    HasScenery,
-    VehicleUnavailable,
+    sceneryUnavailable,
+    hasScenery,
+    vehicleUnavailable,
 };
 
 struct TrackDesignTrackAndVehicleSettings
