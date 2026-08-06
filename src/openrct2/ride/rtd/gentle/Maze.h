@@ -61,8 +61,8 @@ constexpr RideTypeDescriptor MazeRTD =
         0,
         false,
         {
-            { RatingsModifierType::BonusMazeSize, 100, 1, 2, 0 },
-            { RatingsModifierType::BonusScenery,  0,   22310, 0, 0 },
+            { RatingsModifierType::bonusMazeSize, 100, 1, 2, 0 },
+            { RatingsModifierType::bonusScenery,  0,   22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

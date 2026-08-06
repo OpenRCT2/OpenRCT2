@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
         7,
         false,
         {
-            { RatingsModifierType::BonusMotionSimulatorMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonusMotionSimulatorMode, 0, 0, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

@@ -62,9 +62,9 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusProximity,        0,                11183, 0, 0 },
-            { RatingsModifierType::BonusScenery,          0,                22310, 0, 0 },
+            { RatingsModifierType::bonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::bonusProximity,        0,                11183, 0, 0 },
+            { RatingsModifierType::bonusScenery,          0,                22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

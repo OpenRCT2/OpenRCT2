@@ -60,8 +60,8 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
         7,
         false,
         {
-            { RatingsModifierType::BonusRotations,        0,                5, 5, 5 },
-            { RatingsModifierType::BonusScenery,          0,                19521, 0, 0 },
+            { RatingsModifierType::bonusRotations,        0,                5, 5, 5 },
+            { RatingsModifierType::bonusScenery,          0,                19521, 0, 0 },
         },
     },
 };

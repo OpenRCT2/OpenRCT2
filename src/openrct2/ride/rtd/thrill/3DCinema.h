@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor CinemaRTD =
         7,
         false,
         {
-            { RatingsModifierType::Bonus3DCinemaMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonus3DCinemaMode, 0, 0, 0, 0 },
         },
     },
 };

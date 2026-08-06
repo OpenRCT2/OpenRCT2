@@ -61,9 +61,9 @@ constexpr RideTypeDescriptor RotoDropRTD =
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::BonusProximity,   0, 11183, 0, 0 },
-            { RatingsModifierType::BonusScenery,     0, 25098, 0, 0 },
-            { RatingsModifierType::BonusRotoDrop,    0, 0, 0, 0 },
+            { RatingsModifierType::bonusProximity,   0, 11183, 0, 0 },
+            { RatingsModifierType::bonusScenery,     0, 25098, 0, 0 },
+            { RatingsModifierType::bonusRotoDrop,    0, 0, 0, 0 },
         },
     },
 };

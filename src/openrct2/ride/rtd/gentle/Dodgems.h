@@ -67,9 +67,9 @@ constexpr RideTypeDescriptor DodgemsRTD =
         false,
         {
             // Special case, passing -2 to represent division by 2
-            { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
-            { RatingsModifierType::BonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
-            { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 1, -2, 0 }, 
+            { RatingsModifierType::bonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
+            { RatingsModifierType::bonusScenery,         0, 5577, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

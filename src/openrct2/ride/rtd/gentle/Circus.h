@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor CircusRTD =
         9,
         7,
         false,
-        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,

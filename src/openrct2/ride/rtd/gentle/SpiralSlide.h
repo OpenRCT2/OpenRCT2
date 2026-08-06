@@ -64,8 +64,8 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
         2,
         false,
         {
-            { RatingsModifierType::BonusSlideUnlimitedRides, 0, RideRating::make(0, 40), RideRating::make(0, 20), RideRating::make(0, 25) },
-            { RatingsModifierType::BonusScenery,             0, 25098, 0, 0 },
+            { RatingsModifierType::bonusSlideUnlimitedRides, 0, RideRating::make(0, 40), RideRating::make(0, 20), RideRating::make(0, 25) },
+            { RatingsModifierType::bonusScenery,             0, 25098, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

@@ -62,8 +62,8 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
         0,
         false,
         {
-            { RatingsModifierType::BonusRotations,        0,                25, 25, 25 },
-            { RatingsModifierType::BonusScenery,          0,                41831, 0, 0 },
+            { RatingsModifierType::bonusRotations,        0,                25, 25, 25 },
+            { RatingsModifierType::bonusScenery,          0,                41831, 0, 0 },
         },
     },
 };

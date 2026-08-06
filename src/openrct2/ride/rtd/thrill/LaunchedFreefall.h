@@ -61,10 +61,10 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::BonusDownwardLaunch,          0, RideRating::make(0, 30), RideRating::make(0, 65), RideRating::make(0, 45) },
-            { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
-            { RatingsModifierType::BonusProximity,               0, 20130, 0, 0 },
-            { RatingsModifierType::BonusScenery,                 0, 25098, 0, 0 },
+            { RatingsModifierType::bonusDownwardLaunch,          0, RideRating::make(0, 30), RideRating::make(0, 65), RideRating::make(0, 45) },
+            { RatingsModifierType::bonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
+            { RatingsModifierType::bonusProximity,               0, 20130, 0, 0 },
+            { RatingsModifierType::bonusScenery,                 0, 25098, 0, 0 },
         },
     },
 };

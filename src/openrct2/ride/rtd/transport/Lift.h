@@ -62,10 +62,10 @@ constexpr RideTypeDescriptor LiftRTD =
         7,
         false,
         {
-            { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
-            { RatingsModifierType::BonusScenery,           0, 83662, 0, 0 },
-            { RatingsModifierType::BonusTowerRide,       0, 45875, 0, 26214 },
-            { RatingsModifierType::RequirementUnsheltered, 5, 4, 1, 1 },
+            { RatingsModifierType::bonusProximity,         0, 11183, 0, 0 },
+            { RatingsModifierType::bonusScenery,           0, 83662, 0, 0 },
+            { RatingsModifierType::bonusTowerRide,       0, 45875, 0, 26214 },
+            { RatingsModifierType::requirementUnsheltered, 5, 4, 1, 1 },
         },
     },
 };

@@ -69,9 +69,9 @@ constexpr RideTypeDescriptor BoatHireRTD =
         0,
         false,
         {
-            { RatingsModifierType::BonusBoatHireNoCircuit, 0, RideRating::make(0, 20), 0, 0 },
-            { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
-            { RatingsModifierType::BonusScenery,           0, 22310, 0, 0 },
+            { RatingsModifierType::bonusBoatHireNoCircuit, 0, RideRating::make(0, 20), 0, 0 },
+            { RatingsModifierType::bonusProximity,         0, 11183, 0, 0 },
+            { RatingsModifierType::bonusScenery,           0, 22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

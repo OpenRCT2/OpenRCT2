@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
         0,
         false,
         {
-            { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
+            { RatingsModifierType::bonusScenery,          0,                25098, 0, 0 },
         },
     },
     .specialType = RtdSpecialType::spaceRings,

@@ -57,8 +57,8 @@ constexpr RideTypeDescriptor TwistRTD =
         0,
         false,
         {
-            { RatingsModifierType::BonusRotations,        0,                20, 20, 20 },
-            { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
+            { RatingsModifierType::bonusRotations,        0,                20, 20, 20 },
+            { RatingsModifierType::bonusScenery,          0,                13943, 0, 0 },
         },
     },
 };

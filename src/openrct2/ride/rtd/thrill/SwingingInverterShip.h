@@ -62,8 +62,8 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
         0,
         false,
         {
-            { RatingsModifierType::BonusOperationOption, 0, 11, 22, 22 }, 
-            { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 11, 22, 22 }, 
+            { RatingsModifierType::bonusScenery,         0, 11155, 0, 0 },
         },
     },
 };

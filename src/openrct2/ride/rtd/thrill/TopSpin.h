@@ -62,8 +62,8 @@ constexpr RideTypeDescriptor TopSpinRTD =
         0,
         false,
         {
-            { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },
-            { RatingsModifierType::BonusScenery,     0, 11155, 0, 0 },
+            { RatingsModifierType::bonusTopSpinMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonusScenery,     0, 11155, 0, 0 },
         },
     },
 };
