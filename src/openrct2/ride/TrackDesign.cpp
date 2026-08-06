@@ -176,7 +176,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 
     const auto& rtd = GetRideTypeDescriptor(trackAndVehicle.rtdIndex);
 
-    if (rtd.DesignCreateMode == TrackDesignCreateMode::Maze)
+    if (rtd.DesignCreateMode == TrackDesignCreateMode::maze)
     {
         return CreateTrackDesignMaze(tds, ride);
     }

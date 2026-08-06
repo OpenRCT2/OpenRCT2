@@ -95,8 +95,8 @@ enum class RideColourKey : uint8_t
 
 enum class TrackDesignCreateMode : uint_fast8_t
 {
-    Default,
-    Maze
+    standard,
+    maze
 };
 
 enum class RatingsCalculationType : uint8_t
@@ -540,7 +540,7 @@ struct RideTypeDescriptor
     LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
     StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
 
-    TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
+    TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::standard;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::ride;
@@ -676,7 +676,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .DesignCreateMode = TrackDesignCreateMode::standard,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = OpenRCT2::PeepUpdateRideLeaveEntranceDefault,
