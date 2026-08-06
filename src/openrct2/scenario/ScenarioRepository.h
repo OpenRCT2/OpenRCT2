@@ -36,16 +36,16 @@ struct ScenarioHighscoreEntry
 
 enum class ScenarioSource : uint8_t
 {
-    RCT1,
-    RCT1_AA,
-    RCT1_LL,
-    RCT2,
-    RCT2_WW,
-    RCT2_TT,
-    UCES,
-    Real,
-    Extras,
-    Other
+    rct1,
+    rct1AA,
+    rct1LL,
+    rct2,
+    rct2WW,
+    rct2TT,
+    uces,
+    real,
+    extras,
+    other
 };
 
 struct ScenarioIndexEntry

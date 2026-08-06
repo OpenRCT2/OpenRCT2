@@ -707,7 +707,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Category heading
                 StringId headingStringId = kStringIdNone;
-                if (selectedTab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
+                if (selectedTab != EnumValue(ScenarioSource::real) && currentHeading.category != scenario->Category)
                 {
                     currentHeading.category = scenario->Category;
                     headingStringId = Scenario::kScenarioCategoryStringIds[currentHeading.raw];

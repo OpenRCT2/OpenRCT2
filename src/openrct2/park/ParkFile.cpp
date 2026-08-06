@@ -241,7 +241,7 @@ namespace OpenRCT2
                 entry.ObjectiveArg3 = cs.read<uint16_t>();
                 entry.ObjectiveArg2 = cs.read<int32_t>();
 
-                entry.SourceGame = ScenarioSource::Other;
+                entry.SourceGame = ScenarioSource::other;
             });
             return entry;
         }

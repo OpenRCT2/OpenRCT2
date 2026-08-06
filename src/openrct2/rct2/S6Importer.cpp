@@ -271,11 +271,11 @@ namespace OpenRCT2::RCT2
                 dst->SourceIndex = -1;
                 if (dst->Category == Scenario::Category::real)
                 {
-                    dst->SourceGame = ScenarioSource::Real;
+                    dst->SourceGame = ScenarioSource::real;
                 }
                 else
                 {
-                    dst->SourceGame = ScenarioSource::Other;
+                    dst->SourceGame = ScenarioSource::other;
                 }
             }
 
