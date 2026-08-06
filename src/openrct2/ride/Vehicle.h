@@ -483,8 +483,8 @@ enum class MiniGolfAnimation : uint8_t
 
 enum BoatHireSubState : uint8_t
 {
-    Normal,
-    EnteringReturnPosition,
+    rowing,
+    enteringReturnPosition,
 };
 
 enum

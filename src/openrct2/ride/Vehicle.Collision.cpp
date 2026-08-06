@@ -195,7 +195,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         return false;
     }
 
-    if (collideVehicle->status == Status::travellingBoat && sub_state == BoatHireSubState::EnteringReturnPosition)
+    if (collideVehicle->status == Status::travellingBoat && sub_state == BoatHireSubState::enteringReturnPosition)
     {
         return false;
     }
