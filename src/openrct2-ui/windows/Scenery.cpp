@@ -802,17 +802,18 @@ namespace OpenRCT2::Ui::Windows
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
                 {
                     auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex);
-                    if (wallEntry != nullptr && wallEntry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS))
+                    if (wallEntry != nullptr
+                        && wallEntry->flags.hasAny(WallSceneryFlag::hasPrimaryColour, WallSceneryFlag::hasGlass))
                     {
                         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setVisible();
 
-                        if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                        if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                         {
                             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].setVisible();
 
                             if (wallEntry->flags2 & WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR)
                                 widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setHidden();
-                            if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+                            if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
                                 widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].setVisible();
                         }
                     }
@@ -1636,10 +1637,10 @@ namespace OpenRCT2::Ui::Windows
 
                 auto imageId = ImageId(wallEntry->image);
                 auto spriteTop = (wallEntry->height * 2) + 0x32;
-                if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
+                if (wallEntry->flags.has(WallSceneryFlag::hasGlass))
                 {
                     imageId = imageId.WithPrimary(_sceneryPrimaryColour);
-                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                     {
                         imageId = imageId.WithSecondary(_scenerySecondaryColour);
                     }
@@ -1651,17 +1652,17 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     imageId = imageId.WithPrimary(_sceneryPrimaryColour);
-                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                     {
                         imageId = imageId.WithSecondary(_scenerySecondaryColour);
-                        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+                        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
                         {
                             imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                         }
                     }
                     GfxDrawSprite(rt, imageId, { 47, spriteTop });
 
-                    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+                    if (wallEntry->flags.has(WallSceneryFlag::isDoor))
                     {
                         GfxDrawSprite(rt, imageId.WithIndexOffset(1), { 47, spriteTop });
                     }
@@ -2263,7 +2264,7 @@ namespace OpenRCT2::Ui::Windows
                     auto* scenery_entry = info.Element->asWall()->GetEntry();
 
                     // If can't repaint
-                    if (!(scenery_entry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
+                    if (!scenery_entry->flags.hasAny(WallSceneryFlag::hasPrimaryColour, WallSceneryFlag::hasGlass))
                         return;
 
                     auto repaintScenery = GameActions::WallSetColourAction(

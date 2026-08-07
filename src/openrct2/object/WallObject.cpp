@@ -24,7 +24,7 @@ namespace OpenRCT2
     {
         stream->Seek(6, STREAM_SEEK_CURRENT);
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-        _legacyType.flags = stream->ReadValue<uint8_t>();
+        _legacyType.flags = static_cast<WallSceneryFlags>(stream->ReadValue<uint8_t>());
         _legacyType.height = stream->ReadValue<uint8_t>();
         _legacyType.flags2 = stream->ReadValue<uint8_t>();
         _legacyType.price = stream->ReadValue<money16>();
@@ -78,19 +78,19 @@ namespace OpenRCT2
         screenCoords.y += (_legacyType.height * 2) + 16;
 
         auto imageId = ImageId(_legacyType.image, Drawing::Colour::bordeauxRed);
-        if (_legacyType.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+        if (_legacyType.flags.has(WallSceneryFlag::hasSecondaryColour))
         {
             imageId = imageId.WithSecondary(Drawing::Colour::yellow);
         }
 
         GfxDrawSprite(rt, imageId, screenCoords);
 
-        if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
+        if (_legacyType.flags.has(WallSceneryFlag::hasGlass))
         {
             auto glassImageId = imageId.WithTransparency(Drawing::Colour::bordeauxRed).WithIndexOffset(6);
             GfxDrawSprite(rt, glassImageId, screenCoords);
         }
-        else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
+        else if (_legacyType.flags.has(WallSceneryFlag::isDoor))
         {
             GfxDrawSprite(rt, imageId.WithIndexOffset(1), screenCoords);
         }
@@ -113,19 +113,19 @@ namespace OpenRCT2
             SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 
             // clang-format off
-        _legacyType.flags = Json::GetFlags<uint8_t>(
+        _legacyType.flags = Json::GetFlagHolder<WallSceneryFlags, WallSceneryFlag>(
             properties,
             {
-                { "hasPrimaryColour",       WALL_SCENERY_HAS_PRIMARY_COLOUR,    Json::FlagType::normal },
-                { "isAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::inverted },
-                { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::normal },
-                { "hasTertiaryColour",      WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::normal },
-                { "hasTernaryColour",       WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::normal },
-                { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::normal },
-                { "isBanner",               WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::normal },
-                { "isDoubleSided",          WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::normal },
-                { "isDoor",                 WALL_SCENERY_IS_DOOR,               Json::FlagType::normal },
-                { "isLongDoorAnimation",    WALL_SCENERY_LONG_DOOR_ANIMATION,   Json::FlagType::normal },
+                { "hasPrimaryColour",       WallSceneryFlag::hasPrimaryColour,     Json::FlagType::normal },
+                { "isAllowedOnSlope",       WallSceneryFlag::cannotBuildOnSlope,   Json::FlagType::inverted },
+                { "hasSecondaryColour",     WallSceneryFlag::hasSecondaryColour,   Json::FlagType::normal },
+                { "hasTertiaryColour",      WallSceneryFlag::hasTertiaryColour,    Json::FlagType::normal },
+                { "hasTernaryColour",       WallSceneryFlag::hasTertiaryColour,    Json::FlagType::normal },
+                { "hasGlass",               WallSceneryFlag::hasGlass,             Json::FlagType::normal },
+                { "isBanner",               WallSceneryFlag::isDoubleSided,        Json::FlagType::normal },
+                { "isDoubleSided",          WallSceneryFlag::isDoubleSided,        Json::FlagType::normal },
+                { "isDoor",                 WallSceneryFlag::isDoor,               Json::FlagType::normal },
+                { "isLongDoorAnimation",    WallSceneryFlag::hasLongDoorAnimation, Json::FlagType::normal },
             });
             // clang-format on
 
@@ -138,13 +138,13 @@ namespace OpenRCT2
                     { "isAnimated", WALL_SCENERY_2_ANIMATED },
                 });
 
-            // HACK WALL_SCENERY_HAS_PRIMARY_COLOUR actually means, has any colour but we simplify the
+            // HACK WallSceneryFlag::hasPrimaryColour actually means, has any colour but we simplify the
             //      JSON and handle this on load. We should change code base in future to reflect the JSON.
-            if (!(_legacyType.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
+            if (!_legacyType.flags.has(WallSceneryFlag::hasPrimaryColour))
             {
-                if (_legacyType.flags & (WALL_SCENERY_HAS_SECONDARY_COLOUR | WALL_SCENERY_HAS_TERTIARY_COLOUR))
+                if (_legacyType.flags.hasAny(WallSceneryFlag::hasSecondaryColour, WallSceneryFlag::hasTertiaryColour))
                 {
-                    _legacyType.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
+                    _legacyType.flags.set(WallSceneryFlag::hasPrimaryColour);
                     _legacyType.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
                 }
             }

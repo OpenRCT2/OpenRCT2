@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    uint8_t gToolbarDirtyFlags;
+    BottomToolbarDirtyFlags gToolbarDirtyFlags;
 
     class GameBottomToolbar final : public Window
     {
@@ -394,33 +394,33 @@ namespace OpenRCT2::Ui::Windows
 
         void InvalidateDirtyWidgets()
         {
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
+            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::money))
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
+                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::money);
                 invalidateWidget(WIDX_LEFT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
+            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::date))
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
+                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::date);
                 invalidateWidget(WIDX_RIGHT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
+            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::guestCount))
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::guestCount);
                 invalidateWidget(WIDX_LEFT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
+            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::weather))
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
+                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::weather);
                 invalidateWidget(WIDX_RIGHT_INSET);
             }
 
-            if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
+            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::parkRating))
             {
-                gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
+                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::parkRating);
                 invalidateWidget(WIDX_LEFT_INSET);
             }
         }

@@ -209,6 +209,40 @@ namespace OpenRCT2::Json
         }
         return flags;
     }
+
+    /**
+     * Helper function to convert a json object and an initializer list to binary flags
+     * @param THolderType FlagHolder type
+     * @param TEnumType Flag enum type
+     * @param jsonObj JSON object containing boolean values
+     * @param list List of tuples of keys, bits to change and flag type
+     * @return Value with relevant bits flipped
+     * @note FLAG_NORMAL behaves like the other GetFlags function, but FLAG_INVERTED will turn the flag on when false
+     */
+    template<typename THolderType, typename TEnumType>
+    THolderType GetFlagHolder(const json_t& jsonObj, std::initializer_list<std::tuple<std::string, TEnumType, FlagType>> list)
+    {
+        THolderType flagholder;
+        for (const auto& item : list)
+        {
+            if (std::get<2>(item) == FlagType::normal)
+            {
+                if (jsonObj.contains(std::get<0>(item)) && Json::GetBoolean(jsonObj[std::get<0>(item)]))
+                {
+                    flagholder.set(std::get<1>(item));
+                }
+            }
+            else
+            {
+                // if the json flag doesn't exist, assume it's false
+                if (!jsonObj.contains(std::get<0>(item)) || !Json::GetBoolean(jsonObj[std::get<0>(item)]))
+                {
+                    flagholder.set(std::get<1>(item));
+                }
+            }
+        }
+        return flagholder;
+    }
 } // namespace OpenRCT2::Json
 
 class JsonException final : public std::runtime_error

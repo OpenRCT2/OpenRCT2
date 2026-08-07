@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
+
 #include <cstdint>
 
 struct ZoomLevel;
@@ -100,14 +102,15 @@ namespace OpenRCT2
         quit
     };
 
-    enum BTM_TOOLBAR_DIRTY_FLAGS
+    enum class BottomToolbarDirtyFlag : uint8_t
     {
-        BTM_TB_DIRTY_FLAG_MONEY = (1 << 0),
-        BTM_TB_DIRTY_FLAG_DATE = (1 << 1),
-        BTM_TB_DIRTY_FLAG_PEEP_COUNT = (1 << 2),
-        BTM_TB_DIRTY_FLAG_CLIMATE = (1 << 3),
-        BTM_TB_DIRTY_FLAG_PARK_RATING = (1 << 4)
+        money,
+        date,
+        guestCount,
+        weather,
+        parkRating,
     };
+    using BottomToolbarDirtyFlags = FlagHolder<uint8_t, BottomToolbarDirtyFlag>;
 
     enum class LoadSaveAction : uint8_t
     {

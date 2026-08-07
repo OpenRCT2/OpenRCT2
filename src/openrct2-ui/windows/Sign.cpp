@@ -260,11 +260,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return;
                 }
-                if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+                if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
                 {
                     mainColourButton.setVisible();
                 }
-                if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                 {
                     textColourButotn.setVisible();
                 }

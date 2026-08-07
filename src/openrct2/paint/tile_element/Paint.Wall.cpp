@@ -50,7 +50,7 @@ static void PaintWallDoor(
 
     auto newImageId0 = imageId;
     auto newImageId1 = imageId.WithIndexOffset(1);
-    if (wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+    if (wallEntry.flags.has(WallSceneryFlag::cannotBuildOnSlope))
     {
         PaintAddImageAsParent(session, newImageId0, offset, bbR1);
         PaintAddImageAsParent(session, newImageId1, offset, bbR2);
@@ -135,7 +135,7 @@ static void PaintWallWall(
     auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (getGameState().currentTicks & 7) * 2 : 0;
     auto imageIndex = wallEntry.image + imageOffset + frameNum;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
-    if ((wallEntry.flags & WALL_SCENERY_HAS_GLASS) && !isGhost)
+    if ((wallEntry.flags.has(WallSceneryFlag::hasGlass)) && !isGhost)
     {
         auto glassImageId = ImageId(imageIndex + 6).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, glassImageId, offset, boundBox);
@@ -216,16 +216,16 @@ static void PaintWallWall(
                 imageOffset = 0;
             }
 
-            if (wallEntry.flags & WALL_SCENERY_HAS_GLASS)
+            if (wallEntry.flags.has(WallSceneryFlag::hasGlass))
             {
-                if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+                if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
                 {
                     imageOffset += 12;
                 }
             }
             else
             {
-                if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+                if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
                 {
                     imageOffset += 6;
                 }
@@ -249,7 +249,7 @@ static void PaintWallWall(
                 imageOffset = 1;
             }
 
-            if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+            if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
             {
                 imageOffset += 6;
             }
@@ -299,15 +299,15 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     session.InteractionType = ViewportInteractionItem::wall;
 
     ImageId imageTemplate;
-    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+    if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
     {
         imageTemplate = imageTemplate.WithPrimary(wallElement.GetPrimaryColour());
     }
-    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
     {
         imageTemplate = imageTemplate.WithSecondary(wallElement.GetSecondaryColour());
     }
-    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+    if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
     {
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }
@@ -336,7 +336,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         isGhost = true;
     }
 
-    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+    if (wallEntry->flags.has(WallSceneryFlag::isDoor))
     {
         PaintWallDoor(session, *wallEntry, wallElement, imageTemplate, direction, height);
     }

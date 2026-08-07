@@ -88,7 +88,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
 ObjectEntryIndex LandTool::GetSurfaceStyleFromDropdownIndex(size_t index)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    auto itemIndex = 0U;
+    auto itemIndex = 0u;
     for (size_t i = 0; i < kMaxTerrainSurfaceObjects; i++)
     {
         const auto surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(i);
@@ -139,7 +139,7 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
 ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    auto itemIndex = 0U;
+    auto itemIndex = 0u;
     for (size_t i = 0; i < kMaxTerrainEdgeObjects; i++)
     {
         const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(i);
