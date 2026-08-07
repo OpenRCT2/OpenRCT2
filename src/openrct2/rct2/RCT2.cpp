@@ -11,13 +11,11 @@
 
 #include "../Context.h"
 #include "../object/Object.h"
-#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
-#include "../ride/RideData.h"
+#include "../ride/ted/TrackElemType.h"
 #include "../ride/ted/TrackGroup.h"
 
-#include <cstdint>
 #include <cstring>
 
 using OpenRCT2::TrackGroup;

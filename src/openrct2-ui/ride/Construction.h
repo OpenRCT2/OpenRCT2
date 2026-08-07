@@ -15,6 +15,8 @@
 #include <openrct2/ride/ted/TrackElemType.h>
 #include <vector>
 
+struct ScreenCoordsXY;
+
 namespace OpenRCT2
 {
     namespace TrackMetadata

@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../GameState.h"
-#include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
 #include "Vehicle.h"
 

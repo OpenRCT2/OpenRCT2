@@ -25,7 +25,6 @@
     #include <android/asset_manager_jni.h>
     #include <jni.h>
     #include <memory>
-    #include <mutex>
     #include <sys/stat.h>
 
 AndroidClassLoader::~AndroidClassLoader()

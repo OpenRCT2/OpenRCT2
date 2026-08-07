@@ -13,9 +13,6 @@
 #include "../actions/CommandFlag.h"
 #include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
-#include "../world/Location.hpp"
-#include "RideColour.h"
-#include "Station.h"
 
 #include <cstdint>
 #include <optional>
@@ -40,9 +37,15 @@ namespace OpenRCT2::GameActions
 }
 
 struct CoordsXYE;
+struct CoordsXYZ;
+struct CoordsXYZD;
+
+struct Ride;
 struct RideTypeDescriptor;
 struct TrackDrawerDescriptor;
 struct TrackDrawerEntry;
+
+enum class RideColourScheme : uint8_t;
 
 enum class TrackElementSetFlag : uint8_t
 {

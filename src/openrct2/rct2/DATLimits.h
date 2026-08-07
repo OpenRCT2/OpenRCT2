@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #pragma once
+
 #include <cstdint>
 
 namespace OpenRCT2::RCT2::ObjectLimits

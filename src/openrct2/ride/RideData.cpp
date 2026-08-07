@@ -22,11 +22,9 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../SpriteIds.h"
 #include "../audio/Audio.h"
 #include "../management/Research.h"
 #include "Ride.h"
-#include "ShopItem.h"
 #include "Vehicle.h"
 #include "rtd/coaster/AirPoweredVerticalCoaster.h"
 #include "rtd/coaster/AlpineCoaster.h"
@@ -119,8 +117,6 @@
 #include "rtd/water/RiverRapids.h"
 #include "rtd/water/SplashBoats.h"
 #include "rtd/water/SubmarineRide.h"
-
-#include <iterator>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Entity::Yaw;

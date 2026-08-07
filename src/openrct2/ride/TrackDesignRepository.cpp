@@ -11,11 +11,8 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
-#include "../core/Collections.hpp"
-#include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
-#include "../core/FileStream.h"
 #include "../core/FlagHolder.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"

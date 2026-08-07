@@ -15,7 +15,6 @@
 #include "../entity/EntityRegistry.h"
 #include "../scenario/Scenario.h"
 #include "Ride.h"
-#include "TrackData.h"
 #include "VehicleGeometry.h"
 
 using namespace OpenRCT2;

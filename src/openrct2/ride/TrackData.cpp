@@ -11,7 +11,6 @@
 
 #include "../core/EnumUtils.hpp"
 #include "../localisation/StringIds.h"
-#include "TrackPaint.h"
 #include "ted/TED.Corkscrew.h"
 #include "ted/TED.DiveLoop.h"
 #include "ted/TED.FlatRide.h"

@@ -9,9 +9,8 @@
 
 #pragma once
 
-#include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../ShopItem.h"
+#include "../../RideStringIds.h"
 
 // clang-format off
 namespace OpenRCT2
@@ -29,7 +28,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::allowMusic,
-                     RtdFlag::hasEntranceAndExit, RtdFlag::singleSession, 
+                     RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
     .RideModes = EnumsToFlags(RideMode::crookedHouse),
     .DefaultMode = RideMode::crookedHouse,
@@ -52,7 +51,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::ride,
     .Name = "crooked_house",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(2, 15), RideRating::make(0, 62), RideRating::make(0, 34) },

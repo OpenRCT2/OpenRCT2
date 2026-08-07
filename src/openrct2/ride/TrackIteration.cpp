@@ -1,5 +1,6 @@
 #include "TrackIteration.h"
 
+#include "../ride/RideConstruction.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/tile_element/TileElement.h"

@@ -9,8 +9,6 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
-#include "../audio/Audio.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
@@ -19,15 +17,9 @@
 #include "../object/FootpathRailingsObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/LargeSceneryObject.h"
-#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../rct2/RCT2.h"
-#include "../sawyer_coding/SawyerCoding.h"
-#include "../windows/Intent.h"
-#include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/Scenery.h"
-#include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/PathElement.h"
@@ -35,11 +27,7 @@
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "../world/tile_element/WallElement.h"
-#include "RideData.h"
-#include "Station.h"
-#include "TrackData.h"
 #include "TrackDesign.h"
-#include "TrackDesignRepository.h"
 
 #include <cassert>
 

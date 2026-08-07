@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -55,7 +56,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "air_powered_vertical_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(4, 13), RideRating::make(2, 50), RideRating::make(2, 80) },

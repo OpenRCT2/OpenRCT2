@@ -18,7 +18,6 @@
 #include "../core/UnitConversion.h"
 #include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
-#include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -28,7 +27,6 @@
 #include "RideData.h"
 #include "RideManager.hpp"
 #include "Station.h"
-#include "TrackData.h"
 #include "TrackIteration.h"
 
 #include <iterator>

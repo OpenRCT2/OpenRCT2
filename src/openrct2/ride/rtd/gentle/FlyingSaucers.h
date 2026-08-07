@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -56,7 +57,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_SAUCERS_TRACK, 0 },
     .ColourKey = RideColourKey::ride,
     .Name = "flying_saucers",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::flatRide,
         { RideRating::make(2, 40), RideRating::make(0, 55), RideRating::make(0, 39) },

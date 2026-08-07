@@ -12,6 +12,7 @@
 #include "../../../SpriteIds.h"
 #include "../../../paint/support/MetalSupports.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
@@ -58,7 +59,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_SUPPORTS },
     .ColourKey = RideColourKey::ride,
     .Name = "vertical_drop_rc",
-    .RatingsData = 
+    .RatingsData =
     {
         RatingsCalculationType::normal,
         { RideRating::make(3, 20), RideRating::make(0, 80), RideRating::make(0, 30) },

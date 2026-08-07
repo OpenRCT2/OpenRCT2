@@ -27,11 +27,8 @@
 #include <span>
 #include <string_view>
 
-struct IObjectManager;
-struct Ride;
 struct RideTypeDescriptor;
 struct Vehicle;
-struct RideObjectEntry;
 struct ResultWithMessage;
 
 namespace OpenRCT2

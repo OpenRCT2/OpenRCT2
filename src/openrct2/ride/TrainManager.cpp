@@ -9,7 +9,7 @@
 
 #include "TrainManager.h"
 
-#include "../entity/EntityList.h"
+#include "../GameState.h"
 #include "../entity/EntityRegistry.h"
 #include "Vehicle.h"
 

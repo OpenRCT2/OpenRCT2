@@ -13,7 +13,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../core/Numerics.hpp"
 #include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/NewDrawing.h"

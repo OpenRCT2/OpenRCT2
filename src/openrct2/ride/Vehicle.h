@@ -13,10 +13,8 @@
 #include "../audio/Audio.h"
 #include "../core/FlagHolder.hpp"
 #include "../entity/EntityBase.h"
-#include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "Angles.h"
-#include "CarEntry.h"
 #include "VehicleColour.h"
 #include "VehicleSubpositionData.h"
 #include "ted/PitchAndRoll.h"
@@ -27,7 +25,6 @@
 struct Ride;
 struct RideObjectEntry;
 struct CarEntry;
-struct PaintSession;
 
 enum class Breakdown : uint8_t;
 
