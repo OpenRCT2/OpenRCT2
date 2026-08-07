@@ -11,10 +11,8 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
-#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
@@ -27,14 +25,10 @@
 #include "../platform/Crash.h"
 #include "../platform/Platform.h"
 #include "../rct12/CSStringConverter.h"
-#include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
-#include "../sawyer_coding/SawyerChunkReader.h"
-#include "Scenario.h"
 #include "ScenarioCategory.h"
 #include "ScenarioSources.h"
 
-#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
