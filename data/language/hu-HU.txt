@@ -970,7 +970,7 @@ STR_1600    :„{STRINGID} sütije igazán megéri az árát”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{OPENQUOTES{STRINGID} sült kolbásza igazán megéri az árát”
+STR_1604    :„{STRINGID} sült kolbásza igazán megéri az árát”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1962,7 +1962,7 @@ STR_2808    :{RED}A vendégek panaszkodnak a parkodban lévő vandalizmus miatt{
 STR_2809    :{RED}A vendégek éhesek és sehol nem tudnak ételt venni
 STR_2810    :{RED}A vendégek szomjasak és sehol nem tudnak italt venni
 STR_2811    :{RED}A vendégek panaszkodnak, mert nem találják a WC-ket a parkodban
-STR_2812    :{RED}A vendégek eltévednek vagy beragadnak{NEWLINE}Nézd meg lehet-e javítani az úthálózatodon, hogy a vendégek biztosan elérjék a céljukat
+STR_2812    :{RED}A vendégek eltévednek vagy elakadnak{NEWLINE}Nézd meg lehet-e javítani az úthálózatodon, hogy a vendégek biztosan elérjék a céljukat
 STR_2813    :{RED}A parkod belépési díja túl magas!{NEWLINE}Csökkentsd a belépési díjad, vagy növeld a park értékét, hogy több vendéget vonzz
 STR_2814    :{WINDOW_COLOUR_2}A legkoszosabb park díja
 STR_2815    :{WINDOW_COLOUR_2}A legtisztább park díja
@@ -1997,7 +1997,7 @@ STR_2843    :{TOPAZ}A parkod megkapta „A legjobb vízi játékokkal rendelkez�
 STR_2844    :{TOPAZ}A parkod megkapta „A legjobb egyedi tervezésű játékokkal rendelkező park” díjat!
 STR_2845    :{TOPAZ}A parkod megkapta „A legkáprázatosabb színsémájú játékokal rendelkező park” díjat!
 STR_2846    :{TOPAZ}A parkod megkapta „A legzavarbaejtőbb alaprajzú park” díjat!
-STR_2847    :{TOPAZ}A parkod megkapta „A legjobb enyhe játékokkal rendelkező rendelkező park” díjat!
+STR_2847    :{TOPAZ}A parkod megkapta „A legjobb enyhe játékokkal rendelkező park” díjat!
 STR_2848    :{WINDOW_COLOUR_2}Nincsenek friss díjak
 STR_2849    :Az új pálya sikeresen telepítve
 STR_2850    :Az új játékterv sikeresen telepítve
@@ -2243,7 +2243,7 @@ STR_3283    :A műemlékvédelem alá eső játékok kiválasztása
 STR_3285    :Pálya beállítások - Védett játékok
 STR_3286    :A pálya céljának kiválasztása
 STR_3287    :{WINDOW_COLOUR_2}Cél:
-STR_3294    :Változtat…
+STR_3294    :Módosítás…
 STR_3295    :A park nevének megváltoztatása
 STR_3296    :A pálya nevének megváltoztatása
 STR_3297    :A park / pálya részletes leírásának megváltoztatása
@@ -2837,7 +2837,7 @@ STR_5778    :Építés ideje: {COMMA16} éve
 STR_5779    :Bevétel: {CURRENCY2DP} óránként
 STR_5780    :Üzemeltetési költség: {CURRENCY2DP} óránként
 STR_5781    :Üzemeltetési költség: Ismeretlen
-STR_5782    :Csatlakoztál. A(z) ’{STRING}’ lenyomásával cseveghetsz.
+STR_5782    :Csatlakoztál. A(z) ’{STRING}’ lenyomásával chatelhetsz.
 STR_5783    :{WINDOW_COLOUR_2}Lezárt pálya
 STR_5784    :{BLACK}Teljesíts korábbi pályákat a feloldásához.
 STR_5785    :A csoport nem nevezhető át…
@@ -2961,7 +2961,7 @@ STR_5909    :Lehetővé teszi a járműtípus szabad megváltoztatását. Össze
 STR_5910    :Alkalmazás
 STR_5911    :Átlátszó utak
 STR_5912    :Átlátszó utak be/ki
-STR_5913    :Csevegés
+STR_5913    :Chat
 STR_5914    :Ismeretlen játék
 STR_5915    :Játékos
 STR_5916    :{COMMA16} játékos
@@ -3826,3 +3826,4 @@ STR_7035    :Bolt stílusa
 STR_7036    :Jármű stílusa
 STR_7037    :Üzemmód
 STR_7038    :Várakozás és beszállás
+STR_7039    :Játéktípus

@@ -3833,3 +3833,4 @@ STR_7035    :Style de boutique
 STR_7036    :Style de véhicule
 STR_7037    :Mode de fonctionnement
 STR_7038    :Attente et chargement
+STR_7039    :Type d’attraction
