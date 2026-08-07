@@ -9,8 +9,6 @@
 
 #include "SawyerChunk.h"
 
-#include "SawyerChunkReader.h"
-
 #include <utility>
 
 namespace OpenRCT2::SawyerCoding
