@@ -11,9 +11,13 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
-    #include "../../../ride/Ride.h"
+    #include "../../../Identifiers.h"
     #include "../../ScriptEngine.h"
+
+namespace OpenRCT2
+{
+    struct RideStation;
+}
 
 namespace OpenRCT2::Scripting
 {

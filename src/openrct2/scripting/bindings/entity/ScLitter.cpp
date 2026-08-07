@@ -11,6 +11,7 @@
 
     #include "ScLitter.hpp"
 
+    #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
     #include "../../../entity/Litter.h"
 

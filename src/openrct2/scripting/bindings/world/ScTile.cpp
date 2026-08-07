@@ -11,21 +11,8 @@
 
     #include "ScTile.hpp"
 
-    #include "../../../Context.h"
-    #include "../../../core/Guard.hpp"
-    #include "../../../drawing/ScrollingText.h"
-    #include "../../../entity/EntityRegistry.h"
-    #include "../../../object/LargeSceneryEntry.h"
-    #include "../../../world/Footpath.h"
     #include "../../../world/Map.h"
-    #include "../../../world/Scenery.h"
     #include "../../../world/tile_element/LargeSceneryElement.h"
-    #include "../../ScriptEngine.h"
-    #include "ScTileElement.hpp"
-
-    #include <cstdio>
-    #include <cstring>
-    #include <utility>
 
 namespace OpenRCT2::Scripting
 {

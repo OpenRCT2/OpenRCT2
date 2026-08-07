@@ -12,9 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../ScriptEngine.h"
-    #include "ScPlayer.hpp"
-    #include "ScPlayerGroup.hpp"
-    #include "ScSocket.hpp"
 
     #include <memory>
 

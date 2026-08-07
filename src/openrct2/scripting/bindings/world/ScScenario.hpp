@@ -11,12 +11,9 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
     #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
-    #include "../../../core/StringTypes.h"
     #include "../../../scenario/Scenario.h"
-    #include "../../../world/Park.h"
     #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting

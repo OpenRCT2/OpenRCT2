@@ -12,19 +12,17 @@
     #include "ScPark.hpp"
 
     #include "../../../Context.h"
-    #include "../../../Date.h"
     #include "../../../GameState.h"
-    #include "../../../core/String.hpp"
+    #include "../../../core/EnumMap.hpp"
     #include "../../../drawing/Drawing.h"
-    #include "../../../entity/Guest.h"
-    #include "../../../management/Finance.h"
-    #include "../../../management/NewsItem.h"
     #include "../../../ui/WindowManager.h"
     #include "../../../windows/Intent.h"
     #include "../../../world/Park.h"
-    #include "../../ScriptEngine.h"
+    #include "../../../world/ParkData.h"
     #include "../entity/ScGuest.hpp"
+    #include "ScAward.hpp"
     #include "ScParkMessage.hpp"
+    #include "ScResearch.hpp"
 
 namespace OpenRCT2::Scripting
 {

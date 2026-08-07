@@ -11,7 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
     #include "../../../management/NewsItem.h"
     #include "../../ScriptEngine.h"
 
@@ -19,17 +18,17 @@
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr const char* ParkMessageTypeStrings[] = {
+    static constexpr const char* kParkMessageTypeStrings[] = {
         "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart", "campaign",
     };
 
     inline News::ItemType GetParkMessageType(const std::string& key)
     {
-        // Get the first ItemType that appears in ParkMessageTypeStrings that isn't Null
+        // Get the first ItemType that appears in kParkMessageTypeStrings that isn't Null
         auto firstType = static_cast<uint8_t>(News::ItemType::ride);
 
-        auto begin = std::begin(ParkMessageTypeStrings);
-        auto end = std::end(ParkMessageTypeStrings);
+        auto begin = std::begin(kParkMessageTypeStrings);
+        auto end = std::end(kParkMessageTypeStrings);
 
         auto it = std::find(begin, end, key);
         return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::blank;
@@ -37,12 +36,12 @@ namespace OpenRCT2::Scripting
 
     inline std::string GetParkMessageType(News::ItemType type)
     {
-        // Decrement 1 as ParkMessageTypeStrings doesn't contain the null type
+        // Decrement 1 as kParkMessageTypeStrings doesn't contain the null type
         auto scriptType = static_cast<size_t>(type) - 1;
 
-        if (scriptType < std::size(ParkMessageTypeStrings))
+        if (scriptType < std::size(kParkMessageTypeStrings))
         {
-            return ParkMessageTypeStrings[scriptType];
+            return kParkMessageTypeStrings[scriptType];
         }
         return {};
     }

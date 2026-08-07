@@ -12,9 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../ScriptEngine.h"
-    #include "../ride/ScRide.hpp"
-    #include "../ride/ScTrackIterator.h"
-    #include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
 {

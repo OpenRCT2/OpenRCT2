@@ -11,6 +11,7 @@
 
     #include "ScBalloon.hpp"
 
+    #include "../../../GameState.h"
     #include "../../../entity/Balloon.h"
 
 namespace OpenRCT2::Scripting

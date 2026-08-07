@@ -12,17 +12,10 @@
     #include "ScTileElement.hpp"
 
     #include "../../../Context.h"
-    #include "../../../core/Guard.hpp"
-    #include "../../../drawing/ScrollingText.h"
-    #include "../../../entity/EntityRegistry.h"
-    #include "../../../object/LargeSceneryEntry.h"
     #include "../../../object/PathAdditionEntry.h"
-    #include "../../../object/WallSceneryEntry.h"
     #include "../../../ride/Ride.h"
     #include "../../../ride/RideData.h"
-    #include "../../../world/Footpath.h"
     #include "../../../world/Map.h"
-    #include "../../../world/Scenery.h"
     #include "../../../world/tile_element/BannerElement.h"
     #include "../../../world/tile_element/EntranceElement.h"
     #include "../../../world/tile_element/LargeSceneryElement.h"
@@ -31,11 +24,6 @@
     #include "../../../world/tile_element/SurfaceElement.h"
     #include "../../../world/tile_element/TrackElement.h"
     #include "../../../world/tile_element/WallElement.h"
-    #include "../../ScriptEngine.h"
-
-    #include <cstdio>
-    #include <cstring>
-    #include <utility>
 
 namespace OpenRCT2::Scripting
 {

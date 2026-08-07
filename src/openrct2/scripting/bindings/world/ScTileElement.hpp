@@ -11,16 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
-    #include "../../../core/Guard.hpp"
-    #include "../../../entity/EntityRegistry.h"
-    #include "../../../world/Footpath.h"
-    #include "../../../world/Scenery.h"
     #include "../../ScriptEngine.h"
 
-    #include <cstdio>
-    #include <cstring>
-    #include <utility>
+struct CoordsXY;
+
+namespace OpenRCT2
+{
+    struct LargeSceneryElement;
+}
 
 namespace OpenRCT2::Scripting
 {

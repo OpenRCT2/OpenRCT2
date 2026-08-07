@@ -9,11 +9,8 @@
 
 #pragma once
 
-#include "../../../Context.h"
-#include "../../../ride/Ride.h"
+#include "../../../drawing/Colour.h"
 #include "../../ScriptEngine.h"
-#include "../object/ScObject.hpp"
-#include "ScRideStation.hpp"
 
 #ifdef ENABLE_SCRIPTING
 
