@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
     bool WindowFootpathSelectDefault();
 
     // GameBottomToolbar
-    extern uint8_t gToolbarDirtyFlags;
+    extern BottomToolbarDirtyFlags gToolbarDirtyFlags;
     WindowBase* GameBottomToolbarOpen();
     void WindowGameBottomToolbarInvalidateNewsItem();
 
