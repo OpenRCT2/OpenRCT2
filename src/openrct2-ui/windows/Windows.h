@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <functional>
 #include <openrct2/Identifiers.h>
 #include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/WindowTypes.h>
