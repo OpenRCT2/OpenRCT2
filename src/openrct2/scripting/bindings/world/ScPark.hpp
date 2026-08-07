@@ -11,11 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
     #include "../../ScriptEngine.h"
-    #include "ScAward.hpp"
-    #include "ScParkMessage.hpp"
-    #include "ScResearch.hpp"
 
     #include <vector>
 

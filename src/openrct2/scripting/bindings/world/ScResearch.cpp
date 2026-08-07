@@ -14,10 +14,7 @@
     #include "../../../Context.h"
     #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
-    #include "../../../core/String.hpp"
-    #include "../../../management/Research.h"
     #include "../../../ride/RideData.h"
-    #include "../../ScriptEngine.h"
     #include "../object/ScObject.hpp"
 
 using namespace OpenRCT2;
