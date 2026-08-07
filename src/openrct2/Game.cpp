@@ -35,7 +35,7 @@
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
 #include "interface/Viewport.h"
-#include "interface/Window.h"
+#include "interface/WindowTypes.h"
 #include "management/Research.h"
 #include "network/Network.h"
 #include "platform/Platform.h"

@@ -19,7 +19,7 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
 #include "../interface/ColourWithFlags.h"
-#include "../interface/Window.h"
+#include "../interface/WindowTypes.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"

@@ -11,8 +11,8 @@
 
 #include "../../../OpenRCT2.h"
 #include "../../../interface/Viewport.h"
-#include "../../../interface/Window.h"
 #include "../../../interface/WindowBase.h"
+#include "../../../interface/WindowTypes.h"
 #include "../../../world/Map.h"
 
 namespace OpenRCT2::Title
