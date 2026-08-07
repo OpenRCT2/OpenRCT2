@@ -55,14 +55,14 @@
 
 #include <memory>
 
+using namespace OpenRCT2;
+
 #ifdef __EMSCRIPTEN__
 extern "C" {
 extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType type);
 extern void EmscriptenResetAutosave();
 }
 #endif
-
-using namespace OpenRCT2;
 
 uint16_t gCurrentDeltaTime;
 uint8_t gGamePaused = 0;
