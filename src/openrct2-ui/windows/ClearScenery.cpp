@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
         bool _clearSmallScenery = true;
         bool _clearLargeScenery = false;
         bool _clearFootpath = false;
-        bool _clearWalls = false;
+        bool _clearWalls = true;
         bool _clearFootpathAdditions = false;
         money64 _clearSceneryCost = kMoney64Undefined;
 
@@ -82,6 +82,8 @@ namespace OpenRCT2::Ui::Windows
             widgetSetPressed(*this, WIDX_SMALL_SCENERY, _clearSmallScenery);
             widgetSetPressed(*this, WIDX_LARGE_SCENERY, _clearLargeScenery);
             widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
+            widgetSetPressed(*this, WIDX_WALLS, _clearWalls);
+            widgetSetPressed(*this, WIDX_FOOTPATH_ADDITIONS, _clearFootpathAdditions);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
