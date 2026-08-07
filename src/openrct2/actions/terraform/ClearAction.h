@@ -20,6 +20,8 @@ namespace OpenRCT2::GameActions
         constexpr ClearableItems kScenerySmall = 1 << 0;
         constexpr ClearableItems kSceneryLarge = 1 << 1;
         constexpr ClearableItems kSceneryFootpath = 1 << 2;
+        constexpr ClearableItems kSceneryWall = 1 << 3;
+        constexpr ClearableItems kPathAddition = 1 << 4;
     } // namespace CLEARABLE_ITEMS
 
     class ClearAction final : public GameActionBase<GameCommand::ClearScenery>
