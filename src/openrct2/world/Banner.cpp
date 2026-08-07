@@ -9,35 +9,22 @@
 
 #include "Banner.h"
 
-#include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
-#include "../core/String.hpp"
 #include "../drawing/ScrollingText.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../management/Finance.h"
-#include "../network/Network.h"
-#include "../object/BannerSceneryEntry.h"
-#include "../object/ObjectEntryManager.h"
 #include "../object/WallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
-#include "../windows/Intent.h"
 #include "Map.h"
-#include "MapAnimation.h"
-#include "Park.h"
-#include "Scenery.h"
 #include "TileElementsView.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/TileElement.h"
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
-#include <cstring>
-#include <iterator>
 #include <limits>
 
 using namespace OpenRCT2;

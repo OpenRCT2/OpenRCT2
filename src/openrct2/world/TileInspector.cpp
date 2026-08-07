@@ -12,20 +12,18 @@
 #include "../Diagnostic.h"
 #include "../actions/GameAction.hpp"
 #include "../core/Guard.hpp"
+#include "../localisation/StringIds.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Ride.h"
-#include "../ride/Station.h"
 #include "../ride/TrackData.h"
 #include "../ride/ted/TrackElementDescriptor.h"
 #include "../ui/WindowManager.h"
 #include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
-#include "Footpath.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
-#include "Scenery.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/LargeSceneryElement.h"
@@ -35,8 +33,6 @@
 #include "tile_element/SurfaceElement.h"
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
-
-#include <optional>
 
 TileCoordsXY windowTileInspectorTile;
 int32_t windowTileInspectorElementCount = 0;

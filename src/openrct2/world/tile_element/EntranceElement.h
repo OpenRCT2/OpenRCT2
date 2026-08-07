@@ -10,9 +10,6 @@
 #pragma once
 
 #include "../../Identifiers.h"
-#include "../../object/FootpathObject.h"
-#include "../../object/FootpathRailingsObject.h"
-#include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectTypes.h"
 #include "TileElementBase.h"
 
@@ -20,6 +17,10 @@
 
 namespace OpenRCT2
 {
+    class FootpathObject;
+    class FootpathSurfaceObject;
+    struct PathSurfaceDescriptor;
+
     enum
     {
         ENTRANCE_TYPE_RIDE_ENTRANCE,
@@ -40,7 +41,6 @@ namespace OpenRCT2
     } // namespace EntranceSequence
 
 #pragma pack(push, 1)
-    struct EntranceElement;
 
     struct EntranceElement : TileElementBase
     {

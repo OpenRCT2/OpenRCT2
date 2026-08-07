@@ -11,7 +11,6 @@
 
 #include "../../Identifiers.h"
 #include "../../object/ObjectTypes.h"
-#include "../../object/WallSceneryEntry.h"
 #include "../Banner.h"
 #include "TileElementBase.h"
 
@@ -19,6 +18,8 @@
 
 namespace OpenRCT2
 {
+    struct WallSceneryEntry;
+
     enum
     {
         WALL_ANIMATION_FLAG_IS_ANIMATING = (1 << 1),

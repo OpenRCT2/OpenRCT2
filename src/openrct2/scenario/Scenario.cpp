@@ -21,6 +21,7 @@
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/PaletteIndex.h"
 #include "../entity/Duck.h"
 #include "../entity/Staff.h"
 #include "../localisation/Formatter.h"

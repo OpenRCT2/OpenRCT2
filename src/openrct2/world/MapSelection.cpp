@@ -9,7 +9,6 @@
 
 #include "MapSelection.h"
 
-#include "../interface/Viewport.h"
 #include "Map.h"
 
 MapSelectFlags gMapSelectFlags;

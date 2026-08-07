@@ -10,11 +10,9 @@
 #include "EntranceElement.h"
 
 #include "../../Context.h"
-#include "../../object/EntranceObject.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectManager.h"
-#include "../Entrance.h"
 
 namespace OpenRCT2
 {

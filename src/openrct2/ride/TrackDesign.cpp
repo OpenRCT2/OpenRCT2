@@ -38,6 +38,7 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
+#include "../object/FootpathEntry.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"

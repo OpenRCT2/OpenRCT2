@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../object/ObjectTypes.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "TileElementBase.h"
 

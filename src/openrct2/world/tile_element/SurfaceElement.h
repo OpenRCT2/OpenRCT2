@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "../../object/TerrainEdgeObject.h"
-#include "../../object/TerrainSurfaceObject.h"
+#include "../../object/ObjectTypes.h"
 #include "TileElementBase.h"
 
 namespace OpenRCT2
@@ -42,6 +41,9 @@ namespace OpenRCT2
 
     constexpr uint8_t kTileElementSurfaceOwnershipMask = 0xF0;
     constexpr uint8_t kTileElementSurfaceParkFenceMask = 0x0F;
+
+    class TerrainEdgeObject;
+    class TerrainSurfaceObject;
 
 #pragma pack(push, 1)
     struct SurfaceElement : TileElementBase

@@ -12,7 +12,6 @@
 #include "../object/ObjectTypes.h"
 
 #include <cstdint>
-#include <limits>
 
 struct ScenerySelection
 {

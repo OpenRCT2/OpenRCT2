@@ -9,11 +9,9 @@
 
 #include "MapAnimation.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../core/Numerics.hpp"
+#include "../drawing/ScrollingText.h"
 #include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
@@ -23,11 +21,8 @@
 #include "../object/WallSceneryEntry.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
-#include "../ride/RideData.h"
-#include "Banner.h"
-#include "Footpath.h"
+#include "../ride/ted/TrackElemType.h"
 #include "Map.h"
-#include "Scenery.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/LargeSceneryElement.h"
 #include "tile_element/PathElement.h"
@@ -36,7 +31,6 @@
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
-#include <algorithm>
 #include <set>
 
 using namespace OpenRCT2;

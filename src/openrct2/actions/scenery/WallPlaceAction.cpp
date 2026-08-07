@@ -12,6 +12,7 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../drawing/TextColour.h"
 #include "../../management/Finance.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"

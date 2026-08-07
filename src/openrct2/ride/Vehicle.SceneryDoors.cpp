@@ -11,6 +11,8 @@
 
 #include "../audio/Audio.h"
 #include "../core/EnumUtils.hpp"
+#include "../object/TerrainEdgeObject.h"
+#include "../object/WallSceneryEntry.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/tile_element/SurfaceElement.h"

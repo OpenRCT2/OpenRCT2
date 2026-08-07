@@ -10,8 +10,6 @@
 #include "SurfaceSelection.h"
 
 #include "../../Context.h"
-#include "../../object/ObjectEntryManager.h"
-#include "../../object/ObjectList.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
