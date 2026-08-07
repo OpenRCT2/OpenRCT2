@@ -72,5 +72,6 @@ namespace OpenRCT2::Ui::FileBrowser
 } // namespace OpenRCT2::Ui::FileBrowser
 
 #ifdef __EMSCRIPTEN__
+using namespace OpenRCT2;
 extern "C" void LoadGameCallback(const char* path, LoadSaveType action);
 #endif
