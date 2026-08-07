@@ -16,15 +16,16 @@
 #include <openrct2/localisation/StringIdType.h>
 #include <string>
 
-enum class LoadSaveAction : uint8_t;
-enum class LoadSaveType : uint8_t;
-enum class ModalResult : int8_t;
 struct TrackDesign;
 
 namespace OpenRCT2
 {
+    enum class LoadSaveAction : uint8_t;
+    enum class LoadSaveType : uint8_t;
+    enum class ModalResult : int8_t;
+
     struct WindowBase;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Ui::FileBrowser
 {
@@ -71,5 +72,5 @@ namespace OpenRCT2::Ui::FileBrowser
 } // namespace OpenRCT2::Ui::FileBrowser
 
 #ifdef __EMSCRIPTEN__
-extern "C" void LoadGameCallback(const char* path, LoadSaveType action);
+extern "C" void LoadGameCallback(const char* path, OpenRCT2::LoadSaveType action);
 #endif

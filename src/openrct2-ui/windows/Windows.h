@@ -9,9 +9,10 @@
 
 #pragma once
 
+#include <functional>
 #include <openrct2/Identifiers.h>
 #include <openrct2/core/StringTypes.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2/interface/WindowTypes.h>
 #include <openrct2/localisation/StringIdType.h>
 #include <openrct2/world/ScenerySelection.h>
 #include <optional>
@@ -23,26 +24,29 @@ struct RideSelection;
 struct TrackDesign;
 struct TrackDesignFileRef;
 
-enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
-
-using LoadSaveCallback = void (*)(ModalResult result, const utf8* path);
-using ScenarioSelectCallback = void (*)(const utf8* path);
 
 namespace OpenRCT2
 {
+    enum class GuestListFilterType : int32_t;
+
     class Formatter;
     struct ObjectEntryDescriptor;
     struct Peep;
     struct Ride;
     struct TileElement;
     struct Vehicle;
+
+    using LoadSaveCallback = void (*)(ModalResult result, const utf8* path);
+    using ScenarioSelectCallback = void (*)(const utf8* path);
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing
 {
     enum class Colour : uint8_t;
-}
+
+    struct RenderTarget;
+} // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::Ui::Windows
 {

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../interface/Window.h"
+#include "../../interface/WindowTypes.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions

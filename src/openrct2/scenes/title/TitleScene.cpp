@@ -21,6 +21,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
+#include "../../interface/Window.h"
 #include "../../network/Network.h"
 #include "../../network/NetworkBase.h"
 #include "../../scenario/ScenarioRepository.h"

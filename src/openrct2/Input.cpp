@@ -11,7 +11,7 @@
 
 #include "Context.h"
 #include "Game.h"
-#include "interface/Window.h"
+#include "interface/WindowTypes.h"
 
 namespace OpenRCT2
 {

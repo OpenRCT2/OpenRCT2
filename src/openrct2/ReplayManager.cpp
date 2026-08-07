@@ -28,7 +28,7 @@
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
-#include "interface/Window.h"
+#include "interface/WindowTypes.h"
 #include "localisation/Formatting.h"
 #include "localisation/StringIds.h"
 #include "management/NewsItem.h"

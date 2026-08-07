@@ -16,7 +16,7 @@
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Font.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
+#include "../interface/WindowTypes.h"
 #include "../localisation/Formatting.h"
 #include "../network/Network.h"
 #include "../world/Map.h"

@@ -18,7 +18,7 @@
 #include "../drawing/NewDrawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
+#include "../interface/WindowTypes.h"
 #include "../ride/RideManager.hpp"
 #include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"

@@ -25,7 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2/interface/WindowTypes.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
