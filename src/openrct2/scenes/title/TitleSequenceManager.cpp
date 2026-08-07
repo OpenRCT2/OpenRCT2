@@ -10,7 +10,6 @@
 #include "TitleSequenceManager.h"
 
 #include "../../Context.h"
-#include "../../OpenRCT2.h"
 #include "../../PlatformEnvironment.h"
 #include "../../core/Collections.hpp"
 #include "../../core/File.h"

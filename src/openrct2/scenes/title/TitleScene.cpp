@@ -19,7 +19,6 @@
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
 #include "../../drawing/Drawing.h"
-#include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Window.h"
 #include "../../network/Network.h"
@@ -29,9 +28,7 @@
 #include "../../ui/UiContext.h"
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
-#include "../../windows/Intent.h"
 #include "../../world/Map.h"
-#include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 

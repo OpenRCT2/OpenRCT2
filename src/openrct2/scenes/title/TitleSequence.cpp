@@ -10,7 +10,6 @@
 #include "TitleSequence.h"
 
 #include "../../Diagnostic.h"
-#include "../../core/Collections.hpp"
 #include "../../core/Console.hpp"
 #include "../../core/File.h"
 #include "../../core/FileScanner.h"
@@ -21,8 +20,6 @@
 #include "../../core/String.hpp"
 #include "../../core/StringBuilder.h"
 #include "../../core/Zip.h"
-#include "../../scenario/ScenarioRepository.h"
-#include "../../scenario/ScenarioSources.h"
 
 #include <algorithm>
 #include <array>
