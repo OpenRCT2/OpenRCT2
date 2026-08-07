@@ -19,11 +19,6 @@
 struct CoordsXYZ;
 struct ZoomLevel;
 
-// Cannot be expressed using a constexpr.
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define VALIDATE_GLOBAL_WIDX(wc, widx)                                                                                         \
-    static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
-
 namespace OpenRCT2::Drawing
 {
     struct RenderTarget;
