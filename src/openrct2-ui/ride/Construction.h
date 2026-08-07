@@ -27,7 +27,7 @@ namespace OpenRCT2
 
     enum class RideConstructionState : uint8_t;
 
-    struct ElementEntry
+    struct SpecialDropdownElement
     {
         TrackElemType TrackType;
         bool Disabled;
@@ -36,7 +36,7 @@ namespace OpenRCT2
     struct SpecialElementsDropdownState
     {
         bool HasActiveElements = false;
-        std::vector<ElementEntry> Elements{};
+        std::vector<SpecialDropdownElement> Elements{};
         size_t PreferredNumRows{};
     };
 
