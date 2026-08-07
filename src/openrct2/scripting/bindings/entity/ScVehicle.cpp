@@ -9,9 +9,12 @@
 
 #include "ScVehicle.hpp"
 
+#include "../../../GameState.h"
 #include "../../../core/EnumMap.hpp"
+#include "../../../entity/EntityTweener.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackData.h"
+#include "../../../ride/Vehicle.h"
 #include "../../../ride/ted/TrackElementDescriptor.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"

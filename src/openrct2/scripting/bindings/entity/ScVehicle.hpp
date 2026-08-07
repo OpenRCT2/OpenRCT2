@@ -11,9 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../entity/EntityTweener.h"
-    #include "../../../ride/Ride.h"
-    #include "../../../ride/Vehicle.h"
+    #include "../../../ride/VehicleFlags.h"
     #include "ScEntity.hpp"
 
     #include <optional>

@@ -9,7 +9,10 @@
 
 #include "ScParticle.hpp"
 
+#include "../../../GameState.h"
 #include "../../../core/EnumMap.hpp"
+#include "../../../entity/Particle.h"
+#include "../../../world/Location.hpp"
 #include "../ride/ScRide.hpp"
 
 #ifdef ENABLE_SCRIPTING

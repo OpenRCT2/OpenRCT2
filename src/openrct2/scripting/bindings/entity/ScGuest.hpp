@@ -11,8 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../entity/Guest.h"
-    #include "../../../management/Marketing.h"
     #include "ScPeep.hpp"
 
 namespace OpenRCT2

@@ -11,7 +11,10 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../Context.h"
+    #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
+    #include "../../../entity/Peep.h"
     #include "ScEntity.hpp"
 
 namespace OpenRCT2::Scripting
