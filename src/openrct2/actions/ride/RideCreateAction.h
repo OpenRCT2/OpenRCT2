@@ -14,7 +14,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class RideCreateAction final : public GameActionBase<GameCommand::CreateRide>
+    class RideCreateAction final : public GameActionBase<GameCommand::createRide>
     {
     private:
         ride_type_t _rideType{ kRideTypeNull };

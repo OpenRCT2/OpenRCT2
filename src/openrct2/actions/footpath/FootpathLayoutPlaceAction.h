@@ -14,7 +14,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class FootpathLayoutPlaceAction final : public GameActionBase<GameCommand::PlacePathLayout>
+    class FootpathLayoutPlaceAction final : public GameActionBase<GameCommand::placePathLayout>
     {
     private:
         CoordsXYZ _loc;

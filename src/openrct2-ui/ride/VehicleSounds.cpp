@@ -434,14 +434,14 @@ namespace OpenRCT2::Audio
 
     enum class SoundType
     {
-        TrackNoises,
-        OtherNoises, // e.g. Screams
+        trackNoises,
+        otherNoises, // e.g. Screams
     };
 
     template<SoundType type>
     static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
     {
-        if constexpr (type == SoundType::TrackNoises)
+        if constexpr (type == SoundType::trackNoises)
         {
             if (IsSpecialFrequencySound(id))
             {
@@ -462,7 +462,7 @@ namespace OpenRCT2::Audio
     template<SoundType type>
     static bool ShouldUpdateChannelRate(const SoundId id)
     {
-        return type == SoundType::TrackNoises || !IsFixedFrequencySound(id);
+        return type == SoundType::trackNoises || !IsFixedFrequencySound(id);
     }
 
     template<SoundType type>
@@ -607,9 +607,9 @@ namespace OpenRCT2::Audio
             Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(EntityId::FromUnderlying(vehicleSoundParams.id));
             if (vehicle != nullptr)
             {
-                UpdateSound<SoundType::TrackNoises>(
+                UpdateSound<SoundType::trackNoises>(
                     vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->trackSound, panVol);
-                UpdateSound<SoundType::OtherNoises>(
+                UpdateSound<SoundType::otherNoises>(
                     vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->otherSound, panVol);
             }
         }

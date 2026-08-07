@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class WallRemoveAction final : public GameActionBase<GameCommand::RemoveWall>
+    class WallRemoveAction final : public GameActionBase<GameCommand::removeWall>
     {
     private:
         CoordsXYZD _loc;

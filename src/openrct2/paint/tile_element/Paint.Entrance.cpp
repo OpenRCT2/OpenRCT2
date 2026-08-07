@@ -186,7 +186,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
             { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::squareFlat);
 
     if (!entranceEl.isGhost())
         PaintRideEntranceExitScrollingText(session, entranceEl, *stationObj, direction, height);

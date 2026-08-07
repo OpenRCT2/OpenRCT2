@@ -172,10 +172,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 Console::WriteLine("Downloading %s", url.c_str());
                 Http::Request req;
-                req.method = Http::Method::GET;
+                req.method = Http::Method::get;
                 req.url = url;
                 Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                    if (response.status == Http::Status::Ok)
+                    if (response.status == Http::Status::ok)
                     {
                         // Check that download operation hasn't been cancelled
                         if (_downloadingObjects)
@@ -184,7 +184,7 @@ namespace OpenRCT2::Ui::Windows
                             auto dataLen = response.body.size();
 
                             auto& objRepo = GetContext()->GetObjectRepository();
-                            objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
+                            objRepo.AddObjectFromFile(ObjectGeneration::dat, name, data, dataLen);
 
                             std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
                             _downloadedEntries.push_back(entry);
@@ -222,10 +222,10 @@ namespace OpenRCT2::Ui::Windows
             try
             {
                 Http::Request req;
-                req.method = Http::Method::GET;
+                req.method = Http::Method::get;
                 req.url = kOpenRCT2ApiLegacyObjectURL + name;
                 Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                    if (response.status == Http::Status::Ok)
+                    if (response.status == Http::Status::ok)
                     {
                         auto jresponse = Json::FromString(response.body);
                         if (jresponse.is_object())
@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
-                    else if (response.status == Http::Status::NotFound)
+                    else if (response.status == Http::Status::notFound)
                     {
                         Console::Error::WriteLine("  %s not found", name.c_str());
                         QueueNextDownload();
@@ -548,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
 
                 drawText(rt, screenCoords, entry.GetName(), { Colour::darkGreen });
 
-                if (entry.Generation == ObjectGeneration::DAT)
+                if (entry.Generation == ObjectGeneration::dat)
                 {
                     // ... source game ...
                     const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());

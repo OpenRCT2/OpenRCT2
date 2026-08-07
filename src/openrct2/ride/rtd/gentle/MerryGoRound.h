@@ -36,7 +36,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 4, 25 },
     .Naming = { STR_RIDE_NAME_MERRY_GO_ROUND, STR_RIDE_DESCRIPTION_MERRY_GO_ROUND },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::controlFailure },
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
@@ -50,18 +50,18 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "merry_go_round",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(0, 60), RideRating::make(0, 15), RideRating::make(0, 30) },
         16,
         7,
         false,
         {
-            { RatingsModifierType::BonusRotations,        0,                5, 5, 5 },
-            { RatingsModifierType::BonusScenery,          0,                19521, 0, 0 },
+            { RatingsModifierType::bonusRotations,        0,                5, 5, 5 },
+            { RatingsModifierType::bonusScenery,          0,                19521, 0, 0 },
         },
     },
 };

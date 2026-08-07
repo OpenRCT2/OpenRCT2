@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class GuestSetNameAction final : public GameActionBase<GameCommand::SetGuestName>
+    class GuestSetNameAction final : public GameActionBase<GameCommand::setGuestName>
     {
     private:
         EntityId _spriteIndex{ EntityId::GetNull() };

@@ -2771,10 +2771,10 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<uint16_t>(std::max(uint8_t(1), ride->maxCarsPerTrain) - rideEntry->zero_cars);
 
-                    StringId stringId = GetRideComponentName(RideComponentType::Car).singular;
+                    StringId stringId = GetRideComponentName(RideComponentType::car).singular;
                     if (ride->maxCarsPerTrain - rideEntry->zero_cars > 1)
                     {
-                        stringId = GetRideComponentName(RideComponentType::Car).plural;
+                        stringId = GetRideComponentName(RideComponentType::car).plural;
                     }
                     ft.Add<StringId>(stringId);
                     return { fallback, ft };
@@ -3674,7 +3674,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].setVisible();
                 widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = rtd.NameConvention.vehicle == RideComponentType::Boat
+                widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = rtd.NameConvention.vehicle == RideComponentType::boat
                     ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
                     : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
 

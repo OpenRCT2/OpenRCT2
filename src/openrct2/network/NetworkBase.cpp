@@ -1321,7 +1321,7 @@ namespace OpenRCT2::Network
         {
             std::string name(object.GetName());
             LOG_VERBOSE("client requests object %s", name.c_str());
-            if (object.Generation == ObjectGeneration::DAT)
+            if (object.Generation == ObjectGeneration::dat)
             {
                 packet << static_cast<uint8_t>(0);
                 packet.write(&object.Entry, sizeof(RCTObjectEntry));
@@ -2633,7 +2633,7 @@ namespace OpenRCT2::Network
 
             std::string objectName;
             const ObjectRepositoryItem* item{};
-            if (generation == static_cast<uint8_t>(ObjectGeneration::DAT))
+            if (generation == static_cast<uint8_t>(ObjectGeneration::dat))
             {
                 const auto* entry = reinterpret_cast<const RCTObjectEntry*>(packet.read(sizeof(RCTObjectEntry)));
                 if (entry == nullptr)
@@ -3039,12 +3039,12 @@ namespace OpenRCT2::Network
         packet >> tick >> actionType;
 
         // Don't let clients send pause or quit
-        if (actionType == GameCommand::TogglePause || actionType == GameCommand::LoadOrQuit)
+        if (actionType == GameCommand::togglePause || actionType == GameCommand::loadOrQuit)
         {
             return;
         }
 
-        if (actionType != GameCommand::Custom)
+        if (actionType != GameCommand::custom)
         {
             // Check if player's group permission allows command to run
             NetworkGroup* group = GetGroupByID(connection.player->group);

@@ -45,8 +45,8 @@ namespace OpenRCT2::Ui::Windows
 
     enum class DisplayType
     {
-        DisplayRaw,
-        DisplayUnits
+        displayRaw,
+        displayUnits
     };
 
 #pragma region Widgets
@@ -108,13 +108,13 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_CLIP_HEIGHT_VALUE:
                     // Toggle display of the cut height value in RAW vs UNITS
-                    if (_clipHeightDisplayType == DisplayType::DisplayRaw)
+                    if (_clipHeightDisplayType == DisplayType::displayRaw)
                     {
-                        _clipHeightDisplayType = DisplayType::DisplayUnits;
+                        _clipHeightDisplayType = DisplayType::displayUnits;
                     }
                     else
                     {
-                        _clipHeightDisplayType = DisplayType::DisplayRaw;
+                        _clipHeightDisplayType = DisplayType::displayRaw;
                     }
                     this->invalidate();
                     break;
@@ -295,7 +295,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (_clipHeightDisplayType)
             {
-                case DisplayType::DisplayRaw:
+                case DisplayType::displayRaw:
                 default:
                 {
                     auto ft = Formatter();
@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
                     drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] });
                     break;
                 }
-                case DisplayType::DisplayUnits:
+                case DisplayType::displayUnits:
                 {
                     // Print the value in the configured height label type:
                     if (Config::Get().general.showHeightAsUnits)
@@ -363,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowInitScrollWidgets(*this);
 
-            _clipHeightDisplayType = DisplayType::DisplayUnits;
+            _clipHeightDisplayType = DisplayType::displayUnits;
 
             // Initialise the clip height slider from the current clip height value.
             this->SetClipHeight(gClipHeight);

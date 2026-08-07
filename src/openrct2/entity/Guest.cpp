@@ -3033,11 +3033,11 @@ namespace OpenRCT2
                             if (musicObject == nullptr)
                                 break;
 
-                            if (musicObject->GetNiceFactor() == MusicNiceFactor::Nice)
+                            if (musicObject->GetNiceFactor() == MusicNiceFactor::nice)
                             {
                                 nearby_music |= 1;
                             }
-                            else if (musicObject->GetNiceFactor() == MusicNiceFactor::Overbearing)
+                            else if (musicObject->GetNiceFactor() == MusicNiceFactor::overbearing)
                             {
                                 nearby_music |= 2;
                             }
@@ -5020,13 +5020,13 @@ namespace OpenRCT2
 
         targetLoc = GetDestination() + CoordsDirectionDelta[chosenEdge] / 2;
 
-        enum class maze_type
+        enum class MazeType
         {
             invalid,
             hedge,
-            entrance_or_exit
+            entranceOrExit
         };
-        maze_type mazeType = maze_type::invalid;
+        MazeType mazeType = MazeType::invalid;
 
         for (auto* tileElement : TileElementsView(targetLoc))
         {
@@ -5035,30 +5035,30 @@ namespace OpenRCT2
 
             if (tileElement->getType() == TileElementType::track)
             {
-                mazeType = maze_type::hedge;
+                mazeType = MazeType::hedge;
                 break;
             }
 
             if (tileElement->getType() == TileElementType::entrance
                 && tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
             {
-                mazeType = maze_type::entrance_or_exit;
+                mazeType = MazeType::entranceOrExit;
                 break;
             }
         }
 
         switch (mazeType)
         {
-            case maze_type::invalid:
+            case MazeType::invalid:
                 MazeLastEdge++;
                 MazeLastEdge &= 3;
                 return;
-            case maze_type::hedge:
+            case MazeType::hedge:
                 SetDestination(targetLoc);
                 Var37 = kMazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
                 MazeLastEdge = chosenEdge;
                 break;
-            case maze_type::entrance_or_exit:
+            case MazeType::entranceOrExit:
                 targetLoc = GetDestination();
                 if (chosenEdge & 1)
                 {

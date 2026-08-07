@@ -370,13 +370,13 @@ namespace OpenRCT2::Network
 
         Http::Request request;
         request.url = std::move(masterServerUrl);
-        request.method = Http::Method::GET;
+        request.method = Http::Method::get;
         request.header["Accept"] = "application/json";
         Http::DoAsync(request, [p](Http::Response& response) -> void {
             json_t root;
             try
             {
-                if (response.status != Http::Status::Ok)
+                if (response.status != Http::Status::ok)
                 {
                     throw MasterServerException(STR_SERVER_LIST_NO_CONNECTION);
                 }

@@ -61,11 +61,11 @@ namespace OpenRCT2::CommandLine::Sprite
 
     static ExitCode HandleSprite(CommandLineArgEnumerator* argEnumerator)
     {
-        auto spriteMode = ImportMode::Default;
+        auto spriteMode = ImportMode::standard;
         if (String::iequals(_mode, SZ_CLOSEST))
-            spriteMode = ImportMode::Closest;
+            spriteMode = ImportMode::closest;
         else if (String::iequals(_mode, SZ_DITHERING))
-            spriteMode = ImportMode::Dithering;
+            spriteMode = ImportMode::dithering;
 
         const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
         int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
@@ -163,7 +163,7 @@ namespace OpenRCT2::CommandLine::Sprite
         try
         {
             auto format = ImageFormat::png32;
-            if (meta.palette == Palette::KeepIndices)
+            if (meta.palette == Palette::keepIndices)
             {
                 format = ImageFormat::png;
             }

@@ -23,8 +23,8 @@ using namespace OpenRCT2;
 
 enum class Plane
 {
-    Back,
-    Front,
+    back,
+    front,
 };
 
 enum
@@ -59,11 +59,11 @@ static ImageIndex GetMagicCarpetFrameImage(Plane plane, Direction direction)
 {
     if (direction & 1)
     {
-        return plane == Plane::Back ? SPR_MAGIC_CARPET_FRAME_NE : SPR_MAGIC_CARPET_FRAME_SW;
+        return plane == Plane::back ? SPR_MAGIC_CARPET_FRAME_NE : SPR_MAGIC_CARPET_FRAME_SW;
     }
     else
     {
-        return plane == Plane::Back ? SPR_MAGIC_CARPET_FRAME_NW : SPR_MAGIC_CARPET_FRAME_SE;
+        return plane == Plane::back ? SPR_MAGIC_CARPET_FRAME_NW : SPR_MAGIC_CARPET_FRAME_SE;
     }
 }
 
@@ -72,11 +72,11 @@ static ImageIndex GetMagicCarpetPendulumImage(Plane plane, Direction direction, 
     ImageIndex imageIndex;
     if (direction & 1)
     {
-        imageIndex = plane == Plane::Back ? SPR_MAGIC_CARPET_PENDULUM_NE : SPR_MAGIC_CARPET_PENDULUM_SW;
+        imageIndex = plane == Plane::back ? SPR_MAGIC_CARPET_PENDULUM_NE : SPR_MAGIC_CARPET_PENDULUM_SW;
     }
     else
     {
-        imageIndex = plane == Plane::Back ? SPR_MAGIC_CARPET_PENDULUM_NW : SPR_MAGIC_CARPET_PENDULUM_SE;
+        imageIndex = plane == Plane::back ? SPR_MAGIC_CARPET_PENDULUM_NW : SPR_MAGIC_CARPET_PENDULUM_SE;
     }
     if (direction & 2)
     {
@@ -121,7 +121,7 @@ static void PaintMagicCarpetFrame(
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
     auto imageTemplate = session.TrackColours;
     auto imageId = imageTemplate.WithIndex(imageIndex);
-    if (plane == Plane::Back)
+    if (plane == Plane::back)
     {
         PaintAddImageAsParent(session, imageId, offset, bb);
     }
@@ -201,11 +201,11 @@ static void PaintMagicCarpetStructure(
     };
     BoundBoxXYZ bb = { { kMagicCarpetBounds[direction].offset, height + 7 }, { kMagicCarpetBounds[direction].length, 127 } };
 
-    PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bb);
-    PaintMagicCarpetPendulum(session, Plane::Back, swing, direction, offset, bb);
+    PaintMagicCarpetFrame(session, Plane::back, direction, offset, bb);
+    PaintMagicCarpetPendulum(session, Plane::back, swing, direction, offset, bb);
     PaintMagicCarpetVehicle(session, ride, direction, swing, offset, bb, stationColour);
-    PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bb);
-    PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bb);
+    PaintMagicCarpetPendulum(session, Plane::front, swing, direction, offset, bb);
+    PaintMagicCarpetFrame(session, Plane::front, direction, offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::ride;

@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor InformationKioskRTD =
     .RideModes = EnumsToFlags(RideMode::shopStall),
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
     .availableBreakdowns = {},
     .Heights = { 12, kDefaultInformationKioskHeight, 0, 0, },
     .MaxMass = 255,
@@ -46,21 +46,21 @@ constexpr RideTypeDescriptor InformationKioskRTD =
     .BonusValue = 15,
     .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::InfoKiosk,
+    .ColourKey = RideColourKey::infoKiosk,
     .Name = "information_kiosk",
     .RatingsData = 
     {
-        RatingsCalculationType::Stall,
+        RatingsCalculationType::stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,
         false,
-        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .DesignCreateMode = TrackDesignCreateMode::standard,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::kioskOrFacility,
 };

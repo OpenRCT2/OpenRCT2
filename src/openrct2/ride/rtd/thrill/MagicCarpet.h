@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,
@@ -53,18 +53,18 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::yellow, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "magic_carpet",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 45), RideRating::make(1, 60), RideRating::make(2, 60) },
         16,
         0,
         false,
         {
-            { RatingsModifierType::BonusOperationOption, 0, 10, 20, 20 }, 
-            { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 10, 20, 20 }, 
+            { RatingsModifierType::bonusScenery,         0, 11155, 0, 0 },
         },
     },
 };

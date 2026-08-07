@@ -15,7 +15,7 @@
 namespace OpenRCT2
 {
 
-    using YearlyDistribution = std::array<uint8_t, EnumValue(Weather::Type::Count)>;
+    using YearlyDistribution = std::array<uint8_t, EnumValue(Weather::Type::count)>;
 
     class ClimateObject final : public Object
     {

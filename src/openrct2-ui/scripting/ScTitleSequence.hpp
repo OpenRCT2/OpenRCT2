@@ -33,33 +33,33 @@ namespace OpenRCT2::Scripting
 {
     enum class TitleScript : uint8_t
     {
-        Undefined = 0xFF,
-        Wait = 0,
-        Location,
-        Rotate,
-        Zoom,
-        Follow,
-        Restart,
-        Load,
-        End,
-        Speed,
-        Loop,
-        EndLoop,
-        LoadSc,
+        undefined = 0xFF,
+        wait = 0,
+        location,
+        rotate,
+        zoom,
+        follow,
+        restart,
+        load,
+        end,
+        speed,
+        loop,
+        endLoop,
+        loadSc,
     };
 
     static const EnumMap<TitleScript> TitleScriptMap(
         {
-            { Title::LoadParkCommand::ScriptingName, TitleScript::Load },
-            { Title::SetLocationCommand::ScriptingName, TitleScript::Location },
-            { Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
-            { Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
-            { Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
-            { Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
-            { Title::WaitCommand::ScriptingName, TitleScript::Wait },
-            { Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
-            { Title::RestartCommand::ScriptingName, TitleScript::Restart },
-            { Title::EndCommand::ScriptingName, TitleScript::End },
+            { Title::LoadParkCommand::ScriptingName, TitleScript::load },
+            { Title::SetLocationCommand::ScriptingName, TitleScript::location },
+            { Title::RotateViewCommand::ScriptingName, TitleScript::rotate },
+            { Title::SetZoomCommand::ScriptingName, TitleScript::zoom },
+            { Title::FollowEntityCommand::ScriptingName, TitleScript::follow },
+            { Title::SetSpeedCommand::ScriptingName, TitleScript::speed },
+            { Title::WaitCommand::ScriptingName, TitleScript::wait },
+            { Title::LoadScenarioCommand::ScriptingName, TitleScript::loadSc },
+            { Title::RestartCommand::ScriptingName, TitleScript::restart },
+            { Title::EndCommand::ScriptingName, TitleScript::end },
         });
 
     inline JSValue TitleScriptToJS(JSContext* ctx, TitleScript value)
@@ -125,7 +125,7 @@ namespace OpenRCT2::Scripting
 
         switch (type.value())
         {
-            case TitleScript::Load:
+            case TitleScript::load:
             {
                 auto index = JSToOptionalInt(ctx, value, "index");
                 if (!index.has_value())
@@ -133,7 +133,7 @@ namespace OpenRCT2::Scripting
 
                 return LoadParkCommand{ static_cast<uint8_t>(index.value()) };
             }
-            case TitleScript::Location:
+            case TitleScript::location:
             {
                 auto x = JSToOptionalInt(ctx, value, "x");
                 auto y = JSToOptionalInt(ctx, value, "y");
@@ -145,7 +145,7 @@ namespace OpenRCT2::Scripting
                     static_cast<uint8_t>(y.value()),
                 };
             }
-            case TitleScript::Rotate:
+            case TitleScript::rotate:
             {
                 auto rotations = JSToOptionalInt(ctx, value, "rotations");
                 if (!rotations.has_value())
@@ -153,7 +153,7 @@ namespace OpenRCT2::Scripting
 
                 return RotateViewCommand{ static_cast<uint8_t>(rotations.value()) };
             }
-            case TitleScript::Zoom:
+            case TitleScript::zoom:
             {
                 auto zoom = JSToOptionalInt(ctx, value, "zoom");
                 if (!zoom.has_value())
@@ -161,7 +161,7 @@ namespace OpenRCT2::Scripting
 
                 return SetZoomCommand{ static_cast<uint8_t>(zoom.value()) };
             }
-            case TitleScript::Follow:
+            case TitleScript::follow:
                 if (auto id = JSToOptionalInt(ctx, value, "id"); id.has_value())
                 {
                     return FollowEntityCommand{ EntityId::FromUnderlying(id.value()) };
@@ -170,7 +170,7 @@ namespace OpenRCT2::Scripting
                 {
                     return FollowEntityCommand{ EntityId::GetNull() };
                 }
-            case TitleScript::Speed:
+            case TitleScript::speed:
             {
                 auto speed = JSToOptionalInt(ctx, value, "speed");
                 if (!speed.has_value())
@@ -178,7 +178,7 @@ namespace OpenRCT2::Scripting
 
                 return SetSpeedCommand{ static_cast<uint8_t>(speed.value()) };
             }
-            case TitleScript::Wait:
+            case TitleScript::wait:
             {
                 auto duration = JSToOptionalInt(ctx, value, "duration");
                 if (!duration.has_value())
@@ -186,7 +186,7 @@ namespace OpenRCT2::Scripting
 
                 return WaitCommand{ static_cast<uint16_t>(duration.value()) };
             }
-            case TitleScript::LoadSc:
+            case TitleScript::loadSc:
             {
                 auto scenario = JSToOptionalStdString(ctx, value, "scenario");
                 if (!scenario.has_value())
@@ -196,9 +196,9 @@ namespace OpenRCT2::Scripting
                 String::set(loadScenarioCommand.Scenario, sizeof(loadScenarioCommand.Scenario), scenario.value().c_str());
                 return loadScenarioCommand;
             }
-            case TitleScript::Restart:
+            case TitleScript::restart:
                 return RestartCommand{};
-            case TitleScript::End:
+            case TitleScript::end:
                 return EndCommand{};
             default:
                 return std::nullopt;

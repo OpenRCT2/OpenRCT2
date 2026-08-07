@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
                 result.OnHighlight = JSToCallback(ctx, desc, "onHighlight");
                 result.CanSelect = AsOrDefault(ctx, desc, "canSelect", false);
                 if (JS_IsUndefined(scrollbars))
-                    result.Scrollbars = ScrollbarType::Vertical;
+                    result.Scrollbars = ScrollbarType::vertical;
                 else
                     result.Scrollbars = ScrollbarTypeFromJS(ctx, scrollbars);
                 JS_FreeValue(ctx, cols);
@@ -512,12 +512,12 @@ namespace OpenRCT2::Ui::Windows
                     auto& listView = _info.ListViews[scrollIndex];
                     auto wwidth = widget.width() - 2;
                     auto wheight = widget.height() - 2;
-                    if (listView.GetScrollbars() == ScrollbarType::Horizontal
-                        || listView.GetScrollbars() == ScrollbarType::Both)
+                    if (listView.GetScrollbars() == ScrollbarType::horizontal
+                        || listView.GetScrollbars() == ScrollbarType::both)
                     {
                         wheight -= kScrollBarWidth + 1;
                     }
-                    if (listView.GetScrollbars() == ScrollbarType::Vertical || listView.GetScrollbars() == ScrollbarType::Both)
+                    if (listView.GetScrollbars() == ScrollbarType::vertical || listView.GetScrollbars() == ScrollbarType::both)
                     {
                         wwidth -= kScrollBarWidth + 1;
                     }
@@ -1050,11 +1050,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget.type = WidgetType::scroll;
                 widget.content = 0;
-                if (desc.Scrollbars == ScrollbarType::Horizontal)
+                if (desc.Scrollbars == ScrollbarType::horizontal)
                     widget.content = SCROLL_HORIZONTAL;
-                else if (desc.Scrollbars == ScrollbarType::Vertical)
+                else if (desc.Scrollbars == ScrollbarType::vertical)
                     widget.content = SCROLL_VERTICAL;
-                else if (desc.Scrollbars == ScrollbarType::Both)
+                else if (desc.Scrollbars == ScrollbarType::both)
                     widget.content = SCROLL_BOTH;
                 widgetList.push_back(widget);
             }

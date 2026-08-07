@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor CinemaRTD =
     .RideModes = EnumsToFlags(RideMode::mouseTails3DFilm, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm),
     .DefaultMode = RideMode::mouseTails3DFilm,
     .Naming = { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA },
-    .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,
@@ -48,17 +48,17 @@ constexpr RideTypeDescriptor CinemaRTD =
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "3d_cinema",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         21,
         7,
         false,
         {
-            { RatingsModifierType::Bonus3DCinemaMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonus3DCinemaMode, 0, 0, 0, 0 },
         },
     },
 };

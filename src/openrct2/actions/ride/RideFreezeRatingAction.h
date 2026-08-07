@@ -20,7 +20,7 @@ namespace OpenRCT2::GameActions
         nausea,
     };
 
-    class RideFreezeRatingAction final : public GameActionBase<GameCommand::FreezeRideRating>
+    class RideFreezeRatingAction final : public GameActionBase<GameCommand::freezeRideRating>
     {
     private:
         RideId _rideIndex{ RideId::GetNull() };

@@ -81,21 +81,21 @@ namespace OpenRCT2::Ui::Windows
     private:
         enum class TabId
         {
-            Individual,
-            Summarised
+            individual,
+            summarised
         };
 
         enum class GuestViewType
         {
-            Actions,
-            Thoughts,
+            actions,
+            thoughts,
         };
 
         enum class GuestFilterType
         {
-            Guests,
-            GuestsThinking,
-            GuestsThinkingAbout,
+            guests,
+            guestsThinking,
+            guestsThinkingAbout,
         };
 
         struct FilterArguments
@@ -167,8 +167,8 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(window_guest_list_widgets);
             WindowInitScrollWidgets(*this);
 
-            _selectedTab = TabId::Summarised;
-            _selectedView = GuestViewType::Thoughts;
+            _selectedTab = TabId::summarised;
+            _selectedView = GuestViewType::thoughts;
             _numPages = 1;
 
             widgets[WIDX_PAGE_DROPDOWN].setHidden();
@@ -200,10 +200,10 @@ namespace OpenRCT2::Ui::Windows
                                                                                                     : STR_ON_RIDE);
                         guestRide->formatNameTo(ft);
 
-                        _selectedFilter = GuestFilterType::Guests;
+                        _selectedFilter = GuestFilterType::guests;
                         _highlightedIndex = {};
-                        _selectedTab = TabId::Individual;
-                        _selectedView = GuestViewType::Thoughts;
+                        _selectedTab = TabId::individual;
+                        _selectedView = GuestViewType::thoughts;
                     }
                     break;
                 }
@@ -215,10 +215,10 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(STR_QUEUING_FOR);
                         guestRide->formatNameTo(ft);
 
-                        _selectedFilter = GuestFilterType::Guests;
+                        _selectedFilter = GuestFilterType::guests;
                         _highlightedIndex = {};
-                        _selectedTab = TabId::Individual;
-                        _selectedView = GuestViewType::Thoughts;
+                        _selectedTab = TabId::individual;
+                        _selectedView = GuestViewType::thoughts;
                     }
                     break;
                 }
@@ -230,10 +230,10 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(kStringIdNone);
                         guestRide->formatNameTo(ft);
 
-                        _selectedFilter = GuestFilterType::GuestsThinking;
+                        _selectedFilter = GuestFilterType::guestsThinking;
                         _highlightedIndex = {};
-                        _selectedTab = TabId::Individual;
-                        _selectedView = GuestViewType::Thoughts;
+                        _selectedTab = TabId::individual;
+                        _selectedView = GuestViewType::thoughts;
                     }
                     break;
                 }
@@ -241,10 +241,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ft.Add<StringId>(kPeepThoughtIds[index & 0xFF]);
 
-                    _selectedFilter = GuestFilterType::GuestsThinking;
+                    _selectedFilter = GuestFilterType::guestsThinking;
                     _highlightedIndex = {};
-                    _selectedTab = TabId::Individual;
-                    _selectedView = GuestViewType::Thoughts;
+                    _selectedTab = TabId::individual;
+                    _selectedView = GuestViewType::thoughts;
                     break;
                 }
             }
@@ -261,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Current tab image animation
             _tabAnimationIndex++;
-            if (_tabAnimationIndex >= (_selectedTab == TabId::Individual ? 24uL : 32uL))
+            if (_tabAnimationIndex >= (_selectedTab == TabId::individual ? 24uL : 32uL))
                 _tabAnimationIndex = 0;
             invalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab));
         }
@@ -341,8 +341,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
                 {
-                    gDropdown.items[0] = Dropdown::MenuLabel(GetViewName(GuestViewType::Actions));
-                    gDropdown.items[1] = Dropdown::MenuLabel(GetViewName(GuestViewType::Thoughts));
+                    gDropdown.items[0] = Dropdown::MenuLabel(GetViewName(GuestViewType::actions));
+                    gDropdown.items[1] = Dropdown::MenuLabel(GetViewName(GuestViewType::thoughts));
 
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab), true);
 
             widgets[WIDX_INFO_TYPE_DROPDOWN].text = GetViewName(_selectedView);
-            widgets[WIDX_MAP].setVisible(_selectedTab == TabId::Individual && _selectedFilter);
+            widgets[WIDX_MAP].setVisible(_selectedTab == TabId::individual && _selectedFilter);
 
             widgets[WIDX_GUEST_LIST].right = width - 4;
             widgets[WIDX_GUEST_LIST].bottom = height - 15;
@@ -402,10 +402,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TRACKING].left = 321 - kWindowSize.width + width;
             widgets[WIDX_TRACKING].right = 344 - kWindowSize.width + width;
 
-            widgets[WIDX_TRACKING].setVisible(_selectedTab == TabId::Individual);
-            widgets[WIDX_FILTER_BY_NAME].setVisible(_selectedTab == TabId::Individual);
+            widgets[WIDX_TRACKING].setVisible(_selectedTab == TabId::individual);
+            widgets[WIDX_FILTER_BY_NAME].setVisible(_selectedTab == TabId::individual);
 
-            if (_selectedTab == TabId::Summarised)
+            if (_selectedTab == TabId::summarised)
             {
                 setWidgetPressed(WIDX_FILTER_BY_NAME, false);
                 _filterName.clear();
@@ -430,7 +430,7 @@ namespace OpenRCT2::Ui::Windows
             // Filter description
             StringId format;
             auto screenCoords = windowPos + ScreenCoordsXY{ 6, widgets[WIDX_TAB_CONTENT_PANEL].top + 3 };
-            if (_selectedTab == TabId::Individual)
+            if (_selectedTab == TabId::individual)
             {
                 if (_selectedFilter)
                 {
@@ -459,7 +459,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Number of guests (list items)
-            if (_selectedTab == TabId::Individual)
+            if (_selectedTab == TabId::individual)
             {
                 screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_GUEST_LIST].bottom + 2 };
                 auto ft = Formatter();
@@ -475,7 +475,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             switch (_selectedTab)
             {
-                case TabId::Individual:
+                case TabId::individual:
                     // Count the number of guests
                     y = static_cast<int32_t>(_guestList.size()) * kScrollableRowHeight;
                     _numPages = (_guestList.size() + kGuestsPerPage - 1) / kGuestsPerPage;
@@ -484,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
                     else if (_selectedPage >= _numPages)
                         _selectedPage = _numPages - 1;
                     break;
-                case TabId::Summarised:
+                case TabId::summarised:
                 default:
                     // Find the groups
                     if (IsRefreshOfGroupsRequired())
@@ -516,7 +516,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto i = screenCoords.y / (_selectedTab == TabId::Individual ? kScrollableRowHeight : kSummarisedGuestsRowHeight);
+            auto i = screenCoords.y / (_selectedTab == TabId::individual ? kScrollableRowHeight : kSummarisedGuestsRowHeight);
             i += static_cast<int32_t>(_selectedPage * kGuestsPerPage);
             if (static_cast<size_t>(i) != _highlightedIndex)
             {
@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (_selectedTab)
             {
-                case TabId::Individual:
+                case TabId::individual:
                 {
                     auto i = screenCoords.y / kScrollableRowHeight;
                     i += static_cast<int32_t>(_selectedPage * kGuestsPerPage);
@@ -548,15 +548,15 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case TabId::Summarised:
+                case TabId::summarised:
                 {
                     auto i = static_cast<size_t>(screenCoords.y / kSummarisedGuestsRowHeight);
                     if (i < _groups.size())
                     {
                         _filterArguments = _groups[i].Arguments;
-                        _selectedFilter = _selectedView == GuestViewType::Actions ? GuestFilterType::Guests
-                                                                                  : GuestFilterType::GuestsThinking;
-                        _selectedTab = TabId::Individual;
+                        _selectedFilter = _selectedView == GuestViewType::actions ? GuestFilterType::guests
+                                                                                  : GuestFilterType::guestsThinking;
+                        _selectedTab = TabId::individual;
                         widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
                         invalidate();
                         widgets[WIDX_FILTER_BY_NAME].type = WidgetType::flatBtn;
@@ -575,10 +575,10 @@ namespace OpenRCT2::Ui::Windows
                 getColourMap(colours[1].colour).midLight);
             switch (_selectedTab)
             {
-                case TabId::Individual:
+                case TabId::individual:
                     DrawScrollIndividual(rt);
                     break;
-                case TabId::Summarised:
+                case TabId::summarised:
                     DrawScrollSummarised(rt);
                     break;
             }
@@ -587,7 +587,7 @@ namespace OpenRCT2::Ui::Windows
         void RefreshList()
         {
             // only the individual tab uses the GuestList so no point calculating it
-            if (_selectedTab != TabId::Individual)
+            if (_selectedTab != TabId::individual)
             {
                 RefreshGroups();
             }
@@ -625,7 +625,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(RenderTarget& rt)
         {
             // Tab 1 image
-            auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
+            auto i = (_selectedTab == TabId::individual ? _tabAnimationIndex & ~3 : 0);
             auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
             i += animObj->GetPeepAnimation(PeepAnimationGroup::normal).baseImage + 1;
             GfxDrawSprite(
@@ -633,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
 
             // Tab 2 image
-            i = (_selectedTab == TabId::Summarised ? _tabAnimationIndex / 4 : 0);
+            i = (_selectedTab == TabId::summarised ? _tabAnimationIndex / 4 : 0);
             GfxDrawSprite(
                 rt, ImageId(SPR_TAB_GUESTS_0 + i),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
@@ -669,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
 
                     switch (_selectedView)
                     {
-                        case GuestViewType::Actions:
+                        case GuestViewType::actions:
                             // Guest face
                             GfxDrawSprite(rt, ImageId(GetPeepFaceSpriteSmall(peep)), { 118, y + 1 });
 
@@ -682,7 +682,7 @@ namespace OpenRCT2::Ui::Windows
                             peep->FormatActionTo(ft);
                             drawTextEllipsised(rt, { 133, y }, 314, format, ft);
                             break;
-                        case GuestViewType::Thoughts:
+                        case GuestViewType::thoughts:
                             // For each thought
                             for (const auto& thought : peep->thoughts)
                             {
@@ -738,7 +738,7 @@ namespace OpenRCT2::Ui::Windows
                     // Draw action/thoughts
                     Formatter ft(group.Arguments.args);
                     // Draw small font if displaying guests
-                    if (_selectedView == GuestViewType::Thoughts)
+                    if (_selectedView == GuestViewType::thoughts)
                     {
                         drawTextEllipsised(rt, { 0, y }, 414, format, ft, { FontStyle::small });
                     }
@@ -781,9 +781,9 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsPeepInFilter(const Guest& peep)
         {
-            auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::Actions : GuestViewType::Thoughts;
+            auto guestViewType = _selectedFilter == GuestFilterType::guests ? GuestViewType::actions : GuestViewType::thoughts;
             auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
-            if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::GuestsThinking)
+            if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::guestsThinking)
             {
                 Formatter(peepArgs.args).Add<StringId>(kStringIdNone);
             }
@@ -868,10 +868,10 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft(result.args);
             switch (type)
             {
-                case GuestViewType::Actions:
+                case GuestViewType::actions:
                     peep.FormatActionTo(ft);
                     break;
-                case GuestViewType::Thoughts:
+                case GuestViewType::thoughts:
                 {
                     const auto& thought = peep.thoughts[0];
                     if (thought.type != PeepThoughtType::none && thought.freshness <= 5)
@@ -889,9 +889,9 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 default:
-                case GuestViewType::Actions:
+                case GuestViewType::actions:
                     return STR_ACTIONS;
-                case GuestViewType::Thoughts:
+                case GuestViewType::thoughts:
                     return STR_THOUGHTS;
             }
         }
@@ -901,11 +901,11 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 default:
-                case GuestFilterType::Guests:
+                case GuestFilterType::guests:
                     return STR_GUESTS_FILTER;
-                case GuestFilterType::GuestsThinking:
+                case GuestFilterType::guestsThinking:
                     return STR_GUESTS_FILTER_THINKING;
-                case GuestFilterType::GuestsThinkingAbout:
+                case GuestFilterType::guestsThinkingAbout:
                     return STR_GUESTS_FILTER_THINKING_ABOUT;
             }
         }

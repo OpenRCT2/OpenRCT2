@@ -105,7 +105,7 @@ namespace OpenRCT2::Scripting
             std::string str;
             if (obj != nullptr)
             {
-                if (obj->GetGeneration() == ObjectGeneration::DAT)
+                if (obj->GetGeneration() == ObjectGeneration::dat)
                 {
                     str = obj->GetDescriptor().ToString();
                 }

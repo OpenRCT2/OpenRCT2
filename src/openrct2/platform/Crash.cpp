@@ -216,7 +216,7 @@ static bool OnCrash(
     // 1. Create the screenshot with software renderer - requires allocations
     // 2. Not create screenshot at all.
     // Discovering which of the approaches got implemented is left as an excercise for the reader.
-    if (OpenRCT2::GetContext()->GetDrawingEngineType() != DrawingEngine::OpenGL)
+    if (OpenRCT2::GetContext()->GetDrawingEngineType() != DrawingEngine::openGL)
     {
         std::string screenshotPath = ScreenshotDump();
         if (!screenshotPath.empty())

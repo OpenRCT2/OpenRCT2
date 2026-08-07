@@ -31,8 +31,8 @@ namespace OpenRCT2
 
     enum class JumpingFountainType : uint8_t
     {
-        Water,
-        Snow
+        water,
+        snow
     };
 
     struct JumpingFountain : EntityBase

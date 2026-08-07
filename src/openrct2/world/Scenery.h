@@ -40,9 +40,9 @@ enum
 
 enum class ScatterToolDensity : uint8_t
 {
-    LowDensity,
-    MediumDensity,
-    HighDensity
+    lowDensity,
+    mediumDensity,
+    highDensity
 };
 
 extern uint8_t gSceneryQuadrant;

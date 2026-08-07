@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class TrackRemoveAction final : public GameActionBase<GameCommand::RemoveTrack>
+    class TrackRemoveAction final : public GameActionBase<GameCommand::removeTrack>
     {
     private:
         TrackElemType _trackType{};

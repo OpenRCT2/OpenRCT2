@@ -68,19 +68,19 @@ namespace OpenRCT2::PathFinding
 
     enum class PathSearchResult
     {
-        DeadEnd,      // Path is a dead end, i.e. < 2 edges.
-        Wide,         // Path with wide flag set.
-        Thin,         // Path is simple.
-        Junction,     // Path is a junction, i.e. > 2 edges.
-        RideQueue,    // Queue path connected to a ride.
-        RideEntrance, // Map element is a ride entrance.
-        RideExit,     // Map element is a ride exit.
-        ParkExit,     // Park entrance / exit (map element is a park entrance/exit).
-        ShopEntrance, // Map element is a shop entrance.
-        Other,        // Path is other than the above.
-        Loop,         // Loop detected.
-        LimitReached, // Search limit reached without reaching path end.
-        Failed,       // No path element found.
+        deadEnd,      // Path is a dead end, i.e. < 2 edges.
+        wide,         // Path with wide flag set.
+        thin,         // Path is simple.
+        junction,     // Path is a junction, i.e. > 2 edges.
+        rideQueue,    // Queue path connected to a ride.
+        rideEntrance, // Map element is a ride entrance.
+        rideExit,     // Map element is a ride exit.
+        parkExit,     // Park entrance / exit (map element is a park entrance/exit).
+        shopEntrance, // Map element is a shop entrance.
+        other,        // Path is other than the above.
+        loop,         // Loop detected.
+        limitReached, // Search limit reached without reaching path end.
+        failed,       // No path element found.
     };
 
 #pragma region Pathfinding Logging
@@ -114,31 +114,31 @@ namespace OpenRCT2::PathFinding
     {
         switch (pathFindSearchResult)
         {
-            case PathSearchResult::DeadEnd:
+            case PathSearchResult::deadEnd:
                 return "DeadEnd";
-            case PathSearchResult::Wide:
+            case PathSearchResult::wide:
                 return "Wide";
-            case PathSearchResult::Thin:
+            case PathSearchResult::thin:
                 return "Thin";
-            case PathSearchResult::Junction:
+            case PathSearchResult::junction:
                 return "Junction";
-            case PathSearchResult::RideQueue:
+            case PathSearchResult::rideQueue:
                 return "RideQueue";
-            case PathSearchResult::RideEntrance:
+            case PathSearchResult::rideEntrance:
                 return "RideEntrance";
-            case PathSearchResult::RideExit:
+            case PathSearchResult::rideExit:
                 return "RideExit";
-            case PathSearchResult::ParkExit:
+            case PathSearchResult::parkExit:
                 return "ParkEntryExit";
-            case PathSearchResult::ShopEntrance:
+            case PathSearchResult::shopEntrance:
                 return "ShopEntrance";
-            case PathSearchResult::LimitReached:
+            case PathSearchResult::limitReached:
                 return "LimitReached";
-            case PathSearchResult::Other:
+            case PathSearchResult::other:
                 return "Other";
-            case PathSearchResult::Loop:
+            case PathSearchResult::loop:
                 return "Loop";
-            case PathSearchResult::Failed:
+            case PathSearchResult::failed:
                 return "Failed";
                 // The default case is omitted intentionally.
         }
@@ -367,15 +367,15 @@ namespace OpenRCT2::PathFinding
             if (!FootpathIsZAndDirectionValid(*nextPathElement, loc.z, chosenDirection))
                 continue;
             if (nextPathElement->IsWide())
-                return PathSearchResult::Wide;
+                return PathSearchResult::wide;
             // Only queue tiles that are connected to a ride are returned as ride queues.
             if (nextPathElement->IsQueue() && !nextPathElement->GetRideIndex().IsNull())
-                return PathSearchResult::RideQueue;
+                return PathSearchResult::rideQueue;
 
-            return PathSearchResult::Other;
+            return PathSearchResult::other;
         } while (!(nextTileElement++)->isLastForTile());
 
-        return PathSearchResult::Failed;
+        return PathSearchResult::failed;
     }
 
     /**
@@ -402,7 +402,7 @@ namespace OpenRCT2::PathFinding
         Direction direction;
 
         if (level > 25)
-            return PathSearchResult::LimitReached;
+            return PathSearchResult::limitReached;
 
         loc += TileDirectionDelta[chosenDirection];
         for (auto* tileElement : TileElementsView(loc))
@@ -421,7 +421,7 @@ namespace OpenRCT2::PathFinding
                     if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
                     {
                         *outRideIndex = rideIndex;
-                        return PathSearchResult::ShopEntrance;
+                        return PathSearchResult::shopEntrance;
                     }
                 }
                 break;
@@ -435,7 +435,7 @@ namespace OpenRCT2::PathFinding
                             if (direction == chosenDirection)
                             {
                                 *outRideIndex = tileElement->asEntrance()->GetRideIndex();
-                                return PathSearchResult::RideEntrance;
+                                return PathSearchResult::rideEntrance;
                             }
                             break;
                         case ENTRANCE_TYPE_RIDE_EXIT:
@@ -443,11 +443,11 @@ namespace OpenRCT2::PathFinding
                             if (direction == chosenDirection)
                             {
                                 *outRideIndex = tileElement->asEntrance()->GetRideIndex();
-                                return PathSearchResult::RideExit;
+                                return PathSearchResult::rideExit;
                             }
                             break;
                         case ENTRANCE_TYPE_PARK_ENTRANCE:
-                            return PathSearchResult::ParkExit;
+                            return PathSearchResult::parkExit;
                     }
                     break;
                 case TileElementType::path:
@@ -456,7 +456,7 @@ namespace OpenRCT2::PathFinding
                     if (!FootpathIsZAndDirectionValid(*pathElement, loc.z, chosenDirection))
                         continue;
                     if (tileElement->asPath()->IsWide())
-                        return PathSearchResult::Wide;
+                        return PathSearchResult::wide;
 
                     uint8_t edges = PathGetPermittedEdges(ignoreBanners, pathElement);
                     edges &= ~(1 << DirectionReverse(chosenDirection));
@@ -469,7 +469,7 @@ namespace OpenRCT2::PathFinding
 
                         edges &= ~(1 << dir);
                         if (edges != 0)
-                            return PathSearchResult::Junction;
+                            return PathSearchResult::junction;
 
                         if (tileElement->asPath()->IsSloped())
                         {
@@ -480,14 +480,14 @@ namespace OpenRCT2::PathFinding
                         }
                         return FootpathElementDestInDir(ignoreBanners, loc, dir, outRideIndex, level + 1);
                     }
-                    return PathSearchResult::DeadEnd;
+                    return PathSearchResult::deadEnd;
                 }
                 default:
                     break;
             }
         }
 
-        return PathSearchResult::Failed;
+        return PathSearchResult::failed;
     }
 
     /**
@@ -609,8 +609,8 @@ namespace OpenRCT2::PathFinding
             /* Ignore non-paths (e.g. ride entrances, shops), wide paths
              * and ride queues (per ignoreQueues) when counting
              * neighbouring tiles. */
-            if (nextFootpathResult != PathSearchResult::Failed && nextFootpathResult != PathSearchResult::Wide
-                && nextFootpathResult != PathSearchResult::RideQueue)
+            if (nextFootpathResult != PathSearchResult::failed && nextFootpathResult != PathSearchResult::wide
+                && nextFootpathResult != PathSearchResult::rideQueue)
             {
                 thinCount++;
             }
@@ -721,7 +721,7 @@ namespace OpenRCT2::PathFinding
         uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ,
         uint8_t* endSteps)
     {
-        PathSearchResult searchResult = PathSearchResult::Failed;
+        PathSearchResult searchResult = PathSearchResult::failed;
 
         bool currentElementIsWide = currentTileElement->asPath()->IsWide();
         if (currentElementIsWide)
@@ -791,14 +791,14 @@ namespace OpenRCT2::PathFinding
                         continue;
 
                     found = true;
-                    searchResult = PathSearchResult::ShopEntrance;
+                    searchResult = PathSearchResult::shopEntrance;
                     break;
                 }
                 case TileElementType::entrance:
                     if (loc.z != tileElement->baseHeight)
                         continue;
                     Direction direction;
-                    searchResult = PathSearchResult::Other;
+                    searchResult = PathSearchResult::other;
                     switch (tileElement->asEntrance()->GetEntranceType())
                     {
                         case ENTRANCE_TYPE_RIDE_ENTRANCE:
@@ -813,7 +813,7 @@ namespace OpenRCT2::PathFinding
                                 /* The rideIndex will be useful for
                                  * adding transport rides later. */
                                 rideIndex = tileElement->asEntrance()->GetRideIndex();
-                                searchResult = PathSearchResult::RideEntrance;
+                                searchResult = PathSearchResult::rideEntrance;
                                 found = true;
                                 break;
                             }
@@ -821,7 +821,7 @@ namespace OpenRCT2::PathFinding
                         case ENTRANCE_TYPE_PARK_ENTRANCE:
                             /* For peeps leaving the park, the goal is the park
                              * entrance/exit tile. */
-                            searchResult = PathSearchResult::ParkExit;
+                            searchResult = PathSearchResult::parkExit;
                             found = true;
                             break;
                         case ENTRANCE_TYPE_RIDE_EXIT:
@@ -830,7 +830,7 @@ namespace OpenRCT2::PathFinding
                             direction = tileElement->getDirection();
                             if (direction == testEdge)
                             {
-                                searchResult = PathSearchResult::RideExit;
+                                searchResult = PathSearchResult::rideExit;
                                 found = true;
                                 break;
                             }
@@ -856,23 +856,23 @@ namespace OpenRCT2::PathFinding
                         /* Check if staff can ignore this wide flag. */
                         if (staff == nullptr || !staff->canIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
                         {
-                            searchResult = PathSearchResult::Wide;
+                            searchResult = PathSearchResult::wide;
                             found = true;
                             break;
                         }
                     }
 
-                    searchResult = PathSearchResult::Thin;
+                    searchResult = PathSearchResult::thin;
 
                     uint8_t numEdges = std::popcount(pathElement->GetEdges());
 
                     if (numEdges < 2)
                     {
-                        searchResult = PathSearchResult::DeadEnd;
+                        searchResult = PathSearchResult::deadEnd;
                     }
                     else if (numEdges > 2)
                     {
-                        searchResult = PathSearchResult::Junction;
+                        searchResult = PathSearchResult::junction;
                     }
                     else
                     { // numEdges == 2
@@ -884,7 +884,7 @@ namespace OpenRCT2::PathFinding
                                 /* The rideIndex will be useful for
                                  * adding transport rides later. */
                                 rideIndex = pathElement->GetRideIndex();
-                                searchResult = PathSearchResult::RideQueue;
+                                searchResult = PathSearchResult::rideQueue;
                             }
                         }
                     }
@@ -942,8 +942,8 @@ namespace OpenRCT2::PathFinding
 
             /* If this map element is not a path, the search cannot be continued.
              * Continue to the next map element without updating the parameters (best result so far). */
-            if (searchResult != PathSearchResult::DeadEnd && searchResult != PathSearchResult::Thin
-                && searchResult != PathSearchResult::Junction && searchResult != PathSearchResult::Wide)
+            if (searchResult != PathSearchResult::deadEnd && searchResult != PathSearchResult::thin
+                && searchResult != PathSearchResult::junction && searchResult != PathSearchResult::wide)
             {
                 LogPathfinding(
                     &peep, "Search path ends at %d,%d,%d; Steps: %u; Not a path", loc.x >> 5, loc.y >> 5, loc.z, numSteps);
@@ -953,7 +953,7 @@ namespace OpenRCT2::PathFinding
             /* At this point the map element is a path. */
 
             /* If this is a wide path the search ends here. */
-            if (searchResult == PathSearchResult::Wide)
+            if (searchResult == PathSearchResult::wide)
             {
                 /* Ignore Wide paths as continuing paths UNLESS
                  * the current path is also Wide (and, for staff, not ignored).
@@ -1047,7 +1047,7 @@ namespace OpenRCT2::PathFinding
             }
 
             bool isThinJunction = false;
-            if (searchResult == PathSearchResult::Junction)
+            if (searchResult == PathSearchResult::junction)
             {
                 /* Check if this is a thin junction. And perform additional
                  * necessary checks. */
@@ -1166,7 +1166,7 @@ namespace OpenRCT2::PathFinding
 
                 if constexpr (kLogPathfinding)
                 {
-                    if (searchResult == PathSearchResult::Junction)
+                    if (searchResult == PathSearchResult::junction)
                     {
                         if (isThinJunction)
                             LogPathfinding(
@@ -1914,7 +1914,7 @@ namespace OpenRCT2::PathFinding
 
                 /* If there is a wide path in that direction,
                     remove that edge and try another */
-                if (FootpathElementNextInDirection(loc, pathElement, chosenDirection) == PathSearchResult::Wide)
+                if (FootpathElementNextInDirection(loc, pathElement, chosenDirection) == PathSearchResult::wide)
                 {
                     adjustedEdges &= ~(1 << chosenDirection);
                 }
@@ -1986,9 +1986,9 @@ namespace OpenRCT2::PathFinding
                 auto pathSearchResult = FootpathElementDestinationInDirection(loc, pathElement, chosenDirection, &rideIndex);
                 switch (pathSearchResult)
                 {
-                    case PathSearchResult::DeadEnd:
-                    case PathSearchResult::RideExit:
-                    case PathSearchResult::Wide:
+                    case PathSearchResult::deadEnd:
+                    case PathSearchResult::rideExit:
+                    case PathSearchResult::wide:
                         adjustedEdges &= ~(1 << chosenDirection);
                         break;
                     default:

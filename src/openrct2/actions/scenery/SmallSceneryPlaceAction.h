@@ -20,7 +20,7 @@ namespace OpenRCT2::GameActions
         uint8_t SceneryQuadrant{};
     };
 
-    class SmallSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceScenery>
+    class SmallSceneryPlaceAction final : public GameActionBase<GameCommand::placeScenery>
     {
     private:
         CoordsXYZD _loc;

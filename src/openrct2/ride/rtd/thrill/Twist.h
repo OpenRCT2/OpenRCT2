@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor TwistRTD =
     .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 3, 6, 3 },
     .Naming = { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST },
-    .NameConvention = { RideComponentType::Structure, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::structure, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
@@ -47,18 +47,18 @@ constexpr RideTypeDescriptor TwistRTD =
     .BonusValue = 40,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "twist",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(1, 13), RideRating::make(0, 97), RideRating::make(1, 90) },
         16,
         0,
         false,
         {
-            { RatingsModifierType::BonusRotations,        0,                20, 20, 20 },
-            { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
+            { RatingsModifierType::bonusRotations,        0,                20, 20, 20 },
+            { RatingsModifierType::bonusScenery,          0,                13943, 0, 0 },
         },
     },
 };

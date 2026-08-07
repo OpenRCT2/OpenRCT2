@@ -457,25 +457,25 @@ ImageCatalogue ImageId::GetCatalogue() const
     auto index = GetIndex();
     if (index >= SPR_TEMP_BEGIN && index < SPR_TEMP_END)
     {
-        return ImageCatalogue::TEMPORARY;
+        return ImageCatalogue::temporary;
     }
     if (index < SPR_RCTC_G1_END)
     {
-        return ImageCatalogue::G1;
+        return ImageCatalogue::g1;
     }
     if (index < SPR_G2_END)
     {
-        return ImageCatalogue::G2;
+        return ImageCatalogue::g2;
     }
     if (index < SPR_CSG_END)
     {
-        return ImageCatalogue::CSG;
+        return ImageCatalogue::csg;
     }
     if (index < SPR_IMAGE_LIST_END)
     {
-        return ImageCatalogue::OBJECT;
+        return ImageCatalogue::object;
     }
-    return ImageCatalogue::UNKNOWN;
+    return ImageCatalogue::unknown;
 }
 
 void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)

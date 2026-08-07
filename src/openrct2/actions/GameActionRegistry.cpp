@@ -105,14 +105,14 @@ namespace OpenRCT2::GameActions
         const char* name{};
     };
 
-    using GameActionRegistry = std::array<GameActionEntry, EnumValue(GameCommand::Count)>;
+    using GameActionRegistry = std::array<GameActionEntry, EnumValue(GameCommand::count)>;
 
     template<GameCommand TId>
     static constexpr void Register(GameActionRegistry& registry, GameActionFactory factory, const char* name)
     {
         constexpr auto idx = static_cast<size_t>(TId);
 
-        static_assert(idx < EnumValue(GameCommand::Count));
+        static_assert(idx < EnumValue(GameCommand::count));
 
         registry[idx] = { factory, name };
     }

@@ -45,7 +45,7 @@ namespace OpenRCT2
 
     CursorID WindowBase::onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
     {
-        return CursorID::Arrow;
+        return CursorID::arrow;
     }
 
     static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth, bool translucent)

@@ -208,7 +208,7 @@ namespace OpenRCT2
 
     static void ReorganiseTileElements(GameState_t& gameState, size_t capacity)
     {
-        ContextSetCurrentCursor(CursorID::ZZZ);
+        ContextSetCurrentCursor(CursorID::zzz);
 
         std::vector<TileElement> newElements;
         newElements.reserve(std::max(MIN_TILE_ELEMENTS, capacity));

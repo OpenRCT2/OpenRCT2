@@ -903,7 +903,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue scrollbars_get(JSContext* ctx, JSValue thisVal)
         {
-            auto scrollType = ScrollbarType::None;
+            auto scrollType = ScrollbarType::none;
             auto listView = GetListView(thisVal);
             if (listView != nullptr)
             {

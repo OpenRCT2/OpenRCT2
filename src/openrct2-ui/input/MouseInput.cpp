@@ -1144,7 +1144,7 @@ namespace OpenRCT2
      */
     void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
     {
-        CursorID cursorId = CursorID::Arrow;
+        CursorID cursorId = CursorID::arrow;
         auto ft = Formatter();
         ft.Add<StringId>(kStringIdNone);
         SetMapTooltip(ft);
@@ -1164,7 +1164,7 @@ namespace OpenRCT2
                         {
                             if (ViewportInteractionLeftOver(screenCoords))
                             {
-                                SetCursor(CursorID::HandPoint);
+                                SetCursor(CursorID::handPoint);
                                 return;
                             }
                             break;
@@ -1183,7 +1183,7 @@ namespace OpenRCT2
                         if (screenCoords.y < window->windowPos.y + window->height - 0x13)
                             break;
 
-                        cursorId = CursorID::DiagonalArrows;
+                        cursorId = CursorID::diagonalArrows;
                         break;
 
                     case WidgetType::scroll:
@@ -1194,19 +1194,19 @@ namespace OpenRCT2
                             *window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
                         if (output_scroll_area != SCROLL_PART_VIEW)
                         {
-                            cursorId = CursorID::Arrow;
+                            cursorId = CursorID::arrow;
                             break;
                         }
                         // Same as default but with scroll_x/y
-                        cursorId = window->onCursor(widgetId, scrollCoords, CursorID::Arrow);
-                        if (cursorId == CursorID::Undefined)
-                            cursorId = CursorID::Arrow;
+                        cursorId = window->onCursor(widgetId, scrollCoords, CursorID::arrow);
+                        if (cursorId == CursorID::undefined)
+                            cursorId = CursorID::arrow;
                         break;
                     }
                     default:
-                        cursorId = window->onCursor(widgetId, screenCoords, CursorID::Arrow);
-                        if (cursorId == CursorID::Undefined)
-                            cursorId = CursorID::Arrow;
+                        cursorId = window->onCursor(widgetId, screenCoords, CursorID::arrow);
+                        if (cursorId == CursorID::undefined)
+                            cursorId = CursorID::arrow;
                         break;
                 }
             }
@@ -1546,10 +1546,10 @@ namespace OpenRCT2
      */
     void SetCursor(CursorID cursor_id)
     {
-        assert(cursor_id != CursorID::Undefined);
+        assert(cursor_id != CursorID::undefined);
         if (_inputState == InputState::resizing)
         {
-            cursor_id = CursorID::DiagonalArrows;
+            cursor_id = CursorID::diagonalArrows;
         }
         ContextSetCurrentCursor(cursor_id);
     }

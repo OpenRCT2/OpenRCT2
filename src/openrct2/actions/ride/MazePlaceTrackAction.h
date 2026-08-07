@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class MazePlaceTrackAction final : public GameActionBase<GameCommand::PlaceMazeDesign>
+    class MazePlaceTrackAction final : public GameActionBase<GameCommand::placeMazeDesign>
     {
     private:
         CoordsXYZ _loc;

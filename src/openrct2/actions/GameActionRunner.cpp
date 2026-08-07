@@ -122,10 +122,10 @@ namespace OpenRCT2::GameActions
             // Remove ghost scenery so it doesn't interfere with incoming network command
             switch (queued.action->GetType())
             {
-                case GameCommand::PlaceWall:
-                case GameCommand::PlaceLargeScenery:
-                case GameCommand::PlaceBanner:
-                case GameCommand::PlaceScenery:
+                case GameCommand::placeWall:
+                case GameCommand::placeLargeScenery:
+                case GameCommand::placeBanner:
+                case GameCommand::placeScenery:
                     SceneryRemoveGhostToolPlacement();
                     break;
                 default:

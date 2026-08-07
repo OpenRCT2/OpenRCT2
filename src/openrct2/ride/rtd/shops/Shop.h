@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor ShopRTD =
     .RideModes = EnumsToFlags(RideMode::shopStall),
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_SHOP, STR_RIDE_DESCRIPTION_SHOP },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
     .availableBreakdowns = {},
     .Heights = { 12, kDefaultShopHeight, 0, 0, },
     .MaxMass = 255,
@@ -46,21 +46,21 @@ constexpr RideTypeDescriptor ShopRTD =
     .BonusValue = 15,
     .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Shop,
+    .ColourKey = RideColourKey::shop,
     .Name = "shop",
     .RatingsData = 
     {
-        RatingsCalculationType::Stall,
+        RatingsCalculationType::stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,
         false,
-        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .DesignCreateMode = TrackDesignCreateMode::standard,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::shopOrStall,
 };

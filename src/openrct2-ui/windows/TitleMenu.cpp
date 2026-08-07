@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
         size_t i = 0;
         for (const auto& item : customMenuItems)
         {
-            if (item.Kind == Scripting::CustomToolbarMenuItemKind::Toolbox)
+            if (item.Kind == Scripting::CustomToolbarMenuItemKind::toolbox)
             {
                 if (i == index)
                 {
@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     for (const auto& item : customMenuItems)
                     {
-                        if (item.Kind == Scripting::CustomToolbarMenuItemKind::Toolbox)
+                        if (item.Kind == Scripting::CustomToolbarMenuItemKind::toolbox)
                         {
                             if (!hasCustomItems)
                             {

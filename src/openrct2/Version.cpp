@@ -86,13 +86,13 @@ NewVersionInfo GetLatestVersion()
     {
         Http::Request request;
         request.url = "https://api.github.com/repos/OpenRCT2/OpenRCT2/releases/latest";
-        request.method = Http::Method::GET;
+        request.method = Http::Method::get;
 
         Http::Response res;
         try
         {
             res = Do(request);
-            if (res.status != Http::Status::Ok)
+            if (res.status != Http::Status::ok)
                 throw std::runtime_error("bad http status");
         }
         catch (std::exception& e)

@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_SWINGING_INVERTER_SHIP, STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP },
-    .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::ship, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,
@@ -52,18 +52,18 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
         { Drawing::Colour::black, Drawing::Colour::saturatedBrown, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "swinging_inverter_ship",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 50), RideRating::make(2, 70), RideRating::make(2, 74) },
         16,
         0,
         false,
         {
-            { RatingsModifierType::BonusOperationOption, 0, 11, 22, 22 }, 
-            { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 11, 22, 22 }, 
+            { RatingsModifierType::bonusScenery,         0, 11155, 0, 0 },
         },
     },
 };

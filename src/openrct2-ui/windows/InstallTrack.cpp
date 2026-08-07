@@ -169,7 +169,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Warnings
             const TrackDesign& td = *_trackDesign;
-            if (td.gameStateData.hasFlag(TrackDesignGameStateFlag::SceneryUnavailable))
+            if (td.gameStateData.hasFlag(TrackDesignGameStateFlag::sceneryUnavailable))
             {
                 if (!gTrackDesignSceneryToggle)
                 {

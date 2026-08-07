@@ -46,16 +46,16 @@ namespace OpenRCT2::Weather
     };
 
     // clang-format off
-    constexpr std::array<Trait, EnumValue(Type::Count)> kWeatherTraits = { {
-        {  10, EffectType::None,     0, Level::None,  SPR_WEATHER_SUN          }, // Sunny
-        {   5, EffectType::None,     0, Level::None,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
-        {   0, EffectType::None,     0, Level::None,  SPR_WEATHER_CLOUD        }, // Cloudy
-        {  -2, EffectType::Rain,     1, Level::Light, SPR_WEATHER_LIGHT_RAIN   }, // Rain
-        {  -4, EffectType::Rain,     2, Level::Heavy, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
-        {   2, EffectType::Storm,    2, Level::Heavy, SPR_WEATHER_STORM        }, // Thunderstorm
-        { -10, EffectType::Snow,     1, Level::Light, SPR_G2_WEATHER_SNOW      }, // Snow
-        { -15, EffectType::Snow,     2, Level::Heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
-        { -20, EffectType::Blizzard, 2, Level::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
+    constexpr std::array<Trait, EnumValue(Type::count)> kWeatherTraits = { {
+        {  10, EffectType::none,     0, Level::none,  SPR_WEATHER_SUN          }, // Sunny
+        {   5, EffectType::none,     0, Level::none,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
+        {   0, EffectType::none,     0, Level::none,  SPR_WEATHER_CLOUD        }, // Cloudy
+        {  -2, EffectType::rain,     1, Level::light, SPR_WEATHER_LIGHT_RAIN   }, // Rain
+        {  -4, EffectType::rain,     2, Level::heavy, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
+        {   2, EffectType::storm,    2, Level::heavy, SPR_WEATHER_STORM        }, // Thunderstorm
+        { -10, EffectType::snow,     1, Level::light, SPR_G2_WEATHER_SNOW      }, // Snow
+        { -15, EffectType::snow,     2, Level::heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
+        { -20, EffectType::blizzard, 2, Level::heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
     } };
     // clang-format on
 
@@ -116,7 +116,7 @@ namespace OpenRCT2::Weather
         int32_t month = GetDate().GetMonth();
         const Weather::Pattern& pattern = climateObj->getPatternForMonth(month);
 
-        auto weather = Weather::Type::PartiallyCloudy;
+        auto weather = Weather::Type::partiallyCloudy;
         const Weather::Trait& trait = kWeatherTraits[EnumValue(weather)];
 
         auto& gameState = getGameState();
@@ -179,7 +179,7 @@ namespace OpenRCT2::Weather
                             auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                             ContextBroadcastIntent(&intent);
                         }
-                        else if (gameState.weatherNext.level <= Weather::Level::Heavy)
+                        else if (gameState.weatherNext.level <= Weather::Level::heavy)
                         {
                             gameState.weatherCurrent.level = static_cast<Weather::Level>(stepWeatherLevel(
                                 static_cast<int8_t>(gameState.weatherCurrent.level),
@@ -211,9 +211,9 @@ namespace OpenRCT2::Weather
         else
         {
             uint32_t thunderChance;
-            if (gameState.weatherCurrent.weatherEffect == EffectType::Storm)
+            if (gameState.weatherCurrent.weatherEffect == EffectType::storm)
                 thunderChance = 0x1B4;
-            else if (gameState.weatherCurrent.weatherEffect == EffectType::Blizzard)
+            else if (gameState.weatherCurrent.weatherEffect == EffectType::blizzard)
                 thunderChance = 0x6D;
             else
                 return;
@@ -271,31 +271,31 @@ namespace OpenRCT2::Weather
     bool isDry()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::Sunny || weather == Type::PartiallyCloudy || weather == Type::Cloudy;
+        return weather == Type::sunny || weather == Type::partiallyCloudy || weather == Type::cloudy;
     }
 
     bool isRaining()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::Rain || weather == Type::HeavyRain || weather == Type::Thunder;
+        return weather == Type::rain || weather == Type::heavyRain || weather == Type::thunder;
     }
 
     bool isSnowing()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::Snow || weather == Type::HeavySnow || weather == Type::Blizzard;
+        return weather == Type::snow || weather == Type::heavySnow || weather == Type::blizzard;
     }
 
     bool isTransitioningToSnow()
     {
         auto& weather = getGameState().weatherNext.weatherType;
-        return weather == Type::Snow || weather == Type::HeavySnow || weather == Type::Blizzard;
+        return weather == Type::snow || weather == Type::heavySnow || weather == Type::blizzard;
     }
 
     bool isSnowingHeavily()
     {
         auto& weather = getGameState().weatherCurrent.weatherType;
-        return weather == Type::HeavySnow || weather == Type::Blizzard;
+        return weather == Type::heavySnow || weather == Type::blizzard;
     }
 
     bool isPrecipitating()
@@ -307,7 +307,7 @@ namespace OpenRCT2::Weather
     {
         const auto& weatherCurrent = getGameState().weatherCurrent;
         // The game starts drawing rain whenever this level is not none.
-        return weatherCurrent.level != Weather::Level::None;
+        return weatherCurrent.level != Weather::Level::none;
     }
 
     FilterPaletteID getWeatherGloomPaletteId(const State& state)
@@ -371,8 +371,8 @@ namespace OpenRCT2::Weather
 
     static void updateWeatherSound()
     {
-        if (getGameState().weatherCurrent.weatherEffect == EffectType::Rain
-            || getGameState().weatherCurrent.weatherEffect == EffectType::Storm)
+        if (getGameState().weatherCurrent.weatherEffect == EffectType::rain
+            || getGameState().weatherCurrent.weatherEffect == EffectType::storm)
         {
             // Start playing the weather sound
             if (_weatherSoundChannel == nullptr || _weatherSoundChannel->IsDone())

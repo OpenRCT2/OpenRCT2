@@ -91,7 +91,7 @@ namespace OpenRCT2
             // All official DAT files have a JSON object counterpart. Avoid loading the obsolete .DAT versions,
             // which can happen if the user copies the official DAT objects to their custom content folder.
             if (object == nullptr
-                || (object->GetGeneration() == ObjectGeneration::DAT
+                || (object->GetGeneration() == ObjectGeneration::dat
                     && object->GetObjectEntry().GetSourceGame() != ObjectSourceGame::custom))
             {
                 return std::nullopt;
@@ -237,7 +237,7 @@ namespace OpenRCT2
 
         const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& entry) const override final
         {
-            if (entry.Generation == ObjectGeneration::DAT)
+            if (entry.Generation == ObjectGeneration::dat)
                 return FindObject(&entry.Entry);
 
             return FindObject(entry.Identifier);
@@ -304,7 +304,7 @@ namespace OpenRCT2
         {
             LOG_VERBOSE("Adding object: [%s]", std::string(objectName).c_str());
             u8string path;
-            if (generation == ObjectGeneration::JSON)
+            if (generation == ObjectGeneration::json)
             {
                 path = GetPathForNewObject(objectName);
             }
@@ -427,7 +427,7 @@ namespace OpenRCT2
                 return true;
             }
             // When there is a conflict between a DAT file and a JSON file, the JSON should take precedence.
-            else if (item.Generation == ObjectGeneration::JSON && conflict->Generation == ObjectGeneration::DAT)
+            else if (item.Generation == ObjectGeneration::json && conflict->Generation == ObjectGeneration::dat)
             {
                 const auto id = conflict->Id;
                 const auto oldPath = conflict->Path;

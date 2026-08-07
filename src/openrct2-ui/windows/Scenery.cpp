@@ -2915,15 +2915,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (gWindowSceneryScatterDensity)
                 {
-                    case ScatterToolDensity::LowDensity:
+                    case ScatterToolDensity::lowDensity:
                         quantity = gWindowSceneryScatterSize;
                         break;
 
-                    case ScatterToolDensity::MediumDensity:
+                    case ScatterToolDensity::mediumDensity:
                         quantity = gWindowSceneryScatterSize * 2;
                         break;
 
-                    case ScatterToolDensity::HighDensity:
+                    case ScatterToolDensity::highDensity:
                         quantity = gWindowSceneryScatterSize * 3;
                         break;
                 }

@@ -21,7 +21,7 @@ extern uint8_t gScreenshotCountdown;
 
 struct ScreenshotOptions
 {
-    OpenRCT2::Weather::Type weather = OpenRCT2::Weather::Type::Sunny;
+    OpenRCT2::Weather::Type weather = OpenRCT2::Weather::Type::sunny;
     bool hide_guests = false;
     bool hide_sprites = false;
     bool clear_grass = false;

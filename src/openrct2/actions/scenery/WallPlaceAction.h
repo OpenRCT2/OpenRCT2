@@ -28,7 +28,7 @@ namespace OpenRCT2::GameActions
         BannerIndex BannerId = BannerIndex::GetNull();
     };
 
-    class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
+    class WallPlaceAction final : public GameActionBase<GameCommand::placeWall>
     {
     private:
         ObjectEntryIndex _wallType{ kObjectEntryIndexNull };

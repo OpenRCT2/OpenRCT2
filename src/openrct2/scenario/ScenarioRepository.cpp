@@ -113,7 +113,7 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
             }
             return entryA.SourceIndex - entryB.SourceIndex;
 
-        case ScenarioSource::Real:
+        case ScenarioSource::real:
             return ScenarioIndexEntryCompareByCategory(entryA, entryB);
     }
 }
@@ -347,7 +347,7 @@ public:
         {
             const ScenarioIndexEntry* scenario = &_scenarios[i];
 
-            if (scenario->SourceGame == ScenarioSource::Other && scenario->ScenarioId == SC_UNIDENTIFIED)
+            if (scenario->SourceGame == ScenarioSource::other && scenario->ScenarioId == SC_UNIDENTIFIED)
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency

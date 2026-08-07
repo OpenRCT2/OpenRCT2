@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .RideModes = EnumsToFlags(RideMode::crookedHouse),
     .DefaultMode = RideMode::crookedHouse,
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
-    .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = {},
     .Heights = { 16, 96, 3, 2, },
     .MaxMass = 255,
@@ -50,16 +50,16 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "crooked_house",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 15), RideRating::make(0, 62), RideRating::make(0, 34) },
         5,
         7,
         false,
-        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
     },
 };
 } // namespace OpenRCT2

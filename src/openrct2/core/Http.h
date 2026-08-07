@@ -20,17 +20,17 @@ namespace OpenRCT2::Http
 {
     enum class Status
     {
-        Invalid = 0,
-        Error = 1,
-        Ok = 200,
-        NotFound = 404
+        invalid = 0,
+        error = 1,
+        ok = 200,
+        notFound = 404
     };
 
     enum class Method
     {
-        GET,
-        POST,
-        PUT
+        get,
+        post,
+        put
     };
 
     struct Response
@@ -46,7 +46,7 @@ namespace OpenRCT2::Http
     {
         std::string url;
         std::map<std::string, std::string> header;
-        Method method = Method::GET;
+        Method method = Method::get;
         std::string body;
         bool forceIPv4{};
     };

@@ -49,9 +49,9 @@ namespace OpenRCT2::Scripting
     } };
 
     static const EnumMap<ScenarioSource> ScenarioSourceMap{
-        { "rct1", ScenarioSource::RCT1 }, { "rct1_aa", ScenarioSource::RCT1_AA }, { "rct1_ll", ScenarioSource::RCT1_LL },
-        { "rct2", ScenarioSource::RCT2 }, { "rct2_ww", ScenarioSource::RCT2_WW }, { "rct2_tt", ScenarioSource::RCT2_TT },
-        { "real", ScenarioSource::Real }, { "extras", ScenarioSource::Extras },   { "other", ScenarioSource::Other },
+        { "rct1", ScenarioSource::rct1 }, { "rct1_aa", ScenarioSource::rct1AA }, { "rct1_ll", ScenarioSource::rct1LL },
+        { "rct2", ScenarioSource::rct2 }, { "rct2_ww", ScenarioSource::rct2WW }, { "rct2_tt", ScenarioSource::rct2TT },
+        { "real", ScenarioSource::real }, { "extras", ScenarioSource::extras },  { "other", ScenarioSource::other },
     };
 
     static std::unordered_set<std::shared_ptr<Plugin>> _pluginsShowingGridlines;
@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
         const auto& entry = ScenarioSourceMap.find(value);
         if (entry != ScenarioSourceMap.end())
             return JSFromStdString(ctx, entry->first);
-        return JSFromStdString(ctx, ScenarioSourceMap[ScenarioSource::Other]);
+        return JSFromStdString(ctx, ScenarioSourceMap[ScenarioSource::other]);
     }
 
     class ScTool final : public ScBase
@@ -380,7 +380,7 @@ namespace OpenRCT2::Scripting
             auto& execInfo = scriptEngine->GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
             std::string text = JSToStdString(ctx, argv[0]);
-            CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Standard, text, JSCallback(ctx, argv[1]));
+            CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::standard, text, JSCallback(ctx, argv[1]));
             std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
 
             return JS_UNDEFINED;
@@ -405,7 +405,7 @@ namespace OpenRCT2::Scripting
             if (owner->GetMetadata().Type == PluginType::intransient)
             {
                 CustomMenuItems.emplace_back(
-                    owner, CustomToolbarMenuItemKind::Toolbox, JSToStdString(ctx, argv[0]), JSCallback(ctx, argv[1]));
+                    owner, CustomToolbarMenuItemKind::toolbox, JSToStdString(ctx, argv[0]), JSCallback(ctx, argv[1]));
                 std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
             }
             else

@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class PlayerSetGroupAction final : public GameActionBase<GameCommand::SetPlayerGroup>
+    class PlayerSetGroupAction final : public GameActionBase<GameCommand::setPlayerGroup>
     {
     private:
         Network::PlayerId_t _playerId{ -1 };

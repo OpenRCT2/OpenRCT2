@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
             auto installedObject = GetInstalledObject(thisVal);
             if (installedObject != nullptr)
             {
-                if (installedObject->Generation == ObjectGeneration::DAT)
+                if (installedObject->Generation == ObjectGeneration::dat)
                     return JSFromStdString(ctx, "dat");
                 else
                     return JSFromStdString(ctx, "json");
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
             auto installedObject = GetInstalledObject(thisVal);
             if (installedObject != nullptr)
             {
-                if (installedObject->Generation == ObjectGeneration::DAT)
+                if (installedObject->Generation == ObjectGeneration::dat)
                 {
                     return JSFromStdString(ctx, ObjectEntryDescriptor(installedObject->ObjectEntry).ToString());
                 }

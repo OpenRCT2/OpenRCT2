@@ -176,7 +176,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 
     const auto& rtd = GetRideTypeDescriptor(trackAndVehicle.rtdIndex);
 
-    if (rtd.DesignCreateMode == TrackDesignCreateMode::Maze)
+    if (rtd.DesignCreateMode == TrackDesignCreateMode::maze)
     {
         return CreateTrackDesignMaze(tds, ride);
     }
@@ -1945,13 +1945,13 @@ static bool TrackDesignPlacePreview(
 
     if (tds.hasScenery)
     {
-        gameStateData.setFlag(TrackDesignGameStateFlag::HasScenery, true);
+        gameStateData.setFlag(TrackDesignGameStateFlag::hasScenery, true);
     }
 
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        gameStateData.setFlag(TrackDesignGameStateFlag::SceneryUnavailable, true);
+        gameStateData.setFlag(TrackDesignGameStateFlag::sceneryUnavailable, true);
     }
 
     auto res = TrackDesignPlaceVirtual(
@@ -1963,11 +1963,11 @@ static bool TrackDesignPlacePreview(
     {
         if (entry_index == kObjectEntryIndexNull)
         {
-            gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
+            gameStateData.setFlag(TrackDesignGameStateFlag::vehicleUnavailable, true);
         }
         else if (!RideEntryIsInvented(entry_index) && !getGameState().cheats.ignoreResearchStatus)
         {
-            gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
+            gameStateData.setFlag(TrackDesignGameStateFlag::vehicleUnavailable, true);
         }
 
         _currentTrackPieceDirection = backup_rotation;

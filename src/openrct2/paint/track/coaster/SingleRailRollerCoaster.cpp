@@ -18390,11 +18390,11 @@ namespace OpenRCT2::SingleRailRC
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::standardSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::standardSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);

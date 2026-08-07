@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
     .RideModes = EnumsToFlags(RideMode::beginners, RideMode::intense, RideMode::berserk),
     .DefaultMode = RideMode::beginners,
     .Naming = { STR_RIDE_NAME_TOP_SPIN, STR_RIDE_DESCRIPTION_TOP_SPIN },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 16, 112, 3, 2, },
     .MaxMass = 255,
@@ -52,18 +52,18 @@ constexpr RideTypeDescriptor TopSpinRTD =
         { Drawing::Colour::darkGreen, Drawing::Colour::brightRed, Drawing::Colour::brightRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "top_spin",
     .RatingsData = 
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         19,
         0,
         false,
         {
-            { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },
-            { RatingsModifierType::BonusScenery,     0, 11155, 0, 0 },
+            { RatingsModifierType::bonusTopSpinMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonusScenery,     0, 11155, 0, 0 },
         },
     },
 };

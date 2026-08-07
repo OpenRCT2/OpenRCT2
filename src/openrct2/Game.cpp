@@ -745,7 +745,7 @@ void StartSilentRecord()
     std::string name = Path::Combine(
         GetContext()->GetPlatformEnvironment().GetDirectoryPath(DirBase::user), u8"debug_replay.parkrep");
     auto* replayManager = GetContext()->GetReplayManager();
-    if (replayManager->StartRecording(name, k_MaxReplayTicks, IReplayManager::RecordType::SILENT))
+    if (replayManager->StartRecording(name, k_MaxReplayTicks, IReplayManager::RecordType::silent))
     {
         ReplayRecordInfo info;
         replayManager->GetCurrentReplayInfo(info);

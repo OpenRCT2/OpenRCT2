@@ -64,105 +64,105 @@ struct RideComponentName
 
 enum class RideComponentType
 {
-    Train,
-    Boat,
-    Track,
-    DockingPlatform,
-    Station,
-    Car,
-    Building,
-    Structure,
-    Ship,
-    Cabin,
-    Wheel,
-    Ring,
-    Player,
-    Course,
-    Count
+    train,
+    boat,
+    track,
+    dockingPlatform,
+    station,
+    car,
+    building,
+    structure,
+    ship,
+    cabin,
+    wheel,
+    ring,
+    player,
+    course,
+    count
 };
 
 enum class RideColourKey : uint8_t
 {
-    Ride,
-    Food,
-    Drink,
-    Shop,
-    InfoKiosk,
-    FirstAid,
-    CashMachine,
-    Toilets
+    ride,
+    food,
+    drink,
+    shop,
+    infoKiosk,
+    firstAid,
+    cashMachine,
+    toilets
 };
 
 enum class TrackDesignCreateMode : uint_fast8_t
 {
-    Default,
-    Maze
+    standard,
+    maze
 };
 
 enum class RatingsCalculationType : uint8_t
 {
-    Normal,
-    FlatRide,
-    Stall,
+    normal,
+    flatRide,
+    stall,
 };
 
 enum class RatingsModifierType : uint8_t
 {
-    NoModifier,
+    noModifier,
     // General Rating Bonuses
-    BonusLength,
-    BonusSynchronisation,
-    BonusTrainLength,
-    BonusMaxSpeed,
-    BonusAverageSpeed,
-    BonusDuration,
-    BonusGForces,
-    BonusTurns,
-    BonusDrops,
-    BonusSheltered,
-    BonusProximity,
-    BonusScenery,
-    BonusRotations,
-    BonusOperationOption,
-    BonusReversedTrains,
+    bonusLength,
+    bonusSynchronisation,
+    bonusTrainLength,
+    bonusMaxSpeed,
+    bonusAverageSpeed,
+    bonusDuration,
+    bonusGForces,
+    bonusTurns,
+    bonusDrops,
+    bonusSheltered,
+    bonusProximity,
+    bonusScenery,
+    bonusRotations,
+    bonusOperationOption,
+    bonusReversedTrains,
     // Ride-specific Rating Bonuses
-    BonusGoKartRace,
-    BonusTowerRide,
-    BonusRotoDrop,
-    BonusMazeSize,
-    BonusBoatHireNoCircuit,
-    BonusSlideUnlimitedRides,
-    BonusMotionSimulatorMode,
-    Bonus3DCinemaMode,
-    BonusTopSpinMode,
+    bonusGoKartRace,
+    bonusTowerRide,
+    bonusRotoDrop,
+    bonusMazeSize,
+    bonusBoatHireNoCircuit,
+    bonusSlideUnlimitedRides,
+    bonusMotionSimulatorMode,
+    bonus3DCinemaMode,
+    bonusTopSpinMode,
     // Number of reversals BONUS for reverser coaster
-    BonusReversals,
+    bonusReversals,
     // Number of hole BONUS for mini golf
-    BonusHoles,
+    bonusHoles,
     // Number of cars bonus for dodgems/flying saucers
-    BonusNumTrains,
+    bonusNumTrains,
     // Bonus for launched freefall in downward launch mode
-    BonusDownwardLaunch,
+    bonusDownwardLaunch,
     // Bonus with further mode-dependent logic for LF
-    BonusLaunchedFreefallSpecial,
+    bonusLaunchedFreefallSpecial,
     // General Rating Requirements
-    RequirementLength,
-    RequirementDropHeight,
-    RequirementNumDrops,
-    RequirementMaxSpeed,
-    RequirementNegativeGs,
-    RequirementLateralGs,
-    RequirementInversions,
-    RequirementUnsheltered,
+    requirementLength,
+    requirementDropHeight,
+    requirementNumDrops,
+    requirementMaxSpeed,
+    requirementNegativeGs,
+    requirementLateralGs,
+    requirementInversions,
+    requirementUnsheltered,
     // Number of reversals REQUIREMENT for reverser coaster
-    RequirementReversals,
+    requirementReversals,
     // Number of hole REQUIREMENT for mini golf
-    RequirementHoles,
+    requirementHoles,
     // 2 Station requirement for Chairlift
-    RequirementStations,
+    requirementStations,
     // Water section requirement for Water Coaster
-    RequirementSplashdown,
-    PenaltyLateralGs,
+    requirementSplashdown,
+    penaltyLateralGs,
 };
 
 struct RideNameConvention
@@ -288,8 +288,8 @@ using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& e
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
 {
-    Default,
-    Maze,
+    standard,
+    maze,
 };
 
 struct TrackDrawerEntry
@@ -540,7 +540,7 @@ struct RideTypeDescriptor
     LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
     StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
 
-    TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
+    TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::standard;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::ride;
@@ -550,7 +550,7 @@ struct RideTypeDescriptor
 
     RideLocationFunction GetGuestWaypointLocation = OpenRCT2::GetGuestWaypointLocationDefault;
 
-    RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::Default;
+    RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::standard;
     RideUpdateFunction RideUpdate = nullptr;
 
     RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
@@ -646,7 +646,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .BoosterSettings = {},
     .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
     .availableBreakdowns = {},
     .Heights = { 12, 64, 0, 0, },
     .MaxMass = 255,
@@ -660,23 +660,23 @@ constexpr RideTypeDescriptor kDummyRTD =
     .BonusValue = 0,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { kImageIndexUndefined, kImageIndexUndefined },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "invalid",
 	.RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { OpenRCT2::RideRating::make(1, 00), OpenRCT2::RideRating::make(1, 00), OpenRCT2::RideRating::make(1, 00) },
         1,
         -1,
         false,
         {
-            { RatingsModifierType::NoModifier, 0, 0, 0, 0 },
+            { RatingsModifierType::noModifier, 0, 0, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .DesignCreateMode = TrackDesignCreateMode::standard,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = OpenRCT2::PeepUpdateRideLeaveEntranceDefault,

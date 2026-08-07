@@ -437,7 +437,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[i++] = Dropdown::Separator();
                 for (const auto& item : customMenuItems)
                 {
-                    if (item.Kind == Scripting::CustomToolbarMenuItemKind::Standard)
+                    if (item.Kind == Scripting::CustomToolbarMenuItemKind::standard)
                     {
                         gDropdown.items[i] = Dropdown::PlainMenuLabel(item.Text.c_str());
                         i++;
@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
                 size_t i = 0;
                 for (const auto& item : customMenuItems)
                 {
-                    if (item.Kind == Scripting::CustomToolbarMenuItemKind::Standard)
+                    if (item.Kind == Scripting::CustomToolbarMenuItemKind::standard)
                     {
                         if (i == customIndex)
                         {

@@ -27,12 +27,12 @@ namespace OpenRCT2::Ui
         class CursorSetHolder
         {
         private:
-            SDL_Cursor* _cursors[EnumValue(CursorID::Count)] = { nullptr };
+            SDL_Cursor* _cursors[EnumValue(CursorID::count)] = { nullptr };
 
         public:
             CursorSetHolder(const std::function<SDL_Cursor*(CursorID)>& getCursor)
             {
-                for (size_t i = 0; i < EnumValue(CursorID::Count); i++)
+                for (size_t i = 0; i < EnumValue(CursorID::count); i++)
                 {
                     _cursors[i] = getCursor(static_cast<CursorID>(i));
                 }
@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui
 
             ~CursorSetHolder()
             {
-                for (size_t i = 0; i < EnumValue(CursorID::Count); i++)
+                for (size_t i = 0; i < EnumValue(CursorID::count); i++)
                 {
                     SDL_FreeCursor(_cursors[i]);
                 }
@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui
         constexpr static int32_t kBaseCursorWidth = 32;
         constexpr static int32_t kBaseCursorHeight = 32;
 
-        CursorID _currentCursor = CursorID::Undefined;
+        CursorID _currentCursor = CursorID::undefined;
         uint8_t _currentCursorScale = 1;
 
         std::map<uint8_t, CursorSetHolder> _scaledCursors;

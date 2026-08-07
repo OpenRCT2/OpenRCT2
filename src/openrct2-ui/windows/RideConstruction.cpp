@@ -2834,9 +2834,9 @@ namespace OpenRCT2::Ui::Windows
         const auto& rtd = currentRide->getRideTypeDescriptor();
         switch (rtd.ConstructionWindowContext)
         {
-            case RideConstructionWindowContext::Maze:
+            case RideConstructionWindowContext::maze:
                 return ContextOpenWindowView(WindowView::mazeConstruction);
-            case RideConstructionWindowContext::Default:
+            case RideConstructionWindowContext::standard:
                 return windowMgr->Create<RideConstructionWindow>(
                     WindowClass::rideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WindowFlag::noAutoClose);
         }

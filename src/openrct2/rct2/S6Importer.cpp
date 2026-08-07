@@ -271,11 +271,11 @@ namespace OpenRCT2::RCT2
                 dst->SourceIndex = -1;
                 if (dst->Category == Scenario::Category::real)
                 {
-                    dst->SourceGame = ScenarioSource::Real;
+                    dst->SourceGame = ScenarioSource::real;
                 }
                 else
                 {
-                    dst->SourceGame = ScenarioSource::Other;
+                    dst->SourceGame = ScenarioSource::other;
                 }
             }
 
@@ -2282,8 +2282,8 @@ namespace OpenRCT2::RCT2
         dst->TargetY = src->TargetY;
         dst->Iteration = src->Iteration;
         dst->FountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::jumpingFountainSnow
-            ? ::JumpingFountainType::Snow
-            : ::JumpingFountainType::Water;
+            ? ::JumpingFountainType::snow
+            : ::JumpingFountainType::water;
     }
 
     template<>
