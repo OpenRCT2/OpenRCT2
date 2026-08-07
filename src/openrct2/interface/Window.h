@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "WindowTypes.h"
 
 #include <functional>
 #include <memory>
@@ -29,8 +28,12 @@ namespace OpenRCT2
     using WidgetIndex = uint16_t;
 
     struct Viewport;
+    struct WidgetRef;
     struct WindowBase;
     struct WindowCloseModifier;
+
+    enum class Tool;
+    enum class WindowClass : uint8_t;
 
     extern WindowCloseModifier gLastCloseModifier;
     extern Tool gCurrentToolId;
