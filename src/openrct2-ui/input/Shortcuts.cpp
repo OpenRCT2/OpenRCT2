@@ -515,7 +515,7 @@ static void ShortcutToggleWallSlope()
     }
 
     // Ensure a wall can be built on a slope
-    if (tileElement->asWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+    if (tileElement->asWall()->GetEntry()->flags.has(WallSceneryFlag::cannotBuildOnSlope))
     {
         return;
     }

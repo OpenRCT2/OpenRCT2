@@ -261,7 +261,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
         return std::nullopt;
     }
 
-    if (entry->flags & WALL_SCENERY_IS_DOOR && wall.IsAnimating())
+    if (entry->flags.has(WallSceneryFlag::isDoor) && wall.IsAnimating())
     {
         if (getGameState().currentTicks & 1)
         {
@@ -286,7 +286,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
                 {
                     newFrame++;
 
-                    if (newFrame == 13 && !(entry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
+                    if (newFrame == 13 && !(entry->flags.has(WallSceneryFlag::hasLongDoorAnimation)))
                         newFrame = 15;
                 }
             }
@@ -519,7 +519,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
                 {
                     return std::optional(UpdateType::invalidate);
                 }
-                if (entry->flags & WALL_SCENERY_IS_DOOR && wall->IsAnimating())
+                if (entry->flags.has(WallSceneryFlag::isDoor) && wall->IsAnimating())
                 {
                     return std::optional(UpdateType::update);
                 }

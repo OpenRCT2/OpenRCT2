@@ -2360,8 +2360,8 @@ namespace OpenRCT2::Ui::Windows
                     const auto wallEntry = tileElement->asWall()->GetEntry();
                     if (wallEntry != nullptr)
                     {
-                        canBeSloped = !(wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
-                        hasAnimation = wallEntry->flags & WALL_SCENERY_IS_DOOR;
+                        canBeSloped = !(wallEntry->flags.has(WallSceneryFlag::cannotBuildOnSlope));
+                        hasAnimation = wallEntry->flags.has(WallSceneryFlag::isDoor);
                     }
 
                     widgets[WIDX_WALL_SPINNER_HEIGHT].moveTo(PropertyRowCol(propertiesAnchor, 0, 1));

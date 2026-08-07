@@ -246,7 +246,7 @@ namespace OpenRCT2::GameActions
         uint8_t clearanceHeight = targetHeight / 8;
         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
         {
-            if (wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+            if (wallEntry->flags.has(WallSceneryFlag::cannotBuildOnSlope))
             {
                 return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
             }
@@ -380,7 +380,7 @@ namespace OpenRCT2::GameActions
         wallElement->SetEntryIndex(_wallType);
         wallElement->SetBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
 
-        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
         {
             wallElement->SetTertiaryColour(_tertiaryColour);
         }
@@ -422,7 +422,7 @@ namespace OpenRCT2::GameActions
             return true;
         }
 
-        if (!(wall->flags & WALL_SCENERY_IS_DOOR))
+        if (!(wall->flags.has(WallSceneryFlag::isDoor)))
         {
             return false;
         }

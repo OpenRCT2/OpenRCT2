@@ -101,7 +101,7 @@ namespace OpenRCT2::GameActions
             LOG_ERROR("Secondary colour invalid: colour = %d", _secondaryColour);
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
-        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
         {
             if (!Drawing::colourIsValid(_tertiaryColour))
             {
@@ -147,7 +147,7 @@ namespace OpenRCT2::GameActions
         wallElement->SetPrimaryColour(_primaryColour);
         wallElement->SetSecondaryColour(_secondaryColour);
 
-        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
         {
             wallElement->SetTertiaryColour(_tertiaryColour);
         }
