@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../core/EnumUtils.hpp"
 #include "WindowTypes.h"
 
 #include <functional>
