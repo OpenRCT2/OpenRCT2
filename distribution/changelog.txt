@@ -8,7 +8,6 @@
 - Fix: [#26811] Crash when a ride points to a non-existing station object.
 - Fix: [#26880] Max negative G-Force stat on flat track erroneously reads as 0.49g.
 
-
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
 - Improved: [#26560] [Plugin] Scripts can now be used to trigger saving a game (limited to the user save folder).
