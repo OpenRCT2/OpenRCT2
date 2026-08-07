@@ -93,10 +93,10 @@ namespace OpenRCT2::Ui
         Widget* widget = WindowGetScrollWidget(w, scrollIndex);
         WidgetIndex widgetIndex = WindowGetWidgetIndex(w, widget);
 
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
+        if (scroll.flags.has(ScrollFlag::vScrollbarVisible))
         {
             int32_t size = widget->height() - 2;
-            if (scroll.flags & HSCROLLBAR_VISIBLE)
+            if (scroll.flags.has(ScrollFlag::hScrollbarVisible))
                 size -= 11;
             size = std::max(0, scroll.contentHeight - size);
             scroll.contentOffsetY = std::min(std::max(0, scroll.contentOffsetY + wheel), size);
@@ -104,7 +104,7 @@ namespace OpenRCT2::Ui
         else
         {
             int32_t size = widget->width() - 2;
-            if (scroll.flags & VSCROLLBAR_VISIBLE)
+            if (scroll.flags.has(ScrollFlag::vScrollbarVisible))
                 size -= 11;
             size = std::max(0, scroll.contentWidth - size);
             scroll.contentOffsetX = std::min(std::max(0, scroll.contentOffsetX + wheel), size);
@@ -131,7 +131,7 @@ namespace OpenRCT2::Ui
 
             // Originally always checked first scroll view, bug maybe?
             const auto& scroll = w.scrolls[scrollIndex];
-            if (scroll.flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
+            if (scroll.flags.hasAny(ScrollFlag::hScrollbarVisible, ScrollFlag::vScrollbarVisible))
             {
                 WindowScrollWheelInput(w, scrollIndex, wheel);
                 return 1;
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui
                     {
                         int32_t scrollIndex = WindowGetScrollIndex(*w, widgetIndex);
                         const auto& scroll = w->scrolls[scrollIndex];
-                        if (scroll.flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
+                        if (scroll.flags.hasAny(ScrollFlag::hScrollbarVisible, ScrollFlag::vScrollbarVisible))
                         {
                             WindowScrollWheelInput(*w, WindowGetScrollIndex(*w, widgetIndex), pixel_scroll);
                             return;
@@ -731,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& scroll = w.scrolls[scroll_index];
-            scroll.flags = 0;
+            scroll.flags.clearAll();
             ScreenSize scrollSize = w.onScrollGetSize(scroll_index);
             scroll.contentOffsetX = 0;
             scroll.contentWidth = scrollSize.width + 1;
@@ -739,9 +739,9 @@ namespace OpenRCT2::Ui::Windows
             scroll.contentHeight = scrollSize.height + 1;
 
             if (widget.content & SCROLL_HORIZONTAL)
-                scroll.flags |= HSCROLLBAR_VISIBLE;
+                scroll.flags.set(ScrollFlag::hScrollbarVisible);
             if (widget.content & SCROLL_VERTICAL)
-                scroll.flags |= VSCROLLBAR_VISIBLE;
+                scroll.flags.set(ScrollFlag::vScrollbarVisible);
 
             widgetScrollUpdateThumbs(w, widgetIndex);
             scroll_index++;
