@@ -14,7 +14,6 @@
 #include "../interface/WindowFlags.h"
 #include "../interface/WindowTypes.h"
 
-#include <map>
 #include <sfl/static_vector.hpp>
 #include <string>
 #include <variant>
