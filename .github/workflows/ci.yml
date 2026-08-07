@@ -62,7 +62,7 @@ jobs:
     steps:
       # We need to fetch entire repo to get the tags and correctly run `describe`
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       # We cannot use proudust/gh-describe, as it reports incorrect (too short) short-sha
@@ -119,7 +119,7 @@ jobs:
   #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #   steps:
   #     - name: Checkout
-  #       uses: actions/checkout@v6
+  #       uses: actions/checkout@v7
   #       with:
   #         fetch-depth: 0
   #     - name: Lint Commit Messages
@@ -138,7 +138,7 @@ jobs:
         shell: sh
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - run: git config --global --add safe.directory $PWD
       - name: Run clang-format
         id: clang_format
@@ -156,7 +156,7 @@ jobs:
         shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Run check-changelog-formatting
         run: scripts/check-changelog-formatting
   g2dat:
@@ -165,7 +165,7 @@ jobs:
     needs: build_variables
     steps:
       - name: Checkout OpenRCT2
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: OpenRCT2
       - name: Download gxc
@@ -215,7 +215,7 @@ jobs:
              echo "CONFIGURATION=Release" >> "$GITHUB_ENV"
           fi
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Install MSVC problem matcher
         uses: ammaraskar/msvc-problem-matcher@master
       - name: Build OpenRCT2
@@ -344,7 +344,7 @@ jobs:
             build_flags: -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=ON
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -386,7 +386,7 @@ jobs:
             run_tests: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -425,7 +425,7 @@ jobs:
     needs: [macos-cmake, build_variables]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: download x64 app bundle
         uses: actions/download-artifact@v7
         with:
@@ -489,7 +489,7 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -518,7 +518,7 @@ jobs:
     container: openrct2/openrct2-build:24-jammy
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -546,7 +546,7 @@ jobs:
     steps:
       - name: Checkout image
         if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: OpenRCT2/openrct2-docker
       - name: Build image
@@ -573,7 +573,7 @@ jobs:
     container: ghcr.io/openrct2/openrct2-build:26-noble
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -589,7 +589,7 @@ jobs:
     container: ghcr.io/openrct2/openrct2-build:26-noble
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -634,7 +634,7 @@ jobs:
         arch: [armeabi-v7a, arm64-v8a, x86_64]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -672,7 +672,7 @@ jobs:
     container: ghcr.io/openrct2/openrct2-build:26-android
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Cache Gradle
         uses: actions/cache@v5
         with:
@@ -737,7 +737,7 @@ jobs:
     container: ghcr.io/openrct2/openrct2-build:26-emscripten
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -759,7 +759,7 @@ jobs:
     needs: [build_variables, linux-portable, android, linux-appimage, macos-universal, windows]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           sparse-checkout: |
             distribution/changelog.txt
