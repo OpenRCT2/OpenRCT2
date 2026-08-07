@@ -19,11 +19,9 @@
 
 struct ScreenCoordsXY;
 struct StringWithArgs;
-struct Ride;
 struct RideSelection;
 struct TrackDesign;
 struct TrackDesignFileRef;
-struct Vehicle;
 
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
@@ -36,7 +34,9 @@ namespace OpenRCT2
     class Formatter;
     struct ObjectEntryDescriptor;
     struct Peep;
+    struct Ride;
     struct TileElement;
+    struct Vehicle;
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing

@@ -17,10 +17,10 @@
 
 namespace OpenRCT2
 {
-    class StationObject;
-}
+    struct Ride;
 
-struct Ride;
+    class StationObject;
+} // namespace OpenRCT2
 
 constexpr uint8_t kTrackMap2x2[][4] = {
     { 0, 1, 2, 3 },
@@ -413,13 +413,14 @@ ImageId GetStationColourScheme(PaintSession& session, const OpenRCT2::TrackEleme
 ImageId GetShopSupportColourScheme(PaintSession& session, const OpenRCT2::TrackElement& trackElement);
 
 bool TrackPaintUtilHasFence(
-    enum edge_t edge, const CoordsXY& position, const OpenRCT2::TrackElement& trackElement, const Ride& ride, uint8_t rotation);
+    enum edge_t edge, const CoordsXY& position, const OpenRCT2::TrackElement& trackElement, const OpenRCT2::Ride& ride,
+    uint8_t rotation);
 void TrackPaintUtilPaintFloor(
     PaintSession& session, uint8_t edges, ImageId colourFlags, uint16_t height, const uint32_t floorSprites[4],
     const OpenRCT2::StationObject* stationStyle);
 void TrackPaintUtilPaintFences(
     PaintSession& session, uint8_t edges, const CoordsXY& position, const OpenRCT2::TrackElement& trackElement,
-    const Ride& ride, ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
+    const OpenRCT2::Ride& ride, ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
 
 enum class StationBaseType
 {
@@ -437,20 +438,21 @@ bool TrackPaintUtilDrawStationCovers2(
     PaintSession& session, enum edge_t edge, bool hasFence, const OpenRCT2::StationObject* stationObject, uint16_t height,
     uint8_t stationVariant, ImageId colour);
 bool TrackPaintUtilDrawNarrowStationPlatform(
-    PaintSession& session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
+    PaintSession& session, const OpenRCT2::Ride& ride, Direction direction, int32_t height, int32_t zOffset,
     const OpenRCT2::TrackElement& trackElement, StationBaseType baseType, int32_t baseOffsetZ);
 bool TrackPaintUtilDrawStation(
-    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, const OpenRCT2::TrackElement& trackElement,
-    StationBaseType baseType, int32_t baseOffsetZ);
+    PaintSession& session, const OpenRCT2::Ride& ride, Direction direction, uint16_t height,
+    const OpenRCT2::TrackElement& trackElement, StationBaseType baseType, int32_t baseOffsetZ);
 bool TrackPaintUtilDrawStation2(
-    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, const OpenRCT2::TrackElement& trackElement,
-    StationBaseType baseType, int32_t baseOffsetZ, int32_t fenceOffsetA, int32_t fenceOffsetB);
+    PaintSession& session, const OpenRCT2::Ride& ride, Direction direction, uint16_t height,
+    const OpenRCT2::TrackElement& trackElement, StationBaseType baseType, int32_t baseOffsetZ, int32_t fenceOffsetA,
+    int32_t fenceOffsetB);
 bool TrackPaintUtilDrawStationInverted(
-    PaintSession& session, const Ride& ride, Direction direction, int32_t height, const OpenRCT2::TrackElement& trackElement,
-    uint8_t stationVariant);
+    PaintSession& session, const OpenRCT2::Ride& ride, Direction direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, uint8_t stationVariant);
 bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position);
 void TrackPaintUtilDrawPier(
-    PaintSession& session, const Ride& ride, const OpenRCT2::StationObject* stationObject, const CoordsXY& position,
+    PaintSession& session, const OpenRCT2::Ride& ride, const OpenRCT2::StationObject* stationObject, const CoordsXY& position,
     Direction direction, int32_t height, const OpenRCT2::TrackElement& trackElement, uint8_t rotation);
 inline void TrackPaintUtilDrawStationTunnel(PaintSession& session, Direction direction, int32_t height)
 {
@@ -564,11 +566,11 @@ void DrawSBendRightSupports(
     int32_t specialA, int32_t specialB);
 
 using TrackPaintFunction = void (&)(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 
 void TrackPaintFunctionDummy(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 
 TrackPaintFunction GetTrackPaintFunctionStandUpRC(OpenRCT2::TrackElemType trackType);

@@ -14,8 +14,6 @@
 
 #include <cstdint>
 
-struct Ride;
-
 namespace OpenRCT2::Drawing
 {
     enum class Colour : uint8_t;
@@ -24,11 +22,11 @@ namespace OpenRCT2::Drawing
 namespace OpenRCT2
 {
     class DataSerialiser;
+    class PatrolArea;
 
+    struct Ride;
     struct TileElement;
     struct PathElement;
-
-    class PatrolArea;
 
     enum class StaffType : uint8_t
     {

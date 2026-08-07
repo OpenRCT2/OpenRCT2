@@ -22,12 +22,16 @@
 
 struct RideObjectEntry;
 
-enum class Breakdown : uint8_t;
-enum class MechanicStatus : uint8_t;
-enum class RideInvalidateFlag : uint8_t;
 enum class VehicleColourSettings : uint8_t;
 
-using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
+namespace OpenRCT2
+{
+    enum class Breakdown : uint8_t;
+    enum class MechanicStatus : uint8_t;
+    enum class RideInvalidateFlag : uint8_t;
+
+    using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Editor
 {

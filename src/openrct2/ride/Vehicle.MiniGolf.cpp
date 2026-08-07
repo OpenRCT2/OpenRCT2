@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
 using namespace OpenRCT2::TrackMetadata;
 
-void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemType trackType)
+void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     if (ted.flags.has(TrackElementFlag::isGolfHole))

@@ -84,7 +84,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_LogFlume,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_LogFlume,
 };
 } // namespace OpenRCT2
 // clang-format on

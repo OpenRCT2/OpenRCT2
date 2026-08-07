@@ -2,10 +2,9 @@
 
 #include "../world/Location.hpp"
 
-struct Ride;
-
 namespace OpenRCT2
 {
+    struct Ride;
     struct TrackElement;
 
     struct TrackCircuitIterator

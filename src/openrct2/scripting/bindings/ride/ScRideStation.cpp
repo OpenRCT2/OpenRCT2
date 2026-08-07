@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
     RideStation* ScRideStation::GetRideStation(JSValue thisVal)
     {
         RideStationData* data = GetRideStationData(thisVal);
-        auto ride = ::GetRide(data->_rideId);
+        auto ride = OpenRCT2::GetRide(data->_rideId);
         if (ride != nullptr)
         {
             if (data->_stationIndex.ToUnderlying() < std::size(ride->getStations()))

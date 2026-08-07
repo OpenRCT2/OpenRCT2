@@ -16,7 +16,10 @@
 #include <limits>
 #include <type_traits>
 
-struct Ride;
+namespace OpenRCT2
+{
+    struct Ride;
+}
 
 using ride_type_t = uint16_t;
 static ride_type_t constexpr kRideTypeNull = 0xFF;

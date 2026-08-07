@@ -89,7 +89,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_GhostTrain,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_GhostTrain,
 };
 } // namespace OpenRCT2
 // clang-format on
