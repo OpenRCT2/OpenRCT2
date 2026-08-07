@@ -18,6 +18,9 @@
     #include "../../../actions/network/PlayerKickAction.h"
     #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
+    #include "ScPlayer.hpp"
+    #include "ScPlayerGroup.hpp"
+    #include "ScSocket.hpp"
 
 namespace OpenRCT2::Scripting
 {
