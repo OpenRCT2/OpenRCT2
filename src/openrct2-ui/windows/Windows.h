@@ -11,7 +11,7 @@
 
 #include <openrct2/Identifiers.h>
 #include <openrct2/core/StringTypes.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2/interface/WindowTypes.h>
 #include <openrct2/localisation/StringIdType.h>
 #include <openrct2/world/ScenerySelection.h>
 #include <optional>
@@ -43,6 +43,8 @@ namespace OpenRCT2
 namespace OpenRCT2::Drawing
 {
     enum class Colour : uint8_t;
+
+    struct RenderTarget;
 }
 
 namespace OpenRCT2::Ui::Windows

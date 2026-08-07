@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <openrct2/interface/Window.h>
 #include <openrct2/interface/WindowBase.h>
+#include <openrct2/interface/WindowTypes.h>
 
 namespace OpenRCT2
 {

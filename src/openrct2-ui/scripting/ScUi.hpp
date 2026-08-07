@@ -23,7 +23,7 @@
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/Input.h>
-    #include <openrct2/interface/Window.h>
+    #include <openrct2/interface/WindowTypes.h>
     #include <openrct2/scenario/ScenarioCategory.h>
     #include <openrct2/scenario/ScenarioRepository.h>
     #include <openrct2/scripting/ScriptEngine.h>

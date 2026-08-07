@@ -25,7 +25,7 @@
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/ColourWithFlags.h>
     #include <openrct2/interface/Viewport.h>
-    #include <openrct2/interface/Window.h>
+    #include <openrct2/interface/WindowTypes.h>
     #include <openrct2/scripting/Plugin.h>
     #include <optional>
     #include <string>

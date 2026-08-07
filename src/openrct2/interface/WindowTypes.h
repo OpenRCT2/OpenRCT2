@@ -20,6 +20,7 @@ namespace OpenRCT2
     using CloseCallback = void (*)();
 
     struct Viewport;
+    struct Widget;
     struct WindowBase;
 
     enum class WindowClass : uint8_t;

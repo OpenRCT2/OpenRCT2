@@ -10,7 +10,7 @@
 #pragma once
 
 #include <openrct2/core/StringTypes.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2/interface/WindowTypes.h>
 #include <openrct2/localisation/StringIdType.h>
 
 namespace OpenRCT2
