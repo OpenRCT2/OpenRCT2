@@ -45,7 +45,7 @@ namespace OpenRCT2::Drawing
     enum class Colour : uint8_t;
 
     struct RenderTarget;
-}
+} // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::Ui::Windows
 {

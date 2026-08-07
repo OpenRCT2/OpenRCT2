@@ -25,7 +25,7 @@ namespace OpenRCT2
     enum class ModalResult : int8_t;
 
     struct WindowBase;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Ui::FileBrowser
 {
