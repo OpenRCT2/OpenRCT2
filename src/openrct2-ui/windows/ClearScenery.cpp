@@ -38,23 +38,27 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INCREMENT,
         WIDX_SMALL_SCENERY,
         WIDX_LARGE_SCENERY,
-        WIDX_FOOTPATH
+        WIDX_FOOTPATH,
+        WIDX_WALLS,
+        WIDX_FOOTPATH_ADDITIONS,
     };
 
     static constexpr StringId kWindowTitle = STR_CLEAR_SCENERY;
-    static constexpr ScreenSize kWindowSize = { 98, 94 };
+    static constexpr ScreenSize kWindowSize = { 98, 124 };
 
     static constexpr ScreenSize kClearSceneryButtonSize = { 24, 24 };
 
     // clang-format off
     static constexpr auto window_clear_scenery_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget     ({ 27, 17 }, { 44, 32 },              WidgetType::imgBtn,  WindowColour::primary,   SPR_LAND_TOOL_SIZE_0,        kStringIdNone                             ), // preview box
-        makeRemapWidget({ 28, 18 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP               ), // decrement size
-        makeRemapWidget({ 54, 32 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP                ), // increment size
-        makeRemapWidget({  7, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
-        makeRemapWidget({ 37, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
-        makeRemapWidget({ 67, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP    )  // footpaths
+        makeWidget     ({ 27, 17 }, { 44, 32 },              WidgetType::imgBtn,  WindowColour::primary,   SPR_LAND_TOOL_SIZE_0,         kStringIdNone                                  ), // preview box
+        makeRemapWidget({ 28, 18 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,       STR_ADJUST_SMALLER_LAND_TIP                    ), // decrement size
+        makeRemapWidget({ 54, 32 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,       STR_ADJUST_LARGER_LAND_TIP                     ), // increment size
+        makeRemapWidget({  7, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_TREES,          STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP     ), // small scenery
+        makeRemapWidget({ 37, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_LARGE_SCENERY,  STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP     ), // large scenery
+        makeRemapWidget({ 22, 83 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_FOOTPATH,       STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP         ), // footpaths
+        makeRemapWidget({ 67, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_WALLS,          STR_CLEAR_SCENERY_REMOVE_WALLS_TIP             ), // walls
+        makeRemapWidget({ 52, 83 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_PATH_ADDITIONS, STR_CLEAR_SCENERY_REMOVE_FOOTPATH_ADDITIONS_TIP)  // footpath additions
     );
     // clang-format on
 
@@ -64,6 +68,8 @@ namespace OpenRCT2::Ui::Windows
         bool _clearSmallScenery = true;
         bool _clearLargeScenery = false;
         bool _clearFootpath = false;
+        bool _clearWalls = true;
+        bool _clearFootpathAdditions = false;
         money64 _clearSceneryCost = kMoney64Undefined;
 
     public:
@@ -76,6 +82,8 @@ namespace OpenRCT2::Ui::Windows
             widgetSetPressed(*this, WIDX_SMALL_SCENERY, _clearSmallScenery);
             widgetSetPressed(*this, WIDX_LARGE_SCENERY, _clearLargeScenery);
             widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
+            widgetSetPressed(*this, WIDX_WALLS, _clearWalls);
+            widgetSetPressed(*this, WIDX_FOOTPATH_ADDITIONS, _clearFootpathAdditions);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -120,6 +128,16 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FOOTPATH:
                     _clearFootpath ^= 1;
                     widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
+                    invalidate();
+                    break;
+                case WIDX_WALLS:
+                    _clearWalls ^= 1;
+                    widgetSetPressed(*this, WIDX_WALLS, _clearWalls);
+                    invalidate();
+                    break;
+                case WIDX_FOOTPATH_ADDITIONS:
+                    _clearFootpathAdditions ^= 1;
+                    widgetSetPressed(*this, WIDX_FOOTPATH_ADDITIONS, _clearFootpathAdditions);
                     invalidate();
                     break;
             }
@@ -199,7 +217,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<money64>(_clearSceneryCost);
                 screenCoords.x = widgets[WIDX_PREVIEW].midX() + windowPos.x;
-                screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
+                screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 57;
                 drawText(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::centre });
             }
         }
@@ -216,6 +234,10 @@ namespace OpenRCT2::Ui::Windows
                 itemsToClear |= GameActions::CLEARABLE_ITEMS::kSceneryLarge;
             if (_clearFootpath)
                 itemsToClear |= GameActions::CLEARABLE_ITEMS::kSceneryFootpath;
+            if (_clearWalls)
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kSceneryWall;
+            if (_clearFootpathAdditions)
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kPathAddition;
 
             return GameActions::ClearAction(range, itemsToClear);
         }

@@ -19,6 +19,7 @@
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
 #include "../GameActionRunner.h"
+#include "../footpath/FootpathAdditionRemoveAction.h"
 #include "../footpath/FootpathRemoveAction.h"
 #include "../scenery/LargeSceneryRemoveAction.h"
 #include "../scenery/SmallSceneryRemoveAction.h"
@@ -158,6 +159,23 @@ namespace OpenRCT2::GameActions
                                 totalCost += res.cost;
                             }
                         }
+                        if (!tileEdited && _itemsToClear & CLEARABLE_ITEMS::kPathAddition)
+                        {
+                            auto additionRemoveAction = FootpathAdditionRemoveAction({ tilePos, tileElement->getBaseZ() });
+                            additionRemoveAction.SetFlags(GetFlags());
+
+                            auto res = executing ? ExecuteNested(&additionRemoveAction, gameState)
+                                                 : QueryNested(&additionRemoveAction, gameState);
+
+                            if (res.error == Status::ok)
+                            {
+                                totalCost += res.cost;
+                            }
+                            else if (res.error == Status::insufficientFunds)
+                            {
+                                totalCost += res.cost;
+                            }
+                        }
                         break;
                     case TileElementType::smallScenery:
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
@@ -182,7 +200,7 @@ namespace OpenRCT2::GameActions
                         }
                         break;
                     case TileElementType::wall:
-                        if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
+                        if (_itemsToClear & CLEARABLE_ITEMS::kSceneryWall)
                         {
                             CoordsXYZD wallLocation = { tilePos, tileElement->getBaseZ(), tileElement->getDirection() };
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
