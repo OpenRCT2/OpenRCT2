@@ -23,20 +23,21 @@ struct RideSelection;
 struct TrackDesign;
 struct TrackDesignFileRef;
 
-enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
-
-using LoadSaveCallback = void (*)(ModalResult result, const utf8* path);
-using ScenarioSelectCallback = void (*)(const utf8* path);
 
 namespace OpenRCT2
 {
+    enum class GuestListFilterType : int32_t;
+
     class Formatter;
     struct ObjectEntryDescriptor;
     struct Peep;
     struct Ride;
     struct TileElement;
     struct Vehicle;
+
+    using LoadSaveCallback = void (*)(ModalResult result, const utf8* path);
+    using ScenarioSelectCallback = void (*)(const utf8* path);
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing

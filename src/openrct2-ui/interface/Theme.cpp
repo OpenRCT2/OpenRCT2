@@ -135,7 +135,7 @@ namespace OpenRCT2::Ui
      */
     struct WindowThemeDesc
     {
-        ::WindowClass WindowClass;
+        OpenRCT2::WindowClass WindowClass;
         const utf8* WindowClassSZ;
         StringId WindowName;
         VariableWindowColours windowColours;

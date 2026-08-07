@@ -12,8 +12,6 @@
 #include "../../core/StringTypes.h"
 #include "../Scene.h"
 
-enum class ModalResult : int8_t;
-
 // Counter false positive around EditorScene, needed for gcc 15.2 (used for MinGW CI)
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic push
@@ -23,6 +21,8 @@ enum class ModalResult : int8_t;
 
 namespace OpenRCT2
 {
+    enum class ModalResult : int8_t;
+
     class EditorScene : public Scene
     {
     public:
