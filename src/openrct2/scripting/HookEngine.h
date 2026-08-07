@@ -13,7 +13,6 @@
 
     #include "ScriptUtil.hpp"
 
-    #include <any>
     #include <memory>
     #include <string>
     #include <variant>
@@ -22,7 +21,6 @@
 namespace OpenRCT2::Scripting
 {
     class ScriptEngine;
-    class ScriptExecutionInfo;
     class Plugin;
 
     enum class HookType

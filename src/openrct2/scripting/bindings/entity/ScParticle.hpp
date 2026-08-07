@@ -13,8 +13,6 @@
 
     #include "ScEntity.hpp"
 
-    #include <optional>
-
 namespace OpenRCT2
 {
     struct VehicleCrashParticle;

@@ -19,7 +19,6 @@
 #include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
 
-
 using namespace OpenRCT2;
 
 PreloaderScene::PreloaderScene(IContext& context)

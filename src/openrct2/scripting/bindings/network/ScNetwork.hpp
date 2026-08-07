@@ -13,8 +13,6 @@
 
     #include "../../ScriptEngine.h"
 
-    #include <memory>
-
 namespace OpenRCT2::Scripting
 {
     class ScNetwork final : public ScBase

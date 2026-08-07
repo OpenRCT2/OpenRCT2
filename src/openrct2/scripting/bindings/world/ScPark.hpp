@@ -13,8 +13,6 @@
 
     #include "../../ScriptEngine.h"
 
-    #include <vector>
-
 namespace OpenRCT2::Scripting
 {
     class ScPark;

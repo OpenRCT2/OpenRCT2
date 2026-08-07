@@ -15,7 +15,6 @@
     #include "../../../object/ObjectRepository.h"
     #include "../../ScriptEngine.h"
 
-    #include <optional>
     #include <string_view>
 
 namespace OpenRCT2::Scripting

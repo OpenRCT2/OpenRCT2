@@ -13,12 +13,8 @@
 
     #include "../Context.h"
     #include "../Diagnostic.h"
-    #include "../OpenRCT2.h"
     #include "../core/File.h"
     #include "ScriptEngine.h"
-
-    #include <fstream>
-    #include <memory>
 
 using namespace OpenRCT2::Scripting;
 

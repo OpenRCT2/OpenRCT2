@@ -13,9 +13,6 @@
 
     #include "../../ScriptEngine.h"
 
-    #include <string_view>
-    #include <unordered_map>
-
 namespace OpenRCT2::Scripting
 {
     class ScEntity;

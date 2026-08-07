@@ -11,15 +11,12 @@
 
     #include "ScTrackIterator.h"
 
-    #include "../../../Context.h"
-    #include "../../../ride/Ride.h"
     #include "../../../ride/Track.h"
     #include "../../../ride/TrackData.h"
     #include "../../../ride/TrackIteration.h"
     #include "../../../ride/ted/TrackElementDescriptor.h"
     #include "../../../world/Map.h"
     #include "../../../world/tile_element/TrackElement.h"
-    #include "../../ScriptEngine.h"
     #include "ScTrackSegment.h"
 
 using namespace OpenRCT2::Scripting;

@@ -19,7 +19,7 @@ namespace OpenRCT2::Scenario
 {
     enum class Category : uint8_t;
     enum class ObjectiveType : uint8_t;
-}
+} // namespace OpenRCT2::Scenario
 
 struct ScenarioHighscoreEntry
 {

@@ -11,7 +11,6 @@
 
     #include "ScParkMessage.hpp"
 
-    #include "../../../Context.h"
     #include "../../../GameState.h"
 
 namespace OpenRCT2::Scripting

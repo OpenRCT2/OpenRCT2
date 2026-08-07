@@ -28,7 +28,6 @@
     #include "../core/Path.hpp"
     #include "../interface/InteractiveConsole.h"
     #include "../platform/Platform.h"
-    #include "../profiling/Profiling.h"
     #include "../ride/ted/PitchAndRoll.h"
     #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
@@ -65,8 +64,6 @@
     #include "bindings/world/ScTileElement.hpp"
     #include "bindings/world/ScWeather.hpp"
 
-    #include <cassert>
-    #include <iostream>
     #include <memory>
     #include <stdexcept>
     #include <string>

@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../../drawing/Colour.h"
 #include "../../ScriptEngine.h"
 
 #ifdef ENABLE_SCRIPTING
