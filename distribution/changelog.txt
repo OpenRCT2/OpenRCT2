@@ -6,6 +6,7 @@
 - Improved: [#26862] Add a Liquid Glass app icon for macOS 26 and later.
 - Fix: [#25169] The convert command strips custom objects from the resulting park.
 - Fix: [#26811] Crash when a ride points to a non-existing station object.
+- Fix: [#26816] Water rides ignore zero clearances, preventing adjacent terrain modifications and building them anywhere.
 - Fix: [#26880] Max negative G-Force stat on flat track erroneously reads as 0.49g.
 
 0.5.4 (2026-08-02)
