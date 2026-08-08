@@ -1018,7 +1018,7 @@ namespace OpenRCT2
                         possible_thoughts[num_thoughts++] = PeepThoughtType::toilet;
                     }
 
-                    if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY) && cashInPocket <= 9.00_GBP && happiness >= 105
+                    if (!getGameState().park.flags.has(ParkFlag::noMoney) && cashInPocket <= 9.00_GBP && happiness >= 105
                         && Energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
@@ -1499,7 +1499,7 @@ namespace OpenRCT2
 
         if (!hasVoucher)
         {
-            if (price != 0 && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+            if (price != 0 && !gameState.park.flags.has(ParkFlag::noMoney))
             {
                 if (guest.cashInPocket == 0)
                 {
@@ -1540,7 +1540,7 @@ namespace OpenRCT2
                 itemValue -= price;
                 itemValue = std::max(0.80_GBP, itemValue);
 
-                if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+                if (!gameState.park.flags.has(ParkFlag::noMoney))
                 {
                     if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                     {
@@ -1649,7 +1649,7 @@ namespace OpenRCT2
             guest.amountOfSouvenirs++;
         }
 
-        if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+        if (!gameState.park.flags.has(ParkFlag::noMoney))
             FinancePayment(shopItemDescriptor.Cost, expenditure);
 
         // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
@@ -1659,7 +1659,7 @@ namespace OpenRCT2
             guest.removeItem(ShopItem::voucher);
             guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
-        else if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+        else if (!gameState.park.flags.has(ParkFlag::noMoney))
         {
             guest.spendMoney(*expend_type, price, expenditure);
         }
@@ -1966,7 +1966,7 @@ namespace OpenRCT2
 
                 auto& gameState = getGameState();
                 // Basic price checks
-                if (ridePrice != 0 && !GuestHasVoucherForFreeRide(*this, ride) && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+                if (ridePrice != 0 && !GuestHasVoucherForFreeRide(*this, ride) && !gameState.park.flags.has(ParkFlag::noMoney))
                 {
                     if (ridePrice > cashInPocket)
                     {
@@ -2116,7 +2116,7 @@ namespace OpenRCT2
 
                 // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
                 if (value != kRideValueUndefined && !GuestHasVoucherForFreeRide(*this, ride)
-                    && !(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+                    && !gameState.park.flags.has(ParkFlag::noMoney))
                 {
                     // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
                     if (peepFlags.has(PeepFlag::hasPaidForParkEntry))
@@ -2143,7 +2143,7 @@ namespace OpenRCT2
                     // park.
                     if (ridePrice <= (value / 2) && peepAtRide)
                     {
-                        if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+                        if (!gameState.park.flags.has(ParkFlag::noMoney))
                         {
                             if (!peepFlags.has(PeepFlag::hasPaidForParkEntry))
                             {
@@ -2262,7 +2262,7 @@ namespace OpenRCT2
      */
     void Guest::spendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
     {
-        assert(!(getGameState().park.flags & PARK_FLAGS_NO_MONEY));
+        assert(!getGameState().park.flags.has(ParkFlag::noMoney));
 
         cashInPocket = std::max(0.00_GBP, cashInPocket - amount);
         cashSpent = AddClamp(cashSpent, amount);
@@ -2580,7 +2580,7 @@ namespace OpenRCT2
             && guest.voucherRideId == guest.CurrentRide)
             return true;
 
-        if (guest.cashInPocket <= 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+        if (guest.cashInPocket <= 0 && !getGameState().park.flags.has(ParkFlag::noMoney))
         {
             guest.insertNewThought(PeepThoughtType::spentMoney);
             PeepUpdateRideAtEntranceTryLeave(guest);
@@ -2674,7 +2674,7 @@ namespace OpenRCT2
     /* rct2: 0x00695555 */
     static int16_t GuestCalculateRideValueSatisfaction(Guest& guest, const Ride& ride)
     {
-        if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+        if (getGameState().park.flags.has(ParkFlag::noMoney))
         {
             return -30;
         }
@@ -2848,7 +2848,7 @@ namespace OpenRCT2
 
     static bool GuestShouldPreferredIntensityIncrease(Guest& guest)
     {
-        if (getGameState().park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+        if (getGameState().park.flags.has(ParkFlag::guestPreferLessIntenseRides))
             return false;
         if (guest.happiness < 200)
             return false;
@@ -3033,7 +3033,7 @@ namespace OpenRCT2
          * in the park. */
         if (!guest.peepFlags.has(PeepFlag::leavingPark))
         {
-            if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+            if (getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 if (guest.Energy >= 70 && guest.happiness >= 60)
                 {
@@ -3275,7 +3275,7 @@ namespace OpenRCT2
      */
     static bool PeepShouldUseCashMachine(Guest& guest, RideId rideIndex)
     {
-        if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+        if (getGameState().park.flags.has(ParkFlag::noMoney))
             return false;
         if (guest.peepFlags.has(PeepFlag::leavingPark))
             return false;
@@ -7197,9 +7197,9 @@ namespace OpenRCT2
 
         /* Check which intensity boxes are enabled
          * and apply the appropriate intensity settings. */
-        if (gameState.park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+        if (gameState.park.flags.has(ParkFlag::guestPreferLessIntenseRides))
         {
-            if (gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+            if (gameState.park.flags.has(ParkFlag::guestPreferMoreIntenseRides))
             {
                 intensityLowest = 0;
                 intensityHighest = 15;
@@ -7210,7 +7210,7 @@ namespace OpenRCT2
                 intensityHighest = 4;
             }
         }
-        else if (gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+        else if (gameState.park.flags.has(ParkFlag::guestPreferMoreIntenseRides))
         {
             intensityLowest = 9;
             intensityHighest = 15;
@@ -7219,7 +7219,7 @@ namespace OpenRCT2
         peep->intensity = IntensityRange(intensityLowest, intensityHighest);
 
         uint8_t nauseaTolerance = ScenarioRand() & 0x7;
-        if (gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+        if (gameState.park.flags.has(ParkFlag::guestPreferMoreIntenseRides))
         {
             nauseaTolerance += 4;
         }
@@ -7276,7 +7276,7 @@ namespace OpenRCT2
             cash = 500;
         }
 
-        if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
+        if (gameState.park.flags.has(ParkFlag::noMoney))
         {
             cash = 0;
         }

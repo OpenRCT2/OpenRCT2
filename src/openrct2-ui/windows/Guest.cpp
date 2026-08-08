@@ -496,7 +496,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(WIDX_PICKUP, disablePickup);
             }
 
-            setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
+            setWidgetDisabled(WIDX_TAB_4, getGameState().park.flags.has(ParkFlag::noMoney));
             setWidgetDisabled(WIDX_TAB_7, !Config::Get().general.debuggingTools);
         }
 

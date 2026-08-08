@@ -57,7 +57,7 @@ namespace OpenRCT2::GameActions
 
     Result LandSetHeightAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+        if (park.flags.has(ParkFlag::forbidLandscapeChanges))
         {
             return Result(Status::disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
         }
@@ -79,7 +79,7 @@ namespace OpenRCT2::GameActions
         money64 sceneryRemovalCost = 0;
         if (!gameState.cheats.disableClearanceChecks)
         {
-            if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (park.flags.has(ParkFlag::forbidTreeRemoval))
             {
                 // Check for obstructing large trees
                 TileElement* tileElement = CheckTreeObstructions();

@@ -333,7 +333,7 @@ namespace OpenRCT2::Network
                 { "parkValue", gameState.park.value },
             };
 
-            if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+            if (!gameState.park.flags.has(ParkFlag::noMoney))
             {
                 gameInfo["cash"] = gameState.park.cash;
             }

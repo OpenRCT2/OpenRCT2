@@ -112,7 +112,7 @@ void ScenarioReset(GameState_t& gameState)
     park.totalAdmissions = 0;
     park.totalIncomeFromAdmissions = 0;
 
-    park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    park.flags.unset(ParkFlag::scenarioCompleteNameInput);
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.scenarioCompletedBy = "?";
 
@@ -137,13 +137,13 @@ void ScenarioReset(GameState_t& gameState)
     park.ratingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
-    if (park.flags & PARK_FLAGS_NO_MONEY)
+    if (park.flags.has(ParkFlag::noMoney))
     {
-        park.flags |= PARK_FLAGS_PARK_OPEN;
+        park.flags.set(ParkFlag::parkOpen);
         park.entranceFee = 0;
     }
 
-    park.flags |= PARK_FLAGS_SPRITES_INITIALISED;
+    park.flags.set(ParkFlag::spritesInitialised);
     gGamePaused = false;
 }
 
@@ -182,7 +182,7 @@ void ScenarioSuccess(GameState_t& gameState)
     if (ScenarioRepositoryTryRecordHighscore(gameState.scenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
-        gameState.park.flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        gameState.park.flags.set(ParkFlag::scenarioCompleteNameInput);
         gameState.scenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
@@ -198,7 +198,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
     {
         gameState.scenarioCompletedBy = name;
     }
-    gameState.park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    gameState.park.flags.unset(ParkFlag::scenarioCompleteNameInput);
 }
 
 /**
@@ -210,7 +210,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
     const auto& park = getGameState().park;
     const auto max_fee = AddClamp(park.totalRideValueForMoney, park.totalRideValueForMoney / 2);
 
-    if ((park.flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee(park) > max_fee)
+    if (park.flags.has(ParkFlag::parkOpen) && Park::GetEntranceFee(park) > max_fee)
     {
         if (!park.entrances.empty())
         {
@@ -286,7 +286,7 @@ static void ScenarioDayUpdate(GameState_t& gameState)
     auto& park = gameState.park;
 
     // Lower the casualty penalty
-    uint16_t casualtyPenaltyModifier = (park.flags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+    uint16_t casualtyPenaltyModifier = park.flags.has(ParkFlag::noMoney) ? 40 : 7;
     park.ratingCasualtyPenalty = std::max(0, park.ratingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
@@ -578,7 +578,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
     }
 
     if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating)
-        gameState.park.flags |= PARK_FLAGS_PARK_OPEN;
+        gameState.park.flags.set(ParkFlag::parkOpen);
 
     ScenarioReset(gameState);
 

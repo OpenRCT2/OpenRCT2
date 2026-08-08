@@ -82,8 +82,8 @@ namespace OpenRCT2::Ui::Windows
             auto currentRide = GetRide(rideId);
             if (currentRide != nullptr)
             {
-                auto stringId = (getGameState().park.flags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID
-                                                                                  : STR_DEMOLISH_RIDE_ID_MONEY;
+                auto stringId = getGameState().park.flags.has(ParkFlag::noMoney) ? STR_DEMOLISH_RIDE_ID
+                                                                                 : STR_DEMOLISH_RIDE_ID_MONEY;
                 auto ft = Formatter();
                 currentRide->formatNameTo(ft);
                 ft.Add<money64>(_demolishRideCost);

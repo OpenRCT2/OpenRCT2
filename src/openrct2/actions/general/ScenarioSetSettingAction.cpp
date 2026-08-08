@@ -49,27 +49,9 @@ namespace OpenRCT2::GameActions
         switch (_setting)
         {
             case ScenarioSetSetting::noMoney:
-                if (gLegacyScene == LegacyScene::scenarioEditor)
+                park.flags.set(ParkFlag::noMoney, _value != 0);
+                if (gLegacyScene != LegacyScene::scenarioEditor)
                 {
-                    if (_value != 0)
-                    {
-                        park.flags |= PARK_FLAGS_NO_MONEY;
-                    }
-                    else
-                    {
-                        park.flags &= ~PARK_FLAGS_NO_MONEY;
-                    }
-                }
-                else
-                {
-                    if (_value != 0)
-                    {
-                        park.flags |= PARK_FLAGS_NO_MONEY;
-                    }
-                    else
-                    {
-                        park.flags &= ~PARK_FLAGS_NO_MONEY;
-                    }
                     // Invalidate all windows that have anything to do with finance
                     windowMgr->InvalidateByClass(WindowClass::ride);
                     windowMgr->InvalidateByClass(WindowClass::peep);
@@ -100,14 +82,7 @@ namespace OpenRCT2::GameActions
                 windowMgr->InvalidateByClass(WindowClass::finances);
                 break;
             case ScenarioSetSetting::forbidMarketingCampaigns:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-                }
+                park.flags.set(ParkFlag::forbidMarketingCampaigns, _value != 0);
                 break;
             case ScenarioSetSetting::averageCashPerGuest:
                 gameState.scenarioOptions.guestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
@@ -122,24 +97,10 @@ namespace OpenRCT2::GameActions
                 gameState.scenarioOptions.guestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
                 break;
             case ScenarioSetSetting::guestsPreferLessIntenseRides:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-                }
+                park.flags.set(ParkFlag::guestPreferLessIntenseRides, _value != 0);
                 break;
             case ScenarioSetSetting::guestsPreferMoreIntenseRides:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-                }
+                park.flags.set(ParkFlag::guestPreferMoreIntenseRides, _value != 0);
                 break;
             case ScenarioSetSetting::costToBuyLand:
                 gameState.scenarioOptions.landPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
@@ -152,20 +113,20 @@ namespace OpenRCT2::GameActions
                 {
                     if (_value == 0)
                     {
-                        park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        park.flags.set(ParkFlag::freeEntry);
+                        park.flags.unset(ParkFlag::unlockAllPrices);
                         park.entranceFee = 0.00_GBP;
                     }
                     else if (_value == 1)
                     {
-                        park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                        park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        park.flags.unset(ParkFlag::freeEntry);
+                        park.flags.unset(ParkFlag::unlockAllPrices);
                         park.entranceFee = 10.00_GBP;
                     }
                     else
                     {
-                        park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        park.flags.set(ParkFlag::freeEntry);
+                        park.flags.set(ParkFlag::unlockAllPrices);
                         park.entranceFee = 10.00_GBP;
                     }
                 }
@@ -173,18 +134,18 @@ namespace OpenRCT2::GameActions
                 {
                     if (_value == 0)
                     {
-                        park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        park.flags.set(ParkFlag::freeEntry);
+                        park.flags.unset(ParkFlag::unlockAllPrices);
                     }
                     else if (_value == 1)
                     {
-                        park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                        park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        park.flags.unset(ParkFlag::freeEntry);
+                        park.flags.unset(ParkFlag::unlockAllPrices);
                     }
                     else
                     {
-                        park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                        park.flags.set(ParkFlag::freeEntry);
+                        park.flags.set(ParkFlag::unlockAllPrices);
                     }
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                     windowMgr->InvalidateByClass(WindowClass::ride);
@@ -195,68 +156,26 @@ namespace OpenRCT2::GameActions
                 windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 break;
             case ScenarioSetSetting::forbidTreeRemoval:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
-                }
+                park.flags.set(ParkFlag::forbidTreeRemoval, _value != 0);
                 break;
             case ScenarioSetSetting::forbidLandscapeChanges:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-                }
+                park.flags.set(ParkFlag::forbidLandscapeChanges, _value != 0);
                 break;
             case ScenarioSetSetting::forbidHighConstruction:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-                }
+                park.flags.set(ParkFlag::forbidHighConstruction, _value != 0);
                 break;
             case ScenarioSetSetting::parkRatingHigherDifficultyLevel:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
-                }
+                park.flags.set(ParkFlag::difficultParkRating, _value != 0);
                 break;
             case ScenarioSetSetting::guestGenerationHigherDifficultyLevel:
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-                }
+                park.flags.set(ParkFlag::difficultGuestGeneration, _value != 0);
                 break;
             case ScenarioSetSetting::allowEarlyCompletion:
                 gAllowEarlyCompletionInNetworkPlay = _value;
                 break;
             case ScenarioSetSetting::useRCT1Interest:
             {
-                if (_value != 0)
-                {
-                    park.flags |= PARK_FLAGS_RCT1_INTEREST;
-                }
-                else
-                {
-                    park.flags &= ~PARK_FLAGS_RCT1_INTEREST;
-                }
+                park.flags.set(ParkFlag::rct1Interest, _value != 0);
                 break;
             }
             default:

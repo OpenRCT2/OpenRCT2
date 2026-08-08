@@ -1415,7 +1415,7 @@ namespace OpenRCT2::Ui::Windows
             const bool disableTab7 = noRideEntry || rtd.flags.has(RtdFlag::isShopOrFacility);
             const bool disableTab8 = noRideEntry || !rtd.flags.has(RtdFlag::hasDataLogging);
             const bool disableTab9 = noRideEntry || rtd.specialType == RtdSpecialType::cashMachine
-                || rtd.specialType == RtdSpecialType::firstAid || (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0
+                || rtd.specialType == RtdSpecialType::firstAid || getGameState().park.flags.has(ParkFlag::noMoney)
                 || gLegacyScene == LegacyScene::trackDesigner;
             const bool disableTab10 = noRideEntry || gLegacyScene == LegacyScene::trackDesigner;
 

@@ -184,7 +184,7 @@ static bool AwardIsDeservedBestValue(GameState_t& gameState, Park::ParkData& par
     if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
-    if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked(park))
+    if (park.flags.has(ParkFlag::noMoney) || !Park::EntranceFeeUnlocked(park))
         return false;
 
     if (park.totalRideValueForMoney < 10.00_GBP)
@@ -234,7 +234,7 @@ static bool AwardIsDeservedWorstValue(GameState_t& gameState, Park::ParkData& pa
 {
     if (activeAwardTypes & EnumToFlag(AwardType::bestValue))
         return false;
-    if (park.flags & PARK_FLAGS_NO_MONEY)
+    if (park.flags.has(ParkFlag::noMoney))
         return false;
 
     const auto parkEntranceFee = Park::GetEntranceFee(park);
@@ -655,7 +655,7 @@ void AwardUpdateAll()
     auto& gameState = getGameState();
     auto& park = gameState.park;
 
-    if (park.flags & PARK_FLAGS_PARK_OPEN)
+    if (park.flags.has(ParkFlag::parkOpen))
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;

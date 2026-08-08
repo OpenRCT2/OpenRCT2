@@ -741,6 +741,28 @@ namespace OpenRCT2::RCT1
     };
     static_assert(sizeof(ResearchItem) == 5);
 
+    enum class ParkFlag : uint32_t
+    {
+        parkOpen = 0,
+        scenarioCompleteNameInput = 1,
+        forbidLandscapeChanges = 2,
+        forbidTreeRemoval = 3,
+        showRealGuestNames = 4,
+        forbidHighConstruction = 5, // Below tree height
+        guestPreferLessIntenseRides = 6,
+        forbidMarketingCampaigns = 7,
+        antiCheatDeprecated = 8, // Used for cheat detection. Should be cleared on import.
+        guestPreferMoreIntenseRides = 9,
+        noMoney = 11, // Used for both scenarios and saved games, unlike RCT2
+        difficultGuestGeneration = 12,
+        parkEntryLockedAtFree = 13, // Off: rides and park entry chargeable. On: only rides
+                                    // chargeable.
+        difficultParkRating = 14,
+        lockRealNamesOptionDeprecated = 15, // Deprecated now we use a persistent 'real names'
+                                            // setting
+    };
+    using ParkFlags = FlagHolder<uint32_t, ParkFlag>;
+
     /**
      * RCT1,AA,LL scenario / saved game structure.
      * size: 0x1F850C
@@ -771,7 +793,7 @@ namespace OpenRCT2::RCT1
         uint32_t Unk198830;
         money32 Cash;
         money32 Loan;
-        uint32_t ParkFlags;
+        ParkFlags parkFlags;
         money16 ParkEntranceFee;
         Entrance ParkEntrance;
         uint8_t Unk198849;
@@ -1200,27 +1222,6 @@ namespace OpenRCT2::RCT1
         RCT1_SCENARIO_FLAG_17 = 1 << 17,
         RCT1_SCENARIO_FLAG_18 = 1 << 18,
         RCT1_SCENARIO_FLAG_19 = 1 << 19,
-    };
-
-    enum
-    {
-        RCT1_PARK_FLAGS_PARK_OPEN = (1 << 0),
-        RCT1_PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
-        RCT1_PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
-        RCT1_PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
-        RCT1_PARK_FLAGS_SHOW_REAL_GUEST_NAMES = (1 << 4),
-        RCT1_PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // Below tree height
-        RCT1_PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
-        RCT1_PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
-        RCT1_PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection
-        RCT1_PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
-        RCT1_PARK_FLAGS_NO_MONEY = (1 << 11), // Used for both scenarios and saved games, unlike RCT2
-        RCT1_PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
-        RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE = (1 << 13), // Off: rides and park entry chargeable. On: only rides
-                                                               // chargeable.
-        RCT1_PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
-        RCT1_PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15), // Deprecated now we use a persistent 'real names'
-                                                                       // setting
     };
 
     enum

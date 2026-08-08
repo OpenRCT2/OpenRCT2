@@ -75,7 +75,7 @@ namespace OpenRCT2::Park
     static money64 calculateTotalRideValueForMoney(const ParkData& park, const GameState_t& gameState)
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked(park) && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
+        bool ridePricesUnlocked = RidePricesUnlocked(park) && !gameState.park.flags.has(ParkFlag::noMoney);
         for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)
@@ -116,7 +116,7 @@ namespace OpenRCT2::Park
             suggestedMaxGuests += ride.getRideTypeDescriptor().BonusValue;
 
             // If difficult guest generation, extra guests are available for good rides
-            if (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+            if (park.flags.has(ParkFlag::difficultGuestGeneration))
             {
                 if (!ride.flags.has(RideFlag::tested))
                     continue;
@@ -134,7 +134,7 @@ namespace OpenRCT2::Park
             }
         }
 
-        if (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (park.flags.has(ParkFlag::difficultGuestGeneration))
         {
             suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
             suggestedMaxGuests += difficultGenerationBonus;
@@ -171,7 +171,7 @@ namespace OpenRCT2::Park
         {
             probability /= 4;
             // Even lower for difficult guest generation
-            if (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+            if (park.flags.has(ParkFlag::difficultGuestGeneration))
             {
                 probability /= 4;
             }
@@ -217,7 +217,7 @@ namespace OpenRCT2::Park
         // Generate a new guest for some probability
         if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < park.guestGenerationProbability)
         {
-            bool difficultGeneration = (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+            bool difficultGeneration = park.flags.has(ParkFlag::difficultGuestGeneration);
             if (!difficultGeneration || park.suggestedGuestMaximum + 150 >= park.numGuestsInPark)
             {
                 GenerateGuest();
@@ -301,7 +301,7 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.objective.NumGuests = 1000;
         gameState.scenarioOptions.landPrice = 90.00_GBP;
         gameState.scenarioOptions.constructionRightsPrice = 40.00_GBP;
-        park.flags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        park.flags = { ParkFlag::noMoney, ParkFlag::showRealGuestNames };
 
         ResetHistories(park);
         FinanceResetHistory();
@@ -375,7 +375,7 @@ namespace OpenRCT2::Park
         }
 
         int32_t result = 1150;
-        if (park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+        if (park.flags.has(ParkFlag::difficultParkRating))
         {
             result = 1050;
         }
@@ -723,7 +723,7 @@ namespace OpenRCT2::Park
 
     money64 GetEntranceFee(const ParkData& park)
     {
-        if (park.flags & PARK_FLAGS_NO_MONEY)
+        if (park.flags.has(ParkFlag::noMoney))
         {
             return 0;
         }
@@ -737,11 +737,11 @@ namespace OpenRCT2::Park
 
     bool RidePricesUnlocked(const ParkData& park)
     {
-        if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+        if (park.flags.has(ParkFlag::unlockAllPrices))
         {
             return true;
         }
-        if (park.flags & PARK_FLAGS_PARK_FREE_ENTRY)
+        if (park.flags.has(ParkFlag::freeEntry))
         {
             return true;
         }
@@ -750,11 +750,11 @@ namespace OpenRCT2::Park
 
     bool EntranceFeeUnlocked(const ParkData& park)
     {
-        if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+        if (park.flags.has(ParkFlag::unlockAllPrices))
         {
             return true;
         }
-        if (!(park.flags & PARK_FLAGS_PARK_FREE_ENTRY))
+        if (!park.flags.has(ParkFlag::freeEntry))
         {
             return true;
         }
@@ -763,6 +763,6 @@ namespace OpenRCT2::Park
 
     bool IsOpen(const ParkData& park)
     {
-        return (park.flags & PARK_FLAGS_PARK_OPEN) != 0;
+        return park.flags.has(ParkFlag::parkOpen);
     }
 } // namespace OpenRCT2::Park

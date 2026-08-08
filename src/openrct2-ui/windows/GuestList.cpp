@@ -938,8 +938,8 @@ namespace OpenRCT2::Ui::Windows
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return getGameState().park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
-                                                                                : CompareGuestItem<false>;
+            return getGameState().park.flags.has(ParkFlag::showRealGuestNames) ? CompareGuestItem<true>
+                                                                               : CompareGuestItem<false>;
         }
     };
 

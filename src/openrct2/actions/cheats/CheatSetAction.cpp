@@ -582,14 +582,7 @@ namespace OpenRCT2::GameActions
 
     void CheatSetAction::SetScenarioNoMoney(Park::ParkData& park, bool enabled) const
     {
-        if (enabled)
-        {
-            park.flags |= PARK_FLAGS_NO_MONEY;
-        }
-        else
-        {
-            park.flags &= ~PARK_FLAGS_NO_MONEY;
-        }
+        park.flags.set(ParkFlag::noMoney, enabled);
 
         // Invalidate all windows that have anything to do with finance
         auto* windowMgr = Ui::GetWindowManager();

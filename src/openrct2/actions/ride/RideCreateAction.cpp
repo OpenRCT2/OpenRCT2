@@ -202,7 +202,7 @@ namespace OpenRCT2::GameActions
 
         ride->ratings.setNull();
 
-        if (!(park.flags & PARK_FLAGS_NO_MONEY))
+        if (!park.flags.has(ParkFlag::noMoney))
         {
             for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
             {
