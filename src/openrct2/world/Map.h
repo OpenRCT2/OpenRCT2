@@ -11,9 +11,9 @@
 
 #include "../Identifiers.h"
 #include "Location.hpp"
+#include "tile_element/TileElement.h"
 
 #include <array>
-#include <initializer_list>
 #include <optional>
 #include <vector>
 

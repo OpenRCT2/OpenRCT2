@@ -11,7 +11,7 @@
 
 #include "../core/Money.hpp"
 #include "../core/Random.hpp"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 struct ResultWithMessage;
 

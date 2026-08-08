@@ -9,6 +9,7 @@
 
 #include "../Paint.h"
 
+#include "../../drawing/PaletteIndex.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
 #include "../../object/BannerSceneryEntry.h"

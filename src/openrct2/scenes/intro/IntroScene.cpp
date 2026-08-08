@@ -12,7 +12,6 @@
 #include "../../Context.h"
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
-#include "../../SpriteIds.h"
 #include "../../audio/Audio.h"
 #include "../../audio/AudioChannel.h"
 #include "../../audio/AudioMixer.h"

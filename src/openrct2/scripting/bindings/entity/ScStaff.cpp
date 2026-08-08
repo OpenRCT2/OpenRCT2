@@ -11,6 +11,7 @@
 
     #include "ScStaff.hpp"
 
+    #include "../../../Context.h"
     #include "../../../entity/PatrolArea.h"
     #include "../../../entity/Staff.h"
     #include "../../../object/ObjectManager.h"

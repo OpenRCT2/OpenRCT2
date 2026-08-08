@@ -10,7 +10,7 @@
 #include "SawyerCoding.h"
 
 #include "../core/Numerics.hpp"
-#include "../platform/Platform.h"
+#include "SawyerChunk.h"
 
 #include <cassert>
 #include <cstdint>

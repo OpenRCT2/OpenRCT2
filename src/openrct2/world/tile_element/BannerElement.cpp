@@ -2,7 +2,6 @@
 
 #include "../../object/BannerSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
-#include "../../object/ObjectManager.h"
 #include "../Banner.h"
 
 namespace OpenRCT2

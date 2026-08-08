@@ -14,8 +14,6 @@
     #include "../../../ride/VehicleFlags.h"
     #include "ScEntity.hpp"
 
-    #include <optional>
-
 namespace OpenRCT2::Scripting
 {
     class ScVehicle;

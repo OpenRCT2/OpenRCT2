@@ -13,6 +13,7 @@
 #include "../../GameState.h"
 #include "../../SpriteIds.h"
 #include "../../drawing/LightFX.h"
+#include "../../drawing/PaletteIndex.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/StringIds.h"

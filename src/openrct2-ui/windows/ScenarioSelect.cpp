@@ -36,6 +36,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioCategory.h>
+#include <openrct2/scenario/ScenarioObjective.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/ui/WindowManager.h>

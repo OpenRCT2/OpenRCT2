@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "Location.hpp"
+#include <cstdint>
 
 struct Banner;
+struct CoordsXY;
 
 namespace OpenRCT2
 {

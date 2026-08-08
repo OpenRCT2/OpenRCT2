@@ -11,6 +11,7 @@
 
     #include "ScGuest.hpp"
 
+    #include "../../../Context.h"
     #include "../../../GameState.h"
     #include "../../../entity/Guest.h"
     #include "../../../localisation/Formatter.h"
@@ -19,7 +20,6 @@
     #include "../../../object/ObjectManager.h"
     #include "../../../object/PeepAnimationsObject.h"
     #include "../../../peep/PeepAnimations.h"
-    #include "../../../ride/RideEntry.h"
 
 namespace OpenRCT2::Scripting
 {

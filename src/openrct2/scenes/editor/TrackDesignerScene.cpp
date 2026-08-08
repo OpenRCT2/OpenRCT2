@@ -16,8 +16,6 @@
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
 #include "../../drawing/Drawing.h"
-#include "../../interface/WindowBase.h"
-#include "../../localisation/Language.h"
 #include "../../world/Map.h"
 #include "EditorController.h"
 

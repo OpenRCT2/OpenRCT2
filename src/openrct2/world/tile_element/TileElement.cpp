@@ -13,6 +13,7 @@
 #include "../../core/Guard.hpp"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/WindowClasses.h"
+#include "../../object/WallSceneryEntry.h"
 #include "../../ui/WindowManager.h"
 #include "BannerElement.h"
 #include "EntranceElement.h"

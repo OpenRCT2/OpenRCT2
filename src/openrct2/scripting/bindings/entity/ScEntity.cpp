@@ -11,15 +11,7 @@
 
     #include "ScEntity.hpp"
 
-    #include "../../../entity/Staff.h"
-    #include "ScBalloon.hpp"
-    #include "ScGuest.hpp"
-    #include "ScLitter.hpp"
-    #include "ScMoneyEffect.hpp"
-    #include "ScParticle.hpp"
-    #include "ScPeep.hpp"
-    #include "ScStaff.hpp"
-    #include "ScVehicle.hpp"
+    #include "../../../GameState.h"
 
 namespace OpenRCT2::Scripting
 {

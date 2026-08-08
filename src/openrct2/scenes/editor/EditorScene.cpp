@@ -16,7 +16,6 @@
 #include "../../OpenRCT2.h"
 #include "../../ParkImporter.h"
 #include "../../actions/GameActionRunner.h"
-#include "../../actions/ResultWithMessage.h"
 #include "../../actions/park/LandBuyRightsAction.h"
 #include "../../actions/park/LandSetRightsAction.h"
 #include "../../audio/Audio.h"

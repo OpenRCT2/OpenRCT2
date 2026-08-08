@@ -11,7 +11,6 @@
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../actions/ResultWithMessage.h"
@@ -50,7 +49,6 @@
 
 #include <array>
 #include <cassert>
-#include <iterator>
 #include <vector>
 
 namespace OpenRCT2::Editor

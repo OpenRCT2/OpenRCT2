@@ -11,6 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../core/Guard.hpp"
+#include "../../drawing/TextColour.h"
 #include "../../management/Finance.h"
 #include "../../object/BannerSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"

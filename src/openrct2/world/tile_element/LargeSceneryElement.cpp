@@ -12,7 +12,6 @@
 #include "../../drawing/Colour.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
-#include "../../object/ObjectManager.h"
 #include "../Banner.h"
 
 #include <cassert>

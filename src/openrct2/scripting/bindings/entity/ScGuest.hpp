@@ -13,11 +13,6 @@
 
     #include "ScPeep.hpp"
 
-namespace OpenRCT2
-{
-    enum class PeepAnimationType : uint8_t;
-}
-
 namespace OpenRCT2::Scripting
 {
     static const EnumMap<ShopItem> ShopItemMap(

@@ -11,9 +11,7 @@
 
     #include "ScRideStation.hpp"
 
-    #include "../../../Context.h"
     #include "../../../ride/Ride.h"
-    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {

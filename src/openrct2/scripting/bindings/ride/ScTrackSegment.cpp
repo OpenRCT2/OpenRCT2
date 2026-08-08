@@ -11,12 +11,10 @@
 
     #include "ScTrackSegment.h"
 
-    #include "../../../Context.h"
     #include "../../../core/EnumMap.hpp"
     #include "../../../ride/TrackData.h"
     #include "../../../ride/Vehicle.h"
     #include "../../../ride/ted/TrackElementDescriptor.h"
-    #include "../../ScriptEngine.h"
     #include "../../ScriptUtil.hpp"
 
 using namespace OpenRCT2::Scripting;

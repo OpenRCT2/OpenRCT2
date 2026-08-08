@@ -9,7 +9,6 @@
 
 #include "ConstructionClearance.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../localisation/Formatter.h"
 #include "../object/LargeSceneryEntry.h"
@@ -21,9 +20,7 @@
 #include "../ride/TrackData.h"
 #include "../ride/ted/TrackElementDescriptor.h"
 #include "Map.h"
-#include "Park.h"
 #include "QuarterTile.h"
-#include "Scenery.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/LargeSceneryElement.h"
 #include "tile_element/PathElement.h"

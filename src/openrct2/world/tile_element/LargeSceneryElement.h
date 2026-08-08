@@ -12,13 +12,14 @@
 #include "../../Identifiers.h"
 #include "../../drawing/Colour.h"
 #include "../../object/LargeSceneryEntry.h"
-#include "../../object/LargeSceneryObject.h"
 #include "TileElementBase.h"
 
 struct Banner;
 
 namespace OpenRCT2
 {
+    class LargeSceneryObject;
+
     enum
     {
         LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,
