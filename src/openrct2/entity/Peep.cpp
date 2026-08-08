@@ -931,7 +931,7 @@ namespace OpenRCT2
         uint32_t stepsToTake = Energy;
         if (stepsToTake < 95 && State == PeepState::queuing)
             stepsToTake = 95;
-        if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::queuing)
+        if (peepFlags.has(PeepFlag::slowWalk) && State != PeepState::queuing)
             stepsToTake /= 2;
         if (IsActionWalking() && GetNextIsSloped())
         {
@@ -1241,8 +1241,8 @@ namespace OpenRCT2
     {
         for (auto peep : EntityList<Guest>())
         {
-            if (peep->outsideOfPark || peep->PeepFlags & PEEP_FLAGS_POSITION_FROZEN
-                || peep->PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
+            if (peep->outsideOfPark || peep->peepFlags.has(PeepFlag::positionFrozen)
+                || peep->peepFlags.has(PeepFlag::animationFrozen))
                 continue;
 
             // Release balloon
@@ -1334,7 +1334,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        ft.Add<StringId>((PeepFlags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
+                        ft.Add<StringId>(peepFlags.has(PeepFlag::leavingPark) ? STR_LEAVING_PARK : STR_WALKING);
                     }
                 }
                 break;
@@ -1565,7 +1565,7 @@ namespace OpenRCT2
         auto ft = Formatter();
         if (auto* guest = peep->as<Guest>(); guest != nullptr)
         {
-            ft.Add<StringId>((peep->PeepFlags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
+            ft.Add<StringId>(peep->peepFlags.has(PeepFlag::tracking) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
             ft.Add<uint32_t>(GetPeepFaceSpriteSmall(guest));
             guest->FormatNameTo(ft);
             guest->FormatActionTo(ft);
@@ -1722,7 +1722,7 @@ namespace OpenRCT2
             guest->SetState(PeepState::queuing);
             guest->RideSubState = PeepRideSubState::atQueueFront;
             guest->timeInQueue = 0;
-            if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
+            if (guest->peepFlags.has(PeepFlag::tracking))
             {
                 auto ft = Formatter();
                 guest->FormatNameTo(ft);
@@ -1768,7 +1768,7 @@ namespace OpenRCT2
                     return true;
                 }
 
-                if (!(guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
+                if (!guest->peepFlags.has(PeepFlag::leavingPark))
                 {
                     // If the park is open and leaving flag isn't set return to centre
                     if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
@@ -1784,7 +1784,7 @@ namespace OpenRCT2
                 guest->SetState(PeepState::leavingPark);
 
                 guest->Var37 = 0;
-                if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
+                if (guest->peepFlags.has(PeepFlag::tracking))
                 {
                     auto ft = Formatter();
                     guest->FormatNameTo(ft);
@@ -1907,7 +1907,7 @@ namespace OpenRCT2
 
                 gameState.park.totalIncomeFromAdmissions = AddClamp(gameState.park.totalIncomeFromAdmissions, entranceFee);
                 guest->spendMoney(guest->paidToEnter, entranceFee, ExpenditureType::parkEntranceTickets);
-                guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
+                guest->peepFlags.set(PeepFlag::hasPaidForParkEntry);
             }
 
             auto& park = getGameState().park;
@@ -2175,7 +2175,7 @@ namespace OpenRCT2
                         guest->RideSubState = PeepRideSubState::inQueue;
                         guest->DestinationTolerance = 2;
                         guest->timeInQueue = 0;
-                        if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
+                        if (guest->peepFlags.has(PeepFlag::tracking))
                         {
                             auto ft = Formatter();
                             guest->FormatNameTo(ft);
@@ -2260,7 +2260,7 @@ namespace OpenRCT2
             return true;
         }
 
-        if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+        if (guest->peepFlags.has(PeepFlag::leavingPark))
         {
             PeepReturnToCentreOfTile(guest);
             return true;
@@ -2291,7 +2291,7 @@ namespace OpenRCT2
 
             guest->guestTimeOnRide = 0;
             ride->curNumCustomers++;
-            if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
+            if (guest->peepFlags.has(PeepFlag::tracking))
             {
                 auto ft = Formatter();
                 guest->FormatNameTo(ft);
@@ -2731,7 +2731,7 @@ namespace OpenRCT2
         stream << PathfindGoal;
         stream << PathfindHistory;
         stream << WalkingAnimationFrameNum;
-        stream << PeepFlags;
+        stream << peepFlags.holder;
     }
 
     /**

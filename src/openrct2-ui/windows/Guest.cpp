@@ -676,9 +676,10 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_TRACK:
                 {
-                    uint32_t guestFlags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
+                    auto newFlags = peep->peepFlags;
+                    newFlags.flip(PeepFlag::tracking);
 
-                    auto guestSetFlagsAction = GameActions::GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
+                    auto guestSetFlagsAction = GameActions::GuestSetFlagsAction(EntityId::FromUnderlying(number), newFlags);
                     GameActions::Execute(&guestSetFlagsAction, gameState);
                 }
                 break;
@@ -859,7 +860,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            setWidgetPressed(WIDX_TRACK, (peep->PeepFlags & PEEP_FLAGS_TRACKING) != 0);
+            setWidgetPressed(WIDX_TRACK, peep->peepFlags.has(PeepFlag::tracking));
 
             widgets[WIDX_VIEWPORT].right = width - 26;
             widgets[WIDX_VIEWPORT].bottom = height - 14;

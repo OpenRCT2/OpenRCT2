@@ -2062,7 +2062,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PeepFlags);
+            cs.readWrite(entity.peepFlags.holder);
             cs.readWrite(entity.PathfindGoal.x);
             cs.readWrite(entity.PathfindGoal.y);
             cs.readWrite(entity.PathfindGoal.z);

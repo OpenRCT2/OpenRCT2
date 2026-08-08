@@ -81,7 +81,7 @@ namespace OpenRCT2::PathFinding
 
 #pragma region Pathfinding Logging
     // In case this is set to true it will enable code paths that log path finding. The peep will additionally
-    // require to have PEEP_FLAGS_DEBUG_PATHFINDING set in PeepFlags in order to activate logging.
+    // require to have PeepFlag::debugPathfinding set in PeepFlags in order to activate logging.
     static constexpr bool kLogPathfinding = false;
 
     template<typename... TArgs>
@@ -89,7 +89,7 @@ namespace OpenRCT2::PathFinding
     {
         if constexpr (kLogPathfinding)
         {
-            if ((peep->PeepFlags & PEEP_FLAGS_DEBUG_PATHFINDING) == 0)
+            if (!peep->peepFlags.has(PeepFlag::debugPathfinding))
                 return;
 
             char buffer[256];
@@ -563,7 +563,7 @@ namespace OpenRCT2::PathFinding
             return kMaxJunctionsStaff;
         }
 
-        bool isLeavingPark = (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK) != 0;
+        bool isLeavingPark = guest->peepFlags.has(PeepFlag::leavingPark);
         if (isLeavingPark && guest->guestIsLostCountdown < 90)
         {
             return kMaxJunctionsGuestLeavingParkLost;
@@ -1658,25 +1658,25 @@ namespace OpenRCT2::PathFinding
     int32_t GuestPathFindParkEntranceLeaving(Peep& peep, uint8_t edges)
     {
         TileCoordsXYZ entranceGoal{};
-        if (peep.PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)
+        if (peep.peepFlags.has(PeepFlag::parkEntranceChosen))
         {
             entranceGoal = peep.PathfindGoal;
             auto* entranceElement = MapGetParkEntranceElementAt(entranceGoal.ToCoordsXYZ(), false);
             // If entrance no longer exists, choose a new one
             if (entranceElement == nullptr)
             {
-                peep.PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+                peep.peepFlags.unset(PeepFlag::parkEntranceChosen);
             }
         }
 
-        if (!(peep.PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
+        if (!peep.peepFlags.has(PeepFlag::parkEntranceChosen))
         {
             auto chosenEntrance = GetNearestParkEntrance(peep.NextLoc);
 
             if (!chosenEntrance.has_value())
                 return GuestPathfindAimless(peep, edges);
 
-            peep.PeepFlags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+            peep.peepFlags.set(PeepFlag::parkEntranceChosen);
             entranceGoal = TileCoordsXYZ(*chosenEntrance);
         }
 
@@ -2015,7 +2015,7 @@ namespace OpenRCT2::PathFinding
             }
         }
 
-        if (peep.PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+        if (peep.peepFlags.has(PeepFlag::leavingPark))
         {
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is leaving the park.");
 

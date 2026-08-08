@@ -17,11 +17,11 @@ namespace OpenRCT2::GameActions
     {
     private:
         EntityId _peepId{ EntityId::GetNull() };
-        uint32_t _newFlags{};
+        PeepFlags _newFlags{};
 
     public:
         GuestSetFlagsAction() = default;
-        GuestSetFlagsAction(EntityId peepId, uint32_t flags);
+        GuestSetFlagsAction(EntityId peepId, PeepFlags flags);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

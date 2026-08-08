@@ -410,7 +410,7 @@ namespace OpenRCT2
         void updateRidePrepareForExit();
         void updateMotivesIdle();
         void updateConsumptionMotives();
-        int32_t checkEasterEggName(int32_t index) const;
+        bool checkEasterEggName(int32_t index) const;
         void givePassingGuestPurpleClothes(Guest& passingPeep);
         void givePassingGuestPizza(Guest& passingPeep);
         void makePassingGuestSick(Guest& passingPeep);

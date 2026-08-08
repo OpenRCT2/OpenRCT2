@@ -653,7 +653,7 @@ namespace OpenRCT2::GameActions
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)
                     {
-                        peep->PeepFlags &= ~PEEP_FLAGS_ANGRY;
+                        peep->peepFlags.unset(PeepFlag::angry);
                         peep->angriness = 0;
                     }
                     break;
@@ -764,7 +764,7 @@ namespace OpenRCT2::GameActions
         {
             // Frozen peeps are usually placed and tweaked for artistic purposes,
             // so exempt them from being removed.
-            if (guest->PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+            if (guest->peepFlags.has(PeepFlag::positionFrozen))
                 continue;
 
             guest->Remove();

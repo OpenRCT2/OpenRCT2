@@ -396,7 +396,7 @@ namespace OpenRCT2::Park
                     {
                         happyGuestCount++;
                     }
-                    if ((peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK) && (peep->guestIsLostCountdown < 90))
+                    if (peep->peepFlags.has(PeepFlag::leavingPark) && (peep->guestIsLostCountdown < 90))
                     {
                         lostGuestCount++;
                     }

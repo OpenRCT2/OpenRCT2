@@ -115,7 +115,7 @@ namespace OpenRCT2::GameActions
             newPeep->WalkingAnimationFrameNum = 0;
             newPeep->AnimationType = PeepAnimationType::walking;
             newPeep->PathCheckOptimisation = 0;
-            newPeep->PeepFlags = 0;
+            newPeep->peepFlags = {};
             newPeep->staffLawnsMown = 0;
             newPeep->staffGardensWatered = 0;
             newPeep->staffLitterSwept = 0;
@@ -154,9 +154,9 @@ namespace OpenRCT2::GameActions
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animObjectIndex);
 
-            newPeep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+            newPeep->peepFlags.unset(PeepFlag::slowWalk);
             if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
-                newPeep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+                newPeep->peepFlags.set(PeepFlag::slowWalk);
 
             const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);
             newPeep->spriteData.width = spriteBounds.spriteWidth;
