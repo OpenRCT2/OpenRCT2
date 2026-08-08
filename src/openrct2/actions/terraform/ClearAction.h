@@ -9,20 +9,20 @@
 
 #pragma once
 
+#include "../../core/FlagHolder.hpp"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {
-    using ClearableItems = uint8_t;
-
-    namespace CLEARABLE_ITEMS
+    enum class ClearableItem : uint8_t
     {
-        constexpr ClearableItems kScenerySmall = 1 << 0;
-        constexpr ClearableItems kSceneryLarge = 1 << 1;
-        constexpr ClearableItems kSceneryFootpath = 1 << 2;
-        constexpr ClearableItems kSceneryWall = 1 << 3;
-        constexpr ClearableItems kPathAddition = 1 << 4;
-    } // namespace CLEARABLE_ITEMS
+        smallScenery,
+        largeScenery,
+        footpaths,
+        walls,
+        pathAdditions,
+    };
+    using ClearableItems = FlagHolder<uint8_t, ClearableItem>;
 
     class ClearAction final : public GameActionBase<GameCommand::clearScenery>
     {
