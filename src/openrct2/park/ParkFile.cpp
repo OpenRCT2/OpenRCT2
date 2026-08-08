@@ -909,9 +909,9 @@ namespace OpenRCT2
                         cs.readWrite(park.entranceFee);
                     }
 
-                    cs.readWrite(park.staffHandymanColour);
-                    cs.readWrite(park.staffMechanicColour);
-                    cs.readWrite(park.staffSecurityColour);
+                    readWriteColour(cs, park.staffHandymanColour, version);
+                    readWriteColour(cs, park.staffMechanicColour, version);
+                    readWriteColour(cs, park.staffSecurityColour, version);
                     cs.readWrite(park.samePriceThroughoutPark);
 
                     // Finances
@@ -1357,7 +1357,7 @@ namespace OpenRCT2
             cs.readWrite(banner.type);
             cs.readWrite(banner.flags.holder);
             cs.readWrite(banner.text);
-            cs.readWrite(banner.colour);
+            readWriteColour(cs, banner.colour, version);
             cs.readWrite(banner.rideIndex);
             cs.readWrite(banner.textColour);
             cs.readWrite(banner.position.x);
@@ -1439,17 +1439,17 @@ namespace OpenRCT2
                     // Colours
                     cs.readWrite(ride.entranceStyle);
                     cs.readWrite(ride.vehicleColourSettings);
-                    cs.readWriteArray(ride.trackColours, [&cs](TrackColour& tc) {
-                        cs.readWrite(tc.main);
-                        cs.readWrite(tc.additional);
-                        cs.readWrite(tc.supports);
+                    cs.readWriteArray(ride.trackColours, [&cs, version](TrackColour& tc) {
+                        readWriteColour(cs, tc.main, version);
+                        readWriteColour(cs, tc.additional, version);
+                        readWriteColour(cs, tc.supports, version);
                         return true;
                     });
 
-                    cs.readWriteArray(ride.vehicleColours, [&cs](VehicleColour& vc) {
-                        cs.readWrite(vc.Body);
-                        cs.readWrite(vc.Trim);
-                        cs.readWrite(vc.Tertiary);
+                    cs.readWriteArray(ride.vehicleColours, [&cs, version](VehicleColour& vc) {
+                        readWriteColour(cs, vc.Body, version);
+                        readWriteColour(cs, vc.Trim, version);
+                        readWriteColour(cs, vc.Tertiary, version);
                         return true;
                     });
 
@@ -1513,7 +1513,7 @@ namespace OpenRCT2
                     cs.readWrite(ride.chairliftBullwheelRotation);
                     cs.readWrite(ride.slideInUse);
                     cs.readWrite(ride.slidePeep);
-                    cs.readWrite(ride.slidePeepTShirtColour);
+                    readWriteColour(cs, ride.slidePeepTShirtColour, version);
                     cs.readWrite(ride.spiralSlideProgress);
                     cs.readWrite(ride.raceWinner);
                     cs.readWrite(ride.cableLift);
@@ -1833,8 +1833,8 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.tShirtColour);
-            cs.readWrite(entity.trousersColour);
+            readWriteColour(cs, entity.tShirtColour, version);
+            readWriteColour(cs, entity.trousersColour, version);
             cs.readWrite(entity.destinationX);
             cs.readWrite(entity.destinationY);
             cs.readWrite(entity.destinationTolerance);
@@ -2105,9 +2105,9 @@ namespace OpenRCT2
                     cs.readWrite(guest->angriness);
                     cs.readWrite(guest->timeLost);
                     cs.readWrite(guest->daysInQueue);
-                    cs.readWrite(guest->balloonColour);
-                    cs.readWrite(guest->umbrellaColour);
-                    cs.readWrite(guest->hatColour);
+                    readWriteColour(cs, guest->balloonColour, version);
+                    readWriteColour(cs, guest->umbrellaColour, version);
+                    readWriteColour(cs, guest->hatColour, version);
                     cs.readWrite(guest->favouriteRide);
                     cs.readWrite(guest->favouriteRideRating);
                 }
@@ -2187,6 +2187,7 @@ namespace OpenRCT2
     template<>
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Vehicle& entity)
     {
+        auto version = os.getHeader().targetVersion;
         ReadWriteEntityCommon(cs, entity);
         cs.readWrite(entity.SubType);
         cs.readWrite(entity.pitch);
@@ -2196,8 +2197,8 @@ namespace OpenRCT2
         cs.readWrite(entity.acceleration);
         cs.readWrite(entity.ride);
         cs.readWrite(entity.vehicle_type);
-        cs.readWrite(entity.colours.Body);
-        cs.readWrite(entity.colours.Trim);
+        readWriteColour(cs, entity.colours.Body, version);
+        readWriteColour(cs, entity.colours.Trim, version);
         cs.readWrite(entity.track_progress);
         cs.readWrite(entity.BoatLocation);
         cs.readWrite(entity.TrackTypeAndDirection);
@@ -2209,7 +2210,7 @@ namespace OpenRCT2
         cs.readWrite(entity.next_vehicle_on_ride);
         cs.readWrite(entity.var_44);
         cs.readWrite(entity.mass);
-        if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < 18)
+        if (cs.getMode() == OrcaStream::Mode::reading && version < 18)
         {
             uint16_t updateFlags = 0;
             cs.readWrite(updateFlags);
@@ -2228,7 +2229,7 @@ namespace OpenRCT2
         for (size_t i = 0; i < std::size(entity.peep); i++)
         {
             cs.readWrite(entity.peep[i]);
-            cs.readWrite(entity.peep_tshirt_colours[i]);
+            readWriteColour(cs, entity.peep_tshirt_colours[i], version);
         }
         cs.readWrite(entity.num_seats);
         cs.readWrite(entity.num_peeps);
@@ -2279,7 +2280,7 @@ namespace OpenRCT2
         cs.readWrite(entity.mini_golf_current_animation);
         cs.readWrite(entity.miniGolfFlags.holder);
         cs.readWrite(entity.ride_subtype);
-        cs.readWrite(entity.colours.Tertiary);
+        readWriteColour(cs, entity.colours.Tertiary, version);
         cs.readWrite(entity.seat_rotation);
         cs.readWrite(entity.target_seat_rotation);
         if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < 18)
@@ -2466,9 +2467,9 @@ namespace OpenRCT2
         cs.readWrite(guest.angriness);
         cs.readWrite(guest.timeLost);
         cs.readWrite(guest.daysInQueue);
-        cs.readWrite(guest.balloonColour);
-        cs.readWrite(guest.umbrellaColour);
-        cs.readWrite(guest.hatColour);
+        readWriteColour(cs, guest.balloonColour, version);
+        readWriteColour(cs, guest.umbrellaColour, version);
+        readWriteColour(cs, guest.hatColour, version);
         cs.readWrite(guest.favouriteRide);
         cs.readWrite(guest.favouriteRideRating);
         cs.readWrite(guest.itemFlags);
@@ -2544,12 +2545,13 @@ namespace OpenRCT2
     template<>
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, VehicleCrashParticle& vehicleCrashParticle)
     {
+        auto version = os.getHeader().targetVersion;
         ReadWriteEntityCommon(cs, vehicleCrashParticle);
         cs.readWrite(vehicleCrashParticle.frame);
         cs.readWrite(vehicleCrashParticle.timeToLive);
         cs.readWrite(vehicleCrashParticle.frame);
-        cs.readWrite(vehicleCrashParticle.colour[0]);
-        cs.readWrite(vehicleCrashParticle.colour[1]);
+        readWriteColour(cs, vehicleCrashParticle.colour[0], version);
+        readWriteColour(cs, vehicleCrashParticle.colour[1], version);
         cs.readWrite(vehicleCrashParticle.crashedSpriteBase);
         cs.readWrite(vehicleCrashParticle.velocityX);
         cs.readWrite(vehicleCrashParticle.velocityY);
@@ -2600,7 +2602,7 @@ namespace OpenRCT2
         cs.readWrite(balloon.popped);
         cs.readWrite(balloon.timeToMove);
         cs.readWrite(balloon.frame);
-        cs.readWrite(balloon.colour);
+        readWriteColour(cs, balloon.colour, os.getHeader().targetVersion);
     }
 
     template<>

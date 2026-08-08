@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
+#include "../core/OrcaStream.hpp"
 #include "../object/ObjectTypes.h"
 
 #include <cstdint>
@@ -38,6 +39,11 @@ namespace OpenRCT2
 
     enum class SpecialElement : uint8_t;
     using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
+
+    namespace Drawing
+    {
+        enum class Colour : uint8_t;
+    }
 } // namespace OpenRCT2
 
 using ride_type_t = uint16_t;
@@ -69,3 +75,4 @@ bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, in
 
 std::pair<uint8_t, OpenRCT2::SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
 std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);
+void readWriteColour(OpenRCT2::OrcaStream::ChunkStream& cs, OpenRCT2::Drawing::Colour& colourField, uint32_t parkFileVersion);
