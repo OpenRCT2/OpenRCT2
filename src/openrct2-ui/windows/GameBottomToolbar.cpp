@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
 
             // Draw money
-            if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+            if (!gameState.park.flags.has(ParkFlag::noMoney))
             {
                 const auto& widget = widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
@@ -446,7 +446,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
-                    if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+                    if (!getGameState().park.flags.has(ParkFlag::noMoney))
                         ContextOpenWindow(WindowClass::finances);
                     break;
                 case WIDX_GUESTS:
@@ -528,7 +528,7 @@ namespace OpenRCT2::Ui::Windows
                 + 1;
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-            if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
+            if (getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 widgets[WIDX_MONEY].setHidden();
                 widgets[WIDX_GUESTS].top = 1;

@@ -324,8 +324,8 @@ namespace OpenRCT2::Ui::FileBrowser
                     case (LoadSaveType::scenario):
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.park.flags;
-                        gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        auto parkFlagsBackup = gameState.park.flags;
+                        gameState.park.flags.unset(ParkFlag::spritesInitialised);
                         gameState.editorStep = Editor::Step::invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
@@ -413,8 +413,8 @@ namespace OpenRCT2::Ui::FileBrowser
                     case LoadSaveType::scenario:
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.park.flags;
-                        gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        auto parkFlagsBackup = gameState.park.flags;
+                        gameState.park.flags.unset(ParkFlag::spritesInitialised);
                         gameState.editorStep = Editor::Step::invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);

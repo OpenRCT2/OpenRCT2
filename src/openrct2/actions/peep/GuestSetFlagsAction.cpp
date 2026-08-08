@@ -15,7 +15,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    GuestSetFlagsAction::GuestSetFlagsAction(EntityId peepId, uint32_t flags)
+    GuestSetFlagsAction::GuestSetFlagsAction(EntityId peepId, PeepFlags flags)
         : _peepId(peepId)
         , _newFlags(flags)
     {
@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
     void GuestSetFlagsAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
         visitor.Visit("peep", _peepId);
-        visitor.Visit("guestFlags", _newFlags);
+        visitor.Visit("guestFlags", _newFlags.holder);
     }
 
     uint16_t GuestSetFlagsAction::GetActionFlags() const
@@ -36,7 +36,7 @@ namespace OpenRCT2::GameActions
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
+        stream << DS_TAG(_peepId) << DS_TAG(_newFlags.holder);
     }
 
     Result GuestSetFlagsAction::Query(GameState_t& gameState, Park::ParkData& park) const
@@ -59,7 +59,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
         }
 
-        peep->PeepFlags = _newFlags;
+        peep->peepFlags = _newFlags;
 
         return Result();
     }

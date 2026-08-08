@@ -308,7 +308,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
         COMPARE_FIELD(Peep, WalkingAnimationFrameNum);
-        COMPARE_FIELD(Peep, PeepFlags);
+        COMPARE_FIELD(Peep, peepFlags);
     }
 
     void CompareSpriteDataStaff(const Staff& spriteBase, const Staff& spriteCmp, GameStateSpriteChange& changeData) const

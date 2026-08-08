@@ -602,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
-                if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+                if (!getGameState().park.flags.has(ParkFlag::noMoney))
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
@@ -1311,7 +1311,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY) && totalCost > getGameState().park.cash)
+            if (!getGameState().park.flags.has(ParkFlag::noMoney) && totalCost > getGameState().park.cash)
             {
                 Audio::Play3D(Audio::SoundId::error, lastLocation);
                 _footpathErrorOccured = true;

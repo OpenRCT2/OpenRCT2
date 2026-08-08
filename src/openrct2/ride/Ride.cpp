@@ -5099,7 +5099,7 @@ namespace OpenRCT2
     money64 RideGetPrice(const Ride& ride)
     {
         auto& park = getGameState().park;
-        if (park.flags & PARK_FLAGS_NO_MONEY)
+        if (park.flags.has(ParkFlag::noMoney))
             return 0;
         if (ride.isRide())
         {

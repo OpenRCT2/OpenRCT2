@@ -674,7 +674,7 @@ namespace OpenRCT2::Ui::Windows
                             GfxDrawSprite(rt, ImageId(GetPeepFaceSpriteSmall(peep)), { 118, y + 1 });
 
                             // Tracking icon
-                            if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
+                            if (peep->peepFlags.has(PeepFlag::tracking))
                                 GfxDrawSprite(rt, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
 
                             // Action
@@ -760,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool GuestShouldBeVisible(const Guest& peep)
         {
-            if (_trackingOnly && !(peep.PeepFlags & PEEP_FLAGS_TRACKING))
+            if (_trackingOnly && !peep.peepFlags.has(PeepFlag::tracking))
                 return false;
 
             if (!_filterName.empty())
@@ -938,8 +938,8 @@ namespace OpenRCT2::Ui::Windows
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return getGameState().park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
-                                                                                : CompareGuestItem<false>;
+            return getGameState().park.flags.has(ParkFlag::showRealGuestNames) ? CompareGuestItem<true>
+                                                                               : CompareGuestItem<false>;
         }
     };
 

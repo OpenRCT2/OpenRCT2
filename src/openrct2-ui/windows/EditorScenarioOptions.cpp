@@ -712,7 +712,7 @@ namespace OpenRCT2::Ui::Windows
                 if (obj == Scenario::ObjectiveType::none || obj == Scenario::ObjectiveType::buildTheBest)
                     continue;
 
-                const bool objectiveAllowedByMoneyUsage = !(gameState.park.flags & PARK_FLAGS_NO_MONEY)
+                const bool objectiveAllowedByMoneyUsage = !gameState.park.flags.has(ParkFlag::noMoney)
                     || !Scenario::ObjectiveNeedsMoney(obj);
 
                 // This objective can only work if the player can ask money for rides.
@@ -936,7 +936,7 @@ namespace OpenRCT2::Ui::Windows
                     auto& gameState = getGameState();
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::parkRatingHigherDifficultyLevel,
-                        gameState.park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
+                        gameState.park.flags.has(ParkFlag::difficultParkRating) ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -1007,8 +1007,7 @@ namespace OpenRCT2::Ui::Windows
             auto objectiveType = gameState.scenarioOptions.objective.Type;
 
             // Check if objective is allowed by money and pay-per-ride settings.
-            const bool objectiveAllowedByMoneyUsage = !(park.flags & PARK_FLAGS_NO_MONEY)
-                || !ObjectiveNeedsMoney(objectiveType);
+            const bool objectiveAllowedByMoneyUsage = !park.flags.has(ParkFlag::noMoney) || !ObjectiveNeedsMoney(objectiveType);
 
             // This objective can only work if the player can ask money for rides.
             const bool objectiveAllowedByPaymentSettings = (objectiveType != Scenario::ObjectiveType::monthlyRideIncome)
@@ -1096,7 +1095,7 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].setHidden(gLegacyScene == LegacyScene::scenarioEditor);
 
-            setWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
+            setWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.flags.has(ParkFlag::difficultParkRating));
         }
 
         /**
@@ -1345,7 +1344,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_NO_MONEY:
                 {
-                    auto newMoneySetting = (gameState.park.flags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
+                    auto newMoneySetting = gameState.park.flags.has(ParkFlag::noMoney) ? 0 : 1;
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::noMoney, newMoneySetting);
                     GameActions::Execute(&scenarioSetSetting, gameState);
@@ -1356,7 +1355,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::forbidMarketingCampaigns,
-                        gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
+                        gameState.park.flags.has(ParkFlag::forbidMarketingCampaigns) ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -1365,7 +1364,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::useRCT1Interest,
-                        gameState.park.flags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
+                        gameState.park.flags.has(ParkFlag::rct1Interest) ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -1526,9 +1525,9 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 2,
                         colours[1], 0, {}, 3, dropdownWidget->width() - 4);
 
-                    if (gameState.park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                    if (gameState.park.flags.has(ParkFlag::unlockAllPrices))
                         gDropdown.items[2].setChecked(true);
-                    else if (gameState.park.flags & PARK_FLAGS_PARK_FREE_ENTRY)
+                    else if (gameState.park.flags.has(ParkFlag::freeEntry))
                         gDropdown.items[0].setChecked(true);
                     else
                         gDropdown.items[1].setChecked(true);
@@ -1578,7 +1577,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             auto& park = gameState.park;
 
-            bool noMoney = park.flags & PARK_FLAGS_NO_MONEY;
+            bool noMoney = park.flags.has(ParkFlag::noMoney);
             setWidgetPressed(WIDX_NO_MONEY, noMoney);
 
             setWidgetDisabled(WIDX_GROUP_LOAN, noMoney);
@@ -1591,7 +1590,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_MAXIMUM_LOAN_INCREASE, noMoney);
             setWidgetDisabled(WIDX_MAXIMUM_LOAN_DECREASE, noMoney);
 
-            const bool rct1Interest = park.flags & PARK_FLAGS_RCT1_INTEREST;
+            const bool rct1Interest = park.flags.has(ParkFlag::rct1Interest);
             widgets[WIDX_RCT1_INTEREST].setVisible(rct1Interest);
             widgets[WIDX_INTEREST_RATE_LABEL].setHidden(rct1Interest);
             widgets[WIDX_INTEREST_RATE].setHidden(rct1Interest);
@@ -1635,7 +1634,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(WIDX_ENTRY_PRICE_DECREASE, noMoney);
             }
 
-            setWidgetPressed(WIDX_FORBID_MARKETING, park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
+            setWidgetPressed(WIDX_FORBID_MARKETING, park.flags.has(ParkFlag::forbidMarketingCampaigns));
 
             widgets[WIDX_CLOSE].setHidden(gLegacyScene == LegacyScene::scenarioEditor);
         }
@@ -1700,9 +1699,9 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 // Pay for park and/or rides value
-                if (gameState.park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                if (gameState.park.flags.has(ParkFlag::unlockAllPrices))
                     ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
-                else if (gameState.park.flags & PARK_FLAGS_PARK_FREE_ENTRY)
+                else if (gameState.park.flags.has(ParkFlag::freeEntry))
                     ft.Add<StringId>(STR_FREE_PARK_ENTER);
                 else
                     ft.Add<StringId>(STR_PAY_PARK_ENTER);
@@ -1858,8 +1857,8 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 2,
                         colours[1], 0, {}, 4, dropdownWidget.width() - 4);
 
-                    const auto preferLess = gameState.park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-                    const auto preferMore = gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                    const auto preferLess = gameState.park.flags.has(ParkFlag::guestPreferLessIntenseRides);
+                    const auto preferMore = gameState.park.flags.has(ParkFlag::guestPreferMoreIntenseRides);
 
                     auto prefItem = 1;
                     if (preferLess && preferMore)
@@ -1876,7 +1875,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::guestGenerationHigherDifficultyLevel,
-                        gameState.park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
+                        gameState.park.flags.has(ParkFlag::difficultGuestGeneration) ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -1914,7 +1913,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             auto& gameState = getGameState();
-            bool noMoney = gameState.park.flags & PARK_FLAGS_NO_MONEY;
+            bool noMoney = gameState.park.flags.has(ParkFlag::noMoney);
 
             setWidgetDisabled(WIDX_CASH_PER_GUEST_LABEL, noMoney);
             setWidgetDisabled(WIDX_CASH_PER_GUEST, noMoney);
@@ -1923,7 +1922,7 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].setHidden(gLegacyScene == LegacyScene::scenarioEditor);
 
-            setWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
+            setWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.flags.has(ParkFlag::difficultGuestGeneration));
         }
 
         void GuestsDraw(RenderTarget& rt)
@@ -1975,8 +1974,8 @@ namespace OpenRCT2::Ui::Windows
                 const auto& guestsIntensity = widgets[WIDX_GUESTS_INTENSITY_PREFERENCE];
                 screenCoords = windowPos + ScreenCoordsXY{ guestsIntensity.left + 1, guestsIntensity.top + 1 };
 
-                const auto preferLess = gameState.park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-                const auto preferMore = gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                const auto preferLess = gameState.park.flags.has(ParkFlag::guestPreferLessIntenseRides);
+                const auto preferMore = gameState.park.flags.has(ParkFlag::guestPreferMoreIntenseRides);
 
                 StringId prefString = STR_GUESTS_PREFER_INTENSITY_BALANCED;
                 if (preferLess && preferMore)
@@ -2005,7 +2004,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::forbidTreeRemoval,
-                        gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
+                        gameState.park.flags.has(ParkFlag::forbidTreeRemoval) ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -2014,7 +2013,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::forbidLandscapeChanges,
-                        gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
+                        gameState.park.flags.has(ParkFlag::forbidLandscapeChanges) ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -2023,7 +2022,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = GameActions::ScenarioSetSettingAction(
                         GameActions::ScenarioSetSetting::forbidHighConstruction,
-                        gameState.park.flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
+                        gameState.park.flags.has(ParkFlag::forbidHighConstruction) ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting, gameState);
                     invalidate();
                     break;
@@ -2111,7 +2110,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             auto& gameState = getGameState();
-            bool noMoney = gameState.park.flags & PARK_FLAGS_NO_MONEY;
+            bool noMoney = gameState.park.flags.has(ParkFlag::noMoney);
 
             setWidgetDisabled(WIDX_LAND_COST_LABEL, noMoney);
             setWidgetDisabled(WIDX_LAND_COST, noMoney);
@@ -2122,9 +2121,9 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE, noMoney);
             setWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE, noMoney);
 
-            setWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL);
-            setWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
-            setWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.park.flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
+            setWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.park.flags.has(ParkFlag::forbidTreeRemoval));
+            setWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.park.flags.has(ParkFlag::forbidLandscapeChanges));
+            setWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.park.flags.has(ParkFlag::forbidHighConstruction));
 
             widgets[WIDX_CLOSE].setHidden(gLegacyScene == LegacyScene::scenarioEditor);
         }

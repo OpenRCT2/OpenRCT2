@@ -896,7 +896,7 @@ namespace OpenRCT2
                     cs.readWrite(park.bankLoan);
                     cs.readWrite(park.maxBankLoan);
                     cs.readWrite(park.bankLoanInterestRate);
-                    cs.readWrite(park.flags);
+                    cs.readWrite(park.flags.holder);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
@@ -2062,7 +2062,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PeepFlags);
+            cs.readWrite(entity.peepFlags.holder);
             cs.readWrite(entity.PathfindGoal.x);
             cs.readWrite(entity.PathfindGoal.y);
             cs.readWrite(entity.PathfindGoal.z);

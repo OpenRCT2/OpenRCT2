@@ -83,6 +83,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::SawyerCoding;
+using OpenRCT2ParkFlag = ::ParkFlag;
 
 static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
@@ -346,7 +347,7 @@ namespace OpenRCT2::RCT1
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.editorStep = Editor::Step::objectSelection;
-            gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.park.flags.set(OpenRCT2ParkFlag::showRealGuestNames);
             gameState.scenarioOptions.category = Scenario::Category::other;
         }
 
@@ -1375,7 +1376,7 @@ namespace OpenRCT2::RCT1
             dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
             dst->PeepId = src->ID;
             dst->PathCheckOptimisation = 0;
-            dst->PeepFlags = 0;
+            dst->peepFlags = {};
             dst->PathfindGoal.x = 0xFF;
             dst->PathfindGoal.y = 0xFF;
             dst->PathfindGoal.z = 0xFF;
@@ -2303,14 +2304,13 @@ namespace OpenRCT2::RCT1
             park.staffSecurityColour = GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            park.flags = _s4.ParkFlags;
-            park.flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            park.flags |= PARK_FLAGS_RCT1_INTEREST;
+            park.flags.holder = _s4.parkFlags.without(ParkFlag::antiCheatDeprecated).holder;
+            park.flags.set(OpenRCT2ParkFlag::rct1Interest);
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
-            if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
+            if (!_s4.parkFlags.has(ParkFlag::parkEntryLockedAtFree))
             {
-                park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                park.flags.set(OpenRCT2ParkFlag::unlockAllPrices);
             }
 
             park.size = _s4.ParkSize;
@@ -2972,7 +2972,7 @@ namespace OpenRCT2::RCT1
         RideUse::GetTypeHistory().Set(dst->id, RCT12GetRideTypesBeenOn(src));
 
         dst->photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
-        dst->PeepFlags = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);
+        dst->peepFlags.holder = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);
 
         for (size_t i = 0; i < std::size(src->Thoughts); i++)
         {

@@ -226,7 +226,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            setWidgetDisabled(WIDX_TAB_5, (_parkData.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+            setWidgetDisabled(WIDX_TAB_5, _parkData.flags.has(ParkFlag::forbidMarketingCampaigns));
         }
 
     public:
@@ -615,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Loan and interest rate
             drawText(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
-            if (!(_parkData.flags & PARK_FLAGS_RCT1_INTEREST))
+            if (!_parkData.flags.has(ParkFlag::rct1Interest))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(_parkData.bankLoanInterestRate);

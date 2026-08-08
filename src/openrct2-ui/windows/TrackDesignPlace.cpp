@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Price
-            if (_placementCost != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+            if (_placementCost != kMoney64Undefined && !getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_placementCost);

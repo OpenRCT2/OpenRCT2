@@ -531,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
         const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-        if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        if (gameState.park.flags.has(ParkFlag::noMoney) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
         {
             w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].setHidden();
             w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].setHidden();
@@ -562,7 +562,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowResearchFundingDraw(WindowBase* w, Drawing::RenderTarget& rt)
     {
         const auto& gameState = getGameState();
-        if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
+        if (gameState.park.flags.has(ParkFlag::noMoney))
             return;
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;

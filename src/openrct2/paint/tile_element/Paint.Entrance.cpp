@@ -219,7 +219,7 @@ static void PaintParkEntranceScrollingText(
 
     auto& gameState = getGameState();
     u8string bannerText;
-    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+    if (gameState.park.flags.has(ParkFlag::parkOpen))
     {
         const auto& park = gameState.park;
         bannerText = ScrollingText::kParkBannerColourPrefix + park.name;

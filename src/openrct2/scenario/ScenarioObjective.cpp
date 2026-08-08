@@ -137,7 +137,7 @@ namespace OpenRCT2::Scenario
             else if (gameState.scenarioParkRatingWarningDays == 29)
             {
                 News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-                park.flags &= ~PARK_FLAGS_PARK_OPEN;
+                park.flags.unset(ParkFlag::parkOpen);
                 gameState.scenarioOptions.guestInitialHappiness = 50;
                 return ObjectiveStatus::failure;
             }

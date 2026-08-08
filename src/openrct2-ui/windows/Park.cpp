@@ -396,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
         void SetDisabledTabs()
         {
             // Disable price tab if money is disabled
-            setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
+            setWidgetDisabled(WIDX_TAB_4, getGameState().park.flags.has(ParkFlag::noMoney));
         }
 
         void PrepareWindowTitleText()
@@ -520,7 +520,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_OPEN_LIGHT, disableOpenClose);
 
             // only allow purchase of land when there is money
-            widgets[WIDX_BUY_LAND_RIGHTS].setHidden(_parkData.flags & PARK_FLAGS_NO_MONEY);
+            widgets[WIDX_BUY_LAND_RIGHTS].setHidden(_parkData.flags.has(ParkFlag::noMoney));
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
 
@@ -851,7 +851,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-            if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked(park))
+            if (park.flags.has(ParkFlag::noMoney) || !Park::EntranceFeeUnlocked(park))
             {
                 widgets[WIDX_PRICE].type = WidgetType::labelCentred;
                 widgets[WIDX_INCREASE_PRICE].setHidden();
@@ -1042,7 +1042,7 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             // Show name input button on scenario completion.
-            if (getGameState().park.flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+            if (getGameState().park.flags.has(ParkFlag::scenarioCompleteNameInput))
             {
                 widgets[WIDX_ENTER_NAME].setVisible();
                 widgets[WIDX_ENTER_NAME].top = height - 19;

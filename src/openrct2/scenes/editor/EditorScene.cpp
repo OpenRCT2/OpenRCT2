@@ -49,7 +49,7 @@ void EditorScene::Load()
 
     gLegacyScene = LegacyScene::scenarioEditor;
     gameState.editorStep = Editor::Step::objectSelection;
-    gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+    gameState.park.flags.set(ParkFlag::showRealGuestNames);
     gameState.scenarioOptions.category = Scenario::Category::other;
 
     Editor::ObjectListLoad();
@@ -207,18 +207,18 @@ void EditorScene::clearFinances()
     auto& gameState = getGameState();
     auto& park = gameState.park;
 
-    park.flags |= PARK_FLAGS_NO_MONEY;
+    park.flags.set(ParkFlag::noMoney);
 
     if (park.entranceFee == 0)
     {
-        park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+        park.flags.set(ParkFlag::freeEntry);
     }
     else
     {
-        park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+        park.flags.unset(ParkFlag::freeEntry);
     }
 
-    park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+    park.flags.unset(ParkFlag::spritesInitialised);
 
     auto& scenarioOptions = gameState.scenarioOptions;
     scenarioOptions.guestInitialCash = std::clamp(scenarioOptions.guestInitialCash, 10.00_GBP, kMaxEntranceFee);

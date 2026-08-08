@@ -84,7 +84,7 @@ namespace OpenRCT2::GameActions
 
         // Do nothing if not in editor, sandbox mode or landscaping is forbidden
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-            && (park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+            && park.flags.has(ParkFlag::forbidLandscapeChanges))
         {
             return Result(Status::disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }

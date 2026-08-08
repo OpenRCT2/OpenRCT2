@@ -1108,7 +1108,7 @@ namespace OpenRCT2::Ui::Windows
                 gLegacyScene == LegacyScene::scenarioEditor || gLegacyScene == LegacyScene::trackDesignsManager);
             widgets[WIDX_PAUSE].setVisible(hasPauseButton);
 
-            const bool hasFinanceButton = !((getGameState().park.flags & PARK_FLAGS_NO_MONEY) || !config.toolbarShowFinances);
+            const bool hasFinanceButton = !(getGameState().park.flags.has(ParkFlag::noMoney) || !config.toolbarShowFinances);
             widgets[WIDX_FINANCES].setVisible(hasFinanceButton);
         }
 

@@ -88,9 +88,9 @@ namespace OpenRCT2::GameActions
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
 
-        staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+        staff->peepFlags.unset(PeepFlag::slowWalk);
         if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
-            staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+            staff->peepFlags.set(PeepFlag::slowWalk);
 
         staff->AnimationFrameNum = 0;
         staff->UpdateCurrentAnimationType();

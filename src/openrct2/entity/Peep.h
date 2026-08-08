@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../core/FlagHolder.hpp"
 #include "../entity/EntityBase.h"
 #include "../localisation/StringIdType.h"
 #include "../object/ObjectTypes.h"
@@ -200,43 +201,44 @@ namespace OpenRCT2
         invalid = 255
     };
 
-    enum PeepFlags : uint32_t
+    enum class PeepFlag : uint32_t
     {
-        PEEP_FLAGS_LEAVING_PARK = (1 << 0),
-        PEEP_FLAGS_SLOW_WALK = (1 << 1),
-        PEEP_FLAGS_DEBUG_PATHFINDING = (1 << 2), // Enables debug logging for path finding
-        PEEP_FLAGS_TRACKING = (1 << 3),
-        PEEP_FLAGS_WAVING = (1 << 4),                  // Makes the peep wave
-        PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY = (1 << 5), // Set on paying to enter park
-        PEEP_FLAGS_PHOTO = (1 << 6),                   // Makes the peep take a picture
-        PEEP_FLAGS_PAINTING = (1 << 7),
-        PEEP_FLAGS_WOW = (1 << 8),        // Makes a peep WOW2
-        PEEP_FLAGS_LITTER = (1 << 9),     // Makes the peep throw litter
-        PEEP_FLAGS_LOST = (1 << 10),      // Makes the peep feel lost (animation triggered)
-        PEEP_FLAGS_HUNGER = (1 << 11),    // Makes the peep become hungry quicker
-        PEEP_FLAGS_TOILET = (1 << 12),    // Makes the peep want to go to the toilet
-        PEEP_FLAGS_CROWDED = (1 << 13),   // The peep will start feeling crowded
-        PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
-        PEEP_FLAGS_NAUSEA = (1 << 15),    // Makes the peep feel sick (e.g. after an extreme ride)
-        PEEP_FLAGS_PURPLE = (1 << 16),    // Makes surrounding peeps purple
-        PEEP_FLAGS_PIZZA = (1 << 17),     // Gives passing peeps pizza
-        PEEP_FLAGS_EXPLODE = (1 << 18),
-        PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE = (1 << 19),
-        PEEP_FLAGS_PARK_ENTRANCE_CHOSEN = (1 << 20), // Set when the nearest park entrance has been chosen
-        PEEP_FLAGS_21 = (1 << 21),
-        PEEP_FLAGS_CONTAGIOUS = (1 << 22), // Makes any peeps in surrounding tiles sick
-        PEEP_FLAGS_JOY = (1 << 23),        // Makes the peep jump in joy
-        PEEP_FLAGS_ANGRY = (1 << 24),
-        PEEP_FLAGS_ICE_CREAM = (1 << 25),            // Gives passing peeps ice cream and they wave back
-        PEEP_FLAGS_NICE_RIDE_DEPRECATED = (1 << 26), // Used to make the peep think "Nice ride! But not as good as the
-                                                     // Phoenix..." on exiting a ride
-        PEEP_FLAGS_INTAMIN_DEPRECATED = (1 << 27), // Used to make the peep think "I'm so excited - It's an Intamin ride!" while
-                                                   // riding on a Intamin ride.
-        PEEP_FLAGS_HERE_WE_ARE = (1 << 28),        // Makes the peep think  "...and here we are on X!" while riding a ride
-        PEEP_FLAGS_POSITION_FROZEN = (1 << 29),    // Prevents the peep from moving around, thus keeping them in place
-        PEEP_FLAGS_ANIMATION_FROZEN = (1 << 30),   // Prevents the peep sprite from updating
-        PEEP_FLAGS_TWITCH_DEPRECATED = (1u << 31), // Formerly used for twitch integration
+        leavingPark = 0,
+        slowWalk = 1,
+        debugPathfinding = 2, // Enables debug logging for path finding
+        tracking = 3,
+        waving = 4,              // Makes the peep wave
+        hasPaidForParkEntry = 5, // Set on paying to enter park
+        photo = 6,               // Makes the peep take a picture
+        painting = 7,
+        wow = 8,        // Makes a peep WOW2
+        litter = 9,     // Makes the peep throw litter
+        lost = 10,      // Makes the peep feel lost (animation triggered)
+        hunger = 11,    // Makes the peep become hungry quicker
+        toilet = 12,    // Makes the peep want to go to the toilet
+        crowded = 13,   // The peep will start feeling crowded
+        happiness = 14, // The peep will start increasing happiness
+        nausea = 15,    // Makes the peep feel sick (e.g. after an extreme ride)
+        purple = 16,    // Makes surrounding peeps purple
+        pizza = 17,     // Gives passing peeps pizza
+        explode = 18,
+        rideShouldBeMarkedAsFavourite = 19,
+        parkEntranceChosen = 20, // Set when the nearest park entrance has been chosen
+        unknown21 = 21,
+        contagious = 22, // Makes any peeps in surrounding tiles sick
+        joy = 23,        // Makes the peep jump in joy
+        angry = 24,
+        iceCream = 25,           // Gives passing peeps ice cream and they wave back
+        niceRideDeprecated = 26, // Used to make the peep think "Nice ride! But not as good as the
+                                 // Phoenix..." on exiting a ride
+        intaminDeprecated = 27,  // Used to make the peep think "I'm so excited - It's an Intamin ride!" while
+                                 // riding on a Intamin ride.
+        hereWeAre = 28,          // Makes the peep think  "...and here we are on X!" while riding a ride
+        positionFrozen = 29,     // Prevents the peep from moving around, thus keeping them in place
+        animationFrozen = 30,    // Prevents the peep sprite from updating
+        twitchDeprecated = 31,   // Formerly used for twitch integration
     };
+    using PeepFlags = FlagHolder<uint32_t, PeepFlag>;
 
     enum PeepNextFlags
     {
@@ -375,7 +377,7 @@ namespace OpenRCT2
         TileCoordsXYZD PathfindGoal;
         std::array<TileCoordsXYZD, 4> PathfindHistory;
         uint8_t WalkingAnimationFrameNum;
-        uint32_t PeepFlags;
+        PeepFlags peepFlags;
 
     public: // Peep
         std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);

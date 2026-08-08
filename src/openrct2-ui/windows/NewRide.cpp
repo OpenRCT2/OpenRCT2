@@ -821,7 +821,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_GROUP_BY_TRACK_TYPE, _currentTab >= SHOP_TAB);
 
             const bool isResearchTab = _currentTab == RESEARCH_TAB;
-            const bool moneyEnabled = !(getGameState().park.flags & PARK_FLAGS_NO_MONEY);
+            const bool moneyEnabled = !getGameState().park.flags.has(ParkFlag::noMoney);
 
             // Show or hide unrelated widgets
             widgets[WIDX_GROUP_BY_TRACK_TYPE].setHidden(isResearchTab);
@@ -952,7 +952,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Price
-            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+            if (!getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 // Get price of ride
                 auto startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;

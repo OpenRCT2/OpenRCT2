@@ -375,15 +375,14 @@ namespace OpenRCT2::RCT2
             gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
             park.bankLoan = ToMoney64(_s6.CurrentLoan);
 
-            park.flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
+            park.flags.holder = _s6.ParkFlags;
+            auto hadNoMoneyScenarioFlag = park.flags.has(ParkFlag::noMoneyScenario);
+            park.flags.unset(ParkFlag::noMoneyScenario);
 
             // RCT2 used a different flag for `no money` when the park is a scenario
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
-                if (_s6.ParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-                    park.flags |= PARK_FLAGS_NO_MONEY;
-                else
-                    park.flags &= ~PARK_FLAGS_NO_MONEY;
+                park.flags.set(ParkFlag::noMoney, hadNoMoneyScenarioFlag);
             }
 
             park.entranceFee = _s6.ParkEntranceFee;
@@ -1722,7 +1721,7 @@ namespace OpenRCT2::RCT2
             dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
             dst->PeepId = src->Id;
             dst->PathCheckOptimisation = src->PathCheckOptimisation;
-            dst->PeepFlags = src->PeepFlags;
+            dst->peepFlags.holder = src->PeepFlags;
             if (isNullLocation(src->PathfindGoal))
             {
                 dst->PathfindGoal.SetNull();
