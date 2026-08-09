@@ -14,17 +14,17 @@
 #include "interface/InGameConsole.h"
 #include "interface/Window.h"
 
-#include <SDL_clipboard.h>
-#include <SDL_events.h>
+#include <SDL3/SDL.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
 #include <openrct2/ui/UiContext.h>
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
-    #define KB_PRIMARY_MODIFIER KMOD_GUI
+    #define KB_PRIMARY_MODIFIER SDL_KMOD_GUI
 #else
-    #define KB_PRIMARY_MODIFIER KMOD_CTRL
+    #define KB_PRIMARY_MODIFIER SDL_KMOD_CTRL
 #endif
 
 using namespace OpenRCT2;
@@ -32,12 +32,12 @@ using namespace OpenRCT2::Ui;
 
 bool TextComposition::IsActive()
 {
-    return SDL_IsTextInputActive() && _session.Buffer != nullptr;
+    return SDL_TextInputActive(SDL_GetKeyboardFocus()) && _session.Buffer != nullptr;
 }
 
 TextInputSession* TextComposition::Start(u8string& buffer, size_t maxLength)
 {
-    SDL_StartTextInput();
+    SDL_StartTextInput(SDL_GetKeyboardFocus());
     _session.Buffer = &buffer;
     _session.MaxLength = maxLength;
     _session.SelectionStart = buffer.size();
@@ -49,7 +49,7 @@ TextInputSession* TextComposition::Start(u8string& buffer, size_t maxLength)
 
 void TextComposition::Stop()
 {
-    SDL_StopTextInput();
+    SDL_StopTextInput(SDL_GetKeyboardFocus());
     _session.Buffer = nullptr;
     _session.ImeBuffer = nullptr;
     _imeActive = false;
@@ -66,7 +66,7 @@ static std::pair<SDL_Keycode, SDL_Scancode> ProcessKeyPress(SDL_Keycode key, SDL
         key = SDLK_RETURN;
         scancode = SDL_SCANCODE_RETURN;
     }
-    else if (!(SDL_GetModState() & KMOD_NUM))
+    else if (!(SDL_GetModState() & SDL_KMOD_NUM))
     {
         switch (key)
         {
@@ -111,14 +111,14 @@ void TextComposition::HandleMessage(const SDL_Event* e)
 
     switch (e->type)
     {
-        case SDL_TEXTEDITING:
+        case SDL_EVENT_TEXT_EDITING:
             // When inputting Korean characters, `edit.length` is always zero
             String::set(_imeBuffer, sizeof(_imeBuffer), e->edit.text);
             _imeStart = e->edit.start;
             _imeLength = e->edit.length;
             _imeActive = ((e->edit.length != 0 || String::sizeOf(e->edit.text) != 0) && _imeBuffer[0] != '\0');
             break;
-        case SDL_TEXTINPUT:
+        case SDL_EVENT_TEXT_INPUT:
             // will receive an `SDL_TEXTINPUT` event when a composition is committed
             _imeActive = false;
             _imeBuffer[0] = '\0';
@@ -136,16 +136,16 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 Windows::WindowUpdateTextbox();
             }
             break;
-        case SDL_KEYDOWN:
+        case SDL_EVENT_KEY_DOWN:
         {
             if (_imeActive)
             {
                 break;
             }
 
-            uint16_t modifier = e->key.keysym.mod;
-            SDL_Keycode rawKey = e->key.keysym.sym;
-            SDL_Scancode rawScancode = e->key.keysym.scancode;
+            uint16_t modifier = e->key.mod;
+            SDL_Keycode rawKey = e->key.key;
+            SDL_Scancode rawScancode = e->key.scancode;
 
             auto [key, scancode] = ProcessKeyPress(rawKey, rawScancode);
 
@@ -214,14 +214,14 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         CaretMoveRight();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
-                case SDLK_c:
+                case SDLK_C:
                     if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
                         GetContext()->GetUiContext().SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
-                case SDLK_v:
+                case SDLK_V:
                     if ((modifier & KB_PRIMARY_MODIFIER) && SDL_HasClipboardText())
                     {
                         utf8* text = SDL_GetClipboardText();
@@ -231,7 +231,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         Windows::WindowUpdateTextbox();
                     }
                     break;
-                case SDLK_x:
+                case SDLK_X:
                     if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
                         GetContext()->GetUiContext().SetClipboardText(_session.Buffer->c_str());
