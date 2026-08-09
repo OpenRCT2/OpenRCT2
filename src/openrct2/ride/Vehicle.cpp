@@ -354,13 +354,13 @@ namespace OpenRCT2
             {
                 if (vehicle->animationState <= 0xCCCC)
                 {
-                    vehicle->animationState += carEntry.AnimationSpeed;
+                    vehicle->animationState += carEntry.animationSpeed;
                 }
                 else
                 {
                     vehicle->animationState = 0;
                     vehicle->animation_frame++;
-                    vehicle->animation_frame %= carEntry.AnimationFrames;
+                    vehicle->animation_frame %= carEntry.animationFrames;
                     vehicle->invalidate();
                 }
                 restraintsOpen = false;

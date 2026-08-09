@@ -26,12 +26,12 @@ namespace OpenRCT2
             auto directionOffset = imageDirection / 8;
             if ((directionOffset == 0) || (directionOffset == 3))
             {
-                result = carEntry->base_image_id + 8;
+                result = carEntry->baseImageId + 8;
             }
             else
             {
                 result *= 2;
-                result += carEntry->base_image_id;
+                result += carEntry->baseImageId;
                 if (directionOffset == 1)
                 {
                     result += 28;
@@ -44,7 +44,7 @@ namespace OpenRCT2
         }
         else
         {
-            result = (vehicle->animation_frame * 2) + carEntry->base_image_id + 8;
+            result = (vehicle->animation_frame * 2) + carEntry->baseImageId + 8;
         }
         return result;
     }

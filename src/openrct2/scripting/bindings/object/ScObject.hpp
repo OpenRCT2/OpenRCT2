@@ -227,7 +227,7 @@ namespace OpenRCT2::Scripting
         static JSValue rotationFrameMask_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->TabRotationMask : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->tabRotationMask : 0);
         }
 
         static JSValue spacing_get(JSContext* ctx, JSValue thisVal)
@@ -239,19 +239,19 @@ namespace OpenRCT2::Scripting
         static JSValue carMass_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->car_mass : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->carMass : 0);
         }
 
         static JSValue tabHeight_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewInt32(ctx, carEntry != nullptr ? carEntry->tab_height : 0);
+            return JS_NewInt32(ctx, carEntry != nullptr ? carEntry->tabHeight : 0);
         }
 
         static JSValue numSeats_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->num_seats : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->numSeats : 0);
         }
 
         static JSValue spriteFlags_get(JSContext* ctx, JSValue thisVal)
@@ -292,13 +292,13 @@ namespace OpenRCT2::Scripting
         static JSValue baseNumFrames_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->base_num_frames : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->baseNumFrames : 0);
         }
 
         static JSValue baseImageId_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->base_image_id : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->baseImageId : 0);
         }
 
         static JSValue spriteGroups_get(JSContext* ctx, JSValue thisVal)
@@ -309,7 +309,7 @@ namespace OpenRCT2::Scripting
             {
                 for (std::underlying_type_t<SpriteGroupType> g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::count); g++)
                 {
-                    auto group = carEntry->SpriteGroups[g];
+                    auto group = carEntry->spriteGroups[g];
                     if (group.Enabled())
                     {
                         JSValue groupObj = JS_NewObject(ctx);
@@ -327,37 +327,37 @@ namespace OpenRCT2::Scripting
         static JSValue noVehicleImages_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->NumCarImages : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->numCarImages : 0);
         }
 
         static JSValue noSeatingRows_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->no_seating_rows : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->numSeatingRows : 0);
         }
 
         static JSValue spinningInertia_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spinning_inertia : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spinningInertia : 0);
         }
 
         static JSValue spinningFriction_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spinning_friction : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->spinningFriction : 0);
         }
 
         static JSValue frictionSoundId_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewInt32(ctx, carEntry != nullptr ? static_cast<int32_t>(carEntry->friction_sound_id) : 0);
+            return JS_NewInt32(ctx, carEntry != nullptr ? static_cast<int32_t>(carEntry->frictionSoundId) : 0);
         }
 
         static JSValue logFlumeReverserVehicleType_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->ReversedCarIndex : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->reversedCarIndex : 0);
         }
 
         static JSValue soundRange_get(JSContext* ctx, JSValue thisVal)
@@ -369,19 +369,19 @@ namespace OpenRCT2::Scripting
         static JSValue doubleSoundFrequency_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->double_sound_frequency : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->doubleSoundFrequency : 0);
         }
 
         static JSValue poweredAcceleration_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->powered_acceleration : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->poweredAcceleration : 0);
         }
 
         static JSValue poweredMaxSpeed_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->powered_max_speed : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->poweredMaxSpeed : 0);
         }
 
         static JSValue carVisual_get(JSContext* ctx, JSValue thisVal)
@@ -399,13 +399,13 @@ namespace OpenRCT2::Scripting
         static JSValue drawOrder_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->draw_order : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->drawOrder : 0);
         }
 
         static JSValue numVerticalFramesOverride_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->num_vertical_frames_override : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->numVerticalFramesOverride : 0);
         }
 
         static const RideObject* GetObject(JSValue thisVal)

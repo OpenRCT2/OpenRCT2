@@ -204,7 +204,7 @@ namespace OpenRCT2::Audio
         const auto* rideType = vehicle.GetRideEntry();
         if (rideType != nullptr)
         {
-            if (rideType->Cars[vehicle.vehicle_type].double_sound_frequency & 1)
+            if (rideType->Cars[vehicle.vehicle_type].doubleSoundFrequency & 1)
             {
                 frequency *= 2;
             }

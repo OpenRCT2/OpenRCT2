@@ -32,7 +32,7 @@ static void PaintEnterpriseRiders(
     if (imageOffset >= 12)
         return;
 
-    auto baseImageIndex = rideEntry.Cars[0].base_image_id;
+    auto baseImageIndex = rideEntry.Cars[0].baseImageId;
     for (int32_t i = 0; i < 15; i++)
     {
         if (vehicle.num_peeps <= i)
@@ -79,7 +79,7 @@ static void PaintEnterpriseStructure(
     {
         imageTemplate = imageFlags;
     }
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr)

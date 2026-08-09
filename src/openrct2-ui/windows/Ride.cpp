@@ -1337,7 +1337,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, rideEntry->TabCar);
                 const auto& carEntry = rideEntry->Cars[vehicle];
 
-                spriteCoords.y += carEntry.tab_height;
+                spriteCoords.y += carEntry.tabHeight;
 
                 auto vehicleId = (ride->vehicleColourSettings == VehicleColourSettings::perCar) ? rideEntry->TabCar : 0;
                 VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleId);
@@ -1346,10 +1346,10 @@ namespace OpenRCT2::Ui::Windows
                 auto imageIndex = Entity::Yaw::YawFrom4(2) * 2;
                 if (page == WINDOW_RIDE_PAGE_VEHICLE)
                     imageIndex += currentFrame;
-                imageIndex = carEntry.SpriteByYaw(imageIndex / 2, SpriteGroupType::slopeFlat);
-                imageIndex &= carEntry.TabRotationMask;
-                imageIndex *= carEntry.base_num_frames;
-                imageIndex += carEntry.base_image_id;
+                imageIndex = carEntry.spriteByYaw(imageIndex / 2, SpriteGroupType::slopeFlat);
+                imageIndex &= carEntry.tabRotationMask;
+                imageIndex *= carEntry.baseNumFrames;
+                imageIndex += carEntry.baseImageId;
                 auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
                 GfxDrawSprite(clipRT, imageId, spriteCoords);
             }
@@ -2941,18 +2941,18 @@ namespace OpenRCT2::Ui::Windows
 
             VehicleColour vehicleColour = RideGetVehicleColour(ride, vehicleColourIndex);
 
-            ImageIndex imageIndex = carEntry.SpriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::slopeFlat);
+            ImageIndex imageIndex = carEntry.spriteByYaw(Entity::Yaw::kBaseRotation / 2, SpriteGroupType::slopeFlat);
 
             if (isReversed)
             {
-                auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::slopeFlat);
-                imageIndex = carEntry.SpriteByYaw(
+                auto baseRotation = carEntry.numRotationSprites(SpriteGroupType::slopeFlat);
+                imageIndex = carEntry.spriteByYaw(
                     (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::slopeFlat);
             }
 
-            imageIndex &= carEntry.TabRotationMask;
-            imageIndex *= carEntry.base_num_frames;
-            imageIndex += carEntry.base_image_id;
+            imageIndex &= carEntry.tabRotationMask;
+            imageIndex *= carEntry.baseNumFrames;
+            imageIndex += carEntry.baseImageId;
 
             return ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
         }
@@ -3015,7 +3015,7 @@ namespace OpenRCT2::Ui::Windows
             const int32_t firstCarIndex = (isReversed) ? ride->numCarsPerTrain - 1 : 0;
             const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
                 ride->subtype, ride->numCarsPerTrain, firstCarIndex)];
-            startY += firstCarEntry.tab_height;
+            startY += firstCarEntry.tabHeight;
 
             // Prepare and draw each train
             for (int32_t i = 0; i < ride->numTrains; i++)
@@ -5269,14 +5269,14 @@ namespace OpenRCT2::Ui::Windows
             const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
                 ride->subtype, ride->numCarsPerTrain, trainCarIndex)];
 
-            screenCoords.y += carEntry.tab_height;
+            screenCoords.y += carEntry.tabHeight;
 
             // Draw the coloured spinning vehicle
             // currentFrame represents a SpritePrecision of 64
-            ImageIndex imageIndex = carEntry.SpriteByYaw(currentFrame / 2, SpriteGroupType::slopeFlat);
-            imageIndex &= carEntry.TabRotationMask;
-            imageIndex *= carEntry.base_num_frames;
-            imageIndex += carEntry.base_image_id;
+            ImageIndex imageIndex = carEntry.spriteByYaw(currentFrame / 2, SpriteGroupType::slopeFlat);
+            imageIndex &= carEntry.tabRotationMask;
+            imageIndex *= carEntry.baseNumFrames;
+            imageIndex += carEntry.baseImageId;
             auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
             GfxDrawSprite(rt, imageId, screenCoords);
         }

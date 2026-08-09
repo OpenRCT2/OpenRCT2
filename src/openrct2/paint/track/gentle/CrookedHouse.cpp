@@ -77,7 +77,7 @@ static void PaintCrookedHouseStructure(
     }
 
     const auto& boundBox = kCrookedHouseData[segment];
-    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
+    auto imageIndex = rideEntry->Cars[0].baseImageId + direction;
     PaintAddImageAsParent(
         session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
         { { boundBox.offset, height + 3 }, { boundBox.length, 127 } });

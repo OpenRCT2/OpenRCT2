@@ -110,7 +110,7 @@ namespace OpenRCT2
         int32_t ecx = abs(velocity) - 1.0_mph;
         if (ecx >= 0)
         {
-            frictionSound.id = carEntry.friction_sound_id;
+            frictionSound.id = carEntry.frictionSoundId;
             ecx >>= 15;
             frictionSound.volume = std::min(208 + (ecx & 0xFF), 255);
         }

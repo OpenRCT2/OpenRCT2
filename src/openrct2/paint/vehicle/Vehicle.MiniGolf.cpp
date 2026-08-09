@@ -124,7 +124,7 @@ namespace OpenRCT2
         uint8_t frame = MiniGolfPeepAnimationFrames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
         uint32_t ebx = (frame << 2) + Entity::Yaw::YawTo4(imageDirection);
 
-        ImageIndex index = rideEntry->Cars[0].base_image_id + 1 + ebx;
+        ImageIndex index = rideEntry->Cars[0].baseImageId + 1 + ebx;
         auto image = ImageId(index, peep->TshirtColour, peep->TrousersColour);
         PaintAddImageAsParent(session, image, { 0, 0, z }, { { 0, 0, z + 5 }, { 1, 1, 11 } });
     }
@@ -153,7 +153,7 @@ namespace OpenRCT2
         if (rideEntry == nullptr)
             return;
 
-        uint32_t image_id = rideEntry->Cars[0].base_image_id;
+        uint32_t image_id = rideEntry->Cars[0].baseImageId;
         PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z + 3 }, { 1, 1, 0 } });
     }
 } // namespace OpenRCT2

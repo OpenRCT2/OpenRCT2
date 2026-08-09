@@ -3577,7 +3577,7 @@ namespace OpenRCT2
 
         // Type 1 loading doesn't do segments and all peeps go to the same
         // location on the ride
-        if (vehicle_type->peep_loading_waypoint_segments == 0)
+        if (vehicle_type->guestLoadingWaypointSegments == 0)
         {
             track_direction /= 2;
             seatLocationSegment = 0;
@@ -3616,11 +3616,11 @@ namespace OpenRCT2
         CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
 
         const auto waypointIndex = Var37 / 4u;
-        if (waypointIndex < carEntry->peep_loading_waypoints.size())
+        if (waypointIndex < carEntry->guestLoadingWaypoints.size())
         {
-            Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
-            waypoint.x += carEntry->peep_loading_waypoints[waypointIndex][0].x;
-            waypoint.y += carEntry->peep_loading_waypoints[waypointIndex][0].y;
+            Guard::Assert(carEntry->guestLoadingWaypoints.size() >= static_cast<size_t>(waypointIndex));
+            waypoint.x += carEntry->guestLoadingWaypoints[waypointIndex][0].x;
+            waypoint.y += carEntry->guestLoadingWaypoints[waypointIndex][0].y;
         }
 
         SetDestination(waypoint);
@@ -3726,7 +3726,7 @@ namespace OpenRCT2
 
         int8_t load_position = 0;
         // Safe, in case current seat > number of loading positions
-        uint16_t numSeatPositions = static_cast<uint16_t>(vehicle_type->peep_loading_positions.size());
+        uint16_t numSeatPositions = static_cast<uint16_t>(vehicle_type->guestLoadingPositions.size());
         if (numSeatPositions != 0)
         {
             size_t loadPositionIndex = numSeatPositions - 1;
@@ -3734,7 +3734,7 @@ namespace OpenRCT2
             {
                 loadPositionIndex = CurrentSeat;
             }
-            load_position = vehicle_type->peep_loading_positions[loadPositionIndex];
+            load_position = vehicle_type->guestLoadingPositions[loadPositionIndex];
         }
 
         auto destination = GetDestination();
@@ -4228,9 +4228,9 @@ namespace OpenRCT2
             platformLocation.y = vehicle->y + DirectionOffsets[platformLocation.direction].y * 12;
 
             // This can evaluate to false with buggy custom rides.
-            if (CurrentSeat < carEntry->peep_loading_positions.size())
+            if (CurrentSeat < carEntry->guestLoadingPositions.size())
             {
-                int8_t loadPosition = carEntry->peep_loading_positions[CurrentSeat];
+                int8_t loadPosition = carEntry->guestLoadingPositions[CurrentSeat];
 
                 switch (vehicle->orientation / 8)
                 {
@@ -4252,7 +4252,7 @@ namespace OpenRCT2
             {
                 LOG_VERBOSE(
                     "CurrentSeat %d is too large! (Vehicle entry has room for %d.)", CurrentSeat,
-                    carEntry->peep_loading_positions.size());
+                    carEntry->guestLoadingPositions.size());
             }
 
             platformLocation.z = station.GetBaseZ();
@@ -4292,10 +4292,10 @@ namespace OpenRCT2
         CoordsXYZ exitWaypointLoc = waypointLoc;
 
         const auto waypointIndex = Var37 / 4u;
-        if (waypointIndex < carEntry->peep_loading_waypoints.size())
+        if (waypointIndex < carEntry->guestLoadingWaypoints.size())
         {
-            exitWaypointLoc.x += carEntry->peep_loading_waypoints[waypointIndex][2].x;
-            exitWaypointLoc.y += carEntry->peep_loading_waypoints[waypointIndex][2].y;
+            exitWaypointLoc.x += carEntry->guestLoadingWaypoints[waypointIndex][2].x;
+            exitWaypointLoc.y += carEntry->guestLoadingWaypoints[waypointIndex][2].y;
         }
 
         if (ride->getRideTypeDescriptor().specialType == RtdSpecialType::motionSimulator)
@@ -4303,10 +4303,10 @@ namespace OpenRCT2
 
         moveTo(exitWaypointLoc);
 
-        if (waypointIndex < carEntry->peep_loading_waypoints.size())
+        if (waypointIndex < carEntry->guestLoadingWaypoints.size())
         {
-            waypointLoc.x += carEntry->peep_loading_waypoints[waypointIndex][1].x;
-            waypointLoc.y += carEntry->peep_loading_waypoints[waypointIndex][1].y;
+            waypointLoc.x += carEntry->guestLoadingWaypoints[waypointIndex][1].x;
+            waypointLoc.y += carEntry->guestLoadingWaypoints[waypointIndex][1].y;
         }
 
         SetDestination(waypointLoc, 2);
@@ -4470,11 +4470,11 @@ namespace OpenRCT2
 
         const auto& vehicle_type = rideEntry->Cars[vehicle->vehicle_type];
         const auto waypointIndex = Var37 / 4u;
-        if (waypointIndex < vehicle_type.peep_loading_waypoints.size())
+        if (waypointIndex < vehicle_type.guestLoadingWaypoints.size())
         {
             Guard::Assert(waypoint < 3);
-            targetLoc.x += vehicle_type.peep_loading_waypoints[waypointIndex][waypoint].x;
-            targetLoc.y += vehicle_type.peep_loading_waypoints[waypointIndex][waypoint].y;
+            targetLoc.x += vehicle_type.guestLoadingWaypoints[waypointIndex][waypoint].x;
+            targetLoc.y += vehicle_type.guestLoadingWaypoints[waypointIndex][waypoint].y;
         }
 
         SetDestination(targetLoc);
@@ -4567,7 +4567,7 @@ namespace OpenRCT2
             const CarEntry& carEntry = rideEntry->Cars[vehicle->vehicle_type];
 
             const size_t carPosition = Var37 / 4;
-            if (carPosition >= carEntry.peep_loading_waypoints.size())
+            if (carPosition >= carEntry.guestLoadingWaypoints.size())
                 return;
 
             const auto waypoint = Var37 & 3;
@@ -4576,7 +4576,7 @@ namespace OpenRCT2
             const auto& rtd = ride->getRideTypeDescriptor();
 
             CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
-            targetLoc += carEntry.peep_loading_waypoints[carPosition][waypoint];
+            targetLoc += carEntry.guestLoadingWaypoints[carPosition][waypoint];
             SetDestination(targetLoc);
             return;
         }

@@ -54,7 +54,7 @@ static void PaintMotionSimulatorVehicle(
         }
     }
 
-    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
+    auto imageIndex = rideEntry->Cars[0].baseImageId + direction;
     if (vehicle != nullptr)
     {
         if (vehicle->restraints_position >= 64)

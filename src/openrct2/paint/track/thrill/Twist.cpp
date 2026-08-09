@@ -58,7 +58,7 @@ static void PaintTwistStructure(
         imageTemplate = stationColour;
     }
 
-    auto baseImageId = rideEntry->Cars[0].base_image_id;
+    auto baseImageId = rideEntry->Cars[0].baseImageId;
     auto structureFrameNum = frameNum % 24;
     auto imageId = imageTemplate.WithIndex(baseImageId + structureFrameNum);
     const BoundBoxXYZ bb = {

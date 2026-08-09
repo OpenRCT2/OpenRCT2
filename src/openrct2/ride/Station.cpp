@@ -287,7 +287,7 @@ namespace OpenRCT2
 
             const auto* rideEntry = vehicle->GetRideEntry();
 
-            vehicle->speed = (ScenarioRand() & 15) - 8 + rideEntry->Cars[vehicle->vehicle_type].powered_max_speed;
+            vehicle->speed = (ScenarioRand() & 15) - 8 + rideEntry->Cars[vehicle->vehicle_type].poweredMaxSpeed;
 
             if (vehicle->num_peeps != 0)
             {

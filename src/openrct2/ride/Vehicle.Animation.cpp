@@ -767,7 +767,7 @@ namespace OpenRCT2
         {
             return;
         }
-        int32_t spinningInertia = carEntry->spinning_inertia;
+        int32_t spinningInertia = carEntry->spinningInertia;
         auto trackType = GetTrackType();
         int32_t dword_F64E08 = _vehicleVelocityF64E08;
         int32_t spinSpeed{};
@@ -863,7 +863,7 @@ namespace OpenRCT2
         spin_speed = spinSpeed;
         spin_sprite += spinSpeed >> 8;
         // Note this actually increases the spin speed if going right!
-        spin_speed -= spinSpeed >> carEntry->spinning_friction;
+        spin_speed -= spinSpeed >> carEntry->spinningFriction;
         invalidate();
     }
 
@@ -903,13 +903,13 @@ namespace OpenRCT2
      */
     static uint8_t GetTargetFrame(const CarEntry& carEntry, uint32_t animationState)
     {
-        if (carEntry.AnimationSpeed == 0)
+        if (carEntry.animationSpeed == 0)
             return 0;
-        auto targetFrame = animationState / (carEntry.AnimationSpeed << 2);
+        auto targetFrame = animationState / (carEntry.animationSpeed << 2);
         // mask of 0xFF
         targetFrame &= std::numeric_limits<uint8_t>::max();
         // multiply by number of frames. After the bitshift 8, the range will be 0 to AnimationFrames - 1
-        targetFrame *= carEntry.AnimationFrames;
+        targetFrame *= carEntry.animationFrames;
         return targetFrame >> std::numeric_limits<uint8_t>::digits;
     }
 
@@ -968,7 +968,7 @@ namespace OpenRCT2
         if (vehicle.animation_frame != targetFrame)
         {
             vehicle.animation_frame = targetFrame;
-            if (ShouldMakeSteam(targetFrame, carEntry.AnimationFrames))
+            if (ShouldMakeSteam(targetFrame, carEntry.animationFrames))
             {
                 auto curRide = vehicle.GetRide();
                 if (curRide != nullptr)
@@ -978,7 +978,7 @@ namespace OpenRCT2
                             && vehicle.status != Vehicle::Status::arriving))
                     {
                         CoordsXYZ steamOffset = ComputeSteamOffset(
-                            carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.pitch,
+                            carEntry.steamEffect.vertical, carEntry.steamEffect.longitudinal, vehicle.pitch,
                             vehicle.orientation);
                         SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
                     }
@@ -1022,13 +1022,13 @@ namespace OpenRCT2
     {
         if (vehicle.animationState <= 0xCCCC)
         {
-            vehicle.animationState += carEntry.AnimationSpeed;
+            vehicle.animationState += carEntry.animationSpeed;
         }
         else
         {
             vehicle.animationState = 0;
             vehicle.animation_frame += 1;
-            vehicle.animation_frame %= carEntry.AnimationFrames;
+            vehicle.animation_frame %= carEntry.animationFrames;
             vehicle.invalidate();
         }
     }
@@ -1050,7 +1050,7 @@ namespace OpenRCT2
         {
             if (vehicle.animationState <= 0xCCCC)
             {
-                vehicle.animationState += carEntry.AnimationSpeed;
+                vehicle.animationState += carEntry.animationSpeed;
             }
             else
             {
@@ -1061,7 +1061,7 @@ namespace OpenRCT2
                 else
                     vehicle.seat_rotation++;
 
-                int16_t targetSeatRotation = MultiDimensionTargetAngle(vehicle.seat_rotation, carEntry.AnimationFrames);
+                int16_t targetSeatRotation = MultiDimensionTargetAngle(vehicle.seat_rotation, carEntry.animationFrames);
                 if (targetSeatRotation != vehicle.animation_frame)
                 {
                     vehicle.animation_frame = targetSeatRotation;
@@ -1078,7 +1078,7 @@ namespace OpenRCT2
     {
         vehicle.UpdateAnimationAnimalFlying();
         // makes animation play faster with vehicle speed
-        uint8_t targetFrame = abs(_vehicleVelocityF64E08) >> carEntry.AnimationSpeed;
+        uint8_t targetFrame = abs(_vehicleVelocityF64E08) >> carEntry.animationSpeed;
         vehicle.animationState = std::max(vehicle.animationState - targetFrame, 0u);
     }
 
@@ -1101,7 +1101,7 @@ namespace OpenRCT2
         {
             return;
         }
-        if (carEntry->AnimationFrames == 0 || carEntry->animation >= CarEntryAnimation::count)
+        if (carEntry->animationFrames == 0 || carEntry->animation >= CarEntryAnimation::count)
             return;
         AnimationFunctions[EnumValue(carEntry->animation)](*this, *carEntry);
     }

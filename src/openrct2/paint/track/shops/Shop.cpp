@@ -39,7 +39,7 @@ static void PaintShop(
     BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, trackElement.getClearanceZ() - trackElement.getBaseZ() - 3 } };
 
     auto imageFlags = session.TrackColours.WithoutSecondary();
-    auto imageIndex = firstCarEntry->base_image_id + direction;
+    auto imageIndex = firstCarEntry->baseImageId + direction;
     if (hasSupports)
     {
         auto foundationImageTemplate = GetShopSupportColourScheme(session, trackElement);

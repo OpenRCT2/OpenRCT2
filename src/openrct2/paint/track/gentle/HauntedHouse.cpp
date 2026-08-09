@@ -45,7 +45,7 @@ static void PaintHauntedHouseStructure(
     }
 
     const auto& boundBox = kHauntedHouseData[part];
-    auto baseImageIndex = rideEntry->Cars[0].base_image_id;
+    auto baseImageIndex = rideEntry->Cars[0].baseImageId;
     auto imageIndex = baseImageIndex + direction;
 
     auto bb = BoundBoxXYZ{ { boundBox.offset, height }, { boundBox.length, 127 } };
