@@ -14,7 +14,7 @@
     #include "../Version.h"
     #include "../platform/Platform.h"
 
-    #include <SDL_system.h>
+    #include <SDL3/SDL_system.h>
     #include <android/log.h>
     #include <jni.h>
 

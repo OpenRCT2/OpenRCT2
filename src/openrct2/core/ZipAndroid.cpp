@@ -15,7 +15,7 @@
     #include "MemoryStream.h"
     #include "Zip.h"
 
-    #include <SDL_system.h>
+    #include <SDL3/SDL_system.h>
     #include <jni.h>
     #include <string>
 
