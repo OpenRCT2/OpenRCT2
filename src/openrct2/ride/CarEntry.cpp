@@ -27,7 +27,7 @@ int32_t CarEntry::spriteByYaw(int32_t yaw, SpriteGroupType spriteGroup) const
 
 bool CarEntry::groupEnabled(SpriteGroupType spriteGroup) const
 {
-    return spriteGroups[EnumValue(spriteGroup)].Enabled();
+    return spriteGroups[EnumValue(spriteGroup)].isEnabled();
 }
 
 uint32_t CarEntry::groupImageId(SpriteGroupType spriteGroup) const

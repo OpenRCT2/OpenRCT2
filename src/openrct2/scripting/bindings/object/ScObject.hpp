@@ -310,7 +310,7 @@ namespace OpenRCT2::Scripting
                 for (std::underlying_type_t<SpriteGroupType> g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::count); g++)
                 {
                     auto group = carEntry->spriteGroups[g];
-                    if (group.Enabled())
+                    if (group.isEnabled())
                     {
                         JSValue groupObj = JS_NewObject(ctx);
                         JS_SetPropertyStr(ctx, groupObj, "imageId", JS_NewUint32(ctx, group.imageId));

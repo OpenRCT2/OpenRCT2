@@ -315,7 +315,7 @@ namespace OpenRCT2
 
                 for (uint8_t spriteGroup = 0; spriteGroup < EnumValue(SpriteGroupType::count); spriteGroup++)
                 {
-                    if (carEntry.spriteGroups[spriteGroup].Enabled())
+                    if (carEntry.spriteGroups[spriteGroup].isEnabled())
                     {
                         carEntry.spriteGroups[spriteGroup].imageId = imageIndex;
                         const auto spriteCount = carEntry.baseNumFrames
