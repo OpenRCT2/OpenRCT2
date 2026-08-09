@@ -387,13 +387,13 @@ namespace OpenRCT2::Scripting
         static JSValue carVisual_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->PaintStyle : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? EnumValue(carEntry->paintStyle) : 0);
         }
 
         static JSValue effectVisual_get(JSContext* ctx, JSValue thisVal)
         {
             auto carEntry = GetEntry(thisVal);
-            return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->effect_visual : 0);
+            return JS_NewUint32(ctx, carEntry != nullptr ? EnumValue(carEntry->effectVisual) : 0);
         }
 
         static JSValue drawOrder_get(JSContext* ctx, JSValue thisVal)
