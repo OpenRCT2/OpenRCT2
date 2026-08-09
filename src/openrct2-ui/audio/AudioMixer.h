@@ -13,7 +13,7 @@
 #include "AudioFormat.h"
 #include "SDLAudioSource.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <cstdint>
 #include <list>
 #include <memory>
@@ -33,6 +33,7 @@ namespace OpenRCT2::Audio
         std::vector<std::unique_ptr<SDLAudioSource>> _sources;
 
         SDL_AudioDeviceID _deviceId = 0;
+        SDL_AudioStream* _deviceStream = nullptr;
         AudioFormat _outputFormat = {};
         std::list<std::shared_ptr<ISDLAudioChannel>> _channels;
         float _volume = 1.0f;
@@ -76,6 +77,7 @@ namespace OpenRCT2::Audio
         static void EffectPanU8(const IAudioChannel* channel, uint8_t* data, int32_t length);
         static void EffectFadeS16(int16_t* data, int32_t length, int32_t startvolume, int32_t endvolume);
         static void EffectFadeU8(uint8_t* data, int32_t length, int32_t startvolume, int32_t endvolume);
-        bool Convert(SDL_AudioCVT* cvt, const void* src, size_t len);
+        static void AudioStreamCallback(void* userdata, SDL_AudioStream* stream, int additionalAmount, int totalAmount);
+        bool Convert(const AudioFormat& srcFormat, const void* src, size_t len, void** outBuf, size_t* outLen);
     };
 } // namespace OpenRCT2::Audio

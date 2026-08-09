@@ -14,7 +14,7 @@
 #include <stdexcept>
 
 #ifndef DISABLE_VORBIS
-    #include <SDL.h>
+    #include <SDL3/SDL.h>
     #include <optional>
     #include <vector>
     #include <vorbis/vorbisfile.h>
@@ -30,7 +30,7 @@ namespace OpenRCT2::Audio
     {
     private:
         AudioFormat _format = {};
-        SDL_RWops* _rw = nullptr;
+        SDL_IOStream* _rw = nullptr;
 
         std::optional<OggVorbis_File> _file;
         uint64_t _dataLength{};
@@ -54,7 +54,7 @@ namespace OpenRCT2::Audio
             return _format;
         }
 
-        bool LoadOgg(SDL_RWops* rw)
+        bool LoadOgg(SDL_IOStream* rw)
         {
             _rw = rw;
 
@@ -76,7 +76,7 @@ namespace OpenRCT2::Audio
                 return false;
             }
 
-            _format.format = AUDIO_S16LSB;
+            _format.format = SDL_AUDIO_S16LE;
             _format.channels = vi->channels;
             _format.freq = vi->rate;
             _totalSamples = ov_pcm_total(&*_file, -1);
@@ -131,7 +131,7 @@ namespace OpenRCT2::Audio
             }
             if (_rw != nullptr)
             {
-                SDL_RWclose(_rw);
+                SDL_CloseIO(_rw);
                 _rw = nullptr;
             }
         }
@@ -139,22 +139,26 @@ namespace OpenRCT2::Audio
     private:
         static size_t VorbisCallbackRead(void* ptr, size_t size, size_t nmemb, void* datasource)
         {
-            return SDL_RWread(static_cast<SDL_RWops*>(datasource), ptr, size, nmemb);
+            if (size == 0)
+                return 0;
+            auto bytesRead = SDL_ReadIO(static_cast<SDL_IOStream*>(datasource), ptr, size * nmemb);
+            return bytesRead / size;
         }
 
         static int VorbisCallbackSeek(void* datasource, ogg_int64_t offset, int whence)
         {
-            return (SDL_RWseek(static_cast<SDL_RWops*>(datasource), offset, whence) < 0) ? -1 : 0;
+            return (SDL_SeekIO(static_cast<SDL_IOStream*>(datasource), offset, static_cast<SDL_IOWhence>(whence)) < 0) ? -1
+                                                                                                                        : 0;
         }
 
         static long VorbisCallbackTell(void* datasource)
         {
-            return static_cast<long>(SDL_RWtell(static_cast<SDL_RWops*>(datasource)));
+            return static_cast<long>(SDL_TellIO(static_cast<SDL_IOStream*>(datasource)));
         }
     };
 #endif
 
-    std::unique_ptr<SDLAudioSource> CreateOggAudioSource(SDL_RWops* rw)
+    std::unique_ptr<SDLAudioSource> CreateOggAudioSource(SDL_IOStream* rw)
     {
 #ifndef DISABLE_VORBIS
         auto source = std::make_unique<OggAudioSource>();
