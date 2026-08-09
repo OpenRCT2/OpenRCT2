@@ -520,6 +520,7 @@ declare global {
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
+        subscribe(hook: "map.resize", callback: (e: MapChangeSizeArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
