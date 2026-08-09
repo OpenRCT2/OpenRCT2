@@ -52,7 +52,7 @@ static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tile
     if (wallEntry == nullptr)
         return;
 
-    auto doorSoundType = wallEntry->getDoorSoundType();
+    const auto doorSoundType = wallEntry->doorSound;
     if (doorSoundType == DoorSoundType::none)
         return;
 
@@ -70,7 +70,7 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
     if (wallEntry == nullptr)
         return;
 
-    auto doorSoundType = wallEntry->getDoorSoundType();
+    const auto doorSoundType = wallEntry->doorSound;
     if (doorSoundType == DoorSoundType::none)
         return;
 

@@ -18,7 +18,7 @@
 namespace OpenRCT2
 {
 // Non-inverted variant
-constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
+constexpr RideTypeDescriptor kFlyingRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = TrackElemType::endStation,
@@ -96,7 +96,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     },
 };
 
-constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
+constexpr RideTypeDescriptor kFlyingRollerCoasterAltRTD =
 {
     .Category = RideCategory::none,
     .StartTrackPiece = TrackElemType::endStation,

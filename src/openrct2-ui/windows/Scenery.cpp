@@ -811,7 +811,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].setVisible();
 
-                            if (wallEntry->flags2 & WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR)
+                            if (wallEntry->flags2.has(WallSceneryFlag2::disablePrimaryColour))
                                 widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setHidden();
                             if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
                                 widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].setVisible();

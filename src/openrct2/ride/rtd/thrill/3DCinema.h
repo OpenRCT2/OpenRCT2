@@ -17,7 +17,7 @@
 namespace OpenRCT2
 {
 // C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
-constexpr RideTypeDescriptor CinemaRTD =
+constexpr RideTypeDescriptor kCinemaRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::flatTrack3x3,

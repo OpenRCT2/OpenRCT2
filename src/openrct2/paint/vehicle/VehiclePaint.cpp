@@ -4660,22 +4660,24 @@ static void vehicle_visual_splash5_effect(PaintSession& session, const int32_t z
 
 void VehicleVisualSplashEffect(PaintSession& session, const int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
-    switch (carEntry->effect_visual)
+    switch (carEntry->effectVisual)
     {
-        case VEHICLE_VISUAL_SPLASH1_EFFECT:
+        case EffectVisual::splash1Effect:
             vehicle_visual_splash1_effect(session, z, vehicle);
             break;
-        case VEHICLE_VISUAL_SPLASH2_EFFECT:
+        case EffectVisual::splash2Effect:
             vehicle_visual_splash2_effect(session, z, vehicle);
             break;
-        case VEHICLE_VISUAL_SPLASH3_EFFECT:
+        case EffectVisual::splash3Effect:
             vehicle_visual_splash3_effect(session, z, vehicle);
             break;
-        case VEHICLE_VISUAL_SPLASH4_EFFECT:
+        case EffectVisual::splash4Effect:
             vehicle_visual_splash4_effect(session, z, vehicle);
             break;
-        case VEHICLE_VISUAL_SPLASH5_EFFECT:
+        case EffectVisual::splash5Effect:
             vehicle_visual_splash5_effect(session, z, vehicle);
+            break;
+        default:
             break;
     }
 }

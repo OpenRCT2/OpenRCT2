@@ -81,7 +81,7 @@ namespace OpenRCT2
             }
         }
 
-        assert(carEntry->effect_visual == 1);
+        assert(carEntry->effectVisual == EffectVisual::unknown1);
         // Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense
         // so it was taken out
     }

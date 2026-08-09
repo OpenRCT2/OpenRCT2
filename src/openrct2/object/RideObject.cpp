@@ -446,11 +446,11 @@ namespace OpenRCT2
         car.double_sound_frequency = stream->ReadValue<uint8_t>();
         car.powered_acceleration = stream->ReadValue<uint8_t>();
         car.powered_max_speed = stream->ReadValue<uint8_t>();
-        car.PaintStyle = stream->ReadValue<uint8_t>();
+        car.paintStyle = stream->ReadValue<VehiclePaintStyle>();
         // Since this animation style may be replaced with a generic spinner system, make sure it gets limited to just our port.
-        if (car.PaintStyle == VEHICLE_VISUAL_SPINNING_CARS)
-            car.PaintStyle = VEHICLE_VISUAL_DEFAULT;
-        car.effect_visual = stream->ReadValue<uint8_t>();
+        if (car.paintStyle == VehiclePaintStyle::spinningCars)
+            car.paintStyle = VehiclePaintStyle::standard;
+        car.effectVisual = stream->ReadValue<EffectVisual>();
         car.draw_order = stream->ReadValue<uint8_t>();
         car.num_vertical_frames_override = stream->ReadValue<uint8_t>();
         stream->Seek(4, STREAM_SEEK_CURRENT);
@@ -596,7 +596,7 @@ namespace OpenRCT2
                 car.spriteHeightNegative = 1;
                 car.spriteHeightPositive = 1;
                 car.flags = { CarEntryFlag::hasSpinning };
-                car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
+                car.paintStyle = VehiclePaintStyle::flatRideOrCarRide;
                 car.friction_sound_id = Audio::SoundId::null;
                 car.soundRange = SoundRange::none;
                 car.draw_order = 6;
@@ -765,15 +765,15 @@ namespace OpenRCT2
         car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);
         car.powered_acceleration = Json::GetNumber<uint8_t>(jCar["poweredAcceleration"]);
         car.powered_max_speed = Json::GetNumber<uint8_t>(jCar["poweredMaxSpeed"]);
-        car.PaintStyle = Json::GetNumber<uint8_t>(jCar["carVisual"]);
+        car.paintStyle = Json::GetEnum<VehiclePaintStyle>(jCar["carVisual"], VehiclePaintStyle::standard);
         // Since this animation style may be replaced with a generic spinner system, make sure it gets limited to just our port.
-        if (car.PaintStyle == VEHICLE_VISUAL_SPINNING_CARS
+        if (car.paintStyle == VehiclePaintStyle::spinningCars
             && (GetIdentifier() != "rct1.ride.spinning_cars"
                 || _legacyType.ride_type[0] != RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER))
         {
-            car.PaintStyle = VEHICLE_VISUAL_DEFAULT;
+            car.paintStyle = VehiclePaintStyle::standard;
         }
-        car.effect_visual = Json::GetNumber<uint8_t>(jCar["effectVisual"], 1);
+        car.effectVisual = Json::GetEnum<EffectVisual>(jCar["effectVisual"], EffectVisual::unknown1);
         car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
         car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);
 

@@ -83,6 +83,6 @@ namespace OpenRCT2
             }
         }
 
-        assert(carEntry->effect_visual == 1);
+        assert(carEntry->effectVisual == EffectVisual::unknown1);
     }
 } // namespace OpenRCT2

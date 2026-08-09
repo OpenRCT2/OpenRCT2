@@ -457,26 +457,31 @@ namespace OpenRCT2
         enteringReturnPosition,
     };
 
-    enum
+    enum class VehiclePaintStyle : uint8_t
     {
-        VEHICLE_VISUAL_DEFAULT,
-        VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE,
-        VEHICLE_VISUAL_LAUNCHED_FREEFALL,
-        VEHICLE_VISUAL_OBSERVATION_TOWER,
-        VEHICLE_VISUAL_RIVER_RAPIDS,
-        VEHICLE_VISUAL_MINI_GOLF_PLAYER,
-        VEHICLE_VISUAL_MINI_GOLF_BALL,
-        VEHICLE_VISUAL_REVERSER,
-        VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER,
-        VEHICLE_VISUAL_ROTO_DROP,
-        VEHICLE_VISUAL_SPLASH1_EFFECT,
-        VEHICLE_VISUAL_SPLASH2_EFFECT,
-        VEHICLE_VISUAL_SPLASH3_EFFECT,
-        VEHICLE_VISUAL_SPLASH4_EFFECT,
-        VEHICLE_VISUAL_SPLASH5_EFFECT,
-        VEHICLE_VISUAL_VIRGINIA_REEL,
-        VEHICLE_VISUAL_SUBMARINE,
-        VEHICLE_VISUAL_SPINNING_CARS,
+        standard,
+        flatRideOrCarRide,
+        launchedFreefall,
+        observationTower,
+        riverRapids,
+        miniGolfPlayer,
+        miniGolfBall,
+        reverser,
+        splashBoatsOrWaterCoaster,
+        rotoDrop,
+        virginiaReel = 15,
+        submarine,
+        spinningCars,
+    };
+
+    enum class EffectVisual : uint8_t
+    {
+        unknown1 = 1,
+        splash1Effect = 10,
+        splash2Effect,
+        splash3Effect,
+        splash4Effect,
+        splash5Effect,
     };
 
     enum : uint32_t
@@ -501,17 +506,17 @@ namespace OpenRCT2
         VEHICLE_SOUND2_FLAGS_LIFT_HILL = 1 << 1 // When on a lift hill generate sound
     };
 
-    enum
+    enum class FrictionSound : uint8_t
     {
-        FRICTION_SOUND_WOOD_SMALL = 1,
-        FRICTION_SOUND_STEEL = 2,
-        FRICTION_SOUND_PETROL = 21,
-        FRICTION_SOUND_TRAIN = 31,
-        FRICTION_SOUND_WATERSLIDE = 32,
-        FRICTION_SOUND_WOOD_LARGE = 54,
-        FRICTION_SOUND_STEEL_SMOOTH = 57,
-        FRICTION_SOUND_HYBRID = 65,
-        FRICTION_SOUND_NONE = 255
+        woodSmall = 1,
+        steel = 2,
+        petrol = 21,
+        train = 31,
+        waterSlide = 32,
+        woodLarge = 54,
+        steelSmooth = 57,
+        hybrid = 65,
+        none = 255
     };
 
     enum class SoundRange : uint8_t

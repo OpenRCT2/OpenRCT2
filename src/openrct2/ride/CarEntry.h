@@ -25,8 +25,10 @@ namespace OpenRCT2::Audio
 
 namespace OpenRCT2
 {
+    enum class EffectVisual : uint8_t;
     enum class SoundRange : uint8_t;
-}
+    enum class VehiclePaintStyle : uint8_t;
+} // namespace OpenRCT2
 
 enum class CarEntryAnimation : uint8_t
 {
@@ -219,8 +221,8 @@ struct CarEntry
     uint8_t double_sound_frequency; // (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8_t powered_acceleration;
     uint8_t powered_max_speed;
-    uint8_t PaintStyle;
-    uint8_t effect_visual;
+    OpenRCT2::VehiclePaintStyle paintStyle;
+    OpenRCT2::EffectVisual effectVisual;
     uint8_t draw_order;
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
     // Needs the overrideNumberOfVerticalFrames CarEntryFlag to be set.

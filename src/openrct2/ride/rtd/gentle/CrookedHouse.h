@@ -15,7 +15,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor CrookedHouseRTD =
+constexpr RideTypeDescriptor kCrookedHouseRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack3x3,

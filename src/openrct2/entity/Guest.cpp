@@ -6438,7 +6438,7 @@ namespace OpenRCT2
             if (tileElement->getDirection() != edge)
                 continue;
             auto wallEntry = tileElement->asWall()->GetEntry();
-            if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_TRANSPARENT))
+            if (wallEntry == nullptr || (wallEntry->flags2.has(WallSceneryFlag2::isTransparent)))
                 continue;
             if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
@@ -6478,7 +6478,7 @@ namespace OpenRCT2
             if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
             auto wallEntry = tileElement->asWall()->GetEntry();
-            if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_TRANSPARENT))
+            if (wallEntry == nullptr || (wallEntry->flags2.has(WallSceneryFlag2::isTransparent)))
                 continue;
             if (guest.NextLoc.z + (4 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
@@ -6556,7 +6556,7 @@ namespace OpenRCT2
             if (tileElement->getType() == TileElementType::wall)
             {
                 auto wallEntry = tileElement->asWall()->GetEntry();
-                if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_TRANSPARENT))
+                if (wallEntry == nullptr || (wallEntry->flags2.has(WallSceneryFlag2::isTransparent)))
                 {
                     continue;
                 }
@@ -6596,7 +6596,7 @@ namespace OpenRCT2
             if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
             auto wallEntry = tileElement->asWall()->GetEntry();
-            if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_TRANSPARENT))
+            if (wallEntry == nullptr || (wallEntry->flags2.has(WallSceneryFlag2::isTransparent)))
                 continue;
             if (guest.NextLoc.z + (6 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;
@@ -6673,7 +6673,7 @@ namespace OpenRCT2
             if (tileElement->getType() == TileElementType::wall)
             {
                 auto wallEntry = tileElement->asWall()->GetEntry();
-                if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_TRANSPARENT))
+                if (wallEntry == nullptr || (wallEntry->flags2.has(WallSceneryFlag2::isTransparent)))
                 {
                     continue;
                 }
@@ -6712,7 +6712,7 @@ namespace OpenRCT2
             if (DirectionReverse(tileElement->getDirection()) != edge)
                 continue;
             auto wallEntry = tileElement->asWall()->GetEntry();
-            if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_TRANSPARENT))
+            if (wallEntry == nullptr || (wallEntry->flags2.has(WallSceneryFlag2::isTransparent)))
                 continue;
             if (guest.NextLoc.z + (8 * kCoordsZStep) <= tileElement->getBaseZ())
                 continue;

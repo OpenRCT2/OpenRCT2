@@ -62,6 +62,6 @@ namespace OpenRCT2
         PaintAddImageAsParent(
             session, imageId1, { 0, 0, z },
             { { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 }, { bb.length_x, bb.length_y, 2 } });
-        assert(carEntry->effect_visual == 1);
+        assert(carEntry->effectVisual == EffectVisual::unknown1);
     }
 } // namespace OpenRCT2
