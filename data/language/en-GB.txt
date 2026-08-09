@@ -3851,7 +3851,7 @@ STR_7051    :Copper
 STR_7052    :Crimson
 STR_7053    :Darker water
 STR_7054    :Emerald
-STR_7055    :Obsidian
+STR_7055    :Indigo
 STR_7056    :Pesto
 STR_7057    :Pine green
 STR_7058    :Ruby

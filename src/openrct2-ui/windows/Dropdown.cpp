@@ -536,7 +536,7 @@ namespace OpenRCT2::Ui::Windows
         Colour::darkPink,
 
         Colour::darkBrown,      Colour::crimson,        Colour::copper,       Colour::caramel,
-        Colour::pesto,          Colour::asparagus,      Colour::pineGreen,    Colour::obsidian,
+        Colour::pesto,          Colour::asparagus,      Colour::pineGreen,    Colour::indigo,
         Colour::burntPink,
 
         Colour::brown,          Colour::bordeauxRed,    Colour::salmonPink,   Colour::lightBrown,
@@ -608,7 +608,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_PESTO_TIP,
         STR_COLOUR_ASPARAGUS_TIP,
         STR_COLOUR_PINE_GREEN_TIP,
-        STR_COLOUR_OBSIDIAN_TIP,
+        STR_COLOUR_INDIGO_TIP,
         STR_COLOUR_BURNT_PINK_TIP,
 
         STR_COLOUR_BROWN_TIP,

@@ -725,7 +725,7 @@
         "format": "raw"
     },
     {
-        "path": "map_base/palette_map_obsidian.png",
+        "path": "map_base/palette_map_indigo.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -1495,7 +1495,7 @@
         "format": "raw"
     },
     {
-        "path": "map_glass/palette_map_glass_obsidian.png",
+        "path": "map_glass/palette_map_glass_indigo.png",
         "palette": "keep",
         "format": "raw"
     },

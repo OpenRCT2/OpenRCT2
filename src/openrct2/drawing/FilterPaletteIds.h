@@ -173,7 +173,7 @@ namespace OpenRCT2::Drawing
         paletteGlassCrimson = paletteGlass + EnumValue(Colour::crimson),
         paletteGlassDarkerWater = paletteGlass + EnumValue(Colour::darkerWater),
         paletteGlassEmerald = paletteGlass + EnumValue(Colour::emerald),
-        paletteGlassObsidian = paletteGlass + EnumValue(Colour::obsidian),
+        paletteGlassIndigo = paletteGlass + EnumValue(Colour::indigo),
         paletteGlassPesto = paletteGlass + EnumValue(Colour::pesto),
         paletteGlassPineGreen = paletteGlass + EnumValue(Colour::pineGreen),
         paletteGlassRuby = paletteGlass + EnumValue(Colour::ruby),

@@ -84,7 +84,7 @@ namespace OpenRCT2::Drawing
         { "crimson", Colour::crimson },
         { "darker_water", Colour::darkerWater },
         { "emerald", Colour::emerald },
-        { "obsidian", Colour::obsidian },
+        { "indigo", Colour::indigo },
         { "pesto", Colour::pesto },
         { "pine_green", Colour::pineGreen },
         { "ruby", Colour::ruby },

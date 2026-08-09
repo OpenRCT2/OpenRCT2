@@ -92,7 +92,7 @@ namespace OpenRCT2::Drawing
         crimson,
         darkerWater,
         emerald,
-        obsidian,
+        indigo,
         pesto,
         pineGreen,
         ruby,
