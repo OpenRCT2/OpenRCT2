@@ -17,7 +17,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor SwingingShipRTD =
+constexpr RideTypeDescriptor kSwingingShipRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::flatTrack1x5,

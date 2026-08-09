@@ -18,7 +18,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor WaterCoasterRTD =
+constexpr RideTypeDescriptor kWaterCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = TrackElemType::endStation,

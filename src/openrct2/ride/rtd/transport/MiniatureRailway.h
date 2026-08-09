@@ -18,7 +18,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor MiniatureRailwayRTD =
+constexpr RideTypeDescriptor kMiniatureRailwayRTD =
 {
     .Category = RideCategory::transport,
     .StartTrackPiece = TrackElemType::endStation,

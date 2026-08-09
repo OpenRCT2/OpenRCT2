@@ -17,7 +17,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor RiverRaftsRTD =
+constexpr RideTypeDescriptor kRiverRaftsRTD =
 {
     .Category = RideCategory::water,
     .StartTrackPiece = TrackElemType::endStation,

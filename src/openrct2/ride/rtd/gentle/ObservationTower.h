@@ -18,7 +18,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor ObservationTowerRTD =
+constexpr RideTypeDescriptor kObservationTowerRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::towerBase,

@@ -16,7 +16,7 @@
 
 // clang-format off
 namespace OpenRCT2 {
-constexpr RideTypeDescriptor MiniGolfRTD =
+constexpr RideTypeDescriptor kMiniGolfRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::endStation,

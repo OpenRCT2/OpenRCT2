@@ -17,7 +17,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor SuspendedMonorailRTD =
+constexpr RideTypeDescriptor kSuspendedMonorailRTD =
 {
     .Category = RideCategory::transport,
     .StartTrackPiece = TrackElemType::endStation,

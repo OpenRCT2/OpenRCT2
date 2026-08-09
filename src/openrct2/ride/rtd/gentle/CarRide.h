@@ -18,7 +18,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor CarRideRTD =
+constexpr RideTypeDescriptor kCarRideRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::endStation,

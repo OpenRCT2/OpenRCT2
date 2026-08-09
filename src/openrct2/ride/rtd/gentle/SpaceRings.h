@@ -16,7 +16,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor SpaceRingsRTD =
+constexpr RideTypeDescriptor kSpaceRingsRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack3x3,

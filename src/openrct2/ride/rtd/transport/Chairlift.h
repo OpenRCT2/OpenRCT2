@@ -18,7 +18,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor ChairliftRTD =
+constexpr RideTypeDescriptor kChairliftRTD =
 {
     .Category = RideCategory::transport,
     .StartTrackPiece = TrackElemType::endStation,

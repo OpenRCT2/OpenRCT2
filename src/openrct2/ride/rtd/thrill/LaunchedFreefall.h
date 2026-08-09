@@ -17,7 +17,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor LaunchedFreefallRTD =
+constexpr RideTypeDescriptor kLaunchedFreefallRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::towerBase,

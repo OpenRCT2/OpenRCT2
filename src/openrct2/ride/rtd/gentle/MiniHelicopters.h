@@ -18,7 +18,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor MiniHelicoptersRTD =
+constexpr RideTypeDescriptor kMiniHelicoptersRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::endStation,

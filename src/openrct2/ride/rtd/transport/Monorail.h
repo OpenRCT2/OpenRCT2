@@ -17,7 +17,7 @@
 
 // clang-format off
 namespace OpenRCT2 {
-constexpr RideTypeDescriptor MonorailRTD =
+constexpr RideTypeDescriptor kMonorailRTD =
 {
     .Category = RideCategory::transport,
     .StartTrackPiece = TrackElemType::endStation,

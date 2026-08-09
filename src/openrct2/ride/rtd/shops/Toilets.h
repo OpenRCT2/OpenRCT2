@@ -16,7 +16,7 @@
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor ToiletsRTD =
+constexpr RideTypeDescriptor kToiletsRTD =
 {
     .Category = RideCategory::shop,
     .StartTrackPiece = TrackElemType::flatTrack1x1A,
