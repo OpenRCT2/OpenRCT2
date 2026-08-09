@@ -501,17 +501,17 @@ namespace OpenRCT2
         VEHICLE_SOUND2_FLAGS_LIFT_HILL = 1 << 1 // When on a lift hill generate sound
     };
 
-    enum
+    enum class FrictionSound : uint8_t
     {
-        FRICTION_SOUND_WOOD_SMALL = 1,
-        FRICTION_SOUND_STEEL = 2,
-        FRICTION_SOUND_PETROL = 21,
-        FRICTION_SOUND_TRAIN = 31,
-        FRICTION_SOUND_WATERSLIDE = 32,
-        FRICTION_SOUND_WOOD_LARGE = 54,
-        FRICTION_SOUND_STEEL_SMOOTH = 57,
-        FRICTION_SOUND_HYBRID = 65,
-        FRICTION_SOUND_NONE = 255
+        woodSmall = 1,
+        steel = 2,
+        petrol = 21,
+        train = 31,
+        waterSlide = 32,
+        woodLarge = 54,
+        steelSmooth = 57,
+        hybrid = 65,
+        none = 255
     };
 
     enum class SoundRange : uint8_t
