@@ -13,7 +13,7 @@
 
     #include "UiStringIds.h"
 
-    #include <SDL.h>
+    #include <SDL3/SDL.h>
     #include <algorithm>
     #include <dlfcn.h>
     #include <openrct2/Diagnostic.h>

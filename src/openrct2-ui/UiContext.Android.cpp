@@ -11,7 +11,7 @@
 
     #include "UiContext.h"
 
-    #include <SDL.h>
+    #include <SDL3/SDL.h>
     #include <dlfcn.h>
     #include <jni.h>
     #include <openrct2/Diagnostic.h>
