@@ -11,8 +11,8 @@
 
 #include "ShortcutIds.h"
 
-#include <SDL_events.h>
-#include <SDL_timer.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_gamepad.h>
 #include <cmath>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/MouseInput.h>
@@ -40,23 +40,23 @@ void InputManager::queueInputEvent(const SDL_Event& e)
 {
     switch (e.type)
     {
-        case SDL_CONTROLLERAXISMOTION:
+        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
         {
             // Process only the stick axes for scrolling (ignore triggers)
-            if (e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX || e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY
-                || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY)
+            if (e.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTX || e.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTY
+                || e.gaxis.axis == SDL_GAMEPAD_AXIS_RIGHTX || e.gaxis.axis == SDL_GAMEPAD_AXIS_RIGHTY)
             {
                 InputEvent ie;
                 ie.deviceKind = InputDeviceKind::joyAxis;
                 ie.modifiers = SDL_GetModState();
-                ie.button = e.caxis.axis;
+                ie.button = e.gaxis.axis;
                 ie.state = InputEventState::down;
-                ie.axisValue = e.caxis.value;
+                ie.axisValue = e.gaxis.value;
                 queueInputEvent(std::move(ie));
             }
             break;
         }
-        case SDL_JOYHATMOTION:
+        case SDL_EVENT_JOYSTICK_HAT_MOTION:
         {
             if (e.jhat.value != SDL_HAT_CENTERED)
             {
@@ -70,34 +70,34 @@ void InputManager::queueInputEvent(const SDL_Event& e)
             }
             break;
         }
-        case SDL_CONTROLLERBUTTONDOWN:
-        case SDL_JOYBUTTONDOWN:
+        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+        case SDL_EVENT_JOYSTICK_BUTTON_DOWN:
         {
             InputEvent ie;
             ie.deviceKind = InputDeviceKind::joyButton;
             ie.modifiers = SDL_GetModState();
-            ie.button = e.cbutton.button;
+            ie.button = e.gbutton.button;
             ie.state = InputEventState::down;
             ie.axisValue = 0;
             queueInputEvent(std::move(ie));
             break;
         }
-        case SDL_CONTROLLERBUTTONUP:
-        case SDL_JOYBUTTONUP:
+        case SDL_EVENT_GAMEPAD_BUTTON_UP:
+        case SDL_EVENT_JOYSTICK_BUTTON_UP:
         {
             InputEvent ie;
             ie.deviceKind = InputDeviceKind::joyButton;
             ie.modifiers = SDL_GetModState();
-            ie.button = e.cbutton.button;
+            ie.button = e.gbutton.button;
             ie.state = InputEventState::release;
             ie.axisValue = 0;
             queueInputEvent(std::move(ie));
             break;
         }
-        case SDL_CONTROLLERDEVICEADDED:
-        case SDL_CONTROLLERDEVICEREMOVED:
-        case SDL_JOYDEVICEADDED:
-        case SDL_JOYDEVICEREMOVED:
+        case SDL_EVENT_GAMEPAD_ADDED:
+        case SDL_EVENT_GAMEPAD_REMOVED:
+        case SDL_EVENT_JOYSTICK_ADDED:
+        case SDL_EVENT_JOYSTICK_REMOVED:
         {
             // Force joystick refresh on next check
             _lastJoystickCheck = 0;
@@ -121,17 +121,22 @@ void InputManager::checkJoysticks()
         _lastJoystickCheck = tick;
 
         _gameControllers.clear();
-        auto numJoysticks = SDL_NumJoysticks();
-        for (auto i = 0; i < numJoysticks; i++)
+        int numJoysticks = 0;
+        auto* joystickIds = SDL_GetJoysticks(&numJoysticks);
+        if (joystickIds != nullptr)
         {
-            if (SDL_IsGameController(i))
+            for (int i = 0; i < numJoysticks; i++)
             {
-                auto gameController = SDL_GameControllerOpen(i);
-                if (gameController != nullptr)
+                if (SDL_IsGamepad(joystickIds[i]))
                 {
-                    _gameControllers.push_back(gameController);
+                    auto gameController = SDL_OpenGamepad(joystickIds[i]);
+                    if (gameController != nullptr)
+                    {
+                        _gameControllers.push_back(gameController);
+                    }
                 }
             }
+            SDL_free(joystickIds);
         }
     }
 }
@@ -148,8 +153,8 @@ void InputManager::processAnalogueInput()
     {
         if (gameController != nullptr)
         {
-            int32_t stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX);
-            int32_t stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY);
+            int32_t stickX = SDL_GetGamepadAxis(gameController, SDL_GAMEPAD_AXIS_LEFTX);
+            int32_t stickY = SDL_GetGamepadAxis(gameController, SDL_GAMEPAD_AXIS_LEFTY);
 
             // Calculate the magnitude of the stick input vector
             float magnitude = std::sqrt(static_cast<float>(stickX * stickX + stickY * stickY));
@@ -279,20 +284,20 @@ void InputManager::handleModifiers()
     _modifierKeyState = EnumValue(ModifierKey::none);
 
     auto modifiers = SDL_GetModState();
-    if (modifiers & KMOD_SHIFT)
+    if (modifiers & SDL_KMOD_SHIFT)
     {
         _modifierKeyState |= EnumValue(ModifierKey::shift);
     }
-    if (modifiers & KMOD_CTRL)
+    if (modifiers & SDL_KMOD_CTRL)
     {
         _modifierKeyState |= EnumValue(ModifierKey::ctrl);
     }
-    if (modifiers & KMOD_ALT)
+    if (modifiers & SDL_KMOD_ALT)
     {
         _modifierKeyState |= EnumValue(ModifierKey::alt);
     }
 #ifdef __MACOSX__
-    if (modifiers & KMOD_GUI)
+    if (modifiers & SDL_KMOD_GUI)
     {
         _modifierKeyState |= EnumValue(ModifierKey::cmd);
     }
@@ -501,7 +506,7 @@ bool InputManager::getState(const RegisteredShortcut& shortcut) const
 
 bool InputManager::getState(const ShortcutInput& shortcut) const
 {
-    constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+    constexpr uint32_t kUsefulModifiers = SDL_KMOD_SHIFT | SDL_KMOD_CTRL | SDL_KMOD_ALT | SDL_KMOD_GUI;
     auto modifiers = SDL_GetModState() & kUsefulModifiers;
     if ((shortcut.modifiers & kUsefulModifiers) == modifiers)
     {
@@ -517,7 +522,7 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::keyboard:
             {
-                auto scanCode = static_cast<size_t>(SDL_GetScancodeFromKey(shortcut.button));
+                auto scanCode = static_cast<size_t>(SDL_GetScancodeFromKey(shortcut.button, nullptr));
                 if (scanCode < _keyboardState.size() && _keyboardState[scanCode])
                 {
                     return true;
@@ -529,8 +534,8 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                 for (auto* gameController : _gameControllers)
                 {
                     // Get the underlying joystick to maintain compatibility with raw button numbers
-                    auto* joystick = SDL_GameControllerGetJoystick(gameController);
-                    if (joystick && SDL_JoystickGetButton(joystick, shortcut.button))
+                    auto* joystick = SDL_GetGamepadJoystick(gameController);
+                    if (joystick && SDL_GetJoystickButton(joystick, shortcut.button))
                     {
                         return true;
                     }
@@ -542,13 +547,13 @@ bool InputManager::getState(const ShortcutInput& shortcut) const
                 for (auto* gameController : _gameControllers)
                 {
                     // Get the underlying joystick to maintain compatibility with hat functionality
-                    auto* joystick = SDL_GameControllerGetJoystick(gameController);
+                    auto* joystick = SDL_GetGamepadJoystick(gameController);
                     if (joystick)
                     {
-                        auto numHats = SDL_JoystickNumHats(joystick);
+                        auto numHats = SDL_GetNumJoystickHats(joystick);
                         for (int i = 0; i < numHats; i++)
                         {
-                            auto hat = SDL_JoystickGetHat(joystick, i);
+                            auto hat = SDL_GetJoystickHat(joystick, i);
                             if (hat & shortcut.button)
                             {
                                 return true;
