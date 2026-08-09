@@ -32,7 +32,7 @@ namespace OpenRCT2
         }
 
         // Draw back:
-        int32_t baseImage_id = carEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
+        int32_t baseImage_id = carEntry->baseImageId + ((vehicle->restraints_position / 64) * 2);
         auto image_id = imageFlags.WithIndex(baseImage_id + 2);
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -11, -11, z + 1 }, { 2, 2, 41 } });
 
@@ -43,7 +43,7 @@ namespace OpenRCT2
         // Draw peeps:
         if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
-            baseImage_id = carEntry->base_image_id + 9;
+            baseImage_id = carEntry->baseImageId + 9;
             if ((vehicle->restraints_position / 64) == 3)
             {
                 baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints

@@ -61,13 +61,13 @@ static void SpiralSlidePaintTileRight(
     ImageId imageId;
 
     if (direction == 0)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR0));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR0));
     else if (direction == 1)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR1));
     else if (direction == 2)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR2));
     else
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR3));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR3));
 
     PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 16, 0, height + 3 }, { 16, 16, 108 } });
 }
@@ -83,13 +83,13 @@ static void SpiralSlidePaintTileLeft(
     ImageId imageId;
 
     if (direction == 0)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR0));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR0));
     else if (direction == 1)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR1));
     else if (direction == 2)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR2));
     else
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR3));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR3));
 
     PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, 16, height + 3 }, { 16, 16, 108 } });
 }
@@ -106,33 +106,33 @@ static void SpiralSlidePaintTileFront(
 
     if (direction == 1)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideInsideR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideInsideR1));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { -12, 0, height + 3 }, { 2, 16, 108 } });
     }
     else if (direction == 2)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideInsideR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideInsideR2));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, -12, height + 3 }, { 16, 2, 108 } });
     }
 
     if (direction == 0)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR0));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR0));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, 8, height + 3 }, { 16, 8, 108 } });
     }
     else if (direction == 1)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR1));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 14, 0, height + 3 }, { 2, 16, 108 } });
     }
     else if (direction == 2)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR2));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, 14, height + 3 }, { 16, 2, 108 } });
     }
     else if (direction == 3)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR3));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR3));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 8, 0, height + 3 }, { 8, 16, 108 } });
     }
 
@@ -151,7 +151,7 @@ static void SpiralSlidePaintTileFront(
 
         if (slide_progress < 46)
         {
-            int32_t offset = rideEntry->Cars[0].base_image_id + SpiralSlidePeep + 46 * direction;
+            int32_t offset = rideEntry->Cars[0].baseImageId + SpiralSlidePeep + 46 * direction;
             CoordsXYZ boundingBox = { 0, 0, 108 };
             CoordsXYZ boundingBoxOffset = { 0, 0, static_cast<int16_t>(height + 3) };
 
@@ -216,15 +216,15 @@ static void PaintSpiralSlide(
     if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         auto imageId = session.SupportColours.WithIndex(
-            rideEntry->Cars[0].base_image_id + ((direction & 1) ? SpiralSlideBaseB : SpiralSlideBaseA));
+            rideEntry->Cars[0].baseImageId + ((direction & 1) ? SpiralSlideBaseB : SpiralSlideBaseA));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
     }
 
     const uint32_t spiral_slide_fence_sprites[] = {
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopRight,
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomRight,
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomLeft,
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopLeft,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceTopRight,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceBottomRight,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceBottomLeft,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceTopLeft,
     };
 
     TrackPaintUtilPaintFences(

@@ -47,7 +47,7 @@ static void PaintRiders(
         if (imageOffset >= 68)
             continue;
 
-        auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + imageOffset;
+        auto imageIndex = rideEntry.Cars[0].baseImageId + 32 + imageOffset;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[peep], vehicle.peep_tshirt_colours[peep + 1]);
         PaintAddImageAsChild(session, imageId, offset, bb);
     }
@@ -92,7 +92,7 @@ static void PaintCarousel(
         imageTemplate = stationColour;
     }
     auto imageOffset = rotationOffset & 0x1F;
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr && vehicle->num_peeps > 0)

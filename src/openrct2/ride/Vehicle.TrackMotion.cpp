@@ -852,7 +852,7 @@ namespace OpenRCT2
                 {
                     if (track_progress == 32)
                     {
-                        vehicle_type = carEntry->ReversedCarIndex;
+                        vehicle_type = carEntry->reversedCarIndex;
                         carEntry = Entry();
                     }
                 }

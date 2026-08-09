@@ -40,7 +40,7 @@ static void PaintCircusTent(
     {
         imageTemplate = stationColour;
     }
-    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
+    auto imageIndex = rideEntry->Cars[0].baseImageId + direction;
 
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 },

@@ -42,7 +42,7 @@ static void PaintFacility(
                                                               : BoundBoxXYZ{ { 2, 2, height }, { 28, 8, lengthZ } };
 
     auto imageTemplate = session.TrackColours;
-    auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
+    auto imageIndex = firstCarEntry->baseImageId + ((direction + 2) & 3);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
     {

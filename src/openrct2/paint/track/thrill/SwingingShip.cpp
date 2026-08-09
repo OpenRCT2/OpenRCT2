@@ -105,7 +105,7 @@ static void PaintSwingingShipStructure(
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { bounds.offset, height + 7 }, { bounds.length, 80 } };
 
-    auto baseImageId = rideEntry->Cars[0].base_image_id + kSwingingShipBaseSpriteOffset[direction];
+    auto baseImageId = rideEntry->Cars[0].baseImageId + kSwingingShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
         int32_t rotation = static_cast<int8_t>(vehicle->flatRideAnimationFrame);

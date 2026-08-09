@@ -3002,10 +3002,10 @@ namespace OpenRCT2
         vehicle->spriteData.width = carEntry.spriteWidth;
         vehicle->spriteData.heightMin = carEntry.spriteHeightNegative;
         vehicle->spriteData.heightMax = carEntry.spriteHeightPositive;
-        vehicle->mass = carEntry.car_mass;
-        vehicle->num_seats = carEntry.num_seats;
-        vehicle->speed = carEntry.powered_max_speed;
-        vehicle->powered_acceleration = carEntry.powered_acceleration;
+        vehicle->mass = carEntry.carMass;
+        vehicle->num_seats = carEntry.numSeats;
+        vehicle->speed = carEntry.poweredMaxSpeed;
+        vehicle->powered_acceleration = carEntry.poweredAcceleration;
         vehicle->velocity = 0;
         vehicle->acceleration = 0;
         vehicle->SwingSprite = 0;
@@ -4709,7 +4709,7 @@ namespace OpenRCT2
             {
                 for (auto& group : trackPieceRequiredSprites[i])
                 {
-                    auto precision = defaultVehicle->SpriteGroups[EnumValue(group.VehicleSpriteGroup)].spritePrecision;
+                    auto precision = defaultVehicle->spriteGroups[EnumValue(group.VehicleSpriteGroup)].spritePrecision;
                     if (precision < group.MinPrecision)
                         supportedPieces.set(i, false);
                 }
@@ -4853,7 +4853,7 @@ namespace OpenRCT2
                 {
                     const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, numCars, i)];
                     trainLength += carEntry.spacing;
-                    totalMass += carEntry.car_mass;
+                    totalMass += carEntry.carMass;
                 }
 
                 if (trainLength <= stationLength && totalMass <= maxMass)
@@ -4912,7 +4912,7 @@ namespace OpenRCT2
                     else
                     {
                         const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, 0)];
-                        int32_t poweredMaxSpeed = firstCarEntry.powered_max_speed;
+                        int32_t poweredMaxSpeed = firstCarEntry.poweredMaxSpeed;
 
                         int32_t totalSpacing = 0;
                         for (int32_t i = 0; i < newCarsPerTrain; i++)

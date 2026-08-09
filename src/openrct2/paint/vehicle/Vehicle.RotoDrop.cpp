@@ -34,7 +34,7 @@ namespace OpenRCT2
         }
 
         ImageId image_id;
-        int32_t baseImage_id = (carEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
+        int32_t baseImage_id = (carEntry->baseImageId + 4) + ((vehicle->animation_frame / 4) & 0x3);
         if (vehicle->restraints_position >= 64)
         {
             baseImage_id += 7;
@@ -69,7 +69,7 @@ namespace OpenRCT2
                 int32_t i = (j % 2) ? (48 - (j / 2)) : (j / 2);
                 if (riding_peep_sprites[i] != Drawing::kColourNull)
                 {
-                    baseImage_id = carEntry->base_image_id + 20 + i;
+                    baseImage_id = carEntry->baseImageId + 20 + i;
                     if (vehicle->restraints_position >= 64)
                     {
                         baseImage_id += 64;

@@ -68,12 +68,12 @@ namespace OpenRCT2
         const int32_t spin = vehicle->spin_sprite >> 4;
         const ImageIndex rotationImageIndex = spin & (spriteRotationPrecision - 1);
 
-        const ImageIndex carImageIndex = carEntry->base_image_id + pitchImageIndex + rotationImageIndex;
+        const ImageIndex carImageIndex = carEntry->baseImageId + pitchImageIndex + rotationImageIndex;
 
         constexpr const int32_t restraintsImageIndexOffset = 132;
         constexpr const int32_t restraintsInterval = 64;
         const bool restraints = vehicle->restraints_position >= restraintsInterval;
-        const ImageIndex restraintsImageIndex = carEntry->base_image_id + restraintsImageIndexOffset
+        const ImageIndex restraintsImageIndex = carEntry->baseImageId + restraintsImageIndexOffset
             + ((vehicle->restraints_position - restraintsInterval) / restraintsInterval);
 
         const ImageIndex imageIndex = ((!restraints) * carImageIndex) + (restraints * restraintsImageIndex);
@@ -82,7 +82,7 @@ namespace OpenRCT2
 
         const uint32_t boundingBoxIndex = pitchInfo.boundingBoxIndex
             + (rotatedImageDirection >> pitchInfo.boundingBoxPrecisionShift);
-        const VehicleBoundBox& bb = VehicleBoundboxes[carEntry->draw_order][boundingBoxIndex];
+        const VehicleBoundBox& bb = VehicleBoundboxes[carEntry->drawOrder][boundingBoxIndex];
         const BoundBoxXYZ boundingBox = { { bb.offset_x, bb.offset_y, bb.offset_z + z },
                                           { bb.length_x, bb.length_y, bb.length_z } };
         PaintAddImageAsParent(session, imageId, { 0, 0, z }, boundingBox);
