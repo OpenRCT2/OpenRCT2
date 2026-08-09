@@ -132,7 +132,7 @@ static void PaintWallWall(
 {
     PROFILED_FUNCTION();
 
-    auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (getGameState().currentTicks & 7) * 2 : 0;
+    auto frameNum = wallEntry.flags2.has(WallSceneryFlag2::isAnimated) ? (getGameState().currentTicks & 7) * 2 : 0;
     auto imageIndex = wallEntry.image + imageOffset + frameNum;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
     if ((wallEntry.flags.has(WallSceneryFlag::hasGlass)) && !isGhost)

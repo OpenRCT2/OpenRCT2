@@ -297,7 +297,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
 
         return removeAnim ? std::nullopt : std::optional(UpdateType::update);
     }
-    else if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
+    else if (entry->flags2.has(WallSceneryFlag2::isAnimated) || entry->scrolling_mode != kScrollingModeNone)
     {
         if constexpr (invalidate)
         {
@@ -509,7 +509,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
             const auto* const entry = wall->GetEntry();
             if (entry != nullptr)
             {
-                if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
+                if (entry->flags2.has(WallSceneryFlag2::isAnimated) || entry->scrolling_mode != kScrollingModeNone)
                 {
                     return std::optional(UpdateType::invalidate);
                 }
