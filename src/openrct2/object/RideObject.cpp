@@ -931,7 +931,7 @@ namespace OpenRCT2
         {
             for (uint8_t i = 0; i < EnumValue(SpriteGroupType::count); i++)
             {
-                auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
+                auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[kSpriteGroupNames[i]], 0);
                 if (numRotationFrames != 0)
                 {
                     if (!std::has_single_bit(numRotationFrames))

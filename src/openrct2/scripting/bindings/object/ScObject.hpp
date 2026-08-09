@@ -317,7 +317,7 @@ namespace OpenRCT2::Scripting
                         JS_SetPropertyStr(
                             ctx, groupObj, "spriteNumImages",
                             JS_NewUint32(ctx, OpenRCT2::Entity::Yaw::NumSpritesPrecision(group.spritePrecision)));
-                        JS_SetPropertyStr(ctx, groups, SpriteGroupNames[g], groupObj);
+                        JS_SetPropertyStr(ctx, groups, kSpriteGroupNames[g], groupObj);
                     }
                 }
             }
