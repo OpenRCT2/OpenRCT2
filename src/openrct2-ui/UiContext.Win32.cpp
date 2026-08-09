@@ -22,8 +22,7 @@
     // Then the rest
     #include "UiContext.h"
 
-    #include <SDL.h>
-    #include <SDL_syswm.h>
+    #include <SDL3/SDL.h>
     #include <openrct2/Diagnostic.h>
     #include <openrct2/core/Path.hpp>
     #include <openrct2/core/String.hpp>
@@ -219,15 +218,8 @@ namespace OpenRCT2::Ui
             HWND result = nullptr;
             if (window != nullptr)
             {
-                SDL_SysWMinfo wmInfo;
-                SDL_VERSION(&wmInfo.version);
-                if (SDL_GetWindowWMInfo(window, &wmInfo) != SDL_TRUE)
-                {
-                    LOG_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
-                    exit(-1);
-                }
-
-                result = wmInfo.info.win.window;
+                result = static_cast<HWND>(
+                    SDL_GetPointerProperty(SDL_GetWindowProperties(window), SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr));
             }
             return result;
         }
