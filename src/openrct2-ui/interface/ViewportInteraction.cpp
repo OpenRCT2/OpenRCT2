@@ -12,8 +12,6 @@
 #include "../ProvisionalElements.h"
 #include "../UiStringIds.h"
 #include "../windows/Windows.h"
-#include "Viewport.h"
-#include "Window.h"
 
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -31,8 +29,9 @@
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
 #include <openrct2/entity/EntityList.h>
-#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/WindowBase.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
@@ -43,15 +42,11 @@
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/ride/Track.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
-#include <openrct2/world/Park.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>

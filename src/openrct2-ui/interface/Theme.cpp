@@ -12,7 +12,6 @@
 #include "Theme.h"
 
 #include "../UiStringIds.h"
-#include "Window.h"
 
 #include <memory>
 #include <openrct2/Context.h>
@@ -27,6 +26,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/ColourWithFlags.h>
+#include <openrct2/interface/WindowBase.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <stdexcept>

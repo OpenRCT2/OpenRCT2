@@ -8,12 +8,10 @@
  *****************************************************************************/
 #include "ViewportQuery.h"
 
-#include "Viewport.h"
-#include "Window.h"
-
 #include <algorithm>
-#include <openrct2/Context.h>
 #include <openrct2/core/Numerics.hpp>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/WindowBase.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/EntranceElement.h>

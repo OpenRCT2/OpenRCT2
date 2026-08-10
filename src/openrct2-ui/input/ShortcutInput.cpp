@@ -10,8 +10,8 @@
 #include "../UiStringIds.h"
 #include "ShortcutManager.h"
 
-#include <SDL_keyboard.h>
 #include <SDL_joystick.h>
+#include <SDL_keyboard.h>
 #include <cstring>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatting.h>

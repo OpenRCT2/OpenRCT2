@@ -9,12 +9,9 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/WindowBase.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>

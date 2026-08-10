@@ -15,6 +15,7 @@
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -32,8 +33,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/scenes/title/TitleScene.h>

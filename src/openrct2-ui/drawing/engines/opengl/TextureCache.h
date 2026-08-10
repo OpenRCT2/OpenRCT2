@@ -13,6 +13,7 @@
 
 #include <array>
 #include <cassert>
+#include <cmath>
 #include <openrct2/SpriteIds.h>
 #include <unordered_map>
 #include <vector>

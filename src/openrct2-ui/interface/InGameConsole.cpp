@@ -27,7 +27,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/WindowTypes.h>
+#include <openrct2/localisation/FormatCodes.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
 
