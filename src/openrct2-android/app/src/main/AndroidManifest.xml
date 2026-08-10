@@ -23,6 +23,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.Splash"
+            android:screenOrientation="sensorLandscape"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +34,7 @@
         <activity
             android:name=".GameActivity"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             android:preferMinimalPostProcessing="true"
             >
 
