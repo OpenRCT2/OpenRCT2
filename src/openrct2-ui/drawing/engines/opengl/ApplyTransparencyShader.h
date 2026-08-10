@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
+
 namespace OpenRCT2::Ui
 {
     class ApplyTransparencyShader final : public OpenGLShaderProgram

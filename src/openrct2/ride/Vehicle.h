@@ -28,6 +28,8 @@ struct CarEntry;
 
 namespace OpenRCT2
 {
+    using ObjectEntryIndex = uint16_t;
+
     enum class Breakdown : uint8_t;
 
     class DataSerialiser;
