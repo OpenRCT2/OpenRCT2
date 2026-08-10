@@ -14,7 +14,6 @@
 #include <functional>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/interface/InGameConsole.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
@@ -34,18 +33,13 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/WidgetIndexGlobals.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/object/WallSceneryEntry.h>
-#include <openrct2/platform/Platform.h>
-#include <openrct2/ride/Track.h>
-#include <openrct2/ride/TrackPaint.h>
 #include <openrct2/scenes/title/TitleScene.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
-#include <openrct2/world/Park.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2/world/TileInspector.h>
 #include <openrct2/world/tile_element/WallElement.h>
 

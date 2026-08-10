@@ -11,16 +11,14 @@
 
 #include "ShortcutIds.h"
 
-#include <SDL.h>
+#include <SDL_keyboard.h>
 #include <openrct2-ui/UiStringIds.h>
-#include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/Console.hpp>
-#include <openrct2/core/DataSerialiser.h>
 #include <openrct2/core/FileStream.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Json.hpp>
-#include <openrct2/core/String.hpp>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
