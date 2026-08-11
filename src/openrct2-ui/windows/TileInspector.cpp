@@ -614,15 +614,15 @@ namespace OpenRCT2::Ui::Windows
                     switch (widgetIndex)
                     {
                         case WIDX_PATH_CHECK_SLOPED:
-                            PathSetSloped(windowTileInspectorSelectedIndex, !tileElement->asPath()->IsSloped());
+                            PathSetSloped(windowTileInspectorSelectedIndex, !tileElement->asPath()->isSloped());
                             break;
                         case WIDX_PATH_CHECK_JUNCTION_RAILINGS:
                             PathSetJunctionRailings(
-                                windowTileInspectorSelectedIndex, !tileElement->asPath()->HasJunctionRailings());
+                                windowTileInspectorSelectedIndex, !tileElement->asPath()->hasJunctionRailings());
                             break;
 
                         case WIDX_PATH_CHECK_BROKEN:
-                            PathSetBroken(windowTileInspectorSelectedIndex, !tileElement->asPath()->IsBroken());
+                            PathSetBroken(windowTileInspectorSelectedIndex, !tileElement->asPath()->isBroken());
                             break;
 
                         case WIDX_PATH_CHECK_EDGE_E:
@@ -1207,11 +1207,11 @@ namespace OpenRCT2::Ui::Windows
         void onDrawPath(RenderTarget& rt, ScreenCoordsXY screenCoords, const PathElement& pathEl)
         {
             // Details
-            auto footpathObj = pathEl.GetLegacyPathEntry();
+            auto footpathObj = pathEl.getLegacyPathEntry();
             if (footpathObj == nullptr)
             {
                 // Surface name
-                auto surfaceObj = pathEl.GetSurfaceEntry();
+                auto surfaceObj = pathEl.getSurfaceEntry();
                 if (surfaceObj != nullptr)
                 {
                     auto ft = Formatter();
@@ -1220,7 +1220,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Railings name
-                auto railingsObj = pathEl.GetRailingsEntry();
+                auto railingsObj = pathEl.getRailingsEntry();
                 if (railingsObj != nullptr)
                 {
                     auto ft = Formatter();
@@ -1240,9 +1240,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Path addition
-            if (pathEl.HasAddition())
+            if (pathEl.hasAddition())
             {
-                const auto pathAdditionEntry = pathEl.GetAdditionEntry();
+                const auto pathAdditionEntry = pathEl.getAdditionEntry();
                 StringId additionNameId = pathAdditionEntry != nullptr ? pathAdditionEntry->name
                                                                        : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                 auto ft = Formatter();
@@ -1662,7 +1662,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     case TileElementType::path:
-                        typeName = tileElement->asPath()->IsQueue() ? LanguageGetString(STR_QUEUE_LINE_MAP_TIP)
+                        typeName = tileElement->asPath()->isQueue() ? LanguageGetString(STR_QUEUE_LINE_MAP_TIP)
                                                                     : LanguageGetString(STR_FOOTPATH_MAP_TIP);
                         break;
 
@@ -2248,25 +2248,25 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_PATH_CHECK_EDGE_NW].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 1, 1));
                     widgets[WIDX_PATH_CHECK_EDGE_N].moveTo(CheckboxGroupOffset(PropertyRowCol(propertiesAnchor, 4, 1), 2, 0));
 
-                    setCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->asPath()->IsSloped());
-                    setCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->asPath()->HasJunctionRailings());
-                    setCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->asPath()->IsBroken());
+                    setCheckboxValue(WIDX_PATH_CHECK_SLOPED, tileElement->asPath()->isSloped());
+                    setCheckboxValue(WIDX_PATH_CHECK_JUNCTION_RAILINGS, tileElement->asPath()->hasJunctionRailings());
+                    setCheckboxValue(WIDX_PATH_CHECK_BROKEN, tileElement->asPath()->isBroken());
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_NE, tileElement->asPath()->GetEdges() & (1 << ((0 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_NE, tileElement->asPath()->getEdges() & (1 << ((0 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_SE, tileElement->asPath()->GetEdges() & (1 << ((1 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_SE, tileElement->asPath()->getEdges() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_SW, tileElement->asPath()->GetEdges() & (1 << ((2 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_SW, tileElement->asPath()->getEdges() & (1 << ((2 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_NW, tileElement->asPath()->GetEdges() & (1 << ((3 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_NW, tileElement->asPath()->getEdges() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_E, tileElement->asPath()->GetCorners() & (1 << ((0 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_E, tileElement->asPath()->getCorners() & (1 << ((0 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_S, tileElement->asPath()->GetCorners() & (1 << ((1 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_S, tileElement->asPath()->getCorners() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_W, tileElement->asPath()->GetCorners() & (1 << ((2 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_W, tileElement->asPath()->getCorners() & (1 << ((2 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_PATH_CHECK_EDGE_N, tileElement->asPath()->GetCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
+                        WIDX_PATH_CHECK_EDGE_N, tileElement->asPath()->getCorners() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     break;
 
                 case TileElementType::track:

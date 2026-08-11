@@ -320,7 +320,7 @@ static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElem
 
 static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(const PathElement& pathElement)
 {
-    auto legacyPathObj = pathElement.GetLegacyPathEntry();
+    auto legacyPathObj = pathElement.getLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
         RCTObjectEntry pathEntry = legacyPathObj->GetObjectEntry();
@@ -331,11 +331,11 @@ static std::optional<RCTObjectEntry> TrackDesignSaveFootpathGetBestEntry(const P
     }
     else
     {
-        auto surfaceEntry = pathElement.GetSurfaceEntry();
+        auto surfaceEntry = pathElement.getSurfaceEntry();
         if (surfaceEntry != nullptr)
         {
             auto surfaceId = surfaceEntry->GetIdentifier();
-            auto railingsEntry = pathElement.GetRailingsEntry();
+            auto railingsEntry = pathElement.getRailingsEntry();
             auto railingsId = railingsEntry == nullptr ? "" : railingsEntry->GetIdentifier();
             return RCT2::GetBestObjectEntryForSurface(surfaceId, railingsId);
         }
@@ -347,10 +347,10 @@ static TrackDesignSceneryElement TrackDesignSaveCreateFootpathDesc(
     const RCTObjectEntry& pathEntry, const CoordsXY& loc, const PathElement& pathElement)
 {
     auto item = TrackDesignCreateTileElementDesc(pathEntry, { loc, pathElement.getBaseZ() });
-    item.setEdges(pathElement.GetEdges());
-    item.setHasSlope(pathElement.IsSloped());
-    item.setSlopeDirection(pathElement.GetSlopeDirection());
-    item.setIsQueue(pathElement.IsQueue());
+    item.setEdges(pathElement.getEdges());
+    item.setHasSlope(pathElement.isSloped());
+    item.setSlopeDirection(pathElement.getSlopeDirection());
+    item.setIsQueue(pathElement.isQueue());
 
     return item;
 }
@@ -555,7 +555,7 @@ static bool TrackDesignSaveShouldSelectSceneryAround(RideId rideIndex, TileEleme
     switch (tileElement->getType())
     {
         case TileElementType::path:
-            if (tileElement->asPath()->IsQueue() && tileElement->asPath()->GetRideIndex() == rideIndex)
+            if (tileElement->asPath()->isQueue() && tileElement->asPath()->getRideIndex() == rideIndex)
                 return true;
             break;
         case TileElementType::track:
@@ -594,9 +594,9 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                 switch (tileElement->getType())
                 {
                     case TileElementType::path:
-                        if (!tileElement->asPath()->IsQueue())
+                        if (!tileElement->asPath()->isQueue())
                             interactionType = ViewportInteractionItem::footpath;
-                        else if (tileElement->asPath()->GetRideIndex() == rideIndex)
+                        else if (tileElement->asPath()->getRideIndex() == rideIndex)
                             interactionType = ViewportInteractionItem::footpath;
                         break;
                     case TileElementType::smallScenery:

@@ -1356,30 +1356,30 @@ namespace OpenRCT2::RCT2
                     if (surfaceEntry == kObjectEntryIndexNull)
                     {
                         // Legacy footpath object
-                        dst2->SetLegacyPathEntryIndex(pathEntryIndex);
+                        dst2->setLegacyPathEntryIndex(pathEntryIndex);
                     }
                     else
                     {
                         // Surface / railing
-                        dst2->SetSurfaceEntryIndex(surfaceEntry);
-                        dst2->SetRailingsEntryIndex(_pathToRailingMap[pathEntryIndex]);
+                        dst2->setSurfaceEntryIndex(surfaceEntry);
+                        dst2->setRailingsEntryIndex(_pathToRailingMap[pathEntryIndex]);
                     }
 
-                    dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
-                    dst2->SetSloped(src2->IsSloped());
-                    dst2->SetSlopeDirection(src2->GetSlopeDirection());
-                    dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
-                    dst2->SetWide(src2->IsWide());
-                    dst2->SetIsQueue(src2->IsQueue());
-                    dst2->SetHasQueueBanner(src2->HasQueueBanner());
-                    dst2->SetEdges(src2->GetEdges());
-                    dst2->SetCorners(src2->GetCorners());
-                    dst2->SetAddition(src2->GetAddition());
-                    dst2->SetAdditionIsGhost(src2->AdditionIsGhost());
-                    dst2->SetAdditionStatus(src2->GetAdditionStatus());
-                    dst2->SetIsBroken(src2->IsBroken());
-                    dst2->SetIsBlockedByVehicle(src2->IsBlockedByVehicle());
+                    dst2->setQueueBannerDirection(src2->GetQueueBannerDirection());
+                    dst2->setSloped(src2->IsSloped());
+                    dst2->setSlopeDirection(src2->GetSlopeDirection());
+                    dst2->setRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
+                    dst2->setWide(src2->IsWide());
+                    dst2->setIsQueue(src2->IsQueue());
+                    dst2->setHasQueueBanner(src2->HasQueueBanner());
+                    dst2->setEdges(src2->GetEdges());
+                    dst2->setCorners(src2->GetCorners());
+                    dst2->setAddition(src2->GetAddition());
+                    dst2->setAdditionIsGhost(src2->AdditionIsGhost());
+                    dst2->setAdditionStatus(src2->GetAdditionStatus());
+                    dst2->setIsBroken(src2->IsBroken());
+                    dst2->setIsBlockedByVehicle(src2->IsBlockedByVehicle());
 
                     break;
                 }

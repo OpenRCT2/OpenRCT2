@@ -2378,7 +2378,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::pathAddition:
                 {
-                    auto entryIndex = info.Element->asPath()->GetAdditionEntryIndex();
+                    auto entryIndex = info.Element->asPath()->getAdditionEntryIndex();
                     auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
                     if (pathAdditionEntry != nullptr)
                     {
@@ -2881,9 +2881,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto z = info.Element->getBaseZ();
 
-            if (info.Element->asPath()->IsSloped())
+            if (info.Element->asPath()->isSloped())
             {
-                if (rotation != DirectionReverse(info.Element->asPath()->GetSlopeDirection()))
+                if (rotation != DirectionReverse(info.Element->asPath()->getSlopeDirection()))
                 {
                     z += (2 * kCoordsZStep);
                 }

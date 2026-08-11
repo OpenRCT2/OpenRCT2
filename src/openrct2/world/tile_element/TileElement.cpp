@@ -91,7 +91,7 @@ namespace OpenRCT2
             case TileElementType::entrance:
                 return asEntrance()->getRideIndex();
             case TileElementType::path:
-                return asPath()->GetRideIndex();
+                return asPath()->getRideIndex();
             default:
                 return RideId::GetNull();
         }

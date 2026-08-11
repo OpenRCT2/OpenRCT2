@@ -485,10 +485,10 @@ namespace OpenRCT2::GameActions
             if (it.element->getType() != TileElementType::path)
                 continue;
 
-            if (!(it.element)->asPath()->HasAddition())
+            if (!(it.element)->asPath()->hasAddition())
                 continue;
 
-            it.element->asPath()->SetIsBroken(false);
+            it.element->asPath()->setIsBroken(false);
         } while (TileElementIteratorNext(&it));
 
         GfxInvalidateScreen();
@@ -509,12 +509,12 @@ namespace OpenRCT2::GameActions
                 continue;
 
             auto* path = it.element->asPath();
-            if (!path->HasAddition())
+            if (!path->hasAddition())
                 continue;
 
-            auto* pathAdditionEntry = path->GetAdditionEntry();
+            auto* pathAdditionEntry = path->getAdditionEntry();
             if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
-                path->SetAdditionStatus(0xFF);
+                path->setAdditionStatus(0xFF);
 
         } while (TileElementIteratorNext(&it));
 

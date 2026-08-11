@@ -367,11 +367,11 @@ namespace OpenRCT2::Editor
                 case TileElementType::path:
                 {
                     auto footpathEl = iter.element->asPath();
-                    auto legacyPathEntryIndex = footpathEl->GetLegacyPathEntryIndex();
+                    auto legacyPathEntryIndex = footpathEl->getLegacyPathEntryIndex();
                     if (legacyPathEntryIndex == kObjectEntryIndexNull)
                     {
-                        auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
-                        auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
+                        auto surfaceEntryIndex = footpathEl->getSurfaceEntryIndex();
+                        auto railingEntryIndex = footpathEl->getRailingsEntryIndex();
                         Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
                         Editor::SetSelectedObject(ObjectType::footpathRailings, railingEntryIndex, ObjectSelectionFlags::InUse);
                     }
@@ -379,9 +379,9 @@ namespace OpenRCT2::Editor
                     {
                         Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
                     }
-                    if (footpathEl->HasAddition())
+                    if (footpathEl->hasAddition())
                     {
-                        auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
+                        auto pathAdditionEntryIndex = footpathEl->getAdditionEntryIndex();
                         SetSelectedObject(ObjectType::pathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
                     }
                     break;

@@ -34,7 +34,7 @@ namespace OpenRCT2
                 continue;
 
             int32_t pathBaseZ = tileElement->getBaseZ();
-            int32_t pathTopZ = pathBaseZ + (tileElement->asPath()->IsSloped() ? kPathHeightStep : 0);
+            int32_t pathTopZ = pathBaseZ + (tileElement->asPath()->isSloped() ? kPathHeightStep : 0);
             if (!(pathBaseZ <= mapPos.z && pathTopZ >= mapPos.z))
                 continue;
 

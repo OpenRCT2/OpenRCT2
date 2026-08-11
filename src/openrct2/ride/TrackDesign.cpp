@@ -1236,7 +1236,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview
                     || tds.placeOperation == TrackPlaceOperation::place)
                 {
-                    if (!pathElement->IsQueue() || FootpathQueueCountConnections(mapCoord, *pathElement) < 2)
+                    if (!pathElement->isQueue() || FootpathQueueCountConnections(mapCoord, *pathElement) < 2)
                     {
                         FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
                         FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);

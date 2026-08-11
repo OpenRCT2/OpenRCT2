@@ -347,7 +347,7 @@ namespace OpenRCT2
         auto pathElement = MapGetFootpathElement(loc);
         if (pathElement != nullptr)
         {
-            return pathElement->asPath()->IsLevelCrossing(loc);
+            return pathElement->asPath()->isLevelCrossing(loc);
         }
         return false;
     }
@@ -805,8 +805,8 @@ namespace OpenRCT2
                 if (tile_element->getType() == TileElementType::path)
                 {
                     int32_t height = MapHeightFromSlope(
-                                         { x, y }, tile_element->asPath()->GetSlopeDirection(),
-                                         tile_element->asPath()->IsSloped())
+                                         { x, y }, tile_element->asPath()->getSlopeDirection(),
+                                         tile_element->asPath()->isSloped())
                         + tile_element->getBaseZ();
 
                     if (height < z - 1 || height > z + 8)
@@ -876,7 +876,7 @@ namespace OpenRCT2
         }
         else
         {
-            SetNextFlags(saved_map->asPath()->GetSlopeDirection(), saved_map->asPath()->IsSloped(), false);
+            SetNextFlags(saved_map->asPath()->getSlopeDirection(), saved_map->asPath()->isSloped(), false);
         }
         SetState(PeepState::one);
     }
@@ -1833,12 +1833,12 @@ namespace OpenRCT2
                     if (nextTileElement->getType() != TileElementType::path)
                         continue;
 
-                    if (nextTileElement->asPath()->IsQueue())
+                    if (nextTileElement->asPath()->isQueue())
                         continue;
 
-                    if (nextTileElement->asPath()->IsSloped())
+                    if (nextTileElement->asPath()->isSloped())
                     {
-                        uint8_t slopeDirection = nextTileElement->asPath()->GetSlopeDirection();
+                        uint8_t slopeDirection = nextTileElement->asPath()->getSlopeDirection();
                         if (slopeDirection == entranceDirection)
                         {
                             if (z != nextTileElement->baseHeight)
@@ -1935,7 +1935,7 @@ namespace OpenRCT2
         assert(pathElement != nullptr);
 
         peep->NextLoc = { coords.ToTileStart(), pathElement->getBaseZ() };
-        peep->SetNextFlags(pathElement->GetSlopeDirection(), pathElement->IsSloped(), false);
+        peep->SetNextFlags(pathElement->getSlopeDirection(), pathElement->isSloped(), false);
 
         int16_t z = peep->GetZOnSlope(coords.x, coords.y);
 
@@ -2094,7 +2094,7 @@ namespace OpenRCT2
         assert(pathElement != nullptr);
 
         bool vandalismPresent = false;
-        if (pathElement->HasAddition() && pathElement->IsBroken() && (pathElement->GetEdges()) != 0xF)
+        if (pathElement->hasAddition() && pathElement->isBroken() && (pathElement->getEdges()) != 0xF)
         {
             vandalismPresent = true;
         }
@@ -2118,9 +2118,9 @@ namespace OpenRCT2
             }
         }
 
-        if (guest != nullptr && pathElement->IsQueue())
+        if (guest != nullptr && pathElement->isQueue())
         {
-            auto rideIndex = pathElement->GetRideIndex();
+            auto rideIndex = pathElement->getRideIndex();
             if (guest->State == PeepState::queuing)
             {
                 // Check if this queue is connected to the ride the
@@ -2143,10 +2143,10 @@ namespace OpenRCT2
             {
                 // Peep is not queuing.
                 guest->timeLost = 0;
-                auto stationNum = pathElement->GetStationIndex();
+                auto stationNum = pathElement->getStationIndex();
 
-                if (pathElement->HasQueueBanner()
-                    && pathElement->GetQueueBannerDirection()
+                if (pathElement->hasQueueBanner()
+                    && pathElement->getQueueBannerDirection()
                         == DirectionReverse(guest->PeepDirection) // Ride sign is facing the direction the peep is walking
                 )
                 {

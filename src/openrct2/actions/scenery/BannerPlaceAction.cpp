@@ -168,7 +168,7 @@ namespace OpenRCT2::GameActions
             if (pathElement->getBaseZ() != _loc.z && pathElement->getBaseZ() != _loc.z - kPathHeightStep)
                 continue;
 
-            if (!(pathElement->GetEdges() & (1 << _loc.direction)))
+            if (!(pathElement->getEdges() & (1 << _loc.direction)))
                 continue;
 
             if (pathElement->isGhost() && !GetFlags().has(CommandFlag::ghost))

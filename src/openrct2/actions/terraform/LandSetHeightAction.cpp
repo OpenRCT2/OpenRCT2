@@ -111,7 +111,7 @@ namespace OpenRCT2::GameActions
         // For that, we need the old height, so we can't use the _height variable.
         auto oldCoords = CoordsXYZ{ _coords, surfaceElement->getBaseZ() };
         auto* pathElement = MapGetFootpathElement(oldCoords);
-        if (pathElement != nullptr && pathElement->asPath()->IsLevelCrossing(oldCoords))
+        if (pathElement != nullptr && pathElement->asPath()->isLevelCrossing(oldCoords))
         {
             return Result(Status::disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
         }

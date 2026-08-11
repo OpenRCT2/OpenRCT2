@@ -494,9 +494,9 @@ namespace OpenRCT2::GameActions
             if (crossingMode == CreateCrossingMode::trackOverPath && !GetFlags().has(CommandFlag::ghost))
             {
                 auto footpathElement = MapGetFootpathElement(mapLoc);
-                if (footpathElement != nullptr && footpathElement->HasAddition())
+                if (footpathElement != nullptr && footpathElement->hasAddition())
                 {
-                    footpathElement->SetAddition(0);
+                    footpathElement->setAddition(0);
                 }
             }
 

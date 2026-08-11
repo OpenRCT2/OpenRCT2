@@ -1673,32 +1673,32 @@ namespace OpenRCT2::RCT1
                     auto dst2 = dst->asPath();
                     auto src2 = src->asPath();
 
-                    dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
-                    dst2->SetSloped(src2->IsSloped());
-                    dst2->SetSlopeDirection(src2->GetSlopeDirection());
-                    dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
-                    dst2->SetWide(src2->IsWide());
-                    dst2->SetHasQueueBanner(src2->HasQueueBanner());
-                    dst2->SetEdges(src2->GetEdges());
-                    dst2->SetCorners(src2->GetCorners());
-                    dst2->SetAddition(0);
-                    dst2->SetAdditionIsGhost(false);
-                    dst2->SetAdditionStatus(src2->GetAdditionStatus());
+                    dst2->setQueueBannerDirection(src2->GetQueueBannerDirection());
+                    dst2->setSloped(src2->IsSloped());
+                    dst2->setSlopeDirection(src2->GetSlopeDirection());
+                    dst2->setRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
+                    dst2->setWide(src2->IsWide());
+                    dst2->setHasQueueBanner(src2->HasQueueBanner());
+                    dst2->setEdges(src2->GetEdges());
+                    dst2->setCorners(src2->GetCorners());
+                    dst2->setAddition(0);
+                    dst2->setAdditionIsGhost(false);
+                    dst2->setAdditionStatus(src2->GetAdditionStatus());
 
                     // Type
                     uint8_t pathType = src2->GetRCT1PathType();
                     auto entryIndex = _footpathSurfaceTypeToEntryMap[pathType];
 
                     dst2->setDirection(0);
-                    dst2->SetIsBroken(false);
-                    dst2->SetIsBlockedByVehicle(false);
+                    dst2->setIsBroken(false);
+                    dst2->setIsBlockedByVehicle(false);
 
-                    dst2->SetLegacyPathEntryIndex(entryIndex);
-                    dst2->SetShouldDrawPathOverSupports(true);
+                    dst2->setLegacyPathEntryIndex(entryIndex);
+                    dst2->setShouldDrawPathOverSupports(true);
                     if (PathIsQueue(pathType))
                     {
-                        dst2->SetIsQueue(true);
+                        dst2->setIsQueue(true);
                     }
 
                     uint8_t railingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
@@ -1707,7 +1707,7 @@ namespace OpenRCT2::RCT1
                         railingsType = src2->GetRCT1SupportType();
                     }
                     // All types are already loaded, in the same order as RCT1.
-                    dst2->SetRailingsEntryIndex(railingsType);
+                    dst2->setRailingsEntryIndex(railingsType);
 
                     // Additions
                     ObjectEntryIndex additionType = src2->GetAddition();
@@ -1717,9 +1717,9 @@ namespace OpenRCT2::RCT1
                         entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
                         if (additionType != normalisedType)
                         {
-                            dst2->SetIsBroken(true);
+                            dst2->setIsBroken(true);
                         }
-                        dst2->SetAdditionEntryIndex(entryIndex);
+                        dst2->setAdditionEntryIndex(entryIndex);
                     }
                     return 1;
                 }
@@ -2557,10 +2557,10 @@ namespace OpenRCT2::RCT1
                     continue;
 
                 auto* pathElement = it.element->asPath();
-                if (pathElement->IsSloped())
+                if (pathElement->isSloped())
                     continue;
 
-                if (pathElement->IsQueue())
+                if (pathElement->isQueue())
                     continue;
 
                 auto* surface = MapGetSurfaceElementAt(TileCoordsXY(it.x, it.y));
@@ -2576,7 +2576,7 @@ namespace OpenRCT2::RCT1
                 // RCT1 would always draw supports around a path if it was flat on the ground.
                 // In RCT2, this depends on the support type of the path, even though that isn’t even visible in this case.
                 // As such, always import footpath that is on the ground with box supports.
-                pathElement->SetRailingsEntryIndex(RCT1_PATH_SUPPORT_TYPE_TRUSS);
+                pathElement->setRailingsEntryIndex(RCT1_PATH_SUPPORT_TYPE_TRUSS);
             }
         }
 

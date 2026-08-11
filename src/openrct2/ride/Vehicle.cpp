@@ -1363,13 +1363,13 @@ namespace OpenRCT2
                 auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->getBaseZ() }));
                 if (pathElement != nullptr)
                 {
-                    if (!playedClaxon && !pathElement->IsBlockedByVehicle())
+                    if (!playedClaxon && !pathElement->isBlockedByVehicle())
                     {
                         Claxon();
                         playedClaxon = true;
                     }
                     crossingBonus = 4;
-                    pathElement->SetIsBlockedByVehicle(true);
+                    pathElement->setIsBlockedByVehicle(true);
                 }
                 else
                 {
@@ -1435,7 +1435,7 @@ namespace OpenRCT2
             auto* pathElement = MapGetPathElementAt(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->getBaseZ() }));
             if (pathElement != nullptr)
             {
-                pathElement->SetIsBlockedByVehicle(false);
+                pathElement->setIsBlockedByVehicle(false);
             }
         }
     }

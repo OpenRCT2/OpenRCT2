@@ -485,7 +485,7 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::footpath:
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-                if (tileElement->asPath()->IsQueue())
+                if (tileElement->asPath()->isQueue())
                     ft.Add<StringId>(STR_QUEUE_LINE_MAP_TIP);
                 else
                     ft.Add<StringId>(STR_FOOTPATH_MAP_TIP);
@@ -494,9 +494,9 @@ namespace OpenRCT2::Ui
 
             case ViewportInteractionItem::pathAddition:
             {
-                auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
+                auto* pathAddEntry = tileElement->asPath()->getAdditionEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-                if (tileElement->asPath()->IsBroken())
+                if (tileElement->asPath()->isBroken())
                 {
                     ft.Add<StringId>(STR_BROKEN);
                 }

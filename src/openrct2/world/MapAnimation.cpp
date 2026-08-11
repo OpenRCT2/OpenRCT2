@@ -128,11 +128,11 @@ template<bool invalidate, bool invalidateAllViewports>
 static bool UpdatePathAnimation(
     const PathElement& path, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    if (path.IsQueue() && path.HasQueueBanner())
+    if (path.isQueue() && path.hasQueueBanner())
     {
         if constexpr (invalidate)
         {
-            const int32_t direction = (path.GetQueueBannerDirection() + GetCurrentRotation()) & 3;
+            const int32_t direction = (path.getQueueBannerDirection() + GetCurrentRotation()) & 3;
             if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
             {
                 Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 16, baseZ + 30, kMaxScrollingTextZoom);
@@ -550,7 +550,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::path:
         {
             const auto* const path = element.asPath();
-            if (path->HasQueueBanner())
+            if (path->hasQueueBanner())
             {
                 return std::optional(UpdateType::invalidate);
             }

@@ -744,7 +744,7 @@ namespace OpenRCT2
                     }
                     break;
                 case TileElementType::path:
-                    if (!tileElement->asPath()->IsQueue())
+                    if (!tileElement->asPath()->isQueue())
                     {
                         if (tileElement->getClearanceZ() == inputTileElement->getBaseZ())
                         {

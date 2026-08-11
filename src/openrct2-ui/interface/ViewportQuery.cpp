@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui
         if (info.interactionType == ViewportInteractionItem::footpath)
         {
             z = myTileElement->getBaseZ();
-            if (myTileElement->asPath()->IsSloped())
+            if (myTileElement->asPath()->isSloped())
             {
                 z += 8;
             }

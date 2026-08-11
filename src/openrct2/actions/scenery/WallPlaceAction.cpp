@@ -539,7 +539,7 @@ namespace OpenRCT2::GameActions
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
                 case TileElementType::path:
-                    if (tileElement->asPath()->GetEdges() & (1 << _edge))
+                    if (tileElement->asPath()->getEdges() & (1 << _edge))
                     {
                         MapGetObstructionErrorText(tileElement, res);
                         return res;

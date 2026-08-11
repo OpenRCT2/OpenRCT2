@@ -267,22 +267,22 @@ namespace OpenRCT2::GameActions
             pathElement->setClearanceZ(zHigh);
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
-                pathElement->SetLegacyPathEntryIndex(_type);
+                pathElement->setLegacyPathEntryIndex(_type);
             }
             else
             {
-                pathElement->SetSurfaceEntryIndex(_type);
-                pathElement->SetRailingsEntryIndex(_railingsType);
+                pathElement->setSurfaceEntryIndex(_type);
+                pathElement->setRailingsEntryIndex(_railingsType);
             }
-            pathElement->SetSlopeDirection(_slope.direction);
-            pathElement->SetSloped(_slope.type == FootpathSlopeType::sloped);
-            pathElement->SetIsQueue(isQueue);
-            pathElement->SetAddition(0);
-            pathElement->SetRideIndex(RideId::GetNull());
-            pathElement->SetAdditionStatus(255);
-            pathElement->SetIsBroken(false);
-            pathElement->SetEdges(_edges);
-            pathElement->SetCorners(0);
+            pathElement->setSlopeDirection(_slope.direction);
+            pathElement->setSloped(_slope.type == FootpathSlopeType::sloped);
+            pathElement->setIsQueue(isQueue);
+            pathElement->setAddition(0);
+            pathElement->setRideIndex(RideId::GetNull());
+            pathElement->setAdditionStatus(255);
+            pathElement->setIsBroken(false);
+            pathElement->setEdges(_edges);
+            pathElement->setCorners(0);
             pathElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             MapInvalidateTileFull(_loc);

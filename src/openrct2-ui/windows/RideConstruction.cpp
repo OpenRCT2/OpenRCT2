@@ -3448,7 +3448,7 @@ namespace OpenRCT2::Ui::Windows
 
                 pathsByDir[i] = MapGetFootpathElement(testLoc);
 
-                if (pathsByDir[i] != nullptr && pathsByDir[i]->IsSloped() && pathsByDir[i]->GetSlopeDirection() != i)
+                if (pathsByDir[i] != nullptr && pathsByDir[i]->isSloped() && pathsByDir[i]->getSlopeDirection() != i)
                 {
                     pathsByDir[i] = nullptr;
                 }
@@ -3459,13 +3459,13 @@ namespace OpenRCT2::Ui::Windows
                     pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - kPathHeightStep });
 
                     if (pathsByDir[i] != nullptr
-                        && (!pathsByDir[i]->IsSloped() || pathsByDir[i]->GetSlopeDirection() != DirectionReverse(i)))
+                        && (!pathsByDir[i]->isSloped() || pathsByDir[i]->getSlopeDirection() != DirectionReverse(i)))
                     {
                         pathsByDir[i] = nullptr;
                     }
                 }
 
-                if (pathsByDir[i] != nullptr && pathsByDir[i]->IsQueue())
+                if (pathsByDir[i] != nullptr && pathsByDir[i]->isQueue())
                 {
                     pathsByDir[i] = nullptr;
                 }

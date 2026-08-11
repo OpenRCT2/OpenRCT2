@@ -698,9 +698,9 @@ namespace OpenRCT2
             if (tileElement->getType() != TileElementType::path)
                 continue;
 
-            uint8_t slopeDirection = tileElement->asPath()->GetSlopeDirection();
+            uint8_t slopeDirection = tileElement->asPath()->getSlopeDirection();
 
-            if (tileElement->asPath()->IsSloped())
+            if (tileElement->asPath()->isSloped())
             {
                 if (slopeDirection == faceDirection)
                 {
@@ -714,7 +714,7 @@ namespace OpenRCT2
             }
             else
             {
-                if (loc.z == tileElement->baseHeight && (tileElement->asPath()->GetEdges() & (1 << faceDirection)))
+                if (loc.z == tileElement->baseHeight && (tileElement->asPath()->getEdges() & (1 << faceDirection)))
                     return true;
             }
         } while (!(tileElement++)->isLastForTile());
@@ -1020,10 +1020,10 @@ namespace OpenRCT2
             switch (it.element->getType())
             {
                 case TileElementType::path:
-                    if (it.element->asPath()->IsQueue())
+                    if (it.element->asPath()->isQueue())
                     {
-                        it.element->asPath()->SetHasQueueBanner(false);
-                        it.element->asPath()->SetRideIndex(RideId::GetNull());
+                        it.element->asPath()->setHasQueueBanner(false);
+                        it.element->asPath()->setRideIndex(RideId::GetNull());
                     }
                     break;
                 case TileElementType::entrance:

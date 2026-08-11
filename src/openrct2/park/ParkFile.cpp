@@ -1211,17 +1211,17 @@ namespace OpenRCT2
                         if (it.element->getType() == TileElementType::path)
                         {
                             auto* pathElement = it.element->asPath();
-                            if (pathElement->HasLegacyPathEntry())
+                            if (pathElement->hasLegacyPathEntry())
                             {
-                                auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
+                                auto pathEntryIndex = pathElement->getLegacyPathEntryIndex();
                                 if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
                                 {
-                                    if (pathElement->IsQueue())
-                                        pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
+                                    if (pathElement->isQueue())
+                                        pathElement->setSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
                                     else
-                                        pathElement->SetSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
+                                        pathElement->setSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
 
-                                    pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                    pathElement->setRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
                                 }
                             }
                         }

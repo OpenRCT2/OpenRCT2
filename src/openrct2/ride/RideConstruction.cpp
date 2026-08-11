@@ -568,7 +568,7 @@ namespace OpenRCT2
                     if (footpathElement == nullptr)
                         continue;
 
-                    footpathElement->SetIsBlockedByVehicle(false);
+                    footpathElement->setIsBlockedByVehicle(false);
                 }
             }
         }

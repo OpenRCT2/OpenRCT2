@@ -140,9 +140,9 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
         }
         else if (tileElement->getType() == TileElementType::path)
         {
-            if (tileElement->asPath()->HasAddition() && !tileElement->asPath()->AdditionIsGhost())
+            if (tileElement->asPath()->hasAddition() && !tileElement->asPath()->additionIsGhost())
             {
-                auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
+                auto* pathAddEntry = tileElement->asPath()->getAdditionEntry();
                 if (pathAddEntry != nullptr)
                 {
                     if (pathAddEntry->flags & PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER)
