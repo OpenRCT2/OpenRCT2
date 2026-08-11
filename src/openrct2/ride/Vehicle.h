@@ -254,7 +254,7 @@ namespace OpenRCT2
         void SetState(Status vehicleStatus, uint8_t subState = 0);
         bool isGhost() const;
         std::optional<EntityId> DodgemsCarWouldCollideAt(const CoordsXY& coords) const;
-        int32_t UpdateTrackMotion(int32_t* outStation);
+        int32_t updateTrackMotionTrain(int32_t* outStation);
         int32_t CableLiftUpdateTrackMotion();
         GForces GetGForces() const;
         void SetMapToolbar() const;
@@ -310,7 +310,7 @@ namespace OpenRCT2
         void CableLiftUpdateDeparting();
         void CableLiftUpdateTravelling();
         void CableLiftUpdateArriving();
-        void Sub6DBF3E();
+        void findStationStopPoint();
         void UpdateMeasurements();
         void UpdateMovingToEndOfStation();
         void UpdateWaitingForPassengers();
@@ -352,9 +352,9 @@ namespace OpenRCT2
         void UpdateAdditionalAnimation();
         void CheckIfMissing();
         bool CurrentTowerElementIsTop();
-        bool UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry);
-        bool UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry);
-        int32_t UpdateTrackMotionPoweredRideAcceleration(const CarEntry* carEntry, uint32_t totalMass, int32_t curAcceleration);
+        bool trackMotionForwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry);
+        bool trackMotionBackwards(const CarEntry* carEntry, const Ride& curRide, const RideObjectEntry& rideEntry);
+        int32_t getPoweredCarAcceleration(const CarEntry* carEntry, uint32_t totalMass, int32_t curAcceleration);
         int32_t NumPeepsUntilTrainTail() const;
         void InvalidateWindow();
         void TestReset();
@@ -363,14 +363,14 @@ namespace OpenRCT2
         bool CanDepartSynchronised() const;
         void ReverseReverserCar();
         void UpdateReverserCarBogies();
-        void UpdateHandleWaterSplash() const;
+        void handleWaterSplash() const;
         void Claxon() const;
-        void UpdateTrackMotionUpStopCheck() const;
-        void ApplyNonStopBlockBrake();
-        void ApplyStopBlockBrake();
-        void ApplyCableLiftBlockBrake(bool brakeClosed);
-        void CheckAndApplyBlockSectionStopSite();
-        void UpdateVelocity();
+        void upstopCheck() const;
+        void applyNonstopBlockBrake();
+        void applyStopBlockBrake();
+        void applyCableLiftBlockBrake(bool brakeClosed);
+        void handleBlockBrake();
+        void updateVelocity();
         void UpdateSpinningCar();
         void UpdateSwingingCar();
         int32_t GetSwingAmount() const;
@@ -385,17 +385,16 @@ namespace OpenRCT2
         int32_t UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& carEntry);
         int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
         void UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry);
-        bool UpdateTrackMotionForwardsGetNewTrack(
-            TrackElemType trackType, const Ride& curRide, const RideObjectEntry& rideEntry);
-        bool UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, uint16_t* progress);
+        bool trackMotionForwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, const RideObjectEntry& rideEntry);
+        bool trackMotionBackwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, uint16_t* progress);
         bool UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex);
-        void UpdateGoKartAttemptSwitchLanes();
+        void goKartAttemptLaneSwitch();
         void UpdateSceneryDoor() const;
         void UpdateSceneryDoorBackwards() const;
         void UpdateLandscapeDoors(int32_t previousTrackHeight) const;
         int32_t CalculateRiderBraking() const;
-        uint8_t ChooseBrakeSpeed() const;
-        void PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake);
+        uint8_t chooseBrakeSpeed() const;
+        void populateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake);
 
         void Loc6DCE02(const Ride& curRide);
         void Loc6DCDE4(const Ride& curRide);
@@ -415,7 +414,7 @@ namespace OpenRCT2
          * @return UpdateMiniGolfSubroutineStatus::stop or UpdateMiniGolfSubroutineStatus::restart
          */
         [[nodiscard]] UpdateMiniGolfSubroutineStatus Loc6DCA9A(const Ride& curRide);
-        void UpdateTrackMotionPreUpdate(
+        void updateTrackMotionCar(
             Vehicle& car, const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry);
     };
     static_assert(sizeof(Vehicle) <= 512);
@@ -551,10 +550,10 @@ namespace OpenRCT2
     extern Breakdown _vehicleBreakdown;
     extern StationIndex _vehicleStationIndex;
     extern uint32_t _vehicleMotionTrackFlags;
-    extern int32_t _vehicleVelocityF64E08;
-    extern int32_t _vehicleVelocityF64E0C;
-    extern int32_t _vehicleUnkF64E10;
-    extern uint8_t _vehicleF64E2C;
+    extern int32_t _vehicleVelocity;
+    extern int32_t _vehicleRemainingDistance;
+    extern int32_t _vehicleSubpositionsMoved;
+    extern uint8_t _vehicleBrakeSoundTimeout;
     extern Vehicle* _vehicleFrontVehicle;
     extern CoordsXYZ _vehicleCurPosition;
 } // namespace OpenRCT2

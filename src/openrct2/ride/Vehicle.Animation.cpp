@@ -658,7 +658,7 @@ namespace OpenRCT2
      */
     void Vehicle::UpdateSwingingCar()
     {
-        int32_t dword_F64E08 = abs(_vehicleVelocityF64E08);
+        int32_t dword_F64E08 = abs(_vehicleVelocity);
         if (flags.has(VehicleFlag::carIsReversed))
         {
             dword_F64E08 *= -1;
@@ -769,7 +769,7 @@ namespace OpenRCT2
         }
         int32_t spinningInertia = carEntry->spinningInertia;
         auto trackType = GetTrackType();
-        int32_t dword_F64E08 = _vehicleVelocityF64E08;
+        int32_t dword_F64E08 = _vehicleVelocity;
         int32_t spinSpeed{};
         // An L spin adds to the spin speed, R does the opposite
         // The number indicates how much right shift of the velocity will become spin
@@ -949,7 +949,7 @@ namespace OpenRCT2
      */
     static void AnimateSimpleVehicle(Vehicle& vehicle, const CarEntry& carEntry)
     {
-        vehicle.animationState += _vehicleVelocityF64E08;
+        vehicle.animationState += _vehicleVelocity;
         uint8_t targetFrame = GetTargetFrame(carEntry, vehicle.animationState);
         if (vehicle.animation_frame != targetFrame)
         {
@@ -963,7 +963,7 @@ namespace OpenRCT2
      */
     static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
     {
-        vehicle.animationState += _vehicleVelocityF64E08;
+        vehicle.animationState += _vehicleVelocity;
         uint8_t targetFrame = GetTargetFrame(carEntry, vehicle.animationState);
         if (vehicle.animation_frame != targetFrame)
         {
@@ -995,7 +995,7 @@ namespace OpenRCT2
     {
         // The animation of swan boats places frames at 0 and 2 instead of 0 and 1 like Water Tricycles due to the second
         // pair of peeps. The animation technically uses 4 frames, but ignores frames 1 and 3.
-        vehicle.animationState += _vehicleVelocityF64E08;
+        vehicle.animationState += _vehicleVelocity;
         uint8_t targetFrame = GetTargetFrame(carEntry, vehicle.animationState) * 2;
         if (vehicle.animation_frame != targetFrame)
         {
@@ -1078,7 +1078,7 @@ namespace OpenRCT2
     {
         vehicle.UpdateAnimationAnimalFlying();
         // makes animation play faster with vehicle speed
-        uint8_t targetFrame = abs(_vehicleVelocityF64E08) >> carEntry.animationSpeed;
+        uint8_t targetFrame = abs(_vehicleVelocity) >> carEntry.animationSpeed;
         vehicle.animationState = std::max(vehicle.animationState - targetFrame, 0u);
     }
 
