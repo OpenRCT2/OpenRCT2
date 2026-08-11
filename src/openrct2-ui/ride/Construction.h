@@ -9,16 +9,18 @@
 
 #pragma once
 
-#include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/ride/RideTypes.h>
-#include <openrct2/ride/Track.h>
-#include <openrct2/ride/ted/TrackElemType.h>
 #include <vector>
 
+struct CoordsXYZD;
+struct RideSelection;
 struct ScreenCoordsXY;
 
 namespace OpenRCT2
 {
+    enum class TrackElemType : uint16_t;
+
+    struct Ride;
+
     namespace TrackMetadata
     {
         enum class TrackPitch : uint8_t;
