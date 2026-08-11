@@ -404,9 +404,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
             return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         if (tileElement->getType() != TileElementType::entrance)
             continue;
-        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
-        if (tileElement->asEntrance()->GetRideIndex() == ride.id)
+        if (tileElement->asEntrance()->getRideIndex() == ride.id)
             break;
     } while (!(tileElement++)->isLastForTile());
     // Add something that stops this from walking off the end
@@ -431,9 +431,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     {
         if (tileElement->getType() != TileElementType::entrance)
             continue;
-        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+        if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
             continue;
-        if (tileElement->asEntrance()->GetRideIndex() == ride.id)
+        if (tileElement->asEntrance()->getRideIndex() == ride.id)
             break;
     } while (!(tileElement++)->isLastForTile());
     // Add something that stops this from walking off the end

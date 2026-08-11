@@ -424,13 +424,13 @@ namespace OpenRCT2::PathFinding
                 case TileElementType::entrance:
                     if (loc.z != tileElement->baseHeight)
                         continue;
-                    switch (tileElement->asEntrance()->GetEntranceType())
+                    switch (tileElement->asEntrance()->getEntranceType())
                     {
                         case ENTRANCE_TYPE_RIDE_ENTRANCE:
                             direction = tileElement->getDirection();
                             if (direction == chosenDirection)
                             {
-                                *outRideIndex = tileElement->asEntrance()->GetRideIndex();
+                                *outRideIndex = tileElement->asEntrance()->getRideIndex();
                                 return PathSearchResult::rideEntrance;
                             }
                             break;
@@ -438,7 +438,7 @@ namespace OpenRCT2::PathFinding
                             direction = tileElement->getDirection();
                             if (direction == chosenDirection)
                             {
-                                *outRideIndex = tileElement->asEntrance()->GetRideIndex();
+                                *outRideIndex = tileElement->asEntrance()->getRideIndex();
                                 return PathSearchResult::rideExit;
                             }
                             break;
@@ -795,7 +795,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     Direction direction;
                     searchResult = PathSearchResult::other;
-                    switch (tileElement->asEntrance()->GetEntranceType())
+                    switch (tileElement->asEntrance()->getEntranceType())
                     {
                         case ENTRANCE_TYPE_RIDE_ENTRANCE:
                             /* For peeps heading for a ride without a queue, the
@@ -808,7 +808,7 @@ namespace OpenRCT2::PathFinding
                             {
                                 /* The rideIndex will be useful for
                                  * adding transport rides later. */
-                                rideIndex = tileElement->asEntrance()->GetRideIndex();
+                                rideIndex = tileElement->asEntrance()->getRideIndex();
                                 searchResult = PathSearchResult::rideEntrance;
                                 found = true;
                                 break;

@@ -653,7 +653,7 @@ namespace OpenRCT2::Park
                 if (tileElement->getType() != TileElementType::entrance)
                     continue;
 
-                if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
                 if (!(tileElement->isGhost()))

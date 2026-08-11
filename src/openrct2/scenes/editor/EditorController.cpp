@@ -393,20 +393,20 @@ namespace OpenRCT2::Editor
                 case TileElementType::entrance:
                 {
                     auto parkEntranceEl = iter.element->asEntrance();
-                    if (parkEntranceEl->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (parkEntranceEl->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                         break;
 
                     type = iter.element->asEntrance()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::parkEntrance, type, ObjectSelectionFlags::InUse);
 
                     // Skip if not the middle part
-                    if (parkEntranceEl->GetSequenceIndex() != 0)
+                    if (parkEntranceEl->getSequenceIndex() != 0)
                         break;
 
-                    auto legacyPathEntryIndex = parkEntranceEl->GetLegacyPathEntryIndex();
+                    auto legacyPathEntryIndex = parkEntranceEl->getLegacyPathEntryIndex();
                     if (legacyPathEntryIndex == kObjectEntryIndexNull)
                     {
-                        auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
+                        auto surfaceEntryIndex = parkEntranceEl->getSurfaceEntryIndex();
                         Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
                     }
                     else

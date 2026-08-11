@@ -1818,10 +1818,10 @@ namespace OpenRCT2::RCT1
                     auto dst2 = dst->asEntrance();
                     auto src2 = src->asEntrance();
 
-                    dst2->SetEntranceType(src2->GetEntranceType());
-                    dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
-                    dst2->SetSequenceIndex(src2->GetSequenceIndex());
+                    dst2->setEntranceType(src2->GetEntranceType());
+                    dst2->setRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
+                    dst2->setSequenceIndex(src2->GetSequenceIndex());
 
                     if (src2->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     {
@@ -1831,7 +1831,7 @@ namespace OpenRCT2::RCT1
                             pathType = RCT1_FOOTPATH_TYPE_TARMAC_GREY;
                         }
                         auto entryIndex = _footpathSurfaceTypeToEntryMap[pathType];
-                        dst2->SetSurfaceEntryIndex(entryIndex);
+                        dst2->setSurfaceEntryIndex(entryIndex);
                     }
 
                     return 1;
@@ -2537,9 +2537,9 @@ namespace OpenRCT2::RCT1
 
                 if (element->getType() != TileElementType::entrance)
                     continue;
-                if (element->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (element->asEntrance()->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
-                if ((element->asEntrance()->GetSequenceIndex()) != 0)
+                if ((element->asEntrance()->getSequenceIndex()) != 0)
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->getBaseZ(), element->getDirection() };

@@ -1397,10 +1397,10 @@ namespace OpenRCT2::Ui::Windows
             // Details
             // Entrance type
             auto ft = Formatter();
-            ft.Add<StringId>(kEntranceTypeStringIds[entranceEl.GetEntranceType()]);
+            ft.Add<StringId>(kEntranceTypeStringIds[entranceEl.getEntranceType()]);
             drawText(rt, screenCoords, STR_TILE_INSPECTOR_ENTRANCE_TYPE, ft, { colours[1] });
 
-            if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (entranceEl.getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
             {
                 // TODO: Make this work with Left/Right park entrance parts
                 ft = Formatter();
@@ -1411,8 +1411,8 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 ft = Formatter();
-                ft.Add<int16_t>(entranceEl.GetStationIndex().ToUnderlying());
-                if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                ft.Add<int16_t>(entranceEl.getStationIndex().ToUnderlying());
+                if (entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                 {
                     // Ride entrance ID
                     drawText(
@@ -1427,21 +1427,21 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (entranceEl.getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
             {
                 // Entrance part
                 ft = Formatter();
-                ft.Add<StringId>(kParkEntrancePartStringIds[entranceEl.GetSequenceIndex()]);
+                ft.Add<StringId>(kParkEntrancePartStringIds[entranceEl.getSequenceIndex()]);
                 drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_PART, ft, { colours[1] });
             }
             else
             {
                 // Ride ID
                 ft = Formatter();
-                ft.Add<RideId>(entranceEl.GetRideIndex());
+                ft.Add<RideId>(entranceEl.getRideIndex());
                 drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, ft, { colours[1] });
                 // Station index
-                auto stationIndex = entranceEl.GetStationIndex();
+                auto stationIndex = entranceEl.getStationIndex();
                 ft = Formatter();
                 ft.Add<StringId>(STR_COMMA16);
                 ft.Add<int16_t>(stationIndex.ToUnderlying());
@@ -2351,7 +2351,7 @@ namespace OpenRCT2::Ui::Windows
 
                     setWidgetDisabled(
                         WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
-                        tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
+                        tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
                     break;
 
                 case TileElementType::wall:

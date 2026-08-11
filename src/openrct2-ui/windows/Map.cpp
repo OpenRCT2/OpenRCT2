@@ -928,9 +928,9 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case TileElementType::entrance:
                     {
-                        if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                        if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                             break;
-                        Ride* targetRide = GetRide(tileElement->asEntrance()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asEntrance()->getRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;

@@ -126,7 +126,7 @@ void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
     int32_t direction = entrance.element->getDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->getBaseZ();
-    RideId rideIndex = entrance.element->asEntrance()->GetRideIndex();
+    RideId rideIndex = entrance.element->asEntrance()->getRideIndex();
 
     auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
@@ -163,7 +163,7 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
     int32_t direction = entrance.element->getDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->getBaseZ();
-    RideId rideIndex = entrance.element->asEntrance()->GetRideIndex();
+    RideId rideIndex = entrance.element->asEntrance()->getRideIndex();
 
     auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
@@ -217,8 +217,8 @@ void ParkEntranceUpdateLocations()
     while (TileElementIteratorNext(&it))
     {
         auto entranceElement = it.element->asEntrance();
-        if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
-            && entranceElement->GetSequenceIndex() == 0 && !entranceElement->isGhost())
+        if (entranceElement != nullptr && entranceElement->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
+            && entranceElement->getSequenceIndex() == 0 && !entranceElement->isGhost())
         {
             auto entrance = TileCoordsXYZD(it.x, it.y, it.element->baseHeight, it.element->getDirection()).ToCoordsXYZD();
             park.entrances.push_back(entrance);

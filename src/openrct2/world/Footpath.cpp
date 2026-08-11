@@ -107,7 +107,7 @@ namespace OpenRCT2
 
     static bool entrance_has_direction(const EntranceElement& entranceElement, int32_t direction)
     {
-        return entranceElement.GetDirections() & (1 << (direction & 3));
+        return entranceElement.getDirections() & (1 << (direction & 3));
     }
 
     PathElement* MapGetFootpathElement(const CoordsXYZ& coords)
@@ -626,14 +626,14 @@ namespace OpenRCT2
                                 if (query)
                                 {
                                     FootpathNeighbourListPush(
-                                        neighbourList, 8, direction, tileElement->asEntrance()->GetRideIndex(),
-                                        tileElement->asEntrance()->GetStationIndex());
+                                        neighbourList, 8, direction, tileElement->asEntrance()->getRideIndex(),
+                                        tileElement->asEntrance()->getStationIndex());
                                 }
                                 else
                                 {
-                                    if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                                    if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                                     {
-                                        FootpathQueueChainPush(tileElement->asEntrance()->GetRideIndex());
+                                        FootpathQueueChainPush(tileElement->asEntrance()->getRideIndex());
                                     }
                                 }
                                 Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
@@ -956,9 +956,9 @@ namespace OpenRCT2
                     {
                         if (tileElement->getType() != TileElementType::entrance)
                             continue;
-                        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                        if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                             continue;
-                        if (tileElement->asEntrance()->GetRideIndex() != rideIndex)
+                        if (tileElement->asEntrance()->getRideIndex() != rideIndex)
                             continue;
 
                         Direction direction = DirectionReverse(tileElement->getDirection());
@@ -1564,9 +1564,9 @@ namespace OpenRCT2
         }
         else if (elementType == TileElementType::entrance)
         {
-            if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
-                FootpathQueueChainPush(tileElement->asEntrance()->GetRideIndex());
+                FootpathQueueChainPush(tileElement->asEntrance()->getRideIndex());
                 FootpathChainRideQueue(
                     RideId::GetNull(), StationIndex::FromUnderlying(0), footpathPos, tileElement,
                     DirectionReverse(tileElement->getDirection()));

@@ -48,43 +48,43 @@ namespace OpenRCT2
 
     private:
         uint8_t entranceType;        // 5
-        uint8_t SequenceIndex;       // 6. Only uses the lower nibble.
+        uint8_t sequenceIndex;       // 6. Only uses the lower nibble.
         StationIndex stationIndex;   // 7
-        ObjectEntryIndex PathType;   // 8
+        ObjectEntryIndex pathType;   // 8
         RideId rideIndex;            // A
         uint8_t flags2;              // C
         ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t Pad0F[1];
+        uint8_t pad0F[1];
 #pragma clang diagnostic pop
 
     public:
-        uint8_t GetEntranceType() const;
-        void SetEntranceType(uint8_t newType);
+        uint8_t getEntranceType() const;
+        void setEntranceType(uint8_t newType);
 
-        RideId GetRideIndex() const;
-        void SetRideIndex(RideId newRideIndex);
+        RideId getRideIndex() const;
+        void setRideIndex(RideId newRideIndex);
 
-        StationIndex GetStationIndex() const;
-        void SetStationIndex(StationIndex newStationIndex);
+        StationIndex getStationIndex() const;
+        void setStationIndex(StationIndex newStationIndex);
 
-        uint8_t GetSequenceIndex() const;
-        void SetSequenceIndex(uint8_t newSequenceIndex);
+        uint8_t getSequenceIndex() const;
+        void setSequenceIndex(uint8_t newSequenceIndex);
 
-        bool HasLegacyPathEntry() const;
+        bool hasLegacyPathEntry() const;
 
-        ObjectEntryIndex GetLegacyPathEntryIndex() const;
-        const FootpathObject* GetLegacyPathEntry() const;
-        void SetLegacyPathEntryIndex(ObjectEntryIndex newPathType);
+        ObjectEntryIndex getLegacyPathEntryIndex() const;
+        const FootpathObject* getLegacyPathEntry() const;
+        void setLegacyPathEntryIndex(ObjectEntryIndex newPathType);
 
-        ObjectEntryIndex GetSurfaceEntryIndex() const;
-        const FootpathSurfaceObject* GetSurfaceEntry() const;
-        void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+        ObjectEntryIndex getSurfaceEntryIndex() const;
+        const FootpathSurfaceObject* getSurfaceEntry() const;
+        void setSurfaceEntryIndex(ObjectEntryIndex newIndex);
 
-        const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
+        const PathSurfaceDescriptor* getPathSurfaceDescriptor() const;
 
-        int32_t GetDirections() const;
+        int32_t getDirections() const;
 
         ObjectEntryIndex getEntryIndex() const;
         void setEntryIndex(ObjectEntryIndex newIndex);

@@ -512,9 +512,9 @@ static void SwapRideEntranceAndExit(RideId rideId)
         station.Exit = exitCoords;
 
         auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
-        entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
+        entranceElement->setEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
         auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
-        exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
+        exitElement->setEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
         // Trigger footpath update
         FootpathQueueChainReset();

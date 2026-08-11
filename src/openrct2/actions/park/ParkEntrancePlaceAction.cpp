@@ -160,16 +160,16 @@ namespace OpenRCT2::GameActions
             entranceElement->setClearanceZ(zHigh);
             entranceElement->setGhost(flags.has(CommandFlag::ghost));
             entranceElement->setDirection(_loc.direction);
-            entranceElement->SetSequenceIndex(index);
-            entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
+            entranceElement->setSequenceIndex(index);
+            entranceElement->setEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
             entranceElement->setEntryIndex(_entranceType);
             if (!_pathTypeIsLegacy)
             {
-                entranceElement->SetSurfaceEntryIndex(_pathType);
+                entranceElement->setSurfaceEntryIndex(_pathType);
             }
             else
             {
-                entranceElement->SetLegacyPathEntryIndex(_pathType);
+                entranceElement->setLegacyPathEntryIndex(_pathType);
             }
 
             if (!entranceElement->isGhost())

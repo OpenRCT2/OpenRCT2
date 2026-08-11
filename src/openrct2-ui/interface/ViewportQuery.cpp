@@ -150,7 +150,7 @@ namespace OpenRCT2::Ui
             && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
             && (*tileElement)->getType() == TileElementType::entrance)
         {
-            uint32_t directions = (*tileElement)->asEntrance()->GetDirections();
+            uint32_t directions = (*tileElement)->asEntrance()->getDirections();
             if (directions & 0x0F)
             {
                 int32_t bx = Numerics::bitScanForward(directions);
@@ -167,7 +167,7 @@ namespace OpenRCT2::Ui
             EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath, ViewportInteractionItem::ride));
         if (info.interactionType == ViewportInteractionItem::ride && (*tileElement)->getType() == TileElementType::entrance)
         {
-            uint32_t directions = (*tileElement)->asEntrance()->GetDirections();
+            uint32_t directions = (*tileElement)->asEntrance()->getDirections();
             if (directions & 0x0F)
             {
                 int32_t bx = (*tileElement)->getDirectionWithOffset(Numerics::bitScanForward(directions));

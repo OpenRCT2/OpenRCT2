@@ -4953,7 +4953,7 @@ namespace OpenRCT2
             }
 
             if (tileElement->getType() == TileElementType::entrance
-                && tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+                && tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
             {
                 mazeType = MazeType::entranceOrExit;
                 break;

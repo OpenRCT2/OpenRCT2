@@ -1622,8 +1622,8 @@ namespace OpenRCT2
     static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_t& pathing_result)
     {
         auto tile_element = coords.element;
-        uint8_t entranceType = tile_element->asEntrance()->GetEntranceType();
-        auto rideIndex = tile_element->asEntrance()->GetRideIndex();
+        uint8_t entranceType = tile_element->asEntrance()->getEntranceType();
+        auto rideIndex = tile_element->asEntrance()->getRideIndex();
 
         if ((entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) || (entranceType == ENTRANCE_TYPE_RIDE_EXIT))
         {
@@ -1693,7 +1693,7 @@ namespace OpenRCT2
             }
 
             guest->timeLost = 0;
-            auto stationNum = tile_element->asEntrance()->GetStationIndex();
+            auto stationNum = tile_element->asEntrance()->getStationIndex();
             // Guest walks up to the ride for the first time since entering
             // the path tile or since considering another ride attached to
             // the path tile.
@@ -1745,7 +1745,7 @@ namespace OpenRCT2
             }
 
             // If not the centre of the entrance arch
-            if (tile_element->asEntrance()->GetSequenceIndex() != 0)
+            if (tile_element->asEntrance()->getSequenceIndex() != 0)
             {
                 PeepReturnToCentreOfTile(guest);
                 return true;

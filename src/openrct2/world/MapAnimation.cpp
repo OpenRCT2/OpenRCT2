@@ -90,9 +90,9 @@ template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateEntranceAnimation(
     const EntranceElement& entrance, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    if (entrance.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    if (entrance.getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
-        const auto* const ride = GetRide(entrance.GetRideIndex());
+        const auto* const ride = GetRide(entrance.getRideIndex());
         if (ride != nullptr)
         {
             const auto* const stationObj = ride->getStationObject();
@@ -108,7 +108,7 @@ static bool UpdateEntranceAnimation(
             }
         }
     }
-    else if (entrance.GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance.GetSequenceIndex() == 0)
+    else if (entrance.getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance.getSequenceIndex() == 0)
     {
         if constexpr (invalidate)
         {
@@ -559,11 +559,11 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::entrance:
         {
             const auto* const entrance = element.asEntrance();
-            if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
+            if (entrance->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->getSequenceIndex() == 0)
             {
                 return std::optional(UpdateType::invalidate);
             }
-            else if (entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            else if (entrance->getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 return std::optional(UpdateType::invalidate);
             }

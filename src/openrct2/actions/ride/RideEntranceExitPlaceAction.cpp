@@ -206,9 +206,9 @@ namespace OpenRCT2::GameActions
 
         entranceElement->setDirection(_direction);
         entranceElement->setClearanceZ(clear_z);
-        entranceElement->SetEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
-        entranceElement->SetStationIndex(_stationNum);
-        entranceElement->SetRideIndex(_rideIndex);
+        entranceElement->setEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
+        entranceElement->setStationIndex(_stationNum);
+        entranceElement->setRideIndex(_rideIndex);
         entranceElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
         if (_isExit)

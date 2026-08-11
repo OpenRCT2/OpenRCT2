@@ -333,7 +333,7 @@ namespace OpenRCT2::Ui
                 if (tileElement->getType() == TileElementType::entrance)
                 {
                     StringId stringId;
-                    if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                    if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     {
                         if (ride->numStations > 1)
                         {
@@ -390,7 +390,7 @@ namespace OpenRCT2::Ui
 
                 StationIndex::UnderlyingType stationIndex;
                 if (tileElement->getType() == TileElementType::entrance)
-                    stationIndex = tileElement->asEntrance()->GetStationIndex().ToUnderlying();
+                    stationIndex = tileElement->asEntrance()->getStationIndex().ToUnderlying();
                 else
                     stationIndex = tileElement->asTrack()->GetStationIndex().ToUnderlying();
 
@@ -670,7 +670,7 @@ namespace OpenRCT2::Ui
     void ViewportInteractionRemoveParkEntrance(const EntranceElement& entranceElement, CoordsXY mapCoords)
     {
         int32_t rotation = entranceElement.getDirectionWithOffset(1);
-        switch (entranceElement.GetSequenceIndex())
+        switch (entranceElement.getSequenceIndex())
         {
             case 1:
                 mapCoords += CoordsDirectionDelta[rotation];

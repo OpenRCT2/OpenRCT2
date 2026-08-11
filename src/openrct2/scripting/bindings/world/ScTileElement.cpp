@@ -560,7 +560,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                return JS_NewUint32(ctx, el->GetSequenceIndex());
+                return JS_NewUint32(ctx, el->getSequenceIndex());
             }
             default:
             {
@@ -613,7 +613,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                el->SetSequenceIndex(value);
+                el->setSequenceIndex(value);
                 Invalidate(data);
                 break;
             }
@@ -658,7 +658,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                return JS_NewUint32(ctx, el->GetRideIndex().ToUnderlying());
+                return JS_NewUint32(ctx, el->getRideIndex().ToUnderlying());
             }
             default:
             {
@@ -731,7 +731,7 @@ namespace OpenRCT2::Scripting
 
                 JS_UNPACK_UINT32(value, ctx, jsValue);
                 auto* el = element->asEntrance();
-                el->SetRideIndex(RideId::FromUnderlying(value));
+                el->setRideIndex(RideId::FromUnderlying(value));
                 Invalidate(data);
                 break;
             }
@@ -789,7 +789,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                return JS_NewUint32(ctx, el->GetStationIndex().ToUnderlying());
+                return JS_NewUint32(ctx, el->getStationIndex().ToUnderlying());
             }
             default:
             {
@@ -855,7 +855,7 @@ namespace OpenRCT2::Scripting
 
                 JS_UNPACK_UINT32(value, ctx, jsValue);
                 auto* el = element->asEntrance();
-                el->SetStationIndex(StationIndex::FromUnderlying(value));
+                el->setStationIndex(StationIndex::FromUnderlying(value));
                 Invalidate(data);
                 break;
             }
@@ -1286,7 +1286,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                return JS_NewUint32(ctx, el->GetEntranceType());
+                return JS_NewUint32(ctx, el->getEntranceType());
             }
             case TileElementType::banner:
             {
@@ -1349,7 +1349,7 @@ namespace OpenRCT2::Scripting
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
                 auto* el = element->asEntrance();
-                el->SetEntranceType(index);
+                el->setEntranceType(index);
                 Invalidate(data);
                 break;
             }
@@ -2138,7 +2138,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asEntrance();
         if (el != nullptr)
         {
-            auto index = el->GetLegacyPathEntryIndex();
+            auto index = el->getLegacyPathEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
                 return JS_NewUint32(ctx, index);
@@ -2156,7 +2156,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                el->SetLegacyPathEntryIndex(value);
+                el->setLegacyPathEntryIndex(value);
                 Invalidate(data);
             }
         }
@@ -2169,7 +2169,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asEntrance();
         if (el != nullptr)
         {
-            auto index = el->GetSurfaceEntryIndex();
+            auto index = el->getSurfaceEntryIndex();
             if (index != kObjectEntryIndexNull)
             {
                 return JS_NewUint32(ctx, index);
@@ -2188,7 +2188,7 @@ namespace OpenRCT2::Scripting
             if (el != nullptr)
             {
                 JS_UNPACK_UINT32(value, ctx, jsValue);
-                el->SetSurfaceEntryIndex(value);
+                el->setSurfaceEntryIndex(value);
                 Invalidate(data);
             }
         }

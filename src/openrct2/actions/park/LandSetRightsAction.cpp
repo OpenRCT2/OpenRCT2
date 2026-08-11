@@ -162,7 +162,7 @@ namespace OpenRCT2::GameActions
 
                 for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
                 {
-                    if (entranceElement->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (entranceElement->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                         continue;
 
                     // Do not allow ownership of park entrance.

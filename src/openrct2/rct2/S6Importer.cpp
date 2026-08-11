@@ -1464,10 +1464,10 @@ namespace OpenRCT2::RCT2
                     auto dst2 = dst->asEntrance();
                     auto src2 = src->asEntrance();
 
-                    dst2->SetEntranceType(src2->GetEntranceType());
-                    dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
-                    dst2->SetSequenceIndex(src2->GetSequenceIndex());
+                    dst2->setEntranceType(src2->GetEntranceType());
+                    dst2->setRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
+                    dst2->setSequenceIndex(src2->GetSequenceIndex());
 
                     if (src2->GetSequenceIndex() == 0)
                     {
@@ -1476,17 +1476,17 @@ namespace OpenRCT2::RCT2
                         if (surfaceEntry == kObjectEntryIndexNull)
                         {
                             // Legacy footpath object
-                            dst2->SetLegacyPathEntryIndex(pathEntryIndex);
+                            dst2->setLegacyPathEntryIndex(pathEntryIndex);
                         }
                         else
                         {
                             // Surface
-                            dst2->SetSurfaceEntryIndex(surfaceEntry);
+                            dst2->setSurfaceEntryIndex(surfaceEntry);
                         }
                     }
                     else
                     {
-                        dst2->SetSurfaceEntryIndex(kObjectEntryIndexNull);
+                        dst2->setSurfaceEntryIndex(kObjectEntryIndexNull);
                     }
                     break;
                 }

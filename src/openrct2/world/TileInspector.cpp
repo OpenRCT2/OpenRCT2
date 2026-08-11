@@ -234,14 +234,14 @@ namespace OpenRCT2::TileInspector
                     tileElement->setDirection(newRotation);
 
                     // Update ride's known entrance/exit rotation
-                    auto ride = GetRide(tileElement->asEntrance()->GetRideIndex());
+                    auto ride = GetRide(tileElement->asEntrance()->getRideIndex());
                     if (ride != nullptr)
                     {
-                        auto stationIndex = tileElement->asEntrance()->GetStationIndex();
+                        auto stationIndex = tileElement->asEntrance()->getStationIndex();
                         auto& station = ride->getStation(stationIndex);
                         auto entrance = station.Entrance;
                         auto exit = station.Exit;
-                        uint8_t entranceType = tileElement->asEntrance()->GetEntranceType();
+                        uint8_t entranceType = tileElement->asEntrance()->getEntranceType();
                         uint8_t z = tileElement->baseHeight;
 
                         // Make sure this is the correct entrance or exit
@@ -460,14 +460,14 @@ namespace OpenRCT2::TileInspector
         {
             if (tileElement->getType() == TileElementType::entrance)
             {
-                uint8_t entranceType = tileElement->asEntrance()->GetEntranceType();
+                uint8_t entranceType = tileElement->asEntrance()->getEntranceType();
                 if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
                     // Update the ride's known entrance or exit height
-                    auto ride = GetRide(tileElement->asEntrance()->GetRideIndex());
+                    auto ride = GetRide(tileElement->asEntrance()->getRideIndex());
                     if (ride != nullptr)
                     {
-                        auto entranceIndex = tileElement->asEntrance()->GetStationIndex();
+                        auto entranceIndex = tileElement->asEntrance()->getStationIndex();
                         auto& station = ride->getStation(entranceIndex);
                         const auto& entranceLoc = station.Entrance;
                         const auto& exitLoc = station.Exit;
@@ -643,17 +643,17 @@ namespace OpenRCT2::TileInspector
             return GameActions::Result(
                 GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
 
-        auto ride = GetRide(entranceElement->asEntrance()->GetRideIndex());
+        auto ride = GetRide(entranceElement->asEntrance()->getRideIndex());
         if (ride == nullptr)
             return GameActions::Result(
                 GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
         if (isExecuting)
         {
-            auto stationIndex = entranceElement->asEntrance()->GetStationIndex();
+            auto stationIndex = entranceElement->asEntrance()->getStationIndex();
             auto& station = ride->getStation(stationIndex);
 
-            switch (entranceElement->asEntrance()->GetEntranceType())
+            switch (entranceElement->asEntrance()->getEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
                     station.Entrance = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
