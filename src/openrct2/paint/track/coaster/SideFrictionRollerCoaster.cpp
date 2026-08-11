@@ -71,7 +71,7 @@ static void SideFrictionRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -173,7 +173,7 @@ static void SideFrictionRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -268,7 +268,7 @@ static void SideFrictionRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -363,7 +363,7 @@ static void SideFrictionRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -1724,7 +1724,7 @@ static void SideFrictionRCTrackDiagFlat(
     };
 
     TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, kImages[trackElement.HasChain()], defaultDiagTileOffsets,
+        session, 2, height, direction, trackSequence, kImages[trackElement.hasChain()], defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     switch (trackSequence)
@@ -1733,7 +1733,7 @@ static void SideFrictionRCTrackDiagFlat(
             if (direction == 0)
             {
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
+                    session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.hasChain()][direction]),
                     { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
             }
             break;
@@ -1741,7 +1741,7 @@ static void SideFrictionRCTrackDiagFlat(
             if (direction == 2)
             {
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
+                    session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.hasChain()][direction]),
                     { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
             }
             break;
@@ -1761,7 +1761,7 @@ static void SideFrictionRCTrackDiag25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -1785,7 +1785,7 @@ static void SideFrictionRCTrackDiag25DegUp(
             }
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -1815,7 +1815,7 @@ static void SideFrictionRCTrackDiag25DegUp(
             }
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -1845,7 +1845,7 @@ static void SideFrictionRCTrackDiag25DegUp(
             }
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -1884,7 +1884,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -1910,7 +1910,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -1944,7 +1944,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -1978,7 +1978,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2014,7 +2014,7 @@ static void SideFrictionRCTrackDiag25DegUpToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2038,7 +2038,7 @@ static void SideFrictionRCTrackDiag25DegUpToFlat(
             }
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2068,7 +2068,7 @@ static void SideFrictionRCTrackDiag25DegUpToFlat(
             }
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2098,7 +2098,7 @@ static void SideFrictionRCTrackDiag25DegUpToFlat(
             }
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2137,7 +2137,7 @@ static void SideFrictionRCTrackDiag25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2161,7 +2161,7 @@ static void SideFrictionRCTrackDiag25DegDown(
             }
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2191,7 +2191,7 @@ static void SideFrictionRCTrackDiag25DegDown(
             }
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2221,7 +2221,7 @@ static void SideFrictionRCTrackDiag25DegDown(
             }
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2260,7 +2260,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2284,7 +2284,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
             }
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2314,7 +2314,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
             }
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2344,7 +2344,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
             }
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2383,7 +2383,7 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2409,7 +2409,7 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2443,7 +2443,7 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -2477,7 +2477,7 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {

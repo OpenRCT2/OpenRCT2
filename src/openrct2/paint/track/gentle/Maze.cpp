@@ -52,7 +52,7 @@ static void MazePaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    uint16_t mazeEntry = trackElement.GetMazeEntry();
+    uint16_t mazeEntry = trackElement.getMazeEntry();
     mazeEntry = Numerics::rol16(mazeEntry, direction * 4);
 
     uint32_t rotation = session.CurrentRotation;

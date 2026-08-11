@@ -129,13 +129,13 @@ static void AnimateLandscapeDoor(
     const CoordsXYZ& doorLocation, TrackElement& trackElement, const bool isLastVehicle, const DoorSoundType doorSound,
     const CoordsXYZ& soundLocation)
 {
-    const auto doorState = isBackwards ? trackElement.GetDoorAState() : trackElement.GetDoorBState();
+    const auto doorState = isBackwards ? trackElement.getDoorAState() : trackElement.getDoorBState();
     if (!isLastVehicle && doorState == kLandEdgeDoorFrameClosed)
     {
         if (isBackwards)
-            trackElement.SetDoorAState(kLandEdgeDoorFrameOpening);
+            trackElement.setDoorAState(kLandEdgeDoorFrameOpening);
         else
-            trackElement.SetDoorBState(kLandEdgeDoorFrameOpening);
+            trackElement.setDoorBState(kLandEdgeDoorFrameOpening);
 
         MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
         Play3D(kDoorOpenSoundIds[EnumValue(doorSound)], soundLocation);
@@ -144,9 +144,9 @@ static void AnimateLandscapeDoor(
     if (isLastVehicle)
     {
         if (isBackwards)
-            trackElement.SetDoorAState(kLandEdgeDoorFrameClosing);
+            trackElement.setDoorAState(kLandEdgeDoorFrameClosing);
         else
-            trackElement.SetDoorBState(kLandEdgeDoorFrameClosing);
+            trackElement.setDoorBState(kLandEdgeDoorFrameClosing);
 
         MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
         Play3D(kDoorCloseSoundIds[EnumValue(doorSound)], soundLocation);

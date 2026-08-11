@@ -406,13 +406,13 @@ namespace OpenRCT2::GameActions
     bool WallPlaceAction::WallCheckObstructionWithTrack(
         const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
     {
-        TrackElemType trackType = trackElement->GetTrackType();
+        TrackElemType trackType = trackElement->getTrackType();
 
         using namespace OpenRCT2::TrackMetadata;
         const auto& ted = GetTrackElementDescriptor(trackType);
-        int32_t sequence = trackElement->GetSequenceIndex();
+        int32_t sequence = trackElement->getSequenceIndex();
         int32_t direction = (_edge - trackElement->getDirection()) & kTileElementDirectionMask;
-        auto ride = GetRide(trackElement->GetRideIndex());
+        auto ride = GetRide(trackElement->getRideIndex());
         if (ride == nullptr)
         {
             return false;

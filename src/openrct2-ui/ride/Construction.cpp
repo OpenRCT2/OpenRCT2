@@ -380,18 +380,18 @@ namespace OpenRCT2
             if (info.Element->getType() == TileElementType::track)
             {
                 const auto* trackElement = info.Element->asTrack();
-                if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
+                if (trackElement->getRideIndex() == gRideEntranceExitPlaceRideIndex)
                 {
-                    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+                    const auto& ted = GetTrackElementDescriptor(trackElement->getTrackType());
                     if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
                     {
-                        if (trackElement->GetTrackType() == TrackElemType::maze)
+                        if (trackElement->getTrackType() == TrackElemType::maze)
                         {
                             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
                         }
                         else
                         {
-                            gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
+                            gRideEntranceExitPlaceStationIndex = trackElement->getStationIndex();
                         }
                     }
                 }
@@ -455,9 +455,9 @@ namespace OpenRCT2
                 {
                     if (trackElement->getBaseZ() != stationBaseZ)
                         continue;
-                    if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
+                    if (trackElement->getRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
-                    if (trackElement->GetTrackType() == TrackElemType::maze)
+                    if (trackElement->getTrackType() == TrackElemType::maze)
                     {
                         // if it's a maze, it can place the entrance and exit immediately
                         entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
@@ -467,12 +467,12 @@ namespace OpenRCT2
                     // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
                     // entrance can be placed on that side
 
-                    gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
+                    gRideEntranceExitPlaceStationIndex = trackElement->getStationIndex();
 
                     // get the ride entrance's side relative to the TrackElement
                     Direction direction = (DirectionReverse(entranceExitCoords.direction) - trackElement->getDirection()) & 3;
-                    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                    auto connectionSides = ted.sequenceData.sequences[trackElement->GetSequenceIndex()]
+                    const auto& ted = GetTrackElementDescriptor(trackElement->getTrackType());
+                    auto connectionSides = ted.sequenceData.sequences[trackElement->getSequenceIndex()]
                                                .getEntranceConnectionSides();
                     if (connectionSides & (1 << direction))
                     {

@@ -1228,7 +1228,7 @@ namespace OpenRCT2
                         else if (it.element->getType() == TileElementType::track)
                         {
                             auto* trackElement = it.element->asTrack();
-                            auto trackType = trackElement->GetTrackType();
+                            auto trackType = trackElement->getTrackType();
                             if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
                             {
                                 it.element->setInvisible(true);
@@ -1236,9 +1236,9 @@ namespace OpenRCT2
                             if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
                             {
                                 if (trackType == TrackElemType::brakes)
-                                    trackElement->SetBrakeClosed(true);
+                                    trackElement->setBrakeClosed(true);
                                 if (trackType == TrackElemType::blockBrakes)
-                                    trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                                    trackElement->setBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
                         else if (it.element->getType() == TileElementType::smallScenery && os.getHeader().targetVersion < 23)
@@ -1275,10 +1275,10 @@ namespace OpenRCT2
                 {
                     for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY{ x, y }))
                     {
-                        const auto* ride = GetRide(trackElement->GetRideIndex());
+                        const auto* ride = GetRide(trackElement->getRideIndex());
                         if (ride != nullptr)
                         {
-                            trackElement->SetRideType(ride->type);
+                            trackElement->setRideType(ride->type);
                         }
                     }
                 }

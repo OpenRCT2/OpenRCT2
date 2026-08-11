@@ -875,7 +875,7 @@ namespace OpenRCT2
         if (trackElement == nullptr)
             return false;
 
-        auto ride = GetRide(trackElement->GetRideIndex());
+        auto ride = GetRide(trackElement->getRideIndex());
         if (ride == nullptr)
             return false;
 
@@ -2382,7 +2382,7 @@ namespace OpenRCT2
             TrackBeginEnd trackBeginEnd;
             while (trackBlockGetPrevious(input, &trackBeginEnd))
             {
-                if (trackBeginEnd.begin_element->asTrack()->IsStation())
+                if (trackBeginEnd.begin_element->asTrack()->isStation())
                 {
                     input.x = trackBeginEnd.begin_x;
                     input.y = trackBeginEnd.begin_y;

@@ -135,19 +135,19 @@ void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
     {
         if (tileElement->getType() != TileElementType::track)
             continue;
-        if (tileElement->asTrack()->GetRideIndex() != rideIndex)
+        if (tileElement->asTrack()->getRideIndex() != rideIndex)
             continue;
         if (tileElement->getBaseZ() != z)
             continue;
-        if (tileElement->asTrack()->GetTrackType() != TrackElemType::maze)
+        if (tileElement->asTrack()->getTrackType() != TrackElemType::maze)
             continue;
 
         // Each maze element is split into 4 sections with 4 different walls
         uint8_t mazeSection = direction * 4;
         // Add the top outer wall
-        tileElement->asTrack()->MazeEntryAdd(1 << ((mazeSection + 9) & 0x0F));
+        tileElement->asTrack()->mazeEntryAdd(1 << ((mazeSection + 9) & 0x0F));
         // Add the bottom outer wall
-        tileElement->asTrack()->MazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
+        tileElement->asTrack()->mazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
 
         MapInvalidateTile({ hedgePos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
         return;
@@ -172,25 +172,25 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
     {
         if (tileElement->getType() != TileElementType::track)
             continue;
-        if (tileElement->asTrack()->GetRideIndex() != rideIndex)
+        if (tileElement->asTrack()->getRideIndex() != rideIndex)
             continue;
         if (tileElement->getBaseZ() != z)
             continue;
-        if (tileElement->asTrack()->GetTrackType() != TrackElemType::maze)
+        if (tileElement->asTrack()->getTrackType() != TrackElemType::maze)
             continue;
 
         // Each maze element is split into 4 sections with 4 different walls
         uint8_t mazeSection = direction * 4;
         // Remove the top outer wall
-        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 9) & 0x0F));
+        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 9) & 0x0F));
         // Remove the bottom outer wall
-        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 12) & 0x0F));
+        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 12) & 0x0F));
         // Remove the intersecting wall
-        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 10) & 0x0F));
+        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 10) & 0x0F));
         // Remove the top hedge section
-        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 11) & 0x0F));
+        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 11) & 0x0F));
         // Remove the bottom hedge section
-        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
+        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
         MapInvalidateTile({ hedgePos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
         return;

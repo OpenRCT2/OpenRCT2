@@ -95,7 +95,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
     RideId resultRideIndex = RideId::GetNull();
     for (auto* trackElement : TileElementsView<TrackElement>(bannerCoords))
     {
-        RideId rideIndex = trackElement->GetRideIndex();
+        RideId rideIndex = trackElement->getRideIndex();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             continue;

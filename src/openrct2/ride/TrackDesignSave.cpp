@@ -559,7 +559,7 @@ static bool TrackDesignSaveShouldSelectSceneryAround(RideId rideIndex, TileEleme
                 return true;
             break;
         case TileElementType::track:
-            if (tileElement->asTrack()->GetRideIndex() == rideIndex)
+            if (tileElement->asTrack()->getRideIndex() == rideIndex)
                 return true;
             break;
         case TileElementType::entrance:

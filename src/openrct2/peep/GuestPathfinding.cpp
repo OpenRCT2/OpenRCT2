@@ -412,7 +412,7 @@ namespace OpenRCT2::PathFinding
                 {
                     if (loc.z != tileElement->baseHeight)
                         continue;
-                    RideId rideIndex = tileElement->asTrack()->GetRideIndex();
+                    RideId rideIndex = tileElement->asTrack()->getRideIndex();
                     auto ride = GetRide(rideIndex);
                     if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
                     {
@@ -781,7 +781,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     /* For peeps heading for a shop, the goal is the shop
                      * tile. */
-                    rideIndex = tileElement->asTrack()->GetRideIndex();
+                    rideIndex = tileElement->asTrack()->getRideIndex();
                     auto ride = GetRide(rideIndex);
                     if (ride == nullptr || !ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
                         continue;

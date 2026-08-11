@@ -185,7 +185,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     RideGetStartOfTrack(&trackElement);
 
     int32_t z = trackElement.element->getBaseZ();
-    auto trackType = trackElement.element->asTrack()->GetTrackType();
+    auto trackType = trackElement.element->asTrack()->getTrackType();
     uint8_t direction = trackElement.element->getDirection();
     _saveDirection = direction;
     auto newCoords = GetTrackElementOriginAndApplyChanges(
@@ -199,7 +199,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     trackElement.y = newCoords->y;
     z = newCoords->z;
 
-    const auto& ted = GetTrackElementDescriptor(trackElement.element->asTrack()->GetTrackType());
+    const auto& ted = GetTrackElementDescriptor(trackElement.element->asTrack()->getTrackType());
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
@@ -214,27 +214,27 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         const auto& element = trackElement.element->asTrack();
 
-        if (element->GetTrackType() > TrackElemType::highestAlias)
+        if (element->getTrackType() > TrackElemType::highestAlias)
         {
             version = RCT12::TD46Version::td7;
         }
 
         TrackDesignTrackElement track{};
-        track.type = element->GetTrackType();
-        track.colourScheme = element->GetColourScheme();
-        track.stationIndex = element->GetStationIndex();
-        track.brakeBoosterSpeed = element->GetBrakeBoosterSpeed();
-        track.seatRotation = element->GetSeatRotation();
+        track.type = element->getTrackType();
+        track.colourScheme = element->getColourScheme();
+        track.stationIndex = element->getStationIndex();
+        track.brakeBoosterSpeed = element->getBrakeBoosterSpeed();
+        track.seatRotation = element->getSeatRotation();
 
-        if (track.type == TrackElemType::blockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        if (track.type == TrackElemType::blockBrakes && element->getBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
             version = RCT12::TD46Version::td7;
         }
 
-        if (element->HasChain())
+        if (element->hasChain())
             track.flags.set(TrackDesignTrackElementFlag::hasChain);
 
-        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasInvertedVariant) && element->IsInverted())
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasInvertedVariant) && element->isInverted())
         {
             track.flags.set(TrackDesignTrackElementFlag::isInverted);
         }
@@ -248,7 +248,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
         z = trackElement.element->getBaseZ();
         direction = trackElement.element->getDirection();
-        trackType = trackElement.element->asTrack()->GetTrackType();
+        trackType = trackElement.element->asTrack()->getTrackType();
         newCoords = GetTrackElementOriginAndApplyChanges(
             { trackElement, z, direction }, trackType, 0, &trackElement.element, {});
 
@@ -370,12 +370,12 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
                     break;
                 if (tileElement->getType() != TileElementType::track)
                     continue;
-                if (tileElement->asTrack()->GetRideIndex() != ride.id)
+                if (tileElement->asTrack()->getRideIndex() != ride.id)
                     continue;
 
                 TrackDesignMazeElement maze{};
 
-                maze.mazeEntry = tileElement->asTrack()->GetMazeEntry();
+                maze.mazeEntry = tileElement->asTrack()->getMazeEntry();
                 maze.location.x = (x - startLoc.x) / kCoordsXYStep;
                 maze.location.y = (y - startLoc.y) / kCoordsXYStep;
                 _saveDirection = tileElement->getDirection();
@@ -474,7 +474,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 
                 if (tile.element->getType() != TileElementType::track)
                     continue;
-                if (tile.element->asTrack()->GetRideIndex() == ride.id)
+                if (tile.element->asTrack()->getRideIndex() == ride.id)
                 {
                     return tile;
                 }
@@ -1359,7 +1359,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                             continue;
                         }
 
-                        auto stationIndex = tile_element->asTrack()->GetStationIndex();
+                        auto stationIndex = tile_element->asTrack()->getStationIndex();
                         CommandFlags flags = { CommandFlag::apply };
                         if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                         {

@@ -200,7 +200,7 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
 template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    switch (track.GetTrackType())
+    switch (track.getTrackType())
     {
         case TrackElemType::waterfall:
             if constexpr (invalidate)
@@ -397,9 +397,9 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
 template<bool invalidate>
 static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coords)
 {
-    if (track.IsTakingPhoto())
+    if (track.isTakingPhoto())
     {
-        track.DecrementPhotoTimeout();
+        track.decrementPhotoTimeout();
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, track.getClearanceZ(), kMaxZoom);
@@ -419,10 +419,10 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
 
     bool isAnimating = false;
 
-    const auto doorAState = track.GetDoorAState();
+    const auto doorAState = track.getDoorAState();
     if (doorAState >= kLandEdgeDoorFrameEnd)
     {
-        track.SetDoorAState(kLandEdgeDoorFrameClosed);
+        track.setDoorAState(kLandEdgeDoorFrameClosed);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -430,7 +430,7 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     }
     else if (doorAState != kLandEdgeDoorFrameClosed && doorAState != kLandEdgeDoorFrameOpen)
     {
-        track.SetDoorAState(doorAState + 1);
+        track.setDoorAState(doorAState + 1);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -438,10 +438,10 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
         isAnimating = true;
     }
 
-    const auto doorBState = track.GetDoorBState();
+    const auto doorBState = track.getDoorBState();
     if (doorBState >= kLandEdgeDoorFrameEnd)
     {
-        track.SetDoorBState(kLandEdgeDoorFrameClosed);
+        track.setDoorBState(kLandEdgeDoorFrameClosed);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -449,7 +449,7 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     }
     else if (doorBState != kLandEdgeDoorFrameClosed && doorBState != kLandEdgeDoorFrameOpen)
     {
-        track.SetDoorBState(doorBState + 1);
+        track.setDoorBState(doorBState + 1);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -478,7 +478,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
             case MapAnimations::TemporaryType::onRidePhoto:
             {
                 if (tileElement->getType() == TileElementType::track && tileElement->baseHeight == tileCoords.z
-                    && tileElement->asTrack()->GetTrackType() == TrackElemType::onRidePhoto)
+                    && tileElement->asTrack()->getTrackType() == TrackElemType::onRidePhoto)
                 {
                     isAnimating |= UpdateOnRidePhotoAnimation<invalidate>(*tileElement->asTrack(), animation.location);
                 }
@@ -572,7 +572,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::track:
         {
             const auto* const track = element.asTrack();
-            switch (track->GetTrackType())
+            switch (track->getTrackType())
             {
                 case TrackElemType::waterfall:
                 case TrackElemType::rapids:

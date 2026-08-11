@@ -856,7 +856,7 @@ static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t hei
     // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
     if (session.TrackElementOnSameHeight != nullptr
-        && session.TrackElementOnSameHeight->asTrack()->GetTrackType() == TrackElemType::flat)
+        && session.TrackElementOnSameHeight->asTrack()->getTrackType() == TrackElemType::flat)
     {
         boundingBoxZOffset = 2;
     }

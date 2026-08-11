@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui
                     }
                     ft.Add<StringId>(stringId);
                 }
-                else if (tileElement->asTrack()->IsStation())
+                else if (tileElement->asTrack()->isStation())
                 {
                     StringId stringId;
                     if (ride->numStations > 1)
@@ -392,7 +392,7 @@ namespace OpenRCT2::Ui
                 if (tileElement->getType() == TileElementType::entrance)
                     stationIndex = tileElement->asEntrance()->getStationIndex().ToUnderlying();
                 else
-                    stationIndex = tileElement->asTrack()->GetStationIndex().ToUnderlying();
+                    stationIndex = tileElement->asTrack()->getStationIndex().ToUnderlying();
 
                 for (int32_t i = stationIndex; i >= 0; i--)
                     if (ride->getStations()[i].Start.IsNull())

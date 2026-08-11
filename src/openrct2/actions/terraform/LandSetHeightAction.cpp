@@ -264,7 +264,7 @@ namespace OpenRCT2::GameActions
     {
         for (auto* trackElement : TileElementsView<TrackElement>(_coords))
         {
-            RideId rideIndex = trackElement->GetRideIndex();
+            RideId rideIndex = trackElement->getRideIndex();
 
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)

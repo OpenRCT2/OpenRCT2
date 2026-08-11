@@ -339,10 +339,10 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tile))
             {
-                if (trackElement->GetTrackType() != fromTrackType)
+                if (trackElement->getTrackType() != fromTrackType)
                     continue;
 
-                trackElement->SetTrackType(destinationTrackType);
+                trackElement->setTrackType(destinationTrackType);
             }
         }
     }

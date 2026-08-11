@@ -666,18 +666,18 @@ namespace OpenRCT2::Ui::Windows
                         case WIDX_TRACK_CHECK_CHAIN_LIFT:
                         {
                             bool entireTrackBlock = isWidgetPressed(WIDX_TRACK_CHECK_APPLY_TO_ALL);
-                            bool newLift = !tileElement->asTrack()->HasChain();
+                            bool newLift = !tileElement->asTrack()->hasChain();
                             TrackBlockSetLift(windowTileInspectorSelectedIndex, entireTrackBlock, newLift);
                             break;
                         }
 
                         case WIDX_TRACK_CHECK_BRAKE_CLOSED:
-                            TrackSetBrakeClosed(windowTileInspectorSelectedIndex, !tileElement->asTrack()->IsBrakeClosed());
+                            TrackSetBrakeClosed(windowTileInspectorSelectedIndex, !tileElement->asTrack()->isBrakeClosed());
                             break;
 
                         case WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE:
                             TrackSetIndestructible(
-                                windowTileInspectorSelectedIndex, !tileElement->asTrack()->IsIndestructible());
+                                windowTileInspectorSelectedIndex, !tileElement->asTrack()->isIndestructible());
                             break;
                     } // switch widget index
                     break;
@@ -1276,7 +1276,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onDrawTrack(RenderTarget& rt, ScreenCoordsXY screenCoords, const TrackElement& trackEl)
         {
-            RideId id = trackEl.GetRideIndex();
+            RideId id = trackEl.getRideIndex();
             auto rideTile = GetRide(id);
 
             // Ride ID
@@ -1293,22 +1293,22 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Ride type. Individual pieces may be of a different ride type from the ride it belongs to.
-            const auto& rtd = GetRideTypeDescriptor(trackEl.GetRideType());
+            const auto& rtd = GetRideTypeDescriptor(trackEl.getRideType());
             ft = Formatter();
             ft.Add<StringId>(rtd.Naming.Name);
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { colours[1] });
 
             // Track
             ft = Formatter();
-            ft.Add<uint16_t>(trackEl.GetTrackType());
+            ft.Add<uint16_t>(trackEl.getTrackType());
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_TRACK_PIECE_ID, ft, { colours[1] });
 
             ft = Formatter();
-            ft.Add<uint16_t>(trackEl.GetSequenceIndex());
+            ft.Add<uint16_t>(trackEl.getSequenceIndex());
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_TRACK_SEQUENCE, ft, { colours[1] });
-            if (trackEl.IsStation())
+            if (trackEl.isStation())
             {
-                auto stationIndex = trackEl.GetStationIndex();
+                auto stationIndex = trackEl.getStationIndex();
                 ft = Formatter();
                 ft.Add<StringId>(STR_COMMA16);
                 ft.Add<int16_t>(stationIndex.ToUnderlying());
@@ -1324,7 +1324,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ft = Formatter();
-            ft.Add<StringId>(ColourSchemeNames[trackEl.GetColourScheme()]);
+            ft.Add<StringId>(ColourSchemeNames[trackEl.getColourScheme()]);
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 66 }, STR_TILE_INSPECTOR_COLOUR_SCHEME, ft, { colours[1] });
 
             // Properties
@@ -2281,12 +2281,12 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].moveTo(PropertyRowCol(propertiesAnchor, 4, 0));
 
                     setCheckboxValue(WIDX_TRACK_CHECK_APPLY_TO_ALL, _applyToAll);
-                    setCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->asTrack()->HasChain());
-                    setCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->asTrack()->IsBrakeClosed());
-                    widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].content = tileElement->asTrack()->IsBlockStart()
+                    setCheckboxValue(WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->asTrack()->hasChain());
+                    setCheckboxValue(WIDX_TRACK_CHECK_BRAKE_CLOSED, tileElement->asTrack()->isBrakeClosed());
+                    widgets[WIDX_TRACK_CHECK_BRAKE_CLOSED].content = tileElement->asTrack()->isBlockStart()
                         ? STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE
                         : STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED;
-                    setCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->asTrack()->IsIndestructible());
+                    setCheckboxValue(WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->asTrack()->isIndestructible());
                     break;
 
                 case TileElementType::smallScenery:

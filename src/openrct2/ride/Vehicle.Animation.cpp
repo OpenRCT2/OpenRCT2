@@ -879,7 +879,7 @@ namespace OpenRCT2
         {
             auto trackType = GetTrackType();
             TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
-            if (trackElement != nullptr && trackElement->asTrack()->HasChain())
+            if (trackElement != nullptr && trackElement->asTrack()->hasChain())
             {
                 // start flapping, bird
                 animation_frame = 1;

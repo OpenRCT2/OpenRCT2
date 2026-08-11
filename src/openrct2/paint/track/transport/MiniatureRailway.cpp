@@ -1545,7 +1545,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isRightEighthToOrthog = trackElement.GetTrackType() == TrackElemType::rightEighthToOrthogonal;
+    bool isRightEighthToOrthog = trackElement.getTrackType() == TrackElemType::rightEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isRightEighthToOrthog)
@@ -1713,7 +1713,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isLeftEighthToOrthog = trackElement.GetTrackType() == TrackElemType::leftEighthToOrthogonal;
+    bool isLeftEighthToOrthog = trackElement.getTrackType() == TrackElemType::leftEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isLeftEighthToOrthog)

@@ -87,7 +87,7 @@ namespace OpenRCT2
         switch (getType())
         {
             case TileElementType::track:
-                return asTrack()->GetRideIndex();
+                return asTrack()->getRideIndex();
             case TileElementType::entrance:
                 return asEntrance()->getRideIndex();
             case TileElementType::path:

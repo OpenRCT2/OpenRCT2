@@ -2227,7 +2227,7 @@ namespace OpenRCT2
      */
     static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
     {
-        RideId rideIndex = coords.element->asTrack()->GetRideIndex();
+        RideId rideIndex = coords.element->asTrack()->getRideIndex();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr || !ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             return false;

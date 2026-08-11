@@ -239,22 +239,22 @@ namespace OpenRCT2
                     int32_t direction;
                     if (trackBlockGetNextFromZero(
                             TrackLocation, *curRide, GetTrackDirection(), &track, &zUnused, &direction, false)
-                        && track.element != nullptr && track.element->asTrack()->HasCableLift())
+                        && track.element != nullptr && track.element->asTrack()->hasCableLift())
                     {
-                        applyCableLiftBlockBrake(curRide->isBlockSectioned() && trackElement->asTrack()->IsBrakeClosed());
+                        applyCableLiftBlockBrake(curRide->isBlockSectioned() && trackElement->asTrack()->isBrakeClosed());
                         break;
                     }
                 }
                 [[fallthrough]];
             case TrackElemType::diagBlockBrakes:
-                if (curRide->isBlockSectioned() && trackElement->asTrack()->IsBrakeClosed())
+                if (curRide->isBlockSectioned() && trackElement->asTrack()->isBrakeClosed())
                     applyStopBlockBrake();
                 else
                     applyNonstopBlockBrake();
 
                 break;
             case TrackElemType::endStation:
-                if (trackElement->asTrack()->IsBrakeClosed())
+                if (trackElement->asTrack()->isBrakeClosed())
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
 
                 break;
@@ -265,9 +265,9 @@ namespace OpenRCT2
             case TrackElemType::diagUp60ToFlat:
                 if (curRide->isBlockSectioned())
                 {
-                    if (trackType == TrackElemType::cableLiftHill || trackElement->asTrack()->HasChain())
+                    if (trackType == TrackElemType::cableLiftHill || trackElement->asTrack()->hasChain())
                     {
-                        if (trackElement->asTrack()->IsBrakeClosed())
+                        if (trackElement->asTrack()->isBrakeClosed())
                         {
                             applyStopBlockBrake();
                         }
@@ -316,7 +316,7 @@ namespace OpenRCT2
         SetBrakeClosedMultiTile(*trackElement, location, false);
         MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
-        auto trackType = trackElement->GetTrackType();
+        auto trackType = trackElement->getTrackType();
         if (trackType == TrackElemType::endStation)
         {
             Play3D(SoundId::blockBrakeClose, location);
@@ -450,7 +450,7 @@ namespace OpenRCT2
 
         if (_vehicleStationIndex.IsNull())
         {
-            _vehicleStationIndex = tileElement->asTrack()->GetStationIndex();
+            _vehicleStationIndex = tileElement->asTrack()->getStationIndex();
         }
 
         if (trackType == TrackElemType::towerBase && this == gCurrentVehicle)
@@ -519,7 +519,7 @@ namespace OpenRCT2
         auto trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
         if (trackElement != nullptr)
         {
-            if (trackElement->asTrack()->IsBrakeClosed())
+            if (trackElement->asTrack()->isBrakeClosed())
                 return brake_speed;
             else
                 return std::max<uint8_t>(brake_speed, BlockBrakeSpeed);
@@ -532,9 +532,9 @@ namespace OpenRCT2
      */
     void Vehicle::populateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake)
     {
-        auto trackSpeed = brake.GetBrakeBoosterSpeed();
+        auto trackSpeed = brake.getBrakeBoosterSpeed();
         brake_speed = trackSpeed;
-        if (!trackTypeIsBrakes(brake.GetTrackType()))
+        if (!trackTypeIsBrakes(brake.getTrackType()))
         {
             BlockBrakeSpeed = trackSpeed;
             return;
@@ -546,12 +546,12 @@ namespace OpenRCT2
         uint16_t timeoutCount = 256;
         do
         {
-            if (trackTypeIsBlockBrakes(output.element->asTrack()->GetTrackType()))
+            if (trackTypeIsBlockBrakes(output.element->asTrack()->getTrackType()))
             {
-                BlockBrakeSpeed = output.element->asTrack()->GetBrakeBoosterSpeed();
+                BlockBrakeSpeed = output.element->asTrack()->getBrakeBoosterSpeed();
                 return;
             }
-            if (!trackTypeIsBrakes(output.element->asTrack()->GetTrackType()))
+            if (!trackTypeIsBrakes(output.element->asTrack()->getTrackType()))
             {
                 break;
             }
@@ -583,7 +583,7 @@ namespace OpenRCT2
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
         }
 
-        if (tileElement->asTrack()->IsBlockStart())
+        if (tileElement->asTrack()->isBlockStart())
         {
             if (next_vehicle_on_train.IsNull())
             {
@@ -653,8 +653,8 @@ namespace OpenRCT2
                 tileElement = xyElement.element;
                 location = { xyElement, curZ, static_cast<Direction>(direction) };
             }
-            if (tileElement->asTrack()->GetTrackType() == TrackElemType::leftReverser
-                || tileElement->asTrack()->GetTrackType() == TrackElemType::rightReverser)
+            if (tileElement->asTrack()->getTrackType() == TrackElemType::leftReverser
+                || tileElement->asTrack()->getTrackType() == TrackElemType::rightReverser)
             {
                 if (IsHead() && velocity <= 3.0_mph)
                 {
@@ -671,10 +671,10 @@ namespace OpenRCT2
             const auto previousCarIsInverted = flags.has(VehicleFlag::carIsInverted);
             flags.unset(VehicleFlag::carIsInverted);
             {
-                auto rideType = OpenRCT2::GetRide(tileElement->asTrack()->GetRideIndex())->type;
+                auto rideType = OpenRCT2::GetRide(tileElement->asTrack()->getRideIndex())->type;
                 if (GetRideTypeDescriptor(rideType).flags.has(RtdFlag::hasInvertedVariant))
                 {
-                    if (tileElement->asTrack()->IsInverted())
+                    if (tileElement->asTrack()->isInverted())
                     {
                         flags.set(VehicleFlag::carIsInverted);
                     }
@@ -697,14 +697,14 @@ namespace OpenRCT2
         }
         if (carEntry->flags.has(CarEntryFlag::isGoKart) && TrackSubposition < VehicleTrackSubposition::goKartsMovingToRightLane)
         {
-            trackType = tileElement->asTrack()->GetTrackType();
+            trackType = tileElement->asTrack()->getTrackType();
             if (trackType == TrackElemType::flat || trackType == TrackElemType::leftQuarterTurn3Tiles
                 || trackType == TrackElemType::rightQuarterTurn3Tiles || trackType == TrackElemType::leftQuarterTurn5Tiles
                 || trackType == TrackElemType::rightQuarterTurn5Tiles || trackType == TrackElemType::leftEighthToDiag
                 || trackType == TrackElemType::rightEighthToDiag || trackType == TrackElemType::leftEighthToOrthogonal
                 || trackType == TrackElemType::rightEighthToOrthogonal || trackType == TrackElemType::diagFlat
                 || trackType == TrackElemType::sBendLeft || trackType == TrackElemType::sBendRight
-                || (curRide.flags.has(RideFlag::passStationNoStopping) && tileElement->asTrack()->IsStation()))
+                || (curRide.flags.has(RideFlag::passStationNoStopping) && tileElement->asTrack()->isStation()))
             {
                 goKartAttemptLaneSwitch();
             }
@@ -728,15 +728,15 @@ namespace OpenRCT2
         // Loc6DB500
         // Update VehicleFlags::OnLiftHill
         flags.unset(VehicleFlag::onLiftHill);
-        if (tileElement->asTrack()->HasChain())
+        if (tileElement->asTrack()->hasChain())
         {
             flags.set(VehicleFlag::onLiftHill);
         }
 
-        trackType = tileElement->asTrack()->GetTrackType();
+        trackType = tileElement->asTrack()->getTrackType();
         if (trackType != TrackElemType::brakes)
         {
-            target_seat_rotation = tileElement->asTrack()->GetSeatRotation();
+            target_seat_rotation = tileElement->asTrack()->getSeatRotation();
         }
         SetTrackDirection(location.direction);
         SetTrackType(trackType);
@@ -747,7 +747,7 @@ namespace OpenRCT2
         }
         if (trackType == TrackElemType::onRidePhoto)
         {
-            tileElement->asTrack()->SetPhotoTimeout();
+            tileElement->asTrack()->setPhotoTimeout();
             MapAnimations::CreateTemporary(TrackLocation, MapAnimations::TemporaryType::onRidePhoto);
         }
         if (trackType == TrackElemType::rotationControlToggle)
@@ -985,7 +985,7 @@ namespace OpenRCT2
     static PitchAndRoll getPitchAndRollEnd(
         const Ride& curRide, bool useInvertedSprites, TrackElemType trackType, TileElement* tileElement)
     {
-        bool isInverted = useInvertedSprites ^ tileElement->asTrack()->IsInverted();
+        bool isInverted = useInvertedSprites ^ tileElement->asTrack()->isInverted();
         const auto& ted = GetTrackElementDescriptor(trackType);
         return { ted.definition.pitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.definition.rollEnd) };
     }
@@ -1037,7 +1037,7 @@ namespace OpenRCT2
             }
             tileElement = trackBeginEnd.begin_element;
 
-            trackType = tileElement->asTrack()->GetTrackType();
+            trackType = tileElement->asTrack()->getTrackType();
             if (trackType == TrackElemType::leftReverser || trackType == TrackElemType::rightReverser)
             {
                 return false;
@@ -1053,7 +1053,7 @@ namespace OpenRCT2
             flags.unset(VehicleFlag::carIsInverted);
             if (GetRideTypeDescriptor(curRide.type).flags.has(RtdFlag::hasInvertedVariant))
             {
-                if (tileElement->asTrack()->IsInverted())
+                if (tileElement->asTrack()->isInverted())
                 {
                     flags.set(VehicleFlag::carIsInverted);
                 }
@@ -1102,13 +1102,13 @@ namespace OpenRCT2
             }
         }
 
-        if (tileElement->asTrack()->HasChain())
+        if (tileElement->asTrack()->hasChain())
         {
             if (_vehicleVelocity < 0)
             {
                 if (next_vehicle_on_train.IsNull())
                 {
-                    trackType = tileElement->asTrack()->GetTrackType();
+                    trackType = tileElement->asTrack()->getTrackType();
                     const auto& ted = GetTrackElementDescriptor(trackType);
                     if (!ted.flags.has(TrackElementFlag::down))
                     {
@@ -1133,10 +1133,10 @@ namespace OpenRCT2
             }
         }
 
-        trackType = tileElement->asTrack()->GetTrackType();
+        trackType = tileElement->asTrack()->getTrackType();
         if (trackType != TrackElemType::brakes)
         {
-            target_seat_rotation = tileElement->asTrack()->GetSeatRotation();
+            target_seat_rotation = tileElement->asTrack()->getSeatRotation();
         }
         direction &= 3;
         SetTrackType(trackType);

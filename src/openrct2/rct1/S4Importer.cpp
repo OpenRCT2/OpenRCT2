@@ -1731,44 +1731,44 @@ namespace OpenRCT2::RCT1
                     auto rideType = (ride != nullptr) ? ride->type : kRideTypeNull;
                     auto rct1RideType = _s4.Rides[src2->GetRideIndex()].type;
 
-                    dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
-                    dst2->SetRideType(rideType);
-                    dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                    dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetColourScheme(src2->GetColourScheme());
-                    dst2->SetHasChain(src2->HasChain());
-                    dst2->SetHasCableLift(false);
-                    dst2->SetInverted(src2->IsInverted());
-                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
-                    dst2->SetHasGreenLight(src2->HasGreenLight());
-                    dst2->SetIsIndestructible(src2->IsIndestructible());
+                    dst2->setTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
+                    dst2->setRideType(rideType);
+                    dst2->setSequenceIndex(src2->GetSequenceIndex());
+                    dst2->setRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    dst2->setColourScheme(src2->GetColourScheme());
+                    dst2->setHasChain(src2->HasChain());
+                    dst2->setHasCableLift(false);
+                    dst2->setInverted(src2->IsInverted());
+                    dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
+                    dst2->setHasGreenLight(src2->HasGreenLight());
+                    dst2->setIsIndestructible(src2->IsIndestructible());
                     if (rct1RideType == RideType::ghostTrain)
                     {
-                        dst2->SetDoorAState(src2->GetDoorAState());
-                        dst2->SetDoorBState(src2->GetDoorBState());
+                        dst2->setDoorAState(src2->GetDoorAState());
+                        dst2->setDoorBState(src2->GetDoorBState());
                     }
                     else
                     {
-                        dst2->SetSeatRotation(kDefaultSeatRotation);
+                        dst2->setSeatRotation(kDefaultSeatRotation);
                     }
                     // Skipping IsHighlighted()
 
-                    auto trackType = dst2->GetTrackType();
+                    auto trackType = dst2->getTrackType();
                     // Brakes import as closed to preserve legacy behaviour
-                    dst2->SetBrakeClosed(trackType == TrackElemType::brakes);
+                    dst2->setBrakeClosed(trackType == TrackElemType::brakes);
                     if (trackTypeHasSpeedSetting(trackType))
                     {
-                        dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                        dst2->setBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
                     else if (trackType == TrackElemType::onRidePhoto)
                     {
-                        dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                        dst2->setPhotoTimeout(src2->GetPhotoTimeout());
                     }
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                     if (rct1RideType == RideType::hedgeMaze)
                     {
-                        dst2->SetMazeEntry(src2->GetMazeEntry());
+                        dst2->setMazeEntry(src2->GetMazeEntry());
                     }
 
                     if (TrackTypeMustBeMadeInvisible(*dst2))
@@ -2661,10 +2661,10 @@ namespace OpenRCT2::RCT1
                     for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY(x, y)))
                     {
                         // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
-                        if (!trackElement->HasChain())
+                        if (!trackElement->hasChain())
                             continue;
 
-                        auto trackType = trackElement->GetTrackType();
+                        auto trackType = trackElement->getTrackType();
                         switch (trackType)
                         {
                             case TrackElemType::up25ToFlat:
@@ -2676,7 +2676,7 @@ namespace OpenRCT2::RCT1
                                 continue;
                         }
 
-                        RideId rideIndex = trackElement->GetRideIndex();
+                        RideId rideIndex = trackElement->getRideIndex();
                         auto ride = GetRide(rideIndex);
                         if (ride != nullptr)
                         {

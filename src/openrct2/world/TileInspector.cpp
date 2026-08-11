@@ -714,19 +714,19 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            auto type = trackElement->asTrack()->GetTrackType();
+            auto type = trackElement->asTrack()->getTrackType();
             int16_t originX = loc.x;
             int16_t originY = loc.y;
             int16_t originZ = trackElement->getBaseZ();
             uint8_t rotation = trackElement->getDirection();
-            auto rideIndex = trackElement->asTrack()->GetRideIndex();
+            auto rideIndex = trackElement->asTrack()->getRideIndex();
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)
                 return GameActions::Result(
                     GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            auto sequenceIndex = trackElement->asTrack()->GetSequenceIndex();
+            auto sequenceIndex = trackElement->asTrack()->getSequenceIndex();
             if (sequenceIndex >= ted.sequenceData.numSequences)
                 return GameActions::Result(
                     GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
@@ -790,27 +790,27 @@ namespace OpenRCT2::TileInspector
             if (!entireTrackBlock)
             {
                 // Set chain for only the selected piece
-                if (trackElement->asTrack()->HasChain() != setChain)
+                if (trackElement->asTrack()->hasChain() != setChain)
                 {
-                    trackElement->asTrack()->SetHasChain(setChain);
+                    trackElement->asTrack()->setHasChain(setChain);
                 }
 
                 return GameActions::Result();
             }
 
-            auto type = trackElement->asTrack()->GetTrackType();
+            auto type = trackElement->asTrack()->getTrackType();
             int16_t originX = loc.x;
             int16_t originY = loc.y;
             int16_t originZ = trackElement->getBaseZ();
             uint8_t rotation = trackElement->getDirection();
-            auto rideIndex = trackElement->asTrack()->GetRideIndex();
+            auto rideIndex = trackElement->asTrack()->getRideIndex();
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)
                 return GameActions::Result(
                     GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            auto sequenceIndex = trackElement->asTrack()->GetSequenceIndex();
+            auto sequenceIndex = trackElement->asTrack()->getSequenceIndex();
             if (sequenceIndex >= ted.sequenceData.numSequences)
                 return GameActions::Result(
                     GameActions::Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
@@ -848,9 +848,9 @@ namespace OpenRCT2::TileInspector
                 // Keep?
                 // invalidate_test_results(ride);
 
-                if (nextTrackElement->asTrack()->HasChain() != setChain)
+                if (nextTrackElement->asTrack()->hasChain() != setChain)
                 {
-                    nextTrackElement->asTrack()->SetHasChain(setChain);
+                    nextTrackElement->asTrack()->setHasChain(setChain);
                 }
 
                 MapInvalidateTileFull(elem);
@@ -869,7 +869,7 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            trackElement->asTrack()->SetBrakeClosed(isClosed);
+            trackElement->asTrack()->setBrakeClosed(isClosed);
         }
 
         return GameActions::Result();
@@ -885,7 +885,7 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            trackElement->asTrack()->SetIsIndestructible(isIndestructible);
+            trackElement->asTrack()->setIsIndestructible(isIndestructible);
         }
 
         return GameActions::Result();

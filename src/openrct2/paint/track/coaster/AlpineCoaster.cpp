@@ -70,7 +70,7 @@ namespace OpenRCT2::AlpineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.HasChain())
+        if (trackElement.hasChain())
         {
             switch (direction)
             {
@@ -141,7 +141,7 @@ namespace OpenRCT2::AlpineRC
             { (SPR_TRACKS_ALPINE_TRACK_FLAT + 1), (SPR_TRACKS_ALPINE_TRACK_FLAT + 1), SPR_STATION_BASE_MEDIUM_NW_SE },
         };
 
-        if (trackElement.GetTrackType() == TrackElemType::endStation)
+        if (trackElement.getTrackType() == TrackElemType::endStation)
         {
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
@@ -171,7 +171,7 @@ namespace OpenRCT2::AlpineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.HasChain())
+        if (trackElement.hasChain())
         {
             switch (direction)
             {
@@ -250,7 +250,7 @@ namespace OpenRCT2::AlpineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.HasChain())
+        if (trackElement.hasChain())
         {
             switch (direction)
             {
@@ -329,7 +329,7 @@ namespace OpenRCT2::AlpineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.HasChain())
+        if (trackElement.hasChain())
         {
             switch (direction)
             {
@@ -1111,7 +1111,7 @@ namespace OpenRCT2::AlpineRC
         };
 
         TrackPaintUtilDiagTilesPaintExtra(
-            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType.metal);
+            session, 3, height, direction, trackSequence, images[trackElement.hasChain()], supportType.metal);
     }
 
     static void TrackDiag25DegUp(
@@ -1121,7 +1121,7 @@ namespace OpenRCT2::AlpineRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1155,7 +1155,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1188,7 +1188,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1222,7 +1222,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1266,7 +1266,7 @@ namespace OpenRCT2::AlpineRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1300,7 +1300,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1333,7 +1333,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1367,7 +1367,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1411,7 +1411,7 @@ namespace OpenRCT2::AlpineRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1445,7 +1445,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1478,7 +1478,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1512,7 +1512,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1560,7 +1560,7 @@ namespace OpenRCT2::AlpineRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1594,7 +1594,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1627,7 +1627,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1661,7 +1661,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1705,7 +1705,7 @@ namespace OpenRCT2::AlpineRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1738,7 +1738,7 @@ namespace OpenRCT2::AlpineRC
                     0xFFFF, 0);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1770,7 +1770,7 @@ namespace OpenRCT2::AlpineRC
                     0xFFFF, 0);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1803,7 +1803,7 @@ namespace OpenRCT2::AlpineRC
                     0xFFFF, 0);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1848,7 +1848,7 @@ namespace OpenRCT2::AlpineRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1882,7 +1882,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1915,7 +1915,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -1949,7 +1949,7 @@ namespace OpenRCT2::AlpineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {

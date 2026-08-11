@@ -216,15 +216,15 @@ namespace OpenRCT2::GameActions
                         continue;
 
                     auto* trackElement = tileElement->asTrack();
-                    if (trackElement->GetRideIndex() != _rideIndex)
+                    if (trackElement->getRideIndex() != _rideIndex)
                         continue;
 
                     const auto location = CoordsXYZD(tileCoords, trackElement->getBaseZ(), trackElement->getDirection());
-                    const auto type = trackElement->GetTrackType();
+                    const auto type = trackElement->getTrackType();
 
                     if (type != TrackElemType::maze)
                     {
-                        auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
+                        auto trackRemoveAction = TrackRemoveAction(type, trackElement->getSequenceIndex(), location);
                         trackRemoveAction.SetFlags({ CommandFlag::noSpend });
 
                         auto removeRes = ExecuteNested(&trackRemoveAction, gameState);

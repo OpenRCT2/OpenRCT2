@@ -940,7 +940,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case TileElementType::track:
                     {
-                        Ride* targetRide = GetRide(tileElement->asTrack()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asTrack()->getRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;

@@ -85,7 +85,7 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         {
             auto trackElement = MapGetTrackElementAt(TrackLocation);
             if (trackElement != nullptr)
-                SetTrackType(trackElement->GetTrackType());
+                SetTrackType(trackElement->getTrackType());
 
             SetTrackDirection(curRide->boatHireReturnDirection);
             BoatLocation.SetNull();

@@ -1392,49 +1392,49 @@ namespace OpenRCT2::RCT2
                     auto oldTrackType = src2->GetTrackType();
                     TrackElemType trackType = RCT2TrackTypeToOpenRCT2(oldTrackType, rideType, IsFlatRide(src2->GetRideIndex()));
 
-                    dst2->SetTrackType(trackType);
-                    dst2->SetRideType(rideType);
-                    dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                    dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetColourScheme(src2->GetColourScheme());
-                    dst2->SetHasChain(src2->HasChain());
-                    dst2->SetHasCableLift(src2->HasCableLift());
-                    dst2->SetInverted(src2->IsInverted());
-                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
-                    dst2->SetHasGreenLight(src2->HasGreenLight());
+                    dst2->setTrackType(trackType);
+                    dst2->setRideType(rideType);
+                    dst2->setSequenceIndex(src2->GetSequenceIndex());
+                    dst2->setRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    dst2->setColourScheme(src2->GetColourScheme());
+                    dst2->setHasChain(src2->HasChain());
+                    dst2->setHasCableLift(src2->HasCableLift());
+                    dst2->setInverted(src2->IsInverted());
+                    dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
+                    dst2->setHasGreenLight(src2->HasGreenLight());
                     // Brakes import as closed to preserve legacy behaviour
-                    dst2->SetBrakeClosed(src2->BlockBrakeClosed() || (trackType == TrackElemType::brakes));
-                    dst2->SetIsIndestructible(src2->IsIndestructible());
+                    dst2->setBrakeClosed(src2->BlockBrakeClosed() || (trackType == TrackElemType::brakes));
+                    dst2->setIsIndestructible(src2->IsIndestructible());
                     // Skipping IsHighlighted()
 
                     // Import block brakes to keep legacy behaviour
                     if (trackType == TrackElemType::blockBrakes)
                     {
-                        dst2->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                        dst2->setBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                     }
                     else if (trackTypeHasSpeedSetting(trackType))
                     {
-                        dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                        dst2->setBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
                     else if (trackType == TrackElemType::onRidePhoto)
                     {
-                        dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                        dst2->setPhotoTimeout(src2->GetPhotoTimeout());
                     }
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                     const auto& rtd = GetRideTypeDescriptor(rideType);
                     if (rtd.specialType == RtdSpecialType::maze)
                     {
-                        dst2->SetMazeEntry(src2->GetMazeEntry());
+                        dst2->setMazeEntry(src2->GetMazeEntry());
                     }
                     else if (rideType == RIDE_TYPE_GHOST_TRAIN)
                     {
-                        dst2->SetDoorAState(src2->GetDoorAState());
-                        dst2->SetDoorBState(src2->GetDoorBState());
+                        dst2->setDoorAState(src2->GetDoorAState());
+                        dst2->setDoorBState(src2->GetDoorBState());
                     }
                     else
                     {
-                        dst2->SetSeatRotation(src2->GetSeatRotation());
+                        dst2->setSeatRotation(src2->GetSeatRotation());
                     }
 
                     if (TrackTypeMustBeMadeInvisible(*dst2))

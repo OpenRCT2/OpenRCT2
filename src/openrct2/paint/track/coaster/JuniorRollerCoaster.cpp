@@ -1847,7 +1847,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_blockbrakes[2][4] = 
 template<JuniorRCSubType TSubType>
 constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
 {
-    return trackElement.HasChain() ? EnumValue(TSubType) : 0;
+    return trackElement.hasChain() ? EnumValue(TSubType) : 0;
 }
 
 template<JuniorRCSubType TSubType>
@@ -1881,12 +1881,12 @@ static void JuniorRCPaintStation(
 {
     ImageId imageId;
 
-    const bool isBraked = trackElement.IsBrakeClosed();
+    const bool isBraked = trackElement.isBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::junior)
+        if (trackElement.getTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::junior)
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -1899,7 +1899,7 @@ static void JuniorRCPaintStation(
     else if (direction == 1 || direction == 3)
     {
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::junior)
+        if (trackElement.getTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::junior)
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -4033,7 +4033,7 @@ static void JuniorRCBlockBrakePaintSetup(
 {
     ImageId image_id;
 
-    bool isBraked = trackElement.IsBrakeClosed();
+    bool isBraked = trackElement.isBrakeClosed();
 
     image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
     if (direction & 1)
@@ -4545,7 +4545,7 @@ static void JuniorRCTrackDiagBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_blockbrakes[trackElement.IsBrakeClosed()],
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_blockbrakes[trackElement.isBrakeClosed()],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
@@ -5562,7 +5562,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isChained = trackElement.HasChain();
+    bool isChained = trackElement.hasChain();
     auto image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][0]);
 
     PaintAddImageAsParent(
@@ -5625,7 +5625,7 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isChained = trackElement.HasChain();
+    bool isChained = trackElement.hasChain();
     auto image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][0]);
 
     PaintAddImageAsParent(

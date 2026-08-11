@@ -2030,7 +2030,7 @@ static void WoodenRCTrackFlat(
         { SPR_WOODEN_RC_FLAT_RAILS_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SE_NW },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     TrackPaint<isClassic>(
         session, direction, imageIds[direction][isChained], railsImageIds[direction][isChained], { 0, 2, height },
         { { 0, 3, height }, { 32, 25, 2 } });
@@ -2063,9 +2063,9 @@ static void WoodenRCTrackStation(
     const bool drewStation = TrackPaintUtilDrawStation2(
         session, ride, direction, height, trackElement, StationBaseType::none, 0, 9, 11);
     const ImageId colours = isClassic ? session.TrackColours : session.SupportColours;
-    if (trackElement.GetTrackType() == TrackElemType::endStation)
+    if (trackElement.getTrackType() == TrackElemType::endStation)
     {
-        const ImageIndex imageIndex = kStationBlockBrakesImageIds[drewStation][direction][trackElement.IsBrakeClosed()];
+        const ImageIndex imageIndex = kStationBlockBrakesImageIds[drewStation][direction][trackElement.isBrakeClosed()];
         PaintAddImageAsParentRotated(
             session, direction, colours.WithIndex(imageIndex), { 0, 2, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
@@ -2143,7 +2143,7 @@ static void WoodenRCTrack25DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     TrackPaint<isClassic>(
         session, direction, imageIds[isChained][direction][0], imageIds[isChained][direction][1], { 0, 0, height },
         { { 0, 3, height }, { 32, 25, 2 } });
@@ -2190,7 +2190,7 @@ static void WoodenRCTrack60DegUp(
         { SPR_WOODEN_RC_60_DEG_SE_NW, SPR_WOODEN_RC_60_DEG_RAILS_SE_NW },
     };
 
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         if (direction == 0 || direction == 3)
         {
@@ -2299,7 +2299,7 @@ static void WoodenRCTrackFlatTo25DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     TrackPaint<isClassic>(
         session, direction, imageIds[isChained][direction][0], imageIds[isChained][direction][1], { 0, 0, height },
         { { 0, 3, height }, { 32, 25, 2 } });
@@ -2385,7 +2385,7 @@ static void WoodenRCTrack25DegUpTo60DegUp(
             0,
         },
     };
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         if (direction == 0 || direction == 3)
         {
@@ -2499,7 +2499,7 @@ static void WoodenRCTrack60DegUpTo25DegUp(
         },
     };
 
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         if (direction == 0 || direction == 3)
         {
@@ -2614,7 +2614,7 @@ static void WoodenRCTrack25DegUpToFlat(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     TrackPaint<isClassic>(
         session, direction, imageIds[isChained][direction][0], imageIds[isChained][direction][1], { 0, 0, height },
         { { 0, 3, height }, { 32, 25, 2 } });
@@ -8039,8 +8039,8 @@ static void WoodenRCTrackDiagBlockBrakes(
         },
     };
 
-    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
-    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
+    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.isBrakeClosed()][trackSequence][direction][0], height);
+    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.isBrakeClosed()][trackSequence][direction][0], height);
 
     if (kDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::null)
     {
@@ -8061,7 +8061,7 @@ static void WoodenRCTrackDiagFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8092,7 +8092,7 @@ static void WoodenRCTrackDiagFlat(
 
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8138,7 +8138,7 @@ static void WoodenRCTrackDiagFlat(
 
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8184,7 +8184,7 @@ static void WoodenRCTrackDiagFlat(
 
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8229,7 +8229,7 @@ static void WoodenRCTrackDiag25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8261,7 +8261,7 @@ static void WoodenRCTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8309,7 +8309,7 @@ static void WoodenRCTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8357,7 +8357,7 @@ static void WoodenRCTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8489,7 +8489,7 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8521,7 +8521,7 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8593,7 +8593,7 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8665,7 +8665,7 @@ static void WoodenRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8884,7 +8884,7 @@ static void WoodenRCTrackDiag25DegUpToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8916,7 +8916,7 @@ static void WoodenRCTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8964,7 +8964,7 @@ static void WoodenRCTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9012,7 +9012,7 @@ static void WoodenRCTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9055,7 +9055,7 @@ static void WoodenRCTrackDiag25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9087,7 +9087,7 @@ static void WoodenRCTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9135,7 +9135,7 @@ static void WoodenRCTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9183,7 +9183,7 @@ static void WoodenRCTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9313,7 +9313,7 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9343,7 +9343,7 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
             }
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9389,7 +9389,7 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
             }
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9435,7 +9435,7 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
 
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9653,7 +9653,7 @@ static void WoodenRCTrackDiag25DegDownToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9685,7 +9685,7 @@ static void WoodenRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9757,7 +9757,7 @@ static void WoodenRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -9829,7 +9829,7 @@ static void WoodenRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -10171,7 +10171,7 @@ static void WoodenRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto brakeImg = trackElement.IsBrakeClosed() ? kBlockBrakesImageIds[direction][1]
+    const auto brakeImg = trackElement.isBrakeClosed() ? kBlockBrakesImageIds[direction][1]
                                                        : kBlockBrakesImageIds[direction][0];
     TrackPaint<isClassic>(
         session, direction, brakeImg, kBlockBrakesImageIds[direction][2], { 0, 2, height },

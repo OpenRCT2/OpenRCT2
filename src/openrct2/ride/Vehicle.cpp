@@ -64,7 +64,7 @@ namespace OpenRCT2
 
     PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
     {
-        auto trackType = tileElement->asTrack()->GetTrackType();
+        auto trackType = tileElement->asTrack()->getTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
         return PitchAndRoll{ ted.definition.pitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
     }
@@ -1026,10 +1026,10 @@ namespace OpenRCT2
                 continue;
 
             const auto* trackElement = tileElement->asTrack();
-            if (trackElement->GetRideIndex() != ride)
+            if (trackElement->getRideIndex() != ride)
                 continue;
 
-            if (trackElement->GetTrackType() != TrackElemType::towerSection)
+            if (trackElement->getTrackType() != TrackElemType::towerSection)
                 continue;
 
             return false;
@@ -1403,7 +1403,7 @@ namespace OpenRCT2
 
                 // Ensure trains near a station don't block possible crossings after the stop,
                 // except when they are departing
-                if (xyElement.element->asTrack()->IsStation() && status != Status::departing)
+                if (xyElement.element->asTrack()->isStation() && status != Status::departing)
                 {
                     break;
                 }

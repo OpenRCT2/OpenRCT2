@@ -577,11 +577,11 @@ namespace OpenRCT2::GameActions
 
             trackElement->setClearanceZ(clearanceZ);
             trackElement->setDirection(_origin.direction);
-            trackElement->SetHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
-            trackElement->SetSequenceIndex(blockIndex);
-            trackElement->SetRideIndex(_rideIndex);
-            trackElement->SetTrackType(_trackType);
-            trackElement->SetRideType(_rideType);
+            trackElement->setHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
+            trackElement->setSequenceIndex(blockIndex);
+            trackElement->setRideIndex(_rideIndex);
+            trackElement->setTrackType(_trackType);
+            trackElement->setRideType(_rideType);
             trackElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             switch (_trackType)
@@ -594,31 +594,31 @@ namespace OpenRCT2::GameActions
                     break;
                 case TrackElemType::brakes:
                 case TrackElemType::diagBrakes:
-                    trackElement->SetBrakeClosed(true);
+                    trackElement->setBrakeClosed(true);
                     break;
                 default:
                     break;
             }
             if (trackTypeHasSpeedSetting(_trackType))
             {
-                trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
+                trackElement->setBrakeBoosterSpeed(_brakeSpeed);
             }
 
             if (rtd.flags.has(RtdFlag::hasLandscapeDoors))
             {
-                trackElement->SetDoorAState(kLandEdgeDoorFrameClosed);
-                trackElement->SetDoorBState(kLandEdgeDoorFrameClosed);
+                trackElement->setDoorAState(kLandEdgeDoorFrameClosed);
+                trackElement->setDoorBState(kLandEdgeDoorFrameClosed);
             }
             else
             {
-                trackElement->SetSeatRotation(_seatRotation);
+                trackElement->setSeatRotation(_seatRotation);
             }
 
             if (_trackPlaceFlags.has(LiftHillAndInverted::inverted))
             {
-                trackElement->SetInverted(true);
+                trackElement->setInverted(true);
             }
-            trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
+            trackElement->setColourScheme(static_cast<RideColourScheme>(_colour));
 
             if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::connectsToPath))
             {
