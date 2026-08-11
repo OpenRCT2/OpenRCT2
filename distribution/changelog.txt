@@ -2,7 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.
-- Improved: [#23042] [Plugin] Add API for play sound effects.
+- Improved: [#23042] [Plugin] Add API for playing sound effects.
 - Improved: [#26099] The ride type selection cheat has been moved into the ride operations tab.
 - Improved: [#26099] The ride visiblity cheat has been moved into the ride colour/appearance tab.
 - Improved: [#26862] Add a Liquid Glass app icon for macOS 26 and later.

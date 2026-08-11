@@ -624,23 +624,87 @@ declare global {
         filename?: string;
     }
 
-    type SoundOptions = SoundOptions2d | SoundOptions3d;
+    type Sound = Sound2d | Sound3d;
 
-    interface SoundOptionsBase {
-        soundId: number; // see SoundId in openrct2/audio/Audio.h
-    }
-
-    interface SoundOptions2d extends SoundOptionsBase {
-        location?: never;
+    interface Sound2d {
+        soundName: SoundName;
         volume: number;
         pan: number;
     }
 
-    interface SoundOptions3d extends SoundOptionsBase {
+    interface Sound3d {
+        soundName: SoundName;
         location: CoordsXYZ;
-        volume?: never;
-        pan?: never;
     }
+
+    type SoundName =
+        "applause" |
+        "balloon_pop" |
+        "block_brake_close" |
+        "block_brake_release" |
+        "brake_release" |
+        "click_1" |
+        "click_2" |
+        "click_3" |
+        "cough_1" |
+        "cough_2" |
+        "cough_3" |
+        "cough_4" |
+        "crash" |
+        "crowd_ambience" |
+        "door_close" |
+        "door_open" |
+        "error" |
+        "friction_classic" |
+        "go_kart_engine" |
+        "haunted_house_scare" |
+        "haunted_house_scream_1" |
+        "haunted_house_scream_2" |
+        "laugh_1" |
+        "laugh_2" |
+        "laugh_3" |
+        "laying_out_water" |
+        "lift_arrow" |
+        "lift_bm" |
+        "lift_classic" |
+        "lift_flume" |
+        "lift_friction_wheels" |
+        "lift_rmc" |
+        "lift_wild_mouse" |
+        "lift_wood" |
+        "mechanic_fix" |
+        "news_item" |
+        "place_item" |
+        "portcullis" |
+        "purchase" |
+        "quack" |
+        "rain" |
+        "ride_launch_1" |
+        "ride_launch_2" |
+        "scream_1" |
+        "scream_2" |
+        "scream_3" |
+        "scream_4" |
+        "scream_5" |
+        "scream_6" |
+        "scream_7" |
+        "scream_8" |
+        "thunder_1" |
+        "thunder_2" |
+        "toilet_flush" |
+        "track_friction_bm" |
+        "track_friction_classic_wood" |
+        "track_friction_rmc" |
+        "track_friction_train" |
+        "track_friction_water" |
+        "track_friction_wood" |
+        "train_departing" |
+        "train_whistle" |
+        "tram" |
+        "water_1" |
+        "water_2" |
+        "water_splash" |
+        "window_open";
 
     type GameMode =
         "normal" |
@@ -4858,7 +4922,7 @@ declare global {
          * Play the sound effect.
          * @param options Options that play the sound.
          */
-        playSound(options: SoundOptions): void;
+        playSound(options: Sound): void;
     }
 
     /**
