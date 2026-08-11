@@ -11,14 +11,11 @@
 
     #include "CustomMenu.h"
 
-    #include "../interface/Viewport.h"
-
     #include <openrct2-ui/UiContext.h>
     #include <openrct2-ui/input/ShortcutManager.h>
-    #include <openrct2/Input.h>
     #include <openrct2/core/EnumMap.hpp>
+    #include <openrct2/interface/Viewport.h>
     #include <openrct2/scripting/ScriptUtil.hpp>
-    #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
 
