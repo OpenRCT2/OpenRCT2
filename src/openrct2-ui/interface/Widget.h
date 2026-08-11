@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include "Window.h"
-
 #include <initializer_list>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/drawing/FilterPaletteIds.h>
 #include <openrct2/interface/Widget.h>
+#include <openrct2/interface/WindowBase.h>
 
 namespace OpenRCT2::Ui
 {

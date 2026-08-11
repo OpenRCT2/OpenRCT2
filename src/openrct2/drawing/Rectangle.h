@@ -22,6 +22,7 @@ namespace OpenRCT2::Drawing
 {
     enum class FilterPaletteID : int32_t;
     enum class PaletteIndex : uint8_t;
+
     struct RenderTarget;
 } // namespace OpenRCT2::Drawing
 

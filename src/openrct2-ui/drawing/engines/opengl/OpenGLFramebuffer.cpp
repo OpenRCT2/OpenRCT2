@@ -15,6 +15,7 @@
     #include <algorithm>
     #include <cassert>
     #include <memory>
+    #include <openrct2/drawing/RenderTarget.h>
 
 using namespace OpenRCT2::Ui;
 

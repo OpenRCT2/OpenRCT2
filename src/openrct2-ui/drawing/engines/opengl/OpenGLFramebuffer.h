@@ -11,8 +11,10 @@
 
 #include "OpenGLAPI.h"
 
-#include <openrct2/drawing/RenderTarget.h>
-#include <vector>
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 struct SDL_Window;
 namespace OpenRCT2::Ui

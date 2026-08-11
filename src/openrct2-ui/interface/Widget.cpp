@@ -13,7 +13,7 @@
 #include <cmath>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Theme.h>
-#include <openrct2-ui/windows/Windows.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -27,7 +27,6 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 

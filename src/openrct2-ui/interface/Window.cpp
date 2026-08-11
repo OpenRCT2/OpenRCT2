@@ -10,10 +10,9 @@
 #include "Window.h"
 
 #include "../UiStringIds.h"
-#include "Theme.h"
 #include "Widget.h"
 
-#include <SDL.h>
+#include <SDL_video.h>
 #include <algorithm>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
@@ -21,12 +20,9 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/RenderTarget.h>
-#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/ui/WindowManager.h>
