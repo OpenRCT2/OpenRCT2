@@ -1914,7 +1914,7 @@ namespace OpenRCT2::Ui::Windows
             // Copy value, in case the element gets moved
             _copiedElement = *tileElement;
             _copiedBanner = {};
-            auto bannerIndex = _copiedElement.GetBannerIndex();
+            auto bannerIndex = _copiedElement.getBannerIndex();
             if (bannerIndex != BannerIndex::GetNull())
             {
                 auto banner = GetBanner(bannerIndex);

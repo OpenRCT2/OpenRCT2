@@ -129,7 +129,7 @@ namespace OpenRCT2::GameActions
             res.cost = -((bannerEntry->price * 3) / 4);
         }
 
-        reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
+        reinterpret_cast<TileElement*>(bannerElement)->removeBannerEntry();
         MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
         bannerElement->remove();
 

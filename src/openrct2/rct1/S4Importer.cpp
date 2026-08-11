@@ -1614,7 +1614,7 @@ namespace OpenRCT2::RCT1
                     {
                         // Add a default surface element, we always need at least one element per tile
                         auto& dstElement = tileElements.emplace_back();
-                        dstElement.ClearAs(TileElementType::surface);
+                        dstElement.clearAs(TileElementType::surface);
                         dstElement.setLastForTile(true);
                     }
 
@@ -1635,7 +1635,7 @@ namespace OpenRCT2::RCT1
         {
             const auto rct12type = src->getType();
             const auto tileElementType = ToOpenRCT2TileElementType(rct12type);
-            dst->ClearAs(tileElementType);
+            dst->clearAs(tileElementType);
             dst->setDirection(src->getDirection());
 
             // All saved in "flags"

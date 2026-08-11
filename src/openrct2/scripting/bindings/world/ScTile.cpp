@@ -191,7 +191,7 @@ namespace OpenRCT2::Scripting
                 || element->asLargeScenery()->GetEntry()->scrolling_mode == kScrollingModeNone
                 || ScTileElement::GetOtherLargeSceneryElement(coords, element->asLargeScenery()) == nullptr)
             {
-                element->RemoveBannerEntry();
+                element->removeBannerEntry();
             }
             TileElementRemove(&first[index]);
             MapInvalidateTileFull(coords);

@@ -1165,7 +1165,7 @@ namespace OpenRCT2
         if (tileElement.element == nullptr)
             return false;
 
-        auto rideIndex = tileElement.element->GetRideIndex();
+        auto rideIndex = tileElement.element->getRideIndex();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
         {

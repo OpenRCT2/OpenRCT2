@@ -136,7 +136,7 @@ namespace OpenRCT2
     static TileElement GetDefaultSurfaceElement()
     {
         TileElement el;
-        el.ClearAs(TileElementType::surface);
+        el.clearAs(TileElementType::surface);
         el.setLastForTile(true);
         el.baseHeight = 14;
         el.clearanceHeight = 14;
@@ -1152,8 +1152,8 @@ namespace OpenRCT2
         newTileElement->setOccupiedQuadrants(occupiedQuadrants);
         newTileElement->setClearanceZ(loc.z);
         newTileElement->owner = 0;
-        std::memset(&newTileElement->Pad05, 0, sizeof(newTileElement->Pad05));
-        std::memset(&newTileElement->Pad08, 0, sizeof(newTileElement->Pad08));
+        std::memset(&newTileElement->pad05, 0, sizeof(newTileElement->pad05));
+        std::memset(&newTileElement->pad08, 0, sizeof(newTileElement->pad08));
         newTileElement++;
 
         // Insert rest of map elements above insert height

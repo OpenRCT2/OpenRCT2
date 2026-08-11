@@ -38,7 +38,7 @@ namespace OpenRCT2
             if (!(pathBaseZ <= mapPos.z && pathTopZ >= mapPos.z))
                 continue;
 
-            return !TileElementIsUnderground(tileElement);
+            return !tileElementIsUnderground(tileElement);
         } while (!(tileElement++)->isLastForTile());
         return false;
     }

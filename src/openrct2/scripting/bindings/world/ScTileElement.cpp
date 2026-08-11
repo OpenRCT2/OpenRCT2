@@ -1666,7 +1666,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::bannerIndex_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        BannerIndex idx = data->element->GetBannerIndex();
+        BannerIndex idx = data->element->getBannerIndex();
         if (idx == BannerIndex::GetNull())
             return JS_NULL;
         else
@@ -2249,7 +2249,7 @@ namespace OpenRCT2::Scripting
     JSValue ScTileElement::bannerText_get(JSContext* ctx, JSValue thisValue)
     {
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
-        BannerIndex idx = data->element->GetBannerIndex();
+        BannerIndex idx = data->element->getBannerIndex();
         if (idx == BannerIndex::GetNull())
             return JS_NULL;
         else
@@ -2261,7 +2261,7 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto element = data->element;
-        BannerIndex idx = element->GetBannerIndex();
+        BannerIndex idx = element->getBannerIndex();
         if (idx != BannerIndex::GetNull())
         {
             auto banner = GetBanner(idx);
@@ -2356,7 +2356,7 @@ namespace OpenRCT2::Scripting
             && GetOtherLargeSceneryElement(coords, element->asLargeScenery()) != nullptr)
             return;
         // remove banner entry (if one exists)
-        element->RemoveBannerEntry();
+        element->removeBannerEntry();
     }
 
     void ScTileElement::CreateBannerEntryIfNeeded(TileElement* element, CoordsXY& coords)
@@ -2420,7 +2420,7 @@ namespace OpenRCT2::Scripting
                 }
             }
 
-            element->SetBannerIndex(banner->id);
+            element->setBannerIndex(banner->id);
         }
     }
 

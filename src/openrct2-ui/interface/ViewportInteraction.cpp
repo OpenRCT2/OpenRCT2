@@ -317,7 +317,7 @@ namespace OpenRCT2::Ui
                     return info;
                 }
 
-                ride = GetRide(tileElement->GetRideIndex());
+                ride = GetRide(tileElement->getRideIndex());
                 if (ride == nullptr)
                 {
                     info.interactionType = ViewportInteractionItem::none;

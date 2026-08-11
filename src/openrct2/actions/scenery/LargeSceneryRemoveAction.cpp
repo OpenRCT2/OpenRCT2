@@ -151,7 +151,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::unknown, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        tileElement->RemoveBannerEntry();
+        tileElement->removeBannerEntry();
 
         auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
                                            sceneryEntry->tiles[_tileIndex].offset.z };

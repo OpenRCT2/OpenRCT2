@@ -154,13 +154,13 @@ namespace OpenRCT2::TileInspector
                 // Only delete the banner entry if there are no other parts of the large scenery to delete
                 if (NumLargeScenerySequences(loc, largeScenery) == 1)
                 {
-                    tileElement->RemoveBannerEntry();
+                    tileElement->removeBannerEntry();
                 }
             }
             else
             {
                 // Removes any potential banners from the entry
-                tileElement->RemoveBannerEntry();
+                tileElement->removeBannerEntry();
             }
 
             TileElementRemove(tileElement);
@@ -313,7 +313,7 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             // Check if the element to be pasted has a banner
-            if (element.GetBannerIndex() != BannerIndex::GetNull())
+            if (element.getBannerIndex() != BannerIndex::GetNull())
             {
                 // The element to be pasted has a banner - make a copy of it from the banner provided
                 auto newBanner = CreateBanner();
@@ -337,7 +337,7 @@ namespace OpenRCT2::TileInspector
                 }
 
                 // Use the new banner index
-                element.SetBannerIndex(newBanner->id);
+                element.setBannerIndex(newBanner->id);
             }
 
             // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set

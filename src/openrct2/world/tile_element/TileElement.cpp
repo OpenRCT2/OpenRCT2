@@ -24,7 +24,7 @@
 
 namespace OpenRCT2
 {
-    BannerIndex TileElement::GetBannerIndex() const
+    BannerIndex TileElement::getBannerIndex() const
     {
         switch (getType())
         {
@@ -51,7 +51,7 @@ namespace OpenRCT2
         }
     }
 
-    void TileElement::SetBannerIndex(BannerIndex bannerIndex)
+    void TileElement::setBannerIndex(BannerIndex bannerIndex)
     {
         switch (getType())
         {
@@ -70,9 +70,9 @@ namespace OpenRCT2
         }
     }
 
-    void TileElement::RemoveBannerEntry()
+    void TileElement::removeBannerEntry()
     {
-        auto bannerIndex = GetBannerIndex();
+        auto bannerIndex = getBannerIndex();
         auto banner = GetBanner(bannerIndex);
         if (banner != nullptr)
         {
@@ -82,7 +82,7 @@ namespace OpenRCT2
         }
     }
 
-    RideId TileElement::GetRideIndex() const
+    RideId TileElement::getRideIndex() const
     {
         switch (getType())
         {
@@ -97,7 +97,7 @@ namespace OpenRCT2
         }
     }
 
-    void TileElement::ClearAs(TileElementType newType)
+    void TileElement::clearAs(TileElementType newType)
     {
         type = 0;
         setType(newType);
@@ -105,11 +105,11 @@ namespace OpenRCT2
         baseHeight = kMinimumLandHeight;
         clearanceHeight = kMinimumLandHeight;
         owner = 0;
-        std::fill_n(Pad05, sizeof(Pad05), 0x00);
-        std::fill_n(Pad08, sizeof(Pad08), 0x00);
+        std::fill_n(pad05, sizeof(pad05), 0x00);
+        std::fill_n(pad08, sizeof(pad08), 0x00);
     }
 
-    bool TileElementIsUnderground(TileElement* tileElement)
+    bool tileElementIsUnderground(TileElement* tileElement)
     {
         do
         {

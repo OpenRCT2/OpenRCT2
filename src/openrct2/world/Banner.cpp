@@ -149,7 +149,7 @@ TileElement* BannerGetTileElement(BannerIndex bannerIndex)
         {
             do
             {
-                if (tileElement->GetBannerIndex() == bannerIndex)
+                if (tileElement->getBannerIndex() == bannerIndex)
                 {
                     return tileElement;
                 }
