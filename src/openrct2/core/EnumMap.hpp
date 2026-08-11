@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,10 +23,10 @@ class EnumMap
 {
 private:
     std::vector<std::pair<std::string_view, T>> _map;
-    bool _continiousValueIndex{ false };
+    bool _continuousValueIndex{ false };
 
-    static constexpr size_t BucketSize = 43;
-    std::array<std::vector<int32_t>, BucketSize> _buckets;
+    static constexpr size_t kBucketSize = 43;
+    std::array<std::vector<int32_t>, kBucketSize> _buckets;
 
     static constexpr bool ValueIndexable()
     {
@@ -65,7 +65,7 @@ public:
 
         if (ValueIndexable() && _map.size() > 1)
         {
-            _continiousValueIndex = true;
+            _continuousValueIndex = true;
             T cur{};
             for (size_t i = 1; i < _map.size(); i++)
             {
@@ -73,7 +73,7 @@ public:
                 auto dist = ValueDistance(cur, _map[i].second);
                 if (dist != 1)
                 {
-                    _continiousValueIndex = false;
+                    _continuousValueIndex = false;
                     break;
                 }
                 cur = nextVal;
@@ -84,7 +84,7 @@ public:
         for (auto& kv : _map)
         {
             auto hash = MakeHash(kv.first);
-            auto bucketIndex = hash % BucketSize;
+            auto bucketIndex = hash % kBucketSize;
             auto& bucket = _buckets[bucketIndex];
             bucket.push_back(index);
             index++;
@@ -94,6 +94,8 @@ public:
     std::string_view operator[](T k) const
     {
         auto it = find(k);
+        if (it == end())
+            return {};
         return it->first;
     }
 
@@ -116,7 +118,7 @@ public:
     auto find(const std::string_view k) const
     {
         const auto hash = MakeHash(k);
-        const auto bucketIndex = hash % BucketSize;
+        const auto bucketIndex = hash % kBucketSize;
         const auto& bucket = _buckets[bucketIndex];
 
         for (auto index : bucket)
@@ -143,9 +145,11 @@ public:
 
         if constexpr (ValueIndexable())
         {
-            if (_continiousValueIndex)
+            if (_continuousValueIndex)
             {
                 auto index = static_cast<size_t>(k);
+                if (index >= _map.size())
+                    return end();
                 return _map.begin() + index;
             }
 

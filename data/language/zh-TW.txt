@@ -32,12 +32,9 @@ STR_0027    :碰碰車
 STR_0028    :海盜船
 STR_0029    :垂直迴轉海盜船
 STR_0030    :食物店鋪
-STR_0031    :Unknown Stall (1D)
 STR_0032    :飲料店鋪
-STR_0033    :Unknown Stall (1F)
 STR_0034    :商店
 STR_0035    :旋轉木馬
-STR_0036    :Unknown Stall (22)
 STR_0037    :訪客資訊中心
 STR_0038    :廁所
 STR_0039    :摩天輪
@@ -83,21 +80,18 @@ STR_0078    :反轉髮夾彎式雲霄飛車
 STR_0079    :魔法地毯
 STR_0080    :潛艇遊道
 STR_0081    :木筏河道
-STR_0082    :Unknown Ride (50)
 STR_0083    :太空摩天輪
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
 STR_0088    :反轉極速式雲霄飛車
 STR_0089    :迷你雲霄飛車
 STR_0090    :礦遊式雲霄飛車
-STR_0091    :Unknown Ride (59)
 STR_0092    :直線電動機發車雲霄飛車
 STR_0093    :混合式雲霄飛車
 STR_0094    :單軌式雲霄飛車
 STR_0095    :高地式雲霄飛車
 STR_0096    :傳統木製雲霄飛車
+STR_0097    :傳統站立式雲霄飛車
+STR_0098    :直線同步馬達發車雲霄飛車
+STR_0099    :傳統木製旋轉式雲霄飛車
 STR_0512    :一款帶有螺旋式鏈條坡道, 以及順滑又彎曲的下坡的雲霄飛車
 STR_0513    :一款乘客需要以站立乘坐的迴環式雲霄飛車
 STR_0514    :列車懸吊在雲霄飛車的軌道下, 並會在拐彎的時候搖擺乘客到旁邊
@@ -181,6 +175,9 @@ STR_0603    :一款木製的列車配上鋼鐵軌道的雲霄飛車, 使它能�
 STR_0604    :遊客乘坐在單人形式的車輛中於狹窄的單軌上穿梭於緊密的倒轉軌道及方向轉變.
 STR_0605    :乘客乘坐於長雪橇慢慢地滑下金屬軌道, 並以煞車控制速度.
 STR_0606    :這個舊式木製雲霄飛車會飛馳過高低不平的軌道, 給乘客充足的‘空中時間’及一些橫向重力之餘, 同時會給人一種‘失去控制’的乘坐體驗
+STR_0607    :一款乘客需要以站立乘坐, 而且刺激又懷舊的迴環式雲霄飛車
+STR_0608    :雲霄飛車列車由直線同步發動機加速, 穿過盤繞的迴環及倒轉軌道
+STR_0609    :一款舊式木製雲霄飛車會穿過高低不平的軌道及給乘客充足的空中時間, 營造一趟又快又粗曠的乘坐體驗 
 STR_0767    :遊客{INT32}
 STR_0768    :清潔工人{INT32}
 STR_0769    :維修人員{INT32}
@@ -245,7 +242,6 @@ STR_0832    :將檢視區域順時針旋轉90°
 STR_0833    :暫停遊戲
 STR_0834    :硬碟及遊戲選項
 STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :有關‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}版權商標 © 2002 Chris Sawyer, 版權所有
@@ -257,16 +253,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}感謝:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :太低!
 STR_0878    :太高!
@@ -285,7 +271,7 @@ STR_0892    :截圖‘{STRINGID}’已儲存到硬碟中
 STR_0893    :截圖失敗!
 STR_0894    :地形資料的範圍已滿!
 STR_0895    :不能建造在一半露天一半地底的地勢中
-STR_0896    :{POP16}{POP16}{STRINGID} 建造
+STR_0896    :{STRING} 建造
 STR_0897    :方向
 STR_0898    :左彎
 STR_0899    :右彎
@@ -320,8 +306,8 @@ STR_0927    :不能在此建造…
 STR_0928    :帶有鏈條的坡道, 此坡道會將車卡拉上坡
 STR_0929    :‘S’型彎道 (向左)
 STR_0930    :‘S’型彎道 (向右)
-STR_0931    :垂直回環 (向左)
-STR_0932    :垂直回環 (向右)
+STR_0931    :垂直迴環 (向左)
+STR_0932    :垂直迴環 (向右)
 STR_0933    :先把地面降低或升高
 STR_0934    :遊樂設施的入口擋在路上
 STR_0935    :遊樂設施的出口擋在路上
@@ -410,8 +396,6 @@ STR_1018    :不能作出更變…
 STR_1019    :不能作出更變…
 STR_1020    :不能作出更變…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :每列車{POP16}{POP16}{POP16}{COMMA16}車卡
-STR_1023    :每列車{POP16}{POP16}{POP16}{COMMA16}車卡
 STR_1024    :每列車{COMMA16}車卡
 STR_1025    :每列車{COMMA16}車卡
 STR_1026    :車站月台太長!
@@ -517,18 +501,16 @@ STR_1125    :運作中
 STR_1126    :停止中
 STR_1127    :卸客中
 STR_1128    :被區域煞車裝置煞停了
-STR_1129    :全部車卡使用相同顏色
-STR_1130    :不同{STRINGID}使用不同顏色
-STR_1131    :不同車卡使用不同顏色
-STR_1132    :車卡{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :車卡{POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1129    :全部車卡使用相同色彩
+STR_1130    :不同{STRINGID}使用不同色彩
+STR_1131    :不同車卡使用不同色彩
+STR_1133    :車卡{COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :選擇主要色彩選配
 STR_1137    :選擇額外色彩選配1
 STR_1138    :選擇額外色彩選配2
-STR_1139    :選擇支撐顏色
-STR_1140    :選擇有關車卡顏色調配的選項
+STR_1139    :選擇支撐色彩
+STR_1140    :選擇有關車卡色彩調配的選項
 STR_1141    :選擇要修改的車卡/列車
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
@@ -544,8 +526,8 @@ STR_1152    :任意載客量
 STR_1153    :在設施軌道上標記高度
 STR_1154    :在土地上標記高度
 STR_1155    :在道路上標記高度
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :不能移除…
 STR_1159    :放置景物, 花圃及其他裝飾物
 STR_1160    :創造或調整湖泊及水塘
@@ -560,7 +542,6 @@ STR_1168    :選項
 STR_1169    :(無)
 STR_1170    :{STRING}
 STR_1171    :{RED}已關閉
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :建造道路及‘輪候區’道路
 STR_1174    :橫額擋在路上
 STR_1175    :不能在斜路上建造此物件
@@ -719,7 +700,6 @@ STR_1327    :將物件旋轉90°
 STR_1328    :需要升高或降低土地
 STR_1329    :{WINDOW_COLOUR_2}發車速度:
 STR_1330    :離開車站時的最高速度
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -817,7 +797,6 @@ STR_1425    :道路
 STR_1426    :輪侯區
 STR_1427    :{WINDOW_COLOUR_2}乘客: {BLACK}每小時{COMMA32}個
 STR_1428    :{WINDOW_COLOUR_2}門票價格:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :免費
 STR_1431    :行走中
 STR_1432    :前往{STRINGID}中
@@ -1062,7 +1041,6 @@ STR_1671    :{WINDOW_COLOUR_2}總利潤: {BLACK}{CURRENCY2DP}
 STR_1672    :煞車裝置
 STR_1673    :控制旋轉開/關軌道
 STR_1674    :煞車速度
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :設置煞車速度限制
 STR_1677    :{WINDOW_COLOUR_2}受歡迎度: {BLACK}未知
 STR_1678    :{WINDOW_COLOUR_2}受歡迎度: {BLACK}{COMMA16}%
@@ -1118,23 +1096,19 @@ STR_1727    :建造權不供購買!
 STR_1728    :不能在此購買建造權…
 STR_1729    :土地並非由樂園所擁有!
 STR_1730    :{RED}已關閉
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :建造
 STR_1733    :模式
 STR_1734    :{WINDOW_COLOUR_2}圈數:
 STR_1735    :每次循環的圈數
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :不能改變圈數…
 STR_1739    :此賽事由遊客{INT32}勝出
 STR_1740    :此賽事由{STRINGID}勝出
 STR_1741    :尚未建造!
 STR_1742    :{WINDOW_COLOUR_2}設施的最大載客量:
 STR_1743    :同時間遊樂設施上最多可接受的乘客數量
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :不能改變…
 STR_1747    :{WINDOW_COLOUR_2}遊玩時間限制:
 STR_1748    :此遊樂設施的遊玩時間限制
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :不能改變此遊樂設施的遊玩時間限制…
 STR_1752    :列出樂園內每個遊客
 STR_1753    :列出樂園內遊客的總匯
@@ -1155,31 +1129,17 @@ STR_1767    :不斷旋轉的隧道
 STR_1768    :不能改變搖擺次數…
 STR_1769    :{WINDOW_COLOUR_2}搖擺次數:
 STR_1770    :完全搖擺的次數
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :每個遊樂設施只可建造一個即時照相區域
 STR_1774    :每個遊樂設施只可建造一個纜索坡道
 STR_1777    :音樂
-STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊貓服裝
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 老虎服裝
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} 大象服裝
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} 羅馬服裝
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} 哥斯拉服裝
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} 雪人服裝
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} 騎士服裝
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 太空人服裝
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 土匪服裝
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} 警長服裝
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海盜服裝
-STR_1790    :選擇這種員工的制服顏色
-STR_1791    :{WINDOW_COLOUR_2}制服的顏色:
+STR_1790    :選擇這種員工的制服色彩
+STR_1791    :{WINDOW_COLOUR_2}制服的色彩:
 STR_1792    :回應{STRINGID}的故障呼叫中
 STR_1793    :前往到{STRINGID}作出檢查中
 STR_1794    :修理{STRINGID}中
 STR_1795    :回應電台呼叫中
 STR_1796    :已經故障並需要修復
 STR_1798    :漩渦
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :保險裝置跳掣
 STR_1801    :保護裝置卡住不能開啟
 STR_1802    :保護裝置卡住不能關閉
@@ -1251,10 +1211,8 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :不能改變旋轉次數…
 STR_1869    :{WINDOW_COLOUR_2}旋轉次數:
 STR_1870    :完整旋轉次數
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}收入: {BLACK}每小時{CURRENCY2DP}
 STR_1874    :{WINDOW_COLOUR_2}營利: {BLACK}每小時{CURRENCY2DP}
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}檢查遊樂設施
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}修理遊樂設施
 STR_1878    :{WINDOW_COLOUR_2}檢查時距:
@@ -1296,7 +1254,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}貸款:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :不能再借貸更多錢!
 STR_1919    :沒有足夠的現金!
 STR_1920    :不能償還貸款!
@@ -1334,7 +1291,6 @@ STR_1953    :營銷計劃
 STR_1954    :研發資金
 STR_1955    :{WINDOW_COLOUR_2}圈數:
 STR_1956    :每次運轉遊樂設施的圈數
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :不能改變圈數…
 STR_1960    :{WINDOW_COLOUR_2}氣球價格:
@@ -1578,8 +1534,8 @@ STR_2212    :列出樂園內的安全警衛
 STR_2213    :列出樂園內的表演人員
 STR_2214    :遊戲暫停時無法建造任何物件!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID}, {STRINGID}的一部份, 尚未返回到{STRINGID}!{NEWLINE}檢查是否被卡住或被停止了
 STR_2219    :{RED}{COMMA16}人已於{STRINGID}的意外中喪生
 STR_2220    :{WINDOW_COLOUR_2}樂園評價: {BLACK}{COMMA16}
@@ -1912,8 +1868,8 @@ STR_2670    :Scroll
 STR_2680    :所有項目都已研發完畢
 STR_2684    :一大群遊客到訪
 STR_2685    :簡單雜噪參數
-STR_2686    :最低值:
-STR_2687    :最高值:
+STR_2686    :最低土地高度:
+STR_2687    :最高土地高度:
 STR_2688    :基本頻律:
 STR_2689    :八度:
 STR_2690    :生成地圖
@@ -1933,9 +1889,6 @@ STR_2706    :從不
 STR_2707    :使用操作系統的文件瀏覽器
 STR_2708    :{WINDOW_COLOUR_1}你確定要覆蓋存檔{STRINGID}?
 STR_2709    :覆蓋
-STR_2710    :請輸入存檔名稱:
-STR_2718    :往上層目錄
-STR_2719    :建立新檔案
 STR_2720    :{UINT16}秒
 STR_2721    :{UINT16}秒
 STR_2722    :{UINT16}分:{UINT16}秒
@@ -2077,8 +2030,8 @@ STR_2985    :橫額
 STR_2986    :修改橫額中的文字
 STR_2987    :將此橫額顯示為‘遊客止步’
 STR_2988    :拆除這個橫額
-STR_2989    :選擇橫額顏色
-STR_2990    :選擇文字顏色
+STR_2989    :選擇橫額色彩
+STR_2990    :選擇文字色彩
 STR_2991    :招牌
 STR_2992    :修改招牌中的文字
 STR_2993    :請輸入招牌中的文字:
@@ -2135,11 +2088,10 @@ STR_3092    :你無法移動或修改這個遊樂設施的車站!
 STR_3093    :{WINDOW_COLOUR_2}最愛: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}鏈條坡道的鏈條速度:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :選擇鏈條坡道的鏈條上拉速度
-STR_3099    :選擇顏色
-STR_3100    :選擇第二顏色
-STR_3101    :選擇第三顏色
+STR_3099    :選擇色彩
+STR_3100    :選擇第二色彩
+STR_3101    :選擇第三色彩
 STR_3102    :將地形的景物重新上色
 STR_3103    :不能重新上色這個物件…
 STR_3104    :列出遊樂設施
@@ -2178,7 +2130,6 @@ STR_3136    :警告: 此設計會使用另一款車輛, 它的運作可能會跟
 STR_3137    :選擇鄰近景物
 STR_3138    :重新選擇
 STR_3139    :纜道坡道不能在這個運作模式運作
-STR_3140    :纜道坡道需要連接至車站
 STR_3141    :纜道坡道並不適合於單次多圈數的遊樂設施
 STR_3142    :{WINDOW_COLOUR_2}載客量: {BLACK}{STRINGID}
 STR_3143    :在地圖上顯示所有人物
@@ -2229,7 +2180,6 @@ STR_3208    :軌道設計管理工具
 STR_3209    :上一步:
 STR_3210    :下一步:
 STR_3211    :地圖大小:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :不能再縮小地圖
 STR_3214    :不能再擴大地圖
 STR_3215    :太接近地圖的邊緣
@@ -2249,22 +2199,20 @@ STR_3228    :設置遊客的開始步行位置
 STR_3229    :區域煞車不能建造在車站之後
 STR_3230    :區域煞車不能建造在另一個區域煞車之後
 STR_3231    :區域煞車不能建造在這個鏈條坡道的頂部之後
-STR_3232    :選項 - 財政
-STR_3233    :選項 - 遊客
-STR_3234    :選項 - 樂園
+STR_3232    :劇情選項 - 財政
+STR_3233    :劇情選項 - 遊客
 STR_3235    :顯示財政選項
 STR_3236    :顯示遊客選項
-STR_3237    :顯示樂園選項
 STR_3238    :無金錢限制
 STR_3239    :將這個樂園設定為無金錢限制的樂園
-STR_3240    :{WINDOW_COLOUR_2}初始現金:
-STR_3241    :{WINDOW_COLOUR_2}初始貸款額:
-STR_3242    :{WINDOW_COLOUR_2}最高貸款額:
-STR_3243    :{WINDOW_COLOUR_2}貸款年利率:
+STR_3240    :初始現金:
+STR_3241    :初始貸款額:
+STR_3242    :最高貸款額:
+STR_3243    :貸款年利率:
 STR_3244    :禁止營銷計劃
 STR_3245    :禁止推銷, 推廣計劃以及其他營銷計劃
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :不能再增加初始現金!
 STR_3249    :不能再減少初始現金!
 STR_3250    :不能再增加初始貸款額!
@@ -2273,14 +2221,10 @@ STR_3252    :不能再增加最高貸款額!
 STR_3253    :不能再減少最高貸款額!
 STR_3254    :不能再增加貸款利率!
 STR_3255    :不能再減少貸款利率!
-STR_3256    :遊客喜歡較溫和的遊樂設施
-STR_3257    :選擇普遍遊客是否只喜歡較溫和的遊樂設施
-STR_3258    :遊客喜歡較刺激的遊樂設施
-STR_3259    :選擇普遍遊客是否只喜歡較刺激的遊樂設施
-STR_3260    :{WINDOW_COLOUR_2}遊客身上現金 (平均值):
-STR_3261    :{WINDOW_COLOUR_2}遊客初始快樂度:
-STR_3262    :{WINDOW_COLOUR_2}遊客初始飢餓度:
-STR_3263    :{WINDOW_COLOUR_2}遊客初始口渴度:
+STR_3260    :遊客身上現金 (平均值):
+STR_3261    :遊客初始快樂度:
+STR_3262    :遊客初始飢餓度:
+STR_3263    :遊客初始口渴度:
 STR_3264    :不能再增加這個選項!
 STR_3265    :不能再減少這個選項!
 STR_3266    :選擇這個樂園的收費策略
@@ -2294,23 +2238,15 @@ STR_3273    :較高難度的樂園評價公式
 STR_3274    :使增加樂園評價更具挑戰性
 STR_3275    :較難生成遊客
 STR_3276    :使吸引遊客更具挑戰性
-STR_3277    :{WINDOW_COLOUR_2}購買土地的費用:
-STR_3278    :{WINDOW_COLOUR_2}購買建造權利的費用:
+STR_3277    :購買土地的費用:
+STR_3278    :購買建造權利的費用:
 STR_3279    :免費進入樂園 / 需費乘搭遊樂設施
 STR_3280    :需費進入樂園 / 免費乘搭遊樂設施
-STR_3281    :{WINDOW_COLOUR_2}樂園門票價格:
-STR_3282    :選擇目標及樂園名稱
+STR_3281    :樂園門票價格:
 STR_3283    :選擇要保留的遊樂設施/店鋪
-STR_3284    :選取目標
-STR_3285    :保留遊樂設施/店鋪
+STR_3285    :劇情選項 - 保留遊樂設施/店鋪
 STR_3286    :選擇此劇情的目標
 STR_3287    :{WINDOW_COLOUR_2}目標:
-STR_3288    :選擇氣候
-STR_3289    :{WINDOW_COLOUR_2}氣候:
-STR_3290    :又冷又潮濕
-STR_3291    :溫暖
-STR_3292    :又熱又乾燥
-STR_3293    :寒冷
 STR_3294    :更改…
 STR_3295    :更改樂園名稱
 STR_3296    :更改劇情名稱
@@ -2606,8 +2542,8 @@ STR_5357    :{BLACK}噁心忍受程度:
 STR_5358    :{BLACK}如廁度:
 STR_5359    :移除遊客
 STR_5360    :移除地圖上所有遊客
-STR_5361    :給予全部遊客:
-STR_5362    :{BLACK}設置所有遊客對遊樂設施的偏好刺激度為:
+STR_5361    :加入到遊客的物品清單
+STR_5362    :{BLACK}對遊樂設施的偏好刺激度:
 STR_5363    :高於1
 STR_5364    :低於15
 STR_5365    :{BLACK}員工行走速度:
@@ -2617,7 +2553,7 @@ STR_5368    :重設毀壞狀態
 STR_5371    :選取物件
 STR_5372    :滑鼠左鍵拖拉
 STR_5373    :名稱 {STRINGID}
-STR_5374    :日期 {STRINGID}
+STR_5374    :修改日期 {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :名稱已經存在
@@ -2637,7 +2573,7 @@ STR_5457    :去除支撐限制
 STR_5458    :順時計旋轉
 STR_5459    :逆時計旋轉
 STR_5460    :逆時針旋轉檢視範圍
-STR_5461    :設置遊客的屬性
+STR_5461    :設置所有遊客的屬性
 STR_5462    :{CURRENCY}
 STR_5463    :目標: 盡情玩吧!
 STR_5464    :一般
@@ -2724,7 +2660,6 @@ STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :當Steam內嵌介面開啟時暫停遊戲
 STR_5554    :啟用山丘工具
 STR_5555    :顯示來自其他類型軌道的車輛種類
 STR_5556    :踢除玩家
@@ -2780,7 +2715,7 @@ STR_5608    :BH
 STR_5609    :CH
 STR_5610    :移除選中的地圖元素. 使用時請注意. 因為強制移除地圖元素並不會對遊戲中的現金做成影響.
 STR_5611    :G
-STR_5612    :Ghost flag
+STR_5612    :預覽標記
 STR_5613    :B
 STR_5614    :損壞標記
 STR_5615    :L
@@ -2795,9 +2730,6 @@ STR_5623    :瘋狂世界
 STR_5624    :時空歷險
 STR_5625    :“真實的”樂園
 STR_5626    :其他樂園
-STR_5627    :樂園列表的排序方式:
-STR_5628    :出處的遊戲
-STR_5629    :困難程度
 STR_5630    :允許漸進解鎖
 STR_5631    :額外下載的官方樂園
 STR_5632    :建設你的..
@@ -2940,14 +2872,13 @@ STR_5807    :{WINDOW_COLOUR_2}遊樂設施數目: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}商店及攤販數目: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}訪客資訊中心及其他設施數目: {BLACK}{COMMA16}
 STR_5810    :去除有關列車的限制
-STR_5811    :勾選後, 你可以選擇高達每列車255車卡及每遊樂設施31輛列車/艘小船
+STR_5811    :勾選後, 你可以選擇高達每列車255車卡及每遊樂設施255輛列車/艘小船
 STR_5812    :顯示多人連線模式的視窗
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :在遊戲中顯示每秒顯示張數數目
 STR_5816    :設置縮放遊戲的比例.{NEWLINE}於高解析度時遊玩非常有用
-STR_5819    :[需先啟用硬體渲染]{NEWLINE}當Steam遊戲內的內嵌介面開啟時{NEWLINE}暫停遊戲
 STR_5820    :當焦點在全螢幕模式{NEWLINE}失去時最小化遊戲
 STR_5822    :循環日與夜.{NEWLINE}一個完整的循環需時一個遊戲月
 STR_5823    :在橫額中顥示大階英文 (為夢幻遊樂園1((RCT1)的特色)
@@ -3015,7 +2946,6 @@ STR_5887    :前綴
 STR_5888    :後綴
 STR_5889    :自訂貨幣符號
 STR_5890    :請輸入用於顯示的貨幣符號
-STR_5891    :預設文件夾
 STR_5892    :回到預設文件夾
 STR_5893    :匯率
 STR_5894    :請輸入匯率
@@ -3041,12 +2971,11 @@ STR_5914    :未知的遊樂設施
 STR_5915    :玩家
 STR_5916    :{COMMA16}位玩家
 STR_5917    :{COMMA16}位玩家
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :渲染天氣效果
 STR_5921    :啟用後, 於雷暴天氣中的雨和灰濛濛的濾鏡會被渲染在畫面中.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}最多 {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}每列車最多為 {COMMA16} {STRINGID}
+STR_5922    :最多 {STRINGID}
+STR_5923    :每列車最多為 {COMMA16} {STRINGID}
 STR_5924    :地面詳情
 STR_5925    :道路詳情
 STR_5926    :軌道詳情
@@ -3139,7 +3068,7 @@ STR_6012    :{COMMA1DP16}
 STR_6013    :遊客只會付費購買樂園入場卷及物品.{NEWLINE}他們能免費乘搭遊樂設施.
 STR_6014    :遊客只會付費乘搭遊樂設施及物品.{NEWLINE}他們不會乘搭付費購買樂園入場卷.
 STR_6015    :斜道
-STR_6016    :更改方格
+STR_6016    :更改區域
 STR_6017    :請減慢操作速度
 STR_6018    :建造 - 轉左
 STR_6019    :建造 - 轉右
@@ -3168,9 +3097,9 @@ STR_6041    :{BLACK}沒有僱用任何的維修人員!
 STR_6042    :載入高度點陣圖
 STR_6043    :選擇高度點陣圖
 STR_6044    :高度點陣圖平滑化
-STR_6045    :強度
+STR_6045    :強度:
 STR_6046    :高度點陣圖平均化
-STR_6047    :平滑方塊區域
+STR_6047    :平滑方塊區域邊緣
 STR_6048    :高度點陣圖錯誤
 STR_6049    :PNG讀取錯誤
 STR_6050    :高度點陣圖讀取錯誤
@@ -3209,8 +3138,8 @@ STR_6083    :{STRING} 測試了遊樂設施 ‘{STRING}’.
 STR_6084    :{STRING} 更改了遊樂設施 ‘{STRING}’ 的車輛設置.
 STR_6085    :{STRING} 更改了遊樂設施 ‘{STRING}’ 的運行設置.
 STR_6086    :{STRING} 將遊樂設施 ‘{STRING}’ 重命名至 ‘{STRING}’.
-STR_6087    :{STRING} 將遊樂設施 ‘{STRING}’ 的價錢調整至 {STRING}
-STR_6088    :{STRING} 將遊樂設施 ‘{STRING}’ 的額外價錢調整至 {STRING}
+STR_6087    :{STRING} 將遊樂設施 ‘{STRING}’ 的價格調整至 {STRING}
+STR_6088    :{STRING} 將遊樂設施 ‘{STRING}’ 的額外價格調整至 {STRING}
 STR_6089    :{STRING} 將樂園 ‘{STRING}’ 重命名至 ‘{STRING}’.
 STR_6090    :{STRING} 開啟了樂園.
 STR_6091    :{STRING} 關啟了樂園.
@@ -3251,8 +3180,8 @@ STR_6133    :允許使用尚未研發的遊樂設施及景物
 STR_6134    :清除景物
 STR_6135    :客戶端發送了不正確的要求
 STR_6136    :伺服器發送了不正確的要求
-STR_6137    :OpenRCT2, 一個免費及開放原始碼的模擬樂園2複製品.
-STR_6138    :OpenRCT2由眾多志願者一起開發, 完整的列表可於 “contributors.md” 找到. 請訪問 http://github.com/OpenRCT2/OpenRCT2 以便獲取更多資訊
+STR_6137    :OpenRCT2, 一個免費及開放原始碼的模擬樂園2擴充及重製版本.
+STR_6138    :OpenRCT2由眾多志願者一起開發, 完整的列表可按下 “貢獻者” 按鈕找到. 請訪問 http://github.com/OpenRCT2/OpenRCT2 以便獲取更多資訊.
 STR_6139    :所有的產品及公司名稱皆屬其擁有者所有. 使用那些名稱並不暗示或代表本項目與他們有任何聯繫.
 STR_6140    :更新日誌…
 STR_6141    :夢幻遊樂園(RCT1)式的底部工具列
@@ -3281,7 +3210,6 @@ STR_6165    :使用垂直同步
 STR_6166    :將每影格與螢幕的更新頻率同步, 以避免畫面撕裂.
 STR_6167    :進階
 STR_6168    :主選單動畫
-STR_6169    :劇情選項
 STR_6170    :界面小設定
 STR_6171    :搜尋
 STR_6172    :搜尋
@@ -3358,7 +3286,7 @@ STR_6271    :地型邊緣
 STR_6272    :車站
 STR_6273    :音樂
 STR_6274    :無法設置色彩選配…
-STR_6275    :{WINDOW_COLOUR_2}車站風格:
+STR_6275    :車站風格
 STR_6276    :{RED}有遊客於{STRINGID}中卡住, 可能因為使用了非法的遊樂設施種類或運作模式.
 STR_6277    :車站索引: {BLACK}{COMMA16}
 STR_6278    :自動存檔數量
@@ -3382,7 +3310,7 @@ STR_6304    :開啟景物選取器
 STR_6305    :多執行緒
 STR_6306    :啟用多執行緒渲染的實驗選項, 可能令到遊戲不穩定.
 STR_6307    :色彩選配: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :重新連接
 STR_6310    :{WINDOW_COLOUR_2}當前位置: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}下一位置: {BLACK}{INT32} {INT32} {INT32}
@@ -3432,7 +3360,6 @@ STR_6355    :高密度
 STR_6356    :如果樂園中有水域存在, 則會生成鴨子
 STR_6357    :移除所有於地圖上的鴨子
 STR_6358    :第{UINT16}頁
-STR_6359    :{POP16}{POP16}第{UINT16}頁
 STR_6361    :啟用遊樂設施的燈光效果 (實驗性質)
 STR_6362    :當啟用此選項時, 所有在擁有軌道的遊樂設施中的車輛將會於晚中被照亮.
 STR_6363    :複製文字到剪貼簿
@@ -3568,11 +3495,11 @@ STR_6493    :此樂園從較新的OpenRCT2中儲存, 部份資料可能會被遺
 STR_6494    :以遊樂設施種類分類
 STR_6495    :以遊樂設施種類分類, 而不獨立地以列車分類.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
-STR_6497    :點擊方格顯示其方格元素.{NEWLINE}同時按下Ctrl及點擊方格元素即可直接選取.
+STR_6497    :點擊區域顯示其區域元素.{NEWLINE}同時按下Ctrl及點擊區域元素即可直接選取.
 STR_6498    :啟用後會維持產生正方形地圖.
 STR_6499    :軌道設計格式不支持此車輛種類
 STR_6500    :軌道設計格式不支持此軌道配置
-STR_6501    :隨機顏色
+STR_6501    :隨機色彩
 STR_6502    :請輸入介於{COMMA16}及{COMMA16}的數值
 STR_6503    :請選擇至少一個車站物件
 STR_6504    :請選擇至少一個地型表面
@@ -3600,7 +3527,7 @@ STR_6525    :以選中的資料包重新載入遊戲內所有的物件資料.
 STR_6526    :(基本圖像, 音樂及聲音效果)
 STR_6527    :比賽
 STR_6528    :不適合的軌道參數!
-STR_6529    :不適合的顏色調配參數!
+STR_6529    :不適合的色彩調配參數!
 STR_6530    :玩家創作的擴展地圖
 STR_6533    :{WINDOW_COLOUR_2}興奮度加成: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}刺激度加成: {BLACK}-{COMMA16}%
@@ -3608,3 +3535,225 @@ STR_6535    :{WINDOW_COLOUR_2}噁心度加成: {BLACK}-{COMMA16}%
 STR_6536    :此樂園從較新的OpenRCT2中儲存. 儲存樂園文件版本為v{INT32}. 你目前使用v{INT32}.
 STR_6537    :容許使用一般道路為輪候區
 STR_6538    :於“道路”視窗內的輪候區下拉選單中顯示一般道路.
+STR_6539    :關閉煞車
+STR_6540    :{WINDOW_COLOUR_2}特別鳴謝以下公司允許他們的衍生產品出現在本遊戲中:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
+STR_6542    :貢獻者
+STR_6543    :貢獻者…
+STR_6544    :無法將貸款調整至負數!
+STR_6545    :使用夢幻遊樂園(RCT1)的利息計算方式
+STR_6546    :使用夢幻遊樂園(RCT1)的利息計算算法, 將以約1.33%的固定利率計算利息.
+STR_6547    :所有景物
+STR_6548    :顯示分岔路的等候道扶手
+STR_6549    :無法選取兼容性物件!
+STR_6550    :此物件只因古老或損壞的物品的兼容性而列出. 它只能夠取消選取, 而不能選取.
+STR_6551    :軍綠色
+STR_6552    :蜜瓜(淺)綠色
+STR_6553    :棕黃色
+STR_6554    :褐紅色
+STR_6555    :珊瑚粉色
+STR_6556    :葉綠色
+STR_6557    :鮮黃綠色
+STR_6558    :深綠色
+STR_6559    :青瓷色
+STR_6560    :草綠色
+STR_6561    :紅褐色
+STR_6562    :桃色
+STR_6563    :長春花色
+STR_6564    :鉻綠色
+STR_6565    :淺青綠色
+STR_6566    :紫羅蘭色
+STR_6567    :薰衣草色
+STR_6568    :淡橙色
+STR_6569    :灰藍色
+STR_6570    :淡粉色
+STR_6571    :棕土色
+STR_6572    :米色
+STR_6573    :隱形
+STR_6574    :虛無 (背景色)
+STR_6575    :允許特殊的色彩選配
+STR_6576    :添加特殊的顏色到下拉選單
+STR_6577    :區域煞車限速
+STR_6578    :設置區域煞車的速度限制. 在區域運作模式, 相鄰更慢速度的煞車將與區域煞車的速度同步.
+STR_6579    :當儲存軌道設計時, 區域煞車將會設置為預設的限速
+STR_6580    :重設
+STR_6581    :你確定要重設此標籤頁中所有的快捷鍵嗎?
+STR_6582    :顯示鍵盤快捷鍵視窗
+STR_6583    :{WINDOW_COLOUR_2}列車反向
+STR_6584    :選擇以反向運行列車
+STR_6585    :無法作出更改…
+STR_6586    :OpenRCT2
+STR_6587    :OpenRCT2的主題曲由Allister Brimble創作,{NEWLINE}以CC BY-SA 4.0授權.
+STR_6588    :鳴謝Herman Riddering授權錄製35er Voigt.
+STR_6589    :顯示視窗操作按鈕在左側
+STR_6590    :顯示視窗操作按鈕(例如關閉視窗)在左側而非在右側.
+STR_6591    :員工正在修理遊樂設施而不能被解僱.
+STR_6592    :員工正在檢查遊樂設施而不能被解僱.
+STR_6593    :移除樂園圍欄
+STR_6594    :區域檢查器: 開關坡道牆體
+STR_6595    :{WINDOW_COLOUR_2}作者: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}作者: {BLACK}{STRING}
+STR_6597    :不適合的參數
+STR_6598    :數值超出限制
+STR_6599    :找不到預覽元素
+STR_6600    :找不到氣球
+STR_6601    :找不到員工
+STR_6602    :找不到遊樂設施
+STR_6603    :找不到遊樂設施物件
+STR_6604    :找不到玩家
+STR_6605    :找不到入口元素
+STR_6606    :找不到地表元素
+STR_6607    :找不到區域元素
+STR_6608    :找不到軌道元素
+STR_6609    :找不到軌道區間
+STR_6610    :找不到道路元素
+STR_6611    :找不到磚牆元素
+STR_6612    :找不到橫幅元素
+STR_6613    :重新載入物件
+STR_6614    :無法改變樂園入場費
+STR_6615    :在此區域的軌道需要水體
+STR_6616    :對於此員工類別為不合理的動作
+STR_6617    :無法與自身替換區域元素
+STR_6618    :無法改變物件限制…
+STR_6619    :物件類別不能被限制!
+STR_6620    :找不到物件!
+STR_6621    :限制
+STR_6622    :限制只能在劇情編輯工具及沙盒模式中使用物件.
+STR_6623    :輸入 ‘help’ 來顯示可供使用指令. 輸入 ‘hide’ 來隱藏命令行.
+STR_6624    :區域檢查器: 排序元素Sort elements
+STR_6625    :不合理的色彩
+STR_6626    :動畫正在反向播放
+STR_6627    :軌道速度太快了!
+STR_6628    :只可以擺放在道路邊緣上!
+STR_6629    :置中工具列的按鈕
+STR_6630    :此設定將會將工具列的按鈕在螢幕上置中. 而預設的按鈕排序為左右並列.
+STR_6631    :載入中…
+STR_6632    :正在檢查物件檔案…
+STR_6633    :正在檢查劇情檔案…
+STR_6634    :正在檢查軌道設計檔案…
+STR_6635    :正在檢查資料包…
+STR_6636    :正在檢查主選單動畫…
+STR_6637    :正在載入主選單動畫…
+STR_6638    :放大界面
+STR_6639    :將界面設置得更適合觸控
+STR_6640    :修改資料包…
+STR_6641    :載入/進度視窗
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :觸控改進
+STR_6645    :放大某些界面元素讓他們更易點撃或觸及.
+STR_6646    :作者: {STRING}
+STR_6647    :作者: {STRING}
+STR_6648    :正在載入插件引擎…
+STR_6649    :正在載入劇情…
+STR_6650    :正在載入遊戲存檔…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :錯誤提示框
+STR_6653    :顯示所有來源的物件
+STR_6654    :顯示{POP16}{UINT16}個來源的物件
+STR_6655    :只顯示‘{POP16}{STRINGID}’的物件
+STR_6656    :移除樂園的所有圍欄
+STR_6657    :不可擁有的土地
+STR_6658    :設置土地不屬於樂園並不可供購買
+STR_6659    :遊客忽略價格
+STR_6660    :遊客會忽略遊樂設施及店鋪的價格.
+STR_6661    :全部隨機
+STR_6662    :將所有列車或車輛的顏色隨機選取.
+STR_6663    :日期密技
+STR_6664    :顯示日期密技
+STR_6665    :大自然/天氣密技
+STR_6666    :顯示大自然/天氣密技
+STR_6667    :動物
+STR_6668    :員工密技
+STR_6669    :顯示員工密技
+STR_6670    :遊客行為
+STR_6671    :顯示遊客的‘員工’姓名
+STR_6672    :設定顯示員工的‘真實’名字或顯示員工名字為數字
+STR_6673    :透明
+STR_6674    :{MONTH}, 第{COMMA16}年
+STR_6675    :人物名稱
+STR_6676    :至少選取一個人物名稱物件
+STR_6677    :於水體周圍添加沙灘
+STR_6678    :高度圖來源:
+STR_6679    :平地
+STR_6680    :簡單雜訊
+STR_6681    :高度圖檔案
+STR_6682    :地圖產生器 - 產生器
+STR_6683    :地圖產生器 - 地勢
+STR_6684    :地圖產生器 - 水塘
+STR_6685    :地圖產生器 - 森林
+STR_6686    :樹木與土地比例:
+STR_6687    :最低樹木海拔:
+STR_6688    :最高樹木海拔:
+STR_6689    :{UINT16}%
+STR_6690    :最低土地高度
+STR_6691    :請輸入介乎{COMMA16}及{COMMA16}的最低土地高度
+STR_6692    :最高土地高度
+STR_6693    :請輸入介乎{COMMA16}及{COMMA16}的最高土地高度
+STR_6694    :最低樹木海拔
+STR_6695    :請輸入介乎{COMMA16}及{COMMA16}的最低樹木海拔
+STR_6696    :最高樹木海拔
+STR_6697    :請輸入介乎{COMMA16}及{COMMA16}的最高樹木海拔
+STR_6698    :樹木與土地比例
+STR_6699    :請輸入介乎{COMMA16}及{COMMA16}的樹木與土地比例
+STR_6700    :簡單雜訊基本頻率
+STR_6701    :請輸入介乎{COMMA2DP32}及{COMMA2DP32}的簡單雜訊基本頻率
+STR_6702    :簡單雜訊八度
+STR_6703    :請輸入介乎{COMMA16}及{COMMA16}的八度
+STR_6704    :{COMMA2DP32}
+STR_6705    :瀏覽…
+STR_6706    :{WINDOW_COLOUR_2}目前圖片檔案: {BLACK}{STRING}
+STR_6707    :(沒有選取)
+STR_6708    :平滑化強度
+STR_6709    :請輸入介乎{COMMA16}及{COMMA16}的平滑化強度
+STR_6710    :穩定物件渲染排序
+STR_6711    :檔案名:
+STR_6712    :儲存
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :檔案名
+STR_6715    :檔案修改日期
+STR_6716    :檔案大小
+STR_6717    :檔案大小 {STRINGID}
+STR_6718    :人物動畫
+STR_6719    :至少選取一項遊客動畫物件
+STR_6720    :至少選取一項清潔工人動畫物件
+STR_6721    :至少選取一項維修人員動畫物件
+STR_6722    :至少選取一項安全警衛動畫物件
+STR_6723    :至少選取一項表演人員動畫物件
+STR_6724    :劇情標示
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :旋轉迴環 (向左)
+STR_6728    :旋轉迴環 (向右)
+STR_6729    :纜道坡道需要連接至車站或區域煞車
+STR_6730    :導出emscripten資料
+STR_6731    :導入emscripten資料
+STR_6732    :在工具列中顯示一個倒時針旋轉視覺的按鈕
+STR_6733    :透明化
+STR_6734    :將等於或高過切割高度的元素透明化.
+STR_6735    :返回上一目錄
+STR_6736    :預覽
+STR_6737    :沒有可供預覽
+STR_6738    :{WINDOW_COLOUR_2}樂園評價: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}日期: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}現金: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}遊樂設施數目: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}遊客數目: {BLACK}{UINT16}
+STR_6743    :氣候
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}遊客對遊樂設施刺激度的偏好:
+STR_6746    :沒有偏好
+STR_6747    :不同偏好 (預設)
+STR_6748    :只偏好較不刺激的遊樂設施
+STR_6749    :只偏好較更刺激的遊樂設施
+STR_6750    :選擇新到訪遊客對遊樂設施刺激度偏好.
+STR_6752    :劇情選項 - 目標
+STR_6753    :劇情選項 - 劇情詳情
+STR_6754    :劇情選項 - 土地限制
+STR_6755    :顥示目標選項
+STR_6756    :顥示劇情詳情選項
+STR_6757    :顥示土地限制選項
+STR_6758    :貸款選項
+STR_6759    :營運模式
+STR_6760    :營利模式:
+STR_6761    :劇情詳情

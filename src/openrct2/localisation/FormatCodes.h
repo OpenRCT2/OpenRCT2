@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,77 +9,83 @@
 
 #pragma once
 
+#include "../drawing/TextColour.h"
+
+#include <cstdint>
 #include <string>
 #include <string_view>
 
-enum class FormatToken
+namespace OpenRCT2
 {
-    Unknown,
-    Literal,
-    Escaped,
+    enum class FormatToken : uint8_t
+    {
+        unknown,
+        literal,
+        escaped,
 
-    Newline,
-    NewlineSmall,
+        newline,
+        newlineSmall,
 
-    // With parameters
-    Move,
-    InlineSprite,
+        // With parameters
+        move,
+        inlineSprite,
 
-    // With arguments
-    Comma32,
-    Int32,
-    Comma1dp16,
-    Comma2dp32,
-    Comma16,
-    UInt16,
-    Currency2dp,
-    Currency,
-    StringById,
-    String,
-    MonthYear,
-    MonthYearSentence,
-    Month,
-    Velocity,
-    DurationShort,
-    DurationLong,
-    Length,
-    Height,
-    Sprite,
-    Pop16,
-    Push16,
+        // With arguments
+        comma32,
+        int32,
+        comma1dp16,
+        comma2dp32,
+        comma16,
+        uint16,
+        currency2dp,
+        currency,
+        stringById,
+        string,
+        monthYear,
+        monthYearSentence,
+        month,
+        velocity,
+        durationShort,
+        durationLong,
+        length,
+        height,
+        sprite,
+        pop16,
+        push16,
 
-    // Colours
-    ColourWindow1,
-    ColourWindow2,
-    ColourWindow3,
-    ColourBlack,
-    ColourGrey,
-    ColourWhite,
-    ColourRed,
-    ColourGreen,
-    ColourYellow,
-    ColourTopaz,
-    ColourCeladon,
-    ColourBabyBlue,
-    ColourPaleLavender,
-    ColourPaleGold,
-    ColourLightPink,
-    ColourPearlAqua,
-    ColourPaleSilver,
+        // Colours
+        colourWindow1,
+        colourWindow2,
+        colourWindow3,
+        colourBlack,
+        colourGrey,
+        colourWhite,
+        colourRed,
+        colourGreen,
+        colourYellow,
+        colourTopaz,
+        colourCeladon,
+        colourBabyBlue,
+        colourPaleLavender,
+        colourPaleGold,
+        colourLightPink,
+        colourPearlAqua,
+        colourPaleSilver,
 
-    // Fonts
-    FontTiny,
-    FontSmall,
-    FontMedium,
+        // Fonts
+        fontTiny,
+        fontSmall,
+        fontMedium,
 
-    OutlineEnable,
-    OutlineDisable,
-};
+        outlineEnable,
+        outlineDisable,
+    };
 
-FormatToken FormatTokenFromString(std::string_view token);
-std::string FormatTokenToString(FormatToken token);
-std::string FormatTokenToStringWithBraces(FormatToken token);
-bool FormatTokenTakesArgument(FormatToken token);
-bool FormatTokenIsColour(FormatToken token);
-size_t FormatTokenGetTextColourIndex(FormatToken token);
-FormatToken FormatTokenFromTextColour(size_t textColour);
+    FormatToken FormatTokenFromString(std::string_view token);
+    std::string FormatTokenToString(FormatToken token);
+    std::string FormatTokenToStringWithBraces(FormatToken token);
+    bool FormatTokenTakesArgument(FormatToken token);
+    bool FormatTokenIsColour(FormatToken token);
+    Drawing::TextColour FormatTokenToTextColour(FormatToken token);
+    FormatToken FormatTokenFromTextColour(Drawing::TextColour textColour);
+} // namespace OpenRCT2

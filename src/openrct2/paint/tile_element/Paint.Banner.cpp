@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,28 +9,24 @@
 
 #include "../Paint.h"
 
-#include "../../Game.h"
-#include "../../GameState.h"
-#include "../../config/Config.h"
+#include "../../drawing/PaletteIndex.h"
+#include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Formatter.h"
-#include "../../localisation/Formatting.h"
-#include "../../localisation/StringIds.h"
-#include "../../object/BannerObject.h"
+#include "../../object/BannerSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Banner.h"
-#include "../../world/Scenery.h"
-#include "../../world/TileInspector.h"
 #include "../../world/tile_element/BannerElement.h"
+#include "Paint.Banner.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
-// BannerBoundBoxes[rotation][0] is for the pole in the back
-// BannerBoundBoxes[rotation][1] is for the pole and the banner in the front
-constexpr CoordsXY BannerBoundBoxes[][2] = {
+// kBannerBoundBoxes[rotation][0] is for the pole in the back
+// kBannerBoundBoxes[rotation][1] is for the pole and the banner in the front
+const CoordsXY kBannerBoundBoxes[][2] = {
     { { 1, 2 }, { 1, 29 } },
     { { 2, 32 }, { 29, 32 } },
     { { 32, 2 }, { 32, 29 } },
@@ -45,31 +41,17 @@ static void PaintBannerScrollingText(
 
     // If text on hidden direction or ghost
     direction = DirectionReverse(direction) - 1;
-    if (direction >= 2 || (bannerElement.IsGhost()))
+    if (direction >= 2 || (bannerElement.isGhost()))
         return;
 
     auto scrollingMode = bannerEntry.scrolling_mode + (direction & 3);
-    if (scrollingMode >= kMaxScrollingTextModes)
+    if (scrollingMode >= ScrollingText::kMaxModes)
     {
         return;
     }
 
-    auto ft = Formatter();
-    banner.FormatTextTo(ft, true);
-
-    char text[256];
-    if (Config::Get().general.UpperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-    else
-    {
-        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
-    }
-
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
+    auto bannerText = banner.getTextWithColour();
+    auto imageId = ScrollingText::setup(session, bannerText, scrollingMode, PaletteIndex::transparent);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
 
@@ -77,7 +59,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
 {
     PROFILED_FUNCTION();
 
-    if (session.DPI.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
+    if (session.rt.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
         || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
@@ -87,13 +69,13 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         return;
     }
 
-    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
+    auto* bannerEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
     if (bannerEntry == nullptr)
     {
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::Banner;
+    session.InteractionType = ViewportInteractionItem::banner;
 
     height -= 16;
 
@@ -101,14 +83,14 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     direction &= 3;
 
     ImageId imageTemplate;
-    if (bannerElement.IsGhost())
+    if (bannerElement.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        session.InteractionType = ViewportInteractionItem::none;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&bannerElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
     }
     else
     {
@@ -117,10 +99,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
 
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
-    auto bbOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
+    auto bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][0], height + 2);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
-    bbOffset = CoordsXYZ(BannerBoundBoxes[direction][1], height + 2);
+    bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][1], height + 2);
     PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);

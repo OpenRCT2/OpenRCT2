@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,96 +9,98 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-// Non-inverted variant
-constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+// Non-inverted variant
+constexpr RideTypeDescriptor kFlyingRollerCoasterRTD =
+{
+    .Category = RideCategory::rollerCoaster,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::flyingRollerCoaster,
-        .supportType = MetalSupportType::TubesInverted,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::quarterLoopUninvertedUp, TrackGroup::flyingLargeHalfLoopUninvertedUp, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeCurveLarge},
-        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift},
+        .supportType = MetalSupportType::tubesInverted,
+        .enabledTrackGroups = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::quarterLoopUninvertedUp, TrackGroup::flyingLargeHalfLoopUninvertedUp, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeCurveLarge, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown, TrackGroup::helixUpUnbankedQuarter, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::helixDownBankedQuarter },
+        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift},
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::flyingRollerCoasterInverted,
-        .supportType = MetalSupportType::TubesInverted,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::quarterLoopInvertedDown, TrackGroup::flyingLargeHalfLoopInvertedDown, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+        .supportType = MetalSupportType::tubesInverted,
+        .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::quarterLoopInvertedDown, TrackGroup::flyingLargeHalfLoopInvertedDown, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown },
         .extraTrackGroups = {TrackGroup::flyingLargeHalfLoopInvertedUp, TrackGroup::flyingHalfLoopInvertedUp},
     }),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant, 
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::startConstructionInverted),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
     .Naming = { STR_RIDE_NAME_FLYING_ROLLER_COASTER, STR_RIDE_DESCRIPTION_FLYING_ROLLER_COASTER },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction, Breakdown::brakesFailure },
     .Heights = { 30, 24, 8, 11, },
     .MaxMass = 35,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftBM, 4, 6 },
+    .LiftData = { Audio::SoundId::liftBM, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 49, 20, 90, 11, 3, 15 },
     .BuildCosts = { 62.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
-    .PhotoItem = ShopItem::Photo2,
+    .DefaultMusic = kMusicObjectRock1,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_TEAL },
-        { COLOUR_TEAL, COLOUR_TEAL, COLOUR_BORDEAUX_RED },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
-        { COLOUR_DULL_GREEN_DARK, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_AQUA_DARK },
-        { COLOUR_BORDEAUX_RED_DARK, COLOUR_BORDEAUX_RED_DARK, COLOUR_SATURATED_BROWN }, // FLY
-        { COLOUR_LIGHT_BLUE, COLOUR_DARK_BLUE, COLOUR_ICY_BLUE }, // Manta
-        { COLOUR_YELLOW, COLOUR_BRIGHT_RED, COLOUR_LIGHT_ORANGE } // Tatsu
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::darkWater },
+        { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::darkPurple },
+        { Drawing::Colour::viridian, Drawing::Colour::limeGreen, Drawing::Colour::deepWater },
+        { Drawing::Colour::maroon, Drawing::Colour::maroon, Drawing::Colour::saturatedBrown }, // FLY
+        { Drawing::Colour::lightBlue, Drawing::Colour::darkBlue, Drawing::Colour::icyBlue }, // Manta
+        { Drawing::Colour::yellow, Drawing::Colour::brightRed, Drawing::Colour::lightOrange } // Tatsu
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "flying_rc",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::Normal,
-        { RIDE_RATING(4, 35), RIDE_RATING(1, 85), RIDE_RATING(4, 33) },
+        RatingsCalculationType::normal,
+        { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },
         17,
-        -1,
-        false,
+        kDynamicRideShelterRating,
+        true,
         {
-            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
-            { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
-            { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
-            { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
-            { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
-            { RatingsModifierType::BonusGForces,          0,                24576, 38130, 49648 },
-            { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
-            { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
-            { RatingsModifierType::BonusSheltered,        0,                15420, 32768, 35108 },
-            { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
-            { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
-            { RatingsModifierType::RequirementInversions, 1,                2, 1, 1 },
-            { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 1, 1 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
-            { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
-            { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
+            { RatingsModifierType::bonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::bonusTrainLength,      0,                187245, 0, 0 },
+            { RatingsModifierType::bonusMaxSpeed,         0,                44281, 88562, 35424 },
+            { RatingsModifierType::bonusAverageSpeed,     0,                291271, 436906, 0 },
+            { RatingsModifierType::bonusDuration,         150,              26214, 0, 0 },
+            { RatingsModifierType::bonusGForces,          0,                24576, 38130, 49648 },
+            { RatingsModifierType::bonusTurns,            0,                26749, 34767, 45749 },
+            { RatingsModifierType::bonusDrops,            0,                29127, 46811, 49152 },
+            { RatingsModifierType::bonusSheltered,        0,                15420, 32768, 35108 },
+            { RatingsModifierType::bonusProximity,        0,                20130, 0, 0 },
+            { RatingsModifierType::bonusScenery,          0,                6693, 0, 0 },
+            { RatingsModifierType::requirementInversions, 1,                2, 1, 1 },
+            { RatingsModifierType::requirementMaxSpeed,   0xA0000,          2, 1, 1 },
+            { RatingsModifierType::requirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 1, 1 },
+            { RatingsModifierType::requirementNumDrops,   2,                2, 1, 1 },
+            { RatingsModifierType::penaltyLateralGs,      0,                24576, 38130, 49648 },
         },
     },
 };
 
-constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
+constexpr RideTypeDescriptor kFlyingRollerCoasterAltRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
-    .TrackPaintFunctions = TrackDrawerDescriptor({ 
+    .Category = RideCategory::none,
+    .StartTrackPiece = TrackElemType::endStation,
+    .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
@@ -108,60 +110,61 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
     }),
-    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster |
-        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::startConstructionInverted),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster |
+        RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::startConstructionInverted, RtdFlag::isDummyType),
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
     .Naming = { STR_RIDE_NAME_3A, STR_RIDE_DESCRIPTION_UNKNOWN },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction, Breakdown::brakesFailure },
     .Heights = { 30, 24, 8, 11, },
     .MaxMass = 35,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftBM, 4, 6 },
+    .LiftData = { Audio::SoundId::liftBM, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 49, 20, 90, 11, 3, 15 },
     .BuildCosts = { 62.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
-    .PhotoItem = ShopItem::Photo2,
+    .DefaultMusic = kMusicObjectRock1,
+    .PhotoItem = ShopItem::photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_TEAL },
-        { COLOUR_TEAL, COLOUR_TEAL, COLOUR_BORDEAUX_RED },
-        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::darkWater },
+        { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::darkPurple },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "flying_rc_alt",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::Normal,
-        { RIDE_RATING(4, 35), RIDE_RATING(1, 85), RIDE_RATING(4, 33) },
+        RatingsCalculationType::normal,
+        { RideRating::make(4, 35), RideRating::make(1, 85), RideRating::make(4, 33) },
         17,
-        -1,
-        false,
+        kDynamicRideShelterRating,
+        true,
         {
-            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
-            { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
-            { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
-            { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
-            { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
-            { RatingsModifierType::BonusGForces,          0,                24576, 38130, 49648 },
-            { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
-            { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
-            { RatingsModifierType::BonusSheltered,        0,                15420, 32768, 35108 },
-            { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
-            { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
-            { RatingsModifierType::RequirementInversions, 1,                2, 1, 1 },
-            { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 1, 1 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
-            { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
-            { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
+            { RatingsModifierType::bonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::bonusTrainLength,      0,                187245, 0, 0 },
+            { RatingsModifierType::bonusMaxSpeed,         0,                44281, 88562, 35424 },
+            { RatingsModifierType::bonusAverageSpeed,     0,                291271, 436906, 0 },
+            { RatingsModifierType::bonusDuration,         150,              26214, 0, 0 },
+            { RatingsModifierType::bonusGForces,          0,                24576, 38130, 49648 },
+            { RatingsModifierType::bonusTurns,            0,                26749, 34767, 45749 },
+            { RatingsModifierType::bonusDrops,            0,                29127, 46811, 49152 },
+            { RatingsModifierType::bonusSheltered,        0,                15420, 32768, 35108 },
+            { RatingsModifierType::bonusProximity,        0,                20130, 0, 0 },
+            { RatingsModifierType::bonusScenery,          0,                6693, 0, 0 },
+            { RatingsModifierType::requirementInversions, 1,                2, 1, 1 },
+            { RatingsModifierType::requirementMaxSpeed,   0xA0000,          2, 1, 1 },
+            { RatingsModifierType::requirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 1, 1 },
+            { RatingsModifierType::requirementNumDrops,   2,                2, 1, 1 },
+            { RatingsModifierType::penaltyLateralGs,      0,                24576, 38130, 49648 },
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

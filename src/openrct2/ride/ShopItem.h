@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,65 +12,68 @@
 #include "../core/Money.hpp"
 #include "../entity/Litter.h"
 
-struct Ride;
+namespace OpenRCT2
+{
+    enum class PeepThoughtType : uint8_t;
 
-enum class PeepThoughtType : uint8_t;
+    struct Ride;
+} // namespace OpenRCT2
 
 enum class ShopItem : uint8_t
 {
-    Balloon,
-    Toy,
-    Map,
-    Photo,
-    Umbrella,
-    Drink,
-    Burger,
-    Chips,
-    IceCream,
-    Candyfloss,
-    EmptyCan,
-    Rubbish,
-    EmptyBurgerBox,
-    Pizza,
-    Voucher,
-    Popcorn,
-    HotDog,
-    Tentacle,
-    Hat,
-    ToffeeApple,
-    TShirt,
-    Doughnut,
-    Coffee,
-    EmptyCup,
-    Chicken,
-    Lemonade,
-    EmptyBox,
-    EmptyBottle = 27,
-    Admission = 31,
-    Photo2 = 32,
-    Photo3,
-    Photo4,
-    Pretzel,
-    Chocolate,
-    IcedTea,
-    FunnelCake,
-    Sunglasses,
-    BeefNoodles,
-    FriedRiceNoodles,
-    WontonSoup,
-    MeatballSoup,
-    FruitJuice,
-    SoybeanMilk,
-    Sujeonggwa,
-    SubSandwich,
-    Cookie,
-    EmptyBowlRed,
-    EmptyDrinkCarton,
-    EmptyJuiceCup,
-    RoastSausage,
-    EmptyBowlBlue,
-    Count = 56,
-    None = 255
+    balloon,
+    toy,
+    map,
+    photo,
+    umbrella,
+    drink,
+    burger,
+    chips,
+    iceCream,
+    candyfloss,
+    emptyCan,
+    rubbish,
+    emptyBurgerBox,
+    pizza,
+    voucher,
+    popcorn,
+    hotDog,
+    tentacle,
+    hat,
+    toffeeApple,
+    tShirt,
+    doughnut,
+    coffee,
+    emptyCup,
+    chicken,
+    lemonade,
+    emptyBox,
+    emptyBottle = 27,
+    admission = 31,
+    photo2 = 32,
+    photo3,
+    photo4,
+    pretzel,
+    chocolate,
+    icedTea,
+    funnelCake,
+    sunglasses,
+    beefNoodles,
+    friedRiceNoodles,
+    wontonSoup,
+    meatballSoup,
+    fruitJuice,
+    soybeanMilk,
+    sujeonggwa,
+    subSandwich,
+    cookie,
+    emptyBowlRed,
+    emptyDrinkCarton,
+    emptyJuiceCup,
+    roastSausage,
+    emptyBowlBlue,
+    count = 56,
+    none = 255
 };
 
 ShopItem& operator++(ShopItem& d, int);
@@ -96,11 +99,11 @@ struct ShopItemDescriptor
     uint32_t Image;
     ShopItemStrings Naming;
     uint16_t Flags;
-    Litter::Type Type;
+    OpenRCT2::Litter::Type Type;
     uint8_t ConsumptionTime;
     ShopItem DiscardContainer;
-    PeepThoughtType TooMuchThought;
-    PeepThoughtType GoodValueThought;
+    OpenRCT2::PeepThoughtType TooMuchThought;
+    OpenRCT2::PeepThoughtType GoodValueThought;
 
     constexpr bool HasFlag(const uint16_t flag) const
     {
@@ -128,7 +131,7 @@ enum
     SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
-money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
-bool ShopItemHasCommonPrice(const ShopItem shopItem);
+money64 ShopItemGetCommonPrice(OpenRCT2::Ride* forRide, ShopItem shopItem);
+bool ShopItemHasCommonPrice(ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

@@ -21,22 +21,28 @@ set(test_files
    "${CMAKE_CURRENT_SOURCE_DIR}/LanguagePackTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/LocalisationTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/MultiLaunch.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/NetworkTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Pathfinding.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/Platform.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/PlayTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/ReplayTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/RideRatings.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/EntityImportTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/S6ImportExportTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/SawyerCodingTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/ScenarioPatcherTests.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/ScriptingTests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/StringTest.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TestData.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TestData.h"
    "${CMAKE_CURRENT_SOURCE_DIR}/tests.cpp"
    "${CMAKE_CURRENT_SOURCE_DIR}/TileElements.cpp"
-   "${CMAKE_CURRENT_SOURCE_DIR}/TileElementsView.cpp")
+   "${CMAKE_CURRENT_SOURCE_DIR}/TileElementsView.cpp"
+   "${CMAKE_CURRENT_SOURCE_DIR}/WidgetStateTests.cpp")
 
 add_executable(OpenRCT2Tests ${test_files})
+add_executable(OpenRCT2::OpenRCT2Tests ALIAS OpenRCT2Tests)
+
 target_link_libraries(OpenRCT2Tests GTest::gtest GTest::gtest_main libopenrct2)
 target_include_directories(OpenRCT2Tests PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 set_target_properties(OpenRCT2Tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

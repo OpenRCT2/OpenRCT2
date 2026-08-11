@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,37 +12,43 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/PeepPickupAction.h>
-#include <openrct2/actions/StaffSetCostumeAction.h>
-#include <openrct2/actions/StaffSetNameAction.h>
-#include <openrct2/actions/StaffSetOrdersAction.h>
-#include <openrct2/actions/StaffSetPatrolAreaAction.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/peep/PeepPickupAction.h>
+#include <openrct2/actions/peep/StaffSetCostumeAction.h>
+#include <openrct2/actions/peep/StaffSetNameAction.h>
+#include <openrct2/actions/peep/StaffSetOrdersAction.h>
+#include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/RenderTarget.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/network/network.h>
-#include <openrct2/peep/PeepAnimationData.h>
-#include <openrct2/sprites.h>
+#include <openrct2/network/Network.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepAnimations.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
+#include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
-
-using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_STRINGID;
+    static constexpr StringId kWindowTitle = kStringIdNone;
 
-    static constexpr int32_t WW = 190;
-    static constexpr int32_t WH = 180;
+    static constexpr ScreenSize kWindowSize = { 190, 180 };
 
     enum WindowStaffPage
     {
@@ -52,7 +58,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_STAFF_PAGE_COUNT,
     };
 
-    enum WindowStaffWidgetIdx
+    enum WindowStaffWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -78,49 +84,47 @@ namespace OpenRCT2::Ui::Windows
         WIDX_COSTUME_BTN,
     };
 
-    validate_global_widx(WC_PEEP, WIDX_PATROL);
-    validate_global_widx(WC_STAFF, WIDX_PICKUP);
-
-#define MAIN_STAFF_WIDGETS                                                                                                     \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
-        MakeWidget({ 0, 43 }, { 190, 137 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
-        MakeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),                                             /* Tab 1 */                    \
-        MakeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),                                             /* Tab 2 */                    \
-        MakeTab({ 65, 17 }, STR_STAFF_STATS_TIP)                                                /* Tab 3 */
+    VALIDATE_GLOBAL_WIDX(WC_PEEP, WIDX_PATROL);
+    VALIDATE_GLOBAL_WIDX(WC_STAFF, WIDX_PICKUP);
 
     // clang-format off
-    static Widget _staffOverviewWidgets[] = {
-        MAIN_STAFF_WIDGETS,
-        MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
-        MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
-        MakeWidget     ({WW - 25,      45}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
-        MakeWidget     ({WW - 25,      69}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
-        MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
-        MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
-        MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    ), // Fire Button
-        kWidgetsEnd,
-    };
+    static constexpr auto kMainStaffWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({ 0, 43 }, { 190, 137 }, WidgetType::resize, WindowColour::secondary),
+        makeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),
+        makeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),
+        makeTab({ 65, 17 }, STR_STAFF_STATS_TIP)
+    );
+
+    static constexpr auto _staffOverviewWidgets = makeWidgets(
+        kMainStaffWidgets,
+        makeWidget     ({ 3, 47},                      {162, 120}, WidgetType::viewport,      WindowColour::secondary                                                 ), // Viewport
+        makeWidget     ({ 3, kWindowSize.height - 13}, {162,  11}, WidgetType::labelCentred, WindowColour::secondary                                                  ), // Label at bottom of viewport
+        makeWidget     ({kWindowSize.width - 25,  45}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
+        makeWidget     ({kWindowSize.width - 25,  69}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
+        makeWidget     ({kWindowSize.width - 25,  93}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
+        makeWidget     ({kWindowSize.width - 25, 117}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
+        makeWidget     ({kWindowSize.width - 25, 141}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    )  // Fire Button
+    );
 
     //0x9AF910
-    static Widget _staffOptionsWidgets[] = {
-        MAIN_STAFF_WIDGETS,
-        MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
-        MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
-        MakeWidget     ({      5,  84}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 3
-        MakeWidget     ({      5, 101}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 4
-        MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                            ), // Costume Dropdown
-        MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
-        kWidgetsEnd,
-    };
-    // clang-format on
+    static constexpr auto _staffOptionsWidgets = makeWidgets(
+        kMainStaffWidgets,
+        makeWidget     ({      5,  50},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 1
+        makeWidget     ({      5,  67},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 2
+        makeWidget     ({      5,  84},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 3
+        makeWidget     ({      5, 101},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 4
+        makeWidget     ({      5,  50},                {180,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                            ), // Costume Dropdown
+        makeWidget     ({kWindowSize.width - 17,  51}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP) // Costume Dropdown Button
+    );
 
     // 0x9AF9F4
-    static Widget _staffStatsWidgets[] = {
-        MAIN_STAFF_WIDGETS,
-        kWidgetsEnd,
-    };
+    static constexpr auto _staffStatsWidgets = makeWidgets(
+        kMainStaffWidgets
+    );
+    // clang-format on
 
-    static Widget* window_staff_page_widgets[] = {
+    static constexpr std::span<const Widget> window_staff_page_widgets[] = {
         _staffOverviewWidgets,
         _staffOptionsWidgets,
         _staffStatsWidgets,
@@ -129,27 +133,46 @@ namespace OpenRCT2::Ui::Windows
     class StaffWindow final : public Window
     {
     private:
-        EntertainerCostume _availableCostumes[EnumValue(EntertainerCostume::Count)]{};
+        std::vector<AvailableCostume> _availableCostumes;
         uint16_t _tabAnimationOffset = 0;
         int32_t _pickedPeepOldX = kLocationNull;
+        u8string _windowTitle{};
 
     public:
-        void Initialise(EntityId entityId)
+        void initialise(EntityId entityId)
         {
             number = entityId.ToUnderlying();
+            auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
+
+            if (staff->isEntertainer())
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::entertainer);
+
+            ViewportInit();
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            SetPage(WINDOW_STAFF_OVERVIEW);
+            setPage(WINDOW_STAFF_OVERVIEW);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             CancelTools();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onLanguageChange() override
+        {
+            auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
+
+            if (staff->isEntertainer())
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::entertainer);
+        }
+
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             if (widgetIndex <= WIDX_TAB_3)
                 CommonMouseUp(widgetIndex);
@@ -166,7 +189,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -179,7 +202,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             switch (page)
             {
@@ -192,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             CommonPrepareDrawBefore();
 
@@ -209,23 +232,23 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            drawWidgets(rt);
+            DrawTabImages(rt);
 
             switch (page)
             {
                 case WINDOW_STAFF_OVERVIEW:
-                    OverviewDraw(dpi);
+                    OverviewDraw(rt);
                     break;
                 case WINDOW_STAFF_STATISTICS:
-                    StatsDraw(dpi);
+                    StatsDraw(rt);
                     break;
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
             switch (page)
             {
@@ -241,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             switch (page)
             {
@@ -257,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -267,7 +290,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -277,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -287,7 +310,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnViewportRotate() override
+        void onViewportRotate() override
         {
             switch (page)
             {
@@ -297,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             switch (page)
             {
@@ -314,26 +337,20 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
-                    SetPage(widgetIndex - WIDX_TAB_1);
+                    setPage(widgetIndex - WIDX_TAB_1);
                     break;
             }
         }
 
         void CommonPrepareDrawBefore()
         {
-            ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
+            ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::staff));
 
-            if (window_staff_page_widgets[page] != widgets)
-            {
-                widgets = window_staff_page_widgets[page];
-                InitScrollWidgets();
-            }
-            SetPressedTab();
             DisableWidgets();
 
             auto staff = GetStaff();
@@ -342,10 +359,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto ft = Formatter::Common();
-            staff->FormatNameTo(ft);
-
-            ResizeFrameWithPage();
+            _windowTitle = staff->GetName();
+            widgets[WIDX_TITLE].setString(_windowTitle.c_str());
         }
 
         void CommonPrepareDrawAfter()
@@ -363,6 +378,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_PICKUP:
@@ -370,23 +386,27 @@ namespace OpenRCT2::Ui::Windows
                     _pickedPeepOldX = staff->x;
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
-                    PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                                   NetworkGetCurrentPlayerId() };
-                    pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                            return;
-                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
-                        if (wind != nullptr)
-                        {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
-                        }
-                    });
-                    GameActions::Execute(&pickupAction);
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup,
+                                                                EntityId::FromUnderlying(number), nullLoc,
+                                                                Network::GetCurrentPlayerId() };
+                    pickupAction.SetCallback(
+                        [peepnum = number](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->error != GameActions::Status::ok)
+                                return;
+
+                            auto* windowMgr = GetWindowManager();
+                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::peep, peepnum);
+                            if (wind != nullptr)
+                            {
+                                ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
+                            }
+                        });
+                    GameActions::Execute(&pickupAction, gameState);
                 }
                 break;
                 case WIDX_FIRE:
                 {
-                    auto intent = Intent(WindowClass::FirePrompt);
+                    auto intent = Intent(WindowClass::firePrompt);
                     intent.PutExtra(INTENT_EXTRA_PEEP, staff);
                     ContextOpenIntent(&intent);
                     break;
@@ -414,13 +434,13 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PATROL:
                 {
                     // Dropdown names
-                    gDropdownItems[0].Format = STR_SET_PATROL_AREA;
-                    gDropdownItems[1].Format = STR_CLEAR_PATROL_AREA;
+                    gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_SET_PATROL_AREA);
+                    gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_CLEAR_PATROL_AREA);
 
                     auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
-                    int32_t extraHeight = widget->height() + 1;
-                    WindowDropdownShowText(ddPos, extraHeight, colours[1], 0, 2);
-                    gDropdownDefaultIndex = 0;
+                    int32_t extraHeight = widget->height();
+                    WindowDropdownShowText(ddPos, extraHeight, colours[1], { Dropdown::Flag::autoClose }, 2);
+                    gDropdown.defaultIndex = 0;
 
                     auto staff = GetStaff();
                     if (staff == nullptr)
@@ -429,9 +449,9 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Disable clear patrol area if no area is set.
-                    if (!staff->HasPatrolArea())
+                    if (!staff->hasPatrolArea())
                     {
-                        Dropdown::SetDisabled(1, true);
+                        gDropdown.items[1].setDisabled(true);
                     }
                 }
             }
@@ -439,13 +459,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_LOCATE:
                 {
                     if (dropdownIndex == 0)
                     {
-                        ScrollToViewport();
+                        scrollToViewport();
                     }
                     else if (dropdownIndex == 1)
                     {
@@ -464,18 +485,20 @@ namespace OpenRCT2::Ui::Windows
                             return;
                         }
 
-                        WindowCloseByClass(WindowClass::PatrolArea);
+                        auto* windowMgr = GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::patrolArea);
 
-                        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-                            staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
-                        GameActions::Execute(&staffSetPatrolAreaAction);
+                        auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
+                            staff->id, {}, GameActions::StaffSetPatrolAreaMode::clearAll);
+                        GameActions::Execute(&staffSetPatrolAreaAction, gameState);
                     }
                     else
                     {
                         auto staffId = EntityId::FromUnderlying(number);
                         if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                         {
-                            WindowCloseByClass(WindowClass::PatrolArea);
+                            auto* windowMgr = GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::patrolArea);
                         }
                         else
                         {
@@ -505,7 +528,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PICKUP].left = width - 25;
             widgets[WIDX_PICKUP].right = width - 2;
 
-            SetWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->Id);
+            setWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->id);
 
             widgets[WIDX_PATROL].left = width - 25;
             widgets[WIDX_PATROL].right = width - 2;
@@ -520,16 +543,16 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FIRE].right = width - 2;
         }
 
-        void OverviewDraw(DrawPixelInfo& dpi)
+        void OverviewDraw(Drawing::RenderTarget& rt)
         {
             // Draw the viewport no sound sprite
             if (viewport != nullptr)
             {
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
 
                 if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
                 {
-                    GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
+                    GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
                 }
             }
 
@@ -543,24 +566,24 @@ namespace OpenRCT2::Ui::Windows
             staff->FormatActionTo(ft);
             const auto& widget = widgets[WIDX_BTM_LABEL];
             auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
-            int32_t widgetWidth = widget.width();
-            DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+            int32_t widgetWidth = widget.width() - 1;
+            drawTextEllipsised(rt, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::centre });
         }
 
-        void DrawOverviewTabImage(DrawPixelInfo& dpi)
+        void DrawOverviewTabImage(Drawing::RenderTarget& rt)
         {
-            if (IsWidgetDisabled(WIDX_TAB_1))
+            if (isWidgetDisabled(WIDX_TAB_1))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_1];
-            int32_t widgetWidth = widget.width() - 1;
-            int32_t widgetHeight = widget.height() - 1;
+            int32_t widgetWidth = widget.width() - 2;
+            int32_t widgetHeight = widget.height() - 2;
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
             if (page == WINDOW_STAFF_OVERVIEW)
                 widgetHeight++;
 
-            DrawPixelInfo clip_dpi;
-            if (!ClipDrawPixelInfo(clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
+            Drawing::RenderTarget clippedRT;
+            if (!ClipRenderTarget(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 return;
             }
@@ -573,61 +596,36 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (staff->Is<Staff>() && staff->AssignedStaffType == StaffType::Entertainer)
+            if (staff->isEntertainer())
                 screenCoords.y++;
 
-            int32_t imageIndex = GetPeepAnimation(staff->AnimationGroup).base_image + 1;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
-            int32_t offset = 0;
-
+            const auto& anim = animObj->GetPeepAnimation(staff->AnimationGroup);
+            int32_t animFrame = 0;
             if (page == WINDOW_STAFF_OVERVIEW)
-            {
-                offset = _tabAnimationOffset;
-                offset = floor2(offset, 4);
-            }
-            imageIndex += offset;
+                animFrame = _tabAnimationOffset / 4;
 
-            GfxDrawSprite(clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
+            auto imageIndex = anim.baseImage + 1 + anim.frameOffsets[animFrame] * 4;
+            GfxDrawSprite(clippedRT, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
         }
 
         void OverviewResize()
         {
-            min_width = WW;
-            max_width = 500;
-            min_height = WH;
-            max_height = 450;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, kWindowSize, { 500, 450 });
 
             if (viewport != nullptr)
             {
-                int32_t newWidth = width - 30;
-                int32_t newHeight = height - 62;
+                const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
+                const auto reqViewportWidth = viewportWidget.width() - 2;
+                const auto reqViewportHeight = viewportWidget.height() - 2;
 
-                // Update the viewport size
-                if (viewport->width != newWidth || viewport->height != newHeight)
+                viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
+                if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
-                    viewport->width = newWidth;
-                    viewport->height = newHeight;
+                    viewport->width = reqViewportWidth;
+                    viewport->height = reqViewportHeight;
                 }
             }
 
@@ -636,14 +634,36 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewUpdate()
         {
+            auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
+
+            // Get walking animation length
+            const auto& walkingAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::walking);
+            const auto walkingAnimLength = walkingAnim.frameOffsets.size();
+
+            // Overview tab animation offset
             _tabAnimationOffset++;
-            _tabAnimationOffset %= 24;
+            _tabAnimationOffset %= walkingAnimLength * 4;
 
-            // Update pickup animation, can only happen in this tab.
-            picked_peep_frame++;
-            picked_peep_frame %= 48;
+            // Get pickup animation length
+            const auto& pickAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::hanging);
+            const auto pickAnimLength = pickAnim.frameOffsets.size();
 
-            InvalidateWidget(WIDX_TAB_1);
+            // Update pickup animation frame
+            pickedPeepFrame++;
+            pickedPeepFrame %= pickAnimLength * 4;
+
+            invalidateWidget(WIDX_TAB_1);
+
+            const std::optional<Focus> tempFocus = staff->State != PeepState::picked ? std::optional(Focus(staff->id))
+                                                                                     : std::nullopt;
+            if (focus != tempFocus)
+            {
+                ViewportInit();
+            }
         }
 
         void OverviewToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -651,28 +671,31 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            MapInvalidateSelectionRect();
-
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
             if (!mapCoords.IsNull())
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectFlags.set(MapSelectFlag::enable);
+                gMapSelectType = MapSelectType::full;
                 gMapSelectPositionA = mapCoords;
                 gMapSelectPositionB = mapCoords;
-                MapInvalidateSelectionRect();
             }
 
             gPickupPeepImage = ImageId();
 
-            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
-            if (info.interactionType == ViewportInteractionItem::None)
+            auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
+            if (info.interactionType == ViewportInteractionItem::none)
                 return;
 
             gPickupPeepX = screenCoords.x - 1;
             gPickupPeepY = screenCoords.y + 16;
+
+            auto* mainWindow = WindowGetMain();
+            if (mainWindow != nullptr)
+            {
+                gPickupPeepZoom = std::min(mainWindow->viewport->zoom, ZoomLevel{ 0 });
+            }
 
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -680,8 +703,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging).base_image;
-            baseImageId += picked_peep_frame >> 2;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
+
+            auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::hanging);
+            auto baseImageId = pickupAnim.baseImage + pickupAnim.frameOffsets[pickedPeepFrame >> 2];
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
 
@@ -697,16 +723,17 @@ namespace OpenRCT2::Ui::Windows
             if (destCoords.IsNull())
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, NetworkGetCurrentPlayerId()
-            };
-            pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::place,
+                                                        staffEntityId,
+                                                        { destCoords, tileElement->getBaseZ() },
+                                                        Network::GetCurrentPlayerId() };
+            pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                if (result->error != GameActions::Status::ok)
                     return;
                 ToolCancel();
                 gPickupPeepImage = ImageId();
             });
-            GameActions::Execute(&pickupAction);
+            GameActions::Execute(&pickupAction, getGameState());
         }
 
         void OverviewToolAbort(WidgetIndex widgetIndex)
@@ -714,10 +741,11 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepOldX, 0, 0 }, NetworkGetCurrentPlayerId()
-            };
-            GameActions::Execute(&pickupAction);
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::cancel,
+                                                        EntityId::FromUnderlying(number),
+                                                        { _pickedPeepOldX, 0, 0 },
+                                                        Network::GetCurrentPlayerId() };
+            GameActions::Execute(&pickupAction, getGameState());
         }
 
         void OverviewViewportRotate()
@@ -733,8 +761,8 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
 
-            auto gameAction = StaffSetNameAction(EntityId::FromUnderlying(number), std::string{ text });
-            GameActions::Execute(&gameAction);
+            auto gameAction = GameActions::StaffSetNameAction(EntityId::FromUnderlying(number), std::string{ text });
+            GameActions::Execute(&gameAction, getGameState());
         }
 #pragma endregion
 
@@ -768,31 +796,25 @@ namespace OpenRCT2::Ui::Windows
             }
 
             int32_t checkedIndex = -1;
-            // This will be moved below where Items Checked is when all
-            // of dropdown related functions are finished. This prevents
-            // the dropdown from not working on first click.
-            int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(_availableCostumes);
-            for (int32_t i = 0; i < numCostumes; i++)
+            auto numCostumes = _availableCostumes.size();
+            for (auto i = 0u; i < numCostumes; i++)
             {
-                EntertainerCostume costume = _availableCostumes[i];
-                if (staff->AnimationGroup == EntertainerCostumeToSprite(costume))
-                {
+                gDropdown.items[i] = Dropdown::MenuLabel(_availableCostumes[i].friendlyName.c_str());
+
+                // Remember what item to check for the end of this event function
+                auto costumeIndex = _availableCostumes[i].index;
+                if (staff->AnimationObjectIndex == costumeIndex)
                     checkedIndex = i;
-                }
-                gDropdownItems[i].Args = StaffCostumeNames[EnumValue(costume)];
-                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
             }
 
             auto ddPos = ScreenCoordsXY{ ddWidget->left + windowPos.x, ddWidget->top + windowPos.y };
-            int32_t ddHeight = ddWidget->height() + 1;
-            int32_t ddWidth = ddWidget->width() - 3;
-            WindowDropdownShowTextCustomWidth(ddPos, ddHeight, colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, ddWidth);
+            int32_t ddHeight = ddWidget->height();
+            int32_t ddWidth = ddWidget->width() - 4;
+            WindowDropdownShowTextCustomWidth(ddPos, ddHeight, colours[1], 0, {}, numCostumes, ddWidth);
 
-            // See above note.
+            // Set selection
             if (checkedIndex != -1)
-            {
-                Dropdown::SetChecked(checkedIndex, true);
-            }
+                gDropdown.items[checkedIndex].setChecked(true);
         }
 
         void OptionsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
@@ -805,9 +827,9 @@ namespace OpenRCT2::Ui::Windows
             if (dropdownIndex == -1)
                 return;
 
-            EntertainerCostume costume = _availableCostumes[dropdownIndex];
-            auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(number), costume);
-            GameActions::Execute(&staffSetCostumeAction);
+            ObjectEntryIndex costume = _availableCostumes[dropdownIndex].index;
+            auto staffSetCostumeAction = GameActions::StaffSetCostumeAction(EntityId::FromUnderlying(number), costume);
+            GameActions::Execute(&staffSetCostumeAction, getGameState());
         }
 
         void OptionsPrepareDraw()
@@ -818,64 +840,73 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            switch (staff->AssignedStaffType)
+            switch (staff->assignedStaffType)
             {
-                case StaffType::Entertainer:
+                case StaffType::entertainer:
                 {
-                    widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::DropdownMenu;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
+                    widgets[WIDX_CHECKBOX_1].setHidden();
+                    widgets[WIDX_CHECKBOX_2].setHidden();
+                    widgets[WIDX_CHECKBOX_3].setHidden();
+                    widgets[WIDX_CHECKBOX_4].setHidden();
+                    widgets[WIDX_COSTUME_BOX].setVisible();
+                    widgets[WIDX_COSTUME_BTN].setVisible();
 
-                    // TODO: retrieve string from object instead
-                    auto costumeType = EnumValue(staff->AnimationGroup) - EnumValue(PeepAnimationGroup::EntertainerPanda);
-                    if (costumeType >= 0)
-                        widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[costumeType];
+                    auto pos = std::find_if(_availableCostumes.begin(), _availableCostumes.end(), [staff](auto costume) {
+                        return costume.index == staff->AnimationObjectIndex;
+                    });
+
+                    if (pos != _availableCostumes.end())
+                    {
+                        auto index = std::distance(_availableCostumes.begin(), pos);
+                        auto name = _availableCostumes[index].friendlyName.c_str();
+                        widgets[WIDX_COSTUME_BOX].setString(name);
+                    }
                     else
-                        widgets[WIDX_COSTUME_BOX].text = STR_UNKNOWN_OBJECT_TYPE;
+                    {
+                        widgets[WIDX_COSTUME_BOX].setString(kStringIdEmpty);
+                    }
+
                     break;
                 }
-                case StaffType::Handyman:
-                    widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
+                case StaffType::handyman:
+                    widgets[WIDX_CHECKBOX_1].setVisible();
                     widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
-                    widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_2].setVisible();
                     widgets[WIDX_CHECKBOX_2].text = STR_STAFF_OPTION_WATER_GARDENS;
-                    widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_3].setVisible();
                     widgets[WIDX_CHECKBOX_3].text = STR_STAFF_OPTION_EMPTY_LITTER;
-                    widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_4].setVisible();
                     widgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
-                    widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
+                    widgets[WIDX_COSTUME_BOX].setHidden();
+                    widgets[WIDX_COSTUME_BTN].setHidden();
                     OptionsSetCheckboxValues();
                     break;
-                case StaffType::Mechanic:
-                    widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
+                case StaffType::mechanic:
+                    widgets[WIDX_CHECKBOX_1].setVisible();
                     widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
-                    widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_2].setVisible();
                     widgets[WIDX_CHECKBOX_2].text = STR_FIX_RIDES;
-                    widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
+                    widgets[WIDX_CHECKBOX_3].setHidden();
+                    widgets[WIDX_CHECKBOX_4].setHidden();
+                    widgets[WIDX_COSTUME_BOX].setHidden();
+                    widgets[WIDX_COSTUME_BTN].setHidden();
+                    widgets[WIDX_COSTUME_BTN].setHidden();
                     OptionsSetCheckboxValues();
                     break;
-                case StaffType::Security:
+                case StaffType::security:
                     // Security guards don't have an options screen.
                     break;
-                case StaffType::Count:
+                case StaffType::count:
                     break;
             }
         }
 
         void OptionsSetCheckboxValues()
         {
-            SetCheckboxValue(WIDX_CHECKBOX_1, false);
-            SetCheckboxValue(WIDX_CHECKBOX_2, false);
-            SetCheckboxValue(WIDX_CHECKBOX_3, false);
-            SetCheckboxValue(WIDX_CHECKBOX_4, false);
+            setCheckboxValue(WIDX_CHECKBOX_1, false);
+            setCheckboxValue(WIDX_CHECKBOX_2, false);
+            setCheckboxValue(WIDX_CHECKBOX_3, false);
+            setCheckboxValue(WIDX_CHECKBOX_4, false);
 
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -883,52 +914,28 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            uint32_t staffOrders = staff->StaffOrders;
+            uint32_t staffOrders = staff->staffOrders;
             for (auto index = Numerics::bitScanForward(staffOrders); index != -1; index = Numerics::bitScanForward(staffOrders))
             {
                 staffOrders &= ~(1 << index);
-                SetCheckboxValue(WIDX_CHECKBOX_1 + index, true);
+                setCheckboxValue(WIDX_CHECKBOX_1 + index, true);
             }
         }
 
         void OptionsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void OptionsUpdate()
         {
-            frame_no++;
-            InvalidateWidget(WIDX_TAB_2);
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_2);
         }
 #pragma endregion
 
 #pragma region Statistics tab events
-        void StatsDraw(DrawPixelInfo& dpi)
+        void StatsDraw(Drawing::RenderTarget& rt)
         {
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -938,95 +945,75 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_RESIZE].left + 4, widgets[WIDX_RESIZE].top + 4 };
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 auto ft = Formatter();
-                ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
+                ft.Add<money64>(GetStaffWage(staff->assignedStaffType));
+                drawText(rt, screenCoords, STR_STAFF_STAT_WAGES, ft);
                 screenCoords.y += kListRowHeight;
             }
 
             auto ft = Formatter();
-            ft.Add<int32_t>(staff->GetHireDate());
-            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
+            ft.Add<int32_t>(staff->getHireDate());
+            drawText(rt, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
             screenCoords.y += kListRowHeight;
 
-            switch (staff->AssignedStaffType)
+            switch (staff->assignedStaffType)
             {
-                case StaffType::Handyman:
+                case StaffType::handyman:
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffLawnsMown);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
+                    ft.Add<uint32_t>(staff->staffLawnsMown);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffGardensWatered);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
+                    ft.Add<uint32_t>(staff->staffGardensWatered);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffLitterSwept);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
+                    ft.Add<uint32_t>(staff->staffLitterSwept);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffBinsEmptied);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
+                    ft.Add<uint32_t>(staff->staffBinsEmptied);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                     break;
-                case StaffType::Mechanic:
+                case StaffType::mechanic:
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffRidesInspected);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
+                    ft.Add<uint32_t>(staff->staffRidesInspected);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffRidesFixed);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
+                    ft.Add<uint32_t>(staff->staffRidesFixed);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                     break;
-                case StaffType::Security:
+                case StaffType::security:
                     ft = Formatter();
-                    ft.Add<uint32_t>(staff->StaffVandalsStopped);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+                    ft.Add<uint32_t>(staff->staffVandalsStopped);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
-                case StaffType::Entertainer:
-                case StaffType::Count:
+                case StaffType::entertainer:
+                    ft = Formatter();
+                    ft.Add<uint32_t>(staff->staffGuestsEntertained);
+                    drawText(rt, screenCoords, STR_STAFF_STAT_GUESTS_ENTERTAINED, ft);
+                    break;
+                case StaffType::count:
                     break;
             }
         }
 
         void StatsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void StatsUpdate()
         {
-            frame_no++;
-            InvalidateWidget(WIDX_TAB_3);
+            currentFrame++;
+            invalidateWidget(WIDX_TAB_3);
 
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -1037,7 +1024,7 @@ namespace OpenRCT2::Ui::Windows
             if (staff->WindowInvalidateFlags & PEEP_INVALIDATE_STAFF_STATS)
             {
                 staff->WindowInvalidateFlags &= ~PEEP_INVALIDATE_STAFF_STATS;
-                Invalidate();
+                invalidate();
             }
         }
 #pragma endregion
@@ -1049,28 +1036,28 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            for (WidgetIndex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != kWidgetsEnd.type; widgetIndex++)
+            for (WidgetIndex widgetIndex = WIDX_TAB_1; widgetIndex < widgets.size(); widgetIndex++)
             {
-                SetWidgetDisabled(widgetIndex, false);
+                setWidgetDisabled(widgetIndex, false);
             }
 
-            if (staff->AssignedStaffType == StaffType::Security)
+            if (staff->assignedStaffType == StaffType::security)
             {
-                SetWidgetDisabled(WIDX_TAB_2, true);
+                setWidgetDisabled(WIDX_TAB_2, true);
             }
 
             if (page == WINDOW_STAFF_OVERVIEW)
             {
                 if (staff->CanBePickedUp())
                 {
-                    SetWidgetDisabled(WIDX_PICKUP, false);
+                    setWidgetDisabled(WIDX_PICKUP, false);
                 }
                 else
                 {
-                    SetWidgetDisabled(WIDX_PICKUP, true);
+                    setWidgetDisabled(WIDX_PICKUP, true);
                 }
 
-                SetWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
+                setWidgetDisabled(WIDX_FIRE, staff->State == PeepState::fixing || staff->State == PeepState::inspecting);
             }
         }
 
@@ -1080,31 +1067,34 @@ namespace OpenRCT2::Ui::Windows
                 ToolCancel();
         }
 
-        void SetPage(int32_t pageNum)
+        void setPage(int32_t newPage)
         {
             CancelTools();
 
-            int32_t listen = 0;
-            if (page == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
+            bool listen = false;
+            if (page == WINDOW_STAFF_OVERVIEW && newPage == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
             {
-                if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                    listen = 1;
+                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
+                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
             }
 
-            page = pageNum;
-            frame_no = 0;
-            pressed_widgets = 0;
-            hold_down_widgets = 0;
-            widgets = window_staff_page_widgets[page];
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (newPage == page && !widgets.empty())
+                return;
 
-            RemoveViewport();
+            page = newPage;
+            currentFrame = 0;
+            setWidgets(window_staff_page_widgets[page]);
+            SetPressedTab();
 
-            Invalidate();
-            OnResize();
-            OnPrepareDraw();
-            InitScrollWidgets();
+            removeViewport();
+
+            invalidate();
+            onResize();
+            onPrepareDraw();
+            initScrollWidgets();
             ViewportInit();
-            Invalidate();
+            invalidate();
 
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -1113,8 +1103,8 @@ namespace OpenRCT2::Ui::Windows
         void SetPressedTab()
         {
             for (int32_t i = 0; i < WINDOW_STAFF_PAGE_COUNT; i++)
-                SetWidgetPressed((WIDX_TAB_1 + i), false);
-            SetWidgetPressed(WIDX_TAB_1 + page, true);
+                setWidgetPressed((WIDX_TAB_1 + i), false);
+            setWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
         void SetOrder(int32_t orderId)
@@ -1125,9 +1115,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            uint8_t newOrders = staff->StaffOrders ^ (1 << orderId);
-            auto staffSetOrdersAction = StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
-            GameActions::Execute(&staffSetOrdersAction);
+            uint8_t newOrders = staff->staffOrders ^ (1 << orderId);
+            auto staffSetOrdersAction = GameActions::StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
+            GameActions::Execute(&staffSetOrdersAction, getGameState());
         }
 
         void ViewportInit()
@@ -1142,9 +1132,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             std::optional<Focus> tempFocus;
-            if (staff->State != PeepState::Picked)
+            if (staff->State != PeepState::picked)
             {
-                tempFocus = Focus(staff->Id);
+                tempFocus = Focus(staff->id);
             }
 
             uint16_t viewport_flags;
@@ -1155,48 +1145,49 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 viewport_flags = viewport->flags;
-                RemoveViewport();
+                removeViewport();
             }
             else
             {
                 viewport_flags = 0;
-                if (Config::Get().general.AlwaysShowGridlines)
+                if (Config::Get().general.alwaysShowGridlines)
                     viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
             }
 
-            OnPrepareDraw();
+            onPrepareDraw();
 
             focus = tempFocus;
 
-            if (staff->State != PeepState::Picked)
+            if (staff->State != PeepState::picked)
             {
                 if (viewport == nullptr)
                 {
                     const auto& viewWidget = widgets[WIDX_VIEWPORT];
 
                     auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
-                    int32_t viewportWidth = viewWidget.width() - 1;
-                    int32_t viewportHeight = viewWidget.height() - 1;
+                    int32_t viewportWidth = viewWidget.width() - 2;
+                    int32_t viewportHeight = viewWidget.height() - 2;
 
-                    ViewportCreate(this, screenPos, viewportWidth, viewportHeight, focus.value());
-                    flags |= WF_NO_SCROLLING;
-                    Invalidate();
+                    ViewportCreate(*this, screenPos, viewportWidth, viewportHeight, focus.value());
+                    flags |= WindowFlag::noScrolling;
+                    invalidate();
                 }
             }
 
             if (viewport != nullptr)
                 viewport->flags = viewport_flags;
-            Invalidate();
+            invalidate();
         }
 
         void ShowLocateDropdown(Widget* widget)
         {
-            gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
-            gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
+            gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_LOCATE_SUBJECT_TIP);
+            gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
-            gDropdownDefaultIndex = 0;
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1],
+                { Dropdown::Flag::autoClose }, 2);
+            gDropdown.defaultIndex = 0;
         }
 
         void FollowPeep()
@@ -1205,36 +1196,36 @@ namespace OpenRCT2::Ui::Windows
             WindowFollowSprite(*main, EntityId::FromUnderlying(number));
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(Drawing::RenderTarget& rt)
         {
-            DrawOverviewTabImage(dpi);
-            DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
-            DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
+            DrawOverviewTabImage(rt);
+            DrawTabImage(rt, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
+            DrawTabImage(rt, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t baseImageId)
+        void DrawTabImage(Drawing::RenderTarget& rt, int32_t p, int32_t baseImageId)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + p;
             Widget* widget = &widgets[widgetIndex];
 
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-            if (!IsWidgetDisabled(widgetIndex))
+            if (!isWidgetDisabled(widgetIndex))
             {
                 if (page == p)
                 {
-                    int32_t frame = frame_no / TabAnimationDivisor[page - 1];
+                    int32_t frame = currentFrame / TabAnimationDivisor[page - 1];
                     baseImageId += (frame % TabAnimationFrames);
                 }
 
                 // Draw normal, enabled sprite.
-                GfxDrawSprite(dpi, ImageId(baseImageId), screenCoords);
+                GfxDrawSprite(rt, ImageId(baseImageId), screenCoords);
             }
         }
 
         Staff* GetStaff()
         {
-            return GetEntity<Staff>(EntityId::FromUnderlying(number));
+            return getGameState().entities.GetEntity<Staff>(EntityId::FromUnderlying(number));
         }
 
         static constexpr int32_t TabAnimationDivisor[] = {
@@ -1247,18 +1238,19 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* StaffOpen(Peep* peep)
     {
-        auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* windowMgr = GetWindowManager();
 
+        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::peep, peep->id.ToUnderlying()));
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
-
+        w = windowMgr->Create<StaffWindow>(
+            WindowClass::peep, kWindowSize, { WindowFlag::higherContrastOnPress, WindowFlag::resizable });
         if (w == nullptr)
             return nullptr;
 
         if (w != nullptr)
-            w->Initialise(peep->Id);
+            w->initialise(peep->id);
 
         return w;
     }

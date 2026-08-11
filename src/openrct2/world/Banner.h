@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,58 +10,63 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../ride/RideTypes.h"
+#include "../core/FlagHolder.hpp"
+#include "../object/ObjectTypes.h"
 #include "Location.hpp"
 
 #include <string>
 
-class Formatter;
-struct TileElement;
-struct WallElement;
-
 namespace OpenRCT2
 {
+    class Formatter;
     struct GameState_t;
-}
+    struct TileElement;
+    struct WallElement;
+} // namespace OpenRCT2
 
-constexpr ObjectEntryIndex BANNER_NULL = OBJECT_ENTRY_INDEX_NULL;
-constexpr size_t MAX_BANNERS = 8192;
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+    enum class TextColour : uint8_t;
+} // namespace OpenRCT2::Drawing
 
-constexpr uint8_t SCROLLING_MODE_NONE = 255;
+constexpr OpenRCT2::ObjectEntryIndex kBannerNull = OpenRCT2::kObjectEntryIndexNull;
+constexpr size_t kMaxBanners = 8192;
+
+enum class BannerFlag : uint8_t
+{
+    noEntry = 0,
+    isLargeScenery = 1,
+    linkedToRide = 2,
+    isWall = 3,
+};
+using BannerFlags = FlagHolder<uint8_t, BannerFlag>;
 
 struct Banner
 {
     BannerIndex id = BannerIndex::GetNull();
-    ObjectEntryIndex type = BANNER_NULL;
-    uint8_t flags{};
+    OpenRCT2::ObjectEntryIndex type = kBannerNull;
+    BannerFlags flags{};
     std::string text;
-    mutable std::string formattedTextBuffer;
-    uint8_t colour{};
-    RideId ride_index{};
-    uint8_t text_colour{};
+    OpenRCT2::Drawing::Colour colour{};
+    RideId rideIndex{};
+    OpenRCT2::Drawing::TextColour textColour{};
     TileCoordsXY position;
 
-    bool IsNull() const
+    bool isNull() const
     {
-        return type == BANNER_NULL;
+        return type == kBannerNull;
     }
 
-    std::string GetText() const;
-    void FormatTextTo(Formatter&, bool addColour) const;
-    void FormatTextTo(Formatter&) const;
-};
-
-enum BANNER_FLAGS
-{
-    BANNER_FLAG_NO_ENTRY = (1 << 0),
-    BANNER_FLAG_IS_LARGE_SCENERY = (1 << 1),
-    BANNER_FLAG_LINKED_TO_RIDE = (1 << 2),
-    BANNER_FLAG_IS_WALL = (1 << 3)
+    std::string getTextWithColour() const;
+    std::string getText() const;
+    void formatTextWithColourTo(OpenRCT2::Formatter&) const;
+    void formatTextTo(OpenRCT2::Formatter&) const;
 };
 
 void BannerInit(OpenRCT2::GameState_t& gameState);
-TileElement* BannerGetTileElement(BannerIndex bannerIndex);
-WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex);
+OpenRCT2::TileElement* BannerGetTileElement(BannerIndex bannerIndex);
+OpenRCT2::WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex);
 RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos);
 void BannerApplyFixes();
 void UnlinkAllRideBanners();

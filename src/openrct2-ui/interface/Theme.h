@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,14 @@
 
 #pragma once
 
-#include <openrct2/interface/Colour.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2/core/StringTypes.h>
+#include <openrct2/interface/WindowTypes.h>
+#include <openrct2/localisation/StringIdType.h>
+
+namespace OpenRCT2
+{
+    struct ColourWithFlags;
+}
 
 namespace OpenRCT2::Ui
 {
@@ -21,6 +27,7 @@ namespace OpenRCT2::Ui
         UITHEME_FLAG_USE_LIGHTS_PARK = 1 << 2,
         UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT = 1 << 3,
         UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR = 1 << 4,
+        UITHEME_FLAG_USE_3D_IMAGE_BUTTONS = 1 << 5,
     };
 
     void ColourSchemeUpdate(WindowBase* window);

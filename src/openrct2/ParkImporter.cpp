@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,8 +12,6 @@
 #include "Context.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "object/ObjectManager.h"
-#include "object/ObjectRepository.h"
 
 #include <memory>
 
@@ -23,7 +21,7 @@ namespace OpenRCT2::ParkImporter
     {
         std::unique_ptr<IParkImporter> parkImporter;
         std::string extension = Path::GetExtension(hintPath);
-        auto* context = OpenRCT2::GetContext();
+        auto* context = GetContext();
         if (ExtensionIsOpenRCT2ParkFile(extension))
         {
             parkImporter = CreateParkFile(context->GetObjectRepository());

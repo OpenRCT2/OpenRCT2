@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,11 +13,15 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../object/PathAdditionEntry.h"
+#include "../../paint/Paint.h"
 #include "../../profiling/Profiling.h"
 #include "../../world/tile_element/PathElement.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
+
+using OpenRCT2::Drawing::LightFx::LightType;
 
 static ImageIndex GetEdgeImageOffset(edge_t edge)
 {
@@ -40,7 +44,7 @@ static ImageIndex GetFootpathLampImage(const PathAdditionEntry& pathAdditionEntr
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     return pathAdditionEntry.image + offset + (isBroken ? 4 : 0);
 }
 
@@ -48,7 +52,7 @@ static ImageIndex GetFootpathBinImage(const PathAdditionEntry& pathAdditionEntry
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
 
     auto stateOffset = isBroken ? 4 : (isFull ? 8 : 0);
     return pathAdditionEntry.image + offset + stateOffset;
@@ -58,7 +62,7 @@ static ImageIndex GetFootpathBenchImage(const PathAdditionEntry& pathAdditionEnt
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     return pathAdditionEntry.image + offset + (isBroken ? 4 : 0);
 }
 
@@ -75,25 +79,25 @@ static void PathAdditionLightsPaint(
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_NE, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 2, 16, height }, { { 6, 8, height + 2 }, { 0, 16, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 2, 16, height }, { { 3, 8, height + 2 }, { 0, 16, 23 } });
     }
     if (edges & EDGE_SE)
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_SE, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 16, 30, height }, { { 8, 23, height + 2 }, { 16, 0, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 16, 30, height }, { { 2, 29, height + 2 }, { 22, 0, 23 } });
     }
     if (edges & EDGE_SW)
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_SW, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 30, 16, height }, { { 23, 8, height + 2 }, { 0, 16, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 30, 16, height }, { { 29, 2, height + 2 }, { 0, 22, 23 } });
     }
     if (edges & EDGE_NW)
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_NW, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 16, 2, height }, { { 8, 6, height + 2 }, { 16, 0, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 16, 2, height }, { { 8, 3, height + 2 }, { 16, 0, 23 } });
     }
 }
 
@@ -195,10 +199,9 @@ static void PathAdditionBenchesPaint(
 
 /* rct2: 0x006A6008 */
 static void PathAdditionJumpingFountainsPaint(
-    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, int32_t height, ImageId imageTemplate,
-    DrawPixelInfo& dpi)
+    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, int32_t height, ImageId imageTemplate, RenderTarget& rt)
 {
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    if (rt.zoom_level > ZoomLevel{ 0 })
         return;
 
     auto imageId = imageTemplate.WithIndex(pathAdditionEntry.image);
@@ -216,22 +219,22 @@ inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& p
     if (isBroken)
         return true;
 
-    if (pathAdditionEntry.draw_type == PathAdditionDrawType::Bin)
+    if (pathAdditionEntry.draw_type == PathAdditionDrawType::bin)
         return true;
 
     return false;
 }
 
-void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate)
+void paintPathAddition(PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate)
 {
     // Path additions get drawn on edges that are not connected, so we need to flip them.
     const auto edges = pathElement.GetEdges() ^ 0b1111;
     const auto rotatedEdges = ((edges << session.CurrentRotation) & 0xF) | (((edges) << session.CurrentRotation) >> 4);
 
-    session.InteractionType = ViewportInteractionItem::PathAddition;
+    session.InteractionType = ViewportInteractionItem::pathAddition;
     if (sceneryImageTemplate.IsRemap())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
     }
 
     auto* pathAddEntry = pathElement.GetAdditionEntry();
@@ -243,26 +246,26 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
 
     switch (pathAddEntry->draw_type)
     {
-        case PathAdditionDrawType::Light:
+        case PathAdditionDrawType::light:
             PathAdditionLightsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathAdditionDrawType::Bin:
+        case PathAdditionDrawType::bin:
             PathAdditionBinsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathAdditionDrawType::Bench:
+        case PathAdditionDrawType::bench:
             PathAdditionBenchesPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathAdditionDrawType::JumpingFountain:
-            PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
+        case PathAdditionDrawType::jumpingFountain:
+            PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.rt);
             break;
     }
 
-    session.InteractionType = ViewportInteractionItem::Footpath;
+    session.InteractionType = ViewportInteractionItem::footpath;
 
     // Set when the path addition is a ghost.
     if (sceneryImageTemplate.IsRemap())
     {
-        session.InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::none;
     }
 }
 
@@ -270,7 +273,7 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
         {
@@ -279,19 +282,19 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
             {
                 if (!(pathEl.GetEdges() & EDGE_NE))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SE))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SW))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_NW))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::lantern3);
                 }
             }
         }

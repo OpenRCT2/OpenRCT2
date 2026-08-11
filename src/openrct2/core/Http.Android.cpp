@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,19 +18,19 @@
     #include <android/log.h>
     #include <jni.h>
 
-    #define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+    #define kOpenRCT2UserAgent "OpenRCT2/" kOpenRCT2Version
 
 namespace OpenRCT2::Http
 {
     Response Do(const Request& req)
     {
         std::map<std::string, std::string> headers = req.header;
-        headers["User-Agent"] = OPENRCT2_USER_AGENT;
+        headers["User-Agent"] = kOpenRCT2UserAgent;
         // Lambda to convert jstring to string
         auto jstringToString = [](JNIEnv* env, jstring jstr) -> std::string {
             if (jstr == nullptr)
             {
-                return "";
+                return {};
             }
             const char* cstr = env->GetStringUTFChars(jstr, nullptr);
             std::string str = cstr;
@@ -76,13 +76,13 @@ namespace OpenRCT2::Http
         std::string method = "GET";
         switch (req.method)
         {
-            case Method::GET:
+            case Method::get:
                 method = "GET";
                 break;
-            case Method::POST:
+            case Method::post:
                 method = "POST";
                 break;
-            case Method::PUT:
+            case Method::put:
                 method = "PUT";
                 break;
         }

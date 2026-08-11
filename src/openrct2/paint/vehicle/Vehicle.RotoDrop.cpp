@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
-#include "../../ride/Ride.h"
+#include "../../ride/CarEntry.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 
@@ -25,16 +25,16 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
-        imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+        imageDirection = Entity::Yaw::YawTo32(imageDirection);
 
         auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
-        if (vehicle->IsGhost())
+        if (vehicle->isGhost())
         {
             imageFlags = ConstructionMarker;
         }
 
         ImageId image_id;
-        int32_t baseImage_id = (carEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
+        int32_t baseImage_id = (carEntry->baseImageId + 4) + ((vehicle->animation_frame / 4) & 0x3);
         if (vehicle->restraints_position >= 64)
         {
             baseImage_id += 7;
@@ -49,10 +49,10 @@ namespace OpenRCT2
         image_id = imageFlags.WithIndex(baseImage_id + 4);
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
 
-        if (vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
-            uint8_t riding_peep_sprites[64];
-            std::fill_n(riding_peep_sprites, sizeof(riding_peep_sprites), 0xFF);
+            Drawing::Colour riding_peep_sprites[64];
+            std::fill_n(riding_peep_sprites, sizeof(riding_peep_sprites), Drawing::kColourNull);
             for (int32_t i = 0; i < vehicle->num_peeps; i++)
             {
                 uint8_t cl = (i & 3) * 16;
@@ -67,9 +67,9 @@ namespace OpenRCT2
             for (int32_t j = 0; j <= 48; j++)
             {
                 int32_t i = (j % 2) ? (48 - (j / 2)) : (j / 2);
-                if (riding_peep_sprites[i] != 0xFF)
+                if (riding_peep_sprites[i] != Drawing::kColourNull)
                 {
-                    baseImage_id = carEntry->base_image_id + 20 + i;
+                    baseImage_id = carEntry->baseImageId + 20 + i;
                     if (vehicle->restraints_position >= 64)
                     {
                         baseImage_id += 64;
@@ -81,7 +81,7 @@ namespace OpenRCT2
             }
         }
 
-        assert(carEntry->effect_visual == 1);
+        assert(carEntry->effectVisual == EffectVisual::unknown1);
         // Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense
         // so it was taken out
     }

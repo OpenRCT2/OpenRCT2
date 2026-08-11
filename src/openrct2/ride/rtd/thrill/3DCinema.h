@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,55 +10,58 @@
 #pragma once
 
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-// C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
-constexpr RideTypeDescriptor CinemaRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+// C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
+constexpr RideTypeDescriptor kCinemaRTD =
+{
+    .Category = RideCategory::thrill,
+    .StartTrackPiece = TrackElemType::flatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::_3DCinema,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
+    .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::MouseTails3DFilm, RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm),
-    .DefaultMode = RideMode::MouseTails3DFilm,
+    .RideModes = EnumsToFlags(RideMode::mouseTails3DFilm, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm),
+    .DefaultMode = RideMode::mouseTails3DFilm,
     .Naming = { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA },
-    .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 20, 10, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 70.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectRock1,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "3d_cinema",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         21,
         7,
         false,
         {
-            { RatingsModifierType::Bonus3DCinemaMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonus3DCinemaMode, 0, 0, 0, 0 },
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

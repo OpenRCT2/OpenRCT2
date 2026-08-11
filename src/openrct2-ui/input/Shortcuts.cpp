@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,30 +16,32 @@
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/CheatSetAction.h>
-#include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/actions/PauseToggleAction.h>
-#include <openrct2/actions/TileModifyAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/cheats/CheatSetAction.h>
+#include <openrct2/actions/general/LoadOrQuitAction.h>
+#include <openrct2/actions/general/PauseToggleAction.h>
+#include <openrct2/actions/general/TileModifyAction.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/network/network.h>
+#include <openrct2/interface/WidgetIndexGlobals.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackPaint.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Park.h>
@@ -55,7 +57,7 @@ using namespace OpenRCT2::Ui::Windows;
 
 static void OpenWindow(WindowClass wc)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gLegacyScene != LegacyScene::titleSequence)
     {
         ContextOpenWindow(wc);
     }
@@ -63,7 +65,7 @@ static void OpenWindow(WindowClass wc)
 
 static void RotateCamera(int32_t direction)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gLegacyScene != LegacyScene::titleSequence)
     {
         ViewportRotateAll(direction);
     }
@@ -71,92 +73,96 @@ static void RotateCamera(int32_t direction)
 
 static void ToggleViewFlag(int32_t viewportFlag)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gLegacyScene != LegacyScene::titleSequence)
     {
         auto window = WindowGetMain();
         if (window != nullptr)
         {
             window->viewport->flags ^= viewportFlag;
-            window->Invalidate();
+            window->invalidate();
         }
     }
 }
 
 static void ShortcutRotateConstructionObject()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
+    auto* windowMgr = GetWindowManager();
+
     // Rotate scenery
-    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
-        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WindowWidgetType::Empty)
+    WindowBase* w = windowMgr->FindByClass(WindowClass::scenery);
+    if (w != nullptr && !widgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
+        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].isVisible())
     {
-        w->OnMouseUp(WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
+        w->onMouseUp(WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
         return;
     }
 
     // Rotate construction track piece
-    w = WindowFindByClass(WindowClass::RideConstruction);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
-        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WindowWidgetType::Empty)
+    w = windowMgr->FindByClass(WindowClass::rideConstruction);
+    if (w != nullptr && !widgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
+        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].isVisible())
     {
         // Check if building a maze...
         if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
         {
-            w->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ROTATE);
+            w->onMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ROTATE);
             return;
         }
     }
 
     // Rotate track design preview
-    w = WindowFindByClass(WindowClass::TrackDesignList);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WindowWidgetType::Empty)
+    w = windowMgr->FindByClass(WindowClass::trackDesignList);
+    if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
+        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].isVisible())
     {
-        w->OnMouseUp(WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
+        w->onMouseUp(WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
         return;
     }
 
     // Rotate track design placement
-    w = WindowFindByClass(WindowClass::TrackDesignPlace);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WindowWidgetType::Empty)
+    w = windowMgr->FindByClass(WindowClass::trackDesignPlace);
+    if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
+        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].isVisible())
     {
-        w->OnMouseUp(WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
+        w->onMouseUp(WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
         return;
     }
 
     // Rotate park entrance
-    w = WindowFindByClass(WindowClass::EditorParkEntrance);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
-        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WindowWidgetType::Empty)
+    w = windowMgr->FindByClass(WindowClass::editorParkEntrance);
+    if (w != nullptr && !widgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
+        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].isVisible())
     {
-        w->OnMouseUp(WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON);
+        w->onMouseUp(WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON);
         return;
     }
 
     // Rotate selected element in tile inspector
-    w = WindowFindByClass(WindowClass::TileInspector);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
-        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WindowWidgetType::Empty)
+    w = windowMgr->FindByClass(WindowClass::tileInspector);
+    if (w != nullptr && !widgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
+        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].isVisible())
     {
-        w->OnMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
+        w->onMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
         return;
     }
 }
 
 static void ShortcutRemoveTopBottomToolbarToggle()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    auto* windowMgr = GetWindowManager();
+
+    if (gLegacyScene == LegacyScene::titleSequence)
     {
-        if (WindowFindByClass(WindowClass::TitleLogo) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::titleLogo) != nullptr)
         {
-            WindowCloseByClass(WindowClass::TitleLogo);
-            WindowCloseByClass(WindowClass::TitleOptions);
-            WindowCloseByClass(WindowClass::TitleMenu);
-            WindowCloseByClass(WindowClass::TitleExit);
-            WindowCloseByClass(WindowClass::TitleVersion);
+            windowMgr->CloseByClass(WindowClass::titleLogo);
+            windowMgr->CloseByClass(WindowClass::titleOptions);
+            windowMgr->CloseByClass(WindowClass::titleMenu);
+            windowMgr->CloseByClass(WindowClass::titleExit);
+            windowMgr->CloseByClass(WindowClass::titleVersion);
         }
         else
         {
@@ -165,23 +171,23 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     }
     else
     {
-        if (WindowFindByClass(WindowClass::TopToolbar) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::topToolbar) != nullptr)
         {
-            WindowCloseByClass(WindowClass::Dropdown);
-            WindowCloseByClass(WindowClass::TopToolbar);
-            WindowCloseByClass(WindowClass::BottomToolbar);
+            windowMgr->CloseByClass(WindowClass::dropdown);
+            windowMgr->CloseByClass(WindowClass::topToolbar);
+            windowMgr->CloseByClass(WindowClass::bottomToolbar);
         }
         else
         {
-            if (gScreenFlags == 0)
+            if (gLegacyScene == LegacyScene::playing)
             {
-                ContextOpenWindow(WindowClass::TopToolbar);
-                ContextOpenWindow(WindowClass::BottomToolbar);
+                ContextOpenWindow(WindowClass::topToolbar);
+                ContextOpenWindow(WindowClass::bottomToolbar);
             }
             else
             {
-                ContextOpenWindow(WindowClass::TopToolbar);
-                ContextOpenWindowView(WV_EDITOR_BOTTOM_TOOLBAR);
+                ContextOpenWindow(WindowClass::topToolbar);
+                ContextOpenWindowView(WindowView::editorBottomToolbar);
             }
         }
     }
@@ -190,13 +196,13 @@ static void ShortcutRemoveTopBottomToolbarToggle()
 
 static void ShortcutAdjustLand()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleLandWindow();
@@ -204,13 +210,13 @@ static void ShortcutAdjustLand()
 
 static void ShortcutAdjustWater()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleWaterWindow();
@@ -218,13 +224,13 @@ static void ShortcutAdjustWater()
 
 static void ShortcutBuildScenery()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleSceneryWindow();
@@ -232,13 +238,13 @@ static void ShortcutBuildScenery()
 
 static void ShortcutBuildPaths()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleFootpathWindow();
@@ -246,133 +252,134 @@ static void ShortcutBuildPaths()
 
 static void ShortcutBuildNewRide()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
+    if (gLegacyScene != LegacyScene::scenarioEditor)
     {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+        if (!(isInTrackDesignerOrManager()))
         {
-            ContextOpenWindow(WindowClass::ConstructRide);
+            ContextOpenWindow(WindowClass::constructRide);
         }
     }
 }
 
 static void ShortcutShowFinancialInformation()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
-            ContextOpenWindow(WindowClass::Finances);
+    if (!(isInTrackDesignerOrManager()))
+        if (!getGameState().park.flags.has(ParkFlag::noMoney))
+            ContextOpenWindow(WindowClass::finances);
 }
 
 static void ShortcutShowResearchInformation()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
-        ContextOpenWindowView(WV_RIDE_RESEARCH);
+        ContextOpenWindowView(WindowView::rideResearch);
     }
 }
 
 static void ShortcutShowRidesList()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::RideList);
+        ContextOpenWindow(WindowClass::rideList);
     }
 }
 
 static void ShortcutShowParkInformation()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::ParkInformation);
+        ContextOpenWindow(WindowClass::parkInformation);
     }
 }
 
 static void ShortcutShowGuestList()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::GuestList);
+        ContextOpenWindow(WindowClass::guestList);
     }
 }
 
 static void ShortcutShowStaffList()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
-        ContextOpenWindow(WindowClass::StaffList);
+        ContextOpenWindow(WindowClass::staffList);
     }
 }
 
 static void ShortcutShowRecentMessages()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
-        ContextOpenWindow(WindowClass::RecentNews);
+    if (!isInEditorMode())
+        ContextOpenWindow(WindowClass::recentNews);
 }
 
 static void ShortcutShowMap()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-            ContextOpenWindow(WindowClass::Map);
+    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == Editor::Step::landscapeEditor)
+        if (!(isInTrackDesignerOrManager()))
+            ContextOpenWindow(WindowClass::map);
 }
 
 static void ShortcutReduceGameSpeed()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (NetworkGetMode() == NETWORK_MODE_NONE)
+    if (Network::GetMode() == Network::Mode::none)
         GameReduceGameSpeed();
 }
 
 static void ShortcutIncreaseGameSpeed()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (NetworkGetMode() == NETWORK_MODE_NONE)
+    if (Network::GetMode() == Network::Mode::none)
         GameIncreaseGameSpeed();
 }
 
 static void ShortcutOpenCheatWindow()
 {
-    if (gScreenFlags != SCREEN_FLAGS_PLAYING)
+    if (gLegacyScene != LegacyScene::playing)
         return;
 
     // Check if window is already open
-    WindowBase* window = WindowFindByClass(WindowClass::Cheats);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::cheats);
     if (window != nullptr)
     {
-        WindowClose(*window);
+        windowMgr->Close(*window);
         return;
     }
-    ContextOpenWindow(WindowClass::Cheats);
+    ContextOpenWindow(WindowClass::cheats);
 }
 
 static void ShortcutOpenKeyboardShortcutsWindow()
@@ -382,21 +389,21 @@ static void ShortcutOpenKeyboardShortcutsWindow()
 
 static void ShortcutOpenTransparencyWindow()
 {
-    if (gScreenFlags != SCREEN_FLAGS_PLAYING)
+    if (gLegacyScene != LegacyScene::playing)
         return;
 
-    ContextOpenWindow(WindowClass::Transparency);
+    ContextOpenWindow(WindowClass::transparency);
 }
 
 static void ShortcutClearScenery()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleClearSceneryWindow();
@@ -405,51 +412,54 @@ static void ShortcutClearScenery()
 static void ShortcutQuickSaveGame()
 {
     // Do a quick save in playing mode and a regular save in Scenario Editor mode. In other cases, don't do anything.
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+    if (gLegacyScene == LegacyScene::playing)
     {
         ToolCancel();
         SaveGame();
     }
-    else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    else if (gLegacyScene == LegacyScene::scenarioEditor)
     {
-        auto intent = Intent(WindowClass::Loadsave);
-        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
+        auto intent = Intent(WindowClass::loadsave);
+        intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+        intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
+        intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioOptions.name);
         ContextOpenIntent(&intent);
     }
 }
 
 static void ShortcutLoadGame()
 {
-    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(isInTrackDesignerOrManager()))
     {
-        auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
-        GameActions::Execute(&loadOrQuitAction);
+        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::openSavePrompt);
+        GameActions::Execute(&loadOrQuitAction, getGameState());
     }
 }
 
 static void ShortcutOpenSceneryPicker()
 {
-    if ((gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor))
+    if ((gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
+         || gLegacyScene == LegacyScene::trackDesignsManager)
+        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor))
         return;
 
-    WindowBase* window_scenery = WindowFindByClass(WindowClass::Scenery);
-    if (window_scenery == nullptr)
+    auto* windowMgr = GetWindowManager();
+    WindowBase* sceneryWindow = windowMgr->FindByClass(WindowClass::scenery);
+    if (sceneryWindow == nullptr)
         ToggleSceneryWindow();
 
-    window_scenery = WindowFindByClass(WindowClass::Scenery);
-    if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+    sceneryWindow = windowMgr->FindByClass(WindowClass::scenery);
+    if (sceneryWindow != nullptr && !widgetIsDisabled(*sceneryWindow, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
         && !gWindowSceneryEyedropperEnabled)
     {
-        window_scenery->OnMouseUp(WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
+        sceneryWindow->onMouseUp(WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
         return;
     }
 }
 
 static void ShortcutScaleUp()
 {
-    Config::Get().general.WindowScale += 0.25f;
+    Config::Get().general.windowScale += 0.25f;
     Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
@@ -458,8 +468,8 @@ static void ShortcutScaleUp()
 
 static void ShortcutScaleDown()
 {
-    Config::Get().general.WindowScale -= 0.25f;
-    Config::Get().general.WindowScale = std::max(0.5f, Config::Get().general.WindowScale);
+    Config::Get().general.windowScale -= 0.25f;
+    Config::Get().general.windowScale = std::max(0.5f, Config::Get().general.windowScale);
     Config::Save();
     GfxInvalidateScreen();
     ContextTriggerResize();
@@ -469,56 +479,61 @@ static void ShortcutScaleDown()
 // Tile inspector shortcuts
 static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
-    auto w = WindowFindByClass(WindowClass::TileInspector);
-    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    auto* windowMgr = GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::tileInspector);
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].isVisible())
     {
-        w->OnMouseUp(widgetIndex);
+        w->onMouseUp(widgetIndex);
     }
 }
 
 static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
-    auto w = WindowFindByClass(WindowClass::TileInspector);
-    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    auto* windowMgr = GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::tileInspector);
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].isVisible())
     {
-        w->OnMouseDown(widgetIndex);
+        w->onMouseDown(widgetIndex);
     }
 }
 
 static void ShortcutToggleWallSlope()
 {
-    WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::tileInspector);
     if (window == nullptr)
     {
         return;
     }
 
-    const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
+    const TileElement* tileElement = TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
-    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
+    if (tileElement == nullptr || tileElement->getType() != TileElementType::wall)
     {
         return;
     }
 
     // Ensure a wall can be built on a slope
-    if (tileElement->AsWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+    if (tileElement->asWall()->GetEntry()->flags.has(WallSceneryFlag::cannotBuildOnSlope))
     {
         return;
     }
 
-    int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
+    int32_t currSlopeValue = tileElement->asWall()->GetSlope();
     int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;
-    auto modifyTile = TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(), TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex, newSlopeValue);
-    GameActions::Execute(&modifyTile);
+    auto modifyTile = GameActions::TileModifyAction(
+        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
+        newSlopeValue);
+    GameActions::Execute(&modifyTile, getGameState());
 }
 
 static void ShortcutIncreaseElementHeight()
 {
-    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -549,15 +564,16 @@ static void ShortcutIncreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
-            w->OnMouseDown(action);
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].isVisible())
+            w->onMouseDown(action);
         return;
     }
 }
 
 static void ShortcutDecreaseElementHeight()
 {
-    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -588,17 +604,18 @@ static void ShortcutDecreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
-            w->OnMouseDown(action);
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].isVisible())
+            w->onMouseDown(action);
         return;
     }
 }
 
 static void ShortcutToggleClearanceChecks()
 {
-    auto cheatSetAction = CheatSetAction(
-        CheatType::DisableClearanceChecks, GetGameState().Cheats.disableClearanceChecks ? 0 : 1);
-    GameActions::Execute(&cheatSetAction);
+    auto& gameState = getGameState();
+    auto cheatSetAction = GameActions::CheatSetAction(
+        CheatType::disableClearanceChecks, gameState.cheats.disableClearanceChecks ? 0 : 1);
+    GameActions::Execute(&cheatSetAction, gameState);
 }
 
 static void ShortcutToggleConsole()
@@ -608,7 +625,7 @@ static void ShortcutToggleConsole()
     {
         console.Toggle();
     }
-    else if (Config::Get().general.DebuggingTools && !ContextIsInputActive())
+    else if (Config::Get().general.debuggingTools && !ContextIsInputActive())
     {
         WindowCancelTextbox();
         console.Toggle();
@@ -617,10 +634,11 @@ static void ShortcutToggleConsole()
 
 static void ShortcutConstructionTurnLeft()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnLeft();
@@ -633,9 +651,11 @@ static void ShortcutConstructionTurnLeft()
 
 static void ShortcutConstructionTurnRight()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnRight();
@@ -648,10 +668,11 @@ static void ShortcutConstructionTurnRight()
 
 static void ShortcutConstructionSlopeUp()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeUp();
@@ -664,10 +685,11 @@ static void ShortcutConstructionSlopeUp()
 
 static void ShortcutConstructionBuildCurrent()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutBuildCurrent();
@@ -680,10 +702,11 @@ static void ShortcutConstructionBuildCurrent()
 
 static void ShortcutConstructionSlopeDown()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeDown();
@@ -696,10 +719,11 @@ static void ShortcutConstructionSlopeDown()
 
 static void ShortcutConstructionDemolishCurrent()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutDemolishCurrent();
@@ -712,10 +736,10 @@ static void ShortcutConstructionDemolishCurrent()
 
 static void ShortcutToggleTransparentWater()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    Config::Get().general.TransparentWater ^= 1;
+    Config::Get().general.transparentWater ^= 1;
     Config::Save();
     GfxInvalidateScreen();
 }
@@ -724,169 +748,175 @@ static void ShortcutToggleTransparentWater()
 
 using namespace OpenRCT2::Ui;
 
-void ShortcutManager::RegisterDefaultShortcuts()
+void ShortcutManager::registerDefaultShortcuts()
 {
     // clang-format off
     // Interface
-    RegisterShortcut(ShortcutId::kInterfaceCloseTop, STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", WindowCloseTop);
-    RegisterShortcut(ShortcutId::kInterfaceCloseAll, STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
+    registerShortcut(ShortcutId::kInterfaceCloseTop, STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", []() {
+        auto* windowMgr = GetWindowManager();
+        windowMgr->CloseTop();
+    });
+    registerShortcut(ShortcutId::kInterfaceCloseAll, STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
+        auto* windowMgr = GetWindowManager();
+        if (gLegacyScene != LegacyScene::scenarioEditor)
         {
-            WindowCloseAll();
+            windowMgr->CloseAll();
         }
-        else if (GetGameState().EditorStep == EditorStep::LandscapeEditor)
+        else if (getGameState().editorStep == Editor::Step::landscapeEditor)
         {
-            WindowCloseTop();
+            windowMgr->CloseTop();
         }
     });
-    RegisterShortcut(ShortcutId::kInterfaceRotateConstruction, STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", ShortcutRotateConstructionObject);
-    RegisterShortcut(ShortcutId::kInterfaceCancelConstruction, STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE, "ESCAPE", []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    registerShortcut(ShortcutId::kInterfaceRotateConstruction, STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", ShortcutRotateConstructionObject);
+    registerShortcut(ShortcutId::kInterfaceCancelConstruction, STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE, "ESCAPE", []() {
+        if (gLegacyScene != LegacyScene::titleSequence)
         {
-            auto window = WindowFindByClass(WindowClass::Error);
+            auto* windowMgr = GetWindowManager();
+            auto window = windowMgr->FindByClass(WindowClass::error);
             if (window != nullptr)
             {
-                WindowClose(*window);
+                windowMgr->Close(*window);
             }
-            else if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+            else if (gInputFlags.has(InputFlag::toolActive))
             {
                 ToolCancel();
             }
         }
     });
-    RegisterShortcut(ShortcutId::kInterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
+    registerShortcut(ShortcutId::kInterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
+        if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::scenarioEditor && gLegacyScene != LegacyScene::trackDesignsManager)
         {
-            auto pauseToggleAction = PauseToggleAction();
-            GameActions::Execute(&pauseToggleAction);
+            auto pauseToggleAction = GameActions::PauseToggleAction();
+            GameActions::Execute(&pauseToggleAction, getGameState());
         }
     });
-    RegisterShortcut(ShortcutId::kInterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED, "-", ShortcutReduceGameSpeed);
-    RegisterShortcut(ShortcutId::kInterfaceIncreaseSpeed, STR_SHORTCUT_INCREASE_GAME_SPEED, "=", ShortcutIncreaseGameSpeed);
-    RegisterShortcut(ShortcutId::kInterfaceToggleToolbars, STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS, ShortcutRemoveTopBottomToolbarToggle);
-    RegisterShortcut(ShortcutId::kInterfaceScreenshot, STR_SHORTCUT_SCREENSHOT, "CTRL+S", []() { gScreenshotCountdown = 2; });
-    RegisterShortcut(ShortcutId::kInterfaceGiantScreenshot, STR_SHORTCUT_GIANT_SCREENSHOT, "CTRL+SHIFT+S", ScreenshotGiant);
-    RegisterShortcut(ShortcutId::kInterfaceLoadGame, STR_LOAD_GAME, "CTRL+L", ShortcutLoadGame);
-    RegisterShortcut(ShortcutId::kInterfaceSaveGame, STR_SAVE_GAME, "CTRL+F10", ShortcutQuickSaveGame);
-    RegisterShortcut(ShortcutId::kInterfaceMute, STR_SHORTCUT_MUTE_SOUND, OpenRCT2::Audio::ToggleAllSounds);
-    RegisterShortcut(ShortcutId::kInterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, ShortcutOpenSceneryPicker);
-    RegisterShortcut(
+    registerShortcut(ShortcutId::kInterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED, "-", ShortcutReduceGameSpeed);
+    registerShortcut(ShortcutId::kInterfaceIncreaseSpeed, STR_SHORTCUT_INCREASE_GAME_SPEED, "=", ShortcutIncreaseGameSpeed);
+    registerShortcut(ShortcutId::kInterfaceToggleToolbars, STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS, ShortcutRemoveTopBottomToolbarToggle);
+    registerShortcut(ShortcutId::kInterfaceScreenshot, STR_SHORTCUT_SCREENSHOT, "CTRL+S", []() { gScreenshotCountdown = 2; });
+    registerShortcut(ShortcutId::kInterfaceGiantScreenshot, STR_SHORTCUT_GIANT_SCREENSHOT, "CTRL+SHIFT+S", ScreenshotGiant);
+    registerShortcut(ShortcutId::kInterfaceLoadGame, STR_LOAD_GAME, "CTRL+L", ShortcutLoadGame);
+    registerShortcut(ShortcutId::kInterfaceSaveGame, STR_SAVE_GAME, "CTRL+F10", ShortcutQuickSaveGame);
+    registerShortcut(ShortcutId::kInterfaceMute, STR_SHORTCUT_MUTE_SOUND, Audio::ToggleAllSounds);
+    registerShortcut(ShortcutId::kInterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, ShortcutOpenSceneryPicker);
+    registerShortcut(
         ShortcutId::kInterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, ShortcutToggleClearanceChecks);
-    RegisterShortcut(ShortcutId::kInterfaceMultiplayerChat, STR_SHORTCUT_SEND_MESSAGE, "C", []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && ChatAvailable())
+    registerShortcut(ShortcutId::kInterfaceMultiplayerChat, STR_SHORTCUT_SEND_MESSAGE, "C", []() {
+        if (gLegacyScene != LegacyScene::titleSequence && ChatAvailable())
         {
             ChatToggle();
         }
     });
-    RegisterShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", ToggleWindowedMode);
-    RegisterShortcut(ShortcutId::kInterfaceScaleIncrease, STR_SHORTCUT_SCALE_UP, ShortcutScaleUp);
-    RegisterShortcut(ShortcutId::kInterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, ShortcutScaleDown);
-    RegisterShortcut(ShortcutId::kInterfaceOpenLand, STR_SHORTCUT_ADJUST_LAND, "F1", ShortcutAdjustLand);
-    RegisterShortcut(ShortcutId::kInterfaceOpenWater, STR_SHORTCUT_ADJUST_WATER, "F2", ShortcutAdjustWater);
-    RegisterShortcut(ShortcutId::kInterfaceClearScenery, STR_SHORTCUT_CLEAR_SCENERY, "B", ShortcutClearScenery);
-    RegisterShortcut(ShortcutId::kInterfaceOpenScenery, STR_SHORTCUT_BUILD_SCENERY, "F3", ShortcutBuildScenery);
-    RegisterShortcut(ShortcutId::kInterfaceOpenFootpaths, STR_SHORTCUT_BUILD_PATHS, "F4", ShortcutBuildPaths);
-    RegisterShortcut(ShortcutId::kInterfaceOpenNewRide, STR_SHORTCUT_BUILD_NEW_RIDE, "F5", ShortcutBuildNewRide);
-    RegisterShortcut(ShortcutId::kInterfaceOpenFinances, STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION, "F", ShortcutShowFinancialInformation);
-    RegisterShortcut(ShortcutId::kInterfaceOpenResearch, STR_SHORTCUT_SHOW_RESEARCH_INFORMATION, "D", ShortcutShowResearchInformation);
-    RegisterShortcut(ShortcutId::kInterfaceOpenRides, STR_SHORTCUT_SHOW_RIDES_LIST, "R", ShortcutShowRidesList);
-    RegisterShortcut(ShortcutId::kInterfaceOpenPark, STR_SHORTCUT_SHOW_PARK_INFORMATION, "P", ShortcutShowParkInformation);
-    RegisterShortcut(ShortcutId::kInterfaceOpenGuests, STR_SHORTCUT_SHOW_GUEST_LIST, "G", ShortcutShowGuestList);
-    RegisterShortcut(ShortcutId::kInterfaceOpenStaff, STR_SHORTCUT_SHOW_STAFF_LIST, "S", ShortcutShowStaffList);
-    RegisterShortcut(ShortcutId::kInterfaceOpenMessages, STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", ShortcutShowRecentMessages);
-    RegisterShortcut(ShortcutId::kInterfaceOpenMap, STR_SHORTCUT_SHOW_MAP, "TAB", ShortcutShowMap);
-    RegisterShortcut(ShortcutId::kInterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, std::bind(ContextOpenWindow, WindowClass::Options));
-    RegisterShortcut(ShortcutId::kInterfaceOpenKeyboardShortcuts, STR_SHORTCUT_OPEN_KEYBOARD_SHORTCUTS_WINDOW, "SHIFT+/", ShortcutOpenKeyboardShortcutsWindow);
-    RegisterShortcut(ShortcutId::kInterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", ShortcutOpenTransparencyWindow);
-    RegisterShortcut(ShortcutId::kInterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", ShortcutOpenCheatWindow);
-    RegisterShortcut(ShortcutId::kInterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (Config::Get().interface.ToolbarShowCheats)
+    registerShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", ToggleWindowedMode);
+    registerShortcut(ShortcutId::kInterfaceScaleIncrease, STR_SHORTCUT_SCALE_UP, ShortcutScaleUp);
+    registerShortcut(ShortcutId::kInterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, ShortcutScaleDown);
+    registerShortcut(ShortcutId::kInterfaceOpenLand, STR_SHORTCUT_ADJUST_LAND, "F1", ShortcutAdjustLand);
+    registerShortcut(ShortcutId::kInterfaceOpenWater, STR_SHORTCUT_ADJUST_WATER, "F2", ShortcutAdjustWater);
+    registerShortcut(ShortcutId::kInterfaceClearScenery, STR_SHORTCUT_CLEAR_SCENERY, "B", ShortcutClearScenery);
+    registerShortcut(ShortcutId::kInterfaceOpenScenery, STR_SHORTCUT_BUILD_SCENERY, "F3", ShortcutBuildScenery);
+    registerShortcut(ShortcutId::kInterfaceOpenFootpaths, STR_SHORTCUT_BUILD_PATHS, "F4", ShortcutBuildPaths);
+    registerShortcut(ShortcutId::kInterfaceOpenNewRide, STR_SHORTCUT_BUILD_NEW_RIDE, "F5", ShortcutBuildNewRide);
+    registerShortcut(ShortcutId::kInterfaceOpenFinances, STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION, "F", ShortcutShowFinancialInformation);
+    registerShortcut(ShortcutId::kInterfaceOpenResearch, STR_SHORTCUT_SHOW_RESEARCH_INFORMATION, "D", ShortcutShowResearchInformation);
+    registerShortcut(ShortcutId::kInterfaceOpenRides, STR_SHORTCUT_SHOW_RIDES_LIST, "R", ShortcutShowRidesList);
+    registerShortcut(ShortcutId::kInterfaceOpenPark, STR_SHORTCUT_SHOW_PARK_INFORMATION, "P", ShortcutShowParkInformation);
+    registerShortcut(ShortcutId::kInterfaceOpenGuests, STR_SHORTCUT_SHOW_GUEST_LIST, "G", ShortcutShowGuestList);
+    registerShortcut(ShortcutId::kInterfaceOpenStaff, STR_SHORTCUT_SHOW_STAFF_LIST, "S", ShortcutShowStaffList);
+    registerShortcut(ShortcutId::kInterfaceOpenMessages, STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", ShortcutShowRecentMessages);
+    registerShortcut(ShortcutId::kInterfaceOpenMap, STR_SHORTCUT_SHOW_MAP, "TAB", ShortcutShowMap);
+    registerShortcut(ShortcutId::kInterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, std::bind(ContextOpenWindow, WindowClass::options));
+    registerShortcut(ShortcutId::kInterfaceOpenKeyboardShortcuts, STR_SHORTCUT_OPEN_KEYBOARD_SHORTCUTS_WINDOW, "SHIFT+/", ShortcutOpenKeyboardShortcutsWindow);
+    registerShortcut(ShortcutId::kInterfaceOpenTransparencyOptions, STR_SHORTCUT_OPEN_TRANSPARENCY_OPTIONS, "CTRL+T", ShortcutOpenTransparencyWindow);
+    registerShortcut(ShortcutId::kInterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", ShortcutOpenCheatWindow);
+    registerShortcut(ShortcutId::kInterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
+        if (Config::Get().interface.toolbarShowCheats)
         {
-            OpenWindow(WindowClass::TileInspector);
+            OpenWindow(WindowClass::tileInspector);
         }
     });
-    RegisterShortcut(ShortcutId::kInterfaceMultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+    registerShortcut(ShortcutId::kInterfaceMultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
+        if (Network::GetMode() != Network::Mode::none)
         {
-            OpenWindow(WindowClass::Multiplayer);
+            OpenWindow(WindowClass::multiplayer);
         }
     });
 
     // View
-    RegisterShortcut(ShortcutId::kViewGeneralZoomOut, STR_SHORTCUT_ZOOM_VIEW_OUT, "PAGEUP", std::bind(MainWindowZoom, false, false));
-    RegisterShortcut(ShortcutId::kViewGeneralZoomIn, STR_SHORTCUT_ZOOM_VIEW_IN, "PAGEDOWN", std::bind(MainWindowZoom, true, false));
-    RegisterShortcut(ShortcutId::kViewGeneralRotateClockwise, STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", "MOUSE 6", std::bind(RotateCamera, 1));
-    RegisterShortcut(ShortcutId::kViewGeneralRotateAnticlockwise, STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", "MOUSE 5", std::bind(RotateCamera, -1));
-    RegisterShortcut(ShortcutId::kViewScrollUp, STR_SHORTCUT_SCROLL_MAP_UP, "UP", []() {});
-    RegisterShortcut(ShortcutId::kViewScrollLeft, STR_SHORTCUT_SCROLL_MAP_LEFT, "LEFT", []() {});
-    RegisterShortcut(ShortcutId::kViewScrollRight, STR_SHORTCUT_SCROLL_MAP_RIGHT, "RIGHT", []() {});
-    RegisterShortcut(ShortcutId::kViewScrollDown, STR_SHORTCUT_SCROLL_MAP_DOWN, "DOWN", []() {});
-    RegisterShortcut(ShortcutId::kViewToggleUnderground, STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE, "1", std::bind(ToggleViewFlag, VIEWPORT_FLAG_UNDERGROUND_INSIDE));
-    RegisterShortcut(ShortcutId::kViewToggleTransparentWater, STR_VIEWPORT_TRANSPARENT_WATER, "2", ShortcutToggleTransparentWater);
-    RegisterShortcut(ShortcutId::kViewToggleBaseLand, STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE, "H", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_BASE));
-    RegisterShortcut(ShortcutId::kViewToggleVerticalLand, STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE, "V", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VERTICAL));
-    RegisterShortcut(ShortcutId::kViewToggleRides, STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE, "3", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_RIDES));
-    RegisterShortcut(ShortcutId::kViewToggleVehicles, STR_SHORTCUT_SEE_THROUGH_VEHICLES_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VEHICLES));
-    RegisterShortcut(ShortcutId::kViewToggleVegetation, STR_SHORTCUT_SEE_THROUGH_VEGETATION_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VEGETATION));
-    RegisterShortcut(ShortcutId::kViewToggleScenery, STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE, "4", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_SCENERY));
-    RegisterShortcut(ShortcutId::kViewToggleFootpaths, STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_PATHS));
-    RegisterShortcut(ShortcutId::kViewToggleSupports, STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE, "5", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_SUPPORTS));
-    RegisterShortcut(ShortcutId::kViewToggleGuests, STR_SHORTCUT_SEE_THROUGH_GUESTS_TOGGLE, "6", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_GUESTS));
-    RegisterShortcut(ShortcutId::kViewToggleStaff, STR_SHORTCUT_SEE_THROUGH_STAFF_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_STAFF));
-    RegisterShortcut(ShortcutId::kViewToggleLandHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE, "8", std::bind(ToggleViewFlag, VIEWPORT_FLAG_LAND_HEIGHTS));
-    RegisterShortcut(ShortcutId::kViewToggleTrackHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE, "9", std::bind(ToggleViewFlag, VIEWPORT_FLAG_TRACK_HEIGHTS));
-    RegisterShortcut(ShortcutId::kViewToggleFootpathHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE, "0", std::bind(ToggleViewFlag, VIEWPORT_FLAG_PATH_HEIGHTS));
-    RegisterShortcut(ShortcutId::kViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", std::bind(ToggleViewFlag, VIEWPORT_FLAG_GRIDLINES));
-    RegisterShortcut(ShortcutId::kViewToggleCutAway, STR_SHORTCUT_VIEW_CLIPPING, std::bind(OpenWindow, WindowClass::ViewClipping));
-    RegisterShortcut(ShortcutId::kViewToggleFootpathIssues, STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE, "I", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES));
+    registerShortcut(ShortcutId::kViewGeneralZoomOut, STR_SHORTCUT_ZOOM_VIEW_OUT, "PAGEUP", std::bind(MainWindowZoom, false, false));
+    registerShortcut(ShortcutId::kViewGeneralZoomIn, STR_SHORTCUT_ZOOM_VIEW_IN, "PAGEDOWN", std::bind(MainWindowZoom, true, false));
+    registerShortcut(ShortcutId::kViewGeneralRotateClockwise, STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", "MOUSE 6", std::bind(RotateCamera, 1));
+    registerShortcut(ShortcutId::kViewGeneralRotateAnticlockwise, STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", "MOUSE 5", std::bind(RotateCamera, -1));
+    registerShortcut(ShortcutId::kViewScrollUp, STR_SHORTCUT_SCROLL_MAP_UP, "UP", []() {});
+    registerShortcut(ShortcutId::kViewScrollLeft, STR_SHORTCUT_SCROLL_MAP_LEFT, "LEFT", []() {});
+    registerShortcut(ShortcutId::kViewScrollRight, STR_SHORTCUT_SCROLL_MAP_RIGHT, "RIGHT", []() {});
+    registerShortcut(ShortcutId::kViewScrollDown, STR_SHORTCUT_SCROLL_MAP_DOWN, "DOWN", []() {});
+    registerShortcut(ShortcutId::kViewToggleUnderground, STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE, "1", std::bind(ToggleViewFlag, VIEWPORT_FLAG_UNDERGROUND_INSIDE));
+    registerShortcut(ShortcutId::kViewToggleTransparentWater, STR_VIEWPORT_TRANSPARENT_WATER, "2", ShortcutToggleTransparentWater);
+    registerShortcut(ShortcutId::kViewToggleBaseLand, STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE, "H", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_BASE));
+    registerShortcut(ShortcutId::kViewToggleVerticalLand, STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE, "V", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VERTICAL));
+    registerShortcut(ShortcutId::kViewToggleRides, STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE, "3", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_RIDES));
+    registerShortcut(ShortcutId::kViewToggleVehicles, STR_SHORTCUT_SEE_THROUGH_VEHICLES_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VEHICLES));
+    registerShortcut(ShortcutId::kViewToggleVegetation, STR_SHORTCUT_SEE_THROUGH_VEGETATION_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VEGETATION));
+    registerShortcut(ShortcutId::kViewToggleScenery, STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE, "4", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_SCENERY));
+    registerShortcut(ShortcutId::kViewToggleFootpaths, STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_PATHS));
+    registerShortcut(ShortcutId::kViewToggleSupports, STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE, "5", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_SUPPORTS));
+    registerShortcut(ShortcutId::kViewToggleGuests, STR_SHORTCUT_SEE_THROUGH_GUESTS_TOGGLE, "6", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_GUESTS));
+    registerShortcut(ShortcutId::kViewToggleStaff, STR_SHORTCUT_SEE_THROUGH_STAFF_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_STAFF));
+    registerShortcut(ShortcutId::kViewToggleLandHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE, "8", std::bind(ToggleViewFlag, VIEWPORT_FLAG_LAND_HEIGHTS));
+    registerShortcut(ShortcutId::kViewToggleTrackHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE, "9", std::bind(ToggleViewFlag, VIEWPORT_FLAG_TRACK_HEIGHTS));
+    registerShortcut(ShortcutId::kViewToggleFootpathHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE, "0", std::bind(ToggleViewFlag, VIEWPORT_FLAG_PATH_HEIGHTS));
+    registerShortcut(ShortcutId::kViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", std::bind(ToggleViewFlag, VIEWPORT_FLAG_GRIDLINES));
+    registerShortcut(ShortcutId::kViewToggleCutAway, STR_SHORTCUT_VIEW_CLIPPING, std::bind(OpenWindow, WindowClass::viewClipping));
+    registerShortcut(ShortcutId::kViewToggleFootpathIssues, STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE, "I", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES));
 
     // Window
-    RegisterShortcut(ShortcutId::kWindowRideConstructionTurnLeft, STR_SHORTCUT_CONSTRUCTION_TURN_LEFT, "NUMPAD 4", ShortcutConstructionTurnLeft);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionTurnRight, STR_SHORTCUT_CONSTRUCTION_TURN_RIGHT, "NUMPAD 6", ShortcutConstructionTurnRight);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionDefault, STR_SHORTCUT_CONSTRUCTION_USE_TRACK_DEFAULT, "NUMPAD 5", WindowRideConstructionKeyboardShortcutUseTrackDefault);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionSlopeDown, STR_SHORTCUT_CONSTRUCTION_SLOPE_DOWN, "NUMPAD 2", ShortcutConstructionSlopeDown);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionSlopeUp, STR_SHORTCUT_CONSTRUCTION_SLOPE_UP, "NUMPAD 8", ShortcutConstructionSlopeUp);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionChainLift, STR_SHORTCUT_CONSTRUCTION_CHAIN_LIFT_TOGGLE, "NUMPAD +", WindowRideConstructionKeyboardShortcutChainLiftToggle);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionBankLeft, STR_SHORTCUT_CONSTRUCTION_BANK_LEFT, "NUMPAD 1", WindowRideConstructionKeyboardShortcutBankLeft);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionBankRight, STR_SHORTCUT_CONSTRUCTION_BANK_RIGHT, "NUMPAD 3", WindowRideConstructionKeyboardShortcutBankRight);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionPrevious, STR_SHORTCUT_CONSTRUCTION_PREVIOUS_TRACK, "NUMPAD 7", WindowRideConstructionKeyboardShortcutPreviousTrack);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionNext, STR_SHORTCUT_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", WindowRideConstructionKeyboardShortcutNextTrack);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", ShortcutConstructionBuildCurrent);
-    RegisterShortcut(ShortcutId::kWindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", ShortcutConstructionDemolishCurrent);
-    RegisterShortcut(ShortcutId::kWindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
-    RegisterShortcut(ShortcutId::kWindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorSort, STR_SHORTCUT_SORT_ELEMENTS, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_SORT));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorMoveUp, STR_SHORTCUT_MOVE_ELEMENT_UP, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorMoveDown, STR_SHORTCUT_MOVE_ELEMENT_DOWN, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorIncreaseX, STR_SHORTCUT_INCREASE_X_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorDecreaseX, STR_SHORTCUT_DECREASE_X_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorIncreaseY, STR_SHORTCUT_INCREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorDecreaseY, STR_SHORTCUT_DECREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE));
-    RegisterShortcut(ShortcutId::kWindowTileInspectorIncreaseHeight, STR_SHORTCUT_INCREASE_ELEM_HEIGHT, ShortcutIncreaseElementHeight);
-    RegisterShortcut(ShortcutId::kWindowTileInspectorDecreaseHeight, STR_SHORTCUT_DECREASE_ELEM_HEIGHT, ShortcutDecreaseElementHeight);
-    RegisterShortcut(ShortcutId::kWindowTileInspectorChangeWallSlope, STR_SHORTCUT_TOGGLE_WALL_SLOPE, ShortcutToggleWallSlope);
+    registerShortcut(ShortcutId::kWindowRideConstructionTurnLeft, STR_SHORTCUT_CONSTRUCTION_TURN_LEFT, "NUMPAD 4", ShortcutConstructionTurnLeft);
+    registerShortcut(ShortcutId::kWindowRideConstructionTurnRight, STR_SHORTCUT_CONSTRUCTION_TURN_RIGHT, "NUMPAD 6", ShortcutConstructionTurnRight);
+    registerShortcut(ShortcutId::kWindowRideConstructionDefault, STR_SHORTCUT_CONSTRUCTION_USE_TRACK_DEFAULT, "NUMPAD 5", WindowRideConstructionKeyboardShortcutUseTrackDefault);
+    registerShortcut(ShortcutId::kWindowRideConstructionSlopeDown, STR_SHORTCUT_CONSTRUCTION_SLOPE_DOWN, "NUMPAD 2", ShortcutConstructionSlopeDown);
+    registerShortcut(ShortcutId::kWindowRideConstructionSlopeUp, STR_SHORTCUT_CONSTRUCTION_SLOPE_UP, "NUMPAD 8", ShortcutConstructionSlopeUp);
+    registerShortcut(ShortcutId::kWindowRideConstructionChainLift, STR_SHORTCUT_CONSTRUCTION_CHAIN_LIFT_TOGGLE, "NUMPAD +", WindowRideConstructionKeyboardShortcutChainLiftToggle);
+    registerShortcut(ShortcutId::kWindowRideConstructionBankLeft, STR_SHORTCUT_CONSTRUCTION_BANK_LEFT, "NUMPAD 1", WindowRideConstructionKeyboardShortcutBankLeft);
+    registerShortcut(ShortcutId::kWindowRideConstructionBankRight, STR_SHORTCUT_CONSTRUCTION_BANK_RIGHT, "NUMPAD 3", WindowRideConstructionKeyboardShortcutBankRight);
+    registerShortcut(ShortcutId::kWindowRideConstructionPrevious, STR_SHORTCUT_CONSTRUCTION_PREVIOUS_TRACK, "NUMPAD 7", WindowRideConstructionKeyboardShortcutPreviousTrack);
+    registerShortcut(ShortcutId::kWindowRideConstructionNext, STR_SHORTCUT_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", WindowRideConstructionKeyboardShortcutNextTrack);
+    registerShortcut(ShortcutId::kWindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", ShortcutConstructionBuildCurrent);
+    registerShortcut(ShortcutId::kWindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", ShortcutConstructionDemolishCurrent);
+    registerShortcut(ShortcutId::kWindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
+    registerShortcut(ShortcutId::kWindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
+    registerShortcut(ShortcutId::kWindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
+    registerShortcut(ShortcutId::kWindowTileInspectorSort, STR_SHORTCUT_SORT_ELEMENTS, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_SORT));
+    registerShortcut(ShortcutId::kWindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE));
+    registerShortcut(ShortcutId::kWindowTileInspectorMoveUp, STR_SHORTCUT_MOVE_ELEMENT_UP, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP));
+    registerShortcut(ShortcutId::kWindowTileInspectorMoveDown, STR_SHORTCUT_MOVE_ELEMENT_DOWN, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN));
+    registerShortcut(ShortcutId::kWindowTileInspectorIncreaseX, STR_SHORTCUT_INCREASE_X_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE));
+    registerShortcut(ShortcutId::kWindowTileInspectorDecreaseX, STR_SHORTCUT_DECREASE_X_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE));
+    registerShortcut(ShortcutId::kWindowTileInspectorIncreaseY, STR_SHORTCUT_INCREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE));
+    registerShortcut(ShortcutId::kWindowTileInspectorDecreaseY, STR_SHORTCUT_DECREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE));
+    registerShortcut(ShortcutId::kWindowTileInspectorIncreaseHeight, STR_SHORTCUT_INCREASE_ELEM_HEIGHT, ShortcutIncreaseElementHeight);
+    registerShortcut(ShortcutId::kWindowTileInspectorDecreaseHeight, STR_SHORTCUT_DECREASE_ELEM_HEIGHT, ShortcutDecreaseElementHeight);
+    registerShortcut(ShortcutId::kWindowTileInspectorChangeWallSlope, STR_SHORTCUT_TOGGLE_WALL_SLOPE, ShortcutToggleWallSlope);
 
     // Debug
-    RegisterShortcut(ShortcutId::kDebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);
-    RegisterShortcut(ShortcutId::kDebugAdvanceTick, STR_SHORTCUT_ADVANCE_TO_NEXT_TICK, []() {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
+    registerShortcut(ShortcutId::kDebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);
+    registerShortcut(ShortcutId::kDebugAdvanceTick, STR_SHORTCUT_ADVANCE_TO_NEXT_TICK, []() {
+        if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::scenarioEditor && gLegacyScene != LegacyScene::trackDesignsManager)
         {
             gDoSingleUpdate = true;
         }
     });
-    RegisterShortcut(ShortcutId::kDebugTogglePaintDebugWindow, STR_SHORTCUT_DEBUG_PAINT_TOGGLE, []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    registerShortcut(ShortcutId::kDebugTogglePaintDebugWindow, STR_SHORTCUT_DEBUG_PAINT_TOGGLE, []() {
+        if (gLegacyScene != LegacyScene::titleSequence)
         {
-            auto window = WindowFindByClass(WindowClass::DebugPaint);
+            auto* windowMgr = GetWindowManager();
+            auto window = windowMgr->FindByClass(WindowClass::debugPaint);
             if (window != nullptr)
             {
-                WindowClose(*window);
+                windowMgr->Close(*window);
             }
             else
             {
-                ContextOpenWindow(WindowClass::DebugPaint);
+                ContextOpenWindow(WindowClass::debugPaint);
             }
         }
     });

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,14 +11,34 @@
 
 #include "StringTypes.h"
 
+#include <charconv>
 #include <cstdarg>
 #include <cstddef>
 #include <optional>
+#include <stdexcept>
 #include <string_view>
 #include <vector>
 
 namespace OpenRCT2::String
 {
+    struct Hash
+    {
+        using is_transparent = void;
+
+        size_t operator()(const char* txt) const
+        {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(std::string_view txt) const
+        {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(const std::string& txt) const
+        {
+            return std::hash<std::string>{}(txt);
+        }
+    };
+
     std::string toStd(const utf8* str);
     std::string toUtf8(std::wstring_view src);
     std::wstring toWideChar(std::string_view src);
@@ -34,10 +54,8 @@ namespace OpenRCT2::String
     int32_t compare(const utf8* a, const utf8* b, bool ignoreCase = false);
 
     bool equals(u8string_view a, u8string_view b);
-    bool equals(const u8string& a, const u8string& b);
     bool equals(const utf8* a, const utf8* b, bool ignoreCase = false);
     bool iequals(u8string_view a, u8string_view b);
-    bool iequals(const u8string& a, const u8string& b);
     bool iequals(const utf8* a, const utf8* b);
 
     bool startsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
@@ -68,7 +86,7 @@ namespace OpenRCT2::String
      * Splits the given string by a delimiter and returns the values as a new string array.
      * @returns the number of values.
      */
-    std::vector<std::string> split(std::string_view s, std::string_view delimiter);
+    std::vector<std::string_view> split(std::string_view s, std::string_view delimiter);
 
     utf8* skipBOM(utf8* buffer);
     const utf8* skipBOM(const utf8* buffer);
@@ -96,31 +114,49 @@ namespace OpenRCT2::String
     std::string toUpper(std::string_view src);
 
     template<typename T>
-    std::optional<T> Parse(std::string_view input)
+    inline std::optional<T> tryParse(std::string_view input)
     {
-        if (input.size() == 0)
-            return std::nullopt;
+        static_assert(!std::is_same_v<T, float> && !std::is_same_v<T, double>, "Float support is currently unsupported");
 
-        T result = 0;
-        for (size_t i = 0; i < input.size(); i++)
+        if (input.empty())
         {
-            auto chr = input[i];
-            if (chr >= '0' && chr <= '9')
-            {
-                auto digit = chr - '0';
-                auto last = result;
-                result = static_cast<T>((result * 10) + digit);
-                if (result <= last)
-                {
-                    // Overflow, number too large for type
-                    return std::nullopt;
-                }
-            }
-            else
-            {
-                // Bad character
-                return std::nullopt;
-            }
+            return std::nullopt;
+        }
+        T result;
+        auto [ptr, ec] = std::from_chars(input.data(), input.data() + input.size(), result);
+        if (ec == std::errc() && ptr == input.data() + input.size())
+        {
+            return result;
+        }
+        return std::nullopt;
+    }
+
+    template<typename T>
+    inline T parse(std::string_view input)
+    {
+        static_assert(!std::is_same_v<T, float> && !std::is_same_v<T, double>, "Float support is currently unsupported");
+
+        if (input.empty())
+        {
+            throw std::invalid_argument("Input is empty");
+        }
+        T result;
+        auto [ptr, ec] = std::from_chars(input.data(), input.data() + input.size(), result);
+        if (ec == std::errc::invalid_argument)
+        {
+            throw std::invalid_argument("Invalid argument in conversion");
+        }
+        if (ec == std::errc::result_out_of_range)
+        {
+            throw std::out_of_range("Result out of range");
+        }
+        if (ec != std::errc())
+        {
+            throw std::runtime_error("Conversion error");
+        }
+        if (ptr != input.data() + input.size())
+        {
+            throw std::invalid_argument("Trailing characters after number");
         }
         return result;
     }
@@ -149,7 +185,7 @@ namespace OpenRCT2::String
      */
     constexpr std::optional<int> utf8GetCodePointSize(std::string_view v)
     {
-        if (v.size() >= 1 && !(v[0] & 0x80))
+        if (!v.empty() && !(v[0] & 0x80))
         {
             return { 1 };
         }

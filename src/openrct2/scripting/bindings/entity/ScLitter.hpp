@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,26 +13,30 @@
 
     #include "ScEntity.hpp"
 
-struct Litter;
+namespace OpenRCT2
+{
+    struct Litter;
+}
 
 namespace OpenRCT2::Scripting
 {
-    class ScLitter : public ScEntity
+    class ScLitter;
+    extern ScLitter gScLitter;
+
+    class ScLitter final : public ScEntity
     {
     public:
-        ScLitter(EntityId Id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
 
     private:
-        Litter* GetLitter() const;
+        static Litter* GetLitter(JSValue thisVal);
 
-        std::string litterType_get() const;
-        void litterType_set(const std::string& litterType);
+        static JSValue litterType_get(JSContext* ctx, JSValue thisVal);
+        static JSValue litterType_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        uint32_t creationTick_get() const;
+        static JSValue creationTick_get(JSContext* ctx, JSValue thisVal);
     };
-
 } // namespace OpenRCT2::Scripting
 
 #endif

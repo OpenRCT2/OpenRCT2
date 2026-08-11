@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/LightFX.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
+#include <openrct2/interface/Window.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/ui/UiContext.h>
 #include <vector>
@@ -30,9 +31,10 @@ using namespace OpenRCT2::Ui;
 class HardwareDisplayDrawingEngine final : public X8DrawingEngine
 {
 private:
-    constexpr static uint32_t DIRTY_VISUAL_TIME = 32;
+    constexpr static uint32_t kDirtyVisualTime = 40;
+    constexpr static uint32_t kDirtyRegionAlpha = 100;
 
-    std::shared_ptr<IUiContext> const _uiContext;
+    IUiContext& _uiContext;
     SDL_Window* _window = nullptr;
     SDL_Renderer* _sdlRenderer = nullptr;
     SDL_Texture* _screenTexture = nullptr;
@@ -41,11 +43,6 @@ private:
     uint32_t _paletteHWMapped[256] = { 0 };
     uint32_t _lightPaletteHWMapped[256] = { 0 };
 
-    // Steam overlay checking
-    uint32_t _pixelBeforeOverlay = 0;
-    uint32_t _pixelAfterOverlay = 0;
-    bool _overlayActive = false;
-    bool _pausedBeforeOverlay = false;
     bool _useVsync = true;
 
     std::vector<uint32_t> _dirtyVisualsTime;
@@ -53,11 +50,11 @@ private:
     bool smoothNN = false;
 
 public:
-    explicit HardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+    explicit HardwareDisplayDrawingEngine(IUiContext& uiContext)
         : X8DrawingEngine(uiContext)
         , _uiContext(uiContext)
     {
-        _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
+        _window = static_cast<SDL_Window*>(_uiContext.GetWindow());
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -127,10 +124,10 @@ public:
             }
         }
 
-        ScaleQuality scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
-        if (scaleQuality == ScaleQuality::SmoothNearestNeighbour)
+        ScaleQuality scaleQuality = GetContext()->GetUiContext().GetScaleQuality();
+        if (scaleQuality == ScaleQuality::smoothNearestNeighbour)
         {
-            scaleQuality = ScaleQuality::Linear;
+            scaleQuality = ScaleQuality::linear;
             smoothNN = true;
         }
         else
@@ -156,7 +153,7 @@ public:
 
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
-            uint32_t scale = std::ceil(Config::Get().general.WindowScale);
+            uint32_t scale = std::ceil(Config::Get().general.windowScale);
             _scaledScreenTexture = SDL_CreateTexture(
                 _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
 
@@ -177,9 +174,7 @@ public:
         SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
-        ConfigureBits(width, height, width);
-
-        _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
+        X8DrawingEngine::Resize(width, height);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -188,42 +183,48 @@ public:
         {
             for (int32_t i = 0; i < 256; i++)
             {
-                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
+                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
             }
 
-            if (Config::Get().general.EnableLightFx)
+            if (Config::Get().general.enableLightFx)
             {
-                auto& lightPalette = LightFXGetPalette();
+                auto& lightPalette = LightFx::GetPalette();
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.Red, src.Green, src.Blue, src.Alpha);
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.red, src.green, src.blue, src.alpha);
                 }
             }
         }
     }
 
+    void BeginDraw() override
+    {
+        X8DrawingEngine::BeginDraw();
+    }
+
     void EndDraw() override
     {
+        X8DrawingEngine::EndDraw();
+
         Display();
-        if (gShowDirtyVisuals)
-        {
-            UpdateDirtyVisuals();
-        }
     }
 
 protected:
-    void OnDrawDirtyBlock(uint32_t left, uint32_t top, uint32_t columns, uint32_t rows) override
+    void OnDrawDirtyBlock(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
         if (gShowDirtyVisuals)
         {
-            uint32_t right = left + columns;
-            uint32_t bottom = top + rows;
-            for (uint32_t x = left; x < right; x++)
+            const auto columns = ((right - left) + (_invalidationGrid.getBlockWidth() - 1)) / _invalidationGrid.getBlockWidth();
+            const auto rows = ((bottom - top) + (_invalidationGrid.getBlockHeight() - 1)) / _invalidationGrid.getBlockHeight();
+            const auto firstRow = top / _invalidationGrid.getBlockHeight();
+            const auto firstColumn = left / _invalidationGrid.getBlockWidth();
+
+            for (uint32_t y = 0; y < rows; y++)
             {
-                for (uint32_t y = top; y < bottom; y++)
+                for (uint32_t x = 0; x < columns; x++)
                 {
-                    SetDirtyVisualTime(x, y, DIRTY_VISUAL_TIME);
+                    SetDirtyVisualTime(firstColumn + x, firstRow + y, gCurrentRealTimeTicks + kDirtyVisualTime);
                 }
             }
         }
@@ -232,13 +233,16 @@ protected:
 private:
     void Display()
     {
-        if (Config::Get().general.EnableLightFx)
+        auto* viewport = WindowGetViewport(WindowGetMain());
+
+        if (Config::Get().general.enableLightFx && viewport != nullptr)
         {
             void* pixels;
             int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
-                LightFXRenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                LightFx::RenderToTexture(
+                    *viewport, pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
             }
         }
@@ -265,21 +269,10 @@ private:
             RenderDirtyVisuals();
         }
 
-        bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
-        if (isSteamOverlayActive && Config::Get().general.SteamOverlayPause)
-        {
-            OverlayPreRenderCheck();
-        }
-
         SDL_RenderPresent(_sdlRenderer);
-
-        if (isSteamOverlayActive && Config::Get().general.SteamOverlayPause)
-        {
-            OverlayPostRenderCheck();
-        }
     }
 
-    void CopyBitsToTexture(SDL_Texture* texture, uint8_t* src, int32_t width, int32_t height, const uint32_t* palette)
+    void CopyBitsToTexture(SDL_Texture* texture, PaletteIndex* src, int32_t width, int32_t height, const uint32_t* palette)
     {
         void* pixels;
         int32_t pitch;
@@ -291,7 +284,7 @@ private:
                 uint32_t* dst = static_cast<uint32_t*>(pixels);
                 for (int32_t i = width * height; i > 0; i--)
                 {
-                    *dst++ = palette[*src++];
+                    *dst++ = palette[EnumValue(*src++)];
                 }
             }
             else
@@ -303,8 +296,8 @@ private:
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            const uint8_t lower = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
-                            const uint8_t upper = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
+                            const uint8_t lower = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
+                            const uint8_t upper = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
                             *dst++ = (lower << 8) | upper;
                         }
                         dst = reinterpret_cast<uint16_t*>(reinterpret_cast<uint8_t*>(dst) + padding);
@@ -317,7 +310,7 @@ private:
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            *dst++ = *reinterpret_cast<const uint8_t*>(&palette[*src++]);
+                            *dst++ = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
                         }
                         dst += padding;
                     }
@@ -330,7 +323,7 @@ private:
     uint32_t GetDirtyVisualTime(uint32_t x, uint32_t y)
     {
         uint32_t result = 0;
-        uint32_t i = y * _dirtyGrid.BlockColumns + x;
+        uint32_t i = y * _invalidationGrid.getColumnCount() + x;
         if (_dirtyVisualsTime.size() > i)
         {
             result = _dirtyVisualsTime[i];
@@ -340,49 +333,42 @@ private:
 
     void SetDirtyVisualTime(uint32_t x, uint32_t y, uint32_t value)
     {
-        uint32_t i = y * _dirtyGrid.BlockColumns + x;
+        const auto rows = _invalidationGrid.getRowCount();
+        const auto columns = _invalidationGrid.getColumnCount();
+
+        _dirtyVisualsTime.resize(rows * columns);
+
+        uint32_t i = y * _invalidationGrid.getColumnCount() + x;
         if (_dirtyVisualsTime.size() > i)
         {
             _dirtyVisualsTime[i] = value;
         }
     }
 
-    void UpdateDirtyVisuals()
-    {
-        _dirtyVisualsTime.resize(_dirtyGrid.BlockRows * _dirtyGrid.BlockColumns);
-        for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
-        {
-            for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
-            {
-                auto timeLeft = GetDirtyVisualTime(x, y);
-                if (timeLeft > 0)
-                {
-                    SetDirtyVisualTime(x, y, timeLeft - 1);
-                }
-            }
-        }
-    }
-
     void RenderDirtyVisuals()
     {
-        float scaleX = Config::Get().general.WindowScale;
-        float scaleY = Config::Get().general.WindowScale;
+        int windowX, windowY, renderX, renderY;
+        SDL_GetWindowSize(_window, &windowX, &windowY);
+        SDL_GetRendererOutputSize(_sdlRenderer, &renderX, &renderY);
+
+        float scaleX = Config::Get().general.windowScale * renderX / static_cast<float>(windowX);
+        float scaleY = Config::Get().general.windowScale * renderY / static_cast<float>(windowY);
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
-        for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
+        for (uint32_t y = 0; y < _invalidationGrid.getRowCount(); y++)
         {
-            for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
+            for (uint32_t x = 0; x < _invalidationGrid.getColumnCount(); x++)
             {
-                auto timeLeft = GetDirtyVisualTime(x, y);
+                const auto timeEnd = GetDirtyVisualTime(x, y);
+                const auto timeLeft = gCurrentRealTimeTicks < timeEnd ? timeEnd - gCurrentRealTimeTicks : 0;
                 if (timeLeft > 0)
                 {
-                    uint8_t alpha = static_cast<uint8_t>(timeLeft * 5 / 2);
-
+                    uint8_t alpha = timeLeft * kDirtyRegionAlpha / kDirtyVisualTime;
                     SDL_Rect ddRect;
-                    ddRect.x = static_cast<int32_t>(x * _dirtyGrid.BlockWidth * scaleX);
-                    ddRect.y = static_cast<int32_t>(y * _dirtyGrid.BlockHeight * scaleY);
-                    ddRect.w = static_cast<int32_t>(_dirtyGrid.BlockWidth * scaleX);
-                    ddRect.h = static_cast<int32_t>(_dirtyGrid.BlockHeight * scaleY);
+                    ddRect.x = static_cast<int32_t>(x * _invalidationGrid.getBlockWidth() * scaleX);
+                    ddRect.y = static_cast<int32_t>(y * _invalidationGrid.getBlockHeight() * scaleY);
+                    ddRect.w = static_cast<int32_t>(_invalidationGrid.getBlockWidth() * scaleX);
+                    ddRect.h = static_cast<int32_t>(_invalidationGrid.getBlockHeight() * scaleY);
 
                     SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
                     SDL_RenderFillRect(_sdlRenderer, &ddRect);
@@ -390,47 +376,9 @@ private:
             }
         }
     }
-
-    void ReadCentrePixel(uint32_t* pixel)
-    {
-        SDL_Rect centrePixelRegion = { static_cast<int32_t>(_width / 2), static_cast<int32_t>(_height / 2), 1, 1 };
-        SDL_RenderReadPixels(_sdlRenderer, &centrePixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32_t));
-    }
-
-    // Should be called before SDL_RenderPresent to capture frame buffer before Steam overlay is drawn.
-    void OverlayPreRenderCheck()
-    {
-        ReadCentrePixel(&_pixelBeforeOverlay);
-    }
-
-    // Should be called after SDL_RenderPresent, when Steam overlay has had the chance to be drawn.
-    void OverlayPostRenderCheck()
-    {
-        ReadCentrePixel(&_pixelAfterOverlay);
-
-        // Detect an active Steam overlay by checking if the centre pixel is changed by the grey fade.
-        // Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
-        bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
-
-        // Toggle game pause state consistently with base pause state
-        if (!_overlayActive && newOverlayActive)
-        {
-            _pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
-            if (!_pausedBeforeOverlay)
-            {
-                PauseToggle();
-            }
-        }
-        else if (_overlayActive && !newOverlayActive && !_pausedBeforeOverlay)
-        {
-            PauseToggle();
-        }
-
-        _overlayActive = newOverlayActive;
-    }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+std::unique_ptr<IDrawingEngine> Ui::CreateHardwareDisplayDrawingEngine(IUiContext& uiContext)
 {
     return std::make_unique<HardwareDisplayDrawingEngine>(uiContext);
 }

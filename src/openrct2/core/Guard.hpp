@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,15 +11,15 @@
 
 #include <memory>
 #include <optional>
+#include <source_location>
 #include <stdarg.h>
-#include <stdbool.h>
 #include <string>
 
-enum class ASSERT_BEHAVIOUR
+enum class AssertBehaviour
 {
-    ABORT,
-    CASSERT,
-    MESSAGE_BOX,
+    abort,
+    cAssert,
+    messageBox,
 };
 
 /**
@@ -27,10 +27,11 @@ enum class ASSERT_BEHAVIOUR
  */
 namespace OpenRCT2::Guard
 {
-    ASSERT_BEHAVIOUR GetAssertBehaviour();
-    void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour);
+    AssertBehaviour GetAssertBehaviour();
+    void SetAssertBehaviour(AssertBehaviour behaviour);
 
-    void Assert(bool expression, const char* message = nullptr, ...);
+    void Assert(bool expression, const std::source_location& location = std::source_location::current());
+    void Assert(bool expression, const char* message, ...);
     void Assert_VA(bool expression, const char* message, va_list args);
     void Fail(const char* message = nullptr, ...);
     void Fail_VA(const char* message, va_list args);

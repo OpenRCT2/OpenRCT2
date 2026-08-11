@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,10 +17,10 @@ using namespace OpenRCT2::Audio;
 
 enum class AudioCodecKind
 {
-    Unknown,
-    Wav,
-    Ogg,
-    Flac,
+    unknown,
+    wav,
+    ogg,
+    flac,
 };
 
 bool SDLAudioSource::IsReleased() const
@@ -53,11 +53,8 @@ IAudioMixer* SDLAudioSource::GetMixer()
     if (ctx == nullptr)
         return nullptr;
 
-    auto audioContext = ctx->GetAudioContext();
-    if (audioContext == nullptr)
-        return nullptr;
-
-    return audioContext->GetMixer();
+    auto& audioContext = ctx->GetAudioContext();
+    return audioContext.GetMixer();
 }
 
 int32_t SDLAudioSource::GetBytesPerSecond() const
@@ -80,23 +77,23 @@ std::unique_ptr<SDLAudioSource> SDLAudioSource::ToMemory(const AudioFormat& targ
 
 static AudioCodecKind GetAudioCodec(SDL_RWops* rw)
 {
-    constexpr uint32_t MAGIC_FLAC = 0x43614C66;
-    constexpr uint32_t MAGIC_OGG = 0x5367674F;
-    constexpr uint32_t MAGIC_RIFF = 0x46464952;
+    constexpr uint32_t kMagicFLAC = 0x43614C66;
+    constexpr uint32_t kMagicOGG = 0x5367674F;
+    constexpr uint32_t kMagicRIFF = 0x46464952;
 
     auto originalPosition = SDL_RWtell(rw);
     auto magic = SDL_ReadLE32(rw);
     SDL_RWseek(rw, originalPosition, RW_SEEK_SET);
     switch (magic)
     {
-        case MAGIC_FLAC:
-            return AudioCodecKind::Flac;
-        case MAGIC_OGG:
-            return AudioCodecKind::Ogg;
-        case MAGIC_RIFF:
-            return AudioCodecKind::Wav;
+        case kMagicFLAC:
+            return AudioCodecKind::flac;
+        case kMagicOGG:
+            return AudioCodecKind::ogg;
+        case kMagicRIFF:
+            return AudioCodecKind::wav;
         default:
-            return AudioCodecKind::Unknown;
+            return AudioCodecKind::unknown;
     }
 }
 
@@ -105,11 +102,11 @@ std::unique_ptr<SDLAudioSource> OpenRCT2::Audio::CreateAudioSource(SDL_RWops* rw
     auto codec = GetAudioCodec(rw);
     switch (codec)
     {
-        case AudioCodecKind::Flac:
+        case AudioCodecKind::flac:
             return CreateFlacAudioSource(rw);
-        case AudioCodecKind::Ogg:
+        case AudioCodecKind::ogg:
             return CreateOggAudioSource(rw);
-        case AudioCodecKind::Wav:
+        case AudioCodecKind::wav:
             return CreateWavAudioSource(rw);
         default:
             throw std::runtime_error("Unsupported audio codec");
@@ -119,46 +116,45 @@ std::unique_ptr<SDLAudioSource> OpenRCT2::Audio::CreateAudioSource(SDL_RWops* rw
 std::unique_ptr<SDLAudioSource> OpenRCT2::Audio::CreateAudioSource(SDL_RWops* rw, uint32_t cssIndex)
 {
     auto numSounds = SDL_ReadLE32(rw);
-    if (cssIndex < numSounds)
+    if (cssIndex >= numSounds)
     {
-        SDL_RWseek(rw, cssIndex * 4, RW_SEEK_CUR);
-
-        auto pcmOffset = SDL_ReadLE32(rw);
-        SDL_RWseek(rw, pcmOffset, RW_SEEK_SET);
-
-        auto pcmLength = SDL_ReadLE32(rw);
-
-        AudioFormat format;
-        [[maybe_unused]] auto encoding = SDL_ReadLE16(rw);
-        format.channels = SDL_ReadLE16(rw);
-        format.freq = SDL_ReadLE32(rw);
-        [[maybe_unused]] auto byterate = SDL_ReadLE32(rw);
-        [[maybe_unused]] auto blockalign = SDL_ReadLE16(rw);
-        [[maybe_unused]] auto bitspersample = SDL_ReadLE16(rw);
-        switch (bitspersample)
-        {
-            case 8:
-                format.format = AUDIO_U8;
-                break;
-            case 16:
-                format.format = AUDIO_S16LSB;
-                break;
-            default:
-                SDL_RWclose(rw);
-                throw std::runtime_error("Unsupported bits per sample");
-        }
-        [[maybe_unused]] auto extrasize = SDL_ReadLE16(rw);
-
-        std::vector<uint8_t> pcmData;
-        pcmData.resize(pcmLength);
-        SDL_RWread(rw, pcmData.data(), pcmLength, 1);
-
-        SDL_RWclose(rw);
-        return CreateMemoryAudioSource(format, format, std::move(pcmData));
+        // Not enough sounds, caller is responsible for freeing rw
+        return nullptr;
     }
-    else
+
+    SDL_RWseek(rw, cssIndex * 4, RW_SEEK_CUR);
+
+    auto pcmOffset = SDL_ReadLE32(rw);
+    SDL_RWseek(rw, pcmOffset, RW_SEEK_SET);
+
+    auto pcmLength = SDL_ReadLE32(rw);
+
+    AudioFormat format;
+    // encoding, 16 bits
+    rw->seek(rw, 2, RW_SEEK_CUR);
+    format.channels = SDL_ReadLE16(rw);
+    format.freq = SDL_ReadLE32(rw);
+    // byterate, 32 bits
+    // blockalign, 16 bits
+    rw->seek(rw, 6, RW_SEEK_CUR);
+    auto bitspersample = SDL_ReadLE16(rw);
+    switch (bitspersample)
     {
-        SDL_RWclose(rw);
-        throw std::runtime_error("CSS does not contain required entry");
+        case 8:
+            format.format = AUDIO_U8;
+            break;
+        case 16:
+            format.format = AUDIO_S16LSB;
+            break;
+        default:
+            throw std::runtime_error("Unsupported bits per sample");
     }
+    // extrasize, 16 bits
+    rw->seek(rw, 2, RW_SEEK_CUR);
+
+    std::vector<uint8_t> pcmData;
+    pcmData.resize(pcmLength);
+    SDL_RWread(rw, pcmData.data(), pcmLength, 1);
+
+    return CreateMemoryAudioSource(format, format, std::move(pcmData));
 }

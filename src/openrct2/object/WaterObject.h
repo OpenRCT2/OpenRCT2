@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,29 +12,29 @@
 #include "Object.h"
 #include "WaterEntry.h"
 
-#include <tuple>
-
-class WaterObject final : public Object
+namespace OpenRCT2
 {
-private:
-    WaterObjectEntry _legacyType = {};
-
-public:
-    static constexpr ObjectType kObjectType = ObjectType::Water;
-
-    void* GetLegacyData() override
+    class WaterObject final : public Object
     {
-        return &_legacyType;
-    }
+    private:
+        WaterObjectEntry _legacyType = {};
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::water;
 
-    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-private:
-    void ReadJsonPalette(json_t& jPalette);
-    uint32_t ParseColour(const std::string& s) const;
-};
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
+
+    private:
+        void ReadJsonPalette(json_t& jPalette);
+    };
+} // namespace OpenRCT2

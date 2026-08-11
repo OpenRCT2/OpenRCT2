@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,9 +15,9 @@
 
 namespace OpenRCT2::Ui
 {
-    constexpr char rawTransparent = ' ';
-    constexpr char rawWhite = '.';
-    constexpr char rawBlack = 'X';
+    constexpr char kRawTransparent = ' ';
+    constexpr char kRawWhite = '.';
+    constexpr char kRawBlack = 'X';
 
     constexpr static CursorData cursorFromBitMap(int x, int y, std::string_view bitmap)
     {
@@ -35,15 +35,15 @@ namespace OpenRCT2::Ui
             uint8_t dataBit{}, maskBit{};
             switch (rawPixel)
             {
-                case rawBlack:
+                case kRawBlack:
                     dataBit = 1;
                     maskBit = 1;
                     break;
-                case rawWhite:
+                case kRawWhite:
                     dataBit = 0;
                     maskBit = 1;
                     break;
-                case rawTransparent:
+                case kRawTransparent:
                     dataBit = 0;
                     maskBit = 0;
                     break;
@@ -947,43 +947,43 @@ namespace OpenRCT2::Ui
         "     X.X                        "
         "      X                         ");
 
-    static constexpr const CursorData* RawCursorData[] = {
-        nullptr,                    // CursorID::Arrow
-        &kBlankCursorData,          // CursorID::Blank
-        &kUpArrowCursorData,        // CursorID::UpArrow
-        &kUpDownArrowCursorData,    // CursorID::UpDownArrow
-        nullptr,                    // CursorID::HandPoint
-        &kZzzCursorData,            // CursorID::ZZZ
-        &kDiagonalArrowCursorData,  // CursorID::DiagonalArrows
-        &kPickerArrowCursorData,    // CursorID::Picker
-        &kTreeDownCursorData,       // CursorID::TreeDown
-        &kFountainDownCursorData,   // CursorID::FountainDown
-        &kStatueDownCursorData,     // CursorID::StatueDown
-        &kBenchDownCursorData,      // CursorID::BenchDown
-        &kCrossHairCursorData,      // CursorID::CrossHair
-        &kBinDownCursorData,        // CursorID::BinDown
-        &kLampPostDownCursorData,   // CursorID::LamppostDown
-        &kFenceDownCursorData,      // CursorID::FenceDown
-        &kFlowerDownCursorData,     // CursorID::FlowerDown
-        &kFootpathDownCursorData,   // CursorID::PathDown
-        &kDigDownCursorData,        // CursorID::DigDown
-        &kWaterDownCursorData,      // CursorID::WaterDown
-        &kHouseDownCursorData,      // CursorID::HouseDown
-        &kVolcanoDownCursorData,    // CursorID::VolcanoDown
-        &kWalkDownCursorData,       // CursorID::WalkDown
-        &kPaintDownCursorData,      // CursorID::PaintDown
-        &kEntranceDownCursorData,   // CursorID::EntranceDown
-        &kHandOpenDownCursorData,   // CursorID::HandOpen
-        &kHandClosedDownCursorData, // CursorID::HandClosed
-        &kBulldozerCursorData,      // CursorID::Bulldozer
+    static constexpr const CursorData* kRawCursorData[] = {
+        nullptr,                    // CursorID::arrow
+        &kBlankCursorData,          // CursorID::blank
+        &kUpArrowCursorData,        // CursorID::upArrow
+        &kUpDownArrowCursorData,    // CursorID::upDownArrow
+        nullptr,                    // CursorID::handPoint
+        &kZzzCursorData,            // CursorID::zZZ
+        &kDiagonalArrowCursorData,  // CursorID::diagonalArrows
+        &kPickerArrowCursorData,    // CursorID::picker
+        &kTreeDownCursorData,       // CursorID::treeDown
+        &kFountainDownCursorData,   // CursorID::fountainDown
+        &kStatueDownCursorData,     // CursorID::statueDown
+        &kBenchDownCursorData,      // CursorID::benchDown
+        &kCrossHairCursorData,      // CursorID::crossHair
+        &kBinDownCursorData,        // CursorID::binDown
+        &kLampPostDownCursorData,   // CursorID::lamppostDown
+        &kFenceDownCursorData,      // CursorID::fenceDown
+        &kFlowerDownCursorData,     // CursorID::flowerDown
+        &kFootpathDownCursorData,   // CursorID::pathDown
+        &kDigDownCursorData,        // CursorID::digDown
+        &kWaterDownCursorData,      // CursorID::waterDown
+        &kHouseDownCursorData,      // CursorID::houseDown
+        &kVolcanoDownCursorData,    // CursorID::volcanoDown
+        &kWalkDownCursorData,       // CursorID::walkDown
+        &kPaintDownCursorData,      // CursorID::paintDown
+        &kEntranceDownCursorData,   // CursorID::entranceDown
+        &kHandOpenDownCursorData,   // CursorID::handOpen
+        &kHandClosedDownCursorData, // CursorID::handClosed
+        &kBulldozerCursorData,      // CursorID::bulldozer
     };
 
     const CursorData* getCursorData(CursorID cursorId)
     {
         const CursorData* result = nullptr;
-        if (cursorId != CursorID::Undefined && cursorId != CursorID::Count)
+        if (cursorId != CursorID::undefined && cursorId != CursorID::count)
         {
-            result = RawCursorData[EnumValue(cursorId)];
+            result = kRawCursorData[EnumValue(cursorId)];
         }
         return result;
     }

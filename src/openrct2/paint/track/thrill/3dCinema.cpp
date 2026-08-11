@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,17 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -25,28 +24,28 @@ static void Paint3dCinemaDome(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height,
     ImageId stationColour)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
-        session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnEntity = GetEntity<Vehicle>(ride.vehicles[0]);
+        session.InteractionType = ViewportInteractionItem::entity;
+        session.CurrentlyDrawnEntity = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
     }
 
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + direction);
     PaintAddImageAsParent(
         session, imageId, { xOffset, yOffset, height + 3 }, { { xOffset + 16, yOffset + 16, height + 3 }, { 24, 24, 47 } });
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 /**
@@ -62,11 +61,11 @@ static void Paint3dCinema(
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, stationColour);
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, stationColour, height, kFenceSpritesRope,
@@ -99,20 +98,19 @@ static void Paint3dCinema(
     {
         case 1:
             // top
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
             break;
         case 3:
             // right
-            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
             break;
         case 6:
             // left
-            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
             break;
         case 7:
             // bottom
-            cornerSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -121,9 +119,9 @@ static void Paint3dCinema(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TrackPaintFunction GetTrackPaintFunction3dCinema(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunction3dCinema(TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::flatTrack3x3)
     {
         return TrackPaintFunctionDummy;
     }

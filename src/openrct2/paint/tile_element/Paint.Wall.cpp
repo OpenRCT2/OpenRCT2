@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,26 +9,19 @@
 
 #include "../Paint.h"
 
-#include "../../Game.h"
 #include "../../GameState.h"
-#include "../../config/Config.h"
-#include "../../drawing/Drawing.h"
-#include "../../interface/Colour.h"
+#include "../../drawing/ColourMap.h"
+#include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Formatting.h"
-#include "../../localisation/StringIds.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
-#include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
-#include "../../world/Banner.h"
-#include "../../world/Map.h"
-#include "../../world/Scenery.h"
-#include "../../world/TileInspector.h"
 #include "../../world/tile_element/WallElement.h"
 #include "Paint.TileElement.h"
+#include "Paint.Wall.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static constexpr uint8_t DirectionToDoorImageOffset0[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2, 2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2,
@@ -57,7 +50,7 @@ static void PaintWallDoor(
 
     auto newImageId0 = imageId;
     auto newImageId1 = imageId.WithIndexOffset(1);
-    if (wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+    if (wallEntry.flags.has(WallSceneryFlag::cannotBuildOnSlope))
     {
         PaintAddImageAsParent(session, newImageId0, offset, bbR1);
         PaintAddImageAsParent(session, newImageId1, offset, bbR2);
@@ -139,10 +132,10 @@ static void PaintWallWall(
 {
     PROFILED_FUNCTION();
 
-    auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (GetGameState().CurrentTicks & 7) * 2 : 0;
+    auto frameNum = wallEntry.flags2.has(WallSceneryFlag2::isAnimated) ? (getGameState().currentTicks & 7) * 2 : 0;
     auto imageIndex = wallEntry.image + imageOffset + frameNum;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
-    if ((wallEntry.flags & WALL_SCENERY_HAS_GLASS) && !isGhost)
+    if ((wallEntry.flags.has(WallSceneryFlag::hasGlass)) && !isGhost)
     {
         auto glassImageId = ImageId(imageIndex + 6).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, glassImageId, offset, boundBox);
@@ -159,35 +152,23 @@ static void PaintWallScrollingText(
         return;
 
     auto scrollingMode = wallEntry.scrolling_mode;
-    if (scrollingMode == SCROLLING_MODE_NONE)
+    if (scrollingMode == kScrollingModeNone)
         return;
 
     scrollingMode = wallEntry.scrolling_mode + ((direction + 1) & 3);
-    if (scrollingMode >= kMaxScrollingTextModes)
+    if (scrollingMode >= ScrollingText::kMaxModes)
         return;
 
     auto banner = wallElement.GetBanner();
     if (banner == nullptr)
         return;
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : wallElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : wallElement.GetSecondaryColour();
+    auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
-    auto ft = Formatter();
-    banner->FormatTextTo(ft);
-    char signString[256];
-    if (Config::Get().general.UpperCaseBanners)
-    {
-        FormatStringToUpper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-    else
-    {
-        OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-
-    auto stringWidth = GfxGetStringWidth(signString, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
+    auto bannerText = banner->getText();
+    auto imageId = ScrollingText::setup(session, bannerText, scrollingMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });
 }
 
@@ -235,16 +216,16 @@ static void PaintWallWall(
                 imageOffset = 0;
             }
 
-            if (wallEntry.flags & WALL_SCENERY_HAS_GLASS)
+            if (wallEntry.flags.has(WallSceneryFlag::hasGlass))
             {
-                if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+                if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
                 {
                     imageOffset += 12;
                 }
             }
             else
             {
-                if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+                if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
                 {
                     imageOffset += 6;
                 }
@@ -268,7 +249,7 @@ static void PaintWallWall(
                 imageOffset = 1;
             }
 
-            if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+            if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
             {
                 imageOffset += 6;
             }
@@ -315,47 +296,47 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         return;
     }
 
-    session.InteractionType = ViewportInteractionItem::Wall;
+    session.InteractionType = ViewportInteractionItem::wall;
 
     ImageId imageTemplate;
-    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+    if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
     {
         imageTemplate = imageTemplate.WithPrimary(wallElement.GetPrimaryColour());
     }
-    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
     {
         imageTemplate = imageTemplate.WithSecondary(wallElement.GetSecondaryColour());
     }
-    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+    if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
     {
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }
 
-    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.ClearanceHeight);
+    PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.clearanceHeight);
 
     auto isGhost = false;
     if (gTrackDesignSaveMode)
     {
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&wallElement)))
         {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
             isGhost = true;
         }
     }
 
-    if (wallElement.IsGhost())
+    if (wallElement.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        session.InteractionType = ViewportInteractionItem::none;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&wallElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
 
-    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+    if (wallEntry->flags.has(WallSceneryFlag::isDoor))
     {
         PaintWallDoor(session, *wallEntry, wallElement, imageTemplate, direction, height);
     }

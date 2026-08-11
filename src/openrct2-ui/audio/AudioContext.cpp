@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,7 @@ namespace OpenRCT2::Audio
     class AudioContext final : public IAudioContext
     {
     private:
-        static constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
+        static constexpr size_t kStreamMinSize = 2 * 1024 * 1024; // 2 MiB
 
         std::unique_ptr<AudioMixer> _audioMixer;
 
@@ -78,22 +78,28 @@ namespace OpenRCT2::Audio
                 return nullptr;
             }
 
+            std::unique_ptr<SDLAudioSource> source;
             try
             {
-                auto source = CreateAudioSource(rw, index);
-
-                // Stream will already be in memory, so convert to target format
-                auto& targetFormat = _audioMixer->GetFormat();
-                source = source->ToMemory(targetFormat);
-
-                return AddSource(std::move(source));
+                source = CreateAudioSource(rw, index);
             }
             catch (const std::exception& e)
             {
-                SDL_RWclose(rw);
                 LOG_VERBOSE("Unable to create audio source: %s", e.what());
+            }
+
+            SDL_RWclose(rw);
+
+            if (source == nullptr)
+            {
                 return nullptr;
             }
+
+            // Stream will already be in memory, so convert to target format
+            auto& targetFormat = _audioMixer->GetFormat();
+            source = source->ToMemory(targetFormat);
+
+            return AddSource(std::move(source));
         }
 
         IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
@@ -110,7 +116,7 @@ namespace OpenRCT2::Audio
 
                 // Load whole stream into memory if small enough
                 auto dataLength = source->GetLength();
-                if (dataLength < STREAM_MIN_SIZE)
+                if (dataLength < kStreamMinSize)
                 {
                     auto& targetFormat = _audioMixer->GetFormat();
                     source = source->ToMemory(targetFormat);

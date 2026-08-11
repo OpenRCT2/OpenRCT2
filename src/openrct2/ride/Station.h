@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,10 +11,12 @@
 
 #include "../Identifiers.h"
 
-struct Ride;
-struct TileCoordsXYZD;
+namespace OpenRCT2
+{
+    struct Ride;
 
-void RideUpdateStation(Ride& ride, StationIndex stationIndex);
-StationIndex RideGetFirstValidStationExit(const Ride& ride);
-StationIndex RideGetFirstValidStationStart(const Ride& ride);
-StationIndex RideGetFirstEmptyStationStart(const Ride& ride);
+    void RideUpdateStation(OpenRCT2::Ride& ride, StationIndex stationIndex);
+    StationIndex RideGetFirstValidStationExit(const OpenRCT2::Ride& ride);
+    StationIndex RideGetFirstValidStationStart(const OpenRCT2::Ride& ride);
+    StationIndex RideGetFirstEmptyStationStart(const OpenRCT2::Ride& ride);
+} // namespace OpenRCT2

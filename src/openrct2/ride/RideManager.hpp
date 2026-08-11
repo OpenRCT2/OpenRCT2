@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,14 +13,15 @@
 
 namespace OpenRCT2
 {
+    struct GameState_t;
+
     struct RideManager
     {
     private:
-        GameState_t& _gameState;
+        const GameState_t& _gameState;
 
     public:
-        RideManager();
-        RideManager(GameState_t& gameState);
+        RideManager(const GameState_t& gameState);
 
         const Ride* operator[](RideId id) const
         {
@@ -102,6 +103,4 @@ namespace OpenRCT2
             return (const_cast<RideManager*>(this))->end();
         }
     };
-
-    RideManager GetRideManager();
 } // namespace OpenRCT2

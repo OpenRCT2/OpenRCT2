@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,14 +11,15 @@
 
 #include "FileSystem.hpp"
 #include "IStream.hpp"
+#include "StringTypes.h"
 
 namespace OpenRCT2
 {
-    enum
+    enum class FileMode : uint8_t
     {
-        FILE_MODE_OPEN,
-        FILE_MODE_WRITE,
-        FILE_MODE_APPEND,
+        open,
+        write,
+        append,
     };
 
     /**
@@ -28,6 +29,7 @@ namespace OpenRCT2
     {
     private:
         FILE* _file = nullptr;
+        void* _asset = nullptr;
         bool _ownsFilePtr = false;
         bool _canRead = false;
         bool _canWrite = false;
@@ -35,10 +37,10 @@ namespace OpenRCT2
         uint64_t _fileSize = 0;
 
     public:
-        FileStream(const fs::path& path, int32_t fileMode);
-        FileStream(const std::string& path, int32_t fileMode);
-        FileStream(std::string_view path, int32_t fileMode);
-        FileStream(const utf8* path, int32_t fileMode);
+        FileStream(const fs::path& path, FileMode fileMode);
+        FileStream(const std::string& path, FileMode fileMode);
+        FileStream(std::string_view path, FileMode fileMode);
+        FileStream(const utf8* path, FileMode fileMode);
         ~FileStream() override;
 
         bool CanRead() const override;
@@ -52,7 +54,6 @@ namespace OpenRCT2
         void Read(void* buffer, uint64_t length) override;
         void Write(const void* buffer, uint64_t length) override;
         uint64_t TryRead(void* buffer, uint64_t length) override;
-        const void* GetData() const override;
     };
 
 } // namespace OpenRCT2

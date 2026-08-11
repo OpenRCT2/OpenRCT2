@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,9 +9,10 @@
 
 #include "../../ride/Vehicle.h"
 
+#include "../../GameState.h"
 #include "../../entity/EntityRegistry.h"
-#include "../../ride/Ride.h"
 #include "../Paint.h"
+#include "../entity/Paint.Vehicle.h"
 #include "VehiclePaint.h"
 
 #include <cstdint>
@@ -26,18 +27,20 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
-        auto* vehicleToPaint = vehicle->IsHead() ? GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
-                                                 : GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+        // TODO: pass as parameter?
+        auto& entityRegistry = getGameState().entities;
+
+        auto* vehicleToPaint = vehicle->IsHead() ? entityRegistry.GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
+                                                 : entityRegistry.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         if (vehicleToPaint == nullptr)
         {
             return;
         }
 
         session.CurrentlyDrawnEntity = vehicleToPaint;
-        imageDirection = OpenRCT2::Entity::Yaw::Add(
-            OpenRCT2::Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->Orientation);
+        imageDirection = Entity::Yaw::Add(Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->orientation);
         session.SpritePosition.x = vehicleToPaint->x;
         session.SpritePosition.y = vehicleToPaint->y;
-        vehicleToPaint->Paint(session, imageDirection);
+        PaintVehicle(session, *vehicleToPaint, imageDirection);
     }
 } // namespace OpenRCT2

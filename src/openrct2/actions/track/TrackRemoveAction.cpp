@@ -1,0 +1,485 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2026 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "TrackRemoveAction.h"
+
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../management/Finance.h"
+#include "../../ride/RideData.h"
+#include "../../ride/Track.h"
+#include "../../ride/TrackData.h"
+#include "../../ride/ted/TrackElemType.h"
+#include "../../ride/ted/TrackElementDescriptor.h"
+#include "../../world/Footpath.h"
+#include "../../world/Map.h"
+#include "../../world/TileElementsView.h"
+#include "../../world/tile_element/SurfaceElement.h"
+#include "../../world/tile_element/TrackElement.h"
+#include "../GameActionRunner.h"
+#include "../ResultWithMessage.h"
+#include "../ride/RideSetSettingAction.h"
+
+namespace OpenRCT2::GameActions
+{
+    using namespace OpenRCT2::TrackMetadata;
+
+    TrackRemoveAction::TrackRemoveAction(TrackElemType trackType, int32_t sequence, const CoordsXYZD& origin)
+        : _trackType(trackType)
+        , _sequence(sequence)
+        , _origin(origin)
+    {
+        _origin.direction &= 3;
+    }
+
+    void TrackRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit(_origin);
+        visitor.Visit("trackType", _trackType);
+        visitor.Visit("sequence", _sequence);
+    }
+
+    uint16_t TrackRemoveAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags();
+    }
+
+    static TrackElemType normaliseTrackType(TrackElemType trackType)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::beginStation:
+            case TrackElemType::middleStation:
+                return TrackElemType::endStation;
+            default:
+                return trackType;
+        }
+    }
+
+    void TrackRemoveAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
+    }
+
+    Result TrackRemoveAction::Query(GameState_t& gameState, Park::ParkData& park) const
+    {
+        auto res = Result();
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
+
+        auto comparableTrackType = normaliseTrackType(_trackType);
+
+        TrackElement* foundElement = nullptr;
+        bool isGhost = GetFlags().has(CommandFlag::ghost);
+
+        for (auto* trackElement : TileElementsView<TrackElement>(_origin))
+        {
+            if (trackElement->getBaseZ() != _origin.z)
+                continue;
+
+            if ((trackElement->getDirection()) != _origin.direction)
+                continue;
+
+            if (trackElement->GetSequenceIndex() != _sequence)
+                continue;
+
+            if (trackElement->isGhost() != isGhost)
+                continue;
+
+            auto tileTrackType = normaliseTrackType(trackElement->GetTrackType());
+
+            if (tileTrackType != comparableTrackType)
+                continue;
+
+            foundElement = trackElement;
+            break;
+        }
+
+        if (foundElement == nullptr)
+        {
+            LOG_ERROR(
+                "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
+                _origin.direction, _sequence);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
+        }
+
+        if (foundElement->IsIndestructible())
+        {
+            return Result(
+                Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
+        }
+
+        RideId rideIndex = foundElement->GetRideIndex();
+        const auto trackType = foundElement->GetTrackType();
+
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr)
+        {
+            LOG_ERROR("Ride not found for rideIndex %d.", rideIndex);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_RIDE_NOT_FOUND);
+        }
+
+        if (ride->type >= RIDE_TYPE_COUNT)
+        {
+            LOG_ERROR("Ride type not found. ride type = %d.", ride->type);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        auto sequenceIndex = foundElement->GetSequenceIndex();
+        if (sequenceIndex >= ted.sequenceData.numSequences)
+        {
+            LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_BLOCK_NOT_FOUND);
+        }
+        const auto& currentTrackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
+
+        auto startLoc = _origin;
+        startLoc.direction = foundElement->getDirection();
+
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
+                                       currentTrackBlock.z };
+        startLoc.x -= rotatedTrack.x;
+        startLoc.y -= rotatedTrack.y;
+        startLoc.z -= rotatedTrack.z;
+        res.position.x = startLoc.x;
+        res.position.y = startLoc.y;
+        res.position.z = startLoc.z;
+
+        money64 supportCosts = 0;
+
+        for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
+        {
+            const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
+            rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(startLoc.direction), trackBlock.z };
+            auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrack;
+
+            if (!LocationValid(mapLoc))
+            {
+                return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+            }
+            MapInvalidateTileFull(mapLoc);
+
+            foundElement = nullptr;
+            for (auto* trackElement : TileElementsView<TrackElement>(mapLoc))
+            {
+                if (trackElement->getBaseZ() != mapLoc.z)
+                    continue;
+
+                if (trackElement->getDirection() != _origin.direction)
+                    continue;
+
+                if (trackElement->GetSequenceIndex() != i)
+                    continue;
+
+                if (trackElement->GetTrackType() != trackType)
+                    continue;
+
+                if (trackElement->isGhost() != isGhost)
+                    continue;
+
+                foundElement = trackElement;
+                break;
+            }
+
+            if (foundElement == nullptr)
+            {
+                LOG_ERROR(
+                    "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
+                    _origin.direction, i);
+                return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
+            }
+
+            if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin) && (foundElement->GetSequenceIndex() == 0))
+            {
+                const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, {});
+                if (!removeElementResult.Successful)
+                {
+                    return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, removeElementResult.Message);
+                }
+            }
+
+            auto* surfaceElement = MapGetSurfaceElementAt(mapLoc);
+            if (surfaceElement == nullptr)
+            {
+                LOG_ERROR("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
+                return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            }
+
+            int16_t _support_height = foundElement->baseHeight - surfaceElement->baseHeight;
+            if (_support_height < 0)
+            {
+                _support_height = 10;
+            }
+
+            supportCosts += (_support_height / 2) * ride->getRideTypeDescriptor().BuildCosts.SupportPrice;
+        }
+
+        money64 price = ride->getRideTypeDescriptor().BuildCosts.TrackPrice;
+        price *= ted.priceModifier;
+        price >>= 16;
+        price = supportCosts + price;
+        if (ride->flags.has(RideFlag::everBeenOpened))
+        {
+            // 70% modifier for opened rides
+            price = (price * 45875) / 65536;
+        }
+
+        res.cost = -price;
+        return res;
+    }
+
+    Result TrackRemoveAction::Execute(GameState_t& gameState, Park::ParkData& park) const
+    {
+        auto res = Result();
+        res.position.x = _origin.x + 16;
+        res.position.y = _origin.y + 16;
+        res.position.z = _origin.z;
+        res.expenditure = ExpenditureType::rideConstruction;
+
+        auto comparableTrackType = normaliseTrackType(_trackType);
+
+        TrackElement* foundElement = nullptr;
+        bool isGhost = GetFlags().has(CommandFlag::ghost);
+
+        for (auto* trackElement : TileElementsView<TrackElement>(_origin))
+        {
+            if (trackElement->getBaseZ() != _origin.z)
+                continue;
+
+            if ((trackElement->getDirection()) != _origin.direction)
+                continue;
+
+            if (trackElement->GetSequenceIndex() != _sequence)
+                continue;
+
+            if (trackElement->isGhost() != isGhost)
+                continue;
+
+            auto tileTrackType = normaliseTrackType(trackElement->GetTrackType());
+
+            if (tileTrackType != comparableTrackType)
+                continue;
+
+            foundElement = trackElement;
+            break;
+        }
+
+        if (foundElement == nullptr)
+        {
+            LOG_ERROR(
+                "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
+                _origin.direction, _sequence);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
+        }
+
+        RideId rideIndex = foundElement->GetRideIndex();
+        const auto trackType = foundElement->GetTrackType();
+        bool isLiftHill = foundElement->HasChain();
+
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr)
+        {
+            LOG_ERROR("Ride not found. ride index = %d.", rideIndex);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_RIDE_NOT_FOUND);
+        }
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        auto sequenceIndex = foundElement->GetSequenceIndex();
+        if (sequenceIndex >= ted.sequenceData.numSequences)
+        {
+            LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
+            return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_BLOCK_NOT_FOUND);
+        }
+
+        auto startLoc = _origin;
+        startLoc.direction = foundElement->getDirection();
+
+        const auto& currentTrackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
+        auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
+                                          currentTrackBlock.z };
+        startLoc.x -= rotatedTrackLoc.x;
+        startLoc.y -= rotatedTrackLoc.y;
+        startLoc.z -= rotatedTrackLoc.z;
+        res.position.x = startLoc.x;
+        res.position.y = startLoc.y;
+        res.position.z = startLoc.z;
+
+        money64 supportCosts = 0;
+
+        for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
+        {
+            const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
+
+            rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(startLoc.direction), trackBlock.z };
+            auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrackLoc;
+
+            MapInvalidateTileFull(mapLoc);
+
+            foundElement = nullptr;
+            for (auto* trackElement : TileElementsView<TrackElement>(mapLoc))
+            {
+                if (trackElement->getBaseZ() != mapLoc.z)
+                    continue;
+
+                if (trackElement->getDirection() != _origin.direction)
+                    continue;
+
+                if (trackElement->GetSequenceIndex() != i)
+                    continue;
+
+                if (trackElement->GetTrackType() != trackType)
+                    continue;
+
+                if (trackElement->isGhost() != isGhost)
+                    continue;
+
+                foundElement = trackElement;
+                break;
+            }
+
+            if (foundElement == nullptr)
+            {
+                LOG_ERROR(
+                    "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
+                    _origin.direction, i);
+                return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
+            }
+
+            if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin) && (foundElement->GetSequenceIndex() == 0))
+            {
+                const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, {});
+                if (!removeElementResult.Successful)
+                {
+                    return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, removeElementResult.Message);
+                }
+            }
+
+            auto* surfaceElement = MapGetSurfaceElementAt(mapLoc);
+            if (surfaceElement == nullptr)
+            {
+                LOG_ERROR("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
+                return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            }
+
+            int16_t _support_height = foundElement->baseHeight - surfaceElement->baseHeight;
+            if (_support_height < 0)
+            {
+                _support_height = 10;
+            }
+
+            supportCosts += (_support_height / 2) * ride->getRideTypeDescriptor().BuildCosts.SupportPrice;
+
+            // If the removed tile is a station modify station properties.
+            // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
+            if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin)
+                && (!GetFlags().has(CommandFlag::ghost) || (GetFlags().has(CommandFlag::trackDesign)))
+                && (foundElement->GetSequenceIndex() == 0))
+            {
+                const auto removeElementResult = TrackRemoveStationElement(
+                    { mapLoc, _origin.direction }, rideIndex, { CommandFlag::apply });
+                if (!removeElementResult.Successful)
+                {
+                    return Result(Status::unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, removeElementResult.Message);
+                }
+            }
+
+            if (ride->getRideTypeDescriptor().flags.has(RtdFlag::trackMustBeOnWater))
+            {
+                surfaceElement->SetHasTrackThatNeedsWater(false);
+            }
+
+            InvalidateTestResults(*ride);
+            FootpathQueueChainReset();
+            if (!gameState.cheats.disableClearanceChecks || !(foundElement->isGhost()))
+            {
+                FootpathRemoveEdgesAt(mapLoc, reinterpret_cast<TileElement*>(foundElement));
+            }
+            TileElementRemove(reinterpret_cast<TileElement*>(foundElement));
+            ride->validateStations();
+            if (!GetFlags().has(CommandFlag::ghost))
+            {
+                ride->updateMaxVehicles();
+            }
+        }
+
+        if (!GetFlags().has(CommandFlag::ghost))
+        {
+            switch (trackType)
+            {
+                case TrackElemType::onRidePhoto:
+                    ride->flags.unset(RideFlag::onRidePhoto);
+                    break;
+                case TrackElemType::cableLiftHill:
+                    ride->flags.unset(RideFlag::cableLiftHillComponentUsed);
+                    break;
+                case TrackElemType::blockBrakes:
+                case TrackElemType::diagBlockBrakes:
+                    ride->numBlockBrakes--;
+                    if (ride->numBlockBrakes == 0 && ride->isBlockSectioned())
+                    {
+                        RideMode newMode = RideMode::continuousCircuit;
+                        if (ride->mode == RideMode::poweredLaunchBlockSectioned)
+                        {
+                            // Depending on the ride, the equivalent will be powered launch with or without passing station.
+                            newMode = ride->getRideTypeDescriptor().DefaultMode;
+                        }
+
+                        if (ride->mode != newMode)
+                        {
+                            bool canSwitch = ride->getRideTypeDescriptor().SupportsRideMode(newMode)
+                                || gameState.cheats.showAllOperatingModes;
+                            if (canSwitch)
+                            {
+                                ride->windowInvalidateFlags.set(RideInvalidateFlag::operatingSettings);
+                                auto rideSetSetting = RideSetSettingAction(
+                                    ride->id, RideSetSetting::mode, static_cast<uint8_t>(newMode));
+                                ExecuteNested(&rideSetSetting, gameState);
+                            }
+                        }
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            switch (trackType)
+            {
+                case TrackElemType::up25ToFlat:
+                case TrackElemType::up60ToFlat:
+                case TrackElemType::diagUp25ToFlat:
+                case TrackElemType::diagUp60ToFlat:
+                    if (!isLiftHill)
+                        break;
+                    [[fallthrough]];
+                case TrackElemType::cableLiftHill:
+                    ride->numBlockBrakes--;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        money64 price = ride->getRideTypeDescriptor().BuildCosts.TrackPrice;
+        price *= ted.priceModifier;
+        price >>= 16;
+        price = supportCosts + price;
+        if (ride->flags.has(RideFlag::everBeenOpened))
+        {
+            // 70% modifier for opened rides
+            price = (price * 45875) / 65536;
+        }
+
+        res.cost = -price;
+        return res;
+    }
+} // namespace OpenRCT2::GameActions

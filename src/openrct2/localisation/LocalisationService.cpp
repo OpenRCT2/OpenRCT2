@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,184 +11,181 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
-#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Fonts.h"
-#include "../object/ObjectManager.h"
 #include "Language.h"
 #include "LanguagePack.h"
-#include "StringIds.h"
 
 #include <stdexcept>
 
-using namespace OpenRCT2;
-using namespace OpenRCT2::Localisation;
-
-static constexpr uint16_t BASE_OBJECT_STRING_ID = 0x2000;
-static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 0x5000 - BASE_OBJECT_STRING_ID;
-
-LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
-    : _env(env)
+namespace OpenRCT2::Localisation
 {
-    for (StringId stringId = BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= BASE_OBJECT_STRING_ID; stringId--)
+    static constexpr uint16_t kBaseObjectStringID = 0x2000;
+    static constexpr uint16_t kMaxObjectCachedStrings = 0x5000 - kBaseObjectStringID;
+
+    LocalisationService::LocalisationService(IPlatformEnvironment& env)
+        : _env(env)
     {
-        _availableObjectStringIds.push(stringId);
+        for (StringId stringId = kBaseObjectStringID + kMaxObjectCachedStrings; stringId >= kBaseObjectStringID; stringId--)
+        {
+            _availableObjectStringIds.push(stringId);
+        }
     }
-}
 
-// Define implementation here to avoid including LanguagePack.h in header
-LocalisationService::~LocalisationService() = default;
+    // Define implementation here to avoid including LanguagePack.h in header
+    LocalisationService::~LocalisationService() = default;
 
-const char* LocalisationService::GetString(StringId id) const
-{
-    if (id == STR_EMPTY)
+    const char* LocalisationService::GetString(StringId id) const
     {
+        if (id == kStringIdEmpty)
+        {
+            return "";
+        }
+        else if (id >= kBaseObjectStringID && id < kBaseObjectStringID + kMaxObjectCachedStrings)
+        {
+            size_t index = id - kBaseObjectStringID;
+            if (index < _objectStrings.size())
+            {
+                return _objectStrings[index].c_str();
+            }
+
+            return "(unallocated string)";
+        }
+        else if (id != kStringIdNone)
+        {
+            for (const auto& language : _loadedLanguages)
+            {
+                const auto result = language->GetString(id);
+                if (result != nullptr)
+                    return result;
+            }
+
+            return "(undefined string)";
+        }
+
         return "";
     }
-    else if (id >= BASE_OBJECT_STRING_ID && id < BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS)
+
+    std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
     {
-        size_t index = id - BASE_OBJECT_STRING_ID;
-        if (index < _objectStrings.size())
+        auto locale = std::string(LanguagesDescriptors[languageId].locale);
+        auto languageDirectory = _env.GetDirectoryPath(DirBase::openrct2, DirId::languages);
+        auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
+        return languagePath;
+    }
+
+    std::string_view LocalisationService::GetCurrentLanguageLocale() const
+    {
+        if (_currentLanguage >= 0 && static_cast<size_t>(_currentLanguage) < std::size(LanguagesDescriptors))
         {
-            return _objectStrings[index].c_str();
+            return LanguagesDescriptors[_currentLanguage].locale;
+        }
+        return {};
+    }
+
+    void LocalisationService::OpenLanguage(int32_t id)
+    {
+        CloseLanguages();
+        if (id == LANGUAGE_UNDEFINED)
+        {
+            throw std::invalid_argument("id was undefined");
         }
 
-        return "(unallocated string)";
-    }
-    else if (id != STR_NONE)
-    {
-        for (const auto& language : _loadedLanguages)
+        auto preferredLanguage = LanguagePackFactory::FromLanguageId(id);
+        if (preferredLanguage != nullptr)
         {
-            const auto result = language->GetString(id);
-            if (result != nullptr)
-                return result;
-        }
-
-        return "(undefined string)";
-    }
-
-    return nullptr;
-}
-
-std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
-{
-    auto locale = std::string(LanguagesDescriptors[languageId].locale);
-    auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
-    auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
-    return languagePath;
-}
-
-std::string_view LocalisationService::GetCurrentLanguageLocale() const
-{
-    if (_currentLanguage >= 0 && static_cast<size_t>(_currentLanguage) < std::size(LanguagesDescriptors))
-    {
-        return LanguagesDescriptors[_currentLanguage].locale;
-    }
-    return {};
-}
-
-void LocalisationService::OpenLanguage(int32_t id)
-{
-    CloseLanguages();
-    if (id == LANGUAGE_UNDEFINED)
-    {
-        throw std::invalid_argument("id was undefined");
-    }
-
-    auto preferredLanguage = LanguagePackFactory::FromLanguageId(id);
-    if (preferredLanguage != nullptr)
-    {
-        _currentLanguage = id;
-        _languageOrder.emplace_back(id);
-        _loadedLanguages.emplace_back(std::move(preferredLanguage));
-        TryLoadFonts(*this);
-    }
-    else
-    {
-        throw std::runtime_error("Unable to open language " + std::to_string(id));
-    }
-
-    auto checkLanguage = LanguagesDescriptors[id].fallback;
-    while (checkLanguage != LANGUAGE_UNDEFINED)
-    {
-        _languageOrder.emplace_back(checkLanguage);
-        auto fallbackLanguagePack = LanguagePackFactory::FromLanguageId(checkLanguage);
-        if (fallbackLanguagePack != nullptr)
-        {
-            _loadedLanguages.emplace_back(std::move(fallbackLanguagePack));
-        }
-
-        checkLanguage = LanguagesDescriptors[checkLanguage].fallback;
-    }
-
-    if (id != LANGUAGE_ENGLISH_UK)
-    {
-        _languageOrder.emplace_back(LANGUAGE_ENGLISH_UK);
-        auto englishLanguagePack = LanguagePackFactory::FromLanguageId(LANGUAGE_ENGLISH_UK);
-        if (englishLanguagePack != nullptr)
-        {
-            _loadedLanguages.emplace_back(std::move(englishLanguagePack));
+            _currentLanguage = id;
+            _languageOrder.emplace_back(id);
+            _loadedLanguages.emplace_back(std::move(preferredLanguage));
+            TryLoadFonts(*this);
         }
         else
         {
-            throw std::runtime_error("Unable to open the English language file!");
+            throw std::runtime_error("Unable to open language " + std::to_string(id));
         }
-    }
-}
 
-void LocalisationService::CloseLanguages()
-{
-    _languageOrder.clear();
-    _loadedLanguages.clear();
-    _currentLanguage = LANGUAGE_UNDEFINED;
-}
-
-StringId LocalisationService::AllocateObjectString(const std::string& target)
-{
-    if (_availableObjectStringIds.empty())
-    {
-        return STR_EMPTY;
-    }
-
-    auto stringId = _availableObjectStringIds.top();
-    _availableObjectStringIds.pop();
-
-    size_t index = stringId - BASE_OBJECT_STRING_ID;
-    if (index >= _objectStrings.size())
-    {
-        _objectStrings.resize(index + 1);
-    }
-    _objectStrings[index] = target;
-
-    return stringId;
-}
-
-void LocalisationService::FreeObjectString(StringId stringId)
-{
-    if (stringId != STR_EMPTY)
-    {
-        size_t index = stringId - BASE_OBJECT_STRING_ID;
-        if (index < _objectStrings.size())
+        auto checkLanguage = LanguagesDescriptors[id].fallback;
+        while (checkLanguage != LANGUAGE_UNDEFINED)
         {
-            _objectStrings[index] = {};
-        }
-        _availableObjectStringIds.push(stringId);
-    }
-}
+            _languageOrder.emplace_back(checkLanguage);
+            auto fallbackLanguagePack = LanguagePackFactory::FromLanguageId(checkLanguage);
+            if (fallbackLanguagePack != nullptr)
+            {
+                _loadedLanguages.emplace_back(std::move(fallbackLanguagePack));
+            }
 
-const std::vector<int32_t>& LocalisationService::GetLanguageOrder() const
-{
-    return _languageOrder;
-}
+            checkLanguage = LanguagesDescriptors[checkLanguage].fallback;
+        }
+
+        if (id != LANGUAGE_ENGLISH_UK)
+        {
+            _languageOrder.emplace_back(LANGUAGE_ENGLISH_UK);
+            auto englishLanguagePack = LanguagePackFactory::FromLanguageId(LANGUAGE_ENGLISH_UK);
+            if (englishLanguagePack != nullptr)
+            {
+                _loadedLanguages.emplace_back(std::move(englishLanguagePack));
+            }
+            else
+            {
+                throw std::runtime_error("Unable to open the English language file!");
+            }
+        }
+    }
+
+    void LocalisationService::CloseLanguages()
+    {
+        _languageOrder.clear();
+        _loadedLanguages.clear();
+        _currentLanguage = LANGUAGE_UNDEFINED;
+    }
+
+    StringId LocalisationService::AllocateObjectString(const std::string& target)
+    {
+        if (_availableObjectStringIds.empty())
+        {
+            return kStringIdEmpty;
+        }
+
+        auto stringId = _availableObjectStringIds.top();
+        _availableObjectStringIds.pop();
+
+        size_t index = stringId - kBaseObjectStringID;
+        if (index >= _objectStrings.size())
+        {
+            _objectStrings.resize(index + 1);
+        }
+        _objectStrings[index] = target;
+
+        return stringId;
+    }
+
+    void LocalisationService::FreeObjectString(StringId stringId)
+    {
+        if (stringId != kStringIdEmpty)
+        {
+            size_t index = stringId - kBaseObjectStringID;
+            if (index < _objectStrings.size())
+            {
+                _objectStrings[index] = {};
+            }
+            _availableObjectStringIds.push(stringId);
+        }
+    }
+
+    const std::vector<int32_t>& LocalisationService::GetLanguageOrder() const
+    {
+        return _languageOrder;
+    }
+} // namespace OpenRCT2::Localisation
 
 int32_t LocalisationService_GetCurrentLanguage()
 {
-    const auto& localisationService = GetContext()->GetLocalisationService();
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetCurrentLanguage();
 }
 
 bool LocalisationService_UseTrueTypeFont()
 {
-    const auto& localisationService = GetContext()->GetLocalisationService();
+    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.UseTrueTypeFont();
 }

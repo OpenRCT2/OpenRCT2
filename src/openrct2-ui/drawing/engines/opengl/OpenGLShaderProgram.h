@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,7 @@ namespace OpenRCT2::Ui
     class OpenGLShader final
     {
     private:
-        static constexpr uint64_t MaxSourceSize = 8 * 1024 * 1024; // 8 MiB
+        static constexpr uint64_t kMaxSourceSize = 8 * 1024 * 1024; // 8 MiB
 
         GLenum _type;
         GLuint _id = 0;
@@ -47,8 +47,8 @@ namespace OpenRCT2::Ui
         explicit OpenGLShaderProgram(OpenGLShaderProgram&&) = default;
         virtual ~OpenGLShaderProgram();
 
-        GLuint GetAttributeLocation(const char* name);
-        GLuint GetUniformLocation(const char* name);
+        GLint GetAttributeLocation(const char* name);
+        GLint GetUniformLocation(const char* name);
         void Use();
 
     private:

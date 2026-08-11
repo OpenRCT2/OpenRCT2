@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,90 +11,89 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
     #include "../../../management/NewsItem.h"
-    #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
     #include <string>
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr const char* ParkMessageTypeStrings[] = {
+    static constexpr const char* kParkMessageTypeStrings[] = {
         "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart", "campaign",
     };
 
     inline News::ItemType GetParkMessageType(const std::string& key)
     {
-        // Get the first ItemType that appears in ParkMessageTypeStrings that isn't Null
-        auto firstType = static_cast<uint8_t>(News::ItemType::Ride);
+        // Get the first ItemType that appears in kParkMessageTypeStrings that isn't Null
+        auto firstType = static_cast<uint8_t>(News::ItemType::ride);
 
-        auto begin = std::begin(ParkMessageTypeStrings);
-        auto end = std::end(ParkMessageTypeStrings);
+        auto begin = std::begin(kParkMessageTypeStrings);
+        auto end = std::end(kParkMessageTypeStrings);
 
         auto it = std::find(begin, end, key);
-        return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::Blank;
+        return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::blank;
     }
 
     inline std::string GetParkMessageType(News::ItemType type)
     {
-        // Decrement 1 as ParkMessageTypeStrings doesn't contain the null type
+        // Decrement 1 as kParkMessageTypeStrings doesn't contain the null type
         auto scriptType = static_cast<size_t>(type) - 1;
 
-        if (scriptType < std::size(ParkMessageTypeStrings))
+        if (scriptType < std::size(kParkMessageTypeStrings))
         {
-            return ParkMessageTypeStrings[scriptType];
+            return kParkMessageTypeStrings[scriptType];
         }
         return {};
     }
 
-    template<>
-    inline News::Item FromDuk(const DukValue& value)
+    inline News::Item NewsItemFromJS(JSContext* ctx, JSValue value)
     {
         News::Item result{};
-        result.Type = GetParkMessageType(value["type"].as_string());
-        result.Assoc = value["subject"].as_uint();
-        result.Ticks = value["tickCount"].as_uint();
-        result.MonthYear = value["month"].as_uint();
-        result.Day = value["day"].as_uint();
-        result.Text = value["text"].as_string();
+        result.type = GetParkMessageType(JSToStdString(ctx, value, "type"));
+        result.assoc = JSToUint(ctx, value, "subject");
+        result.ticks = JSToUint(ctx, value, "tickCount");
+        result.monthYear = JSToUint(ctx, value, "month");
+        result.day = JSToUint(ctx, value, "day");
+        result.text = JSToStdString(ctx, value, "text");
         return result;
     }
 
-    class ScParkMessage
+    class ScParkMessage;
+    extern ScParkMessage gScParkMessage;
+    class ScParkMessage : public ScBase
     {
     private:
-        size_t _index{};
+        static News::Item* GetMessage(JSValue thisVal);
+
+        static JSValue isArchived_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue month_get(JSContext* ctx, JSValue thisVal);
+        static JSValue month_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue day_get(JSContext* ctx, JSValue thisVal);
+        static JSValue day_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue tickCount_get(JSContext* ctx, JSValue thisVal);
+        static JSValue tickCount_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue type_get(JSContext* ctx, JSValue thisVal);
+        static JSValue type_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue subject_get(JSContext* ctx, JSValue thisVal);
+        static JSValue subject_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue text_get(JSContext* ctx, JSValue thisVal);
+        static JSValue text_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
+
+        static JSValue remove(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
     public:
-        ScParkMessage(size_t index);
+        JSValue New(JSContext* ctx, size_t index);
 
-        static void Register(duk_context* ctx);
+        void Register(JSContext* ctx);
 
     private:
-        News::Item* GetMessage() const;
-
-        bool isArchived_get() const;
-
-        uint16_t month_get() const;
-        void month_set(uint16_t value);
-
-        uint8_t day_get() const;
-        void day_set(uint8_t value);
-
-        uint16_t tickCount_get() const;
-        void tickCount_set(uint16_t value);
-
-        std::string type_get() const;
-        void type_set(const std::string& value);
-
-        uint32_t subject_get() const;
-        void subject_set(uint32_t value);
-
-        std::string text_get() const;
-        void text_set(const std::string& value);
-
-        void remove();
+        static void Finalize(JSRuntime* rt, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting

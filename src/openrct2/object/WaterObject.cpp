@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,137 +11,97 @@
 
 #include "WaterObject.h"
 
-#include "../OpenRCT2.h"
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../localisation/Formatter.h"
+#include "../drawing/Drawing.h"
+#include "../drawing/ImageImporter.h"
+#include "../drawing/Text.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 #include "../world/Location.hpp"
 
-#include <array>
-#include <cstring>
-#include <memory>
-
-using namespace OpenRCT2;
-
-void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+namespace OpenRCT2
 {
-    stream->Seek(14, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.flags = stream->ReadValue<uint16_t>();
-
-    GetStringTable().Read(context, stream, ObjectStringID::NAME);
-    GetImageTable().Read(context, stream);
-}
-
-void WaterObject::Load()
-{
-    GetStringTable().Sort();
-    _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-    _legacyType.image_id = LoadImages();
-    _legacyType.palette_index_1 = _legacyType.image_id + 1;
-    _legacyType.palette_index_2 = _legacyType.image_id + 4;
-
-    LoadPalette();
-}
-
-void WaterObject::Unload()
-{
-    UnloadImages();
-    LanguageFreeObjectString(_legacyType.string_idx);
-
-    _legacyType.string_idx = 0;
-    _legacyType.image_id = 0;
-    _legacyType.palette_index_1 = 0;
-    _legacyType.palette_index_2 = 0;
-}
-
-void WaterObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
-{
-    // Write (no image)
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
-}
-
-void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "WaterObject::ReadJson expects parameter root to be object");
-
-    auto properties = root["properties"];
-
-    PopulateTablesFromJson(context, root);
-
-    if (properties.is_object())
+    void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        _legacyType.flags = Json::GetFlags<uint16_t>(
-            properties,
-            {
-                { "allowDucks", WATER_FLAGS_ALLOW_DUCKS },
-            });
+        stream->Seek(14, STREAM_SEEK_CURRENT);
+        _legacyType.flags = stream->ReadValue<uint16_t>();
 
-        auto jPalettes = properties["palettes"];
-        if (jPalettes.is_object())
+        GetStringTable().Read(context, stream, ObjectStringID::name);
+        GetImageTable().Read(context, stream);
+    }
+
+    void WaterObject::Load()
+    {
+        GetStringTable().Sort();
+        _legacyType.stringId = LanguageAllocateObjectString(GetName());
+        _legacyType.mainPalette = LoadImages();
+        _legacyType.waterWavesPalette = _legacyType.mainPalette + 1;
+        _legacyType.waterSparklesPalette = _legacyType.mainPalette + 4;
+
+        LoadPalette();
+    }
+
+    void WaterObject::Unload()
+    {
+        UnloadImages();
+        LanguageFreeObjectString(_legacyType.stringId);
+
+        _legacyType.stringId = 0;
+        _legacyType.mainPalette = 0;
+        _legacyType.waterWavesPalette = 0;
+        _legacyType.waterSparklesPalette = 0;
+    }
+
+    void WaterObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
+    {
+        // Write (no image)
+        auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+        drawText(rt, screenCoords, STR_WINDOW_NO_IMAGE, { TextAlignment::centre });
+    }
+
+    void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, json_t& root)
+    {
+        Guard::Assert(root.is_object(), "WaterObject::ReadJson expects parameter root to be object");
+
+        auto properties = root["properties"];
+
+        PopulateTablesFromJson(context, root);
+
+        if (properties.is_object())
         {
-            // Images which are actually palette data
-            static const char* paletteNames[] = {
-                "general", "waves-0", "waves-1", "waves-2", "sparkles-0", "sparkles-1", "sparkles-2",
-            };
-            for (auto paletteName : paletteNames)
-            {
-                auto jPalette = jPalettes[paletteName];
-                if (jPalette.is_object())
+            _legacyType.flags = Json::GetFlags<uint16_t>(
+                properties,
                 {
-                    ReadJsonPalette(jPalette);
+                    { "allowDucks", WATER_FLAGS_ALLOW_DUCKS },
+                });
+
+            auto jPalettes = properties["palettes"];
+            if (jPalettes.is_object())
+            {
+                // Images which are actually palette data
+                static const char* paletteNames[] = {
+                    "general", "waves-0", "waves-1", "waves-2", "sparkles-0", "sparkles-1", "sparkles-2",
+                };
+                for (auto paletteName : paletteNames)
+                {
+                    auto jPalette = jPalettes[paletteName];
+                    if (jPalette.is_object())
+                    {
+                        ReadJsonPalette(jPalette);
+                    }
                 }
             }
         }
     }
-}
 
-void WaterObject::ReadJsonPalette(json_t& jPalette)
-{
-    Guard::Assert(jPalette.is_object(), "WaterObject::ReadJsonPalette expects parameter jPalette to be object");
-
-    auto jColours = jPalette["colours"];
-    auto numColours = jColours.size();
-
-    // This pointer gets memcopied in ImageTable::AddImage so it's fine for the unique_ptr to go out of scope
-    auto data = std::make_unique<uint8_t[]>(numColours * 3);
-    size_t dataIndex = 0;
-
-    for (auto& jColour : jColours)
+    void WaterObject::ReadJsonPalette(json_t& jPalette)
     {
-        if (jColour.is_string())
-        {
-            auto colour = ParseColour(Json::GetString(jColour));
-            data[dataIndex + 0] = (colour >> 16) & 0xFF;
-            data[dataIndex + 1] = (colour >> 8) & 0xFF;
-            data[dataIndex + 2] = colour & 0xFF;
-        }
-        dataIndex += 3;
+        auto importer = Drawing::ImageImporter();
+        const auto importResult = importer.importJSONPalette(jPalette);
+
+        auto& imageTable = GetImageTable();
+        imageTable.addPalette(importResult.element);
     }
-
-    G1Element g1 = {};
-    g1.offset = data.get();
-    g1.width = static_cast<int16_t>(numColours);
-    g1.x_offset = Json::GetNumber<int16_t>(jPalette["index"]);
-    g1.flags = G1_FLAG_PALETTE;
-
-    auto& imageTable = GetImageTable();
-    imageTable.AddImage(&g1);
-}
-
-uint32_t WaterObject::ParseColour(const std::string& s) const
-{
-    uint8_t r = 0;
-    uint8_t g = 0;
-    uint8_t b = 0;
-    if (s[0] == '#' && s.size() == 7)
-    {
-        // Expect #RRGGBB
-        r = std::stoul(s.substr(1, 2), nullptr, 16) & 0xFF;
-        g = std::stoul(s.substr(3, 2), nullptr, 16) & 0xFF;
-        b = std::stoul(s.substr(5, 2), nullptr, 16) & 0xFF;
-    }
-    return (b << 16) | (g << 8) | r;
-}
+} // namespace OpenRCT2

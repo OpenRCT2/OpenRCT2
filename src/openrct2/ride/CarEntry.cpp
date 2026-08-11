@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,35 +9,36 @@
 
 #include "CarEntry.h"
 
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Sprite.h"
+#include "../drawing/RenderTarget.h"
 #include "../entity/Yaw.hpp"
 
 #include <cstdint>
 
-uint32_t CarEntry::NumRotationSprites(SpriteGroupType spriteGroup) const
+uint32_t CarEntry::numRotationSprites(SpriteGroupType spriteGroup) const
 {
-    return NumSpritesPrecision(SpriteGroups[EnumValue(spriteGroup)].spritePrecision);
+    return NumSpritesPrecision(spriteGroups[EnumValue(spriteGroup)].spritePrecision);
 }
 
-int32_t CarEntry::SpriteByYaw(int32_t yaw, SpriteGroupType spriteGroup) const
+int32_t CarEntry::spriteByYaw(int32_t yaw, SpriteGroupType spriteGroup) const
 {
-    return YawToPrecision(yaw, SpriteGroups[EnumValue(spriteGroup)].spritePrecision);
+    return YawToPrecision(yaw, spriteGroups[EnumValue(spriteGroup)].spritePrecision);
 }
 
-bool CarEntry::GroupEnabled(SpriteGroupType spriteGroup) const
+bool CarEntry::groupEnabled(SpriteGroupType spriteGroup) const
 {
-    return SpriteGroups[EnumValue(spriteGroup)].Enabled();
+    return spriteGroups[EnumValue(spriteGroup)].isEnabled();
 }
 
-uint32_t CarEntry::GroupImageId(SpriteGroupType spriteGroup) const
+uint32_t CarEntry::groupImageId(SpriteGroupType spriteGroup) const
 {
-    return SpriteGroups[EnumValue(spriteGroup)].imageId;
+    return spriteGroups[EnumValue(spriteGroup)].imageId;
 }
 
-uint32_t CarEntry::SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const
+uint32_t CarEntry::getSpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const
 {
-    return ((SpriteByYaw(imageDirection, spriteGroup) + NumRotationSprites(spriteGroup) * rankIndex) * base_num_frames)
-        + GroupImageId(spriteGroup);
+    return ((spriteByYaw(imageDirection, spriteGroup) + numRotationSprites(spriteGroup) * rankIndex) * baseNumFrames)
+        + groupImageId(spriteGroup);
 }
 
 /**
@@ -51,10 +52,10 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     constexpr uint8_t kCentreX = kWidth / 2;
     constexpr uint8_t kCentreY = kHeight / 2;
 
-    uint8_t bitmap[kHeight][kWidth] = { 0 };
+    OpenRCT2::Drawing::PaletteIndex bitmap[kHeight][kWidth]{};
 
-    DrawPixelInfo dpi = {
-        .bits = reinterpret_cast<uint8_t*>(bitmap),
+    OpenRCT2::Drawing::RenderTarget rt = {
+        .bits = reinterpret_cast<OpenRCT2::Drawing::PaletteIndex*>(bitmap),
         .x = -(kWidth / 2),
         .y = -(kHeight / 2),
         .width = kWidth,
@@ -65,7 +66,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     for (int32_t i = 0; i < numImages; ++i)
     {
-        GfxDrawSpriteSoftware(dpi, ImageId(carEntry.base_image_id + i), { 0, 0 });
+        GfxDrawSpriteSoftware(rt, ImageId(carEntry.baseImageId + i), { 0, 0 });
     }
 
     int32_t spriteWidth = -1;
@@ -73,7 +74,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     {
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[j][kCentreX - i] != 0)
+            if (bitmap[j][kCentreX - i] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteWidth = i;
                 break;
@@ -85,7 +86,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[j][kCentreX + i] != 0)
+            if (bitmap[j][kCentreX + i] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteWidth = i;
                 break;
@@ -102,7 +103,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     {
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[kCentreY - i][j] != 0)
+            if (bitmap[kCentreY - i][j] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteHeightNegative = i;
                 break;
@@ -119,7 +120,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     {
         for (int32_t j = 0; j < kWidth; j++)
         {
-            if (bitmap[kCentreY + i][j] != 0)
+            if (bitmap[kCentreY + i][j] != OpenRCT2::Drawing::PaletteIndex::transparent)
             {
                 spriteHeightPositive = i;
                 break;
@@ -133,17 +134,17 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     // Moved from object paint
 
-    if (carEntry.flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
+    if (carEntry.flags.has(CarEntryFlag::spriteBoundsIncludeInvertedSet))
     {
         spriteHeightNegative += 16;
     }
 
-    carEntry.sprite_width = spriteWidth;
-    carEntry.sprite_height_negative = spriteHeightNegative;
-    carEntry.sprite_height_positive = spriteHeightPositive;
+    carEntry.spriteWidth = spriteWidth;
+    carEntry.spriteHeightNegative = spriteHeightNegative;
+    carEntry.spriteHeightPositive = spriteHeightPositive;
 }
 
 bool CarEntry::isVisible() const
 {
-    return TabRotationMask != 0;
+    return tabRotationMask != 0;
 }

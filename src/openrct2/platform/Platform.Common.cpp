@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,8 +25,6 @@
     #define OpenRCT2_CPUID_MSVC_X86
 #endif
 
-#include "../Context.h"
-#include "../Game.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -37,8 +35,8 @@
 #include <array>
 #include <chrono>
 #include <cstring>
+#include <ctime>
 #include <thread>
-#include <time.h>
 
 #ifdef _WIN32
 static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
@@ -52,10 +50,10 @@ namespace OpenRCT2::Platform
     {
         if (currCode == nullptr || strlen(currCode) < 3)
         {
-            return CurrencyType::Pounds;
+            return CurrencyType::pounds;
         }
 
-        for (int32_t currency = 0; currency < EnumValue(CurrencyType::Count); ++currency)
+        for (int32_t currency = 0; currency < EnumValue(CurrencyType::count); ++currency)
         {
             if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
             {
@@ -63,7 +61,7 @@ namespace OpenRCT2::Platform
             }
         }
 
-        return CurrencyType::Pounds;
+        return CurrencyType::pounds;
     }
 
     RealWorldDate GetDateLocal()
@@ -91,21 +89,75 @@ namespace OpenRCT2::Platform
         return outTime;
     }
 
-    bool IsRCT2Path(std::string_view path)
+#ifndef __ANDROID__
+    AssetCheckResult CheckAssetDirectoryExists([[maybe_unused]] u8string_view path)
     {
-        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        return File::Exists(combinedPath);
+        return AssetCheckResult::notApplicable;
     }
 
-    bool IsRCTClassicPath(std::string_view path)
+    AssetCheckResult CheckAssetExists([[maybe_unused]] u8string_view path)
     {
-        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
-        return File::Exists(combinedPath);
+        return AssetCheckResult::notApplicable;
+    }
+
+    AssetFileOpenResult OpenAssetFile([[maybe_unused]] u8string_view path)
+    {
+        return AssetFileOpenResult{ AssetCheckResult::notApplicable, nullptr, 0 };
+    }
+
+    void CloseAssetFile([[maybe_unused]] void* handle)
+    {
+    }
+
+    uint64_t GetAssetPosition([[maybe_unused]] void* handle)
+    {
+        return 0;
+    }
+
+    void SeekAsset([[maybe_unused]] void* handle, [[maybe_unused]] int64_t offset, [[maybe_unused]] int32_t origin)
+    {
+    }
+
+    uint64_t ReadAsset([[maybe_unused]] void* handle, [[maybe_unused]] void* buffer, [[maybe_unused]] uint64_t length)
+    {
+        return 0;
+    }
+
+    uint64_t TryReadAsset([[maybe_unused]] void* handle, [[maybe_unused]] void* buffer, [[maybe_unused]] uint64_t length)
+    {
+        return 0;
+    }
+
+    u8string GetAssetPath()
+    {
+        return {};
+    }
+#endif
+
+    std::optional<RCT2Variant> classifyGamePath(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rct2Original);
+
+        combinedPath = Path::ResolveCasing(Path::Combine(path, kRCTClassicWindowsDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicWindows);
+
+        combinedPath = Path::ResolveCasing(Path::Combine(path, kRCTClassicMacOSDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicMac);
+
+        combinedPath = Path::ResolveCasing(Path::Combine(path, kRCTClassicPlusMacOSDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicPlusMac);
+
+        return std::nullopt;
     }
 
     bool OriginalGameDataExists(std::string_view path)
     {
-        return IsRCT2Path(path) || IsRCTClassicPath(path);
+        return classifyGamePath(path) != std::nullopt;
     }
 
     std::string SanitiseFilename(std::string_view originalName)
@@ -201,6 +253,45 @@ namespace OpenRCT2::Platform
     #endif
 #endif
         return false;
+    }
+
+    bool SteamPaths::isSteamPresent() const
+    {
+        return !roots.empty();
+    }
+
+    u8string SteamPaths::getDownloadDepotFolder(u8string_view steamroot, const SteamGameData& data) const
+    {
+        return Path::Combine(
+            steamroot, downloadDepotFolder, "app_" + std::to_string(data.appId), "depot_" + std::to_string(data.depotId));
+    }
+
+    bool triggerSteamDownload()
+    {
+        const auto steamPaths = GetSteamPaths();
+        if (!steamPaths.isSteamPresent() || steamPaths.manifests.empty())
+            return false;
+
+        const auto manifestsDir = Path::Combine(steamPaths.roots[0], steamPaths.manifests);
+        const std::array<SteamGameData, 3> gamesToTrigger = { kSteamRCT2Data, kSteamRCTCData, kSteamRCT1Data };
+        for (const auto& game : gamesToTrigger)
+        {
+            auto fullFilename = Path::Combine(manifestsDir, "appmanifest_" + std::to_string(game.appId) + ".acf");
+            // If the file exists, we assume a download has been triggered already.
+            if (File::Exists(fullFilename))
+                continue;
+
+            // clang-format off
+            auto buffer = u8string("\"AppState\"\r\n") + u8string("{\r\n")
+                + u8string("	\"AppID\"	\"" + std::to_string(game.appId) + "\"\r\n")
+                + u8string("	\"Universe\"	\"1\"\r\n")
+                + u8string("	\"installdir\"	\"" + game.nativeFolder + "\"\r\n")
+                + u8string("	\"StateFlags\"	\"1026\"\r\n") + u8string("}\r\n");
+            // clang-format on
+            File::WriteAllBytes(fullFilename, buffer.data(), buffer.size());
+        }
+
+        return true;
     }
 
 } // namespace OpenRCT2::Platform

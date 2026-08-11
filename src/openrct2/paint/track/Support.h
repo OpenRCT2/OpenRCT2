@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,6 +47,6 @@ struct SupportType
 
 namespace OpenRCT2::SupportedSequences
 {
-    constexpr MetalSupportPlace kDiagStraightFlat[] = { MetalSupportPlace::None, MetalSupportPlace::None,
-                                                        MetalSupportPlace::None, MetalSupportPlace::LeftCorner };
+    constexpr MetalSupportPlace kDiagStraightFlat[] = { MetalSupportPlace::none, MetalSupportPlace::none,
+                                                        MetalSupportPlace::none, MetalSupportPlace::leftCorner };
 }

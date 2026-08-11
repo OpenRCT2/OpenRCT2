@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,44 +14,51 @@
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Peep.h"
 
+#include <string>
+#include <vector>
+
+enum class RCT12PeepAnimationGroup : uint8_t;
+
 namespace OpenRCT2
 {
+    class PeepAnimationsObject;
+
+    enum class StaffType : uint8_t;
+
     enum class AnimationPeepType : uint8_t
     {
-        Guest,
-        Handyman,
-        Mechanic,
-        Security,
-        Entertainer,
+        guest,
+        handyman,
+        mechanic,
+        security,
+        entertainer,
     };
 
     const EnumMap<PeepAnimationType>& getAnimationsByPeepType(AnimationPeepType peepType);
+    AnimationPeepType getAnimationPeepType(StaffType staffType);
 
     struct SpriteBounds
     {
-        uint8_t sprite_width;           // 0x00
-        uint8_t sprite_height_negative; // 0x01
-        uint8_t sprite_height_positive; // 0x02
+        uint8_t spriteWidth;          // 0x00
+        uint8_t spriteHeightNegative; // 0x01
+        uint8_t spriteHeightPositive; // 0x02
     };
 
     struct PeepAnimation
     {
-        uint32_t base_image;
-        std::span<const uint8_t> frame_offsets;
+        ImageIndex imageTableOffset;
+        std::vector<uint8_t> frameOffsets;
+        uint32_t baseImage{};
         SpriteBounds bounds{};
-
-        constexpr PeepAnimation() = default;
-
-        PeepAnimation(uint32_t baseImage, std::span<const uint8_t> frameOffsets)
-            : base_image(baseImage)
-            , frame_offsets(frameOffsets)
-        {
-        }
     };
 
     struct PeepAnimations
     {
     public:
+        bool isSlowWalking = false;
+        RCT12PeepAnimationGroup legacyPosition;
+        std::string scriptName{};
+
         constexpr PeepAnimation& operator[](PeepAnimationType n)
         {
             return animations[EnumValue(n)];
@@ -64,6 +71,35 @@ namespace OpenRCT2
     private:
         PeepAnimation animations[37]{};
     };
+
+    ObjectEntryIndex findPeepAnimationsIndexForType(AnimationPeepType type);
+    PeepAnimationsObject* findPeepAnimationsObjectForType(AnimationPeepType type);
+
+    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(AnimationPeepType type, bool randomOnly = false);
+    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(AnimationPeepType type, bool randomOnly = false);
+
+    ObjectEntryIndex findRandomPeepAnimationsIndexForType(AnimationPeepType type);
+
+    struct AnimationGroupResult
+    {
+        ObjectEntryIndex objectId;
+        PeepAnimationGroup group;
+        RCT12PeepAnimationGroup legacyPosition;
+        std::string rawName;
+        std::string_view scriptName;
+    };
+
+    std::vector<AnimationGroupResult> getAnimationGroupsByPeepType(AnimationPeepType type);
+
+    struct AvailableCostume
+    {
+        ObjectEntryIndex index;
+        PeepAnimationsObject* object;
+        std::string rawName;
+        std::string friendlyName;
+    };
+
+    std::vector<AvailableCostume> getAvailableCostumeStrings(AnimationPeepType type);
 
     SpriteBounds inferMaxAnimationDimensions(const PeepAnimation& anim);
 } // namespace OpenRCT2

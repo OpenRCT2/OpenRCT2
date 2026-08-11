@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,70 +10,70 @@
 #include "FootpathSurfaceObject.h"
 
 #include "../core/Guard.hpp"
-#include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Image.h"
+#include "../drawing/Drawing.h"
 #include "FootpathEntry.h"
 #include "ObjectRepository.h"
 
-using namespace OpenRCT2;
-
-void FootpathSurfaceObject::Load()
+namespace OpenRCT2
 {
-    GetStringTable().Sort();
-    NameStringId = LanguageAllocateObjectString(GetName());
-
-    auto numImages = GetImageTable().GetCount();
-    if (numImages != 0)
+    void FootpathSurfaceObject::Load()
     {
-        PreviewImageId = LoadImages();
-        BaseImageId = PreviewImageId + 1;
+        GetStringTable().Sort();
+        NameStringId = LanguageAllocateObjectString(GetName());
+
+        auto numImages = GetImageTable().GetCount();
+        if (numImages != 0)
+        {
+            PreviewImageId = LoadImages();
+            BaseImageId = PreviewImageId + 1;
+        }
+
+        _descriptor.name = NameStringId;
+        _descriptor.image = BaseImageId;
+        _descriptor.previewImage = PreviewImageId;
+        _descriptor.flags = Flags;
     }
 
-    _descriptor.Name = NameStringId;
-    _descriptor.Image = BaseImageId;
-    _descriptor.PreviewImage = PreviewImageId;
-    _descriptor.Flags = Flags;
-}
-
-void FootpathSurfaceObject::Unload()
-{
-    LanguageFreeObjectString(NameStringId);
-    UnloadImages();
-
-    NameStringId = 0;
-    PreviewImageId = 0;
-    BaseImageId = 0;
-}
-
-void FootpathSurfaceObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
-{
-    auto screenCoords = ScreenCoordsXY{ width / 2 - 16, height / 2 };
-    GfxDrawSprite(dpi, ImageId(BaseImageId + 3), screenCoords);
-    GfxDrawSprite(dpi, ImageId(BaseImageId + 16), { screenCoords.x + 32, screenCoords.y - 16 });
-    GfxDrawSprite(dpi, ImageId(BaseImageId + 8), { screenCoords.x + 32, screenCoords.y + 16 });
-}
-
-void FootpathSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "FootpathSurfaceObject::ReadJson expects parameter root to be object");
-
-    auto properties = root["properties"];
-    if (properties.is_object())
+    void FootpathSurfaceObject::Unload()
     {
-        Flags = Json::GetFlags<uint8_t>(
-            properties,
-            {
-                { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
-                { "isQueue", FOOTPATH_ENTRY_FLAG_IS_QUEUE },
-                { "noSlopeRailings", FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS },
-            });
+        LanguageFreeObjectString(NameStringId);
+        UnloadImages();
+
+        NameStringId = 0;
+        PreviewImageId = 0;
+        BaseImageId = 0;
     }
 
-    PopulateTablesFromJson(context, root);
-}
+    void FootpathSurfaceObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
+    {
+        auto screenCoords = ScreenCoordsXY{ width / 2 - 16, height / 2 };
+        GfxDrawSprite(rt, ImageId(BaseImageId + 3), screenCoords);
+        GfxDrawSprite(rt, ImageId(BaseImageId + 16), { screenCoords.x + 32, screenCoords.y - 16 });
+        GfxDrawSprite(rt, ImageId(BaseImageId + 8), { screenCoords.x + 32, screenCoords.y + 16 });
+    }
 
-void FootpathSurfaceObject::SetRepositoryItem(ObjectRepositoryItem* item) const
-{
-    item->FootpathSurfaceInfo.Flags = Flags;
-}
+    void FootpathSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
+    {
+        Guard::Assert(root.is_object(), "FootpathSurfaceObject::ReadJson expects parameter root to be object");
+
+        auto properties = root["properties"];
+        if (properties.is_object())
+        {
+            Flags = Json::GetFlags<uint8_t>(
+                properties,
+                {
+                    { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
+                    { "isQueue", FOOTPATH_ENTRY_FLAG_IS_QUEUE },
+                    { "noSlopeRailings", FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS },
+                });
+        }
+
+        PopulateTablesFromJson(context, root);
+    }
+
+    void FootpathSurfaceObject::SetRepositoryItem(ObjectRepositoryItem* item) const
+    {
+        item->FootpathSurfaceInfo.Flags = Flags;
+    }
+} // namespace OpenRCT2

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,17 +9,18 @@
 
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
-#include <openrct2/audio/audio.h>
-#include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
+#include <openrct2/localisation/Formatting.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowViewportWidgetIdx
+    enum WindowViewportWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -34,36 +35,35 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region MEASUREMENTS
 
-    static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
-    static constexpr int32_t WW = 200;
-    static constexpr int32_t WH = 200;
+    static constexpr StringId kWindowTitle = kStringIdNone;
+    static constexpr ScreenSize kWindowSize = { 200, 200 };
 
-    static constexpr ScreenSize VIEWPORT_BUTTON = { 24, 24 };
+    static constexpr ScreenSize kButtonSize = { 24, 24 };
 
 #pragma endregion
 
     // clang-format off
-    static Widget _viewportWidgets[] =
-    {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
-        MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
-        MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
-        MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
-        MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
-        MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
-        kWidgetsEnd,
-    };
+    static constexpr auto _viewportWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({      0, 14}, kWindowSize - ScreenSize( 1, 1),  WidgetType::resize,   WindowColour::secondary                                         ), // resize
+        makeWidget({      3, 17}, kWindowSize - ScreenSize(26, 3),  WidgetType::viewport, WindowColour::primary                                           ), // viewport
+        makeWidget({kWindowSize.width - 25, 17}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
+        makeWidget({kWindowSize.width - 25, 41}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
+        makeWidget({kWindowSize.width - 25, 65}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
+        makeWidget({kWindowSize.width - 25, 89}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP)  // rotate
+    );
     // clang-format on
 
     class ViewportWindow final : public Window
     {
     private:
+        u8string _windowTitle{};
+
         void GetFreeViewportNumber()
         {
             number = 1;
             WindowVisitEach([&](WindowBase* w) {
-                if (w != nullptr && w != this && w->classification == WindowClass::Viewport)
+                if (w != nullptr && w != this && w->classification == WindowClass::viewport)
                 {
                     if (w->number >= number)
                         number = w->number + 1;
@@ -72,17 +72,17 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
             GetFreeViewportNumber();
 
-            widgets = _viewportWidgets;
+            setWidgets(_viewportWidgets);
 
             // Create viewport
-            ViewportCreate(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
+            ViewportCreate(*this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
             if (viewport == nullptr)
             {
-                Close();
+                close();
                 ErrorOpen("Unexpected Error", "Failed to create viewport window.");
                 return;
             }
@@ -96,53 +96,39 @@ namespace OpenRCT2::Ui::Windows
                 savedViewPos = { x - (viewport->ViewWidth() / 2), y - (viewport->ViewHeight() / 2) };
             }
 
-            viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
+            viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW;
-            max_height = WH;
+            WindowSetResize(*this, kWindowSize, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             auto* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
                 return;
 
-            if (viewport != nullptr && viewport->flags != mainWindow->viewport->flags)
+            if (viewport != nullptr && viewport->flags != (mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION))
             {
-                viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
-                Invalidate();
+                viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
+                invalidateWidget(WIDX_VIEWPORT);
             }
-
-            // Not sure how to invalidate part of the viewport that has changed, this will have to do for now
-            // widget_invalidate(*this, WIDX_VIEWPORT);
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_ZOOM_IN:
                 {
-                    if (viewport != nullptr && viewport->zoom > ZoomLevel::min())
-                    {
-                        viewport->zoom--;
-                        Invalidate();
-                    }
+                    WindowZoomIn(*this, false);
                     break;
                 }
                 case WIDX_ZOOM_OUT:
                 {
-                    if (viewport != nullptr && viewport->zoom < ZoomLevel::max())
-                    {
-                        viewport->zoom++;
-                        Invalidate();
-                    }
+                    WindowZoomOut(*this, false);
                     break;
                 }
                 case WIDX_LOCATE:
@@ -151,7 +137,7 @@ namespace OpenRCT2::Ui::Windows
                     if (mainWindow != nullptr)
                     {
                         auto info = GetMapCoordinatesFromPos(
-                            { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
+                            { windowPos.x + (width / 2), windowPos.y + (height / 2) }, kViewportInteractionItemAll);
                         WindowScrollToLocation(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                     }
                     break;
@@ -159,40 +145,37 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ROTATE:
                 {
                     ViewportRotateSingle(this, 1);
-                    Invalidate();
+                    invalidate();
                     break;
                 }
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            drawWidgets(rt);
 
             // Draw viewport
             if (viewport != nullptr)
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
         }
 
-        void OnResize() override
+        void onResize() override
         {
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
 
-            max_width = (screenWidth * 4) / 5;
-            max_height = (screenHeight * 4) / 5;
+            maxWidth = (screenWidth * 4) / 5;
+            maxHeight = (screenHeight * 4) / 5;
 
-            min_width = WW;
-            min_height = WH;
+            minWidth = kWindowSize.width;
+            minHeight = kWindowSize.height;
 
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, { minWidth, minHeight }, { maxWidth, maxHeight });
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
-
-            ResizeFrameWithPage();
             widgets[WIDX_ZOOM_IN].left = width - 27;
             widgets[WIDX_ZOOM_IN].right = width - 2;
             widgets[WIDX_ZOOM_OUT].left = width - 27;
@@ -205,35 +188,25 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_VIEWPORT].bottom = widgets[WIDX_BACKGROUND].bottom - 3;
 
             // Set title
-            Formatter::Common().Add<uint32_t>(number);
+            _windowTitle = FormatStringID(STR_VIEWPORT_NO, static_cast<uint32_t>(number));
+            widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
             // Set disabled widgets
-            disabled_widgets = 0;
-            if (viewport != nullptr && viewport->zoom == ZoomLevel::min())
-                disabled_widgets |= 1uLL << WIDX_ZOOM_IN;
-            if (viewport != nullptr && viewport->zoom >= ZoomLevel::max())
-                disabled_widgets |= 1uLL << WIDX_ZOOM_OUT;
+            setWidgetDisabled(WIDX_ZOOM_IN, viewport != nullptr && viewport->zoom == ZoomLevel::min());
+            setWidgetDisabled(WIDX_ZOOM_OUT, viewport != nullptr && viewport->zoom >= ZoomLevel::max());
 
             if (viewport != nullptr)
             {
+                Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
-                viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
-                viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
+                viewport->width = widgets[WIDX_VIEWPORT].width() - 2;
+                viewport->height = widgets[WIDX_VIEWPORT].height() - 2;
             }
         }
     };
 
     WindowBase* ViewportOpen()
     {
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
-        int32_t width = (screenWidth / 2);
-        int32_t height = (screenHeight / 2);
-
-        auto* w = WindowCreate<ViewportWindow>(WindowClass::Viewport, std::max(WW, width), std::max(WH, height), WF_RESIZABLE);
-
-        if (w != nullptr)
-            return w;
-        return nullptr;
+        return GetWindowManager()->Create<ViewportWindow>(WindowClass::viewport, kWindowSize, WindowFlag::resizable);
     }
 } // namespace OpenRCT2::Ui::Windows

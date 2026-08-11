@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,22 +10,39 @@
 #pragma once
 
 #include "../Limits.h"
+#include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
-#include "../core/EnumUtils.hpp"
+#include "../drawing/Colour.h"
 #include "../object/Object.h"
+#include "../rct12/TD46.h"
 #include "../ride/RideColour.h"
-#include "../ride/Track.h"
-#include "../world/Map.h"
+#include "../ride/ted/TrackElemType.h"
 #include "RideRatings.h"
 #include "VehicleColour.h"
 
 #include <memory>
 
-struct Ride;
+namespace OpenRCT2::RCT12
+{
+    enum class TD46Version : uint8_t;
+}
+
+namespace OpenRCT2
+{
+    struct Ride;
+
+    enum class RideMode : uint8_t;
+} // namespace OpenRCT2
+
 struct ResultWithMessage;
 enum class ViewportInteractionItem : uint8_t;
 
 constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
+
+namespace OpenRCT2::Drawing
+{
+    enum class PaletteIndex : uint8_t;
+}
 
 enum class TrackPlaceOperation : uint8_t
 {
@@ -61,12 +78,12 @@ struct TrackDesignEntranceElement
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor sceneryObject{};
+    OpenRCT2::ObjectEntryDescriptor sceneryObject{};
     CoordsXYZ loc{};
     uint8_t flags{};
-    colour_t primaryColour{};
-    colour_t secondaryColour{};
-    colour_t tertiaryColour = COLOUR_DARK_BROWN;
+    OpenRCT2::Drawing::Colour primaryColour{};
+    OpenRCT2::Drawing::Colour secondaryColour{};
+    OpenRCT2::Drawing::Colour tertiaryColour = OpenRCT2::Drawing::Colour::darkBrown;
 
     Direction getRotation() const;
     void setRotation(Direction rotation);
@@ -94,34 +111,20 @@ struct TrackDesignSceneryElement
 
 enum class TrackDesignTrackElementFlag : uint8_t
 {
-    hasChain = (1 << 0),
-    isInverted = (1 << 1),
-    isCovered = (1 << 2), // Reserved
+    hasChain,
+    isInverted,
+    isCovered, // Reserved
 };
+using TrackDesignTrackElementFlags = FlagHolder<uint8_t, TrackDesignTrackElementFlag>;
 
 struct TrackDesignTrackElement
 {
-    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::Flat;
-    uint8_t flags = 0;
+    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::flat;
+    TrackDesignTrackElementFlags flags = {};
     uint8_t colourScheme = 0;
     ::StationIndex stationIndex = StationIndex::FromUnderlying(0);
     uint8_t brakeBoosterSpeed = 0;
     uint8_t seatRotation = 4;
-
-    constexpr bool HasFlag(const TrackDesignTrackElementFlag flag) const
-    {
-        return flags & EnumValue(flag);
-    }
-
-    constexpr void SetFlag(const TrackDesignTrackElementFlag flag)
-    {
-        flags |= EnumValue(flag);
-    }
-
-    constexpr void ClearFlag(const TrackDesignTrackElementFlag flag)
-    {
-        flags &= ~EnumValue(flag);
-    }
 };
 
 struct TrackDesignMazeElement
@@ -130,27 +133,24 @@ struct TrackDesignMazeElement
     uint16_t mazeEntry{};
 };
 
-class DataSerialiser;
-enum class RideMode : uint8_t;
-
 enum class TrackDesignGameStateFlag
 {
-    SceneryUnavailable,
-    HasScenery,
-    VehicleUnavailable,
+    sceneryUnavailable,
+    hasScenery,
+    vehicleUnavailable,
 };
 
 struct TrackDesignTrackAndVehicleSettings
 {
     ride_type_t rtdIndex{};
-    ObjectEntryDescriptor vehicleObject{};
+    OpenRCT2::ObjectEntryDescriptor vehicleObject{};
     uint8_t numberOfTrains{};
     uint8_t numberOfCarsPerTrain{};
 };
 
 struct TrackDesignOperatingSettings
 {
-    RideMode rideMode{};
+    OpenRCT2::RideMode rideMode{};
     uint8_t liftHillSpeed{};
     uint8_t numCircuits{};
     uint8_t operationSetting{};
@@ -169,7 +169,7 @@ struct TrackDesignAppearanceSettings
 
 struct TrackDesignStatistics
 {
-    RatingTuple ratings{};
+    OpenRCT2::RideRating::Tuple ratings{};
     int8_t maxSpeed{};
     int8_t averageSpeed{};
 
@@ -200,6 +200,11 @@ struct TrackDesignGameStateData
     void setFlag(TrackDesignGameStateFlag flag, bool on);
 };
 
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
+
 struct TrackDesign
 {
     TrackDesignTrackAndVehicleSettings trackAndVehicle{};
@@ -213,17 +218,18 @@ struct TrackDesign
     std::vector<TrackDesignSceneryElement> sceneryElements;
 
     TrackDesignGameStateData gameStateData{};
+    OpenRCT2::RCT12::TD46Version version = OpenRCT2::RCT12::TD46Version::td6;
 
 public:
-    ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
+    ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const OpenRCT2::Ride& ride);
     ResultWithMessage CreateTrackDesignScenery(TrackDesignState& tds);
-    void Serialise(DataSerialiser& stream);
+    void Serialise(OpenRCT2::DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
-    ResultWithMessage CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
-    ResultWithMessage CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
-    CoordsXYE MazeGetFirstElement(const Ride& ride);
+    ResultWithMessage CreateTrackDesignTrack(TrackDesignState& tds, const OpenRCT2::Ride& ride);
+    ResultWithMessage CreateTrackDesignMaze(TrackDesignState& tds, const OpenRCT2::Ride& ride);
+    CoordsXYE MazeGetFirstElement(const OpenRCT2::Ride& ride);
 };
 
 extern bool gTrackDesignSceneryToggle;
@@ -239,27 +245,31 @@ extern RideId gTrackDesignSaveRideIndex;
 void TrackDesignMirror(TrackDesign& td);
 
 OpenRCT2::GameActions::Result TrackDesignPlace(
-    const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
-void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
-int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
+    const TrackDesign& td, OpenRCT2::GameActions::CommandFlags flags, bool placeScenery, OpenRCT2::Ride& ride,
+    const CoordsXYZD& coords);
+void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, OpenRCT2::Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewDrawOutlines(
+    TrackDesignState& tds, const TrackDesign& td, OpenRCT2::Ride& ride, const CoordsXYZD& coords, bool placeScenery);
+int32_t TrackDesignGetZPlacement(const TrackDesign& td, OpenRCT2::Ride& ride, const CoordsXYZD& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels);
+using TrackDesignPreviewBuffer = std::array<OpenRCT2::Drawing::PaletteIndex, kTrackPreviewImageSize * kNumOrthogonalDirections>;
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving
 ///////////////////////////////////////////////////////////////////////////////
 void TrackDesignSaveInit();
 void TrackDesignSaveResetScenery();
-bool TrackDesignSaveContainsTileElement(const TileElement* tileElement);
+bool TrackDesignSaveContainsTileElement(const OpenRCT2::TileElement* tileElement);
 void TrackDesignSaveSelectNearbyScenery(RideId rideIndex);
 void TrackDesignSaveSelectTileElement(
-    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect);
+    ViewportInteractionItem interactionType, const CoordsXY& loc, OpenRCT2::TileElement* tileElement, bool collect);
 
 bool TrackDesignAreEntranceAndExitPlaced();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
-extern std::vector<const TileElement*> _trackSavedTileElements;
+
+u8string trackDesignGetExtension(OpenRCT2::RCT12::TD46Version version);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,11 +13,12 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/localisation/CurrencyTypes.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideStringIds.h>
-#include <sstream>
 #include <string>
 
 using namespace OpenRCT2;
@@ -138,7 +139,7 @@ TEST_F(FormattingTests, comma_large)
 
 TEST_F(FormattingTests, currency)
 {
-    Config::Get().general.CurrencyFormat = CurrencyType::Pounds;
+    Config::Get().general.currencyFormat = CurrencyType::pounds;
     ASSERT_EQ(u8"-£251", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 4));
     ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 5));
@@ -149,7 +150,7 @@ TEST_F(FormattingTests, currency)
 
 TEST_F(FormattingTests, currency2dp)
 {
-    Config::Get().general.CurrencyFormat = CurrencyType::Pounds;
+    Config::Get().general.currencyFormat = CurrencyType::pounds;
     ASSERT_EQ(u8"-£251.00", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ(u8"£0.40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"£0.50", FormatString("{CURRENCY2DP}", 5));
@@ -160,7 +161,7 @@ TEST_F(FormattingTests, currency2dp)
 
 TEST_F(FormattingTests, currency_yen)
 {
-    Config::Get().general.CurrencyFormat = CurrencyType::Yen;
+    Config::Get().general.currencyFormat = CurrencyType::yen;
     ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
@@ -171,7 +172,7 @@ TEST_F(FormattingTests, currency_yen)
 
 TEST_F(FormattingTests, currency2dp_yen)
 {
-    Config::Get().general.CurrencyFormat = CurrencyType::Yen;
+    Config::Get().general.currencyFormat = CurrencyType::yen;
     ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
@@ -182,14 +183,14 @@ TEST_F(FormattingTests, currency2dp_yen)
 
 TEST_F(FormattingTests, currency_pts)
 {
-    Config::Get().general.CurrencyFormat = CurrencyType::Peseta;
+    Config::Get().general.currencyFormat = CurrencyType::peseta;
     ASSERT_EQ("-251Pts", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ("112Pts", FormatString("{CURRENCY}", 1111));
 }
 
 TEST_F(FormattingTests, currency2dp_pts)
 {
-    Config::Get().general.CurrencyFormat = CurrencyType::Peseta;
+    Config::Get().general.currencyFormat = CurrencyType::peseta;
     ASSERT_EQ("-251.00Pts", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ("0.40Pts", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ("111.10Pts", FormatString("{CURRENCY2DP}", 1111));
@@ -209,42 +210,42 @@ TEST_F(FormattingTests, escaped_braces)
 
 TEST_F(FormattingTests, velocity_mph)
 {
-    Config::Get().general.MeasurementFormat = MeasurementFormat::Imperial;
+    Config::Get().general.measurementFormat = MeasurementFormat::imperial;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 1,024 mph.", actual);
 }
 
 TEST_F(FormattingTests, velocity_kph)
 {
-    Config::Get().general.MeasurementFormat = MeasurementFormat::Metric;
+    Config::Get().general.measurementFormat = MeasurementFormat::metric;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 1,648 km/h.", actual);
 }
 
 TEST_F(FormattingTests, velocity_mps)
 {
-    Config::Get().general.MeasurementFormat = MeasurementFormat::SI;
+    Config::Get().general.measurementFormat = MeasurementFormat::SI;
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 457.7 m/s.", actual);
 }
 
 TEST_F(FormattingTests, length_imperial)
 {
-    Config::Get().general.MeasurementFormat = MeasurementFormat::Imperial;
+    Config::Get().general.measurementFormat = MeasurementFormat::imperial;
     auto actual = FormatString("Height: {LENGTH}", 1024);
     ASSERT_EQ("Height: 3,360 ft", actual);
 }
 
 TEST_F(FormattingTests, length_metric)
 {
-    Config::Get().general.MeasurementFormat = MeasurementFormat::Metric;
+    Config::Get().general.measurementFormat = MeasurementFormat::metric;
     auto actual = FormatString("Height: {LENGTH}", 1024);
     ASSERT_EQ("Height: 1,024 m", actual);
 }
 
 TEST_F(FormattingTests, length_si)
 {
-    Config::Get().general.MeasurementFormat = MeasurementFormat::SI;
+    Config::Get().general.measurementFormat = MeasurementFormat::SI;
     auto actual = FormatString("Height: {LENGTH}", 2048);
     ASSERT_EQ("Height: 2,048 m", actual);
 }
@@ -344,7 +345,7 @@ TEST_F(FormattingTests, format_number_basic)
 {
     FormatBuffer ss;
     // test basic integral conversion
-    FormatArgument<int32_t>(ss, FormatToken::UInt16, 123);
+    FormatArgument<int32_t>(ss, FormatToken::uint16, 123);
     ASSERT_STREQ("123", ss.data());
 }
 
@@ -352,7 +353,7 @@ TEST_F(FormattingTests, format_number_basic_int32)
 {
     FormatBuffer ss;
     // test that case fallthrough works
-    FormatArgument<int32_t>(ss, FormatToken::Int32, 123);
+    FormatArgument<int32_t>(ss, FormatToken::int32, 123);
     ASSERT_STREQ("123", ss.data());
 }
 
@@ -360,7 +361,7 @@ TEST_F(FormattingTests, format_number_negative)
 {
     FormatBuffer ss;
     // test negative conversion
-    FormatArgument<int32_t>(ss, FormatToken::Int32, -123);
+    FormatArgument<int32_t>(ss, FormatToken::int32, -123);
     ASSERT_STREQ("-123", ss.data());
 }
 
@@ -369,7 +370,7 @@ TEST_F(FormattingTests, format_number_comma16_basic)
     FormatBuffer ss;
     // test separator formatter
     // test base case separator formatter
-    FormatArgument<int32_t>(ss, FormatToken::Comma16, 123);
+    FormatArgument<int32_t>(ss, FormatToken::comma16, 123);
     ASSERT_STREQ("123", ss.data());
 }
 
@@ -378,7 +379,7 @@ TEST_F(FormattingTests, format_number_comma16_negative)
     FormatBuffer ss;
     // test separator formatter
     // test base case separator formatter
-    FormatArgument<int32_t>(ss, FormatToken::Comma16, -123);
+    FormatArgument<int32_t>(ss, FormatToken::comma16, -123);
     ASSERT_STREQ("-123", ss.data());
 }
 
@@ -386,7 +387,7 @@ TEST_F(FormattingTests, format_number_comma16_large)
 {
     FormatBuffer ss;
     // test larger value for separator formatter
-    FormatArgument<int32_t>(ss, FormatToken::Comma16, 123456789);
+    FormatArgument<int32_t>(ss, FormatToken::comma16, 123456789);
     ASSERT_STREQ("123,456,789", ss.data());
 }
 
@@ -394,7 +395,7 @@ TEST_F(FormattingTests, format_number_comma16_large_negative)
 {
     FormatBuffer ss;
     // test larger value for separator formatter with negative
-    FormatArgument<int32_t>(ss, FormatToken::Comma16, -123456789);
+    FormatArgument<int32_t>(ss, FormatToken::comma16, -123456789);
     ASSERT_STREQ("-123,456,789", ss.data());
 }
 
@@ -402,7 +403,7 @@ TEST_F(FormattingTests, format_number_comma16_uneven)
 {
     FormatBuffer ss;
     // test non-multiple of 3
-    FormatArgument<int32_t>(ss, FormatToken::Comma16, 12345678);
+    FormatArgument<int32_t>(ss, FormatToken::comma16, 12345678);
     ASSERT_STREQ("12,345,678", ss.data());
 }
 
@@ -410,7 +411,7 @@ TEST_F(FormattingTests, format_number_comma16_uneven_negative)
 {
     FormatBuffer ss;
     // test non-multiple of 3 with negative
-    FormatArgument<int32_t>(ss, FormatToken::Comma16, -12345678);
+    FormatArgument<int32_t>(ss, FormatToken::comma16, -12345678);
     ASSERT_STREQ("-12,345,678", ss.data());
 }
 
@@ -418,7 +419,7 @@ TEST_F(FormattingTests, format_number_comma16_zero)
 {
     FormatBuffer ss;
     // test zero
-    FormatArgument<int32_t>(ss, FormatToken::Comma16, 0);
+    FormatArgument<int32_t>(ss, FormatToken::comma16, 0);
     ASSERT_STREQ("0", ss.data());
 }
 
@@ -426,7 +427,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_zero)
 {
     FormatBuffer ss;
     // zero case
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 0);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, 0);
     ASSERT_STREQ("0.0", ss.data());
 }
 
@@ -434,7 +435,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_leading_zero)
 {
     FormatBuffer ss;
     // test leading zero
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 5);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, 5);
     ASSERT_STREQ("0.5", ss.data());
 }
 
@@ -442,7 +443,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_leading_zero_negative)
 {
     FormatBuffer ss;
     // test leading zero with negative value
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -5);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, -5);
     ASSERT_STREQ("-0.5", ss.data());
 }
 
@@ -450,7 +451,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_small_value)
 {
     FormatBuffer ss;
     // test small value
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 75);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, 75);
     ASSERT_STREQ("7.5", ss.data());
 }
 
@@ -458,7 +459,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_small_value_negative)
 {
     FormatBuffer ss;
     // test small value with negative
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -75);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, -75);
     ASSERT_STREQ("-7.5", ss.data());
 }
 
@@ -466,7 +467,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_trailing_zeros)
 {
     FormatBuffer ss;
     // test value with trailing zero, no commas
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 1000);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, 1000);
     ASSERT_STREQ("100.0", ss.data());
 }
 
@@ -474,7 +475,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_trailing_zeros_negative)
 {
     FormatBuffer ss;
     // test value with trailing zero, no commas
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -1000);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, -1000);
     ASSERT_STREQ("-100.0", ss.data());
 }
 
@@ -482,7 +483,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_large_trailing_zeros)
 {
     FormatBuffer ss;
     // test value with commas and trailing zeros
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 10000000);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, 10000000);
     ASSERT_STREQ("1,000,000.0", ss.data());
 }
 
@@ -490,7 +491,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_large_trailing_zeros_negative)
 {
     FormatBuffer ss;
     // test value with commas and trailing zeros
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -10000000);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, -10000000);
     ASSERT_STREQ("-1,000,000.0", ss.data());
 }
 
@@ -498,7 +499,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_large_value)
 {
     FormatBuffer ss;
     // test large value
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 123456789);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, 123456789);
     ASSERT_STREQ("12,345,678.9", ss.data());
 }
 
@@ -506,7 +507,7 @@ TEST_F(FormattingTests, format_number_comma1dp16_large_value_negative)
 {
     FormatBuffer ss;
     // test large value
-    FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -123456789);
+    FormatArgument<int32_t>(ss, FormatToken::comma1dp16, -123456789);
     ASSERT_STREQ("-12,345,678.9", ss.data());
 }
 
@@ -514,7 +515,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_zero)
 {
     FormatBuffer ss;
     // zero case
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 0);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, 0);
     ASSERT_STREQ("0.00", ss.data());
 }
 
@@ -522,7 +523,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_less_sig_figs)
 {
     FormatBuffer ss;
     // test leading zero
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 5);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, 5);
     ASSERT_STREQ("0.05", ss.data());
 }
 
@@ -530,7 +531,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_less_sig_figs_negative)
 {
     FormatBuffer ss;
     // test leading zero
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -5);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, -5);
     ASSERT_STREQ("-0.05", ss.data());
 }
 
@@ -538,7 +539,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_leading_zero)
 {
     FormatBuffer ss;
     // test small value
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 75);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, 75);
     ASSERT_STREQ("0.75", ss.data());
 }
 
@@ -546,7 +547,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_leading_zero_negative)
 {
     FormatBuffer ss;
     // test small value
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -75);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, -75);
     ASSERT_STREQ("-0.75", ss.data());
 }
 
@@ -554,7 +555,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_trailing_zeros)
 {
     FormatBuffer ss;
     // test value with trailing zero, no commas
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 1000);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, 1000);
     ASSERT_STREQ("10.00", ss.data());
 }
 
@@ -562,7 +563,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_trailing_zeros_negative)
 {
     FormatBuffer ss;
     // test value with trailing zero, no commas
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -1000);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, -1000);
     ASSERT_STREQ("-10.00", ss.data());
 }
 
@@ -570,7 +571,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_trailing_zeros)
 {
     FormatBuffer ss;
     // test value with commas and trailing zeros
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 10000000);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, 10000000);
     ASSERT_STREQ("100,000.00", ss.data());
 }
 
@@ -578,7 +579,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_trailing_zeros_negative)
 {
     FormatBuffer ss;
     // test value with commas and trailing zeros
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -10000000);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, -10000000);
     ASSERT_STREQ("-100,000.00", ss.data());
 }
 
@@ -586,7 +587,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_value)
 {
     FormatBuffer ss;
     // test large value
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 123456789);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, 123456789);
     ASSERT_STREQ("1,234,567.89", ss.data());
 }
 
@@ -594,7 +595,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_value_negative)
 {
     FormatBuffer ss;
     // test large value
-    FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -123456789);
+    FormatArgument<int32_t>(ss, FormatToken::comma2dp32, -123456789);
     ASSERT_STREQ("-1,234,567.89", ss.data());
 
     // extra note:
@@ -603,7 +604,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_value_negative)
     // specialization for which that would ever be the case is never
     // declared. As such the following line won't be able to find
     // the necessary symbol to link with.
-    // FormatArgument<double>(ss, FormatToken::Comma1dp16, 12.372);
+    // FormatArgument<double>(ss, FormatToken::comma1dp16, 12.372);
 }
 
 TEST_F(FormattingTests, buffer_storage_swap)

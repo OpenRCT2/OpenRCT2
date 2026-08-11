@@ -1,0 +1,10 @@
+{
+    "scenario_name": "Cemetery Ridge",
+    "sha256": "9401f88e1dfdc5f7e6e4759271ac8dea3fc499c2fb21cdbf42567d876a91641a",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "swap_entrance_exit"
+        }
+    ]
+}

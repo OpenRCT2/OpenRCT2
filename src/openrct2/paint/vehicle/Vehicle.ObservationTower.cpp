@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
-#include "../../ride/Ride.h"
+#include "../../ride/CarEntry.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 
@@ -26,12 +26,12 @@ namespace OpenRCT2
             auto directionOffset = imageDirection / 8;
             if ((directionOffset == 0) || (directionOffset == 3))
             {
-                result = carEntry->base_image_id + 8;
+                result = carEntry->baseImageId + 8;
             }
             else
             {
                 result *= 2;
-                result += carEntry->base_image_id;
+                result += carEntry->baseImageId;
                 if (directionOffset == 1)
                 {
                     result += 28;
@@ -44,7 +44,7 @@ namespace OpenRCT2
         }
         else
         {
-            result = (vehicle->animation_frame * 2) + carEntry->base_image_id + 8;
+            result = (vehicle->animation_frame * 2) + carEntry->baseImageId + 8;
         }
         return result;
     }
@@ -60,14 +60,14 @@ namespace OpenRCT2
         auto baseImageId = GetObservationTowerVehicleBaseImageId(vehicle, carEntry, imageDirection);
         auto imageId0 = ImageId(baseImageId + 0, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
         auto imageId1 = ImageId(baseImageId + 1, vehicle->colours.Body, vehicle->colours.Trim, vehicle->colours.Tertiary);
-        if (vehicle->IsGhost())
+        if (vehicle->isGhost())
         {
-            imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::PaletteGhost);
-            imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::PaletteGhost);
+            imageId0 = ImageId(baseImageId + 0).WithRemap(Drawing::FilterPaletteID::paletteGhost);
+            imageId1 = ImageId(baseImageId + 1).WithRemap(Drawing::FilterPaletteID::paletteGhost);
         }
 
         PaintAddImageAsParent(session, imageId0, { 0, 0, z }, { { -11, -11, z + 1 }, { 2, 2, 41 } });
         PaintAddImageAsParent(session, imageId1, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
-        assert(carEntry->effect_visual == 1);
+        assert(carEntry->effectVisual == EffectVisual::unknown1);
     }
 } // namespace OpenRCT2

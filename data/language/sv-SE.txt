@@ -6,16 +6,16 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spiralberg- och dalbana
 STR_0003    :Stående berg- och dalbana
-STR_0004    :Hängande svängbana
+STR_0004    :Upphängd svängbana
 STR_0005    :Inverterad berg- och dalbana
 STR_0006    :Juniorberg- och dalbana
-STR_0007    :Miniatyrtåg
-STR_0008    :Balkbana
-STR_0009    :Liten upphängd bana
+STR_0007    :Miniatyrjärnväg
+STR_0008    :Enspårsbana
+STR_0009    :Minihängbana
 STR_0010    :Båtuthyrning
 STR_0011    :Vildmus i trä
 STR_0012    :Hinderbana
-STR_0013    :Biltur
+STR_0013    :Bilbana
 STR_0014    :Fritt fall med uppskjut
 STR_0015    :Bobslädesbana
 STR_0016    :Observationstorn
@@ -26,19 +26,16 @@ STR_0020    :Linbana
 STR_0021    :Korkskruvsberg- och dalbana
 STR_0022    :Labyrint
 STR_0023    :Spiralrutschkana
-STR_0024    :Gokart
+STR_0024    :Gokarts
 STR_0025    :Stockfors
 STR_0026    :Forsränning
 STR_0027    :Radiobilar
 STR_0028    :Piratskepp
 STR_0029    :Svängande omvänt piratskepp
 STR_0030    :Matstånd
-STR_0031    :Okänt stånd (1D)
 STR_0032    :Dryckesstånd
-STR_0033    :Okänt stånd (1F)
 STR_0034    :Stånd
 STR_0035    :Karusell
-STR_0036    :Okänt stånd (22)
 STR_0037    :Informationskiosk
 STR_0038    :Toaletter
 STR_0039    :Pariserhjul
@@ -47,7 +44,7 @@ STR_0041    :3D-bio
 STR_0042    :Top spin
 STR_0043    :Rymdringar
 STR_0044    :Bakvänd fritt fall-bana
-STR_0045    :Lift
+STR_0045    :Hiss
 STR_0046    :Vertikalt stup
 STR_0047    :Bankomat
 STR_0048    :Twister
@@ -67,7 +64,7 @@ STR_0061    :Virginiavirvel
 STR_0062    :Plaskbåtar
 STR_0063    :Minihelikoptrar
 STR_0064    :Liggande berg- och dalbana
-STR_0065    :Hängande balkbana
+STR_0065    :Hängande Enspårsbana
 STR_0066    :Okänd åktur (40)
 STR_0067    :Vändande berg- och dalbana
 STR_0068    :Skruvberg- och dalbana
@@ -84,29 +81,25 @@ STR_0078    :Inverterad hårnålsbana
 STR_0079    :Flygande matta
 STR_0080    :Ubåtsbana
 STR_0081    :Flodflottar
-STR_0082    :Okänd åktur (50)
 STR_0083    :Enterprise
-STR_0084    :Okänd åktur (52)
-STR_0085    :Okänd åktur (53)
-STR_0086    :Okänd åktur (54)
-STR_0087    :Okänd åktur (55)
 STR_0088    :Inverterad impulsbana
 STR_0089    :Miniberg- och dalbana
 STR_0090    :Gruvattraktion
-STR_0091    :Okänd åktur (59)
 STR_0092    :Induktionsberg- och dalbana
 STR_0093    :Hybridberg- och dalbana
 STR_0094    :Enkelspårig berg- och dalbana
 STR_0095    :Alpin berg- och dalbana
 STR_0096    :Klassisk berg- och dalbana i trä
 STR_0097    :Klassisk stående berg- och dalbana
-STR_0512    :En kompakt berg- och dalbana med en spiralvriden kedjelift och mjuka, vridna stup.
+STR_0098    :LSM-accelererad berg-och-dalbana
+STR_0099    :Klassisk träberg-och-dalbana i twister-stil
+STR_0512    :En kompakt berg- och dalbana med en spiralvriden kedjelyft och mjuka, vridna stup.
 STR_0513    :En ringlande berg- och dalbana där passagerarna åker stående
 STR_0514    :Tåg hängande under banan som svingar ut åt sidan i kurvorna
 STR_0515    :En berg- och dalbana i stål med många spännande och kurviga spårsektioner och tåg som hänger under spåren
 STR_0516    :En snäll berg- och dalbana för dem som inte har mod nog att utmana större åkturer
 STR_0517    :Passagerare åker i miniatyrtåg på smalspårig räls
-STR_0518    :Passagerare åker i elektriska tåg på en balkbana
+STR_0518    :Passagerare åker i elektriska tåg på en enspårsbana
 STR_0519    :Passagerare åker i små vagnar som hänger under en enkelspårig bana, fritt svingande från sida till sida i kurvor
 STR_0520    :En brygga varifrån besökarna kan köra eller ro vattenfarkoster på en vattensamling
 STR_0521    :En snabb och svängande berg- och dalbana med skarpa kurvor. Intensiteten kommer vara hög.
@@ -184,6 +177,8 @@ STR_0604    :Passagerare åker i singelled längs en stålbalk, som tar dem geno
 STR_0605    :Passagerare åker släde nerför ett slingrande stålspår och bromsar för att reglera hastigheten
 STR_0606    :Den här berg- och dalbanan i trä är i äldre stil. Den är snabb, tuff, högljudd och ger en känsla av att förlora kontrollen. Dessutom spenderar man mycket tid flygandes över topparna
 STR_0607    :En intensiv berg- och dalbana i äldre stil där passagerarna åker stående
+STR_0608    :Berg-och-dalbanetågen accelereras med linjära synkronmotorer och far genom snäva svängar och kurvor
+STR_0609    :En träberg-och-dalbana i äldre stil med en snabb och skakig åktur, ledade tåg, mycket airtime och slingrande spår
 STR_0767    :Besökare {INT32}
 STR_0768    :Vaktmästare {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -248,7 +243,6 @@ STR_0832    :Rotera vyn 90° medurs
 STR_0833    :Pausa spelet
 STR_0834    :Spel- och lagringsinställningar
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Om ’OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alla rättigheter förbehålls
 STR_0851    :{WINDOW_COLOUR_2}Designat och programmerat av Chris Sawyer
@@ -259,16 +253,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representation av Jacqui Lyons från Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Tack till:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth och John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :För lågt!
 STR_0878    :För högt!
@@ -287,7 +271,7 @@ STR_0892    :Skärmdumpen sparades som ’{STRINGID}’
 STR_0893    :Skärmdumpen misslyckades!
 STR_0894    :Landskapens minnesutrymme är fullt!
 STR_0895    :Kan inte bygga både ovan och under jord samtidigt
-STR_0896    :{POP16}{POP16}{STRINGID} Konstruktion
+STR_0896    :{STRING} Konstruktion
 STR_0897    :Riktning
 STR_0898    :Vänsterkurva
 STR_0899    :Högerkurva
@@ -319,7 +303,7 @@ STR_0924    :Helix nedåt
 STR_0925    :Helix uppåt
 STR_0926    :Kan inte ta bort det här …
 STR_0927    :Kan inte bygga här …
-STR_0928    :Lyftkedjor, för att dra vagnar uppför backar
+STR_0928    :Kedjelyft, för att dra vagnar uppför backar
 STR_0929    :S-kurva (vänster)
 STR_0930    :S-kurva (höger)
 STR_0931    :Vertikal loop (vänster)
@@ -412,8 +396,6 @@ STR_1018    :Kan inte göra förändringar…
 STR_1019    :Kan inte göra förändringar…
 STR_1020    :Kan inte göra förändringar…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vagn per tåg
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vagnar per tåg
 STR_1024    :{COMMA16} vagn per tåg
 STR_1025    :{COMMA16} vagnar per tåg
 STR_1026    :Stationsplattformen är för lång!
@@ -464,8 +446,8 @@ STR_1070    :En åktur per biljett
 STR_1071    :Oändligt med åkturer per biljett
 STR_1072    :Labyrint
 STR_1073    :Rallyläge
-STR_1074    :Krockbilar
-STR_1075    :Svängläge
+STR_1074    :Radiobilsläge
+STR_1075    :Gungläge
 STR_1076    :Stånd
 STR_1077    :Rotationsläge
 STR_1078    :Rotation framåt
@@ -522,9 +504,7 @@ STR_1128    :Stoppad av bromsblock
 STR_1129    :Alla fordon i samma färg
 STR_1130    :Olika färg per {STRINGID}
 STR_1131    :Olika färg per fordon
-STR_1132    :Fordon {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Fordon {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Fordon {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Välj huvudfärg
 STR_1137    :Välj andra färg
@@ -538,7 +518,7 @@ STR_1144    :Kan inte bygga eller flytta ingången för den här åkturen eller 
 STR_1145    :Kan inte bygga eller flytta utgången för den här åkturen eller attraktionen…
 STR_1146    :Ingången är inte byggd
 STR_1147    :Utgången är inte byggd
-STR_1148    :En kvarts fullt
+STR_1148    :Kvarts fullt
 STR_1149    :Halvfullt
 STR_1150    :Trekvarts fullt
 STR_1151    :Fullt
@@ -546,8 +526,8 @@ STR_1152    :Minst en person
 STR_1153    :Höjdmarkeringar på åkturer
 STR_1154    :Höjdmarkeringar på land
 STR_1155    :Höjdmarkeringar på gångvägar
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Kan inte ta bort detta…
 STR_1159    :Placera dekorationer, planteringar och andra tillbehör
 STR_1160    :Skapa eller justera sjöar och vatten
@@ -562,7 +542,6 @@ STR_1168    :Inställningar
 STR_1169    :(Inga)
 STR_1170    :{STRING}
 STR_1171    :{RED}Stängd
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Bygg gångvägar och köer
 STR_1174    :En skylt är i vägen
 STR_1175    :Kan inte bygga på en sluttande gångväg
@@ -604,7 +583,7 @@ STR_1210    :Välj om avgång ska ske då ett annat fordon anländer
 STR_1211    :{WINDOW_COLOUR_2}Minsta väntetid:
 STR_1212    :{WINDOW_COLOUR_2}Högsta väntetid:
 STR_1213    :Välj minsta väntetid innan avgång
-STR_1214    :Välj högsta väntetid innan avgång
+STR_1214    :Välj längsta väntetid innan avgång
 STR_1215    :{WINDOW_COLOUR_2}Synkronisera med närliggande stationer
 STR_1216    :Välj om avgången ska synkroniseras med alla närliggande stationer (för ’rally’)
 STR_1217    :{COMMA16} sekunder
@@ -721,7 +700,6 @@ STR_1327    :Rotera objekt 90°
 STR_1328    :Platt land krävs
 STR_1329    :{WINDOW_COLOUR_2}Starthastighet:
 STR_1330    :Maxhastighet när tåget lämnar stationen
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} – {STRINGID}{POP16}
 STR_1334    :{STRINGID} – {STRINGID} {COMMA16}
@@ -755,8 +733,8 @@ STR_1361    :Kan inte ändra hastighet…
 STR_1362    :Kan inte ändra starthastighet…
 STR_1363    :För högt för stödpelare!
 STR_1364    :Stödpelarna kan inte förlängas mer!
-STR_1365    :Tvist (vänster)
-STR_1366    :Tvist (höger)
+STR_1365    :Inlineskruv (vänster)
+STR_1366    :Inlineskruv (höger)
 STR_1367    :Halvloop
 STR_1368    :Halv korkskruv (vänster)
 STR_1369    :Halv korkskruv (höger)
@@ -767,8 +745,8 @@ STR_1373    :Stor halvloop (vänster)
 STR_1374    :Stor halvloop (höger)
 STR_1375    :Övre vidarekoppling
 STR_1376    :Nedre vidarekoppling
-STR_1377    :Mittpunktsroll (vänster)
-STR_1378    :Mittpunktsroll (höger)
+STR_1377    :Hjärtlinjeroll (vänster)
+STR_1378    :Hjärtlinjeroll (höger)
 STR_1379    :Omvändare (vänster)
 STR_1380    :Omvändare (höger)
 STR_1381    :Kurvad uppskjutskulle (vänster)
@@ -819,7 +797,6 @@ STR_1425    :Gångväg
 STR_1426    :Kö
 STR_1427    :{WINDOW_COLOUR_2}Kunder: {BLACK}{COMMA32} per timme
 STR_1428    :{WINDOW_COLOUR_2}Biljettpris:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratis
 STR_1431    :Går
 STR_1432    :På väg mot {STRINGID}
@@ -854,17 +831,17 @@ STR_1460    :U-formad öppen bana
 STR_1461    :O-formad stängd bana
 STR_1462    :För brant för uppskjutskulle
 STR_1463    :Besökare
-STR_1464    :Helix uppåt (liten)
-STR_1465    :Helix uppåt (stor)
-STR_1466    :Helix nedåt (liten)
-STR_1467    :Helix nedåt (stor)
+STR_1464    :Halv helix uppåt (liten)
+STR_1465    :Halv helix uppåt (stor)
+STR_1466    :Halv helix nedåt (liten)
+STR_1467    :Halv helix nedåt (stor)
 STR_1468    :Personal
 STR_1469    :Åkturen måste påbörjas och avslutas med stationer
 STR_1470    :Stationen är inte tillräckligt lång
 STR_1471    :{WINDOW_COLOUR_2}Hastighet:
 STR_1472    :Den här åkturens hastighet
-STR_1473    :{WINDOW_COLOUR_2}Glädjenivå: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Glädjenivå: {BLACK}Inte tillgänglig
+STR_1473    :{WINDOW_COLOUR_2}Spänningsnivå: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Spänningsnivå: {BLACK}Inte tillgänglig
 STR_1475    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1476    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}Inte tillgänglig
 STR_1477    :{WINDOW_COLOUR_2}Intensitetsnivå: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
@@ -1063,14 +1040,13 @@ STR_1671    :{WINDOW_COLOUR_2}Total vinst: {BLACK}{CURRENCY2DP}
 STR_1672    :Bromsar
 STR_1673    :Snurrkontrollväxlare
 STR_1674    :Bromshastighet
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Sätt hastighetsgräns för bromsar
 STR_1677    :{WINDOW_COLOUR_2}Popularitet: {BLACK}Okänd
 STR_1678    :{WINDOW_COLOUR_2}Popularitet: {BLACK}{COMMA16}%
-STR_1679    :Helix uppåt (vänster)
-STR_1680    :Helix uppåt (höger)
-STR_1681    :Helix nedåt (vänster)
-STR_1682    :Helix nedåt (höger)
+STR_1679    :Kvarts helix uppåt (vänster)
+STR_1680    :Kvarts helix uppåt (höger)
+STR_1681    :Kvarts helix nedåt (vänster)
+STR_1682    :Kvarts helix nedåt (höger)
 STR_1683    :Basstorlek 2 × 2
 STR_1684    :Basstorlek 4 × 4
 STR_1685    :Basstorlek 2 × 4
@@ -1119,23 +1095,19 @@ STR_1727    :Bygglov är inte till salu!
 STR_1728    :Kan inte få bygglov här…
 STR_1729    :Marken ägs inte av parken!
 STR_1730    :{RED}Stängd
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bygg
 STR_1733    :Läge
 STR_1734    :{WINDOW_COLOUR_2}Antal varv:
 STR_1735    :Antal varv
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Kan inte ändra antal varv…
 STR_1739    :Besökare {INT32} vann rallyt
 STR_1740    :{STRINGID} vann rallyt
 STR_1741    :Inte byggt än!
 STR_1742    :{WINDOW_COLOUR_2}Max. personer på åktur:
 STR_1743    :Maximalt antal personer på denna åktur samtidigt
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Kan inte ändra detta…
 STR_1747    :{WINDOW_COLOUR_2}Tidsgräns:
 STR_1748    :Tidsgräns för åkturen
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Kan inte ändra tidsgränsen för åkturen…
 STR_1752    :Visa lista över individuella besökare i parken
 STR_1753    :Visa sammanfattning av alla besökare i parken
@@ -1156,22 +1128,9 @@ STR_1767    :Snurrande tunnel
 STR_1768    :Kan inte ändra antalet gungningar…
 STR_1769    :{WINDOW_COLOUR_2}Antal gungningar:
 STR_1770    :Antal hela gungningar
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Bara en fotosektion tillåten per åktur
 STR_1774    :Bara en uppskjutskulle tillåten per åktur
 STR_1777    :Musik för åkturer
-STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandadräkt
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerdräkt
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefantdräkt
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romersk dräkt
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilladräkt
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snögubbedräkt
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Riddardräkt
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautdräkt
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditdräkt
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffdräkt
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratdräkt
 STR_1790    :Välj uniformfärg för den här sortens personal
 STR_1791    :{WINDOW_COLOUR_2}Uniformfärg:
 STR_1792    :Svarar på radioanrop om {STRINGID}
@@ -1180,7 +1139,6 @@ STR_1794    :Fixar {STRINGID}
 STR_1795    :Svarar på radioanrop
 STR_1796    :Har gått sönder och behöver fixas
 STR_1798    :Strömvirvel
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Nödstopp
 STR_1801    :Byglarna kan ej fällas upp
 STR_1802    :Byglarna kan ej fällas ner
@@ -1252,10 +1210,8 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan inte ändra antal rotationer…
 STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :Antal hela rotationer
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inkomst: {BLACK}{CURRENCY2DP} per timme
 STR_1874    :{WINDOW_COLOUR_2}Vinst: {BLACK}{CURRENCY2DP} per timme
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspektera åkturer
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fixa åkturer
 STR_1878    :{WINDOW_COLOUR_2}Inspektion:
@@ -1295,7 +1251,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Lån:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Kan inte låna mer pengar!
 STR_1919    :Inte tillräckligt med pengar!
 STR_1920    :Kan inte betala tillbaka lån!
@@ -1333,7 +1288,6 @@ STR_1953    :Marknadsföring
 STR_1954    :Forskningsbidrag
 STR_1955    :{WINDOW_COLOUR_2}Antal varv:
 STR_1956    :Antal varv per åk
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Kan inte ändra antal varv…
 STR_1960    :{WINDOW_COLOUR_2}Pris på ballong:
@@ -1577,8 +1531,8 @@ STR_2212    :Visa listan över alla säkerhetsvakter
 STR_2213    :Visa listan över alla underhållare
 STR_2214    :Konstruktion är inte möjligt när spelet är pausat!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} på {STRINGID} har inte kommit tillbaka till {STRINGID} än!{NEWLINE}Kolla om den sitter fast eller har fått motorstopp
 STR_2219    :{RED}{COMMA16} personer har omkommit i en olycka på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkomdöme: {BLACK}{COMMA16}
@@ -1671,7 +1625,7 @@ STR_2307    :Välj designen {STRINGID}
 STR_2308    :{STRINGID} bandesigner
 STR_2309    :Installera ny bandesign
 STR_2310    :Bygg egen design
-STR_2311    :{WINDOW_COLOUR_2}Glädjenivå: {BLACK}{COMMA2DP32} (ungefär)
+STR_2311    :{WINDOW_COLOUR_2}Spänningsnivå: {BLACK}{COMMA2DP32} (ungefär)
 STR_2312    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}{COMMA2DP32} (ungefär)
 STR_2313    :{WINDOW_COLOUR_2}Illamående nivå: {BLACK}{COMMA2DP32} (ungefär)
 STR_2314    :{WINDOW_COLOUR_2}Åktur längd: {BLACK}{STRINGID}
@@ -1744,11 +1698,11 @@ STR_2386    :{BLACK}Att ha minst {COMMA32} besökare i parken tills {MONTHYEAR},
 STR_2387    :{BLACK}Att uppnå ett parkvärde över {POP16}{POP16}{CURRENCY} tills {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Ha kul!
 STR_2389    :{BLACK}Bygg den bästa {STRINGID} du kan!
-STR_2390    :{BLACK}Att ha tio olika sorters berg- och dalbanor i din park, alla med en glädjenivå över 6.00
+STR_2390    :{BLACK}Att ha tio olika sorters berg- och dalbanor i din park, alla med en spänningsnivå över 6.00
 STR_2391    :{BLACK}Att ha minst {COMMA32} besökare i din park. Du får aldrig låta parkomdömet gå under 700!
 STR_2392    :{BLACK}Att få en månadsinkomst från åktursbiljetter på minst {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}Att ha tio olika sorters berg- och dalbanor i din park, alla ska vara längre än {LENGTH}, och med en glädjenivå över 7.00
-STR_2394    :{BLACK}Att bygga klart alla fem delvis byggda berg- och dalbanor i parken, designade så att de alla får en glädjenivå över {POP16}{POP16}{COMMA2DP32}
+STR_2393    :{BLACK}Att ha tio olika sorters berg- och dalbanor i din park, alla ska vara längre än {LENGTH}, och med en spänningsnivå över 7.00
+STR_2394    :{BLACK}Att bygga klart alla fem delvis byggda berg- och dalbanor i parken, designade så att de alla får en spänningsnivå över {POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}Att betala tillbaka ditt lån och uppnå ett parkvärde på över {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}Att få en månadsinkomst från mat, dricka och souvenirer på minst {POP16}{POP16}{CURRENCY}
 STR_2397    :Inga
@@ -1932,9 +1886,6 @@ STR_2706    :Aldrig
 STR_2707    :Använd operativsystemets filhanterare
 STR_2708    :{WINDOW_COLOUR_1}Är du säker på att du vill skriva över {STRINGID}?
 STR_2709    :Skriv över
-STR_2710    :Skriv namnet på filen.
-STR_2718    :Upp
-STR_2719    :Ny fil
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}min:{UINT16}s
@@ -2134,9 +2085,8 @@ STR_3091    :Du får inte ta bort den här sektionen!
 STR_3092    :Du får inte flytta eller modifiera stationen för den här åkturen!
 STR_3093    :{WINDOW_COLOUR_2}Favorit: {BLACK}{STRINGID}
 STR_3094    :N/A
-STR_3095    :{WINDOW_COLOUR_2}Upplyftskedjehastighet:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :Välj upplyftskedjehastighet
+STR_3095    :{WINDOW_COLOUR_2}Kedjelyfthastighet:
+STR_3097    :Välj kedjelyfthastighet
 STR_3099    :Välj huvudfärg
 STR_3100    :Välj andra färg
 STR_3101    :Välj tredje färg
@@ -2163,7 +2113,7 @@ STR_3121    :Kan inte hitta en mekaniker, eller så är alla i närheten upptagn
 STR_3122    :{BLACK}{COMMA32} besökares {WINDOW_COLOUR_2}favoritåktur
 STR_3123    :{BLACK}{COMMA32} besökares {WINDOW_COLOUR_2}favoritåktur
 STR_3124    :Trasig {STRINGID}
-STR_3125    :{WINDOW_COLOUR_2}Glädjefaktor: {BLACK}+{COMMA16}%
+STR_3125    :{WINDOW_COLOUR_2}Spänningsfaktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensitetsfaktor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Illamåendefaktor: {BLACK}+{COMMA16}%
 STR_3128    :Spara bandesign
@@ -2178,7 +2128,6 @@ STR_3136    :Varning: Denna design kommer att byggas med en alternativ fordonsty
 STR_3137    :Välj närliggande dekorationer
 STR_3138    :Återställ markering
 STR_3139    :Uppskjuts fungerar inte i detta körläge
-STR_3140    :Uppskjutsbacken måste börja direkt efter en station
 STR_3141    :Kontinuerligt banläge går inte att kombinera med en uppskjutskulle
 STR_3142    :{WINDOW_COLOUR_2}Kapacitet: {BLACK}{STRINGID}
 STR_3143    :Visa besökare på kartan
@@ -2211,7 +2160,7 @@ STR_3188    :Gångvägsskyltar
 STR_3189    :Utfasade gångvägar
 STR_3190    :Gångvägsdetaljer
 STR_3191    :Dekorationsgrupper
-STR_3192    :Parkentré
+STR_3192    :Parkingångar
 STR_3193    :Vatten
 STR_3195    :Uppfinningslista
 STR_3196    :{WINDOW_COLOUR_2}Forskningsgrupp: {BLACK}{STRINGID}
@@ -2230,7 +2179,6 @@ STR_3208    :Bandesignhanterare
 STR_3209    :Tillbaka till tidigare steg:
 STR_3210    :Vidare till nästa steg:
 STR_3211    :Kartstorlek:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan inte minska kartstorleken mer
 STR_3214    :Kan inte utöka kartstorleken mer
 STR_3215    :För nära kanten av kartan
@@ -2252,20 +2200,18 @@ STR_3230    :Blockbromsar kan inte användas direkt efter varandra
 STR_3231    :Blockbromsar kan inte användas efter en uppskjutskulle
 STR_3232    :Inställningar – Finanser
 STR_3233    :Inställningar – Besökare
-STR_3234    :Inställningar – Parken
 STR_3235    :Visa finansiella inställningar
 STR_3236    :Visa besökarinställningar
-STR_3237    :Visa parkinställningar
 STR_3238    :Inga pengar
 STR_3239    :Gör detta till en ’inga pengar’-park utan finansiella begränsningar
-STR_3240    :{WINDOW_COLOUR_2}Startpengar:
-STR_3241    :{WINDOW_COLOUR_2}Startlån:
-STR_3242    :{WINDOW_COLOUR_2}Maxlån:
-STR_3243    :{WINDOW_COLOUR_2}Årlig ränta:
+STR_3240    :Startpengar:
+STR_3241    :Startlån:
+STR_3242    :Maxlån:
+STR_3243    :Årlig ränta:
 STR_3244    :Förbjud kampanjer
 STR_3245    :Förbjud kampanjer och marknadsföring
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan inte höja startpengar mer!
 STR_3249    :Kan inte sänka startpengar mer!
 STR_3250    :Kan inte höja startlån mer!
@@ -2274,14 +2220,10 @@ STR_3252    :Kan inte höja maxlån mer!
 STR_3253    :Kan inte sänka maxlån mer!
 STR_3254    :Kan inte höja räntan mer!
 STR_3255    :Kan inte sänka räntan mer!
-STR_3256    :Besökare föredrar mindre intensiva åkturer
-STR_3257    :Välj om besökare endast ska föredra mindre intensiva åkturer
-STR_3258    :Besökare föredrar mer intensiva åkturer
-STR_3259    :Välj om besökare endast ska föredra mer intensiva åkturer
-STR_3260    :{WINDOW_COLOUR_2}Pengar per besökare (genomsnitt):
-STR_3261    :{WINDOW_COLOUR_2}Besökares startglädje:
-STR_3262    :{WINDOW_COLOUR_2}Besökares starthunger:
-STR_3263    :{WINDOW_COLOUR_2}Besökares starttörst:
+STR_3260    :Pengar per besökare (genomsnitt):
+STR_3261    :Besökares startglädje:
+STR_3262    :Besökares starthunger:
+STR_3263    :Besökares starttörst:
 STR_3264    :Kan inte höja detta mer!
 STR_3265    :Kan inte sänka detta mer!
 STR_3266    :Välj hur den här parken tar betalt för entré och åkturer
@@ -2295,23 +2237,15 @@ STR_3273    :Svårare parkomdöme
 STR_3274    :Gör så att bra parkomdöme är svårare att få
 STR_3275    :Svårare besökare
 STR_3276    :Gör så att det blir svårare att få besökare
-STR_3277    :{WINDOW_COLOUR_2}Kostnad för att köpa mark:
-STR_3278    :{WINDOW_COLOUR_2}Kostnad för att köpa bygglov:
+STR_3277    :Kostnad för att köpa mark:
+STR_3278    :Kostnad för att köpa bygglov:
 STR_3279    :Gratis parkentré och betala per åktur
 STR_3280    :Gratis åkturer och betala för parkentré
-STR_3281    :{WINDOW_COLOUR_2}Entrépris:
-STR_3282    :Välj uppdrag och parknamn
+STR_3281    :Entrépris:
 STR_3283    :Välj åkturer som ska bevaras
-STR_3284    :Uppdragsval
 STR_3285    :Bevarade åkturer
 STR_3286    :Välj uppdrag för detta scenario
 STR_3287    :{WINDOW_COLOUR_2}Uppdrag:
-STR_3288    :Välj klimat
-STR_3289    :{WINDOW_COLOUR_2}Klimat:
-STR_3290    :Svalt och blött
-STR_3291    :Varmt
-STR_3292    :Hett och torrt
-STR_3293    :Kallt
 STR_3294    :Ändra…
 STR_3295    :Byt namn på parken
 STR_3296    :Byt namn på scenario
@@ -2326,7 +2260,7 @@ STR_3304    :{WINDOW_COLOUR_2}Parkvärde:
 STR_3305    :{WINDOW_COLOUR_2}Månadsinkomst:
 STR_3306    :{WINDOW_COLOUR_2}Månadsvinst:
 STR_3307    :{WINDOW_COLOUR_2}Minimilängd:
-STR_3308    :{WINDOW_COLOUR_2}Glädjenivå:
+STR_3308    :{WINDOW_COLOUR_2}Spänningsnivå:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA32}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
@@ -2412,7 +2346,7 @@ STR_5120    :Finans
 STR_5121    :Forskning
 STR_5122    :Välj vagnar efter spårtyp (som i RCT1)
 STR_5123    :Förnya karuseller
-STR_5125    :Alla förstörbara
+STR_5125    :Allt kan förstöras
 STR_5126    :Slumpvald titelmusik
 STR_5127    :När du drar, måla landskapet istället för att ändra höjden
 STR_5128    :Välj storlek
@@ -2540,7 +2474,7 @@ STR_5265    :Välj vilket innehåll som ska vara synligt
 STR_5266    :Skärm
 STR_5267    :Kultur och enheter
 STR_5268    :Ljud
-STR_5269    :Kontroller och gränssnitt
+STR_5269    :Kontroller
 STR_5270    :Diverse
 STR_5272    :Små dekorationer
 STR_5273    :Stora dekorationer
@@ -2725,7 +2659,6 @@ STR_5549    :År/Månad/Dag
 STR_5550    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :År/Dag/Månad
 STR_5552    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pausa spelet när Steam overlay är uppe
 STR_5554    :Tillåt bergverktyget
 STR_5555    :Visa fordon från andra karuseller
 STR_5556    :Sparka ut spelare
@@ -2756,7 +2689,7 @@ STR_5581    :Visa bildhastighet
 STR_5582    :Behåll muspekaren i spelet
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
-STR_5585    :Avaktivera åkturernas hastighetsgränser, vilket tillåter till exempel {VELOCITY} kedjehastigheter
+STR_5585    :Avaktivera åkturernas hastighetsgränser, vilket tillåter till exempel kedjelyfthastigheter upp till {VELOCITY}
 STR_5586    :Öppna butiker och stånd automatiskt
 STR_5587    :Om aktiverad öppnas butiker och stånd automatiskt efter att du har byggt dem
 STR_5588    :Spela med andra spelare
@@ -2797,9 +2730,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :”Riktiga” Parker
 STR_5626    :Andra parker
-STR_5627    :Sortera scenarion via:
-STR_5628    :Spelpaket
-STR_5629    :Svårighetsgrad
 STR_5630    :Tillåt progressiv upplåsning
 STR_5631    :Original DLC parker
 STR_5632    :Bygg din egna…
@@ -2942,14 +2872,13 @@ STR_5807    :{WINDOW_COLOUR_2}Antal åkturer: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal affärer och stånd: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal informationskiosker och toaletter: {BLACK}{COMMA16}
 STR_5810    :Avaktivera gränsen för vagnar per tåg
-STR_5811    :Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg och 31{NEWLINE}tåg per attraktion
+STR_5811    :Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg och 255{NEWLINE}tåg per attraktion
 STR_5812    :Visa flerspelarfönstret
 STR_5813    :”{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}”{STRING}”
 #tooltips
 STR_5815    :Visa bildhastighetsmätare i spelet
 STR_5816    :Sätter skalan i spelet.{NEWLINE}Mest användbar när du spelar i{NEWLINE}hög upplösning
-STR_5819    :[Kräver Hårdvaruhantering]{NEWLINE}Pausa spelet om Steam{NEWLINE}in-game overlay är öppet
 STR_5820    :Minimera spelet om fokusen{NEWLINE}tappas medan du är i fullskärmsläge
 STR_5822    :Växla mellan natt och dag.{NEWLINE}En full växling tar 1 månad i spelet.
 STR_5823    :Visa banderoller med versaler{NEWLINE}(Som i RCT1)
@@ -3017,7 +2946,6 @@ STR_5887    :Prefix
 STR_5888    :Suffix
 STR_5889    :Skriv in valutatecken
 STR_5890    :Skriv in vilket valutatecken som ska visas
-STR_5891    :Standard
 STR_5892    :Gå till standardmappen
 STR_5893    :Valutakurs
 STR_5894    :Skriv in valutakurs
@@ -3043,12 +2971,11 @@ STR_5914    :Okänd åktur
 STR_5915    :Spelare
 STR_5916    :{COMMA16} spelare
 STR_5917    :{COMMA16} spelare
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Visa vädereffekter
 STR_5921    :Om aktiverad kommer regn och mörkare färger att visas när det stormar.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {COMMA16} {STRINGID} per tåg
+STR_5922    :Max {STRINGID}
+STR_5923    :Max {COMMA16} {STRINGID} per tåg
 STR_5924    :Terränginformation
 STR_5925    :Gånginformation
 STR_5926    :Spårinformation
@@ -3283,7 +3210,6 @@ STR_6165    :Använd vertikal synk
 STR_6166    :Synkroniserar varje bild som ritas med skärmens uppdateringshastighet, vilket förhindrar så kallad ’screen tearing’.
 STR_6167    :Avancerat
 STR_6168    :Titelsekvens
-STR_6169    :Scenarioväljaren
 STR_6170    :Anpassa gränssnittet
 STR_6171    :Sök
 STR_6172    :Sök
@@ -3360,7 +3286,7 @@ STR_6271    :Terrängsidor
 STR_6272    :Stationer
 STR_6273    :Musik
 STR_6274    :Kan inte välja färgschema…
-STR_6275    :{WINDOW_COLOUR_2}Stationsstil:
+STR_6275    :Stationsstil
 STR_6276    :{RED}{STRINGID} har besökare som sitter fast, troligen på grund av ogiltig typ av åktur eller felaktigt körläge.
 STR_6277    :Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Antal autosparningar
@@ -3384,7 +3310,7 @@ STR_6304    :Öppen dekorationsväljare
 STR_6305    :Flertrådsprocess
 STR_6306    :Experiment att använda flera processortrådar för rendering, kan orsaka instabilitet.
 STR_6307    :Färgschema: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}”{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}”{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Återanslut
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Nästa: {BLACK}{INT32} {INT32} {INT32}
@@ -3435,7 +3361,6 @@ STR_6355    :Hög densitet
 STR_6356    :Sätter ut ankor om parken innehåller vatten
 STR_6357    :Tar bort alla ankor från kartan
 STR_6358    :Sida {UINT16}
-STR_6359    :{POP16}{POP16}Sida {UINT16}
 STR_6361    :Aktivera ljuseffekter på åkturer (experiment)
 STR_6362    :Om aktiverad, lyses vagnar på spår upp om natten.
 STR_6363    :Text kopierad till urklipp
@@ -3446,7 +3371,7 @@ STR_6367    :Animationsruta:
 STR_6368    :Av kompatibilitetsskäl är det inte rekommenderat att köra OpenRCT2 med Wine. OpenRCT2 har direkt stöd för macOS, Linux, FreeBSD och OpenBSD.
 STR_6369    :Tillåt spårbygge på ogiltiga höjder
 STR_6370    :Tillåter bygge av spårdelar på alla höjdintervall
-STR_6371    :Den angivna sökvägen innehåller en installation av RollerCoaster Tycoon 1, men filen ”csg1i.dat” saknas. Filen måste kopieras från RollerCoaster Tycoon 1-skivan till ”Data”-mappen under RollerCoaster Tycoon 1-installationen på din hårddisk.
+STR_6371    :Den angivna sökvägen innehåller en installation av RollerCoaster Tycoon 1, men filen “csg1i.dat” saknas. Filen måste kopieras från Loopy Landscapes- eller RCT Deluxe-skivan till “Data”-mappen under RollerCoaster Tycoon 1-installationen på din hårddisk.
 STR_6372    :Den angivna sökvägen innehåller en installation av RollerCoaster Tycoon 1, men av en version som inte är lämplig. OpenRCT2 behöver en installation av Loopy Landscapes eller RCT Deluxe för att använda resurser från RollerCoaster Tycoon 1.
 STR_6373    :Aktivera eller avaktivera kontroller för fri höjd
 STR_6374    :F
@@ -3615,7 +3540,7 @@ STR_6537    :Tillåt normala gångvägar som köer
 STR_6538    :Visar normala gångvägar i kölistan i gångvägsfönstret
 STR_6539    :Bromsen stängd
 STR_6540    :{WINDOW_COLOUR_2}Särskilt tack till följande företag för att de tillåter oss att använda deras likhet:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Medverkande
 STR_6543    :Medverkande …
 STR_6544    :Lånet kan inte vara negativt!
@@ -3730,3 +3655,180 @@ STR_6652    :Felmeddelande
 STR_6653    :Alla källor visas
 STR_6654    :Visar {POP16}{UINT16} källor
 STR_6655    :Endast ‘{POP16}{STRINGID}’
+STR_6656    :Ta bort alla stängsel från parken
+STR_6657    :Marken ägs inte
+STR_6658    :Ställ in marken som inte ägd av parken och inte tillgänglig för köp
+STR_6659    :Gäster ignorerar priser
+STR_6660    :Gäster kommer att ignorera priser på åkattraktioner och stånd
+STR_6661    :Slumpa alla
+STR_6662    :Slumpa färger för varje tåg eller fordon
+STR_6663    :Datumfusk
+STR_6664    :Visa datumfusk
+STR_6665    :Natur/väderfusk
+STR_6666    :Visa natur/väderfusk
+STR_6667    :Fauna
+STR_6668    :Personal fusk
+STR_6669    :Visa personal fusk
+STR_6670    :Gästbeteende
+STR_6671    :Visa “riktiga” namn på personal
+STR_6672    :Växla mellan att visa “riktiga” namn och personalnummer
+STR_6673    :Transparent
+STR_6674    :{MONTH}, År {COMMA16}
+STR_6675    :Peep-namn
+STR_6676    :Minst ett peep-namns objekt måste vara valt
+STR_6677    :Lägg till stränder runt vattendrag
+STR_6678    :Höjdkällkälla:
+STR_6679    :Slättland
+STR_6680    :Simplex-brus
+STR_6681    :Höjdkarta-fil
+STR_6682    :Kartgenerator - Generator
+STR_6683    :Kartgenerator - Terräng
+STR_6684    :Kartgenerator - Vatten
+STR_6685    :Kartgenerator - Skogar
+STR_6686    :Träd till mark förhållande:
+STR_6687    :Min. trädaltitud:
+STR_6688    :Max. trädaltitud:
+STR_6689    :{UINT16}%
+STR_6690    :Minsta markhöjd
+STR_6691    :Ange min. markhöjd mellan {COMMA16} och {COMMA16}
+STR_6692    :Högsta markhöjd
+STR_6693    :Ange max. markhöjd mellan {COMMA16} och {COMMA16}
+STR_6694    :Minsta trädaltitud
+STR_6695    :Ange min. trädaltitud mellan {COMMA16} och {COMMA16}
+STR_6696    :Högsta trädaltitud
+STR_6697    :Ange max. trädaltitud mellan {COMMA16} och {COMMA16}
+STR_6698    :Träd-till-mark-förhållande
+STR_6699    :Ange träd-till-mark-förhållande mellan {COMMA16} och {COMMA16}
+STR_6700    :Simplex Grundfrekvens
+STR_6701    :Ange grundfrekvens mellan {COMMA2DP32} och {COMMA2DP32}
+STR_6702    :Simplex Oktaver
+STR_6703    :Ange antal oktaver mellan {COMMA16} och {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Bläddra...
+STR_6706    :{WINDOW_COLOUR_2}Aktuell bildfil: {BLACK}{STRING}
+STR_6707    :(ingen vald)
+STR_6708    :Utjämningsstyrka
+STR_6709    :Ange utjämningsstyrka mellan {COMMA16} och {COMMA16}
+STR_6710    :Stabil sortering
+STR_6711    :Filnamn:
+STR_6712    :Spara
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Filnamn
+STR_6715    :Ändringsdatum
+STR_6716    :Filstorlek
+STR_6717    :Filstorlek {STRINGID}
+STR_6718    :Gästanimationer
+STR_6719    :Minst ett gästanimationsobjekt måste vara valt
+STR_6720    :Minst ett vaktmästaranimationsobjekt måste vara valt
+STR_6721    :Minst ett mekanikeranimationsobjekt måste vara valt
+STR_6722    :Minst ett säkerhetsanimationsobjekt måste vara valt
+STR_6723    :Minst ett underhållaranimationsobjekt måste vara valt
+STR_6724    :Scenariotexter
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dykloop (vänster)
+STR_6728    :Dykloop (höger)
+STR_6729    :Kabelhissbacke måste börja direkt efter station eller blockbroms
+STR_6730    :Exportera emscripten-data
+STR_6731    :Importera emscripten-data
+STR_6732    :Visa en knapp i verktygsfältet för att rotera vyn moturs
+STR_6733    :Genomskinlig
+STR_6734    :Kartobjekt vid eller ovanför snitthöjd renderas halvgenomskinliga
+STR_6735    :Gå upp till föräldermapp
+STR_6736    :Förhandsvisning
+STR_6737    :Ingen förhandsvisning tillgänglig
+STR_6738    :{WINDOW_COLOUR_2}Parkbetyg: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Datum: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Kassa: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Antal åkattraktioner: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Antal gäster: {BLACK}{UINT16}
+STR_6743    :Klimat
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Gästernas intensitetspreferenser:
+STR_6746    :Inga preferenser
+STR_6747    :Preferenser varierar (standard)
+STR_6748    :Endast mindre intensiva åk
+STR_6749    :Endast mer intensiva åk
+STR_6750    :Välj vilken intensitet nya gäster föredrar
+STR_6751    :Kövägar kan inte användas för plankorsningar!
+STR_6752    :Scenarioalternativ - Mål
+STR_6753    :Scenarioalternativ - Detaljer
+STR_6754    :Scenarioalternativ - Markbegränsningar
+STR_6755    :Visa målalternativ
+STR_6756    :Visa scenarioinformation
+STR_6757    :Visa markbegränsningsalternativ
+STR_6758    :Lånealternativ
+STR_6759    :Affärsmodell
+STR_6760    :Intäkter:
+STR_6761    :Scenariodetaljer
+STR_6762    :Gränssnitt
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Sparande och autospar
+STR_6765    :Avancerat
+STR_6766    :Rensa
+STR_6767    :Fönster
+STR_6768    :Rendering
+STR_6769    :Beteende
+STR_6770    :Bildfrekvensgräns:
+STR_6771    :Intern hastighet (standard)
+STR_6772    :Vertikal synkronisering
+STR_6773    :Obegränsad
+STR_6774    :Tid sedan senaste inspektion
+STR_6775    :{COMMA16} minut
+STR_6776    :{COMMA16} minuter
+STR_6777    :mer än 4 timmar
+STR_6778    :Förhandsgranska scenarier med:
+STR_6779    :Välj vilken typ av förhandsbild som ska användas i scenarioskärmen
+STR_6780    :Minikartor
+STR_6781    :Skärmdumpar
+STR_6782    :Parknotiser
+STR_6783    :Åknotiser
+STR_6784    :Gästnotiser
+STR_6785    :Handkontroll
+STR_6786    :Dödzon:
+STR_6787    :Dödzon för analog spak (minsta rörelse som krävs)
+STR_6788    :Känslighet:
+STR_6789    :Känslighet multiplikator för analog spak
+STR_6790    :Dödzon: {COMMA32}%
+STR_6791    :Känslighet: {COMMA32}%
+STR_6792    :Entrébyggnader
+STR_6793    :Gäster och Personal
+STR_6794    :Landskap och Teman
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Ingen förhandsvisning
+STR_6798    :Skärmdump
+STR_6799    :Minikarta
+STR_7000    :eller
+STR_7001    :Attraktionsnamn
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Ljudfilen ‘{STRING}’ är trunkerad. Förväntat antal samples {INT32}, men bara {INT32} finns tillgängliga. Överväg att ominstallera RCT2.
+STR_7004    :Tvinga omritning
+STR_7005    :Dra gångvägsområde
+STR_7006    :Rita en kant runt bildknapparna
+STR_7007    :Åkturstyp
+STR_7008    :Okänd åkturstyp ({INT32})
+STR_7009    :Hämtar skript...
+STR_7010    :Kan inte starta inspelning, filen ‘{STRING}’ finns inte eller är korrupt.
+STR_7011    :Kan inte starta inspelning
+STR_7012    :Polsk Złoty (PLN)
+STR_7013    :Dra gångvägsområde
+STR_7014    :Jag äger spelet på Steam, men jag har inte installerat det än.
+STR_7015    :Var snäll och stäng Steam ifall Steam körs, tryck sedan på 'OK'.
+STR_7016    :OpenRCT2 har försökt påbörja nedladdning i Steam. Öppna Steam och låt det ladda ner spelet. När Steam slutfört nedladdningen, tryck 'OK'.
+STR_7017    :Avsluta
+STR_7023    :Gör osynlig
+STR_7024    :Gör hela åkturen osynlig
+STR_7025    :Gör synlig
+STR_7026    :Gör hela åkturen synlig
+STR_7028    :Kvarts helix uppåt
+STR_7029    :Kvarts helix nedåt
+STR_7030    :{WINDOW_COLOUR_2}Underhållna gäster: {BLACK}{COMMA32}
+STR_7031    :Avaktivera växande gräs
+STR_7032    :Avaktiverar att gräs åldras så att det inte växer.
+STR_7033    :Spårstil
+STR_7034    :Labyrintstil
+STR_7035    :Affärsstil
+STR_7036    :Fordonsstil
+STR_7037    :Körläge
+STR_7038    :väntetid och last

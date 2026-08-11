@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,36 +9,40 @@
 
 #include "CableLift.h"
 
-#include "../audio/audio.h"
-#include "../entity/EntityList.h"
-#include "../rct12/RCT12.h"
+#include "../GameState.h"
+#include "../audio/Audio.h"
 #include "../util/Util.h"
+#include "../world/Map.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "Track.h"
+#include "TrackIteration.h"
 #include "Vehicle.h"
-#include "VehicleData.h"
+#include "VehicleGeometry.h"
+#include "ted/PitchAndRoll.h"
+#include "ted/TrackElemType.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::RideVehicle;
+using namespace OpenRCT2::TrackMetadata;
 
 Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
-    Vehicle* current = CreateEntity<Vehicle>();
+    Vehicle* current = getGameState().entities.CreateEntity<Vehicle>();
     current->ride = ride.id;
-    current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
+    current->ride_subtype = kObjectEntryIndexNull;
     if (head)
     {
-        ride.cable_lift = current->Id;
+        ride.cableLift = current->id;
     }
-    current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
+    current->SubType = head ? Vehicle::Type::head : Vehicle::Type::tail;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
-    current->SpriteData.Width = 10;
-    current->SpriteData.HeightMin = 10;
-    current->SpriteData.HeightMax = 10;
+    current->spriteData.width = 10;
+    current->spriteData.heightMin = 10;
+    current->spriteData.heightMax = 10;
     current->mass = 100;
     current->num_seats = 0;
     current->speed = 20;
@@ -52,31 +56,31 @@ Vehicle* CableLiftSegmentCreate(
     current->spin_sprite = 0;
     current->spin_speed = 0;
     current->sound2_flags = 0;
-    current->sound1_id = OpenRCT2::Audio::SoundId::Null;
-    current->sound2_id = OpenRCT2::Audio::SoundId::Null;
+    current->sound1_id = Audio::SoundId::null;
+    current->sound2_id = Audio::SoundId::null;
     current->CollisionDetectionTimer = 0;
     current->animation_frame = 0;
     current->animationState = 0;
-    current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    current->Pitch = 0;
-    current->bank_rotation = 0;
+    current->scream_sound_id = Audio::SoundId::null;
+    current->pitch = VehiclePitch::flat;
+    current->roll = VehicleRoll::unbanked;
     for (auto& peep : current->peep)
     {
         peep = EntityId::GetNull();
     }
-    current->TrackSubposition = VehicleTrackSubposition::Default;
-    current->Orientation = direction << 3;
+    current->TrackSubposition = VehicleTrackSubposition::standard;
+    current->orientation = direction << 3;
 
     z = z * kCoordsZStep;
     current->TrackLocation = { x, y, z };
-    z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
+    z += ride.getRideTypeDescriptor().Heights.VehicleZOffset;
 
-    current->MoveTo({ 16, 16, z });
-    current->SetTrackType(TrackElemType::CableLiftHill);
-    current->SetTrackDirection(current->Orientation >> 3);
+    current->moveTo({ 16, 16, z });
+    current->SetTrackType(TrackElemType::cableLiftHill);
+    current->SetTrackDirection(current->orientation >> 3);
     current->track_progress = 164;
-    current->Flags = VehicleFlags::CollisionDisabled;
-    current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
+    current->flags = { VehicleFlag::collisionDisabled };
+    current->SetState(Vehicle::Status::movingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
     current->BoatLocation.SetNull();
@@ -87,22 +91,22 @@ void Vehicle::CableLiftUpdate()
 {
     switch (status)
     {
-        case Vehicle::Status::MovingToEndOfStation:
+        case Status::movingToEndOfStation:
             CableLiftUpdateMovingToEndOfStation();
             break;
-        case Vehicle::Status::WaitingForPassengers:
+        case Status::waitingForPassengers:
             // Stays in this state until a train puts it into next state
             break;
-        case Vehicle::Status::WaitingToDepart:
+        case Status::waitingToDepart:
             CableLiftUpdateWaitingToDepart();
             break;
-        case Vehicle::Status::Departing:
+        case Status::departing:
             CableLiftUpdateDeparting();
             break;
-        case Vehicle::Status::Travelling:
+        case Status::travelling:
             CableLiftUpdateTravelling();
             break;
-        case Vehicle::Status::Arriving:
+        case Status::arriving:
             CableLiftUpdateArriving();
             break;
         default:
@@ -132,7 +136,7 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
 
     velocity = 0;
     acceleration = 0;
-    SetState(Vehicle::Status::WaitingForPassengers, sub_state);
+    SetState(Status::waitingForPassengers, sub_state);
 }
 
 /**
@@ -157,8 +161,8 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
     // Next check to see if the second part of the cable lift
     // is at the front of the passenger vehicle to simulate the
     // cable being attached underneath the train.
-    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
-    Vehicle* cableLiftSecondPart = GetEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* passengerVehicle = getGameState().entities.GetEntity<Vehicle>(cable_lift_target);
+    Vehicle* cableLiftSecondPart = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
     if (passengerVehicle == nullptr || cableLiftSecondPart == nullptr)
     {
         return;
@@ -172,7 +176,7 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
 
     velocity = 0;
     acceleration = 0;
-    SetState(Vehicle::Status::Departing, 0);
+    SetState(Status::departing, 0);
 }
 
 /**
@@ -185,13 +189,13 @@ void Vehicle::CableLiftUpdateDeparting()
     if (sub_state < 16)
         return;
 
-    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
+    Vehicle* passengerVehicle = getGameState().entities.GetEntity<Vehicle>(cable_lift_target);
     if (passengerVehicle == nullptr)
     {
         return;
     }
-    SetState(Vehicle::Status::Travelling, sub_state);
-    passengerVehicle->SetState(Vehicle::Status::TravellingCableLift, passengerVehicle->sub_state);
+    SetState(Status::travelling, sub_state);
+    passengerVehicle->SetState(Status::travellingCableLift, passengerVehicle->sub_state);
 }
 
 /**
@@ -200,7 +204,7 @@ void Vehicle::CableLiftUpdateDeparting()
  */
 void Vehicle::CableLiftUpdateTravelling()
 {
-    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
+    Vehicle* passengerVehicle = getGameState().entities.GetEntity<Vehicle>(cable_lift_target);
     if (passengerVehicle == nullptr)
     {
         return;
@@ -208,7 +212,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
-    if (passengerVehicle->HasFlag(VehicleFlags::TrainIsBroken))
+    if (passengerVehicle->flags.has(VehicleFlag::trainIsBroken))
         return;
 
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
@@ -216,7 +220,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = 0;
     acceleration = 0;
-    SetState(Vehicle::Status::Arriving, 0);
+    SetState(Status::arriving, 0);
 }
 
 /**
@@ -227,7 +231,7 @@ void Vehicle::CableLiftUpdateArriving()
 {
     sub_state++;
     if (sub_state >= 64)
-        SetState(Vehicle::Status::MovingToEndOfStation, sub_state);
+        SetState(Status::movingToEndOfStation, sub_state);
 }
 
 bool Vehicle::CableLiftUpdateTrackMotionForwards()
@@ -239,7 +243,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::CableLiftHill && track_progress == 160)
+        if (trackType == TrackElemType::cableLiftHill && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
         }
@@ -257,15 +261,15 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
 
-            if (!TrackBlockGetNext(&input, &output, &outputZ, &outputDirection))
+            if (!trackBlockGetNext(&input, &output, &outputZ, &outputDirection))
                 return false;
 
-            if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->AsTrack()->GetTrackType()))
+            if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->asTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output, outputZ };
             SetTrackDirection(outputDirection);
-            SetTrackType(output.element->AsTrack()->GetTrackType());
+            SetTrackType(output.element->asTrack()->GetTrackType());
             trackProgress = 0;
         }
 
@@ -273,27 +277,18 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         const auto moveInfo = GetMoveInfo();
         auto nextVehiclePosition = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
-        uint8_t remainingDistanceFlags = 0;
         nextVehiclePosition.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
-        if (nextVehiclePosition.x != _vehicleCurPosition.x)
-            remainingDistanceFlags |= (1 << 0);
-        if (nextVehiclePosition.y != _vehicleCurPosition.y)
-            remainingDistanceFlags |= (1 << 1);
-        if (nextVehiclePosition.z != _vehicleCurPosition.z)
-            remainingDistanceFlags |= (1 << 2);
 
-        remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
-        _vehicleCurPosition.x = nextVehiclePosition.x;
-        _vehicleCurPosition.y = nextVehiclePosition.y;
-        _vehicleCurPosition.z = nextVehiclePosition.z;
+        remaining_distance -= Geometry::getTranslationDistance(nextVehiclePosition - _vehicleCurPosition, false);
+        _vehicleCurPosition = nextVehiclePosition;
 
-        Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        orientation = moveInfo->yaw;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (remaining_distance >= 13962)
         {
-            acceleration += AccelerationFromPitch[Pitch];
+            acceleration += Geometry::getAccelerationFromPitch(pitch);
         }
     }
     return true;
@@ -317,17 +312,20 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             auto input = CoordsXYE{ TrackLocation, trackElement };
             TrackBeginEnd output;
 
-            if (!TrackBlockGetPrevious(input, &output))
+            if (!trackBlockGetPrevious(input, &output))
                 return false;
 
-            if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->AsTrack()->GetTrackType()))
+            if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->asTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
             SetTrackDirection(output.begin_direction);
-            SetTrackType(output.begin_element->AsTrack()->GetTrackType());
+            SetTrackType(output.begin_element->asTrack()->GetTrackType());
 
-            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
+            // Doesn't check for diagonal block brakes because there is no diagonal cable lift piece,
+            // no way for a cable lift to start from a diagonal brake.
+            if (output.begin_element->asTrack()->GetTrackType() == TrackElemType::endStation
+                || output.begin_element->asTrack()->GetTrackType() == TrackElemType::blockBrakes)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }
@@ -337,29 +335,20 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         }
         track_progress = trackProgress;
         const auto moveInfo = GetMoveInfo();
-        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
+        auto nextVehiclePosition = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
-        uint8_t remainingDistanceFlags = 0;
-        unk.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
-        if (unk.x != _vehicleCurPosition.x)
-            remainingDistanceFlags |= (1 << 0);
-        if (unk.y != _vehicleCurPosition.y)
-            remainingDistanceFlags |= (1 << 1);
-        if (unk.z != _vehicleCurPosition.z)
-            remainingDistanceFlags |= (1 << 2);
+        nextVehiclePosition.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
 
-        remaining_distance += SubpositionTranslationDistances[remainingDistanceFlags];
-        _vehicleCurPosition.x = unk.x;
-        _vehicleCurPosition.y = unk.y;
-        _vehicleCurPosition.z = unk.z;
+        remaining_distance += Geometry::getTranslationDistance(nextVehiclePosition - _vehicleCurPosition, false);
 
-        Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        _vehicleCurPosition = nextVehiclePosition;
+        orientation = moveInfo->yaw;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (remaining_distance < 0)
         {
-            acceleration += AccelerationFromPitch[Pitch];
+            acceleration += Geometry::getAccelerationFromPitch(pitch);
         }
     }
     return true;
@@ -390,14 +379,14 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     for (Vehicle* vehicle = frontVehicle; vehicle != nullptr;)
     {
-        vehicle->acceleration = AccelerationFromPitch[vehicle->Pitch];
+        vehicle->acceleration = Geometry::getAccelerationFromPitch(vehicle->pitch);
         _vehicleUnkF64E10 = 1;
         vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
         if (vehicle->remaining_distance < 0 || vehicle->remaining_distance >= 13962)
         {
-            _vehicleCurPosition = vehicle->GetLocation();
-            vehicle->Invalidate();
+            _vehicleCurPosition = vehicle->getLocation();
+            vehicle->invalidate();
 
             while (true)
             {
@@ -411,7 +400,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                     _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
                     vehicle->remaining_distance = 13962;
-                    vehicle->acceleration += AccelerationFromPitch[vehicle->Pitch];
+                    vehicle->acceleration += Geometry::getAccelerationFromPitch(vehicle->pitch);
                     _vehicleUnkF64E10++;
                     continue;
                 }
@@ -424,21 +413,21 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
                 vehicle->remaining_distance = -1;
-                vehicle->acceleration += AccelerationFromPitch[vehicle->Pitch];
+                vehicle->acceleration += Geometry::getAccelerationFromPitch(vehicle->pitch);
                 _vehicleUnkF64E10++;
             }
-            vehicle->MoveTo(_vehicleCurPosition);
+            vehicle->moveTo(_vehicleCurPosition);
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)
         {
-            vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
             if (vehicle == this)
                 break;
-            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 
@@ -446,8 +435,8 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     uint16_t massTotal = 0;
     int32_t accelerationTotal = 0;
 
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicleCount++;
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,11 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../../world/tile_element/TileElement.h"
@@ -20,11 +20,10 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
-static constexpr BoundBoxXY CrookedHouseData[] = {
+static constexpr BoundBoxXY kCrookedHouseData[] = {
     {
         { 6, 0 },
         { 42, 24 },
@@ -59,31 +58,32 @@ static void PaintCrookedHouseStructure(
     if (tileElement == nullptr)
         return;
 
-    auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
+    auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
     if (ride == nullptr)
         return;
 
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride->getRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride->flags.has(RideFlag::onTrack))
     {
-        auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+        auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::Entity;
+            session.InteractionType = ViewportInteractionItem::entity;
             session.CurrentlyDrawnEntity = vehicle;
         }
     }
 
-    const auto& boundBox = CrookedHouseData[segment];
-    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
+    const auto& boundBox = kCrookedHouseData[segment];
+    auto imageIndex = rideEntry->Cars[0].baseImageId + direction;
     PaintAddImageAsParent(
         session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
         { { boundBox.offset, height + 3 }, { boundBox.length, 127 } });
 
     session.CurrentlyDrawnEntity = nullptr;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintCrookedHouse(
@@ -95,11 +95,11 @@ static void PaintCrookedHouse(
     int32_t edges = kEdges3x3[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesMulch, stationObject);
 
     TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
@@ -124,20 +124,19 @@ static void PaintCrookedHouse(
     {
         case 1:
             // Top
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
             break;
         case 3:
             // Right
-            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
             break;
         case 6:
             // Left
-            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
             break;
         case 7:
             // Bottom
-            cornerSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -146,9 +145,9 @@ static void PaintCrookedHouse(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TrackPaintFunction GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCrookedHouse(TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::flatTrack3x3)
     {
         return TrackPaintFunctionDummy;
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,6 @@
     #include <unicode/ubidi.h>
     #include <unicode/unistr.h>
     #include <unicode/ushape.h>
-    #include <unicode/ustring.h>
-    #include <unicode/utf.h>
     #include <unicode/utypes.h>
 
 std::string FixRTL(std::string& input)

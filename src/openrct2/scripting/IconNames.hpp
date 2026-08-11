@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,15 +9,15 @@
 
 #pragma once
 
+#include "../SpriteIds.h"
 #include "../core/EnumMap.hpp"
-#include "../sprites.h"
 
 #include <map>
 #include <string>
 
 namespace OpenRCT2::Scripting
 {
-    // When adding to this map, also add to IconName in openrct2.d.ts
+    // When adding to this map, also add to IconName in distribution/scripting/openrct2.d.ts
 
     static EnumMap<uint32_t> SpriteLookupTable = {
         // G1 Icons
@@ -169,6 +169,14 @@ namespace OpenRCT2::Scripting
         { "selection_edge_se", SPR_G2_SELECTION_EDGE_SE },
         { "palette_invisible", SPR_G2_ICON_PALETTE_INVISIBLE },
         { "palette_invisible_pressed", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED },
+        { "palette_large", SPR_G2_ICON_PALETTE_LARGE },
+        { "palette_pressed_large", SPR_G2_ICON_PALETTE_PRESSED_LARGE },
+        { "palette_invisible_large", SPR_G2_ICON_PALETTE_INVISIBLE_LARGE },
+        { "palette_invisible_pressed_large", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED_LARGE },
+        { "monitor_start", SPR_G2_MONITOR_TAB_START },
+        { "monitor_end", SPR_G2_MONITOR_TAB_END },
+        { "path_additions", SPR_G2_BUTTON_PATH_ADDITIONS },
+        { "walls", SPR_G2_BUTTON_WALLS },
     };
 
     // Maps legacy G2 icons sprite indices to new sprite indices

@@ -7,15 +7,18 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Michał Janiszewski (janisozaur) - Programming
 * Hielke Morsink (Broxzier) - Programming
 * Tulio Paschoalin Leao (tupaschoal) - Programming
-* Olivier Wervers (Oli414) - Lead OpenGraphics - Programming
-* Matthias Moninger (ZehMatt) - Programming
 * Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
 * Michael Bernardi (mrmbernardi) - Programming
 * Michael Steenbeek (Gymnasiast) - Lead Localisation - Programming
 * Aaron van Geffen (AaronVanGeffen) - Programming
+* Joshua Jacobs (leicestersquare) - Graphic Artist
 
 ## Support team
-* Kenton Boadway (Krutonium) - Lead OpenScenarios
+* Kelson Blakewood (spacek531) - QA, Programming
+* (ZeeMaji) - QA, objects
+* Bas Cantrijn (Basssiiie) - QA, plugins
+* (Kyphii) - Lead OpenScenarios
+* Kenton Boadway (Krutonium) - Discord moderation
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -23,17 +26,19 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Rik Smeets (rik-smeets)
+* Olivier Wervers (Oli414)
+* Matthias Moninger (ZehMatt)
 
 ## Long term contributors
 Appreciation for long term contributors to the project having provided substantial work.
 * Edward Calver (X7123M3-256)
-* Kelson Blakewood (spacek531)
-* (frutiemax)
+* (mixiate)
 
 ## Special Thanks
 Appreciation for contributors who have provided substantial work, but are no longer active.
 * Joe Minor Jr (wolfreak99)
 * Matte Andersson (Nubbie)
+* (frutiemax)
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)
@@ -89,7 +94,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Brian Callahan (ibara) - OpenBSD port.
 * Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
 * Park Joon-Kyu (segfault87) - Allow filtering guests by name
-* Harrison Gentry (hgentry) - Date-changing command, misc.
+* Rachael Arbor (rarbor-old) - Date-changing command, misc.
 * Joshua Moerman (Jaxan) - Minimap cleanup, misc.
 * Nicolas Hawrysh (xp4xbox) - Various (ride) sprite improvements.
 * Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
@@ -123,6 +128,8 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * John Dolph (johnwdolph) - Ride music UI, misc.
 * Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls.
 * Kendall Frey (kendfrey) - Add plugin API for spawning guests
+* Marino Rottier (rinode) - Plugin API & UI
+* Ben Spurlock (BenDaSpur) - Plugin API automation helpers
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
@@ -247,14 +254,26 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Robert Yan (lewyche)
 * Tom Matalenas (tmatale)
 * Brendan Heinonen (staticinvocation)
+* (QuestionableDeer)
+* David Sungaila (sungaila)
+* Garrett Leach (GarrettLeach)
+* Ruohao (Jater) Xu (jaterx)
+* Marcel Vos (MarcelVos96)
+* Jonas Doggart
+* (pg805)
+* Sjoerd de Bruin (sjoerddebruin)
+* Alex Harvey (loonyduck1)
+* Daniel Rödl (danielroedl)
+* Michael Hlas (mhlas7)
+* (byteraidhost)
+* Ray (RayKoopa)
 
 ## Toolchain
 * (Balletie) - macOS
 * Kevin Burke (kevinburke) - macOS, Unix
 * Miso Zmiric (mzmiric5) - Initial macOS toolchain
-* Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
-* Michał Janiszewski (janisozaur) - Linux, Travis CI
+* Michał Janiszewski (janisozaur) - Linux, CI
 * Lewis Fox (LRFLEW) - macOS
 * Andrew Rimpici (Andy608) - macOS
 * Adam Bloom (adam-bloom) - macOS, CI
@@ -268,6 +287,8 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Mithun Hunsur (Philpax)
 * (RollingStar)
 * (That Human Being)
+* Alex Marck (ATMarcks)
+* Michael Steenbeek (Gymnasiast)
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
@@ -280,20 +301,22 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Catalan - Joan Josep (J0anJosep)
 * Chinese (Simplified) - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30), (Muhhan), Arnold Zhou (mrmagic2020)
 * Chinese (Traditional) - Harry Lam (daihakken)
-* Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
+* Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap), Ríša Szlachta (tygrysek90)
 * Danish - Lars P. Sørensen (LPSGizmo)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic), Karst van Galen Last (AuraSpecs); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon)
 * Esperanto - (tellovishous), Raymond Zhao (rzhao271)
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rmnvgr), (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
+* Galician - (ninjum)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie), Gilian Rehm (gr33ndev)
+* Hungarian - (anon569)
 * Italian - Luca Andrea Rossi (LucaRed), Precious Ugo Abara (48cfu)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Haruna Chinzei, Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - Willem J. Lee (telk5093), (NeverDruid); small fixes: (kexplo)
 * Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
-* Russian - (Soosisya)
+* Russian - (Soosisya), (andOlga)
 * Spanish - Josué Acevedo (Wirlie), Diego Mateos (dimateos), (frenchiveruti), (mdtrooper), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 * Ukrainian - (CsyeCokTheSolly), (Veydzher), (Saba4ara)

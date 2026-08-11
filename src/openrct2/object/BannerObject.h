@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,27 +9,29 @@
 
 #pragma once
 
-#include "../core/IStream.hpp"
 #include "BannerSceneryEntry.h"
 #include "SceneryObject.h"
 
-class BannerObject final : public SceneryObject
+namespace OpenRCT2
 {
-private:
-    BannerSceneryEntry _legacyType = {};
-
-public:
-    static constexpr ObjectType kObjectType = ObjectType::Banners;
-
-    void* GetLegacyData() override
+    class BannerObject final : public SceneryObject
     {
-        return &_legacyType;
-    }
+    private:
+        BannerSceneryEntry _legacyType = {};
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::banners;
 
-    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
-};
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
+
+        void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
+    };
+} // namespace OpenRCT2

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,18 +8,23 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/Drawing.String.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Font.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowDebugPaintWidgetIdx
+    enum WindowDebugPaintWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TOGGLE_SHOW_WIDE_PATHS,
@@ -28,21 +33,21 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOGGLE_SHOW_BOUND_BOXES,
         WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
         WIDX_TOGGLE_STABLE_PAINT_SORT,
+        WIDX_TOGGLE_FORCE_REDRAW,
     };
 
-    constexpr int32_t WINDOW_WIDTH = 200;
-    constexpr int32_t WINDOW_HEIGHT = 8 + (15 * 6) + 8;
+    static constexpr ScreenSize kWindowSize = { 200, 8 + (15 * 7) + 8 };
 
     // clang-format off
-    static Widget window_debug_paint_widgets[] = {
-        MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
-        MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
-        MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
-        MakeWidget({8, 8 + 15 * 2}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
-        MakeWidget({8, 8 + 15 * 3}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
-        MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
-        MakeWidget({8, 8 + 15 * 5}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_STABLE_SORT  ),
-        kWidgetsEnd,
+    static constexpr Widget window_debug_paint_widgets[] = {
+        makeWidget({0,          0}, kWindowSize,                   WidgetType::frame,    WindowColour::primary                                        ),
+        makeWidget({8, 8 + 15 * 0}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
+        makeWidget({8, 8 + 15 * 1}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
+        makeWidget({8, 8 + 15 * 2}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
+        makeWidget({8, 8 + 15 * 3}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
+        makeWidget({8, 8 + 15 * 4}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
+        makeWidget({8, 8 + 15 * 5}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_STABLE_SORT  ),
+        makeWidget({8, 8 + 15 * 6}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_FORCE_REDRAW  ),
     };
     // clang-format on
 
@@ -52,20 +57,20 @@ namespace OpenRCT2::Ui::Windows
         int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            widgets = window_debug_paint_widgets;
+            setWidgets(window_debug_paint_widgets);
 
-            InitScrollWidgets();
+            initScrollWidgets();
             WindowPushOthersBelow(*this);
 
-            colours[0] = ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::translucent, true);
-            colours[1] = COLOUR_GREY;
+            colours[0] = ColourWithFlags{ Drawing::Colour::black }.withFlag(ColourFlag::translucent, true);
+            colours[1] = Drawing::Colour::grey;
 
             ResizeLanguage = LANGUAGE_UNDEFINED;
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -98,17 +103,22 @@ namespace OpenRCT2::Ui::Windows
                     gPaintStableSort = !gPaintStableSort;
                     GfxInvalidateScreen();
                     break;
+
+                case WIDX_TOGGLE_FORCE_REDRAW:
+                    gPaintForceRedraw = !gPaintForceRedraw;
+                    GfxInvalidateScreen();
+                    break;
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+            const auto& ls = GetContext()->GetLocalisationService();
             const auto currentLanguage = ls.GetCurrentLanguage();
             if (ResizeLanguage != currentLanguage)
             {
                 ResizeLanguage = currentLanguage;
-                Invalidate();
+                invalidate();
 
                 // Find the width of the longest string
                 int16_t newWidth = 0;
@@ -118,7 +128,7 @@ namespace OpenRCT2::Ui::Windows
                     const auto& stringIdx = widgets[widgetIndex].text;
                     auto string = ls.GetString(stringIdx);
                     Guard::ArgumentNotNull(string);
-                    const auto strWidth = GfxGetStringWidth(string, FontStyle::Medium);
+                    const auto strWidth = Drawing::getStringWidth(string, FontStyle::medium);
                     newWidth = std::max<int16_t>(strWidth, newWidth);
                 }
 
@@ -126,8 +136,8 @@ namespace OpenRCT2::Ui::Windows
                 newWidth += 8 * 2 + 15;
 
                 width = newWidth;
-                max_width = newWidth;
-                min_width = newWidth;
+                maxWidth = newWidth;
+                minWidth = newWidth;
                 widgets[WIDX_BACKGROUND].right = newWidth - 1;
                 widgets[WIDX_TOGGLE_SHOW_WIDE_PATHS].right = newWidth - 8;
                 widgets[WIDX_TOGGLE_SHOW_BLOCKED_TILES].right = newWidth - 8;
@@ -135,28 +145,30 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
                 widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
 
-                Invalidate();
+                invalidate();
             }
 
-            WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
-            WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
-            WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
-            WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
-            WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
-            WidgetSetCheckboxValue(*this, WIDX_TOGGLE_STABLE_PAINT_SORT, gPaintStableSort);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+            setCheckboxValue(WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+            setCheckboxValue(WIDX_TOGGLE_STABLE_PAINT_SORT, gPaintStableSort);
+            setCheckboxValue(WIDX_TOGGLE_FORCE_REDRAW, gPaintForceRedraw);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            drawWidgets(rt);
         }
     };
 
     WindowBase* DebugPaintOpen()
     {
-        auto* window = WindowFocusOrCreate<DebugPaintWindow>(
-            WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
+            WindowClass::debugPaint, { 16, ContextGetHeight() - 16 - 33 - kWindowSize.height }, kWindowSize,
+            { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noTitleBar });
 
         return window;
     }

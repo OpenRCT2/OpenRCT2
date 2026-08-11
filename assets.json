@@ -1,0 +1,22 @@
+{
+  "objects": {
+    "url": "https://github.com/OpenRCT2/objects/releases/download/v1.7.11/objects.zip",
+    "sha256": "74e73bbd012339511bb359dd0fbb148fda899790ae37d7d69861d88183b19452"
+  },
+  "openmusic": {
+    "url": "https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6.1/openmusic.zip",
+    "sha256": "994b350d3b180ee1cb9619fe27f7ebae3a1a5232840c4bd47a89f33fa89de1a1"
+  },
+  "opensfx": {
+    "url": "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.6/opensound.zip",
+    "sha256": "06b90f3e19c216752df441d551b26a9e3e1ba7755bdd2102504b73bf993608be"
+  },
+  "title-sequences": {
+    "url": "https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.26/title-sequences.zip",
+    "sha256": "dabb9787b1576342fca4dd9f64b3f8cfa04a7e6ce9c2bb9610f47b762905c858"
+  },
+  "replays": {
+    "url": "https://github.com/OpenRCT2/replays/releases/download/v0.0.97/replays.zip",
+    "sha256": "c32c93fea479c61e8ccf9f7afe09541680a6383360f39cd67420c24d7f739490"
+  }
+}

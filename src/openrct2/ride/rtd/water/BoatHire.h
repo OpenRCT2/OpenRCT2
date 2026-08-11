@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,70 +9,75 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor BoatHireRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_WATER,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+constexpr RideTypeDescriptor kBoatHireRTD =
+{
+    .Category = RideCategory::water,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::boatHire,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::sBend},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::trackMustBeOnWater,
+    .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::trackMustBeOnWater,
                      RtdFlag::noTestMode, RtdFlag::hasLoadOptions, RtdFlag::hasVehicleColours, RtdFlag::checkForStalling,
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit),
-    .RideModes = EnumsToFlags(RideMode::BoatHire),
-    .DefaultMode = RideMode::BoatHire,
+    .RideModes = EnumsToFlags(RideMode::boatHire),
+    .DefaultMode = RideMode::boatHire,
+    .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
-    .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
-    .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .NameConvention = { RideComponentType::boat, RideComponentType::dockingPlatform, RideComponentType::dockingPlatform },
+    .availableBreakdowns = { Breakdown::vehicleMalfunction },
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 70, 6, 0 },
     .UpkeepCosts = { 50, 1, 0, 4, 0, 0 },
     .BuildCosts = { 27.50_GBP, 0.00_GBP, 5, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectWater,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_MOSS_GREEN, COLOUR_MOSS_GREEN, COLOUR_WHITE },
-        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_DARK_GREEN },
-        { COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN, COLOUR_YELLOW },
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED },
-        { COLOUR_ICY_BLUE, COLOUR_ICY_BLUE, COLOUR_ICY_BLUE },
-        { COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN },
-        { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_DARK_BLUE },
-        { COLOUR_BRIGHT_PURPLE, COLOUR_BRIGHT_PURPLE, COLOUR_WHITE },
-        { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_YELLOW },
-        { COLOUR_DARK_WATER, COLOUR_DARK_WATER, COLOUR_DARK_GREEN },
+        { Drawing::Colour::mossGreen, Drawing::Colour::mossGreen, Drawing::Colour::white },
+        { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::darkGreen },
+        { Drawing::Colour::lightBrown, Drawing::Colour::lightBrown, Drawing::Colour::yellow },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::icyBlue, Drawing::Colour::icyBlue, Drawing::Colour::icyBlue },
+        { Drawing::Colour::lightBrown, Drawing::Colour::lightBrown, Drawing::Colour::lightBrown },
+        { Drawing::Colour::lightBlue, Drawing::Colour::lightBlue, Drawing::Colour::darkBlue },
+        { Drawing::Colour::brightPurple, Drawing::Colour::brightPurple, Drawing::Colour::white },
+        { Drawing::Colour::brightYellow, Drawing::Colour::brightYellow, Drawing::Colour::yellow },
+        { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "boat_hire",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 90), RIDE_RATING(0, 80), RIDE_RATING(0, 90) },
+        RatingsCalculationType::normal,
+        { RideRating::make(1, 90), RideRating::make(0, 80), RideRating::make(0, 90) },
         7,
         0,
         false,
         {
-            { RatingsModifierType::BonusBoatHireNoCircuit, 0, RIDE_RATING(0, 20), 0, 0 },
-            { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
-            { RatingsModifierType::BonusScenery,           0, 22310, 0, 0 },
+            { RatingsModifierType::bonusBoatHireNoCircuit, 0, RideRating::make(0, 20), 0, 0 },
+            { RatingsModifierType::bonusProximity,         0, 11183, 0, 0 },
+            { RatingsModifierType::bonusScenery,           0, 22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
+    .specialType = RtdSpecialType::boatHire,
 };
+} // namespace OpenRCT2
 // clang-format on

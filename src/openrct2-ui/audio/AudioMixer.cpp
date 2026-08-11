@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,6 @@
 #include <iterator>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
-#include <speex/speex_resampler.h>
 
 using namespace OpenRCT2::Audio;
 
@@ -39,10 +38,10 @@ void AudioMixer::Init(const char* device)
     want.userdata = this;
 
     SDL_AudioSpec have;
-    _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
-    _format.format = have.format;
-    _format.channels = have.channels;
-    _format.freq = have.freq;
+    _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_SAMPLES_CHANGE);
+    _outputFormat.format = have.format;
+    _outputFormat.channels = have.channels;
+    _outputFormat.freq = have.freq;
 
     SDL_PauseAudioDevice(_deviceId, 0);
 }
@@ -121,9 +120,10 @@ void AudioMixer::RemoveReleasedSources()
 
 const AudioFormat& AudioMixer::GetFormat() const
 {
-    return _format;
+    return _outputFormat;
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
 {
     UpdateAdjustedSound();
@@ -146,8 +146,8 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
         else
         {
             auto group = channel->GetGroup();
-            if ((group != MixerGroup::Sound || Config::Get().sound.SoundEnabled) && Config::Get().sound.MasterSoundEnabled
-                && Config::Get().sound.MasterVolume != 0)
+            if ((group != MixerGroup::sound || Config::Get().sound.soundEnabled) && Config::Get().sound.masterSoundEnabled
+                && Config::Get().sound.masterVolume != 0)
             {
                 MixChannel(channel.get(), dst, length);
             }
@@ -156,27 +156,29 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::UpdateAdjustedSound()
 {
     // Did the volume level get changed? Recalculate level in this case.
-    if (_settingSoundVolume != Config::Get().sound.SoundVolume)
+    if (_settingSoundVolume != Config::Get().sound.soundVolume)
     {
-        _settingSoundVolume = Config::Get().sound.SoundVolume;
+        _settingSoundVolume = Config::Get().sound.soundVolume;
         _adjustSoundVolume = powf(static_cast<float>(_settingSoundVolume) / 100.f, 10.f / 6.f);
     }
-    if (_settingMusicVolume != Config::Get().sound.AudioFocus)
+    if (_settingMusicVolume != Config::Get().sound.rideMusicVolume)
     {
-        _settingMusicVolume = Config::Get().sound.AudioFocus;
+        _settingMusicVolume = Config::Get().sound.rideMusicVolume;
         _adjustMusicVolume = powf(static_cast<float>(_settingMusicVolume) / 100.f, 10.f / 6.f);
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t length)
 {
-    int32_t byteRate = _format.GetByteRate();
-    auto numSamples = static_cast<int32_t>(length / byteRate);
+    int32_t outputByteRate = _outputFormat.GetByteRate();
+    auto numSamples = static_cast<int32_t>(length / outputByteRate);
     double rate = 1;
-    if (_format.format == AUDIO_S16SYS)
+    if (_outputFormat.format == AUDIO_S16SYS)
     {
         rate = channel->GetRate();
     }
@@ -185,11 +187,11 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     SDL_AudioCVT cvt;
     cvt.len_ratio = 1;
     AudioFormat streamformat = channel->GetFormat();
-    if (streamformat != _format)
+    if (streamformat != _outputFormat)
     {
         if (SDL_BuildAudioCVT(
-                &cvt, streamformat.format, streamformat.channels, streamformat.freq, _format.format, _format.channels,
-                _format.freq)
+                &cvt, streamformat.format, streamformat.channels, streamformat.freq, _outputFormat.format,
+                _outputFormat.channels, _outputFormat.freq)
             == -1)
         {
             // Unable to convert channel data
@@ -200,7 +202,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 
     // Read raw PCM from channel
     int32_t readSamples = numSamples * rate;
-    auto readLength = static_cast<size_t>(readSamples / cvt.len_ratio) * byteRate;
+    auto readLength = static_cast<size_t>(ceil(readSamples / cvt.len_ratio)) * outputByteRate;
     _channelBuffer.resize(readLength);
     size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
 
@@ -228,61 +230,92 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     // Apply effects
     if (rate != 1)
     {
-        auto inRate = static_cast<int32_t>(bufferLen / byteRate);
+        auto inRate = static_cast<int32_t>(bufferLen / outputByteRate);
         int32_t outRate = numSamples;
         if (bytesRead != readLength)
         {
-            inRate = _format.freq;
-            outRate = _format.freq * (1 / rate);
+            inRate = _outputFormat.freq;
+            outRate = _outputFormat.freq * (1 / rate);
         }
         _effectBuffer.resize(length);
-        bufferLen = ApplyResample(channel, buffer, static_cast<int32_t>(bufferLen / byteRate), numSamples, inRate, outRate);
+        bufferLen = ApplyResample(buffer, static_cast<int32_t>(bufferLen / outputByteRate), numSamples, inRate, outRate);
         buffer = _effectBuffer.data();
     }
 
     // Apply panning and volume
-    ApplyPan(channel, buffer, bufferLen, byteRate);
+    ApplyPan(channel, buffer, bufferLen, outputByteRate);
     int32_t mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
     // Finally mix on to destination buffer
     size_t dstLength = std::min(length, bufferLen);
-    SDL_MixAudioFormat(data, static_cast<const uint8_t*>(buffer), _format.format, static_cast<uint32_t>(dstLength), mixVolume);
+    SDL_MixAudioFormat(
+        data, static_cast<const uint8_t*>(buffer), _outputFormat.format, static_cast<uint32_t>(dstLength), mixVolume);
 
     channel->UpdateOldVolume();
 }
 
 /**
  * Resample the given buffer into _effectBuffer.
- * Assumes that srcBuffer is the same format as _format.
+ * Assumes that srcBuffer is the same format as _outputFormat.
+ *
+ * TODO: investigate replacing this with OpenAL (#26035)
  */
-size_t AudioMixer::ApplyResample(
-    ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
+size_t AudioMixer::ApplyResample(const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate, int32_t outRate)
 {
-    int32_t byteRate = _format.GetByteRate();
+    // Prevent buffer underread in inner loop
+    if (srcSamples < 2)
+        return 0;
 
-    // Create resampler
-    SpeexResamplerState* resampler = channel->GetResampler();
-    if (resampler == nullptr)
+    const int channels = _outputFormat.channels;
+    const int bytesPerFrame = channels * sizeof(int16_t);
+
+    const int16_t* src = static_cast<const int16_t*>(srcBuffer);
+    int16_t* dst = reinterpret_cast<int16_t*>(_effectBuffer.data());
+
+    double ratio = static_cast<double>(inRate) / static_cast<double>(outRate);
+
+    for (int32_t i = 0; i < dstSamples; ++i)
     {
-        resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, nullptr);
-        channel->SetResampler(resampler);
+        double srcPos = i * ratio;
+        int32_t index = static_cast<int32_t>(srcPos);
+        double frac = srcPos - index;
+
+        // Clamp to avoid reading past end
+        if (index >= srcSamples - 1)
+        {
+            index = srcSamples - 2;
+            frac = 1.0;
+        }
+
+        for (int ch = 0; ch < channels; ++ch)
+        {
+            int32_t baseIndex = index * channels + ch;
+
+            int16_t s1 = src[baseIndex];
+            int16_t s2 = src[baseIndex + channels];
+
+            // Linear interpolation
+            double sample = (1.0 - frac) * s1 + frac * s2;
+
+            // Clamp to int16 range
+            if (sample > 32767.0)
+                sample = 32767.0;
+            if (sample < -32768.0)
+                sample = -32768.0;
+
+            dst[i * channels + ch] = static_cast<int16_t>(sample);
+        }
     }
-    speex_resampler_set_rate(resampler, inRate, outRate);
 
-    uint32_t inLen = srcSamples;
-    uint32_t outLen = dstSamples;
-    speex_resampler_process_interleaved_int(
-        resampler, static_cast<const spx_int16_t*>(srcBuffer), &inLen, reinterpret_cast<spx_int16_t*>(_effectBuffer.data()),
-        &outLen);
-
-    return outLen * byteRate;
+    return dstSamples * bytesPerFrame;
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len, size_t sampleSize)
 {
-    if (channel->GetPan() != 0.5f && _format.channels == 2)
+    if (channel->GetPan() != 0.5f && _outputFormat.channels == 2)
     {
-        switch (_format.format)
+        switch (_outputFormat.format)
         {
             case AUDIO_S16SYS:
                 EffectPanS16(channel, static_cast<int16_t*>(buffer), static_cast<int32_t>(len / sampleSize));
@@ -294,25 +327,26 @@ void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len)
 {
     float volumeAdjust = _volume;
-    volumeAdjust *= Config::Get().sound.MasterSoundEnabled ? (static_cast<float>(Config::Get().sound.MasterVolume) / 100.0f)
+    volumeAdjust *= Config::Get().sound.masterSoundEnabled ? (static_cast<float>(Config::Get().sound.masterVolume) / 100.0f)
                                                            : 0.0f;
 
     switch (channel->GetGroup())
     {
-        case MixerGroup::Sound:
+        case MixerGroup::sound:
             volumeAdjust *= _adjustSoundVolume;
 
             // Cap sound volume on title screen so music is more audible
-            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            if (gLegacyScene == LegacyScene::titleSequence)
             {
                 volumeAdjust = std::min(volumeAdjust, 0.75f);
             }
             break;
-        case MixerGroup::RideMusic:
-        case MixerGroup::TitleMusic:
+        case MixerGroup::rideMusic:
+        case MixerGroup::titleMusic:
             volumeAdjust *= _adjustMusicVolume;
             break;
     }
@@ -331,8 +365,8 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
         mixVolume = kMixerVolumeMax;
 
         // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-        int32_t fadeLength = static_cast<int32_t>(len) / _format.BytesPerSample();
-        switch (_format.format)
+        int32_t fadeLength = static_cast<int32_t>(len) / _outputFormat.BytesPerSample();
+        switch (_outputFormat.format)
         {
             case AUDIO_S16SYS:
                 EffectFadeS16(static_cast<int16_t*>(buffer), fadeLength, startVolume, endVolume);
@@ -345,6 +379,7 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
     return mixVolume;
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectPanS16(const IAudioChannel* channel, int16_t* data, int32_t length)
 {
     const float dt = 1.0f / static_cast<float>(length * 2.0f);
@@ -362,6 +397,7 @@ void AudioMixer::EffectPanS16(const IAudioChannel* channel, int16_t* data, int32
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectPanU8(const IAudioChannel* channel, uint8_t* data, int32_t length)
 {
     float volumeL = channel->GetVolumeL();
@@ -377,6 +413,7 @@ void AudioMixer::EffectPanU8(const IAudioChannel* channel, uint8_t* data, int32_
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
     static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");
@@ -390,6 +427,7 @@ void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolum
     }
 }
 
+// TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectFadeU8(uint8_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
     static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");

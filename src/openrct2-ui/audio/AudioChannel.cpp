@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <cmath>
 #include <openrct2/audio/AudioSource.h>
-#include <speex/speex_resampler.h>
 
 namespace OpenRCT2::Audio
 {
@@ -25,9 +24,8 @@ namespace OpenRCT2::Audio
 
     private:
         AudioSource_* _source = nullptr;
-        SpeexResamplerState* _resampler = nullptr;
 
-        MixerGroup _group = MixerGroup::Sound;
+        MixerGroup _group = MixerGroup::sound;
         double _rate = 0;
         uint64_t _offset = 0;
         int32_t _loop = 0;
@@ -52,28 +50,9 @@ namespace OpenRCT2::Audio
             AudioChannelImpl::SetPan(0.5f);
         }
 
-        ~AudioChannelImpl() override
-        {
-            if (_resampler != nullptr)
-            {
-                speex_resampler_destroy(_resampler);
-                _resampler = nullptr;
-            }
-        }
-
         [[nodiscard]] IAudioSource* GetSource() const override
         {
             return _source;
-        }
-
-        [[nodiscard]] SpeexResamplerState* GetResampler() const override
-        {
-            return _resampler;
-        }
-
-        void SetResampler(SpeexResamplerState* value) override
-        {
-            _resampler = value;
         }
 
         [[nodiscard]] MixerGroup GetGroup() const override
@@ -254,7 +233,7 @@ namespace OpenRCT2::Audio
                 size_t readLen = _source->Read(dst, _offset, bytesToRead);
                 if (readLen > 0)
                 {
-                    dst = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(dst) + readLen);
+                    dst = static_cast<void*>(static_cast<uint8_t*>(dst) + readLen);
                     bytesToRead -= readLen;
                     bytesRead += readLen;
                     _offset += readLen;

@@ -32,12 +32,9 @@ STR_0027    :السيارات المتصادمة
 STR_0028    :سفينة القراصنة
 STR_0029    :سفينة متأرجحة عكسية
 STR_0030    :كشك الطعام
-STR_0031    :كشك غير معروف (1D)
 STR_0032    :كشك الشرب
-STR_0033    :كشك غير معروف (1F)
 STR_0034    :متجر
 STR_0035    :أفعوانية الخيل
-STR_0036    :كشك غير معروف (22)
 STR_0037    :منصة المعلومات
 STR_0038    :غرفة الإستراحة
 STR_0039    :عجلة فيريس
@@ -83,16 +80,10 @@ STR_0078    :إفعوانية منعطفه حاده معكوسة
 STR_0079    :السجادة السحرية
 STR_0080    :رحلة بالغواصة
 STR_0081    :طوافات النهر
-STR_0082    :رحلة غير معروفة (50)
 STR_0083    :مغامرة
-STR_0084    :رحلة غير معروفة (52)
-STR_0085    :رحلة غير معروفة (53)
-STR_0086    :رحلة غير معروفة (54)
-STR_0087    :رحلة غير معروفة (55)
 STR_0088    :إفعوانية دافعة معكوسة
 STR_0089    :إفعوانية دائرية مصغرة
 STR_0090    :رحلة مصغرة
-STR_0091    :رحلة غير معروفة (59)
 STR_0092    :LIM أفعوانية مُطلقة بواسطة
 STR_0093    :أفعوانية هجينة
 STR_0094    :أفعوانية سكة حديدية مفردة
@@ -245,7 +236,6 @@ STR_0832    :تدوير المشهد 90 ° بإتجاه عقارب الساعة
 STR_0833    :إيقاف اللعبة مؤقتاً
 STR_0834    :إعدادات اللعبة والهارد
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :‘OpenRCT2’ عن
 STR_0850    :{WINDOW_COLOUR_2}حقوق النشر © 2002 كريس سوير، كل الحقوق محفوظة
@@ -257,16 +247,6 @@ STR_0855    :{WINDOW_COLOUR_2}إعادة التقديم بواسطة جاكي ل
 STR_0856    :{WINDOW_COLOUR_2}شكراً إلي:
 STR_0857    :{WINDOW_COLOUR_2}بيتر جيمس أدكوك، جو بوث، وجون واردلي
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :!منخفض للغاية
 STR_0878    :!مرتفع للغاية
@@ -285,7 +265,7 @@ STR_0892    :‘{STRINGID}’ لقطة شاشة حفظت للهارد بـ
 STR_0893    :!فشل لقطة الشاشة
 STR_0894    :!بيانات منطقة المشهد ممتلئة
 STR_0895    :لا يمكن البناء بجزء في الأعلي وجزء في الأسفل
-STR_0896    :{POP16}{POP16}{STRINGID} البناء
+STR_0896    :{STRING} البناء
 STR_0897    :الإتجاه
 STR_0898    :Left-hand curve
 STR_0899    :Right-hand curve
@@ -410,8 +390,6 @@ STR_1018    :لا يمكن إجراء التغيير…
 STR_1019    :ا يمكن إجراء التغيير…
 STR_1020    :ا يمكن إجراء التغيير…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} سيارة لكل قطر
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} سيارات لكل قطر
 STR_1024    :{COMMA16} سيارة لكل قطار
 STR_1025    :{COMMA16} سيارات لكل قطار
 STR_1026    :!منصة المحطة بعيدة للغاية
@@ -520,9 +498,7 @@ STR_1128    :Stopped by block brakes
 STR_1129    :كل المركبات بنفس اللون
 STR_1130    :ألوان مختلفة لكل {STRINGID}
 STR_1131    :ألوان مختلفة لكل مركبة
-STR_1132    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}المركبة
-STR_1133    :{POP16}{COMMA16}المركبة
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :{COMMA16}المركبة
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :حدد الون الأساسي
 STR_1137    :حدد اللون الأضافي 1
@@ -544,8 +520,8 @@ STR_1152    :أي حمل
 STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :…لا يمكن مسح هذا
 STR_1159    :Place scenery, gardens, and other accessories
 STR_1160    :Create/adjust lakes & water
@@ -560,7 +536,6 @@ STR_1168    :الإعدادات
 STR_1169    :(لا شئ)
 STR_1170    :{STRING}
 STR_1171    :{RED} مغلق 
-STR_1172    :{YELLOW}{STRINGID} 
 STR_1173    : ابني ممشي وخطوط إنتظار
 STR_1174    :Banner sign in the way
 STR_1175    :Can’t build this on sloped footpath
@@ -719,7 +694,6 @@ STR_1327    :أدر العنصر 90°
 STR_1328    :Level land required
 STR_1329    :{WINDOW_COLOUR_2}سرعة الإطلاق:
 STR_1330    :أقصي سرعة عند مغادرة المحطة
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -817,7 +791,6 @@ STR_1425    :خطوات أقدام
 STR_1426    :طابور إنتظار
 STR_1427    :{WINDOW_COLOUR_2}العملاء: {BLACK}{COMMA32} بالساعة
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :حر
 STR_1431    :يمشي
 STR_1432    :يتجه لـ {STRINGID}
@@ -1061,7 +1034,6 @@ STR_1671    :{WINDOW_COLOUR_2}الربح الكلي: {BLACK}{CURRENCY2DP}
 STR_1672    :فرامل
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :سرعة الفرملة
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :حدد السرعة القصوي للفرملة
 STR_1677    :{WINDOW_COLOUR_2}الشهرة: {BLACK}غير معروف
 STR_1678    :{WINDOW_COLOUR_2}الشهرة: {BLACK}{COMMA16}%
@@ -1117,23 +1089,19 @@ STR_1727    :حقوق الإنشاء ليست للبيع!
 STR_1728    :لا يمكنك شراء حقوق البناء هُنا
 STR_1729    :الأرض ليست مملوكة للحديقة!
 STR_1730    :{RED}مغلقة 
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :بناء
 STR_1733    :الوضع
 STR_1734    :{WINDOW_COLOUR_2}عدد اللفات:
 STR_1735    :Number of laps of circuit
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Can’t change number of laps…
 STR_1739    :السباق فاز به الزائر {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :لم يبني بعد !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :Maximum number of people allowed on this ride at one time
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :لا يمكن تغيير هذا…
 STR_1747    :{WINDOW_COLOUR_2}حد الوقت:
 STR_1748    :Time limit for ride
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Can’t change time limit for ride…
 STR_1752    :Show list of individual guests in park
 STR_1753    :Show summarised list of guests in park
@@ -1154,22 +1122,9 @@ STR_1767    :Spinning tunnel
 STR_1768    :Can’t change number of swings…
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :Number of complete swings
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1777    :موسيقي الرحلة
-STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
 STR_1790    :Select uniform colour for this type of staff
 STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
 STR_1792    :Responding to {STRINGID} breakdown call
@@ -1178,7 +1133,6 @@ STR_1794    :Fixing {STRINGID}
 STR_1795    :Answering radio call
 STR_1796    :Has broken down and requires fixing
 STR_1798    :Whirlpool
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Safety cut-out
 STR_1801    :Restraints stuck closed
 STR_1802    :Restraints stuck open
@@ -1250,10 +1204,8 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
@@ -1295,7 +1247,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Loan:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can’t borrow any more money!
 STR_1919    :Not enough cash available!
 STR_1920    :Can’t pay back loan!
@@ -1333,7 +1284,6 @@ STR_1953    :Marketing
 STR_1954    :Research Funding
 STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
 STR_1956    :Number of circuits of track per ride
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can’t change number of circuits…
 STR_1960    :{WINDOW_COLOUR_2}Balloon price:
@@ -1577,8 +1527,8 @@ STR_2212    :Show list of security guards in park
 STR_2213    :Show list of entertainers in park
 STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} أشخاص قد ماتوا بحادثة علي {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
@@ -1932,9 +1882,6 @@ STR_2706    :أبداً
 STR_2707    :إستخدم متصفح ملف النظام
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
-STR_2718    :Up
-STR_2719    :New file
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2134,7 +2081,6 @@ STR_3092    :You are not allowed to move or modify the station for this ride!
 STR_3093    :{WINDOW_COLOUR_2}Favourite: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Select lift hill chain speed
 STR_3099    :حدد اللون
 STR_3100    :حدد اللون الثاني
@@ -2177,7 +2123,6 @@ STR_3136    :Warning: This design will be built with an alternative vehicle type
 STR_3137    :Select Nearby Scenery
 STR_3138    :Reset Selection
 STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :Show people on map
@@ -2228,7 +2173,6 @@ STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :حجم الخريطة:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Can’t decrease map size any further
 STR_3214    :Can’t increase map size any further
 STR_3215    :Too close to edge of map
@@ -2250,20 +2194,18 @@ STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
 STR_3232    :Options - Financial
 STR_3233    :Options - Guests
-STR_3234    :Options - Park
 STR_3235    :Show financial options
 STR_3236    :Show guest options
-STR_3237    :Show park options
 STR_3238    :لا نقود
 STR_3239    :Make this park a ‘no money’ park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
-STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
-STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
+STR_3240    :Initial cash:
+STR_3241    :Initial loan:
+STR_3242    :Maximum loan size:
+STR_3243    :Annual interest rate:
 STR_3244    :Forbid marketing campaigns
 STR_3245    :Forbid advertising, promotional schemes, and other marketing campaigns
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Can’t increase initial cash any further!
 STR_3249    :Can’t reduce initial cash any further!
 STR_3250    :Can’t increase initial loan any further!
@@ -2272,14 +2214,10 @@ STR_3252    :Can’t increase maximum loan size any further!
 STR_3253    :Can’t reduce maximum loan size any further!
 STR_3254    :Can’t increase interest rate any further!
 STR_3255    :Can’t reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :Select whether guests should generally prefer more intense rides only
-STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
+STR_3260    :Cash per guest (average):
+STR_3261    :Guests initial happiness:
+STR_3262    :Guests initial hunger:
+STR_3263    :Guests initial thirst:
 STR_3264    :Can’t increase this any further!
 STR_3265    :Can’t reduce this any further!
 STR_3266    :Select how this park charges for entrance and rides
@@ -2293,23 +2231,15 @@ STR_3273    :Park rating is harder to increase and maintain
 STR_3274    :Make the park rating value more challenging
 STR_3275    :Guests are more difficult to attract
 STR_3276    :Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3277    :Cost to buy land:
+STR_3278    :Cost to buy construction rights:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
-STR_3281    :{WINDOW_COLOUR_2}Entry price:
-STR_3282    :Select objective and park name
+STR_3281    :Entry price:
 STR_3283    :Select rides to be preserved
-STR_3284    :Objective Selection
 STR_3285    :Preserved Rides
 STR_3286    :Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
-STR_3288    :Select climate
-STR_3289    :{WINDOW_COLOUR_2}Climate:
-STR_3290    :بارد ومبتل
-STR_3291    :دافئ
-STR_3292    :حار وجاف
-STR_3293    :بارد
 STR_3294    :…تغيير
 STR_3295    :Change name of park
 STR_3296    :Change name of scenario
@@ -2723,7 +2653,6 @@ STR_5549    :السنة/الشهر/اليوم
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :السنة/اليوم/الشهر
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause game when Steam overlay is open
 STR_5554    :تفعيل أدوات الجبال
 STR_5555    :Show vehicles from other track types
 STR_5556    :طرد اللاعب
@@ -2794,9 +2723,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Real” Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :اللعبة المصدر
-STR_5629    :مستوي الصعوبة
 STR_5630    :تفعيل الإفراج التدريجي
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
@@ -2939,7 +2865,7 @@ STR_5807    :{WINDOW_COLOUR_2}عدد الرحلات: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
 STR_5810    :Disable vehicle limits
-STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
+STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 255{NEWLINE}trains per ride
 STR_5812    :أظهر نافذة اللعب الجماعي
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -2947,7 +2873,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :أظهر عداد معدل الإطارات بداخل اللعبة
 STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :Display banners in uppercase (RCT1 behaviour)
@@ -3015,7 +2940,6 @@ STR_5887    :السابقة
 STR_5888    :اللاحقة
 STR_5889    :رمز العملة المخصص
 STR_5890    :أدخل رمز العملة لعرضها
-STR_5891    :الإفتراضي
 STR_5892    :اذهب إلى الوجهة الافتراضية
 STR_5893    :سعر الصرف
 STR_5894    :أدخل سعر الصرف
@@ -3041,12 +2965,11 @@ STR_5914    :رحلة غير معروفة
 STR_5915    :لاعب
 STR_5916    :{COMMA16} لاعب 
 STR_5917    :{COMMA16} لاعبين
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :تصيير مؤثرات الطقس
 STR_5921    :If enabled, rain and gloomy colours will be rendered during storms.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {COMMA16} {STRINGID} per train
+STR_5922    :Max {STRINGID}
+STR_5923    :Max {COMMA16} {STRINGID} per train
 STR_5924    :تفاصيل السطح
 STR_5925    :تفاصيل المسار
 STR_5926    :تفاصيل المسار
@@ -3281,7 +3204,6 @@ STR_6165    :إستخدام المزامنة العمودية
 STR_6166    :مزامنة كل فريم إلي معدل تحديث الشاشة، مما يمنع تمزيق وتمييع الشاشة.
 STR_6167    :متقدم
 STR_6168    :تسلسل العنوان
-STR_6169    :تحديد السيناريو
 STR_6170    :ضبط الواجهة
 STR_6171    :البحث
 STR_6172    :بحث
@@ -3404,7 +3326,6 @@ STR_6331    :إنشاء البط
 STR_6332    :حذف البط
 STR_6333    :زيادة عامل الحجم
 STR_6334    :تقليل عامل الحجم
-STR_6335    :معاين البلاط: أدرج العنصر التالف
 STR_6336    :معاين البلاط: نسخ العنصر
 STR_6337    :معاين البلاط: لصق العنصر
 STR_6338    :معاين البلاط: حذف العنصر
@@ -3428,7 +3349,6 @@ STR_6355    :{SMALLFONT}{BLACK}كثافة عالية
 STR_6356    :{SMALLFONT}{BLACK}ينشئ البط إذا كانت الحديقة تحتوي على ماء
 STR_6357    :{SMALLFONT}{BLACK}حذف كل البط من الخريطة
 STR_6358    :الصفحة {UINT16}
-STR_6359    :{POP16}{POP16}الصفحة {UINT16}
 STR_6361    :تفعيل تأثيرات الإضاءة على الرحلات (تجريبي)
 STR_6362    :{SMALLFONT}{BLACK}في حالة التفعيل، ستضيء مركبات الرحلات في الليل.
 STR_6363    :تم نسخ النص إلى الحافظة

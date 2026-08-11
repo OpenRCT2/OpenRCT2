@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,71 +9,73 @@
 
 #pragma once
 
-#include "../../../sprites.h"
 #include "../../RideAudio.h"
 #include "../../RideData.h"
 #include "../../RideRatings.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor MazeRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_GENTLE,
-    .StartTrackPiece = OpenRCT2::TrackElemType::Maze,
+constexpr RideTypeDescriptor kMazeRTD =
+{
+    .Category = RideCategory::gentle,
+    .StartTrackPiece = TrackElemType::maze,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::maze,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasSinglePieceStation, RtdFlag::noTestMode, RtdFlag::noVehicles,
+    .flags = RtdFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasSinglePieceStation, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::describeAsInside, RtdFlag::hasTrack, RtdFlag::hasEntranceAndExit,
                      RtdFlag::guestsCanUseUmbrella),
-    .RideModes = EnumsToFlags(RideMode::Maze),
-    .DefaultMode = RideMode::Maze,
+    .RideModes = EnumsToFlags(RideMode::maze),
+    .DefaultMode = RideMode::maze,
     .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = 0,
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
+    .availableBreakdowns = {},
     .Heights = { 6, 24, 0, 1, },
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 50, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 8, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectSummer,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_GREY, COLOUR_GREY, COLOUR_GREY },
+        { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::grey },
     ),
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "maze",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00) },
+        RatingsCalculationType::flatRide,
+        { RideRating::make(1, 30), RideRating::make(0, 50), RideRating::make(0, 00) },
         8,
         0,
         false,
         {
-            { RatingsModifierType::BonusMazeSize, 100, 1, 2, 0 },
-            { RatingsModifierType::BonusScenery,  0,   22310, 0, 0 },
+            { RatingsModifierType::bonusMazeSize, 100, 1, 2, 0 },
+            { RatingsModifierType::bonusScenery,  0,   22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Maze,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
+    .DesignCreateMode = TrackDesignCreateMode::maze,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceMaze,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Maze,
+    .ConstructionWindowContext = RideConstructionWindowContext::maze,
     .specialType = RtdSpecialType::maze,
 };
+} // namespace OpenRCT2
 // clang-format on

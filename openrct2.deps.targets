@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- ReadAssetsJson task: Parse assets.json and set properties -->
+  <UsingTask TaskName="ReadAssetsJson"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <JsonFilePath           Required="true"  ParameterType="System.String" />
+      <TitleSequencesUrl      Required="false" ParameterType="System.String" Output="true" />
+      <TitleSequencesSha256   Required="false" ParameterType="System.String" Output="true" />
+      <ObjectsUrl             Required="false" ParameterType="System.String" Output="true" />
+      <ObjectsSha256          Required="false" ParameterType="System.String" Output="true" />
+      <OpenSFXUrl             Required="false" ParameterType="System.String" Output="true" />
+      <OpenSFXSha256          Required="false" ParameterType="System.String" Output="true" />
+      <OpenMusicUrl           Required="false" ParameterType="System.String" Output="true" />
+      <OpenMusicSha256        Required="false" ParameterType="System.String" Output="true" />
+      <ReplaysUrl             Required="false" ParameterType="System.String" Output="true" />
+      <ReplaysSha256          Required="false" ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Memory" />
+      <Reference Include="System.Text.Json" />
+      <Using Namespace="System"/>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.Text.Json"/>
+      <Using Namespace="Microsoft.Build.Framework"/>
+      <Using Namespace="Microsoft.Build.Utilities"/>
+      <Code Type="Method" Language="cs">
+        <![CDATA[
+          public override bool Execute()
+          {
+              try
+              {
+                  if (!File.Exists(JsonFilePath))
+                  {
+                      Log.LogWarning("Assets JSON file not found: {0}", JsonFilePath);
+                      return true;
+                  }
+
+                  string jsonContent = File.ReadAllText(JsonFilePath);
+                  using (JsonDocument doc = JsonDocument.Parse(jsonContent))
+                  {
+                      JsonElement root = doc.RootElement;
+
+                      TitleSequencesUrl = GetAssetProperty(root, "title-sequences", "url");
+                      TitleSequencesSha256 = GetAssetProperty(root, "title-sequences", "sha256");
+
+                      ObjectsUrl = GetAssetProperty(root, "objects", "url");
+                      ObjectsSha256 = GetAssetProperty(root, "objects", "sha256");
+
+                      OpenSFXUrl = GetAssetProperty(root, "opensfx", "url");
+                      OpenSFXSha256 = GetAssetProperty(root, "opensfx", "sha256");
+
+                      OpenMusicUrl = GetAssetProperty(root, "openmusic", "url");
+                      OpenMusicSha256 = GetAssetProperty(root, "openmusic", "sha256");
+
+                      ReplaysUrl = GetAssetProperty(root, "replays", "url");
+                      ReplaysSha256 = GetAssetProperty(root, "replays", "sha256");
+                  }
+
+                  Log.LogMessage(MessageImportance.Low, "Successfully read asset definitions from {0}", JsonFilePath);
+              }
+              catch (Exception ex)
+              {
+                  Log.LogErrorFromException(ex, showStackTrace: true);
+                  return false;
+              }
+
+              return true;
+          }
+
+          private string GetAssetProperty(JsonElement assets, string assetName, string propertyName)
+          {
+              if (assets.TryGetProperty(assetName, out JsonElement asset))
+              {
+                  if (asset.TryGetProperty(propertyName, out JsonElement property))
+                  {
+                      return property.GetString() ?? string.Empty;
+                  }
+              }
+              Log.LogWarning("Could not find property '{0}' in asset '{1}'", propertyName, assetName);
+              return string.Empty;
+          }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <!-- DownloadDependency task -->
+  <UsingTask TaskName="DownloadDependency"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Name            Required="true"  ParameterType="System.String" />
+      <Url             Required="true"  ParameterType="System.String" />
+      <Sha256          Required="true"  ParameterType="System.String" />
+      <CheckFile       Required="false" ParameterType="System.String" />
+      <OutputDirectory Required="true"  ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System"/>
+      <Using Namespace="System.IO"/>
+      <Using Namespace="System.IO.Compression"/>
+      <Using Namespace="System.Net"/>
+      <Using Namespace="System.Text"/>
+      <Using Namespace="Microsoft.Build.Framework"/>
+      <Using Namespace="Microsoft.Build.Utilities"/>
+      <Code Type="Method" Language="cs">
+        <![CDATA[
+          public override bool Execute()
+          {
+              if (!String.IsNullOrEmpty(CheckFile))
+              {
+                  string checkSha256 = GetSha256FromCheckFile(CheckFile, Name);
+                  if (String.Equals(checkSha256, Sha256, StringComparison.OrdinalIgnoreCase) && Directory.Exists(OutputDirectory))
+                  {
+                      Log.LogMessage(MessageImportance.Normal, String.Format("{0} up to date", Name));
+                      return true;
+                  }
+              }
+
+              string tempFile = Path.GetTempFileName();
+              try
+              {
+                  // Download the file
+                  Log.LogMessage(MessageImportance.High, String.Format("Downloading '{0}'.", Url));
+                  var client = new WebClient();
+                  client.DownloadFile(Url, tempFile);
+
+                  // Check the file matches
+                  string actualSha256;
+                  if (!CheckFileSha256(tempFile, Sha256, out actualSha256))
+                  {
+                      Log.LogError("Download file did not match expected SHA256\n  expected: {0}\n  actual: {1}", Sha256, actualSha256);
+                      return false;
+                  }
+
+                  // Extract contents
+                  Log.LogMessage(MessageImportance.High, String.Format("Extracting to '{0}'.", OutputDirectory));
+                  if (!Directory.Exists(OutputDirectory))
+                  {
+                      Directory.CreateDirectory(OutputDirectory);
+                  }
+                  ExtractZip(tempFile, OutputDirectory, overwrite: true);
+
+                  SetSha256InCheckFile(CheckFile, Name, Sha256);
+              }
+              catch (Exception ex)
+              {
+                  Log.LogErrorFromException(ex, showStackTrace: false);
+              }
+              finally
+              {
+                  try
+                  {
+                      File.Delete(tempFile);
+                  }
+                  catch
+                  {
+                  }
+              }
+
+              return true;
+          }
+
+          private string GetSha256FromCheckFile(string checkFile, string name)
+          {
+              string result = null;
+              try
+              {
+                  if (File.Exists(checkFile))
+                  {
+                      string[] lines = File.ReadAllLines(checkFile);
+                      string sha256;
+                      GetCheckFileLineIndexSha256(lines, name, out sha256);
+                      return sha256;
+                  }
+              }
+              catch (Exception ex)
+              {
+                  Log.LogWarningFromException(ex, showStackTrace: false);
+              }
+              return result;
+          }
+
+          private void SetSha256InCheckFile(string checkFile, string name, string sha256)
+          {
+              try
+              {
+                  string newLine = String.Format("{0} = {1}", name, sha256.ToLower());
+                  string[] lines = new string[0];
+                  int lineIndex = -1;
+                  if (File.Exists(checkFile))
+                  {
+                      lines = File.ReadAllLines(checkFile);
+                      string oldsha256;
+                      lineIndex = GetCheckFileLineIndexSha256(lines, name, out oldsha256);
+                  }
+                  if (lineIndex == -1)
+                  {
+                      if (lines.Length == 0 || lines[lines.Length - 1].Trim().Length > 0)
+                      {
+                          Array.Resize(ref lines, lines.Length + 1);
+                      }
+                      lineIndex = lines.Length - 1;
+
+                      // End with new line
+                      Array.Resize(ref lines, lines.Length + 1);
+                  }
+                  lines[lineIndex] = newLine;
+                  File.WriteAllLines(checkFile, lines);
+              }
+              catch (Exception ex)
+              {
+                  Log.LogWarningFromException(ex, showStackTrace: false);
+              }
+          }
+
+          private int GetCheckFileLineIndexSha256(string[] lines, string name, out string sha256)
+          {
+              for (int i = 0; i < lines.Length; i++)
+              {
+                  string line = lines[i];
+                  string[] lineParts = line.Split('=');
+                  if (lineParts.Length == 2)
+                  {
+                      string lineTag = lineParts[0].Trim();
+                      string lineSha256 = lineParts[1].Trim();
+                      if (lineTag == name)
+                      {
+                          sha256 = lineSha256;
+                          return i;
+                      }
+                  }
+              }
+              sha256 = null;
+              return -1;
+          }
+
+          private bool CheckFileSha256(string file, string expectedSha256, out string actualSha256)
+          {
+              using (var fs = new FileStream(file, FileMode.Open))
+              {
+                  var hasher = System.Security.Cryptography.SHA256.Create();
+                  byte[] hash = hasher.ComputeHash(fs);
+                  actualSha256 = BytesToHexString(hash);
+                  if (String.Equals(actualSha256, expectedSha256, StringComparison.OrdinalIgnoreCase))
+                  {
+                      return true;
+                  }
+              }
+              return false;
+          }
+
+          private string BytesToHexString(byte[] data)
+          {
+              var sb = new StringBuilder();
+              foreach (byte b in data)
+              {
+                  sb.Append(b.ToString("x2"));
+              }
+              return sb.ToString();
+          }
+
+          private static void ExtractZip(string zipPath, string destinationDirectory, bool overwrite)
+          {
+              var archive = ZipFile.OpenRead(zipPath);
+              if (!overwrite)
+              {
+                  archive.ExtractToDirectory(destinationDirectory);
+                  return;
+              }
+              foreach (ZipArchiveEntry file in archive.Entries)
+              {
+                  string fileName = Path.Combine(destinationDirectory, file.FullName);
+                  string directory = Path.GetDirectoryName(fileName);
+                  if (!Directory.Exists(directory))
+                  {
+                      Directory.CreateDirectory(directory);
+                  }
+                  if (file.Name != String.Empty)
+                  {
+                      file.ExtractToFile(fileName, true);
+                  }
+              }
+          }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <!-- 3rd party libraries / dependencies loaded from assets.json -->
+  <PropertyGroup>
+    <RootDir>$(MsBuildThisFileDirectory)</RootDir>
+    <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
+    <AssetsJsonPath>$(RootDir)assets.json</AssetsJsonPath>
+    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v41/openrct2-libs-v41-arm64-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='ARM64'">5d171f23eee584bdc29b1186dc7a86d935a6ea58efa42b5674c196c5b581923b</LibsSha256>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v41/openrct2-libs-v41-x64-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='x64'">8e78f1c3c09c50cb0f509eab6845a93dd69771ff95cdf82d747568093d138f73</LibsSha256>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v41/openrct2-libs-v41-x86-windows-static.zip</LibsUrl>
+    <LibsSha256 Condition="'$(Platform)'=='Win32'">490263b873dd02c13a043a04d26bb9837d2d378dacd8b2c8d29660fef44db3db</LibsSha256>
+  </PropertyGroup>
+
+  <!-- Load asset definitions from JSON first, before any download targets run -->
+  <Target Name="LoadAssetsJson">
+    <ReadAssetsJson
+      JsonFilePath="$(AssetsJsonPath)"
+      Condition="Exists('$(AssetsJsonPath)')">
+      <Output TaskParameter="TitleSequencesUrl" PropertyName="TitleSequencesUrl" />
+      <Output TaskParameter="TitleSequencesSha256" PropertyName="TitleSequencesSha256" />
+      <Output TaskParameter="ObjectsUrl" PropertyName="ObjectsUrl" />
+      <Output TaskParameter="ObjectsSha256" PropertyName="ObjectsSha256" />
+      <Output TaskParameter="OpenSFXUrl" PropertyName="OpenSFXUrl" />
+      <Output TaskParameter="OpenSFXSha256" PropertyName="OpenSFXSha256" />
+      <Output TaskParameter="OpenMusicUrl" PropertyName="OpenMusicUrl" />
+      <Output TaskParameter="OpenMusicSha256" PropertyName="OpenMusicSha256" />
+      <Output TaskParameter="ReplaysUrl" PropertyName="ReplaysUrl" />
+      <Output TaskParameter="ReplaysSha256" PropertyName="ReplaysSha256" />
+    </ReadAssetsJson>
+  </Target>
+
+  <!-- Unified Dependency Target -->
+  <Target Name="DownloadAllDependencies"
+          BeforeTargets="PrepareForBuild"
+          DependsOnTargets="LoadAssetsJson;DownloadLibs;DownloadTitleSequences;DownloadObjects;DownloadOpenSFX;DownloadOpenMusic;DownloadReplays">
+
+    <!-- Add completion marker -->
+    <Touch Files="$(DependenciesCheckFile)" AlwaysCreate="true" />
+  </Target>
+
+  <!-- Target Implementations -->
+  <Target Name="DownloadLibs">
+    <!-- libs -->
+    <DownloadDependency Name="Libs"
+                        Url="$(LibsUrl)"
+                        Sha256="$(LibsSha256)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib\$(Platform)" />
+
+  </Target>
+
+  <!-- Target to download the title sequences -->
+  <Target Name="DownloadTitleSequences">
+    <DownloadDependency Name="TitleSequences"
+                        Url="$(TitleSequencesUrl)"
+                        Sha256="$(TitleSequencesSha256)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data\sequence" />
+  </Target>
+
+  <!-- Target to download the objects -->
+  <Target Name="DownloadObjects">
+    <DownloadDependency Name="Objects"
+                        Url="$(ObjectsUrl)"
+                        Sha256="$(ObjectsSha256)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data\object" />
+  </Target>
+
+  <!-- Target to download OpenSFX -->
+  <Target Name="DownloadOpenSFX">
+    <DownloadDependency Name="OpenSFX"
+                        Url="$(OpenSFXUrl)"
+                        Sha256="$(OpenSFXSha256)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data" />
+  </Target>
+
+  <!-- Target to download OpenMusic -->
+  <Target Name="DownloadOpenMusic">
+    <DownloadDependency Name="OpenMusic"
+                        Url="$(OpenMusicUrl)"
+                        Sha256="$(OpenMusicSha256)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data" />
+  </Target>
+
+  <!-- Target to download replays -->
+  <Target Name="DownloadReplays">
+    <DownloadDependency Name="Replays"
+                        Url="$(ReplaysUrl)"
+                        Sha256="$(ReplaysSha256)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)testdata\replays" />
+  </Target>
+
+</Project>

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,52 +11,54 @@
 
 #include "../audio/AudioSource.h"
 #include "../core/JsonFwd.hpp"
-#include "Object.h"
 #include "ObjectAsset.h"
 #include "ResourceTable.h"
 
 #include <optional>
 
-struct IReadObjectContext;
-
-class AudioSampleTable : public ResourceTable
+namespace OpenRCT2
 {
-private:
-    struct Entry
+    struct IReadObjectContext;
+
+    class AudioSampleTable : public ResourceTable
     {
-        OpenRCT2::Audio::IAudioSource* Source{};
-        std::optional<ObjectAsset> Asset;
-        std::optional<uint32_t> PathIndex;
-        int32_t Modifier{};
+    private:
+        struct Entry
+        {
+            Audio::IAudioSource* Source{};
+            std::optional<ObjectAsset> Asset;
+            std::optional<uint32_t> PathIndex;
+            int32_t Modifier{};
+        };
+
+        std::vector<Entry> _entries;
+
+    public:
+        std::vector<Entry>& GetEntries();
+
+        /**
+         * Read the entries from the given JSON into the table, but do not load anything.
+         */
+        void ReadFromJson(IReadObjectContext* context, const json_t& root);
+
+        /**
+         * Load all available entries from the given table.
+         */
+        void LoadFrom(const AudioSampleTable& table, size_t sourceIndex, size_t length);
+
+        /**
+         * Load all available entries.
+         */
+        void Load();
+
+        /**
+         * Unloads all entries that are currently loaded.
+         */
+        void Unload();
+
+        size_t GetCount() const;
+        Audio::IAudioSource* GetSample(uint32_t index) const;
+        Audio::IAudioSource* LoadSample(uint32_t index) const;
+        int32_t GetSampleModifier(uint32_t index) const;
     };
-
-    std::vector<Entry> _entries;
-
-public:
-    std::vector<Entry>& GetEntries();
-
-    /**
-     * Read the entries from the given JSON into the table, but do not load anything.
-     */
-    void ReadFromJson(IReadObjectContext* context, const json_t& root);
-
-    /**
-     * Load all available entries from the given table.
-     */
-    void LoadFrom(const AudioSampleTable& table, size_t sourceIndex, size_t length);
-
-    /**
-     * Load all available entries.
-     */
-    void Load();
-
-    /**
-     * Unloads all entries that are currently loaded.
-     */
-    void Unload();
-
-    size_t GetCount() const;
-    OpenRCT2::Audio::IAudioSource* GetSample(uint32_t index) const;
-    OpenRCT2::Audio::IAudioSource* LoadSample(uint32_t index) const;
-    int32_t GetSampleModifier(uint32_t index) const;
-};
+} // namespace OpenRCT2

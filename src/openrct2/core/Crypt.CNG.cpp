@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,12 +24,17 @@
     #include <tuple>
 
 // clang-format off
-// CNG: Cryptography API: Next Generation (CNG)
-//      available in Windows Vista onwards.
-#include <windows.h>
-#include <wincrypt.h>
-#include <bcrypt.h>
-constexpr bool NT_SUCCESS(NTSTATUS status) {return status >= 0;}
+    // windows.h needs to be included first
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <windows.h>
+
+    // CNG: Cryptography API: Next Generation (CNG)
+    //      available in Windows Vista onwards.
+    #include <wincrypt.h>
+    #include <bcrypt.h>
+    constexpr bool NT_SUCCESS(NTSTATUS status) {return status >= 0;}
 // clang-format on
 
 using namespace OpenRCT2::Crypt;
@@ -98,7 +103,7 @@ public:
         return this;
     }
 
-    typename TBase::Result Finish() override
+    TBase::Result Finish() override
     {
         typename TBase::Result result;
         auto status = BCryptFinishHash(_hHash, result.data(), static_cast<ULONG>(result.size()), 0);
@@ -421,7 +426,7 @@ public:
 
     void SetPrivate(std::string_view pem) override
     {
-        auto der = ReadPEM(pem, SZ_PRIVATE_BEGIN_TOKEN, SZ_PRIVATE_END_TOKEN);
+        auto der = ReadPEM(pem, kPrivateKeyBeginToken, kPrivateKeyEndToken);
         DerReader derReader(der);
         RsaKeyParams params;
         derReader.ReadSequenceHeader();
@@ -439,7 +444,7 @@ public:
 
     void SetPublic(std::string_view pem) override
     {
-        auto der = ReadPEM(pem, SZ_PUBLIC_BEGIN_TOKEN, SZ_PUBLIC_END_TOKEN);
+        auto der = ReadPEM(pem, kPublicKeyBeginToken, kPublicKeyEndToken);
         DerReader derReader(der);
         RsaKeyParams params;
         derReader.ReadSequenceHeader();
@@ -465,9 +470,9 @@ public:
         auto b64 = EncodeBase64(derBytes);
 
         std::ostringstream sb;
-        sb << std::string(SZ_PRIVATE_BEGIN_TOKEN) << std::endl;
+        sb << std::string(kPrivateKeyBeginToken) << std::endl;
         sb << b64;
-        sb << std::string(SZ_PRIVATE_END_TOKEN) << std::endl;
+        sb << std::string(kPrivateKeyEndToken) << std::endl;
         return sb.str();
     }
 
@@ -481,9 +486,9 @@ public:
         auto b64 = EncodeBase64(derBytes);
 
         std::ostringstream sb;
-        sb << std::string(SZ_PUBLIC_BEGIN_TOKEN) << std::endl;
+        sb << std::string(kPublicKeyBeginToken) << std::endl;
         sb << b64;
-        sb << std::string(SZ_PUBLIC_END_TOKEN) << std::endl;
+        sb << std::string(kPublicKeyEndToken) << std::endl;
         return sb.str();
     }
 
@@ -506,10 +511,10 @@ public:
     }
 
 private:
-    static constexpr const char* SZ_PUBLIC_BEGIN_TOKEN = "-----BEGIN RSA PUBLIC KEY-----";
-    static constexpr const char* SZ_PUBLIC_END_TOKEN = "-----END RSA PUBLIC KEY-----";
-    static constexpr const char* SZ_PRIVATE_BEGIN_TOKEN = "-----BEGIN RSA PRIVATE KEY-----";
-    static constexpr const char* SZ_PRIVATE_END_TOKEN = "-----END RSA PRIVATE KEY-----";
+    static constexpr const char* kPublicKeyBeginToken = "-----BEGIN RSA PUBLIC KEY-----";
+    static constexpr const char* kPublicKeyEndToken = "-----END RSA PUBLIC KEY-----";
+    static constexpr const char* kPrivateKeyBeginToken = "-----BEGIN RSA PRIVATE KEY-----";
+    static constexpr const char* kPrivateKeyEndToken = "-----END RSA PRIVATE KEY-----";
 
     BCRYPT_KEY_HANDLE _hKey{};
     BCRYPT_KEY_HANDLE _hAlg{};
@@ -659,7 +664,7 @@ public:
 private:
     static std::tuple<DWORD, PBYTE> HashData(const void* data, size_t dataLen)
     {
-        auto hash = OpenRCT2::Crypt::SHA256(data, dataLen);
+        auto hash = SHA256(data, dataLen);
         return ToHeap(hash.data(), hash.size());
     }
 

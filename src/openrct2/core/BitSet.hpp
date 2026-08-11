@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,150 +19,147 @@
 
 namespace OpenRCT2
 {
-    namespace Detail
+    namespace Detail::BitSet
     {
-        namespace BitSet
+        static constexpr size_t kBitsPerByte = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
+
+        template<size_t TNumBits>
+        static constexpr size_t ByteAlignBits()
         {
-            static constexpr size_t BitsPerByte = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
-
-            template<size_t TNumBits>
-            static constexpr size_t ByteAlignBits()
+            const auto remainder = TNumBits % kBitsPerByte;
+            if constexpr (remainder == 0u)
             {
-                const auto reminder = TNumBits % BitsPerByte;
-                if constexpr (reminder == 0u)
-                {
-                    return TNumBits;
-                }
-                else
-                {
-                    return TNumBits + (BitsPerByte - (TNumBits % BitsPerByte));
-                }
+                return TNumBits;
             }
-
-            static_assert(ByteAlignBits<1>() == 8);
-            static_assert(ByteAlignBits<4>() == 8);
-            static_assert(ByteAlignBits<8>() == 8);
-            static_assert(ByteAlignBits<9>() == 16);
-            static_assert(ByteAlignBits<9>() == 16);
-            static_assert(ByteAlignBits<17>() == 24);
-            static_assert(ByteAlignBits<24>() == 24);
-            static_assert(ByteAlignBits<31>() == 32);
-
-            // Returns the amount of bytes required for a single block.
-            template<size_t TNumBits>
-            static constexpr size_t ComputeBlockSize()
+            else
             {
-                constexpr size_t numBits = ByteAlignBits<TNumBits>();
-                if constexpr (numBits >= std::numeric_limits<uintptr_t>::digits)
-                {
-                    return sizeof(uintptr_t);
-                }
-                else
-                {
-                    const auto numBytes = numBits / BitsPerByte;
-                    auto mask = 1u;
-                    while (mask < numBytes)
-                    {
-                        mask <<= 1u;
-                    }
-                    return mask;
-                }
+                return TNumBits + (kBitsPerByte - (TNumBits % kBitsPerByte));
             }
+        }
 
-            template<size_t TNumBits, size_t TBlockSizeBytes>
-            static constexpr size_t ComputeBlockCount()
+        static_assert(ByteAlignBits<1>() == 8);
+        static_assert(ByteAlignBits<4>() == 8);
+        static_assert(ByteAlignBits<8>() == 8);
+        static_assert(ByteAlignBits<9>() == 16);
+        static_assert(ByteAlignBits<9>() == 16);
+        static_assert(ByteAlignBits<17>() == 24);
+        static_assert(ByteAlignBits<24>() == 24);
+        static_assert(ByteAlignBits<31>() == 32);
+
+        // Returns the amount of bytes required for a single block.
+        template<size_t TNumBits>
+        static constexpr size_t ComputeBlockSize()
+        {
+            constexpr size_t numBits = ByteAlignBits<TNumBits>();
+            if constexpr (numBits >= std::numeric_limits<uintptr_t>::digits)
             {
-                size_t numBits = TNumBits;
-                size_t numBlocks = 0;
-                while (numBits > 0)
-                {
-                    numBlocks++;
-                    numBits -= std::min(TBlockSizeBytes * BitsPerByte, numBits);
-                }
-                return numBlocks;
+                return sizeof(uintptr_t);
             }
-
-            static_assert(ComputeBlockSize<1>() == sizeof(uint8_t));
-            static_assert(ComputeBlockSize<4>() == sizeof(uint8_t));
-            static_assert(ComputeBlockSize<8>() == sizeof(uint8_t));
-            static_assert(ComputeBlockSize<9>() == sizeof(uint16_t));
-            static_assert(ComputeBlockSize<14>() == sizeof(uint16_t));
-            static_assert(ComputeBlockSize<16>() == sizeof(uint16_t));
-            static_assert(ComputeBlockSize<18>() == sizeof(uint32_t));
-            static_assert(ComputeBlockSize<31>() == sizeof(uint32_t));
-            static_assert(ComputeBlockSize<33>() == sizeof(uintptr_t));
-
-            // TODO: Replace with std::popcount when C++20 is enabled.
-            template<typename T>
-            static constexpr size_t popcount(const T val)
+            else
             {
-                size_t res = 0;
-                auto x = static_cast<std::make_unsigned_t<T>>(val);
-                while (x > 0u)
+                const auto numBytes = numBits / kBitsPerByte;
+                auto mask = 1u;
+                while (mask < numBytes)
                 {
-                    if (x & 1u)
-                        res++;
-                    x >>= 1u;
+                    mask <<= 1u;
                 }
-                return res;
+                return mask;
             }
+        }
 
-            template<size_t TByteSize>
-            struct StorageBlockType;
-
-            template<>
-            struct StorageBlockType<1>
+        template<size_t TNumBits, size_t TBlockSizeBytes>
+        static constexpr size_t ComputekBlockCount()
+        {
+            size_t numBits = TNumBits;
+            size_t numBlocks = 0;
+            while (numBits > 0)
             {
-                using value_type = uint8_t;
-            };
+                numBlocks++;
+                numBits -= std::min(TBlockSizeBytes * kBitsPerByte, numBits);
+            }
+            return numBlocks;
+        }
 
-            template<>
-            struct StorageBlockType<2>
-            {
-                using value_type = uint16_t;
-            };
+        static_assert(ComputeBlockSize<1>() == sizeof(uint8_t));
+        static_assert(ComputeBlockSize<4>() == sizeof(uint8_t));
+        static_assert(ComputeBlockSize<8>() == sizeof(uint8_t));
+        static_assert(ComputeBlockSize<9>() == sizeof(uint16_t));
+        static_assert(ComputeBlockSize<14>() == sizeof(uint16_t));
+        static_assert(ComputeBlockSize<16>() == sizeof(uint16_t));
+        static_assert(ComputeBlockSize<18>() == sizeof(uint32_t));
+        static_assert(ComputeBlockSize<31>() == sizeof(uint32_t));
+        static_assert(ComputeBlockSize<33>() == sizeof(uintptr_t));
 
-            template<>
-            struct StorageBlockType<4>
+        // TODO: Replace with std::popcount when C++20 is enabled.
+        template<typename T>
+        static constexpr size_t popcount(const T val)
+        {
+            size_t res = 0;
+            auto x = static_cast<std::make_unsigned_t<T>>(val);
+            while (x > 0u)
             {
-                using value_type = uint32_t;
-            };
+                if (x & 1u)
+                    res++;
+                x >>= 1u;
+            }
+            return res;
+        }
 
-            template<>
-            struct StorageBlockType<8>
-            {
-                using value_type = uint64_t;
-            };
+        template<size_t TByteSize>
+        struct StorageBlockType;
 
-            template<size_t TBitSize>
-            struct storage_block_type_aligned
-            {
-                using value_type = typename StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
-            };
-        } // namespace BitSet
-    } // namespace Detail
+        template<>
+        struct StorageBlockType<1>
+        {
+            using value_type = uint8_t;
+        };
+
+        template<>
+        struct StorageBlockType<2>
+        {
+            using value_type = uint16_t;
+        };
+
+        template<>
+        struct StorageBlockType<4>
+        {
+            using value_type = uint32_t;
+        };
+
+        template<>
+        struct StorageBlockType<8>
+        {
+            using value_type = uint64_t;
+        };
+
+        template<size_t TBitSize>
+        struct storage_block_type_aligned
+        {
+            using value_type = StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
+        };
+    } // namespace Detail::BitSet
 
     template<size_t TBitSize>
     class BitSet
     {
-        static constexpr size_t ByteAlignedBitSize = Detail::BitSet::ByteAlignBits<TBitSize>();
+        static constexpr size_t kByteAlignedBitSize = Detail::BitSet::ByteAlignBits<TBitSize>();
 
-        using StorageBlockType = typename Detail::BitSet::storage_block_type_aligned<ByteAlignedBitSize>::value_type;
+        using StorageBlockType = Detail::BitSet::storage_block_type_aligned<kByteAlignedBitSize>::value_type;
 
-        static constexpr size_t BlockByteSize = sizeof(StorageBlockType);
-        static constexpr size_t BlockBitSize = BlockByteSize * Detail::BitSet::BitsPerByte;
-        static constexpr size_t BlockCount = Detail::BitSet::ComputeBlockCount<ByteAlignedBitSize, BlockByteSize>();
-        static constexpr size_t CapacityBits = BlockCount * BlockBitSize;
+        static constexpr size_t kBlockByteSize = sizeof(StorageBlockType);
+        static constexpr size_t kBlockBitSize = kBlockByteSize * Detail::BitSet::kBitsPerByte;
+        static constexpr size_t kBlockCount = Detail::BitSet::ComputekBlockCount<kByteAlignedBitSize, kBlockByteSize>();
+        static constexpr size_t kCapacityBits = kBlockCount * kBlockBitSize;
 
-        static constexpr StorageBlockType BlockValueZero = StorageBlockType{ 0u };
-        static constexpr StorageBlockType BlockValueOne = StorageBlockType{ 1u };
-        static constexpr StorageBlockType BlockValueMask = static_cast<StorageBlockType>(~BlockValueZero);
+        static constexpr StorageBlockType kBlockValueZero = StorageBlockType{ 0u };
+        static constexpr StorageBlockType kBlockValueOne = StorageBlockType{ 1u };
+        static constexpr StorageBlockType kBlockValueMask = static_cast<StorageBlockType>(~kBlockValueZero);
 
-        static constexpr bool RequiresTrim = TBitSize != CapacityBits;
+        static constexpr bool kRequiresTrim = TBitSize != kCapacityBits;
 
     public:
         using BlockType = StorageBlockType;
-        using Storage = std::array<BlockType, BlockCount>;
+        using Storage = std::array<BlockType, kBlockCount>;
 
         // Proxy object to access the bits as single value.
         template<typename T>
@@ -183,9 +180,9 @@ namespace OpenRCT2
             constexpr reference_base& operator=(const bool value) noexcept
             {
                 if (!value)
-                    _storage[_blockIndex] &= ~(BlockValueOne << _blockOffset);
+                    _storage[_blockIndex] &= ~(kBlockValueOne << _blockOffset);
                 else
-                    _storage[_blockIndex] |= (BlockValueOne << _blockOffset);
+                    _storage[_blockIndex] |= (kBlockValueOne << _blockOffset);
                 return *this;
             }
 
@@ -196,7 +193,7 @@ namespace OpenRCT2
 
             constexpr bool value() const noexcept
             {
-                return (_storage[_blockIndex] & (BlockValueOne << _blockOffset)) != BlockValueZero;
+                return (_storage[_blockIndex] & (kBlockValueOne << _blockOffset)) != kBlockValueZero;
             }
 
             constexpr operator bool() const noexcept
@@ -317,7 +314,7 @@ namespace OpenRCT2
 
         constexpr size_t capacity() const noexcept
         {
-            return CapacityBits;
+            return kCapacityBits;
         }
 
         constexpr Storage& data() noexcept
@@ -335,9 +332,9 @@ namespace OpenRCT2
             const auto blockIndex = ComputeBlockIndex(index);
             const auto blockOffset = ComputeBlockOffset(index);
             if (!value)
-                _data[blockIndex] &= ~(BlockValueOne << blockOffset);
+                _data[blockIndex] &= ~(kBlockValueOne << blockOffset);
             else
-                _data[blockIndex] |= (BlockValueOne << blockOffset);
+                _data[blockIndex] |= (kBlockValueOne << blockOffset);
             return *this;
         }
 
@@ -345,7 +342,7 @@ namespace OpenRCT2
         {
             const auto blockIndex = ComputeBlockIndex(index);
             const auto blockOffset = ComputeBlockOffset(index);
-            return (_data[blockIndex] & (BlockValueOne << blockOffset)) != BlockValueZero;
+            return (_data[blockIndex] & (kBlockValueOne << blockOffset)) != kBlockValueZero;
         }
 
         constexpr bool operator[](const size_t index) const noexcept
@@ -367,9 +364,9 @@ namespace OpenRCT2
         {
             for (auto& data : _data)
             {
-                data ^= BlockValueMask;
+                data ^= kBlockValueMask;
             }
-            if constexpr (RequiresTrim)
+            if constexpr (kRequiresTrim)
             {
                 Trim();
             }
@@ -378,8 +375,8 @@ namespace OpenRCT2
 
         constexpr BitSet& reset() noexcept
         {
-            std::fill(_data.begin(), _data.end(), BlockValueZero);
-            if constexpr (RequiresTrim)
+            std::fill(_data.begin(), _data.end(), kBlockValueZero);
+            if constexpr (kRequiresTrim)
             {
                 Trim();
             }
@@ -422,7 +419,7 @@ namespace OpenRCT2
         constexpr BitSet operator^(const BitSet& other) const noexcept
         {
             BitSet res = *this;
-            ApplyOp<std::bit_xor<BlockType>>(res, other, std::make_index_sequence<BlockCount>{});
+            ApplyOp<std::bit_xor<BlockType>>(res, other, std::make_index_sequence<kBlockCount>{});
             return res;
         }
 
@@ -435,7 +432,7 @@ namespace OpenRCT2
         constexpr BitSet operator|(const BitSet& other) const noexcept
         {
             BitSet res = *this;
-            ApplyOp<std::bit_or<BlockType>>(res, other, std::make_index_sequence<BlockCount>{});
+            ApplyOp<std::bit_or<BlockType>>(res, other, std::make_index_sequence<kBlockCount>{});
             return res;
         }
 
@@ -448,7 +445,7 @@ namespace OpenRCT2
         constexpr BitSet operator&(const BitSet& other) const noexcept
         {
             BitSet res = *this;
-            ApplyOp<std::bit_and<BlockType>>(res, other, std::make_index_sequence<BlockCount>{});
+            ApplyOp<std::bit_and<BlockType>>(res, other, std::make_index_sequence<kBlockCount>{});
             return res;
         }
 
@@ -465,7 +462,7 @@ namespace OpenRCT2
             {
                 res._data[i] = ~res._data[i];
             }
-            if constexpr (RequiresTrim)
+            if constexpr (kRequiresTrim)
             {
                 res.Trim();
             }
@@ -502,7 +499,7 @@ namespace OpenRCT2
         {
             TOperator op{};
             ((dst._data[TIndex] = op(dst._data[TIndex], src._data[TIndex])), ...);
-            if constexpr (RequiresTrim)
+            if constexpr (kRequiresTrim)
             {
                 dst.Trim();
             }
@@ -510,39 +507,39 @@ namespace OpenRCT2
 
         static constexpr size_t ComputeBlockIndex(size_t idx) noexcept
         {
-            if constexpr (BlockCount == 1)
+            if constexpr (kBlockCount == 1)
             {
                 return 0;
             }
             else
             {
-                return idx / BlockBitSize;
+                return idx / kBlockBitSize;
             }
         }
 
         static constexpr size_t ComputeBlockOffset(size_t idx) noexcept
         {
-            if constexpr (BlockCount == 1)
+            if constexpr (kBlockCount == 1)
             {
                 return idx;
             }
             else
             {
-                return idx % BlockBitSize;
+                return idx % kBlockBitSize;
             }
         }
 
         // Some operations require to trim of the excess.
         constexpr void Trim() noexcept
         {
-            const auto byteIdx = TBitSize / BlockBitSize;
-            const auto bitIdx = TBitSize % BlockBitSize;
+            const auto byteIdx = TBitSize / kBlockBitSize;
+            const auto bitIdx = TBitSize % kBlockBitSize;
             if constexpr (bitIdx == 0)
                 return;
 
-            auto trimMask = BlockValueMask;
-            trimMask <<= (BlockBitSize - bitIdx);
-            trimMask >>= (BlockBitSize - bitIdx);
+            auto trimMask = kBlockValueMask;
+            trimMask <<= (kBlockBitSize - bitIdx);
+            trimMask >>= (kBlockBitSize - bitIdx);
 
             _data[byteIdx] &= trimMask;
         }

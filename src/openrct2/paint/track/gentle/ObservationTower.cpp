@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,21 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/Vehicle.h"
-#include "../../../world/Map.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TileElement.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
-
-#include <cassert>
 
 using namespace OpenRCT2;
 
@@ -43,15 +37,15 @@ static void PaintObservationTowerBase(
     CoordsXY position = session.MapPosition;
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesTileDiamond, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, position, trackElement, ride, session.TrackColours, height, kFenceSpritesMetalB,
+        session, edges, position, trackElement, ride, session.TrackColours, height, kFenceSpritesPicketDuplicate,
         session.CurrentRotation);
 
     if (trackSequence == 0)
@@ -78,36 +72,33 @@ static void PaintObservationTowerBase(
     {
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner, PaintSegment::topRightSide,
-                PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight,
+                PaintSegment::bottom);
             break;
         case 4:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::left);
             break;
         case 5:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::right, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 6:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
         case 7:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight,
+                PaintSegment::right);
             break;
         case 8:
-            blockedSegments = EnumsToFlags(PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
@@ -129,7 +120,7 @@ static void PaintObservationTowerSection(
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
-    if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
+    if (trackElement.isLastForTile() || trackElement.getClearanceZ() != nextTileElement->getBaseZ())
     {
         imageId = session.TrackColours.WithIndex(SprObservationTowerSegmentTop);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
@@ -144,14 +135,14 @@ static void PaintObservationTowerSection(
 /**
  * rct2: 0x0070DC5C
  */
-TrackPaintFunction GetTrackPaintFunctionObservationTower(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionObservationTower(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::towerBase:
             return PaintObservationTowerBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::towerSection:
             return PaintObservationTowerSection;
         default:
             return TrackPaintFunctionDummy;

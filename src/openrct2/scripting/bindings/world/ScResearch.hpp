@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,43 +15,42 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScResearch
+    class ScResearch;
+    extern ScResearch gScResearch;
+
+    class ScResearch final : public ScBase
     {
-    private:
-        duk_context* _context;
-
     public:
-        ScResearch(duk_context* ctx);
-
-        static void Register(duk_context* ctx);
+        void Register(JSContext* ctx);
+        JSValue New(JSContext* ctx);
 
     private:
-        uint8_t funding_get() const;
-        void funding_set(uint8_t value);
+        static JSValue funding_get(JSContext* ctx, JSValue thisVal);
+        static JSValue funding_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        std::vector<std::string> priorities_get() const;
-        void priorities_set(const std::vector<std::string>& values);
+        static JSValue priorities_get(JSContext* ctx, JSValue thisVal);
+        static JSValue priorities_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        std::string stage_get() const;
-        void stage_set(const std::string& value);
+        static JSValue stage_get(JSContext* ctx, JSValue thisVal);
+        static JSValue stage_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        uint16_t progress_get() const;
-        void progress_set(uint16_t value);
+        static JSValue progress_get(JSContext* ctx, JSValue thisVal);
+        static JSValue progress_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        DukValue expectedMonth_get() const;
-        DukValue expectedDay_get() const;
-        DukValue lastResearchedItem_get() const;
-        DukValue expectedItem_get() const;
+        static JSValue expectedMonth_get(JSContext* ctx, JSValue thisVal);
+        static JSValue expectedDay_get(JSContext* ctx, JSValue thisVal);
+        static JSValue lastResearchedItem_get(JSContext* ctx, JSValue thisVal);
+        static JSValue expectedItem_get(JSContext* ctx, JSValue thisVal);
 
-        std::vector<DukValue> inventedItems_get() const;
-        void inventedItems_set(const std::vector<DukValue>& value);
+        static JSValue inventedItems_get(JSContext* ctx, JSValue thisVal);
+        static JSValue inventedItems_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        std::vector<DukValue> uninventedItems_get() const;
-        void uninventedItems_set(const std::vector<DukValue>& value);
+        static JSValue uninventedItems_get(JSContext* ctx, JSValue thisVal);
+        static JSValue uninventedItems_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        bool isObjectResearched(const std::string& typez, ObjectEntryIndex index);
+        static JSValue isObjectResearched(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
-        static std::vector<ResearchItem> ConvertResearchList(const std::vector<DukValue>& value);
+        static std::vector<ResearchItem> ConvertResearchList(JSContext* ctx, JSValue value);
     };
 
 } // namespace OpenRCT2::Scripting

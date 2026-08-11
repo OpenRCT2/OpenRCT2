@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,61 +9,64 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor TopSpinRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+constexpr RideTypeDescriptor kTopSpinRTD =
+{
+    .Category = RideCategory::thrill,
+    .StartTrackPiece = TrackElemType::flatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::topSpin,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,
+    .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasSinglePieceStation,
                      RtdFlag::cannotHaveGaps, RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Beginners, RideMode::Intense, RideMode::Berserk),
-    .DefaultMode = RideMode::Beginners,
+    .RideModes = EnumsToFlags(RideMode::beginners, RideMode::intense, RideMode::berserk),
+    .DefaultMode = RideMode::beginners,
     .Naming = { STR_RIDE_NAME_TOP_SPIN, STR_RIDE_DESCRIPTION_TOP_SPIN },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 16, 112, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 24, 20, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 72.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectTechno,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_YELLOW },
-        { COLOUR_TEAL, COLOUR_WHITE, COLOUR_WHITE },
-        { COLOUR_DARK_GREEN, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
+        { Drawing::Colour::brightRed, Drawing::Colour::yellow, Drawing::Colour::yellow },
+        { Drawing::Colour::darkWater, Drawing::Colour::white, Drawing::Colour::white },
+        { Drawing::Colour::darkGreen, Drawing::Colour::brightRed, Drawing::Colour::brightRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "top_spin",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         19,
         0,
         false,
         {
-            { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },
-            { RatingsModifierType::BonusScenery,     0, 11155, 0, 0 },
+            { RatingsModifierType::bonusTopSpinMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonusScenery,     0, 11155, 0, 0 },
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

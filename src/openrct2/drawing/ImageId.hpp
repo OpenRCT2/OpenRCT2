@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,28 +9,29 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "ImageIndexType.h"
 
 #include <cassert>
 #include <cstdint>
-#include <limits>
 
-using colour_t = uint8_t;
-enum class FilterPaletteID : int32_t;
-
-static constexpr ImageIndex ImageIndexUndefined = std::numeric_limits<ImageIndex>::max();
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+    enum class FilterPaletteID : int32_t;
+} // namespace OpenRCT2::Drawing
 
 enum class ImageCatalogue
 {
-    UNKNOWN,
-    G1,
-    G2,
-    CSG,
-    OBJECT,
-    TEMPORARY,
+    unknown,
+    g1,
+    g2,
+    csg,
+    object,
+    temporary,
 };
 
-FilterPaletteID GetGlassPaletteId(colour_t);
+OpenRCT2::Drawing::FilterPaletteID GetGlassPaletteId(OpenRCT2::Drawing::Colour);
 
 /**
  * Represents a specific image from a catalogue such as G1, G2, CSG etc. with remap
@@ -42,24 +43,9 @@ FilterPaletteID GetGlassPaletteId(colour_t);
 struct ImageId
 {
 private:
-    // clang-format off
-    static constexpr uint32_t MASK_INDEX       = 0b00000000000001111111111111111111;
-    static constexpr uint32_t MASK_REMAP       = 0b00000111111110000000000000000000;
-    static constexpr uint32_t MASK_PRIMARY     = 0b00000000111110000000000000000000;
-    static constexpr uint32_t MASK_SECONDARY   = 0b00011111000000000000000000000000;
-    static constexpr uint32_t FLAG_PRIMARY     = 0b00100000000000000000000000000000;
-    static constexpr uint32_t FLAG_BLEND       = 0b01000000000000000000000000000000;
-    static constexpr uint32_t FLAG_SECONDARY   = 0b10000000000000000000000000000000;
-    static constexpr uint32_t SHIFT_REMAP      = 19;
-    static constexpr uint32_t SHIFT_PRIMARY    = 19;
-    static constexpr uint32_t SHIFT_SECONDARY  = 24;
-    static constexpr uint32_t INDEX_UNDEFINED  = 0b00000000000001111111111111111111;
-    static constexpr uint32_t VALUE_UNDEFINED  = INDEX_UNDEFINED;
-
-    static constexpr uint8_t  NEW_FLAG_PRIMARY      = 1;
-    static constexpr uint8_t  NEW_FLAG_BLEND        = 2;
-    static constexpr uint8_t  NEW_FLAG_SECONDARY    = 4;
-    // clang-format on
+    static constexpr uint8_t kFlagPrimary = 1;
+    static constexpr uint8_t kFlagBlend = 2;
+    static constexpr uint8_t kFlagSecondary = 4;
 
     // NONE = No remap
     // BLENDED = No source copy, remap destination only (glass)
@@ -68,7 +54,7 @@ private:
     // PRIMARY | SECONDARY = Remap with primary and secondary colours
     // SECONDARY = Remap with primary, secondary and tertiary colours
 
-    ImageIndex _index = ImageIndexUndefined;
+    ImageIndex _index = kImageIndexUndefined;
     uint8_t _primary = 0;
     uint8_t _secondary = 0;
     uint8_t _tertiary = 0;
@@ -78,58 +64,60 @@ public:
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)
-        : _index(index == INDEX_UNDEFINED ? ImageIndexUndefined : index)
+        : _index(index)
     {
     }
 
-    constexpr ImageId(uint32_t index, FilterPaletteID palette)
+    constexpr ImageId(uint32_t index, OpenRCT2::Drawing::FilterPaletteID palette)
         : ImageId(ImageId(index).WithRemap(palette))
     {
     }
 
-    constexpr ImageId(uint32_t index, colour_t primaryColour)
+    constexpr ImageId(uint32_t index, OpenRCT2::Drawing::Colour primaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour))
     {
     }
 
-    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour)
+    constexpr ImageId(uint32_t index, OpenRCT2::Drawing::Colour primaryColour, OpenRCT2::Drawing::Colour secondaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour))
     {
     }
 
-    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
+    constexpr ImageId(
+        uint32_t index, OpenRCT2::Drawing::Colour primaryColour, OpenRCT2::Drawing::Colour secondaryColour,
+        OpenRCT2::Drawing::Colour tertiaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour).WithTertiary(tertiaryColour))
     {
     }
 
     bool HasValue() const
     {
-        return GetIndex() != ImageIndexUndefined;
+        return GetIndex() != kImageIndexUndefined;
     }
 
     bool HasPrimary() const
     {
-        return (_flags & NEW_FLAG_PRIMARY) || (_flags & NEW_FLAG_SECONDARY);
+        return (_flags & kFlagPrimary) || (_flags & kFlagSecondary);
     }
 
     bool HasSecondary() const
     {
-        return _flags & NEW_FLAG_SECONDARY;
+        return _flags & kFlagSecondary;
     }
 
     bool HasTertiary() const
     {
-        return !(_flags & NEW_FLAG_PRIMARY) && (_flags & NEW_FLAG_SECONDARY);
+        return !(_flags & kFlagPrimary) && (_flags & kFlagSecondary);
     }
 
     bool IsRemap() const
     {
-        return (_flags & NEW_FLAG_PRIMARY) && !(_flags & NEW_FLAG_SECONDARY);
+        return (_flags & kFlagPrimary) && !(_flags & kFlagSecondary);
     }
 
     bool IsBlended() const
     {
-        return _flags & NEW_FLAG_BLEND;
+        return _flags & kFlagBlend;
     }
 
     ImageIndex GetIndex() const
@@ -142,19 +130,19 @@ public:
         return _primary;
     }
 
-    colour_t GetPrimary() const
+    OpenRCT2::Drawing::Colour GetPrimary() const
     {
-        return _primary;
+        return static_cast<OpenRCT2::Drawing::Colour>(_primary);
     }
 
-    colour_t GetSecondary() const
+    OpenRCT2::Drawing::Colour GetSecondary() const
     {
-        return _secondary;
+        return static_cast<OpenRCT2::Drawing::Colour>(_secondary);
     }
 
-    colour_t GetTertiary() const
+    OpenRCT2::Drawing::Colour GetTertiary() const
     {
-        return _tertiary;
+        return static_cast<OpenRCT2::Drawing::Colour>(_tertiary);
     }
 
     ImageCatalogue GetCatalogue() const;
@@ -173,7 +161,7 @@ public:
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithRemap(FilterPaletteID paletteId) const
+    [[nodiscard]] constexpr ImageId WithRemap(OpenRCT2::Drawing::FilterPaletteID paletteId) const
     {
         return WithRemap(static_cast<uint8_t>(paletteId));
     }
@@ -184,24 +172,24 @@ public:
         result._primary = paletteId;
         result._secondary = 0;
         result._tertiary = 0;
-        result._flags |= NEW_FLAG_PRIMARY;
-        result._flags &= ~NEW_FLAG_SECONDARY;
+        result._flags |= kFlagPrimary;
+        result._flags &= ~kFlagSecondary;
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithPrimary(colour_t colour) const
+    [[nodiscard]] constexpr ImageId WithPrimary(OpenRCT2::Drawing::Colour colour) const
     {
         ImageId result = *this;
-        result._primary = colour;
-        result._flags |= NEW_FLAG_PRIMARY;
+        result._primary = EnumValue(colour);
+        result._flags |= kFlagPrimary;
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithSecondary(colour_t colour) const
+    [[nodiscard]] constexpr ImageId WithSecondary(OpenRCT2::Drawing::Colour colour) const
     {
         ImageId result = *this;
-        result._secondary = colour;
-        result._flags |= NEW_FLAG_SECONDARY;
+        result._secondary = EnumValue(colour);
+        result._flags |= kFlagSecondary;
         return result;
     }
 
@@ -209,17 +197,17 @@ public:
     {
         ImageId result = *this;
         result._secondary = 0;
-        result._flags &= ~NEW_FLAG_SECONDARY;
+        result._flags &= ~kFlagSecondary;
         return result;
     }
 
-    [[nodiscard]] constexpr ImageId WithTertiary(colour_t tertiary) const
+    [[nodiscard]] constexpr ImageId WithTertiary(OpenRCT2::Drawing::Colour tertiary) const
     {
         ImageId result = *this;
-        result._tertiary = tertiary;
-        result._flags &= ~NEW_FLAG_PRIMARY;
-        result._flags |= NEW_FLAG_SECONDARY;
-        if (!(_flags & NEW_FLAG_SECONDARY))
+        result._tertiary = EnumValue(tertiary);
+        result._flags &= ~kFlagPrimary;
+        result._flags |= kFlagSecondary;
+        if (!(_flags & kFlagSecondary))
         {
             // Tertiary implies primary and secondary, so if colour was remap (8-bit primary) then
             // we need to zero the secondary colour.
@@ -228,18 +216,18 @@ public:
         return result;
     }
 
-    [[nodiscard]] ImageId WithTransparency(colour_t colour) const
+    [[nodiscard]] ImageId WithTransparency(OpenRCT2::Drawing::Colour colour) const
     {
         return WithTransparency(GetGlassPaletteId(colour));
     }
 
-    [[nodiscard]] ImageId WithTransparency(FilterPaletteID palette) const
+    [[nodiscard]] ImageId WithTransparency(OpenRCT2::Drawing::FilterPaletteID palette) const
     {
         ImageId result = *this;
         result._primary = static_cast<uint8_t>(palette);
         result._secondary = 0;
         result._tertiary = 0;
-        result._flags = NEW_FLAG_BLEND;
+        result._flags = kFlagBlend;
         return result;
     }
 
@@ -247,9 +235,9 @@ public:
     {
         ImageId result = *this;
         if (value)
-            result._flags |= NEW_FLAG_BLEND;
+            result._flags |= kFlagBlend;
         else
-            result._flags &= ~NEW_FLAG_BLEND;
+            result._flags &= ~kFlagBlend;
         return result;
     }
 

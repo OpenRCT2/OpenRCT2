@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,35 +9,35 @@
 
 #include <array>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <random>
 #include <sstream>
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum ProgressWindowWidgetIdx
+    enum ProgressWindowWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
         WIDX_CLOSE,
     };
 
-    static constexpr int32_t kWindowWidth = 400;
-    static constexpr int32_t kWindowHeight = 90;
+    static constexpr ScreenSize kWindowSize = { 400, 90 };
 
     // clang-format off
-    static Widget kProgressWindowWidgets[] = {
-        MakeWidget({                0, 0}, {    kWindowWidth, kWindowHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), // panel / background
-        MakeWidget({                1, 1}, {kWindowWidth - 3,            14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_STRINGID,  STR_WINDOW_TITLE_TIP), // title bar
-        MakeWidget({kWindowWidth - 12, 2}, {              11,            12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,   STR_CLOSE_WINDOW_TIP), // close x button
-        kWidgetsEnd,
-    };
+    static constexpr auto kProgressWindowWidgets = makeWidgets(
+        makeWindowShim(kStringIdNone, kWindowSize)
+    );
 
     struct LoaderVehicleStyle
     {
@@ -46,21 +46,26 @@ namespace OpenRCT2::Ui::Windows
         ImageId vehicle;
     };
 
-    static std::array<LoaderVehicleStyle, 3> kVehicleStyles = { {
+    static std::array<LoaderVehicleStyle, 4> kVehicleStyles = { {
         {
-            ImageId{SPR_G2_LOADER_HYBRID_SUPPORTS, COLOUR_LIGHT_ORANGE, COLOUR_DARK_BROWN },
-            ImageId{SPR_G2_LOADER_HYBRID_TRACK, COLOUR_LIGHT_ORANGE, COLOUR_LIGHT_ORANGE },
-            ImageId{SPR_G2_LOADER_HYBRID_VEHICLE, COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_BRIGHT_RED }
+            ImageId{SPR_G2_LOADER_HYBRID_SUPPORTS, Drawing::Colour::lightOrange, Drawing::Colour::darkBrown },
+            ImageId{SPR_G2_LOADER_HYBRID_TRACK, Drawing::Colour::lightOrange, Drawing::Colour::lightOrange },
+            ImageId{SPR_G2_LOADER_HYBRID_VEHICLE, Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::brightRed }
         },
         {
-            ImageId{SPR_G2_LOADER_STEEL_SUPPORTS, COLOUR_LIGHT_BROWN, COLOUR_BLACK },
-            ImageId{SPR_G2_LOADER_STEEL_TRACK, COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN },
-            ImageId{SPR_G2_LOADER_STEEL_VEHICLE, COLOUR_LIGHT_BLUE, COLOUR_WHITE, COLOUR_LIGHT_BLUE }
+            ImageId{SPR_G2_LOADER_STEEL_SUPPORTS, Drawing::Colour::lightBrown, Drawing::Colour::black },
+            ImageId{SPR_G2_LOADER_STEEL_TRACK, Drawing::Colour::lightBrown, Drawing::Colour::lightBrown },
+            ImageId{SPR_G2_LOADER_STEEL_VEHICLE, Drawing::Colour::lightBlue, Drawing::Colour::white, Drawing::Colour::lightBlue }
         },
         {
-            ImageId{SPR_G2_LOADER_WOODEN_SUPPORTS, COLOUR_BLACK, COLOUR_WHITE },
-            ImageId{SPR_G2_LOADER_WOODEN_TRACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-            ImageId{SPR_G2_LOADER_WOODEN_VEHICLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN}
+            ImageId{SPR_G2_LOADER_WOODEN_SUPPORTS, Drawing::Colour::black, Drawing::Colour::white },
+            ImageId{SPR_G2_LOADER_WOODEN_TRACK, Drawing::Colour::bordeauxRed, Drawing::Colour::black },
+            ImageId{SPR_G2_LOADER_WOODEN_VEHICLE, Drawing::Colour::brightRed, Drawing::Colour::brightRed, Drawing::Colour::saturatedBrown}
+        },
+        {
+            ImageId{SPR_G2_LOADER_GO_KARTS_SUPPORTS, Drawing::Colour::darkBrown, Drawing::Colour::darkBrown },
+            ImageId{SPR_G2_LOADER_GO_KARTS_TRACK, Drawing::Colour::black, Drawing::Colour::black },
+            ImageId{SPR_G2_LOADER_GO_KARTS_VEHICLES }
         },
     } };
 
@@ -72,30 +77,29 @@ namespace OpenRCT2::Ui::Windows
     private:
         CloseCallback _onClose = nullptr;
 
-        StringId _progressFormat;
+        StringId _progressFormat{ kStringIdEmpty };
         std::string _progressTitle;
         std::string _currentCaption;
 
-        uint32_t _currentProgress;
-        uint32_t _totalCount;
+        uint32_t _currentProgress{};
+        uint32_t _totalCount{};
         int8_t style = -1;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            widgets = kProgressWindowWidgets;
-            WindowInitScrollWidgets(*this);
+            Audio::StopSFX();
 
-            frame_no = 0;
-            min_width = kWindowWidth;
-            min_height = kWindowHeight;
-            max_width = min_width;
-            max_height = min_height;
+            setWidgets(kProgressWindowWidgets);
+            WindowSetResize(*this, kWindowSize, kWindowSize);
+
+            currentFrame = 0;
 
             ApplyStyle();
+            resizeFrame();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             if (_onClose != nullptr)
             {
@@ -103,29 +107,25 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            Invalidate();
+            invalidate();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            if (_onClose != nullptr)
-                widgets[WIDX_CLOSE].type = WindowWidgetType::Button;
-            else
-                widgets[WIDX_CLOSE].type = WindowWidgetType::Empty;
+            widgets[WIDX_CLOSE].setVisible(_onClose != nullptr);
 
-            ResizeFrame();
             PrepareCaption();
         }
 
@@ -152,127 +152,127 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_totalCount > 0)
             {
-                auto ft = Formatter();
-                ft.Add<const char*>(_progressTitle.c_str());
-                ft.Add<uint32_t>(_currentProgress);
-                ft.Add<uint32_t>(_totalCount);
-
-                _currentCaption = FormatStringIDLegacy(_progressFormat, ft.Data());
+                _currentCaption = FormatStringID(_progressFormat, _progressTitle.c_str(), _currentProgress, _totalCount);
             }
             else
+            {
                 _currentCaption = _progressTitle;
+            }
 
             // Set window title
-            {
-                auto ft = Formatter::Common();
-                ft.Add<StringId>(STR_STRING);
-                ft.Add<const char*>(_currentCaption.c_str());
-            }
+            widgets[WIDX_TITLE].setString(_currentCaption.c_str());
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
 
             auto& widget = widgets[WIDX_TITLE];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.bottom + 1 };
 
-            DrawPixelInfo clipDPI;
-            if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, width - 3, height - widget.bottom - 3))
+            Drawing::RenderTarget clipRT;
+            if (!ClipRenderTarget(clipRT, rt, screenCoords, width - 3, height - widget.bottom - 3))
                 return;
 
             auto& variant = kVehicleStyles[style];
 
             // Draw supports sprite -- twice, to fill the window
             auto trackCoords = ScreenCoordsXY{ widget.left, widget.bottom + 1 };
-            GfxDrawSprite(clipDPI, variant.supports, trackCoords);
-            GfxDrawSprite(clipDPI, variant.supports, trackCoords + ScreenCoordsXY(256, 0));
+            GfxDrawSprite(clipRT, variant.supports, trackCoords);
+            GfxDrawSprite(clipRT, variant.supports, trackCoords + ScreenCoordsXY(256, 0));
 
             // Draw track sprite -- twice, to fill the window
-            GfxDrawSprite(clipDPI, variant.track, trackCoords);
-            GfxDrawSprite(clipDPI, variant.track, trackCoords + ScreenCoordsXY(256, 0));
+            GfxDrawSprite(clipRT, variant.track, trackCoords);
+            GfxDrawSprite(clipRT, variant.track, trackCoords + ScreenCoordsXY(256, 0));
 
             // Figure out where to position the vehicle to indicate progress
             auto* vehicle = GfxGetG1Element(variant.vehicle);
             int16_t vehicleWidth = (vehicle != nullptr) ? vehicle->width : 0;
             int32_t position;
             if (_totalCount > 0)
-                position = (-vehicleWidth + 2) + width * _currentProgress / _totalCount;
+            {
+                const auto progress = static_cast<double>(_currentProgress) / _totalCount;
+                position = static_cast<int32_t>((-vehicleWidth + 2) + width * progress);
+            }
             else
+            {
                 position = (vehicleWidth + width) / 2;
+            }
 
-            GfxDrawSprite(clipDPI, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
+            GfxDrawSprite(clipRT, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
         }
 
-        void SetCaption(const std::string& text)
+        void setCaption(const std::string& text)
         {
             _progressTitle = text;
-            _currentProgress = 0;
-            _totalCount = 0;
-
-            Invalidate();
+            invalidate();
         }
 
-        void SetCloseCallback(CloseCallback onClose)
+        void setCloseCallback(CloseCallback callback)
         {
-            _onClose = onClose;
+            _onClose = callback;
         }
 
-        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format)
+        void setProgress(uint32_t currentProgress, uint32_t totalCount, StringId format)
         {
-            if (format == STR_NONE)
+            if (format == kStringIdNone)
                 _progressFormat = STR_STRING_M_OF_N;
             else
                 _progressFormat = format;
 
             _currentProgress = currentProgress;
             _totalCount = totalCount;
-            Invalidate();
+            invalidate();
         }
     };
 
     WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose)
     {
-        ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
+        ContextForceCloseWindowByClass(WindowClass::networkStatus);
+
+        auto* windowMgr = GetWindowManager();
 
         ProgressWindow* window;
-        if ((window = static_cast<ProgressWindow*>(WindowFindByClass(WindowClass::ProgressWindow))) != nullptr)
+        if ((window = static_cast<ProgressWindow*>(windowMgr->FindByClass(WindowClass::progressWindow))) != nullptr)
         {
-            WindowBringToFront(*window);
+            windowMgr->BringToFront(*window);
         }
         else
         {
-            window = WindowCreate<ProgressWindow>(
-                WindowClass::ProgressWindow, kWindowWidth, kWindowHeight,
-                WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+            window = windowMgr->Create<ProgressWindow>(
+                WindowClass::progressWindow, kWindowSize,
+                { WindowFlag::higherContrastOnPress, WindowFlag::transparent, WindowFlag::centreScreen,
+                  WindowFlag::stickToFront });
         }
 
-        window->SetCaption(text);
-        window->SetCloseCallback(onClose);
+        window->setCaption(text);
+        window->setCloseCallback(onClose);
         return window;
     }
 
     void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format)
     {
-        auto window = WindowFindByClass(WindowClass::ProgressWindow);
+        auto* windowMgr = GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::progressWindow);
         if (window == nullptr)
         {
             return;
         }
         auto progressWindow = static_cast<ProgressWindow*>(window);
-        progressWindow->SetProgress(currentProgress, totalCount, format);
+        progressWindow->setProgress(currentProgress, totalCount, format);
     }
 
     // Closes the window, deliberately *without* executing the callback.
     void ProgressWindowClose()
     {
-        auto window = WindowFindByClass(WindowClass::ProgressWindow);
+        auto* windowMgr = GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::progressWindow);
         if (window == nullptr)
         {
             return;
         }
         auto progressWindow = static_cast<ProgressWindow*>(window);
-        progressWindow->SetCloseCallback(nullptr);
-        progressWindow->Close();
+        progressWindow->setCloseCallback(nullptr);
+        progressWindow->close();
     }
 } // namespace OpenRCT2::Ui::Windows

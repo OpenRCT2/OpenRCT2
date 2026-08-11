@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,8 +11,12 @@
 
 #include <cstdint>
 
-struct Vehicle;
-struct Ride;
+namespace OpenRCT2
+{
+    struct Vehicle;
+    struct Ride;
+} // namespace OpenRCT2
 
-Vehicle* CableLiftSegmentCreate(
-    Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head);
+OpenRCT2::Vehicle* CableLiftSegmentCreate(
+    OpenRCT2::Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance,
+    bool head);

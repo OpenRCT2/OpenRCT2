@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,22 +11,25 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/WaterLowerAction.h>
-#include <openrct2/actions/WaterRaiseAction.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/terraform/WaterLowerAction.h>
+#include <openrct2/actions/terraform/WaterRaiseAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_WATER;
-    static constexpr int32_t WH = 77;
-    static constexpr int32_t WW = 76;
+    static constexpr StringId kWindowTitle = STR_WATER;
+    static constexpr ScreenSize kWindowSize = { 76, 77 };
 
     enum WindowWaterWidgetIdx : WidgetIndex
     {
@@ -39,13 +42,12 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _waterWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0),   STR_NONE),            // preview box
-        MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
-        MakeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
-        kWidgetsEnd,
-    };
+    static constexpr auto _waterWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget     ({16, 17}, {44, 32}, WidgetType::imgBtn, WindowColour::primary , ImageId(SPR_LAND_TOOL_SIZE_0),   kStringIdNone),            // preview box
+        makeRemapWidget({17, 18}, {16, 16}, WidgetType::trnBtn, WindowColour::tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
+        makeRemapWidget({43, 32}, {16, 16}, WidgetType::trnBtn, WindowColour::tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP) // increment size
+    );
     // clang-format on
 
     class WaterWindow final : public Window
@@ -55,31 +57,32 @@ namespace OpenRCT2::Ui::Windows
         money64 _waterToolLowerCost = kMoney64Undefined;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            widgets = _waterWidgets;
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            setWidgets(_waterWidgets);
+
+            widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
             gLandToolSize = 1;
         }
 
-        void OnClose() override
+        void onClose() override
         {
             // If the tool wasn't changed, turn tool off
-            if (isToolActive(WindowClass::Water, WIDX_BACKGROUND))
+            if (isToolActive(WindowClass::water, WIDX_BACKGROUND))
             {
                 ToolCancel();
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PREVIEW:
                     InputSize();
@@ -87,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -96,28 +99,28 @@ namespace OpenRCT2::Ui::Windows
                     gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INCREMENT:
                     // Increment land tool size
                     gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             // Close window if another tool is open
-            if (!isToolActive(WindowClass::Water, WIDX_BACKGROUND))
+            if (!isToolActive(WindowClass::water, WIDX_BACKGROUND))
             {
-                Close();
+                close();
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             int32_t size;
             char* end;
@@ -135,35 +138,34 @@ namespace OpenRCT2::Ui::Windows
                 size = std::min<uint16_t>(kLandToolMaximumSize, size);
                 gLandToolSize = size;
 
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
             // Set the preview image button to be pressed down
-            SetWidgetPressed(WIDX_PREVIEW, true);
+            setWidgetPressed(WIDX_PREVIEW, true);
 
             // Update the preview image
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
                                                 windowPos.y + widgets[WIDX_PREVIEW].midY() };
 
-            DrawWidgets(dpi);
+            drawWidgets(rt);
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
-                DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                drawText(rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
             }
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 // Draw raise cost amount
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
@@ -171,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_waterToolRaiseCost);
-                    DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    drawText(rt, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::centre });
                 }
                 screenCoords.y += 10;
 
@@ -180,17 +182,12 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_waterToolLowerCost);
-                    DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    drawText(rt, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::centre });
                 }
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -200,20 +197,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                    if (gMapSelectFlags.has(MapSelectFlag::enable))
                     {
-                        gCurrentToolId = Tool::UpDownArrow;
+                        gCurrentToolId = Tool::upDownArrow;
                     }
                     break;
             }
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -223,19 +220,18 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::WaterDown;
+                    gMapSelectFlags.unset(MapSelectFlag::enable);
+                    gCurrentToolId = Tool::waterDown;
                     break;
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -252,7 +248,8 @@ namespace OpenRCT2::Ui::Windows
          */
         void WaterToolDrag(const ScreenCoordsXY& screenPos)
         {
-            auto* window = WindowFindFromPoint(screenPos);
+            auto* windowMgr = GetWindowManager();
+            auto* window = windowMgr->FindFromPoint(screenPos);
             if (window == nullptr || window->viewport == nullptr)
                 return;
 
@@ -260,13 +257,15 @@ namespace OpenRCT2::Ui::Windows
 
             auto offsetPos = screenPos - ScreenCoordsXY{ 0, gInputDragLast.y };
 
+            auto& gameState = getGameState();
+
             if (offsetPos.y <= dx)
             {
                 gInputDragLast.y += dx;
 
-                auto waterRaiseAction = WaterRaiseAction(
+                auto waterRaiseAction = GameActions::WaterRaiseAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
-                GameActions::Execute(&waterRaiseAction);
+                GameActions::Execute(&waterRaiseAction, gameState);
 
                 _waterToolRaiseCost = kMoney64Undefined;
                 _waterToolLowerCost = kMoney64Undefined;
@@ -280,9 +279,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 gInputDragLast.y += dx;
 
-                auto waterLowerAction = WaterLowerAction(
+                auto waterLowerAction = GameActions::WaterLowerAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
-                GameActions::Execute(&waterLowerAction);
+                GameActions::Execute(&waterLowerAction, gameState);
                 _waterToolRaiseCost = kMoney64Undefined;
                 _waterToolLowerCost = kMoney64Undefined;
 
@@ -296,45 +295,48 @@ namespace OpenRCT2::Ui::Windows
          */
         void ToolUpdateWater(const ScreenCoordsXY& screenPos)
         {
-            MapInvalidateSelectionRect();
+            auto* windowMgr = GetWindowManager();
+            auto& gameState = getGameState();
 
-            if (gCurrentToolId == Tool::UpDownArrow)
+            if (gCurrentToolId == Tool::upDownArrow)
             {
-                if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                if (!gMapSelectFlags.has(MapSelectFlag::enable))
                     return;
 
-                auto waterLowerAction = WaterLowerAction(
+                auto waterLowerAction = GameActions::WaterLowerAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
-                auto waterRaiseAction = WaterRaiseAction(
+                waterLowerAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
+                auto waterRaiseAction = GameActions::WaterRaiseAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+                waterRaiseAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
 
-                auto res = GameActions::Query(&waterLowerAction);
-                money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                auto res = GameActions::Query(&waterLowerAction, gameState);
+                money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
-                res = GameActions::Query(&waterRaiseAction);
-                money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+                res = GameActions::Query(&waterRaiseAction, gameState);
+                money64 raiseCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
                 if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
                 {
                     _waterToolRaiseCost = raiseCost;
                     _waterToolLowerCost = lowerCost;
-                    WindowInvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::water);
                 }
                 return;
             }
 
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
-                screenPos, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+                screenPos, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
 
-            if (info.interactionType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::none)
             {
                 if (_waterToolRaiseCost != kMoney64Undefined || _waterToolLowerCost != kMoney64Undefined)
                 {
                     _waterToolRaiseCost = kMoney64Undefined;
                     _waterToolLowerCost = kMoney64Undefined;
-                    WindowInvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::water);
                 }
                 return;
             }
@@ -343,15 +345,15 @@ namespace OpenRCT2::Ui::Windows
 
             uint8_t state_changed = 0;
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL_WATER)
+            if (gMapSelectType != MapSelectType::fullWater)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL_WATER;
+                gMapSelectType = MapSelectType::fullWater;
                 state_changed++;
             }
 
@@ -390,26 +392,27 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             if (!state_changed)
                 return;
 
-            auto waterLowerAction = WaterLowerAction(
+            auto waterLowerAction = GameActions::WaterLowerAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
-            auto waterRaiseAction = WaterRaiseAction(
+            waterLowerAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
+            auto waterRaiseAction = GameActions::WaterRaiseAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+            waterRaiseAction.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
 
-            auto res = GameActions::Query(&waterLowerAction);
-            money64 lowerCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            auto res = GameActions::Query(&waterLowerAction, gameState);
+            money64 lowerCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
-            res = GameActions::Query(&waterRaiseAction);
-            money64 raiseCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            res = GameActions::Query(&waterRaiseAction, gameState);
+            money64 raiseCost = res.error == GameActions::Status::ok ? res.cost : kMoney64Undefined;
 
             if (_waterToolRaiseCost != raiseCost || _waterToolLowerCost != lowerCost)
             {
                 _waterToolRaiseCost = raiseCost;
                 _waterToolLowerCost = lowerCost;
-                WindowInvalidateByClass(WindowClass::Water);
+                windowMgr->InvalidateByClass(WindowClass::water);
             }
         }
 
@@ -418,13 +421,16 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<uint16_t>(kLandToolMinimumSize);
             ft.Add<uint16_t>(kLandToolMaximumSize);
-            WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+            WindowTextInputOpen(
+                this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, 3);
         }
     };
 
     WindowBase* WaterOpen()
     {
-        return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<WaterWindow>(
+            WindowClass::water, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, {});
     }
 
     /**
@@ -433,16 +439,16 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleWaterWindow()
     {
-        if (isToolActive(WindowClass::Water, WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::water, WIDX_BACKGROUND))
         {
             ToolCancel();
         }
         else
         {
             ShowGridlines();
-            auto* toolWindow = ContextOpenWindow(WindowClass::Water);
-            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::WaterDown);
-            InputSetFlag(INPUT_FLAG_6, true);
+            auto* toolWindow = ContextOpenWindow(WindowClass::water);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::waterDown);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,67 +9,91 @@
 
 #pragma once
 
-#include "interface/Window.h"
+#include "core/FlagHolder.hpp"
+#include "core/StringTypes.h"
+#include "world/Location.hpp"
 
-enum INPUT_FLAGS
+namespace OpenRCT2
 {
-    INPUT_FLAG_WIDGET_PRESSED = (1 << 0),
+    enum class InputFlag : uint8_t
+    {
+        widgetPressed,
+        // The dropdown autocloses if the mouse is released, set on flag Dropdown::Flag::autoClose.
+        dropdownAutoclose,
+        // The mouse has been released and the dropdown is still open.
+        dropdownMouseUp,
+        toolActive,
+        // Left click on a viewport
+        leftMousePressed,
+        rightMousePressed,
+        allowRightMouseRemoval,
+        viewportScrolling,
+    };
+    using InputFlags = FlagHolder<uint8_t, InputFlag>;
 
-    // The dropdown can stay open if the mouse is released, set on flag Dropdown::Flag::StayOpen
-    INPUT_FLAG_DROPDOWN_STAY_OPEN = (1 << 1),
+    enum class InputState
+    {
+        reset,
+        normal,
+        widgetPressed,
+        positioningWindow,
+        viewportRight,
+        dropdownActive,
+        viewportLeft,
+        scrollLeft,
+        resizing,
+        scrollRight
+    };
 
-    // The mouse has been released and the dropdown is still open
-    // INPUT_FLAG_DROPDOWN_STAY_OPEN is already set if this happens
-    INPUT_FLAG_DROPDOWN_MOUSE_UP = (1 << 2),
+    struct CursorState
+    {
+        ScreenCoordsXY position;
+        uint8_t left, middle, right, any;
+        int32_t wheel;
+        int32_t old;
+        bool touch, touchIsDouble;
+        uint32_t touchDownTimestamp;
+    };
 
-    INPUT_FLAG_TOOL_ACTIVE = (1 << 3),
+    struct TextInputSession
+    {
+        u8string* Buffer;      // UTF-8 string buffer, non-owning.
+        size_t Length;         // Number of codepoints
+        size_t MaxLength;      // Maximum length of text, Length can't be larger than this.
+        size_t SelectionStart; // Selection start, in bytes
+        size_t SelectionSize;  // Selection length in bytes
 
-    // Left click on a viewport
-    INPUT_FLAG_4 = (1 << 4),
+        const utf8* ImeBuffer; // IME UTF-8 stream
+    };
 
-    INPUT_FLAG_5 = (1 << 5),
+    enum
+    {
+        CURSOR_UP = 0,
+        CURSOR_DOWN = 1,
+        CURSOR_CHANGED = 2,
+        CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
+        CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
+    };
 
-    // Some of the map tools (clear, footpath, scenery)
-    // never read as far as I know.
-    INPUT_FLAG_6 = (1 << 6),
+    struct WidgetRef;
 
-    INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
-};
+    extern WidgetRef gHoverWidget;
+    extern WidgetRef gPressedWidget;
 
-enum class InputState
-{
-    Reset,
-    Normal,
-    WidgetPressed,
-    PositioningWindow,
-    ViewportRight,
-    DropdownActive,
-    ViewportLeft,
-    ScrollLeft,
-    Resizing,
-    ScrollRight
-};
+    extern uint32_t gTooltipCloseTimeout;
+    extern WidgetRef gTooltipWidget;
+    extern ScreenCoordsXY gTooltipCursor;
 
-extern WidgetRef gHoverWidget;
-extern WidgetRef gPressedWidget;
+    // TODO: Move to openrct2-ui and make static again
+    extern InputState _inputState;
+    extern InputFlags gInputFlags;
+    extern uint32_t _tooltipNotShownTimeout;
 
-extern uint32_t gTooltipCloseTimeout;
-extern WidgetRef gTooltipWidget;
-extern ScreenCoordsXY gTooltipCursor;
+    void TitleHandleKeyboardInput();
+    void GameHandleKeyboardInput();
 
-// TODO: Move to openrct2-ui and make static again
-extern InputState _inputState;
-extern uint8_t _inputFlags;
-extern uint32_t _tooltipNotShownTimeout;
+    void InputSetState(InputState state);
+    InputState InputGetState();
 
-void TitleHandleKeyboardInput();
-void GameHandleKeyboardInput();
-
-void InputSetFlag(INPUT_FLAGS flag, bool on);
-bool InputTestFlag(INPUT_FLAGS flag);
-void InputResetFlags();
-
-void InputSetState(InputState state);
-InputState InputGetState();
-
-void ResetTooltipNotShown();
+    void ResetTooltipNotShown();
+} // namespace OpenRCT2

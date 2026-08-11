@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,61 +9,64 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor SwingingShipRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x5,
+constexpr RideTypeDescriptor kSwingingShipRTD =
+{
+    .Category = RideCategory::thrill,
+    .StartTrackPiece = TrackElemType::flatTrack1x5,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::swingingShip,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
+    .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
                      RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession, RtdFlag::interestingToLookAt,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Swing),
-    .DefaultMode = RideMode::Swing,
+    .RideModes = EnumsToFlags(RideMode::swing),
+    .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 25 },
     .Naming = { STR_RIDE_NAME_SWINGING_SHIP, STR_RIDE_DESCRIPTION_SWINGING_SHIP },
-    .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .NameConvention = { RideComponentType::ship, RideComponentType::structure, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 112, 7, 11, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 77.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_PIRATE,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectPirate,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
+        { Drawing::Colour::darkBrown, Drawing::Colour::darkBrown, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "swinging_ship",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 50), RIDE_RATING(1, 90), RIDE_RATING(1, 41) },
+        RatingsCalculationType::flatRide,
+        { RideRating::make(1, 50), RideRating::make(1, 90), RideRating::make(1, 41) },
         10,
         0,
         false,
         {
-            { RatingsModifierType::BonusOperationOption, 0, 5, 5, 10 }, 
-            { RatingsModifierType::BonusScenery,         0, 16732, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 5, 5, 10 }, 
+            { RatingsModifierType::bonusScenery,         0, 16732, 0, 0 },
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

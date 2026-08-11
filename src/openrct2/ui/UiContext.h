@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,6 @@
 #include <vector>
 
 struct ScreenCoordsXY;
-struct DrawPixelInfo;
 struct ITitleSequencePlayer;
 
 namespace OpenRCT2
@@ -27,20 +26,26 @@ namespace OpenRCT2
     {
         struct IDrawingEngineFactory;
         struct IWeatherDrawer;
+        struct RenderTarget;
         using DrawWeatherFunc = void (*)(
-            DrawPixelInfo& dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width,
-            int32_t height);
+            RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui
     {
         struct IWindowManager;
 
-        enum class FULLSCREEN_MODE
+        enum class FullscreenMode
         {
-            WINDOWED,
-            FULLSCREEN,
-            FULLSCREEN_DESKTOP,
+            windowed,
+            fullscreen,
+            fullscreenDesktop,
+        };
+
+        struct Resolution
+        {
+            int32_t Width;
+            int32_t Height;
         };
 
         inline bool operator<(const Resolution& lhs, const Resolution& rhs)
@@ -66,8 +71,8 @@ namespace OpenRCT2
 
         enum class FileDialogType : uint8_t
         {
-            Open,
-            Save
+            open,
+            save
         };
 
         struct FileDialogDesc
@@ -84,7 +89,7 @@ namespace OpenRCT2
                 }
             };
 
-            FileDialogType Type = FileDialogType::Open;
+            FileDialogType Type = FileDialogType::open;
             u8string Title;
             u8string InitialDirectory;
             u8string DefaultFilename;
@@ -100,7 +105,7 @@ namespace OpenRCT2
 
             virtual void InitialiseScriptExtensions() = 0;
             virtual void Tick() = 0;
-            virtual void Draw(DrawPixelInfo& dpi) = 0;
+            virtual void Draw(Drawing::RenderTarget& rt) = 0;
 
             // Window
             virtual void CreateWindow() = 0;
@@ -110,7 +115,7 @@ namespace OpenRCT2
             virtual int32_t GetWidth() = 0;
             virtual int32_t GetHeight() = 0;
             virtual ScaleQuality GetScaleQuality() = 0;
-            virtual void SetFullscreenMode(FULLSCREEN_MODE mode) = 0;
+            virtual void SetFullscreenMode(FullscreenMode mode) = 0;
             virtual const std::vector<Resolution>& GetFullscreenResolutions() = 0;
             virtual bool HasFocus() = 0;
             virtual bool IsMinimised() = 0;
@@ -150,8 +155,7 @@ namespace OpenRCT2
             // Drawing
             [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() = 0;
             virtual void DrawWeatherAnimation(
-                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi,
-                OpenRCT2::Drawing::DrawWeatherFunc drawFunc)
+                Drawing::IWeatherDrawer* weatherDrawer, Drawing::RenderTarget& rt, Drawing::DrawWeatherFunc drawFunc)
                 = 0;
 
             // Text input
@@ -169,6 +173,6 @@ namespace OpenRCT2
             virtual ITitleSequencePlayer* GetTitleSequencePlayer() = 0;
         };
 
-        [[nodiscard]] std::shared_ptr<IUiContext> CreateDummyUiContext();
+        [[nodiscard]] std::unique_ptr<IUiContext> CreateDummyUiContext();
     } // namespace Ui
 } // namespace OpenRCT2

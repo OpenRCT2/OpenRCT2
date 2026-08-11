@@ -7,5 +7,25 @@
                 [ 9, 74 ]
             ]
         }
-    }
+    },
+    "paths": [
+        {
+            "railings": "rct2.footpath_railings.concrete",
+            "surface": "rct2.footpath_surface.queue_yellow",
+            "coordinates": [
+                [ 19, 58, 26 ],
+                [ 20, 58, 26 ],
+                [ 21, 58, 26 ],
+                [ 22, 58, 26 ],
+                [ 23, 58, 26 ],
+                [ 23, 57, 26 ],
+                [ 23, 56, 26 ],
+                [ 22, 56, 26 ],
+                [ 21, 56, 26 ],
+                [ 21, 57, 26 ],
+                [ 20, 57, 26 ]
+            ],
+            "queue": true
+        }
+    ]
 }

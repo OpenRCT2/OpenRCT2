@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,97 +11,99 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
-    #include "../../Duktape.hpp"
-    #include "ScParkMessage.hpp"
-    #include "ScResearch.hpp"
-
-    #include <vector>
+    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
-    class ScPark
+    class ScPark;
+    extern ScPark gScPark;
+
+    class ScPark final : public ScBase
     {
     private:
-        duk_context* _context;
+        static JSValue cash_get(JSContext* ctx, JSValue thisVal);
+        static JSValue cash_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue rating_get(JSContext* ctx, JSValue thisVal);
+        static JSValue rating_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue bankLoan_get(JSContext* ctx, JSValue thisVal);
+        static JSValue bankLoan_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue maxBankLoan_get(JSContext* ctx, JSValue thisVal);
+        static JSValue maxBankLoan_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue entranceFee_get(JSContext* ctx, JSValue thisVal);
+        static JSValue entranceFee_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue guests_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue suggestedGuestMaximum_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue guestGenerationProbability_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue generateGuest(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue guestInitialCash_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue guestInitialHappiness_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue guestInitialHunger_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue guestInitialThirst_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue value_get(JSContext* ctx, JSValue thisVal);
+        static JSValue value_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue companyValue_get(JSContext* ctx, JSValue thisVal);
+        static JSValue companyValue_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue totalRideValueForMoney_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue totalAdmissions_get(JSContext* ctx, JSValue thisVal);
+        static JSValue totalAdmissions_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue totalIncomeFromAdmissions_get(JSContext* ctx, JSValue thisVal);
+        static JSValue totalIncomeFromAdmissions_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue landPrice_get(JSContext* ctx, JSValue thisVal);
+        static JSValue landPrice_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue constructionRightsPrice_get(JSContext* ctx, JSValue thisVal);
+        static JSValue constructionRightsPrice_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue casualtyPenalty_get(JSContext* ctx, JSValue thisVal);
+        static JSValue casualtyPenalty_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue parkSize_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue name_get(JSContext* ctx, JSValue thisVal);
+        static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue getFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue setFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue research_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue messages_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue messages_set(JSContext* ctx, JSValue thisVal, JSValue value);
+
+        static JSValue postMessage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue getMonthlyExpenditure(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue awards_get(JSContext* ctx, JSValue thisVal);
+
+        static JSValue clearAwards(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
+
+        static JSValue grantAward(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
     public:
-        ScPark(duk_context* ctx);
+        JSValue New(JSContext* ctx);
 
-        money64 cash_get() const;
-        void cash_set(money64 value);
-
-        int32_t rating_get() const;
-        void rating_set(int32_t value);
-
-        money64 bankLoan_get() const;
-        void bankLoan_set(money64 value);
-
-        money64 maxBankLoan_get() const;
-        void maxBankLoan_set(money64 value);
-
-        money64 entranceFee_get() const;
-        void entranceFee_set(money64 value);
-
-        uint32_t guests_get() const;
-
-        uint32_t suggestedGuestMaximum_get() const;
-
-        int32_t guestGenerationProbability_get() const;
-
-        DukValue generateGuest();
-
-        money64 guestInitialCash_get() const;
-
-        uint8_t guestInitialHappiness_get() const;
-
-        uint8_t guestInitialHunger_get() const;
-
-        uint8_t guestInitialThirst_get() const;
-
-        money64 value_get() const;
-        void value_set(money64 value);
-
-        money64 companyValue_get() const;
-        void companyValue_set(money64 value);
-
-        money64 totalRideValueForMoney_get() const;
-
-        uint32_t totalAdmissions_get() const;
-        void totalAdmissions_set(uint32_t value);
-
-        money64 totalIncomeFromAdmissions_get() const;
-        void totalIncomeFromAdmissions_set(money64 value);
-
-        money64 landPrice_get() const;
-        void landPrice_set(money64 value);
-
-        money64 constructionRightsPrice_get() const;
-        void constructionRightsPrice_set(money64 value);
-
-        int16_t casualtyPenalty_get() const;
-        void casualtyPenalty_set(int16_t value);
-
-        uint16_t parkSize_get() const;
-
-        std::string name_get() const;
-        void name_set(std::string value);
-
-        bool getFlag(const std::string& key) const;
-
-        void setFlag(const std::string& key, bool value);
-
-        std::shared_ptr<ScResearch> research_get() const;
-
-        std::vector<std::shared_ptr<ScParkMessage>> messages_get() const;
-
-        void messages_set(const std::vector<DukValue>& value);
-
-        void postMessage(DukValue message);
-
-        std::vector<int32_t> getMonthlyExpenditure(const std::string& expenditureType) const;
-
-        static void Register(duk_context* ctx);
+        void Register(JSContext* ctx);
     };
 } // namespace OpenRCT2::Scripting
 

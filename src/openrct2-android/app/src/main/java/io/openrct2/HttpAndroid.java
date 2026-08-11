@@ -67,6 +67,8 @@ public class HttpAndroid {
         Response response = new Response();
         response.status = Status.Invalid;
         response.error = "Request failed";
+        response.body = null;
+        response.headers = new HashMap<>();
         try {
             InputStream inputStream = null;
             try {

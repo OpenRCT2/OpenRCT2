@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,70 +14,66 @@
 #include <cstdint>
 
 struct CoordsXY;
-struct Vehicle;
-struct DrawPixelInfo;
 struct CoordsXYZ;
-struct EntityBase;
 
-enum class LightType : uint8_t
+namespace OpenRCT2
 {
-    None = 0,
+    struct EntityBase;
+    struct Vehicle;
+    struct Viewport;
+} // namespace OpenRCT2
 
-    Lantern0 = 4,
-    Lantern1 = 5,
-    Lantern2 = 6,
-    Lantern3 = 7,
-
-    Spot0 = 8,
-    Spot1 = 9,
-    Spot2 = 10,
-    Spot3 = 11,
-};
-
-constexpr uint8_t GetLightTypeSize(LightType type)
+namespace OpenRCT2::Drawing
 {
-    return static_cast<uint8_t>(type) & 0x3;
-}
-constexpr LightType SetLightTypeSize(LightType type, uint8_t size)
+    struct RenderTarget;
+    enum class PaletteIndex : uint8_t;
+} // namespace OpenRCT2::Drawing
+
+namespace OpenRCT2::Drawing::LightFx
 {
-    return static_cast<LightType>(((static_cast<uint8_t>(type) & ~0x3) | size));
-}
+    enum class LightType : uint8_t
+    {
+        none = 0,
 
-void LightFXSetAvailable(bool available);
-bool LightFXIsAvailable();
-bool LightFXForVehiclesIsAvailable();
+        lantern0 = 4,
+        lantern1 = 5,
+        lantern2 = 6,
+        lantern3 = 7,
 
-void LightFXInit();
+        spot0 = 8,
+        spot1 = 9,
+        spot2 = 10,
+        spot3 = 11,
+    };
 
-void LightFXUpdateBuffers(DrawPixelInfo&);
+    void SetAvailable(bool available);
+    bool IsAvailable();
+    bool ForVehiclesIsAvailable();
 
-void LightFXPrepareLightList();
-void LightFXSwapBuffers();
-void LightFXRenderLightsToFrontBuffer();
-void LightFXUpdateViewportSettings();
+    void Init();
 
-void* LightFXGetFrontBuffer();
-const OpenRCT2::Drawing::GamePalette& LightFXGetPalette();
+    void UpdateBuffers(RenderTarget&);
+    const GamePalette& GetPalette();
 
-void LightFXAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
+    void Add3DLight(const EntityBase& entity, uint8_t id, const CoordsXYZ& loc, LightType lightType);
 
-void LightFXAdd3DLightMagicFromDrawingTile(
-    const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);
+    void Add3DLightMagicFromDrawingTile(
+        const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);
 
-void LightFXAddLightsMagicVehicle(const Vehicle* vehicle);
-void LightFxAddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle);
-void LightFxAddLightsMagicVehicle_MineTrainCoaster(const Vehicle* vehicle);
-void LightFxAddLightsMagicVehicle_ChairLift(const Vehicle* vehicle);
-void LightFxAddLightsMagicVehicle_BoatHire(const Vehicle* vehicle);
-void LightFxAddLightsMagicVehicle_Monorail(const Vehicle* vehicle);
-void LightFxAddLightsMagicVehicle_MiniatureRailway(const Vehicle* vehicle);
+    void AddLightsMagicVehicle(const Vehicle* vehicle);
+    void AddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle);
+    void AddLightsMagicVehicle_MineTrainCoaster(const Vehicle* vehicle);
+    void AddLightsMagicVehicle_ChairLift(const Vehicle* vehicle);
+    void AddLightsMagicVehicle_BoatHire(const Vehicle* vehicle);
+    void AddLightsMagicVehicle_Monorail(const Vehicle* vehicle);
+    void AddLightsMagicVehicle_MiniatureRailway(const Vehicle* vehicle);
 
-void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset);
-void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset);
+    void AddKioskLights(const CoordsXY& mapPosition, int32_t height, uint8_t zOffset);
+    void AddShopLights(const CoordsXY& mapPosition, uint8_t direction, int32_t height, uint8_t zOffset);
 
-uint32_t LightFXGetLightPolution();
+    void ApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
+    void RenderToTexture(
+        const Viewport& vp, void* dstPixels, uint32_t dstPitch, Drawing::PaletteIndex* bits, uint32_t width, uint32_t height,
+        const uint32_t* palette, const uint32_t* lightPalette);
 
-void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
-void LightFXRenderToTexture(
-    void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
-    const uint32_t* lightPalette);
+} // namespace OpenRCT2::Drawing::LightFx

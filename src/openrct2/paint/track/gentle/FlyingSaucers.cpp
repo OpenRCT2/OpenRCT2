@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,15 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../interface/Viewport.h"
 #include "../../../object/StationObject.h"
 #include "../../../ride/Ride.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -47,12 +45,12 @@ static void PaintFlyingSaucers(
     int32_t edges = kEdges4x4[relativeTrackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         auto imageId = session.TrackColours.WithIndex(SprFlyingSaucersFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
@@ -69,9 +67,9 @@ static void PaintFlyingSaucers(
 /**
  * rct2: 0x00887208
  */
-TrackPaintFunction GetTrackPaintFunctionFlyingSaucers(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionFlyingSaucers(TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack4x4)
+    if (trackType != TrackElemType::flatTrack4x4)
     {
         return TrackPaintFunctionDummy;
     }

@@ -2,10 +2,6 @@
 // clang-format off
 
 #define FT_LOAD_TARGET_ALT(x) (static_cast<FT_Int32>((x)&15) << 16)
-#define FT_IMAGE_TAG(value, _x1, _x2, _x3, _x4)                                                                                \
-    value                                                                                                                      \
-        = ((static_cast<unsigned long>(_x1) << 24) | (static_cast<unsigned long>(_x2) << 16)                                   \
-           | (static_cast<unsigned long>(_x3) << 8) | static_cast<unsigned long>(_x4))
 
 /**
  * The following code is from SDL2_ttf (2 Jan 2017).
@@ -13,7 +9,7 @@
  * removed.
  */
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 /*
 SDL_ttf:  A companion library to SDL for working with TrueType (tm) fonts
@@ -579,6 +575,11 @@ static void Flush_Cache(TTF_Font* font)
     }
 }
 
+#if defined(_MSC_VER) && _MSC_VER == 1951
+// MSVC bug in 19.51, using different optimization setting fixes the codegen
+// see https://github.com/OpenRCT2/OpenRCT2/issues/26637
+#pragma optimize("", off)
+#endif
 static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int want)
 {
     FT_Face face;
@@ -968,6 +969,9 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
 
     return 0;
 }
+#if defined(_MSC_VER) && _MSC_VER == 1951
+#pragma optimize("", on)
+#endif
 
 static FT_Error Find_Glyph(TTF_Font* font, uint16_t ch, int want)
 {

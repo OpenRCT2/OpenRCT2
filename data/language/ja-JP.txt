@@ -32,12 +32,9 @@ STR_0027    :バンパーカー
 STR_0028    :パイレーツシップ
 STR_0029    :スイング・インバータ・シップ
 STR_0030    :食べ物の店
-STR_0031    :Unknown Stall (1D)
 STR_0032    :飲料の店
-STR_0033    :Unknown Stall (1F)
 STR_0034    :ショップ
 STR_0035    :メリーゴーラウンド
-STR_0036    :Unknown Stall (22)
 STR_0037    :インフォーメーションセンター
 STR_0038    :トイレ
 STR_0039    :観覧車
@@ -83,16 +80,10 @@ STR_0078    :インバーテッドヘアピンコースター
 STR_0079    :空飛ぶじゅうたん
 STR_0080    :潜水艦ライド
 STR_0081    :川いかだ
-STR_0082    :Unknown Ride (50)
 STR_0083    :エンタープライズ
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
 STR_0088    :インバーテッドインパルスコースター
 STR_0089    :ミニジェットコースター
 STR_0090    :鉱山ライド
-STR_0091    :Unknown Ride (59)
 STR_0092    :リニアモーターコースター
 STR_0093    :ハイブリッドコースター
 STR_0094    :シングルレール・ジェットコースター
@@ -247,7 +238,6 @@ STR_0832    :時計回90°りに移動させる
 STR_0833    :ゲームをポーズする
 STR_0834    :ディスクとゲームオプション
 STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :OpenRCT2について
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
@@ -258,16 +248,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Thanks to:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :低すぎる!
 STR_0878    :高すぎる!
@@ -286,7 +266,7 @@ STR_0892    :スクリーンショットが「{STRINGID}」でセーブしまし
 STR_0893    :スクリーンショット失敗しました!
 STR_0894    :地形データエリアがいっぱいです !
 STR_0895    :地上と地下にまたがって建設することはできません
-STR_0896    :{POP16}{POP16}{STRINGID}の建設
+STR_0896    :{STRING}の建設
 STR_0897    :方向
 STR_0898    :左手にカーブ
 STR_0899    :右手にカーブ
@@ -411,8 +391,6 @@ STR_1018    :変更を行うことができません…
 STR_1019    :変更を行うことができません…
 STR_1020    :変更を行うことができません…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :列車ごとの{POP16}{POP16}{POP16}{COMMA16}台
-STR_1023    :列車ごと{POP16}{POP16}{POP16}{COMMA16}台
 STR_1024    :列車ごと{COMMA16}台
 STR_1025    :列車ごと{COMMA16}台
 STR_1026    :乗り場は長すぎです！
@@ -521,9 +499,7 @@ STR_1128    :ブロック・ブレーキで停車した
 STR_1129    :全ての乗り物に同じ色を塗ります
 STR_1130    :{STRINGID}ごとに異なる色
 STR_1131    :乗り物ごとに異なる色
-STR_1132    :乗り物 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :乗り物 {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :乗り物 {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :メインの色を選択
 STR_1137    :追加の色1を選択
@@ -545,8 +521,8 @@ STR_1152    :指定なし
 STR_1153    :ライドの高さ表示の切り替え
 STR_1154    :地形の高さ表示の切り替え
 STR_1155    :歩道の高さ表示の切り替え
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :これを削除できません…
 STR_1159    :景観、花壇、その他の備品を設置
 STR_1160    :湖と水域を作成/調整
@@ -561,7 +537,6 @@ STR_1168    :設定
 STR_1169    :(なし)
 STR_1170    :{STRING}
 STR_1171    :{RED}閉鎖中
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :歩道と行列歩道を敷設
 STR_1174    :バナーがあります
 STR_1175    :これは傾斜のある歩道には設置できません
@@ -720,7 +695,6 @@ STR_1327    :アイテムを90°回転
 STR_1328    :平地が必要
 STR_1329    :{WINDOW_COLOUR_2}発進速度:
 STR_1330    :発着所を出る時の最高速度
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -818,7 +792,6 @@ STR_1425    :歩道
 STR_1426    :行列
 STR_1427    :{WINDOW_COLOUR_2}顧客: {BLACK}{COMMA32}（時間あたり）
 STR_1428    :{WINDOW_COLOUR_2}入場料:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :無料
 STR_1431    :歩行中
 STR_1432    :{STRINGID}へ移動中
@@ -1062,7 +1035,6 @@ STR_1671    :{WINDOW_COLOUR_2}総収益: {BLACK}{CURRENCY2DP}
 STR_1672    :ブレーキ
 STR_1673    :スピン・コントロール・スイッチ・トラック
 STR_1674    :ブレーキのスピード
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :ブレーキ速度の設定
 STR_1677    :{WINDOW_COLOUR_2}人気度: {BLACK}未知
 STR_1678    :{WINDOW_COLOUR_2}人気度: {BLACK}{COMMA16}%
@@ -1118,23 +1090,19 @@ STR_1727    :建設権は売りに出ていません!
 STR_1728    :ここの建設権を購入できません…
 STR_1729    :この土地は遊園地のものではありません!
 STR_1730    :{RED}閉鎖中
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :建設
 STR_1733    :モード
 STR_1734    :{WINDOW_COLOUR_2}ラップ数:
 STR_1735    :コースのラップ数
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :ラップ数が変更することはできません。
 STR_1739    :来客 {INT32} はレースに勝ちました!
 STR_1740    :{STRINGID} はレースに勝ちました!
 STR_1741    :まだ建設しませんでした！
 STR_1742    :{WINDOW_COLOUR_2}乗物の最大定員:
 STR_1743    :この乗物に一度に乗ることのできる最大人数
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :これを変更することはできません。
 STR_1747    :{WINDOW_COLOUR_2}達成期限:
 STR_1748    :ライドの達成期限
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :乗物のタイムリミットを変更できません…
 STR_1752    :園内の各入園客のリストを表示
 STR_1753    :園内の入園客の概要リストを表示
@@ -1155,22 +1123,9 @@ STR_1767    :スピン・トンネル
 STR_1768    :スイング回数を変更するはできません。
 STR_1769    :{WINDOW_COLOUR_2}スイング回数:
 STR_1770    :スイング回数の設定
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :乗物からの写真の場所は、各乗物につき一箇所だけです
 STR_1774    :ケーブルリフトヒルは、各乗物につき一箇所だけです
 STR_1777    :音楽
-STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} パンダのコスチューム
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} トラのコスチューム
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} 象のコスチューム
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} ローマのコスチューム
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} ゴリラのコスチューム
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} 雪だるまのコスチューム
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} ナイトのコスチューム
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 宇宙飛行士のコスチューム
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 泥棒のコスチューム
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} シェリフのコスチューム
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海賊のコスチューム
 STR_1790    :このスタッフのタイプの制服の色を選択：
 STR_1791    :{WINDOW_COLOUR_2}制服の色:
 STR_1792    :{STRINGID}の故障の電話を返事中
@@ -1179,7 +1134,6 @@ STR_1794    :{STRINGID}を修理している
 STR_1795    :電話を返事中
 STR_1796    :故障中、修理するはず
 STR_1798    :回転プール
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :非常停止
 STR_1801    :制限　稼働に失敗
 STR_1802    :制限　閉鎖に失敗
@@ -1251,10 +1205,8 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :回転数が変更できない…
 STR_1869    :{WINDOW_COLOUR_2}回転数:
 STR_1870    :ライドの回転の数です。
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}毎時収入: {BLACK}{CURRENCY2DP}
 STR_1874    :{WINDOW_COLOUR_2}毎時利潤: {BLACK}{CURRENCY2DP}
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}ライドを点検する
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}ライドを修理する
 STR_1878    :{WINDOW_COLOUR_2}点検時間:
@@ -1294,7 +1246,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}借入額:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :もうお金を借りることはできません！
 STR_1919    :十分な資金がありません！
 STR_1920    :貸金を返済することはできません！
@@ -1332,7 +1283,6 @@ STR_1953    :広告宣伝費
 STR_1954    :費用合計
 STR_1955    :{WINDOW_COLOUR_2}周回数:
 STR_1956    :ライドのトラックの周回数です。
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :周回数が変更できません…
 STR_1960    :{WINDOW_COLOUR_2}風船の価格:
@@ -1576,8 +1526,8 @@ STR_2212    :パークの警備員の表示
 STR_2213    :パークのエンターテイナーの表示
 STR_2214    :ゲームが一時停止中で建設はできません。
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}℃
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}℉
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}℃
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}℉
 STR_2218    :{RED}{STRINGID}の{STRINGID}が{STRINGID}にまだ戻ってきていません!{NEWLINE}どこかにひっかかったり止まったりしていないか確認してください
 STR_2219    :{RED}{COMMA16}人の来客は{STRINGID}上の事故で死亡してしまいました。
 STR_2220    :{WINDOW_COLOUR_2}パーク評価値: {BLACK}{COMMA16}
@@ -1748,7 +1698,7 @@ STR_2391    :{BLACK}パークに少なくとも{COMMA32}ゲストを入れてを
 STR_2392    :{BLACK}ライドの月次総収入の{POP16}{POP16}{CURRENCY}を取得する必要があります。
 STR_2393    :{BLACK}パークで10タイプのジェットコースターを操作しますし、それぞれ所定の長さの{LENGTH}し, 7.00以上の興奮度が必要です。
 STR_2394    :{BLACK}パークであるの5ジェットコースターの建設を仕上げますし、 それぞれ{POP16}{POP16}{COMMA2DP32}以上の興奮度が必要です。
-STR_2395    :{BLACK}借金完済を取得するし、パーク評価額{CURRENCY}以上を取得する必要があります。
+STR_2395    :{BLACK}借金完済を取得するし、パーク評価額{POP16}{POP16}{CURRENCY}以上を取得する必要があります。
 STR_2396    :{BLACK}飲食やお土産の売ることで、月利益を{POP16}{POP16}{CURRENCY}以上を得ります。
 STR_2397    :なし
 STR_2398    :指定された日付のゲスト数
@@ -1931,9 +1881,6 @@ STR_2706    :なし
 STR_2707    :システムファイルブラウザを使う
 STR_2708    :{WINDOW_COLOUR_1}{STRINGID}に上書きしてもいいですか？
 STR_2709    :上書き
-STR_2710    :新しいファイルの名を入力して下さい。
-STR_2718    :親フォルダ
-STR_2719    :新しいファイル
 STR_2720    :{UINT16}秒
 STR_2721    :{UINT16}秒
 STR_2722    :{UINT16}分{UINT16}秒
@@ -2133,7 +2080,6 @@ STR_3092    :この乗物の発着所の移動や改造はできません!
 STR_3093    :{WINDOW_COLOUR_2}お気に入り: {BLACK}{STRINGID}
 STR_3094    :非適用
 STR_3095    :{WINDOW_COLOUR_2}リフト巻き上げ速度:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :リフトヒルのチェーン速度を選択
 STR_3099    :色を選択
 STR_3100    :ふたつ目の色を選択
@@ -2176,7 +2122,6 @@ STR_3136    :警告:このデザインは代わりの車両の種類が使用さ
 STR_3137    :近くの景観物を選択する
 STR_3138    :選定をリセットする
 STR_3139    :この操作モードではケーブルリフトは動作しません
-STR_3140    :ケーブルリフトヒルは発着所の直後から始まらなければなりません
 STR_3141    :ケーブルリフトヒルでは各乗物の複数周回路は不可能です
 STR_3142    :{WINDOW_COLOUR_2}収容能力: {BLACK}{STRINGID}
 STR_3143    :マップ上の人々を表示
@@ -2227,7 +2172,6 @@ STR_3208    :トラックデザインマネージャー
 STR_3209    :前のステップに戻る:
 STR_3210    :次のステップに進む:
 STR_3211    :マップサイズ:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :これ以上マップサイズを小さくできません
 STR_3214    :これ以上マップサイズを大きくできません
 STR_3215    :マップの端に近すぎます
@@ -2249,20 +2193,18 @@ STR_3230    :ブロックブレーキは互いの直後に使用することは�
 STR_3231    :ブロックブレーキはこのリフトヒルの頂上の直後に使用することはできません
 STR_3232    :財務の設定
 STR_3233    :ゲストの設定
-STR_3234    :パークの設定
 STR_3235    :財務の設定の表示
 STR_3236    :ゲストの設定の表示
-STR_3237    :パークの設定の表示
 STR_3238    :資金無制限
 STR_3239    :パークは資金無制限の設定です。
-STR_3240    :{WINDOW_COLOUR_2}金銭 初期値:
-STR_3241    :{WINDOW_COLOUR_2}借金 初期値:
-STR_3242    :{WINDOW_COLOUR_2}借入上限額:
-STR_3243    :{WINDOW_COLOUR_2}年利息:
+STR_3240    :金銭 初期値:
+STR_3241    :借金 初期値:
+STR_3242    :借入上限額:
+STR_3243    :年利息:
 STR_3244    :広告宣伝キャンペーンを禁止する
 STR_3245    :広告宣伝キャンペーンを禁止の設定です。
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :これ以上当初のキャッシュを増やすことはできません!
 STR_3249    :これ以上当初のキャッシュを減らすことはできません!
 STR_3250    :これ以上当初のローン額を増やすことはできません!
@@ -2271,14 +2213,10 @@ STR_3252    :これ以上最大ローン額を増やすことはできません!
 STR_3253    :これ以上最大ローン額を減らすことはできません!
 STR_3254    :これ以上利率を上げることはできません!
 STR_3255    :これ以上利率を下げることはできません!
-STR_3256    :ゲストは低いライドの強烈度が好きです。
-STR_3257    :ゲストは低いライドの強烈度が好きの設定です。
-STR_3258    :ゲストは高いライドの強烈度が好きです。
-STR_3259    :ゲストは高いライドの強烈度が好きの設定です。
-STR_3260    :{WINDOW_COLOUR_2}ゲストの平均所持金:
-STR_3261    :{WINDOW_COLOUR_2}ゲストの幸福度　初期値:
-STR_3262    :{WINDOW_COLOUR_2}ゲストの空腹度　初期値:
-STR_3263    :{WINDOW_COLOUR_2}ゲストの喉の渇き　初期値:
+STR_3260    :ゲストの平均所持金:
+STR_3261    :ゲストの幸福度　初期値:
+STR_3262    :ゲストの空腹度　初期値:
+STR_3263    :ゲストの喉の渇き　初期値:
 STR_3264    :これ以上増やすことはできません!
 STR_3265    :これ以上減らすことはできません!
 STR_3266    :入園料と乗物料金の徴収方法を選択
@@ -2292,23 +2230,15 @@ STR_3273    :パーク評価値の算定を厳しくする
 STR_3274    :パーク評価値の算定を厳しくの設定です。
 STR_3275    :来園客の高年齢層化
 STR_3276    :来園客の集客の難易度を上げる
-STR_3277    :{WINDOW_COLOUR_2}土地購入費用:
-STR_3278    :{WINDOW_COLOUR_2}土地利用権費用:
+STR_3277    :土地購入費用:
+STR_3278    :土地利用権費用:
 STR_3279    :無料入園／ライド利用料
 STR_3280    :料入園／ライド利用料なし
-STR_3281    :{WINDOW_COLOUR_2}入場料:
-STR_3282    :目標とパーク名を選定する
+STR_3281    :入場料:
 STR_3283    :保全ライドを選定する
-STR_3284    :目標を選定する
 STR_3285    :保全ライド
 STR_3286    :目標の選定
 STR_3287    :{WINDOW_COLOUR_2}目標:
-STR_3288    :気候の選定
-STR_3289    :{WINDOW_COLOUR_2}気候:
-STR_3290    :質素
-STR_3291    :南国
-STR_3292    :砂漠
-STR_3293    :冬
 STR_3294    :変更する…
 STR_3295    :パーク名を変更する
 STR_3296    :シナリオ名を変更する
@@ -2720,7 +2650,6 @@ STR_5549    :年月日
 STR_5550    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年日月
 STR_5552    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Steamオーバーレイが開いている時に一時停止する
 STR_5554    :マウンテンツールを切り替える
 STR_5555    :他のトラックタイプの乗り物を表示する
 STR_5556    :プレイヤーを蹴る
@@ -2791,9 +2720,6 @@ STR_5623    :ワッキーワールド
 STR_5624    :タイムツイスター
 STR_5625    :現実のパーク
 STR_5626    :他のパーク
-STR_5627    :シナリオリストのタブ設定:
-STR_5628    :ゲーム
-STR_5629    :難易度
 STR_5630    :シナリオのロック解除モード
 STR_5631    :オリジナルDLCパーク
 STR_5632    :自分だけのビルド…
@@ -2936,7 +2862,7 @@ STR_5807    :{WINDOW_COLOUR_2}ライドの数: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}ショップの数: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}インフォメーションキオスクと設備などの数: {BLACK}{COMMA16}
 STR_5810    :乗り物の制限を無効にする
-STR_5811    :チェックされている場合、1編成あたり最大255台の車両と、1つの乗り物に対して31編成を持つことができます。
+STR_5811    :チェックされている場合、1編成あたり最大255台の車両と、1つの乗り物に対して255編成を持つことができます。
 STR_5812    :マルチプレイヤーのウィンドウを表示する
 STR_5813    :「{STRING}」
 STR_5814    :{WINDOW_COLOUR_1}「{STRING}」
@@ -2944,7 +2870,6 @@ STR_5814    :{WINDOW_COLOUR_1}「{STRING}」
 #tooltips
 STR_5815    :ゲーム内でFPSカウンターを表示する
 STR_5816    :ゲームのスケール比率を設定する。{NEWLINE}高解像度でプレイする際に最も便利
-STR_5819    :[ハードウェアディスプレイが必要]{NEWLINE}Steamのゲーム内オーバーレイが開かれるとゲームを一時停止する
 STR_5820    :フルスクリーンモードでフォーカスを失った場合、ゲームを最小化する
 STR_5822    :昼と夜をサイクルする。{NEWLINE}フルサイクルはゲーム内の1か月を要する
 STR_5823    :バナーを大文字で表示する（RCT1の動作）
@@ -3012,7 +2937,6 @@ STR_5887    :接頭辞
 STR_5888    :接尾辞
 STR_5889    :カスタム通貨記号
 STR_5890    :通貨記号を入力して下さい
-STR_5891    :デフォルト
 STR_5892    :デフォルト・ディレクトリに移動
 STR_5893    :円相場
 STR_5894    :円相場を入力して下さい
@@ -3038,12 +2962,11 @@ STR_5914    :不明なライド
 STR_5915    :プレイヤー
 STR_5916    :{COMMA16}プレイヤー
 STR_5917    :{COMMA16}プレイヤー
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :天気効果をレンダリングする
 STR_5921    :このオプションを有効にすると、暴風雨ある時に雨と湿っぽい色でレンダリングします。
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}最大{STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}列車ごとに最大{COMMA16}{STRINGID}の車両
+STR_5922    :最大{STRINGID}
+STR_5923    :列車ごとに最大{COMMA16}{STRINGID}の車両
 STR_5924    :面ディテール
 STR_5925    :歩道ディテール
 STR_5926    :トラック・ディテール
@@ -3278,7 +3201,6 @@ STR_6165    :垂直同期信号を使う
 STR_6166    :表示された各フレームをモニターのリフレッシュレートに同期させ、スクリーンテアリングを防ぎます。
 STR_6167    :先行制御
 STR_6168    :タイトル順序
-STR_6169    :シナリオ選択
 STR_6170    :インターフェースの微調整
 STR_6171    :検索
 STR_6172    :検索
@@ -3355,7 +3277,7 @@ STR_6271    :地形エッジ
 STR_6272    :乗り場
 STR_6273    :音楽
 STR_6274    :配色の設定できません…
-STR_6275    :{WINDOW_COLOUR_2}乗り場スタイル:
+STR_6275    :乗り場スタイル
 STR_6276    :{RED}{STRINGID}には来客が行き詰まっています。無効な配車タイプまたは操作モードが原因である可能性があります。
 STR_6277    :乗り場インデックス: {BLACK}{STRINGID}
 STR_6278    :自動保存量
@@ -3379,7 +3301,7 @@ STR_6304    :シーナリーピッカーを開く
 STR_6305    :マルチスレッド
 STR_6306    :複数のスレッドを使用してレンダリングする実験的オプションです（安定性に影響を与える可能性があります）
 STR_6307    :配色:{BLACK}{STRINGID}
-STR_6308    :{TOPAZ}「{STRINGID}{OUTLINE}{TOPAZ}」{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}「{STRINGID}{TOPAZ}」{NEWLINE}{STRINGID}
 STR_6309    :再接続
 STR_6310    :{WINDOW_COLOUR_2}拠点:{BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}次:{BLACK}{INT32} {INT32} {INT32}
@@ -3429,7 +3351,6 @@ STR_6355    :高密度
 STR_6356    :パークに水があれば、カモを投入する
 STR_6357    :全部のカモを取り除く
 STR_6358    :{UINT16}ページ目
-STR_6359    :{POP16}{POP16}{UINT16}ページ目
 STR_6361    :乗り物のライトの効果を表示にする（試験的）
 STR_6362    :有効になっている場合、追跡された乗り物の車両は夜間にライトアップされます。
 STR_6363    :テキストをクリップボードにコピーしました。

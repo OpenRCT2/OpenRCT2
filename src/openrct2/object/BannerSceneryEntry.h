@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,19 +13,22 @@
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
-enum
+namespace OpenRCT2
 {
-    BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
-};
+    enum
+    {
+        BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
+    };
 
-struct BannerSceneryEntry
-{
-    static constexpr auto kObjectType = ObjectType::Banners;
+    struct BannerSceneryEntry
+    {
+        static constexpr auto kObjectType = ObjectType::banners;
 
-    StringId name;
-    uint32_t image;
-    uint8_t scrolling_mode;
-    uint8_t flags;
-    money64 price;
-    ObjectEntryIndex scenery_tab_id;
-};
+        StringId name;
+        uint32_t image;
+        uint8_t scrolling_mode;
+        uint8_t flags;
+        money64 price;
+        ObjectEntryIndex scenery_tab_id;
+    };
+} // namespace OpenRCT2

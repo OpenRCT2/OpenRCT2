@@ -1,0 +1,1347 @@
+[
+    {
+        "index": 10,
+        "colours": [
+            "#172323",
+            "#233333",
+            "#2F4343",
+            "#3F5353",
+            "#4B6363",
+            "#5B7373",
+            "#6F8383",
+            "#839797",
+            "#9FAFAF",
+            "#B7C3C3",
+            "#D3DBDB",
+            "#EFF3F3",
+            "#332F00",
+            "#3F3B00",
+            "#4F4B0B",
+            "#5B5B13",
+            "#6B6B1F",
+            "#777B2F",
+            "#878B3B",
+            "#979B4F",
+            "#A7AF5F",
+            "#BBBF73",
+            "#CBCF8B",
+            "#DFE3A3",
+            "#432B07",
+            "#573B0B",
+            "#6F4B17",
+            "#7F571F",
+            "#8F6327",
+            "#9F7333",
+            "#B38343",
+            "#BF9757",
+            "#CBAF6F",
+            "#DBC787",
+            "#E7DBA3",
+            "#F7EFC3",
+            "#471B00",
+            "#5F2B00",
+            "#773F00",
+            "#8F5307",
+            "#A76F07",
+            "#BF8B0F",
+            "#D7A713",
+            "#F3CB1B",
+            "#FFE72F",
+            "#FFF35F",
+            "#FFFB8F",
+            "#FFFFC3",
+            "#230000",
+            "#4F0000",
+            "#5F0707",
+            "#6F0F0F",
+            "#7F1B1B",
+            "#8F2727",
+            "#A33B3B",
+            "#B34F4F",
+            "#C76767",
+            "#D77F7F",
+            "#EB9F9F",
+            "#FFBFBF",
+            "#1B3313",
+            "#233F17",
+            "#2F4F1F",
+            "#3B5F27",
+            "#476F2B",
+            "#577F33",
+            "#638F3B",
+            "#739B43",
+            "#83AB4B",
+            "#93BB53",
+            "#A3CB5F",
+            "#B7DB67",
+            "#1F371B",
+            "#2F4723",
+            "#3B532B",
+            "#4B6337",
+            "#5B6F43",
+            "#6F874F",
+            "#879F5F",
+            "#9FB76F",
+            "#B7CF7F",
+            "#C3DB93",
+            "#CFE7A7",
+            "#DFF7BF",
+            "#0F3F00",
+            "#135300",
+            "#176700",
+            "#1F7B00",
+            "#278F07",
+            "#379F17",
+            "#47AF27",
+            "#5BBF3F",
+            "#6FCF57",
+            "#8BDF73",
+            "#A3EF8F",
+            "#C3FFB3",
+            "#4F2B13",
+            "#63371B",
+            "#77472B",
+            "#8B573B",
+            "#A76343",
+            "#BB7353",
+            "#CF8363",
+            "#D79773",
+            "#E3AB83",
+            "#EFBF97",
+            "#F7CFAB",
+            "#FFE3C3",
+            "#0F1337",
+            "#272B57",
+            "#333767",
+            "#3F4377",
+            "#53538B",
+            "#63639B",
+            "#7777AF",
+            "#8B8BBF",
+            "#9F9FCF",
+            "#B7B7DF",
+            "#D3D3EF",
+            "#EFEFFF",
+            "#001B6F",
+            "#002797",
+            "#0733A7",
+            "#0F43BB",
+            "#1B53CB",
+            "#2B67DF",
+            "#4387E3",
+            "#5BA3E7",
+            "#77BBEF",
+            "#8FD3F3",
+            "#AFE7FB",
+            "#D7F7FF",
+            "#0B2B0F",
+            "#0F3717",
+            "#17471F",
+            "#23532B",
+            "#2F633B",
+            "#3B734B",
+            "#4F875F",
+            "#639B77",
+            "#7BAF8B",
+            "#93C7A7",
+            "#AFDBC3",
+            "#CFF3DF",
+            "#3F005F",
+            "#4B0773",
+            "#530F7F",
+            "#5F1F8F",
+            "#6B2B9B",
+            "#7B3FAB",
+            "#8753BB",
+            "#9B67C7",
+            "#AB7FD7",
+            "#BF9BE7",
+            "#D7C3F3",
+            "#F3EBFF",
+            "#3F0000",
+            "#570000",
+            "#730000",
+            "#8F0000",
+            "#AB0000",
+            "#C70000",
+            "#E30700",
+            "#FF0700",
+            "#FF4F43",
+            "#FF7B73",
+            "#FFABA3",
+            "#FFDBD7",
+            "#4F2700",
+            "#6F3300",
+            "#933F00",
+            "#B74700",
+            "#DB4F00",
+            "#FF5300",
+            "#FF6F17",
+            "#FF8B33",
+            "#FFA34F",
+            "#FFB76B",
+            "#FFCB87",
+            "#FFDBA3",
+            "#00332F",
+            "#003F37",
+            "#004B43",
+            "#00574F",
+            "#076B63",
+            "#177F77",
+            "#2B938F",
+            "#47A7A3",
+            "#63BBBB",
+            "#83CFCF",
+            "#ABE7E7",
+            "#CFFFFF",
+            "#3F001B",
+            "#670033",
+            "#7B0B3F",
+            "#8F174F",
+            "#A31F5F",
+            "#B7276F",
+            "#DB3B8F",
+            "#EF5BAB",
+            "#F377BB",
+            "#F797CB",
+            "#FBB7DF",
+            "#FFD7EF",
+            "#271300",
+            "#371F07",
+            "#472F0F",
+            "#5B3F1F",
+            "#6B5333",
+            "#7B674B",
+            "#8F7F6B",
+            "#A3937F",
+            "#BBAB93",
+            "#CFC3AB",
+            "#E7DBC3",
+            "#FFF3DF",
+            "#374B4B",
+            "#FFB700",
+            "#FFDB00",
+            "#FFFF00",
+            "#076B63",
+            "#0F776F",
+            "#1B837B",
+            "#278F87",
+            "#379B97",
+            "#379B97",
+            "#53B3AF",
+            "#73CBCB",
+            "#9BE3E3",
+            "#C7FFFF",
+            "#435B5B",
+            "#536B6B",
+            "#637B7B",
+            "#00005F",
+            "#1B2B8B",
+            "#273B97"
+        ]
+    },
+    {
+        "index": 16,
+        "colours": [
+            "#379B97",
+            "#278F87",
+            "#1B837B",
+            "#0F776F",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#0F776F",
+            "#1B837B",
+            "#278F87"
+        ]
+    },
+    {
+        "index": 32,
+        "colours": [
+            "#177F77",
+            "#0F736B",
+            "#076B63",
+            "#005F57",
+            "#00574F",
+            "#00574F",
+            "#00574F",
+            "#00574F",
+            "#00574F",
+            "#00574F",
+            "#00574F",
+            "#00574F",
+            "#005F57",
+            "#07675F",
+            "#0F736B"
+        ]
+    },
+    {
+        "index": 48,
+        "colours": [
+            "#076B63",
+            "#00635B",
+            "#005B53",
+            "#00534B",
+            "#004B43",
+            "#004B43",
+            "#004B43",
+            "#004B43",
+            "#004B43",
+            "#004B43",
+            "#004B43",
+            "#004B43",
+            "#00534B",
+            "#005B53",
+            "#00635B"
+        ]
+    },
+    {
+        "index": 80,
+        "colours": [
+            "#C7FFFF",
+            "#9BE3E3",
+            "#73CBCB",
+            "#53B3AF",
+            "#379B97",
+            "#379B97",
+            "#379B97",
+            "#379B97",
+            "#379B97",
+            "#379B97",
+            "#379B97",
+            "#379B97",
+            "#53B3AF",
+            "#73CBCB",
+            "#9BE3E3"
+        ]
+    },
+    {
+        "index": 96,
+        "colours": [
+            "#ABE7E7",
+            "#7BCBCB",
+            "#53B3AF",
+            "#2F9793",
+            "#177F77",
+            "#177F77",
+            "#177F77",
+            "#177F77",
+            "#177F77",
+            "#177F77",
+            "#177F77",
+            "#177F77",
+            "#2F9793",
+            "#53AFAF",
+            "#7BCBCB"
+        ]
+    },
+    {
+        "index": 112,
+        "colours": [
+            "#83CFCF",
+            "#57B3B3",
+            "#379B97",
+            "#1B837B",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#076B63",
+            "#1B837B",
+            "#339B97",
+            "#57B3B3"
+        ]
+    },
+    {
+        "index": 144,
+        "colours": [
+            "#2F2F2F",
+            "#2F2F2F",
+            "#57472F"
+        ]
+    },
+    {
+        "index": 160,
+        "colours": [
+            "#27272B",
+            "#27272B",
+            "#433723"
+        ]
+    },
+    {
+        "index": 176,
+        "colours": [
+            "#1F2327",
+            "#1F2327",
+            "#3F2F1B"
+        ]
+    },
+    {
+        "path": "map_base/palette_map_black.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_grey.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_white.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_light_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bright_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_light_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_icy_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_teal.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_aquamarine.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_moss_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bright_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_olive_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_olive_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bright_yellow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_yellow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_yellow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_light_orange.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_orange.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_light_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_salmon_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bordeaux_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bright_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bright_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_light_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_olive_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dark_olive_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_brown_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bordeaux_red_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_bordeaux_red_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_grass_green_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_grass_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_olive_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_olive_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_tan_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_tan_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_purple_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_green_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_purple_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_saturated_purple_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_orange_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_aqua_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_magenta_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_brown_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_dull_brown_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_invisible.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_void.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_water.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_land_marker_0.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_land_marker_1.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_land_marker_2.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_land_marker_3.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_scenery_ground_marker.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_water_marker.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_quarter_marker_0.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_quarter_marker_1.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_quarter_marker_2.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_quarter_marker_3.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "marker/palette_ride_ground_marker.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_ghost.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_45.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_46.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_darken_3.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_decreased_contrast.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_darken_1.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_darken_2.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "base/palette_51.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_grey.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_grey_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_grey_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_blue_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_blue_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bordeaux_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bordeaux_red_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bordeaux_red_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_green_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_green_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_purple_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_purple_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_olive_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_olive_green_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_olive_green_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_brown_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_brown_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_yellow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_yellow_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_yellow_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_moss_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_moss_green_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_moss_green_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_olive_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_olive_green_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_olive_green_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_green_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_green_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_salmon_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_salmon_pink_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_salmon_pink_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_purple_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_purple_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_red_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_red_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_orange.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_orange_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_orange_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_teal.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_teal_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_teal_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_pink_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_bright_pink_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_brown_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_dark_brown_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_pink_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_light_pink_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_white.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_white_highlight.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_translucent/palette_map_translucent_white_shadow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_black.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_grey.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_white.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_light_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bright_purple.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_light_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_icy_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_teal.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_aquamarine.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_saturated_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_moss_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bright_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_olive_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_olive_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bright_yellow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_yellow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_yellow.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_light_orange.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_orange.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_light_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_saturated_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_salmon_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bordeaux_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_saturated_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bright_red.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bright_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_light_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_olive_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dark_olive_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_saturated_brown_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bordeaux_red_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_bordeaux_red_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_grass_green_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_grass_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_olive_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_olive_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_saturated_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_tan_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_tan_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dull_purple_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dull_green_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dull_green_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_saturated_purple_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_saturated_purple_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_orange_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_aqua_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_magenta_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dull_brown_dark.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_dull_brown_light.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_invisible.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_void.png",
+        "palette": "keep",
+        "format": "raw"
+    }
+]

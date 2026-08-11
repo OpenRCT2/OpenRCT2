@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,12 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/ParkImporter.h>
-#include <openrct2/audio/AudioContext.h>
-#include <openrct2/core/File.h>
-#include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <string>
 
@@ -41,12 +36,12 @@ TEST(MultiLaunchTest, all)
         ASSERT_TRUE(initialised);
 
         GetContext()->LoadParkFromFile(path);
-        GameLoadInit();
+        GameLoadInit(); // NB: calls `setActiveScene`
 
         // Check ride count to check load was successful
         ASSERT_EQ(RideGetCount(), 134);
 
-        auto& date = GetGameState().Date;
+        auto& date = getGameState().date;
         // NOTE: This value is saved in the SV6 file, after the import this will be the current state.
         // In case the save file gets replaced this needs to be adjusted.
         ASSERT_EQ(date.GetMonthTicks(), 0x1e98);

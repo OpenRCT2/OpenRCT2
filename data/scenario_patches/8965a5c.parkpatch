@@ -17,5 +17,33 @@
                 [ 126, 73 ]
             ]
         }
+    ],
+    "paths": [
+        {
+            "railings": "rct2.footpath_railings.concrete_green",
+            "surface": "rct2.footpath_surface.queue_green",
+            "coordinates": [ [ 51, 58, 16 ] ],
+            "queue": true
+        },
+        {
+            "railings": "rct2.footpath_railings.concrete_green",
+            "surface": "rct2.footpath_surface.queue_green",
+            "coordinates": [ [ 51, 59, 14 ] ],
+            "slope_direction": 3,
+            "queue": true
+        },
+        {
+            "railings": "rct2.footpath_railings.concrete_green",
+            "surface": "rct2.footpath_surface.tarmac_green",
+            "coordinates": [ [ 50, 58, 16 ] ],
+            "queue": false
+        },
+        {
+            "railings": "rct2.footpath_railings.concrete_green",
+            "surface": "rct2.footpath_surface.tarmac_green",
+            "coordinates": [ [ 50, 59, 14 ] ],
+            "slope_direction": 3,
+            "queue": false
+        }
     ]
 }

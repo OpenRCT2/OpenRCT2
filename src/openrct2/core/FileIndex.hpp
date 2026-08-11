@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@
 #include <chrono>
 #include <list>
 #include <string>
-#include <tuple>
+#include <utility>
 #include <vector>
 
 template<typename TItem>
@@ -62,7 +62,7 @@ private:
     };
 
     // Index file format version which when incremented forces a rebuild
-    static constexpr uint8_t FILE_INDEX_VERSION = 4;
+    static constexpr uint8_t kFileIndexVersion = 4;
 
     std::string const _name;
     uint32_t const _magicNumber;
@@ -106,10 +106,10 @@ public:
         std::vector<TItem> items;
         auto scanResult = Scan();
         auto readIndexResult = ReadIndexFile(language, scanResult.Stats);
-        if (std::get<0>(readIndexResult))
+        if (readIndexResult.first)
         {
             // Index was loaded
-            items = std::get<1>(readIndexResult);
+            items = std::move(readIndexResult.second);
         }
         else
         {
@@ -135,7 +135,7 @@ protected:
     /**
      * Serialises/DeSerialises an index item to/from the given stream.
      */
-    virtual void Serialise(DataSerialiser& ds, const TItem& item) const = 0;
+    virtual void Serialise(OpenRCT2::DataSerialiser& ds, const TItem& item) const = 0;
 
 private:
     ScanResult Scan() const
@@ -144,6 +144,9 @@ private:
         std::vector<std::string> files;
         for (const auto& directory : SearchPaths)
         {
+            if (directory.empty())
+                continue;
+
             auto absoluteDirectory = OpenRCT2::Path::GetAbsolute(directory);
             LOG_VERBOSE("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
 
@@ -210,7 +213,7 @@ private:
         return allItems;
     }
 
-    std::tuple<bool, std::vector<TItem>> ReadIndexFile(int32_t language, const DirectoryStats& stats) const
+    std::pair<bool, std::vector<TItem>> ReadIndexFile(int32_t language, const DirectoryStats& stats) const
     {
         bool loadedItems = false;
         std::vector<TItem> items;
@@ -219,18 +222,18 @@ private:
             try
             {
                 LOG_VERBOSE("FileIndex:Loading index: '%s'", _indexPath.c_str());
-                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FileMode::open);
 
                 // Read header, check if we need to re-scan
                 auto header = fs.ReadValue<FileIndexHeader>();
                 if (header.HeaderSize == sizeof(FileIndexHeader) && header.MagicNumber == _magicNumber
-                    && header.VersionA == FILE_INDEX_VERSION && header.VersionB == _version && header.LanguageId == language
+                    && header.VersionA == kFileIndexVersion && header.VersionB == _version && header.LanguageId == language
                     && header.Stats.TotalFiles == stats.TotalFiles && header.Stats.TotalFileSize == stats.TotalFileSize
                     && header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum
                     && header.Stats.PathChecksum == stats.PathChecksum)
                 {
                     items.reserve(header.NumItems);
-                    DataSerialiser ds(false, fs);
+                    OpenRCT2::DataSerialiser ds(false, fs);
                     // Directory is the same, just read the saved items
                     for (uint32_t i = 0; i < header.NumItems; i++)
                     {
@@ -251,7 +254,7 @@ private:
                 OpenRCT2::Console::Error::WriteLine("%s", e.what());
             }
         }
-        return std::make_tuple(loadedItems, std::move(items));
+        return { loadedItems, std::move(items) };
     }
 
     void WriteIndexFile(int32_t language, const DirectoryStats& stats, const std::vector<TItem>& items) const
@@ -260,19 +263,19 @@ private:
         {
             LOG_VERBOSE("FileIndex:Writing index: '%s'", _indexPath.c_str());
             OpenRCT2::Path::CreateDirectory(OpenRCT2::Path::GetDirectory(_indexPath));
-            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
+            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FileMode::write);
 
             // Write header
             FileIndexHeader header;
             header.MagicNumber = _magicNumber;
-            header.VersionA = FILE_INDEX_VERSION;
+            header.VersionA = kFileIndexVersion;
             header.VersionB = _version;
             header.LanguageId = language;
             header.Stats = stats;
             header.NumItems = static_cast<uint32_t>(items.size());
             fs.WriteValue(header);
 
-            DataSerialiser ds(true, fs);
+            OpenRCT2::DataSerialiser ds(true, fs);
             // Write items
             for (const auto& item : items)
             {

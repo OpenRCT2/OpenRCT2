@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,19 +14,19 @@
 
 #include <array>
 
-constexpr uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
+constexpr uint16_t kSpriteFontGlyphCount = 224;
 
 enum class FontStyle : uint8_t
 {
-    Small = 0,
-    Medium = 1,
-    Tiny = 2,
+    small = 0,
+    medium = 1,
+    tiny = 2,
 };
 
 constexpr uint8_t FontStyleCount = 3;
-constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
+constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::small, FontStyle::medium, FontStyle::tiny };
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 struct InternalTTFFont;
 using TTF_Font = InternalTTFFont;
@@ -49,7 +49,7 @@ struct TTFFontSetDescriptor
 
 extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 void FontSpriteInitialiseCharacters();
 int32_t FontSpriteGetCodepointOffset(int32_t codepoint);

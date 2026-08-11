@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,13 +9,16 @@
 
 #pragma once
 
-#include "ImageId.hpp"
+#include "ImageIndexType.h"
 
 #include <cstddef>
 #include <cstdint>
 #include <list>
 
-struct G1Element;
+namespace OpenRCT2
+{
+    struct G1Element;
+}
 
 struct ImageList
 {
@@ -55,7 +58,7 @@ constexpr bool operator!=(const ImageList& lhs, const ImageList& rhs)
     return !(lhs == rhs);
 }
 
-uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count);
+uint32_t GfxObjectAllocateImages(const OpenRCT2::G1Element* images, uint32_t count);
 void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count);
 void GfxObjectCheckAllImagesFreed();
 size_t ImageListGetUsedCount();

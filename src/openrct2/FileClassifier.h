@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,15 +13,15 @@
 
 enum class FileExtension
 {
-    Unknown,
-    DAT,
-    SC4,
-    SV4,
-    TD4,
-    SC6,
-    SV6,
-    TD6,
-    PARK,
+    unknown,
+    dat,
+    sc4,
+    sv4,
+    td4,
+    sc6,
+    sv6,
+    td6,
+    park,
 };
 
 #include <string>
@@ -31,19 +31,19 @@ namespace OpenRCT2
     struct IStream;
 }
 
-enum class FILE_TYPE
+enum class FileType
 {
-    UNDEFINED,
-    OBJECT,
-    SAVED_GAME,
-    SCENARIO,
-    TRACK_DESIGN,
-    PARK,
+    undefined,
+    object,
+    savedGame,
+    scenario,
+    trackDesign,
+    park,
 };
 
 struct ClassifiedFileInfo
 {
-    FILE_TYPE Type = FILE_TYPE::UNDEFINED;
+    FileType Type = FileType::undefined;
     uint32_t Version = 0;
 };
 

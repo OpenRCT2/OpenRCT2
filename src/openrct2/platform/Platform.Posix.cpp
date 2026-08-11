@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__NetBSD__)              \
+    || defined(__HAIKU__)
 
     #include "Platform.h"
 
     #include "../Date.h"
     #include "../Diagnostic.h"
-    #include "../core/Memory.hpp"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
 
@@ -29,10 +29,11 @@
     #include <pwd.h>
     #include <sys/stat.h>
     #include <sys/time.h>
+    #include <sys/wait.h>
     #include <unistd.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
+static constexpr const utf8* kSingleInstanceMutexName = u8"openrct2.lock";
 
 namespace OpenRCT2::Platform
 {
@@ -113,59 +114,123 @@ namespace OpenRCT2::Platform
 
     bool FindApp(std::string_view app, std::string* output)
     {
-        return Execute(String::stdFormat("which %s 2> /dev/null", std::string(app).c_str()), output) == 0;
+        auto tryPath = [&](const std::string& path) -> bool {
+            const char* args[] = { path.c_str(), "--version", nullptr };
+            if (Execute(args, nullptr) == 0)
+            {
+                if (output)
+                    *output = path;
+                return true;
+            }
+            return false;
+        };
+
+        std::string appStr = std::string(app);
+        if (tryPath(appStr))
+            return true;
+
+    #ifdef __APPLE__
+        // Apps on macOS don't inherit the shell PATH, so check common Homebrew install locations as a fallback.
+        for (const char* prefix : { "/opt/homebrew/bin/", "/usr/local/bin/" })
+        {
+            if (tryPath(std::string(prefix) + appStr))
+                return true;
+        }
+    #endif
+
+        return false;
     }
 
-    int32_t Execute(std::string_view command, std::string* output)
+    int32_t Execute(const char* args[], std::string* output)
     {
-    #ifndef __EMSCRIPTEN__
-        LOG_VERBOSE("executing \"%s\"...", std::string(command).c_str());
-        FILE* fpipe = popen(std::string(command).c_str(), "r");
-        if (fpipe == nullptr)
+        // Build the command string from args for logging
+        std::string commandLine;
+        if (args && args[0])
         {
+            for (size_t i = 0; args[i]; ++i)
+            {
+                if (i > 0)
+                    commandLine += " ";
+                commandLine += args[i];
+            }
+        }
+    #ifndef __EMSCRIPTEN__
+        int status;
+        pid_t pid1;
+
+        LOG_INFO("Executing command: %s", commandLine.c_str());
+        int fd_pipe[2];
+        if (pipe(fd_pipe) != 0)
+        { /* create a pipe */
             return -1;
         }
-        if (output != nullptr)
-        {
-            // Read output into buffer
-            std::vector<char> outputBuffer;
-            char buffer[1024];
-            size_t readBytes;
-            while ((readBytes = fread(buffer, 1, sizeof(buffer), fpipe)) > 0)
+
+        pid1 = fork();
+        if (pid1 == 0)
+        {                      /* child process */
+            close(fd_pipe[0]); /* no reading from pipe */
+            /* write stdout in pipe */
+            if (dup2(fd_pipe[1], STDOUT_FILENO) == -1)
             {
-                outputBuffer.insert(outputBuffer.begin(), buffer, buffer + readBytes);
+                _exit(128);
             }
 
-            // Trim line breaks
-            size_t outputLength = outputBuffer.size();
-            for (size_t i = outputLength - 1; i != SIZE_MAX; i--)
-            {
-                if (outputBuffer[i] == '\n')
-                {
-                    outputLength = i;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            // Convert to string
-            *output = std::string(outputBuffer.data(), outputLength);
+            /* const casting argv is fine:
+             * https://pubs.opengroup.org/onlinepubs/9699919799/functions/fexecve.html -> rational
+             */
+            execvp(args[0], const_cast<char**>(args));
+            _exit(129);
+        }
+        else if (pid1 < 0)
+        { /* fork() failed */
+            return -128;
         }
         else
-        {
-            fflush(fpipe);
-        }
+        {                      /* parent process */
+            close(fd_pipe[1]); /* no writing to the pipe */
+            if (waitpid(pid1, &status, 0) != pid1)
+            {
+                return -errno;
+            }
 
-        // Return exit code
-        return pclose(fpipe);
+            if (!WIFEXITED(status))
+            {
+                return -129;
+            }
+
+            if (WEXITSTATUS(status) >= 128)
+            {
+                return -130 - WEXITSTATUS(status);
+            }
+
+            // Optionally, read output from fd_pipe[0] if output != nullptr
+            if (output != nullptr)
+            {
+                std::vector<char> outputBuffer;
+                char buffer[1024];
+                ssize_t readBytes;
+                while ((readBytes = read(fd_pipe[0], buffer, sizeof(buffer))) > 0)
+                {
+                    outputBuffer.insert(outputBuffer.end(), buffer, buffer + readBytes);
+                }
+                // Trim line breaks
+                size_t outputLength = outputBuffer.size();
+                while (outputLength > 0 && outputBuffer[outputLength - 1] == '\n')
+                {
+                    --outputLength;
+                }
+                *output = std::string(outputBuffer.data(), outputLength);
+            }
+            close(fd_pipe[0]);
+            return 0; /* success! */
+        }
     #else
-        LOG_WARNING("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
+        LOG_WARNING("Emscripten cannot execute processes. The commandline was '%s'.", commandLine.c_str());
         return -1;
     #endif // __EMSCRIPTEN__
     }
 
+    #ifndef __ANDROID__
     uint64_t GetLastModified(std::string_view path)
     {
         uint64_t lastModified = 0;
@@ -187,6 +252,7 @@ namespace OpenRCT2::Platform
         }
         return size;
     }
+    #endif
 
     bool ShouldIgnoreCase()
     {
@@ -287,10 +353,10 @@ namespace OpenRCT2::Platform
             if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
                 || !fnmatch("*_PW*", langstring, 0))
             {
-                return TemperatureUnit::Fahrenheit;
+                return TemperatureUnit::fahrenheit;
             }
         }
-        return TemperatureUnit::Celsius;
+        return TemperatureUnit::celsius;
     }
 
     bool ProcessIsElevated()
@@ -308,7 +374,7 @@ namespace OpenRCT2::Platform
         // take care of that, because flock keeps the lock as long as the
         // file is open and closes it automatically on file close.
         // This is intentional.
-        int32_t pidFile = open(SINGLE_INSTANCE_MUTEX_NAME, O_CREAT | O_RDWR, 0666);
+        int32_t pidFile = open(kSingleInstanceMutexName, O_CREAT | O_RDWR, 0666);
 
         if (pidFile == -1)
         {
@@ -342,6 +408,7 @@ namespace OpenRCT2::Platform
         return 0;
     }
 
+    #ifndef __ANDROID__
     time_t FileGetModifiedTime(u8string_view path)
     {
         struct stat buf;
@@ -351,6 +418,7 @@ namespace OpenRCT2::Platform
         }
         return 100;
     }
+    #endif
 
     datetime64 GetDatetimeNowUTC()
     {

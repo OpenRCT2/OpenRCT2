@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,9 +9,11 @@
 
 #include "FileStream.h"
 
+#include "../platform/Platform.h"
 #include "Path.hpp"
 #include "String.hpp"
 
+#include <cinttypes>
 #include <string_view>
 
 #ifndef _WIN32
@@ -27,37 +29,51 @@
 
 namespace OpenRCT2
 {
-    FileStream::FileStream(const fs::path& path, int32_t fileMode)
+    FileStream::FileStream(const fs::path& path, FileMode fileMode)
         : FileStream(path.u8string(), fileMode)
     {
     }
 
-    FileStream::FileStream(const std::string& path, int32_t fileMode)
+    FileStream::FileStream(const std::string& path, FileMode fileMode)
         : FileStream(path.c_str(), fileMode)
     {
     }
 
-    FileStream::FileStream(std::string_view path, int32_t fileMode)
+    FileStream::FileStream(std::string_view path, FileMode fileMode)
         : FileStream(std::string(path), fileMode)
     {
     }
 
-    FileStream::FileStream(const utf8* path, int32_t fileMode)
+    FileStream::FileStream(const utf8* path, FileMode fileMode)
     {
+        if (fileMode == FileMode::open)
+        {
+            auto assetOpen = Platform::OpenAssetFile(path);
+            if (assetOpen.result == Platform::AssetCheckResult::found)
+            {
+                _asset = assetOpen.handle;
+                _fileSize = assetOpen.size;
+                _canRead = true;
+                _canWrite = false;
+                _ownsFilePtr = true;
+                return;
+            }
+        }
+
         const char* mode;
         switch (fileMode)
         {
-            case FILE_MODE_OPEN:
+            case FileMode::open:
                 mode = "rb";
                 _canRead = true;
                 _canWrite = false;
                 break;
-            case FILE_MODE_WRITE:
+            case FileMode::write:
                 mode = "w+b";
                 _canRead = true;
                 _canWrite = true;
                 break;
-            case FILE_MODE_APPEND:
+            case FileMode::append:
                 mode = "a";
                 _canRead = false;
                 _canWrite = true;
@@ -81,7 +97,7 @@ namespace OpenRCT2
         auto modeW = String::toWideChar(mode);
         _file = _wfopen(pathW.c_str(), modeW.c_str());
 #else
-        if (fileMode == FILE_MODE_OPEN)
+        if (fileMode == FileMode::open)
         {
             struct stat fileStat;
             // Only allow regular files to be opened as its possible to open directories.
@@ -117,7 +133,17 @@ namespace OpenRCT2
             _disposed = true;
             if (_ownsFilePtr)
             {
-                fclose(_file);
+                if (_asset != nullptr)
+                {
+                    Platform::CloseAssetFile(_asset);
+                }
+                else
+                {
+                    if (_file != nullptr)
+                    {
+                        fclose(_file);
+                    }
+                }
             }
         }
     }
@@ -139,6 +165,10 @@ namespace OpenRCT2
 
     uint64_t FileStream::GetPosition() const
     {
+        if (_asset != nullptr)
+        {
+            return Platform::GetAssetPosition(_asset);
+        }
         return ftello(_file);
     }
 
@@ -149,6 +179,11 @@ namespace OpenRCT2
 
     void FileStream::Seek(int64_t offset, int32_t origin)
     {
+        if (_asset != nullptr)
+        {
+            Platform::SeekAsset(_asset, offset, origin);
+            return;
+        }
         switch (origin)
         {
             case STREAM_SEEK_BEGIN:
@@ -165,39 +200,60 @@ namespace OpenRCT2
 
     void FileStream::Read(void* buffer, uint64_t length)
     {
+        if (_asset != nullptr)
+        {
+            if (Platform::ReadAsset(_asset, buffer, length) == length)
+            {
+                return;
+            }
+            throw IOException("Attempted to read past end of file.");
+        }
+        uint64_t position = GetPosition();
         if (fread(buffer, 1, static_cast<size_t>(length), _file) == length)
         {
             return;
         }
-        throw IOException("Attempted to read past end of file.");
+        char msg[256];
+        std::snprintf(
+            msg, sizeof(msg),
+            "Unable to read %" PRIu64 " bytes from file. Position: %" PRIu64 ", FileSize: %" PRIu64 ", feof = %d, ferror = %d",
+            length, position, _fileSize, feof(_file), ferror(_file));
+        throw IOException(msg);
     }
 
     void FileStream::Write(const void* buffer, uint64_t length)
     {
+        if (_canWrite == false)
+        {
+            throw IOException("Cannot write to a read-only stream.");
+        }
         if (length == 0)
         {
             return;
         }
+        uint64_t position = GetPosition();
         if (auto count = fwrite(buffer, static_cast<size_t>(length), 1, _file); count != 1)
         {
-            std::string error = "Unable to write " + std::to_string(length) + " bytes to file. Count = " + std::to_string(count)
-                + ", errno = " + std::to_string(errno);
-            throw IOException(error);
+            char msg[256];
+            std::snprintf(
+                msg, sizeof(msg),
+                "Unable to write %" PRIu64 " bytes to file. Count = %zu, Position = %" PRIu64 ", FileSize = %" PRIu64
+                ", feof = %d, ferror = %d",
+                length, count, position, _fileSize, feof(_file), ferror(_file));
+            throw IOException(msg);
         }
 
-        uint64_t position = GetPosition();
-        _fileSize = std::max(_fileSize, position);
+        _fileSize = std::max(_fileSize, position + length);
     }
 
     uint64_t FileStream::TryRead(void* buffer, uint64_t length)
     {
+        if (_asset != nullptr)
+        {
+            return Platform::TryReadAsset(_asset, buffer, length);
+        }
         size_t readBytes = fread(buffer, 1, static_cast<size_t>(length), _file);
         return readBytes;
-    }
-
-    const void* FileStream::GetData() const
-    {
-        return nullptr;
     }
 
 } // namespace OpenRCT2

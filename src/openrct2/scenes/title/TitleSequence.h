@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,11 +45,11 @@ namespace OpenRCT2::Title
     struct TitleSequenceParkHandle
     {
         std::string HintPath;
-        std::unique_ptr<OpenRCT2::IStream> Stream;
+        std::unique_ptr<IStream> Stream;
     };
 
-    constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";
-    constexpr uint8_t SAVE_INDEX_INVALID = UINT8_MAX;
+    constexpr const utf8* kTitleSequenceExtension = ".parkseq";
+    constexpr uint8_t kSaveIndexInvalid = UINT8_MAX;
 
     [[nodiscard]] std::unique_ptr<TitleSequence> CreateTitleSequence();
     [[nodiscard]] std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path);

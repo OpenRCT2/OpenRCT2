@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,13 +12,12 @@
 #include "../Context.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Screenshot.h"
-#include "../localisation/StringIds.h"
-#include "../paint/Painter.h"
 #include "../platform/Platform.h"
 #include "../ui/UiContext.h"
 #include "../world/Location.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
+#include "RenderTarget.h"
 
 #include <cassert>
 #include <cmath>
@@ -27,12 +26,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
-
-StringId DrawingEngineStringIds[] = {
-    STR_DRAWING_ENGINE_SOFTWARE,
-    STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
-    STR_DRAWING_ENGINE_OPENGL,
-};
 
 DrawingEngine drawing_engine_get_type()
 {
@@ -53,7 +46,7 @@ static IDrawingEngine* GetDrawingEngine()
 
 bool DrawingEngineRequiresNewWindow(DrawingEngine srcEngine, DrawingEngine dstEngine)
 {
-    bool openGL = srcEngine == DrawingEngine::OpenGL || dstEngine == DrawingEngine::OpenGL;
+    bool openGL = srcEngine == DrawingEngine::openGL || dstEngine == DrawingEngine::openGL;
     return Platform::RequireNewWindow(openGL);
 }
 
@@ -74,8 +67,8 @@ void DrawingEngineResize()
         auto drawingEngine = context->GetDrawingEngine();
         if (drawingEngine != nullptr)
         {
-            auto uiContext = context->GetUiContext();
-            drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
+            auto& uiContext = context->GetUiContext();
+            drawingEngine->Resize(uiContext.GetWidth(), uiContext.GetHeight());
         }
     }
 }
@@ -115,11 +108,11 @@ void DrawingEngineDispose()
     }
 }
 
-DrawPixelInfo& DrawingEngineGetDpi()
+RenderTarget& DrawingEngineGetRT()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
-    return *(drawingEngine->GetDrawingPixelInfo());
+    return *(drawingEngine->getRT());
 }
 
 bool DrawingEngineHasDirtyOptimisations()
@@ -128,7 +121,7 @@ bool DrawingEngineHasDirtyOptimisations()
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        result = (drawingEngine->GetFlags() & DEF_DIRTY_OPTIMISATIONS);
+        result = drawingEngine->GetFlags().has(DrawingEngineFlag::dirtyOptimisations);
     }
     return result;
 }
@@ -160,55 +153,35 @@ void GfxSetDirtyBlocks(const ScreenRect& rect)
     }
 }
 
-void GfxClear(DrawPixelInfo& dpi, uint8_t paletteIndex)
+void GfxClear(RenderTarget& rt, PaletteIndex paletteIndex)
 {
-    auto drawingEngine = dpi.DrawingEngine;
+    auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->Clear(dpi, paletteIndex);
+        dc->Clear(rt, paletteIndex);
     }
 }
 
-void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour)
+void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, PaletteIndex colour)
 {
-    auto drawingEngine = dpi.DrawingEngine;
+    auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->FillRect(dpi, colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
-    }
-}
-
-void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID palette)
-{
-    auto drawingEngine = dpi.DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->FilterRect(dpi, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
-    }
-}
-
-void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour)
-{
-    auto drawingEngine = dpi.DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawLine(dpi, colour, line);
+        dc->DrawLine(rt, colour, line);
     }
 }
 
 void GfxDrawDashedLine(
-    DrawPixelInfo& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
+    RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const PaletteIndex colour)
 {
     assert(dashedLineSegmentLength > 0);
 
-    const auto drawingEngine = dpi.DrawingEngine;
+    const auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
     {
-        constexpr int32_t precisionFactor = 1000;
+        constexpr int32_t kPrecisionFactor = 1000;
 
         const int32_t dashedLineLength = std::hypot(
             screenLine.GetX2() - screenLine.GetX1(), screenLine.GetY2() - screenLine.GetY1());
@@ -220,57 +193,57 @@ void GfxDrawDashedLine(
 
         const int32_t lineXDist = std::abs(screenLine.GetX2() - screenLine.GetX1());
         const int32_t lineYDist = std::abs(screenLine.GetY2() - screenLine.GetY1());
-        const int32_t dxPrecise = precisionFactor * lineXDist / lineSegmentCount / 2;
-        const int32_t dyPrecise = precisionFactor * lineYDist / lineSegmentCount / 2;
+        const int32_t dxPrecise = kPrecisionFactor * lineXDist / lineSegmentCount / 2;
+        const int32_t dyPrecise = kPrecisionFactor * lineYDist / lineSegmentCount / 2;
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
 
         for (int32_t i = 0, x, y; i < lineSegmentCount; ++i)
         {
-            x = screenLine.GetX1() + dxPrecise * i * 2 / precisionFactor;
-            y = screenLine.GetY1() + dyPrecise * i * 2 / precisionFactor;
-            dc->DrawLine(dpi, color, { { x, y }, { x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor } });
+            x = screenLine.GetX1() + dxPrecise * i * 2 / kPrecisionFactor;
+            y = screenLine.GetY1() + dyPrecise * i * 2 / kPrecisionFactor;
+            dc->DrawLine(rt, colour, { { x, y }, { x + dxPrecise / kPrecisionFactor, y + dyPrecise / kPrecisionFactor } });
         }
     }
 }
 
-void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL GfxDrawSprite(RenderTarget& rt, const ImageId imageId, const ScreenCoordsXY& coords)
 {
-    auto drawingEngine = dpi.DrawingEngine;
+    auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawSprite(dpi, imageId, coords.x, coords.y);
+        dc->DrawSprite(rt, imageId, coords.x, coords.y);
     }
 }
 
-void FASTCALL GfxDrawGlyph(DrawPixelInfo& dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+void FASTCALL GfxDrawGlyph(RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
-    auto drawingEngine = dpi.DrawingEngine;
+    auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawGlyph(dpi, image, coords.x, coords.y, paletteMap);
+        dc->DrawGlyph(rt, image, coords.x, coords.y, paletteMap);
     }
 }
 
 void FASTCALL
-    GfxDrawSpriteRawMasked(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
+    GfxDrawSpriteRawMasked(RenderTarget& rt, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
 {
-    auto drawingEngine = dpi.DrawingEngine;
+    auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawSpriteRawMasked(dpi, coords.x, coords.y, maskImage, colourImage);
+        dc->DrawSpriteRawMasked(rt, coords.x, coords.y, maskImage, colourImage);
     }
 }
 
-void FASTCALL GfxDrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL GfxDrawSpriteSolid(RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, PaletteIndex colour)
 {
-    auto drawingEngine = dpi.DrawingEngine;
+    auto drawingEngine = rt.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawSpriteSolid(dpi, image, coords.x, coords.y, colour);
+        dc->DrawSpriteSolid(rt, image, coords.x, coords.y, colour);
     }
 }
 
@@ -281,5 +254,5 @@ std::string ScreenshotDump()
     {
         return drawingEngine->Screenshot();
     }
-    return "";
+    return {};
 }

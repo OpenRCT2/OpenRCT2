@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #pragma once
+
 #include <cstdint>
 
 namespace OpenRCT2::RCT12::Limits
@@ -16,7 +17,8 @@ namespace OpenRCT2::RCT12::Limits
 
     constexpr uint8_t kMaxRidesInPark = 255;
     constexpr uint8_t kMaxAwards = 4;
-    constexpr uint8_t MaxNewsItems = 61;
+    constexpr uint8_t kMaxRecentNewsItems = 11;
+    constexpr uint8_t kMaxArchivedNewsItems = 50;
     constexpr uint8_t kMaxStationsPerRide = 4;
     constexpr uint8_t kMaxPeepSpawns = 2;
     constexpr uint8_t kMaxParkEntrances = 4;
@@ -39,9 +41,9 @@ namespace OpenRCT2::RCT12::Limits
 
     constexpr uint16_t kRideMeasurementMaxItems = 4800;
 
-    constexpr uint16_t const kMaxInversions = 31;
-    constexpr uint16_t const kMaxGolfHoles = 31;
-    constexpr uint16_t const kMaxHelices = 31;
+    constexpr uint16_t kMaxInversions = 31;
+    constexpr uint16_t kMaxGolfHoles = 31;
+    constexpr uint16_t kMaxHelices = 31;
     constexpr uint8_t kMaxElementHeight = 255;
     constexpr uint8_t kCustomerHistorySize = 10;
 

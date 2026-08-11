@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,44 +11,47 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../entity/Particle.h"
-    #include "../../../world/Location.hpp"
     #include "ScEntity.hpp"
 
-    #include <optional>
+namespace OpenRCT2
+{
+    struct VehicleCrashParticle;
+}
 
 namespace OpenRCT2::Scripting
 {
-    class ScCrashedVehicleParticle : public ScEntity
+    class ScCrashedVehicleParticle;
+    extern ScCrashedVehicleParticle gScCrashedVehicleParticle;
+
+    class ScCrashedVehicleParticle final : public ScEntity
     {
     public:
-        ScCrashedVehicleParticle(EntityId id);
-
-        static void Register(duk_context* ctx);
+        static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
 
     private:
-        VehicleCrashParticle* GetCrashedVehicleParticle() const;
+        static VehicleCrashParticle* GetCrashedVehicleParticle(JSValue thisVal);
 
-        DukValue colours_get() const;
-        void colours_set(const DukValue& value);
+        static JSValue colours_get(JSContext* ctx, JSValue thisVal);
+        static JSValue colours_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        DukValue acceleration_get() const;
-        void acceleration_set(const DukValue& value);
+        static JSValue acceleration_get(JSContext* ctx, JSValue thisVal);
+        static JSValue acceleration_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        DukValue velocity_get() const;
-        void velocity_set(const DukValue& value);
+        static JSValue velocity_get(JSContext* ctx, JSValue thisVal);
+        static JSValue velocity_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        uint8_t frame_get() const;
-        void frame_set(uint8_t value);
+        static JSValue frame_get(JSContext* ctx, JSValue thisVal);
+        static JSValue frame_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        void crashedSpriteBase_set(const std::string& value);
-        std::string crashedSpriteBase_get() const;
+        static JSValue crashedSpriteBase_get(JSContext* ctx, JSValue thisVal);
+        static JSValue crashedSpriteBase_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        void timeToLive_set(uint16_t value);
-        uint16_t timeToLive_get() const;
+        static JSValue timeToLive_get(JSContext* ctx, JSValue thisVal);
+        static JSValue timeToLive_set(JSContext* ctx, JSValue thisVal, JSValue value);
 
-        void Launch(const DukValue& value);
+        static JSValue Launch(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
     };
-}; // namespace OpenRCT2::Scripting
+} // namespace OpenRCT2::Scripting
 
 #endif

@@ -32,12 +32,9 @@ STR_0027    :Radiobiler
 STR_0028    :Piratskip
 STR_0029    :Roterende skip
 STR_0030    :Matbod
-STR_0031    :Ukjent bod (1D)
 STR_0032    :Drikkebod
-STR_0033    :Ukjent bod (1F)
 STR_0034    :Bod
 STR_0035    :Karusell
-STR_0036    :Ukjent bod (22)
 STR_0037    :Informasjonskiosk
 STR_0038    :Toaletter
 STR_0039    :Pariserhjul
@@ -83,16 +80,10 @@ STR_0078    :Invertert hårnålsbane
 STR_0079    :Flyvende teppe
 STR_0080    :Ubåtbane
 STR_0081    :Elveflåter
-STR_0082    :Ukjent attraksjon (50)
 STR_0083    :Enterprise
-STR_0084    :Ukjent attraksjon (52)
-STR_0085    :Ukjent attraksjon (53)
-STR_0086    :Ukjent attraksjon (54)
-STR_0087    :Ukjent attraksjon (55)
 STR_0088    :Invertert impulsbane
 STR_0089    :Miniberg-og-dal-bane
 STR_0090    :Gruvebane
-STR_0091    :Ukjent attraksjon (59)
 STR_0092    :LIM-berg-og-dal-bane
 STR_0093    :Hybrid berg-og-dal-bane
 STR_0094    :Enkeltspor berg-og-dal-bane
@@ -245,7 +236,6 @@ STR_0832    :Roter kameravinkelen 90° med klokken
 STR_0833    :Pause spillet
 STR_0834    :Disk- og spillinnstillinger
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Om ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Opphavsrett © 2002 Chris Sawyer, alle rettigheter forbeholdt
 STR_0851    :{WINDOW_COLOUR_2}Designet og programmert av Chris Sawyer
@@ -256,16 +246,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representasjon av Jacqui Lyons ved Marjacq AS
 STR_0856    :{WINDOW_COLOUR_2}Takk til:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth og John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :For lavt !
 STR_0878    :For høyt !
@@ -284,7 +264,7 @@ STR_0892    :Skjermbilde lagret som ‘{STRINGID}’
 STR_0893    :Skjermbilde mislyktes !
 STR_0894    :Landskapets dataområde er fullt !
 STR_0895    :Kan ikke bygge delvis under bakken
-STR_0896    :{POP16}{POP16}{STRINGID} Konstruksjon
+STR_0896    :{STRING} Konstruksjon
 STR_0897    :Retning
 STR_0898    :Venstrekurve
 STR_0899    :Høyrekurve
@@ -409,8 +389,6 @@ STR_1018    :Kunne ikke utføre endringer…
 STR_1019    :Kunne ikke utføre endringer…
 STR_1020    :Kunne ikke utføre endringer…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vogn per tog
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vogner per tog
 STR_1024    :{COMMA16} vogn per tog
 STR_1025    :{COMMA16} vogner per tog
 STR_1026    :Stasjonsplatform for lang!
@@ -519,9 +497,7 @@ STR_1128    :Stoppet av blokkbremser
 STR_1129    :Alle vogner i like farger
 STR_1130    :Forskjellige farger per {STRINGID}
 STR_1131    :Forskjellige farger per kjøretøy
-STR_1132    :Kjøretøy {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Kjøretøy {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Kjøretøy {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Velg hovedfarge
 STR_1137    :Velg andre farge
@@ -543,8 +519,8 @@ STR_1152    :Minst én person
 STR_1153    :Høydemerker på attraksjonsspor
 STR_1154    :Høydemerker på bakken
 STR_1155    :Høydemerker på gangstier
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Kan ikke fjerne denne…
 STR_1159    :Plasser kulisser, hager og annet tilbehør
 STR_1160    :Lag/juster innsjøer og vann
@@ -559,7 +535,6 @@ STR_1168    :Valg
 STR_1169    :(Ingenting)
 STR_1170    :{STRING}
 STR_1171    :{RED}Stengt
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Bygg gangstier og køer
 STR_1174    :Banner i veien
 STR_1175    :Kan ikke bygges på hellende gangsti
@@ -718,7 +693,6 @@ STR_1327    :Roter objekter 90°
 STR_1328    :Krever flatt land
 STR_1329    :{WINDOW_COLOUR_2}Utskytningsfart:
 STR_1330    :Maksfart ved avgang
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -816,7 +790,6 @@ STR_1425    :Gangsti
 STR_1426    :Kø
 STR_1427    :{WINDOW_COLOUR_2}Kunder: {BLACK}{COMMA32} i timen
 STR_1428    :{WINDOW_COLOUR_2}Inngangspris:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratis
 STR_1431    :Vandrer
 STR_1432    :På vei mot {STRINGID}
@@ -1060,7 +1033,6 @@ STR_1671    :{WINDOW_COLOUR_2}Total profitt: {BLACK}{CURRENCY2DP}
 STR_1672    :Bremser
 STR_1673    :Spinn Kontroll Vekslespor
 STR_1674    :Bremsehastighet
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Angi fartsgrense for bremser
 STR_1677    :{WINDOW_COLOUR_2}Popularitet: {BLACK}Unknown
 STR_1678    :{WINDOW_COLOUR_2}Popularitet: {BLACK}{COMMA16}%
@@ -1116,23 +1088,19 @@ STR_1727    :Byggerettigheter ikke til salgs!
 STR_1728    :Kan ikke kjøpe byggerettigheter her…
 STR_1729    :Land ikke eid av parken!
 STR_1730    :{RED}Lukket
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bygg
 STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Antall runder:
 STR_1735    :Antall runder i krets
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Kan ikke endre antall runder…
 STR_1739    :Løp vunnet av gjest {INT32}
 STR_1740    :Løp vunnet av {STRINGID}
 STR_1741    :Ikke bygget enda !
 STR_1742    :{WINDOW_COLOUR_2}Maks. folk på attraksjon:
 STR_1743    :Maksimal mengde folk tillatt på denne attraksjon
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Kan ikke endre dette…
 STR_1747    :{WINDOW_COLOUR_2}Tidsgrense:
 STR_1748    :Tidsgrense for attraksjon
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Kan ikke endre tidsgrense for attraksjon…
 STR_1752    :Vis liste over individuelle gjester i parken
 STR_1753    :Vis total liste over gjester i parken
@@ -1153,22 +1121,9 @@ STR_1767    :Spinnende tunnel
 STR_1768    :Kan ikke endre antall svingninger…
 STR_1769    :{WINDOW_COLOUR_2}Antall svingninger:
 STR_1770    :Antall fullførte svingninger
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Kun én fotoseksjon tillatt per bane
 STR_1774    :Kun ett kabeltrekk tillatt per bane
 STR_1777    :Attraksjonsmusikk
-STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda-kostyme
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger-kostyme
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefant-kostyme
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romer-kostyme
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla-kostyme
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snømann-kostyme
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridder-kostyme
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut-kostyme
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditt-kostyme
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff-kostyme
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirat-kostyme
 STR_1790    :Velg uniform-farge for denne typen personale
 STR_1791    :{WINDOW_COLOUR_2}Uniform-farge:
 STR_1792    :Svarer på {STRINGID} beskjed om sammenbrudd
@@ -1177,7 +1132,6 @@ STR_1794    :Fikser {STRINGID}
 STR_1795    :Svarer på radiobeskjed
 STR_1796    :Har brutt sammen og trenger fiksing
 STR_1798    :Malstrøm
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Sikkerhetsstopp
 STR_1801    :Sikringer sitter fast lukket
 STR_1802    :Sikringer sitter fast åpen
@@ -1249,10 +1203,8 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan ikke endre antall rotasjoner…
 STR_1869    :{WINDOW_COLOUR_2}Antall rotasjoner:
 STR_1870    :Antall fullførte rotasjoner
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inntekt: {BLACK}{CURRENCY2DP} per time
 STR_1874    :{WINDOW_COLOUR_2}Profitt: {BLACK}{CURRENCY2DP} per time
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspiser Attraksjoner
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fiks Attraksjoner
 STR_1878    :{WINDOW_COLOUR_2}Inspeksjon:
@@ -1292,7 +1244,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Lån:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Kan ikke låne mer penger!
 STR_1919    :Ikke nok penger tilgjengelig!
 STR_1920    :Kan ikke betale tilbake lån!
@@ -1330,7 +1281,6 @@ STR_1953    :Markedsføring
 STR_1954    :Finansiering av forskning
 STR_1955    :{WINDOW_COLOUR_2}Antall kretser:
 STR_1956    :Antall banekretser per attraksjon
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Kan ikke endre antall kretser…
 STR_1960    :{WINDOW_COLOUR_2}Ballong-pris:
@@ -1574,8 +1524,8 @@ STR_2212    :Vis liste over sikkerhetsvakter i parken
 STR_2213    :Vis liste over underholdere i parken
 STR_2214    :Konstruksjon ikke mulig mens spillet er pauset!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} på {STRINGID} har ikke returnet til {STRINGID} enda!{NEWLINE}Sjekk om den sitter fast eller har stoppet
 STR_2219    :{RED}{COMMA16} personer har omkommet i en ulykke på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Vurdering: {BLACK}{COMMA16}
@@ -1929,9 +1879,6 @@ STR_2706    :Aldri
 STR_2707    :Bruk systemets fildialog
 STR_2708    :{WINDOW_COLOUR_1}Er du sikker på du vil overskrive {STRINGID}?
 STR_2709    :Overskriv
-STR_2710    :Skriv navnet på filen.
-STR_2718    :Opp
-STR_2719    :Ny fil
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek
 STR_2722    :{UINT16}min:{UINT16}sek
@@ -2131,7 +2078,6 @@ STR_3092    :Du har ikke tillattelse til å flytte eller modifisere stasjonen ti
 STR_3093    :{WINDOW_COLOUR_2}Favoritt: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Kabeltrekk hastighet:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Velg hastighet for kabeltrekk
 STR_3099    :Velg farge
 STR_3100    :Velg andre farge
@@ -2174,7 +2120,6 @@ STR_3136    :Advarsel: Dette designet vil bli bygget med en alternativ type kjø
 STR_3137    :Velg Dekorasjon i Nærheten
 STR_3138    :Nullstill Utvalg
 STR_3139    :Kabeltrekk fungerer ikke i denne driftsmodusen
-STR_3140    :Kabeltrekk må starte umiddelbart etter stasjon
 STR_3141    :Flerkrets per tur ikke mulig med kabeltrekk
 STR_3142    :{WINDOW_COLOUR_2}Kapasitet: {BLACK}{STRINGID}
 STR_3143    :Vis folk på kart
@@ -2225,7 +2170,6 @@ STR_3208    :Spordesign Administrerer
 STR_3209    :Tilbake til Forrige Steg:
 STR_3210    :Fram til Neste Steg:
 STR_3211    :Kartstørrelse:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan ikke forminske kartstørrelse mer
 STR_3214    :Kan ikke øke kartstørrelse mer
 STR_3215    :For nærme kartets kant
@@ -2247,20 +2191,18 @@ STR_3230    :Blokkbremser kan ikke brukes rett etter hverandre
 STR_3231    :Blokkbremser kan ikke brukes rett etter toppen på dette trekket
 STR_3232    :Alternativer - Økonomisk
 STR_3233    :Alternativer - Gjester
-STR_3234    :Alternativer - Park
 STR_3235    :Vis økonomiske alternativer
 STR_3236    :Vis gjestalternativer
-STR_3237    :Vis parkalternativer
 STR_3238    :Ingen Penger
 STR_3239    :Lag denne parken som en 'ingen penger' park uten økonomiske begrensninger
-STR_3240    :{WINDOW_COLOUR_2}Innledende penger:
-STR_3241    :{WINDOW_COLOUR_2}Innledende lån:
-STR_3242    :{WINDOW_COLOUR_2}Maksimal lånstørrelse:
-STR_3243    :{WINDOW_COLOUR_2}Årlige renter:
+STR_3240    :Innledende penger:
+STR_3241    :Innledende lån:
+STR_3242    :Maksimal lånstørrelse:
+STR_3243    :Årlige renter:
 STR_3244    :Forby markedsføringskampanjer
 STR_3245    :Forby reklame, salgsfremmende taktikker, og andre markedsføringskampanjer
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan ikke øke innledende penger videre!
 STR_3249    :Kan ikke senke innledende penger videre!
 STR_3250    :Kan ikke øke innledende lån videre!
@@ -2269,14 +2211,10 @@ STR_3252    :Kan ikke øke maksimal lånstørrelse videre!
 STR_3253    :Kan ikke senke maksimal lånstørrelse videre!
 STR_3254    :Kan ikke øke renter videre!
 STR_3255    :Kan ikke senke renter videre!
-STR_3256    :Gjester foretrekker mindre intense attraksjoner
-STR_3257    :Velg om gjester kun skal generelt foretrekke mindre intense attraksjoner
-STR_3258    :Gjester foretrekker mer intense attraksjoner
-STR_3259    :Velg om gjester kun skal generelt foretrekke mer intense attraksjoner
-STR_3260    :{WINDOW_COLOUR_2}Penger per gjest (gjennomsnitt):
-STR_3261    :{WINDOW_COLOUR_2}Gjester's innledende glede:
-STR_3262    :{WINDOW_COLOUR_2}Gjester's innledende sult:
-STR_3263    :{WINDOW_COLOUR_2}Gjester's innledende tørste:
+STR_3260    :Penger per gjest (gjennomsnitt):
+STR_3261    :Gjester's innledende glede:
+STR_3262    :Gjester's innledende sult:
+STR_3263    :Gjester's innledende tørste:
 STR_3264    :Kan ikke øke dette videre!
 STR_3265    :Kan ikke senke dette videre!
 STR_3266    :Velg hvordan denne parken tar betalt for inngang og attraksjoner
@@ -2290,23 +2228,15 @@ STR_3273    :Vanskeligere å øke parkvurderingen
 STR_3274    :Gjør parkvurderingens verdi mer utfordrende
 STR_3275    :Vanskeligere nivå på tiltrekning av gjester
 STR_3276    :Gjør det vanskeligere å tiltrekke gjester til parken
-STR_3277    :{WINDOW_COLOUR_2}Kostnad for å kjøpe land:
-STR_3278    :{WINDOW_COLOUR_2}Kostnad for å kjøpe byggerettigheter:
+STR_3277    :Kostnad for å kjøpe land:
+STR_3278    :Kostnad for å kjøpe byggerettigheter:
 STR_3279    :Gratis parkinngang / Betal for tur
 STR_3280    :Betal for parkinngang / Gratis tur
-STR_3281    :{WINDOW_COLOUR_2}Inngangspris:
-STR_3282    :Velg oppdrag og park navn
+STR_3281    :Inngangspris:
 STR_3283    :Velg attraksjoner som er bevart
-STR_3284    :Valg av oppdrag
 STR_3285    :Bevarte Attraksjoner
 STR_3286    :Velg oppdrag for dette scenariet
 STR_3287    :{WINDOW_COLOUR_2}Oppdrag:
-STR_3288    :Velg klima
-STR_3289    :{WINDOW_COLOUR_2}Klima:
-STR_3290    :Kjølig og vått
-STR_3291    :Varmt
-STR_3292    :Varmt og tørt
-STR_3293    :Kaldt
 STR_3294    :Endre…
 STR_3295    :Endre parknavn
 STR_3296    :Endre navn på scenariet
@@ -2718,7 +2648,6 @@ STR_5549    :År/Måned/Dag
 STR_5550    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :År/Dag/Måned
 STR_5552    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause spill når Steam overlegg er åpen
 STR_5554    :Aktiver fjellverktøy
 STR_5555    :Vis kjøretøy fra andre sportyper
 STR_5556    :Spark ut spiller
@@ -2789,9 +2718,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Ekte” Parker
 STR_5626    :Andre Parker
-STR_5627    :Gruppér scenarioliste etter:
-STR_5628    :Kildespill
-STR_5629    :Vanskelighetsgrad
 STR_5630    :Skru på progressiv opplåsing
 STR_5631    :Originale DLC Parker
 STR_5632    :Bygg din egen…
@@ -2934,7 +2860,7 @@ STR_5807    :{WINDOW_COLOUR_2}Antall attraksjoner: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antall butikker og boder: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antall informasjonkiosker og andre fasiliteter: {BLACK}{COMMA16}
 STR_5810    :Skru av vognbegrensninger
-STR_5811    :Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 31{NEWLINE}tog per attraksjon
+STR_5811    :Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 255{NEWLINE}tog per attraksjon
 STR_5812    :Vis flerspillervindu
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -2942,7 +2868,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Vis FPS teller i spillet
 STR_5816    :Angir ratio å skalere spillet med.{NEWLINE}Mest brukbar når man spiller i{NEWLINE}høye oppløsninger
-STR_5819    :[Krever hardware skjermvisning]{NEWLINE}Pause spillet hvis Steam{NEWLINE}overlegg er åpnet
 STR_5820    :Minimer spillet hvis fokus{NEWLINE}mistes når i fullskjerm-modus
 STR_5822    :Veksle mellom dag og natt.{NEWLINE}Full syklus tar en måned i spillet
 STR_5823    :Vis stor tekst i bannere (RCT1 oppførsel)
@@ -3010,7 +2935,6 @@ STR_5887    :Prefiks
 STR_5888    :Suffiks
 STR_5889    :Symbol for egendefinert valuta
 STR_5890    :Skriv inn valutasymbol
-STR_5891    :Standard
 STR_5892    :Gå til standardmappen
 STR_5893    :Valutakurs
 STR_5894    :Skriv inn valutakurs
@@ -3036,12 +2960,11 @@ STR_5914    :Ukjent attraksjon
 STR_5915    :Spiller
 STR_5916    :{COMMA16} spiller
 STR_5917    :{COMMA16} spillere
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Vis vær-effekter
 STR_5921    :Skrur på regn og dystre fargeeffekter i storm.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks {COMMA16} {STRINGID} per tog
+STR_5922    :Maks {STRINGID}
+STR_5923    :Maks {COMMA16} {STRINGID} per tog
 STR_5924    :Overflatedetaljer
 STR_5925    :Veidetaljer
 STR_5926    :Banedetaljer
@@ -3276,7 +3199,6 @@ STR_6165    :Bruk Vertical Sync
 STR_6166    :Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer “screen tearing”.
 STR_6167    :Avansert
 STR_6168    :Startskjermsekvens
-STR_6169    :Scenariovalg
 STR_6170    :Tilpass brukergrensesnitt
 STR_6171    :Søk
 STR_6172    :Søk
@@ -3353,7 +3275,7 @@ STR_6271    :Terrengkanter
 STR_6272    :Stasjoner
 STR_6273    :Musikk
 STR_6274    :Kan ikke angi fargeplan…
-STR_6275    :{WINDOW_COLOUR_2}Stasjon-stil:
+STR_6275    :Stasjon-stil
 STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attraksjonstype eller driftsmodus.
 STR_6277    :Stasjonsindeks: {BLACK}{STRINGID}
 STR_6278    :Antall autolagringer
@@ -3377,7 +3299,7 @@ STR_6304    :Åpne dekorasjonsvelger
 STR_6305    :Multithreading
 STR_6306    :Eksperimentelt valg for å bruke flere tråder til rendering. Kan gjøre spillet ustabilt.
 STR_6307    :Fargeskjema: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Koble til på nytt
 STR_6310    :{WINDOW_COLOUR_2}Posisjon: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Neste: {BLACK}{INT32} {INT32} {INT32}
@@ -3427,7 +3349,6 @@ STR_6355    :{SMALLFONT}{BLACK}Høy tetthet
 STR_6356    :{SMALLFONT}{BLACK}Legger til ender dersom parken inneholder vann
 STR_6357    :{SMALLFONT}{BLACK}Fjerner alle ender fra parken
 STR_6358    :Side {UINT16}
-STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6361    :Aktiver attraksjonlyseffekter (eksperimentelt)
 STR_6362    :Hvis aktivert vil det være lys på vognene til attraksjoner som går på bane.
 STR_6363    :Tekst kopiert til utklippstavlen

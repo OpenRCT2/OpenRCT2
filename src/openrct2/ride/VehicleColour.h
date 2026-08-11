@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,14 @@
 
 #include <cstdint>
 
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
+
 struct VehicleColour
 {
-    uint8_t Body;
-    uint8_t Trim;
-    uint8_t Tertiary;
+    OpenRCT2::Drawing::Colour Body;
+    OpenRCT2::Drawing::Colour Trim;
+    OpenRCT2::Drawing::Colour Tertiary;
 };

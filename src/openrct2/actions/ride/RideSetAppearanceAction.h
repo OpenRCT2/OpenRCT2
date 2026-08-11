@@ -1,0 +1,50 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2026 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include "../GameAction.hpp"
+
+namespace OpenRCT2::GameActions
+{
+    enum class RideSetAppearanceType : uint8_t
+    {
+        trackColourMain,
+        trackColourAdditional,
+        trackColourSupports,
+        mazeStyle = trackColourSupports,
+        vehicleColourBody,
+        vehicleColourTrim,
+        vehicleColourTertiary,
+        vehicleColourScheme,
+        entranceStyle,
+        sellingItemColourIsRandom
+    };
+
+    class RideSetAppearanceAction final : public GameActionBase<GameCommand::setRideAppearance>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        RideSetAppearanceType _type{};
+        uint16_t _value{};
+        uint32_t _index{};
+
+    public:
+        RideSetAppearanceAction() = default;
+        RideSetAppearanceAction(RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index);
+
+        void AcceptParameters(GameActionParameterVisitor&) final;
+
+        uint16_t GetActionFlags() const override;
+
+        void Serialise(DataSerialiser& stream) override;
+        Result Query(GameState_t& gameState, Park::ParkData& park) const override;
+        Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
+    };
+} // namespace OpenRCT2::GameActions

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,12 +31,12 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
 
-    auto env = context->GetPlatformEnvironment();
-    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SCENARIO_PATCHES);
+    auto& env = context->GetPlatformEnvironment();
+    auto scenarioPatches = env.GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
 
     std::error_code ec;
     OpenRCT2::RCT12::SetDryRun(true);
-    OpenRCT2::Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);
+    OpenRCT2::Guard::SetAssertBehaviour(AssertBehaviour::abort);
     static const u8string dummySHA;
     for (const fs::directory_entry& entry : fs::directory_iterator(scenarioPatches, ec))
     {

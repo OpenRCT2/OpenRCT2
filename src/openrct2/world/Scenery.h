@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,10 +10,17 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "Location.hpp"
 #include "ScenerySelection.h"
 
 #include <vector>
+
+struct CoordsXY;
+struct CoordsXYZ;
+
+namespace OpenRCT2
+{
+    enum class ObjectType : uint8_t;
+}
 
 constexpr uint8_t kSceneryWitherAgeThreshold1 = 0x28;
 constexpr uint8_t kSceneryWitherAgeThreshold2 = 0x37;
@@ -40,9 +47,9 @@ enum
 
 enum class ScatterToolDensity : uint8_t
 {
-    LowDensity,
-    MediumDensity,
-    HighDensity
+    lowDensity,
+    mediumDensity,
+    highDensity
 };
 
 extern uint8_t gSceneryQuadrant;
@@ -77,7 +84,7 @@ void RestrictAllMiscScenery();
 void MarkAllUnrestrictedSceneryAsInvented();
 std::vector<ScenerySelection>& GetRestrictedScenery();
 void SetSceneryItemRestricted(const ScenerySelection& item, bool on);
-bool ObjectTypeCanBeRestricted(ObjectType objectType);
+bool ObjectTypeCanBeRestricted(OpenRCT2::ObjectType objectType);
 
-ObjectType GetObjectTypeFromSceneryType(uint8_t type);
-uint8_t GetSceneryTypeFromObjectType(ObjectType type);
+OpenRCT2::ObjectType GetObjectTypeFromSceneryType(uint8_t type);
+uint8_t GetSceneryTypeFromObjectType(OpenRCT2::ObjectType type);

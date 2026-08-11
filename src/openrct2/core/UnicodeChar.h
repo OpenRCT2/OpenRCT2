@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,8 +14,6 @@
 namespace OpenRCT2::UnicodeChar
 {
     // Latin alphabet
-    constexpr char32_t j = 0x6A;
-    constexpr char32_t l = 0x6C;
     constexpr char32_t ae_uc = 0xC6;
     constexpr char32_t o_stroke_uc = 0xD8;
     constexpr char32_t y_acute_uc = 0xDD;
@@ -227,4 +225,4 @@ namespace OpenRCT2::UnicodeChar
     // Misc
     constexpr char32_t superscript_minus_one = 0x207B;
 
-}; // namespace OpenRCT2::UnicodeChar
+} // namespace OpenRCT2::UnicodeChar

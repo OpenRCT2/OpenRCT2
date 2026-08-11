@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,46 +9,54 @@
 
 #pragma once
 
-#include "../core/EnumUtils.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "Drawing.h"
-
-#include <string_view>
-#include <tuple>
-
-struct Image;
+#include "../world/Location.hpp"
+#include "G1Element.h"
 
 namespace OpenRCT2::Drawing
 {
     enum class ImportMode : uint8_t
     {
-        Default,
-        Closest,
-        Dithering,
+        standard,
+        closest,
+        dithering,
     };
 
-    enum class ImportFlags : uint8_t
+    enum class ImportFlag : uint8_t
     {
-        RLE,
-        NoDrawOnZoom,
+        rle,
+        noDrawOnZoom,
     };
+    using ImportFlags = FlagHolder<uint8_t, ImportFlag>;
 
     enum class Palette : uint8_t
     {
-        OpenRCT2,
-        KeepIndices,
+        openRCT2,
+        keepIndices,
     };
 
     struct ImageImportMeta
     {
         ScreenCoordsXY offset{};
-        Palette palette = Palette::OpenRCT2;
-        uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
-        ImportMode importMode = ImportMode::Default;
+        Palette palette = Palette::openRCT2;
+        ImportFlags importFlags = { ImportFlag::rle };
+        ImportMode importMode = ImportMode::standard;
         ScreenCoordsXY srcOffset{};
         ScreenSize srcSize{};
         int32_t zoomedOffset{};
+    };
+
+    struct ImageImportResult
+    {
+        G1Element Element{};
+        std::vector<uint8_t> Buffer;
+    };
+    struct PaletteImportResult
+    {
+        G1Palette element{};
+        std::vector<BGRColour> buffer;
     };
 
     /**
@@ -57,22 +65,17 @@ namespace OpenRCT2::Drawing
     class ImageImporter
     {
     public:
-        struct ImportResult
-        {
-            G1Element Element{};
-            std::vector<uint8_t> Buffer;
-        };
-
-        ImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        ImageImportResult Import(const Image& image, ImageImportMeta& meta) const;
+        PaletteImportResult importJSONPalette(json_t& jPalette) const;
 
     private:
         enum class PaletteIndexType : uint8_t
         {
-            Normal,
-            PrimaryRemap,
-            SecondaryRemap,
-            TertiaryRemap,
-            Special,
+            normal,
+            primaryRemap,
+            secondaryRemap,
+            tertiaryRemap,
+            special,
         };
 
         static std::vector<int32_t> GetPixels(const Image& image, const ImageImportMeta& meta);
@@ -87,6 +90,7 @@ namespace OpenRCT2::Drawing
         static bool IsChangablePixel(int32_t paletteIndex);
         static PaletteIndexType GetPaletteIndexType(int32_t paletteIndex);
         static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
+        BGRColour parseJSONPaletteColour(const std::string& s) const;
     };
 
     // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const.

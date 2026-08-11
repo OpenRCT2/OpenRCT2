@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,42 +9,24 @@
 
 #pragma once
 
-#include "Location.hpp"
-
 #include <cstdint>
-#include <vector>
 
-struct TileElement;
+struct CoordsXYZ;
+struct TileCoordsXY;
 
-struct MapAnimation
+namespace OpenRCT2::MapAnimations
 {
-    uint8_t type{};
-    CoordsXYZ location{};
-};
+    enum class TemporaryType : uint8_t
+    {
+        onRidePhoto,
+        landEdgeDoor,
+    };
 
-enum
-{
-    MAP_ANIMATION_TYPE_RIDE_ENTRANCE,
-    MAP_ANIMATION_TYPE_QUEUE_BANNER,
-    MAP_ANIMATION_TYPE_SMALL_SCENERY,
-    MAP_ANIMATION_TYPE_PARK_ENTRANCE,
-    MAP_ANIMATION_TYPE_TRACK_WATERFALL,
-    MAP_ANIMATION_TYPE_TRACK_RAPIDS,
-    MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO,
-    MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL,
-    MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL,
-    MAP_ANIMATION_TYPE_REMOVE,
-    MAP_ANIMATION_TYPE_BANNER,
-    MAP_ANIMATION_TYPE_LARGE_SCENERY,
-    MAP_ANIMATION_TYPE_WALL_DOOR,
-    MAP_ANIMATION_TYPE_WALL,
-    MAP_ANIMATION_TYPE_COUNT
-};
-
-void MapAnimationCreate(int32_t type, const CoordsXYZ& loc);
-void MapAnimationInvalidateAll();
-const std::vector<MapAnimation>& GetMapAnimations();
-void ClearMapAnimations();
-void MapAnimationAutoCreate();
-void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el);
-void ShiftAllMapAnimations(CoordsXY amount);
+    void MarkTileForInvalidation(TileCoordsXY coords);
+    void MarkTileForUpdate(TileCoordsXY coords);
+    void CreateTemporary(const CoordsXYZ& coords, TemporaryType type);
+    void MarkAllTiles();
+    void InvalidateAndUpdateAll();
+    void ClearAll();
+    void ShiftAll(TileCoordsXY amount);
+} // namespace OpenRCT2::MapAnimations

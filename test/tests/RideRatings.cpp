@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,12 +12,11 @@
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/AudioContext.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
@@ -30,15 +29,17 @@ class RideRatings : public testing::Test
 protected:
     void CalculateRatingsForAllRides()
     {
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
-            RideRatingsUpdateRide(ride);
+            RideRating::UpdateRide(ride);
         }
     }
 
     void DumpRatings()
     {
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             std::string line = FormatRatings(ride);
             printf("%s\n", line.c_str());
@@ -47,8 +48,8 @@ protected:
 
     std::string FormatRatings(const Ride& ride)
     {
-        RatingTuple ratings = ride.ratings;
-        auto name = std::string(ride.GetRideTypeDescriptor().Name);
+        RideRating::Tuple ratings = ride.ratings;
+        auto name = std::string(ride.getRideTypeDescriptor().Name);
         std::string line = String::stdFormat(
             "%s: (%d, %d, %d)", name.c_str(), static_cast<int>(ratings.excitement), static_cast<int>(ratings.intensity),
             static_cast<int>(ratings.nausea));
@@ -80,7 +81,8 @@ protected:
 
         // Check ride ratings
         int expI = 0;
-        for (const auto& ride : GetRideManager())
+        auto& gameState = getGameState();
+        for (const auto& ride : RideManager(gameState))
         {
             auto actual = FormatRatings(ride);
             auto expected = expectedRatings[expI];

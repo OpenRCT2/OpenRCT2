@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,18 +16,18 @@ namespace OpenRCT2::Ui
     class ApplyTransparencyShader final : public OpenGLShaderProgram
     {
     private:
-        GLuint uOpaqueTex;
-        GLuint uOpaqueDepth;
-        GLuint uTransparentTex;
-        GLuint uTransparentDepth;
-        GLuint uPaletteTex;
-        GLuint uBlendPaletteTex;
+        GLint uOpaqueTex{ -1 };
+        GLint uOpaqueDepth{ -1 };
+        GLint uTransparentTex{ -1 };
+        GLint uTransparentDepth{ -1 };
+        GLint uPaletteTex{ -1 };
+        GLint uBlendPaletteTex{ -1 };
 
-        GLuint vPosition;
-        GLuint vTextureCoordinate;
+        GLint vPosition{ -1 };
+        GLint vTextureCoordinate{ -1 };
 
-        GLuint _vbo;
-        GLuint _vao;
+        GLuint _vbo{};
+        GLuint _vao{};
 
     public:
         ApplyTransparencyShader();

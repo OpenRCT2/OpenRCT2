@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,97 +10,156 @@
 #include "IntroScene.h"
 
 #include "../../Context.h"
+#include "../../Input.h"
+#include "../../OpenRCT2.h"
+#include "../../audio/Audio.h"
 #include "../../audio/AudioChannel.h"
 #include "../../audio/AudioMixer.h"
-#include "../../audio/audio.h"
 #include "../../drawing/Drawing.h"
-#include "../../sprites.h"
+#include "../../drawing/NewDrawing.h"
+#include "../../drawing/PaletteIndex.h"
+#include "../../drawing/Rectangle.h"
+#include "../../scenes/SceneManager.h"
 
-#include <memory>
+#include <cstdint>
 
 using OpenRCT2::Audio::SoundId;
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2
 {
-    static constexpr PaletteIndex kBackgroundColourDark = PALETTE_INDEX_10;
-    static constexpr PaletteIndex kBackgroundColourLogo = PALETTE_INDEX_245;
-    static constexpr PaletteIndex kBorderColourPublisher = PALETTE_INDEX_129;
+    static constexpr PaletteIndex kBackgroundColourDark = PaletteIndex::pi10;
+    static constexpr PaletteIndex kBackgroundColourLogo = PaletteIndex::primaryRemap2;
+    static constexpr PaletteIndex kBorderColourPublisher = PaletteIndex::pi129;
 
-    constexpr int32_t PALETTE_G1_IDX_DEVELOPER = 23217;
-    constexpr int32_t PALETTE_G1_IDX_LOGO = 23224;
+    static constexpr ImageIndex kSpriteChrisSawyerLogo00 = 23215;
+    static constexpr ImageIndex kSpriteChrisSawyerLogo10 = kSpriteChrisSawyerLogo00 + 1;
+    static constexpr ImageIndex kPaletteChrisSawyerLogo = 23217;
 
-    static IntroState _introState;
+    static constexpr ImageIndex kSpriteRCT2Logo00 = 23218;
+    static constexpr ImageIndex kSpriteRCT2Logo10 = kSpriteRCT2Logo00 + 1;
+    static constexpr ImageIndex kSpriteRCT2Logo20 = kSpriteRCT2Logo00 + 2;
+    static constexpr ImageIndex kSpriteRCT2Logo01 = kSpriteRCT2Logo00 + 3;
+    static constexpr ImageIndex kSpriteRCT2Logo11 = kSpriteRCT2Logo00 + 4;
+    static constexpr ImageIndex kSpriteRCT2Logo21 = kSpriteRCT2Logo00 + 5;
+    static constexpr ImageIndex kPaletteRCT2Logo = 23224;
 
-    // Used mainly for timing but also for Y coordinate and fading.
-    static int32_t _introStateCounter;
+    static constexpr ImageIndex kSpriteInfogramesLogo00 = 23226;
+    static constexpr ImageIndex kSpriteInfogramesLogo10 = kSpriteInfogramesLogo00 + 1;
+    static constexpr ImageIndex kSpriteInfogramesLogo01 = kSpriteInfogramesLogo00 + 2;
+    static constexpr ImageIndex kSpriteInfogramesLogo11 = kSpriteInfogramesLogo00 + 3;
 
-    static std::shared_ptr<Audio::IAudioChannel> _soundChannel = nullptr;
-    static bool _chainLiftFinished;
+    // Including the white box around it
+    constexpr int32_t kInfogramesLogoWidth = 541;
+    constexpr int32_t kInfogramesLogoHeight = 426;
+    constexpr int32_t kInfogramesLogoPadding = 19;
+    constexpr int32_t kInfogramesLogoOffscreen = kInfogramesLogoHeight + 154;
+
+    static std::weak_ptr<IntroSceneImpl> introSceneImplementation;
+
+    class IntroSceneImpl
+    {
+    public:
+        bool IntroIsPlaying();
+        void IntroDraw(Drawing::RenderTarget& rt);
+        void Load();
+        void Stop();
+        void Tick(IContext& sceneContext);
+
+    private:
+        void ScreenIntroProcessMouseInput();
+        void ScreenIntroProcessKeyboardInput();
+        void ScreenIntroSkipPart();
+        void ScreenIntroDrawLogo(RenderTarget& rt);
+
+    private:
+        enum class IntroState : uint8_t
+        {
+            none,
+            publisherBegin,
+            publisherScroll,
+            developerBegin,
+            developerScroll,
+            logoFadeIn,
+            logoWait,
+            logoFadeOut,
+            clear = 254,
+            finish = 255,
+        };
+
+        IntroState _introState;
+
+        // Used mainly for timing but also for Y coordinate and fading.
+        int32_t _introStateCounter;
+
+        std::shared_ptr<Audio::IAudioChannel> _soundChannel = nullptr;
+        bool _chainLiftFinished;
+    };
 
     bool IntroIsPlaying()
     {
-        return _introState != IntroState::None;
+        if (auto impl = introSceneImplementation.lock())
+        {
+            return impl->IntroIsPlaying();
+        }
+
+        return false;
     }
 
-    void IntroScene::Load()
+    bool IntroSceneImpl::IntroIsPlaying()
     {
-        _introState = IntroState::PublisherBegin;
+        return _introState != IntroState::none;
     }
 
-    void IntroScene::Stop()
+    void IntroSceneImpl::Load()
     {
-        _introState = IntroState::None;
+        _introState = IntroState::publisherBegin;
+    }
+
+    void IntroSceneImpl::Stop()
+    {
+        _introState = IntroState::none;
         LoadPalette();
     }
 
-    static void ScreenIntroProcessMouseInput();
-    static void ScreenIntroProcessKeyboardInput();
-    static void ScreenIntroSkipPart();
-    static void ScreenIntroDrawLogo(DrawPixelInfo& dpi);
-
     // rct2: 0x0068E966
-    void IntroScene::Tick()
+    void IntroSceneImpl::Tick(IContext& sceneContext)
     {
         ScreenIntroProcessMouseInput();
         ScreenIntroProcessKeyboardInput();
 
         switch (_introState)
         {
-            case IntroState::Disclaimer1:
-            case IntroState::Disclaimer2:
-                // Originally used for the disclaimer text
-                _introState = IntroState::PublisherBegin;
-                [[fallthrough]];
-            case IntroState::PublisherBegin:
+            case IntroState::publisherBegin:
                 LoadPalette();
 
                 // Set the Y for the Infogrames logo
-                _introStateCounter = -580;
+                _introStateCounter = -kInfogramesLogoOffscreen;
 
                 // Play the chain lift sound
-                _soundChannel = Audio::CreateAudioChannel(SoundId::LiftBM, true);
+                _soundChannel = Audio::CreateAudioChannel(SoundId::liftBM, true);
                 _chainLiftFinished = false;
-                _introState = IntroState::PublisherScroll;
+                _introState = IntroState::publisherScroll;
                 break;
-            case IntroState::PublisherScroll:
+            case IntroState::publisherScroll:
                 // Move the Infogrames logo down
                 _introStateCounter += 5;
 
-                // Check if logo is off the screen...ish
-                if (_introStateCounter > ContextGetHeight() - 120)
+                // Check if logo is off the screen
+                if (_introStateCounter > ContextGetHeight())
                 {
                     _introStateCounter = -116;
-                    _introState = IntroState::DeveloperBegin;
+                    _introState = IntroState::developerBegin;
                 }
 
                 break;
-            case IntroState::DeveloperBegin:
+            case IntroState::developerBegin:
                 // Set the Y for the Chris Sawyer logo
                 _introStateCounter = -116;
 
-                _introState = IntroState::DeveloperScroll;
+                _introState = IntroState::developerScroll;
                 break;
-            case IntroState::DeveloperScroll:
+            case IntroState::developerScroll:
                 _introStateCounter += 5;
 
                 // Check if logo is almost scrolled to the bottom
@@ -117,7 +176,7 @@ namespace OpenRCT2
 
                     // Play the track friction sound
                     _soundChannel = Audio::CreateAudioChannel(
-                        SoundId::TrackFrictionBM, true, Audio::kMixerVolumeMax, 0.25f, 0.75);
+                        SoundId::trackFrictionBM, true, Audio::kMixerVolumeMax, 0.25f, 0.75);
                 }
 
                 // Check if logo is off the screen...ish
@@ -131,22 +190,22 @@ namespace OpenRCT2
                     }
 
                     // Play long peep scream sound
-                    _soundChannel = Audio::CreateAudioChannel(SoundId::Scream1);
+                    _soundChannel = Audio::CreateAudioChannel(SoundId::scream1);
 
-                    _introState = IntroState::LogoFadeIn;
+                    _introState = IntroState::logoFadeIn;
                     _introStateCounter = 0;
                 }
                 break;
-            case IntroState::LogoFadeIn:
+            case IntroState::logoFadeIn:
                 // Fade in, add 4 / 256 to fading
                 _introStateCounter += 0x400;
                 if (_introStateCounter > 0xFF00)
                 {
-                    _introState = IntroState::LogoWait;
+                    _introState = IntroState::logoWait;
                     _introStateCounter = 0;
                 }
                 break;
-            case IntroState::LogoWait:
+            case IntroState::logoWait:
                 // Wait 80 game ticks
                 _introStateCounter++;
                 if (_introStateCounter >= 80)
@@ -154,18 +213,18 @@ namespace OpenRCT2
                     // Set fading to 256
                     _introStateCounter = 0xFF00;
 
-                    _introState = IntroState::LogoFadeOut;
+                    _introState = IntroState::logoFadeOut;
                 }
                 break;
-            case IntroState::LogoFadeOut:
+            case IntroState::logoFadeOut:
                 // Fade out, subtract 4 / 256 from fading
                 _introStateCounter -= 0x400;
                 if (_introStateCounter < 0)
                 {
-                    _introState = IntroState::Clear;
+                    _introState = IntroState::clear;
                 }
                 break;
-            case IntroState::Clear:
+            case IntroState::clear:
                 // Stop any playing sound
                 if (_soundChannel != nullptr)
                 {
@@ -173,98 +232,109 @@ namespace OpenRCT2
                     _soundChannel = nullptr;
                 }
 
-                // Move to next part
-                _introState = IntroState::Finish;
-                _introStateCounter = 0;
+                if (gOpenRCT2Headless)
+                {
+                    // Move to next part
+                    _introState = IntroState::finish;
+                    _introStateCounter = 0;
+                }
                 break;
-            case IntroState::Finish:
+            case IntroState::finish:
             {
-                auto& context = GetContext();
-                context.SetActiveScene(context.GetTitleScene());
+                auto* sceneMgr = sceneContext.GetSceneManager();
+                sceneMgr->setActiveScene(sceneMgr->getTitleScene());
+                break;
             }
             default:
                 break;
         }
     }
 
-    void IntroDraw(DrawPixelInfo& dpi)
+    void IntroDraw(RenderTarget& rt)
+    {
+        if (auto impl = introSceneImplementation.lock())
+        {
+            impl->IntroDraw(rt);
+        }
+    }
+
+    void IntroSceneImpl::IntroDraw(RenderTarget& rt)
     {
         int32_t screenWidth = ContextGetWidth();
 
         switch (_introState)
         {
-            case IntroState::Disclaimer1:
-            case IntroState::Disclaimer2:
+            case IntroState::publisherBegin:
+                GfxClear(rt, kBackgroundColourDark);
                 break;
-            case IntroState::PublisherBegin:
-                GfxClear(dpi, kBackgroundColourDark);
-                break;
-            case IntroState::PublisherScroll:
-                GfxClear(dpi, kBackgroundColourDark);
+            case IntroState::publisherScroll:
+            {
+                GfxClear(rt, kBackgroundColourDark);
 
                 // Draw a white rectangle for the logo background (gives a bit of white margin)
-                GfxFillRect(
-                    dpi,
-                    { { (screenWidth / 2) - 320 + 50, _introStateCounter + 50 },
-                      { (screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425 } },
-                    kBorderColourPublisher);
+                const auto leftTop = ScreenCoordsXY((screenWidth - kInfogramesLogoWidth) / 2, _introStateCounter + 50);
+                const auto rightBottom = leftTop + ScreenSize(kInfogramesLogoWidth - 1, kInfogramesLogoHeight - 1);
+                Rectangle::fill(rt, { leftTop, rightBottom }, kBorderColourPublisher);
 
                 // Draw Infogrames logo
-                GfxDrawSprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_00), { (screenWidth / 2) - 320 + 69, _introStateCounter + 69 });
-                GfxDrawSprite(
-                    dpi, ImageId(SPR_INTRO_INFOGRAMES_10), { (screenWidth / 2) - 320 + 319, _introStateCounter + 69 });
-                GfxDrawSprite(
-                    dpi, ImageId(SPR_INTRO_INFOGRAMES_01), { (screenWidth / 2) - 320 + 69, _introStateCounter + 319 });
-                GfxDrawSprite(
-                    dpi, ImageId(SPR_INTRO_INFOGRAMES_11), { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 });
+                auto leftTopLogo = leftTop + ScreenCoordsXY(kInfogramesLogoPadding, kInfogramesLogoPadding);
+                GfxDrawSprite(rt, ImageId(kSpriteInfogramesLogo00), leftTopLogo);
+                GfxDrawSprite(rt, ImageId(kSpriteInfogramesLogo10), leftTopLogo + ScreenCoordsXY(250, 0));
+                GfxDrawSprite(rt, ImageId(kSpriteInfogramesLogo01), leftTopLogo + ScreenCoordsXY(0, 250));
+                GfxDrawSprite(rt, ImageId(kSpriteInfogramesLogo11), leftTopLogo + ScreenCoordsXY(250, 250));
                 break;
-            case IntroState::DeveloperBegin:
-                GfxClear(dpi, kBackgroundColourDark);
-                GfxTransposePalette(PALETTE_G1_IDX_DEVELOPER, 255);
+            }
+            case IntroState::developerBegin:
+                GfxClear(rt, kBackgroundColourDark);
+                GfxTransposePalette(kPaletteChrisSawyerLogo, 255);
                 break;
-            case IntroState::DeveloperScroll:
-                GfxClear(dpi, kBackgroundColourDark);
+            case IntroState::developerScroll:
+                GfxClear(rt, kBackgroundColourDark);
 
                 // Draw Chris Sawyer logo
-                GfxDrawSprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
-                GfxDrawSprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_10), { (screenWidth / 2) - 320 + 320, _introStateCounter });
+                GfxDrawSprite(rt, ImageId(kSpriteChrisSawyerLogo00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
+                GfxDrawSprite(rt, ImageId(kSpriteChrisSawyerLogo10), { (screenWidth / 2) - 320 + 320, _introStateCounter });
                 break;
-            case IntroState::LogoFadeIn:
+            case IntroState::logoFadeIn:
                 if (_introStateCounter <= 0xFF00)
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+                    GfxTransposePalette(kPaletteRCT2Logo, (_introStateCounter >> 8) & 0xFF);
                 }
                 else
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, 255);
+                    GfxTransposePalette(kPaletteRCT2Logo, 255);
                 }
-                ScreenIntroDrawLogo(dpi);
+                ScreenIntroDrawLogo(rt);
                 break;
-            case IntroState::LogoWait:
-                ScreenIntroDrawLogo(dpi);
+            case IntroState::logoWait:
+                ScreenIntroDrawLogo(rt);
                 break;
-            case IntroState::LogoFadeOut:
+            case IntroState::logoFadeOut:
                 if (_introStateCounter >= 0)
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+                    GfxTransposePalette(kPaletteRCT2Logo, (_introStateCounter >> 8) & 0xFF);
                 }
                 else
                 {
-                    GfxTransposePalette(PALETTE_G1_IDX_LOGO, 0);
+                    GfxTransposePalette(kPaletteRCT2Logo, 0);
                 }
-                ScreenIntroDrawLogo(dpi);
+                ScreenIntroDrawLogo(rt);
                 break;
-            case IntroState::Clear:
-                GfxClear(dpi, kBackgroundColourDark);
+            case IntroState::clear:
+                GfxClear(rt, kBackgroundColourDark);
+
+                // Move to next part. Has to be done here to ensure the screen is cleared.
+                _introState = IntroState::finish;
+                _introStateCounter = 0;
                 break;
             default:
                 break;
         }
     }
 
-    static void ScreenIntroProcessMouseInput()
+    void IntroSceneImpl::ScreenIntroProcessMouseInput()
     {
-        if (ContextGetCursorState()->any == CURSOR_PRESSED)
+        if (ContextGetCursorState()->any & CURSOR_DOWN)
         {
             ScreenIntroSkipPart();
         }
@@ -274,7 +344,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006E3AEC
      */
-    static void ScreenIntroProcessKeyboardInput()
+    void IntroSceneImpl::ScreenIntroProcessKeyboardInput()
     {
         const uint8_t* keys = ContextGetKeysState();
         for (int i = 0; i < 256; i++)
@@ -287,40 +357,60 @@ namespace OpenRCT2
         }
     }
 
-    static void ScreenIntroSkipPart()
+    void IntroSceneImpl::ScreenIntroSkipPart()
     {
         switch (_introState)
         {
-            case IntroState::None:
-                break;
-            case IntroState::Disclaimer2:
-                _introState = IntroState::PublisherBegin;
+            case IntroState::none:
                 break;
             default:
-                _introState = IntroState::Clear;
+                _introState = IntroState::clear;
                 break;
         }
     }
 
-    static void ScreenIntroDrawLogo(DrawPixelInfo& dpi)
+    void IntroSceneImpl::ScreenIntroDrawLogo(RenderTarget& rt)
     {
         int32_t screenWidth = ContextGetWidth();
         int32_t imageWidth = 640;
         int32_t imageX = (screenWidth - imageWidth) / 2;
 
-        DrawingEngineInvalidateImage(SPR_INTRO_LOGO_00);
-        DrawingEngineInvalidateImage(SPR_INTRO_LOGO_10);
-        DrawingEngineInvalidateImage(SPR_INTRO_LOGO_20);
-        DrawingEngineInvalidateImage(SPR_INTRO_LOGO_01);
-        DrawingEngineInvalidateImage(SPR_INTRO_LOGO_11);
-        DrawingEngineInvalidateImage(SPR_INTRO_LOGO_21);
+        DrawingEngineInvalidateImage(kSpriteRCT2Logo00);
+        DrawingEngineInvalidateImage(kSpriteRCT2Logo10);
+        DrawingEngineInvalidateImage(kSpriteRCT2Logo20);
+        DrawingEngineInvalidateImage(kSpriteRCT2Logo01);
+        DrawingEngineInvalidateImage(kSpriteRCT2Logo11);
+        DrawingEngineInvalidateImage(kSpriteRCT2Logo21);
 
-        GfxClear(dpi, kBackgroundColourLogo);
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_10), { imageX + 220, 0 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_20), { imageX + 440, 0 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_01), { imageX + 0, 240 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_11), { imageX + 220, 240 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_21), { imageX + 440, 240 });
+        GfxClear(rt, kBackgroundColourLogo);
+        GfxDrawSprite(rt, ImageId(kSpriteRCT2Logo00), { imageX + 0, 0 });
+        GfxDrawSprite(rt, ImageId(kSpriteRCT2Logo10), { imageX + 220, 0 });
+        GfxDrawSprite(rt, ImageId(kSpriteRCT2Logo20), { imageX + 440, 0 });
+        GfxDrawSprite(rt, ImageId(kSpriteRCT2Logo01), { imageX + 0, 240 });
+        GfxDrawSprite(rt, ImageId(kSpriteRCT2Logo11), { imageX + 220, 240 });
+        GfxDrawSprite(rt, ImageId(kSpriteRCT2Logo21), { imageX + 440, 240 });
+    }
+
+    IntroScene::IntroScene(IContext& context)
+        : Scene(context)
+        , _impl(std::make_shared<IntroSceneImpl>())
+    {
+        introSceneImplementation = _impl;
+    }
+
+    void IntroScene::Load()
+    {
+        _impl->Load();
+    }
+
+    void IntroScene::Stop()
+    {
+        _impl->Stop();
+    }
+
+    void IntroScene::Tick()
+    {
+        auto& sceneContext = GetContext();
+        _impl->Tick(sceneContext);
     }
 } // namespace OpenRCT2

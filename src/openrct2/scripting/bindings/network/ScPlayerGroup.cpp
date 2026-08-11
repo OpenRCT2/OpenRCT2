@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,134 +11,166 @@
 
     #include "ScPlayerGroup.hpp"
 
-    #include "../../../Context.h"
-    #include "../../../actions/NetworkModifyGroupAction.h"
-    #include "../../../actions/PlayerSetGroupAction.h"
+    #include "../../../GameState.h"
+    #include "../../../actions/GameActionRunner.h"
+    #include "../../../actions/network/NetworkModifyGroupAction.h"
     #include "../../../core/String.hpp"
+    #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
-    #include "../../../network/network.h"
-    #include "../../Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    ScPlayerGroup::ScPlayerGroup(int32_t id)
-        : _id(id)
+    using OpaquePlayerGroupData = struct
     {
+        int32_t id;
+    };
+
+    int32_t ScPlayerGroup::GetGroupId(JSValue thisVal)
+    {
+        OpaquePlayerGroupData* data = gScPlayerGroup.GetOpaque<OpaquePlayerGroupData*>(thisVal);
+        if (data)
+            return data->id;
+        return -1;
     }
 
-    int32_t ScPlayerGroup::id_get()
+    JSValue ScPlayerGroup::id_get(JSContext* ctx, JSValue thisVal)
     {
-        return _id;
+        return JS_NewInt32(ctx, GetGroupId(thisVal));
     }
 
-    std::string ScPlayerGroup::name_get() const
+    JSValue ScPlayerGroup::name_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        auto index = NetworkGetGroupIndex(_id);
+        auto index = Network::GetGroupIndex(GetGroupId(thisVal));
         if (index == -1)
-            return {};
-        return NetworkGetGroupName(index);
+            return JSFromStdString(ctx, {});
+        return JSFromStdString(ctx, Network::GetGroupName(index));
     #else
-        return {};
+        return JSFromStdString(ctx, {});
     #endif
     }
 
-    void ScPlayerGroup::name_set(std::string value)
+    JSValue ScPlayerGroup::name_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
     #ifndef DISABLE_NETWORK
-        auto action = NetworkModifyGroupAction(ModifyGroupType::SetName, _id, value);
-        GameActions::Execute(&action);
+        JS_UNPACK_STR(valueStr, ctx, value);
+        auto action = GameActions::NetworkModifyGroupAction(
+            GameActions::ModifyGroupType::setName, GetGroupId(thisVal), valueStr);
+        GameActions::Execute(&action, getGameState());
     #endif
+        return JS_UNDEFINED;
     }
 
     #ifndef DISABLE_NETWORK
-    static std::string TransformPermissionKeyToJS(const std::string& s)
+    static JSValue TransformPermissionKeyToJS(JSContext* ctx, const std::string& s)
     {
         auto result = s.substr(sizeof("PERMISSION_") - 1);
         for (auto& c : result)
         {
             c = std::tolower(static_cast<unsigned char>(c));
         }
-        return result;
+        return JSFromStdString(ctx, result);
     }
 
-    static std::string TransformPermissionKeyToInternal(const std::string& s)
+    static std::string TransformPermissionKeyToInternal(JSContext* ctx, JSValue s)
     {
-        return "PERMISSION_" + String::toUpper(s);
+        if (JS_IsString(s))
+            return "PERMISSION_" + String::toUpper(JSToStdString(ctx, s));
+        return std::string();
     }
     #endif
 
-    std::vector<std::string> ScPlayerGroup::permissions_get() const
+    JSValue ScPlayerGroup::permissions_get(JSContext* ctx, JSValue thisVal)
     {
-    #ifndef DISABLE_NETWORK
-        auto index = NetworkGetGroupIndex(_id);
-        if (index == -1)
-            return {};
-
         // Create array of permissions
-        std::vector<std::string> result;
+        JSValue result = JS_NewArray(ctx);
+
+    #ifndef DISABLE_NETWORK
+        auto index = Network::GetGroupIndex(GetGroupId(thisVal));
+        if (index == -1)
+            return result;
+
         auto permissionIndex = 0;
-        for (const auto& action : NetworkActions::Actions)
+        int64_t resultIdx = 0;
+        for (const auto& action : Network::NetworkActions::kActions)
         {
-            if (NetworkCanPerformAction(index, static_cast<NetworkPermission>(permissionIndex)))
+            if (Network::CanPerformAction(index, static_cast<Network::Permission>(permissionIndex)))
             {
-                result.push_back(TransformPermissionKeyToJS(action.PermissionName));
+                JS_SetPropertyInt64(ctx, result, resultIdx++, TransformPermissionKeyToJS(ctx, action.permissionName));
             }
             permissionIndex++;
         }
-        return result;
-    #else
-        return {};
     #endif
+        return result;
     }
 
-    void ScPlayerGroup::permissions_set(std::vector<std::string> value)
+    JSValue ScPlayerGroup::permissions_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
     #ifndef DISABLE_NETWORK
-        auto groupIndex = NetworkGetGroupIndex(_id);
+        JS_UNPACK_ARRAY(array, ctx, value);
+
+        int32_t id = GetGroupId(thisVal);
+        auto groupIndex = Network::GetGroupIndex(id);
         if (groupIndex == -1)
-            return;
+            return JS_UNDEFINED;
 
         // First clear all permissions
-        auto networkAction = NetworkModifyGroupAction(ModifyGroupType::SetPermissions, _id, "", 0, PermissionState::ClearAll);
-        GameActions::Execute(&networkAction);
+        auto networkAction = GameActions::NetworkModifyGroupAction(
+            GameActions::ModifyGroupType::setPermissions, id, "", 0, GameActions::PermissionState::clearAll);
+        GameActions::Execute(&networkAction, getGameState());
 
-        std::vector<bool> enabledPermissions;
-        enabledPermissions.resize(NetworkActions::Actions.size());
-        for (const auto& p : value)
-        {
-            auto permissionName = TransformPermissionKeyToInternal(p);
+        // Don't use vector<bool> since the weird bitpacking specialisation does not work with the lambda (on some compilers)
+        std::vector<uint8_t> enabledPermissions(Network::NetworkActions::kActions.size());
+        JSIterateArray(ctx, array, [&enabledPermissions](JSContext* ctx2, JSValue x) {
+            auto permissionName = TransformPermissionKeyToInternal(ctx2, x);
 
             auto permissionIndex = 0;
-            for (const auto& action : NetworkActions::Actions)
+            for (const auto& action : Network::NetworkActions::kActions)
             {
-                if (action.PermissionName == permissionName)
+                if (action.permissionName == permissionName)
                 {
                     enabledPermissions[permissionIndex] = true;
                 }
                 permissionIndex++;
             }
-        }
+        });
 
         for (size_t i = 0; i < enabledPermissions.size(); i++)
         {
             auto toggle
-                = (enabledPermissions[i] != (NetworkCanPerformAction(groupIndex, static_cast<NetworkPermission>(i)) != 0));
+                = (enabledPermissions[i] != (Network::CanPerformAction(groupIndex, static_cast<Network::Permission>(i)) != 0));
             if (toggle)
             {
-                auto networkAction2 = NetworkModifyGroupAction(
-                    ModifyGroupType::SetPermissions, _id, "", static_cast<uint32_t>(i), PermissionState::Toggle);
-                GameActions::Execute(&networkAction2);
+                auto networkAction2 = GameActions::NetworkModifyGroupAction(
+                    GameActions::ModifyGroupType::setPermissions, id, "", static_cast<uint32_t>(i),
+                    GameActions::PermissionState::toggle);
+                GameActions::Execute(&networkAction2, getGameState());
             }
         }
     #endif
+        return JS_UNDEFINED;
     }
 
-    void ScPlayerGroup::Register(duk_context* ctx)
+    JSValue ScPlayerGroup::New(JSContext* ctx, int32_t id)
     {
-        dukglue_register_property(ctx, &ScPlayerGroup::id_get, nullptr, "id");
-        dukglue_register_property(ctx, &ScPlayerGroup::name_get, &ScPlayerGroup::name_set, "name");
-        dukglue_register_property(ctx, &ScPlayerGroup::permissions_get, &ScPlayerGroup::permissions_set, "permissions");
+        return MakeWithOpaque(ctx, new OpaquePlayerGroupData{ id });
+    }
+
+    void ScPlayerGroup::Register(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("id", ScPlayerGroup::id_get, nullptr),
+            JS_CGETSET_DEF("name", ScPlayerGroup::name_get, ScPlayerGroup::name_set),
+            JS_CGETSET_DEF("permissions", ScPlayerGroup::permissions_get, ScPlayerGroup::permissions_set),
+        };
+        RegisterBase(ctx, "PlayerGroup", Finalize, funcs);
+    }
+
+    void ScPlayerGroup::Finalize(JSRuntime* rt, JSValue thisVal)
+    {
+        OpaquePlayerGroupData* data = gScPlayerGroup.GetOpaque<OpaquePlayerGroupData*>(thisVal);
+        if (data)
+            delete data;
     }
 
 } // namespace OpenRCT2::Scripting

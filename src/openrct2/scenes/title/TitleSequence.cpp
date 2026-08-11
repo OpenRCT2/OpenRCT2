@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,21 +10,18 @@
 #include "TitleSequence.h"
 
 #include "../../Diagnostic.h"
-#include "../../core/Collections.hpp"
 #include "../../core/Console.hpp"
 #include "../../core/File.h"
 #include "../../core/FileScanner.h"
 #include "../../core/FileStream.h"
 #include "../../core/Guard.hpp"
-#include "../../core/Memory.hpp"
 #include "../../core/MemoryStream.h"
 #include "../../core/Path.hpp"
 #include "../../core/String.hpp"
 #include "../../core/StringBuilder.h"
 #include "../../core/Zip.h"
-#include "../../scenario/ScenarioRepository.h"
-#include "../../scenario/ScenarioSources.h"
 
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <optional>
@@ -38,7 +35,7 @@ namespace OpenRCT2::Title
     static std::vector<std::string> GetSaves(const std::string& path);
     static std::vector<std::string> GetSaves(IZipArchive* zip);
     static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves);
-    static void LegacyScriptGetLine(OpenRCT2::IStream* stream, std::vector<std::array<char, 128>>& parts);
+    static void LegacyScriptGetLine(IStream* stream, std::vector<std::array<char, 128>>& parts);
     static std::vector<uint8_t> ReadScriptFile(const std::string& path);
     static std::string LegacyScriptWrite(const TitleSequence& seq);
 
@@ -56,9 +53,9 @@ namespace OpenRCT2::Title
         LOG_VERBOSE("Loading title sequence: %s", path.c_str());
 
         auto ext = Path::GetExtension(path);
-        if (String::equals(ext, TITLE_SEQUENCE_EXTENSION))
+        if (String::equals(ext, kTitleSequenceExtension))
         {
-            auto zip = Zip::TryOpen(path, ZIP_ACCESS::READ);
+            auto zip = Zip::TryOpen(path, ZipAccess::read);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", path.c_str());
@@ -91,7 +88,7 @@ namespace OpenRCT2::Title
 
         auto commands = LegacyScriptRead(script, saves);
 
-        auto seq = OpenRCT2::Title::CreateTitleSequence();
+        auto seq = CreateTitleSequence();
         seq->Name = Path::GetFileNameWithoutExtension(path);
         seq->Path = path;
         seq->Saves = saves;
@@ -108,11 +105,11 @@ namespace OpenRCT2::Title
             const auto& filename = seq.Saves[index];
             if (seq.IsZip)
             {
-                auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::READ);
+                auto zip = Zip::TryOpen(seq.Path, ZipAccess::read);
                 if (zip != nullptr)
                 {
                     auto data = zip->GetFileData(filename);
-                    auto ms = std::make_unique<OpenRCT2::MemoryStream>();
+                    auto ms = std::make_unique<MemoryStream>();
                     ms->Write(data.data(), data.size());
                     ms->SetPosition(0);
 
@@ -129,10 +126,10 @@ namespace OpenRCT2::Title
             else
             {
                 auto absolutePath = Path::Combine(seq.Path, filename);
-                std::unique_ptr<OpenRCT2::IStream> fileStream = nullptr;
+                std::unique_ptr<IStream> fileStream = nullptr;
                 try
                 {
-                    fileStream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FILE_MODE_OPEN);
+                    fileStream = std::make_unique<FileStream>(absolutePath, FileMode::open);
                 }
                 catch (const IOException& exception)
                 {
@@ -158,7 +155,7 @@ namespace OpenRCT2::Title
             if (seq.IsZip)
             {
                 auto fdata = std::vector<uint8_t>(script.begin(), script.end());
-                auto zip = Zip::Open(seq.Path, ZIP_ACCESS::WRITE);
+                auto zip = Zip::Open(seq.Path, ZipAccess::write);
                 zip->SetFileData("script.txt", std::move(fdata));
             }
             else
@@ -188,7 +185,7 @@ namespace OpenRCT2::Title
             try
             {
                 auto fdata = File::ReadAllBytes(path);
-                auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+                auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
                 if (zip == nullptr)
                 {
                     Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -221,7 +218,7 @@ namespace OpenRCT2::Title
         auto& oldRelativePath = seq.Saves[index];
         if (seq.IsZip)
         {
-            auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+            auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -251,7 +248,7 @@ namespace OpenRCT2::Title
         auto& relativePath = seq.Saves[index];
         if (seq.IsZip)
         {
-            auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+            auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -282,7 +279,7 @@ namespace OpenRCT2::Title
                         if (command.SaveIndex == index)
                         {
                             // Park no longer exists, so reset load command to invalid
-                            command.SaveIndex = SAVE_INDEX_INVALID;
+                            command.SaveIndex = kSaveIndexInvalid;
                         }
                         else if (command.SaveIndex > index)
                         {
@@ -297,11 +294,11 @@ namespace OpenRCT2::Title
         return true;
     }
 
-    static std::vector<std::string> GetSaves(const std::string& directory)
+    static std::vector<std::string> GetSaves(const std::string& path)
     {
         std::vector<std::string> saves;
 
-        auto pattern = Path::Combine(directory, u8"*.sc6;*.sv6;*.park;*.sv4;*.sc4");
+        auto pattern = Path::Combine(path, u8"*.sc6;*.sv6;*.park;*.sv4;*.sc4");
         auto scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
@@ -329,7 +326,7 @@ namespace OpenRCT2::Title
     static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves)
     {
         std::vector<TitleCommand> commands;
-        auto fs = OpenRCT2::MemoryStream(script.data(), script.size());
+        auto fs = MemoryStream(script.data(), script.size());
         do
         {
             std::vector<std::array<char, 128>> parts;
@@ -342,7 +339,7 @@ namespace OpenRCT2::Title
             {
                 if (String::iequals(token, "LOAD"))
                 {
-                    auto saveIndex = SAVE_INDEX_INVALID;
+                    auto saveIndex = kSaveIndexInvalid;
                     const std::string relativePath = parts[1].data();
                     for (size_t i = 0; i < saves.size(); i++)
                     {
@@ -411,7 +408,7 @@ namespace OpenRCT2::Title
         return commands;
     }
 
-    static void LegacyScriptGetLine(OpenRCT2::IStream* stream, std::vector<std::array<char, 128>>& parts)
+    static void LegacyScriptGetLine(IStream* stream, std::vector<std::array<char, 128>>& parts)
     {
         int32_t part = 0;
         int32_t cindex = 0;
@@ -483,7 +480,7 @@ namespace OpenRCT2::Title
         std::vector<uint8_t> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto size = static_cast<size_t>(fs.GetLength());
             result.resize(size);
             fs.Read(result.data(), size);

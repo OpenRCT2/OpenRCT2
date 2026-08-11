@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,12 +9,9 @@
 
 #pragma once
 
-#include "../Cheats.h"
+#include "../core/FlagHolder.hpp"
 #include "../localisation/StringIdType.h"
-#include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
-
-struct Guest;
 
 enum
 {
@@ -41,22 +38,28 @@ enum
     CAMPAIGN_ACTIVE_FLAG = (1 << 7)
 };
 
+namespace OpenRCT2
+{
+    struct Guest;
+
+    enum class MarketingCampaignFlag : uint8_t
+    {
+        firstWeek,
+    };
+    using MarketingCampaignFlags = FlagHolder<uint8_t, MarketingCampaignFlag>;
+} // namespace OpenRCT2
+
 struct MarketingCampaign
 {
-    uint8_t Type{};
-    uint8_t WeeksLeft{};
-    uint8_t Flags{};
+    uint8_t type{};
+    uint8_t weeksLeft{};
+    OpenRCT2::MarketingCampaignFlags flags{};
     union
     {
-        ::RideId RideId{};
-        ShopItemIndex ShopItemType;
+        ::RideId rideId{};
+        ShopItemIndex shopItemType;
     };
 };
-
-namespace OpenRCT2::MarketingCampaignFlags
-{
-    constexpr uint8_t FIRST_WEEK = 1 << 0;
-}
 
 extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 
@@ -64,8 +67,8 @@ extern const StringId kMarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
 
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
 void MarketingUpdate();
-void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
+void MarketingSetGuestCampaign(OpenRCT2::Guest* peep, int32_t campaign);
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
 void MarketingNewCampaign(const MarketingCampaign& campaign);
-void MarketingCancelCampaignsForRide(const RideId rideId);
+void MarketingCancelCampaignsForRide(RideId rideId);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,39 +11,32 @@
 
 #include "../Scene.h"
 
-#include <cstdint>
+#include <memory>
 
-struct DrawPixelInfo;
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 namespace OpenRCT2
 {
-    enum class IntroState : uint8_t
-    {
-        None,
-        PublisherBegin,
-        PublisherScroll,
-        DeveloperBegin,
-        DeveloperScroll,
-        LogoFadeIn,
-        LogoWait,
-        LogoFadeOut,
-        Disclaimer1,
-        Disclaimer2,
-        Clear = 254,
-        Finish = 255,
-    };
+    class IntroSceneImpl;
 
     class IntroScene final : public Scene
     {
     public:
         using Scene::Scene;
 
+        IntroScene(IContext& context);
+
         void Load() override;
         void Tick() override;
         void Stop() override;
+
+    private:
+        std::shared_ptr<IntroSceneImpl> _impl;
     };
 
     bool IntroIsPlaying();
-    void IntroUpdate();
-    void IntroDraw(DrawPixelInfo& dpi);
+    void IntroDraw(Drawing::RenderTarget& rt);
 } // namespace OpenRCT2

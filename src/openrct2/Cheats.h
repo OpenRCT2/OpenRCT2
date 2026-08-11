@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,9 +13,9 @@
 
 enum class StaffSpeedCheat
 {
-    None,
-    Frozen,
-    Fast,
+    none,
+    frozen,
+    fast,
 };
 
 struct CheatsState
@@ -37,6 +37,7 @@ struct CheatsState
     bool freezeWeather;
     bool disableTrainLengthLimit;
     bool disablePlantAging;
+    bool disableGrassGrowing;
     bool disableRideValueAging;
     bool enableChainLiftOnAllTrack;
     bool allowArbitraryRideTypeChanges;
@@ -52,61 +53,62 @@ struct CheatsState
 
 enum class CheatType : int32_t
 {
-    SandboxMode,
-    DisableClearanceChecks,
-    DisableSupportLimits,
-    ShowAllOperatingModes,
-    ShowVehiclesFromOtherTrackTypes,
-    DisableTrainLengthLimit,
-    EnableChainLiftOnAllTrack,
-    FastLiftHill,
-    DisableBrakesFailure,
-    DisableAllBreakdowns,
-    UnlockAllPrices,
-    BuildInPauseMode,
-    IgnoreRideIntensity,
-    DisableVandalism,
-    DisableLittering,
-    NoMoney,
-    AddMoney,
-    SetMoney,
-    ClearLoan,
-    SetGuestParameter,
-    GenerateGuests,
-    RemoveAllGuests,
-    GiveAllGuests,
-    SetGrassLength,
-    WaterPlants,
-    DisablePlantAging,
-    FixVandalism,
-    RemoveLitter,
-    SetStaffSpeed,
-    RenewRides,
-    MakeDestructible,
-    FixRides,
-    ResetCrashStatus,
-    TenMinuteInspections,
-    WinScenario,
-    ForceWeather,
-    FreezeWeather,
-    OpenClosePark,
-    HaveFun,
-    SetForcedParkRating,
-    NeverendingMarketing,
-    AllowArbitraryRideTypeChanges,
-    OwnAllLand,
-    DisableRideValueAging,
-    IgnoreResearchStatus,
-    EnableAllDrawableTrackPieces,
-    CreateDucks,
-    RemoveDucks,
-    AllowTrackPlaceInvalidHeights,
-    NoCapOnQueueLengthDummy, // Removed; this dummy exists only for deserialisation parks that had it saved
-    AllowRegularPathAsQueue,
-    AllowSpecialColourSchemes,
-    RemoveParkFences,
-    IgnorePrice,
-    Count,
+    sandboxMode,
+    disableClearanceChecks,
+    disableSupportLimits,
+    showAllOperatingModes,
+    showVehiclesFromOtherTrackTypes,
+    disableTrainLengthLimit,
+    enableChainLiftOnAllTrack,
+    fastLiftHill,
+    disableBrakesFailure,
+    disableAllBreakdowns,
+    unlockAllPrices,
+    buildInPauseMode,
+    ignoreRideIntensity,
+    disableVandalism,
+    disableLittering,
+    noMoney,
+    addMoney,
+    setMoney,
+    clearLoan,
+    setGuestParameter,
+    generateGuests,
+    removeAllGuests,
+    giveAllGuests,
+    setGrassLength,
+    waterPlants,
+    disablePlantAging,
+    fixVandalism,
+    removeLitter,
+    setStaffSpeed,
+    renewRides,
+    makeDestructible,
+    fixRides,
+    resetCrashStatus,
+    tenMinuteInspections,
+    winScenario,
+    forceWeather,
+    freezeWeather,
+    openClosePark,
+    haveFun,
+    setForcedParkRating,
+    neverendingMarketing,
+    allowArbitraryRideTypeChanges,
+    ownAllLand,
+    disableRideValueAging,
+    ignoreResearchStatus,
+    enableAllDrawableTrackPieces,
+    createDucks,
+    removeDucks,
+    allowTrackPlaceInvalidHeights,
+    noCapOnQueueLengthDummy, // Removed; this dummy exists only for deserialisation parks that had it saved
+    allowRegularPathAsQueue,
+    allowSpecialColourSchemes,
+    removeParkFences,
+    ignorePrice,
+    disableGrassGrowing,
+    count,
 };
 
 enum
@@ -137,7 +139,12 @@ constexpr int32_t kCheatsStaffNormalSpeed = 0x60;
 constexpr int32_t kCheatsStaffFreezeSpeed = 0;
 constexpr int32_t kForcedParkRatingDisabled = -1;
 
+namespace OpenRCT2
+{
+    class DataSerialiser;
+}
+
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);
 void CheatsSet(CheatType cheatType, int64_t param1 = 0, int64_t param2 = 0);
-void CheatsSerialise(class DataSerialiser& ds);
+void CheatsSerialise(class OpenRCT2::DataSerialiser& ds);

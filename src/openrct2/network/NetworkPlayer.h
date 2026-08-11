@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,42 +9,49 @@
 
 #pragma once
 
-#include "../Game.h"
+#include "../actions/GameAction.hpp"
 #include "../core/Money.hpp"
-#include "../world/Map.h"
+#include "../world/Location.hpp"
 
 #include <string>
 #include <string_view>
 #include <unordered_map>
 
-struct NetworkPacket;
-struct Peep;
-
-class NetworkPlayer final
+namespace OpenRCT2
 {
-public:
-    uint8_t Id = 0;
-    std::string Name;
-    uint16_t Ping = 0;
-    uint8_t Flags = 0;
-    uint8_t Group = 0;
-    money64 MoneySpent = 0.00_GBP;
-    uint32_t CommandsRan = 0;
-    int32_t LastAction = -999;
-    uint32_t LastActionTime = 0;
-    CoordsXYZ LastActionCoord = {};
-    Peep* PickupPeep = nullptr;
-    int32_t PickupPeepOldX = kLocationNull;
-    std::string KeyHash;
-    uint32_t LastDemolishRideTime = 0;
-    uint32_t LastPlaceSceneryTime = 0;
-    std::unordered_map<GameCommand, int32_t> CooldownTime;
-    NetworkPlayer() noexcept = default;
+    struct Peep;
+}
 
-    void SetName(std::string_view name);
+namespace OpenRCT2::Network
+{
+    struct Packet;
 
-    void Read(NetworkPacket& packet);
-    void Write(NetworkPacket& packet);
-    void IncrementNumCommands();
-    void AddMoneySpent(money64 cost);
-};
+    class Player final
+    {
+    public:
+        uint8_t id = 0;
+        std::string name;
+        uint16_t ping = 0;
+        uint8_t flags = 0;
+        uint8_t group = 0;
+        money64 moneySpent = 0.00_GBP;
+        uint32_t commandsRan = 0;
+        int32_t lastAction = -999;
+        uint32_t lastActionTime = 0;
+        CoordsXYZ lastActionCoord = {};
+        Peep* pickupPeep = nullptr;
+        int32_t pickupPeepOldX = kLocationNull;
+        std::string keyHash;
+        uint32_t lastDemolishRideTime = 0;
+        uint32_t lastPlaceSceneryTime = 0;
+        std::unordered_map<GameCommand, int32_t> cooldownTime;
+        Player() noexcept = default;
+
+        void setName(std::string_view name);
+
+        void read(Packet& packet);
+        void write(Packet& packet);
+        void incrementNumCommands();
+        void addMoneySpent(money64 cost);
+    };
+} // namespace OpenRCT2::Network

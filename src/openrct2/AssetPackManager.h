@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,16 +10,14 @@
 #pragma once
 
 #include "core/FileSystem.hpp"
-#include "drawing/ImageId.hpp"
 
 #include <memory>
 #include <vector>
 
-class AudioSampleTable;
-
 namespace OpenRCT2
 {
     class AssetPack;
+    class AudioSampleTable;
 
     class AssetPackManager
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,16 +15,18 @@
 #include "entity/Duck.h"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
-#include "entity/Fountain.h"
 #include "entity/Guest.h"
+#include "entity/JumpingFountain.h"
 #include "entity/Litter.h"
 #include "entity/MoneyEffect.h"
 #include "entity/Particle.h"
 #include "entity/Staff.h"
 #include "ride/Vehicle.h"
 
-static constexpr size_t MaximumGameStateSnapshots = 32;
-static constexpr uint32_t InvalidTick = 0xFFFFFFFF;
+static constexpr size_t kMaximumGameStateSnapshots = 32;
+static constexpr uint32_t kInvalidTick = 0xFFFFFFFF;
+
+using namespace OpenRCT2;
 
 #pragma pack(push, 1)
 union EntitySnapshot
@@ -48,11 +50,11 @@ struct GameStateSnapshot_t
         return *this;
     }
 
-    uint32_t tick = InvalidTick;
+    uint32_t tick = kInvalidTick;
     uint32_t srand0 = 0;
 
-    OpenRCT2::MemoryStream storedSprites;
-    OpenRCT2::MemoryStream parkParameters;
+    MemoryStream storedSprites;
+    MemoryStream parkParameters;
 
     template<typename T>
     bool EntitySizeCheck(DataSerialiser& ds)
@@ -72,7 +74,7 @@ struct GameStateSnapshot_t
     }
 
     // Must pass a function that can access the sprite.
-    void SerialiseSprites(std::function<EntitySnapshot*(const EntityId)> getEntity, const size_t numSprites, bool saving)
+    void SerialiseSprites(std::function<EntitySnapshot*(EntityId)> getEntity, const size_t numSprites, bool saving)
     {
         const bool loading = !saving;
 
@@ -89,7 +91,7 @@ struct GameStateSnapshot_t
             for (EntityId::UnderlyingType i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(EntityId::FromUnderlying(i));
-                if (entity == nullptr || entity->base.Type == EntityType::Null)
+                if (entity == nullptr || entity->base.type == EntityType::null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -123,38 +125,38 @@ struct GameStateSnapshot_t
             }
             auto& sprite = *entity;
 
-            ds << sprite.base.Type;
+            ds << sprite.base.type;
 
-            switch (sprite.base.Type)
+            switch (sprite.base.type)
             {
-                case EntityType::Vehicle:
-                    reinterpret_cast<Vehicle&>(sprite).Serialise(ds);
+                case EntityType::vehicle:
+                    reinterpret_cast<Vehicle&>(sprite).serialise(ds);
                     break;
-                case EntityType::Guest:
-                    reinterpret_cast<Guest&>(sprite).Serialise(ds);
+                case EntityType::guest:
+                    reinterpret_cast<Guest&>(sprite).serialise(ds);
                     break;
-                case EntityType::Staff:
-                    reinterpret_cast<Staff&>(sprite).Serialise(ds);
+                case EntityType::staff:
+                    reinterpret_cast<Staff&>(sprite).serialise(ds);
                     break;
-                case EntityType::Litter:
-                    reinterpret_cast<Litter&>(sprite).Serialise(ds);
+                case EntityType::litter:
+                    reinterpret_cast<Litter&>(sprite).serialise(ds);
                     break;
-                case EntityType::MoneyEffect:
-                    reinterpret_cast<MoneyEffect&>(sprite).Serialise(ds);
+                case EntityType::moneyEffect:
+                    reinterpret_cast<MoneyEffect&>(sprite).serialise(ds);
                     break;
-                case EntityType::Balloon:
-                    reinterpret_cast<Balloon&>(sprite).Serialise(ds);
+                case EntityType::balloon:
+                    reinterpret_cast<Balloon&>(sprite).serialise(ds);
                     break;
-                case EntityType::Duck:
-                    reinterpret_cast<Duck&>(sprite).Serialise(ds);
+                case EntityType::duck:
+                    reinterpret_cast<Duck&>(sprite).serialise(ds);
                     break;
-                case EntityType::JumpingFountain:
-                    reinterpret_cast<JumpingFountain&>(sprite).Serialise(ds);
+                case EntityType::jumpingFountain:
+                    reinterpret_cast<JumpingFountain&>(sprite).serialise(ds);
                     break;
-                case EntityType::SteamParticle:
-                    reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
+                case EntityType::steamParticle:
+                    reinterpret_cast<SteamParticle&>(sprite).serialise(ds);
                     break;
-                case EntityType::Null:
+                case EntityType::null:
                     break;
                 default:
                     break;
@@ -187,7 +189,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
+            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(getGameState().entities.GetEntity(index)); },
+            kMaxEntities, true);
 
         // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -213,16 +216,16 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     std::vector<EntitySnapshot> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
         std::vector<EntitySnapshot> spriteList;
-        spriteList.resize(MAX_ENTITIES);
+        spriteList.resize(kMaxEntities);
 
         for (auto& sprite : spriteList)
         {
             // By default they don't exist.
-            sprite.base.Type = EntityType::Null;
+            sprite.base.type = EntityType::null;
         }
 
         snapshot.SerialiseSprites(
-            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, MAX_ENTITIES, false);
+            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, kMaxEntities, false);
 
         return spriteList;
     }
@@ -242,21 +245,21 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataCommon(
         const EntityBase& spriteBase, const EntityBase& spriteCmp, GameStateSpriteChange& changeData) const
     {
-        COMPARE_FIELD(EntityBase, Type);
-        COMPARE_FIELD(EntityBase, Id);
+        COMPARE_FIELD(EntityBase, type);
+        COMPARE_FIELD(EntityBase, id);
         COMPARE_FIELD(EntityBase, x);
         COMPARE_FIELD(EntityBase, y);
         COMPARE_FIELD(EntityBase, z);
         /* Only relevant for rendering, does not affect game state.
-        COMPARE_FIELD(SpriteBase, sprite_width);
-        COMPARE_FIELD(SpriteBase, sprite_height_negative);
-        COMPARE_FIELD(SpriteBase, sprite_height_positive);
+        COMPARE_FIELD(SpriteBase, spriteWidth);
+        COMPARE_FIELD(SpriteBase, spriteHeightNegative);
+        COMPARE_FIELD(SpriteBase, spriteHeightPositive);
         COMPARE_FIELD(SpriteBase, sprite_left);
         COMPARE_FIELD(SpriteBase, sprite_top);
         COMPARE_FIELD(SpriteBase, sprite_right);
         COMPARE_FIELD(SpriteBase, sprite_bottom);
         */
-        COMPARE_FIELD(EntityBase, Orientation);
+        COMPARE_FIELD(EntityBase, orientation);
     }
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange& changeData) const
@@ -305,92 +308,92 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
         COMPARE_FIELD(Peep, WalkingAnimationFrameNum);
-        COMPARE_FIELD(Peep, PeepFlags);
+        COMPARE_FIELD(Peep, peepFlags);
     }
 
     void CompareSpriteDataStaff(const Staff& spriteBase, const Staff& spriteCmp, GameStateSpriteChange& changeData) const
     {
         CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
 
-        COMPARE_FIELD(Staff, AssignedStaffType);
-        COMPARE_FIELD(Staff, MechanicTimeSinceCall);
-        COMPARE_FIELD(Staff, HireDate);
-        COMPARE_FIELD(Staff, StaffOrders);
-        COMPARE_FIELD(Staff, StaffMowingTimeout);
-        COMPARE_FIELD(Staff, StaffRidesFixed);
-        COMPARE_FIELD(Staff, StaffRidesInspected);
-        COMPARE_FIELD(Staff, StaffLitterSwept);
-        COMPARE_FIELD(Staff, StaffBinsEmptied);
+        COMPARE_FIELD(Staff, assignedStaffType);
+        COMPARE_FIELD(Staff, mechanicTimeSinceCall);
+        COMPARE_FIELD(Staff, hireDate);
+        COMPARE_FIELD(Staff, staffOrders);
+        COMPARE_FIELD(Staff, staffMowingTimeout);
+        COMPARE_FIELD(Staff, staffRidesFixed);
+        COMPARE_FIELD(Staff, staffRidesInspected);
+        COMPARE_FIELD(Staff, staffLitterSwept);
+        COMPARE_FIELD(Staff, staffBinsEmptied);
     }
 
     void CompareSpriteDataGuest(const Guest& spriteBase, const Guest& spriteCmp, GameStateSpriteChange& changeData) const
     {
         CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
 
-        COMPARE_FIELD(Guest, GuestNumRides);
-        COMPARE_FIELD(Guest, GuestNextInQueue);
-        COMPARE_FIELD(Guest, ParkEntryTime);
-        COMPARE_FIELD(Guest, GuestHeadingToRideId);
-        COMPARE_FIELD(Guest, GuestIsLostCountdown);
-        COMPARE_FIELD(Guest, GuestTimeOnRide);
-        COMPARE_FIELD(Guest, PaidToEnter);
-        COMPARE_FIELD(Guest, PaidOnRides);
-        COMPARE_FIELD(Guest, PaidOnFood);
-        COMPARE_FIELD(Guest, PaidOnDrink);
-        COMPARE_FIELD(Guest, PaidOnSouvenirs);
-        COMPARE_FIELD(Guest, OutsideOfPark);
-        COMPARE_FIELD(Guest, Happiness);
-        COMPARE_FIELD(Guest, HappinessTarget);
-        COMPARE_FIELD(Guest, Nausea);
-        COMPARE_FIELD(Guest, NauseaTarget);
-        COMPARE_FIELD(Guest, Hunger);
-        COMPARE_FIELD(Guest, Thirst);
-        COMPARE_FIELD(Guest, Toilet);
-        COMPARE_FIELD(Guest, TimeToConsume);
-        COMPARE_FIELD(Guest, Intensity);
-        COMPARE_FIELD(Guest, NauseaTolerance);
-        COMPARE_FIELD(Guest, TimeInQueue);
-        COMPARE_FIELD(Guest, CashInPocket);
-        COMPARE_FIELD(Guest, CashSpent);
-        COMPARE_FIELD(Guest, Photo1RideRef);
-        COMPARE_FIELD(Guest, Photo2RideRef);
-        COMPARE_FIELD(Guest, Photo3RideRef);
-        COMPARE_FIELD(Guest, Photo4RideRef);
-        COMPARE_FIELD(Guest, RejoinQueueTimeout);
-        COMPARE_FIELD(Guest, PreviousRide);
-        COMPARE_FIELD(Guest, PreviousRideTimeOut);
+        COMPARE_FIELD(Guest, guestNumRides);
+        COMPARE_FIELD(Guest, guestNextInQueue);
+        COMPARE_FIELD(Guest, parkEntryTime);
+        COMPARE_FIELD(Guest, guestHeadingToRideId);
+        COMPARE_FIELD(Guest, guestIsLostCountdown);
+        COMPARE_FIELD(Guest, guestTimeOnRide);
+        COMPARE_FIELD(Guest, paidToEnter);
+        COMPARE_FIELD(Guest, paidOnRides);
+        COMPARE_FIELD(Guest, paidOnFood);
+        COMPARE_FIELD(Guest, paidOnDrink);
+        COMPARE_FIELD(Guest, paidOnSouvenirs);
+        COMPARE_FIELD(Guest, outsideOfPark);
+        COMPARE_FIELD(Guest, happiness);
+        COMPARE_FIELD(Guest, happinessTarget);
+        COMPARE_FIELD(Guest, nausea);
+        COMPARE_FIELD(Guest, nauseaTarget);
+        COMPARE_FIELD(Guest, hunger);
+        COMPARE_FIELD(Guest, thirst);
+        COMPARE_FIELD(Guest, toilet);
+        COMPARE_FIELD(Guest, timeToConsume);
+        COMPARE_FIELD(Guest, intensity);
+        COMPARE_FIELD(Guest, nauseaTolerance);
+        COMPARE_FIELD(Guest, timeInQueue);
+        COMPARE_FIELD(Guest, cashInPocket);
+        COMPARE_FIELD(Guest, cashSpent);
+        COMPARE_FIELD(Guest, photo1RideRef);
+        COMPARE_FIELD(Guest, photo2RideRef);
+        COMPARE_FIELD(Guest, photo3RideRef);
+        COMPARE_FIELD(Guest, photo4RideRef);
+        COMPARE_FIELD(Guest, rejoinQueueTimeout);
+        COMPARE_FIELD(Guest, previousRide);
+        COMPARE_FIELD(Guest, previousRideTimeOut);
         for (std::size_t i = 0; i < kPeepMaxThoughts; i++)
         {
-            COMPARE_FIELD(Guest, Thoughts[i].type);
-            COMPARE_FIELD(Guest, Thoughts[i].item);
-            COMPARE_FIELD(Guest, Thoughts[i].freshness);
-            COMPARE_FIELD(Guest, Thoughts[i].fresh_timeout);
+            COMPARE_FIELD(Guest, thoughts[i].type);
+            COMPARE_FIELD(Guest, thoughts[i].item);
+            COMPARE_FIELD(Guest, thoughts[i].freshness);
+            COMPARE_FIELD(Guest, thoughts[i].fresh_timeout);
         }
-        COMPARE_FIELD(Guest, LitterCount);
-        COMPARE_FIELD(Guest, DisgustingCount);
-        COMPARE_FIELD(Guest, AmountOfFood);
-        COMPARE_FIELD(Guest, AmountOfDrinks);
-        COMPARE_FIELD(Guest, AmountOfSouvenirs);
-        COMPARE_FIELD(Guest, VandalismSeen);
-        COMPARE_FIELD(Guest, VoucherType);
-        COMPARE_FIELD(Guest, VoucherRideId);
-        COMPARE_FIELD(Guest, SurroundingsThoughtTimeout);
-        COMPARE_FIELD(Guest, Angriness);
-        COMPARE_FIELD(Guest, TimeLost);
-        COMPARE_FIELD(Guest, DaysInQueue);
-        COMPARE_FIELD(Guest, BalloonColour);
-        COMPARE_FIELD(Guest, UmbrellaColour);
-        COMPARE_FIELD(Guest, HatColour);
-        COMPARE_FIELD(Guest, FavouriteRide);
-        COMPARE_FIELD(Guest, FavouriteRideRating);
-        COMPARE_FIELD(Guest, ItemFlags);
+        COMPARE_FIELD(Guest, litterCount);
+        COMPARE_FIELD(Guest, disgustingCount);
+        COMPARE_FIELD(Guest, amountOfFood);
+        COMPARE_FIELD(Guest, amountOfDrinks);
+        COMPARE_FIELD(Guest, amountOfSouvenirs);
+        COMPARE_FIELD(Guest, vandalismSeen);
+        COMPARE_FIELD(Guest, voucherType);
+        COMPARE_FIELD(Guest, voucherRideId);
+        COMPARE_FIELD(Guest, surroundingsThoughtTimeout);
+        COMPARE_FIELD(Guest, angriness);
+        COMPARE_FIELD(Guest, timeLost);
+        COMPARE_FIELD(Guest, daysInQueue);
+        COMPARE_FIELD(Guest, balloonColour);
+        COMPARE_FIELD(Guest, umbrellaColour);
+        COMPARE_FIELD(Guest, hatColour);
+        COMPARE_FIELD(Guest, favouriteRide);
+        COMPARE_FIELD(Guest, favouriteRideRating);
+        COMPARE_FIELD(Guest, itemFlags);
     }
 
     void CompareSpriteDataVehicle(const Vehicle& spriteBase, const Vehicle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Vehicle, SubType);
-        COMPARE_FIELD(Vehicle, Pitch);
-        COMPARE_FIELD(Vehicle, bank_rotation);
+        COMPARE_FIELD(Vehicle, pitch);
+        COMPARE_FIELD(Vehicle, roll);
         COMPARE_FIELD(Vehicle, remaining_distance);
         COMPARE_FIELD(Vehicle, velocity);
         COMPARE_FIELD(Vehicle, acceleration);
@@ -407,7 +410,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, next_vehicle_on_ride);
         COMPARE_FIELD(Vehicle, var_44);
         COMPARE_FIELD(Vehicle, mass);
-        COMPARE_FIELD(Vehicle, Flags);
+        COMPARE_FIELD(Vehicle, flags.holder);
         COMPARE_FIELD(Vehicle, SwingSprite);
         COMPARE_FIELD(Vehicle, current_station);
         COMPARE_FIELD(Vehicle, SwingPosition);
@@ -433,7 +436,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, sound1_volume);
         COMPARE_FIELD(Vehicle, sound2_id);
         COMPARE_FIELD(Vehicle, sound2_volume);
-        COMPARE_FIELD(Vehicle, sound_vector_factor);
+        COMPARE_FIELD(Vehicle, dopplerShift);
         COMPARE_FIELD(Vehicle, cable_lift_target);
         COMPARE_FIELD(Vehicle, speed);
         COMPARE_FIELD(Vehicle, powered_acceleration);
@@ -452,7 +455,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, vertical_drop_countdown);
         COMPARE_FIELD(Vehicle, var_D3);
         COMPARE_FIELD(Vehicle, mini_golf_current_animation);
-        COMPARE_FIELD(Vehicle, mini_golf_flags);
+        COMPARE_FIELD(Vehicle, miniGolfFlags.holder);
         COMPARE_FIELD(Vehicle, ride_subtype);
         COMPARE_FIELD(Vehicle, seat_rotation);
         COMPARE_FIELD(Vehicle, target_seat_rotation);
@@ -470,12 +473,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(MoneyEffect, frame);
-        COMPARE_FIELD(MoneyEffect, MoveDelay);
-        COMPARE_FIELD(MoneyEffect, NumMovements);
-        COMPARE_FIELD(MoneyEffect, GuestPurchase);
-        COMPARE_FIELD(MoneyEffect, Value);
-        COMPARE_FIELD(MoneyEffect, OffsetX);
-        COMPARE_FIELD(MoneyEffect, Wiggle);
+        COMPARE_FIELD(MoneyEffect, moveDelay);
+        COMPARE_FIELD(MoneyEffect, numMovements);
+        COMPARE_FIELD(MoneyEffect, guestPurchase);
+        COMPARE_FIELD(MoneyEffect, value);
+        COMPARE_FIELD(MoneyEffect, offsetX);
+        COMPARE_FIELD(MoneyEffect, wiggle);
     }
 
     void CompareSpriteDataSteamParticle(
@@ -525,7 +528,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(JumpingFountain, frame);
         COMPARE_FIELD(JumpingFountain, FountainType);
         COMPARE_FIELD(JumpingFountain, NumTicksAlive);
-        COMPARE_FIELD(JumpingFountain, FountainFlags);
+        COMPARE_FIELD(JumpingFountain, fountainFlags);
         COMPARE_FIELD(JumpingFountain, TargetX);
         COMPARE_FIELD(JumpingFountain, TargetY);
         COMPARE_FIELD(JumpingFountain, Iteration);
@@ -553,70 +556,70 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const EntitySnapshot& spriteBase, const EntitySnapshot& spriteCmp, GameStateSpriteChange& changeData) const
     {
         CompareSpriteDataCommon(spriteBase.base, spriteCmp.base, changeData);
-        if (spriteBase.base.Type == spriteCmp.base.Type)
+        if (spriteBase.base.type == spriteCmp.base.type)
         {
-            switch (spriteBase.base.Type)
+            switch (spriteBase.base.type)
             {
-                case EntityType::Guest:
+                case EntityType::guest:
                     CompareSpriteDataGuest(
                         static_cast<const Guest&>(spriteBase.base), static_cast<const Guest&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Staff:
+                case EntityType::staff:
                     CompareSpriteDataStaff(
                         static_cast<const Staff&>(spriteBase.base), static_cast<const Staff&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Vehicle:
+                case EntityType::vehicle:
                     CompareSpriteDataVehicle(
                         static_cast<const Vehicle&>(spriteBase.base), static_cast<const Vehicle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Litter:
+                case EntityType::litter:
                     CompareSpriteDataLitter(
                         static_cast<const Litter&>(spriteBase.base), static_cast<const Litter&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::SteamParticle:
+                case EntityType::steamParticle:
                     CompareSpriteDataSteamParticle(
                         static_cast<const SteamParticle&>(spriteBase.base), static_cast<const SteamParticle&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::MoneyEffect:
+                case EntityType::moneyEffect:
                     CompareSpriteDataMoneyEffect(
                         static_cast<const MoneyEffect&>(spriteBase.base), static_cast<const MoneyEffect&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::CrashedVehicleParticle:
+                case EntityType::crashedVehicleParticle:
                     CompareSpriteDataVehicleCrashParticle(
                         static_cast<const VehicleCrashParticle&>(spriteBase.base),
                         static_cast<const VehicleCrashParticle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::ExplosionCloud:
+                case EntityType::explosionCloud:
                     CompareSpriteDataExplosionCloud(
                         static_cast<const ExplosionCloud&>(spriteBase.base), static_cast<const ExplosionCloud&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::CrashSplash:
+                case EntityType::crashSplash:
                     CompareSpriteDataCrashSplash(
                         static_cast<const CrashSplashParticle&>(spriteBase.base),
                         static_cast<const CrashSplashParticle&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::ExplosionFlare:
+                case EntityType::explosionFlare:
                     CompareSpriteDataExplosionFlare(
                         static_cast<const ExplosionFlare&>(spriteBase.base), static_cast<const ExplosionFlare&>(spriteCmp.base),
                         changeData);
                     break;
-                case EntityType::JumpingFountain:
+                case EntityType::jumpingFountain:
                     CompareSpriteDataJumpingFountain(
                         static_cast<const JumpingFountain&>(spriteBase.base),
                         static_cast<const JumpingFountain&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Balloon:
+                case EntityType::balloon:
                     CompareSpriteDataBalloon(
                         static_cast<const Balloon&>(spriteBase.base), static_cast<const Balloon&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Duck:
+                case EntityType::duck:
                     CompareSpriteDataDuck(
                         static_cast<const Duck&>(spriteBase.base), static_cast<const Duck&>(spriteCmp.base), changeData);
                     break;
-                case EntityType::Null:
+                case EntityType::null:
                     break;
                 default:
                     break;
@@ -643,21 +646,21 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const EntitySnapshot& spriteBase = spritesBase[i];
             const EntitySnapshot& spriteCmp = spritesCmp[i];
 
-            changeData.entityType = spriteBase.base.Type;
+            changeData.entityType = spriteBase.base.type;
 
-            if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type != EntityType::Null)
+            if (spriteBase.base.type == EntityType::null && spriteCmp.base.type != EntityType::null)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange::ADDED;
-                changeData.entityType = spriteCmp.base.Type;
+                changeData.entityType = spriteCmp.base.type;
             }
-            else if (spriteBase.base.Type != EntityType::Null && spriteCmp.base.Type == EntityType::Null)
+            else if (spriteBase.base.type != EntityType::null && spriteCmp.base.type == EntityType::null)
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange::REMOVED;
-                changeData.entityType = spriteBase.base.Type;
+                changeData.entityType = spriteBase.base.type;
             }
-            else if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type == EntityType::Null)
+            else if (spriteBase.base.type == EntityType::null && spriteCmp.base.type == EntityType::null)
             {
                 // Do nothing.
                 changeData.changeType = GameStateSpriteChange::EQUAL;
@@ -665,7 +668,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             else
             {
                 CompareSpriteData(spriteBase, spriteCmp, changeData);
-                if (changeData.diffs.size() == 0)
+                if (changeData.diffs.empty())
                 {
                     changeData.changeType = GameStateSpriteChange::EQUAL;
                 }
@@ -685,33 +688,33 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         switch (type)
         {
-            case EntityType::Null:
+            case EntityType::null:
                 return "Null";
-            case EntityType::Guest:
+            case EntityType::guest:
                 return "Guest";
-            case EntityType::Staff:
+            case EntityType::staff:
                 return "Staff";
-            case EntityType::Vehicle:
+            case EntityType::vehicle:
                 return "Vehicle";
-            case EntityType::Litter:
+            case EntityType::litter:
                 return "Litter";
-            case EntityType::SteamParticle:
+            case EntityType::steamParticle:
                 return "Misc: Steam Particle";
-            case EntityType::MoneyEffect:
+            case EntityType::moneyEffect:
                 return "Misc: Money effect";
-            case EntityType::CrashedVehicleParticle:
+            case EntityType::crashedVehicleParticle:
                 return "Misc: Crash Vehicle Particle";
-            case EntityType::ExplosionCloud:
+            case EntityType::explosionCloud:
                 return "Misc: Explosion Cloud";
-            case EntityType::CrashSplash:
+            case EntityType::crashSplash:
                 return "Misc: Crash Splash";
-            case EntityType::ExplosionFlare:
+            case EntityType::explosionFlare:
                 return "Misc: Explosion Flare";
-            case EntityType::JumpingFountain:
+            case EntityType::jumpingFountain:
                 return "Misc: Jumping fountain";
-            case EntityType::Balloon:
+            case EntityType::balloon:
                 return "Misc: Balloon";
-            case EntityType::Duck:
+            case EntityType::duck:
                 return "Misc: Duck";
             default:
                 break;
@@ -789,7 +792,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
 private:
-    CircularBuffer<std::unique_ptr<GameStateSnapshot_t>, MaximumGameStateSnapshots> _snapshots;
+    CircularBuffer<std::unique_ptr<GameStateSnapshot_t>, kMaximumGameStateSnapshots> _snapshots;
 };
 
 std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots()

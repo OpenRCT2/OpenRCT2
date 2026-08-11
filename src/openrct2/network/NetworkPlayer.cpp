@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,40 +12,45 @@
     #include "NetworkPlayer.h"
 
     #include "../core/Money.hpp"
-    #include "../interface/Window.h"
+    #include "../ui/WindowManager.h"
     #include "NetworkPacket.h"
 
-void NetworkPlayer::SetName(std::string_view name)
+namespace OpenRCT2::Network
 {
-    // 36 == 31 + strlen(" #255");
-    Name = name.substr(0, 36);
-}
+    void Player::setName(std::string_view newName)
+    {
+        // 36 == 31 + strlen(" #255");
+        name = newName.substr(0, 36);
+    }
 
-void NetworkPlayer::Read(NetworkPacket& packet)
-{
-    auto name = packet.ReadString();
-    SetName(name);
-    packet >> Id >> Flags >> Group >> LastAction >> LastActionCoord.x >> LastActionCoord.y >> LastActionCoord.z >> MoneySpent
-        >> CommandsRan;
-}
+    void Player::read(Packet& packet)
+    {
+        auto newName = packet.readString();
+        setName(newName);
+        packet >> id >> flags >> group >> lastAction >> lastActionCoord.x >> lastActionCoord.y >> lastActionCoord.z
+            >> moneySpent >> commandsRan;
+    }
 
-void NetworkPlayer::Write(NetworkPacket& packet)
-{
-    packet.WriteString(Name);
-    packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z << MoneySpent
-           << CommandsRan;
-}
+    void Player::write(Packet& packet)
+    {
+        packet.writeString(name);
+        packet << id << flags << group << lastAction << lastActionCoord.x << lastActionCoord.y << lastActionCoord.z
+               << moneySpent << commandsRan;
+    }
 
-void NetworkPlayer::IncrementNumCommands()
-{
-    CommandsRan++;
-    WindowInvalidateByNumber(WindowClass::Player, Id);
-}
+    void Player::incrementNumCommands()
+    {
+        commandsRan++;
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::player, id);
+    }
 
-void NetworkPlayer::AddMoneySpent(money64 cost)
-{
-    MoneySpent += cost;
-    WindowInvalidateByNumber(WindowClass::Player, Id);
-}
+    void Player::addMoneySpent(money64 cost)
+    {
+        moneySpent += cost;
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::player, id);
+    }
+} // namespace OpenRCT2::Network
 
 #endif

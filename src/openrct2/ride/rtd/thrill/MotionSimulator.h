@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,68 +10,72 @@
 #pragma once
 
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor MotionSimulatorRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_THRILL,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
+constexpr RideTypeDescriptor kMotionSimulatorRTD =
+{
+    .Category = RideCategory::thrill,
+    .StartTrackPiece = TrackElemType::flatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::motionSimulator,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
+    .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::FilmAvengingAviators, RideMode::FilmThrillRiders),
-    .DefaultMode = RideMode::FilmAvengingAviators,
+    .RideModes = EnumsToFlags(RideMode::filmAvengingAviators, RideMode::filmThrillRiders),
+    .DefaultMode = RideMode::filmAvengingAviators,
     .Naming = { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 24, 20, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 110.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectRock1,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 45,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "motion_simulator",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { 1, 1, 1 },
         21,
         7,
         false,
         {
-            { RatingsModifierType::BonusMotionSimulatorMode, 0, 0, 0, 0 },
+            { RatingsModifierType::bonusMotionSimulatorMode, 0, 0, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
+    .DesignCreateMode = TrackDesignCreateMode::standard,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Default,
+    .ConstructionWindowContext = RideConstructionWindowContext::standard,
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default,
-    .MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default,
-    .UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsMotionSimulator,
+    .MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Default,
+    .UpdateRideApproachVehicleWaypoints = updateRideApproachVehicleWaypointsMotionSimulator,
+    .specialType = RtdSpecialType::motionSimulator,
 };
+} // namespace OpenRCT2
 // clang-format on

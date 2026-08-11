@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,11 +13,9 @@
 
 #include "../Diagnostic.h"
 #include "../Version.h"
-#include "../drawing/Drawing.h"
 #include "FileSystem.hpp"
 #include "Guard.hpp"
 #include "IStream.hpp"
-#include "Memory.hpp"
 #include "String.hpp"
 
 #include <algorithm>
@@ -26,11 +24,17 @@
 #include <stdexcept>
 #include <unordered_map>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+    #include <iostream>
+    #include <sstream>
+#endif
+
 namespace OpenRCT2::Imaging
 {
-    constexpr auto EXCEPTION_IMAGE_FORMAT_UNKNOWN = "Unknown image format.";
+    static constexpr auto kExceptionImageFormatUnknown = "Unknown image format.";
 
-    static std::unordered_map<IMAGE_FORMAT, ImageReaderFunc> _readerImplementations;
+    static std::unordered_map<ImageFormat, ImageReaderFunc> _readerImplementations;
 
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
@@ -203,9 +207,9 @@ namespace OpenRCT2::Imaging
                 for (size_t i = 0; i < PNG_MAX_PALETTE_LENGTH; i++)
                 {
                     const auto& entry = (*image.Palette)[i];
-                    png_palette[i].blue = entry.Blue;
-                    png_palette[i].green = entry.Green;
-                    png_palette[i].red = entry.Red;
+                    png_palette[i].blue = entry.blue;
+                    png_palette[i].green = entry.green;
+                    png_palette[i].red = entry.red;
                 }
                 png_set_PLTE(png_ptr, info_ptr, png_palette, PNG_MAX_PALETTE_LENGTH);
             }
@@ -253,22 +257,22 @@ namespace OpenRCT2::Imaging
         }
     }
 
-    IMAGE_FORMAT GetImageFormatFromPath(std::string_view path)
+    ImageFormat GetImageFormatFromPath(std::string_view path)
     {
         if (String::endsWith(path, ".png", true))
         {
-            return IMAGE_FORMAT::PNG;
+            return ImageFormat::png;
         }
 
         if (String::endsWith(path, ".bmp", true))
         {
-            return IMAGE_FORMAT::BITMAP;
+            return ImageFormat::bitmap;
         }
 
-        return IMAGE_FORMAT::UNKNOWN;
+        return ImageFormat::unknown;
     }
 
-    static ImageReaderFunc GetReader(IMAGE_FORMAT format)
+    static ImageReaderFunc GetReader(ImageFormat format)
     {
         auto result = _readerImplementations.find(format);
         if (result != _readerImplementations.end())
@@ -278,20 +282,20 @@ namespace OpenRCT2::Imaging
         return {};
     }
 
-    void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl)
+    void SetReader(ImageFormat format, ImageReaderFunc impl)
     {
         _readerImplementations[format] = impl;
     }
 
-    static Image ReadFromStream(std::istream& istream, IMAGE_FORMAT format)
+    static Image ReadFromStream(std::istream& istream, ImageFormat format)
     {
         switch (format)
         {
-            case IMAGE_FORMAT::PNG:
+            case ImageFormat::png:
                 return ReadPng(istream, false);
-            case IMAGE_FORMAT::PNG_32:
+            case ImageFormat::png32:
                 return ReadPng(istream, true);
-            case IMAGE_FORMAT::AUTOMATIC:
+            case ImageFormat::automatic:
                 throw std::invalid_argument("format can not be automatic.");
             default:
             {
@@ -300,16 +304,16 @@ namespace OpenRCT2::Imaging
                 {
                     return impl(istream, format);
                 }
-                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+                throw std::runtime_error(kExceptionImageFormatUnknown);
             }
         }
     }
 
-    Image ReadFromFile(std::string_view path, IMAGE_FORMAT format)
+    Image ReadFromFile(std::string_view path, ImageFormat format)
     {
         switch (format)
         {
-            case IMAGE_FORMAT::AUTOMATIC:
+            case ImageFormat::automatic:
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
@@ -319,27 +323,46 @@ namespace OpenRCT2::Imaging
         }
     }
 
-    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format)
+    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, ImageFormat format)
     {
         ivstream<uint8_t> istream(buffer);
         return ReadFromStream(istream, format);
     }
 
-    void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format)
+    void WriteToFile(std::string_view path, const Image& image, ImageFormat format)
     {
         switch (format)
         {
-            case IMAGE_FORMAT::AUTOMATIC:
+            case ImageFormat::automatic:
                 WriteToFile(path, image, GetImageFormatFromPath(path));
                 break;
-            case IMAGE_FORMAT::PNG:
+            case ImageFormat::png:
             {
+#ifndef __EMSCRIPTEN__
                 std::ofstream fs(fs::u8path(path), std::ios::binary);
                 WritePng(fs, image);
+#else
+                std::ostringstream stream(std::ios::binary);
+                WritePng(stream, image);
+                std::string dataStr = stream.str();
+                void* data = reinterpret_cast<void*>(dataStr.data());
+                MAIN_THREAD_EM_ASM(
+                    {
+                        const a = document.createElement("a");
+                        // Blob requires the data must not be shared
+                        const data = new Uint8Array(HEAPU8.subarray($0, $0 + $1));
+                        a.href = URL.createObjectURL(new Blob([data]));
+                        a.download = UTF8ToString($2).split("/").pop();
+                        a.click();
+                        setTimeout(function(){ URL.revokeObjectURL(a.href) }, 1000);
+                    },
+                    data, dataStr.size(), std::string(path).c_str());
+                free(data);
+#endif
                 break;
             }
             default:
-                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+                throw std::runtime_error(kExceptionImageFormatUnknown);
         }
     }
 } // namespace OpenRCT2::Imaging

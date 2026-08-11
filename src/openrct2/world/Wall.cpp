@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,8 @@
 #include "tile_element/TileElement.h"
 #include "tile_element/WallElement.h"
 
+using namespace OpenRCT2;
+
 /**
  *
  *  rct2: 0x006E588E
@@ -22,7 +24,7 @@ void WallRemoveAt(const CoordsXYRangedZ& wallPos)
     for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
     {
         reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
-        MapInvalidateTileZoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
+        MapInvalidateTileZoom1({ wallPos, wallElement->getBaseZ(), wallElement->getBaseZ() + 72 });
         TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
     }
 }
@@ -42,34 +44,32 @@ void WallRemoveAtZ(const CoordsXYZ& wallPos)
  */
 void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
 {
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(wallPos);
+    TileElement* tileElement = MapGetFirstElementAt(wallPos);
     if (tileElement == nullptr)
         return;
     do
     {
-        if (tileElement->GetType() != TileElementType::Wall)
+        if (tileElement->getType() != TileElementType::wall)
             continue;
 
-        if (tileElement->GetClearanceZ() <= wallPos.baseZ || tileElement->GetBaseZ() >= wallPos.clearanceZ)
+        if (tileElement->getClearanceZ() <= wallPos.baseZ || tileElement->getBaseZ() >= wallPos.clearanceZ)
             continue;
 
-        if (direction != tileElement->GetDirection())
+        if (direction != tileElement->getDirection())
             continue;
 
         tileElement->RemoveBannerEntry();
-        MapInvalidateTileZoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
+        MapInvalidateTileZoom1({ wallPos, tileElement->getBaseZ(), tileElement->getBaseZ() + 72 });
         TileElementRemove(tileElement);
         tileElement--;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 }
 
 #pragma region Edge Slopes Table
 
 // clang-format off
 // rct2: 0x009A3FEC
-constexpr static uint8_t LandSlopeToWallSlope[][kNumOrthogonalDirections] = {
+constexpr static uint8_t kLandSlopeToWallSlope[][kNumOrthogonalDirections] = {
     //  Top right                        Bottom right                   Bottom left                       Top left
     { 0,                             0,                             0,                             0                             },
     { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },
@@ -110,5 +110,36 @@ constexpr static uint8_t LandSlopeToWallSlope[][kNumOrthogonalDirections] = {
 
 uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge)
 {
-    return LandSlopeToWallSlope[Slope][Edge];
+    return kLandSlopeToWallSlope[Slope][Edge];
+}
+
+/**
+ * Returns true if the edge of tile x, y specified by direction is occupied by a fence
+ * between heights z0 and z1.
+ *
+ * Note that there may still be a fence on the opposing tile.
+ *
+ *  rct2: 0x006E59DC
+ */
+bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
+{
+    TileElement* tileElement = MapGetFirstElementAt(fencePos);
+    if (tileElement == nullptr)
+        return false;
+    do
+    {
+        if (tileElement->getType() != TileElementType::wall)
+            continue;
+        if (tileElement->isGhost())
+            continue;
+        if (fencePos.baseZ >= tileElement->getClearanceZ())
+            continue;
+        if (fencePos.clearanceZ <= tileElement->getBaseZ())
+            continue;
+        if ((tileElement->getDirection()) != direction)
+            continue;
+
+        return true;
+    } while (!(tileElement++)->isLastForTile());
+    return false;
 }

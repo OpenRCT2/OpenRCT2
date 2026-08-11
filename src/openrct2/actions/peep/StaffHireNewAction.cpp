@@ -1,0 +1,298 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2026 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "StaffHireNewAction.h"
+
+#include "../../Cheats.h"
+#include "../../Context.h"
+#include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../entity/EntityList.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Staff.h"
+#include "../../localisation/StringIds.h"
+#include "../../management/Finance.h"
+#include "../../object/ObjectManager.h"
+#include "../../object/PeepAnimationsObject.h"
+#include "../../scenario/Scenario.h"
+#include "../../world/Map.h"
+
+#include <set>
+
+namespace OpenRCT2::GameActions
+{
+    StaffHireNewAction::StaffHireNewAction(
+        bool autoPosition, StaffType staffType, ObjectEntryIndex costumeIndex, uint32_t staffOrders)
+        : _autoPosition(autoPosition)
+        , _staffType(static_cast<uint8_t>(staffType))
+        , _costumeIndex(costumeIndex)
+        , _staffOrders(staffOrders)
+    {
+    }
+
+    void StaffHireNewAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("autoPosition", _autoPosition);
+        visitor.Visit("staffType", _staffType);
+        visitor.Visit("costumeIndex", _costumeIndex);
+        visitor.Visit("staffOrders", _staffOrders);
+    }
+
+    uint16_t StaffHireNewAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
+    }
+
+    void StaffHireNewAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_costumeIndex) << DS_TAG(_staffOrders);
+    }
+
+    Result StaffHireNewAction::Query(GameState_t& gameState, Park::ParkData& park) const
+    {
+        return QueryExecute(gameState, park, false);
+    }
+
+    Result StaffHireNewAction::Execute(GameState_t& gameState, Park::ParkData& park) const
+    {
+        return QueryExecute(gameState, park, true);
+    }
+
+    Result StaffHireNewAction::QueryExecute(GameState_t& gameState, Park::ParkData& park, bool execute) const
+    {
+        auto res = Result();
+        res.expenditure = ExpenditureType::wages;
+
+        if (_staffType >= static_cast<uint8_t>(StaffType::count))
+        {
+            LOG_ERROR("Invalid staff type %u", static_cast<uint32_t>(_staffType));
+            return Result(Status::invalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
+        if (gameState.entities.GetNumFreeEntities() < 400)
+        {
+            return Result(Status::noFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+        }
+
+        if (_staffType == static_cast<uint8_t>(StaffType::entertainer))
+        {
+            auto costumes = findAllPeepAnimationsIndexesForType(AnimationPeepType::entertainer);
+            if (std::find(costumes.begin(), costumes.end(), _costumeIndex) == costumes.end())
+            {
+                LOG_ERROR("Unavailable entertainer costume %u", static_cast<uint32_t>(_costumeIndex));
+                return Result(Status::invalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
+            }
+        }
+
+        Staff* newPeep = gameState.entities.CreateEntity<Staff>();
+        if (newPeep == nullptr)
+        {
+            // Too many peeps exist already.
+            return Result(Status::noFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+        }
+
+        if (execute == false)
+        {
+            // In query we just want to see if we can obtain a sprite slot.
+            gameState.entities.EntityRemove(newPeep);
+
+            res.setData(StaffHireNewActionResult{ EntityId::GetNull() });
+        }
+        else
+        {
+            newPeep->WindowInvalidateFlags = 0;
+            newPeep->Action = PeepActionType::walking;
+            newPeep->SpecialSprite = 0;
+            newPeep->AnimationImageIdOffset = 0;
+            newPeep->WalkingAnimationFrameNum = 0;
+            newPeep->AnimationType = PeepAnimationType::walking;
+            newPeep->PathCheckOptimisation = 0;
+            newPeep->peepFlags = {};
+            newPeep->staffLawnsMown = 0;
+            newPeep->staffGardensWatered = 0;
+            newPeep->staffLitterSwept = 0;
+            newPeep->staffBinsEmptied = 0;
+            newPeep->staffOrders = _staffOrders;
+
+            // We search for the first available Id for a given staff type
+            std::set<uint32_t> usedStaffIds;
+
+            for (auto searchPeep : EntityList<Staff>())
+            {
+                if (static_cast<uint8_t>(searchPeep->assignedStaffType) != _staffType)
+                    continue;
+
+                usedStaffIds.insert(searchPeep->PeepId);
+            }
+
+            uint32_t newStaffId = 1;
+            while (usedStaffIds.find(newStaffId) != usedStaffIds.end())
+            {
+                newStaffId++;
+            }
+
+            newPeep->PeepId = newStaffId;
+            newPeep->assignedStaffType = static_cast<StaffType>(_staffType);
+
+            auto animPeepType = AnimationPeepType(static_cast<uint8_t>(_staffType) + 1);
+            ObjectEntryIndex animObjectIndex = _costumeIndex;
+            if (animPeepType != AnimationPeepType::entertainer)
+                animObjectIndex = findPeepAnimationsIndexForType(animPeepType);
+
+            newPeep->Name = nullptr;
+            newPeep->AnimationObjectIndex = animObjectIndex;
+            newPeep->AnimationGroup = PeepAnimationGroup::normal;
+
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animObjectIndex);
+
+            newPeep->peepFlags.unset(PeepFlag::slowWalk);
+            if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
+                newPeep->peepFlags.set(PeepFlag::slowWalk);
+
+            const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);
+            newPeep->spriteData.width = spriteBounds.spriteWidth;
+            newPeep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
+            newPeep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
+
+            if (_autoPosition)
+            {
+                AutoPositionNewStaff(gameState, park, newPeep);
+            }
+            else
+            {
+                // NOTE: This state is required for the window to act.
+                newPeep->State = PeepState::picked;
+
+                // INVESTIGATE: x and y are LOCATION_NULL at this point.
+                newPeep->moveTo(newPeep->getLocation());
+            }
+
+            // Staff uses this
+            newPeep->setHireDate(GetDate().GetMonthsElapsed());
+            newPeep->PathfindGoal.x = 0xFF;
+            newPeep->PathfindGoal.y = 0xFF;
+            newPeep->PathfindGoal.z = 0xFF;
+            newPeep->PathfindGoal.direction = kInvalidDirection;
+
+            auto colour = StaffGetColour(static_cast<StaffType>(_staffType));
+            newPeep->TshirtColour = colour;
+            newPeep->TrousersColour = colour;
+
+            // Staff energy determines their walking speed
+            switch (gameState.cheats.selectedStaffSpeed)
+            {
+                case StaffSpeedCheat::none:
+                    newPeep->Energy = kCheatsStaffNormalSpeed;
+                    newPeep->EnergyTarget = kCheatsStaffNormalSpeed;
+                    break;
+
+                case StaffSpeedCheat::frozen:
+                    newPeep->Energy = kCheatsStaffFreezeSpeed;
+                    newPeep->EnergyTarget = kCheatsStaffFreezeSpeed;
+                    break;
+
+                case StaffSpeedCheat::fast:
+                    newPeep->Energy = kCheatsStaffFastSpeed;
+                    newPeep->EnergyTarget = kCheatsStaffFastSpeed;
+                    break;
+            }
+
+            newPeep->staffMowingTimeout = 0;
+            newPeep->patrolInfo = nullptr;
+
+            res.setData(StaffHireNewActionResult{ newPeep->id });
+        }
+
+        return res;
+    }
+
+    void StaffHireNewAction::AutoPositionNewStaff(GameState_t& gameState, Park::ParkData& park, Peep* newPeep) const
+    {
+        // Find a location to place new staff member
+        newPeep->State = PeepState::falling;
+
+        uint32_t count = 0;
+        PathElement* guest_tile = nullptr;
+
+        // Count number of walking guests
+        {
+            for (auto guest : EntityList<Guest>())
+            {
+                if (guest->State == PeepState::walking)
+                {
+                    // Check the walking guest's tile. Only count them if they're on a path tile.
+                    guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
+                    if (guest_tile != nullptr)
+                        ++count;
+                }
+            }
+        }
+
+        CoordsXYZ newLocation{};
+        if (count > 0)
+        {
+            // Place staff at a random guest
+            uint32_t rand = ScenarioRandMax(count);
+            Guest* chosenGuest = nullptr;
+
+            for (auto guest : EntityList<Guest>())
+            {
+                if (guest->State == PeepState::walking)
+                {
+                    guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
+                    if (guest_tile != nullptr)
+                    {
+                        if (rand == 0)
+                        {
+                            chosenGuest = guest;
+                            break;
+                        }
+                        --rand;
+                    }
+                }
+            }
+
+            if (chosenGuest != nullptr)
+            {
+                newLocation = chosenGuest->getLocation();
+            }
+            else
+            {
+                // User must pick a location
+                newPeep->State = PeepState::picked;
+                newLocation = newPeep->getLocation();
+            }
+        }
+        else
+        {
+            // No walking guests; pick random park entrance
+            if (!park.entrances.empty())
+            {
+                auto rand = ScenarioRandMax(static_cast<uint32_t>(park.entrances.size()));
+                const auto& entrance = park.entrances[rand];
+                auto dir = entrance.direction;
+                newLocation = entrance;
+                // TODO: Replace with CoordsDirectionDelta
+                newLocation.x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
+                newLocation.y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
+            }
+            else
+            {
+                // User must pick a location
+                newPeep->State = PeepState::picked;
+                newLocation = newPeep->getLocation();
+            }
+        }
+
+        newPeep->moveTo(newLocation + CoordsXYZ{ 0, 0, 16 });
+    }
+} // namespace OpenRCT2::GameActions

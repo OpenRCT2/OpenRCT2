@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,31 +13,37 @@
     #include <chrono>
     #include <openrct2-ui/interface/Dropdown.h>
     #include <openrct2-ui/interface/Widget.h>
-    #include <openrct2-ui/windows/Window.h>
+    #include <openrct2-ui/windows/Windows.h>
     #include <openrct2/Context.h>
     #include <openrct2/Diagnostic.h>
+    #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Json.hpp>
+    #include <openrct2/drawing/ColourMap.h>
+    #include <openrct2/drawing/Drawing.String.h>
+    #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/drawing/Rectangle.h>
+    #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/drawing/Text.h>
-    #include <openrct2/interface/Colour.h>
     #include <openrct2/localisation/Formatter.h>
+    #include <openrct2/network/Network.h>
     #include <openrct2/network/ServerList.h>
-    #include <openrct2/network/network.h>
     #include <openrct2/platform/Platform.h>
-    #include <openrct2/sprites.h>
+    #include <openrct2/ui/WindowManager.h>
     #include <tuple>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    #define WWIDTH_MIN 500
-    #define WHEIGHT_MIN 300
-    #define WWIDTH_MAX 1200
-    #define WHEIGHT_MAX 800
-    #define ITEM_HEIGHT (3 + 9 + 3)
+    static constexpr ScreenSize kMinimumWindowSize = { 500, 288 };
+    static constexpr ScreenSize kMaximumWindowSize = { 1200, 788 };
+    static constexpr ScreenSize kWindowSize = kMinimumWindowSize;
+    static constexpr int32_t kItemHeight = (3 + 9 + 3);
 
-    constexpr size_t MaxPlayerNameLength = 32;
+    static constexpr size_t kMaxPlayerNameLength = 32;
 
-    enum
+    enum WindowServerListWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -62,17 +68,14 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _serverListWidgets[] = {
-        MakeWidget({  0,  0}, {341,  91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
-        MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
-        MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
-        MakeWidget({100, 20}, {245,  12}, WindowWidgetType::TextBox,  WindowColour::Secondary                                         ), // player name text box
-        MakeWidget({  6, 37}, {489, 226}, WindowWidgetType::Scroll,   WindowColour::Secondary                                         ), // server list
-        MakeWidget({  6, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
-        MakeWidget({112, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
-        MakeWidget({218, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
-        kWidgetsEnd,
-    };
+    static constexpr auto _serverListWidgets = makeWidgets(
+        makeWindowShim(STR_SERVER_LIST, kWindowSize),
+        makeWidget({100, 20}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
+        makeWidget({  6, 37}, {489, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
+        makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
+        makeWidget({112, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_ADD_SERVER                         ), // add server button
+        makeWidget({218, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_START_SERVER                       )  // start server button
+    );
     // clang-format on
 
     void JoinServer(std::string address);
@@ -81,8 +84,8 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         u8string _playerName;
-        ServerList _serverList;
-        std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
+        Network::ServerList _serverList;
+        std::future<std::pair<std::vector<Network::ServerListEntry>, StringId>> _fetchFuture;
         uint32_t _numPlayersOnline = 0;
         StringId _statusText = STR_SERVER_LIST_CONNECTING;
 
@@ -92,50 +95,46 @@ namespace OpenRCT2::Ui::Windows
     public:
     #pragma region Window Override Events
 
-        void OnOpen() override
+        void onOpen() override
         {
-            _playerName = Config::Get().network.PlayerName;
-            widgets = _serverListWidgets;
-            _serverListWidgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
-            InitScrollWidgets();
-            no_list_items = 0;
-            selected_list_item = -1;
-            frame_no = 0;
-            min_width = 320;
-            min_height = 90;
-            max_width = min_width;
-            max_height = min_height;
+            _playerName = Config::Get().network.playerName;
+            setWidgets(_serverListWidgets);
+            widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
+            initScrollWidgets();
 
+            numListItems = 0;
+            selectedListItem = -1;
+            currentFrame = 0;
             page = 0;
-            list_information_type = 0;
+            listInformationType = 0;
 
-            WindowSetResize(*this, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
-            no_list_items = static_cast<uint16_t>(_serverList.GetCount());
+            numListItems = static_cast<uint16_t>(_serverList.GetCount());
 
             ServerListFetchServersBegin();
         }
 
-        void OnClose() override
+        void onClose() override
         {
             _serverList = {};
             _fetchFuture = {};
             Config::Save();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PLAYER_NAME_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, _playerName, MaxPlayerNameLength);
+                    WindowStartTextbox(*this, widgetIndex, _playerName, kMaxPlayerNameLength);
                     break;
                 case WIDX_LIST:
                 {
-                    int32_t serverIndex = selected_list_item;
+                    int32_t serverIndex = selectedListItem;
                     if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
                     {
                         const auto& server = _serverList.GetServer(serverIndex);
@@ -156,26 +155,26 @@ namespace OpenRCT2::Ui::Windows
                     ServerListFetchServersBegin();
                     break;
                 case WIDX_ADD_SERVER:
-                    TextInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
+                    textInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, kStringIdNone, 0, 128);
                     break;
                 case WIDX_START_SERVER:
-                    ContextOpenWindow(WindowClass::ServerStart);
+                    ContextOpenWindow(WindowClass::serverStart);
                     break;
             }
         }
 
-        void OnResize() override
+        void onResize() override
         {
-            WindowSetResize(*this, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             if (selectedIndex == -1)
             {
                 return;
             }
-            auto serverIndex = selected_list_item;
+            auto serverIndex = selectedListItem;
             if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
             {
                 auto& server = _serverList.GetServer(serverIndex);
@@ -203,76 +202,72 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
+                invalidateWidget(WIDX_PLAYER_NAME_INPUT);
             }
             ServerListFetchServersCheck();
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
-            return { 0, no_list_items * ITEM_HEIGHT };
+            return { 0, numListItems * kItemHeight };
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t serverIndex = selected_list_item;
+            int32_t serverIndex = selectedListItem;
             if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
             {
                 const auto& server = _serverList.GetServer(serverIndex);
 
                 const auto& listWidget = widgets[WIDX_LIST];
 
-                gDropdownItems[0].Format = STR_JOIN_GAME;
-                if (server.Favourite)
-                {
-                    gDropdownItems[1].Format = STR_REMOVE_FROM_FAVOURITES;
-                }
-                else
-                {
-                    gDropdownItems[1].Format = STR_ADD_TO_FAVOURITES;
-                }
+                std::array<Dropdown::Item, 2> dropdownItems = {
+                    Dropdown::PlainMenuLabel(STR_JOIN_GAME),
+                    Dropdown::PlainMenuLabel(server.Favourite ? STR_REMOVE_FROM_FAVOURITES : STR_ADD_TO_FAVOURITES),
+                };
+
                 auto dropdownPos = ScreenCoordsXY{
                     windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].contentOffsetX,
                     windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].contentOffsetY
                 };
-                WindowDropdownShowText(dropdownPos, 0, { COLOUR_GREY }, 0, 2);
+                WindowDropdownShowText(dropdownPos, 0, { Drawing::Colour::grey }, { Dropdown::Flag::autoClose }, dropdownItems);
             }
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto& listWidget = widgets[WIDX_LIST];
 
-            int32_t itemIndex = screenCoords.y / ITEM_HEIGHT;
+            int32_t itemIndex = screenCoords.y / kItemHeight;
             bool showNetworkVersionTooltip = false;
-            if (itemIndex < 0 || itemIndex >= no_list_items)
+            if (itemIndex < 0 || itemIndex >= numListItems)
             {
                 itemIndex = -1;
             }
             else
             {
-                const int32_t iconX = listWidget.width() - kScrollBarWidth - 7 - 10;
+                const int32_t iconX = listWidget.width() - 1 - kScrollBarWidth - 7 - 10;
                 showNetworkVersionTooltip = screenCoords.x > iconX;
             }
 
-            if (selected_list_item != itemIndex || _showNetworkVersionTooltip != showNetworkVersionTooltip)
+            if (selectedListItem != itemIndex || _showNetworkVersionTooltip != showNetworkVersionTooltip)
             {
-                selected_list_item = itemIndex;
+                selectedListItem = itemIndex;
                 _showNetworkVersionTooltip = showNetworkVersionTooltip;
 
-                listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : STR_NONE;
+                listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : kStringIdNone;
                 WindowTooltipClose();
 
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
                 return;
@@ -286,89 +281,89 @@ namespace OpenRCT2::Ui::Windows
                         return;
 
                     _playerName = temp;
-                    Config::Get().network.PlayerName = _playerName;
+                    Config::Get().network.playerName = _playerName;
                     widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
 
-                    InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
+                    invalidateWidget(WIDX_PLAYER_NAME_INPUT);
                     break;
 
                 case WIDX_ADD_SERVER:
                 {
-                    ServerListEntry entry;
+                    Network::ServerListEntry entry;
                     entry.Address = text;
                     entry.Name = text;
                     entry.Favourite = true;
                     _serverList.Add(entry);
                     _serverList.WriteFavourites();
-                    Invalidate();
+                    invalidate();
                     break;
                 }
             }
         }
 
-        OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        StringWithArgs onTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             auto ft = Formatter();
             ft.Add<char*>(_version.c_str());
             return { fallback, ft };
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            drawWidgets(rt);
 
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {},
-                { COLOUR_WHITE });
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME,
+                { Drawing::Colour::white });
 
             // Draw version number
-            std::string version = NetworkGetVersion();
+            std::string version = Network::GetVersion();
             auto ft = Formatter();
             ft.Add<const char*>(version.c_str());
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 324, widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
-                { COLOUR_WHITE });
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 324, widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
+                { Drawing::Colour::white });
 
             ft = Formatter();
             ft.Add<uint32_t>(_numPlayersOnline);
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { COLOUR_WHITE });
+            drawText(rt, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { Drawing::Colour::white });
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
-            GfxClear(dpi, paletteIndex);
+            auto paletteIndex = getColourMap(colours[1].colour).midLight;
+            GfxClear(rt, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];
-            int32_t listWidgetWidth = listWidget.width();
+            int32_t listWidgetWidth = listWidget.width() - 1;
 
             ScreenCoordsXY screenCoords;
             screenCoords.y = 0;
-            for (int32_t i = 0; i < no_list_items; i++)
+            for (int32_t i = 0; i < numListItems; i++)
             {
-                if (screenCoords.y >= dpi.y + dpi.height)
+                if (screenCoords.y >= rt.y + rt.height)
                     continue;
 
                 const auto& serverDetails = _serverList.GetServer(i);
-                bool highlighted = i == selected_list_item;
+                bool highlighted = i == selectedListItem;
 
                 // Draw hover highlight
                 if (highlighted)
                 {
-                    GfxFilterRect(
-                        dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT },
-                        FilterPaletteID::PaletteDarken1);
+                    Rectangle::filter(
+                        rt, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
+                        FilterPaletteID::paletteDarken1);
                     _version = serverDetails.Version;
                 }
 
                 auto colour = colours[1];
                 if (serverDetails.Favourite)
                 {
-                    colour = COLOUR_YELLOW;
+                    colour = Drawing::Colour::yellow;
                 }
                 else if (serverDetails.Local)
                 {
-                    colour = COLOUR_MOSS_GREEN;
+                    colour = Drawing::Colour::mossGreen;
                 }
 
                 screenCoords.x = 3;
@@ -379,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
                 }
-                const int16_t numPlayersStringWidth = GfxGetStringWidth(players, FontStyle::Medium);
+                const int16_t numPlayersStringWidth = getStringWidth(players, FontStyle::medium);
 
                 // How much space we have for the server info depends on the size of everything rendered after.
                 const int16_t spaceAvailableForInfo = listWidgetWidth - numPlayersStringWidth - kScrollBarWidth - 35;
@@ -392,10 +387,8 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Finally, draw the server information.
-                auto ft = Formatter();
-                ft.Add<const char*>(serverInfoToShow);
-                DrawTextEllipsised(
-                    dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
+                drawTextEllipsised(
+                    rt, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, serverInfoToShow, { colour });
 
                 int32_t right = listWidgetWidth - 7 - kScrollBarWidth;
 
@@ -410,25 +403,25 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     // Server online... check version
-                    bool correctVersion = serverDetails.Version == NetworkGetVersion();
+                    bool correctVersion = serverDetails.Version == Network::GetVersion();
                     compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
                 }
-                GfxDrawSprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
+                GfxDrawSprite(rt, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
                 right -= 4;
 
                 // Draw lock icon
                 right -= 8;
                 if (serverDetails.RequiresPassword)
                 {
-                    GfxDrawSprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
+                    GfxDrawSprite(rt, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
                 }
                 right -= 6;
 
                 // Draw number of players
                 screenCoords.x = right - numPlayersStringWidth;
-                DrawText(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, { colours[1] }, players);
+                drawText(rt, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { colours[1] });
 
-                screenCoords.y += ITEM_HEIGHT;
+                screenCoords.y += kItemHeight;
             }
         }
 
@@ -453,7 +446,7 @@ namespace OpenRCT2::Ui::Windows
                 auto wanF = _serverList.FetchOnlineServerListAsync();
 
                 // Merge or deal with errors
-                std::vector<ServerListEntry> allEntries;
+                std::vector<Network::ServerListEntry> allEntries;
                 try
                 {
                     auto entries = lanF.get();
@@ -465,14 +458,14 @@ namespace OpenRCT2::Ui::Windows
                 {
                 }
 
-                auto status = STR_NONE;
+                auto status = kStringIdNone;
                 try
                 {
                     auto entries = wanF.get();
                     allEntries.reserve(allEntries.capacity() + entries.size());
                     allEntries.insert(allEntries.end(), entries.begin(), entries.end());
                 }
-                catch (const MasterServerException& e)
+                catch (const Network::MasterServerException& e)
                 {
                     status = e.StatusText;
                 }
@@ -481,7 +474,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     status = STR_SERVER_LIST_NO_CONNECTION;
                 }
-                return std::make_tuple(allEntries, status);
+                return std::make_pair(allEntries, status);
             });
         }
 
@@ -499,12 +492,12 @@ namespace OpenRCT2::Ui::Windows
                         _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
                         _numPlayersOnline = _serverList.GetTotalPlayerCount();
                         _statusText = STR_X_PLAYERS_ONLINE;
-                        if (statusText != STR_NONE)
+                        if (statusText != kStringIdNone)
                         {
                             _statusText = statusText;
                         }
                     }
-                    catch (const MasterServerException& e)
+                    catch (const Network::MasterServerException& e)
                     {
                         _statusText = e.StatusText;
                     }
@@ -514,15 +507,13 @@ namespace OpenRCT2::Ui::Windows
                         LOG_WARNING("Unable to connect to master server: %s", e.what());
                     }
                     _fetchFuture = {};
-                    Invalidate();
+                    invalidate();
                 }
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            ResizeFrame();
-
             int32_t margin = 6;
             int32_t buttonHeight = 13;
             int32_t buttonTop = height - margin - buttonHeight - 13;
@@ -540,26 +531,28 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_START_SERVER].top = buttonTop;
             widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
-            no_list_items = static_cast<uint16_t>(_serverList.GetCount());
+            numListItems = static_cast<uint16_t>(_serverList.GetCount());
         }
     };
 
     WindowBase* ServerListOpen()
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::ServerList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::serverList);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<ServerListWindow>(
-            WindowClass::ServerList, WWIDTH_MIN, WHEIGHT_MIN, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+        window = windowMgr->Create<ServerListWindow>(
+            WindowClass::serverList, kMinimumWindowSize,
+            { WindowFlag::higherContrastOnPress, WindowFlag::resizable, WindowFlag::centreScreen });
 
         return window;
     }
 
     void JoinServer(std::string address)
     {
-        int32_t port = kNetworkDefaultPort;
+        int32_t port = Network::kDefaultPort;
         auto endBracketIndex = address.find(']');
         auto colonIndex = address.find_last_of(':');
         if (colonIndex != std::string::npos)
@@ -581,9 +574,9 @@ namespace OpenRCT2::Ui::Windows
             address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
         }
 
-        if (!NetworkBeginClient(address, port))
+        if (!Network::BeginClient(address, port))
         {
-            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, kStringIdNone, {});
         }
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -3,82 +3,100 @@
 #include "../Identifiers.h"
 #include "../world/Location.hpp"
 
-enum class EntityType : uint8_t
+namespace OpenRCT2
 {
-    Vehicle,
-    Guest,
-    Staff,
-    Litter,
-    SteamParticle,
-    MoneyEffect,
-    CrashedVehicleParticle,
-    ExplosionCloud,
-    CrashSplash,
-    ExplosionFlare,
-    JumpingFountain,
-    Balloon,
-    Duck,
-    Count,
-    Null = 255
-};
 
-struct EntitySpriteData
-{
-    // Width from centre of sprite to edge
-    uint8_t Width;
-    // Height from centre of sprite to bottom
-    uint8_t HeightMin;
-    // Height from centre of sprite to top
-    uint8_t HeightMax;
-    // Screen Coordinates of sprite
-    ScreenRect SpriteRect;
-};
-
-struct EntityBase
-{
-    EntityType Type;
-    EntityId Id;
-    int32_t x;
-    int32_t y;
-    int32_t z;
-    EntitySpriteData SpriteData;
-    // Used as direction or rotation depending on the entity.
-    uint8_t Orientation;
-    uint32_t SpatialIndex;
-
-    /**
-     * Moves a sprite to a new location, invalidates the current position if valid
-     * and also the new position.
-     *
-     *  rct2: 0x0069E9D3
-     */
-    void MoveTo(const CoordsXYZ& newLocation);
-
-    /**
-     * Sets the entity location without screen invalidation.
-     */
-    void SetLocation(const CoordsXYZ& newLocation);
-
-    /**
-     * Gets the entity current location.
-     */
-    CoordsXYZ GetLocation() const;
-
-    void Invalidate();
-    template<typename T>
-    bool Is() const;
-    template<typename T>
-    T* As()
+    enum class EntityType : uint8_t
     {
-        return Is<T>() ? reinterpret_cast<T*>(this) : nullptr;
-    }
-    template<typename T>
-    const T* As() const
+        vehicle,
+        guest,
+        staff,
+        litter,
+        steamParticle,
+        moneyEffect,
+        crashedVehicleParticle,
+        explosionCloud,
+        crashSplash,
+        explosionFlare,
+        jumpingFountain,
+        balloon,
+        duck,
+        count,
+        null = 255
+    };
+
+    struct EntitySpriteData
     {
-        return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
-    }
+        // Width from centre of sprite to edge
+        uint8_t width;
+        // Height from centre of sprite to bottom
+        uint8_t heightMin;
+        // Height from centre of sprite to top
+        uint8_t heightMax;
+        // Screen Coordinates of sprite
+        ScreenRect spriteRect;
+    };
 
-    void Serialise(class DataSerialiser& stream);
+    struct EntityBase
+    {
+        EntityType type;
+        EntityId id;
+        int32_t x;
+        int32_t y;
+        int32_t z;
+        EntitySpriteData spriteData;
+        // Used as direction or rotation depending on the entity.
+        uint8_t orientation;
+        uint32_t spatialIndex;
 
-    void Paint() const;
-};
+        /**
+         * Moves a sprite to a new location, invalidates the current position if valid
+         * and also the new position.
+         *
+         *  rct2: 0x0069E9D3
+         */
+        void moveTo(const CoordsXYZ& newLocation);
+
+        void moveToAndUpdateSpatialIndex(const CoordsXYZ& newLocation);
+
+        /**
+         * Sets the entity location without screen invalidation.
+         */
+        void setLocation(const CoordsXYZ& newLocation);
+
+        /**
+         * Gets the entity current location.
+         */
+        CoordsXYZ getLocation() const;
+
+        void invalidate();
+        template<typename T>
+        bool is() const;
+        template<typename T>
+        T* as()
+        {
+            return is<T>() ? reinterpret_cast<T*>(this) : nullptr;
+        }
+        template<typename T>
+        const T* as() const
+        {
+            return is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
+        }
+
+        template<typename T>
+        T* cast()
+        {
+            return reinterpret_cast<T*>(this);
+        }
+
+        template<typename T>
+        const T* cast() const
+        {
+            return reinterpret_cast<const T*>(this);
+        }
+
+        void serialise(class DataSerialiser& stream);
+
+        void paint() const;
+    };
+} // namespace OpenRCT2

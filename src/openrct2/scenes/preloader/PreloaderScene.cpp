@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,14 +14,10 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../audio/audio.h"
+#include "../../audio/Audio.h"
 #include "../../interface/Viewport.h"
-#include "../../interface/Window.h"
-#include "../../localisation/LocalisationService.h"
-#include "../../localisation/StringIds.h"
-#include "../../windows/Intent.h"
-
-#include <sstream>
+#include "../../ui/WindowManager.h"
+#include "../../world/Map.h"
 
 using namespace OpenRCT2;
 
@@ -35,10 +31,10 @@ void PreloaderScene::Load()
 {
     LOG_VERBOSE("PreloaderScene::Load()");
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-    gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
-    ViewportInitAll();
-    ContextOpenWindow(WindowClass::MainWindow);
+    gLegacyScene = LegacyScene::playing;
+    gameStateInitAll(getGameState(), kDefaultMapSize);
+    ContextResetSubsystems();
+    ContextOpenWindow(WindowClass::mainWindow);
     WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 
@@ -49,12 +45,19 @@ void PreloaderScene::Tick()
 {
     gInUpdateCode = true;
 
-    ContextHandleInput();
-    WindowInvalidateAll();
+    // Avoid race condition with background jobs modifying gWindowList.
+    const bool jobsRunning = _jobs.IsBusy();
+
+    if (!jobsRunning)
+    {
+        ContextHandleInput();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateAll();
+    }
 
     gInUpdateCode = false;
 
-    if (_jobs.CountPending() == 0 && _jobs.CountProcessing() == 0)
+    if (!jobsRunning)
     {
         // Make sure the job is fully completed.
         _jobs.Join();

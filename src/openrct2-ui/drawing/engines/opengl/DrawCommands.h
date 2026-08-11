@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -66,27 +66,27 @@ namespace OpenRCT2::Ui
             return _instances.at(idx);
         }
 
-        typename std::vector<T>::iterator begin() // NOLINT(readability-identifier-naming)
+        std::vector<T>::iterator begin() // NOLINT(readability-identifier-naming)
         {
             return _instances.begin();
         }
-        typename std::vector<T>::const_iterator begin() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator begin() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin();
         }
-        typename std::vector<T>::const_iterator cbegin() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator cbegin() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin();
         }
-        typename std::vector<T>::iterator end() // NOLINT(readability-identifier-naming)
+        std::vector<T>::iterator end() // NOLINT(readability-identifier-naming)
         {
             return _instances.begin() + _numInstances;
         }
-        typename std::vector<T>::const_iterator end() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator end() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin() + _numInstances;
         }
-        typename std::vector<T>::const_iterator cend() const // NOLINT(readability-identifier-naming)
+        std::vector<T>::const_iterator cend() const // NOLINT(readability-identifier-naming)
         {
             return _instances.cbegin() + _numInstances;
         }
@@ -112,6 +112,7 @@ namespace OpenRCT2::Ui
         GLuint colour;
         ivec4 bounds;
         GLint depth;
+        GLfloat zoom;
 
         enum
         {

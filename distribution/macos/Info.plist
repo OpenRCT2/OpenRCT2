@@ -13,7 +13,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.4.17</string>
+	<string>0.5.4</string>
 	<key>CFBundleSignature</key>
 	<string>ORCT</string>
 	<key>LSMinimumSystemVersion</key>
@@ -24,6 +24,8 @@
 	<true/>
 	<key>CFBundleIconFile</key>
 	<string>openrct2.icns</string>
+	<key>CFBundleIconName</key>
+	<string>openrct2</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 </dict>

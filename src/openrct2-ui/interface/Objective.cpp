@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,7 @@
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenario/ScenarioObjective.h>
 
 namespace OpenRCT2::Ui
 {
@@ -33,28 +33,28 @@ namespace OpenRCT2::Ui
         STR_OBJECTIVE_MONTHLY_FOOD_INCOME,
     };
 
-    void formatObjective(Formatter& ft, Objective objective)
+    void formatObjective(Formatter& ft, const Scenario::Objective& objective)
     {
-        if (objective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (objective.Type == Scenario::ObjectiveType::buildTheBest)
         {
-            StringId rideTypeString = STR_NONE;
+            StringId rideTypeString = kStringIdNone;
             auto rideTypeId = objective.RideId;
-            if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+            if (rideTypeId != kRideTypeNull && rideTypeId < RIDE_TYPE_COUNT)
             {
                 rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
             }
             ft.Add<StringId>(rideTypeString);
         }
-        else if (objective.Type == OBJECTIVE_GUESTS_BY)
+        else if (objective.Type == Scenario::ObjectiveType::guestsBy)
         {
             ft.Add<int32_t>(objective.NumGuests);
             ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, objective.Year));
         }
-        else if (objective.Type == OBJECTIVE_GUESTS_AND_RATING)
+        else if (objective.Type == Scenario::ObjectiveType::guestsAndRating)
         {
             ft.Add<int32_t>(objective.NumGuests);
         }
-        else if (objective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
+        else if (objective.Type == Scenario::ObjectiveType::tenRollercoastersLength)
         {
             ft.Add<int16_t>(objective.MinimumLength);
         }
@@ -62,8 +62,8 @@ namespace OpenRCT2::Ui
         {
             ft.Add<int16_t>(objective.NumGuests);
             ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, objective.Year));
-            if (objective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                ft.Add<uint16_t>(objective.MinimumExcitement);
+            if (objective.Type == Scenario::ObjectiveType::finishFiveRollercoasters)
+                ft.Add<RideRating_t>(objective.MinimumExcitement);
             else
                 ft.Add<money64>(objective.Currency);
         }

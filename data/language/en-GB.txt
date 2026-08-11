@@ -32,12 +32,9 @@ STR_0027    :Dodgems
 STR_0028    :Swinging Ship
 STR_0029    :Swinging Inverter Ship
 STR_0030    :Food Stall
-STR_0031    :Unknown Stall (1D)
 STR_0032    :Drink Stall
-STR_0033    :Unknown Stall (1F)
 STR_0034    :Shop
 STR_0035    :Merry-Go-Round
-STR_0036    :Unknown Stall (22)
 STR_0037    :Information Kiosk
 STR_0038    :Toilets
 STR_0039    :Ferris Wheel
@@ -83,16 +80,10 @@ STR_0078    :Inverted Hairpin Coaster
 STR_0079    :Magic Carpet
 STR_0080    :Submarine Ride
 STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
 STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini Roller Coaster
 STR_0090    :Mine Ride
-STR_0091    :Unknown Ride (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
@@ -251,7 +242,6 @@ STR_0832    :Rotate view 90° clockwise
 STR_0833    :Pause game
 STR_0834    :Disk and game options
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :About ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
@@ -262,16 +252,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Thanks to:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Too low!
 STR_0878    :Too high!
@@ -290,7 +270,7 @@ STR_0892    :Screenshot saved to disk as ‘{STRINGID}’
 STR_0893    :Screenshot failed!
 STR_0894    :Landscape data area full!
 STR_0895    :Can’t build partly above and partly below ground
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
+STR_0896    :{STRING} Construction
 STR_0897    :Direction
 STR_0898    :Left-hand curve
 STR_0899    :Right-hand curve
@@ -415,8 +395,6 @@ STR_1018    :Can’t make changes…
 STR_1019    :Can’t make changes…
 STR_1020    :Can’t make changes…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
 STR_1024    :{COMMA16} car per train
 STR_1025    :{COMMA16} cars per train
 STR_1026    :Station platform too long!
@@ -473,14 +451,14 @@ STR_1076    :Shop stall mode
 STR_1077    :Rotation mode
 STR_1078    :Forward rotation
 STR_1079    :Backward rotation
-STR_1080    :Film: “Avenging aviators”
-STR_1081    :3D film: “Mouse tails”
+STR_1080    :Film: “Avenging Aviators”
+STR_1081    :3D film: “Mouse Tails”
 STR_1082    :Space rings mode
 STR_1083    :Beginners mode
 STR_1084    :LIM-powered launch
-STR_1085    :Film: “Thrill riders”
-STR_1086    :3D film: “Storm chasers”
-STR_1087    :3D film: “Space raiders”
+STR_1085    :Film: “Thrill Riders”
+STR_1086    :3D film: “Storm Chasers”
+STR_1087    :3D film: “Space Raiders”
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
 STR_1090    :Haunted house mode
@@ -525,9 +503,7 @@ STR_1128    :Stopped by block brakes
 STR_1129    :All vehicles in same colours
 STR_1130    :Different colours per {STRINGID}
 STR_1131    :Different colours per vehicle
-STR_1132    :Vehicle {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vehicle {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Vehicle {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Select main colour
 STR_1137    :Select additional colour 1
@@ -549,8 +525,8 @@ STR_1152    :Any load
 STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Can’t remove this…
 STR_1159    :Place scenery, gardens, and other accessories
 STR_1160    :Create/adjust lakes & water
@@ -565,7 +541,6 @@ STR_1168    :Options
 STR_1169    :(None)
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Build footpaths and queue lines
 STR_1174    :Banner sign in the way
 STR_1175    :Can’t build this on sloped footpath
@@ -724,7 +699,6 @@ STR_1327    :Rotate objects by 90°
 STR_1328    :Level land required
 STR_1329    :{WINDOW_COLOUR_2}Launch speed:
 STR_1330    :Maximum speed when leaving station
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -822,7 +796,6 @@ STR_1425    :Footpath
 STR_1426    :Queue Line
 STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Free
 STR_1431    :Walking
 STR_1432    :Heading for {STRINGID}
@@ -857,10 +830,10 @@ STR_1460    :‘U’ shaped open track
 STR_1461    :‘O’ shaped enclosed track
 STR_1462    :Too steep for lift hill
 STR_1463    :Guests
-STR_1464    :Helix up (small)
-STR_1465    :Helix up (large)
-STR_1466    :Helix down (small)
-STR_1467    :Helix down (large)
+STR_1464    :Half Helix up (small)
+STR_1465    :Half Helix up (large)
+STR_1466    :Half Helix down (small)
+STR_1467    :Half Helix down (large)
 STR_1468    :Staff
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
@@ -1066,14 +1039,13 @@ STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
 STR_1672    :Brakes
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :Brake speed
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Set speed limit for brakes
 STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
 STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
+STR_1679    :Quarter Helix up (left)
+STR_1680    :Quarter Helix up (right)
+STR_1681    :Quarter Helix down (left)
+STR_1682    :Quarter Helix down (right)
 STR_1683    :Base size 2 × 2
 STR_1684    :Base size 4 × 4
 STR_1685    :Base size 2 × 4
@@ -1122,23 +1094,19 @@ STR_1727    :Construction rights not for sale!
 STR_1728    :Can’t buy construction rights here…
 STR_1729    :Land not owned by park!
 STR_1730    :{RED}Closed
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Build
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
 STR_1735    :Number of laps of circuit
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Can’t change number of laps…
 STR_1739    :Race won by guest {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :Not yet constructed!
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :Maximum number of people allowed on this ride at one time
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Can’t change this…
 STR_1747    :{WINDOW_COLOUR_2}Time limit:
 STR_1748    :Time limit for ride
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Can’t change time limit for ride…
 STR_1752    :Show list of individual guests in park
 STR_1753    :Show summarised list of guests in park
@@ -1159,22 +1127,9 @@ STR_1767    :Spinning tunnel
 STR_1768    :Can’t change number of swings…
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :Number of complete swings
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1777    :Ride music
-STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
 STR_1790    :Select uniform colour for this type of staff
 STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
 STR_1792    :Responding to {STRINGID} breakdown call
@@ -1183,7 +1138,6 @@ STR_1794    :Fixing {STRINGID}
 STR_1795    :Answering radio call
 STR_1796    :Has broken down and requires fixing
 STR_1798    :Whirlpool
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Safety cut-out
 STR_1801    :Restraints stuck closed
 STR_1802    :Restraints stuck open
@@ -1255,7 +1209,6 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
@@ -1297,7 +1250,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Loan:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can’t borrow any more money!
 STR_1919    :Not enough cash available!
 STR_1920    :Can’t pay back loan!
@@ -1335,7 +1287,6 @@ STR_1953    :Marketing
 STR_1954    :Research Funding
 STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
 STR_1956    :Number of circuits of track per ride
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can’t change number of circuits…
 STR_1960    :{WINDOW_COLOUR_2}Balloon price:
@@ -1579,8 +1530,8 @@ STR_2212    :Show list of security guards in park
 STR_2213    :Show list of entertainers in park
 STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
@@ -1934,9 +1885,6 @@ STR_2706    :Never
 STR_2707    :Use system file browser
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
-STR_2718    :Up
-STR_2719    :New file
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2137,7 +2085,6 @@ STR_3092    :You are not allowed to move or modify the station for this ride!
 STR_3093    :{WINDOW_COLOUR_2}Favourite: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Select lift hill chain speed
 STR_3099    :Select colour
 STR_3100    :Select second colour
@@ -2180,7 +2127,6 @@ STR_3136    :Warning: This design will be built with an alternative vehicle type
 STR_3137    :Select Nearby Scenery
 STR_3138    :Reset Selection
 STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :Show people on map
@@ -2212,7 +2158,7 @@ STR_3188    :Path Signs
 STR_3189    :Legacy footpaths
 STR_3190    :Path Extras
 STR_3191    :Scenery Groups
-STR_3192    :Park Entrance
+STR_3192    :Park Entrances
 STR_3193    :Water
 STR_3195    :Invention List
 STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
@@ -2231,7 +2177,6 @@ STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :Map size:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Can’t decrease map size any further
 STR_3214    :Can’t increase map size any further
 STR_3215    :Too close to edge of map
@@ -2251,22 +2196,20 @@ STR_3228    :Set starting positions for people
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
-STR_3232    :Options - Financial
-STR_3233    :Options - Guests
-STR_3234    :Options - Park
+STR_3232    :Scenario options - Financial
+STR_3233    :Scenario options - Guests
 STR_3235    :Show financial options
 STR_3236    :Show guest options
-STR_3237    :Show park options
 STR_3238    :No Money
 STR_3239    :Make this park a ‘no money’ park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
-STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
-STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
+STR_3240    :Initial cash:
+STR_3241    :Initial loan:
+STR_3242    :Maximum loan size:
+STR_3243    :Annual interest rate:
 STR_3244    :Forbid marketing campaigns
 STR_3245    :Forbid advertising, promotional schemes, and other marketing campaigns
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Can’t increase initial cash any further!
 STR_3249    :Can’t reduce initial cash any further!
 STR_3250    :Can’t increase initial loan any further!
@@ -2275,14 +2218,10 @@ STR_3252    :Can’t increase maximum loan size any further!
 STR_3253    :Can’t reduce maximum loan size any further!
 STR_3254    :Can’t increase interest rate any further!
 STR_3255    :Can’t reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :Select whether guests should generally prefer more intense rides only
-STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
+STR_3260    :Cash per guest (average):
+STR_3261    :Guests’ initial happiness:
+STR_3262    :Guests’ initial hunger:
+STR_3263    :Guests’ initial thirst:
 STR_3264    :Can’t increase this any further!
 STR_3265    :Can’t reduce this any further!
 STR_3266    :Select how this park charges for entrance and rides
@@ -2296,23 +2235,15 @@ STR_3273    :Park rating is harder to increase and maintain
 STR_3274    :Make the park rating value more challenging
 STR_3275    :Guests are more difficult to attract
 STR_3276    :Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3277    :Cost to buy land:
+STR_3278    :Cost to buy construction rights:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
-STR_3281    :{WINDOW_COLOUR_2}Entry price:
-STR_3282    :Select objective and park name
+STR_3281    :Entry price:
 STR_3283    :Select rides to be preserved
-STR_3284    :Objective Selection
-STR_3285    :Preserved Rides
+STR_3285    :Scenario options - Preserved Rides
 STR_3286    :Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
-STR_3288    :Select climate
-STR_3289    :{WINDOW_COLOUR_2}Climate:
-STR_3290    :Cool and wet
-STR_3291    :Warm
-STR_3292    :Hot and dry
-STR_3293    :Cold
 STR_3294    :Change…
 STR_3295    :Change name of park
 STR_3296    :Change name of scenario
@@ -2539,7 +2470,7 @@ STR_5265    :Select which content sources are visible
 STR_5266    :Display
 STR_5267    :Culture and Units
 STR_5268    :Audio
-STR_5269    :Controls and interface
+STR_5269    :Controls
 STR_5270    :Miscellaneous
 STR_5272    :Small Scenery
 STR_5273    :Large Scenery
@@ -2617,7 +2548,7 @@ STR_5368    :Reset crash status
 STR_5371    :Object selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
-STR_5374    :Date {STRINGID}
+STR_5374    :Date modified {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Name already exists
@@ -2724,7 +2655,6 @@ STR_5549    :Year/Month/Day
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Year/Day/Month
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause game when Steam overlay is open
 STR_5554    :Enable mountain tool
 STR_5555    :Show vehicles from other track types
 STR_5556    :Kick player
@@ -2795,9 +2725,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Real” Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :Source game
-STR_5629    :Difficulty level
 STR_5630    :Enable progressive unlocking
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
@@ -2940,7 +2867,7 @@ STR_5807    :{WINDOW_COLOUR_2}Number of rides: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
 STR_5810    :Disable vehicle limits
-STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
+STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 255{NEWLINE}trains per ride
 STR_5812    :Show multiplayer window
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -2948,7 +2875,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Display FPS counter in-game
 STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :Display banners in uppercase (RCT1 behaviour)
@@ -2987,7 +2913,7 @@ STR_5858    :Use GPU for displaying instead of CPU. Improves compatibility with 
 STR_5859    :Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 STR_5860    :Toggle original/decompiled track drawing
 STR_5861    :Key verification failure.
-STR_5862    :Block unknown players.
+STR_5862    :Block unknown players
 STR_5863    :Only allow players with known keys to join.
 STR_5864    :This server only allows whitelisted players to connect.
 STR_5865    :Log chat history
@@ -3016,7 +2942,6 @@ STR_5887    :Prefix
 STR_5888    :Suffix
 STR_5889    :Custom currency symbol
 STR_5890    :Enter the currency symbol to display
-STR_5891    :Default
 STR_5892    :Go to the default directory
 STR_5893    :Exchange Rate
 STR_5894    :Enter the exchange rate
@@ -3042,12 +2967,11 @@ STR_5914    :Unknown ride
 STR_5915    :Player
 STR_5916    :{COMMA16} player
 STR_5917    :{COMMA16} players
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Render weather effects
 STR_5921    :If enabled, rain and gloomy colours will be rendered during storms.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {COMMA16} {STRINGID} per train
+STR_5922    :Max {STRINGID}
+STR_5923    :Max {COMMA16} {STRINGID} per train
 STR_5924    :Surface details
 STR_5925    :Path details
 STR_5926    :Track details
@@ -3229,7 +3153,7 @@ STR_6102    :The value of a ride won’t decrease over time, so guests will not 
 STR_6103    :This option is disabled during network play.
 STR_6105    :Hypercoaster
 STR_6107    :Monster Trucks
-STR_6109    :Hyper-Twister
+STR_6109    :Hyper-Twister Roller Coaster
 STR_6111    :Classic Mini Roller Coaster
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
 STR_6115    :Powered giant 4 × 4 trucks which can climb steep slopes
@@ -3282,7 +3206,6 @@ STR_6165    :Use vertical sync
 STR_6166    :Synchronises each frame displayed to the monitor’s refresh rate, preventing screen tearing.
 STR_6167    :Advanced
 STR_6168    :Title Sequence
-STR_6169    :Scenario selection
 STR_6170    :Interface Tweaks
 STR_6171    :Search
 STR_6172    :Search
@@ -3359,7 +3282,7 @@ STR_6271    :Terrain Edges
 STR_6272    :Stations
 STR_6273    :Music
 STR_6274    :Can’t set colour scheme…
-STR_6275    :{WINDOW_COLOUR_2}Station style:
+STR_6275    :Station style
 STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid ride type or operating mode.
 STR_6277    :Station index: {BLACK}{STRINGID}
 STR_6278    :Autosave amount
@@ -3383,7 +3306,7 @@ STR_6304    :Open scenery picker
 STR_6305    :Multithreading
 STR_6306    :Experimental option to use multiple threads to render, may cause instability.
 STR_6307    :Colour scheme: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconnect
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Next: {BLACK}{INT32} {INT32} {INT32}
@@ -3433,7 +3356,6 @@ STR_6355    :High density
 STR_6356    :Spawns ducks if park contains water
 STR_6357    :Removes all ducks from the map
 STR_6358    :Page {UINT16}
-STR_6359    :{POP16}{POP16}Page {UINT16}
 STR_6361    :Enable lighting effects on rides (experimental)
 STR_6362    :If enabled, vehicles for tracked rides will be lit up at night.
 STR_6363    :Copied text to clipboard
@@ -3785,3 +3707,133 @@ STR_6707    :(none selected)
 STR_6708    :Smooth Strength
 STR_6709    :Enter Smooth Strength between {COMMA16} and {COMMA16}
 STR_6710    :Stable sort
+STR_6711    :Filename:
+STR_6712    :Save
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Filename
+STR_6715    :Date modified
+STR_6716    :File size
+STR_6717    :File size {STRINGID}
+STR_6718    :Peep Animations
+STR_6719    :At least one guest peep animations object must be selected
+STR_6720    :At least one handyman peep animations object must be selected
+STR_6721    :At least one mechanic peep animations object must be selected
+STR_6722    :At least one security peep animations object must be selected
+STR_6723    :At least one entertainer peep animations object must be selected
+STR_6724    :Scenario Texts
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dive Loop (left)
+STR_6728    :Dive Loop (right)
+STR_6729    :Cable lift hill must start immediately after station or block brake
+STR_6730    :Export emscripten data
+STR_6731    :Import emscripten data
+STR_6732    :Show a button in the toolbar to rotate the view anti-clockwise
+STR_6733    :See-Through
+STR_6734    :Map elements that are at or above the cutting height are rendered translucent.
+STR_6735    :Go up to parent folder
+STR_6736    :Preview
+STR_6737    :No preview available
+STR_6738    :{WINDOW_COLOUR_2}Park rating: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Date: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Num. rides: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Num. guests: {BLACK}{UINT16}
+STR_6743    :Climate
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Guests’ intensity preferences:
+STR_6746    :No preferences
+STR_6747    :Preferences vary (default)
+STR_6748    :Only less intense rides
+STR_6749    :Only more intense rides
+STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
+STR_6751    :Queue paths cannot be used for level crossings!
+STR_6752    :Scenario options - Objective
+STR_6753    :Scenario options - Scenario Details
+STR_6754    :Scenario options - Land Restrictions
+STR_6755    :Show objective options
+STR_6756    :Show scenario details options
+STR_6757    :Show land restriction options
+STR_6758    :Loan options
+STR_6759    :Business model
+STR_6760    :Earnings:
+STR_6761    :Scenario Details
+STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Saving and autosaves
+STR_6765    :Advanced
+STR_6766    :Clear
+STR_6767    :Window
+STR_6768    :Rendering
+STR_6769    :Behaviour
+STR_6770    :Frame rate limit:
+STR_6771    :Internal speed (default)
+STR_6772    :Vertical sync
+STR_6773    :Unrestricted
+STR_6774    :Time since last inspection
+STR_6775    :{COMMA16} minute
+STR_6776    :{COMMA16} minutes
+STR_6777    :more than 4 hours
+STR_6778    :Preview scenarios using:
+STR_6779    :Select the kind of preview image to use in the scenario selection screen.
+STR_6780    :Mini maps
+STR_6781    :Screenshots
+STR_6782    :Park notifications
+STR_6783    :Ride notifications
+STR_6784    :Guest notifications
+STR_6785    :Gamepad
+STR_6786    :Deadzone:
+STR_6787    :Analogue stick deadzone (minimum movement required)
+STR_6788    :Sensitivity:
+STR_6789    :Analogue stick sensitivity multiplier
+STR_6790    :Deadzone: {COMMA32}%
+STR_6791    :Sensitivity: {COMMA32}%
+STR_6792    :Entrance Buildings
+STR_6793    :Guests and Staff
+STR_6794    :Scenery and Themes
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :No preview
+STR_6798    :Screenshot
+STR_6799    :Mini map
+STR_7000    :or
+STR_7001    :Ride name
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, but only {INT32} are available. Consider reinstalling RCT2.
+STR_7004    :Force Redraw
+STR_7005    :Drag an area of footpath
+STR_7006    :Draw border around image buttons
+STR_7007    :Ride Type
+STR_7008    :Unknown ride type ({INT32})
+STR_7009    :Receiving scripts…
+STR_7010    :Could not start replay, file ‘{STRING}’ doesn’t exist or isn’t valid
+STR_7011    :Could not start replay
+STR_7012    :Polish Złoty (PLN)
+STR_7013    :Drag areas of path
+STR_7014    :I own the game on Steam, but I haven’t installed it yet.
+STR_7015    :Please close Steam if it’s running, then click ‘OK’.
+STR_7016    :OpenRCT2 has tried to trigger a download in Steam. Please open Steam and let it download the game. When Steam is finished, click ‘OK’.
+STR_7017	:Quit
+STR_7018    :{SPRITE}{MOVE_X}{17}{STRINGID}
+STR_7019    :{SPRITE}{MOVE_X}{27}{STRINGID}
+STR_7020    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{36}{STRINGID}
+STR_7021    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}»{MOVE_X}{36}{STRINGID}
+STR_7022    :{STRING} - - 
+STR_7023    :Make invisible
+STR_7024    :Makes the whole ride invisible
+STR_7025    :Make visible
+STR_7026    :Makes the whole ride visible
+STR_7027    :{MOVE_X}{29}{STRINGID}
+STR_7028    :Quarter Helix up
+STR_7029    :Quarter Helix down
+STR_7030    :{WINDOW_COLOUR_2}Guests entertained: {BLACK}{COMMA32}
+STR_7031    :Disable grass growing
+STR_7032    :Disable grass ageing so that it doesn't grow.
+STR_7033    :Track style
+STR_7034    :Maze style
+STR_7035    :Shop style
+STR_7036    :Vehicle style
+STR_7037    :Operating mode
+STR_7038    :Wait and load
+STR_7039    :Ride type
+STR_7040    :Footpath additions

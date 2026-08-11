@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,76 +9,79 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor MonorailRTD =
+namespace OpenRCT2 {
+constexpr RideTypeDescriptor kMonorailRTD =
 {
-    .Category = RIDE_CATEGORY_TRANSPORT,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .Category = RideCategory::transport,
+    .StartTrackPiece = TrackElemType::endStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::monorail,
-        .supportType = MetalSupportType::Boxed,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
+        .supportType = MetalSupportType::boxed,
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::diagSlope},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::canSynchroniseWithAdjacentStations,
+    .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::canSynchroniseWithAdjacentStations,
                      RtdFlag::hasTrackColourSupports, RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
                      RtdFlag::hasDataLogging, RtdFlag::hasLoadOptions, RtdFlag::hasVehicleColours,
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::allowMultipleCircuits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
+    .DefaultMode = RideMode::continuousCircuit,
+    .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_MONORAIL, STR_RIDE_DESCRIPTION_MONORAIL },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::doorsStuckClosed, Breakdown::doorsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 8, 32, 8, 9, },
     .MaxMass = 78,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 70, 6, -10 },
     .UpkeepCosts = { 65, 20, 0, 10, 3, 10 },
     .BuildCosts = { 21.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectSummer,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
-        { COLOUR_GREY, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN },
-        { COLOUR_GREY, COLOUR_GREY, COLOUR_SATURATED_BROWN },
-        { COLOUR_GREY, COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED },
-        { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
-        { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_WHITE },
+        { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::darkOliveGreen },
+        { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::saturatedBrown },
+        { Drawing::Colour::grey, Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed },
+        { Drawing::Colour::bordeauxRed, Drawing::Colour::bordeauxRed, Drawing::Colour::black },
+        { Drawing::Colour::oliveGreen, Drawing::Colour::oliveGreen, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "monorail",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 00), RIDE_RATING(0, 00), RIDE_RATING(0, 00) },
+        RatingsCalculationType::normal,
+        { RideRating::make(2, 00), RideRating::make(0, 00), RideRating::make(0, 00) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::BonusLength,            6000,     764, 0, 0 },
-            { RatingsModifierType::BonusTrainLength,       0,        93622, 0, 0 },
-            { RatingsModifierType::BonusMaxSpeed,          0,        44281, 70849, 35424 },
-            { RatingsModifierType::BonusAverageSpeed,      0,        291271, 218453, 0 },
-            { RatingsModifierType::BonusDuration,          150,      21845, 0, 0 },
-            { RatingsModifierType::BonusSheltered,         0,        5140, 6553, 18724 },
-            { RatingsModifierType::BonusProximity,         0,        8946, 0, 0 },
-            { RatingsModifierType::BonusScenery,           0,        16732, 0, 0 },
-            { RatingsModifierType::RequirementLength,      0xAA0000, 2, 2, 2 },
-            { RatingsModifierType::RequirementUnsheltered, 4,        4, 1, 1 },
+            { RatingsModifierType::bonusLength,            6000,     764, 0, 0 },
+            { RatingsModifierType::bonusTrainLength,       0,        93622, 0, 0 },
+            { RatingsModifierType::bonusMaxSpeed,          0,        44281, 70849, 35424 },
+            { RatingsModifierType::bonusAverageSpeed,      0,        291271, 218453, 0 },
+            { RatingsModifierType::bonusDuration,          150,      21845, 0, 0 },
+            { RatingsModifierType::bonusSheltered,         0,        5140, 6553, 18724 },
+            { RatingsModifierType::bonusProximity,         0,        8946, 0, 0 },
+            { RatingsModifierType::bonusScenery,           0,        16732, 0, 0 },
+            { RatingsModifierType::requirementLength,      0xAA0000, 2, 2, 2 },
+            { RatingsModifierType::requirementUnsheltered, 4,        4, 1, 1 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_Monorail,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_Monorail,
 };
+} // namespace OpenRCT2
 // clang-format on

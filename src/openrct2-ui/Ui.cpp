@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,8 +21,13 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/command_line/CommandLine.hpp>
+#include <openrct2/command_line/ExitCode.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
+
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -43,12 +48,18 @@ int NormalisedMain(int argc, const char** argv)
 int main(int argc, const char** argv)
 #endif
 {
-    std::unique_ptr<IContext> context;
+#ifdef __EMSCRIPTEN__
+    MAIN_THREAD_EM_ASM({
+        specialHTMLTargets["!canvas"] = Module.canvas;
+        Module.canvas.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+    });
+#endif
     int32_t rc = EXIT_SUCCESS;
-    int runGame = CommandLineRun(argv, argc);
+    auto runGame = CommandLineRun(argv, argc);
     RegisterBitmapReader();
-    if (runGame == EXITCODE_CONTINUE)
+    if (runGame == OpenRCT2::CommandLine::ExitCode::launch)
     {
+        std::unique_ptr<IContext> context;
         if (gOpenRCT2Headless)
         {
             // Run OpenRCT2 with a plain context
@@ -57,23 +68,23 @@ int main(int argc, const char** argv)
         else
         {
             // Run OpenRCT2 with a UI context
-            auto env = ToShared(CreatePlatformEnvironment());
-            std::shared_ptr<IAudioContext> audioContext;
+            auto env = CreatePlatformEnvironment();
+            std::unique_ptr<IAudioContext> audioContext;
             try
             {
-                audioContext = ToShared(CreateAudioContext());
+                audioContext = CreateAudioContext();
             }
             catch (const SDLException& e)
             {
                 LOG_WARNING("Failed to create audio context. Using dummy audio context. Error message was: %s", e.what());
-                audioContext = ToShared(CreateDummyAudioContext());
+                audioContext = CreateDummyAudioContext();
             }
-            auto uiContext = ToShared(CreateUiContext(env));
-            context = CreateContext(env, audioContext, uiContext);
+            auto uiContext = CreateUiContext(*env);
+            context = CreateContext(std::move(env), std::move(audioContext), std::move(uiContext));
         }
         rc = context->RunOpenRCT2(argc, argv);
     }
-    else if (runGame == EXITCODE_FAIL)
+    else if (runGame == OpenRCT2::CommandLine::ExitCode::fail)
     {
         rc = EXIT_FAILURE;
     }

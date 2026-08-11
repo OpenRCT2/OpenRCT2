@@ -1,202 +1,156 @@
 #include "Litter.h"
 
 #include "../Cheats.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../core/DataSerialiser.h"
 #include "../localisation/StringIds.h"
-#include "../paint/Paint.h"
-#include "../profiling/Profiling.h"
-#include "../sprites.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
 #include <sfl/small_vector.hpp>
 
-using namespace OpenRCT2;
-
-template<>
-bool EntityBase::Is<Litter>() const
+namespace OpenRCT2
 {
-    return Type == EntityType::Litter;
-}
-
-static bool IsLocationLitterable(const CoordsXYZ& mapPos)
-{
-    TileElement* tileElement;
-
-    if (!MapIsLocationOwned(mapPos))
-        return false;
-
-    tileElement = MapGetFirstElementAt(mapPos);
-    if (tileElement == nullptr)
-        return false;
-    do
+    template<>
+    bool EntityBase::is<Litter>() const
     {
-        if (tileElement->GetType() != TileElementType::Path)
-            continue;
+        return type == EntityType::litter;
+    }
 
-        int32_t pathZ = tileElement->GetBaseZ();
-        if (pathZ < mapPos.z || pathZ >= mapPos.z + kPathClearance)
-            continue;
-
-        return !TileElementIsUnderground(tileElement);
-    } while (!(tileElement++)->IsLastForTile());
-    return false;
-}
-
-/**
- *
- *  rct2: 0x0067375D
- */
-void Litter::Create(const CoordsXYZD& litterPos, Type type)
-{
-    auto& gameState = GetGameState();
-    if (gameState.Cheats.disableLittering)
-        return;
-
-    auto offsetLitterPos = litterPos
-        + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
-                    CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
-
-    if (!IsLocationLitterable(offsetLitterPos))
-        return;
-
-    if (GetEntityListCount(EntityType::Litter) >= 500)
+    static bool IsLocationLitterable(const CoordsXYZ& mapPos)
     {
-        Litter* newestLitter = nullptr;
-        uint32_t newestLitterCreationTick = 0;
-        for (auto litter : EntityList<Litter>())
+        if (!MapIsLocationOwned(mapPos))
+            return false;
+
+        TileElement* tileElement = MapGetFirstElementAt(mapPos);
+        if (tileElement == nullptr)
+            return false;
+        do
         {
-            if (newestLitterCreationTick <= litter->creationTick)
+            if (tileElement->getType() != TileElementType::path)
+                continue;
+
+            int32_t pathBaseZ = tileElement->getBaseZ();
+            int32_t pathTopZ = pathBaseZ + (tileElement->asPath()->IsSloped() ? kPathHeightStep : 0);
+            if (!(pathBaseZ <= mapPos.z && pathTopZ >= mapPos.z))
+                continue;
+
+            return !TileElementIsUnderground(tileElement);
+        } while (!(tileElement++)->isLastForTile());
+        return false;
+    }
+
+    /**
+     *
+     *  rct2: 0x0067375D
+     */
+    void Litter::Create(const CoordsXYZD& litterPos, Type type)
+    {
+        auto& gameState = getGameState();
+        if (gameState.cheats.disableLittering)
+            return;
+
+        auto offsetLitterPos = litterPos
+            + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
+                        CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
+
+        if (!IsLocationLitterable(offsetLitterPos))
+            return;
+
+        if (gameState.entities.GetEntityListCount(EntityType::litter) >= 500)
+        {
+            Litter* newestLitter = nullptr;
+            uint32_t newestLitterCreationTick = 0;
+            for (auto litter : EntityList<Litter>())
             {
-                newestLitterCreationTick = litter->creationTick;
-                newestLitter = litter;
+                if (newestLitterCreationTick <= litter->creationTick)
+                {
+                    newestLitterCreationTick = litter->creationTick;
+                    newestLitter = litter;
+                }
+            }
+
+            if (newestLitter != nullptr)
+            {
+                newestLitter->invalidate();
+                gameState.entities.EntityRemove(newestLitter);
             }
         }
 
-        if (newestLitter != nullptr)
-        {
-            newestLitter->Invalidate();
-            EntityRemove(newestLitter);
-        }
+        Litter* litter = gameState.entities.CreateEntity<Litter>();
+        if (litter == nullptr)
+            return;
+
+        litter->orientation = offsetLitterPos.direction;
+        litter->spriteData.width = 6;
+        litter->spriteData.heightMin = 6;
+        litter->spriteData.heightMax = 3;
+        litter->subType = type;
+        litter->moveTo(offsetLitterPos);
+        litter->creationTick = gameState.currentTicks;
     }
 
-    Litter* litter = CreateEntity<Litter>();
-    if (litter == nullptr)
-        return;
-
-    litter->Orientation = offsetLitterPos.direction;
-    litter->SpriteData.Width = 6;
-    litter->SpriteData.HeightMin = 6;
-    litter->SpriteData.HeightMax = 3;
-    litter->SubType = type;
-    litter->MoveTo(offsetLitterPos);
-    litter->creationTick = gameState.CurrentTicks;
-}
-
-/**
- *
- *  rct2: 0x006738E1
- */
-void Litter::RemoveAt(const CoordsXYZ& litterPos)
-{
-    // There can be a lot of litter entities on the same tile, avoid heap allocations
-    // by having the first 512 stored in a small_vector which is on the stack.
-    sfl::small_vector<Litter*, 512> removals;
-    for (auto litter : EntityTileList<Litter>(litterPos))
+    /**
+     *
+     *  rct2: 0x006738E1
+     */
+    void Litter::RemoveAt(const CoordsXYZ& litterPos)
     {
-        if (abs(litter->z - litterPos.z) <= 16)
+        // There can be a lot of litter entities on the same tile, avoid heap allocations
+        // by having the first 512 stored in a small_vector which is on the stack.
+        sfl::small_vector<Litter*, 512> removals;
+        for (auto litter : EntityTileList<Litter>(litterPos))
         {
-            if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
+            if (abs(litter->z - litterPos.z) <= 16)
             {
-                removals.push_back(litter);
+                if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
+                {
+                    removals.push_back(litter);
+                }
             }
         }
+        for (auto* litter : removals)
+        {
+            litter->invalidate();
+            getGameState().entities.EntityRemove(litter);
+        }
     }
-    for (auto* litter : removals)
+
+    static const StringId litterNames[12] = {
+        STR_LITTER_VOMIT,
+        STR_LITTER_VOMIT,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
+        STR_SHOP_ITEM_SINGULAR_RUBBISH,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
+        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
+    };
+
+    StringId Litter::getName() const
     {
-        litter->Invalidate();
-        EntityRemove(litter);
+        if (EnumValue(subType) >= std::size(litterNames))
+            return kStringIdNone;
+        return litterNames[EnumValue(subType)];
     }
-}
 
-static const StringId litterNames[12] = {
-    STR_LITTER_VOMIT,
-    STR_LITTER_VOMIT,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
-    STR_SHOP_ITEM_SINGULAR_RUBBISH,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
-};
+    uint32_t Litter::getAge() const
+    {
+        return getGameState().currentTicks - creationTick;
+    }
 
-StringId Litter::GetName() const
-{
-    if (EnumValue(SubType) >= std::size(litterNames))
-        return STR_NONE;
-    return litterNames[EnumValue(SubType)];
-}
+    void Litter::serialise(DataSerialiser& stream)
+    {
+        EntityBase::serialise(stream);
 
-uint32_t Litter::GetAge() const
-{
-    return GetGameState().CurrentTicks - creationTick;
-}
-
-void Litter::Serialise(DataSerialiser& stream)
-{
-    EntityBase::Serialise(stream);
-
-    stream << SubType;
-    stream << creationTick;
-}
-
-struct LitterSprite
-{
-    uint16_t base_id;
-    uint8_t direction_mask;
-};
-
-/** rct2: 0x0097EF6C */
-static constexpr LitterSprite _litterSprites[] = {
-    { SPR_LITTER_SICK, 0x1 },
-    { SPR_LITTER_SICK_ALT, 0x1 },
-    { SPR_LITTER_EMPTY_CAN, 0x1 },
-    { SPR_LITTER_RUBBISH, 0x1 },
-    { SPR_LITTER_EMPTY_BURGER_BOX, 0x1 },
-    { SPR_LITTER_EMPTY_CUP, 0x1 },
-    { SPR_LITTER_EMPTY_BOX, 0x1 },
-    { SPR_LITTER_EMPTY_BOTTLE, 0x1 },
-    { SPR_LITTER_EMPTY_BOWL_RED, 0x3 },
-    { SPR_LITTER_EMPTY_DRINK_CART, 0x3 },
-    { SPR_LITTER_EMPTY_JUICE_CUP, 0x3 },
-    { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
-};
-
-void Litter::Paint(PaintSession& session, int32_t imageDirection) const
-{
-    PROFILED_FUNCTION();
-
-    DrawPixelInfo& dpi = session.DPI;
-    if (dpi.zoom_level > ZoomLevel{ 0 })
-        return; // If zoomed at all no litter drawn
-
-    // litter has no sprite direction so remove that
-    imageDirection >>= 3;
-    // Some litter types have only 1 direction so remove
-    // anything that isn't required.
-    imageDirection &= _litterSprites[EnumValue(SubType)].direction_mask;
-
-    uint32_t image_id = imageDirection + _litterSprites[EnumValue(SubType)].base_id;
-
-    // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
-    // bound_box_offset_z to make sure litter is drawn on top of railways
-    PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { -4, -4, z + 4 }, { 5, 5, -1 } });
-}
+        stream << subType;
+        stream << creationTick;
+    }
+} // namespace OpenRCT2

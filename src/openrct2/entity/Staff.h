@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,160 +9,152 @@
 
 #pragma once
 
-#include "../core/EnumUtils.hpp"
 #include "../core/Money.hpp"
-#include "../world/Map.h"
 #include "Peep.h"
 
 #include <cstdint>
 
-class DataSerialiser;
-class PatrolArea;
-
-using colour_t = uint8_t;
-
-enum class StaffType : uint8_t
+namespace OpenRCT2::Drawing
 {
-    Handyman,
-    Mechanic,
-    Security,
-    Entertainer,
+    enum class Colour : uint8_t;
+}
 
-    Count
-};
-
-struct Staff : Peep
+namespace OpenRCT2
 {
-    static constexpr auto cEntityType = EntityType::Staff;
+    class DataSerialiser;
+    class PatrolArea;
 
-public:
-    PatrolArea* PatrolInfo;
-    StaffType AssignedStaffType;
-    uint16_t MechanicTimeSinceCall; // time getting to ride to fix
-    int32_t HireDate;
-    uint8_t StaffOrders;
-    uint8_t StaffMowingTimeout;
-    union
+    struct Ride;
+    struct TileElement;
+    struct PathElement;
+
+    enum class StaffType : uint8_t
     {
-        uint32_t StaffLawnsMown;
-        uint32_t StaffRidesFixed;
+        handyman,
+        mechanic,
+        security,
+        entertainer,
+
+        count
     };
-    union
+
+    struct Staff : Peep
     {
-        uint32_t StaffGardensWatered;
-        uint32_t StaffRidesInspected;
+        static constexpr auto cEntityType = EntityType::staff;
+
+    public:
+        PatrolArea* patrolInfo;
+        StaffType assignedStaffType;
+        uint16_t mechanicTimeSinceCall; // time getting to ride to fix
+        int32_t hireDate;
+        uint8_t staffOrders;
+        uint8_t staffMowingTimeout;
+
+        union // 1st statistic
+        {
+            uint32_t staffLawnsMown;
+            uint32_t staffRidesFixed;
+            uint32_t staffGuestsEntertained;
+        };
+        union // 2nd statistic
+        {
+            uint32_t staffGardensWatered;
+            uint32_t staffRidesInspected;
+        };
+        union // 3rd statistic
+        {
+            uint32_t staffLitterSwept;
+            uint32_t staffVandalsStopped;
+        };
+        union // 4th statistic
+        {
+            uint32_t staffBinsEmptied;
+        };
+
+        void Update();
+        void tick128UpdateStaff();
+        bool isMechanic() const;
+        bool isEntertainer() const;
+        bool isPatrolAreaSet(const CoordsXY& coords) const;
+        bool isLocationInPatrol(const CoordsXY& loc) const;
+        bool isLocationOnPatrolEdge(const CoordsXY& loc) const;
+        bool doPathFinding();
+        void setHireDate(int32_t value);
+        int32_t getHireDate() const;
+
+        bool canIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
+
+        static void resetStats();
+        void serialise(DataSerialiser& stream);
+
+        void clearPatrolArea();
+        void setPatrolArea(const CoordsXY& coords, bool value);
+        void setPatrolArea(const MapRange& range, bool value);
+        bool hasPatrolArea() const;
+
+    private:
+        void updatePatrolling();
+        void updateMowing();
+        void updateSweeping();
+        void updateEmptyingBin();
+        void updateWatering();
+        void updateAnswering();
+        void updateFixing(int32_t steps);
+        bool updateFixingEnterStation(Ride& ride) const;
+        bool updateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride);
+        bool updateFixingFixVehicle(bool firstRun, const Ride& ride);
+        bool updateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride);
+        bool updateFixingMoveToStationEnd(bool firstRun, const Ride& ride);
+        bool updateFixingFixStationEnd(bool firstRun);
+        bool updateFixingMoveToStationStart(bool firstRun, const Ride& ride);
+        bool updateFixingFixStationStart(bool firstRun, const Ride& ride);
+        bool updateFixingFixStationBrakes(bool firstRun, Ride& ride);
+        bool updateFixingMoveToStationExit(bool firstRun, const Ride& ride);
+        bool updateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride);
+        bool updateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride);
+        void updateRideInspected(RideId rideIndex);
+        void updateHeadingToInspect();
+
+        bool doHandymanPathFinding();
+        bool doMechanicPathFinding();
+        bool doEntertainerPathFinding();
+        bool doMiscPathFinding();
+        bool isMechanicHeadingToFixRideBlockingPath();
+
+        Direction handymanDirectionRandSurface(uint8_t validDirections) const;
+
+        void entertainerUpdateNearbyPeeps();
+        bool securityGuardPathIsCrowded() const;
+
+        uint8_t getValidPatrolDirections(const CoordsXY& loc) const;
+        Direction handymanDirectionToNearestLitter() const;
+        uint8_t handymanDirectionToUncutGrass(uint8_t valid_directions) const;
+        Direction directionSurface(Direction initialDirection) const;
+        Direction directionPath(uint8_t validDirections, PathElement* pathElement) const;
+        Direction mechanicDirectionSurface() const;
+        Direction mechanicDirectionPathRand(uint8_t pathDirections) const;
+        Direction mechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
+        bool updatePatrollingFindWatering();
+        bool updatePatrollingFindBin();
+        bool updatePatrollingFindSweeping();
+        bool updatePatrollingFindGrass();
     };
-    union
+    static_assert(sizeof(Staff) <= 512);
+
+    enum STAFF_ORDERS
     {
-        uint32_t StaffLitterSwept;
-        uint32_t StaffVandalsStopped;
+        STAFF_ORDERS_SWEEPING = (1 << 0),
+        STAFF_ORDERS_WATER_FLOWERS = (1 << 1),
+        STAFF_ORDERS_EMPTY_BINS = (1 << 2),
+        STAFF_ORDERS_MOWING = (1 << 3),
+        STAFF_ORDERS_INSPECT_RIDES = (1 << 0),
+        STAFF_ORDERS_FIX_RIDES = (1 << 1)
     };
-    uint32_t StaffBinsEmptied;
 
-    void UpdateStaff(uint32_t stepsToTake);
-    void Tick128UpdateStaff();
-    bool IsMechanic() const;
-    bool IsPatrolAreaSet(const CoordsXY& coords) const;
-    bool IsLocationInPatrol(const CoordsXY& loc) const;
-    bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
-    bool DoPathFinding();
-    void SetHireDate(int32_t hireDate);
-    int32_t GetHireDate() const;
+    Drawing::Colour StaffGetColour(StaffType staffType);
+    GameActions::Result StaffSetColour(StaffType staffType, Drawing::Colour value);
 
-    bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
+    money64 GetStaffWage(StaffType type);
 
-    static void ResetStats();
-    void Serialise(DataSerialiser& stream);
-
-    void ClearPatrolArea();
-    void SetPatrolArea(const CoordsXY& coords, bool value);
-    void SetPatrolArea(const MapRange& range, bool value);
-    bool HasPatrolArea() const;
-    void SetPatrolArea(const std::vector<TileCoordsXY>& area);
-
-private:
-    void UpdatePatrolling();
-    void UpdateMowing();
-    void UpdateSweeping();
-    void UpdateEmptyingBin();
-    void UpdateWatering();
-    void UpdateAnswering();
-    void UpdateFixing(int32_t steps);
-    bool UpdateFixingEnterStation(Ride& ride) const;
-    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride& ride);
-    bool UpdateFixingFixVehicle(bool firstRun, const Ride& ride);
-    bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride);
-    bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride);
-    bool UpdateFixingFixStationEnd(bool firstRun);
-    bool UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride);
-    bool UpdateFixingFixStationStart(bool firstRun, const Ride& ride);
-    bool UpdateFixingFixStationBrakes(bool firstRun, Ride& ride);
-    bool UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride);
-    bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& ride);
-    bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride);
-    void UpdateRideInspected(RideId rideIndex);
-    void UpdateHeadingToInspect();
-
-    bool DoHandymanPathFinding();
-    bool DoMechanicPathFinding();
-    bool DoEntertainerPathFinding();
-    bool DoMiscPathFinding();
-    bool IsMechanicHeadingToFixRideBlockingPath();
-
-    Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
-
-    void EntertainerUpdateNearbyPeeps() const;
-
-    uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
-    Direction HandymanDirectionToNearestLitter() const;
-    uint8_t HandymanDirectionToUncutGrass(uint8_t valid_directions) const;
-    Direction DirectionSurface(Direction initialDirection) const;
-    Direction DirectionPath(uint8_t validDirections, PathElement* pathElement) const;
-    Direction MechanicDirectionSurface() const;
-    Direction MechanicDirectionPathRand(uint8_t pathDirections) const;
-    Direction MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
-    bool UpdatePatrollingFindWatering();
-    bool UpdatePatrollingFindBin();
-    bool UpdatePatrollingFindSweeping();
-    bool UpdatePatrollingFindGrass();
-};
-static_assert(sizeof(Staff) <= 512);
-
-enum STAFF_ORDERS
-{
-    STAFF_ORDERS_SWEEPING = (1 << 0),
-    STAFF_ORDERS_WATER_FLOWERS = (1 << 1),
-    STAFF_ORDERS_EMPTY_BINS = (1 << 2),
-    STAFF_ORDERS_MOWING = (1 << 3),
-    STAFF_ORDERS_INSPECT_RIDES = (1 << 0),
-    STAFF_ORDERS_FIX_RIDES = (1 << 1)
-};
-
-enum class EntertainerCostume : uint8_t
-{
-    Panda,
-    Tiger,
-    Elephant,
-    Roman,
-    Gorilla,
-    Snowman,
-    Knight,
-    Astronaut,
-    Bandit,
-    Sheriff,
-    Pirate,
-
-    Count
-};
-
-extern const StringId StaffCostumeNames[EnumValue(EntertainerCostume::Count)];
-
-colour_t StaffGetColour(StaffType staffType);
-OpenRCT2::GameActions::Result StaffSetColour(StaffType staffType, colour_t value);
-uint32_t StaffGetAvailableEntertainerCostumes();
-int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList);
-
-money64 GetStaffWage(StaffType type);
-PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType);
-
-const PatrolArea& GetMergedPatrolArea(const StaffType type);
+    const PatrolArea& GetMergedPatrolArea(StaffType type);
+} // namespace OpenRCT2

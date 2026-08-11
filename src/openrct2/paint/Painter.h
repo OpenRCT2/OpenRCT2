@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,17 +12,15 @@
 #include "Paint.h"
 
 #include <ctime>
-#include <memory>
 #include <sfl/segmented_vector.hpp>
 #include <vector>
-
-struct DrawPixelInfo;
 
 namespace OpenRCT2
 {
     namespace Drawing
     {
         struct IDrawingEngine;
+        struct RenderTarget;
     } // namespace Drawing
 
     namespace Ui
@@ -35,7 +33,7 @@ namespace OpenRCT2
         struct Painter final
         {
         private:
-            std::shared_ptr<Ui::IUiContext> const _uiContext;
+            Ui::IUiContext& _uiContext;
             sfl::segmented_vector<PaintSession, 32> _paintSessionPool;
             std::vector<PaintSession*> _freePaintSessions;
             time_t _lastSecond = 0;
@@ -43,16 +41,16 @@ namespace OpenRCT2
             int32_t _frames = 0;
 
         public:
-            explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
+            explicit Painter(Ui::IUiContext& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
-            PaintSession* CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags, uint8_t rotation);
+            PaintSession* CreateSession(Drawing::RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
             void ReleaseSession(PaintSession* session);
             ~Painter();
 
         private:
-            void PaintReplayNotice(DrawPixelInfo& dpi, const char* text);
-            void PaintFPS(DrawPixelInfo& dpi);
+            void PaintReplayNotice(Drawing::RenderTarget& rt, const char* text);
+            void PaintFPS(Drawing::RenderTarget& rt);
             void MeasureFPS();
         };
     } // namespace Paint

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,6 +8,9 @@
  *****************************************************************************/
 
 #ifdef _WIN32
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
     #include <windows.h>
 #else
     #include <sys/stat.h>
@@ -19,14 +22,24 @@
 #include "FileStream.h"
 #include "String.hpp"
 
-#include <fstream>
-
 namespace OpenRCT2::File
 {
     bool Exists(u8string_view path)
     {
-        fs::path file = fs::u8path(path);
         LOG_VERBOSE("Checking if file exists: %s", u8string(path).c_str());
+        auto assetCheckResult = Platform::CheckAssetExists(path);
+        switch (assetCheckResult)
+        {
+            case Platform::AssetCheckResult::found:
+                return true;
+            case Platform::AssetCheckResult::notFound:
+                return false;
+            case Platform::AssetCheckResult::notApplicable:
+            default:
+                break;
+        }
+
+        fs::path file = fs::u8path(path);
         std::error_code ec;
         const auto result = fs::exists(file, ec);
         return result && ec.value() == 0;
@@ -61,14 +74,9 @@ namespace OpenRCT2::File
 
     std::vector<uint8_t> ReadAllBytes(u8string_view path)
     {
-        std::ifstream fs(fs::u8path(u8string(path)), std::ios::in | std::ios::binary);
-        if (!fs.is_open())
-        {
-            throw IOException("Unable to open " + u8string(path));
-        }
-
+        FileStream fstream(path, FileMode::open);
         std::vector<uint8_t> result;
-        auto fsize = Platform::GetFileSize(path);
+        auto fsize = fstream.GetLength();
         if (fsize > SIZE_MAX)
         {
             u8string message = String::stdFormat(
@@ -77,9 +85,10 @@ namespace OpenRCT2::File
         }
         else
         {
-            result.resize(fsize);
-            fs.read(reinterpret_cast<char*>(result.data()), result.size());
-            fs.exceptions(fs.failbit);
+            // Reserve capacity for fsize + 1 to support the caller adding a null terminator if they want (needed for quickjs)
+            result.reserve(fsize + 1);
+            result.resize(static_cast<size_t>(fsize));
+            fstream.Read(result.data(), result.size());
         }
         return result;
     }
@@ -124,8 +133,8 @@ namespace OpenRCT2::File
 
     void WriteAllBytes(u8string_view path, const void* buffer, size_t length)
     {
-        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
-        fs.Write(buffer, length);
+        auto fstream = FileStream(path, FileMode::write);
+        fstream.Write(buffer, length);
     }
 
     uint64_t GetLastModified(u8string_view path)

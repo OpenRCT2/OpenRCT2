@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,11 +9,23 @@
 
 #pragma once
 
-#include "../../interface/Colour.h"
-#include "../../sprites.h"
-#include "../../world/Location.hpp"
+#include "../../SpriteIds.h"
 
+#include <cstdint>
 #include <optional>
+
+struct CoordsXY;
+struct PaintSession;
+
+namespace OpenRCT2
+{
+    struct SurfaceElement;
+}
+
+namespace OpenRCT2::Drawing
+{
+    enum class Colour : uint8_t;
+}
 
 enum
 {
@@ -41,12 +53,12 @@ enum
     SPR_TERRAIN_MARTIAN = 2314,
     SPR_TERRAIN_MARTIAN_GRID = 2333,
     SPR_TERRAIN_MARTIAN_UNDERGROUND = 2352,
-    SPR_TERRAIN_CHECKERBOARD = 2371,
-    SPR_TERRAIN_CHECKERBOARD_GRID = 2390,
-    SPR_TERRAIN_CHECKERBOARD_UNDERGROUND = 2409,
-    SPR_TERRAIN_CHECKERBOARD_INVERTED = 2428,
-    SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID = 2447,
-    SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND = 2466,
+    SPR_TERRAIN_CHEQUERBOARD = 2371,
+    SPR_TERRAIN_CHEQUERBOARD_GRID = 2390,
+    SPR_TERRAIN_CHEQUERBOARD_UNDERGROUND = 2409,
+    SPR_TERRAIN_CHEQUERBOARD_INVERTED = 2428,
+    SPR_TERRAIN_CHEQUERBOARD_INVERTED_GRID = 2447,
+    SPR_TERRAIN_CHEQUERBOARD_INVERTED_UNDERGROUND = 2466,
     SPR_TERRAIN_DIRT = 2485,
     SPR_TERRAIN_DIRT_GRID = 2504,
     SPR_TERRAIN_DIRT_UNDERGROUND = 2523,
@@ -106,4 +118,6 @@ enum
     SPR_RCT1_WATER_OVERLAY = SPR_CSG_BEGIN + 46792,
 };
 
-std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos);
+std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY& pos);
+
+void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, const OpenRCT2::SurfaceElement& tileElement);

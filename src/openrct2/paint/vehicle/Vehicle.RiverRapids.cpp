@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
-#include "../../ride/Ride.h"
+#include "../../ride/CarEntry.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 
@@ -32,22 +32,22 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
-        imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+        imageDirection = Entity::Yaw::YawTo32(imageDirection);
 
         ImageId image_id;
         int32_t baseImage_id = imageDirection;
         uint32_t rotation = session.CurrentRotation;
         int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
         int32_t j = 0;
-        if (vehicle->Pitch == 0)
+        if (vehicle->pitch == VehiclePitch::flat)
         {
             baseImage_id = ecx & 7;
         }
         else
         {
-            if (vehicle->Pitch == 1 || vehicle->Pitch == 5)
+            if (vehicle->pitch == VehiclePitch::up12 || vehicle->pitch == VehiclePitch::down12)
             {
-                if (vehicle->Pitch == 5)
+                if (vehicle->pitch == VehiclePitch::down12)
                 {
                     baseImage_id = imageDirection ^ 16;
                 }
@@ -56,9 +56,9 @@ namespace OpenRCT2
                 baseImage_id += (ecx & 7);
                 baseImage_id += 8;
             }
-            else if (vehicle->Pitch == 2 || vehicle->Pitch == 6)
+            else if (vehicle->pitch == VehiclePitch::up25 || vehicle->pitch == VehiclePitch::down25)
             {
-                if (vehicle->Pitch == 6)
+                if (vehicle->pitch == VehiclePitch::down25)
                 {
                     baseImage_id = imageDirection ^ 16;
                 }
@@ -72,19 +72,19 @@ namespace OpenRCT2
                 baseImage_id = ecx & 7;
             }
         }
-        baseImage_id += carEntry->base_image_id;
+        baseImage_id += carEntry->baseImageId;
 
         const auto& riverRapidsBb = _riverRapidsBoundbox[j];
         auto bb = BoundBoxXYZ{ { riverRapidsBb.offset_x, riverRapidsBb.offset_y, riverRapidsBb.offset_z + z },
                                { riverRapidsBb.length_x, riverRapidsBb.length_y, riverRapidsBb.length_z } };
         image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
-        if (vehicle->IsGhost())
+        if (vehicle->isGhost())
         {
             image_id = ConstructionMarker.WithIndex(image_id.GetIndex());
         }
         PaintAddImageAsParent(session, image_id, { 0, 0, z }, bb);
 
-        if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+        if (session.rt.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->isGhost())
         {
             // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip,
             // but that's how the original does it...)

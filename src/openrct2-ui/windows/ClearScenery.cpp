@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,13 +11,18 @@
 
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/ClearAction.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/terraform/ClearAction.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/MapSelection.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
@@ -33,37 +38,29 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INCREMENT,
         WIDX_SMALL_SCENERY,
         WIDX_LARGE_SCENERY,
-        WIDX_FOOTPATH
+        WIDX_FOOTPATH,
+        WIDX_WALLS,
+        WIDX_FOOTPATH_ADDITIONS,
     };
 
-    static constexpr StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
-    static constexpr int32_t WW = 98;
-    static constexpr int32_t WH = 94;
+    static constexpr StringId kWindowTitle = STR_CLEAR_SCENERY;
+    static constexpr ScreenSize kWindowSize = { 98, 124 };
 
-    static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
+    static constexpr ScreenSize kClearSceneryButtonSize = { 24, 24 };
 
-    static Widget window_clear_scenery_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget(
-            { 27, 17 }, { 44, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_LAND_TOOL_SIZE_0,
-            STR_NONE), // preview box
-        MakeRemapWidget(
-            { 28, 18 }, { 16, 16 }, WindowWidgetType::TrnBtn, WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,
-            STR_ADJUST_SMALLER_LAND_TIP), // decrement size
-        MakeRemapWidget(
-            { 54, 32 }, { 16, 16 }, WindowWidgetType::TrnBtn, WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,
-            STR_ADJUST_LARGER_LAND_TIP), // increment size
-        MakeRemapWidget(
-            { 7, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,
-            STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
-        MakeRemapWidget(
-            { 37, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY,
-            STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
-        MakeRemapWidget(
-            { 67, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,
-            STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP), // footpaths
-        kWidgetsEnd,
-    };
+    // clang-format off
+    static constexpr auto window_clear_scenery_widgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget     ({ 27, 17 }, { 44, 32 },              WidgetType::imgBtn,  WindowColour::primary,   SPR_LAND_TOOL_SIZE_0,         kStringIdNone                                  ), // preview box
+        makeRemapWidget({ 28, 18 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,       STR_ADJUST_SMALLER_LAND_TIP                    ), // decrement size
+        makeRemapWidget({ 54, 32 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,       STR_ADJUST_LARGER_LAND_TIP                     ), // increment size
+        makeRemapWidget({  7, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_TREES,          STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP     ), // small scenery
+        makeRemapWidget({ 37, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_LARGE_SCENERY,  STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP     ), // large scenery
+        makeRemapWidget({ 22, 83 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_FOOTPATH,       STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP         ), // footpaths
+        makeRemapWidget({ 67, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_WALLS,          STR_CLEAR_SCENERY_REMOVE_WALLS_TIP             ), // walls
+        makeRemapWidget({ 52, 83 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_PATH_ADDITIONS, STR_CLEAR_SCENERY_REMOVE_FOOTPATH_ADDITIONS_TIP)  // footpath additions
+    );
+    // clang-format on
 
     class CleanSceneryWindow final : public Window
     {
@@ -71,58 +68,82 @@ namespace OpenRCT2::Ui::Windows
         bool _clearSmallScenery = true;
         bool _clearLargeScenery = false;
         bool _clearFootpath = false;
+        bool _clearWalls = true;
+        bool _clearFootpathAdditions = false;
         money64 _clearSceneryCost = kMoney64Undefined;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            widgets = window_clear_scenery_widgets;
-            hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+            setWidgets(window_clear_scenery_widgets);
+
+            widgetsSetHoldable(*this, { WIDX_INCREMENT, WIDX_DECREMENT });
+            widgetSetPressed(*this, WIDX_PREVIEW, true);
+            widgetSetPressed(*this, WIDX_SMALL_SCENERY, _clearSmallScenery);
+            widgetSetPressed(*this, WIDX_LARGE_SCENERY, _clearLargeScenery);
+            widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
+            widgetSetPressed(*this, WIDX_WALLS, _clearWalls);
+            widgetSetPressed(*this, WIDX_FOOTPATH_ADDITIONS, _clearFootpathAdditions);
+
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
 
             gLandToolSize = 2;
 
-            Invalidate();
+            invalidate();
         }
 
-        void OnClose() override
+        void onClose() override
         {
-            if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
+            if (isToolActive(WindowClass::clearScenery, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
-        void OnMouseUp(const WidgetIndex widgetIndex) override
+        void onMouseUp(const WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_PREVIEW:
                 {
                     Formatter ft;
                     ft.Add<uint16_t>(kLandToolMinimumSize);
                     ft.Add<uint16_t>(kLandToolMaximumSize);
-                    TextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+                    textInputOpen(
+                        WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, 3);
                     break;
                 }
                 case WIDX_SMALL_SCENERY:
                     _clearSmallScenery ^= 1;
-                    Invalidate();
+                    widgetSetPressed(*this, WIDX_SMALL_SCENERY, _clearSmallScenery);
+                    invalidate();
                     break;
                 case WIDX_LARGE_SCENERY:
                     _clearLargeScenery ^= 1;
-                    Invalidate();
+                    widgetSetPressed(*this, WIDX_LARGE_SCENERY, _clearLargeScenery);
+                    invalidate();
                     break;
                 case WIDX_FOOTPATH:
                     _clearFootpath ^= 1;
-                    Invalidate();
+                    widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
+                    invalidate();
+                    break;
+                case WIDX_WALLS:
+                    _clearWalls ^= 1;
+                    widgetSetPressed(*this, WIDX_WALLS, _clearWalls);
+                    invalidate();
+                    break;
+                case WIDX_FOOTPATH_ADDITIONS:
+                    _clearFootpathAdditions ^= 1;
+                    widgetSetPressed(*this, WIDX_FOOTPATH_ADDITIONS, _clearFootpathAdditions);
+                    invalidate();
                     break;
             }
         }
 
-        void OnMouseDown(const WidgetIndex widgetIndex) override
+        void onMouseDown(const WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -131,19 +152,19 @@ namespace OpenRCT2::Ui::Windows
                     gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_INCREMENT:
                     // Increment land tool size, if it stays within the limit
                     gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                     // Invalidate the window
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
+        void onTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
         {
             if (widgetIndex != WIDX_PREVIEW || text.empty())
                 return;
@@ -153,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t size = std::stol(std::string(text));
                 size = std::clamp<uint16_t>(size, kLandToolMinimumSize, kLandToolMaximumSize);
                 gLandToolSize = size;
-                Invalidate();
+                invalidate();
             }
             catch (const std::logic_error&)
             {
@@ -161,78 +182,71 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnUpdate() override
+        void onUpdate() override
         {
-            frame_no++;
+            currentFrame++;
             // Close window if another tool is open
-            if (!isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
-                Close();
+            if (!isToolActive(WindowClass::clearScenery, WIDX_BACKGROUND))
+                close();
         }
 
-        void Invalidate()
+        void onPrepareDraw() override
         {
-            // Set the preview image button to be pressed down
-            pressed_widgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
-                | (_clearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (_clearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
-
             // Update the preview image (for tool sizes up to 7)
-            window_clear_scenery_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+            widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            drawWidgets(rt);
 
             // Draw number for tool sizes bigger than 7
-            ScreenCoordsXY screenCoords = { windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
-                                            windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
+            ScreenCoordsXY screenCoords = { windowPos.x + widgets[WIDX_PREVIEW].midX(),
+                                            windowPos.y + widgets[WIDX_PREVIEW].midY() };
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
-                DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                drawText(rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
             }
 
             // Draw cost amount
             if (_clearSceneryCost != kMoney64Undefined && _clearSceneryCost != 0
-                && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                && !getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_clearSceneryCost);
-                screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
-                screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
-                DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                screenCoords.x = widgets[WIDX_PREVIEW].midX() + windowPos.x;
+                screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 57;
+                drawText(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::centre });
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
-        ClearAction GetClearAction()
+        GameActions::ClearAction GetClearAction()
         {
             auto range = MapRange(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y);
 
-            ClearableItems itemsToClear = 0;
+            GameActions::ClearableItems itemsToClear{};
 
             if (_clearSmallScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_SMALL;
+                itemsToClear.set(GameActions::ClearableItem::smallScenery);
             if (_clearLargeScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_LARGE;
+                itemsToClear.set(GameActions::ClearableItem::largeScenery);
             if (_clearFootpath)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_FOOTPATH;
+                itemsToClear.set(GameActions::ClearableItem::footpaths);
+            if (_clearWalls)
+                itemsToClear.set(GameActions::ClearableItem::walls);
+            if (_clearFootpathAdditions)
+                itemsToClear.set(GameActions::ClearableItem::pathAdditions);
 
-            return ClearAction(range, itemsToClear);
+            return GameActions::ClearAction(range, itemsToClear);
         }
 
         int8_t ToolUpdateClearLandPaint(const ScreenCoordsXY& screenPos)
         {
             uint8_t state_changed = 0;
 
-            MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+            gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapTile = ScreenGetMapXY(screenPos, nullptr);
 
@@ -241,15 +255,15 @@ namespace OpenRCT2::Ui::Windows
                 return state_changed;
             }
 
-            if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+            if (!gMapSelectFlags.has(MapSelectFlag::enable))
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.set(MapSelectFlag::enable);
                 state_changed++;
             }
 
-            if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+            if (gMapSelectType != MapSelectType::full)
             {
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
+                gMapSelectType = MapSelectType::full;
                 state_changed++;
             }
 
@@ -288,7 +302,6 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            MapInvalidateSelectionRect();
             return state_changed;
         }
 
@@ -302,16 +315,18 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto action = GetClearAction();
-            auto result = GameActions::Query(&action);
-            auto cost = (result.Error == GameActions::Status::Ok ? result.Cost : kMoney64Undefined);
+            action.SetFlags({ GameActions::CommandFlag::allowDuringPaused });
+            auto result = GameActions::Query(&action, getGameState());
+            auto cost = (result.error == GameActions::Status::ok ? result.cost : kMoney64Undefined);
             if (_clearSceneryCost != cost)
             {
                 _clearSceneryCost = cost;
-                WindowInvalidateByClass(WindowClass::ClearScenery);
+                auto* windowMgr = GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::clearScenery);
             }
         }
 
-        void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
@@ -321,49 +336,51 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+                    if (gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto action = GetClearAction();
-                        GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Bulldozer;
+                        GameActions::Execute(&action, getGameState());
+                        gCurrentToolId = Tool::bulldozer;
                     }
                     break;
             }
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (WindowFindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                {
+                    auto* windowMgr = GetWindowManager();
+                    if (windowMgr->FindByClass(WindowClass::error) == nullptr && gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto action = GetClearAction();
-                        GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Bulldozer;
+                        GameActions::Execute(&action, getGameState());
+                        gCurrentToolId = Tool::bulldozer;
                     }
                     break;
+                }
             }
         }
 
-        void OnToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void onToolUp(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    MapInvalidateSelectionRect();
-                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::Bulldozer;
+                    gMapSelectFlags.unset(MapSelectFlag::enable);
+                    gCurrentToolId = Tool::bulldozer;
                     break;
             }
         }
 
-        void OnToolAbort(WidgetIndex widgetIndex) override
+        void onToolAbort(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
@@ -376,8 +393,9 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ClearSceneryOpen()
     {
-        return WindowFocusOrCreate<CleanSceneryWindow>(
-            WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<CleanSceneryWindow>(
+            WindowClass::clearScenery, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, {});
     }
 
     /**
@@ -386,16 +404,16 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleClearSceneryWindow()
     {
-        if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::clearScenery, WIDX_BACKGROUND))
         {
             ToolCancel();
         }
         else
         {
             ShowGridlines();
-            auto* toolWindow = ContextOpenWindow(WindowClass::ClearScenery);
-            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::Bulldozer);
-            InputSetFlag(INPUT_FLAG_6, true);
+            auto* toolWindow = ContextOpenWindow(WindowClass::clearScenery);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::bulldozer);
+            gInputFlags.set(InputFlag::allowRightMouseRemoval);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -1,0 +1,17 @@
+{
+    "scenario_name": "Build your own Six Flags Great Adventure",
+    "sha256": "0129e96a5c5495f114877bfe68488f164d8420dc6c8f193e3c739d3d3ee26b3f",
+    "land_ownership": {
+        "unowned": {
+            "coordinates": [
+                [ 241, 59 ],
+                [ 242, 59 ]
+            ]
+        },
+        "owned": {
+            "coordinates": [
+                [ 145, 31 ]
+            ]
+        }
+    }
+}

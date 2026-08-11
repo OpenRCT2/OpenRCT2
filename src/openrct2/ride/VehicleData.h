@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,9 @@
 
 #include <cstdint>
 
-extern const uint8_t* Rotation1TimeToSpriteMaps[];
-extern const uint8_t* Rotation2TimeToSpriteMaps[];
-extern const uint8_t* Rotation3TimeToSpriteMaps[];
+extern const uint8_t* kTwistTimeToSpriteMaps[];
+extern const uint8_t* kEnterpriseTimeToSpriteMaps[];
+extern const uint8_t* kMerryGoRoundTimeToSpriteMaps[];
 
 struct TopSpinTimeToSpriteMap
 {
@@ -21,12 +21,12 @@ struct TopSpinTimeToSpriteMap
     uint8_t bank_rotation;
 };
 
-extern const TopSpinTimeToSpriteMap* TopSpinTimeToSpriteMaps[];
+extern const TopSpinTimeToSpriteMap* kTopSpinTimeToSpriteMaps[];
 
 extern const uint8_t MotionSimulatorTimeToSpriteMap[];
 extern const int32_t MotionSimulatorTimeToSpriteMapCount;
 
-extern const int32_t SubpositionTranslationDistances[];
-extern const int32_t AccelerationFromPitch[];
+extern const uint8_t kSpaceRingsTimeToSpriteMap[];
 
-extern const int32_t SpriteDirectionToSoundDirection[];
+/** rct2: 0x0099F9D0 */
+extern const int8_t* kSwingingTimeToSpriteMaps[];

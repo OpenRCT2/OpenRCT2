@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,55 +9,58 @@
 
 #pragma once
 
-#include "../../../sprites.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
-#include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor SpaceRingsRTD =
+namespace OpenRCT2
 {
-    .Category = RIDE_CATEGORY_GENTLE,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+constexpr RideTypeDescriptor kSpaceRingsRTD =
+{
+    .Category = RideCategory::gentle,
+    .StartTrackPiece = TrackElemType::flatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::spaceRings,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
+    .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::SpaceRings),
-    .DefaultMode = RideMode::SpaceRings,
+    .RideModes = EnumsToFlags(RideMode::spaceRings),
+    .DefaultMode = RideMode::spaceRings,
     .Naming = { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS },
-    .NameConvention = { RideComponentType::Ring, RideComponentType::Structure, RideComponentType::Station },
-    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
+    .NameConvention = { RideComponentType::ring, RideComponentType::structure, RideComponentType::station },
+    .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 16, 48, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::null, 5, 5 },
     .RatingsMultipliers = { 12, 4, 4 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 36.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 5, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
-    .PhotoItem = ShopItem::Photo,
+    .DefaultMusic = kMusicObjectGentle,
+    .PhotoItem = ShopItem::photo,
     .BonusValue = 30,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "space_rings",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 50), RIDE_RATING(2, 10), RIDE_RATING(6, 50) },
+        RatingsCalculationType::flatRide,
+        { RideRating::make(1, 50), RideRating::make(2, 10), RideRating::make(6, 50) },
         7,
         0,
         false,
         {
-            { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
+            { RatingsModifierType::bonusScenery,          0,                25098, 0, 0 },
         },
     },
+    .specialType = RtdSpecialType::spaceRings,
 };
+} // namespace OpenRCT2
 // clang-format on

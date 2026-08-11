@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,46 +14,47 @@
     #include "../core/EnumMap.hpp"
     #include "ScriptEngine.h"
 
-    #include <unordered_map>
-
 using namespace OpenRCT2::Scripting;
 
-static const EnumMap<HOOK_TYPE> HooksLookupTable({
-    { "action.query", HOOK_TYPE::ACTION_QUERY },
-    { "action.execute", HOOK_TYPE::ACTION_EXECUTE },
-    { "interval.tick", HOOK_TYPE::INTERVAL_TICK },
-    { "interval.day", HOOK_TYPE::INTERVAL_DAY },
-    { "network.chat", HOOK_TYPE::NETWORK_CHAT },
-    { "network.authenticate", HOOK_TYPE::NETWORK_AUTHENTICATE },
-    { "network.join", HOOK_TYPE::NETWORK_JOIN },
-    { "network.leave", HOOK_TYPE::NETWORK_LEAVE },
-    { "ride.ratings.calculate", HOOK_TYPE::RIDE_RATINGS_CALCULATE },
-    { "action.location", HOOK_TYPE::ACTION_LOCATION },
-    { "guest.generation", HOOK_TYPE::GUEST_GENERATION },
-    { "vehicle.crash", HOOK_TYPE::VEHICLE_CRASH },
-    { "map.change", HOOK_TYPE::MAP_CHANGE },
-    { "map.changed", HOOK_TYPE::MAP_CHANGED },
-    { "map.save", HOOK_TYPE::MAP_SAVE },
-    { "park.guest.softcap.calculate", HOOK_TYPE::PARK_CALCULATE_GUEST_CAP },
-});
+static const EnumMap<HookType> HooksLookupTable(
+    {
+        { "action.query", HookType::actionQuery },
+        { "action.execute", HookType::actionExecute },
+        { "interval.tick", HookType::intervalTick },
+        { "interval.day", HookType::intervalDay },
+        { "network.chat", HookType::networkChat },
+        { "network.authenticate", HookType::networkAuthenticate },
+        { "network.join", HookType::networkJoin },
+        { "network.leave", HookType::networkLeave },
+        { "ride.ratings.calculate", HookType::rideRatingsCalculate },
+        { "action.location", HookType::actionLocation },
+        { "guest.generation", HookType::guestGeneration },
+        { "vehicle.crash", HookType::vehicleCrash },
+        { "map.change", HookType::mapChange },
+        { "map.changed", HookType::mapChanged },
+        { "map.resize", HookType::mapResize },
+        { "map.save", HookType::mapSave },
+        { "park.guest.softcap.calculate", HookType::parkCalculateGuestCap },
+        { "ride.breakdown", HookType::rideBreakDown },
+    });
 
-HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
+HookType OpenRCT2::Scripting::GetHookType(const std::string& name)
 {
     auto result = HooksLookupTable.find(name);
-    return (result != HooksLookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;
+    return (result != HooksLookupTable.end()) ? result->second : HookType::notDefined;
 }
 
 HookEngine::HookEngine(ScriptEngine& scriptEngine)
     : _scriptEngine(scriptEngine)
 {
-    _hookMap.resize(NUM_HOOK_TYPES);
-    for (size_t i = 0; i < NUM_HOOK_TYPES; i++)
+    _hookMap.resize(NUM_HookTypeS);
+    for (size_t i = 0; i < NUM_HookTypeS; i++)
     {
-        _hookMap[i].Type = static_cast<HOOK_TYPE>(i);
+        _hookMap[i].Type = static_cast<HookType>(i);
     }
 }
 
-uint32_t HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue& function)
+uint32_t HookEngine::Subscribe(HookType type, const std::shared_ptr<Plugin>& owner, const JSCallback& function)
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;
@@ -61,7 +62,7 @@ uint32_t HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, co
     return cookie;
 }
 
-void HookEngine::Unsubscribe(HOOK_TYPE type, uint32_t cookie)
+void HookEngine::Unsubscribe(HookType type, uint32_t cookie)
 {
     auto& hookList = GetHookList(type);
     auto& hooks = hookList.Hooks;
@@ -75,7 +76,7 @@ void HookEngine::Unsubscribe(HOOK_TYPE type, uint32_t cookie)
     }
 }
 
-void HookEngine::UnsubscribeAll(std::shared_ptr<const Plugin> owner)
+void HookEngine::UnsubscribeAll(const std::shared_ptr<const Plugin>& owner)
 {
     for (auto& hookList : _hookMap)
     {
@@ -94,81 +95,84 @@ void HookEngine::UnsubscribeAll()
     }
 }
 
-bool HookEngine::HasSubscriptions(HOOK_TYPE type) const
+bool HookEngine::HasSubscriptions(HookType type) const
 {
     auto& hookList = GetHookList(type);
     return !hookList.Hooks.empty();
 }
 
-bool HookEngine::IsValidHookForPlugin(HOOK_TYPE type, Plugin& plugin) const
+bool HookEngine::IsValidHookForPlugin(HookType type, Plugin& plugin) const
 {
-    if (type == HOOK_TYPE::MAP_CHANGED && plugin.GetMetadata().Type != PluginType::Intransient)
+    if (type == HookType::mapChanged && plugin.GetMetadata().Type != PluginType::intransient)
     {
         return false;
     }
     return true;
 }
 
-void HookEngine::Call(HOOK_TYPE type, bool isGameStateMutable)
+void HookEngine::Call(HookType type, bool isGameStateMutable)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, {}, isGameStateMutable);
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function.callback, {}, isGameStateMutable);
     }
 }
 
-void HookEngine::Call(HOOK_TYPE type, const DukValue& arg, bool isGameStateMutable)
+void HookEngine::Call(HookType type, const JSValue arg, bool isGameStateMutable, bool keepArgsAlive)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, { arg }, isGameStateMutable);
+        JSContext* ctx = hook.Owner ? hook.Owner->GetContext() : _scriptEngine.GetContext();
+        _scriptEngine.ExecutePluginCall(
+            hook.Owner, hook.Function.callback, { JS_DupValue(ctx, arg) }, isGameStateMutable, false);
+    }
+
+    if (!keepArgsAlive)
+    {
+        // One final free as we are the "owner" of the passed arg
+        JSContext* ctx = _scriptEngine.GetContext();
+        JS_FreeValue(ctx, arg);
     }
 }
 
 void HookEngine::Call(
-    HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable)
+    HookType type, const std::initializer_list<std::pair<std::string, HookValue>>& args, bool isGameStateMutable)
 {
     auto& hookList = GetHookList(type);
     for (auto& hook : hookList.Hooks)
     {
-        auto ctx = _scriptEngine.GetContext();
+        JSContext* ctx = hook.Owner.get()->GetContext();
 
         // Convert key/value pairs into an object
-        auto objIdx = duk_push_object(ctx);
+        JSValue obj = JS_NewObject(ctx);
         for (const auto& arg : args)
         {
-            if (arg.second.type() == typeid(int32_t))
-            {
-                auto val = std::any_cast<int32_t>(arg.second);
-                duk_push_int(ctx, val);
-            }
-            else if (arg.second.type() == typeid(std::string))
-            {
-                const auto& val = std::any_cast<std::string>(arg.second);
-                duk_push_string(ctx, val.c_str());
-            }
-            else
-            {
-                throw std::runtime_error("Not implemented");
-            }
-            duk_put_prop_string(ctx, objIdx, arg.first.data());
+            JSValue member = std::visit(
+                HookValuesToJS{
+                    [ctx](int64_t v) { return JS_NewInt64(ctx, v); },
+                    [ctx](uint32_t v) { return JS_NewInt64(ctx, v); },
+                    [ctx](int32_t v) { return JS_NewInt32(ctx, v); },
+                    [ctx](uint16_t v) { return JS_NewInt32(ctx, v); },
+                    [ctx](int16_t v) { return JS_NewInt32(ctx, v); },
+                    [ctx](const std::string& v) { return JSFromStdString(ctx, v); },
+                },
+                arg.second);
+            JS_SetPropertyStr(ctx, obj, arg.first.c_str(), member);
         }
 
-        std::vector<DukValue> dukArgs;
-        dukArgs.push_back(DukValue::take_from_stack(ctx));
-        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function, dukArgs, isGameStateMutable);
+        _scriptEngine.ExecutePluginCall(hook.Owner, hook.Function.callback, { obj }, isGameStateMutable);
     }
 }
 
-HookList& HookEngine::GetHookList(HOOK_TYPE type)
+HookList& HookEngine::GetHookList(HookType type)
 {
     auto index = static_cast<size_t>(type);
     return _hookMap[index];
 }
 
-const HookList& HookEngine::GetHookList(HOOK_TYPE type) const
+const HookList& HookEngine::GetHookList(HookType type) const
 {
     auto index = static_cast<size_t>(type);
     return _hookMap[index];

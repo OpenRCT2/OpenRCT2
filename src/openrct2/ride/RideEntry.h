@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,8 +19,7 @@
 #include <cstdint>
 
 // Set to 255 on all tracked ride entries
-static uint8_t constexpr NoFlatRideCars = 0xFF;
-static ride_type_t constexpr RIDE_TYPE_NULL = 0xFF;
+static uint8_t constexpr kNoFlatRideCars = 0xFF;
 
 struct RideNaming
 {
@@ -40,6 +39,44 @@ struct VehicleColourPresetList
     VehicleColour list[256];
 };
 
+// Constants used by the ride_type->flags property at 0x008
+enum class RideEntryFlag : uint8_t
+{
+    tabIconIsHalfScale,
+    noInversions,
+    noBankedTrack,
+    playDepartSound,
+    inverterShipSwingMode,
+    hasTwistRotationType,
+    hasEnterpriseRotationType,
+    disableWanderingDeprecated,
+    playSplashSound,
+    /**
+     * Since the Water Coaster water channel pieces share the same TrackElemType as the Dinghy Slide covered track pieces,
+     * this flag was originally named playSplashSoundSlide
+     */
+    coveredTrackIsWaterChannel,
+    isACoveredRide,
+    limitAirTimeBonus,
+    // Both flags below were made redundant by ride groups and deprecated in favour of it
+    separateRideNameDeprecated,
+    separateRideDeprecated,
+    cannotBreakDown,
+    disableLastOperatingModeDeprecated,
+    disableDoorConstructionDeprecated,
+    disableFirstTwoOperatingModesDeprecated,
+    disableCollisionCrashes,
+    disableColourTab,
+    // Must be set with Inverter Ship swing mode as well
+    magicCarpetSwingMode,
+    riderControlsSpeed,
+    hideEmptyTrains,
+    // Hide the ‘Reverse trains’ checkbox in the Ride window. Used for symmetrical spinning trains and legacy pre-reversed
+    // vehicles (to avoid double-dipping on the reverse bonus).
+    noReverseOption,
+};
+using RideEntryFlags = FlagHolder<uint32_t, RideEntryFlag>;
+
 /**
  * Ride type structure.
  */
@@ -48,8 +85,8 @@ struct RideObjectEntry
     RideNaming naming;
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
-    uint32_t flags;
-    ride_type_t ride_type[OpenRCT2::RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+    RideEntryFlags flags;
+    ride_type_t ride_type[OpenRCT2::RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;
     uint8_t cars_per_flat_ride;
@@ -64,13 +101,13 @@ struct RideObjectEntry
     uint8_t RearCar;
     uint8_t ThirdCar;
     uint8_t BuildMenuPriority;
-    CarEntry Cars[OpenRCT2::RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
+    CarEntry Cars[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
     VehicleColourPresetList* vehicle_preset_list;
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
-    uint8_t max_height;
-    ShopItem shop_item[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
+    uint8_t maxHeight;
+    ShopItem shop_item[OpenRCT2::RCT2::ObjectLimits::kMaxShopItemsPerRideEntry];
     StringId capacity;
     uint8_t Clearance;
 
@@ -92,12 +129,15 @@ struct RideObjectEntry
     {
         for (const auto& currentRideType : ride_type)
         {
-            if (currentRideType != RIDE_TYPE_NULL)
+            if (currentRideType != kRideTypeNull)
                 return currentRideType;
         }
 
-        return RIDE_TYPE_NULL;
+        return kRideTypeNull;
     }
 };
 
-RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry& rideEntry);
+namespace OpenRCT2
+{
+    RideNaming GetRideNaming(ride_type_t rideType, const RideObjectEntry* rideEntry);
+}

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,24 +12,25 @@
 #ifndef DISABLE_HTTP
 
     #include <functional>
+    #include <future>
     #include <map>
     #include <string>
-    #include <thread>
 
 namespace OpenRCT2::Http
 {
     enum class Status
     {
-        Invalid = 0,
-        Ok = 200,
-        NotFound = 404
+        invalid = 0,
+        error = 1,
+        ok = 200,
+        notFound = 404
     };
 
     enum class Method
     {
-        GET,
-        POST,
-        PUT
+        get,
+        post,
+        put
     };
 
     struct Response
@@ -45,16 +46,16 @@ namespace OpenRCT2::Http
     {
         std::string url;
         std::map<std::string, std::string> header;
-        Method method = Method::GET;
+        Method method = Method::get;
         std::string body;
         bool forceIPv4{};
     };
 
     Response Do(const Request& req);
 
-    inline void DoAsync(const Request& req, std::function<void(Response& res)> fn)
+    inline auto DoAsync(const Request& req, std::function<void(Response& res)> fn)
     {
-        auto thread = std::thread([=]() {
+        return std::async(std::launch::async, [=]() {
             Response res{};
             try
             {
@@ -67,7 +68,6 @@ namespace OpenRCT2::Http
             }
             fn(res);
         });
-        thread.detach();
     }
 } // namespace OpenRCT2::Http
 

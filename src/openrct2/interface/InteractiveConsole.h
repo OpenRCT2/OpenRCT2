@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,25 +9,25 @@
 
 #pragma once
 
-#include "../localisation/FormatCodes.h"
-
 #include <atomic>
 #include <cstdint>
 #include <string>
 
-struct DrawPixelInfo;
-struct TextInputSession;
-
 enum class ConsoleInput : uint8_t
 {
-    None,
-    LineClear,
-    LineExecute,
-    HistoryPrevious,
-    HistoryNext,
-    ScrollPrevious,
-    ScrollNext,
+    none,
+    lineClear,
+    lineExecute,
+    historyPrevious,
+    historyNext,
+    scrollPrevious,
+    scrollNext,
 };
+
+namespace OpenRCT2
+{
+    enum class FormatToken : uint8_t;
+} // namespace OpenRCT2
 
 class InteractiveConsole
 {
@@ -53,5 +53,5 @@ public:
     virtual void Clear() = 0;
     virtual void Close() = 0;
     virtual void Hide() = 0;
-    virtual void WriteLine(const std::string& s, FormatToken colourFormat) = 0;
+    virtual void WriteLine(const std::string& s, OpenRCT2::FormatToken colourFormat) = 0;
 };

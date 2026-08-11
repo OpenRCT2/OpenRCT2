@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,40 +17,46 @@
 #include <array>
 #include <iterator>
 #include <optional>
+#include <span>
 #include <string>
 
 struct CoordsXYZ;
-class Formatter;
+
+namespace OpenRCT2
+{
+    class Formatter;
+    struct GameState_t;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::News
 {
     enum class ItemType : uint8_t
     {
-        Null,
-        Ride,
-        PeepOnRide,
-        Peep,
-        Money,
-        Blank,
-        Research,
-        Peeps,
-        Award,
-        Graph,
-        Campaign,
-        Count
+        null,
+        ride,
+        peepOnRide,
+        peep,
+        money,
+        blank,
+        research,
+        peeps,
+        award,
+        graph,
+        campaign,
+        count
     };
 
-    constexpr size_t ItemTypeCount = static_cast<size_t>(News::ItemType::Count);
+    constexpr size_t ItemTypeCount = static_cast<size_t>(ItemType::count);
 
     enum ItemTypeProperty : uint8_t
     {
-        HasLocation = 1,
-        HasSubject = 2,
+        hasLocation = 1,
+        hasSubject = 2,
     };
 
     enum ItemFlags : uint8_t
     {
-        HasButton = 1 << 0,
+        hasButton = 1 << 0,
     };
 
     /**
@@ -58,67 +64,67 @@ namespace OpenRCT2::News
      */
     struct Item
     {
-        News::ItemType Type;
-        uint8_t Flags;
-        uint32_t Assoc;
-        uint16_t Ticks;
-        uint16_t MonthYear;
-        uint8_t Day;
-        std::string Text;
+        ItemType type = ItemType::null;
+        uint8_t flags{};
+        uint32_t assoc{};
+        uint16_t ticks{};
+        uint16_t monthYear{};
+        uint8_t day{};
+        std::string text{};
 
-        constexpr bool IsEmpty() const noexcept
+        constexpr bool isEmpty() const noexcept
         {
-            return Type == News::ItemType::Null;
+            return type == ItemType::null;
         }
 
-        constexpr uint8_t GetTypeProperties() const
+        constexpr uint8_t getTypeProperties() const
         {
-            switch (Type)
+            switch (type)
             {
-                case News::ItemType::Blank:
-                    return News::ItemTypeProperty::HasLocation;
-                case News::ItemType::Money:
-                case News::ItemType::Research:
-                case News::ItemType::Peeps:
-                case News::ItemType::Award:
-                case News::ItemType::Graph:
-                case News::ItemType::Campaign:
-                    return News::ItemTypeProperty::HasSubject;
-                case News::ItemType::Ride:
-                case News::ItemType::PeepOnRide:
-                case News::ItemType::Peep:
-                    return News::ItemTypeProperty::HasLocation | News::ItemTypeProperty::HasSubject;
-                case News::ItemType::Null:
-                case News::ItemType::Count:
+                case ItemType::blank:
+                    return hasLocation;
+                case ItemType::money:
+                case ItemType::research:
+                case ItemType::peeps:
+                case ItemType::award:
+                case ItemType::graph:
+                case ItemType::campaign:
+                    return hasSubject;
+                case ItemType::ride:
+                case ItemType::peepOnRide:
+                case ItemType::peep:
+                    return hasLocation | hasSubject;
+                case ItemType::null:
+                case ItemType::count:
                 default:
                     return 0;
             }
         }
 
-        void SetFlags(uint8_t flag)
+        void setFlags(uint8_t flag)
         {
-            Flags |= flag;
+            flags |= flag;
         }
 
-        constexpr bool TypeHasSubject() const
+        constexpr bool typeHasSubject() const
         {
-            return this->GetTypeProperties() & News::ItemTypeProperty::HasSubject;
+            return this->getTypeProperties() & hasSubject;
         }
 
-        constexpr bool TypeHasLocation() const
+        constexpr bool typeHasLocation() const
         {
-            return this->GetTypeProperties() & News::ItemTypeProperty::HasLocation;
+            return this->getTypeProperties() & hasLocation;
         }
 
-        constexpr bool HasButton() const noexcept
+        constexpr bool hasButton() const noexcept
         {
-            return Flags & News::ItemFlags::HasButton;
+            return flags & ItemFlags::hasButton;
         }
     };
 
     constexpr int32_t ItemHistoryStart = 11;
     constexpr int32_t MaxItemsArchive = 50;
-    constexpr int32_t MaxItems = News::ItemHistoryStart + News::MaxItemsArchive;
+    constexpr int32_t MaxItems = ItemHistoryStart + MaxItemsArchive;
 
     template<std::size_t N>
     class ItemQueue
@@ -126,13 +132,13 @@ namespace OpenRCT2::News
     public:
         static_assert(N > 0, "Cannot instantiate News::ItemQueue with size=0");
 
-        using value_type = typename std::array<News::Item, N>::value_type;
+        using value_type = std::array<Item, N>::value_type;
         using pointer = value_type*;
         using const_pointer = const value_type*;
         using reference = value_type&;
         using const_reference = const value_type&;
-        using iterator = typename std::array<News::Item, N>::iterator;
-        using const_iterator = typename std::array<News::Item, N>::const_iterator;
+        using iterator = std::array<Item, N>::iterator;
+        using const_iterator = std::array<Item, N>::const_iterator;
         using size_type = std::size_t;
         using difference_type = std::ptrdiff_t;
         using reverse_iterator = std::reverse_iterator<iterator>;
@@ -140,12 +146,12 @@ namespace OpenRCT2::News
 
         ItemQueue()
         {
-            std::get<0>(Queue).Type = News::ItemType::Null;
+            std::get<0>(_queue).type = ItemType::null;
         }
 
         constexpr iterator begin() noexcept
         {
-            return std::begin(Queue);
+            return std::begin(_queue);
         }
         constexpr const_iterator begin() const noexcept
         {
@@ -153,11 +159,11 @@ namespace OpenRCT2::News
         }
         constexpr const_iterator cbegin() const noexcept
         {
-            return std::cbegin(Queue);
+            return std::cbegin(_queue);
         }
         iterator end() noexcept
         {
-            return std::find_if(std::begin(Queue), std::end(Queue), [](const_reference item) { return item.IsEmpty(); });
+            return std::find_if(std::begin(_queue), std::end(_queue), [](const_reference item) { return item.isEmpty(); });
         }
         const_iterator end() const noexcept
         {
@@ -165,12 +171,12 @@ namespace OpenRCT2::News
         }
         const_iterator cend() const noexcept
         {
-            return std::find_if(std::cbegin(Queue), std::cend(Queue), [](const_reference item) { return item.IsEmpty(); });
+            return std::find_if(std::cbegin(_queue), std::cend(_queue), [](const_reference item) { return item.isEmpty(); });
         }
 
         constexpr bool empty() const noexcept
         {
-            return std::get<0>(Queue).IsEmpty();
+            return std::get<0>(_queue).isEmpty();
         }
 
         size_type size() const noexcept
@@ -197,35 +203,35 @@ namespace OpenRCT2::News
 
         void pop_front()
         {
-            std::move(std::begin(Queue) + 1, std::end(Queue), std::begin(Queue));
-            Queue[N - 1].Type = News::ItemType::Null;
+            std::move(std::begin(_queue) + 1, std::end(_queue), std::begin(_queue));
+            _queue[N - 1].type = ItemType::null;
         }
 
         void push_back(const_reference item)
         {
             auto it = end();
-            if (!std::distance(it, std::end(Queue)))
+            if (!std::distance(it, std::end(_queue)))
             {
                 // Reached queue max size, need to free some space
                 pop_front();
-                Queue[N - 1] = item;
+                _queue[N - 1] = item;
             }
             else
             {
                 *it = item;
                 ++it;
-                if (std::distance(it, std::end(Queue)))
-                    it->Type = News::ItemType::Null;
+                if (std::distance(it, std::end(_queue)))
+                    it->type = ItemType::null;
             }
         }
 
         reference operator[](size_type n) noexcept
         {
-            return Queue[n];
+            return _queue[n];
         }
         const_reference operator[](size_type n) const noexcept
         {
-            return Queue[n];
+            return _queue[n];
         }
 
         constexpr size_type capacity() const noexcept
@@ -235,84 +241,86 @@ namespace OpenRCT2::News
 
         void clear() noexcept
         {
-            front().Type = News::ItemType::Null;
+            std::fill(_queue.begin(), _queue.end(), Item{});
         }
 
     private:
-        std::array<News::Item, N> Queue;
+        std::array<Item, N> _queue;
     };
 
     struct ItemQueues
     {
-        News::Item& operator[](size_t index);
-        const News::Item& operator[](size_t index) const;
-        News::Item* At(int32_t index);
-        const News::Item* At(int32_t index) const;
-        bool IsEmpty() const;
-        void Clear();
-        uint16_t IncrementTicks();
-        News::Item& Current();
-        const News::Item& Current() const;
-        bool CurrentShouldBeArchived() const;
-        void ArchiveCurrent();
-        News::Item* FirstOpenOrNewSlot();
-        const auto& GetRecent() const
+        Item& operator[](size_t index);
+        const Item& operator[](size_t index) const;
+        Item* at(int32_t index);
+        const Item* at(int32_t index) const;
+        bool isEmpty() const;
+        void clear();
+        uint16_t incrementTicks();
+        Item& current();
+        const Item& current() const;
+        bool currentShouldBeArchived() const;
+        void archiveCurrent();
+        Item* firstOpenOrNewSlot();
+        const auto& getRecent() const
         {
-            return Recent;
+            return _recent;
         }
-        const auto& GetArchived() const
+        const auto& getArchived() const
         {
-            return Archived;
+            return _archived;
         }
 
         template<typename Predicate>
-        void ForeachRecentNews(Predicate&& p)
+        void foreachRecentNews(Predicate&& p)
         {
-            for (auto& newsItem : Recent)
+            for (auto& newsItem : _recent)
             {
                 p(newsItem);
             }
         }
 
         template<typename Predicate>
-        void ForeachArchivedNews(Predicate&& p)
+        void foreachArchivedNews(Predicate&& p)
         {
-            for (auto& newsItem : Archived)
+            for (auto& newsItem : _archived)
             {
                 p(newsItem);
             }
         }
 
     private:
-        int32_t RemoveTime() const;
+        int32_t removeTime() const;
 
-        News::ItemQueue<News::ItemHistoryStart> Recent;
-        News::ItemQueue<News::MaxItemsArchive> Archived;
+        ItemQueue<ItemHistoryStart> _recent;
+        ItemQueue<MaxItemsArchive> _archived;
     };
 
-    void InitQueue();
+    void InitQueue(GameState_t& gameState);
 
     void UpdateCurrentItem();
     void CloseCurrentItem();
 
-    std::optional<CoordsXYZ> GetSubjectLocation(News::ItemType type, int32_t subject);
+    std::optional<CoordsXYZ> GetSubjectLocation(ItemType type, int32_t subject);
 
-    News::Item* AddItemToQueue(News::ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter);
-    News::Item* AddItemToQueue(News::ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter);
-    News::Item* AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc);
+    Item* AddItemToQueue(ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter);
+    Item* AddItemToQueue(ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter);
+    Item* AddItemToQueue(ItemType type, const utf8* text, uint32_t assoc);
 
-    bool CheckIfItemRequiresAssoc(News::ItemType type);
+    bool CheckIfItemRequiresAssoc(ItemType type);
 
-    void OpenSubject(News::ItemType type, int32_t subject);
+    void OpenSubject(ItemType type, int32_t subject);
 
-    void DisableNewsItems(News::ItemType type, uint32_t assoc);
+    void DisableNewsItems(ItemType type, uint32_t assoc);
 
-    News::Item* GetItem(int32_t index);
+    Item* GetItem(int32_t index);
 
     bool IsQueueEmpty();
 
     bool IsValidIndex(int32_t index);
 
-    void AddItemToQueue(News::Item* newNewsItem);
+    void AddItemToQueue(Item* newNewsItem);
     void RemoveItem(int32_t index);
+
+    void importNewsItems(GameState_t& gameState, std::span<const Item> recent, std::span<const Item> archived);
 } // namespace OpenRCT2::News

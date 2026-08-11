@@ -1,4 +1,4 @@
-#version 150
+#version 330 core
 
 uniform vec4 uPalette[256];
 uniform usampler2D uTexture;

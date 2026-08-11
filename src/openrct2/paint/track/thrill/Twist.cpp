@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,18 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -37,29 +36,29 @@ static void PaintTwistStructure(
 
     height += 7;
 
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
-        vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
 
-        session.InteractionType = ViewportInteractionItem::Entity;
+        session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
     uint32_t frameNum = (direction * 88) % 216;
     if (vehicle != nullptr)
     {
-        frameNum += (vehicle->Orientation >> 3) << 4;
-        frameNum += vehicle->Pitch;
+        frameNum += (vehicle->orientation >> 3) << 4;
+        frameNum += vehicle->flatRideAnimationFrame;
         frameNum = frameNum % 216;
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
     }
 
-    auto baseImageId = rideEntry->Cars[0].base_image_id;
+    auto baseImageId = rideEntry->Cars[0].baseImageId;
     auto structureFrameNum = frameNum % 24;
     auto imageId = imageTemplate.WithIndex(baseImageId + structureFrameNum);
     const BoundBoxXYZ bb = {
@@ -68,7 +67,7 @@ static void PaintTwistStructure(
     };
     PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, bb);
 
-    if (session.DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session.rt.zoom_level < ZoomLevel{ 1 } && ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
@@ -80,7 +79,7 @@ static void PaintTwistStructure(
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 /** rct2: 0x0076D858 */
@@ -96,10 +95,10 @@ static void PaintTwist(
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, stationColour);
 
-    const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, stationColour, height, kFloorSpritesCork, stationObject);
+    const StationObject* stationObject = ride.getStationObject();
+    TrackPaintUtilPaintFloor(session, edges, stationColour, height, kFloorSpritesMulch, stationObject);
 
     switch (trackSequence)
     {
@@ -148,17 +147,16 @@ static void PaintTwist(
     switch (trackSequence)
     {
         case 1:
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
             break;
         case 3:
-            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
             break;
         case 6:
-            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
             break;
         case 7:
-            cornerSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -170,9 +168,9 @@ static void PaintTwist(
 /**
  * rct2: 0x0076D658
  */
-TrackPaintFunction GetTrackPaintFunctionTwist(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionTwist(TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack3x3)
+    if (trackType != TrackElemType::flatTrack3x3)
     {
         return TrackPaintFunctionDummy;
     }

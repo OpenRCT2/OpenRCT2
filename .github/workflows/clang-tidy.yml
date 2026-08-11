@@ -12,9 +12,9 @@ on:
 jobs:
   clang-tidy-check:
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:13-jammy
+    container: openrct2/openrct2-build:20-noble
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - uses: ZehMatt/clang-tidy-annotations@v1
       with:
         build_dir: 'build'

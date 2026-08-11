@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,52 +8,46 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Version.h>
+#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/interface/Colour.h>
+#include <openrct2/drawing/Text.h>
+#include <openrct2/interface/ColourWithFlags.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 500;
-    static constexpr int32_t WH = 30;
+    static constexpr ScreenSize kWindowSize = { 500, 30 };
 
     static constexpr uint8_t kTextOffset = 8;
 
-    static Widget _widgets[] = {
-        kWidgetsEnd,
-    };
-
     class TitleVersionWindow final : public Window
     {
-        void OnOpen() override
-        {
-            widgets = _widgets;
-        }
-
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             // Write name and version information
-            const auto whiteOutline = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
-            DrawText(dpi, windowPos, { whiteOutline }, gVersionInfoFull);
-            width = GfxGetStringWidth(gVersionInfoFull, FontStyle::Medium);
+            const auto whiteOutline = ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true);
+            drawText(rt, windowPos, gVersionInfoFull, { whiteOutline });
+            width = Drawing::getStringWidth(gVersionInfoFull, FontStyle::medium);
 
             // Write platform information
             constexpr const char platformInfo[] = OPENRCT2_PLATFORM " (" OPENRCT2_ARCHITECTURE ")";
-            DrawText(dpi, windowPos + ScreenCoordsXY(0, kListRowHeight), { whiteOutline }, platformInfo);
-            width = std::max<int16_t>(width, GfxGetStringWidth(platformInfo, FontStyle::Medium)) + kTextOffset;
+            drawText(rt, windowPos + ScreenCoordsXY(0, kListRowHeight), platformInfo, { whiteOutline });
+            width = std::max<int16_t>(width, Drawing::getStringWidth(platformInfo, FontStyle::medium)) + kTextOffset;
         }
     };
 
     WindowBase* TitleVersionOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::TitleVersion);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::titleVersion);
         if (window == nullptr)
         {
-            window = WindowCreate<TitleVersionWindow>(
-                WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), WW, WH,
-                WF_STICK_TO_BACK | WF_TRANSPARENT);
+            window = windowMgr->Create<TitleVersionWindow>(
+                WindowClass::titleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), kWindowSize,
+                { WindowFlag::stickToBack, WindowFlag::transparent, WindowFlag::noTitleBar });
         }
         return window;
     }

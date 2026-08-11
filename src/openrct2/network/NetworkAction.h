@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,55 +9,59 @@
 
 #pragma once
 
-#include "../Game.h"
+#include "../actions/GameAction.hpp"
 #include "../localisation/StringIdType.h"
 
 #include <array>
 #include <string>
 #include <vector>
 
-enum class NetworkPermission : uint32_t
+namespace OpenRCT2::Network
 {
-    Chat,
-    Terraform,
-    SetWaterLevel,
-    TogglePause,
-    CreateRide,
-    RemoveRide,
-    BuildRide,
-    RideProperties,
-    Scenery,
-    Path,
-    ClearLandscape,
-    Guest,
-    Staff,
-    ParkProperties,
-    ParkFunding,
-    KickPlayer,
-    ModifyGroups,
-    SetPlayerGroup,
-    Cheat,
-    ToggleSceneryCluster,
-    PasswordlessLogin,
-    ModifyTile,
-    EditScenarioOptions,
+    enum class Permission : uint32_t
+    {
+        chat,
+        terraform,
+        setWaterLevel,
+        togglePause,
+        createRide,
+        removeRide,
+        buildRide,
+        rideProperties,
+        scenery,
+        path,
+        clearLandscape,
+        guest,
+        staff,
+        parkProperties,
+        parkFunding,
+        kickPlayer,
+        modifyGroups,
+        setPlayerGroup,
+        cheat,
+        toggleSceneryCluster,
+        passwordlessLogin,
+        modifyTile,
+        editScenarioOptions,
+        dragPathArea,
 
-    Count
-};
+        count,
+    };
 
-class NetworkAction final
-{
-public:
-    StringId Name;
-    std::string PermissionName;
-    std::vector<GameCommand> Commands;
-};
+    class NetworkAction final
+    {
+    public:
+        StringId name;
+        std::string permissionName;
+        std::vector<GameCommand> commands;
+    };
 
-class NetworkActions final
-{
-public:
-    static const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> Actions;
+    class NetworkActions final
+    {
+    public:
+        static const std::array<NetworkAction, static_cast<size_t>(Permission::count)> kActions;
 
-    static NetworkPermission FindCommand(GameCommand command);
-    static NetworkPermission FindCommandByPermissionName(const std::string& permission_name);
-};
+        static Permission findCommand(GameCommand command);
+        static Permission findCommandByPermissionName(const std::string& permission_name);
+    };
+} // namespace OpenRCT2::Network

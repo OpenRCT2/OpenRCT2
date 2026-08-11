@@ -1,0 +1,564 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2026 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "FileBrowser.h"
+
+#include <cstdint>
+#include <functional>
+#include <openrct2-ui/UiStringIds.h>
+#include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Game.h>
+#include <openrct2/GameState.h>
+#include <openrct2/PlatformEnvironment.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Path.hpp>
+#include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/WindowTypes.h>
+#include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/StringIds.h>
+#include <openrct2/platform/Platform.h>
+#include <openrct2/rct2/T6Exporter.h>
+#include <openrct2/ride/TrackDesign.h>
+#include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenes/SceneManager.h>
+#include <openrct2/scenes/editor/EditorScene.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
+#include <openrct2/windows/Intent.h>
+
+#ifdef __EMSCRIPTEN__
+extern "C" {
+extern void EmscriptenLoadGame(OpenRCT2::LoadSaveType type);
+extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, OpenRCT2::LoadSaveType type);
+}
+#endif
+
+namespace OpenRCT2::Ui::FileBrowser
+{
+    static LoadSaveCallback _loadSaveCallback;
+    static bool _loadSaveCallbackIsJs = false;
+
+    WindowBase* OpenPreferred(
+        LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, bool isJsCallback,
+        TrackDesign* trackDesign)
+    {
+#ifdef __EMSCRIPTEN__
+        if (action == LoadSaveAction::save)
+        {
+            Select("/save.park", action, type, trackDesign);
+            EmscriptenSaveGame(type == LoadSaveType::track, false, type);
+        }
+        else
+        {
+            EmscriptenLoadGame(type);
+        }
+        return nullptr;
+#endif
+
+        auto hasFilePicker = GetContext()->GetUiContext().HasFilePicker();
+        auto& config = Config::Get().general;
+
+        // Open system file picker?
+        if (config.useNativeBrowseDialog && hasFilePicker)
+        {
+            const bool isSave = (action == LoadSaveAction::save);
+            const auto defaultDirectory = GetDir(type);
+
+            RegisterCallback(callback, isJsCallback);
+            const u8string path = OpenSystemFileBrowser(isSave, type, defaultDirectory, defaultPath, trackDesign);
+            if (!path.empty())
+            {
+                Select(path.c_str(), action, type, trackDesign);
+            }
+            UnregisterJSCallback();
+            return nullptr;
+        }
+
+        // Use built-in load/save window
+        return Windows::LoadsaveOpen(action, type, defaultPath, callback, isJsCallback, trackDesign);
+    }
+
+    bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
+    {
+        if (a.type != b.type)
+            return EnumValue(a.type) - EnumValue(b.type) < 0;
+
+        switch (Config::Get().general.loadSaveSort)
+        {
+            case FileBrowserSort::nameAscending:
+                return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+            case FileBrowserSort::nameDescending:
+                return -String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+            case FileBrowserSort::dateDescending:
+                return -difftime(a.dateModified, b.dateModified) < 0;
+            case FileBrowserSort::dateAscending:
+                return difftime(a.dateModified, b.dateModified) < 0;
+            case FileBrowserSort::sizeDescending:
+                return a.fileSizeBytes > b.fileSizeBytes;
+            case FileBrowserSort::sizeAscending:
+                return a.fileSizeBytes < b.fileSizeBytes;
+        }
+        return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+    }
+
+    void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
+    {
+        config_str = Path::GetDirectory(path);
+        Config::Save();
+    }
+
+    bool IsValidPath(const char* path)
+    {
+        // HACK This is needed because tracks get passed through with td?
+        //      I am sure this will change eventually to use the new FileScanner
+        //      which handles multiple patterns
+        auto filename = Path::GetFileNameWithoutExtension(path);
+
+        return Platform::IsFilenameValid(filename);
+    }
+
+    u8string GetLastDirectoryByType(LoadSaveType type)
+    {
+        switch (type)
+        {
+            case LoadSaveType::park:
+                return Config::Get().general.lastSaveGameDirectory;
+
+            case LoadSaveType::landscape:
+                return Config::Get().general.lastSaveLandscapeDirectory;
+
+            case LoadSaveType::scenario:
+                return Config::Get().general.lastSaveScenarioDirectory;
+
+            case LoadSaveType::track:
+                return Config::Get().general.lastSaveTrackDirectory;
+
+            default:
+                return u8string();
+        }
+    }
+
+    u8string GetInitialDirectoryByType(const LoadSaveType type)
+    {
+        std::optional<DirId> subdir = std::nullopt;
+        switch (type)
+        {
+            case LoadSaveType::park:
+                subdir = DirId::saves;
+                break;
+
+            case LoadSaveType::landscape:
+                subdir = DirId::landscapes;
+                break;
+
+            case LoadSaveType::scenario:
+                subdir = DirId::scenarios;
+                break;
+
+            case LoadSaveType::track:
+                subdir = DirId::trackDesigns;
+                break;
+
+            case LoadSaveType::heightmap:
+                subdir = DirId::heightmaps;
+                break;
+        }
+
+        auto& env = GetContext()->GetPlatformEnvironment();
+        if (subdir.has_value())
+            return env.GetDirectoryPath(DirBase::user, subdir.value());
+        else
+            return env.GetDirectoryPath(DirBase::user);
+    }
+
+    u8string GetFilterPatternByType(const LoadSaveType type, const bool isSave, const TrackDesign* trackDesign)
+    {
+        switch (type)
+        {
+            case LoadSaveType::park:
+                return isSave ? "*.park" : "*.park;*.sv6;*.sc6;*.sc4;*.sv4;*.sv7;*.sea";
+
+            case LoadSaveType::landscape:
+                return isSave ? "*.park" : "*.park;*.sc6;*.sv6;*.sc4;*.sv4;*.sv7;*.sea";
+
+            case LoadSaveType::scenario:
+                return isSave ? "*.park" : "*.park;*.sc6;*.sc4";
+
+            case LoadSaveType::track:
+            {
+                if (!isSave)
+                    return "*.td6;*.td4;*.td7";
+
+                if (trackDesign == nullptr)
+                    return "*.td6";
+
+                return "*" + trackDesignGetExtension(trackDesign->version);
+            }
+
+            case LoadSaveType::heightmap:
+                return "*.bmp;*.png";
+
+            default:
+                Guard::Fail("Unsupported load/save directory type.");
+        }
+
+        return {};
+    }
+
+    u8string RemovePatternWildcard(u8string_view pattern)
+    {
+        while (!pattern.empty() && pattern.front() == '*')
+        {
+            pattern.remove_prefix(1);
+        }
+        return u8string{ pattern };
+    }
+
+    u8string GetDir(const LoadSaveType type)
+    {
+        u8string result = GetLastDirectoryByType(type);
+        if (result.empty() || !Path::DirectoryExists(result))
+        {
+            result = GetInitialDirectoryByType(type);
+        }
+        return result;
+    }
+
+    void RegisterCallback(LoadSaveCallback callback, bool isJsCallback)
+    {
+        _loadSaveCallback = callback;
+        _loadSaveCallbackIsJs = isJsCallback;
+    }
+
+    void UnregisterJSCallback()
+    {
+        // This is very hacky but for a silly confluence of reasons we have to clear the callback if it is a callback to
+        // javascript plugin code, but not if it is to normal C++ code.
+        // https://github.com/mrmbernardi/OpenRCT2/pull/11#issuecomment-3448197606
+        if (_loadSaveCallbackIsJs)
+            _loadSaveCallback = {};
+    }
+
+    void InvokeCallback(ModalResult result, const utf8* path)
+    {
+        if (_loadSaveCallback != nullptr)
+        {
+            _loadSaveCallback(result, path);
+        }
+    }
+
+    void Select(const char* path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr)
+    {
+        if (!IsValidPath(path))
+        {
+            ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
+            return;
+        }
+
+        char pathBuffer[MAX_PATH];
+        String::safeUtf8Copy(pathBuffer, path, sizeof(pathBuffer));
+
+        // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
+        // no windows are open (besides the toolbars and LoadSave window).
+        auto* windowMgr = GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::rideConstruction);
+        windowMgr->CloseAllExceptClass(WindowClass::loadsave);
+
+        auto& gameState = getGameState();
+
+        switch (action)
+        {
+            case LoadSaveAction::load:
+            {
+                switch (type)
+                {
+                    case (LoadSaveType::park):
+                    {
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveGameDirectory, pathBuffer);
+                        if (GetContext()->LoadParkFromFile(pathBuffer))
+                        {
+                            InvokeCallback(ModalResult::ok, pathBuffer);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            GfxInvalidateScreen();
+                        }
+                        else
+                        {
+                            auto windowManager = GetWindowManager();
+                            if (!windowManager->FindByClass(WindowClass::error))
+                            {
+                                // Not the best message...
+                                ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                            }
+                            InvokeCallback(ModalResult::fail, pathBuffer);
+                        }
+                        break;
+                    }
+                    case (LoadSaveType::landscape):
+                    {
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
+
+                        auto* sceneMgr = GetContext()->GetSceneManager();
+                        auto* editorScene = static_cast<EditorScene*>(sceneMgr->getScenarioEditorScene());
+                        sceneMgr->setActiveScene(editorScene);
+                        if (editorScene->LoadLandscape(pathBuffer))
+                        {
+                            gCurrentLoadedPath = pathBuffer;
+                            GfxInvalidateScreen();
+                            InvokeCallback(ModalResult::ok, pathBuffer);
+                        }
+                        else
+                        {
+                            // Not the best message...
+                            ContextShowError(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                            InvokeCallback(ModalResult::fail, pathBuffer);
+                        }
+                        break;
+                    }
+                    case (LoadSaveType::scenario):
+                    {
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
+                        auto parkFlagsBackup = gameState.park.flags;
+                        gameState.park.flags.unset(ParkFlag::spritesInitialised);
+                        gameState.editorStep = Editor::Step::invalid;
+                        gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
+                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
+                        gameState.park.flags = parkFlagsBackup;
+
+                        if (success)
+                        {
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            InvokeCallback(ModalResult::ok, pathBuffer);
+
+                            auto* sceneMgr = GetContext()->GetSceneManager();
+                            sceneMgr->setActiveScene(sceneMgr->getTitleScene());
+                        }
+                        else
+                        {
+                            ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
+                            gameState.editorStep = Editor::Step::objectiveSelection;
+                            InvokeCallback(ModalResult::fail, pathBuffer);
+                        }
+                        break;
+                    }
+                    case (LoadSaveType::track):
+                    {
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveTrackDirectory, pathBuffer);
+                        auto intent = Intent(WindowClass::installTrack);
+                        intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
+                        ContextOpenIntent(&intent);
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        InvokeCallback(ModalResult::ok, pathBuffer);
+                        break;
+                    }
+                    case (LoadSaveType::heightmap):
+                    {
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        InvokeCallback(ModalResult::ok, pathBuffer);
+                        break;
+                    }
+                }
+                break;
+            }
+            case LoadSaveAction::save:
+            {
+                switch (type)
+                {
+                    case LoadSaveType::park:
+                    {
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveGameDirectory, pathBuffer);
+                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 1 : 0))
+                        {
+                            gScenarioSavePath = pathBuffer;
+                            gCurrentLoadedPath = pathBuffer;
+                            gIsAutosaveLoaded = false;
+                            gFirstTimeSaving = false;
+
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            GfxInvalidateScreen();
+
+                            InvokeCallback(ModalResult::ok, pathBuffer);
+                        }
+                        else
+                        {
+                            ContextShowError(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
+                            InvokeCallback(ModalResult::fail, pathBuffer);
+                        }
+                        break;
+                    }
+                    case LoadSaveType::landscape:
+                    {
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
+                        gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
+                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2))
+                        {
+                            gCurrentLoadedPath = pathBuffer;
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            GfxInvalidateScreen();
+                            InvokeCallback(ModalResult::ok, pathBuffer);
+                        }
+                        else
+                        {
+                            ContextShowError(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
+                            InvokeCallback(ModalResult::fail, pathBuffer);
+                        }
+                        break;
+                    }
+                    case LoadSaveType::scenario:
+                    {
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveScenarioDirectory, pathBuffer);
+                        auto parkFlagsBackup = gameState.park.flags;
+                        gameState.park.flags.unset(ParkFlag::spritesInitialised);
+                        gameState.editorStep = Editor::Step::invalid;
+                        gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
+                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
+                        gameState.park.flags = parkFlagsBackup;
+
+                        if (success)
+                        {
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            InvokeCallback(ModalResult::ok, pathBuffer);
+
+                            auto* sceneMgr = GetContext()->GetSceneManager();
+                            sceneMgr->setActiveScene(sceneMgr->getTitleScene());
+                        }
+                        else
+                        {
+                            ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
+                            gameState.editorStep = Editor::Step::objectiveSelection;
+                            InvokeCallback(ModalResult::fail, pathBuffer);
+                        }
+                        break;
+                    }
+                    case LoadSaveType::track:
+                    {
+                        auto extension = trackDesignGetExtension(trackDesignPtr->version);
+                        SetAndSaveConfigPath(Config::Get().general.lastSaveTrackDirectory, pathBuffer);
+
+                        const auto withExtension = Path::WithExtension(pathBuffer, extension);
+                        String::set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
+
+                        RCT2::T6Exporter t6Export{ *trackDesignPtr };
+
+                        auto success = t6Export.SaveTrack(pathBuffer);
+
+                        if (success)
+                        {
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            Windows::WindowRideMeasurementsDesignCancel();
+                            InvokeCallback(ModalResult::ok, path);
+                        }
+                        else
+                        {
+                            ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
+                            InvokeCallback(ModalResult::fail, path);
+                        }
+                        break;
+                    }
+                    case LoadSaveType::heightmap:
+                    {
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    StringId GetTitleStringId(LoadSaveType type, bool isSave)
+    {
+        switch (type)
+        {
+            case LoadSaveType::park:
+                return isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
+
+            case LoadSaveType::landscape:
+                return isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
+
+            case LoadSaveType::scenario:
+                return STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
+
+            case LoadSaveType::track:
+                return isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
+
+            case LoadSaveType::heightmap:
+                return STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
+
+            default:
+                return kStringIdNone;
+        }
+    }
+
+    static FileDialogDesc::Filter GetFilterForType(LoadSaveType type, bool isSave, const TrackDesign* trackDesign)
+    {
+        switch (type)
+        {
+            case LoadSaveType::park:
+                return { LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(type, isSave) };
+
+            case LoadSaveType::landscape:
+                return { LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(type, isSave) };
+
+            case LoadSaveType::scenario:
+                return { LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(type, isSave) };
+
+            case LoadSaveType::track:
+                return { LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(type, isSave, trackDesign) };
+
+            case LoadSaveType::heightmap:
+                return { LanguageGetString(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(type, isSave) };
+
+            default:
+                Guard::Fail("Unsupported load/save directory type.");
+                return { "", "" };
+        }
+    }
+
+    u8string OpenSystemFileBrowser(
+        bool isSave, LoadSaveType type, u8string defaultDirectory, u8string defaultPath, const TrackDesign* trackDesign)
+    {
+        u8string path = defaultDirectory;
+        if (isSave)
+        {
+            // The file browser requires a file path instead of just a directory
+            if (!defaultPath.empty())
+            {
+                path = Path::Combine(path, defaultPath);
+            }
+            else
+            {
+                auto buffer = getGameState().park.name;
+                if (buffer.empty())
+                {
+                    buffer = LanguageGetString(STR_UNNAMED_PARK);
+                }
+                path = Path::Combine(path, buffer);
+            }
+        }
+
+        StringId title = GetTitleStringId(type, isSave);
+
+        FileDialogDesc desc = {
+            .Type = isSave ? FileDialogType::save : FileDialogType::open,
+            .Title = LanguageGetString(title),
+            .InitialDirectory = defaultDirectory,
+            .DefaultFilename = isSave ? path : u8string(),
+            .Filters = { GetFilterForType(type, isSave, trackDesign), { LanguageGetString(STR_ALL_FILES), "*" } },
+        };
+
+        return ContextOpenCommonFileDialog(desc);
+    }
+} // namespace OpenRCT2::Ui::FileBrowser
+
+#ifdef __EMSCRIPTEN__
+extern "C" void LoadGameCallback(const char* path, OpenRCT2::LoadSaveType action)
+{
+    OpenRCT2::Ui::FileBrowser::Select(path, OpenRCT2::LoadSaveAction::load, action, nullptr);
+}
+#endif

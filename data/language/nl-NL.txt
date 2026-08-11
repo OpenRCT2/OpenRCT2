@@ -29,12 +29,9 @@ STR_0027    :Botsauto’s
 STR_0028    :Schommelschip
 STR_0029    :Loopingschip
 STR_0030    :Eetkraam
-STR_0031    :Onbekende kraam (1D)
 STR_0032    :Drankkraam
-STR_0033    :Onbekende kraam (1F)
 STR_0034    :Winkel
 STR_0035    :Draaimolen
-STR_0036    :Onbekende kraam (22)
 STR_0037    :Informatiekiosk
 STR_0038    :Toilet
 STR_0039    :Reuzenrad
@@ -80,16 +77,10 @@ STR_0078    :Omgekeerde haarspeldachtbaan
 STR_0079    :Vliegend tapijt
 STR_0080    :Onderzeeër-attractie
 STR_0081    :Riviertocht
-STR_0082    :Onbekende attractie (50)
 STR_0083    :Enterprise
-STR_0084    :Onbekende attractie (52)
-STR_0085    :Onbekende attractie (53)
-STR_0086    :Onbekende attractie (54)
-STR_0087    :Onbekende attractie (55)
 STR_0088    :Omgekeerde Impulse-achtbaan
 STR_0089    :Mini-achtbaan
 STR_0090    :Aangedreven mijntrein
-STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :Hybride achtbaan
 STR_0094    :Achtbaan met enkele rail
@@ -248,7 +239,6 @@ STR_0832    :Beeld 90° met de klok mee draaien
 STR_0833    :Spel pauzeren
 STR_0834    :Schijf- en spelopties
 STR_0839    :{UINT16} × {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Over ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alle rechten voorbehouden
@@ -260,16 +250,6 @@ STR_0855    :{WINDOW_COLOUR_2}Representatie door Jacqui Lyons van Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Met dank aan:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth en John Wardley
 STR_0865    :{STRINGID}
-STR_0866    :{POP16}{STRINGID}
-STR_0867    :{POP16}{POP16}{STRINGID}
-STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
-STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}▼
 STR_0877    :Te laag!
 STR_0878    :Te hoog!
@@ -288,7 +268,7 @@ STR_0892    :Screenshot opgeslagen als ‘{STRINGID}’
 STR_0893    :Screenshot maken mislukt!
 STR_0894    :‘Landscape data area’ zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
-STR_0896    :Constructie {POP16}{POP16}{STRINGID}
+STR_0896    :Constructie {STRING}
 STR_0897    :Richting
 STR_0898    :Bocht naar links
 STR_0899    :Bocht naar rechts
@@ -413,8 +393,6 @@ STR_1018    :Kan geen veranderingen aanbrengen…
 STR_1019    :Kan geen veranderingen aanbrengen…
 STR_1020    :Kan geen veranderingen aanbrengen…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} karretje per trein
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} karretjes per trein
 STR_1024    :{COMMA16} karretje per trein
 STR_1025    :{COMMA16} karretjes per trein
 STR_1026    :Perron is te lang!
@@ -445,9 +423,9 @@ STR_1050    :Kan dit niet laden…{NEWLINE}Bestand bevat ongeldige gegevens!
 STR_1051    :Onzichtbare ondersteuningen
 STR_1052    :Onzichtbare mensen
 STR_1053    :Attracties in park
-STR_1054    :Attractienaam
-STR_1055    :Persoonsnaam
-STR_1056    :Werknemersnaam
+STR_1054    :Attractienaam wijzigen
+STR_1055    :Naam wijzigen
+STR_1056    :Naam wijzigen
 STR_1057    :Attractienaam
 STR_1058    :Voer een nieuwe naam in voor deze attractie:
 STR_1059    :Kan deze attractie geen andere naam geven…
@@ -523,9 +501,7 @@ STR_1128    :Gestopt door blokremmen
 STR_1129    :Alle voertuigen in dezelfde kleur
 STR_1130    :Verschillende kleuren per {STRINGID}
 STR_1131    :Verschillende kleuren per voertuig
-STR_1132    :Voertuig {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Voertuig {POP16}{COMMA16}
-STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1133    :Voertuig {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :Selecteer hoofdkleur
 STR_1137    :Selecteer extra kleur 1
@@ -547,8 +523,8 @@ STR_1152    :Aantal maakt niet uit
 STR_1153    :Hoogtemarkering op attracties
 STR_1154    :Hoogtemarkering op land
 STR_1155    :Hoogtemarkering op paden
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Kan dit niet verwijderen…
 STR_1159    :Decor, tuinen en andere accessoires neerzetten
 STR_1160    :Waterniveaus bewerken
@@ -563,7 +539,6 @@ STR_1168    :Opties
 STR_1169    :(Geen)
 STR_1170    :{STRING}
 STR_1171    :{RED}Gesloten
-STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :Voetpaden en wachtrijen aanleggen
 STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
@@ -722,7 +697,6 @@ STR_1327    :Objecten 90° draaien
 STR_1328    :Vlak land vereist
 STR_1329    :{WINDOW_COLOUR_2}Lanceersnelheid:
 STR_1330    :Maximumsnelheid bij het verlaten van het station
-STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
@@ -820,7 +794,6 @@ STR_1425    :Voetpad
 STR_1426    :Wachtrij
 STR_1427    :{WINDOW_COLOUR_2}Bezoekers: {BLACK}{COMMA32} per uur
 STR_1428    :{WINDOW_COLOUR_2}Toegangsprijs:
-STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratis
 STR_1431    :Loopt
 STR_1432    :Gaat naar {STRINGID}
@@ -855,10 +828,10 @@ STR_1460    :Open baan in U-vorm
 STR_1461    :Gesloten baan in O-vorm
 STR_1462    :Te steil voor een kettinglift
 STR_1463    :Bezoekers
-STR_1464    :Spiraal omhoog (klein)
-STR_1465    :Spiraal omhoog (groot)
-STR_1466    :Spiraal omlaag (klein)
-STR_1467    :Spiraal omlaag (groot)
+STR_1464    :Halve spiraal omhoog (klein)
+STR_1465    :Halve spiraal omhoog (groot)
+STR_1466    :Halve spiraal omlaag (klein)
+STR_1467    :Halve spiraal omlaag (groot)
 STR_1468    :Werknemers
 STR_1469    :Attracties moeten beginnen en eindigen met stations
 STR_1470    :Station is niet lang genoeg
@@ -1065,14 +1038,13 @@ STR_1671    :{WINDOW_COLOUR_2}Totale winst: {BLACK}{CURRENCY2DP}
 STR_1672    :Remmen
 STR_1673    :Draaistop
 STR_1674    :Remsnelheid
-STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Snelheidslimiet voor remmen instellen
 STR_1677    :{WINDOW_COLOUR_2}Populariteit: {BLACK}onbekend
 STR_1678    :{WINDOW_COLOUR_2}Populariteit: {BLACK}{COMMA16}%
-STR_1679    :Spiraal omhoog (links)
-STR_1680    :Spiraal omhoog (rechts)
-STR_1681    :Spiraal omlaag (links)
-STR_1682    :Spiraal omlaag (rechts)
+STR_1679    :Halve spiraal omhoog (links)
+STR_1680    :Halve spiraal omhoog (rechts)
+STR_1681    :Halve spiraal omlaag (links)
+STR_1682    :Halve spiraal omlaag (rechts)
 STR_1683    :Oppervlakte 2 × 2
 STR_1684    :Oppervlakte 4 × 4
 STR_1685    :Oppervlakte 2 × 4
@@ -1121,23 +1093,19 @@ STR_1727    :Voor dit land zijn geen bouwrechten te koop!
 STR_1728    :Kan hier geen bouwrechten kopen…
 STR_1729    :Land is geen eigendom van het park!
 STR_1730    :{RED}Gesloten
-STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bouwen
 STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Aantal rondes:
 STR_1735    :Aantal rondes op het circuit
-STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Kan het aantal rondes niet aanpassen…
 STR_1739    :Race is gewonnen door bezoeker {INT32}
 STR_1740    :Race is gewonnen door {STRINGID}
 STR_1741    :Nog niet gebouwd!
 STR_1742    :{WINDOW_COLOUR_2}Max. aant. personen:
 STR_1743    :Het maximale aantal personen dat tegelijkertijd in deze attractie mag zijn
-STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Kan dit niet aanpassen…
 STR_1747    :{WINDOW_COLOUR_2}Tijdslimiet:
 STR_1748    :Tijdslimiet voor deze attractie
-STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Kan de tijdslimiet voor deze attractie niet aanpassen…
 STR_1752    :Toon een lijst van individuele bezoekers in het park
 STR_1753    :Toon een samengevatte lijst van bezoekers in het park
@@ -1158,22 +1126,9 @@ STR_1767    :Draaiende tunnel
 STR_1768    :Kan het aantal schommelingen niet aanpassen…
 STR_1769    :{WINDOW_COLOUR_2}Aantal schommelingen:
 STR_1770    :Aantal complete schommelingen
-STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
 STR_1777    :Attractiemuziek
-STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapak
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tijgerpak
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Olifantenpak
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romeins kostuum
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorillapak
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Sneeuwpoppak
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridderkostuum
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautenpak
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandietenkostuum
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffkostuum
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratenkostuum
 STR_1790    :Selecteer de uniformkleur voor dit type werknemer
 STR_1791    :{WINDOW_COLOUR_2}Uniformkleur:
 STR_1792    :Gaat {STRINGID} repareren
@@ -1182,7 +1137,6 @@ STR_1794    :Repareert {STRINGID}
 STR_1795    :Beantwoordt radio-oproep
 STR_1796    :Is defect en moet worden gerepareerd
 STR_1798    :Draaikolk
-STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Noodstop
 STR_1801    :Veiligheidsbeugel gaat niet open
 STR_1802    :Veiligheidsbeugel gaat niet dicht
@@ -1254,10 +1208,8 @@ STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan het aantal rotaties niet aanpassen…
 STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
 STR_1870    :Aantal complete rotaties
-STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY2DP} per uur
 STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY2DP} per uur
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Attracties inspecteren
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Attracties repareren
 STR_1878    :{WINDOW_COLOUR_2}Inspectie:
@@ -1299,7 +1251,6 @@ STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Lening:
-STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Kan niet meer geld lenen!
 STR_1919    :Onvoldoende contant geld beschikbaar!
 STR_1920    :Kan lening niet terugbetalen!
@@ -1337,7 +1288,6 @@ STR_1953    :Marketing
 STR_1954    :Onderzoeksbudget
 STR_1955    :{WINDOW_COLOUR_2}Aantal rondes:
 STR_1956    :Aantal af te leggen rondes per rit
-STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Kan het aantal rondes niet aanpassen…
 STR_1960    :{WINDOW_COLOUR_2}Prijs ballon:
@@ -1581,8 +1531,8 @@ STR_2212    :Toon lijst van bewakers in het park
 STR_2213    :Toon lijst van entertainers in het park
 STR_2214    :Bouwen is niet mogelijk wanneer het spel is gepauzeerd!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16} °C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16} °F
+STR_2216    :{WINDOW_COLOUR_1}{COMMA16} °C
+STR_2217    :{WINDOW_COLOUR_1}{COMMA16} °F
 STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de opstapplaats ({STRINGID})!{NEWLINE}Controleer of het is vastgelopen of stil komen te staan
 STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
@@ -1936,9 +1886,6 @@ STR_2706    :Nooit
 STR_2707    :Systeembestandsbrowser openen
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
 STR_2709    :Vervangen
-STR_2710    :Kies een bestandsnaam.
-STR_2718    :Eén map omhoog
-STR_2719    :Nieuw bestand
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s
@@ -2136,13 +2083,12 @@ STR_3092    :Je mag het station van deze attractie niet verplaatsen of verandere
 STR_3093    :{WINDOW_COLOUR_2}Favoriet: {BLACK}{STRINGID}
 STR_3094    :n.v.t.
 STR_3095    :{WINDOW_COLOUR_2}Snelheid kettingheuvel:
-STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :Selecteer de snelheid van de kettingheuvel
 STR_3099    :Kleur selecteren
 STR_3100    :Tweede kleur selecteren
 STR_3101    :Derde kleur selecteren
 STR_3102    :Gekleurd decor opnieuw verven
-STR_3103    :Kan dit niet opnieuw verversen…
+STR_3103    :Kan dit niet opnieuw verven…
 STR_3104    :Toon een lijst van attracties
 STR_3105    :Toon een lijst van winkels en kraampjes
 STR_3106    :Toon een lijst van informatiekiosken en andere faciliteiten
@@ -2179,7 +2125,6 @@ STR_3136    :Waarschuwing: Dit ontwerp zal worden gebouwd met een ander type kar
 STR_3137    :Decor naast baan selecteren
 STR_3138    :Alles deselecteren
 STR_3139    :Kabellift kan niet functioneren in deze werkmodus
-STR_3140    :Kabellift moet meteen na het station beginnen
 STR_3141    :Meerdere circuits zijn niet mogelijk met een kabellift
 STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
 STR_3143    :Laat bezoekers zien op kaart
@@ -2211,7 +2156,7 @@ STR_3188    :Lichtkranten
 STR_3189    :Voetpaden (oude stijl)
 STR_3190    :Extra’s voor paden
 STR_3191    :Decorgroepen
-STR_3192    :Parkingang
+STR_3192    :Parkingangen
 STR_3193    :Water
 STR_3195    :Lijst van uitvindingen
 STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
@@ -2230,7 +2175,6 @@ STR_3208    :Baanontwerpbeheer
 STR_3209    :Terug naar de vorige stap:
 STR_3210    :Verder naar de volgende stap:
 STR_3211    :Kaartgrootte:
-STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan de kaart niet verder verkleinen
 STR_3214    :Kan de kaart niet verder vergroten
 STR_3215    :Te dicht bij de rand van de kaart
@@ -2252,20 +2196,18 @@ STR_3230    :Blokremmen kunnen niet direct achter elkaar gebruikt worden
 STR_3231    :Blokremmen kunnen niet direct achter de top van een kettingheuvel geplaatst worden
 STR_3232    :Opties - Financiën
 STR_3233    :Opties - Bezoekers
-STR_3234    :Opties - Park
 STR_3235    :Toon financiële opties
 STR_3236    :Toon bezoekersopties
-STR_3237    :Toon parkopties
 STR_3238    :Zonder geld
 STR_3239    :Schakel geld compleet uit, zodat het park geen financiële beperkingen heeft
-STR_3240    :{WINDOW_COLOUR_2}Startsaldo:
-STR_3241    :{WINDOW_COLOUR_2}Startlening:
-STR_3242    :{WINDOW_COLOUR_2}Maximale lening:
-STR_3243    :{WINDOW_COLOUR_2}Jaarlijkse rente:
+STR_3240    :Startsaldo:
+STR_3241    :Startlening:
+STR_3242    :Maximale lening:
+STR_3243    :Jaarlijkse rente:
 STR_3244    :Marketingcampagnes niet toestaan
 STR_3245    :Geen advertenties, promoties of andere marketingacties toestaan
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan het startsaldo niet verder verhogen!
 STR_3249    :Kan het startsaldo niet verder verlagen!
 STR_3250    :Kan de startlening niet verder verhogen!
@@ -2274,14 +2216,10 @@ STR_3252    :Kan de maximumlening niet verder verhogen!
 STR_3253    :Kan de maximumlening niet verder verlagen!
 STR_3254    :Kan de rente niet verder verhogen!
 STR_3255    :Kan de rente niet verder verlagen!
-STR_3256    :Bezoekers houden meer van rustigere attracties
-STR_3257    :Selecteer of bezoekers in het algemeen meer van rustigere attracties houden
-STR_3258    :Bezoekers houden meer van spannende attracties
-STR_3259    :Selecteer of bezoekers in het algemeen meer van spannende attracties houden
-STR_3260    :{WINDOW_COLOUR_2}Geld per bezoeker (gemiddeld):
-STR_3261    :{WINDOW_COLOUR_2}Aanvankelijke stemming bezoekers:
-STR_3262    :{WINDOW_COLOUR_2}Aanvankelijke honger bezoekers:
-STR_3263    :{WINDOW_COLOUR_2}Aanvankelijke dorst bezoekers:
+STR_3260    :Geld per bezoeker (gemiddeld):
+STR_3261    :Aanvankelijke stemming bezoekers:
+STR_3262    :Aanvankelijke honger bezoekers:
+STR_3263    :Aanvankelijke dorst bezoekers:
 STR_3264    :Kan dit niet verder verhogen!
 STR_3265    :Kan dit niet verder verlagen!
 STR_3266    :Selecteer hoe dit park geld vraagt voor entree en attracties
@@ -2295,23 +2233,15 @@ STR_3273    :Hogere eisen voor goede parkwaardering
 STR_3274    :Maakt het krijgen van een goede parkwaardering uitdagender
 STR_3275    :Hogere eisen voor trekken bezoekers
 STR_3276    :Maakt het moeilijker om bezoekers aan te trekken
-STR_3277    :{WINDOW_COLOUR_2}Prijs landaankoop:
-STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
+STR_3277    :Prijs landaankoop:
+STR_3278    :Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
 STR_3280    :Betaalde entree / Attracties gratis
-STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
-STR_3282    :Doelstelling en parknaam selecteren
+STR_3281    :Entreeprijs:
 STR_3283    :Beschermde attracties selecteren
-STR_3284    :Doelselectie
 STR_3285    :Beschermde attracties
 STR_3286    :Selecteer doelstelling voor dit scenario
 STR_3287    :{WINDOW_COLOUR_2}Doelstelling:
-STR_3288    :Selecteer klimaat:
-STR_3289    :{WINDOW_COLOUR_2}Klimaat:
-STR_3290    :Koel en nat
-STR_3291    :Warm
-STR_3292    :Heet en droog
-STR_3293    :Koud
 STR_3294    :Aanpassen…
 STR_3295    :Parknaam veranderen
 STR_3296    :Scenarionaam veranderen
@@ -2540,7 +2470,7 @@ STR_5265    :Selecteer uit welke bronnen objecten zichtbaar zijn
 STR_5266    :Weergave
 STR_5267    :Landinstellingen
 STR_5268    :Audio
-STR_5269    :Bediening en interface
+STR_5269    :Bediening
 STR_5270    :Overig
 STR_5272    :Klein decor
 STR_5273    :Groot decor
@@ -2618,7 +2548,7 @@ STR_5368    :Crashstatus weg
 STR_5371    :Objectselectie
 STR_5372    :Sleeprichting van rechtermuisknop omkeren
 STR_5373    :Naam {STRINGID}
-STR_5374    :Datum {STRINGID}
+STR_5374    :Gewijzigd {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Naam bestaat al
@@ -2725,7 +2655,6 @@ STR_5549    :Jaar/maand/dag
 STR_5550    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jaar/dag/maand
 STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Spel pauzeren als de Steam-overlay open staat
 STR_5554    :Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
 STR_5556    :Speler verwijderen
@@ -2796,9 +2725,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :‘Echte’ parken
 STR_5626    :Overige parken
-STR_5627    :Scenariolijst groeperen op:
-STR_5628    :Oorsprong
-STR_5629    :Moeilijkheidsgraad
 STR_5630    :Moeilijke scenario’s ontgrendelden met makkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen…
@@ -2941,13 +2867,12 @@ STR_5807    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Aantal winkels en kraampjes: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Aantal informatiekiosken en andere faciliteiten: {BLACK}{COMMA16}
 STR_5810    :Voertuiglimieten uitschakelen
-STR_5811    :Als dit is ingeschakeld kun je{NEWLINE}tot 255 karretjes per trein en 31{NEWLINE}treinen per attractie hebben
+STR_5811    :Als dit is ingeschakeld kun je{NEWLINE}tot 255 karretjes per trein en 255{NEWLINE}treinen per attractie hebben
 STR_5812    :Status multiplayer tonen
 STR_5813    :‘{STRING}’
 STR_5814    :{WINDOW_COLOUR_1}‘{STRING}’
 STR_5815    :Toont FPS-teller aan de bovenkant van het scherm.
 STR_5816    :Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
-STR_5819    :[Vereist ‘Weergave uitgevoerd door hardware’]{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
 STR_5820    :Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
 STR_5822    :Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
 STR_5823    :Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).
@@ -3015,7 +2940,6 @@ STR_5887    :Staat voor het bedrag
 STR_5888    :Staat na het bedrag
 STR_5889    :Symbool eigen valuta
 STR_5890    :Voer het te gebruiken valutasymbool in:
-STR_5891    :Standaardmap
 STR_5892    :Ga naar de standaardmap
 STR_5893    :Wisselkoers
 STR_5894    :Vul de wisselkoers in
@@ -3041,12 +2965,11 @@ STR_5914    :Onbekende attractie
 STR_5915    :Speler
 STR_5916    :{COMMA16} speler
 STR_5917    :{COMMA16} spelers
-STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Toon weereffecten
 STR_5921    :Als dit aanstaat worden regen en verduisterde kleuren niet getoond tijdens stormen
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maximum: {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maximum: {COMMA16} {STRINGID} per trein
+STR_5922    :Maximum: {STRINGID}
+STR_5923    :Maximum: {COMMA16} {STRINGID} per trein
 STR_5924    :Details landschap
 STR_5925    :Details pad
 STR_5926    :Details baan
@@ -3084,7 +3007,7 @@ STR_5957    :Noordwest
 STR_5958    :Noordoost
 STR_5959    :Zuidoost
 STR_5960    :Gekozen hoek:
-STR_5961    :Volgnummer: {BLACK}{COMMA16}
+STR_5961    :Objectindex: {BLACK}{COMMA16}
 STR_5962    :Botsingsdetectie:
 STR_5963    :Verhoogde hoeken:
 STR_5964    :Diagonaal
@@ -3281,7 +3204,6 @@ STR_6165    :Verticale synchronisatie
 STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 STR_6167    :Geavanceerd
 STR_6168    :Titelpresentatie
-STR_6169    :Scenarioselectie
 STR_6170    :Overig
 STR_6171    :Zoeken
 STR_6172    :Zoeken
@@ -3358,7 +3280,7 @@ STR_6271    :Zijkanten terrein
 STR_6272    :Stations
 STR_6273    :Muziek
 STR_6274    :Kan kleurenschema niet instellen…
-STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
+STR_6275    :Stationsstijl
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
 STR_6277    :Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Aantal autosaves
@@ -3382,7 +3304,7 @@ STR_6304    :Decorselector openen
 STR_6305    :Multithreading
 STR_6306    :Experimentele optie om met meerdere threads te renderen. Dit kan de snelheid verhogen, maar ook instabiliteit veroorzaken.
 STR_6307    :Kleurenschema: {BLACK}{STRINGID}
-STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Opnieuw verbinden
 STR_6310    :{WINDOW_COLOUR_2}Positie: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Volgende: {BLACK}{INT32} {INT32} {INT32}
@@ -3432,7 +3354,6 @@ STR_6355    :Hoge dichtheid
 STR_6356    :Maakt eenden aan, mits er water op de kaart is.
 STR_6357    :Verwijdert alle eenden van de kaart.
 STR_6358    :Pagina {UINT16}
-STR_6359    :{POP16}{POP16}Pagina {UINT16}
 STR_6361    :Belichtingseffecten op attracties (experimenteel)
 STR_6362    :Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben ’s nachts verlicht worden.
 STR_6363    :Tekst is naar het klembord gekopieerd.
@@ -3472,7 +3393,7 @@ STR_6396    :Schermbeveiliging en -energiebesparing uitschakelen
 STR_6397    :Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
 STR_6398    :Bestand bevat niet-ondersteunde attractietypes. Update naar een nieuwere versie van OpenRCT2 om dit bestand te openen.
 STR_6399    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie nodig. Voer het pad naar de map waar de bestanden van RollerCoaster Tycoon 2 zich bevinden in bij de variabele “game_path” in config.ini. Start daarna OpenRCT2 opnieuw op.
-STR_6400    :Ik heb offline GOG-installer voor RollerCoaster Tycoon 2 gedownload, maar nog niet geïnstalleerd
+STR_6400    :Ik heb de offline GOG-installer voor RollerCoaster Tycoon 2 gedownload, maar nog niet geïnstalleerd
 STR_6401    :Ik heb RollerCoaster Tycoon 2 al geïnstalleerd
 STR_6402    :OpenRCT2-data instellen
 STR_6403    :Selecteer de optie die op je situatie van toepassing is:
@@ -3753,10 +3674,10 @@ STR_6678    :Bronbestand:
 STR_6679    :Vlak land
 STR_6680    :Simplex-ruis
 STR_6681    :Hoogtekaart
-STR_6682    :Mapgenerator - Generator
-STR_6683    :Mapgenerator - Terrein
-STR_6684    :Mapgenerator - Water
-STR_6685    :Mapgenerator - Bossen
+STR_6682    :Kaartgenerator - Generator
+STR_6683    :Kaartgenerator - Terrein
+STR_6684    :Kaartgenerator - Water
+STR_6685    :Kaartgenerator - Bossen
 STR_6686    :Ratio bomen/land:
 STR_6687    :Minimale boomhoogte:
 STR_6688    :Maximale boomhoogte:
@@ -3781,3 +3702,127 @@ STR_6706    :{WINDOW_COLOUR_2}Geselecteerd bestand: {BLACK}{STRING}
 STR_6707    :(n.v.t.)
 STR_6708    :Afrondsterkte
 STR_6709    :Voer een afrondsterkte in tussen {COMMA16} en {COMMA16}
+STR_6710    :Stabiel sorteren
+STR_6711    :Bestandsnaam:
+STR_6712    :Opslaan
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Naam
+STR_6715    :Gewijzigd
+STR_6716    :Grootte
+STR_6717    :Grootte {STRINGID}
+STR_6718    :NPC-animaties
+STR_6719    :Er moet minstens één object met bezoekersanimaties geselecteerd zijn.
+STR_6720    :Er moet minstens één object met klusjesmananimaties geselecteerd zijn.
+STR_6721    :Er moet minstens één object met monteuranimaties geselecteerd zijn.
+STR_6722    :Er moet minstens één object met bewakeranimaties geselecteerd zijn.
+STR_6723    :Er moet minstens één object met entertaineranimaties geselecteerd zijn.
+STR_6724    :Scenariobeschrijvingen
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dive loop (links)
+STR_6728    :Dive loop (rechts)
+STR_6729    :Kabellift moet meteen na het station of een blokrem beginnen.
+STR_6730    :Emscripten-data exporteren
+STR_6731    :Emscripten-data importeren
+STR_6732    :Toon een knop in de werkbalk om het beeld tegen de klok in te draaien.
+STR_6733    :Doorzichtig
+STR_6734    :Maakt kaartelementen die hoger staan dan de ingestelde bovengrens doorzichtig.
+STR_6735    :Naar bovenliggende map navigeren
+STR_6736    :Preview
+STR_6737    :Geen preview beschikbaar.
+STR_6738    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Datum: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Geld: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Aantal bezoekers: {BLACK}{UINT16}
+STR_6743    :Klimaat
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Intensiteitsvoorkeuren bezoekers:
+STR_6746    :Geen voorkeuren
+STR_6747    :Voorkeuren variëren (standaard)
+STR_6748    :Alleen minder intense attracties
+STR_6749    :Alleen intensere attracties
+STR_6750    :Selecteer welke intensiteit van attracties de voorkeur heeft van nieuwe bezoekers.
+STR_6751    :Wachtrijen kunnen niet gebruikt worden voor overwegen!
+STR_6752    :Scenario-opties - Doel
+STR_6753    :Scenario-opties - Scenario-details
+STR_6754    :Scenario-opties - Landbeperkingen
+STR_6755    :Toon opties voor doel
+STR_6756    :Toon opties voor scenario-details
+STR_6757    :Toon opties voor landbeperkingen
+STR_6758    :Leenopties
+STR_6759    :Bedrijfsmodel
+STR_6760    :Inkomen:
+STR_6761    :Scenariodetails
+STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Opslaan en autosaves
+STR_6765    :Geavanceerd
+STR_6766    :Wissen
+STR_6767    :Venster
+STR_6768    :Rendering
+STR_6769    :Gedrag
+STR_6770    :Frames beperken tot
+STR_6771    :Interne snelheid (standaard)
+STR_6772    :Verticale synchronisatie
+STR_6773    :Niet beperken
+STR_6774    :Laatste inspectie
+STR_6775    :{COMMA16} minuut geleden
+STR_6776    :{COMMA16} minuten geleden
+STR_6777    :meer dan 4 uur geleden
+STR_6778    :Scenariopreview:
+STR_6779    :Selecteer wat er moet worden gebruikt voor de previews in de scenarioselector.
+STR_6780    :Bovenaanzicht
+STR_6781    :Screenshots
+STR_6782    :Park
+STR_6783    :Attracties
+STR_6784    :Bezoekers
+STR_6785    :Gamepad
+STR_6786    :Dode zone:
+STR_6787    :Dode zone voor de analoge stick (minimaal vereiste beweging voordat het spel reageert)
+STR_6788    :Gevoeligheid:
+STR_6789    :Gevoeligheidsfactor voor de analoge stick
+STR_6790    :Dode zone: {COMMA32}%
+STR_6791    :Gevoeligheid: {COMMA32}%
+STR_6792    :Ingangen
+STR_6793    :Bezoekers en werknemers
+STR_6794    :Decor en thema’s
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Geen preview
+STR_6798    :Screenshot
+STR_6799    :Bovenaanzicht
+STR_7000    :of
+STR_7001    :Attractienaam
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Audiobestand ‘{STRING}’ is beschadigd. Sample nr. {INT32} kon niet worden geladen, aangezien er maar {INT32} beschikbaar zijn. Installeer RollerCoaster Tycoon 2 opnieuw.
+STR_7004    :Volledig beeld hertekenen
+STR_7005    :Voetpaden aanleggen door te slepen
+STR_7006    :Rand tekenen om knoppen met alleen een plaatje
+STR_7007    :Attractietype
+STR_7008    :Onbekend attractietype ({INT32})
+STR_7009    :Scripts ophalen…
+STR_7010    :Kon de replay niet starten, bestand ‘{STRING}’ bestaat niet of is ongeldig.
+STR_7011    :Kon de replay niet starten.
+STR_7012    :Poolse Złoty (PLN)
+STR_7013    :Voetpaden aanleggen door te slepen
+STR_7014    :Ik heb het spel op Steam, maar ik heb het nog niet geïnstalleerd.
+STR_7015    :Sluit Steam volledig af en klik daarna op ‘OK’.
+STR_7016    :OpenRCT2 heeft een download getriggerd in Steam. Start nu Steam op en wacht tot de download voltooid is. Klik daarna op ‘OK’.
+STR_7017    :Afsluiten
+STR_7023    :Onzichtb. maken 
+STR_7024    :Hele attractie onzichtbaar maken
+STR_7025    :Zichtb. maken
+STR_7026    :Hele attractie zichtbaar maken
+STR_7028    :Kwartspiraal omhoog
+STR_7029    :Kwartspiraal omlaag
+STR_7030    :{WINDOW_COLOUR_2}Bezoekers vermaakt: {BLACK}{COMMA32}
+STR_7031    :Grasgroei uitschakelen
+STR_7032    :Zorgt ervoor dat het gras op dezelfde lengte blijft.
+STR_7033    :Baanstijl
+STR_7034    :Muursoort
+STR_7035    :Winkelstijl
+STR_7036    :Voertuigstijl
+STR_7037    :Bedrijfsmodus
+STR_7038    :Wacht- en laadinstellingen
+STR_7039    :Attractietype

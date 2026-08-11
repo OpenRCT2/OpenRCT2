@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,9 +12,12 @@
 #include "../Date.h"
 #include "../localisation/StringIdType.h"
 
-extern const StringId DateFormatStringIDs[];
-extern const StringId DateFormatStringFormatIds[];
+namespace OpenRCT2
+{
+    extern const StringId DateFormatStringIDs[];
+    extern const StringId DateFormatStringFormatIds[];
 
-extern const StringId DateDayNames[31];
-extern const StringId DateGameMonthNames[MONTH_COUNT];
-extern const StringId DateGameShortMonthNames[MONTH_COUNT];
+    extern const StringId DateDayNames[31];
+    extern const StringId DateGameMonthNames[MONTH_COUNT];
+    extern const StringId DateGameShortMonthNames[MONTH_COUNT];
+} // namespace OpenRCT2

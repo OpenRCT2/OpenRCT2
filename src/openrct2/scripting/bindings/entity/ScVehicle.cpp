@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,541 +9,625 @@
 
 #include "ScVehicle.hpp"
 
+#include "../../../GameState.h"
+#include "../../../core/EnumMap.hpp"
+#include "../../../entity/EntityTweener.h"
+#include "../../../ride/Track.h"
+#include "../../../ride/TrackData.h"
+#include "../../../ride/Vehicle.h"
+#include "../../../ride/ted/TrackElementDescriptor.h"
+#include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../ride/ScRide.hpp"
 
 #ifdef ENABLE_SCRIPTING
 
+using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::TrackMetadata;
+
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<Vehicle::Status> VehicleStatusMap({
-        { "moving_to_end_of_station", Vehicle::Status::MovingToEndOfStation },
-        { "waiting_for_passengers", Vehicle::Status::WaitingForPassengers },
-        { "waiting_to_depart", Vehicle::Status::WaitingToDepart },
-        { "departing", Vehicle::Status::Departing },
-        { "travelling", Vehicle::Status::Travelling },
-        { "arriving", Vehicle::Status::Arriving },
-        { "unloading_passengers", Vehicle::Status::UnloadingPassengers },
-        { "travelling_boat", Vehicle::Status::TravellingBoat },
-        { "crashing", Vehicle::Status::Crashing },
-        { "crashed", Vehicle::Status::Crashed },
-        { "travelling_dodgems", Vehicle::Status::TravellingDodgems },
-        { "swinging", Vehicle::Status::Swinging },
-        { "rotating", Vehicle::Status::Rotating },
-        { "ferris_wheel_rotating", Vehicle::Status::FerrisWheelRotating },
-        { "simulator_operating", Vehicle::Status::SimulatorOperating },
-        { "showing_film", Vehicle::Status::ShowingFilm },
-        { "space_rings_operating", Vehicle::Status::SpaceRingsOperating },
-        { "top_spin_operating", Vehicle::Status::TopSpinOperating },
-        { "haunted_house_operating", Vehicle::Status::HauntedHouseOperating },
-        { "doing_circus_show", Vehicle::Status::DoingCircusShow },
-        { "crooked_house_operating", Vehicle::Status::CrookedHouseOperating },
-        { "waiting_for_cable_lift", Vehicle::Status::WaitingForCableLift },
-        { "travelling_cable_lift", Vehicle::Status::TravellingCableLift },
-        { "stopping", Vehicle::Status::Stopping },
-        { "waiting_for_passengers_17", Vehicle::Status::WaitingForPassengers17 },
-        { "waiting_to_start", Vehicle::Status::WaitingToStart },
-        { "starting", Vehicle::Status::Starting },
-        { "operating_1a", Vehicle::Status::Operating1A },
-        { "stopping_1b", Vehicle::Status::Stopping1B },
-        { "unloading_passengers_1c", Vehicle::Status::UnloadingPassengers1C },
-        { "stopped_by_block_brake", Vehicle::Status::StoppedByBlockBrakes },
-    });
+    static const EnumMap<Vehicle::Status> VehicleStatusMap(
+        {
+            { "moving_to_end_of_station", Vehicle::Status::movingToEndOfStation },
+            { "waiting_for_passengers", Vehicle::Status::waitingForPassengers },
+            { "waiting_to_depart", Vehicle::Status::waitingToDepart },
+            { "departing", Vehicle::Status::departing },
+            { "travelling", Vehicle::Status::travelling },
+            { "arriving", Vehicle::Status::arriving },
+            { "unloading_passengers", Vehicle::Status::unloadingPassengers },
+            { "travelling_boat", Vehicle::Status::travellingBoat },
+            { "crashing", Vehicle::Status::crashing },
+            { "crashed", Vehicle::Status::crashed },
+            { "travelling_dodgems", Vehicle::Status::travellingDodgems },
+            { "swinging", Vehicle::Status::swinging },
+            { "rotating", Vehicle::Status::rotating },
+            { "ferris_wheel_rotating", Vehicle::Status::ferrisWheelRotating },
+            { "simulator_operating", Vehicle::Status::simulatorOperating },
+            { "showing_film", Vehicle::Status::showingFilm },
+            { "space_rings_operating", Vehicle::Status::spaceRingsOperating },
+            { "top_spin_operating", Vehicle::Status::topSpinOperating },
+            { "haunted_house_operating", Vehicle::Status::hauntedHouseOperating },
+            { "doing_circus_show", Vehicle::Status::doingCircusShow },
+            { "crooked_house_operating", Vehicle::Status::crookedHouseOperating },
+            { "waiting_for_cable_lift", Vehicle::Status::waitingForCableLift },
+            { "travelling_cable_lift", Vehicle::Status::travellingCableLift },
+            { "stopping", Vehicle::Status::stopping },
+            { "waiting_for_passengers_17", Vehicle::Status::waitingForPassengers17 },
+            { "waiting_to_start", Vehicle::Status::waitingToStart },
+            { "starting", Vehicle::Status::starting },
+            { "operating_1a", Vehicle::Status::operating1A },
+            { "stopping_1b", Vehicle::Status::stopping1B },
+            { "unloading_passengers_1c", Vehicle::Status::unloadingPassengers1C },
+            { "stopped_by_block_brake", Vehicle::Status::stoppedByBlockBrakes },
+        });
 
-    ScVehicle::ScVehicle(EntityId id)
-        : ScEntity(id)
+    ScVehicle gScVehicle;
+
+    JSValue ScVehicle::New(JSContext* ctx, EntityId entityId)
     {
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScVehicle.GetProto());
     }
 
-    void ScVehicle::Register(duk_context* ctx)
+    void ScVehicle::Register(JSContext* ctx)
     {
-        dukglue_set_base_class<ScEntity, ScVehicle>(ctx);
-        dukglue_register_property(ctx, &ScVehicle::ride_get, &ScVehicle::ride_set, "ride");
-        dukglue_register_property(ctx, &ScVehicle::rideObject_get, &ScVehicle::rideObject_set, "rideObject");
-        dukglue_register_property(ctx, &ScVehicle::vehicleObject_get, &ScVehicle::vehicleObject_set, "vehicleObject");
-        dukglue_register_property(ctx, &ScVehicle::spriteType_get, &ScVehicle::spriteType_set, "spriteType");
-        dukglue_register_property(ctx, &ScVehicle::numSeats_get, &ScVehicle::numSeats_set, "numSeats");
-        dukglue_register_property(ctx, &ScVehicle::nextCarOnTrain_get, &ScVehicle::nextCarOnTrain_set, "nextCarOnTrain");
-        dukglue_register_property(
-            ctx, &ScVehicle::previousCarOnRide_get, &ScVehicle::previousCarOnRide_set, "previousCarOnRide");
-        dukglue_register_property(ctx, &ScVehicle::nextCarOnRide_get, &ScVehicle::nextCarOnRide_set, "nextCarOnRide");
-        dukglue_register_property(ctx, &ScVehicle::currentStation_get, &ScVehicle::currentStation_set, "currentStation");
-        dukglue_register_property(ctx, &ScVehicle::mass_get, &ScVehicle::mass_set, "mass");
-        dukglue_register_property(ctx, &ScVehicle::acceleration_get, &ScVehicle::acceleration_set, "acceleration");
-        dukglue_register_property(ctx, &ScVehicle::velocity_get, &ScVehicle::velocity_set, "velocity");
-        dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
-        dukglue_register_property(
-            ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
-            "isReversed");
-        dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
-        dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
-        dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
-        dukglue_register_property(ctx, &ScVehicle::remainingDistance_get, nullptr, "remainingDistance");
-        dukglue_register_property(ctx, &ScVehicle::subposition_get, nullptr, "subposition");
-        dukglue_register_property(
-            ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
-        dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
-        dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
-        dukglue_register_property(ctx, &ScVehicle::spin_get, &ScVehicle::spin_set, "spin");
-        dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
-        dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
-        dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
-        dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("ride", &ScVehicle::ride_get, &ScVehicle::ride_set),
+            JS_CGETSET_DEF("rideObject", &ScVehicle::rideObject_get, &ScVehicle::rideObject_set),
+            JS_CGETSET_DEF("vehicleObject", &ScVehicle::vehicleObject_get, &ScVehicle::vehicleObject_set),
+            JS_CGETSET_DEF("spriteType", &ScVehicle::spriteType_get, &ScVehicle::spriteType_set),
+            JS_CGETSET_DEF("numSeats", &ScVehicle::numSeats_get, &ScVehicle::numSeats_set),
+            JS_CGETSET_DEF("nextCarOnTrain", &ScVehicle::nextCarOnTrain_get, &ScVehicle::nextCarOnTrain_set),
+            JS_CGETSET_DEF("previousCarOnRide", &ScVehicle::previousCarOnRide_get, &ScVehicle::previousCarOnRide_set),
+            JS_CGETSET_DEF("nextCarOnRide", &ScVehicle::nextCarOnRide_get, &ScVehicle::nextCarOnRide_set),
+            JS_CGETSET_DEF("currentStation", &ScVehicle::currentStation_get, &ScVehicle::currentStation_set),
+            JS_CGETSET_DEF("mass", &ScVehicle::mass_get, &ScVehicle::mass_set),
+            JS_CGETSET_DEF("acceleration", &ScVehicle::acceleration_get, &ScVehicle::acceleration_set),
+            JS_CGETSET_DEF("velocity", &ScVehicle::velocity_get, &ScVehicle::velocity_set),
+            JS_CGETSET_DEF("bankRotation", &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set),
+            JS_CGETSET_DEF(
+                "isReversed", &ScVehicle::flag_get<VehicleFlag::carIsReversed>,
+                &ScVehicle::flag_set<VehicleFlag::carIsReversed>),
+            JS_CGETSET_DEF("isCrashed", &ScVehicle::flag_get<VehicleFlag::crashed>, &ScVehicle::flag_set<VehicleFlag::crashed>),
+            JS_CGETSET_DEF("colours", &ScVehicle::colours_get, &ScVehicle::colours_set),
+            JS_CGETSET_DEF("trackLocation", &ScVehicle::trackLocation_get, nullptr),
+            JS_CGETSET_DEF("trackProgress", &ScVehicle::trackProgress_get, nullptr),
+            JS_CGETSET_DEF("remainingDistance", &ScVehicle::remainingDistance_get, nullptr),
+            JS_CGETSET_DEF("subposition", &ScVehicle::subposition_get, nullptr),
+            JS_CGETSET_DEF("poweredAcceleration", &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set),
+            JS_CGETSET_DEF("poweredMaxSpeed", &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set),
+            JS_CGETSET_DEF("status", &ScVehicle::status_get, &ScVehicle::status_set),
+            JS_CGETSET_DEF("spin", &ScVehicle::spin_get, &ScVehicle::spin_set),
+            JS_CGETSET_DEF("peeps", &ScVehicle::guests_get, nullptr),
+            JS_CGETSET_DEF("guests", &ScVehicle::guests_get, nullptr),
+            JS_CGETSET_DEF("gForces", &ScVehicle::gForces_get, nullptr),
+            JS_CFUNC_DEF("travelBy", 1, &ScVehicle::travelBy),
+            JS_CFUNC_DEF("moveToTrack", 3, &ScVehicle::moveToTrack),
+        };
+        gScVehicle.RegisterDerived(ctx, gScEntity, funcs);
     }
 
-    Vehicle* ScVehicle::GetVehicle() const
+    Vehicle* ScVehicle::GetVehicle(JSValue thisVal)
     {
-        return ::GetEntity<Vehicle>(_id);
+        auto id = GetEntityId(thisVal);
+        return getGameState().entities.GetEntity<Vehicle>(id);
     }
 
-    ObjectEntryIndex ScVehicle::rideObject_get() const
+    JSValue ScVehicle::rideObject_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->ride_subtype : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->ride_subtype : 0);
     }
-    void ScVehicle::rideObject_set(ObjectEntryIndex value)
+    JSValue ScVehicle::rideObject_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->ride_subtype = value;
+            vehicle->invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScVehicle::vehicleObject_get() const
+    JSValue ScVehicle::vehicleObject_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->vehicle_type : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->vehicle_type : 0);
     }
-    void ScVehicle::vehicleObject_set(uint8_t value)
+    JSValue ScVehicle::vehicleObject_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->vehicle_type = value;
+            vehicle->invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScVehicle::spriteType_get() const
+    JSValue ScVehicle::spriteType_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->Pitch : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? EnumValue(vehicle->pitch) : 0);
     }
-    void ScVehicle::spriteType_set(uint8_t value)
+    JSValue ScVehicle::spriteType_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            vehicle->Pitch = value;
+            vehicle->pitch = static_cast<VehiclePitch>(value);
+            vehicle->invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    int32_t ScVehicle::ride_get() const
+    JSValue ScVehicle::ride_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return (vehicle != nullptr ? vehicle->ride : RideId::GetNull()).ToUnderlying();
+        auto vehicle = GetVehicle(thisVal);
+        auto rideId = vehicle != nullptr ? vehicle->ride : RideId::GetNull();
+        return JS_NewUint32(ctx, rideId.ToUnderlying());
     }
-    void ScVehicle::ride_set(int32_t value)
+    JSValue ScVehicle::ride_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_INT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->ride = RideId::FromUnderlying(value);
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScVehicle::numSeats_get() const
+    JSValue ScVehicle::numSeats_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->num_seats & kVehicleSeatNumMask : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->num_seats & kVehicleSeatNumMask : 0);
     }
-    void ScVehicle::numSeats_set(uint8_t value)
+    JSValue ScVehicle::numSeats_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->num_seats &= ~kVehicleSeatNumMask;
             vehicle->num_seats |= value & kVehicleSeatNumMask;
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScVehicle::nextCarOnTrain_get() const
+    JSValue ScVehicle::nextCarOnTrain_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto vehicle = GetVehicle();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             if (!vehicle->next_vehicle_on_train.IsNull())
             {
-                return ToDuk<int32_t>(ctx, vehicle->next_vehicle_on_train.ToUnderlying());
+                return JS_NewUint32(ctx, vehicle->next_vehicle_on_train.ToUnderlying());
             }
         }
-        return ToDuk(ctx, nullptr);
+        return JS_NULL;
     }
-    void ScVehicle::nextCarOnTrain_set(DukValue value)
+    JSValue ScVehicle::nextCarOnTrain_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            if (value.type() == DukValue::Type::NUMBER)
-            {
-                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(value.as_uint());
-            }
-            else
+            if (JS_IsNull(jsValue))
             {
                 vehicle->next_vehicle_on_train = EntityId::GetNull();
             }
+            else
+            {
+                JS_UNPACK_UINT32(entityId, ctx, jsValue);
+                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(entityId);
+            }
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScVehicle::previousCarOnRide_get() const
+    JSValue ScVehicle::previousCarOnRide_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-        const auto* vehicle = GetVehicle();
+        const auto* vehicle = GetVehicle(thisVal);
         if (vehicle == nullptr)
-            return ToDuk(ctx, nullptr);
+            return JS_NULL;
 
         if (vehicle->prev_vehicle_on_ride.IsNull())
-            return ToDuk(ctx, nullptr);
+            return JS_NULL;
 
-        return ToDuk(ctx, vehicle->prev_vehicle_on_ride.ToUnderlying());
+        return JS_NewUint32(ctx, vehicle->prev_vehicle_on_ride.ToUnderlying());
     }
-    void ScVehicle::previousCarOnRide_set(DukValue value)
+    JSValue ScVehicle::previousCarOnRide_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* vehicle = GetVehicle();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto* vehicle = GetVehicle(thisVal);
         if (vehicle == nullptr)
-            return;
+            return JS_UNDEFINED;
 
-        if (value.type() == DukValue::Type::NUMBER)
-        {
-            vehicle->prev_vehicle_on_ride = EntityId::FromUnderlying(value.as_uint());
-        }
-        else
+        if (JS_IsNull(jsValue))
         {
             vehicle->prev_vehicle_on_ride = EntityId::GetNull();
         }
+        else
+        {
+            JS_UNPACK_UINT32(entityId, ctx, jsValue);
+            vehicle->prev_vehicle_on_ride = EntityId::FromUnderlying(entityId);
+        }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScVehicle::nextCarOnRide_get() const
+    JSValue ScVehicle::nextCarOnRide_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-        const auto* vehicle = GetVehicle();
+        const auto* vehicle = GetVehicle(thisVal);
         if (vehicle == nullptr)
-            return ToDuk(ctx, nullptr);
+            return JS_NULL;
 
         if (vehicle->next_vehicle_on_ride.IsNull())
-            return ToDuk(ctx, nullptr);
+            return JS_NULL;
 
-        return ToDuk(ctx, vehicle->next_vehicle_on_ride.ToUnderlying());
+        return JS_NewUint32(ctx, vehicle->next_vehicle_on_ride.ToUnderlying());
     }
-    void ScVehicle::nextCarOnRide_set(DukValue value)
+    JSValue ScVehicle::nextCarOnRide_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto* vehicle = GetVehicle();
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto* vehicle = GetVehicle(thisVal);
         if (vehicle == nullptr)
-            return;
+            return JS_UNDEFINED;
 
-        if (value.type() == DukValue::Type::NUMBER)
-        {
-            vehicle->next_vehicle_on_ride = EntityId::FromUnderlying(value.as_uint());
-        }
-        else
+        if (JS_IsNull(jsValue))
         {
             vehicle->next_vehicle_on_ride = EntityId::GetNull();
         }
+        else
+        {
+            JS_UNPACK_UINT32(entityId, ctx, jsValue);
+            vehicle->next_vehicle_on_ride = EntityId::FromUnderlying(entityId);
+        }
+        return JS_UNDEFINED;
     }
 
-    StationIndex::UnderlyingType ScVehicle::currentStation_get() const
+    JSValue ScVehicle::currentStation_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->current_station.ToUnderlying() : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->current_station.ToUnderlying() : 0);
     }
-    void ScVehicle::currentStation_set(StationIndex::UnderlyingType value)
+    JSValue ScVehicle::currentStation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->current_station = StationIndex::FromUnderlying(value);
         }
+        return JS_UNDEFINED;
     }
 
-    uint16_t ScVehicle::mass_get() const
+    JSValue ScVehicle::mass_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->mass : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->mass : 0);
     }
-    void ScVehicle::mass_set(uint16_t value)
+    JSValue ScVehicle::mass_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->mass = value;
         }
+        return JS_UNDEFINED;
     }
 
-    int32_t ScVehicle::acceleration_get() const
+    JSValue ScVehicle::acceleration_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->acceleration : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewInt32(ctx, vehicle != nullptr ? vehicle->acceleration : 0);
     }
-    void ScVehicle::acceleration_set(int32_t value)
+    JSValue ScVehicle::acceleration_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_INT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->acceleration = value;
         }
+        return JS_UNDEFINED;
     }
 
-    int32_t ScVehicle::velocity_get() const
+    JSValue ScVehicle::velocity_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->velocity : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewInt32(ctx, vehicle != nullptr ? vehicle->velocity : 0);
     }
-    void ScVehicle::velocity_set(int32_t value)
+    JSValue ScVehicle::velocity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_INT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->velocity = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScVehicle::bankRotation_get() const
+    JSValue ScVehicle::bankRotation_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->bank_rotation : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? EnumValue(vehicle->roll) : 0);
     }
-    void ScVehicle::bankRotation_set(uint8_t value)
+    JSValue ScVehicle::bankRotation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            vehicle->bank_rotation = value;
+            vehicle->roll = static_cast<VehicleRoll>(value);
+            vehicle->invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    template<uint32_t flag>
-    bool ScVehicle::flag_get() const
+    template<VehicleFlag flag>
+    JSValue ScVehicle::flag_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->HasFlag(flag) : false;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewBool(ctx, vehicle != nullptr ? vehicle->flags.has(static_cast<VehicleFlag>(flag)) : false);
     }
 
-    template<uint32_t flag>
-    void ScVehicle::flag_set(bool value)
+    template<VehicleFlag flag>
+    JSValue ScVehicle::flag_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_BOOL(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             if (value)
             {
-                vehicle->SetFlag(flag);
+                vehicle->flags.set(static_cast<VehicleFlag>(flag));
             }
             else
             {
-                vehicle->ClearFlag(flag);
+                vehicle->flags.unset(static_cast<VehicleFlag>(flag));
             }
+            vehicle->invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScVehicle::colours_get() const
+    JSValue ScVehicle::colours_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto vehicle = GetVehicle();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            return ToDuk<VehicleColour>(ctx, vehicle->colours);
+            return ToJSValue(ctx, vehicle->colours);
         }
-        return ToDuk(ctx, nullptr);
+        return JS_NULL;
     }
-    void ScVehicle::colours_set(const DukValue& value)
+    JSValue ScVehicle::colours_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_OBJECT(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            vehicle->colours = FromDuk<VehicleColour>(value);
+            vehicle->colours = JSToVehicleColours(ctx, value);
+            vehicle->invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    DukValue ScVehicle::trackLocation_get() const
+    JSValue ScVehicle::trackLocation_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto vehicle = GetVehicle();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            DukObject dukCoords(ctx);
-            dukCoords.Set("x", vehicle->TrackLocation.x);
-            dukCoords.Set("y", vehicle->TrackLocation.y);
-            dukCoords.Set("z", vehicle->TrackLocation.z);
-            dukCoords.Set("direction", vehicle->GetTrackDirection());
-            dukCoords.Set("trackType", EnumValue(vehicle->GetTrackType()));
-            return dukCoords.Take();
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "x", JS_NewInt32(ctx, vehicle->TrackLocation.x));
+            JS_SetPropertyStr(ctx, obj, "y", JS_NewInt32(ctx, vehicle->TrackLocation.y));
+            JS_SetPropertyStr(ctx, obj, "z", JS_NewInt32(ctx, vehicle->TrackLocation.z));
+            JS_SetPropertyStr(ctx, obj, "direction", JS_NewUint32(ctx, vehicle->GetTrackDirection()));
+            JS_SetPropertyStr(ctx, obj, "trackType", JS_NewUint32(ctx, EnumValue(vehicle->GetTrackType())));
+            return obj;
         }
-        return ToDuk(ctx, nullptr);
-    }
-    void ScVehicle::trackLocation_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
-        {
-            auto x = AsOrDefault(value["x"], 0);
-            auto y = AsOrDefault(value["y"], 0);
-            auto z = AsOrDefault(value["z"], 0);
-            vehicle->TrackLocation = CoordsXYZ(x, y, z);
-            vehicle->SetTrackDirection(AsOrDefault(value["direction"], 0));
-            vehicle->SetTrackType(static_cast<TrackElemType>(AsOrDefault(value["trackType"], 0)));
-        }
+        return JS_NULL;
     }
 
-    uint16_t ScVehicle::trackProgress_get() const
+    JSValue ScVehicle::trackProgress_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->track_progress : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->track_progress : 0);
     }
 
-    int32_t ScVehicle::remainingDistance_get() const
+    JSValue ScVehicle::remainingDistance_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->remaining_distance : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewInt32(ctx, vehicle != nullptr ? vehicle->remaining_distance : 0);
     }
 
-    uint8_t ScVehicle::subposition_get() const
+    JSValue ScVehicle::subposition_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? static_cast<uint8_t>(vehicle->TrackSubposition) : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint8_t>(vehicle->TrackSubposition) : 0);
     }
 
-    uint8_t ScVehicle::poweredAcceleration_get() const
+    JSValue ScVehicle::poweredAcceleration_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->powered_acceleration : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->powered_acceleration : 0);
     }
-    void ScVehicle::poweredAcceleration_set(uint8_t value)
+    JSValue ScVehicle::poweredAcceleration_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->powered_acceleration = value;
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScVehicle::poweredMaxSpeed_get() const
+    JSValue ScVehicle::poweredMaxSpeed_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->speed : 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->speed : 0);
     }
-    void ScVehicle::poweredMaxSpeed_set(uint8_t value)
+    JSValue ScVehicle::poweredMaxSpeed_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->speed = value;
         }
+        return JS_UNDEFINED;
     }
 
-    std::string ScVehicle::status_get() const
+    JSValue ScVehicle::status_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
-            return std::string(VehicleStatusMap[vehicle->status]);
+            return JSFromStdString(ctx, VehicleStatusMap[vehicle->status]);
         }
-        return {};
+        return JS_UNDEFINED;
     }
-    void ScVehicle::status_set(const std::string& value)
+    JSValue ScVehicle::status_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_STR(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->status = VehicleStatusMap[value];
         }
+        return JS_UNDEFINED;
     }
 
-    uint8_t ScVehicle::spin_get() const
+    JSValue ScVehicle::spin_get(JSContext* ctx, JSValue thisVal)
     {
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
-        {
-            return vehicle->spin_sprite;
-        }
-        return 0;
+        auto vehicle = GetVehicle(thisVal);
+        return JS_NewUint32(ctx, vehicle != nullptr ? vehicle->spin_sprite : 0);
     }
-    void ScVehicle::spin_set(const uint8_t value)
+    JSValue ScVehicle::spin_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->spin_sprite = value;
+            vehicle->invalidate();
         }
+        return JS_UNDEFINED;
     }
 
-    std::vector<DukValue> ScVehicle::guests_get() const
+    JSValue ScVehicle::guests_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        std::vector<DukValue> result;
-        auto vehicle = GetVehicle();
+        auto result = JS_NewArray(ctx);
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             size_t len = 0;
             for (size_t i = 0; i < std::size(vehicle->peep); i++)
             {
                 auto peep = vehicle->peep[i];
-                if (peep.IsNull())
+                if (!peep.IsNull())
                 {
-                    result.push_back(ToDuk(ctx, nullptr));
-                }
-                else
-                {
-                    result.push_back(ToDuk<int32_t>(ctx, peep.ToUnderlying()));
+                    // Set all peep slots between last valid peep and current to NULL (if there were any null peeps).
+                    for (size_t j = len; j < i; j++)
+                    {
+                        JS_SetPropertyInt64(ctx, result, j, JS_NULL);
+                    }
+
+                    JS_SetPropertyInt64(ctx, result, i, JS_NewUint32(ctx, peep.ToUnderlying()));
                     len = i + 1;
                 }
             }
-            result.resize(len);
         }
         return result;
     }
 
-    DukValue ScVehicle::gForces_get() const
+    JSValue ScVehicle::gForces_get(JSContext* ctx, JSValue thisVal)
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto vehicle = GetVehicle();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             GForces gForces = vehicle->GetGForces();
-            return ToDuk<GForces>(ctx, gForces);
+            JSValue obj = JS_NewObject(ctx);
+            JS_SetPropertyStr(ctx, obj, "lateralG", JS_NewInt32(ctx, gForces.lateralG));
+            JS_SetPropertyStr(ctx, obj, "verticalG", JS_NewInt32(ctx, gForces.verticalG));
+            return obj;
         }
-        return ToDuk(ctx, nullptr);
+        return JS_NULL;
     }
 
-    void ScVehicle::travelBy(int32_t value)
+    JSValue ScVehicle::travelBy(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
+        JS_UNPACK_INT32(value, ctx, argv[0]);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
             vehicle->MoveRelativeDistance(value);
+            EntityTweener::Get().RemoveEntity(vehicle);
         }
+        return JS_UNDEFINED;
+    }
+
+    JSValue ScVehicle::moveToTrack(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+    {
+        JS_UNPACK_INT32(x, ctx, argv[0]);
+        JS_UNPACK_INT32(y, ctx, argv[1]);
+        JS_UNPACK_INT32(elementIndex, ctx, argv[2]);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+        auto vehicle = GetVehicle(thisVal);
+        if (vehicle == nullptr)
+            return JS_UNDEFINED;
+
+        CoordsXY coords = TileCoordsXY(x, y).ToCoordsXY();
+        auto el = MapGetNthElementAt(coords, elementIndex);
+        if (el == nullptr)
+            return JS_UNDEFINED;
+
+        auto origin = GetTrackSegmentOrigin(CoordsXYE(coords, el));
+        if (!origin)
+            return JS_UNDEFINED;
+
+        const auto& trackType = el->asTrack()->GetTrackType();
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const auto& seq0 = ted.sequenceData.sequences[0].clearance;
+        const auto trackLoc = CoordsXYZ(origin->x + seq0.x, origin->y + seq0.y, origin->z + seq0.z);
+
+        vehicle->TrackLocation.x = trackLoc.x;
+        vehicle->TrackLocation.y = trackLoc.y;
+        vehicle->TrackLocation.z = trackLoc.z;
+        vehicle->SetTrackDirection(origin->direction);
+        vehicle->SetTrackType(trackType);
+
+        // Clip track progress to avoid being out of bounds of current piece
+        uint16_t trackTotalProgress = vehicle->GetTrackProgress();
+        if (trackTotalProgress && vehicle->track_progress >= trackTotalProgress)
+            vehicle->track_progress = trackTotalProgress - 1;
+
+        vehicle->UpdateTrackChange();
+        EntityTweener::Get().RemoveEntity(vehicle);
+        return JS_UNDEFINED;
     }
 } // namespace OpenRCT2::Scripting
 

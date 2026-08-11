@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,46 +10,48 @@
 #pragma once
 
 #include "../localisation/StringIdType.h"
-#include "ObjectTypes.h"
 
-enum class RailingEntrySupportType : uint8_t;
-
-enum
+namespace OpenRCT2
 {
-    FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
-    FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
-    FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
-};
+    enum
+    {
+        FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+        FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
+        FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
+    };
 
-struct FootpathEntry
-{
-    StringId string_idx;                  // 0x00
-    uint32_t image;                       // 0x02
-    uint32_t bridge_image;                // 0x06
-    RailingEntrySupportType support_type; // 0x0A
-    uint8_t flags;                        // 0x0B
-    uint8_t scrolling_mode;               // 0x0C
+    enum class RailingEntrySupportType : uint8_t;
 
-    constexpr uint32_t GetQueueImage() const
+    struct FootpathEntry
     {
-        return image + 51;
-    }
-    constexpr uint32_t GetPreviewImage() const
-    {
-        return image + 71;
-    }
-    constexpr uint32_t GetQueuePreviewImage() const
-    {
-        // Editor-only paths usually lack queue images. In this case, use the main path image.
-        if (flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+        StringId string_idx;                  // 0x00
+        uint32_t image;                       // 0x02
+        uint32_t bridge_image;                // 0x06
+        RailingEntrySupportType support_type; // 0x0A
+        uint8_t flags;                        // 0x0B
+        uint8_t scrolling_mode;               // 0x0C
+
+        constexpr uint32_t GetQueueImage() const
         {
-            return GetPreviewImage();
+            return image + 51;
         }
+        constexpr uint32_t GetPreviewImage() const
+        {
+            return image + 71;
+        }
+        constexpr uint32_t GetQueuePreviewImage() const
+        {
+            // Editor-only paths usually lack queue images. In this case, use the main path image.
+            if (flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            {
+                return GetPreviewImage();
+            }
 
-        return image + 72;
-    }
-    constexpr uint32_t GetRailingsImage() const
-    {
-        return image + 73;
-    }
-};
+            return image + 72;
+        }
+        constexpr uint32_t GetRailingsImage() const
+        {
+            return image + 73;
+        }
+    };
+} // namespace OpenRCT2

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,16 +10,14 @@
 #include "TitleSequenceManager.h"
 
 #include "../../Context.h"
-#include "../../OpenRCT2.h"
 #include "../../PlatformEnvironment.h"
 #include "../../core/Collections.hpp"
 #include "../../core/File.h"
 #include "../../core/FileScanner.h"
-#include "../../core/Memory.hpp"
 #include "../../core/Path.hpp"
 #include "../../core/String.hpp"
+#include "../../localisation/Language.h"
 #include "../../localisation/StringIds.h"
-#include "../../platform/Platform.h"
 #include "TitleSequence.h"
 
 #include <algorithm>
@@ -102,7 +100,7 @@ namespace OpenRCT2::TitleSequenceManager
         auto newPath = Path::Combine(Path::GetDirectory(oldPath), newName);
         if (item->IsZip)
         {
-            newPath += Title::TITLE_SEQUENCE_EXTENSION;
+            newPath += Title::kTitleSequenceExtension;
             File::Move(oldPath, newPath);
         }
         else
@@ -158,7 +156,7 @@ namespace OpenRCT2::TitleSequenceManager
         auto path = Path::Combine(GetUserSequencesPath(), name);
         if (isZip)
         {
-            path += Title::TITLE_SEQUENCE_EXTENSION;
+            path += Title::kTitleSequenceExtension;
         }
         return path;
     }
@@ -254,19 +252,19 @@ namespace OpenRCT2::TitleSequenceManager
 
     static std::string GetDataSequencesPath()
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        return env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::SEQUENCE);
+        auto& env = GetContext()->GetPlatformEnvironment();
+        return env.GetDirectoryPath(DirBase::openrct2, DirId::sequences);
     }
 
     static std::string GetUserSequencesPath()
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        return env->GetDirectoryPath(DIRBASE::USER, DIRID::SEQUENCE);
+        auto& env = GetContext()->GetPlatformEnvironment();
+        return env.GetDirectoryPath(DirBase::user, DirId::sequences);
     }
 
     static bool IsNameReserved(const std::string& name)
     {
-        for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
+        for (const auto& pseq : PredefinedSequences)
         {
             if (String::iequals(name, pseq.ConfigId))
             {

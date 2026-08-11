@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,8 +10,6 @@
 #pragma once
 
 #include "../ride/TrackDesign.h"
-
-#include <vector>
 
 namespace OpenRCT2
 {
@@ -29,9 +27,15 @@ namespace OpenRCT2::RCT2
         T6Exporter(const TrackDesign& trackDesign);
 
         bool SaveTrack(const utf8* path);
-        bool SaveTrack(OpenRCT2::IStream* stream);
+        bool SaveTrack(IStream* stream);
 
     private:
         const TrackDesign& _trackDesign;
+
+        void exportMazeElements(IStream& tempStream) const;
+        void exportTrackElements(IStream& tempStream) const;
+        void exportTrackElementsTD7(IStream& tempStream) const;
+        void exportEntranceElements(IStream& tempStream) const;
+        void exportSceneryElements(IStream& tempStream) const;
     };
 } // namespace OpenRCT2::RCT2

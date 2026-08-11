@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,22 +11,29 @@
 
 #include "EntityBase.h"
 
-class DataSerialiser;
 struct CoordsXYZ;
-struct PaintSession;
 
-struct Balloon : EntityBase
+namespace OpenRCT2::Drawing
 {
-    static constexpr auto cEntityType = EntityType::Balloon;
-    uint16_t frame;
-    uint16_t popped;
-    uint8_t time_to_move;
-    uint8_t colour;
-    static void Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
-    void Update();
-    void Pop(bool playSound);
-    void Press();
-    void Serialise(DataSerialiser& stream);
-    void Paint(PaintSession& session, int32_t imageDirection) const;
-    bool Collides() const;
-};
+    enum class Colour : uint8_t;
+}
+
+namespace OpenRCT2
+{
+    class DataSerialiser;
+
+    struct Balloon : EntityBase
+    {
+        static constexpr auto cEntityType = EntityType::balloon;
+        uint16_t frame;
+        uint16_t popped;
+        uint8_t time_to_move;
+        Drawing::Colour colour;
+        static void Create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped);
+        void Update();
+        void Pop(bool playSound);
+        void Press();
+        void serialise(DataSerialiser& stream);
+        bool Collides() const;
+    };
+} // namespace OpenRCT2

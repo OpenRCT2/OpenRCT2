@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,17 +9,22 @@
 
 #pragma once
 
+#include "../Identifiers.h"
+#include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
-#include "Map.h"
+#include "Location.hpp"
 
 #include <cstdint>
 
-struct TileElement;
-struct CoordsXY;
-struct CoordsXYRangedZ;
+namespace OpenRCT2
+{
+    struct TileElement;
+}
+
 class QuarterTile;
 
-using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
+using ClearingFunction = bool (&)(
+    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, OpenRCT2::GameActions::CommandFlags flags, money64* price);
 
 enum
 {
@@ -38,8 +43,10 @@ enum class CreateCrossingMode
     pathOverTrack,
 };
 
-int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
-int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
+bool MapPlaceNonSceneryClearFunc(
+    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, OpenRCT2::GameActions::CommandFlags flags, money64* price);
+bool MapPlaceSceneryClearFunc(
+    OpenRCT2::TileElement** tile_element, const CoordsXY& coords, OpenRCT2::GameActions::CommandFlags flags, money64* price);
 
 struct ConstructClearResult
 {
@@ -47,9 +54,10 @@ struct ConstructClearResult
 };
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
-    CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false);
+    const CoordsXYRangedZ& pos, ClearingFunction clearFunc, QuarterTile quarterTile, OpenRCT2::GameActions::CommandFlags flags,
+    uint8_t slope, CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false,
+    RideId ignoreRideId = RideId::GetNull());
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
-void MapGetObstructionErrorText(TileElement* tileElement, OpenRCT2::GameActions::Result& res);
+void MapGetObstructionErrorText(OpenRCT2::TileElement* tileElement, OpenRCT2::GameActions::Result& res);

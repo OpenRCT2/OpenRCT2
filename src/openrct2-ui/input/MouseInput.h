@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,23 +9,34 @@
 
 #pragma once
 
-#include <openrct2/interface/Window.h>
+#include <cstdint>
 
-enum class MouseState : uint32_t
+struct ScreenCoordsXY;
+
+namespace OpenRCT2
 {
-    Released,
-    LeftPress,
-    LeftRelease,
-    RightPress,
-    RightRelease
-};
+    enum class MouseState : uint32_t
+    {
+        released,
+        leftPress,
+        leftRelease,
+        rightPress,
+        rightRelease,
+    };
 
-extern ScreenCoordsXY gInputDragLast;
+    using WidgetIndex = uint16_t;
 
-void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void GameHandleInput();
-void GameHandleEdgeScroll();
+    struct WindowBase;
 
-void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
+    extern ScreenCoordsXY gInputDragLast;
 
-void InputScrollViewport(const ScreenCoordsXY& screenCoords);
+    void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+    void GameHandleInput();
+    void GameHandleEdgeScroll();
+
+    void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
+
+    void InputScrollViewport(const ScreenCoordsXY& screenCoords);
+    void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords);
+    void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords, WindowBase* targetWindow);
+} // namespace OpenRCT2

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,8 @@
 
 #include <openrct2/Context.h>
 #include <openrct2/core/Money.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/RenderTarget.h>
+#include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/world/Location.hpp>
 
 namespace OpenRCT2::Graph
@@ -67,7 +68,7 @@ namespace OpenRCT2::Graph
         }
     };
 
-    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p);
-    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint16_t>& p);
-    void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p);
+    void DrawFinanceGraph(Drawing::RenderTarget& rt, const GraphProperties<money64>& p);
+    void DrawRatingGraph(Drawing::RenderTarget& rt, const GraphProperties<uint16_t>& p);
+    void DrawGuestGraph(Drawing::RenderTarget& rt, const GraphProperties<uint32_t>& p);
 } // namespace OpenRCT2::Graph

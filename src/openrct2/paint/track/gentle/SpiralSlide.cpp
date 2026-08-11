@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,16 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../interface/Viewport.h"
 #include "../../../object/StationObject.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -56,20 +54,20 @@ static void SpiralSlidePaintTileRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
     ImageId imageId;
 
     if (direction == 0)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR0));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR0));
     else if (direction == 1)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR1));
     else if (direction == 2)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR2));
     else
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideRightR3));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideRightR3));
 
     PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 16, 0, height + 3 }, { 16, 16, 108 } });
 }
@@ -78,20 +76,20 @@ static void SpiralSlidePaintTileLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
     ImageId imageId;
 
     if (direction == 0)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR0));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR0));
     else if (direction == 1)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR1));
     else if (direction == 2)
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR2));
     else
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideLeftR3));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideLeftR3));
 
     PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, 16, height + 3 }, { 16, 16, 108 } });
 }
@@ -100,7 +98,7 @@ static void SpiralSlidePaintTileFront(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -108,39 +106,39 @@ static void SpiralSlidePaintTileFront(
 
     if (direction == 1)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideInsideR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideInsideR1));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { -12, 0, height + 3 }, { 2, 16, 108 } });
     }
     else if (direction == 2)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideInsideR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideInsideR2));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, -12, height + 3 }, { 16, 2, 108 } });
     }
 
     if (direction == 0)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR0));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR0));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, 8, height + 3 }, { 16, 8, 108 } });
     }
     else if (direction == 1)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR1));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR1));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 14, 0, height + 3 }, { 2, 16, 108 } });
     }
     else if (direction == 2)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR2));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR2));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 0, 14, height + 3 }, { 16, 2, 108 } });
     }
     else if (direction == 3)
     {
-        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].base_image_id + SpiralSlideCentreR3));
+        imageId = session.TrackColours.WithIndex((rideEntry->Cars[0].baseImageId + SpiralSlideCentreR3));
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 8, 0, height + 3 }, { 8, 16, 108 } });
     }
 
-    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && ride.slide_in_use != 0)
+    if (session.rt.zoom_level <= ZoomLevel{ 0 } && ride.slideInUse)
     {
-        uint8_t slide_progress = ride.spiral_slide_progress;
+        uint8_t slide_progress = ride.spiralSlideProgress;
         if (slide_progress != 0)
         {
             slide_progress--;
@@ -153,7 +151,7 @@ static void SpiralSlidePaintTileFront(
 
         if (slide_progress < 46)
         {
-            int32_t offset = rideEntry->Cars[0].base_image_id + SpiralSlidePeep + 46 * direction;
+            int32_t offset = rideEntry->Cars[0].baseImageId + SpiralSlidePeep + 46 * direction;
             CoordsXYZ boundingBox = { 0, 0, 108 };
             CoordsXYZ boundingBoxOffset = { 0, 0, static_cast<int16_t>(height + 3) };
 
@@ -186,7 +184,7 @@ static void SpiralSlidePaintTileFront(
                 boundingBox.x = 8;
             }
 
-            imageId = ImageId(offset + slide_progress, ride.slide_peep_t_shirt_colour, COLOUR_GREY);
+            imageId = ImageId(offset + slide_progress, ride.slidePeepTShirtColour, OpenRCT2::Drawing::Colour::grey);
 
             PaintAddImageAsChild(session, imageId, { 16, 16, height }, { boundingBoxOffset, boundingBox });
         }
@@ -200,7 +198,7 @@ static void PaintSpiralSlide(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -209,24 +207,24 @@ static void PaintSpiralSlide(
     int32_t edges = kEdges2x2[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     // Base
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         auto imageId = session.SupportColours.WithIndex(
-            rideEntry->Cars[0].base_image_id + ((direction & 1) ? SpiralSlideBaseB : SpiralSlideBaseA));
+            rideEntry->Cars[0].baseImageId + ((direction & 1) ? SpiralSlideBaseB : SpiralSlideBaseA));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
     }
 
     const uint32_t spiral_slide_fence_sprites[] = {
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopRight,
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomRight,
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomLeft,
-        rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopLeft,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceTopRight,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceBottomRight,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceBottomLeft,
+        rideEntry->Cars[0].baseImageId + SpiralSlideFenceTopLeft,
     };
 
     TrackPaintUtilPaintFences(
@@ -253,9 +251,9 @@ static void PaintSpiralSlide(
 /**
  * rct2: 0x0074840C
  */
-TrackPaintFunction GetTrackPaintFunctionSpiralSlide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSpiralSlide(TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack2x2)
+    if (trackType != TrackElemType::flatTrack2x2)
     {
         return TrackPaintFunctionDummy;
     }

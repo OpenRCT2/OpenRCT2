@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,21 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../interface/Viewport.h"
-#include "../../../ride/RideData.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../world/Map.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
 
 enum
 {
@@ -75,70 +71,70 @@ enum
     SprCarRideQuarterTurn3TilesSeNePart2 = 28820,
 };
 
-static constexpr uint32_t CarRideTrackPiecesFlat[4] = {
+static constexpr uint32_t kPiecesFlat[4] = {
     SprCarRideFlatSwNe,
     SprCarRideFlatNwSe,
     SprCarRideFlatSwNe,
     SprCarRideFlatNwSe,
 };
 
-static constexpr uint32_t CarRideTrackPiecesLogBumps[4] = {
+static constexpr uint32_t kPiecesLogBumps[4] = {
     SprCarRideLogBumpsSwNe,
     SprCarRideLogBumpsNwSe,
     SprCarRideLogBumpsSwNe,
     SprCarRideLogBumpsNwSe,
 };
 
-static constexpr uint32_t CarRideTrackPieces25DegUp[4] = {
+static constexpr uint32_t kPieces25DegUp[4] = {
     SprCarRide25DegUpSwNe,
     SprCarRide25DegUpNwSe,
     SprCarRide25DegUpNeSw,
     SprCarRide25DegUpSeNw,
 };
 
-static constexpr uint32_t CarRideTrackPiecesFlatTo25DegUp[4] = {
+static constexpr uint32_t kPiecesFlatTo25DegUp[4] = {
     SprCarRideFlatTo25DegUpSwNe,
     SprCarRideFlatTo25DegUpNwSe,
     SprCarRideFlatTo25DegUpNeSw,
     SprCarRideFlatTo25DegUpSeNw,
 };
 
-static constexpr uint32_t CarRideTrackPieces25DegUpToFlat[4] = {
+static constexpr uint32_t kPieces25DegUpToFlat[4] = {
     SprCarRideDegUpToFlatSwNe,
     SprCarRideDegUpToFlatNwSe,
     SprCarRideDegUpToFlatNeSw,
     SprCarRideDegUpToFlatSeNw,
 };
 
-static constexpr uint32_t CarRideTrackPieces60DegUp[4] = {
+static constexpr uint32_t kPieces60DegUp[4] = {
     SprCarRide60DegUpSwNe,
     SprCarRide60DegUpNwSe,
     SprCarRide60DegUpNeSw,
     SprCarRide60DegUpSeNw,
 };
 
-static constexpr uint32_t CarRideTrackPieces25DegUpTo60DegUp[4][2] = {
+static constexpr uint32_t kPieces25DegUpTo60DegUp[4][2] = {
     { SprCarRide25DegUpTo60DegUpSwNe, 0 },
     { SprCarRide25DegUpTo60DegUpNwSe, SprCarRide25DegUpTo60DegUpFrontNwSe },
     { SprCarRide25DegUpTo60DegUpNeSw, SprCarRide25DegUpTo60DegUpFrontNeSw },
     { SprCarRide25DegUpTo60DegUpSeNw, 0 },
 };
 
-static constexpr uint32_t CarRideTrackPieces60DegUpTo25DegUp[4][2] = {
+static constexpr uint32_t kPieces60DegUpTo25DegUp[4][2] = {
     { SprCarRide60DegUpTo25DegUpSwNe, 0 },
     { SprCarRide60DegUpTo25DegUpNwSe, SprCarRide60DegUpTo25DegUpFrontNwSe },
     { SprCarRide60DegUpTo25DegUpNeSw, SprCarRide60DegUpTo25DegUpFrontNeSw },
     { SprCarRide60DegUpTo25DegUpSeNw, 0 },
 };
 
-static constexpr uint32_t CarRideTrackPiecesLeftQuarterTurn1Tile[4] = {
+static constexpr uint32_t kPiecesLeftQuarterTurn1Tile[4] = {
     SprCarRideQuarterTurn1TileSwNw,
     SprCarRideQuarterTurn1TileNwNe,
     SprCarRideQuarterTurn1TileNeSe,
     SprCarRideQuarterTurn1TileSeSw,
 };
 
-static constexpr uint32_t CarRideTrackPiecesQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t kPiecesQuarterTurn3Tiles[4][3] = {
     {
         SprCarRideQuarterTurn3TilesSwSePart0,
         SprCarRideQuarterTurn3TilesSwSePart1,
@@ -166,7 +162,7 @@ static void PaintCarRideTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPiecesFlat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPiecesFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -179,18 +175,18 @@ static void PaintCarRideTrackFlat(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -200,7 +196,7 @@ static void PaintCarRideTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPieces25DegUp[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPieces25DegUp[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -214,24 +210,24 @@ static void PaintCarRideTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -241,7 +237,7 @@ static void PaintCarRideTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPiecesFlatTo25DegUp[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPiecesFlatTo25DegUp[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -255,24 +251,24 @@ static void PaintCarRideTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 3, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -282,7 +278,7 @@ static void PaintCarRideTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPieces25DegUpToFlat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPieces25DegUpToFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -296,24 +292,24 @@ static void PaintCarRideTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -347,34 +343,20 @@ static void PaintCarRideStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    ImageId imageId;
-
-    if (direction == 0 || direction == 2)
-    {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
-    }
-    else if (direction == 1 || direction == 3)
-    {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
-    }
-
-    imageId = session.TrackColours.WithIndex(CarRideTrackPiecesFlat[direction]);
-    if (direction == 0 || direction == 2)
-    {
-        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 1 } });
-    }
-    else
-    {
-        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
-    }
+    const ImageId imageId = session.TrackColours.WithIndex(kPiecesFlat[direction]);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
+    else
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -386,15 +368,15 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn3TilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, CarRideTrackPiecesQuarterTurn3Tiles,
+        session, 3, height, direction, trackSequence, session.TrackColours, kPiecesQuarterTurn3Tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
             break;
     }
 
@@ -403,15 +385,15 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -434,7 +416,7 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPiecesLeftQuarterTurn1Tile[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPiecesLeftQuarterTurn1Tile[direction]);
 
     CoordsXYZ offset;
     switch (direction)
@@ -455,10 +437,10 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
 
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
+        session, kTunnelGroup, direction, height, 0, TunnelSubType::flat, 0, TunnelSubType::flat);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -477,7 +459,7 @@ static void PaintCarRideTrackSpinningTunnel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPiecesFlat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPiecesFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -492,15 +474,15 @@ static void PaintCarRideTrackSpinningTunnel(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -512,7 +494,7 @@ static void PaintCarRideTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPieces60DegUp[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPieces60DegUp[direction]);
 
     switch (direction)
     {
@@ -533,28 +515,28 @@ static void PaintCarRideTrack60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 56, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 56, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 32, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -564,7 +546,7 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPieces25DegUpTo60DegUp[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kPieces25DegUpTo60DegUp[direction][0]);
 
     if (direction == 0 || direction == 2)
     {
@@ -575,9 +557,9 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
-    if (CarRideTrackPieces25DegUpTo60DegUp[direction][1] != 0)
+    if (kPieces25DegUpTo60DegUp[direction][1] != 0)
     {
-        imageId = session.TrackColours.WithIndex(CarRideTrackPieces25DegUpTo60DegUp[direction][1]);
+        imageId = session.TrackColours.WithIndex(kPieces25DegUpTo60DegUp[direction][1]);
 
         if (direction == 0 || direction == 2)
         {
@@ -592,28 +574,28 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 12, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -623,7 +605,7 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPieces60DegUpTo25DegUp[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kPieces60DegUpTo25DegUp[direction][0]);
 
     if (direction == 0 || direction == 2)
     {
@@ -634,9 +616,9 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
 
-    if (CarRideTrackPieces60DegUpTo25DegUp[direction][1] != 0)
+    if (kPieces60DegUpTo25DegUp[direction][1] != 0)
     {
-        imageId = session.TrackColours.WithIndex(CarRideTrackPieces60DegUpTo25DegUp[direction][1]);
+        imageId = session.TrackColours.WithIndex(kPieces60DegUpTo25DegUp[direction][1]);
 
         if (direction == 0 || direction == 2)
         {
@@ -651,28 +633,28 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 20, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -706,7 +688,7 @@ static void PaintCarRideTrackLogBumps(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(CarRideTrackPiecesLogBumps[direction]);
+    auto imageId = session.TrackColours.WithIndex(kPiecesLogBumps[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -719,18 +701,18 @@ static void PaintCarRideTrackLogBumps(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -738,58 +720,58 @@ static void PaintCarRideTrackLogBumps(
 /**
  * rct2: 0x006F7000
  */
-TrackPaintFunction GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCarRide(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintCarRideTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintCarRideStation;
 
-        case TrackElemType::Up25:
+        case TrackElemType::up25:
             return PaintCarRideTrack25DegUp;
-        case TrackElemType::Up60:
+        case TrackElemType::up60:
             return PaintCarRideTrack60DegUp;
-        case TrackElemType::FlatToUp25:
+        case TrackElemType::flatToUp25:
             return PaintCarRideTrackFlatTo25DegUp;
-        case TrackElemType::Up25ToUp60:
+        case TrackElemType::up25ToUp60:
             return PaintCarRideTrack25DegUpTo60DegUp;
-        case TrackElemType::Up60ToUp25:
+        case TrackElemType::up60ToUp25:
             return PaintCarRideTrack60DegUpTo25DegUp;
-        case TrackElemType::Up25ToFlat:
+        case TrackElemType::up25ToFlat:
             return PaintCarRideTrack25DegUpToFlat;
 
-        case TrackElemType::Down25:
+        case TrackElemType::down25:
             return PaintCarRideTrack25DegDown;
-        case TrackElemType::Down60:
+        case TrackElemType::down60:
             return PaintCarRideTrack60DegDown;
-        case TrackElemType::FlatToDown25:
+        case TrackElemType::flatToDown25:
             return PaintCarRideTrackFlatTo25DegDown;
-        case TrackElemType::Down25ToDown60:
+        case TrackElemType::down25ToDown60:
             return PaintCarRideTrack25DegDownTo60DegDown;
-        case TrackElemType::Down60ToDown25:
+        case TrackElemType::down60ToDown25:
             return PaintCarRideTrack60DegDownTo25DegDown;
-        case TrackElemType::Down25ToFlat:
+        case TrackElemType::down25ToFlat:
             return PaintCarRideTrack25DegDownToFlat;
 
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return PaintCarRideTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return PaintCarRideTrackRightQuarterTurn3Tiles;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return PaintCarRideTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return PaintCarRideTrackRightQuarterTurn1Tile;
 
-        case TrackElemType::Rapids:
+        case TrackElemType::rapids:
             return PaintCarRideTrackLogBumps;
 
-        case TrackElemType::SpinningTunnel:
+        case TrackElemType::spinningTunnel:
             return PaintCarRideTrackSpinningTunnel;
 
         default:

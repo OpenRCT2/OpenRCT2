@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include <string>
 
 #define OPENRCT2_NAME "OpenRCT2"
-#define OPENRCT2_VERSION "0.4.17"
+#define kOpenRCT2Version "0.5.4"
 
 #if defined(__amd64__) || defined(_M_AMD64)
     #define OPENRCT2_ARCHITECTURE "x86-64"
@@ -34,9 +34,13 @@
     #define OPENRCT2_ARCHITECTURE "mips"
 #elif defined(__riscv)
     #define OPENRCT2_ARCHITECTURE "RISC-V"
+#elif defined(__loongarch__)
+    #define OPENRCT2_ARCHITECTURE "LoongArch"
 #endif
-#ifdef __EMSCRIPTEN__
-    #define OPENRCT2_ARCHITECTURE "Emscripten"
+#ifdef __wasm64__
+    #define OPENRCT2_ARCHITECTURE "wasm64"
+#elif defined(__wasm32__)
+    #define OPENRCT2_ARCHITECTURE "wasm32"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE
@@ -68,6 +72,9 @@
 #ifdef __EMSCRIPTEN__
     #define OPENRCT2_PLATFORM "Emscripten"
 #endif
+#ifdef __HAIKU__
+    #define OPENRCT2_PLATFORM "Haiku"
+#endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!
 #endif
@@ -79,7 +86,6 @@ struct NewVersionInfo
     std::string tag;
     std::string name;
     std::string changelog;
-    std::string url;
 };
 
 NewVersionInfo GetLatestVersion();

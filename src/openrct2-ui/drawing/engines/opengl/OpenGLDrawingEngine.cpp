@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
     #include "../DrawingEngineFactory.hpp"
     #include "ApplyPaletteShader.h"
+    #include "CopyRectShader.h"
     #include "DrawCommands.h"
     #include "DrawLineShader.h"
     #include "DrawRectShader.h"
@@ -28,14 +29,18 @@
     #include <openrct2-ui/interface/Window.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Console.hpp>
+    #include <openrct2/drawing/Drawing.Sprite.h>
+    #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/IDrawingContext.h>
     #include <openrct2/drawing/IDrawingEngine.h>
+    #include <openrct2/drawing/InvalidationGrid.h>
     #include <openrct2/drawing/LightFX.h>
-    #include <openrct2/drawing/Weather.h>
+    #include <openrct2/drawing/TTF.h>
+    #include <openrct2/drawing/WeatherDrawer.h>
     #include <openrct2/interface/Screenshot.h>
     #include <openrct2/ui/UiContext.h>
-    #include <openrct2/world/Climate.h>
+    #include <openrct2/world/Weather.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -47,7 +52,7 @@ struct OpenGLVersion
     GLint Minor;
 };
 
-constexpr OpenGLVersion OPENGL_MINIMUM_REQUIRED_VERSION = { 3, 3 };
+constexpr OpenGLVersion kOpenGLMinimumRequiredVersion = { 3, 3 };
 
 constexpr uint8_t kCSInside = 0b0000;
 constexpr uint8_t kCSLeft = 0b0001;
@@ -70,7 +75,11 @@ private:
 
     int32_t _drawCount = 0;
 
+    #ifndef DISABLE_TTF
     uint32_t _ttfGlId = 0;
+    #endif
+
+    bool _inDraw = false;
 
     struct
     {
@@ -80,8 +89,8 @@ private:
     } _commandBuffers;
 
     static uint8_t ComputeOutCode(ScreenCoordsXY, ScreenCoordsXY, ScreenCoordsXY);
-    static bool CohenSutherlandLineClip(ScreenLine&, const DrawPixelInfo&);
-    [[nodiscard]] ScreenRect CalculateClipping(const DrawPixelInfo& dpi) const;
+    static bool CohenSutherlandLineClip(ScreenLine&, const RenderTarget&);
+    [[nodiscard]] ScreenRect CalculateClipping(const RenderTarget& rt) const;
 
 public:
     explicit OpenGLDrawingContext(OpenGLDrawingEngine& engine);
@@ -91,7 +100,13 @@ public:
     {
         return _textureCache.get();
     }
+
     const OpenGLFramebuffer& GetFinalFramebuffer() const
+    {
+        return _swapFramebuffer->GetFinalFramebuffer();
+    }
+
+    OpenGLFramebuffer& GetFinalFramebuffer()
     {
         return _swapFramebuffer->GetFinalFramebuffer();
     }
@@ -100,22 +115,31 @@ public:
     void Resize(int32_t width, int32_t height);
     void ResetPalette();
     void StartNewDraw();
+    void FinishDraw();
 
-    void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) override;
-    void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+    void Clear(RenderTarget& rt, PaletteIndex paletteIndex) override;
+    void FillRect(
+        RenderTarget& rt, PaletteIndex paletteIndex, int32_t left, int32_t top, int32_t right, int32_t bottom,
+        bool crossHatch = false) override;
     void FilterRect(
-        DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-    void DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line) override;
-    void DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int32_t x, int32_t y) override;
-    void DrawSpriteRawMasked(
-        DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-    void DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
-    void DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
+        RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+    void DrawLine(RenderTarget& rt, PaletteIndex colour, const ScreenLine& line) override;
+    void DrawSprite(RenderTarget& rt, ImageId imageId, int32_t x, int32_t y) override;
+    void DrawSpriteRawMasked(RenderTarget& rt, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage) override;
+    void DrawSpriteSolid(RenderTarget& rt, ImageId image, int32_t x, int32_t y, PaletteIndex colour) override;
+    void DrawGlyph(RenderTarget& rt, ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawTTFBitmap(
-        DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold) override;
+        RenderTarget& rt, const TextDrawInfo& info, TTFSurface* surface, int32_t x, int32_t y,
+        uint8_t hintingThreshold) override;
 
     void FlushCommandBuffers();
 
+    bool IsActive() const
+    {
+        return _inDraw;
+    }
+
+private:
     void FlushLines();
     void FlushRectangles();
     void HandleTransparency();
@@ -132,7 +156,7 @@ public:
     }
 
     virtual void Draw(
-        DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+        RenderTarget& rt, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
         const uint8_t* weatherpattern) override
     {
         const uint8_t* pattern = weatherpattern;
@@ -142,7 +166,7 @@ public:
         uint8_t patternStartXOffset = xStart % patternXSpace;
         uint8_t patternStartYOffset = yStart % patternYSpace;
 
-        uint32_t pixelOffset = dpi.LineStride() * y + x;
+        uint32_t pixelOffset = rt.LineStride() * y + x;
         uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
         for (; height != 0; height--)
@@ -155,17 +179,17 @@ public:
                 uint32_t xPixelOffset = pixelOffset;
                 xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
 
-                auto patternPixel = pattern[patternYPos * 2 + 1];
+                auto patternPixel = static_cast<PaletteIndex>(pattern[patternYPos * 2 + 1]);
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
-                    int32_t pixelX = xPixelOffset % dpi.width;
-                    int32_t pixelY = (xPixelOffset / dpi.width) % dpi.height;
+                    int32_t pixelX = xPixelOffset % rt.width;
+                    int32_t pixelY = (xPixelOffset / rt.width) % rt.height;
 
-                    _drawingContext->DrawLine(dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
+                    _drawingContext->DrawLine(rt, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
                 }
             }
 
-            pixelOffset += dpi.LineStride();
+            pixelOffset += rt.LineStride();
             patternYPos++;
             patternYPos %= patternYSpace;
         }
@@ -175,7 +199,7 @@ public:
 class OpenGLDrawingEngine final : public IDrawingEngine
 {
 private:
-    std::shared_ptr<IUiContext> const _uiContext;
+    IUiContext& _uiContext;
     SDL_Window* _window = nullptr;
     SDL_GLContext _context = nullptr;
 
@@ -183,30 +207,34 @@ private:
     uint32_t _height = 0;
     uint32_t _pitch = 0;
     size_t _bitsSize = 0;
-    std::unique_ptr<uint8_t[]> _bits;
+    std::unique_ptr<PaletteIndex[]> _bits;
 
-    DrawPixelInfo _bitsDPI = {};
+    RenderTarget _mainRT = {};
 
     std::unique_ptr<OpenGLDrawingContext> _drawingContext;
 
     std::unique_ptr<ApplyPaletteShader> _applyPaletteShader;
+    std::unique_ptr<CopyRectShader> _copyRectShader;
+
     std::unique_ptr<OpenGLFramebuffer> _screenFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
+    std::unique_ptr<OpenGLFramebuffer> _tempFramebuffer;
     OpenGLWeatherDrawer _weatherDrawer;
+    InvalidationGrid _invalidationGrid;
 
 public:
     SDL_Color Palette[256];
     vec4 GLPalette[256];
 
-    explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+    explicit OpenGLDrawingEngine(IUiContext& uiContext)
         : _uiContext(uiContext)
         , _drawingContext(std::make_unique<OpenGLDrawingContext>(*this))
         , _weatherDrawer(_drawingContext.get())
     {
-        _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
-        _bitsDPI.DrawingEngine = this;
-        LightFXSetAvailable(false);
+        _window = static_cast<SDL_Window*>(_uiContext.GetWindow());
+        _mainRT.DrawingEngine = this;
+        LightFx::SetAvailable(false);
     }
 
     ~OpenGLDrawingEngine() override
@@ -216,10 +244,10 @@ public:
 
     void Initialise() override
     {
-        OpenGLVersion requiredVersion = OPENGL_MINIMUM_REQUIRED_VERSION;
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        OpenGLVersion requiredVersion = kOpenGLMinimumRequiredVersion;
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, requiredVersion.Major);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, requiredVersion.Minor);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
         _context = SDL_GL_CreateContext(_window);
         if (_context == nullptr)
@@ -238,14 +266,30 @@ public:
         _drawingContext->Initialise();
 
         _applyPaletteShader = std::make_unique<ApplyPaletteShader>();
+        _copyRectShader = std::make_unique<CopyRectShader>();
     }
 
     void Resize(uint32_t width, uint32_t height) override
     {
         ConfigureBits(width, height, width);
         ConfigureCanvas();
+        ConfigureDirtyGrid();
+
         _drawingContext->Resize(width, height);
-        _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
+        _tempFramebuffer = std::make_unique<OpenGLFramebuffer>(width, height);
+
+        _drawingContext->StartNewDraw();
+        _drawingContext->Clear(_mainRT, PaletteIndex::pi10);
+        _drawingContext->FlushCommandBuffers();
+        _drawingContext->FinishDraw();
+    }
+
+    void ConfigureDirtyGrid()
+    {
+        const auto blockWidth = 1u << 8;
+        const auto blockHeight = 1u << 8;
+
+        _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -253,9 +297,9 @@ public:
         for (int32_t i = 0; i < 256; i++)
         {
             SDL_Color colour;
-            colour.r = palette[i].Red;
-            colour.g = palette[i].Green;
-            colour.b = palette[i].Blue;
+            colour.r = palette[i].red;
+            colour.g = palette[i].green;
+            colour.b = palette[i].blue;
             colour.a = i == 0 ? 0 : 255;
 
             Palette[i] = colour;
@@ -279,6 +323,7 @@ public:
 
     void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
+        _invalidationGrid.invalidate(left, top, right, bottom);
     }
 
     void BeginDraw() override
@@ -318,57 +363,178 @@ public:
         }
 
         CheckGLError();
+
+        _drawingContext->FinishDraw();
+
         Display();
     }
 
     void PaintWindows() override
     {
-        WindowUpdateAllViewports();
-        WindowDrawAll(_bitsDPI, 0, 0, _width, _height);
+        if (Weather::hasWeatherEffect() || gPaintForceRedraw)
+        {
+            WindowUpdateAllViewports();
+            // OpenGL doesn't support restoring pixels, always redraw.
+            // TODO: Render the weather to a texture and use that instead.
+            WindowDrawAll(_mainRT, 0, 0, static_cast<int32_t>(_width), static_cast<int32_t>(_height));
+        }
+        else
+        {
+            // Redraw dirty regions before updating the viewports, otherwise
+            // when viewports get panned, they copy dirty pixels
+            DrawAllDirtyBlocks();
+            WindowUpdateAllViewports();
+            DrawAllDirtyBlocks();
+        }
+    }
+
+    void DrawAllDirtyBlocks()
+    {
+        _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+            // Draw region
+            DrawDirtyBlocks(left, top, right, bottom);
+        });
+    }
+
+    void DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
+    {
+        // Draw region
+        WindowDrawAll(_mainRT, left, top, right, bottom);
     }
 
     void PaintWeather() override
     {
-        DrawWeather(_bitsDPI, &_weatherDrawer);
+        DrawWeather(_mainRT, &_weatherDrawer);
     }
 
     std::string Screenshot() override
     {
         const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
-        framebuffer.GetPixels(_bitsDPI);
-        std::string result = ScreenshotDumpPNG(_bitsDPI);
+        framebuffer.GetPixels(_mainRT);
+        std::string result = ScreenshotDumpPNG(_mainRT);
         return result;
     }
 
     void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override
     {
-        // Not applicable for this engine
+        if (dx == 0 && dy == 0)
+            return;
+
+        _drawingContext->FlushCommandBuffers();
+
+        auto& framebuffer = _drawingContext->GetFinalFramebuffer();
+
+        const int32_t texWidth = static_cast<int32_t>(framebuffer.GetWidth());
+        const int32_t texHeight = static_cast<int32_t>(framebuffer.GetHeight());
+
+        // Adjust for move off screen
+        int32_t lmargin = std::min(x - dx, 0);
+        int32_t rmargin = std::min(texWidth - (x - dx + width), 0);
+        int32_t tmargin = std::min(y - dy, 0);
+        int32_t bmargin = std::min(texHeight - (y - dy + height), 0);
+        x -= lmargin;
+        y -= tmargin;
+        width += lmargin + rmargin;
+        height += tmargin + bmargin;
+
+        if (width <= 0 || height <= 0)
+            return;
+
+    #ifndef __MACOSX__
+
+        auto& tempBuffer = *_tempFramebuffer;
+
+        const auto flipYAxis = [texHeight](int32_t yPos, int32_t h) {
+            // Convert to OpenGL bottom-left origin coords.
+            return texHeight - yPos - h;
+        };
+
+        int32_t srcX = x - dx;
+        int32_t srcY = flipYAxis(y - dy, height);
+        int32_t destX = x;
+        int32_t destY = flipYAxis(y, height);
+
+        glCall(glDisable, GL_BLEND);
+        glCall(glDisable, GL_DEPTH_TEST);
+
+        // First pass: Copy from main to temp
+        GLuint mainTexture = framebuffer.GetTexture();
+        tempBuffer.BindDraw();
+        framebuffer.BindRead();
+        glCall(glViewport, 0, 0, width, height);
+        _copyRectShader->Use();
+        _copyRectShader->SetTexture(mainTexture);
+        _copyRectShader->SetSourceRect(srcX, srcY, width, height);
+        _copyRectShader->SetTextureSize(texWidth, texHeight);
+        _copyRectShader->Draw();
+
+        // Second pass: Copy from temp to main
+        GLuint tempTexture = tempBuffer.GetTexture();
+        framebuffer.BindDraw();
+        tempBuffer.BindRead();
+        glCall(glViewport, destX, destY, width, height);
+        _copyRectShader->Use();
+        _copyRectShader->SetTexture(tempTexture);
+        _copyRectShader->SetSourceRect(0, 0, width, height);
+        _copyRectShader->SetTextureSize(texWidth, texHeight);
+        _copyRectShader->Draw();
+
+    #else
+
+        // Slow but functional path for MacOS, OpenGL is deprecated on MacOS
+        // and there seems to be issues that aren't present on other platforms.
+
+        framebuffer.GetPixels(_mainRT);
+
+        int32_t stride = _mainRT.LineStride();
+        PaletteIndex* to = _mainRT.bits + y * stride + x;
+        PaletteIndex* from = _mainRT.bits + (y - dy) * stride + x - dx;
+
+        if (dy > 0)
+        {
+            // If positive dy, reverse directions
+            to += (height - 1) * stride;
+            from += (height - 1) * stride;
+            stride = -stride;
+        }
+
+        // Move bytes
+        for (int32_t i = 0; i < height; i++)
+        {
+            memmove(to, from, width);
+            to += stride;
+            from += stride;
+        }
+
+        framebuffer.SetPixels(_mainRT);
+
+    #endif
     }
 
     IDrawingContext* GetDrawingContext() override
     {
+        if (!_drawingContext->IsActive())
+        {
+            Guard::Fail("Drawing context is not active.");
+            return nullptr;
+        }
         return _drawingContext.get();
     }
 
-    DrawPixelInfo* GetDrawingPixelInfo() override
+    RenderTarget* getRT() override
     {
-        return &_bitsDPI;
+        return &_mainRT;
     }
 
-    DRAWING_ENGINE_FLAGS GetFlags() override
+    DrawingEngineFlags GetFlags() override
     {
-        return DEF_NONE;
+        return DrawingEngineFlag::dirtyOptimisations;
     }
 
     void InvalidateImage(uint32_t image) override
     {
         _drawingContext->GetTextureCache()->InvalidateImage(image);
-    }
-
-    DrawPixelInfo* GetDPI()
-    {
-        return &_bitsDPI;
     }
 
 private:
@@ -389,10 +555,10 @@ private:
     {
         size_t newBitsSize = pitch * height;
 
-        auto newBits = std::make_unique<uint8_t[]>(newBitsSize);
+        auto newBits = std::make_unique<PaletteIndex[]>(newBitsSize);
         if (_bits == nullptr)
         {
-            std::fill_n(newBits.get(), newBitsSize, 0);
+            std::fill_n(newBits.get(), newBitsSize, PaletteIndex::transparent);
         }
         else
         {
@@ -402,8 +568,8 @@ private:
             }
             else
             {
-                uint8_t* src = _bits.get();
-                uint8_t* dst = newBits.get();
+                PaletteIndex* src = _bits.get();
+                PaletteIndex* dst = newBits.get();
 
                 uint32_t minWidth = std::min(_width, width);
                 uint32_t minHeight = std::min(_height, height);
@@ -412,7 +578,7 @@ private:
                     std::copy_n(src, minWidth, dst);
                     if (pitch - minWidth > 0)
                     {
-                        std::fill_n(dst + minWidth, pitch - minWidth, 0);
+                        std::fill_n(dst + minWidth, pitch - minWidth, PaletteIndex::transparent);
                     }
                     src += _pitch;
                     dst += pitch;
@@ -426,13 +592,13 @@ private:
         _height = height;
         _pitch = pitch;
 
-        DrawPixelInfo* dpi = &_bitsDPI;
-        dpi->bits = _bits.get();
-        dpi->x = 0;
-        dpi->y = 0;
-        dpi->width = width;
-        dpi->height = height;
-        dpi->pitch = _pitch - width;
+        RenderTarget* rt = &_mainRT;
+        rt->bits = _bits.get();
+        rt->x = 0;
+        rt->y = 0;
+        rt->width = width;
+        rt->height = height;
+        rt->pitch = _pitch - width;
     }
 
     void ConfigureCanvas()
@@ -441,13 +607,13 @@ private:
         _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
         _smoothScaleFramebuffer.reset();
         _scaleFramebuffer.reset();
-        if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
+        if (GetContext()->GetUiContext().GetScaleQuality() != ScaleQuality::nearestNeighbour)
         {
             _scaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width, _height, false, false);
         }
-        if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
+        if (GetContext()->GetUiContext().GetScaleQuality() == ScaleQuality::smoothNearestNeighbour)
         {
-            uint32_t scale = std::ceil(Config::Get().general.WindowScale);
+            uint32_t scale = std::ceil(Config::Get().general.windowScale);
             _smoothScaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width * scale, _height * scale, false, false);
         }
     }
@@ -458,7 +624,7 @@ private:
     }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+std::unique_ptr<IDrawingEngine> Ui::CreateOpenGLDrawingEngine(IUiContext& uiContext)
 {
     return std::make_unique<OpenGLDrawingEngine>(uiContext);
 }
@@ -501,24 +667,38 @@ void OpenGLDrawingContext::ResetPalette()
 
 void OpenGLDrawingContext::StartNewDraw()
 {
+    Guard::Assert(_inDraw == false);
+
     _drawCount = 0;
     _swapFramebuffer->Clear();
+    _inDraw = true;
 }
 
-void OpenGLDrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
+void OpenGLDrawingContext::FinishDraw()
 {
-    FillRect(dpi, paletteIndex, dpi.x, dpi.y, dpi.x + dpi.width, dpi.y + dpi.height);
+    Guard::Assert(_inDraw == true);
+
+    _inDraw = false;
+}
+
+void OpenGLDrawingContext::Clear(RenderTarget& rt, PaletteIndex paletteIndex)
+{
+    Guard::Assert(_inDraw == true);
+
+    FillRect(rt, paletteIndex, rt.x, rt.y, rt.x + rt.width, rt.y + rt.height);
 }
 
 void OpenGLDrawingContext::FillRect(
-    DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    RenderTarget& rt, PaletteIndex paletteIndex, int32_t left, int32_t top, int32_t right, int32_t bottom, bool crossHatch)
 {
-    const ScreenRect clip = CalculateClipping(dpi);
+    Guard::Assert(_inDraw == true);
 
-    left += clip.GetLeft() - dpi.x;
-    top += clip.GetTop() - dpi.y;
-    right += clip.GetLeft() - dpi.x;
-    bottom += clip.GetTop() - dpi.y;
+    const ScreenRect clip = CalculateClipping(rt);
+
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -528,32 +708,30 @@ void OpenGLDrawingContext::FillRect(
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
-    command.colour = colour & 0xFF;
+    command.colour = EnumValue(paletteIndex);
     command.bounds = { left, top, right + 1, bottom + 1 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
     command.depth = _drawCount++;
+    command.zoom = 1.0f;
 
-    if (colour & 0x1000000)
+    if (crossHatch)
     {
         // cross-pattern
         command.flags |= DrawRectCommand::FLAG_CROSS_HATCH;
     }
-    else if (colour & 0x2000000)
-    {
-        assert(false);
-        // Should be FilterRect
-    }
 }
 
 void OpenGLDrawingContext::FilterRect(
-    DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
-    const ScreenRect clip = CalculateClipping(dpi);
+    Guard::Assert(_inDraw == true);
 
-    left += clip.GetLeft() - dpi.x;
-    top += clip.GetTop() - dpi.y;
-    right += clip.GetLeft() - dpi.x;
-    bottom += clip.GetTop() - dpi.y;
+    const ScreenRect clip = CalculateClipping(rt);
+
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
@@ -567,6 +745,7 @@ void OpenGLDrawingContext::FilterRect(
     command.bounds = { left, top, right + 1, bottom + 1 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
     command.depth = _drawCount++;
+    command.zoom = 1.0f;
 }
 
 // Compute the bit code for a point p relative to the clip rectangle defined by topLeft and bottomRight
@@ -587,12 +766,12 @@ uint8_t OpenGLDrawingContext::ComputeOutCode(
     return code;
 }
 
-// Trims the line to be within the bounds of the dpi.
+// Trims the line to be within the bounds of the render target.
 // based on: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
-bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawPixelInfo& dpi)
+bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const RenderTarget& rt)
 {
-    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
-    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
+    ScreenCoordsXY topLeft = { rt.x, rt.y };
+    ScreenCoordsXY bottomRight = { rt.x + rt.width - 1, rt.y + rt.height - 1 };
     uint8_t outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
     uint8_t outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
 
@@ -600,12 +779,12 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawP
     {
         if (outcode1 == kCSInside && outcode2 == kCSInside)
         {
-            // both points inside dpi
+            // both points inside render target
             return true;
         }
         if (outcode1 & outcode2)
         {
-            // both points share an outside zone so both must be outside dpi
+            // both points share an outside zone so both must be outside render target
             return false;
         }
 
@@ -653,106 +832,102 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawP
     }
 }
 
-void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
+void OpenGLDrawingContext::DrawLine(RenderTarget& rt, PaletteIndex colour, const ScreenLine& line)
 {
-    const ZoomLevel zoom = dpi.zoom_level;
+    Guard::Assert(_inDraw == true);
+
+    const ZoomLevel zoom = rt.zoom_level;
     ScreenLine trimmedLine = { { zoom.ApplyInversedTo(line.GetX1()), zoom.ApplyInversedTo(line.GetY1()) },
                                { zoom.ApplyInversedTo(line.GetX2()), zoom.ApplyInversedTo(line.GetY2()) } };
-    if (!CohenSutherlandLineClip(trimmedLine, dpi))
+    if (!CohenSutherlandLineClip(trimmedLine, rt))
         return;
 
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
-    const ScreenRect clip = CalculateClipping(dpi);
-    const int32_t x1 = trimmedLine.GetX1() - dpi.x + clip.GetLeft();
-    const int32_t y1 = trimmedLine.GetY1() - dpi.y + clip.GetTop();
-    const int32_t x2 = trimmedLine.GetX2() - dpi.x + clip.GetLeft();
-    const int32_t y2 = trimmedLine.GetY2() - dpi.y + clip.GetTop();
+    const ScreenRect clip = CalculateClipping(rt);
+    const int32_t x1 = trimmedLine.GetX1() - rt.x + clip.GetLeft();
+    const int32_t y1 = trimmedLine.GetY1() - rt.y + clip.GetTop();
+    const int32_t x2 = trimmedLine.GetX2() - rt.x + clip.GetLeft();
+    const int32_t y2 = trimmedLine.GetY2() - rt.y + clip.GetTop();
 
     command.bounds = { x1, y1, x2, y2 };
-    command.colour = colour & 0xFF;
+    command.colour = static_cast<GLuint>(colour);
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int32_t x, int32_t y)
+static auto EuclideanRemainder(const auto a, const auto b)
 {
+    const auto r = a % b;
+    return r >= 0 ? r : r + b;
+};
+
+void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, const int32_t x, const int32_t y)
+{
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(imageId);
     if (g1Element == nullptr)
     {
         return;
     }
 
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    if (rt.zoom_level > ZoomLevel{ 0 })
     {
-        if (g1Element->flags & G1_FLAG_HAS_ZOOM_SPRITE)
+        if (g1Element->flags.has(G1Flag::hasZoomSprite))
         {
-            DrawPixelInfo zoomedDPI;
-            zoomedDPI.bits = dpi.bits;
-            zoomedDPI.x = dpi.x;
-            zoomedDPI.y = dpi.y;
-            zoomedDPI.height = dpi.height;
-            zoomedDPI.width = dpi.width;
-            zoomedDPI.pitch = dpi.pitch;
-            zoomedDPI.zoom_level = dpi.zoom_level - 1;
-            DrawSprite(zoomedDPI, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomed_offset), x >> 1, y >> 1);
+            RenderTarget zoomedRT;
+            zoomedRT.bits = rt.bits;
+            zoomedRT.x = rt.x;
+            zoomedRT.y = rt.y;
+            zoomedRT.height = rt.height;
+            zoomedRT.width = rt.width;
+            zoomedRT.pitch = rt.pitch;
+            zoomedRT.zoom_level = rt.zoom_level - 1;
+            DrawSprite(zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomedOffset), x >> 1, y >> 1);
             return;
         }
-        if (g1Element->flags & G1_FLAG_NO_ZOOM_DRAW)
+        if (g1Element->flags.has(G1Flag::noZoomDraw))
         {
             return;
         }
     }
 
-    int32_t left = x + g1Element->x_offset;
-    int32_t top = y + g1Element->y_offset;
+    auto texture = _textureCache->GetOrLoadImageTexture(imageId);
 
-    int32_t zoom_mask;
-    if (dpi.zoom_level >= ZoomLevel{ 0 })
-        zoom_mask = dpi.zoom_level.ApplyTo(0xFFFFFFFF);
-    else
-        zoom_mask = 0xFFFFFFFF;
-    if (dpi.zoom_level != ZoomLevel{ 0 } && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
+    int32_t left = x + g1Element->xOffset;
+    int32_t top = y + g1Element->yOffset;
+
+    int32_t xModifier = 0;
+    int32_t yModifier = 0;
+    int32_t widthModifier = 0;
+
+    if (rt.zoom_level > ZoomLevel{ 0 })
     {
-        top -= ~zoom_mask;
+        const int32_t interval = rt.zoom_level.ApplyTo(1);
+
+        xModifier = EuclideanRemainder(left, interval);
+        xModifier = xModifier ? interval - xModifier : 0;
+        yModifier = EuclideanRemainder(top, interval);
+        widthModifier = EuclideanRemainder(left + g1Element->width, interval);
+        widthModifier = widthModifier ? interval - widthModifier : 0;
+
+        texture.coords.x += xModifier;
+        texture.coords.y += (interval - 1) - yModifier;
     }
 
-    if (!(g1Element->flags & G1_FLAG_RLE_COMPRESSION))
-    {
-        top &= zoom_mask;
-        left += ~zoom_mask;
-    }
+    left = rt.zoom_level.ApplyInversedTo(left + xModifier);
+    top = rt.zoom_level.ApplyInversedTo(top);
+    int32_t right = left + rt.zoom_level.ApplyInversedTo(g1Element->width + widthModifier);
+    int32_t bottom = top + rt.zoom_level.ApplyInversedTo(g1Element->height + yModifier);
 
-    left &= zoom_mask;
+    const ScreenRect clip = CalculateClipping(rt);
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
-    int32_t right = left + g1Element->width;
-    int32_t bottom = top + g1Element->height;
-
-    if (dpi.zoom_level != ZoomLevel{ 0 } && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
-    {
-        bottom += top & ~zoom_mask;
-    }
-
-    if (left > right)
-    {
-        std::swap(left, right);
-    }
-    if (top > bottom)
-    {
-        std::swap(top, bottom);
-    }
-
-    left = dpi.zoom_level.ApplyInversedTo(left);
-    top = dpi.zoom_level.ApplyInversedTo(top);
-    right = dpi.zoom_level.ApplyInversedTo(right);
-    bottom = dpi.zoom_level.ApplyInversedTo(bottom);
-
-    const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.x;
-    top += clip.GetTop() - dpi.y;
-    right += clip.GetLeft() - dpi.x;
-    bottom += clip.GetTop() - dpi.y;
-
-    const auto texture = _textureCache->GetOrLoadImageTexture(imageId);
+    const float zoom = rt.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(rt.zoom_level.ApplyTo(1))
+                                                       : 1.0f / static_cast<float>(rt.zoom_level.ApplyInversedTo(1));
 
     int paletteCount;
     ivec3 palettes{};
@@ -776,7 +951,7 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
         paletteCount = 1;
         FilterPaletteID palette = static_cast<FilterPaletteID>(imageId.GetRemap());
         palettes.x = TextureCache::PaletteToY(palette);
-        if (palette == FilterPaletteID::PaletteWater)
+        if (palette == FilterPaletteID::paletteWater)
         {
             special = true;
         }
@@ -792,14 +967,15 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
 
         command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
         command.texColourAtlas = texture.index;
-        command.texColourBounds = texture.normalizedBounds;
+        command.texColourBounds = texture.coords;
         command.texMaskAtlas = texture.index;
-        command.texMaskBounds = texture.normalizedBounds;
+        command.texMaskBounds = texture.coords;
         command.palettes = palettes;
         command.colour = palettes.x - (special ? 1 : 0);
         command.bounds = { left, top, right, bottom };
         command.flags = special ? 0 : DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
         command.depth = _drawCount++;
+        command.zoom = zoom;
     }
     else
     {
@@ -807,20 +983,23 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
 
         command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
         command.texColourAtlas = texture.index;
-        command.texColourBounds = texture.normalizedBounds;
+        command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
-        command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+        command.texMaskBounds = { 0.0f, 0.0f, texture.coords.z, texture.coords.w };
         command.palettes = palettes;
         command.colour = 0;
         command.bounds = { left, top, right, bottom };
         command.flags = paletteCount;
         command.depth = _drawCount++;
+        command.zoom = zoom;
     }
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(
-    DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
+    RenderTarget& rt, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1ElementMask = GfxGetG1Element(maskImage);
     auto g1ElementColour = GfxGetG1Element(colourImage);
     if (g1ElementMask == nullptr || g1ElementColour == nullptr)
@@ -831,8 +1010,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     const auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
     const auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
-    int32_t drawOffsetX = g1ElementMask->x_offset;
-    int32_t drawOffsetY = g1ElementMask->y_offset;
+    int32_t drawOffsetX = g1ElementMask->xOffset;
+    int32_t drawOffsetY = g1ElementMask->yOffset;
     int32_t drawWidth = std::min(g1ElementMask->width, g1ElementColour->width);
     int32_t drawHeight = std::min(g1ElementMask->height, g1ElementColour->height);
 
@@ -850,33 +1029,39 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
         std::swap(top, bottom);
     }
 
-    left = dpi.zoom_level.ApplyInversedTo(left);
-    top = dpi.zoom_level.ApplyInversedTo(top);
-    right = dpi.zoom_level.ApplyInversedTo(right);
-    bottom = dpi.zoom_level.ApplyInversedTo(bottom);
+    left = rt.zoom_level.ApplyInversedTo(left);
+    top = rt.zoom_level.ApplyInversedTo(top);
+    right = rt.zoom_level.ApplyInversedTo(right);
+    bottom = rt.zoom_level.ApplyInversedTo(bottom);
 
-    const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.x;
-    top += clip.GetTop() - dpi.y;
-    right += clip.GetLeft() - dpi.x;
-    bottom += clip.GetTop() - dpi.y;
+    const ScreenRect clip = CalculateClipping(rt);
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
+
+    const float zoom = rt.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(rt.zoom_level.ApplyTo(1))
+                                                       : 1.0f / static_cast<float>(rt.zoom_level.ApplyInversedTo(1));
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = textureColour.index;
-    command.texColourBounds = textureColour.normalizedBounds;
+    command.texColourBounds = textureColour.coords;
     command.texMaskAtlas = textureMask.index;
-    command.texMaskBounds = textureMask.normalizedBounds;
+    command.texMaskBounds = textureMask.coords;
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_MASK;
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
+    command.zoom = zoom;
 }
 
-void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, PaletteIndex colour)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
@@ -885,8 +1070,8 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
 
     const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
-    int32_t drawOffsetX = g1Element->x_offset;
-    int32_t drawOffsetY = g1Element->y_offset;
+    int32_t drawOffsetX = g1Element->xOffset;
+    int32_t drawOffsetY = g1Element->yOffset;
     int32_t drawWidth = static_cast<uint16_t>(g1Element->width);
     int32_t drawHeight = static_cast<uint16_t>(g1Element->height);
 
@@ -904,11 +1089,11 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
         std::swap(top, bottom);
     }
 
-    const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.x;
-    top += clip.GetTop() - dpi.y;
-    right += clip.GetLeft() - dpi.x;
-    bottom += clip.GetTop() - dpi.y;
+    const ScreenRect clip = CalculateClipping(rt);
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -916,16 +1101,19 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = texture.index;
-    command.texMaskBounds = texture.normalizedBounds;
+    command.texMaskBounds = texture.coords;
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
-    command.colour = colour & 0xFF;
+    command.colour = static_cast<GLuint>(colour);
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
+    command.zoom = 1.0f;
 }
 
-void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
+void OpenGLDrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
@@ -934,8 +1122,8 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
 
     const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
-    int32_t left = x + g1Element->x_offset;
-    int32_t top = y + g1Element->y_offset;
+    int32_t left = x + g1Element->xOffset;
+    int32_t top = y + g1Element->yOffset;
     int32_t right = left + static_cast<uint16_t>(g1Element->width);
     int32_t bottom = top + static_cast<uint16_t>(g1Element->height);
 
@@ -948,22 +1136,25 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
         std::swap(top, bottom);
     }
 
-    left = dpi.zoom_level.ApplyInversedTo(left);
-    top = dpi.zoom_level.ApplyInversedTo(top);
-    right = dpi.zoom_level.ApplyInversedTo(right);
-    bottom = dpi.zoom_level.ApplyInversedTo(bottom);
+    left = rt.zoom_level.ApplyInversedTo(left);
+    top = rt.zoom_level.ApplyInversedTo(top);
+    right = rt.zoom_level.ApplyInversedTo(right);
+    bottom = rt.zoom_level.ApplyInversedTo(bottom);
 
-    const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.x;
-    top += clip.GetTop() - dpi.y;
-    right += clip.GetLeft() - dpi.x;
-    bottom += clip.GetTop() - dpi.y;
+    const ScreenRect clip = CalculateClipping(rt);
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
+
+    const float zoom = rt.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(rt.zoom_level.ApplyTo(1))
+                                                       : 1.0f / static_cast<float>(rt.zoom_level.ApplyInversedTo(1));
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = texture.index;
-    command.texColourBounds = texture.normalizedBounds;
+    command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
@@ -971,12 +1162,15 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
+    command.zoom = zoom;
 }
 
 void OpenGLDrawingContext::DrawTTFBitmap(
-    DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+    RenderTarget& rt, const TextDrawInfo& info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
-    #ifndef NO_TTF
+    Guard::Assert(_inDraw == true);
+
+    #ifndef DISABLE_TTF
     auto baseId = static_cast<uint32_t>(0x7FFFF) - 1024;
     auto imageId = baseId + _ttfGlId;
     _engine.InvalidateImage(imageId);
@@ -1006,13 +1200,13 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         std::swap(top, bottom);
     }
 
-    const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.x;
-    top += clip.GetTop() - dpi.y;
-    right += clip.GetLeft() - dpi.x;
-    bottom += clip.GetTop() - dpi.y;
+    const ScreenRect clip = CalculateClipping(rt);
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
-    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    if (info.colourFlags.has(ColourFlag::withOutline))
     {
         std::array<ivec4, 4> boundsArr = { {
             { left + 1, top, right + 1, bottom },
@@ -1025,49 +1219,54 @@ void OpenGLDrawingContext::DrawTTFBitmap(
             DrawRectCommand& command = _commandBuffers.rects.allocate();
             command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
             command.texColourAtlas = texture.index;
-            command.texColourBounds = texture.normalizedBounds;
+            command.texColourBounds = texture.coords;
             command.texMaskAtlas = 0;
             command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
             command.palettes = { 0, 0, 0 };
             command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-            command.colour = info->palette[3];
+            command.colour = static_cast<GLuint>(info.palette.shadowOutline);
             command.bounds = b;
             command.depth = _drawCount++;
+            command.zoom = 1.0f;
         }
     }
-    if (info->flags & TEXT_DRAW_FLAG_INSET)
+    if (info.colourFlags.has(ColourFlag::inset))
     {
         DrawRectCommand& command = _commandBuffers.rects.allocate();
         command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
         command.texColourAtlas = texture.index;
-        command.texColourBounds = texture.normalizedBounds;
+        command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
         command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
         command.palettes = { 0, 0, 0 };
         command.flags = DrawRectCommand::FLAG_TTF_TEXT;
-        command.colour = info->palette[3];
+        command.colour = static_cast<GLuint>(info.palette.shadowOutline);
         command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
         command.depth = _drawCount++;
+        command.zoom = 1.0f;
     }
     auto& cmdBuf = hintingThreshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
     DrawRectCommand& command = cmdBuf.allocate();
     command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = texture.index;
-    command.texColourBounds = texture.normalizedBounds;
+    command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hintingThreshold << 8);
-    command.colour = info->palette[1];
+    command.colour = static_cast<GLuint>(info.palette.fill);
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
-    #endif // NO_TTF
+    command.zoom = 1.0f;
+    #endif // DISABLE_TTF
 }
 
 void OpenGLDrawingContext::FlushCommandBuffers()
 {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    Guard::Assert(_inDraw == true);
+
+    glCall(glEnable, GL_DEPTH_TEST);
+    glCall(glDepthFunc, GL_LESS);
 
     _swapFramebuffer->BindOpaque();
     _drawRectShader->Use();
@@ -1120,8 +1319,8 @@ void OpenGLDrawingContext::HandleTransparency()
     {
         _swapFramebuffer->BindTransparent();
 
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_GREATER);
+        glCall(glEnable, GL_DEPTH_TEST);
+        glCall(glDepthFunc, GL_GREATER);
         _drawRectShader->Use();
 
         if (i > 0)
@@ -1141,22 +1340,22 @@ void OpenGLDrawingContext::HandleTransparency()
     _commandBuffers.transparent.clear();
 }
 
-ScreenRect OpenGLDrawingContext::CalculateClipping(const DrawPixelInfo& dpi) const
+ScreenRect OpenGLDrawingContext::CalculateClipping(const RenderTarget& rt) const
 {
     // mber: Calculating the screen coordinates by dividing the difference between pointers like this is a dirty hack.
     //       It's also quite slow. In future the drawing code needs to be refactored to avoid this somehow.
-    const DrawPixelInfo* screenDPI = _engine.GetDPI();
-    const int32_t bytesPerRow = screenDPI->LineStride();
-    const int32_t bitsOffset = static_cast<int32_t>(dpi.bits - screenDPI->bits);
+    const RenderTarget* mainRT = _engine.getRT();
+    const int32_t bytesPerRow = mainRT->LineStride();
+    const int32_t bitsOffset = static_cast<int32_t>(rt.bits - mainRT->bits);
     #ifndef NDEBUG
-    const ptrdiff_t bitsSize = static_cast<ptrdiff_t>(screenDPI->height) * static_cast<ptrdiff_t>(bytesPerRow);
+    const ptrdiff_t bitsSize = static_cast<ptrdiff_t>(mainRT->height) * static_cast<ptrdiff_t>(bytesPerRow);
     assert(static_cast<ptrdiff_t>(bitsOffset) < bitsSize && static_cast<ptrdiff_t>(bitsOffset) >= 0);
     #endif
 
     const int32_t left = bitsOffset % bytesPerRow;
     const int32_t top = bitsOffset / bytesPerRow;
-    const int32_t right = left + dpi.width;
-    const int32_t bottom = top + dpi.height;
+    const int32_t right = left + rt.width;
+    const int32_t bottom = top + rt.height;
 
     return { { left, top }, { right, bottom } };
 }

@@ -24,9 +24,14 @@ libversion
 
 # Downloaded or built data files
 data/g2.dat
+data/fonts.dat
+data/palettes.dat
+data/tracks.dat
 data/sequence
 data/object
 data/assetpack
+test/tests/testdata/replays
+test/tests/testdata/sprites/result.dat
 
 #################
 ## Eclipse
@@ -298,6 +303,12 @@ discord-rpc
 ## JetBrains ##
 ###############
 .idea/
+
+##########
+## Kate ##
+##########
+.*.kate-swp
+.swp.*
 
 #########################
 ## Visual Studio Code

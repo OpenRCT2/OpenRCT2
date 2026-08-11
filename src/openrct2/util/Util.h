@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,8 +24,8 @@ constexpr T AddClamp(T value, T valueToAdd)
     {
         static_assert(sizeof(money64) == sizeof(int64_t));
     }
-    auto maxCap = std::numeric_limits<T>::max();
-    auto minCap = std::numeric_limits<T>::lowest();
+    constexpr auto maxCap = std::numeric_limits<T>::max();
+    constexpr auto minCap = std::numeric_limits<T>::lowest();
     if ((valueToAdd > 0) && (value > (maxCap - (valueToAdd))))
     {
         return maxCap;

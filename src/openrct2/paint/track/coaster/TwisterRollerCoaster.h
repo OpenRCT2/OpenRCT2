@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,34 +12,38 @@
 #include <cstdint>
 
 struct PaintSession;
-struct Ride;
 struct SupportType;
-struct TrackElement;
+
+namespace OpenRCT2
+{
+    struct Ride;
+    struct TrackElement;
+} // namespace OpenRCT2
 
 void TwisterRCTrackBooster(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrackDiagBrakes(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrackDiagBlockBrakes(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrackFlatTo60DegUpLongBase(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrack60DegUpToFlatLongBase(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrackLeftLargeHalfLoopUp(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrackRightLargeHalfLoopUp(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrackLeftLargeHalfLoopDown(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);
 void TwisterRCTrackRightLargeHalfLoopDown(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType);
+    PaintSession& session, const OpenRCT2::Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const OpenRCT2::TrackElement& trackElement, SupportType supportType);

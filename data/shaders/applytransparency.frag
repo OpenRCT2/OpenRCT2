@@ -1,4 +1,4 @@
-#version 150
+#version 330 core
 
 // clang-format off
 uniform usampler2D      uOpaqueTex;

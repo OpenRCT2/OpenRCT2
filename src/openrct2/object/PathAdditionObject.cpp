@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,121 +14,111 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
-#include "../object/Object.h"
-#include "../object/ObjectRepository.h"
-#include "ObjectList.h"
+#include "../world/Location.hpp"
 
-#include <unordered_map>
-
-using namespace OpenRCT2;
-
-void PathAdditionObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+namespace OpenRCT2
 {
-    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.flags = stream->ReadValue<uint16_t>();
-    _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
-    _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-    _legacyType.price = stream->ReadValue<money16>();
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
-    stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
-
-    GetStringTable().Read(context, stream, ObjectStringID::NAME);
-
-    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
-    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
-
-    GetImageTable().Read(context, stream);
-
-    // Validate properties
-    if (_legacyType.price <= 0.00_GBP)
+    void PathAdditionObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
-    }
+        stream->Seek(6, STREAM_SEEK_CURRENT);
+        _legacyType.flags = stream->ReadValue<uint16_t>();
+        _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
+        _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
+        _legacyType.price = stream->ReadValue<money16>();
+        _legacyType.scenery_tab_id = kObjectEntryIndexNull;
+        stream->Seek(2, STREAM_SEEK_CURRENT);
 
-    // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
-    // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
+        GetStringTable().Read(context, stream, ObjectStringID::name);
 
-    auto& objectRepository = context->GetObjectRepository();
-    auto item = objectRepository.FindObject(GetDescriptor());
-    if (item != nullptr)
-    {
-        auto sourceGame = item->GetFirstSourceGame();
-        if (sourceGame == ObjectSourceGame::WackyWorlds || sourceGame == ObjectSourceGame::TimeTwister
-            || sourceGame == ObjectSourceGame::Custom)
+        RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
+
+        GetImageTable().Read(context, stream);
+
+        // Validate properties
+        if (_legacyType.price <= 0.00_GBP)
+        {
+            context->LogError(ObjectError::invalidProperty, "Price can not be free or negative.");
+        }
+
+        // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
+        // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
+        auto firstSourceGame = GetFirstSourceGame();
+        if (firstSourceGame == ObjectSourceGame::custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(scgPathX);
         }
     }
-}
 
-void PathAdditionObject::Load()
-{
-    GetStringTable().Sort();
-    _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = LoadImages();
-
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
-}
-
-void PathAdditionObject::Unload()
-{
-    LanguageFreeObjectString(_legacyType.name);
-    UnloadImages();
-
-    _legacyType.name = 0;
-    _legacyType.image = 0;
-}
-
-void PathAdditionObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
-{
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    GfxDrawSprite(dpi, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });
-}
-
-static PathAdditionDrawType ParseDrawType(const std::string& s)
-{
-    if (s == "lamp")
-        return PathAdditionDrawType::Light;
-    if (s == "bin")
-        return PathAdditionDrawType::Bin;
-    if (s == "bench")
-        return PathAdditionDrawType::Bench;
-    if (s == "fountain")
-        return PathAdditionDrawType::JumpingFountain;
-    return PathAdditionDrawType::Light;
-}
-
-void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "PathAdditionObject::ReadJson expects parameter root to be object");
-
-    json_t properties = root["properties"];
-
-    if (properties.is_object())
+    void PathAdditionObject::Load()
     {
-        _legacyType.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
-        _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
-        _legacyType.price = Json::GetNumber<money64>(properties["price"]);
+        GetStringTable().Sort();
+        _legacyType.name = LanguageAllocateObjectString(GetName());
+        _legacyType.image = LoadImages();
 
-        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
+        _legacyType.scenery_tab_id = kObjectEntryIndexNull;
+    }
 
-        // clang-format off
+    void PathAdditionObject::Unload()
+    {
+        LanguageFreeObjectString(_legacyType.name);
+        UnloadImages();
+
+        _legacyType.name = 0;
+        _legacyType.image = 0;
+    }
+
+    void PathAdditionObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
+    {
+        auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+        GfxDrawSprite(rt, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });
+    }
+
+    static PathAdditionDrawType ParseDrawType(const std::string& s)
+    {
+        if (s == "lamp")
+            return PathAdditionDrawType::light;
+        if (s == "bin")
+            return PathAdditionDrawType::bin;
+        if (s == "bench")
+            return PathAdditionDrawType::bench;
+        if (s == "fountain")
+            return PathAdditionDrawType::jumpingFountain;
+        return PathAdditionDrawType::light;
+    }
+
+    void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
+    {
+        Guard::Assert(root.is_object(), "PathAdditionObject::ReadJson expects parameter root to be object");
+
+        json_t properties = root["properties"];
+
+        if (properties.is_object())
+        {
+            _legacyType.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
+            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::lamppostDown);
+            _legacyType.price = Json::GetNumber<money64>(properties["price"]);
+
+            SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
+
+            // clang-format off
         _legacyType.flags = Json::GetFlags<uint16_t>(
             properties,
             {
-                { "isBin",                  PATH_ADDITION_FLAG_IS_BIN,                   Json::FlagType::Normal },
-                { "isBench",                PATH_ADDITION_FLAG_IS_BENCH,                 Json::FlagType::Normal },
-                { "isBreakable",            PATH_ADDITION_FLAG_BREAKABLE,                Json::FlagType::Normal },
-                { "isLamp",                 PATH_ADDITION_FLAG_LAMP,                     Json::FlagType::Normal },
-                { "isJumpingFountainWater", PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER,   Json::FlagType::Normal },
-                { "isJumpingFountainSnow",  PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW,    Json::FlagType::Normal },
-                { "isAllowedOnQueue",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE,      Json::FlagType::Inverted },
-                { "isAllowedOnSlope",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::Inverted },
-                { "isTelevision",           PATH_ADDITION_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::Normal },
+                { "isBin",                  PATH_ADDITION_FLAG_IS_BIN,                   Json::FlagType::normal },
+                { "isBench",                PATH_ADDITION_FLAG_IS_BENCH,                 Json::FlagType::normal },
+                { "isBreakable",            PATH_ADDITION_FLAG_BREAKABLE,                Json::FlagType::normal },
+                { "isLamp",                 PATH_ADDITION_FLAG_LAMP,                     Json::FlagType::normal },
+                { "isJumpingFountainWater", PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER,   Json::FlagType::normal },
+                { "isJumpingFountainSnow",  PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW,    Json::FlagType::normal },
+                { "isAllowedOnQueue",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE,      Json::FlagType::inverted },
+                { "isAllowedOnSlope",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::inverted },
+                { "isTelevision",           PATH_ADDITION_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::normal },
             });
-        // clang-format on
-    }
+            // clang-format on
+        }
 
-    PopulateTablesFromJson(context, root);
-}
+        PopulateTablesFromJson(context, root);
+    }
+} // namespace OpenRCT2

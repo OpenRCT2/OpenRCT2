@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,19 +10,24 @@
 #include "Chat.h"
 
 #include "../Context.h"
+#include "../Input.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../core/UTF8.h"
+#include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/FilterPaletteIds.h"
+#include "../drawing/Rectangle.h"
 #include "../drawing/Text.h"
-#include "../localisation/Formatter.h"
+#include "../interface/ColourWithFlags.h"
 #include "../localisation/Formatting.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../world/Location.hpp"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Drawing;
 
 bool gChatOpen = false;
 static u8string _chatCurrentLine;
@@ -40,12 +45,12 @@ static TextInputSession* _chatTextInputSession;
 static const u8string& ChatGetHistory(size_t index);
 static uint32_t ChatHistoryGetTime(size_t index);
 static void ChatClearInput();
-static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
+static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
 bool ChatAvailable()
 {
-    return NetworkGetMode() != NETWORK_MODE_NONE && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
-        && NetworkGetAuthstatus() == NetworkAuth::Ok;
+    return Network::GetMode() != Network::Mode::none && Network::GetStatus() == Network::Status::connected
+        && Network::GetAuthstatus() == Network::Auth::ok;
 }
 
 void ChatOpen()
@@ -84,7 +89,7 @@ void ChatUpdate()
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
+void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 
@@ -137,19 +142,19 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
         ScreenCoordsXY bottomLeft{ _chatLeft, _chatBottom };
         GfxSetDirtyBlocks(
             { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
-        GfxFilterRect(
-            dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
-            FilterPaletteID::Palette51); // Opaque grey background
-        GfxFillRectInset(
-            dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
-            INSET_RECT_FLAG_FILL_NONE);
-        GfxFillRectInset(
-            dpi, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
-            chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET);
-        GfxFillRectInset(
-            dpi, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
+        Rectangle::filter(
+            rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
+            FilterPaletteID::palette51); // Opaque grey background
+        Rectangle::fillInset(
+            rt, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
+            Rectangle::BorderStyle::outset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
+        Rectangle::fillInset(
+            rt, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
+            chatBackgroundColor, Rectangle::BorderStyle::inset);
+        Rectangle::fillInset(
+            rt, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
             chatBackgroundColor,
-            INSET_RECT_FLAG_BORDER_INSET); // Textbox
+            Rectangle::BorderStyle::inset); // Textbox
     }
 
     auto screenCoords = ScreenCoordsXY{ _chatLeft + 5, _chatBottom - inputLineHeight - 20 };
@@ -169,7 +174,7 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
 
         lineBuffer = ChatGetHistory(i);
         auto lineCh = lineBuffer.c_str();
-        stringHeight = ChatHistoryDrawString(dpi, lineCh, screenCoords, _chatWidth - 10) + 5;
+        stringHeight = ChatHistoryDrawString(rt, lineCh, screenCoords, _chatWidth - 10) + 5;
         GfxSetDirtyBlocks(
             { { screenCoords - ScreenCoordsXY{ 0, stringHeight } }, { screenCoords + ScreenCoordsXY{ _chatWidth, 20 } } });
 
@@ -187,21 +192,18 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
 
         screenCoords.y = _chatBottom - inputLineHeight - 5;
 
-        auto lineCh = lineBuffer.c_str();
-        auto ft = Formatter();
-        ft.Add<const char*>(lineCh);
-        inputLineHeight = DrawTextWrapped(
-            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { kTextColour255 });
+        inputLineHeight = drawTextWrapped(
+            rt, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, lineBuffer, { OpenRCT2::Drawing::kColourNull });
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
-        if (_chatCaretTicks < 15 && GfxGetStringWidth(lineBuffer, FontStyle::Medium) < (_chatWidth - 10))
+        if (_chatCaretTicks < 15 && getStringWidth(lineBuffer, FontStyle::medium) < (_chatWidth - 10))
         {
             lineBuffer.assign(_chatCurrentLine.c_str(), _chatTextInputSession->SelectionStart);
-            int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::Medium);
+            int32_t caretX = screenCoords.x + getStringWidth(lineBuffer, FontStyle::medium);
             int32_t caretY = screenCoords.y + 14;
 
-            GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
+            Rectangle::fill(rt, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::yellow10);
         }
     }
 }
@@ -243,24 +245,24 @@ void ChatAddHistory(std::string_view s)
     _chatHistoryTime.push_front(Platform::GetTicks());
 
     // Log to file (src only as logging does its own timestamp)
-    NetworkAppendChatLog(s);
+    Network::AppendChatLog(s);
 
-    CreateAudioChannel(SoundId::NewsItem, 0, kMixerVolumeMax, 0.5f, 1.5f, true);
+    CreateAudioChannel(SoundId::newsItem, false, kMixerVolumeMax, 0.5f, 1.5f, true);
 }
 
 void ChatInput(enum ChatInput input)
 {
     switch (input)
     {
-        case ChatInput::Send:
+        case ChatInput::send:
             if (!_chatCurrentLine.empty())
             {
-                NetworkSendChat(_chatCurrentLine.c_str());
+                Network::SendChat(_chatCurrentLine.c_str());
             }
             ChatClearInput();
             ChatClose();
             break;
-        case ChatInput::Close:
+        case ChatInput::close:
             ChatClose();
             break;
         default:
@@ -285,12 +287,12 @@ static void ChatClearInput()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
+static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     int32_t numLines;
     u8string wrappedString;
-    GfxWrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::Medium, &wrappedString, &numLines);
-    auto lineHeight = FontGetLineHeight(FontStyle::Medium);
+    wrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::medium, &wrappedString, &numLines);
+    auto lineHeight = FontGetLineHeight(FontStyle::medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
@@ -302,7 +304,7 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const
     int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        DrawText(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, { kTextColour254 }, bufferPtr);
+        drawText(rt, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { OpenRCT2::Drawing::kColourNull });
         bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }
@@ -314,7 +316,7 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const
 int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
 {
     int32_t numLines;
-    GfxWrapString(FormatStringID(STR_STRING, args), width, FontStyle::Medium, nullptr, &numLines);
-    const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+    wrapString(FormatStringID(STR_STRING, args), width, FontStyle::medium, nullptr, &numLines);
+    const int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
     return lineHeight * (numLines + 1);
 }

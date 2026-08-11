@@ -1,6 +1,5 @@
 /*****************************************************************************
-/*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,14 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../interface/Viewport.h"
+#include "../../../SpriteIds.h"
 #include "../../../ride/Ride.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
@@ -64,7 +61,7 @@ static void PaintBoatHireTrackFlat(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
@@ -74,7 +71,7 @@ static void PaintBoatHireStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     TrackPaintUtilDrawPier(
@@ -125,8 +122,7 @@ static void PaintBoatHireTrackLeftQuarterTurn1Tile(
 
     PaintUtilSetSegmentSupportHeight(
         session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topLeftSide), direction),
+        PaintUtilRotateSegments(EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topLeft), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
@@ -151,34 +147,34 @@ static void PaintBoatHireTrackLeftQuarterTurn3Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 1)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 6)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 7)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 13)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 19)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
             }
@@ -188,12 +184,12 @@ static void PaintBoatHireTrackLeftQuarterTurn3Tiles(
             {
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 8)),
                         { 0, 0, height }, { { 16, 16, height }, { 1, 1, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 21)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
             }
@@ -203,28 +199,28 @@ static void PaintBoatHireTrackLeftQuarterTurn3Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 2)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 3)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 9)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 14)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 15)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 20)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     break;
             }
@@ -234,34 +230,34 @@ static void PaintBoatHireTrackLeftQuarterTurn3Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 4)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 5)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 20, 32, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 10)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 11)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 20, 32, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 16)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 17)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 20, 32, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 22)),
                         { 0, 0, height }, { { 6, 0, height }, { 26, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_SMALL_CURVE + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_SMALL_CURVE + 23)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 26, 32, 0 } });
                     break;
             }
@@ -292,34 +288,34 @@ static void PaintBoatHireTrackLeftQuarterTurn5Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 1)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 10)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 11)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 20)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 21)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 30)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 30)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 31)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 31)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
             }
@@ -329,34 +325,34 @@ static void PaintBoatHireTrackLeftQuarterTurn5Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 2)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 3)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 12)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 13)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 22)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 23)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 32)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 32)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 33)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 33)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 32, 16, 0 } });
                     break;
             }
@@ -366,34 +362,34 @@ static void PaintBoatHireTrackLeftQuarterTurn5Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 4)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 5)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 14)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 15)),
                         { 0, 0, height }, { { 16, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 24)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 24)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 25)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 25)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 34)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 34)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 35)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 35)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 32, 0 } });
                     break;
             }
@@ -403,34 +399,34 @@ static void PaintBoatHireTrackLeftQuarterTurn5Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 6)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 7)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 32, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 16)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 17)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 32, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 26)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 26)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 27)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 27)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 32, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 36)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 36)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 37)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 37)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 32, 0 } });
                     break;
             }
@@ -440,34 +436,34 @@ static void PaintBoatHireTrackLeftQuarterTurn5Tiles(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 8)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 9)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 20, 32, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 18)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 19)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 20, 32, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 28)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 28)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 29)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 29)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 20, 32, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 38)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 38)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_MEDIUM_CURVE + 39)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_MEDIUM_CURVE + 39)),
                         { 0, 0, height }, { { 6, 0, height + 15 }, { 20, 32, 0 } });
                     break;
             }
@@ -498,34 +494,34 @@ static void PaintBoatHireTrackLeftEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 1)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 9)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 19)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 26)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 26)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 27)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 27)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
             }
@@ -535,34 +531,34 @@ static void PaintBoatHireTrackLeftEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 2)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 3)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 10)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 11)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 20)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 21)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 28)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 28)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 29)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 29)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 32, 16, 0 } });
                     break;
             }
@@ -572,34 +568,34 @@ static void PaintBoatHireTrackLeftEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 4)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 5)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 12)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 13)),
                         { 0, 0, height }, { { 16, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 22)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 23)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 30)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 30)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 31)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 31)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
             }
@@ -609,10 +605,10 @@ static void PaintBoatHireTrackLeftEighthToDiag(
             {
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 14)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 15)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
             }
@@ -622,34 +618,34 @@ static void PaintBoatHireTrackLeftEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 6)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 7)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 16)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 17)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 24)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 24)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 25)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 25)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 32)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 32)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 33)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 33)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 16, 0 } });
                     break;
             }
@@ -671,34 +667,34 @@ static void PaintBoatHireTrackRightEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 34)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 34)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 35)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 35)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 42)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 42)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 43)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 43)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 50)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 50)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 51)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 51)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 60)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 60)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 61)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 61)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
             }
@@ -708,34 +704,34 @@ static void PaintBoatHireTrackRightEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 36)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 36)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 37)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 37)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 44)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 44)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 45)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 45)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 52)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 52)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 53)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 53)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 62)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 62)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 63)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 63)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 16, 0 } });
                     break;
             }
@@ -745,34 +741,34 @@ static void PaintBoatHireTrackRightEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 38)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 38)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 39)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 39)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 46)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 46)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 47)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 47)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 54)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 54)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 55)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 55)),
                         { 0, 0, height }, { { 16, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 64)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 64)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 65)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 65)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 16, 16, 0 } });
                     break;
             }
@@ -782,10 +778,10 @@ static void PaintBoatHireTrackRightEighthToDiag(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 56)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 56)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 57)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 57)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
             }
@@ -795,34 +791,34 @@ static void PaintBoatHireTrackRightEighthToDiag(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 40)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 40)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 41)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 41)),
                         { 0, 0, height }, { { 16, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 48)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 48)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 49)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 49)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 58)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 58)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 59)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 59)),
                         { 0, 0, height }, { { 0, 16, height + 15 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 66)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 66)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_LARGE_CURVE + 67)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_LARGE_CURVE + 67)),
                         { 0, 0, height }, { { 16, 16, height + 15 }, { 16, 16, 0 } });
                     break;
             }
@@ -862,7 +858,7 @@ static void PaintBoatHireTrackDiagFlat(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 2),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 2),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 1 } });
                     break;
             }
@@ -872,10 +868,10 @@ static void PaintBoatHireTrackDiagFlat(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 0),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 0),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 1),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 1),
                         { -16, -16, height }, { { -16, -16, height + 15 }, { 32, 32, 0 } });
                     break;
             }
@@ -885,10 +881,10 @@ static void PaintBoatHireTrackDiagFlat(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 0),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 0),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 1),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 1),
                         { -16, -16, height }, { { -16, -16, height + 15 }, { 32, 32, 0 } });
                     break;
             }
@@ -898,7 +894,7 @@ static void PaintBoatHireTrackDiagFlat(
             {
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 2),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_BOAT_HIRE_TRACK_FLAT_DIAGONAL + 2),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 1 } });
                     break;
             }
@@ -920,34 +916,34 @@ static void PaintBoatHireTrackSBendLeft(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 1)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 9)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 6)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 7)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 14)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 15)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
             }
@@ -957,34 +953,34 @@ static void PaintBoatHireTrackSBendLeft(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 2)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 3)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 10)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 11)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 4)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 5)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 13)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
             }
@@ -994,34 +990,34 @@ static void PaintBoatHireTrackSBendLeft(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 4)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 5)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 13)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 2)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 3)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 10)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 11)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
             }
@@ -1031,34 +1027,34 @@ static void PaintBoatHireTrackSBendLeft(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 6)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 7)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 14)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 15)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 1)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 9)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
             }
@@ -1080,34 +1076,34 @@ static void PaintBoatHireTrackSBendRight(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 17)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 24)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 24)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 25)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 25)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 22)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 01 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 23)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 30)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 30)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 31)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 31)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
             }
@@ -1117,34 +1113,34 @@ static void PaintBoatHireTrackSBendRight(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 19)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 26)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 26)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 27)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 27)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 20)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 21)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 28)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 28)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 29)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 29)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
             }
@@ -1154,34 +1150,34 @@ static void PaintBoatHireTrackSBendRight(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 20)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 11 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 21)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 28)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 28)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 29)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 29)),
                         { 0, 0, height }, { { 0, 0, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 19)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 26)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 26)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 26, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 27)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 27)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 26, 0 } });
                     break;
             }
@@ -1191,34 +1187,34 @@ static void PaintBoatHireTrackSBendRight(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 22)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 23)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 30)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 30)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 31)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 31)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 17)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 24)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 24)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_BOAT_HIRE_TRACK_S_BEND + 25)),
+                        session, direction, session.TrackColours.WithIndex((SPR_TRACKS_BOAT_HIRE_TRACK_S_BEND + 25)),
                         { 0, 0, height }, { { 0, 6, height + 15 }, { 32, 20, 0 } });
                     break;
             }
@@ -1232,55 +1228,55 @@ static void PaintBoatHireTrackSBendRight(
 /**
  * rct2: 0x008B0D60
  */
-TrackPaintFunction GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionBoatHire(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::Flat:
+        case TrackElemType::flat:
             return PaintBoatHireTrackFlat;
 
-        case TrackElemType::EndStation:
-        case TrackElemType::BeginStation:
-        case TrackElemType::MiddleStation:
+        case TrackElemType::endStation:
+        case TrackElemType::beginStation:
+        case TrackElemType::middleStation:
             return PaintBoatHireStation;
 
-        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::leftQuarterTurn1Tile:
             return PaintBoatHireTrackLeftQuarterTurn1Tile;
-        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::rightQuarterTurn1Tile:
             return PaintBoatHireTrackRightQuarterTurn1Tile;
 
         // Added by OpenRCT2
 
         // Small turns
-        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::leftQuarterTurn3Tiles:
             return PaintBoatHireTrackLeftQuarterTurn3Tiles;
-        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::rightQuarterTurn3Tiles:
             return PaintBoatHireTrackRightQuarterTurn3Tiles;
 
         // Medium turns
-        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::leftQuarterTurn5Tiles:
             return PaintBoatHireTrackLeftQuarterTurn5Tiles;
-        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::rightQuarterTurn5Tiles:
             return PaintBoatHireTrackRightQuarterTurn5Tiles;
 
         // Large turns
-        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::leftEighthToDiag:
             return PaintBoatHireTrackLeftEighthToDiag;
-        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::rightEighthToDiag:
             return PaintBoatHireTrackRightEighthToDiag;
-        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::leftEighthToOrthogonal:
             return PaintBoatHireTrackLeftEighthToOrthogonal;
-        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::rightEighthToOrthogonal:
             return PaintBoatHireTrackRightEighthToOrthogonal;
 
         // Diagonal
-        case TrackElemType::DiagFlat:
+        case TrackElemType::diagFlat:
             return PaintBoatHireTrackDiagFlat;
 
         // S bends
-        case TrackElemType::SBendLeft:
+        case TrackElemType::sBendLeft:
             return PaintBoatHireTrackSBendLeft;
-        case TrackElemType::SBendRight:
+        case TrackElemType::sBendRight:
             return PaintBoatHireTrackSBendRight;
 
         default:

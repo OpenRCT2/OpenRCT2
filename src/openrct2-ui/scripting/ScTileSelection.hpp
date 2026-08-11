@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,154 +11,146 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include <openrct2/scripting/Duktape.hpp>
-    #include <openrct2/world/Map.h>
+    #include <openrct2/world/MapSelection.h>
 
 namespace OpenRCT2::Scripting
 {
-    class ScTileSelection
-    {
-    private:
-        duk_context* _ctx{};
+    class ScTileSelection;
+    extern ScTileSelection gScTileSelection;
 
+    class ScTileSelection final : public ScBase
+    {
     public:
-        ScTileSelection(duk_context* ctx)
-            : _ctx(ctx)
+        void Register(JSContext* ctx)
         {
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("range", ScTileSelection::range_get, ScTileSelection::range_set),
+                JS_CGETSET_DEF("tiles", ScTileSelection::tiles_get, ScTileSelection::tiles_set),
+            };
+            RegisterBase(ctx, "TileSelection", nullptr, funcs);
         }
 
-        DukValue range_get() const
+        JSValue New(JSContext* ctx)
         {
-            if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+            return MakeWithOpaque(ctx, nullptr);
+        }
+
+        static JSValue range_get(JSContext* ctx, JSValue thisVal)
+        {
+            if (gMapSelectFlags.has(MapSelectFlag::enable))
             {
-                DukObject range(_ctx);
+                JSValue range = JS_NewObject(ctx);
 
-                DukObject leftTop(_ctx);
-                leftTop.Set("x", gMapSelectPositionA.x);
-                leftTop.Set("y", gMapSelectPositionA.y);
-                range.Set("leftTop", leftTop.Take());
+                JSValue leftTop = JS_NewObject(ctx);
+                JS_SetPropertyStr(ctx, leftTop, "x", JS_NewInt32(ctx, gMapSelectPositionA.x));
+                JS_SetPropertyStr(ctx, leftTop, "y", JS_NewInt32(ctx, gMapSelectPositionA.y));
+                JS_SetPropertyStr(ctx, range, "leftTop", leftTop);
 
-                DukObject rightBottom(_ctx);
-                rightBottom.Set("x", gMapSelectPositionB.x);
-                rightBottom.Set("y", gMapSelectPositionB.y);
-                range.Set("rightBottom", rightBottom.Take());
-                return range.Take();
+                JSValue rightBottom = JS_NewObject(ctx);
+                JS_SetPropertyStr(ctx, rightBottom, "x", JS_NewInt32(ctx, gMapSelectPositionB.x));
+                JS_SetPropertyStr(ctx, rightBottom, "y", JS_NewInt32(ctx, gMapSelectPositionB.y));
+                JS_SetPropertyStr(ctx, range, "rightBottom", rightBottom);
+                return range;
             }
 
-            duk_push_null(_ctx);
-            return DukValue::take_from_stack(_ctx);
+            return JS_NULL;
         }
 
-        void range_set(DukValue value)
+        static JSValue range_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            MapInvalidateSelectionRect();
-            if (value.type() == DukValue::Type::OBJECT)
+            if (JS_IsObject(value))
             {
-                auto range = GetMapRange(value);
+                auto range = GetMapRange(ctx, value);
                 if (range)
                 {
-                    gMapSelectPositionA.x = range->GetLeft();
-                    gMapSelectPositionA.y = range->GetTop();
-                    gMapSelectPositionB.x = range->GetRight();
-                    gMapSelectPositionB.y = range->GetBottom();
-                    gMapSelectType = MAP_SELECT_TYPE_FULL;
-                    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+                    gMapSelectPositionA.x = range->GetX1();
+                    gMapSelectPositionA.y = range->GetY1();
+                    gMapSelectPositionB.x = range->GetX2();
+                    gMapSelectPositionB.y = range->GetY2();
+                    gMapSelectType = MapSelectType::full;
+                    gMapSelectFlags.set(MapSelectFlag::enable);
                 }
             }
             else
             {
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                gMapSelectFlags.unset(MapSelectFlag::enable);
             }
-            MapInvalidateSelectionRect();
+
+            return JS_UNDEFINED;
         }
 
-        DukValue tiles_get() const
+        static JSValue tiles_get(JSContext* ctx, JSValue thisVal)
         {
-            duk_push_array(_ctx);
-            if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+            JSValue tiles = JS_NewArray(ctx);
+            if (gMapSelectFlags.has(MapSelectFlag::enableConstruct))
             {
-                duk_uarridx_t index = 0;
-                for (const auto& tile : gMapSelectionTiles)
+                int64_t index = 0;
+                for (const auto& tile : MapSelection::getSelectedTiles())
                 {
-                    duk_push_object(_ctx);
-                    duk_push_int(_ctx, tile.x);
-                    duk_put_prop_string(_ctx, -2, "x");
-                    duk_push_int(_ctx, tile.y);
-                    duk_put_prop_string(_ctx, -2, "y");
-                    duk_put_prop_index(_ctx, -2, index);
+                    JSValue val = JS_NewObject(ctx);
+                    JS_SetPropertyStr(ctx, val, "x", JS_NewInt32(ctx, tile.x));
+                    JS_SetPropertyStr(ctx, val, "y", JS_NewInt32(ctx, tile.y));
+                    JS_SetPropertyInt64(ctx, tiles, index, val);
                     index++;
                 }
             }
-            return DukValue::take_from_stack(_ctx);
+            return tiles;
         }
 
-        void tiles_set(DukValue value)
+        static JSValue tiles_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            MapInvalidateMapSelectionTiles();
-            gMapSelectionTiles.clear();
-            if (value.is_array())
+            MapSelection::clearSelectedTiles();
+            if (JS_IsArray(value))
             {
-                value.push();
-                auto arrayLen = duk_get_length(_ctx, -1);
-                for (duk_uarridx_t i = 0; i < arrayLen; i++)
-                {
-                    if (duk_get_prop_index(_ctx, -1, i))
+                JSIterateArray(ctx, value, [](JSContext* ctx2, JSValue v) {
+                    auto coords = GetCoordsXY(ctx2, v);
+                    if (coords.has_value())
                     {
-                        auto dukElement = DukValue::take_from_stack(_ctx);
-                        auto coords = GetCoordsXY(dukElement);
-                        if (coords)
-                        {
-                            gMapSelectionTiles.push_back(*coords);
-                        }
+                        MapSelection::addSelectedTile(coords.value());
                     }
-                }
-                duk_pop(_ctx);
+                });
             }
 
-            if (gMapSelectionTiles.empty())
+            if (MapSelection::getSelectedTiles().empty())
             {
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+                gMapSelectFlags.unset(MapSelectFlag::enableConstruct);
+                gMapSelectFlags.unset(MapSelectFlag::green);
             }
             else
             {
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+                gMapSelectFlags.set(MapSelectFlag::enableConstruct);
             }
-            MapInvalidateMapSelectionTiles();
-        }
 
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_property(ctx, &ScTileSelection::range_get, &ScTileSelection::range_set, "range");
-            dukglue_register_property(ctx, &ScTileSelection::tiles_get, &ScTileSelection::tiles_set, "tiles");
+            return JS_UNDEFINED;
         }
 
     private:
-        static std::optional<CoordsXY> GetCoordsXY(const DukValue& dukCoords)
+        static std::optional<CoordsXY> GetCoordsXY(JSContext* ctx, JSValue jsCoords)
         {
-            if (dukCoords.type() == DukValue::Type::OBJECT)
+            if (JS_IsObject(jsCoords))
             {
-                auto dukX = dukCoords["x"];
-                if (dukX.type() == DukValue::Type::NUMBER)
+                auto x = JSToOptionalInt(ctx, jsCoords, "x");
+                auto y = JSToOptionalInt(ctx, jsCoords, "y");
+                if (x.has_value() && y.has_value())
                 {
-                    auto dukY = dukCoords["y"];
-                    if (dukY.type() == DukValue::Type::NUMBER)
-                    {
-                        return CoordsXY(dukX.as_int(), dukY.as_int());
-                    }
+                    return CoordsXY(x.value(), y.value());
                 }
             }
             return std::nullopt;
         }
 
-        static std::optional<MapRange> GetMapRange(const DukValue& dukMapRange)
+        static std::optional<MapRange> GetMapRange(JSContext* ctx, JSValue jsMapRange)
         {
-            if (dukMapRange.type() == DukValue::Type::OBJECT)
+            if (JS_IsObject(jsMapRange))
             {
-                auto leftTop = GetCoordsXY(dukMapRange["leftTop"]);
+                JSValue jsLeftTop = JS_GetPropertyStr(ctx, jsMapRange, "leftTop");
+                auto leftTop = GetCoordsXY(ctx, jsLeftTop);
+                JS_FreeValue(ctx, jsLeftTop);
                 if (leftTop.has_value())
                 {
-                    auto rightBottom = GetCoordsXY(dukMapRange["rightBottom"]);
+                    JSValue jsRightBottom = JS_GetPropertyStr(ctx, jsMapRange, "rightBottom");
+                    auto rightBottom = GetCoordsXY(ctx, jsRightBottom);
+                    JS_FreeValue(ctx, jsRightBottom);
                     if (rightBottom.has_value())
                     {
                         return MapRange(leftTop->x, leftTop->y, rightBottom->x, rightBottom->y);

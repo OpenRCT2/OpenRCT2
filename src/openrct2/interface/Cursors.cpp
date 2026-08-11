@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,38 +17,38 @@
 namespace OpenRCT2::Cursor
 {
     static const EnumMap<CursorID> LookupTable{
-        { "CURSOR_BLANK", CursorID::Blank },
-        { "CURSOR_UP_ARROW", CursorID::UpArrow },
-        { "CURSOR_UP_DOWN_ARROW", CursorID::UpDownArrow },
-        { "CURSOR_HAND_POINT", CursorID::HandPoint },
-        { "CURSOR_ZZZ", CursorID::ZZZ },
-        { "CURSOR_DIAGONAL_ARROWS", CursorID::DiagonalArrows },
-        { "CURSOR_PICKER", CursorID::Picker },
-        { "CURSOR_TREE_DOWN", CursorID::TreeDown },
-        { "CURSOR_FOUNTAIN_DOWN", CursorID::FountainDown },
-        { "CURSOR_STATUE_DOWN", CursorID::StatueDown },
-        { "CURSOR_BENCH_DOWN", CursorID::BenchDown },
-        { "CURSOR_CROSS_HAIR", CursorID::CrossHair },
-        { "CURSOR_BIN_DOWN", CursorID::BinDown },
-        { "CURSOR_LAMPPOST_DOWN", CursorID::LamppostDown },
-        { "CURSOR_FENCE_DOWN", CursorID::FenceDown },
-        { "CURSOR_FLOWER_DOWN", CursorID::FlowerDown },
-        { "CURSOR_PATH_DOWN", CursorID::PathDown },
-        { "CURSOR_DIG_DOWN", CursorID::DigDown },
-        { "CURSOR_WATER_DOWN", CursorID::WaterDown },
-        { "CURSOR_HOUSE_DOWN", CursorID::HouseDown },
-        { "CURSOR_VOLCANO_DOWN", CursorID::VolcanoDown },
-        { "CURSOR_WALK_DOWN", CursorID::WalkDown },
-        { "CURSOR_PAINT_DOWN", CursorID::PaintDown },
-        { "CURSOR_ENTRANCE_DOWN", CursorID::EntranceDown },
-        { "CURSOR_HAND_OPEN", CursorID::HandOpen },
-        { "CURSOR_HAND_CLOSED", CursorID::HandClosed },
-        { "CURSOR_ARROW", CursorID::Arrow },
+        { "CURSOR_BLANK", CursorID::blank },
+        { "CURSOR_UP_ARROW", CursorID::upArrow },
+        { "CURSOR_UP_DOWN_ARROW", CursorID::upDownArrow },
+        { "CURSOR_HAND_POINT", CursorID::handPoint },
+        { "CURSOR_ZZZ", CursorID::zzz },
+        { "CURSOR_DIAGONAL_ARROWS", CursorID::diagonalArrows },
+        { "CURSOR_PICKER", CursorID::picker },
+        { "CURSOR_TREE_DOWN", CursorID::treeDown },
+        { "CURSOR_FOUNTAIN_DOWN", CursorID::fountainDown },
+        { "CURSOR_STATUE_DOWN", CursorID::statueDown },
+        { "CURSOR_BENCH_DOWN", CursorID::benchDown },
+        { "CURSOR_CROSS_HAIR", CursorID::crossHair },
+        { "CURSOR_BIN_DOWN", CursorID::binDown },
+        { "CURSOR_LAMPPOST_DOWN", CursorID::lamppostDown },
+        { "CURSOR_FENCE_DOWN", CursorID::fenceDown },
+        { "CURSOR_FLOWER_DOWN", CursorID::flowerDown },
+        { "CURSOR_PATH_DOWN", CursorID::pathDown },
+        { "CURSOR_DIG_DOWN", CursorID::digDown },
+        { "CURSOR_WATER_DOWN", CursorID::waterDown },
+        { "CURSOR_HOUSE_DOWN", CursorID::houseDown },
+        { "CURSOR_VOLCANO_DOWN", CursorID::volcanoDown },
+        { "CURSOR_WALK_DOWN", CursorID::walkDown },
+        { "CURSOR_PAINT_DOWN", CursorID::paintDown },
+        { "CURSOR_ENTRANCE_DOWN", CursorID::entranceDown },
+        { "CURSOR_HAND_OPEN", CursorID::handOpen },
+        { "CURSOR_HAND_CLOSED", CursorID::handClosed },
+        { "CURSOR_ARROW", CursorID::arrow },
     };
 
     CursorID FromString(const std::string& s, CursorID defaultValue)
     {
-        assert(defaultValue != CursorID::Undefined);
+        assert(defaultValue != CursorID::undefined);
 
         auto result = LookupTable.find(s);
         return (result != LookupTable.end()) ? result->second : defaultValue;

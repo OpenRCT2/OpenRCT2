@@ -1,0 +1,106 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2026 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#ifdef ENABLE_SCRIPTING
+
+    #include "ScAward.hpp"
+
+    #include "../../../GameState.h"
+    #include "../../../localisation/Formatter.h"
+    #include "../../../localisation/Formatting.h"
+    #include "../../../management/Award.h"
+
+namespace OpenRCT2::Scripting
+{
+    extern ScAward gScAward;
+
+    using OpaqueAwardData = struct
+    {
+        size_t index;
+    };
+
+    JSValue ScAward::New(JSContext* ctx, size_t index)
+    {
+        return MakeWithOpaque(ctx, new OpaqueAwardData{ index });
+    }
+
+    void ScAward::Register(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("type", &ScAward::type_get, nullptr), JS_CGETSET_DEF("text", &ScAward::text_get, nullptr),
+            JS_CGETSET_DEF("positive", &ScAward::positive_get, nullptr),
+            JS_CGETSET_DEF("imageId", &ScAward::imageId_get, nullptr),
+            JS_CGETSET_DEF("monthsRemaining", &ScAward::monthsRemaining_get, nullptr)
+        };
+        RegisterBase(ctx, "Award", Finalize, funcs);
+    }
+
+    void ScAward::Finalize(JSRuntime* rt, JSValue thisVal)
+    {
+        OpaqueAwardData* data = gScAward.GetOpaque<OpaqueAwardData*>(thisVal);
+        if (data)
+            delete data;
+    }
+
+    Award* ScAward::GetAward(JSValue thisVal)
+    {
+        OpaqueAwardData* data = gScAward.GetOpaque<OpaqueAwardData*>(thisVal);
+        return &getGameState().park.currentAwards[data->index];
+    }
+
+    JSValue ScAward::type_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto award = GetAward(thisVal);
+        if (award == nullptr)
+            return JSFromStdString(ctx, {});
+
+        return JSFromStdString(ctx, AwardTypeToString(award->type).value_or(std::string()));
+    }
+
+    JSValue ScAward::text_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto award = GetAward(thisVal);
+        if (award == nullptr)
+            return JSFromStdString(ctx, {});
+
+        Formatter ft{};
+        ft.Add<StringId>(AwardGetText(award->type));
+        return JSFromStdString(ctx, FormatStringIDLegacy(STR_STRINGID, ft.Data()));
+    }
+
+    JSValue ScAward::monthsRemaining_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto award = GetAward(thisVal);
+        if (award == nullptr)
+            return JS_NewInt32(ctx, {});
+
+        return JS_NewInt32(ctx, award->time);
+    }
+
+    JSValue ScAward::positive_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto award = GetAward(thisVal);
+        if (award == nullptr)
+            return JS_NewBool(ctx, {});
+
+        return JS_NewBool(ctx, AwardIsPositive(award->type));
+    }
+
+    JSValue ScAward::imageId_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto award = GetAward(thisVal);
+        if (award == nullptr)
+            return JS_NewUint32(ctx, {});
+
+        return JS_NewUint32(ctx, AwardGetSprite(award->type));
+    }
+
+} // namespace OpenRCT2::Scripting
+
+#endif

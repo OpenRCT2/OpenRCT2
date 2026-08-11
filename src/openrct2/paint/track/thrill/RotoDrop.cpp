@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,21 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/Vehicle.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TileElement.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
-
-#include <cassert>
-#include <cstring>
 
 using namespace OpenRCT2;
 
@@ -45,15 +39,15 @@ static void PaintRotoDropBase(
     int32_t edges = kEdges3x3[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesTileDiamond, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesMetalB,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesPicketDuplicate,
         session.CurrentRotation);
 
     if (trackSequence == 0)
@@ -83,36 +77,33 @@ static void PaintRotoDropBase(
     {
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner, PaintSegment::topRightSide,
-                PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight,
+                PaintSegment::bottom);
             break;
         case 4:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::left);
             break;
         case 5:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::right, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 6:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
         case 7:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight,
+                PaintSegment::right);
             break;
         case 8:
-            blockedSegments = EnumsToFlags(PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
@@ -136,10 +127,10 @@ static void PaintRotoDropTowerSection(
     // The top segment of the Roto drop is only drawn when there is no tile element right above it
     bool paintTopSegment = true;
     const auto* tileElement = trackElement.as<TileElement>();
-    while (paintTopSegment && !tileElement->IsLastForTile())
+    while (paintTopSegment && !tileElement->isLastForTile())
     {
         tileElement++;
-        paintTopSegment = trackElement.GetClearanceZ() != tileElement->GetBaseZ();
+        paintTopSegment = trackElement.getClearanceZ() != tileElement->getBaseZ();
     }
 
     if (paintTopSegment)
@@ -157,14 +148,14 @@ static void PaintRotoDropTowerSection(
 /**
  * rct2: 0x00886074
  */
-TrackPaintFunction GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionRotoDrop(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::towerBase:
             return PaintRotoDropBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::towerSection:
             return PaintRotoDropTowerSection;
         default:
             return TrackPaintFunctionDummy;

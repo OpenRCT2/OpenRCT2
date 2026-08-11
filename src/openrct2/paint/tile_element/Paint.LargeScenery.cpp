@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,32 +9,28 @@
 
 #include "../Paint.h"
 
-#include "../../Game.h"
-#include "../../GameState.h"
-#include "../../config/Config.h"
 #include "../../core/CodepointView.hpp"
-#include "../../core/EnumUtils.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../core/UTF8.h"
+#include "../../drawing/ColourMap.h"
+#include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../profiling/Profiling.h"
-#include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Banner.h"
-#include "../../world/Map.h"
-#include "../../world/Scenery.h"
-#include "../../world/TileInspector.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../Boundbox.h"
 #include "../support/WoodenSupports.h"
+#include "Paint.LargeScenery.h"
 #include "Paint.TileElement.h"
 #include "Segment.h"
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Numerics;
+using namespace OpenRCT2::Drawing;
 
 // clang-format off
 static constexpr BoundBoxXY LargeSceneryBoundBoxes[] = {
@@ -67,18 +63,18 @@ static void PaintLargeScenerySupports(
     if (!tile.hasSupports)
         return;
 
-    auto transitionType = WoodenSupportTransitionType::None;
+    auto transitionType = WoodenSupportTransitionType::none;
     auto supportHeight = height;
     if (supportHeight & 0xF)
     {
         supportHeight &= ~0xF;
-        transitionType = WoodenSupportTransitionType::Scenery;
+        transitionType = WoodenSupportTransitionType::scenery;
     }
 
     WoodenBSupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, imageTemplate, transitionType);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, supportHeight, imageTemplate, transitionType);
 
-    int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = Numerics::ceil2(tileElement.getClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
@@ -95,7 +91,7 @@ static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText&
     size_t totalSize = 0;
     CodepointView view(s);
     auto it = view.begin();
-    while (it != view.end() && totalSize <= text.max_width)
+    while (it != view.end() && totalSize <= text.maxWidth)
     {
         auto glyph = text.GetGlyph(*it, ' ');
         totalSize += height ? glyph.height : glyph.width;
@@ -121,9 +117,9 @@ static void PaintLargeScenery3DTextLine(
     auto width = text.MeasureWidth(line);
     auto offsetX = text.offset[(direction & 1)].x;
     auto acc = offsetY * ((direction & 1) ? -1 : 1);
-    if (!(text.flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL))
+    if (!text.flags.has(LargeSceneryTextFlag::isVertical))
     {
-        // sign is horizontal, centre text:
+        // Centre text:
         offsetX -= (width / 2);
         acc -= (width / 2);
     }
@@ -134,7 +130,7 @@ static void PaintLargeScenery3DTextLine(
         // Upcasting from uint8_t to uint32_t to avoid an overflow.
         uint32_t glyphOffset = glyph.image_offset;
         auto glyphType = direction & 1;
-        if (text.flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
+        if (text.flags.has(LargeSceneryTextFlag::isVertical))
         {
             glyphOffset *= 2;
         }
@@ -164,7 +160,7 @@ static void PaintLargeScenery3DTextLine(
         {
             PaintAttachToPreviousPS(session, imageId, offsetX, -DivToMinusInfinity(acc, 2));
         }
-        else if (text.flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
+        else if (text.flags.has(LargeSceneryTextFlag::isVertical))
         {
             PaintAttachToPreviousPS(session, imageId, offsetX, DivToMinusInfinity(acc, 2));
         }
@@ -179,10 +175,10 @@ static void PaintLargeScenery3DTextLine(
 
 static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
 {
-    if (text.flags & LARGE_SCENERY_TEXT_FLAG_TWO_LINE)
+    if (text.flags.has(LargeSceneryTextFlag::isTwoLine))
     {
         auto width = text.MeasureWidth(s);
-        return width <= text.max_width;
+        return width <= text.maxWidth;
     }
     return true;
 }
@@ -202,7 +198,7 @@ static void PaintLargeScenery3DText(
         }
     }
 
-    if (session.DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
     auto banner = tileElement.GetBanner();
@@ -213,18 +209,18 @@ static void PaintLargeScenery3DText(
     if (text == nullptr)
         return;
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : tileElement.GetSecondaryColour();
     auto imageTemplate = ImageId().WithPrimary(textColour);
 
     char signString[256];
     auto ft = Formatter();
-    banner->FormatTextTo(ft);
-    OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
+    banner->formatTextTo(ft);
+    FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
 
     auto offsetY = text->offset[(direction & 1)].y * 2;
-    if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
+    if (text->flags.has(LargeSceneryTextFlag::isVertical))
     {
-        // Vertical sign
         offsetY++;
         auto displayText = LargeSceneryCalculateDisplayText(*text, signString, true);
         auto displayTextHeight = text->MeasureHeight(displayText);
@@ -262,34 +258,34 @@ static void PaintLargeScenery3DText(
                 CodepointView view(current);
                 auto lineWidth = 0;
                 auto it = view.begin();
-                while (it != view.end() && lineWidth < text->max_width)
+                size_t lastWhitespaceIndex = 0;
+                while (it != view.end())
                 {
-                    // Trim any leading spaces
-                    auto codepoint = *it;
-                    if (codepoint != ' ' || lineWidth != 0)
+                    const auto codepoint = *it;
+                    const auto glyph = text->GetGlyph(codepoint, ' ');
+                    lineWidth += glyph.width;
+
+                    if (codepoint == ' ')
                     {
-                        // Determine if this is a good place to split
-                        if (codepoint == ' ' || codepoint == '\n')
-                        {
-                            auto index = it.GetIndex();
-                            best = current.substr(0, index);
-                            next = current.substr(index + 1);
-                            if (codepoint == '\n')
-                                break;
-                        }
-
-                        auto glyph = text->GetGlyph(*it, ' ');
-                        lineWidth += glyph.width;
+                        lastWhitespaceIndex = it.GetIndex();
                     }
-                    it++;
-                }
 
-                if (best.empty())
-                {
-                    // No good split found, or reached end of string
-                    auto index = it.GetIndex();
+                    if (lineWidth > text->maxWidth)
+                    {
+                        break;
+                    }
+
+                    it++;
+
+                    const auto index = it.GetIndex();
                     best = current.substr(0, index);
                     next = current.substr(index);
+                }
+
+                if (lastWhitespaceIndex != 0 && it != view.end())
+                {
+                    best = current.substr(0, lastWhitespaceIndex);
+                    next = current.substr(lastWhitespaceIndex + 1);
                 }
 
                 PaintLargeScenery3DTextLine(session, sceneryEntry, *text, best, imageTemplate, direction, offsetY);
@@ -307,30 +303,17 @@ static void PaintLargeSceneryScrollingText(
 {
     PROFILED_FUNCTION();
 
-    auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
-    auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
+    auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
+                              : tileElement.GetSecondaryColour();
+    auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto banner = tileElement.GetBanner();
     if (banner == nullptr)
         return;
 
-    auto ft = Formatter();
-    banner->FormatTextTo(ft);
-
-    char text[256];
-    if (Config::Get().general.UpperCaseBanners)
-    {
-        FormatStringToUpper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-    else
-    {
-        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
-    }
-
+    auto bannerText = banner->getText();
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
-    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
-    auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
+    auto imageId = ScrollingText::setup(session, bannerText, scrollMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
@@ -352,37 +335,37 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     auto& tile = sceneryEntry->tiles[sequenceNum];
 
-    session.InteractionType = ViewportInteractionItem::LargeScenery;
+    session.InteractionType = ViewportInteractionItem::largeScenery;
 
     auto isGhost = false;
     ImageId imageTemplate;
     if (gTrackDesignSaveMode && !TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
         isGhost = true;
     }
-    else if (tileElement.IsGhost())
+    else if (tileElement.isGhost())
     {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        session.InteractionType = ViewportInteractionItem::none;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::paletteGhost);
         isGhost = true;
     }
     else
     {
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
         {
             imageTemplate = imageTemplate.WithPrimary(tileElement.GetPrimaryColour());
         }
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
         {
             imageTemplate = imageTemplate.WithSecondary(tileElement.GetSecondaryColour());
         }
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::hasTertiaryColour))
         {
             imageTemplate = imageTemplate.WithTertiary(tileElement.GetTertiaryColour());
         }
@@ -405,13 +388,13 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { bbOffset, bbLength });
 
-    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE && direction != 1 && direction != 2)
+    if (sceneryEntry->scrolling_mode != kScrollingModeNone && direction != 1 && direction != 2)
     {
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_3D_TEXT)
+        if (sceneryEntry->flags.has(LargeSceneryFlag::is3DText))
         {
             PaintLargeScenery3DText(session, *sceneryEntry, tile, tileElement, direction, height, isGhost);
         }
-        else if (session.DPI.zoom_level <= ZoomLevel{ 0 })
+        else if (session.rt.zoom_level <= ZoomLevel{ 0 })
         {
             auto sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection2 == direction)
@@ -421,5 +404,5 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
     }
     PaintLargeScenerySupports(
-        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, COLOUR_BLACK), tile);
+        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, OpenRCT2::Drawing::Colour::black), tile);
 }

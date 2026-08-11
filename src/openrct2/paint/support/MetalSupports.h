@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../drawing/ImageId.hpp"
 #include "../../world/Location.hpp"
 
 #include <cstdint>
@@ -19,43 +18,43 @@ enum class MetalSupportType
     /**
      * Used by the Steel Twister, Looping RC, and other rides.
      */
-    Tubes = 0,
+    tubes = 0,
 
     /**
      * Used by the Junior RC and other rides.
      */
-    Fork = 1,
+    fork = 1,
 
     /**
      * Used by the vertical roller coasters, the Log Flume and other rides.
      */
-    Boxed = 2,
+    boxed = 2,
 
     /**
      * Used by the Steeplechase.
      */
-    Stick = 3,
+    stick = 3,
 
     /**
      * Used for the Looping Roller Coaster’s loop, and only for that specific part.
      */
-    Thick = 4,
+    thick = 4,
 
     /**
      * Used by the chairlift.
      */
-    Truss = 5,
+    truss = 5,
 
     /**
      * Used by inverted rcs like the flying, lay-down, compact inverted.
      * Mostly the same as `Tubes`, but with a thinner crossbeam.
      */
-    TubesInverted = 6,
+    tubesInverted = 6,
 
     /**
      * Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
      */
-    BoxedCoated = 7,
+    boxedCoated = 7,
 };
 constexpr uint8_t kMetalSupportTypeCount = 8;
 
@@ -73,38 +72,45 @@ constexpr uint8_t kMetalSupportTypeCount = 8;
  */
 enum class MetalSupportPlace : uint8_t
 {
-    TopCorner = 0,
-    LeftCorner = 1,
-    RightCorner = 2,
-    BottomCorner = 3,
-    Centre = 4,
-    TopLeftSide = 5,
-    TopRightSide = 6,
-    BottomLeftSide = 7,
-    BottomRightSide = 8,
+    topCorner = 0,
+    leftCorner = 1,
+    rightCorner = 2,
+    bottomCorner = 3,
+    centre = 4,
+    topLeftSide = 5,
+    topRightSide = 6,
+    bottomLeftSide = 7,
+    bottomRightSide = 8,
 
-    None = 255,
+    none = 255,
 };
 
-struct FootpathPaintInfo;
+struct ImageId;
+
+namespace OpenRCT2
+{
+    struct PathRailingsDescriptor;
+}
+
 struct PaintSession;
 
 /** @deprecated */
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t heightExtra, int32_t height,
     ImageId imageTemplate);
 bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t heightExtra,
     int32_t height, ImageId imageTemplate);
 /** @deprecated */
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t heightExtra, int32_t height,
     ImageId imageTemplate);
 bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t heightExtra,
     int32_t height, ImageId imageTemplate);
 void DrawSupportsSideBySide(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type,
+    int32_t heightExtra = 0);
 bool PathPoleSupportsPaintSetup(
     PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
-    const FootpathPaintInfo& pathPaintInfo);
+    const OpenRCT2::PathRailingsDescriptor& railings);

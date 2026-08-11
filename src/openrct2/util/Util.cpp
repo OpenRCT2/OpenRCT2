@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,9 +39,9 @@ uint8_t Lerp(uint8_t a, uint8_t b, float t)
     return static_cast<uint8_t>(a + amount);
 }
 
-float FLerp(float a, float b, float f)
+float FLerp(float a, float b, float t)
 {
-    return (a * (1.0f - f)) + (b * f);
+    return (a * (1.0f - t)) + (b * t);
 }
 
 uint8_t SoftLight(uint8_t a, uint8_t b)

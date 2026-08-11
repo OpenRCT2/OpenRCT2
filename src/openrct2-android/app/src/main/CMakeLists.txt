@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(openrct2-android CXX)
+project(openrct2-android CXX C)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
@@ -20,7 +20,7 @@ endif()
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v12/${ANDROID_ABI}-android-dynamic.tar.zst
+    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v13/${ANDROID_ABI}-android-dynamic.tar.zst
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
@@ -40,12 +40,12 @@ ExternalProject_Add(libs
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}ssl${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icudata${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icui18n${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icuuc${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}z${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}zstd${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
 
     LOG_DOWNLOAD 1
@@ -75,9 +75,9 @@ add_custom_command(TARGET libs POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libfreetype.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libpng16.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libSDL2.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libspeexdsp.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libssl.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libz.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libzstd.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
 add_library(freetype SHARED IMPORTED)
@@ -98,6 +98,12 @@ set_target_properties(z PROPERTIES IMPORTED_LOCATION
 )
 add_dependencies(z libs)
 
+add_library(zstd SHARED IMPORTED)
+set_target_properties(zstd PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}zstd${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(zstd libs)
+
 add_library(SDL2 SHARED IMPORTED)
 set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION
     ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX}
@@ -109,12 +115,6 @@ set_target_properties(SDL2main PROPERTIES IMPORTED_LOCATION
     ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
 )
 add_dependencies(SDL2main libs)
-
-add_library(speexdsp SHARED IMPORTED)
-set_target_properties(speexdsp PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
-)
-add_dependencies(speexdsp libs)
 
 add_library(icu STATIC IMPORTED)
 set_target_properties(icu PROPERTIES IMPORTED_LOCATION
@@ -190,17 +190,14 @@ add_dependencies(bz2 libs)
 
 
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include")
-include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype2")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
 # now build app's shared lib
-add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
+add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DSDL_MAIN_HANDLED)
 
 # Enable scripting
 add_definitions(-DENABLE_SCRIPTING)
-
-# Fix SpeexDSP compilation
-add_definitions(-DHAVE_STDINT_H)
 
 # -Werror -Wall
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Wundef -Wmissing-declarations -Winit-self  -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
@@ -229,7 +226,7 @@ if (CCache_FOUND)
 endif (CCache_FOUND)
 
 file(GLOB_RECURSE LIBOPENRCT2_SOURCES
-    "${ORCT2_ROOT}/src/thirdparty/duktape/duktape.cpp"
+    "${ORCT2_ROOT}/src/thirdparty/quickjs-ng/quickjs-amalgam.c"
     "${ORCT2_ROOT}/src/openrct2/*.cpp"
     "${ORCT2_ROOT}/src/openrct2/*.h"
     "${ORCT2_ROOT}/src/openrct2/*.hpp")
@@ -250,20 +247,21 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2 android stdc++ log dl SDL2 png z icu icuuc icudata crypto ssl)
+target_link_libraries(openrct2 android stdc++ log dl SDL2 png z zstd icu icuuc icudata crypto ssl freetype)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
-target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp brotlicommon brotlidec bz2 freetype ogg vorbis vorbisfile FLAC)
+target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main brotlicommon brotlidec bz2 freetype ogg vorbis vorbisfile FLAC)
 
 add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
 target_link_libraries(openrct2-cli openrct2 android stdc++ GLESv1_CM GLESv2)
 
-target_include_directories(openrct2 PRIVATE "${ORCT2_ROOT}/src/thirdparty/duktape/")
+target_include_directories(openrct2 SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty/quickjs-ng")
 target_include_directories(openrct2 SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
-target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src/thirdparty/duktape/")
+target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty/quickjs-ng")
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
 target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")
+target_include_directories(openrct2-cli SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 
 target_include_directories(openrct2 PRIVATE "/opt/openrct2/include/nlohmann/../")
 target_include_directories(openrct2-ui PRIVATE "/opt/openrct2/include/nlohmann/../")

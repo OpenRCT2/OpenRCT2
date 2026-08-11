@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,16 +41,16 @@ TEST_F(ImageImporterTests, Import_Logo)
     auto logoPath = GetImagePath("logo.png");
 
     ImageImporter importer;
-    auto image = Imaging::ReadFromFile(logoPath, IMAGE_FORMAT::PNG_32);
+    auto image = Imaging::ReadFromFile(logoPath, ImageFormat::png32);
     auto meta = ImageImportMeta{ .offset = { 3, 5 } };
     auto result = importer.Import(image, meta);
 
     ASSERT_EQ(result.Buffer.data(), result.Element.offset);
     ASSERT_EQ(128, result.Element.width);
     ASSERT_EQ(128, result.Element.height);
-    ASSERT_EQ(3, result.Element.x_offset);
-    ASSERT_EQ(5, result.Element.y_offset);
-    ASSERT_EQ(0, result.Element.zoomed_offset);
+    ASSERT_EQ(3, result.Element.xOffset);
+    ASSERT_EQ(5, result.Element.yOffset);
+    ASSERT_EQ(0, result.Element.zoomedOffset);
 
     // Check to ensure RLE data doesn't change unexpectedly.
     // Update expected hash if change is expected.

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,13 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../interface/Viewport.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
@@ -32,7 +29,7 @@ enum
     SPR_LIFT_CAGE_NW_FRONT = 15003,
 };
 
-static constexpr uint32_t lift_cage_sprites[][2] = {
+static constexpr uint32_t kLiftCageSprites[][2] = {
     { SPR_LIFT_CAGE_BACK, SPR_LIFT_CAGE_FRONT },       { SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT },
     { SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT }, { SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT },
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
@@ -42,10 +39,10 @@ static void PaintLiftCage(PaintSession& session, int8_t index, ImageId colourFla
 {
     ImageId imageId;
 
-    imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][0]);
+    imageId = colourFlags.WithIndex(kLiftCageSprites[1 + index][0]);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height }, { 2, 2, 30 } });
 
-    imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][1]);
+    imageId = colourFlags.WithIndex(kLiftCageSprites[1 + index][1]);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 2, 2, 30 } });
 }
 
@@ -74,11 +71,11 @@ static void PaintLiftBase(
 
     int32_t edges = kEdges3x3[trackSequence];
 
-    auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL_B);
+    auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_TILE_DIAMOND);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesMetalB,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, kFenceSpritesPicketDuplicate,
         session.CurrentRotation);
 
     int32_t blockedSegments = 0;
@@ -86,36 +83,33 @@ static void PaintLiftBase(
     {
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner, PaintSegment::topRightSide,
-                PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight,
+                PaintSegment::bottom);
             break;
         case 4:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::left);
             break;
         case 5:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::right, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 6:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
         case 7:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight,
+                PaintSegment::right);
             break;
         case 8:
-            blockedSegments = EnumsToFlags(PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
@@ -144,14 +138,14 @@ static void PaintLiftTowerSection(
 /**
  * rct2: 0x0076C5BC
  */
-TrackPaintFunction GetTrackPaintFunctionLift(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLift(TrackElemType trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::towerBase:
             return PaintLiftBase;
 
-        case TrackElemType::TowerSection:
+        case TrackElemType::towerSection:
             return PaintLiftTowerSection;
         default:
             return TrackPaintFunctionDummy;

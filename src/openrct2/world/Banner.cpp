@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,73 +9,67 @@
 
 #include "Banner.h"
 
-#include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
-#include "../core/Memory.hpp"
-#include "../core/String.hpp"
-#include "../interface/Window.h"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../management/Finance.h"
-#include "../network/network.h"
-#include "../object/BannerSceneryEntry.h"
-#include "../object/ObjectEntryManager.h"
 #include "../object/WallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
-#include "../ride/Track.h"
-#include "../windows/Intent.h"
 #include "Map.h"
-#include "MapAnimation.h"
-#include "Park.h"
-#include "Scenery.h"
 #include "TileElementsView.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/TileElement.h"
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
-#include <cstring>
-#include <iterator>
 #include <limits>
 
 using namespace OpenRCT2;
 
-std::string Banner::GetText() const
+std::string Banner::getTextWithColour() const
 {
     Formatter ft;
-    FormatTextTo(ft);
+    formatTextWithColourTo(ft);
     return FormatStringIDLegacy(STR_STRINGID, ft.Data());
 }
 
-void Banner::FormatTextTo(Formatter& ft, bool addColour) const
+std::string Banner::getText() const
 {
-    if (addColour)
-    {
-        auto formatToken = FormatTokenFromTextColour(text_colour);
-        formattedTextBuffer = FormatTokenToStringWithBraces(formatToken);
-        ft.Add<StringId>(STR_STRING_STRINGID);
-        ft.Add<const char*>(formattedTextBuffer.data());
-    }
-
-    FormatTextTo(ft);
+    Formatter ft;
+    formatTextTo(ft);
+    return FormatStringIDLegacy(STR_STRINGID, ft.Data());
 }
 
-void Banner::FormatTextTo(Formatter& ft) const
+void Banner::formatTextWithColourTo(Formatter& ft) const
 {
-    if (flags & BANNER_FLAG_NO_ENTRY)
+    // Use thread_local buffer to avoid race conditions during multithreaded rendering.
+    // Multiple threads can call this on the same Banner simultaneously when rendering
+    // different viewport columns in parallel.
+    thread_local std::string formattedTextBuffer;
+
+    auto formatToken = FormatTokenFromTextColour(textColour);
+    formattedTextBuffer = FormatTokenToStringWithBraces(formatToken);
+    ft.Add<StringId>(STR_STRING_STRINGID);
+    ft.Add<const char*>(formattedTextBuffer.data());
+
+    formatTextTo(ft);
+}
+
+void Banner::formatTextTo(Formatter& ft) const
+{
+    if (flags.has(BannerFlag::noEntry))
     {
         ft.Add<StringId>(STR_NO_ENTRY);
     }
-    else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
+    else if (flags.has(BannerFlag::linkedToRide))
     {
-        auto ride = GetRide(ride_index);
+        auto ride = GetRide(rideIndex);
         if (ride != nullptr)
         {
-            ride->FormatNameTo(ft);
+            ride->formatNameTo(ft);
         }
         else
         {
@@ -98,44 +92,38 @@ void Banner::FormatTextTo(Formatter& ft) const
  */
 static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 {
-    TileElement* tileElement = MapGetFirstElementAt(bannerCoords);
     RideId resultRideIndex = RideId::GetNull();
-    if (tileElement == nullptr)
-        return resultRideIndex;
-    do
+    for (auto* trackElement : TileElementsView<TrackElement>(bannerCoords))
     {
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-
-        RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
+        RideId rideIndex = trackElement->GetRideIndex();
         auto ride = GetRide(rideIndex);
-        if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride == nullptr || ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             continue;
 
-        if ((tileElement->GetClearanceZ()) + (4 * kCoordsZStep) <= bannerCoords.z)
+        if ((trackElement->getClearanceZ()) + (4 * kCoordsZStep) <= bannerCoords.z)
             continue;
 
         resultRideIndex = rideIndex;
-    } while (!(tileElement++)->IsLastForTile());
+    }
 
     return resultRideIndex;
 }
 
 static BannerIndex BannerGetNewIndex()
 {
-    auto& gameState = GetGameState();
-    for (BannerIndex::UnderlyingType bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
+    auto& gameState = getGameState();
+    for (BannerIndex::UnderlyingType bannerIndex = 0; bannerIndex < kMaxBanners; bannerIndex++)
     {
-        if (bannerIndex < gameState.Banners.size())
+        if (bannerIndex < gameState.banners.size())
         {
-            if (gameState.Banners[bannerIndex].IsNull())
+            if (gameState.banners[bannerIndex].isNull())
             {
                 return BannerIndex::FromUnderlying(bannerIndex);
             }
         }
         else
         {
-            gameState.Banners.emplace_back();
+            gameState.banners.emplace_back();
             return BannerIndex::FromUnderlying(bannerIndex);
         }
     }
@@ -148,7 +136,7 @@ static BannerIndex BannerGetNewIndex()
  */
 void BannerInit(GameState_t& gameState)
 {
-    gameState.Banners.clear();
+    gameState.banners.clear();
 }
 
 TileElement* BannerGetTileElement(BannerIndex bannerIndex)
@@ -165,7 +153,7 @@ TileElement* BannerGetTileElement(BannerIndex bannerIndex)
                 {
                     return tileElement;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            } while (!(tileElement++)->isLastForTile());
         }
     }
     return nullptr;
@@ -183,18 +171,18 @@ WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
 
     do
     {
-        auto wallElement = tileElement->AsWall();
+        auto wallElement = tileElement->asWall();
 
         if (wallElement == nullptr)
             continue;
 
         auto* wallEntry = wallElement->GetEntry();
-        if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
+        if (wallEntry->scrolling_mode == kScrollingModeNone)
             continue;
         if (wallElement->GetBannerIndex() != bannerIndex)
             continue;
         return wallElement;
-    } while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->isLastForTile());
 
     return nullptr;
 }
@@ -228,12 +216,14 @@ RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
 
     auto rideIndex = RideId::GetNull();
     auto resultDistance = std::numeric_limits<int32_t>::max();
-    for (auto& ride : GetRideManager())
+
+    auto& gameState = getGameState();
+    for (auto& ride : RideManager(gameState))
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             continue;
 
-        auto rideCoords = ride.overall_view;
+        auto rideCoords = ride.overallView;
         if (rideCoords.IsNull())
             continue;
 
@@ -256,11 +246,11 @@ struct BannerElementWithPos
 // Returns a list of BannerElement's with the tile position.
 static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     std::vector<BannerElementWithPos> banners;
-    for (int y = 0; y < gameState.MapSize.y; y++)
+    for (int y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int x = 0; x < gameState.MapSize.x; x++)
+        for (int x = 0; x < gameState.mapSize.x; x++)
         {
             const auto tilePos = TileCoordsXY{ x, y };
             for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.ToCoordsXY()))
@@ -280,8 +270,8 @@ static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
 // has a tile with the banner index, if no tile is found then the banner element will be released.
 static void BannerDeallocateUnlinked()
 {
-    auto& gameState = GetGameState();
-    for (BannerIndex::UnderlyingType index = 0; index < gameState.Banners.size(); index++)
+    auto& gameState = getGameState();
+    for (BannerIndex::UnderlyingType index = 0; index < gameState.banners.size(); index++)
     {
         const auto bannerId = BannerIndex::FromUnderlying(index);
         auto* tileElement = BannerGetTileElement(bannerId);
@@ -290,7 +280,7 @@ static void BannerDeallocateUnlinked()
             auto* banner = GetBanner(bannerId);
             if (banner != nullptr)
             {
-                banner->type = BANNER_NULL;
+                banner->type = kBannerNull;
             }
         }
     }
@@ -375,26 +365,26 @@ void BannerApplyFixes()
 
 void UnlinkAllRideBanners()
 {
-    auto& gameState = GetGameState();
-    for (auto& banner : gameState.Banners)
+    auto& gameState = getGameState();
+    for (auto& banner : gameState.banners)
     {
-        if (!banner.IsNull())
+        if (!banner.isNull())
         {
-            banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner.ride_index = RideId::GetNull();
+            banner.flags.unset(BannerFlag::linkedToRide);
+            banner.rideIndex = RideId::GetNull();
         }
     }
 }
 
 void UnlinkAllBannersForRide(RideId rideId)
 {
-    auto& gameState = GetGameState();
-    for (auto& banner : gameState.Banners)
+    auto& gameState = getGameState();
+    for (auto& banner : gameState.banners)
     {
-        if (!banner.IsNull() && (banner.flags & BANNER_FLAG_LINKED_TO_RIDE) && banner.ride_index == rideId)
+        if (!banner.isNull() && banner.flags.has(BannerFlag::linkedToRide) && banner.rideIndex == rideId)
         {
-            banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner.ride_index = RideId::GetNull();
+            banner.flags.unset(BannerFlag::linkedToRide);
+            banner.rideIndex = RideId::GetNull();
             banner.text = {};
         }
     }
@@ -402,12 +392,12 @@ void UnlinkAllBannersForRide(RideId rideId)
 
 Banner* GetBanner(BannerIndex id)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     const auto index = id.ToUnderlying();
-    if (index < gameState.Banners.size())
+    if (index < gameState.banners.size())
     {
-        auto banner = &gameState.Banners[index];
-        if (banner != nullptr && !banner->IsNull())
+        auto banner = &gameState.banners[index];
+        if (banner != nullptr && !banner->isNull())
         {
             return banner;
         }
@@ -417,16 +407,16 @@ Banner* GetBanner(BannerIndex id)
 
 Banner* GetOrCreateBanner(BannerIndex id)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     const auto index = id.ToUnderlying();
-    if (index < MAX_BANNERS)
+    if (index < kMaxBanners)
     {
-        if (index >= gameState.Banners.size())
+        if (index >= gameState.banners.size())
         {
-            gameState.Banners.resize(index + 1);
+            gameState.banners.resize(index + 1);
         }
         // Create the banner
-        auto& banner = gameState.Banners[index];
+        auto& banner = gameState.banners[index];
         banner.id = id;
         return &banner;
     }
@@ -440,11 +430,11 @@ Banner* CreateBanner()
     if (banner != nullptr)
     {
         banner->id = bannerIndex;
-        banner->flags = 0;
+        banner->flags = {};
         banner->type = 0;
         banner->text = {};
-        banner->colour = COLOUR_WHITE;
-        banner->text_colour = COLOUR_WHITE;
+        banner->colour = OpenRCT2::Drawing::Colour::white;
+        banner->textColour = Drawing::TextColour::white;
     }
     return banner;
 }
@@ -460,26 +450,26 @@ void DeleteBanner(BannerIndex id)
 
 void TrimBanners()
 {
-    auto& gameState = GetGameState();
-    if (gameState.Banners.size() > 0)
+    auto& gameState = getGameState();
+    if (!gameState.banners.empty())
     {
-        auto lastBannerId = gameState.Banners.size() - 1;
-        while (lastBannerId != std::numeric_limits<size_t>::max() && gameState.Banners[lastBannerId].IsNull())
+        auto lastBannerId = gameState.banners.size() - 1;
+        while (lastBannerId != std::numeric_limits<size_t>::max() && gameState.banners[lastBannerId].isNull())
         {
             lastBannerId--;
         }
-        gameState.Banners.resize(lastBannerId + 1);
-        gameState.Banners.shrink_to_fit();
+        gameState.banners.resize(lastBannerId + 1);
+        gameState.banners.shrink_to_fit();
     }
 }
 
 size_t GetNumBanners()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     size_t count = 0;
-    for (const auto& banner : gameState.Banners)
+    for (const auto& banner : gameState.banners)
     {
-        if (!banner.IsNull())
+        if (!banner.isNull())
         {
             count++;
         }
@@ -490,5 +480,5 @@ size_t GetNumBanners()
 bool HasReachedBannerLimit()
 {
     auto numBanners = GetNumBanners();
-    return numBanners >= MAX_BANNERS;
+    return numBanners >= kMaxBanners;
 }

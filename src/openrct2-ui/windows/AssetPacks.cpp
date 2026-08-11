@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,23 +10,28 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/AssetPack.h>
 #include <openrct2/AssetPackManager.h>
 #include <openrct2/Context.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_ASSET_PACKS;
-    static constexpr int32_t WW = 400;
-    static constexpr int32_t WH = 200;
+    static constexpr StringId kWindowTitle = STR_ASSET_PACKS;
+    static constexpr ScreenSize kWindowSize = { 400, 200 };
 
-    enum WindowAssetPacksWidgetIdx
+    enum WindowAssetPacksWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -40,16 +45,15 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget WindowAssetPacksWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
-        MakeWidget({ 0, 0 }, { 0, 147 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_LOW_PRIORITY),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_UP), STR_INCREASE_PRIOTITY_TIP),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_DOWN), STR_DECREASE_PRIOTITY_TIP),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_RELOAD), STR_RELOAD_ASSET_PACKS_TIP),
-        kWidgetsEnd,
-    };
+    static constexpr auto WindowAssetPacksWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::labelCentred, WindowColour::secondary, STR_HIGH_PRIORITY),
+        makeWidget({ 0, 0 }, { 0, 147 }, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::labelCentred, WindowColour::secondary, STR_LOW_PRIORITY),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_ARROW_UP), STR_INCREASE_PRIOTITY_TIP),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_ARROW_DOWN), STR_DECREASE_PRIOTITY_TIP),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_RELOAD), STR_RELOAD_ASSET_PACKS_TIP)
+    );
     // clang-format on
 
     class AssetPacksWindow final : public Window
@@ -61,23 +65,23 @@ namespace OpenRCT2::Ui::Windows
         std::optional<size_t> _selectedIndex;
 
     public:
-        void OnOpen() override
+        void onOpen() override
         {
-            widgets = WindowAssetPacksWidgets;
+            setWidgets(WindowAssetPacksWidgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void OnClose() override
+        void onClose() override
         {
             Apply();
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_MOVE_UP:
                     ReorderSelectedAssetPack(-1);
@@ -91,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
             ScreenSize result;
             auto assetPackManager = GetContext()->GetAssetPackManager();
@@ -104,13 +108,13 @@ namespace OpenRCT2::Ui::Windows
             if (_highlightedIndex)
             {
                 _highlightedIndex = {};
-                Invalidate();
+                invalidate();
             }
 
             return result;
         }
 
-        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto isCheckBox = false;
             auto index = GetAssetPackIndexFromPosition(screenCoords, isCheckBox);
@@ -125,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
                     if (assetPack != nullptr)
                     {
                         assetPack->SetEnabled(!assetPack->IsEnabled());
-                        Invalidate();
+                        invalidate();
                     }
                 }
             }
@@ -134,28 +138,26 @@ namespace OpenRCT2::Ui::Windows
             if (_selectedIndex != index)
             {
                 _selectedIndex = index;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto isCheckBox = false;
             auto index = GetAssetPackIndexFromPosition(screenCoords, isCheckBox);
             if (_highlightedIndex != index)
             {
                 _highlightedIndex = index;
-                Invalidate();
+                invalidate();
             }
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            ResizeFrame();
-
             auto& list = widgets[WIDX_LIST];
             list.left = 6;
-            list.top = 20 + 11 + 3;
+            list.top = widgets[WIDX_TITLE].height() - 1 + 8 + 11 + 3;
             list.right = width - 2 - 24 - 1;
             list.bottom = height - 6 - 11 - 3;
 
@@ -168,7 +170,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LOW_LABEL].left = list.left;
             widgets[WIDX_LOW_LABEL].right = list.right;
 
-            auto toolstripY = 20;
+            auto toolstripY = widgets[WIDX_TITLE].height() - 1 + 8;
             auto toolstripRight = width - 2;
             auto toolstripLeft = toolstripRight - 24;
             for (WidgetIndex i = WIDX_MOVE_UP; i <= WIDX_APPLY; i++)
@@ -180,24 +182,24 @@ namespace OpenRCT2::Ui::Windows
                 toolstripY += 24;
             }
 
-            SetWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0u);
-            SetWidgetDisabled(WIDX_MOVE_DOWN, !_selectedIndex || _selectedIndex >= GetNumAssetPacks() - 1);
+            setWidgetDisabled(WIDX_MOVE_UP, !_selectedIndex || _selectedIndex == 0u);
+            setWidgetDisabled(WIDX_MOVE_DOWN, !_selectedIndex || _selectedIndex >= GetNumAssetPacks() - 1);
 
             widgets[WIDX_APPLY].bottom = widgets[WIDX_LIST].bottom;
             widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            drawWidgets(rt);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-            GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+            auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
+            Rectangle::fill(
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
+                getColourMap(colours[1].colour).midLight);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
             if (assetPackManager == nullptr)
@@ -207,9 +209,9 @@ namespace OpenRCT2::Ui::Windows
             auto y = 0;
             for (size_t i = 0; i <= numAssetPacks; i++)
             {
-                if (y > dpi.y + dpi.height)
+                if (y > rt.y + rt.height)
                     break;
-                if (y + 11 < dpi.y)
+                if (y + 11 < rt.y)
                     continue;
 
                 auto isSelected = i == _selectedIndex;
@@ -218,7 +220,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_BASE_GRAPHICS_MUSIC_SOUND);
-                    PaintItem(dpi, y, ft, true, isSelected, isHighlighted);
+                    PaintItem(rt, y, ft, true, isSelected, isHighlighted);
                 }
                 else
                 {
@@ -229,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(assetPack->Name.c_str());
-                        PaintItem(dpi, y, ft, isChecked, isSelected, isHighlighted);
+                        PaintItem(rt, y, ft, isChecked, isSelected, isHighlighted);
                     }
                 }
                 y += ItemHeight;
@@ -237,37 +239,38 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void PaintItem(DrawPixelInfo& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
+        void PaintItem(RenderTarget& rt, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
         {
             auto listWidth = widgets[WIDX_LIST].right - widgets[WIDX_LIST].left;
             auto stringId = STR_BLACK_STRING;
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else if (isHighlighted)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
             }
 
-            DrawTextEllipsised(dpi, { 16, y + 1 }, listWidth, stringId, ft);
+            drawTextEllipsised(rt, { 16, y + 1 }, listWidth, stringId, ft);
 
             auto checkboxSize = ItemHeight - 3;
-            PaintCheckbox(dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
+            PaintCheckbox(rt, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
         }
 
-        void PaintCheckbox(DrawPixelInfo& dpi, const ScreenRect& rect, bool checked)
+        void PaintCheckbox(RenderTarget& rt, const ScreenRect& rect, bool checked)
         {
-            GfxFillRectInset(dpi, rect, colours[1], INSET_RECT_F_E0);
+            Rectangle::fillInset(
+                rt, rect, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
+                Rectangle::FillMode::dontLightenWhenInset);
             if (checked)
             {
                 auto checkmark = Formatter();
                 checkmark.Add<StringId>(STR_STRING);
                 checkmark.Add<char*>(kCheckMarkString);
-                DrawTextBasic(
-                    dpi, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
+                drawText(rt, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
             }
         }
 
@@ -319,13 +322,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 assetPackManager->Swap(*_selectedIndex, *_selectedIndex - 1);
                 (*_selectedIndex)--;
-                Invalidate();
+                invalidate();
             }
             else if (direction > 0 && *_selectedIndex < assetPackManager->GetCount() - 1)
             {
                 assetPackManager->Swap(*_selectedIndex, *_selectedIndex + 1);
                 (*_selectedIndex)++;
-                Invalidate();
+                invalidate();
             }
         }
 
@@ -344,7 +347,9 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* AssetPacksOpen()
     {
-        auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
-        return WindowFocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
+        auto* windowMgr = GetWindowManager();
+        WindowFlags flags = { WindowFlag::autoPosition, WindowFlag::centreScreen };
+
+        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::assetPacks, kWindowSize, flags);
     }
 } // namespace OpenRCT2::Ui::Windows

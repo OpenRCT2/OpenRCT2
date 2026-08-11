@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,10 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "Duktape.hpp"
+    #include "ScriptUtil.hpp"
 
-    #include <memory>
+    #include <optional>
+    #include <quickjs.h>
     #include <string>
     #include <string_view>
     #include <vector>
@@ -26,19 +27,19 @@ namespace OpenRCT2::Scripting
          * Scripts that can run on servers or clients with no impact on the game state and will not
          * be uploaded to clients.
          */
-        Local,
+        local,
 
         /**
          * Scripts that can run on servers and will be uploaded to clients with ability to
          * modify game state in certain contexts.
          */
-        Remote,
+        remote,
 
         /**
          * Scripts that run when the game starts and only unload explicitly rather than when the
          * park changes.
          */
-        Intransient,
+        intransient,
     };
 
     struct PluginMetadata
@@ -49,13 +50,13 @@ namespace OpenRCT2::Scripting
         PluginType Type{};
         int32_t MinApiVersion{};
         std::optional<int32_t> TargetApiVersion{};
-        DukValue Main;
+        JSCallback Main;
     };
 
     class Plugin
     {
     private:
-        duk_context* _context{};
+        JSContext* _context = nullptr;
         std::string _path;
         PluginMetadata _metadata{};
         std::string _code;
@@ -63,11 +64,18 @@ namespace OpenRCT2::Scripting
         bool _hasStarted{};
         bool _isStopping{};
 
+        std::string TryGetString(JSValue value, const char* property, const std::string& message) const;
+
     public:
         std::string_view GetPath() const
         {
             return _path;
-        };
+        }
+
+        JSContext* GetContext() const
+        {
+            return _context;
+        }
 
         bool HasPath() const
         {
@@ -78,6 +86,8 @@ namespace OpenRCT2::Scripting
         {
             return _metadata;
         }
+
+        void SetMetadata(JSValue obj);
 
         const std::string& GetCode() const
         {
@@ -102,7 +112,7 @@ namespace OpenRCT2::Scripting
         int32_t GetTargetAPIVersion() const;
 
         Plugin() = default;
-        Plugin(duk_context* context, std::string_view path);
+        explicit Plugin(std::string_view path);
         Plugin(const Plugin&) = delete;
         Plugin(Plugin&&) = delete;
 
@@ -112,7 +122,6 @@ namespace OpenRCT2::Scripting
         void StopBegin();
         void StopEnd();
 
-        void ThrowIfStopping() const;
         void Unload();
 
         bool IsTransient() const;
@@ -120,9 +129,8 @@ namespace OpenRCT2::Scripting
     private:
         void LoadCodeFromFile();
 
-        static PluginMetadata GetMetadata(const DukValue& dukMetadata);
         static PluginType ParsePluginType(std::string_view type);
-        static void CheckForLicence(const DukValue& dukLicence, std::string_view pluginName);
+        static void CheckForLicence(JSValue dukLicence, std::string_view pluginName);
     };
 } // namespace OpenRCT2::Scripting
 

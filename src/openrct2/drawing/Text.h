@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,207 +9,231 @@
 
 #pragma once
 
-#include "../interface/Colour.h"
+#include "../drawing/Colour.h"
+#include "../interface/ColourWithFlags.h"
 #include "../localisation/StringIdType.h"
 #include "Font.h"
 
 struct ScreenCoordsXY;
-struct DrawPixelInfo;
-class Formatter;
+
+using OpenRCT2::ColourWithFlags;
+
+namespace OpenRCT2
+{
+    class Formatter;
+}
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 enum class TextAlignment
 {
-    LEFT,
-    CENTRE,
-    RIGHT
+    left,
+    centre,
+    right,
 };
 
-enum class TextUnderline
+enum class TextPaintFlag
 {
-    Off,
-    On,
+    underline,
+    noFormatting,
 };
+using TextPaintFlags = FlagHolder<uint8_t, TextPaintFlag>;
 
-enum class TextDarkness
+enum class TextDarkness : uint8_t
 {
-    Regular = 0,
-    Dark = 1,
-    ExtraDark = 2,
+    regular = 0,
+    dark = 1,
+    extraDark = 2,
 };
 
 struct TextPaint
 {
-    ColourWithFlags Colour = { COLOUR_BLACK };
-    ::FontStyle FontStyle = FontStyle::Medium;
-    TextUnderline UnderlineText = TextUnderline::Off;
-    TextAlignment Alignment = TextAlignment::LEFT;
-    TextDarkness Darkness = TextDarkness::Regular;
+    ColourWithFlags colour = { OpenRCT2::Drawing::Colour::black };
+    ::FontStyle fontStyle = FontStyle::medium;
+    TextPaintFlags flags{};
+    TextAlignment alignment = TextAlignment::left;
+    TextDarkness darkness = TextDarkness::regular;
 
     TextPaint() = default;
-    TextPaint(ColourWithFlags colour)
-        : Colour(colour)
+    TextPaint(ColourWithFlags _colour)
+        : colour(_colour)
     {
     }
-    TextPaint(colour_t colour)
-        : Colour(ColourWithFlags{ colour })
+    TextPaint(OpenRCT2::Drawing::Colour _colour)
+        : colour(ColourWithFlags{ _colour })
     {
     }
-    TextPaint(::FontStyle fontStyle)
-        : FontStyle(fontStyle)
+    TextPaint(::FontStyle _fontStyle)
+        : fontStyle(_fontStyle)
     {
     }
-    TextPaint(TextUnderline underlineText)
-        : UnderlineText(underlineText)
+    TextPaint(TextPaintFlags _flags)
+        : flags(_flags)
     {
     }
-    TextPaint(TextAlignment alignment)
-        : Alignment(alignment)
-    {
-    }
-
-    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle)
-        : Colour(colour)
-        , FontStyle(fontStyle)
-    {
-    }
-    TextPaint(colour_t colour, ::FontStyle fontStyle)
-        : Colour(ColourWithFlags{ colour })
-        , FontStyle(fontStyle)
-    {
-    }
-    TextPaint(ColourWithFlags colour, TextUnderline underlineText)
-        : Colour(colour)
-        , UnderlineText(underlineText)
-    {
-    }
-    TextPaint(colour_t colour, TextUnderline underlineText)
-        : Colour(ColourWithFlags{ colour })
-        , UnderlineText(underlineText)
-    {
-    }
-    TextPaint(ColourWithFlags colour, TextAlignment alignment)
-        : Colour(colour)
-        , Alignment(alignment)
-    {
-    }
-    TextPaint(colour_t colour, TextAlignment alignment)
-        : Colour(ColourWithFlags{ colour })
-        , Alignment(alignment)
+    TextPaint(TextAlignment _alignment)
+        : alignment(_alignment)
     {
     }
 
-    TextPaint(::FontStyle fontStyle, TextUnderline underlineText)
-        : FontStyle(fontStyle)
-        , UnderlineText(underlineText)
+    TextPaint(ColourWithFlags _colour, ::FontStyle _fontStyle)
+        : colour(_colour)
+        , fontStyle(_fontStyle)
     {
     }
-    TextPaint(::FontStyle fontStyle, TextAlignment alignment)
-        : FontStyle(fontStyle)
-        , Alignment(alignment)
+    TextPaint(OpenRCT2::Drawing::Colour _colour, ::FontStyle _fontStyle)
+        : colour(ColourWithFlags{ _colour })
+        , fontStyle(_fontStyle)
     {
     }
-    TextPaint(TextUnderline underlineText, TextAlignment alignment)
-        : UnderlineText(underlineText)
-        , Alignment(alignment)
+    TextPaint(ColourWithFlags _colour, TextPaintFlags _flags)
+        : colour(_colour)
+        , flags(_flags)
     {
     }
-
-    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextUnderline underlineText)
-        : Colour(colour)
-        , FontStyle(fontStyle)
-        , UnderlineText(underlineText)
+    TextPaint(OpenRCT2::Drawing::Colour _colour, TextPaintFlags _flags)
+        : colour(ColourWithFlags{ _colour })
+        , flags(_flags)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText)
-        : Colour(ColourWithFlags{ colour })
-        , FontStyle(fontStyle)
-        , UnderlineText(underlineText)
+    TextPaint(ColourWithFlags _colour, TextAlignment _alignment)
+        : colour(_colour)
+        , alignment(_alignment)
     {
     }
-    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextAlignment alignment)
-        : Colour(colour)
-        , FontStyle(fontStyle)
-        , Alignment(alignment)
-    {
-    }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment)
-        : Colour(ColourWithFlags{ colour })
-        , FontStyle(fontStyle)
-        , Alignment(alignment)
-    {
-    }
-    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextDarkness darkness)
-        : Colour(colour)
-        , FontStyle(fontStyle)
-        , Darkness(darkness)
-    {
-    }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextDarkness darkness)
-        : Colour(ColourWithFlags{ colour })
-        , FontStyle(fontStyle)
-        , Darkness(darkness)
-    {
-    }
-    TextPaint(ColourWithFlags colour, TextUnderline underlineText, TextAlignment alignment)
-        : Colour(colour)
-        , UnderlineText(underlineText)
-        , Alignment(alignment)
-    {
-    }
-    TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
-        : Colour(ColourWithFlags{ colour })
-        , UnderlineText(underlineText)
-        , Alignment(alignment)
-    {
-    }
-    TextPaint(::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
-        : FontStyle(fontStyle)
-        , UnderlineText(underlineText)
-        , Alignment(alignment)
+    TextPaint(OpenRCT2::Drawing::Colour _colour, TextAlignment _alignment)
+        : colour(ColourWithFlags{ _colour })
+        , alignment(_alignment)
     {
     }
 
-    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
-        : Colour(colour)
-        , FontStyle(fontStyle)
-        , UnderlineText(underlineText)
-        , Alignment(alignment)
+    TextPaint(::FontStyle _fontStyle, TextPaintFlags _flags)
+        : fontStyle(_fontStyle)
+        , flags(_flags)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextUnderline underlineText, TextAlignment alignment)
-        : Colour(ColourWithFlags{ colour })
-        , FontStyle(fontStyle)
-        , UnderlineText(underlineText)
-        , Alignment(alignment)
+    TextPaint(::FontStyle _fontStyle, TextAlignment _alignment)
+        : fontStyle(_fontStyle)
+        , alignment(_alignment)
     {
     }
-    TextPaint(ColourWithFlags colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
-        : Colour(colour)
-        , FontStyle(fontStyle)
-        , Alignment(alignment)
-        , Darkness(darkness)
+    TextPaint(TextPaintFlags _flags, TextAlignment _alignment)
+        : flags(_flags)
+        , alignment(_alignment)
     {
     }
-    TextPaint(colour_t colour, ::FontStyle fontStyle, TextAlignment alignment, TextDarkness darkness)
-        : Colour(ColourWithFlags{ colour })
-        , FontStyle(fontStyle)
-        , Alignment(alignment)
-        , Darkness(darkness)
+
+    TextPaint(ColourWithFlags _colour, ::FontStyle _fontStyle, TextPaintFlags _flags)
+        : colour(_colour)
+        , fontStyle(_fontStyle)
+        , flags(_flags)
+    {
+    }
+    TextPaint(OpenRCT2::Drawing::Colour _colour, ::FontStyle _fontStyle, TextPaintFlags _flags)
+        : colour(ColourWithFlags{ _colour })
+        , fontStyle(_fontStyle)
+        , flags(_flags)
+    {
+    }
+    TextPaint(ColourWithFlags _colour, ::FontStyle _fontStyle, TextAlignment _alignment)
+        : colour(_colour)
+        , fontStyle(_fontStyle)
+        , alignment(_alignment)
+    {
+    }
+    TextPaint(OpenRCT2::Drawing::Colour _colour, ::FontStyle _fontStyle, TextAlignment _alignment)
+        : colour(ColourWithFlags{ _colour })
+        , fontStyle(_fontStyle)
+        , alignment(_alignment)
+    {
+    }
+    TextPaint(ColourWithFlags _colour, ::FontStyle _fontStyle, TextDarkness _darkness)
+        : colour(_colour)
+        , fontStyle(_fontStyle)
+        , darkness(_darkness)
+    {
+    }
+    TextPaint(OpenRCT2::Drawing::Colour _colour, ::FontStyle _fontStyle, TextDarkness _darkness)
+        : colour(ColourWithFlags{ _colour })
+        , fontStyle(_fontStyle)
+        , darkness(_darkness)
+    {
+    }
+    TextPaint(ColourWithFlags _colour, TextPaintFlags _flags, TextAlignment _alignment)
+        : colour(_colour)
+        , flags(_flags)
+        , alignment(_alignment)
+    {
+    }
+    TextPaint(OpenRCT2::Drawing::Colour _colour, TextPaintFlags _flags, TextAlignment _alignment)
+        : colour(ColourWithFlags{ _colour })
+        , flags(_flags)
+        , alignment(_alignment)
+    {
+    }
+    TextPaint(::FontStyle _fontStyle, TextPaintFlags _flags, TextAlignment _alignment)
+        : fontStyle(_fontStyle)
+        , flags(_flags)
+        , alignment(_alignment)
+    {
+    }
+
+    TextPaint(ColourWithFlags _colour, ::FontStyle _fontStyle, TextPaintFlags _flags, TextAlignment _alignment)
+        : colour(_colour)
+        , fontStyle(_fontStyle)
+        , flags(_flags)
+        , alignment(_alignment)
+    {
+    }
+    TextPaint(OpenRCT2::Drawing::Colour _colour, ::FontStyle _fontStyle, TextPaintFlags _flags, TextAlignment _alignment)
+        : colour(ColourWithFlags{ _colour })
+        , fontStyle(_fontStyle)
+        , flags(_flags)
+        , alignment(_alignment)
+    {
+    }
+    TextPaint(ColourWithFlags _colour, ::FontStyle _fontStyle, TextAlignment _alignment, TextDarkness _darkness)
+        : colour(_colour)
+        , fontStyle(_fontStyle)
+        , alignment(_alignment)
+        , darkness(_darkness)
+    {
+    }
+    TextPaint(OpenRCT2::Drawing::Colour _colour, ::FontStyle _fontStyle, TextAlignment _alignment, TextDarkness _darkness)
+        : colour(ColourWithFlags{ _colour })
+        , fontStyle(_fontStyle)
+        , alignment(_alignment)
+        , darkness(_darkness)
     {
     }
 };
 
-void DrawTextBasic(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format);
-void DrawTextEllipsised(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
-int32_t DrawTextWrapped(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
-
-void DrawText(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
-void DrawTextBasic(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
-void DrawTextEllipsised(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+void drawText(OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, StringId format, TextPaint textPaint = {});
+void drawText(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, StringId format, const OpenRCT2::Formatter& ft,
     TextPaint textPaint = {});
-int32_t DrawTextWrapped(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+void drawText(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, u8string_view string, TextPaint textPaint = {});
+
+void drawTextEllipsised(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format,
+    TextPaint textPaint = {});
+void drawTextEllipsised(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format,
+    const OpenRCT2::Formatter& ft, TextPaint textPaint = {});
+void drawTextEllipsised(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, u8string_view string,
+    TextPaint textPaint = {});
+
+int32_t drawTextWrapped(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format,
+    TextPaint textPaint = {});
+int32_t drawTextWrapped(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format,
+    const OpenRCT2::Formatter& ft, TextPaint textPaint = {});
+int32_t drawTextWrapped(
+    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, u8string_view string,
     TextPaint textPaint = {});

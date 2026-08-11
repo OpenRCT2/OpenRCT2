@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,16 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
+#if (defined(__unix__) || defined(__HAIKU__)) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(__EMSCRIPTEN__)
 
     #include "../Diagnostic.h"
 
     #include <cstring>
     #include <fnmatch.h>
-    #include <limits.h>
     #include <locale.h>
     #include <pwd.h>
-    #include <unistd.h>
     #include <vector>
     #if defined(__FreeBSD__) || defined(__NetBSD__)
         #include <stddef.h>
@@ -27,35 +25,76 @@
         // for PATH_MAX
         #include <linux/limits.h>
     #endif // __linux__
-    #ifndef NO_TTF
+    #ifndef DISABLE_TTF
         #include <fontconfig/fontconfig.h>
-    #endif // NO_TTF
+    #endif // DISABLE_TTF
 
-    #include "../Date.h"
     #include "../OpenRCT2.h"
     #include "../core/Path.hpp"
+    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
     #include "Platform.h"
 
+    #ifdef __HAIKU__
+        #include <image.h>
+    #endif
+
 namespace OpenRCT2::Platform
 {
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    // EnvLangGuard allows us to temporarily set the user's locale
+    // to the generic C locale, in order to trick fontconfig into
+    // returning an English font face name, while using RAII to avoid
+    // changing locale settings in other parts of the program
+    class EnvLangGuard
+    {
+    public:
+        EnvLangGuard();
+        ~EnvLangGuard();
+
+    private:
+        // GNU recommends scripts/programs set LC_ALL to override
+        // locales for uniform testing, clearing it after should let
+        // LANG and other locale settings operate normally
+        static constexpr const char* _kOverrideVarName{ "LC_ALL" };
+        static constexpr const char* _kTargetLocale{ "C.UTF-8" };
+    };
+
+    EnvLangGuard::EnvLangGuard()
+    {
+        int overwrite = 1;
+        int result = setenv(_kOverrideVarName, _kTargetLocale, overwrite);
+        if (result != 0)
+        {
+            LOG_VERBOSE("Could not update locale for font selection, some fonts may display incorrectly");
+        }
+    }
+
+    EnvLangGuard::~EnvLangGuard()
+    {
+        int result = unsetenv(_kOverrideVarName);
+        if (result != 0)
+        {
+            LOG_VERBOSE("Could not restore user locale");
+        }
+    }
+
+    std::string GetFolderPath(SpecialFolder folder)
     {
         switch (folder)
         {
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
             {
                 auto path = GetEnvironmentPath("XDG_CONFIG_HOME");
                 if (path.empty())
                 {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    auto home = GetFolderPath(SpecialFolder::userHome);
                     path = Path::Combine(home, u8".config");
                 }
                 return path;
             }
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userHome:
                 return GetHomePath();
             default:
                 return std::string();
@@ -64,7 +103,11 @@ namespace OpenRCT2::Platform
 
     std::string GetDocsPath()
     {
-        static const utf8* searchLocations[] = {
+        std::string relative = Path::GetDirectory(Platform::GetCurrentExecutablePath());
+        relative = Path::Combine(relative, u8"../share/doc/openrct2");
+        const utf8* searchLocations[] = {
+            // First try the directory relative to the executable
+            relative.c_str(),
             "./doc",
             "/usr/share/doc/openrct2",
             DOCDIR,
@@ -74,6 +117,7 @@ namespace OpenRCT2::Platform
             LOG_VERBOSE("Looking for OpenRCT2 doc path at %s", searchLocation);
             if (Path::DirectoryExists(searchLocation))
             {
+                LOG_VERBOSE("Found OpenRCT2 doc path at %s", searchLocation);
                 return searchLocation;
             }
         }
@@ -111,6 +155,12 @@ namespace OpenRCT2::Platform
             "/usr/local/share/openrct2",
             "/var/lib/openrct2",
             "/usr/share/openrct2",
+    #ifdef __HAIKU__
+            "/boot/system/data/openrct2",
+            "/boot/home/config/data/openrct2",
+            "/boot/system/non-packaged/data/openrct2",
+            "/boot/home/config/non-packaged/data/openrct2",
+    #endif
         };
         // clang-format on
         for (const auto& prefix : prefixes)
@@ -136,6 +186,18 @@ namespace OpenRCT2::Platform
         if (bytesRead == -1)
         {
             LOG_FATAL("failed to read /proc/self/exe");
+        }
+    #elif defined(__HAIKU__)
+        image_info info;
+        int32 cookie = 0;
+
+        while (get_next_image_info(B_CURRENT_TEAM, &cookie, &info) >= B_OK)
+        {
+            if (info.type == B_APP_IMAGE)
+            {
+                strlcpy(exePath, info.name, sizeof(exePath));
+                break;
+            }
         }
     #elif defined(__FreeBSD__) || defined(__NetBSD__)
         #if defined(__FreeBSD__)
@@ -271,87 +333,99 @@ namespace OpenRCT2::Platform
             // using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
             if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0))
             {
-                return MeasurementFormat::Imperial;
+                return MeasurementFormat::imperial;
             }
         }
-        return MeasurementFormat::Metric;
+        return MeasurementFormat::metric;
     }
 
-    std::string GetSteamPath()
+    SteamPaths GetSteamPaths()
     {
+        SteamPaths ret = {};
+        ret.nativeFolder = "steamapps/common";
+        ret.downloadDepotFolder = "ubuntu12_32/steamapps/content";
+        ret.manifests = "steamapps";
+
         const char* steamRoot = getenv("STEAMROOT");
         if (steamRoot != nullptr)
         {
-            return Path::Combine(steamRoot, u8"ubuntu12_32/steamapps/content");
+            ret.roots.emplace_back(steamRoot);
         }
 
         const char* localSharePath = getenv("XDG_DATA_HOME");
         if (localSharePath != nullptr)
         {
-            auto steamPath = Path::Combine(localSharePath, u8"Steam/ubuntu12_32/steamapps/content");
-            if (Path::DirectoryExists(steamPath))
+            auto xdgDataHomeSteamPath = Path::Combine(localSharePath, u8"Steam");
+            if (Path::DirectoryExists(xdgDataHomeSteamPath))
             {
-                return steamPath;
+                ret.roots.emplace_back(xdgDataHomeSteamPath);
             }
         }
 
         const char* homeDir = getpwuid(getuid())->pw_dir;
-        if (homeDir == nullptr)
+        if (homeDir != nullptr)
         {
-            return {};
+            auto localShareSteamPath = Path::Combine(homeDir, u8".local/share/Steam");
+            if (Path::DirectoryExists(localShareSteamPath))
+            {
+                ret.roots.emplace_back(localShareSteamPath);
+            }
+
+            auto oldSteamPath = Path::Combine(homeDir, u8".steam/steam");
+            if (Path::DirectoryExists(oldSteamPath))
+            {
+                ret.roots.emplace_back(oldSteamPath);
+            }
+
+            auto snapLocalShareSteamPath = Path::Combine(homeDir, u8"snap/steam/common/.local/share/Steam");
+            if (Path::DirectoryExists(snapLocalShareSteamPath))
+            {
+                ret.roots.emplace_back(snapLocalShareSteamPath);
+            }
         }
 
-        // Prefer new path for Steam, which is the default when using with Proton
-        auto steamPath = Path::Combine(homeDir, u8".local/share/Steam/steamapps/common");
-        if (Path::DirectoryExists(steamPath))
-        {
-            return steamPath;
-        }
-
-        // Fallback paths
-        steamPath = Path::Combine(homeDir, u8".local/share/Steam/ubuntu12_32/steamapps/content");
-        if (Path::DirectoryExists(steamPath))
-        {
-            return steamPath;
-        }
-
-        steamPath = Path::Combine(homeDir, u8".steam/steam/ubuntu12_32/steamapps/content");
-        if (Path::DirectoryExists(steamPath))
-        {
-            return steamPath;
-        }
-        return {};
+        return ret;
     }
 
-    u8string GetRCT1SteamDir()
+    std::vector<std::string> GetSearchablePathsRCT1()
     {
-        return u8"Rollercoaster Tycoon Deluxe";
-    }
-
-    u8string GetRCT2SteamDir()
-    {
-        return u8"Rollercoaster Tycoon 2";
-    }
-
-    std::vector<std::string_view> GetSearchablePathsRCT1()
-    {
+        auto userHome = GetFolderPath(SpecialFolder::userHome);
         return {
+            userHome + "/.wine/drive_c/GOG Games/RollerCoaster Tycoon Deluxe",
+            userHome + "/.wine/drive_c/Program Files/GalaxyClient/Games/RollerCoaster Tycoon Deluxe",
+            userHome + "/.wine/drive_c/Program Files (x86)/GalaxyClient/Games/RollerCoaster Tycoon Deluxe",
+            userHome + "/.wine/drive_c/Program Files/Hasbro Interactive/RollerCoaster Tycoon",
+            userHome + "/.wine/drive_c/Program Files (x86)/Hasbro Interactive/RollerCoaster Tycoon",
             // game-data-packager uses this path when installing game files
             "/usr/share/games/roller-coaster-tycoon",
         };
     }
 
-    std::vector<std::string_view> GetSearchablePathsRCT2()
+    std::vector<std::string> GetSearchablePathsRCT2()
     {
+        auto userHome = GetFolderPath(SpecialFolder::userHome);
         return {
+            userHome + "/.wine/drive_c/GOG Games/RollerCoaster Tycoon 2 Triple Thrill Pack",
+            userHome + "/.wine/drive_c/Program Files/GalaxyClient/Games/RollerCoaster Tycoon 2 Triple Thrill Pack",
+            userHome + "/.wine/drive_c/Program Files (x86)/GalaxyClient/Games/RollerCoaster Tycoon 2 Triple Thrill Pack",
+            userHome + "/.wine/drive_c/Program Files/Atari/RollerCoaster Tycoon 2",
+            userHome + "/.wine/drive_c/Program Files (x86)/Atari/RollerCoaster Tycoon 2",
+            userHome + "/.wine/drive_c/Program Files/Infogrames/RollerCoaster Tycoon 2",
+            userHome + "/.wine/drive_c/Program Files (x86)/Infogrames/RollerCoaster Tycoon 2",
+            userHome + "/.wine/drive_c/Program Files/Infogrames Interactive/RollerCoaster Tycoon 2",
+            userHome + "/.wine/drive_c/Program Files (x86)/Infogrames Interactive/RollerCoaster Tycoon 2",
             // game-data-packager uses this path when installing game files
             "/usr/share/games/roller-coaster-tycoon2",
         };
     }
 
-    #ifndef NO_TTF
+    #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
+        // set LANG to portable C.UTF-8 so font face names from fontconfig
+        // are reported in English
+        EnvLangGuard elg;
+
         LOG_VERBOSE("Looking for font %s with FontConfig.", font.font_name);
         FcConfig* config = FcInitLoadConfigAndFonts();
         if (!config)
@@ -406,7 +480,7 @@ namespace OpenRCT2::Platform
         FcFini();
         return path;
     }
-    #endif // NO_TTF
+    #endif // DISABLE_TTF
 } // namespace OpenRCT2::Platform
 
 #endif

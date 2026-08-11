@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,6 @@
 
     #include <cstdint>
     #include <memory>
-    #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <optional>
     #include <string>
@@ -27,17 +26,17 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ScrollbarType
     {
-        None,
-        Horizontal,
-        Vertical,
-        Both
+        none,
+        horizontal,
+        vertical,
+        both
     };
 
     enum class ColumnSortOrder
     {
-        None,
-        Ascending,
-        Descending,
+        none,
+        ascending,
+        descending,
     };
 
     struct ListViewColumn
@@ -94,13 +93,13 @@ namespace OpenRCT2::Ui::Windows
     class CustomListView
     {
     private:
-        static constexpr int32_t HEADER_ROW = -1;
+        static constexpr int32_t kHeaderRow = -1;
 
         WindowBase* ParentWindow{};
         size_t ScrollIndex{};
         std::vector<ListViewColumn> Columns;
         std::vector<ListViewItem> Items;
-        ScrollbarType Scrollbars = ScrollbarType::Vertical;
+        ScrollbarType Scrollbars = ScrollbarType::vertical;
 
     public:
         std::shared_ptr<Plugin> Owner;
@@ -119,8 +118,8 @@ namespace OpenRCT2::Ui::Windows
         bool IsMouseDown{};
         bool CanSelect{};
 
-        DukValue OnClick;
-        DukValue OnHighlight;
+        JSCallback OnClick;
+        JSCallback OnHighlight;
 
         CustomListView(WindowBase* parent, size_t scrollIndex);
         ScrollbarType GetScrollbars() const;
@@ -138,59 +137,46 @@ namespace OpenRCT2::Ui::Windows
         void MouseOver(const ScreenCoordsXY& pos, bool isMouseDown);
         void MouseDown(const ScreenCoordsXY& pos);
         void MouseUp(const ScreenCoordsXY& pos);
-        void Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollArea* scroll) const;
+        void Paint(WindowBase* w, Drawing::RenderTarget& rt, const ScrollArea* scroll) const;
 
     private:
         void PaintHeading(
-            WindowBase* w, DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
-            ColumnSortOrder sortOrder, bool isPressed) const;
-        void PaintSeperator(DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
+            WindowBase* w, Drawing::RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size,
+            const std::string& text, ColumnSortOrder sortOrder, bool isPressed) const;
+        void PaintSeparator(
+            Drawing::RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
         void PaintCell(
-            DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const;
+            Drawing::RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text,
+            bool isHighlighted) const;
         std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos);
         Widget* GetWidget() const;
         void Invalidate();
     };
 } // namespace OpenRCT2::Ui::Windows
 
-class DukValue;
-
 namespace OpenRCT2::Scripting
 {
     using namespace OpenRCT2::Ui::Windows;
 
-    template<>
-    ColumnSortOrder FromDuk(const DukValue& d);
+    ColumnSortOrder ColumnSortOrderFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::optional<int32_t> FromDuk(const DukValue& d);
+    ListViewColumn ListViewColumnFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    ListViewColumn FromDuk(const DukValue& d);
+    ListViewItem ListViewItemFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    ListViewItem FromDuk(const DukValue& d);
+    std::vector<ListViewColumn> ListViewColumnVecFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::vector<ListViewColumn> FromDuk(const DukValue& d);
+    std::vector<ListViewItem> ListViewItemVecFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::vector<ListViewItem> FromDuk(const DukValue& d);
+    std::optional<RowColumn> RowColumnFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    std::optional<RowColumn> FromDuk(const DukValue& d);
+    JSValue RowColumnToJS(JSContext* ctx, RowColumn value);
 
-    template<>
-    DukValue ToDuk(duk_context* ctx, const RowColumn& value);
+    JSValue ListViewColumnToJS(JSContext* ctx, const ListViewColumn& value);
 
-    template<>
-    DukValue ToDuk(duk_context* ctx, const ListViewColumn& value);
+    ScrollbarType ScrollbarTypeFromJS(JSContext* ctx, JSValue d);
 
-    template<>
-    ScrollbarType FromDuk(const DukValue& d);
-
-    template<>
-    DukValue ToDuk(duk_context* ctx, const ScrollbarType& value);
+    JSValue ScrollbarTypeToJS(JSContext* ctx, ScrollbarType value);
 } // namespace OpenRCT2::Scripting
 
 #endif

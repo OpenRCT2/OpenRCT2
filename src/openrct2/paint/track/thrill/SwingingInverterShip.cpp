@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,24 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../object/StationObject.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
-#include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
 /** rct2: 0x01428010 */
-static constexpr uint32_t SwingingInverterShipBaseSpriteOffset[] = {
+static constexpr uint32_t kSwingingInverterShipBaseSpriteOffset[] = {
     0,
     16,
     0,
@@ -32,7 +30,7 @@ static constexpr uint32_t SwingingInverterShipBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x01428020 */
-static constexpr uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] = {
+static constexpr uint32_t kSwingingInverterShipAnimatingBaseSpriteOffset[] = {
     32,
     33,
     32,
@@ -40,7 +38,7 @@ static constexpr uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x01428020 */
-static constexpr BoundBoxXY SwingingInverterShipBounds[] = {
+static constexpr BoundBoxXY kSwingingInverterShipBounds[] = {
     { { 0, 8 }, { 32, 16 } },
     { { 8, 0 }, { 16, 32 } },
     { { 0, 8 }, { 32, 16 } },
@@ -49,17 +47,17 @@ static constexpr BoundBoxXY SwingingInverterShipBounds[] = {
 
 enum
 {
-    SPR_SWINGING_INVERTER_SHIP_FRAME_0 = 21998,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_1 = 21999,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_2 = 22000,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_3 = 22001,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NW = 21998,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NE = 21999,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SE = 22000,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SW = 22001,
 };
 
-static constexpr uint32_t SwingingInverterShipFrameSprites[] = {
-    SPR_SWINGING_INVERTER_SHIP_FRAME_0,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_1,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_2,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_3,
+static constexpr uint32_t kSwingingInverterShipMainSupportSprites[] = {
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NW,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_NE,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SE,
+    SPR_SWINGING_INVERTER_SHIP_MAIN_SUPPORT_SW,
 };
 
 static void PaintSwingingInverterShipStructure(
@@ -69,28 +67,28 @@ static void PaintSwingingInverterShipStructure(
     if (rideEntry == nullptr)
         return;
 
-    const auto& boundBox = SwingingInverterShipBounds[direction];
+    const auto& boundBox = kSwingingInverterShipBounds[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height);
     BoundBoxXYZ bb = { { boundBox.offset, height }, { boundBox.length, 127 } };
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.flags.has(RideFlag::onTrack))
     {
-        vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::Entity;
+            session.InteractionType = ViewportInteractionItem::entity;
             session.CurrentlyDrawnEntity = vehicle;
         }
     }
 
-    ImageIndex vehicleImageIndex = rideEntry->Cars[0].base_image_id + SwingingInverterShipBaseSpriteOffset[direction];
+    ImageIndex vehicleImageIndex = rideEntry->Cars[0].baseImageId + kSwingingInverterShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
+        int32_t rotation = static_cast<int8_t>(vehicle->flatRideAnimationFrame);
         if (rotation != 0)
         {
-            vehicleImageIndex = rideEntry->Cars[0].base_image_id + SwingingInverterShipAnimatingBaseSpriteOffset[direction];
+            vehicleImageIndex = rideEntry->Cars[0].baseImageId + kSwingingInverterShipAnimatingBaseSpriteOffset[direction];
             if (direction & 2)
             {
                 rotation = -rotation;
@@ -103,28 +101,28 @@ static void PaintSwingingInverterShipStructure(
         }
     }
 
-    auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto vehicleImageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         vehicleImageTemplate = stationColour;
     }
     auto frameImageTemplate = session.TrackColours;
     auto vehicleImageId = vehicleImageTemplate.WithIndex(vehicleImageIndex);
-    auto frameImageId = frameImageTemplate.WithIndex(SwingingInverterShipFrameSprites[direction]);
+    auto mainSupportImageId = frameImageTemplate.WithIndex(kSwingingInverterShipMainSupportSprites[direction]);
 
     if (direction & 2)
     {
         PaintAddImageAsParent(session, vehicleImageId, offset, bb);
-        PaintAddImageAsChild(session, frameImageId, offset, bb);
+        PaintAddImageAsChild(session, mainSupportImageId, offset, bb);
     }
     else
     {
-        PaintAddImageAsParent(session, frameImageId, offset, bb);
+        PaintAddImageAsParent(session, mainSupportImageId, offset, bb);
         PaintAddImageAsChild(session, vehicleImageId, offset, bb);
     }
 
     session.CurrentlyDrawnEntity = nullptr;
-    session.InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::ride;
 }
 
 static void PaintSwingingInverterShip(
@@ -132,17 +130,15 @@ static void PaintSwingingInverterShip(
     const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t relativeTrackSequence = kTrackMap1x4[direction][trackSequence];
-    ImageId imageId;
-
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
 
-        if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
-            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
+            ImageId imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
             switch (direction)
@@ -188,9 +184,9 @@ static void PaintSwingingInverterShip(
     PaintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
-TrackPaintFunction GetTrackPaintFunctionSwingingInverterShip(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSwingingInverterShip(TrackElemType trackType)
 {
-    if (trackType != TrackElemType::FlatTrack1x4B)
+    if (trackType != TrackElemType::flatTrack1x4B)
     {
         return TrackPaintFunctionDummy;
     }

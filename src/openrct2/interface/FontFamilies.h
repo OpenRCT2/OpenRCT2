@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,7 @@
 
 constexpr std::nullptr_t kFamilyOpenRCT2Sprite = nullptr;
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
     #include <vector>
 
@@ -25,12 +25,13 @@ extern TTFontFamily const TTFFamilyChineseSimplified;
 extern TTFontFamily const TTFFamilyChineseTraditional;
 extern TTFontFamily const TTFFamilyJapanese;
 extern TTFontFamily const TTFFamilyKorean;
+extern TTFontFamily const TTFFamilyArabic;
 extern TTFontFamily const TTFFamilySansSerif;
 
     #define FAMILY(x) x
 
-#else // NO_TTF
+#else // DISABLE_TTF
 
     #define FAMILY(x) kFamilyOpenRCT2Sprite
 
-#endif // NO_TTF
+#endif // DISABLE_TTF

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,11 +34,11 @@ namespace OpenRCT2::Random
         using result_type = uint32_t;
 
         static constexpr size_t N = TNum;
-        static constexpr result_type default_seed = 0x1234567F;
+        static constexpr result_type kDefaultSeed = 0x1234567F;
 
         explicit FixedSeedSequence()
         {
-            std::fill(v.begin(), v.end(), default_seed);
+            std::fill(v.begin(), v.end(), kDefaultSeed);
         }
 
         template<
@@ -110,7 +110,7 @@ namespace OpenRCT2::Random
         static constexpr result_type x = TX;
         static constexpr size_t r1 = TR1;
         static constexpr size_t r2 = TR2;
-        static constexpr result_type default_seed = 1;
+        static constexpr result_type kDefaultSeed = 1;
 
         static constexpr result_type min()
         {
@@ -135,20 +135,20 @@ namespace OpenRCT2::Random
             s1 = r.s1;
         }
 
-        template<typename TSseq, typename = typename std::enable_if<!std::is_same<TSseq, RotateEngine>::value>::type>
+        template<typename TSseq, typename = std::enable_if<!std::is_same<TSseq, RotateEngine>::value>::type>
         explicit RotateEngine(TSseq& seed_seq)
         {
             seed(seed_seq);
         }
 
-        void seed(result_type s = default_seed)
+        void seed(result_type s = kDefaultSeed)
         {
             s0 = s;
             s1 = s;
         }
 
         template<typename TSseq>
-        typename std::enable_if<std::is_class<TSseq>::value, void>::type seed(TSseq& seed_seq)
+        std::enable_if<std::is_class<TSseq>::value, void>::type seed(TSseq& seed_seq)
         {
             std::array<result_type, 2> s;
             seed_seq.generate(s.begin(), s.end());
@@ -200,3 +200,5 @@ namespace OpenRCT2::Random
         using State = Engine::state_type;
     } // namespace RCT2
 } // namespace OpenRCT2::Random
+
+using random_engine_t = OpenRCT2::Random::RCT2::Engine;

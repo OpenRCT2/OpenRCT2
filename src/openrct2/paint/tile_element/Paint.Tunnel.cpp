@@ -10,37 +10,27 @@ using namespace OpenRCT2;
 
 using TunnelGroupMap = std::array<TunnelType, kTunnelSubTypeCount>;
 static std::array<TunnelGroupMap, kTunnelGroupCount> tunnelMap = {
-    TunnelGroupMap{ TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
-                    TunnelType::StandardFlatTo25Deg, TunnelType::InvertedFlat },
-    TunnelGroupMap{ TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
-                    TunnelType::SquareFlatTo25Deg, TunnelType::InvertedSquare },
-    TunnelGroupMap{ TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd,
-                    TunnelType::InvertedFlatTo25Deg, TunnelType::InvertedFlat },
+    TunnelGroupMap{ TunnelType::standardFlat, TunnelType::standardSlopeStart, TunnelType::standardSlopeEnd,
+                    TunnelType::standardFlatTo25Deg, TunnelType::invertedFlat },
+    TunnelGroupMap{ TunnelType::squareFlat, TunnelType::squareSlopeStart, TunnelType::squareSlopeEnd,
+                    TunnelType::squareFlatTo25Deg, TunnelType::invertedSquare },
+    TunnelGroupMap{ TunnelType::invertedFlat, TunnelType::invertedSlopeStart, TunnelType::invertedSlopeEnd,
+                    TunnelType::invertedFlatTo25Deg, TunnelType::invertedFlat },
 };
-
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel);
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
 {
-    session.LeftTunnels[session.LeftTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
-    if (session.LeftTunnelCount < kTunnelMaxCount - 1)
+    if (!session.LeftTunnels.full())
     {
-        session.LeftTunnels[session.LeftTunnelCount + 1] = { 0xFF, TunnelType::Null };
-        session.LeftTunnelCount++;
+        session.LeftTunnels.emplace_back(height / kCoordsZPerTinyZ, type);
     }
 }
 
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelType type)
 {
-    session.RightTunnels[session.RightTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
-    if (session.RightTunnelCount < kTunnelMaxCount - 1)
+    if (!session.RightTunnels.full())
     {
-        session.RightTunnels[session.RightTunnelCount + 1] = { 0xFF, TunnelType::Null };
-        session.RightTunnelCount++;
+        session.RightTunnels.emplace_back(height / kCoordsZPerTinyZ, type);
     }
 }
 

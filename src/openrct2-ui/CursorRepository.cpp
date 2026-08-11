@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,14 +22,14 @@ using namespace OpenRCT2::Ui;
 CursorRepository::~CursorRepository()
 {
     _scaledCursors.clear();
-    _currentCursor = CursorID::Undefined;
+    _currentCursor = CursorID::undefined;
     _currentCursorScale = 1;
 }
 
 void CursorRepository::LoadCursors()
 {
-    SetCursorScale(static_cast<uint8_t>(round(Config::Get().general.WindowScale)));
-    SetCurrentCursor(CursorID::Arrow);
+    SetCursorScale(static_cast<uint8_t>(round(Config::Get().general.windowScale)));
+    SetCurrentCursor(CursorID::arrow);
 }
 
 CursorID CursorRepository::GetCurrentCursor()
@@ -123,9 +123,9 @@ void CursorRepository::GenerateScaledCursorSetHolder(uint8_t scale)
             switch (cursorId)
             {
                 // We can't scale the system cursors, but they should be appropriately scaled anyway
-                case CursorID::Arrow:
+                case CursorID::arrow:
                     return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
-                case CursorID::HandPoint:
+                case CursorID::handPoint:
                     return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
                 default:
                     return this->Create(getCursorData(cursorId), scale);

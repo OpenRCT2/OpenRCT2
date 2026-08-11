@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,28 +10,31 @@
 #include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
-#include <openrct2/actions/ParkMarketingAction.h>
+#include <openrct2/GameState.h>
+#include <openrct2/actions/GameActionRunner.h>
+#include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_NONE;
-    static constexpr int32_t WH = 109;
-    static constexpr int32_t WW = 350;
+    static constexpr StringId kWindowTitle = kStringIdNone;
+    static constexpr ScreenSize kWindowSize = { 350, 109 };
 
-    constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
+    constexpr uint16_t kSelectedItemUndefined = 0xFFFF;
 
-    enum WindowNewCampaignWidgetIdx
+    enum WindowNewCampaignWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -47,16 +50,15 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_new_campaign_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
-        MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
-        MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-        MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
-        MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
-        MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
-        kWidgetsEnd,
-    };
+    static constexpr auto window_new_campaign_widgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget                ({ 14, 24}, {126, 12}, WidgetType::label,        WindowColour::primary, kStringIdEmpty                             ), // ride label
+        makeWidget                ({100, 24}, {242, 12}, WidgetType::dropdownMenu, WindowColour::primary, kStringIdEmpty                             ), // ride dropdown
+        makeWidget                ({330, 25}, { 11, 10}, WidgetType::button,       WindowColour::primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+        makeWidget                ({ 14, 41}, {126, 14}, WidgetType::label,        WindowColour::primary, STR_LENGTH_OF_TIME                         ), // weeks label
+        makeHoldableSpinnerWidgets({120, 41}, {100, 14}, WidgetType::spinner,      WindowColour::primary, kStringIdEmpty                             ), // weeks (3 widgets)
+        makeWidget                ({ 14, 89}, {322, 14}, WidgetType::button,       WindowColour::primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN) // start button
+    );
     // clang-format on
 
     class NewCampaignWindow final : public Window
@@ -74,6 +76,7 @@ namespace OpenRCT2::Ui::Windows
                 ObjectEntryIndex ShopItemId;
             };
         } Campaign;
+        u8string _dropdownCaption{};
 
         static bool RideValueCompare(const RideId& a, const RideId& b)
         {
@@ -95,12 +98,12 @@ namespace OpenRCT2::Ui::Windows
             std::string rideAName = "";
             auto rideA = GetRide(a);
             if (rideA != nullptr)
-                rideAName = rideA->GetName();
+                rideAName = rideA->getName();
 
             std::string rideBName = "";
             auto rideB = GetRide(b);
             if (rideB != nullptr)
-                rideBName = rideB->GetName();
+                rideBName = rideB->getName();
 
             return String::logicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
         }
@@ -111,15 +114,16 @@ namespace OpenRCT2::Ui::Windows
          */
         void GetShopItems()
         {
-            BitSet<EnumValue(ShopItem::Count)> items = {};
-            for (auto& curRide : GetRideManager())
+            BitSet<EnumValue(ShopItem::count)> items = {};
+            const auto& gameState = getGameState();
+            for (auto& curRide : RideManager(gameState))
             {
-                auto rideEntry = curRide.GetRideEntry();
-                if (rideEntry != nullptr)
+                auto rideEntry = curRide.getRideEntry();
+                if (rideEntry != nullptr && curRide.status == RideStatus::open)
                 {
                     for (const auto itemType : rideEntry->shop_item)
                     {
-                        if (itemType != ShopItem::None && GetShopItemDescriptor(itemType).IsFoodOrDrink())
+                        if (itemType != ShopItem::none && GetShopItemDescriptor(itemType).IsFoodOrDrink())
                         {
                             items[EnumValue(itemType)] = true;
                         }
@@ -128,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ShopItems.clear();
-            for (auto i = 0; i < EnumValue(ShopItem::Count); i++)
+            for (auto i = 0; i < EnumValue(ShopItem::count); i++)
             {
                 if (items[i])
                 {
@@ -138,20 +142,21 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        void RefreshRides()
+        void refreshRides()
         {
             // Get all applicable rides
             RideList.clear();
-            for (const auto& curRide : GetRideManager())
+            const auto& gameState = getGameState();
+            for (const auto& curRide : RideManager(gameState))
             {
-                if (curRide.status == RideStatus::Open)
+                if (curRide.status == RideStatus::open)
                 {
-                    const auto& rtd = curRide.GetRideTypeDescriptor();
-                    if (rtd.HasFlag(RtdFlag::isShopOrFacility))
+                    const auto& rtd = curRide.getRideTypeDescriptor();
+                    if (rtd.flags.has(RtdFlag::isShopOrFacility))
                         continue;
-                    if (rtd.HasFlag(RtdFlag::sellsFood))
+                    if (rtd.flags.has(RtdFlag::sellsFood))
                         continue;
-                    if (rtd.HasFlag(RtdFlag::sellsDrinks))
+                    if (rtd.flags.has(RtdFlag::sellsDrinks))
                         continue;
                     if (rtd.specialType == RtdSpecialType::toilet)
                         continue;
@@ -160,24 +165,23 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (RideList.size() > Dropdown::ItemsMaxSize)
+            if (RideList.size() > Dropdown::kItemsMaxSize)
             {
                 std::sort(RideList.begin(), RideList.end(), RideValueCompare);
-                RideList.resize(Dropdown::ItemsMaxSize);
+                RideList.resize(Dropdown::kItemsMaxSize);
             }
 
             // Sort rides by name
             std::sort(RideList.begin(), RideList.end(), RideNameCompare);
         }
 
-        void OnOpen() override
+        void onOpen() override
         {
-            widgets = window_new_campaign_widgets;
-            hold_down_widgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
+            setWidgets(window_new_campaign_widgets);
             WindowInitScrollWidgets(*this);
         }
 
-        void SetCampaign(int16_t campaignType)
+        void setCampaign(int16_t campaignType)
         {
             widgets[WIDX_TITLE].text = kMarketingCampaignNames[campaignType][0];
 
@@ -190,10 +194,10 @@ namespace OpenRCT2::Ui::Windows
             // Currently selected ride
             Campaign.RideId = RideId::GetNull();
 
-            RefreshRides();
+            refreshRides();
         }
 
-        void OnMouseDown(WidgetIndex widgetIndex) override
+        void onMouseDown(WidgetIndex widgetIndex) override
         {
             Widget* widget = &widgets[widgetIndex];
             Widget* dropdownWidget;
@@ -209,18 +213,16 @@ namespace OpenRCT2::Ui::Windows
                         if (!ShopItems.empty())
                         {
                             int32_t numItems = 0;
-                            int32_t maxSize = std::min(Dropdown::ItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
+                            int32_t maxSize = std::min(Dropdown::kItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
                             for (int32_t i = 0; i < maxSize; i++)
                             {
-                                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                                gDropdownItems[i].Args = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
+                                gDropdown.items[i] = Dropdown::MenuLabel(GetShopItemDescriptor(ShopItems[i]).Naming.Plural);
                                 numItems++;
                             }
 
                             WindowDropdownShowTextCustomWidth(
                                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
-                                dropdownWidget->height() + 1, colours[1], 0, Dropdown::Flag::StayOpen, numItems,
-                                dropdownWidget->width() - 3);
+                                dropdownWidget->height(), colours[1], 0, {}, numItems, dropdownWidget->width() - 4);
                         }
                     }
                     else
@@ -231,64 +233,55 @@ namespace OpenRCT2::Ui::Windows
                             auto curRide = GetRide(rideIndex);
                             if (curRide != nullptr)
                             {
-                                // HACK until dropdown items have longer argument buffers
-                                gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                                Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[numItems].Args));
-                                if (curRide->custom_name.empty())
-                                {
-                                    curRide->FormatNameTo(ft);
-                                }
-                                else
-                                {
-                                    gDropdownItems[numItems].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                                    ft.Add<const char*>(curRide->custom_name.c_str());
-                                }
+                                auto name = curRide->getName();
+                                gDropdown.items[numItems] = Dropdown::MenuLabel(name);
+
                                 numItems++;
                             }
                         }
 
                         WindowDropdownShowTextCustomWidth(
-                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
-                            dropdownWidget->height() + 1, colours[1], 0, Dropdown::Flag::StayOpen, numItems,
-                            dropdownWidget->width() - 3);
+                            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
+                            colours[1], 0, {}, numItems, dropdownWidget->width() - 4);
                     }
                     break;
                     // In RCT2, the maximum was 6 weeks
                 case WIDX_WEEKS_INCREASE_BUTTON:
                     Campaign.no_weeks = std::min(Campaign.no_weeks + 1, 12);
-                    Invalidate();
+                    invalidate();
                     break;
                 case WIDX_WEEKS_DECREASE_BUTTON:
                     Campaign.no_weeks = std::max(Campaign.no_weeks - 1, 2);
-                    Invalidate();
+                    invalidate();
                     break;
             }
         }
 
-        void OnMouseUp(WidgetIndex widgetIndex) override
+        void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    Close();
+                    close();
                     break;
                 case WIDX_START_BUTTON:
                 {
-                    auto gameAction = ParkMarketingAction(
+                    auto gameAction = GameActions::ParkMarketingAction(
                         Campaign.campaign_type, Campaign.RideId.ToUnderlying(), Campaign.no_weeks);
-                    gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
+                    gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                        if (result->error == GameActions::Status::ok)
                         {
-                            WindowCloseByClass(WindowClass::NewCampaign);
+                            auto* windowMgr = GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::newCampaign);
                         }
                     });
-                    GameActions::Execute(&gameAction);
+                    GameActions::Execute(&gameAction, getGameState());
                     break;
                 }
             }
         }
 
-        void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+        void onDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
         {
             if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
                 return;
@@ -311,41 +304,39 @@ namespace OpenRCT2::Ui::Windows
                 Campaign.RideId = RideList[dropdownIndex];
             }
 
-            Invalidate();
+            invalidate();
         }
 
-        void OnPrepareDraw() override
+        void onPrepareDraw() override
         {
-            widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Empty;
-            widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::Empty;
-            widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_RIDE_LABEL].setHidden();
+            widgets[WIDX_RIDE_DROPDOWN].setHidden();
+            widgets[WIDX_RIDE_DROPDOWN_BUTTON].setHidden();
             widgets[WIDX_RIDE_DROPDOWN].text = STR_MARKETING_NOT_SELECTED;
             switch (Campaign.campaign_type)
             {
                 case ADVERTISING_CAMPAIGN_RIDE_FREE:
                 case ADVERTISING_CAMPAIGN_RIDE:
-                    widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
-                    widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
-                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+                    widgets[WIDX_RIDE_LABEL].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].setVisible();
                     widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
                     if (Campaign.RideId != RideId::GetNull())
                     {
                         auto curRide = GetRide(Campaign.RideId);
                         if (curRide != nullptr)
                         {
-                            widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
-
-                            auto ft = Formatter::Common();
-                            curRide->FormatNameTo(ft);
+                            _dropdownCaption = curRide->getName();
+                            widgets[WIDX_RIDE_DROPDOWN].setString(_dropdownCaption.c_str());
                         }
                     }
                     break;
                 case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                    widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
-                    widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
-                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+                    widgets[WIDX_RIDE_LABEL].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].setVisible();
                     widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
-                    if (Campaign.ShopItemId != SELECTED_ITEM_UNDEFINED)
+                    if (Campaign.ShopItemId != kSelectedItemUndefined)
                     {
                         widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(Campaign.ShopItemId)).Naming.Plural;
                     }
@@ -353,48 +344,42 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set current number of weeks spinner (moved to paint due to required parameter)
-            widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
+            widgets[WIDX_WEEKS_SPINNER].text = kStringIdNone;
 
             // Enable / disable start button based on ride dropdown
-            WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
-            if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && Campaign.RideId == RideId::GetNull())
-                WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
+            const bool pendingRideSelection = widgets[WIDX_RIDE_DROPDOWN].isVisible() && Campaign.RideId == RideId::GetNull();
+            widgetSetDisabled(*this, WIDX_START_BUTTON, pendingRideSelection);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void onDraw(Drawing::RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords{};
 
-            DrawWidgets(dpi);
+            drawWidgets(rt);
 
             // Number of weeks
             Widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
             auto ft = Formatter();
             ft.Add<int16_t>(Campaign.no_weeks);
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
                 Campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, ft, { colours[0] });
 
-            screenCoords = windowPos + ScreenCoordsXY{ 14, 60 };
+            screenCoords = windowPos + ScreenCoordsXY{ 14, spinnerWidget->bottom + 6 };
 
             // Price per week
             ft = Formatter();
             ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type]);
-            DrawTextBasic(dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
+            drawText(rt, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
             screenCoords.y += 13;
 
             // Total price
             ft = Formatter();
             ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type] * Campaign.no_weeks);
-            DrawTextBasic(dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
+            drawText(rt, screenCoords, STR_MARKETING_TOTAL_COST, ft);
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
-        int16_t GetCampaignType() const
+        int16_t getCampaignType() const
         {
             return Campaign.campaign_type;
         }
@@ -402,29 +387,31 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NewCampaignOpen(int16_t campaignType)
     {
-        auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<NewCampaignWindow*>(windowMgr->BringToFrontByClass(WindowClass::newCampaign));
         if (w != nullptr)
         {
-            if (w->GetCampaignType() == campaignType)
+            if (w->getCampaignType() == campaignType)
                 return w;
 
-            WindowClose(*w);
+            w->close();
         }
 
-        w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::newCampaign, kWindowSize, {});
         if (w != nullptr)
         {
-            w->SetCampaign(campaignType);
+            w->setCampaign(campaignType);
         }
         return w;
     }
 
     void WindowCampaignRefreshRides()
     {
-        auto w = static_cast<NewCampaignWindow*>(WindowFindByClass(WindowClass::NewCampaign));
+        auto* windowMgr = GetWindowManager();
+        auto w = static_cast<NewCampaignWindow*>(windowMgr->FindByClass(WindowClass::newCampaign));
         if (w != nullptr)
         {
-            w->RefreshRides();
+            w->refreshRides();
         }
     }
 } // namespace OpenRCT2::Ui::Windows

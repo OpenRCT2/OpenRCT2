@@ -22,5 +22,11 @@
                 [ 95, 25 ]
             ]
         }
-    }
+    },
+    "rides": [
+        {
+            "id": 34,
+            "operation": "swap_entrance_exit"
+        }
+    ]
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2026 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include "../interface/Window.h"
 
 #include <memory>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
@@ -23,6 +23,8 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/StringIds.h>
@@ -34,10 +36,9 @@
 #include <openrct2/scenes/title/TitleSequence.h>
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Map.h>
+#include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Scenery.h>
 #include <stdexcept>
 
@@ -317,7 +318,7 @@ namespace OpenRCT2::Title
                     ReportProgress(0);
                     auto parkImporter = ParkImporter::Create(path);
 
-                    auto result = parkImporter->Load(path);
+                    auto result = parkImporter->Load(path, false);
                     ReportProgress(10);
 
                     auto& objectManager = GetContext()->GetObjectManager();
@@ -325,19 +326,22 @@ namespace OpenRCT2::Title
                     ReportProgress(90);
 
                     // TODO: Have a separate GameState and exchange once loaded.
-                    auto& gameState = GetGameState();
+                    auto& gameState = getGameState();
                     parkImporter->Import(gameState);
+
+                    GameFixSaveVars();
+
                     ReportProgress(100);
 
-                    MapAnimationAutoCreate();
+                    MapAnimations::MarkAllTiles();
                 }
                 PrepareParkForPlayback();
                 _initialLoadCommand = false;
                 success = true;
             }
-            catch (const std::exception&)
+            catch (const std::exception& e)
             {
-                Console::Error::WriteLine("Unable to load park: %s", path.c_str());
+                Console::Error::WriteLine("Unable to load park ‘%s’: %s", path.c_str(), e.what());
                 GetContext()->CloseProgress();
             }
 
@@ -352,7 +356,7 @@ namespace OpenRCT2::Title
          * @param stream The stream to read the park data from.
          * @param hintPath Hint path, the extension is grabbed to determine what importer to use.
          */
-        bool LoadParkFromStream(OpenRCT2::IStream* stream, const std::string& hintPath)
+        bool LoadParkFromStream(IStream* stream, const std::string& hintPath)
         {
             LOG_VERBOSE("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
             bool success = false;
@@ -381,11 +385,11 @@ namespace OpenRCT2::Title
                     ReportProgress(70);
 
                     // TODO: Have a separate GameState and exchange once loaded.
-                    auto& gameState = GetGameState();
+                    auto& gameState = getGameState();
                     parkImporter->Import(gameState);
                     ReportProgress(100);
 
-                    MapAnimationAutoCreate();
+                    MapAnimations::MarkAllTiles();
                 }
                 PrepareParkForPlayback();
                 _initialLoadCommand = false;
@@ -406,39 +410,43 @@ namespace OpenRCT2::Title
 
         void CloseParkSpecificWindows()
         {
-            WindowCloseByClass(WindowClass::ConstructRide);
-            WindowCloseByClass(WindowClass::DemolishRidePrompt);
-            WindowCloseByClass(WindowClass::EditorInventionListDrag);
-            WindowCloseByClass(WindowClass::EditorInventionList);
-            WindowCloseByClass(WindowClass::EditorObjectSelection);
-            WindowCloseByClass(WindowClass::EditorObjectiveOptions);
-            WindowCloseByClass(WindowClass::EditorScenarioOptions);
-            WindowCloseByClass(WindowClass::Finances);
-            WindowCloseByClass(WindowClass::FirePrompt);
-            WindowCloseByClass(WindowClass::GuestList);
-            WindowCloseByClass(WindowClass::InstallTrack);
-            WindowCloseByClass(WindowClass::Peep);
-            WindowCloseByClass(WindowClass::Ride);
-            WindowCloseByClass(WindowClass::RideConstruction);
-            WindowCloseByClass(WindowClass::RideList);
-            WindowCloseByClass(WindowClass::Scenery);
-            WindowCloseByClass(WindowClass::Staff);
-            WindowCloseByClass(WindowClass::TrackDeletePrompt);
-            WindowCloseByClass(WindowClass::TrackDesignList);
-            WindowCloseByClass(WindowClass::TrackDesignPlace);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::constructRide);
+            windowMgr->CloseByClass(WindowClass::demolishRidePrompt);
+            windowMgr->CloseByClass(WindowClass::editorInventionListDrag);
+            windowMgr->CloseByClass(WindowClass::editorInventionList);
+            windowMgr->CloseByClass(WindowClass::editorObjectSelection);
+            windowMgr->CloseByClass(WindowClass::editorScenarioOptions);
+            windowMgr->CloseByClass(WindowClass::finances);
+            windowMgr->CloseByClass(WindowClass::firePrompt);
+            windowMgr->CloseByClass(WindowClass::guestList);
+            windowMgr->CloseByClass(WindowClass::installTrack);
+            windowMgr->CloseByClass(WindowClass::peep);
+            windowMgr->CloseByClass(WindowClass::ride);
+            windowMgr->CloseByClass(WindowClass::rideConstruction);
+            windowMgr->CloseByClass(WindowClass::rideList);
+            windowMgr->CloseByClass(WindowClass::scenery);
+            windowMgr->CloseByClass(WindowClass::staff);
+            windowMgr->CloseByClass(WindowClass::trackDeletePrompt);
+            windowMgr->CloseByClass(WindowClass::trackDesignList);
+            windowMgr->CloseByClass(WindowClass::trackDesignPlace);
         }
 
         void PrepareParkForPlayback()
         {
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-            auto& gameState = GetGameState();
-            windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
-            ResetEntitySpatialIndices();
+            auto windowManager = Ui::GetWindowManager();
+            auto& gameState = getGameState();
+            windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
+            gameState.entities.ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
+
+            // Invalidate scrolling text cache to prevent stale text from previous park
+            Drawing::ScrollingText::invalidate();
+
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
             Ui::Windows::WindowScenerySetDefaultPlacementConfiguration();
-            News::InitQueue();
+            News::InitQueue(gameState);
             LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;
@@ -448,7 +456,7 @@ namespace OpenRCT2::Title
         void StoreCurrentViewLocation()
         {
             WindowBase* w = WindowGetMain();
-            if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
+            if (w != nullptr && w->viewportSmartFollowSprite.IsNull())
             {
                 _previousWindowWidth = w->width;
                 _previousWindowHeight = w->height;
@@ -462,7 +470,7 @@ namespace OpenRCT2::Title
         void RestoreViewLocationIfResized()
         {
             WindowBase* w = WindowGetMain();
-            if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
+            if (w != nullptr && w->viewportSmartFollowSprite.IsNull())
             {
                 if (w->width != _previousWindowWidth || w->height != _previousWindowHeight)
                 {
