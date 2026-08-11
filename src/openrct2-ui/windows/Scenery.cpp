@@ -46,6 +46,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/Network.h>
+#include <openrct2/network/NetworkAction.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
@@ -340,7 +341,8 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->CloseByClass(WindowClass::sceneryScatter);
                     else if (
                         Network::GetMode() != Network::Mode::client
-                        || Network::CanPerformCommand(Network::GetCurrentPlayerGroupIndex(), -2))
+                        || Network::CanPerformAction(
+                            Network::GetCurrentPlayerGroupIndex(), Network::Permission::toggleSceneryCluster))
                     {
                         SceneryScatterOpen();
                     }
@@ -2911,7 +2913,8 @@ namespace OpenRCT2::Ui::Windows
             int32_t quantity = 1;
             bool isCluster = gWindowSceneryScatterEnabled
                 && (Network::GetMode() != Network::Mode::client
-                    || Network::CanPerformCommand(Network::GetCurrentPlayerGroupIndex(), -2));
+                    || Network::CanPerformAction(
+                        Network::GetCurrentPlayerGroupIndex(), Network::Permission::toggleSceneryCluster));
 
             if (isCluster)
             {
