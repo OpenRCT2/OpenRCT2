@@ -239,6 +239,7 @@ namespace OpenRCT2::Network
                 GameCommand::cheat,
                 GameCommand::setDate,
                 GameCommand::freezeRideRating,
+                GameCommand::setRideVisibility,
             },
         },
         NetworkAction{
