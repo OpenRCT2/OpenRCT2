@@ -10,10 +10,7 @@
 #include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
-#include <openrct2-ui/input/ShortcutIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
-#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -32,6 +29,7 @@
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/object/FootpathObject.h>
@@ -46,7 +44,6 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 #include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>

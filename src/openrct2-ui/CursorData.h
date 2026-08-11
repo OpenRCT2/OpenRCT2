@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
 enum class CursorID : uint8_t;
 

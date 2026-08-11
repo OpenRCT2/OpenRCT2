@@ -15,7 +15,6 @@
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Theme.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -24,7 +23,6 @@
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/Limits.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
@@ -50,10 +48,10 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/object/MusicObject.h>
@@ -61,11 +59,9 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/StationObject.h>
-#include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
-#include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>

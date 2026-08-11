@@ -7,13 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/core/Numerics.hpp>
@@ -31,7 +29,6 @@
 #include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Park.h>
 #include <vector>
 
 using namespace OpenRCT2::Drawing;

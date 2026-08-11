@@ -7,26 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <iterator>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/general/TileModifyAction.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/ColourMap.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
@@ -39,16 +35,12 @@
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/ride/Track.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Entrance.h>
-#include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/TileInspector.h>
 #include <openrct2/world/tile_element/BannerElement.h>

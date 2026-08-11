@@ -10,14 +10,11 @@
 #include "../interface/ViewportQuery.h"
 
 #include <openrct2-ui/interface/LandTool.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
@@ -27,10 +24,10 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {

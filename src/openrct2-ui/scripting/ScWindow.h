@@ -21,7 +21,7 @@ namespace OpenRCT2
     using WindowNumber = int16_t;
 
     struct WindowBase;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {

@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include <bit>
-#include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -21,7 +20,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ResultWithMessage.h>
-#include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
@@ -34,7 +32,6 @@
 #include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/object/ClimateObject.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -42,11 +39,9 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenes/SceneManager.h>
 #include <openrct2/scenes/editor/EditorController.h>
-#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>

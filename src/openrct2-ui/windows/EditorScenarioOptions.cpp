@@ -15,7 +15,6 @@
 
 #include <algorithm>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
@@ -29,10 +28,7 @@
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/entity/Peep.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Language.h>
-#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideManager.hpp>

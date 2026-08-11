@@ -9,7 +9,6 @@
 
 #include "TitleSequencePlayer.h"
 
-
 #include <memory>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>

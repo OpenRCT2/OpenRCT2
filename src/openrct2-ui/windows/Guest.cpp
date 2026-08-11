@@ -11,14 +11,11 @@
 
 #include <array>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/peep/GuestSetFlagsAction.h>
@@ -30,9 +27,10 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/Guest.h>
-#include <openrct2/entity/Staff.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -41,15 +39,12 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
-#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Footpath.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 
 using namespace OpenRCT2::Drawing;
 

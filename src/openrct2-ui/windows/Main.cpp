@@ -7,14 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Footpath.h>
 
 namespace OpenRCT2::Ui::Windows
 {

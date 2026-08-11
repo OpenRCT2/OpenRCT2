@@ -23,7 +23,7 @@ namespace OpenRCT2
     struct ScrollArea;
     struct Widget;
     struct WindowBase;
-}
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing
 {

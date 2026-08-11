@@ -12,13 +12,11 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Marketing.h>

@@ -9,12 +9,10 @@
 
 #include "../ride/Construction.h"
 
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
@@ -24,12 +22,11 @@
 #include <openrct2/actions/ride/RideDemolishAction.h>
 #include <openrct2/actions/ride/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/Audio.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/ride/Track.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>

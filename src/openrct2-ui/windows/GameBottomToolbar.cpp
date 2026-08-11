@@ -31,13 +31,11 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Park.h>
 
 using namespace OpenRCT2::Drawing;
 

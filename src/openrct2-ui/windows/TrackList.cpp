@@ -23,7 +23,6 @@
 #include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
@@ -33,8 +32,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/scenes/SceneManager.h>
-#include <openrct2/scenes/editor/EditorScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>

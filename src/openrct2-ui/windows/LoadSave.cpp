@@ -19,10 +19,8 @@
 #include <openrct2/Diagnostic.h>
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
-#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
@@ -43,16 +41,10 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
-#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/park/ParkPreview.h>
 #include <openrct2/platform/Platform.h>
-#include <openrct2/rct2/T6Exporter.h>
-#include <openrct2/ride/TrackDesign.h>
-#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/windows/Intent.h>
-#include <openrct2/world/Park.h>
 #include <string>
 #include <vector>
 

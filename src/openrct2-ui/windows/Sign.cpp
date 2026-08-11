@@ -10,11 +10,9 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
@@ -23,12 +21,12 @@
 #include <openrct2/actions/scenery/SignSetStyleAction.h>
 #include <openrct2/actions/scenery/WallRemoveAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
 
