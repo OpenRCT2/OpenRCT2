@@ -729,7 +729,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         case WIDX_WALL_ANIMATION_IS_BACKWARDS:
                             WallSetAnimationIsBackwards(
-                                windowTileInspectorSelectedIndex, !tileElement->asWall()->AnimationIsBackwards());
+                                windowTileInspectorSelectedIndex, !tileElement->asWall()->animationIsBackwards());
                             break;
                     }
                     break;
@@ -904,7 +904,7 @@ namespace OpenRCT2::Ui::Windows
                                 3, widget->width() - 4);
 
                             // Set current value as checked
-                            gDropdown.items[tileElement->asWall()->GetSlope()].setChecked(true);
+                            gDropdown.items[tileElement->asWall()->getSlope()].setChecked(true);
                             break;
                         }
 
@@ -1467,11 +1467,11 @@ namespace OpenRCT2::Ui::Windows
             // Details
             // Type
             auto ft = Formatter();
-            ft.Add<ObjectEntryIndex>(wallEl.GetEntryIndex());
+            ft.Add<ObjectEntryIndex>(wallEl.getEntryIndex());
             drawText(rt, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, ft, { colours[1] });
 
             // Banner info
-            auto banner = wallEl.GetBanner();
+            auto banner = wallEl.getBanner();
             if (banner != nullptr)
             {
                 ft = Formatter();
@@ -1514,7 +1514,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].left + 3,
                                   widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].textTop() };
             ft = Formatter();
-            ft.Add<int32_t>(wallEl.GetAnimationFrame());
+            ft.Add<int32_t>(wallEl.getAnimationFrame());
             drawText(rt, screenCoords, STR_FORMAT_INTEGER, ft, { colour });
         }
 
@@ -1686,7 +1686,7 @@ namespace OpenRCT2::Ui::Windows
 
                     case TileElementType::wall:
                     {
-                        const auto* entry = tileElement->asWall()->GetEntry();
+                        const auto* entry = tileElement->asWall()->getEntry();
                         snprintf(
                             buffer, sizeof(buffer), "%s (%s)", LanguageGetString(STR_TILE_INSPECTOR_WALL),
                             entry != nullptr ? LanguageGetString(entry->name) : "");
@@ -2358,7 +2358,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     bool canBeSloped = false;
                     bool hasAnimation = false;
-                    const auto wallEntry = tileElement->asWall()->GetEntry();
+                    const auto wallEntry = tileElement->asWall()->getEntry();
                     if (wallEntry != nullptr)
                     {
                         canBeSloped = !(wallEntry->flags.has(WallSceneryFlag::cannotBuildOnSlope));
@@ -2373,7 +2373,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_WALL_DROPDOWN_SLOPE].moveTo(PropertyRowCol(propertiesAnchor, 1, 1));
                     widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].moveTo(
                         PropertyRowCol(propertiesAnchor + ScreenCoordsXY{ kPropertyButtonSize.width - 12, 0 }, 1, 1));
-                    widgets[WIDX_WALL_DROPDOWN_SLOPE].text = kWallSlopeStringIds[tileElement->asWall()->GetSlope()];
+                    widgets[WIDX_WALL_DROPDOWN_SLOPE].text = kWallSlopeStringIds[tileElement->asWall()->getSlope()];
                     widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME].moveTo(PropertyRowCol(propertiesAnchor, 2, 1));
                     widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE].moveTo(
                         PropertyRowCol(propertiesAnchor, 2, 1) + ScreenCoordsXY{ kPropertyButtonSize.width - 13, 1 });
@@ -2391,7 +2391,7 @@ namespace OpenRCT2::Ui::Windows
                     setWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, !hasAnimation);
                     setWidgetDisabled(WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, !hasAnimation);
 
-                    setCheckboxValue(WIDX_WALL_ANIMATION_IS_BACKWARDS, tileElement->asWall()->AnimationIsBackwards());
+                    setCheckboxValue(WIDX_WALL_ANIMATION_IS_BACKWARDS, tileElement->asWall()->animationIsBackwards());
                     setWidgetDisabled(WIDX_WALL_ANIMATION_IS_BACKWARDS, !hasAnimation);
                     break;
                 }

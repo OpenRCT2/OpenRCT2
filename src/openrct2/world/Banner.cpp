@@ -176,10 +176,10 @@ WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
         if (wallElement == nullptr)
             continue;
 
-        auto* wallEntry = wallElement->GetEntry();
+        auto* wallEntry = wallElement->getEntry();
         if (wallEntry->scrolling_mode == kScrollingModeNone)
             continue;
-        if (wallElement->GetBannerIndex() != bannerIndex)
+        if (wallElement->getBannerIndex() != bannerIndex)
             continue;
         return wallElement;
     } while (!(tileElement++)->isLastForTile());

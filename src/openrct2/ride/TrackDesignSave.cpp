@@ -296,16 +296,16 @@ static TrackDesignSceneryElement TrackDesignSaveCreateWallDesc(
 {
     auto item = TrackDesignCreateTileElementDesc(object, { loc, wallElement.getBaseZ() });
     item.setRotation(wallElement.getDirection());
-    item.primaryColour = wallElement.GetPrimaryColour();
-    item.secondaryColour = wallElement.GetSecondaryColour();
-    item.tertiaryColour = wallElement.GetTertiaryColour();
+    item.primaryColour = wallElement.getPrimaryColour();
+    item.secondaryColour = wallElement.getSecondaryColour();
+    item.tertiaryColour = wallElement.getTertiaryColour();
 
     return item;
 }
 
 static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElement* wallElement)
 {
-    auto entryIndex = wallElement->GetEntryIndex();
+    auto entryIndex = wallElement->getEntryIndex();
     auto obj = ObjectEntryGetObject(ObjectType::walls, entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
@@ -504,7 +504,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 
 static void TrackDesignSaveRemoveWall(const CoordsXY& loc, WallElement* wallElement)
 {
-    auto entryIndex = wallElement->GetEntryIndex();
+    auto entryIndex = wallElement->getEntryIndex();
     auto obj = ObjectEntryGetObject(ObjectType::walls, entryIndex);
     if (obj != nullptr)
     {

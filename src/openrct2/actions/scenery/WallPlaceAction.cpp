@@ -372,18 +372,18 @@ namespace OpenRCT2::GameActions
 
         wallElement->clearanceHeight = clearanceHeight;
         wallElement->setDirection(_edge);
-        wallElement->SetSlope(edgeSlope);
+        wallElement->setSlope(edgeSlope);
 
-        wallElement->SetPrimaryColour(_primaryColour);
-        wallElement->SetSecondaryColour(_secondaryColour);
-        wallElement->SetAcrossTrack(wallAcrossTrack);
+        wallElement->setPrimaryColour(_primaryColour);
+        wallElement->setSecondaryColour(_secondaryColour);
+        wallElement->setAcrossTrack(wallAcrossTrack);
 
-        wallElement->SetEntryIndex(_wallType);
-        wallElement->SetBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
+        wallElement->setEntryIndex(_wallType);
+        wallElement->setBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
 
         if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
         {
-            wallElement->SetTertiaryColour(_tertiaryColour);
+            wallElement->setTertiaryColour(_tertiaryColour);
         }
 
         wallElement->setGhost(GetFlags().has(CommandFlag::ghost));

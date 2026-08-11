@@ -416,7 +416,7 @@ namespace OpenRCT2::Editor
                     break;
                 }
                 case TileElementType::wall:
-                    type = iter.element->asWall()->GetEntryIndex();
+                    type = iter.element->asWall()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::walls, type, ObjectSelectionFlags::InUse);
                     break;
                 case TileElementType::largeScenery:

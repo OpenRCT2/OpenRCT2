@@ -249,13 +249,13 @@ template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateWallAnimation(
     WallElement& wall, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto* const entry = wall.GetEntry();
+    const auto* const entry = wall.getEntry();
     if (entry == nullptr)
     {
         return std::nullopt;
     }
 
-    if (entry->flags.has(WallSceneryFlag::isDoor) && wall.IsAnimating())
+    if (entry->flags.has(WallSceneryFlag::isDoor) && wall.isAnimating())
     {
         if (getGameState().currentTicks & 1)
         {
@@ -264,14 +264,14 @@ static std::optional<UpdateType> UpdateWallAnimation(
 
         bool removeAnim = true;
 
-        const auto currentFrame = wall.GetAnimationFrame();
+        const auto currentFrame = wall.getAnimationFrame();
         if (currentFrame != 0)
         {
             auto newFrame = currentFrame;
             if (currentFrame == 15)
             {
                 newFrame = 0;
-                wall.SetIsAnimating(false);
+                wall.setIsAnimating(false);
             }
             else
             {
@@ -287,7 +287,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
 
             if (currentFrame != newFrame)
             {
-                wall.SetAnimationFrame(newFrame);
+                wall.setAnimationFrame(newFrame);
                 if constexpr (invalidate)
                 {
                     Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 32, kMaxZoom);
@@ -506,14 +506,14 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::wall:
         {
             const auto* const wall = element.asWall();
-            const auto* const entry = wall->GetEntry();
+            const auto* const entry = wall->getEntry();
             if (entry != nullptr)
             {
                 if (entry->flags2.has(WallSceneryFlag2::isAnimated) || entry->scrolling_mode != kScrollingModeNone)
                 {
                     return std::optional(UpdateType::invalidate);
                 }
-                if (entry->flags.has(WallSceneryFlag::isDoor) && wall->IsAnimating())
+                if (entry->flags.has(WallSceneryFlag::isDoor) && wall->isAnimating())
                 {
                     return std::optional(UpdateType::update);
                 }

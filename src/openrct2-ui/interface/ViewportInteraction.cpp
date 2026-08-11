@@ -404,10 +404,10 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::wall:
             {
-                auto* wallEntry = tileElement->asWall()->GetEntry();
+                auto* wallEntry = tileElement->asWall()->getEntry();
                 if (wallEntry->scrolling_mode != kScrollingModeNone)
                 {
-                    auto banner = tileElement->asWall()->GetBanner();
+                    auto banner = tileElement->asWall()->getBanner();
                     if (banner != nullptr)
                     {
                         auto ft = Formatter();
@@ -518,7 +518,7 @@ namespace OpenRCT2::Ui
 
             case ViewportInteractionItem::wall:
             {
-                auto* wallEntry = tileElement->asWall()->GetEntry();
+                auto* wallEntry = tileElement->asWall()->getEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
                 ft.Add<StringId>(wallEntry->name);
                 SetMapTooltip(ft);
@@ -690,10 +690,10 @@ namespace OpenRCT2::Ui
      */
     static void ViewportInteractionRemoveParkWall(const WallElement& wallElement, const CoordsXY& mapCoords)
     {
-        auto* wallEntry = wallElement.GetEntry();
+        auto* wallEntry = wallElement.getEntry();
         if (wallEntry->scrolling_mode != kScrollingModeNone)
         {
-            ContextOpenDetailWindow(WindowDetail::signSmall, wallElement.GetBannerIndex().ToUnderlying());
+            ContextOpenDetailWindow(WindowDetail::signSmall, wallElement.getBannerIndex().ToUnderlying());
         }
         else
         {

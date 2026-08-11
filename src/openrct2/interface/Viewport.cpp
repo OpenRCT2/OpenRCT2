@@ -1331,7 +1331,7 @@ namespace OpenRCT2
             case TileElementType::wall:
             {
                 auto sceneryItem = tileElement->asWall();
-                auto sceneryEntry = sceneryItem->GetEntry();
+                auto sceneryEntry = sceneryItem->getEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
                     return true;

@@ -1876,14 +1876,14 @@ namespace OpenRCT2::RCT1
                         dst->setLastForTile(false);
 
                         auto* wallElement = dst->asWall();
-                        wallElement->SetEntryIndex(type);
-                        wallElement->SetPrimaryColour(colourA);
-                        wallElement->SetSecondaryColour(colourB);
-                        wallElement->SetTertiaryColour(colourC);
-                        wallElement->SetBannerIndex(BannerIndex::GetNull());
-                        wallElement->SetAcrossTrack(false);
-                        wallElement->SetAnimationIsBackwards(false);
-                        wallElement->SetSlope(edgeSlope);
+                        wallElement->setEntryIndex(type);
+                        wallElement->setPrimaryColour(colourA);
+                        wallElement->setSecondaryColour(colourB);
+                        wallElement->setTertiaryColour(colourC);
+                        wallElement->setBannerIndex(BannerIndex::GetNull());
+                        wallElement->setAcrossTrack(false);
+                        wallElement->setAnimationIsBackwards(false);
+                        wallElement->setSlope(edgeSlope);
 
                         dst++;
                         numAddedElements++;

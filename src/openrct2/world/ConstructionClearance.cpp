@@ -378,7 +378,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             break;
         case TileElementType::wall:
         {
-            auto* wallEntry = tileElement->asWall()->GetEntry();
+            auto* wallEntry = tileElement->asWall()->getEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(kStringIdEmpty);

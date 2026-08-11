@@ -125,8 +125,8 @@ namespace OpenRCT2::GameActions
         {
             WallElement* wallElement = BannerGetScrollingWallTileElement(_bannerIndex);
 
-            wallElement->SetPrimaryColour(_mainColour);
-            wallElement->SetSecondaryColour(_textColour);
+            wallElement->setPrimaryColour(_mainColour);
+            wallElement->setSecondaryColour(_textColour);
             MapInvalidateTile({ coords, wallElement->getBaseZ(), wallElement->getClearanceZ() });
         }
 

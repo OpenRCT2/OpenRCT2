@@ -2262,7 +2262,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto* scenery_entry = info.Element->asWall()->GetEntry();
+                    auto* scenery_entry = info.Element->asWall()->getEntry();
 
                     // If can't repaint
                     if (!scenery_entry->flags.hasAny(WallSceneryFlag::hasPrimaryColour, WallSceneryFlag::hasGlass))
@@ -2337,13 +2337,13 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto entryIndex = info.Element->asWall()->GetEntryIndex();
+                    auto entryIndex = info.Element->asWall()->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->asWall()->GetPrimaryColour(),
-                            info.Element->asWall()->GetSecondaryColour(), info.Element->asWall()->GetTertiaryColour(),
+                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->asWall()->getPrimaryColour(),
+                            info.Element->asWall()->getSecondaryColour(), info.Element->asWall()->getTertiaryColour(),
                             std::nullopt);
                     }
                     break;

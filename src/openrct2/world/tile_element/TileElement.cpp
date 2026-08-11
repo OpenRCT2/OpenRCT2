@@ -38,11 +38,11 @@ namespace OpenRCT2
             }
             case TileElementType::wall:
             {
-                auto* wallEntry = asWall()->GetEntry();
+                auto* wallEntry = asWall()->getEntry();
                 if (wallEntry == nullptr || wallEntry->scrolling_mode == kScrollingModeNone)
                     return BannerIndex::GetNull();
 
-                return asWall()->GetBannerIndex();
+                return asWall()->getBannerIndex();
             }
             case TileElementType::banner:
                 return asBanner()->getIndex();
@@ -56,7 +56,7 @@ namespace OpenRCT2
         switch (getType())
         {
             case TileElementType::wall:
-                asWall()->SetBannerIndex(bannerIndex);
+                asWall()->setBannerIndex(bannerIndex);
                 break;
             case TileElementType::largeScenery:
                 asLargeScenery()->setBannerIndex(bannerIndex);

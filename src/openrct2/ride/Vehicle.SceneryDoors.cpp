@@ -48,7 +48,7 @@ static_assert(std::size(kDoorCloseSoundIds) == kDoorSoundTypeCount);
  */
 static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
-    auto* wallEntry = tileElement->GetEntry();
+    auto* wallEntry = tileElement->getEntry();
     if (wallEntry == nullptr)
         return;
 
@@ -66,7 +66,7 @@ static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tile
  */
 static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
-    auto* wallEntry = tileElement->GetEntry();
+    auto* wallEntry = tileElement->getEntry();
     if (wallEntry == nullptr)
         return;
 
@@ -87,11 +87,11 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         return;
     }
 
-    if (!isLastVehicle && (door->GetAnimationFrame() == 0))
+    if (!isLastVehicle && (door->getAnimationFrame() == 0))
     {
-        door->SetAnimationIsBackwards(isBackwards);
-        door->SetAnimationFrame(1);
-        door->SetIsAnimating(true);
+        door->setAnimationIsBackwards(isBackwards);
+        door->setAnimationFrame(1);
+        door->setIsAnimating(true);
         play_scenery_door_open_sound(trackLocation, door);
 
         MapAnimations::MarkTileForUpdate(TileCoordsXY(doorLocation));
@@ -99,9 +99,9 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
 
     if (isLastVehicle)
     {
-        door->SetAnimationIsBackwards(isBackwards);
-        door->SetAnimationFrame(6);
-        door->SetIsAnimating(true);
+        door->setAnimationIsBackwards(isBackwards);
+        door->setAnimationFrame(6);
+        door->setIsAnimating(true);
         play_scenery_door_close_sound(trackLocation, door);
 
         MapAnimations::MarkTileForUpdate(TileCoordsXY(doorLocation));

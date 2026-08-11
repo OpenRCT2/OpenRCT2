@@ -1041,7 +1041,7 @@ namespace OpenRCT2::RCT2
                                 continue;
                             }
 
-                            wallElement->SetIsAnimating(true);
+                            wallElement->setIsAnimating(true);
                             MapAnimations::MarkTileForUpdate(tileCoords);
                         }
                         break;
@@ -1495,18 +1495,18 @@ namespace OpenRCT2::RCT2
                     auto dst2 = dst->asWall();
                     auto src2 = src->asWall();
 
-                    dst2->SetEntryIndex(src2->GetEntryIndex());
-                    dst2->SetSlope(src2->GetSlope());
-                    dst2->SetPrimaryColour(src2->GetPrimaryColour());
-                    dst2->SetSecondaryColour(src2->GetSecondaryColour());
-                    dst2->SetTertiaryColour(src2->GetTertiaryColour());
-                    dst2->SetAnimationFrame(src2->GetAnimationFrame());
-                    dst2->SetAcrossTrack(src2->IsAcrossTrack());
-                    dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
+                    dst2->setEntryIndex(src2->GetEntryIndex());
+                    dst2->setSlope(src2->GetSlope());
+                    dst2->setPrimaryColour(src2->GetPrimaryColour());
+                    dst2->setSecondaryColour(src2->GetSecondaryColour());
+                    dst2->setTertiaryColour(src2->GetTertiaryColour());
+                    dst2->setAnimationFrame(src2->GetAnimationFrame());
+                    dst2->setAcrossTrack(src2->IsAcrossTrack());
+                    dst2->setAnimationIsBackwards(src2->AnimationIsBackwards());
 
                     // Import banner information
-                    dst2->SetBannerIndex(BannerIndex::GetNull());
-                    auto entry = dst2->GetEntry();
+                    dst2->setBannerIndex(BannerIndex::GetNull());
+                    auto entry = dst2->getEntry();
                     if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
@@ -1516,12 +1516,12 @@ namespace OpenRCT2::RCT2
                             auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
-                                dst2->SetBannerIndex(BannerIndex::GetNull());
+                                dst2->setBannerIndex(BannerIndex::GetNull());
                             }
                             else
                             {
                                 ImportBanner(dstBanner, srcBanner);
-                                dst2->SetBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
+                                dst2->setBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
                             }
                         }
                     }

@@ -69,10 +69,10 @@ static void PaintWallDoor(
     PROFILED_FUNCTION();
 
     auto bbHeight = wallEntry.height * 8 - 2;
-    auto animationFrame = wallElement.GetAnimationFrame();
+    auto animationFrame = wallElement.getAnimationFrame();
 
     // Add the direction as well
-    if (wallElement.AnimationIsBackwards())
+    if (wallElement.animationIsBackwards())
         animationFrame |= (1 << 4);
 
     auto imageId = wallEntry.image + DirectionToDoorImageOffset[direction & 3][animationFrame];
@@ -159,12 +159,12 @@ static void PaintWallScrollingText(
     if (scrollingMode >= ScrollingText::kMaxModes)
         return;
 
-    auto banner = wallElement.GetBanner();
+    auto banner = wallElement.getBanner();
     if (banner == nullptr)
         return;
 
     auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
-                              : wallElement.GetSecondaryColour();
+                              : wallElement.getSecondaryColour();
     auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto bannerText = banner->getText();
@@ -185,11 +185,11 @@ static void PaintWallWall(
     switch (direction)
     {
         case 0:
-            if (wallElement.GetSlope() == 2)
+            if (wallElement.getSlope() == 2)
             {
                 imageOffset = 3;
             }
-            else if (wallElement.GetSlope() == 1)
+            else if (wallElement.getSlope() == 1)
             {
                 imageOffset = 5;
             }
@@ -203,11 +203,11 @@ static void PaintWallWall(
             break;
 
         case 1:
-            if (wallElement.GetSlope() == 2)
+            if (wallElement.getSlope() == 2)
             {
                 imageOffset = 2;
             }
-            else if (wallElement.GetSlope() == 1)
+            else if (wallElement.getSlope() == 1)
             {
                 imageOffset = 4;
             }
@@ -236,11 +236,11 @@ static void PaintWallWall(
             break;
 
         case 2:
-            if (wallElement.GetSlope() == 2)
+            if (wallElement.getSlope() == 2)
             {
                 imageOffset = 5;
             }
-            else if (wallElement.GetSlope() == 1)
+            else if (wallElement.getSlope() == 1)
             {
                 imageOffset = 3;
             }
@@ -259,11 +259,11 @@ static void PaintWallWall(
             break;
 
         case 3:
-            if (wallElement.GetSlope() == 2)
+            if (wallElement.getSlope() == 2)
             {
                 imageOffset = 4;
             }
-            else if (wallElement.GetSlope() == 1)
+            else if (wallElement.getSlope() == 1)
             {
                 imageOffset = 2;
             }
@@ -290,7 +290,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         return;
     }
 
-    auto* wallEntry = wallElement.GetEntry();
+    auto* wallEntry = wallElement.getEntry();
     if (wallEntry == nullptr)
     {
         return;
@@ -301,15 +301,15 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     ImageId imageTemplate;
     if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
     {
-        imageTemplate = imageTemplate.WithPrimary(wallElement.GetPrimaryColour());
+        imageTemplate = imageTemplate.WithPrimary(wallElement.getPrimaryColour());
     }
     if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
     {
-        imageTemplate = imageTemplate.WithSecondary(wallElement.GetSecondaryColour());
+        imageTemplate = imageTemplate.WithSecondary(wallElement.getSecondaryColour());
     }
     if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
     {
-        imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
+        imageTemplate = imageTemplate.WithTertiary(wallElement.getTertiaryColour());
     }
 
     PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.clearanceHeight);

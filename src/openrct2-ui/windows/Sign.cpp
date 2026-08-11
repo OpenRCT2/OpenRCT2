@@ -117,9 +117,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return false;
                 }
-                _mainColour = wallElement->GetPrimaryColour();
-                _textColour = wallElement->GetSecondaryColour();
-                _sceneryEntry = wallElement->GetEntryIndex();
+                _mainColour = wallElement->getPrimaryColour();
+                _textColour = wallElement->getSecondaryColour();
+                _sceneryEntry = wallElement->getEntryIndex();
             }
             else
             {
