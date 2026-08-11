@@ -124,15 +124,15 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::unownLand:
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(
-                        surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
+                    surfaceElement->setOwnership(
+                        surfaceElement->getOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
                     Park::UpdateFencesAroundTile(loc);
                 }
                 return res;
             case LandSetRightSetting::unownConstructionRights:
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    surfaceElement->setOwnership(surfaceElement->getOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -140,7 +140,7 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::setForSale:
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
+                    surfaceElement->setOwnership(surfaceElement->getOwnership() | OWNERSHIP_AVAILABLE);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -148,14 +148,14 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::setConstructionRightsForSale:
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
+                    surfaceElement->setOwnership(surfaceElement->getOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
             case LandSetRightSetting::setOwnershipWithChecks:
             {
-                if (_ownership == surfaceElement->GetOwnership())
+                if (_ownership == surfaceElement->getOwnership())
                 {
                     return res;
                 }
@@ -182,7 +182,7 @@ namespace OpenRCT2::GameActions
                     }
                 }
 
-                const uint8_t currentOwnership = surfaceElement->GetOwnership();
+                const uint8_t currentOwnership = surfaceElement->getOwnership();
 
                 // Are land rights or construction rights currently owned?
                 if (!(currentOwnership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)))
@@ -220,7 +220,7 @@ namespace OpenRCT2::GameActions
                                 }),
                             gameState.peepSpawns.end());
                     }
-                    surfaceElement->SetOwnership(_ownership);
+                    surfaceElement->setOwnership(_ownership);
                     Park::UpdateFencesAroundTile(loc);
                     gMapLandRightsUpdateSuccess = true;
                 }

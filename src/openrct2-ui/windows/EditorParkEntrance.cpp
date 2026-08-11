@@ -156,14 +156,14 @@ namespace OpenRCT2::Ui::Windows
                 return parkEntranceMapPosition;
             }
 
-            parkEntranceMapPosition.z = surfaceElement->GetWaterHeight();
+            parkEntranceMapPosition.z = surfaceElement->getWaterHeight();
             if (parkEntranceMapPosition.z == 0)
             {
                 parkEntranceMapPosition.z = surfaceElement->getBaseZ();
-                if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
+                if ((surfaceElement->getSlope() & kTileSlopeRaisedCornersMask) != 0)
                 {
                     parkEntranceMapPosition.z += 16;
-                    if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                    if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                     {
                         parkEntranceMapPosition.z += 16;
                     }

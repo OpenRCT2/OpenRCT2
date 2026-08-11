@@ -179,7 +179,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::surface:
             {
                 auto* el = element->asSurface();
-                return JS_NewUint32(ctx, el->GetSlope());
+                return JS_NewUint32(ctx, el->getSlope());
             }
             case TileElementType::wall:
             {
@@ -206,7 +206,7 @@ namespace OpenRCT2::Scripting
         if (type == TileElementType::surface)
         {
             auto* el = element->asSurface();
-            el->SetSlope(value);
+            el->setSlope(value);
             Invalidate(data);
         }
         else if (type == TileElementType::wall)
@@ -229,7 +229,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewInt32(ctx, el->GetWaterHeight());
+            return JS_NewInt32(ctx, el->getWaterHeight());
         }
         else
         {
@@ -251,7 +251,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        el->SetWaterHeight(value);
+        el->setWaterHeight(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -262,7 +262,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewUint32(ctx, el->GetSurfaceObjectIndex());
+            return JS_NewUint32(ctx, el->getSurfaceObjectIndex());
         }
         else
         {
@@ -284,7 +284,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        el->SetSurfaceObjectIndex(value);
+        el->setSurfaceObjectIndex(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -295,7 +295,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewUint32(ctx, el->GetEdgeObjectIndex());
+            return JS_NewUint32(ctx, el->getEdgeObjectIndex());
         }
         else
         {
@@ -317,7 +317,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        el->SetEdgeObjectIndex(value);
+        el->setEdgeObjectIndex(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -328,7 +328,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewUint32(ctx, el->GetGrassLength());
+            return JS_NewUint32(ctx, el->getGrassLength());
         }
         else
         {
@@ -351,7 +351,7 @@ namespace OpenRCT2::Scripting
         }
 
         // TODO: Give warning when value > GRASS_LENGTH_CLUMPS_2
-        el->SetGrassLengthAndInvalidate(value, data->coords);
+        el->setGrassLengthAndInvalidate(value, data->coords);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -362,7 +362,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewBool(ctx, el->GetOwnership() & OWNERSHIP_OWNED);
+            return JS_NewBool(ctx, el->getOwnership() & OWNERSHIP_OWNED);
         }
         else
         {
@@ -378,7 +378,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            auto ownership = el->GetOwnership();
+            auto ownership = el->getOwnership();
             return JS_NewBool(ctx, (ownership & OWNERSHIP_OWNED) || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
         }
         else
@@ -395,7 +395,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewUint32(ctx, el->GetOwnership());
+            return JS_NewUint32(ctx, el->getOwnership());
         }
         else
         {
@@ -417,7 +417,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        el->SetOwnership(value);
+        el->setOwnership(value);
         Invalidate(data);
         return JS_UNDEFINED;
     }
@@ -428,7 +428,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewUint32(ctx, el->GetParkFences());
+            return JS_NewUint32(ctx, el->getParkFences());
         }
         else
         {
@@ -450,7 +450,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        el->SetParkFences(value);
+        el->setParkFences(value);
         return JS_UNDEFINED;
     }
 

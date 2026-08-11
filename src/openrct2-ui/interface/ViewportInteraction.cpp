@@ -808,7 +808,7 @@ namespace OpenRCT2::Ui
         int16_t waterHeight = 0;
         if (info.interactionType == ViewportInteractionItem::water)
         {
-            waterHeight = info.Element->asSurface()->GetWaterHeight();
+            waterHeight = info.Element->asSurface()->getWaterHeight();
         }
 
         auto initialVPPos = viewport->ScreenToViewportCoord(screenCoords);

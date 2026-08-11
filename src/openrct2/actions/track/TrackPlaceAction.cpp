@@ -328,7 +328,7 @@ namespace OpenRCT2::GameActions
 
                 if (!gameState.cheats.disableClearanceChecks)
                 {
-                    auto waterHeight = surfaceElement->GetWaterHeight();
+                    auto waterHeight = surfaceElement->getWaterHeight();
                     if (waterHeight == 0)
                     {
                         return Result(
@@ -345,7 +345,7 @@ namespace OpenRCT2::GameActions
                     waterHeight -= kLandHeightStep;
                     if (waterHeight == surfaceElement->getBaseZ())
                     {
-                        uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
+                        uint8_t slope = surfaceElement->getSlope() & kTileSlopeRaisedCornersMask;
                         if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
                             || slope == kTileSlopeNCornerDown)
                         {
@@ -663,7 +663,7 @@ namespace OpenRCT2::GameActions
                 auto* waterSurfaceElement = MapGetSurfaceElementAt(mapLoc);
                 if (waterSurfaceElement != nullptr)
                 {
-                    waterSurfaceElement->SetHasTrackThatNeedsWater(true);
+                    waterSurfaceElement->setHasTrackThatNeedsWater(true);
                     tileElement = waterSurfaceElement->as<TileElement>();
                 }
             }

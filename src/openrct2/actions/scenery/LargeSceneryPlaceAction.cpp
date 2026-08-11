@@ -362,7 +362,7 @@ namespace OpenRCT2::GameActions
                 continue;
 
             int32_t baseZ = surfaceElement->getBaseZ();
-            int32_t slope = surfaceElement->GetSlope();
+            int32_t slope = surfaceElement->getSlope();
 
             if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
             {

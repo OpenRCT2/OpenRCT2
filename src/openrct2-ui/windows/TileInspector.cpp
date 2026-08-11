@@ -1146,7 +1146,7 @@ namespace OpenRCT2::Ui::Windows
             // Details
             // Terrain texture name
             StringId terrainNameId = kStringIdEmpty;
-            auto surfaceStyle = surfaceEl.GetSurfaceObject();
+            auto surfaceStyle = surfaceEl.getSurfaceObject();
             if (surfaceStyle != nullptr)
                 terrainNameId = surfaceStyle->NameStringId;
             auto ft = Formatter();
@@ -1155,7 +1155,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Edge texture name
             StringId terrainEdgeNameId = kStringIdEmpty;
-            auto edgeStyle = surfaceEl.GetEdgeObject();
+            auto edgeStyle = surfaceEl.getEdgeObject();
             if (edgeStyle != nullptr)
                 terrainEdgeNameId = edgeStyle->NameStringId;
             ft = Formatter();
@@ -1164,13 +1164,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Land ownership
             StringId landOwnership;
-            if (surfaceEl.GetOwnership() & OWNERSHIP_OWNED)
+            if (surfaceEl.getOwnership() & OWNERSHIP_OWNED)
                 landOwnership = STR_LAND_OWNED;
-            else if (surfaceEl.GetOwnership() & OWNERSHIP_AVAILABLE)
+            else if (surfaceEl.getOwnership() & OWNERSHIP_AVAILABLE)
                 landOwnership = STR_LAND_SALE;
-            else if (surfaceEl.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+            else if (surfaceEl.getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                 landOwnership = STR_CONSTRUCTION_RIGHTS_OWNED;
-            else if (surfaceEl.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+            else if (surfaceEl.getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
                 landOwnership = STR_CONSTRUCTION_RIGHTS_SALE;
             else
                 landOwnership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
@@ -1181,7 +1181,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Water level
             ft = Formatter();
-            ft.Add<uint32_t>(surfaceEl.GetWaterHeight());
+            ft.Add<uint32_t>(surfaceEl.getWaterHeight());
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, ft, { colours[1] });
 
             // Properties
@@ -2216,18 +2216,18 @@ namespace OpenRCT2::Ui::Windows
 
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_N,
-                        tileElement->asSurface()->GetSlope() & (1 << ((2 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->getSlope() & (1 << ((2 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_E,
-                        tileElement->asSurface()->GetSlope() & (1 << ((3 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->getSlope() & (1 << ((3 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_S,
-                        tileElement->asSurface()->GetSlope() & (1 << ((0 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->getSlope() & (1 << ((0 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
                         WIDX_SURFACE_CHECK_CORNER_W,
-                        tileElement->asSurface()->GetSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
+                        tileElement->asSurface()->getSlope() & (1 << ((1 - GetCurrentRotation()) & 3)));
                     setCheckboxValue(
-                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->asSurface()->GetSlope() & kTileSlopeDiagonalFlag);
+                        WIDX_SURFACE_CHECK_DIAGONAL, tileElement->asSurface()->getSlope() & kTileSlopeDiagonalFlag);
                     break;
 
                 case TileElementType::path:

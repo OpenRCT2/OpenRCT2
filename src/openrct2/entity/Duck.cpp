@@ -107,7 +107,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
         auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ target_x, target_y });
-        int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->GetWaterHeight() : 0;
+        int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->getWaterHeight() : 0;
         if (waterHeight == 0)
         {
             state = DuckState::flyAway;

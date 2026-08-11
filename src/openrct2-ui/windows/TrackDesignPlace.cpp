@@ -503,8 +503,8 @@ namespace OpenRCT2::Ui::Windows
                     _trackPlaceCtrlZ = floor2(surfaceElement->getBaseZ(), kCoordsZStep);
 
                     // Increase Z above water
-                    if (surfaceElement->GetWaterHeight() > 0)
-                        _trackPlaceCtrlZ = std::max(_trackPlaceCtrlZ, surfaceElement->GetWaterHeight());
+                    if (surfaceElement->getWaterHeight() > 0)
+                        _trackPlaceCtrlZ = std::max(_trackPlaceCtrlZ, surfaceElement->getWaterHeight());
                 }
                 else
                 {
@@ -554,8 +554,8 @@ namespace OpenRCT2::Ui::Windows
                 _trackPlaceZ = floor2(surfaceElement->getBaseZ(), kCoordsZStep);
 
                 // Increase Z above water
-                if (surfaceElement->GetWaterHeight() > 0)
-                    _trackPlaceZ = std::max(_trackPlaceZ, surfaceElement->GetWaterHeight());
+                if (surfaceElement->getWaterHeight() > 0)
+                    _trackPlaceZ = std::max(_trackPlaceZ, surfaceElement->getWaterHeight());
 
                 if (_trackPlaceShiftState)
                 {

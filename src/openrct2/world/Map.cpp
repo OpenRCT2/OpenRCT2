@@ -140,13 +140,13 @@ namespace OpenRCT2
         el.setLastForTile(true);
         el.baseHeight = 14;
         el.clearanceHeight = 14;
-        el.asSurface()->SetWaterHeight(0);
-        el.asSurface()->SetSlope(kTileSlopeFlat);
-        el.asSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        el.asSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-        el.asSurface()->SetParkFences(0);
-        el.asSurface()->SetSurfaceObjectIndex(0);
-        el.asSurface()->SetEdgeObjectIndex(0);
+        el.asSurface()->setWaterHeight(0);
+        el.asSurface()->setSlope(kTileSlopeFlat);
+        el.asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
+        el.asSurface()->setOwnership(OWNERSHIP_UNOWNED);
+        el.asSurface()->setParkFences(0);
+        el.asSurface()->setSurfaceObjectIndex(0);
+        el.asSurface()->setEdgeObjectIndex(0);
         return el;
     }
 
@@ -474,7 +474,7 @@ namespace OpenRCT2
                     continue;
                 }
 
-                uint8_t flags = surfaceElement->GetOwnership();
+                uint8_t flags = surfaceElement->getOwnership();
 
                 // Do not combine this condition with (flags & OWNERSHIP_AVAILABLE)
                 // As some RCT1 parks have owned tiles with the 'construction rights available' flag also set
@@ -535,7 +535,7 @@ namespace OpenRCT2
         }
 
         auto height = surfaceElement->getBaseZ();
-        auto slope = surfaceElement->GetSlope();
+        auto slope = surfaceElement->getSlope();
 
         return TileElementHeight(CoordsXYZ{ loc, height }, slope);
     }
@@ -679,7 +679,7 @@ namespace OpenRCT2
             return 0;
         }
 
-        return surfaceElement->GetWaterHeight();
+        return surfaceElement->getWaterHeight();
     }
 
     /**
@@ -819,10 +819,10 @@ namespace OpenRCT2
             auto* surfaceElement = MapGetSurfaceElementAt(loc);
             if (surfaceElement != nullptr)
             {
-                if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
+                if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
                     return true;
 
-                if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+                if (surfaceElement->getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                 {
                     if (loc.z < surfaceElement->getBaseZ()
                         || loc.z >= surfaceElement->getBaseZ() + kConstructionRightsClearanceBig)
@@ -844,7 +844,7 @@ namespace OpenRCT2
             auto surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 return false;
-            if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
+            if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
                 return true;
         }
         return false;
@@ -859,9 +859,9 @@ namespace OpenRCT2
             {
                 return false;
             }
-            if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
+            if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
                 return true;
-            if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+            if (surfaceElement->getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                 return true;
         }
         return false;
@@ -927,7 +927,7 @@ namespace OpenRCT2
     int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t direction)
     {
         int32_t z = surfaceElement->baseHeight;
-        int32_t slope = surfaceElement->GetSlope();
+        int32_t slope = surfaceElement->getSlope();
         return MapGetCornerHeight(z, slope, direction);
     }
 
@@ -967,9 +967,9 @@ namespace OpenRCT2
             }
 
             uint8_t height = surfaceElement->baseHeight;
-            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+            if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
                 height += 2;
-            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+            if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                 height += 2;
 
             if (maxHeight < height)
@@ -1213,7 +1213,7 @@ namespace OpenRCT2
                     auto* surfaceElement = MapGetSurfaceElementAt(mapPos);
                     if (surfaceElement != nullptr)
                     {
-                        surfaceElement->UpdateGrassLength(mapPos);
+                        surfaceElement->updateGrassLength(mapPos);
                         SceneryUpdateTile(mapPos);
                     }
                 }
@@ -1250,7 +1250,7 @@ namespace OpenRCT2
                     auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
                     if (surfaceElement != nullptr)
                     {
-                        surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                        surfaceElement->setOwnership(OWNERSHIP_UNOWNED);
                         Park::UpdateFencesAroundTile({ x, y });
                     }
                     ClearElementsAt({ x, y });
@@ -1265,15 +1265,15 @@ namespace OpenRCT2
     static void MapExtendBoundarySurfaceExtendTile(
         const SurfaceElement& sourceTile, SurfaceElement& destTile, const Direction direction)
     {
-        destTile.SetSurfaceObjectIndex(sourceTile.GetSurfaceObjectIndex());
-        destTile.SetEdgeObjectIndex(sourceTile.GetEdgeObjectIndex());
-        destTile.SetGrassLength(sourceTile.GetGrassLength());
-        destTile.SetOwnership(OWNERSHIP_UNOWNED);
-        destTile.SetWaterHeight(sourceTile.GetWaterHeight());
+        destTile.setSurfaceObjectIndex(sourceTile.getSurfaceObjectIndex());
+        destTile.setEdgeObjectIndex(sourceTile.getEdgeObjectIndex());
+        destTile.setGrassLength(sourceTile.getGrassLength());
+        destTile.setOwnership(OWNERSHIP_UNOWNED);
+        destTile.setWaterHeight(sourceTile.getWaterHeight());
 
         auto z = sourceTile.baseHeight;
-        const auto originalSlope = Numerics::rol4(sourceTile.GetSlope(), direction)
-            | (sourceTile.GetSlope() & kTileSlopeDiagonalFlag);
+        const auto originalSlope = Numerics::rol4(sourceTile.getSlope(), direction)
+            | (sourceTile.getSlope() & kTileSlopeDiagonalFlag);
         auto slope = originalSlope & kTileSlopeNWSideUp;
         if (slope == kTileSlopeNWSideUp)
         {
@@ -1297,7 +1297,7 @@ namespace OpenRCT2
         if (slope & kTileSlopeWCornerUp)
             slope |= kTileSlopeSCornerUp;
 
-        destTile.SetSlope(Numerics::ror4(slope, direction));
+        destTile.setSlope(Numerics::ror4(slope, direction));
         destTile.baseHeight = z;
         destTile.clearanceHeight = z;
     }
@@ -1389,13 +1389,13 @@ namespace OpenRCT2
                 element->baseHeight = kMinimumLandHeight;
                 element->clearanceHeight = kMinimumLandHeight;
                 element->owner = 0;
-                element->asSurface()->SetSlope(kTileSlopeFlat);
-                element->asSurface()->SetSurfaceObjectIndex(0);
-                element->asSurface()->SetEdgeObjectIndex(0);
-                element->asSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                element->asSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-                element->asSurface()->SetParkFences(0);
-                element->asSurface()->SetWaterHeight(0);
+                element->asSurface()->setSlope(kTileSlopeFlat);
+                element->asSurface()->setSurfaceObjectIndex(0);
+                element->asSurface()->setEdgeObjectIndex(0);
+                element->asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
+                element->asSurface()->setOwnership(OWNERSHIP_UNOWNED);
+                element->asSurface()->setParkFences(0);
+                element->asSurface()->setWaterHeight(0);
                 // Because this element is not completely removed, the pointer must be updated manually
                 // The rest of the elements are removed from the array, so the pointer doesn't need to be updated.
                 (*elementPtr)++;
@@ -1500,12 +1500,12 @@ namespace OpenRCT2
         auto z = surfaceElement->getBaseZ();
 
         // Raise z so that is above highest point of land and water on tile
-        if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
+        if ((surfaceElement->getSlope() & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
             z += kLandHeightStep;
-        if ((surfaceElement->GetSlope() & kTileSlopeDiagonalFlag) != 0)
+        if ((surfaceElement->getSlope() & kTileSlopeDiagonalFlag) != 0)
             z += kLandHeightStep;
 
-        z = std::max(z, surfaceElement->GetWaterHeight());
+        z = std::max(z, surfaceElement->getWaterHeight());
         return z;
     }
 
@@ -1789,12 +1789,12 @@ namespace OpenRCT2
             return true;
         }
 
-        if (surfaceElement->GetWaterHeight() > surfaceElement->getBaseZ())
+        if (surfaceElement->getWaterHeight() > surfaceElement->getBaseZ())
             return true;
 
         int16_t base_z = surfaceElement->baseHeight;
         int16_t clear_z = surfaceElement->baseHeight + 2;
-        if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+        if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
             clear_z += 2;
 
         auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -2151,7 +2151,7 @@ namespace OpenRCT2
             auto surfaceElement = MapGetSurfaceElementAt(tile);
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetOwnership(ownership);
+                surfaceElement->setOwnership(ownership);
                 Park::UpdateFencesAroundTile(tile.ToCoordsXY());
             }
         }
@@ -2210,8 +2210,8 @@ namespace OpenRCT2
                     auto surface = GetDefaultSurfaceElement();
                     surface.setBaseZ(kMinimumLandZ);
                     surface.setClearanceZ(kMinimumLandZ);
-                    surface.asSurface()->SetSlope(0);
-                    surface.asSurface()->SetWaterHeight(0);
+                    surface.asSurface()->setSlope(0);
+                    surface.asSurface()->setWaterHeight(0);
                     newElements.push_back(surface);
                 }
                 else

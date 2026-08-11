@@ -1332,16 +1332,16 @@ namespace OpenRCT2::RCT2
                     auto dst2 = dst->asSurface();
                     auto src2 = src->asSurface();
 
-                    dst2->SetSlope(src2->GetSlope());
+                    dst2->setSlope(src2->GetSlope());
 
-                    dst2->SetSurfaceObjectIndex(src2->GetSurfaceStyle());
-                    dst2->SetEdgeObjectIndex(src2->GetEdgeStyle());
+                    dst2->setSurfaceObjectIndex(src2->GetSurfaceStyle());
+                    dst2->setEdgeObjectIndex(src2->GetEdgeStyle());
 
-                    dst2->SetGrassLength(src2->GetGrassLength());
-                    dst2->SetOwnership(src2->GetOwnership());
-                    dst2->SetParkFences(src2->GetParkFences());
-                    dst2->SetWaterHeight(src2->GetWaterHeight());
-                    dst2->SetHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
+                    dst2->setGrassLength(src2->GetGrassLength());
+                    dst2->setOwnership(src2->GetOwnership());
+                    dst2->setParkFences(src2->GetParkFences());
+                    dst2->setWaterHeight(src2->GetWaterHeight());
+                    dst2->setHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
 
                     break;
                 }

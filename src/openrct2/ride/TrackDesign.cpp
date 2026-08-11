@@ -1502,16 +1502,16 @@ static GameActions::Result TrackDesignPlaceMaze(
             if (surfaceElement == nullptr)
                 continue;
             int16_t surfaceZ = surfaceElement->getBaseZ();
-            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+            if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
             {
                 surfaceZ += kLandHeightStep;
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                 {
                     surfaceZ += kLandHeightStep;
                 }
             }
 
-            int16_t waterZ = surfaceElement->GetWaterHeight();
+            int16_t waterZ = surfaceElement->getWaterHeight();
             if (waterZ > 0 && waterZ > surfaceZ)
             {
                 surfaceZ = waterZ;
@@ -1668,16 +1668,16 @@ static GameActions::Result TrackDesignPlaceRide(
                     }
 
                     int32_t surfaceZ = surfaceElement->getBaseZ();
-                    if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+                    if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
                     {
                         surfaceZ += kLandHeightStep;
-                        if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                        if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                         {
                             surfaceZ += kLandHeightStep;
                         }
                     }
 
-                    auto waterZ = surfaceElement->GetWaterHeight();
+                    auto waterZ = surfaceElement->getWaterHeight();
                     if (waterZ > 0 && waterZ > surfaceZ)
                     {
                         surfaceZ = waterZ;
@@ -2172,13 +2172,13 @@ static void TrackDesignPreviewClearMap()
         auto* element = &tileElements.emplace_back();
         element->clearAs(TileElementType::surface);
         element->setLastForTile(true);
-        element->asSurface()->SetSlope(kTileSlopeFlat);
-        element->asSurface()->SetWaterHeight(0);
-        element->asSurface()->SetSurfaceObjectIndex(0);
-        element->asSurface()->SetEdgeObjectIndex(0);
-        element->asSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        element->asSurface()->SetOwnership(OWNERSHIP_OWNED);
-        element->asSurface()->SetParkFences(0);
+        element->asSurface()->setSlope(kTileSlopeFlat);
+        element->asSurface()->setWaterHeight(0);
+        element->asSurface()->setSurfaceObjectIndex(0);
+        element->asSurface()->setEdgeObjectIndex(0);
+        element->asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
+        element->asSurface()->setOwnership(OWNERSHIP_OWNED);
+        element->asSurface()->setParkFences(0);
     }
 
     SetTileElements(gameState, std::move(tileElements));

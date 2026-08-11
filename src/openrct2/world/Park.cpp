@@ -357,7 +357,7 @@ namespace OpenRCT2::Park
         {
             if (it.element->getType() == TileElementType::surface)
             {
-                if (it.element->asSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
+                if (it.element->asSurface()->getOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
                 {
                     tiles++;
                 }
@@ -640,7 +640,7 @@ namespace OpenRCT2::Park
             return;
 
         uint8_t newFences = 0;
-        if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) == 0)
+        if ((surfaceElement->getOwnership() & OWNERSHIP_OWNED) == 0)
         {
             bool fenceRequired = true;
 
@@ -687,12 +687,12 @@ namespace OpenRCT2::Park
             }
         }
 
-        if (surfaceElement->GetParkFences() != newFences)
+        if (surfaceElement->getParkFences() != newFences)
         {
             int32_t baseZ = surfaceElement->getBaseZ();
             int32_t clearZ = baseZ + 16;
             MapInvalidateTile({ coords, baseZ, clearZ });
-            surfaceElement->SetParkFences(newFences);
+            surfaceElement->setParkFences(newFences);
         }
     }
 

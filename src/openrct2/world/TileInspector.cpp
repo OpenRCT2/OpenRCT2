@@ -501,7 +501,7 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             if (!showFences)
-                surfaceelement->SetParkFences(0);
+                surfaceelement->setParkFences(0);
             else
                 Park::UpdateFences(loc);
         }
@@ -520,8 +520,8 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            const uint8_t originalSlope = surfaceElement->GetSlope();
-            uint8_t newSlope = surfaceElement->GetSlope() ^ (1 << cornerIndex);
+            const uint8_t originalSlope = surfaceElement->getSlope();
+            uint8_t newSlope = surfaceElement->getSlope() ^ (1 << cornerIndex);
 
             // All corners are raised
             if ((newSlope & kTileSlopeRaisedCornersMask) == kTileSlopeRaisedCornersMask)
@@ -550,7 +550,7 @@ namespace OpenRCT2::TileInspector
                 surfaceElement->clearanceHeight = surfaceElement->baseHeight;
             }
 
-            surfaceElement->SetSlope(newSlope);
+            surfaceElement->setSlope(newSlope);
         }
 
         return GameActions::Result();
@@ -567,8 +567,8 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            uint8_t newSlope = surfaceElement->GetSlope() ^ kTileSlopeDiagonalFlag;
-            surfaceElement->SetSlope(newSlope);
+            uint8_t newSlope = surfaceElement->getSlope() ^ kTileSlopeDiagonalFlag;
+            surfaceElement->setSlope(newSlope);
         }
 
         return GameActions::Result();

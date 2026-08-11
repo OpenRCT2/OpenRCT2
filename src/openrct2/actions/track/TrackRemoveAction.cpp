@@ -394,7 +394,7 @@ namespace OpenRCT2::GameActions
 
             if (ride->getRideTypeDescriptor().flags.has(RtdFlag::trackMustBeOnWater))
             {
-                surfaceElement->SetHasTrackThatNeedsWater(false);
+                surfaceElement->setHasTrackThatNeedsWater(false);
             }
 
             InvalidateTestResults(*ride);

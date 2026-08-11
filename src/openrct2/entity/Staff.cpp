@@ -423,10 +423,10 @@ namespace OpenRCT2
 
             if (GetNextIsSloped())
             {
-                if (surfaceElement->GetSlope() != kPathSlopeToLandSlope[GetNextDirection()])
+                if (surfaceElement->getSlope() != kPathSlopeToLandSlope[GetNextDirection()])
                     return kInvalidDirection;
             }
-            else if (surfaceElement->GetSlope() != kTileSlopeFlat)
+            else if (surfaceElement->getSlope() != kTileSlopeFlat)
                 return kInvalidDirection;
         }
 
@@ -450,7 +450,7 @@ namespace OpenRCT2
             {
                 if (std::abs(surfaceElement->getBaseZ() - NextLoc.z) <= 2 * kCoordsZStep)
                 {
-                    if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
+                    if (surfaceElement->canGrassGrow() && (surfaceElement->getGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                     {
                         if (!isHandymanAlreadyServicingTile(chosenTile, PeepState::mowing))
                             return chosenDirection;
@@ -1068,9 +1068,9 @@ namespace OpenRCT2
                 continue;
 
             auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
-            if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
+            if (surfaceElement != nullptr && surfaceElement->canGrassGrow())
             {
-                surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
+                surfaceElement->setGrassLength(GRASS_LENGTH_MOWED);
                 MapInvalidateTileZoom0({ NextLoc, surfaceElement->getBaseZ(), surfaceElement->getBaseZ() + 16 });
             }
             staffLawnsMown = AddClamp(staffLawnsMown, 1u);
@@ -1626,9 +1626,9 @@ namespace OpenRCT2
             return false;
 
         auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
-        if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
+        if (surfaceElement != nullptr && surfaceElement->canGrassGrow())
         {
-            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1
+            if ((surfaceElement->getGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1
                 && !isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::mowing))
             {
                 SetState(PeepState::mowing);
@@ -1870,7 +1870,7 @@ namespace OpenRCT2
 
             if (surfaceElement != nullptr)
             {
-                int32_t water_height = surfaceElement->GetWaterHeight();
+                int32_t water_height = surfaceElement->getWaterHeight();
                 if (water_height > 0)
                 {
                     moveTo({ x, y, water_height });

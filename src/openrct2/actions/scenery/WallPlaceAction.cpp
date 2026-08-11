@@ -134,7 +134,7 @@ namespace OpenRCT2::GameActions
             }
             targetHeight = surfaceElement->getBaseZ();
 
-            uint8_t slope = surfaceElement->GetSlope();
+            uint8_t slope = surfaceElement->getSlope();
             edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
@@ -150,9 +150,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        if (surfaceElement->GetWaterHeight() > 0)
+        if (surfaceElement->getWaterHeight() > 0)
         {
-            uint16_t waterHeight = surfaceElement->GetWaterHeight();
+            uint16_t waterHeight = surfaceElement->getWaterHeight();
 
             if (targetHeight < waterHeight && !gameState.cheats.disableClearanceChecks)
             {
@@ -170,21 +170,21 @@ namespace OpenRCT2::GameActions
             uint8_t newEdge = (_edge + 2) & 3;
             uint8_t newBaseHeight = surfaceElement->baseHeight;
             newBaseHeight += 2;
-            if (surfaceElement->GetSlope() & (1 << newEdge))
+            if (surfaceElement->getSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                 {
                     return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->GetSlope() & (1 << newEdge))
+                    if (surfaceElement->getSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->GetSlope() & (1 << newEdge))
+                        if (surfaceElement->getSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
@@ -199,21 +199,21 @@ namespace OpenRCT2::GameActions
             }
 
             newEdge = (_edge + 3) & 3;
-            if (surfaceElement->GetSlope() & (1 << newEdge))
+            if (surfaceElement->getSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                 {
                     return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->GetSlope() & (1 << newEdge))
+                    if (surfaceElement->getSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->GetSlope() & (1 << newEdge))
+                        if (surfaceElement->getSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
@@ -304,7 +304,7 @@ namespace OpenRCT2::GameActions
             }
             targetHeight = surfaceElement->getBaseZ();
 
-            uint8_t slope = surfaceElement->GetSlope();
+            uint8_t slope = surfaceElement->getSlope();
             edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {

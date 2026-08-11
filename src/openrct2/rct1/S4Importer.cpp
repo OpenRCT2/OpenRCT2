@@ -1657,14 +1657,14 @@ namespace OpenRCT2::RCT1
                     auto surfaceStyle = _terrainSurfaceTypeToEntryMap[src2->GetSurfaceStyle()];
                     auto edgeStyle = _terrainEdgeTypeToEntryMap[src2->GetEdgeStyle()];
 
-                    dst2->SetSlope(src2->GetSlope());
-                    dst2->SetSurfaceObjectIndex(surfaceStyle);
-                    dst2->SetEdgeObjectIndex(edgeStyle);
-                    dst2->SetGrassLength(src2->GetGrassLength());
-                    dst2->SetOwnership(src2->GetOwnership());
-                    dst2->SetParkFences(src2->GetParkFences());
-                    dst2->SetWaterHeight(src2->GetWaterHeight());
-                    dst2->SetHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
+                    dst2->setSlope(src2->GetSlope());
+                    dst2->setSurfaceObjectIndex(surfaceStyle);
+                    dst2->setEdgeObjectIndex(edgeStyle);
+                    dst2->setGrassLength(src2->GetGrassLength());
+                    dst2->setOwnership(src2->GetOwnership());
+                    dst2->setParkFences(src2->GetParkFences());
+                    dst2->setWaterHeight(src2->GetWaterHeight());
+                    dst2->setHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
 
                     return 1;
                 }
@@ -2567,7 +2567,7 @@ namespace OpenRCT2::RCT1
                 if (surface == nullptr)
                     continue;
 
-                if (surface->GetSlope() != kTileSlopeFlat)
+                if (surface->getSlope() != kTileSlopeFlat)
                     continue;
 
                 if (surface->getBaseZ() != pathElement->getBaseZ())

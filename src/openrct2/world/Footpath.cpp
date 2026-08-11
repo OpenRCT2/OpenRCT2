@@ -1038,7 +1038,7 @@ namespace OpenRCT2
             // If the tile is safe to own construction rights of, do not erase construction rights.
             else
             {
-                ownership = surfaceElement->GetOwnership();
+                ownership = surfaceElement->getOwnership();
                 // You can't own the entrance path.
                 if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
                 {
@@ -1928,7 +1928,7 @@ namespace OpenRCT2
     FootpathPlacementResult FootpathGetOnTerrainPlacement(const SurfaceElement& surfaceElement)
     {
         int32_t baseZ = surfaceElement.getBaseZ();
-        auto slope = kDefaultPathSlope[surfaceElement.GetSlope() & kTileSlopeRaisedCornersMask];
+        auto slope = kDefaultPathSlope[surfaceElement.getSlope() & kTileSlopeRaisedCornersMask];
         if (slope.type == FootpathSlopeType::raise)
         {
             slope.type = FootpathSlopeType::flat;

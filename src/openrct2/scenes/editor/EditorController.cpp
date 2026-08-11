@@ -355,8 +355,8 @@ namespace OpenRCT2::Editor
                 case TileElementType::surface:
                 {
                     auto surfaceEl = iter.element->asSurface();
-                    auto surfaceIndex = surfaceEl->GetSurfaceObjectIndex();
-                    auto edgeIndex = surfaceEl->GetEdgeObjectIndex();
+                    auto surfaceIndex = surfaceEl->getSurfaceObjectIndex();
+                    auto edgeIndex = surfaceEl->getEdgeObjectIndex();
 
                     Editor::SetSelectedObject(ObjectType::terrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);
                     Editor::SetSelectedObject(ObjectType::terrainEdge, edgeIndex, ObjectSelectionFlags::InUse);

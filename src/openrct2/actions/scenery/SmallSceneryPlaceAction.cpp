@@ -175,9 +175,9 @@ namespace OpenRCT2::GameActions
 
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
 
-        if (surfaceElement != nullptr && !gameState.cheats.disableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
+        if (surfaceElement != nullptr && !gameState.cheats.disableClearanceChecks && surfaceElement->getWaterHeight() > 0)
         {
-            int32_t water_height = surfaceElement->GetWaterHeight() - 1;
+            int32_t water_height = surfaceElement->getWaterHeight() - 1;
             if (water_height > targetHeight)
             {
                 return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -191,9 +191,9 @@ namespace OpenRCT2::GameActions
                 return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
 
-            if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
+            if (surfaceElement != nullptr && surfaceElement->getWaterHeight() > 0)
             {
-                if (surfaceElement->GetWaterHeight() > targetHeight)
+                if (surfaceElement->getWaterHeight() > targetHeight)
                 {
                     return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
                 }
@@ -201,8 +201,8 @@ namespace OpenRCT2::GameActions
         }
 
         if (!gameState.cheats.disableClearanceChecks && sceneryEntry->flags.has(SmallSceneryFlag::requiresFlatSurface)
-            && !supportsRequired && surfaceElement != nullptr && surfaceElement->GetWaterHeight() == 0
-            && (surfaceElement->GetSlope() != kTileSlopeFlat))
+            && !supportsRequired && surfaceElement != nullptr && surfaceElement->getWaterHeight() == 0
+            && (surfaceElement->getSlope() != kTileSlopeFlat))
         {
             return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
         }
@@ -214,7 +214,7 @@ namespace OpenRCT2::GameActions
             {
                 if (surfaceElement != nullptr)
                 {
-                    if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->getBaseZ()) != targetHeight)
+                    if (surfaceElement->getWaterHeight() > 0 || (surfaceElement->getBaseZ()) != targetHeight)
                     {
                         return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
                     }

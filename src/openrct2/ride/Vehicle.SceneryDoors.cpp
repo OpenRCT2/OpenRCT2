@@ -180,7 +180,7 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
         const auto* const surfaceElement = GetSurfaceElementAfterElement(previousTrackElement);
         if (surfaceElement != nullptr && surfaceElement->getBaseZ() > previousTrackLocation.z)
         {
-            const auto* const edgeObject = surfaceElement->GetEdgeObject();
+            const auto* const edgeObject = surfaceElement->getEdgeObject();
             if (edgeObject != nullptr && edgeObject->HasDoors)
             {
                 AnimateLandscapeDoor<false>(
@@ -194,7 +194,7 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
         const auto* const surfaceElement = GetSurfaceElementAfterElement(currentTrackElement);
         if (surfaceElement != nullptr && surfaceElement->getBaseZ() > TrackLocation.z)
         {
-            const auto* const edgeObject = surfaceElement->GetEdgeObject();
+            const auto* const edgeObject = surfaceElement->getEdgeObject();
             if (edgeObject != nullptr && edgeObject->HasDoors)
             {
                 AnimateLandscapeDoor<true>(

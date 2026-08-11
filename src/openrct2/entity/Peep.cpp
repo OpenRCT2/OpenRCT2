@@ -819,9 +819,9 @@ namespace OpenRCT2
                 else if (tile_element->getType() == TileElementType::surface)
                 {
                     // If the surface is water check to see if we could be drowning
-                    if (tile_element->asSurface()->GetWaterHeight() > 0)
+                    if (tile_element->asSurface()->getWaterHeight() > 0)
                     {
-                        int32_t height = tile_element->asSurface()->GetWaterHeight();
+                        int32_t height = tile_element->asSurface()->getWaterHeight();
 
                         if (height - 4 >= z && height < z + 20)
                         {
@@ -2450,7 +2450,7 @@ namespace OpenRCT2
                     return { pathingResult, tileResult };
                 }
 
-                int16_t water_height = surfaceElement->GetWaterHeight();
+                int16_t water_height = surfaceElement->getWaterHeight();
                 if (water_height > 0)
                 {
                     PeepReturnToCentreOfTile(this);

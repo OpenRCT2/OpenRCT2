@@ -273,7 +273,7 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
         for (const auto& tile : coordinatesVector)
         {
             auto surfaceElement = MapGetSurfaceElementAt(tile);
-            surfaceElement->SetWaterHeight(waterHeight);
+            surfaceElement->setWaterHeight(waterHeight);
         }
     }
 }
@@ -427,7 +427,7 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
         for (const auto& tile : coordinatesVector)
         {
             auto surfaceElement = MapGetSurfaceElementAt(tile);
-            surfaceElement->SetSurfaceObjectIndex(surfaceObjIndex);
+            surfaceElement->setSurfaceObjectIndex(surfaceObjIndex);
         }
     }
 }

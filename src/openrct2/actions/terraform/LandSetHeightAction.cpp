@@ -291,9 +291,9 @@ namespace OpenRCT2::GameActions
 
     TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const
     {
-        if (surfaceElement->asSurface()->HasTrackThatNeedsWater())
+        if (surfaceElement->asSurface()->hasTrackThatNeedsWater())
         {
-            uint32_t waterHeight = surfaceElement->asSurface()->GetWaterHeight();
+            uint32_t waterHeight = surfaceElement->asSurface()->getWaterHeight();
             if (waterHeight != 0)
             {
                 if (_style & kTileSlopeMask)
@@ -329,11 +329,11 @@ namespace OpenRCT2::GameActions
     {
         surfaceElement->baseHeight = _height;
         surfaceElement->clearanceHeight = _height;
-        surfaceElement->asSurface()->SetSlope(_style);
-        int32_t waterHeight = surfaceElement->asSurface()->GetWaterHeight() / kCoordsZStep;
+        surfaceElement->asSurface()->setSlope(_style);
+        int32_t waterHeight = surfaceElement->asSurface()->getWaterHeight() / kCoordsZStep;
         if (waterHeight != 0 && waterHeight <= _height)
         {
-            surfaceElement->asSurface()->SetWaterHeight(0);
+            surfaceElement->asSurface()->setWaterHeight(0);
         }
 
         MapInvalidateTileFull(_coords);

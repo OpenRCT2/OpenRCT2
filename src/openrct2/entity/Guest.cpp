@@ -5484,7 +5484,7 @@ namespace OpenRCT2
 
             if (surfaceElement != nullptr)
             {
-                int32_t water_height = surfaceElement->GetWaterHeight();
+                int32_t water_height = surfaceElement->getWaterHeight();
                 if (water_height > 0)
                 {
                     moveTo({ x, y, water_height });

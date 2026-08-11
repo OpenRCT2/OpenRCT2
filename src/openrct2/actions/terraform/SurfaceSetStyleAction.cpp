@@ -113,7 +113,7 @@ namespace OpenRCT2::GameActions
 
                 if (_surfaceStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
+                    uint8_t curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
 
                 if (_edgeStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
+                    uint8_t curEdgeStyle = surfaceElement->getEdgeObjectIndex();
 
                     if (_edgeStyle != curEdgeStyle)
                     {
@@ -180,7 +180,7 @@ namespace OpenRCT2::GameActions
 
                 if (_surfaceStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
+                    uint8_t curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
@@ -190,7 +190,7 @@ namespace OpenRCT2::GameActions
                         {
                             surfaceCost += surfaceObject->Price;
 
-                            surfaceElement->SetSurfaceObjectIndex(_surfaceStyle);
+                            surfaceElement->setSurfaceObjectIndex(_surfaceStyle);
 
                             MapInvalidateTileFull(coords);
                             FootpathRemoveLitter({ coords, TileElementHeight(coords) });
@@ -200,20 +200,20 @@ namespace OpenRCT2::GameActions
 
                 if (_edgeStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
+                    uint8_t curEdgeStyle = surfaceElement->getEdgeObjectIndex();
 
                     if (_edgeStyle != curEdgeStyle)
                     {
                         edgeCost += 100;
 
-                        surfaceElement->SetEdgeObjectIndex(_edgeStyle);
+                        surfaceElement->setEdgeObjectIndex(_edgeStyle);
                         MapInvalidateTileFull(coords);
                     }
                 }
 
-                if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
+                if (surfaceElement->canGrassGrow() && (surfaceElement->getGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
                 {
-                    surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+                    surfaceElement->setGrassLength(GRASS_LENGTH_CLEAR_0);
                     MapInvalidateTileFull(coords);
                 }
             }

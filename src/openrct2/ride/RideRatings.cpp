@@ -719,7 +719,7 @@ namespace OpenRCT2
                     {
                         proximity_score_increment(state, PROXIMITY_SURFACE_TOUCH);
                     }
-                    waterHeight = tileElement->asSurface()->GetWaterHeight();
+                    waterHeight = tileElement->asSurface()->getWaterHeight();
                     if (waterHeight != 0)
                     {
                         auto z = waterHeight;

@@ -674,12 +674,12 @@ static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl,
     else if (pathEl.isSloped())
     {
         // Diagonal path
-        if (surface->GetSlope() != kPathSlopeToLandSlope[pathEl.getSlopeDirection()])
+        if (surface->getSlope() != kPathSlopeToLandSlope[pathEl.getSlopeDirection()])
         {
             return true;
         }
     }
-    else if (surface->GetSlope() != kTileSlopeFlat)
+    else if (surface->getSlope() != kTileSlopeFlat)
     {
         return true;
     }
