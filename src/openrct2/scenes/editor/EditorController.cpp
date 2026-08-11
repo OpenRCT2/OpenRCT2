@@ -420,7 +420,7 @@ namespace OpenRCT2::Editor
                     Editor::SetSelectedObject(ObjectType::walls, type, ObjectSelectionFlags::InUse);
                     break;
                 case TileElementType::largeScenery:
-                    type = iter.element->asLargeScenery()->GetEntryIndex();
+                    type = iter.element->asLargeScenery()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::largeScenery, type, ObjectSelectionFlags::InUse);
                     break;
                 case TileElementType::banner:

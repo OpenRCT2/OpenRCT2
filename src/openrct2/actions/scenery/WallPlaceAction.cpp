@@ -548,13 +548,13 @@ namespace OpenRCT2::GameActions
                 case TileElementType::largeScenery:
                 {
                     const auto* largeSceneryElement = tileElement->asLargeScenery();
-                    const auto* sceneryEntry = largeSceneryElement->GetEntry();
+                    const auto* sceneryEntry = largeSceneryElement->getEntry();
 
                     // If there is no entry, assume the object is not in the way.
                     if (sceneryEntry == nullptr)
                         break;
 
-                    auto sequence = largeSceneryElement->GetSequenceIndex();
+                    auto sequence = largeSceneryElement->getSequenceIndex();
                     const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
                     int32_t direction = ((_edge - tileElement->getDirection()) & kTileElementDirectionMask);

@@ -423,10 +423,10 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::largeScenery:
             {
-                auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+                auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
                 if (sceneryEntry->scrolling_mode != kScrollingModeNone)
                 {
-                    auto banner = tileElement->asLargeScenery()->GetBanner();
+                    auto banner = tileElement->asLargeScenery()->getBanner();
                     if (banner != nullptr)
                     {
                         auto ft = Formatter();
@@ -526,7 +526,7 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::largeScenery:
             {
-                auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+                auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
                 ft.Add<StringId>(sceneryEntry->name);
                 SetMapTooltip(ft);
@@ -709,18 +709,18 @@ namespace OpenRCT2::Ui
      */
     static void ViewportInteractionRemoveLargeScenery(const LargeSceneryElement& largeSceneryElement, const CoordsXY& mapCoords)
     {
-        auto* sceneryEntry = largeSceneryElement.GetEntry();
+        auto* sceneryEntry = largeSceneryElement.getEntry();
 
         if (sceneryEntry->scrolling_mode != kScrollingModeNone)
         {
-            auto bannerIndex = largeSceneryElement.GetBannerIndex();
+            auto bannerIndex = largeSceneryElement.getBannerIndex();
             ContextOpenDetailWindow(WindowDetail::sign, bannerIndex.ToUnderlying());
         }
         else
         {
             auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                 { mapCoords.x, mapCoords.y, largeSceneryElement.getBaseZ(), largeSceneryElement.getDirection() },
-                largeSceneryElement.GetSequenceIndex());
+                largeSceneryElement.getSequenceIndex());
             GameActions::Execute(&removeSceneryAction, getGameState());
         }
     }

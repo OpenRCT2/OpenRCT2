@@ -537,7 +537,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                return JS_NewUint32(ctx, el->GetSequenceIndex());
+                return JS_NewUint32(ctx, el->getSequenceIndex());
             }
             case TileElementType::track:
             {
@@ -585,7 +585,7 @@ namespace OpenRCT2::Scripting
             {
                 RemoveBannerEntryIfNeeded(element, data->coords);
                 auto* el = element->asLargeScenery();
-                el->SetSequenceIndex(value);
+                el->setSequenceIndex(value);
                 CreateBannerEntryIfNeeded(element, data->coords);
                 Invalidate(data);
                 break;
@@ -1276,7 +1276,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                return JS_NewUint32(ctx, el->GetEntryIndex());
+                return JS_NewUint32(ctx, el->getEntryIndex());
             }
             case TileElementType::wall:
             {
@@ -1330,7 +1330,7 @@ namespace OpenRCT2::Scripting
                 JS_UNPACK_UINT32(index, ctx, jsValue);
                 RemoveBannerEntryIfNeeded(element, data->coords);
                 auto* el = element->asLargeScenery();
-                el->SetEntryIndex(index);
+                el->setEntryIndex(index);
                 CreateBannerEntryIfNeeded(element, data->coords);
                 Invalidate(data);
                 break;
@@ -1473,7 +1473,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                return JS_NewUint32(ctx, EnumValue(el->GetPrimaryColour()));
+                return JS_NewUint32(ctx, EnumValue(el->getPrimaryColour()));
             }
             case TileElementType::wall:
             {
@@ -1507,7 +1507,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                el->SetPrimaryColour(static_cast<Drawing::Colour>(value));
+                el->setPrimaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
@@ -1545,7 +1545,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                return JS_NewUint32(ctx, EnumValue(el->GetSecondaryColour()));
+                return JS_NewUint32(ctx, EnumValue(el->getSecondaryColour()));
             }
             case TileElementType::wall:
             {
@@ -1579,7 +1579,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                el->SetSecondaryColour(static_cast<Drawing::Colour>(value));
+                el->setSecondaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
@@ -1617,7 +1617,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                return JS_NewUint32(ctx, EnumValue(el->GetTertiaryColour()));
+                return JS_NewUint32(ctx, EnumValue(el->getTertiaryColour()));
             }
             case TileElementType::wall:
             {
@@ -1646,7 +1646,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto* el = element->asLargeScenery();
-                el->SetTertiaryColour(static_cast<Drawing::Colour>(value));
+                el->setTertiaryColour(static_cast<Drawing::Colour>(value));
                 Invalidate(data);
                 break;
             }
@@ -1685,10 +1685,10 @@ namespace OpenRCT2::Scripting
                 if (JS_IsNumber(jsValue))
                 {
                     JS_UNPACK_UINT32(value, ctx, jsValue);
-                    el->SetBannerIndex(BannerIndex::FromUnderlying(value));
+                    el->setBannerIndex(BannerIndex::FromUnderlying(value));
                 }
                 else
-                    el->SetBannerIndex(BannerIndex::GetNull());
+                    el->setBannerIndex(BannerIndex::GetNull());
                 Invalidate(data);
                 break;
             }
@@ -2305,9 +2305,9 @@ namespace OpenRCT2::Scripting
     const LargeSceneryElement* ScTileElement::GetOtherLargeSceneryElement(
         const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
-        const auto* const largeEntry = largeScenery->GetEntry();
+        const auto* const largeEntry = largeScenery->getEntry();
         const auto direction = largeScenery->getDirection();
-        const auto sequenceIndex = largeScenery->GetSequenceIndex();
+        const auto sequenceIndex = largeScenery->getSequenceIndex();
         const auto& tiles = largeEntry->tiles;
         const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
@@ -2336,9 +2336,9 @@ namespace OpenRCT2::Scripting
 
                     if (tileElement->asLargeScenery() == largeScenery)
                         continue;
-                    if (tileElement->asLargeScenery()->GetEntryIndex() != largeScenery->GetEntryIndex())
+                    if (tileElement->asLargeScenery()->getEntryIndex() != largeScenery->getEntryIndex())
                         continue;
-                    if (tileElement->asLargeScenery()->GetSequenceIndex() != tile.index)
+                    if (tileElement->asLargeScenery()->getSequenceIndex() != tile.index)
                         continue;
 
                     return tileElement->asLargeScenery();
@@ -2352,7 +2352,7 @@ namespace OpenRCT2::Scripting
     {
         // check if other element still uses the banner entry
         if (element->getType() == TileElementType::largeScenery
-            && element->asLargeScenery()->GetEntry()->scrolling_mode != kScrollingModeNone
+            && element->asLargeScenery()->getEntry()->scrolling_mode != kScrollingModeNone
             && GetOtherLargeSceneryElement(coords, element->asLargeScenery()) != nullptr)
             return;
         // remove banner entry (if one exists)
@@ -2376,14 +2376,14 @@ namespace OpenRCT2::Scripting
             case TileElementType::largeScenery:
             {
                 auto largeScenery = element->asLargeScenery();
-                auto largeSceneryEntry = largeScenery->GetEntry();
+                auto largeSceneryEntry = largeScenery->getEntry();
                 if (largeSceneryEntry == nullptr || largeSceneryEntry->scrolling_mode == kScrollingModeNone)
                     return;
 
                 auto otherElement = GetOtherLargeSceneryElement(coords, largeScenery);
                 if (otherElement != nullptr)
                 {
-                    largeScenery->SetBannerIndex(otherElement->GetBannerIndex());
+                    largeScenery->setBannerIndex(otherElement->getBannerIndex());
                     return;
                 }
 

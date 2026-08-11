@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
         // If we have a bugged scenery entry, do not touch the tile element.
         if (sceneryEntry == nullptr)
         {
@@ -112,11 +112,11 @@ namespace OpenRCT2::GameActions
             // scenery tile elements.
             if (flags.has(CommandFlag::trackDesign))
             {
-                if (tileElement->asLargeScenery()->IsAccounted())
+                if (tileElement->asLargeScenery()->isAccounted())
                     calculate_cost = false;
 
                 // Sets the flag to prevent this being counted in additional calls
-                tileElement->asLargeScenery()->SetIsAccounted(true);
+                tileElement->asLargeScenery()->setIsAccounted(true);
             }
         }
 
@@ -143,7 +143,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
         // If we have a bugged scenery entry, do not touch the tile element.
         if (sceneryEntry == nullptr)
         {
@@ -201,7 +201,7 @@ namespace OpenRCT2::GameActions
             if (sceneryElement->getDirection() != _loc.direction)
                 continue;
 
-            if (sceneryElement->GetSequenceIndex() != sequenceIndex)
+            if (sceneryElement->getSequenceIndex() != sequenceIndex)
                 continue;
 
             if (sceneryElement->getBaseZ() != pos.z)

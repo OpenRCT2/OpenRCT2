@@ -1321,7 +1321,7 @@ namespace OpenRCT2
             case TileElementType::largeScenery:
             {
                 auto sceneryItem = tileElement->asLargeScenery();
-                auto sceneryEntry = sceneryItem->GetEntry();
+                auto sceneryEntry = sceneryItem->getEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
                     return true;

@@ -109,7 +109,7 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        auto* sceneryEntry = largeElement->GetEntry();
+        auto* sceneryEntry = largeElement->getEntry();
 
         if (sceneryEntry == nullptr)
         {
@@ -152,9 +152,9 @@ namespace OpenRCT2::GameActions
             }
             if (isExecuting)
             {
-                tileElement->SetPrimaryColour(_primaryColour);
-                tileElement->SetSecondaryColour(_secondaryColour);
-                tileElement->SetTertiaryColour(_tertiaryColour);
+                tileElement->setPrimaryColour(_primaryColour);
+                tileElement->setSecondaryColour(_secondaryColour);
+                tileElement->setTertiaryColour(_tertiaryColour);
 
                 MapInvalidateTileFull(currentTile);
             }

@@ -147,7 +147,7 @@ static size_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
 
         case TileElementType::largeScenery:
         {
-            auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
             return sceneryEntry->tiles.size();
         }
         default:
@@ -239,16 +239,16 @@ static TrackDesignSceneryElement TrackDesignSaveCreateLargeSceneryDesc(
 {
     auto item = TrackDesignCreateTileElementDesc(object, loc);
     item.setRotation(largeSceneryElement.getDirection());
-    item.primaryColour = largeSceneryElement.GetPrimaryColour();
-    item.secondaryColour = largeSceneryElement.GetSecondaryColour();
-    item.tertiaryColour = largeSceneryElement.GetTertiaryColour();
+    item.primaryColour = largeSceneryElement.getPrimaryColour();
+    item.secondaryColour = largeSceneryElement.getSecondaryColour();
+    item.tertiaryColour = largeSceneryElement.getTertiaryColour();
 
     return item;
 }
 
 static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
 {
-    auto entryIndex = tileElement->GetEntryIndex();
+    auto entryIndex = tileElement->getEntryIndex();
     auto& objectMgr = GetContext()->GetObjectManager();
     auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
@@ -258,7 +258,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
 
         int32_t z = tileElement->baseHeight;
         auto direction = tileElement->getDirection();
-        auto sequence = tileElement->GetSequenceIndex();
+        auto sequence = tileElement->getSequenceIndex();
 
         auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
         if (!sceneryOrigin.has_value())
@@ -462,7 +462,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         return;
     }
 
-    auto entryIndex = tileElement->GetEntryIndex();
+    auto entryIndex = tileElement->getEntryIndex();
     auto& objectMgr = GetContext()->GetObjectManager();
     auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr)
@@ -472,7 +472,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 
         int32_t z = tileElement->baseHeight;
         auto direction = tileElement->getDirection();
-        auto sequence = tileElement->GetSequenceIndex();
+        auto sequence = tileElement->getSequenceIndex();
 
         auto sceneryOrigin = MapLargeSceneryGetOrigin({ loc.x, loc.y, z << 3, direction }, sequence, nullptr);
         if (!sceneryOrigin)

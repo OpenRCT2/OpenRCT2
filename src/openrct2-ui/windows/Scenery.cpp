@@ -2277,7 +2277,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto* sceneryEntry = info.Element->asLargeScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asLargeScenery()->getEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
@@ -2285,7 +2285,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto repaintScenery = GameActions::LargeScenerySetColourAction(
                         { info.Loc, info.Element->getBaseZ(), info.Element->getDirection() },
-                        info.Element->asLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
+                        info.Element->asLargeScenery()->getSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
                         _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2350,14 +2350,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto entryIndex = info.Element->asLargeScenery()->GetEntryIndex();
+                    auto entryIndex = info.Element->asLargeScenery()->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->asLargeScenery()->GetPrimaryColour(),
-                            info.Element->asLargeScenery()->GetSecondaryColour(),
-                            info.Element->asLargeScenery()->GetTertiaryColour(),
+                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->asLargeScenery()->getPrimaryColour(),
+                            info.Element->asLargeScenery()->getSecondaryColour(),
+                            info.Element->asLargeScenery()->getTertiaryColour(),
                             (GetCurrentRotation() + info.Element->getDirection()) & 3);
                     }
                     break;

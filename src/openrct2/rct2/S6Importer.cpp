@@ -1532,14 +1532,14 @@ namespace OpenRCT2::RCT2
                     auto dst2 = dst->asLargeScenery();
                     auto src2 = src->asLargeScenery();
 
-                    dst2->SetEntryIndex(src2->GetEntryIndex());
-                    dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                    dst2->SetPrimaryColour(src2->GetPrimaryColour());
-                    dst2->SetSecondaryColour(src2->GetSecondaryColour());
+                    dst2->setEntryIndex(src2->GetEntryIndex());
+                    dst2->setSequenceIndex(src2->GetSequenceIndex());
+                    dst2->setPrimaryColour(src2->GetPrimaryColour());
+                    dst2->setSecondaryColour(src2->GetSecondaryColour());
 
                     // Import banner information
-                    dst2->SetBannerIndex(BannerIndex::GetNull());
-                    auto entry = dst2->GetEntry();
+                    dst2->setBannerIndex(BannerIndex::GetNull());
+                    auto entry = dst2->getEntry();
                     if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
@@ -1549,12 +1549,12 @@ namespace OpenRCT2::RCT2
                             auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
-                                dst2->SetBannerIndex(BannerIndex::GetNull());
+                                dst2->setBannerIndex(BannerIndex::GetNull());
                             }
                             else
                             {
                                 ImportBanner(dstBanner, srcBanner);
-                                dst2->SetBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
+                                dst2->setBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
                             }
                         }
                     }

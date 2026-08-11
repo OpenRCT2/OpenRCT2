@@ -6515,7 +6515,7 @@ namespace OpenRCT2
 
             if (tileElement->getType() == TileElementType::largeScenery)
             {
-                const auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
                 {
                     continue;
@@ -6632,7 +6632,7 @@ namespace OpenRCT2
 
             if (tileElement->getType() == TileElementType::largeScenery)
             {
-                auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+                auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
                 if (!(sceneryEntry == nullptr || sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic)))
                 {
                     continue;
@@ -6748,7 +6748,7 @@ namespace OpenRCT2
 
             if (tileElement->getType() == TileElementType::largeScenery)
             {
-                const auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(LargeSceneryFlag::isPhotogenic))
                 {
                     continue;

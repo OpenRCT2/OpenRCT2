@@ -225,7 +225,7 @@ namespace OpenRCT2::GameActions
                         {
                             auto removeSceneryAction = LargeSceneryRemoveAction(
                                 { tilePos, tileElement->getBaseZ(), tileElement->getDirection() },
-                                tileElement->asLargeScenery()->GetSequenceIndex());
+                                tileElement->asLargeScenery()->getSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags().with(CommandFlag::trackDesign));
 
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)
@@ -260,7 +260,7 @@ namespace OpenRCT2::GameActions
             {
                 for (auto* sceneryElement : TileElementsView<LargeSceneryElement>(TileCoordsXY{ x, y }))
                 {
-                    sceneryElement->SetIsAccounted(false);
+                    sceneryElement->setIsAccounted(false);
                 }
             }
         }

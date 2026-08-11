@@ -387,7 +387,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         }
         case TileElementType::largeScenery:
         {
-            auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);

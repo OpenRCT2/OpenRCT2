@@ -1522,21 +1522,21 @@ namespace OpenRCT2::Ui::Windows
         {
             // Details
             // Type
-            ObjectEntryIndex largeSceneryType = largeSceneryEl.GetEntryIndex();
+            ObjectEntryIndex largeSceneryType = largeSceneryEl.getEntryIndex();
             auto ft = Formatter();
             ft.Add<ObjectEntryIndex>(largeSceneryType);
             drawText(rt, screenCoords, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, ft, { colours[1] });
 
             // Part ID
             ft = Formatter();
-            ft.Add<int16_t>(largeSceneryEl.GetSequenceIndex());
+            ft.Add<int16_t>(largeSceneryEl.getSequenceIndex());
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, ft, { colours[1] });
 
             // Banner info
             auto* largeSceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(largeSceneryType);
             if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != kScrollingModeNone)
             {
-                auto banner = largeSceneryEl.GetBanner();
+                auto banner = largeSceneryEl.getBanner();
                 if (banner != nullptr)
                 {
                     ft = Formatter();

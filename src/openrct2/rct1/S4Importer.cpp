@@ -1897,10 +1897,10 @@ namespace OpenRCT2::RCT1
                     auto src2 = src->asLargeScenery();
 
                     auto type = src2->GetEntryIndex();
-                    dst2->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
-                    dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                    dst2->SetPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
-                    dst2->SetSecondaryColour(GetColour(EnumValue(src2->GetSecondaryColour())));
+                    dst2->setEntryIndex(_largeSceneryTypeToEntryMap[type]);
+                    dst2->setSequenceIndex(src2->GetSequenceIndex());
+                    dst2->setPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
+                    dst2->setSecondaryColour(GetColour(EnumValue(src2->GetSecondaryColour())));
 
                     return 1;
                 }

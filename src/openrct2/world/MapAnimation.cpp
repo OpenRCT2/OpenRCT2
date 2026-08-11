@@ -232,7 +232,7 @@ template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateLargeSceneryAnimation(
     const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto* const entry = scenery.GetEntry();
+    const auto* const entry = scenery.getEntry();
     if (entry != nullptr && entry->flags.has(LargeSceneryFlag::isAnimated))
     {
         if constexpr (invalidate)
@@ -540,7 +540,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::largeScenery:
         {
             const auto* const scenery = element.asLargeScenery();
-            const auto* const entry = scenery->GetEntry();
+            const auto* const entry = scenery->getEntry();
             if (entry != nullptr && entry->flags.has(LargeSceneryFlag::isAnimated))
             {
                 return std::optional(UpdateType::invalidate);
