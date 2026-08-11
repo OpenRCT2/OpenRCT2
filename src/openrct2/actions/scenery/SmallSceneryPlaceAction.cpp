@@ -424,23 +424,23 @@ namespace OpenRCT2::GameActions
         }
 
         sceneryElement->setDirection(_loc.direction);
-        sceneryElement->SetSceneryQuadrant(quadrant);
-        sceneryElement->SetEntryIndex(_sceneryType);
-        sceneryElement->SetAge(0);
-        sceneryElement->SetPrimaryColour(_primaryColour);
-        sceneryElement->SetSecondaryColour(_secondaryColour);
-        sceneryElement->SetTertiaryColour(_tertiaryColour);
+        sceneryElement->setSceneryQuadrant(quadrant);
+        sceneryElement->setEntryIndex(_sceneryType);
+        sceneryElement->setAge(0);
+        sceneryElement->setPrimaryColour(_primaryColour);
+        sceneryElement->setSecondaryColour(_secondaryColour);
+        sceneryElement->setTertiaryColour(_tertiaryColour);
         sceneryElement->setClearanceZ(sceneryElement->getBaseZ() + sceneryEntry->height + 7);
         sceneryElement->setGhost(GetFlags().has(CommandFlag::ghost));
         if (supportsRequired)
         {
-            sceneryElement->SetNeedsSupports();
+            sceneryElement->setNeedsSupports();
         }
 
         const auto clearanceData = canBuild.getData<ConstructClearResult>();
         const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         res.setData(
-            SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->getBaseZ(), sceneryElement->GetSceneryQuadrant() });
+            SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->getBaseZ(), sceneryElement->getSceneryQuadrant() });
 
         MapInvalidateTileFull(_loc);
         if (sceneryEntry->flags.has(SmallSceneryFlag::isClock))

@@ -1345,14 +1345,14 @@ namespace OpenRCT2::Ui::Windows
             // Details
             // Age
             auto ft = Formatter();
-            ft.Add<int16_t>(smallSceneryEl.GetAge());
+            ft.Add<int16_t>(smallSceneryEl.getAge());
             drawText(rt, screenCoords, STR_TILE_INSPECTOR_SCENERY_AGE, ft, { colours[1] });
 
             // Quadrant value
-            const auto* sceneryEntry = smallSceneryEl.GetEntry();
+            const auto* sceneryEntry = smallSceneryEl.getEntry();
             if (sceneryEntry != nullptr && !sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
             {
-                int16_t quadrant = smallSceneryEl.GetSceneryQuadrant();
+                int16_t quadrant = smallSceneryEl.getSceneryQuadrant();
                 static constexpr StringId _quadrantStringIdx[] = {
                     STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
                     STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
@@ -1366,7 +1366,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Scenery ID
             ft = Formatter();
-            ft.Add<ObjectEntryIndex>(smallSceneryEl.GetEntryIndex());
+            ft.Add<ObjectEntryIndex>(smallSceneryEl.getEntryIndex());
             drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, ft, { colours[1] });
 
             // Properties
@@ -1672,7 +1672,7 @@ namespace OpenRCT2::Ui::Windows
 
                     case TileElementType::smallScenery:
                     {
-                        const auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
+                        const auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
                         snprintf(
                             buffer, sizeof(buffer), "%s (%s)", LanguageGetString(STR_OBJECT_SELECTION_SMALL_SCENERY),
                             sceneryEntry != nullptr ? LanguageGetString(sceneryEntry->name) : "");
@@ -2310,10 +2310,10 @@ namespace OpenRCT2::Ui::Windows
 
                     // This gets the relative rotation, by subtracting the camera's rotation, and wrapping it between 0-3
                     // inclusive
-                    bool N = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((0 - GetCurrentRotation()) & 3);
-                    bool E = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((1 - GetCurrentRotation()) & 3);
-                    bool S = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((2 - GetCurrentRotation()) & 3);
-                    bool W = tileElement->asSmallScenery()->GetSceneryQuadrant() == ((3 - GetCurrentRotation()) & 3);
+                    bool N = tileElement->asSmallScenery()->getSceneryQuadrant() == ((0 - GetCurrentRotation()) & 3);
+                    bool E = tileElement->asSmallScenery()->getSceneryQuadrant() == ((1 - GetCurrentRotation()) & 3);
+                    bool S = tileElement->asSmallScenery()->getSceneryQuadrant() == ((2 - GetCurrentRotation()) & 3);
+                    bool W = tileElement->asSmallScenery()->getSceneryQuadrant() == ((3 - GetCurrentRotation()) & 3);
                     setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_N, N);
                     setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_E, E);
                     setCheckboxValue(WIDX_SCENERY_CHECK_QUARTER_S, S);

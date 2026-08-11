@@ -1784,12 +1784,12 @@ namespace OpenRCT2::RCT1
                     auto src2 = src->asSmallScenery();
 
                     auto entryIndex = _smallSceneryTypeToEntryMap[src2->GetEntryIndex()];
-                    dst2->SetEntryIndex(entryIndex);
-                    dst2->SetAge(src2->GetAge());
-                    dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
-                    dst2->SetPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
+                    dst2->setEntryIndex(entryIndex);
+                    dst2->setAge(src2->GetAge());
+                    dst2->setSceneryQuadrant(src2->GetSceneryQuadrant());
+                    dst2->setPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
                     if (src2->NeedsSupports())
-                        dst2->SetNeedsSupports();
+                        dst2->setNeedsSupports();
 
                     // Copied from [rct2: 0x006A2956]
                     switch (src2->GetEntryIndex())
@@ -1799,15 +1799,15 @@ namespace OpenRCT2::RCT1
                         case RCT1_SCENERY_GEOMETRIC_SCULPTURE_3:
                         case RCT1_SCENERY_GEOMETRIC_SCULPTURE_4:
                         case RCT1_SCENERY_GEOMETRIC_SCULPTURE_5:
-                            dst2->SetSecondaryColour(Drawing::Colour::white);
+                            dst2->setSecondaryColour(Drawing::Colour::white);
                             break;
                         case RCT1_SCENERY_TULIPS_1:
                         case RCT1_SCENERY_TULIPS_2:
-                            dst2->SetPrimaryColour(Drawing::Colour::brightRed);
-                            dst2->SetSecondaryColour(Drawing::Colour::yellow);
+                            dst2->setPrimaryColour(Drawing::Colour::brightRed);
+                            dst2->setSecondaryColour(Drawing::Colour::yellow);
                             break;
                         case RCT1_SCENERY_SMALL_RED_GARDENS:
-                            dst2->SetPrimaryColour(Drawing::Colour::brightRed);
+                            dst2->setPrimaryColour(Drawing::Colour::brightRed);
                             break;
                     }
 

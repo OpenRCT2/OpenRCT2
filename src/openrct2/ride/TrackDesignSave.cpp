@@ -211,17 +211,17 @@ static TrackDesignSceneryElement TrackDesignSaveCreateSmallSceneryDesc(
 {
     auto item = TrackDesignCreateTileElementDesc(object, { loc, smallSceneryElement.getBaseZ() });
     item.setRotation(smallSceneryElement.getDirection());
-    item.setQuadrant(smallSceneryElement.GetSceneryQuadrant());
-    item.primaryColour = smallSceneryElement.GetPrimaryColour();
-    item.secondaryColour = smallSceneryElement.GetSecondaryColour();
-    item.tertiaryColour = smallSceneryElement.GetTertiaryColour();
+    item.setQuadrant(smallSceneryElement.getSceneryQuadrant());
+    item.primaryColour = smallSceneryElement.getPrimaryColour();
+    item.secondaryColour = smallSceneryElement.getSecondaryColour();
+    item.tertiaryColour = smallSceneryElement.getTertiaryColour();
 
     return item;
 }
 
 static TrackDesignAddStatus TrackDesignSaveAddSmallScenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
-    auto entryIndex = sceneryElement->GetEntryIndex();
+    auto entryIndex = sceneryElement->getEntryIndex();
     auto obj = ObjectEntryGetObject(ObjectType::smallScenery, entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
@@ -444,7 +444,7 @@ static void TrackDesignSavePopTileElementDesc(const TrackDesignSceneryElement& d
 
 static void TrackDesignSaveRemoveSmallScenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
-    auto entryIndex = sceneryElement->GetEntryIndex();
+    auto entryIndex = sceneryElement->getEntryIndex();
     auto obj = ObjectEntryGetObject(ObjectType::smallScenery, entryIndex);
     if (obj != nullptr)
     {

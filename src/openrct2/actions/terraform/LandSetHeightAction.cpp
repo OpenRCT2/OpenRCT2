@@ -218,7 +218,7 @@ namespace OpenRCT2::GameActions
             if (_height + 4 < sceneryElement->baseHeight)
                 continue;
 
-            auto* sceneryEntry = sceneryElement->GetEntry();
+            auto* sceneryEntry = sceneryElement->getEntry();
             if (!sceneryEntry->flags.has(SmallSceneryFlag::isTree))
                 continue;
 
@@ -238,7 +238,7 @@ namespace OpenRCT2::GameActions
             if (_height + 4 < sceneryElement->baseHeight)
                 continue;
 
-            auto* sceneryEntry = sceneryElement->GetEntry();
+            auto* sceneryEntry = sceneryElement->getEntry();
             if (sceneryEntry == nullptr)
                 continue;
 

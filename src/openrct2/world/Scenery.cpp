@@ -136,7 +136,7 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
 
         if (tileElement->getType() == TileElementType::smallScenery)
         {
-            tileElement->asSmallScenery()->UpdateAge(sceneryPos);
+            tileElement->asSmallScenery()->updateAge(sceneryPos);
         }
         else if (tileElement->getType() == TileElementType::path)
         {
@@ -163,9 +163,9 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
  *
  *  rct2: 0x006E33D9
  */
-void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
+void SmallSceneryElement::updateAge(const CoordsXY& sceneryPos)
 {
-    auto* sceneryEntry = GetEntry();
+    auto* sceneryEntry = getEntry();
     if (sceneryEntry == nullptr)
     {
         return;
@@ -177,9 +177,9 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (!sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered) || Weather::isDry() || GetAge() < 5)
+    if (!sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered) || Weather::isDry() || getAge() < 5)
     {
-        IncreaseAge(sceneryPos);
+        increaseAge(sceneryPos);
         return;
     }
 
@@ -201,13 +201,13 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
             case TileElementType::entrance:
             case TileElementType::path:
                 MapInvalidateTileZoom1({ sceneryPos, tileElementAbove->getBaseZ(), tileElementAbove->getClearanceZ() });
-                IncreaseAge(sceneryPos);
+                increaseAge(sceneryPos);
                 return;
             case TileElementType::smallScenery:
-                sceneryEntry = tileElementAbove->asSmallScenery()->GetEntry();
+                sceneryEntry = tileElementAbove->asSmallScenery()->getEntry();
                 if (sceneryEntry->flags.has(SmallSceneryFlag::vOffsetCentre))
                 {
-                    IncreaseAge(sceneryPos);
+                    increaseAge(sceneryPos);
                     return;
                 }
                 break;
@@ -217,7 +217,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
     }
 
     // Reset age / water plant
-    SetAge(0);
+    setAge(0);
     MapInvalidateTileZoom1({ sceneryPos, getBaseZ(), getClearanceZ() });
 }
 

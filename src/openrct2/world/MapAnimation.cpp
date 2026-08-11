@@ -147,7 +147,7 @@ template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateSmallSceneryAnimation(
     const SmallSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto* const entry = scenery.GetEntry();
+    const auto* const entry = scenery.getEntry();
     if (entry == nullptr)
     {
         return std::nullopt;
@@ -523,7 +523,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::smallScenery:
         {
             const auto* const scenery = element.asSmallScenery();
-            const auto* const entry = scenery->GetEntry();
+            const auto* const entry = scenery->getEntry();
             if (entry != nullptr && entry->flags.has(SmallSceneryFlag::isAnimated))
             {
                 if (entry->flags.has(SmallSceneryFlag::isClock))

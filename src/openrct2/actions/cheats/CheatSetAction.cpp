@@ -468,7 +468,7 @@ namespace OpenRCT2::GameActions
         {
             if (it.element->getType() == TileElementType::smallScenery)
             {
-                it.element->asSmallScenery()->SetAge(0);
+                it.element->asSmallScenery()->setAge(0);
             }
         } while (TileElementIteratorNext(&it));
 

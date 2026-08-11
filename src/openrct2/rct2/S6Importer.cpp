@@ -1449,13 +1449,13 @@ namespace OpenRCT2::RCT2
                     auto dst2 = dst->asSmallScenery();
                     auto src2 = src->asSmallScenery();
 
-                    dst2->SetEntryIndex(src2->GetEntryIndex());
-                    dst2->SetAge(src2->GetAge());
-                    dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
-                    dst2->SetPrimaryColour(src2->GetPrimaryColour());
-                    dst2->SetSecondaryColour(src2->GetSecondaryColour());
+                    dst2->setEntryIndex(src2->GetEntryIndex());
+                    dst2->setAge(src2->GetAge());
+                    dst2->setSceneryQuadrant(src2->GetSceneryQuadrant());
+                    dst2->setPrimaryColour(src2->GetPrimaryColour());
+                    dst2->setSecondaryColour(src2->GetSecondaryColour());
                     if (src2->NeedsSupports())
-                        dst2->SetNeedsSupports();
+                        dst2->setNeedsSupports();
 
                     break;
                 }

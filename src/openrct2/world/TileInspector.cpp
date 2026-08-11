@@ -902,7 +902,7 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             // Set quadrant index
-            tileElement->asSmallScenery()->SetSceneryQuadrant(quarterIndex);
+            tileElement->asSmallScenery()->setSceneryQuadrant(quarterIndex);
 
             // Update collision
             tileElement->setOccupiedQuadrants(1 << ((quarterIndex + 2) & 3));

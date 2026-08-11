@@ -477,7 +477,7 @@ namespace OpenRCT2::Ui
         {
             case ViewportInteractionItem::scenery:
             {
-                auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
+                auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
                 ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
                 ft.Add<StringId>(sceneryEntry->name);
                 SetMapTooltip(ft);
@@ -619,8 +619,8 @@ namespace OpenRCT2::Ui
     static void ViewportInteractionRemoveScenery(const SmallSceneryElement& smallSceneryElement, const CoordsXY& mapCoords)
     {
         auto removeSceneryAction = GameActions::SmallSceneryRemoveAction(
-            { mapCoords.x, mapCoords.y, smallSceneryElement.getBaseZ() }, smallSceneryElement.GetSceneryQuadrant(),
-            smallSceneryElement.GetEntryIndex());
+            { mapCoords.x, mapCoords.y, smallSceneryElement.getBaseZ() }, smallSceneryElement.getSceneryQuadrant(),
+            smallSceneryElement.getEntryIndex());
 
         GameActions::Execute(&removeSceneryAction, getGameState());
     }

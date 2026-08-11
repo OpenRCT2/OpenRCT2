@@ -1621,11 +1621,11 @@ namespace OpenRCT2
             {
                 if (tileElement->getType() != TileElementType::smallScenery)
                     continue;
-                if (tileElement->asSmallScenery()->GetSceneryQuadrant() != quadrant)
+                if (tileElement->asSmallScenery()->getSceneryQuadrant() != quadrant)
                     continue;
                 if (tileElement->baseHeight != sceneryTileCoords.z)
                     continue;
-                if (tileElement->asSmallScenery()->GetEntryIndex() != type)
+                if (tileElement->asSmallScenery()->getEntryIndex() != type)
                     continue;
 
                 return tileElement->asSmallScenery();
@@ -1812,7 +1812,7 @@ namespace OpenRCT2
             if (tileElement->getType() != TileElementType::smallScenery)
                 return true;
 
-            auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
             if (sceneryEntry == nullptr)
             {
                 return false;

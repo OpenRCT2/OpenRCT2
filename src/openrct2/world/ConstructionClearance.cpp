@@ -44,7 +44,7 @@ static bool MapPlaceClearFunc(
     if (is_scenery && !flags.has(CommandFlag::trackDesign))
         return false;
 
-    auto* scenery = (*tile_element)->asSmallScenery()->GetEntry();
+    auto* scenery = (*tile_element)->asSmallScenery()->getEntry();
 
     auto& park = getGameState().park;
     if (park.flags.has(ParkFlag::forbidTreeRemoval))
@@ -355,7 +355,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             break;
         case TileElementType::smallScenery:
         {
-            auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);

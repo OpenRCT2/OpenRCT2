@@ -181,8 +181,8 @@ namespace OpenRCT2::GameActions
                         if (_itemsToClear.has(ClearableItem::smallScenery))
                         {
                             auto removeSceneryAction = SmallSceneryRemoveAction(
-                                { tilePos, tileElement->getBaseZ() }, tileElement->asSmallScenery()->GetSceneryQuadrant(),
-                                tileElement->asSmallScenery()->GetEntryIndex());
+                                { tilePos, tileElement->getBaseZ() }, tileElement->asSmallScenery()->getSceneryQuadrant(),
+                                tileElement->asSmallScenery()->getEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
                             auto res = executing ? ExecuteNested(&removeSceneryAction, gameState)

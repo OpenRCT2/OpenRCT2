@@ -474,7 +474,7 @@ bool TrackGetIsSheltered(const CoordsXYZ& input)
         if (tileElement->getType() != TileElementType::smallScenery)
             continue;
 
-        auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
         if (sceneryEntry == nullptr)
             continue;
 

@@ -1125,12 +1125,12 @@ namespace OpenRCT2
                 if (abs(NextLoc.z - tile_element->getBaseZ()) > 4 * kCoordsZStep)
                     continue;
 
-                const auto* sceneryEntry = tile_element->asSmallScenery()->GetEntry();
+                const auto* sceneryEntry = tile_element->asSmallScenery()->getEntry();
 
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
                     continue;
 
-                tile_element->asSmallScenery()->SetAge(0);
+                tile_element->asSmallScenery()->setAge(0);
                 MapInvalidateTileZoom0({ actionLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
                 staffGardensWatered = AddClamp(staffGardensWatered, 1u);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -1507,21 +1507,21 @@ namespace OpenRCT2
                     continue;
                 }
 
-                auto* sceneryEntry = tile_element->asSmallScenery()->GetEntry();
+                auto* sceneryEntry = tile_element->asSmallScenery()->getEntry();
 
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
                 {
                     continue;
                 }
 
-                if (tile_element->asSmallScenery()->GetAge() < kSceneryWitherAgeThreshold2)
+                if (tile_element->asSmallScenery()->getAge() < kSceneryWitherAgeThreshold2)
                 {
                     if (chosen_position >= 4)
                     {
                         continue;
                     }
 
-                    if (tile_element->asSmallScenery()->GetAge() < kSceneryWitherAgeThreshold1)
+                    if (tile_element->asSmallScenery()->getAge() < kSceneryWitherAgeThreshold1)
                     {
                         continue;
                     }

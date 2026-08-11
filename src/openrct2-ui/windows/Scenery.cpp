@@ -2246,15 +2246,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 case ViewportInteractionItem::scenery:
                 {
-                    auto* sceneryEntry = info.Element->asSmallScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asSmallScenery()->getEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.hasAny(SmallSceneryFlag::hasPrimaryColour, SmallSceneryFlag::hasGlass))
                         return;
 
-                    uint8_t quadrant = info.Element->asSmallScenery()->GetSceneryQuadrant();
+                    uint8_t quadrant = info.Element->asSmallScenery()->getSceneryQuadrant();
                     auto repaintScenery = GameActions::SmallScenerySetColourAction(
-                        { info.Loc, info.Element->getBaseZ() }, quadrant, info.Element->asSmallScenery()->GetEntryIndex(),
+                        { info.Loc, info.Element->getBaseZ() }, quadrant, info.Element->asSmallScenery()->getEntryIndex(),
                         _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2324,13 +2324,13 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::scenery:
                 {
                     SmallSceneryElement* sceneryElement = info.Element->asSmallScenery();
-                    auto entryIndex = sceneryElement->GetEntryIndex();
+                    auto entryIndex = sceneryElement->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
-                            sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
+                            { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->getPrimaryColour(),
+                            sceneryElement->getSecondaryColour(), sceneryElement->getTertiaryColour(),
                             sceneryElement->getDirectionWithOffset(GetCurrentRotation()));
                     }
                     break;

@@ -387,7 +387,7 @@ namespace OpenRCT2::Editor
                     break;
                 }
                 case TileElementType::smallScenery:
-                    type = iter.element->asSmallScenery()->GetEntryIndex();
+                    type = iter.element->asSmallScenery()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::smallScenery, type, ObjectSelectionFlags::InUse);
                     break;
                 case TileElementType::entrance:

@@ -567,7 +567,7 @@ namespace OpenRCT2::GameActions
                 }
                 case TileElementType::smallScenery:
                 {
-                    auto sceneryEntry = tileElement->asSmallScenery()->GetEntry();
+                    auto sceneryEntry = tileElement->asSmallScenery()->getEntry();
                     if (sceneryEntry != nullptr && sceneryEntry->flags.has(SmallSceneryFlag::prohibitWalls))
                     {
                         MapGetObstructionErrorText(tileElement, res);

@@ -138,13 +138,13 @@ namespace OpenRCT2::GameActions
             if (isGhost && sceneryElement->isGhost() == false)
                 continue;
 
-            if (sceneryElement->GetSceneryQuadrant() != _quadrant)
+            if (sceneryElement->getSceneryQuadrant() != _quadrant)
                 continue;
 
             if (sceneryElement->getBaseZ() != _loc.z)
                 continue;
 
-            if (sceneryElement->GetEntryIndex() != _sceneryType)
+            if (sceneryElement->getEntryIndex() != _sceneryType)
                 continue;
 
             return sceneryElement->as<TileElement>();

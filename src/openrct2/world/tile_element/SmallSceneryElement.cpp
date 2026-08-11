@@ -19,38 +19,38 @@
 
 namespace OpenRCT2
 {
-    uint8_t SmallSceneryElement::GetSceneryQuadrant() const
+    uint8_t SmallSceneryElement::getSceneryQuadrant() const
     {
         return (this->type & kTileElementQuadrantMask) >> 6;
     }
 
-    void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
+    void SmallSceneryElement::setSceneryQuadrant(uint8_t newQuadrant)
     {
         type &= ~kTileElementQuadrantMask;
         type |= (newQuadrant << 6);
     }
 
-    uint16_t SmallSceneryElement::GetEntryIndex() const
+    uint16_t SmallSceneryElement::getEntryIndex() const
     {
         return this->entryIndex;
     }
 
-    void SmallSceneryElement::SetEntryIndex(uint16_t newIndex)
+    void SmallSceneryElement::setEntryIndex(uint16_t newIndex)
     {
         this->entryIndex = newIndex;
     }
 
-    uint8_t SmallSceneryElement::GetAge() const
+    uint8_t SmallSceneryElement::getAge() const
     {
         return this->age;
     }
 
-    void SmallSceneryElement::SetAge(uint8_t newAge)
+    void SmallSceneryElement::setAge(uint8_t newAge)
     {
         this->age = newAge;
     }
 
-    void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
+    void SmallSceneryElement::increaseAge(const CoordsXY& sceneryPos)
     {
         if (isGhost())
             return;
@@ -62,7 +62,7 @@ namespace OpenRCT2
             // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
             if (newAge == kSceneryWitherAgeThreshold1 || newAge == kSceneryWitherAgeThreshold2)
             {
-                auto* sceneryEntry = GetEntry();
+                auto* sceneryEntry = getEntry();
 
                 if (sceneryEntry->flags.has(SmallSceneryFlag::canWither))
                 {
@@ -72,50 +72,50 @@ namespace OpenRCT2
         }
     }
 
-    Drawing::Colour SmallSceneryElement::GetPrimaryColour() const
+    Drawing::Colour SmallSceneryElement::getPrimaryColour() const
     {
-        return Colour[0];
+        return colour[0];
     }
 
-    Drawing::Colour SmallSceneryElement::GetSecondaryColour() const
+    Drawing::Colour SmallSceneryElement::getSecondaryColour() const
     {
-        return Colour[1];
+        return colour[1];
     }
 
-    Drawing::Colour SmallSceneryElement::GetTertiaryColour() const
+    Drawing::Colour SmallSceneryElement::getTertiaryColour() const
     {
-        return Colour[2];
+        return colour[2];
     }
 
-    void SmallSceneryElement::SetPrimaryColour(Drawing::Colour newColour)
-    {
-        assert(Drawing::colourIsValid(newColour));
-        Colour[0] = newColour;
-    }
-
-    void SmallSceneryElement::SetSecondaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setPrimaryColour(Drawing::Colour newColour)
     {
         assert(Drawing::colourIsValid(newColour));
-        Colour[1] = newColour;
+        colour[0] = newColour;
     }
 
-    void SmallSceneryElement::SetTertiaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setSecondaryColour(Drawing::Colour newColour)
     {
         assert(Drawing::colourIsValid(newColour));
-        Colour[2] = newColour;
+        colour[1] = newColour;
     }
 
-    bool SmallSceneryElement::NeedsSupports() const
+    void SmallSceneryElement::setTertiaryColour(Drawing::Colour newColour)
     {
-        return static_cast<bool>(Flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
+        assert(Drawing::colourIsValid(newColour));
+        colour[2] = newColour;
     }
 
-    void SmallSceneryElement::SetNeedsSupports()
+    bool SmallSceneryElement::needsSupports() const
     {
-        Flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
+        return static_cast<bool>(flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
     }
 
-    const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
+    void SmallSceneryElement::setNeedsSupports()
+    {
+        flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
+    }
+
+    const SmallSceneryEntry* SmallSceneryElement::getEntry() const
     {
         return ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
     }
