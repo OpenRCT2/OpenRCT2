@@ -1567,7 +1567,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Details
             // Banner info
-            auto* banner = bannerEl.GetBanner();
+            auto* banner = bannerEl.getBanner();
             if (banner != nullptr)
             {
                 Formatter ft;
@@ -1701,7 +1701,7 @@ namespace OpenRCT2::Ui::Windows
                     case TileElementType::banner:
                         snprintf(
                             buffer, sizeof(buffer), "%s (%u)", LanguageGetString(STR_BANNER_WINDOW_TITLE),
-                            tileElement->asBanner()->GetIndex().ToUnderlying());
+                            tileElement->asBanner()->getIndex().ToUnderlying());
                         typeName = buffer;
                         break;
 
@@ -2421,16 +2421,16 @@ namespace OpenRCT2::Ui::Windows
 
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_NE,
-                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((0 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->getAllowedEdges() & (1 << ((0 - GetCurrentRotation()) & 3))));
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_SE,
-                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((1 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->getAllowedEdges() & (1 << ((1 - GetCurrentRotation()) & 3))));
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_SW,
-                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((2 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->getAllowedEdges() & (1 << ((2 - GetCurrentRotation()) & 3))));
                     setCheckboxValue(
                         WIDX_BANNER_CHECK_BLOCK_NW,
-                        (tileElement->asBanner()->GetAllowedEdges() & (1 << ((3 - GetCurrentRotation()) & 3))));
+                        (tileElement->asBanner()->getAllowedEdges() & (1 << ((3 - GetCurrentRotation()) & 3))));
                     break;
 
                 default:

@@ -1291,7 +1291,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::banner:
             {
                 auto* el = element->asBanner();
-                return JS_NewUint32(ctx, el->GetBanner()->type);
+                return JS_NewUint32(ctx, el->getBanner()->type);
             }
             default:
                 return JS_NULL;
@@ -1357,7 +1357,7 @@ namespace OpenRCT2::Scripting
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
                 auto* el = element->asBanner();
-                el->GetBanner()->type = index;
+                el->getBanner()->type = index;
                 Invalidate(data);
                 break;
             }
@@ -1483,7 +1483,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::banner:
             {
                 auto* el = element->asBanner();
-                return JS_NewUint32(ctx, EnumValue(el->GetBanner()->colour));
+                return JS_NewUint32(ctx, EnumValue(el->getBanner()->colour));
             }
             default:
                 return JS_NULL;
@@ -1521,7 +1521,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::banner:
             {
                 auto* el = element->asBanner();
-                el->GetBanner()->colour = static_cast<Drawing::Colour>(value);
+                el->getBanner()->colour = static_cast<Drawing::Colour>(value);
                 Invalidate(data);
                 break;
             }
@@ -1555,7 +1555,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::banner:
             {
                 auto* el = element->asBanner();
-                return JS_NewUint32(ctx, EnumValue(el->GetBanner()->textColour));
+                return JS_NewUint32(ctx, EnumValue(el->getBanner()->textColour));
             }
             default:
                 return JS_NULL;
@@ -1593,7 +1593,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::banner:
             {
                 auto* el = element->asBanner();
-                el->GetBanner()->textColour = static_cast<Drawing::TextColour>(value);
+                el->getBanner()->textColour = static_cast<Drawing::TextColour>(value);
                 Invalidate(data);
                 break;
             }
@@ -1711,10 +1711,10 @@ namespace OpenRCT2::Scripting
                 if (JS_IsNumber(jsValue))
                 {
                     JS_UNPACK_UINT32(value, ctx, jsValue);
-                    el->SetIndex(BannerIndex::FromUnderlying(value));
+                    el->setIndex(BannerIndex::FromUnderlying(value));
                 }
                 else
-                    el->SetIndex(BannerIndex::GetNull());
+                    el->setIndex(BannerIndex::GetNull());
                 Invalidate(data);
                 break;
             }
@@ -2204,7 +2204,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::banner:
             {
                 auto* el = element->asBanner();
-                return JS_NewUint32(ctx, el->GetPosition());
+                return JS_NewUint32(ctx, el->getPosition());
             }
             case TileElementType::path:
             case TileElementType::surface:
@@ -2228,7 +2228,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::banner:
             {
                 auto* el = element->asBanner();
-                el->SetPosition(value);
+                el->setPosition(value);
                 Invalidate(data);
                 break;
             }
@@ -2284,7 +2284,7 @@ namespace OpenRCT2::Scripting
         auto data = gScTileElement.GetOpaque<OpaqueTileElementData*>(thisValue);
         auto* el = data->element->asBanner();
         if (el != nullptr)
-            return JS_NewBool(ctx, el->GetBanner()->flags.has(BannerFlag::noEntry));
+            return JS_NewBool(ctx, el->getBanner()->flags.has(BannerFlag::noEntry));
         else
             return JS_NULL;
     }
@@ -2296,7 +2296,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asBanner();
         if (el != nullptr)
         {
-            el->GetBanner()->flags.set(BannerFlag::noEntry, value);
+            el->getBanner()->flags.set(BannerFlag::noEntry, value);
             Invalidate(data);
         }
         return JS_UNDEFINED;

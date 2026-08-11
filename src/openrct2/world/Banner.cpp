@@ -255,7 +255,7 @@ static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
             const auto tilePos = TileCoordsXY{ x, y };
             for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.ToCoordsXY()))
             {
-                auto bannerIndex = bannerElement->GetIndex();
+                auto bannerIndex = bannerElement->getIndex();
                 if (bannerIndex == BannerIndex::GetNull())
                     continue;
 
@@ -293,14 +293,14 @@ static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElement
 {
     // Sort the banners by index
     std::sort(bannerElements.begin(), bannerElements.end(), [](const BannerElementWithPos& a, const BannerElementWithPos& b) {
-        return a.Element->GetIndex() < b.Element->GetIndex();
+        return a.Element->getIndex() < b.Element->getIndex();
     });
 
     // Create a list of all banners with duplicate indices.
     std::vector<BannerElementWithPos> duplicates;
     for (size_t i = 1; i < bannerElements.size(); i++)
     {
-        if (bannerElements[i - 1].Element->GetIndex() == bannerElements[i].Element->GetIndex())
+        if (bannerElements[i - 1].Element->getIndex() == bannerElements[i].Element->getIndex())
         {
             duplicates.push_back(bannerElements[i]);
         }
@@ -309,7 +309,7 @@ static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElement
     // For each duplicate, create a new banner and copy the old data
     for (const auto& duplicate : duplicates)
     {
-        const auto oldIndex = duplicate.Element->GetIndex();
+        const auto oldIndex = duplicate.Element->getIndex();
         const auto* oldBanner = GetBanner(oldIndex);
         if (oldBanner == nullptr)
         {
@@ -331,7 +331,7 @@ static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElement
         newBanner->id = newBannerId;
 
         // Assign the new banner index to the tile element.
-        duplicate.Element->SetIndex(newBannerId);
+        duplicate.Element->setIndex(newBannerId);
     }
 }
 
@@ -341,7 +341,7 @@ static void BannerFixPositions(std::vector<BannerElementWithPos>& bannerElements
 {
     for (const auto& entry : bannerElements)
     {
-        const auto index = entry.Element->GetIndex();
+        const auto index = entry.Element->getIndex();
         auto* banner = GetBanner(index);
         if (banner == nullptr)
         {

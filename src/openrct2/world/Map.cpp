@@ -424,7 +424,7 @@ namespace OpenRCT2
         {
             if (element->baseHeight != bannerTilePos.z)
                 continue;
-            if (element->GetPosition() != position)
+            if (element->getPosition() != position)
                 continue;
             return element;
         }
@@ -1450,7 +1450,7 @@ namespace OpenRCT2
             case TileElementType::banner:
             {
                 auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                    { loc.x, loc.y, element->getBaseZ(), element->asBanner()->GetPosition() });
+                    { loc.x, loc.y, element->getBaseZ(), element->asBanner()->getPosition() });
                 auto result = GameActions::ExecuteNested(&bannerRemoveAction, gameState);
                 // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
                 if (result.error != GameActions::Status::ok)

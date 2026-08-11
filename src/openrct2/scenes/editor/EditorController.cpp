@@ -425,7 +425,7 @@ namespace OpenRCT2::Editor
                     break;
                 case TileElementType::banner:
                 {
-                    auto banner = iter.element->asBanner()->GetBanner();
+                    auto banner = iter.element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         type = banner->type;

@@ -1205,7 +1205,7 @@ namespace OpenRCT2
                         {
                             continue;
                         }
-                        edges &= tileElement[elementIndex].asBanner()->GetAllowedEdges();
+                        edges &= tileElement[elementIndex].asBanner()->getAllowedEdges();
                     } while (!tileElement[elementIndex++].isLastForTile());
                 }
 

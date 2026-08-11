@@ -69,14 +69,14 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto bannerIndex = bannerElement->GetIndex();
+        auto bannerIndex = bannerElement->getIndex();
         if (bannerIndex == BannerIndex::GetNull())
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto banner = bannerElement->GetBanner();
+        auto banner = bannerElement->getBanner();
         if (banner == nullptr)
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
@@ -109,14 +109,14 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto bannerIndex = bannerElement->GetIndex();
+        auto bannerIndex = bannerElement->getIndex();
         if (bannerIndex == BannerIndex::GetNull())
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto banner = bannerElement->GetBanner();
+        auto banner = bannerElement->getBanner();
         if (banner == nullptr)
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
@@ -145,7 +145,7 @@ namespace OpenRCT2::GameActions
                 continue;
             if (bannerElement->isGhost() && !GetFlags().has(CommandFlag::ghost))
                 continue;
-            if (bannerElement->GetPosition() != _loc.direction)
+            if (bannerElement->getPosition() != _loc.direction)
                 continue;
 
             return bannerElement;

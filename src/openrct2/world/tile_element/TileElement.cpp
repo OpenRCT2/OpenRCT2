@@ -45,7 +45,7 @@ namespace OpenRCT2
                 return asWall()->GetBannerIndex();
             }
             case TileElementType::banner:
-                return asBanner()->GetIndex();
+                return asBanner()->getIndex();
             default:
                 return BannerIndex::GetNull();
         }
@@ -62,7 +62,7 @@ namespace OpenRCT2
                 asLargeScenery()->SetBannerIndex(bannerIndex);
                 break;
             case TileElementType::banner:
-                asBanner()->SetIndex(bannerIndex);
+                asBanner()->setIndex(bannerIndex);
                 break;
             default:
                 LOG_ERROR("Tried to set banner index on unsuitable tile element!");

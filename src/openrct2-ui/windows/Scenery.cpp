@@ -2293,14 +2293,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->asBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                         {
                             auto repaintScenery = GameActions::BannerSetColourAction(
-                                { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->GetPosition() },
+                                { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->getPosition() },
                                 _sceneryPrimaryColour);
 
                             GameActions::Execute(&repaintScenery, gameState);
@@ -2364,7 +2364,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->asBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         auto sceneryEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);

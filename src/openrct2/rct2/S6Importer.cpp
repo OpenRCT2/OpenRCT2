@@ -1565,8 +1565,8 @@ namespace OpenRCT2::RCT2
                     auto dst2 = dst->asBanner();
                     auto src2 = src->asBanner();
 
-                    dst2->SetPosition(src2->GetPosition());
-                    dst2->SetAllowedEdges(src2->GetAllowedEdges());
+                    dst2->setPosition(src2->GetPosition());
+                    dst2->setAllowedEdges(src2->GetAllowedEdges());
 
                     auto bannerIndex = src2->GetIndex();
                     if (bannerIndex < std::size(_s6.Banners))
@@ -1575,17 +1575,17 @@ namespace OpenRCT2::RCT2
                         auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                         if (dstBanner == nullptr)
                         {
-                            dst2->SetIndex(BannerIndex::GetNull());
+                            dst2->setIndex(BannerIndex::GetNull());
                         }
                         else
                         {
                             ImportBanner(dstBanner, srcBanner);
-                            dst2->SetIndex(BannerIndex::FromUnderlying(bannerIndex));
+                            dst2->setIndex(BannerIndex::FromUnderlying(bannerIndex));
                         }
                     }
                     else
                     {
-                        dst2->SetIndex(BannerIndex::GetNull());
+                        dst2->setIndex(BannerIndex::GetNull());
                     }
                     break;
                 }

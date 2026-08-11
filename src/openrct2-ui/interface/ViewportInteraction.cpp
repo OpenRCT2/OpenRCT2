@@ -442,7 +442,7 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::banner:
             {
-                auto banner = tileElement->asBanner()->GetBanner();
+                auto banner = tileElement->asBanner()->getBanner();
                 if (banner != nullptr)
                 {
                     auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
@@ -605,7 +605,7 @@ namespace OpenRCT2::Ui
                 ViewportInteractionRemoveLargeScenery(*info.Element->asLargeScenery(), info.Loc);
                 break;
             case ViewportInteractionItem::banner:
-                ContextOpenDetailWindow(WindowDetail::banner, info.Element->asBanner()->GetIndex().ToUnderlying());
+                ContextOpenDetailWindow(WindowDetail::banner, info.Element->asBanner()->getIndex().ToUnderlying());
                 break;
         }
 
