@@ -68,19 +68,12 @@ namespace OpenRCT2
 
     bool LargeSceneryElement::isAccounted() const
     {
-        return (flags2 & LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED) != 0;
+        return flags2.has(LargeSceneryElementFlag::accounted);
     }
 
     void LargeSceneryElement::setIsAccounted(bool isAccounted)
     {
-        if (isAccounted)
-        {
-            flags2 |= LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED;
-        }
-        else
-        {
-            flags2 &= ~LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED;
-        }
+        flags2.set(LargeSceneryElementFlag::accounted, isAccounted);
     }
 
     ObjectEntryIndex LargeSceneryElement::getEntryIndex() const
