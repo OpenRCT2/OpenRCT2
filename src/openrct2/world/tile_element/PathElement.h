@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../core/FlagHolder.hpp"
 #include "TileElementBase.h"
 
 namespace OpenRCT2
@@ -38,16 +39,17 @@ namespace OpenRCT2
         FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
     };
 
-    enum
+    enum class FootpathElementFlag : uint8_t
     {
-        FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED = 1 << 0,
-        FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER = (1 << 1),
-        FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST = (1 << 2),
-        FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
-        FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
-        FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 5),
-        FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS = (1 << 6),
+        isSloped,
+        hasQueueBanner,
+        additionIsGhost,
+        blockedByVehicle,
+        additionIsBroken,
+        isLegacyPathEntry,
+        hasJunctionRailings,
     };
+    using FootpathElementFlags = FlagHolder<uint8_t, FootpathElementFlag>;
 
 #pragma pack(push, 1)
     struct PathElement : TileElementBase
@@ -59,7 +61,7 @@ namespace OpenRCT2
         ObjectEntryIndex railingsIndex; // 7
         uint8_t additions;              // 9 (0 means no addition)
         uint8_t edgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
-        uint8_t flags2;                 // 11
+        FootpathElementFlags flags2;    // 11
         uint8_t slopeDirection;         // 12
         union
         {

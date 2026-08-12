@@ -23,26 +23,22 @@ namespace OpenRCT2
 {
     bool PathElement::isSloped() const
     {
-        return (flags2 & FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED) != 0;
+        return flags2.has(FootpathElementFlag::isSloped);
     }
 
     void PathElement::setSloped(bool isSloped)
     {
-        flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED;
-        if (isSloped)
-            flags2 |= FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED;
+        flags2.set(FootpathElementFlag::isSloped, isSloped);
     }
 
     bool PathElement::hasJunctionRailings() const
     {
-        return flags2 & FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+        return flags2.has(FootpathElementFlag::hasJunctionRailings);
     }
 
     void PathElement::setJunctionRailings(bool hasJunctionRailings)
     {
-        flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
-        if (hasJunctionRailings)
-            flags2 |= FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+        flags2.set(FootpathElementFlag::hasJunctionRailings, hasJunctionRailings);
     }
 
     Direction PathElement::getSlopeDirection() const
@@ -69,48 +65,32 @@ namespace OpenRCT2
 
     bool PathElement::hasQueueBanner() const
     {
-        return (flags2 & FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER) != 0;
+        return flags2.has(FootpathElementFlag::hasQueueBanner);
     }
 
     void PathElement::setHasQueueBanner(bool hasQueueBanner)
     {
-        flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER;
-        if (hasQueueBanner)
-            flags2 |= FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER;
+        flags2.set(FootpathElementFlag::hasQueueBanner, hasQueueBanner);
     }
 
     bool PathElement::isBroken() const
     {
-        return (flags2 & FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN) != 0;
+        return flags2.has(FootpathElementFlag::additionIsBroken);
     }
 
     void PathElement::setIsBroken(bool isBroken)
     {
-        if (isBroken)
-        {
-            flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN;
-        }
-        else
-        {
-            flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN;
-        }
+        flags2.set(FootpathElementFlag::additionIsBroken, isBroken);
     }
 
     bool PathElement::isBlockedByVehicle() const
     {
-        return (flags2 & FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE) != 0;
+        return flags2.has(FootpathElementFlag::blockedByVehicle);
     }
 
     void PathElement::setIsBlockedByVehicle(bool isBlocked)
     {
-        if (isBlocked)
-        {
-            flags2 |= FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE;
-        }
-        else
-        {
-            flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE;
-        }
+        flags2.set(FootpathElementFlag::blockedByVehicle, isBlocked);
     }
 
     ::StationIndex PathElement::getStationIndex() const
@@ -171,19 +151,17 @@ namespace OpenRCT2
 
     bool PathElement::additionIsGhost() const
     {
-        return (flags2 & FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST) != 0;
+        return flags2.has(FootpathElementFlag::additionIsGhost);
     }
 
     void PathElement::setAdditionIsGhost(bool isGhost)
     {
-        flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
-        if (isGhost)
-            flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
+        flags2.set(FootpathElementFlag::additionIsGhost, isGhost);
     }
 
     ObjectEntryIndex PathElement::getLegacyPathEntryIndex() const
     {
-        if (flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        if (flags2.has(FootpathElementFlag::isLegacyPathEntry))
             return surfaceIndex;
 
         return kObjectEntryIndexNull;
@@ -198,12 +176,12 @@ namespace OpenRCT2
     {
         surfaceIndex = newIndex;
         railingsIndex = kObjectEntryIndexNull;
-        flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+        flags2.set(FootpathElementFlag::isLegacyPathEntry);
     }
 
     bool PathElement::hasLegacyPathEntry() const
     {
-        return (flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
+        return flags2.has(FootpathElementFlag::isLegacyPathEntry);
     }
 
     const PathSurfaceDescriptor* PathElement::getSurfaceDescriptor() const
@@ -247,7 +225,7 @@ namespace OpenRCT2
 
     ObjectEntryIndex PathElement::getSurfaceEntryIndex() const
     {
-        if (flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        if (flags2.has(FootpathElementFlag::isLegacyPathEntry))
             return kObjectEntryIndexNull;
 
         return surfaceIndex;
@@ -262,12 +240,12 @@ namespace OpenRCT2
     void PathElement::setSurfaceEntryIndex(ObjectEntryIndex newIndex)
     {
         surfaceIndex = newIndex;
-        flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+        flags2.unset(FootpathElementFlag::isLegacyPathEntry);
     }
 
     ObjectEntryIndex PathElement::getRailingsEntryIndex() const
     {
-        if (flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        if (flags2.has(FootpathElementFlag::isLegacyPathEntry))
             return kObjectEntryIndexNull;
 
         return railingsIndex;
@@ -282,7 +260,7 @@ namespace OpenRCT2
     void PathElement::setRailingsEntryIndex(ObjectEntryIndex newIndex)
     {
         railingsIndex = newIndex;
-        flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+        flags2.unset(FootpathElementFlag::isLegacyPathEntry);
     }
 
     uint8_t PathElement::getQueueBannerDirection() const
