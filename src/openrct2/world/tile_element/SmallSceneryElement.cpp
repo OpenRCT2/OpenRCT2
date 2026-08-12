@@ -107,12 +107,12 @@ namespace OpenRCT2
 
     bool SmallSceneryElement::needsSupports() const
     {
-        return static_cast<bool>(flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
+        return flags2.has(SmallSceneryElementFlag::needsSupports);
     }
 
     void SmallSceneryElement::setNeedsSupports()
     {
-        flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
+        return flags2.set(SmallSceneryElementFlag::needsSupports);
     }
 
     const SmallSceneryEntry* SmallSceneryElement::getEntry() const

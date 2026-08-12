@@ -19,10 +19,11 @@ namespace OpenRCT2::Drawing
 
 namespace OpenRCT2
 {
-    enum
+    enum class SmallSceneryElementFlag : uint8_t
     {
-        MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS = (1 << 0),
+        needsSupports,
     };
+    using SmallSceneryElementFlags = FlagHolder<uint8_t, SmallSceneryElementFlag>;
 
 #pragma pack(push, 1)
     struct SmallSceneryElement : TileElementBase
@@ -30,10 +31,10 @@ namespace OpenRCT2
         static constexpr TileElementType kElementType = TileElementType::smallScenery;
 
     private:
-        ObjectEntryIndex entryIndex; // 5
-        uint8_t age;                 // 7
-        Drawing::Colour colour[3];   // 8
-        uint8_t flags2;              // B
+        ObjectEntryIndex entryIndex;     // 5
+        uint8_t age;                     // 7
+        Drawing::Colour colour[3];       // 8
+        SmallSceneryElementFlags flags2; // B
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
         uint8_t pad0B[4];
