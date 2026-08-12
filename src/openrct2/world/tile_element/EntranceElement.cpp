@@ -17,18 +17,18 @@
 namespace OpenRCT2
 {
     // rct2: 0x0097B974
-    static constexpr uint16_t kEntranceDirections[] = {
-        (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,
-        (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_EXIT,
-        (4 | 1), 0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_PARK_ENTRANCE
-    };
+    static constexpr std::array<std::array<uint16_t, 8>, 3> kEntranceDirections = { {
+        { (4), 0, 0, 0, 0, 0, 0, 0 },     // EntranceType::rideEntrance,
+        { (4), 0, 0, 0, 0, 0, 0, 0 },     // EntranceType::rideExit,
+        { (4 | 1), 0, 0, 0, 0, 0, 0, 0 }, // EntranceType::parkEntrance
+    } };
 
-    uint8_t EntranceElement::getEntranceType() const
+    EntranceType EntranceElement::getEntranceType() const
     {
         return entranceType;
     }
 
-    void EntranceElement::setEntranceType(uint8_t newType)
+    void EntranceElement::setEntranceType(EntranceType newType)
     {
         entranceType = newType;
     }
@@ -129,7 +129,7 @@ namespace OpenRCT2
 
     int32_t EntranceElement::getDirections() const
     {
-        return kEntranceDirections[(getEntranceType() * 8) + getSequenceIndex()];
+        return kEntranceDirections[EnumValue(getEntranceType())][getSequenceIndex()];
     }
 
     ObjectEntryIndex EntranceElement::getEntryIndex() const

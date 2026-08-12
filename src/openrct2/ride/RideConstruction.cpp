@@ -286,7 +286,7 @@ namespace OpenRCT2
 
     CoordsXYZD _unkF440C5;
 
-    uint8_t gRideEntranceExitPlaceType;
+    EntranceType gRideEntranceExitPlaceType;
     RideId gRideEntranceExitPlaceRideIndex;
     StationIndex gRideEntranceExitPlaceStationIndex;
     RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
@@ -1063,7 +1063,7 @@ namespace OpenRCT2
             return false;
 
         auto entranceType = entranceElement->getEntranceType();
-        if (entranceType != ENTRANCE_TYPE_RIDE_ENTRANCE && entranceType != ENTRANCE_TYPE_RIDE_EXIT)
+        if (entranceType != EntranceType::rideEntrance && entranceType != EntranceType::rideExit)
             return false;
 
         auto stationIndex = entranceElement->getStationIndex();
@@ -1087,8 +1087,8 @@ namespace OpenRCT2
             // Replace entrance / exit
             ToolSet(
                 *constructionWindow,
-                entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-                                                            : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
+                entranceType == EntranceType::rideEntrance ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
+                                                           : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
                 Tool::crosshair);
             gRideEntranceExitPlaceType = entranceType;
             gRideEntranceExitPlaceRideIndex = rideIndex;
@@ -1107,14 +1107,14 @@ namespace OpenRCT2
         {
             // Remove entrance / exit
             auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
-                { tileElement.x, tileElement.y }, rideIndex, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
+                { tileElement.x, tileElement.y }, rideIndex, stationIndex, entranceType == EntranceType::rideExit);
 
             rideEntranceExitRemove.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 gRideEntranceExitPlaceType = entranceType;
                 windowMgr->InvalidateByClass(WindowClass::rideConstruction);
 
-                auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-                                                                                        : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+                auto newToolWidgetIndex = (entranceType == EntranceType::rideEntrance) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
+                                                                                       : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
 
                 ToolCancel();
                 ToolSet(*constructionWindow, newToolWidgetIndex, Tool::crosshair);
@@ -1551,7 +1551,7 @@ namespace OpenRCT2
                 if (tileElement->asEntrance()->getRideIndex() != id)
                     continue;
                 // if it's a park entrance continue to the next tile element
-                if (tileElement->asEntrance()->getEntranceType() > ENTRANCE_TYPE_RIDE_EXIT)
+                if (tileElement->asEntrance()->getEntranceType() > EntranceType::rideExit)
                     continue;
 
                 // find the station that's connected to this ride entrance
@@ -1597,7 +1597,7 @@ namespace OpenRCT2
                     }
 
                     auto& station = getStation(stationId);
-                    if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+                    if (tileElement->asEntrance()->getEntranceType() == EntranceType::rideExit)
                     {
                         // if the location is already set for this station, big problem!
                         if (!station.Exit.IsNull())

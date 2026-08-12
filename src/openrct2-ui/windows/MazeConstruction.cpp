@@ -315,8 +315,8 @@ namespace OpenRCT2::Ui::Windows
             if (ToolSet(*this, widgetIndex, Tool::crosshair))
                 return;
 
-            gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE
-                                                                           : ENTRANCE_TYPE_RIDE_EXIT;
+            gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? EntranceType::rideEntrance
+                                                                           : EntranceType::rideExit;
             gRideEntranceExitPlaceRideIndex = rideId;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
             gInputFlags.set(InputFlag::allowRightMouseRemoval);
@@ -360,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                 entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
-                gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
+                gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == EntranceType::rideExit);
 
             rideEntranceExitPlaceAction.SetCallback([=, this](
                                                         const GameActions::GameAction* ga, const GameActions::Result* result) {
@@ -382,12 +382,19 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
+                    WidgetIndex newToolWidgetIndex;
+                    if (gRideEntranceExitPlaceType == EntranceType::rideEntrance)
+                    {
+                        gRideEntranceExitPlaceType = EntranceType::rideExit;
+                        newToolWidgetIndex = WIDX_MAZE_EXIT;
+                    }
+                    else
+                    {
+                        gRideEntranceExitPlaceType = EntranceType::rideEntrance;
+                        newToolWidgetIndex = WIDX_MAZE_ENTRANCE;
+                    }
+
                     windowMgr->InvalidateByClass(WindowClass::rideConstruction);
-
-                    auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
-                                                                                                          : WIDX_MAZE_EXIT;
-
                     ToolCancel();
                     ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
 

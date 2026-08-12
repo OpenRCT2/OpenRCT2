@@ -393,7 +393,7 @@ namespace OpenRCT2::Editor
                 case TileElementType::entrance:
                 {
                     auto parkEntranceEl = iter.element->asEntrance();
-                    if (parkEntranceEl->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (parkEntranceEl->getEntranceType() != EntranceType::parkEntrance)
                         break;
 
                     type = iter.element->asEntrance()->getEntryIndex();

@@ -1027,7 +1027,7 @@ namespace OpenRCT2
                     }
                     break;
                 case TileElementType::entrance:
-                    if (it.element->asEntrance()->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (it.element->asEntrance()->getEntranceType() == EntranceType::parkEntrance)
                         break;
                     [[fallthrough]];
                 case TileElementType::track:
@@ -1547,7 +1547,7 @@ namespace OpenRCT2
                 if (tileElement->baseHeight != entranceTileCoords.z)
                     continue;
 
-                if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->asEntrance()->getEntranceType() != EntranceType::parkEntrance)
                     continue;
 
                 if (!ghost && tileElement->isGhost())
@@ -1573,7 +1573,7 @@ namespace OpenRCT2
                 if (tileElement->baseHeight != entranceTileCoords.z)
                     continue;
 
-                if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideEntrance)
                     continue;
 
                 if (!ghost && tileElement->isGhost())
@@ -1599,7 +1599,7 @@ namespace OpenRCT2
                 if (tileElement->baseHeight != exitTileCoords.z)
                     continue;
 
-                if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+                if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideExit)
                     continue;
 
                 if (!ghost && tileElement->isGhost())
@@ -2128,7 +2128,7 @@ namespace OpenRCT2
             auto type = tileElement->getType();
             if (type == TileElementType::path
                 || (type == TileElementType::entrance
-                    && tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE))
+                    && tileElement->asEntrance()->getEntranceType() == EntranceType::parkEntrance))
             {
                 destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
                 // Do not own construction rights if too high/below surface

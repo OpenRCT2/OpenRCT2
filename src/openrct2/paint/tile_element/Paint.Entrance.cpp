@@ -43,7 +43,7 @@ static void PaintRideEntranceExitScrollingText(
     if (stationObj.ScrollingMode == kScrollingModeNone)
         return;
 
-    if (entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+    if (entranceEl.getEntranceType() == EntranceType::rideExit)
         return;
 
     const auto* ride = GetRide(entranceEl.getRideIndex());
@@ -71,7 +71,7 @@ static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t hei
 
     if (LightFx::IsAvailable())
     {
-        if (entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (entranceEl.getEntranceType() == EntranceType::rideEntrance)
         {
             LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::lantern3);
         }
@@ -157,7 +157,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     // Each entrance is split into 2 images for drawing
     // Certain entrance styles have another 2 images to draw for coloured windows
 
-    auto isExit = entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
+    auto isExit = entranceEl.getEntranceType() == EntranceType::rideExit;
 
     // Back
     ImageIndex backImageIndex = (isExit ? stationObj->exitBackIndex : stationObj->entranceBackIndex) + direction;
@@ -345,11 +345,11 @@ void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, con
     PaintHeightMarkers(session, entranceElement, height);
     switch (entranceElement.getEntranceType())
     {
-        case ENTRANCE_TYPE_RIDE_ENTRANCE:
-        case ENTRANCE_TYPE_RIDE_EXIT:
+        case EntranceType::rideEntrance:
+        case EntranceType::rideExit:
             PaintRideEntranceExit(session, direction, height, entranceElement);
             break;
-        case ENTRANCE_TYPE_PARK_ENTRANCE:
+        case EntranceType::parkEntrance:
             PaintParkEntrance(session, direction, height, entranceElement);
             break;
     }

@@ -2212,7 +2212,7 @@ namespace OpenRCT2
         if (ride == nullptr)
             return;
 
-        if (entranceElement.getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (entranceElement.getEntranceType() == EntranceType::rideEntrance)
         {
             // Get the queue length
             int32_t queueLength = 0;
@@ -2787,8 +2787,8 @@ namespace OpenRCT2
                     break;
                 if (tileElement->getType() != TileElementType::entrance)
                     continue;
-                if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE
-                    && tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+                if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideEntrance
+                    && tileElement->asEntrance()->getEntranceType() != EntranceType::rideExit)
                 {
                     continue;
                 }
@@ -5402,7 +5402,7 @@ namespace OpenRCT2
                                 // The expected height is where entrances and exit reside in non-hacked parks.
                                 const uint8_t expectedHeight = station.Height;
 
-                                if (fixEntrance && entranceElement->getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                                if (fixEntrance && entranceElement->getEntranceType() == EntranceType::rideEntrance)
                                 {
                                     if (alreadyFoundEntrance)
                                     {
@@ -5420,7 +5420,7 @@ namespace OpenRCT2
                                         "Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.",
                                         ride.id, stationIndex, x, y, entranceElement->baseHeight);
                                 }
-                                else if (fixExit && entranceElement->getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+                                else if (fixExit && entranceElement->getEntranceType() == EntranceType::rideExit)
                                 {
                                     if (alreadyFoundExit)
                                     {
@@ -5466,8 +5466,8 @@ namespace OpenRCT2
             {
                 for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
                 {
-                    const bool isRideEntranceExit = entrance->getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE
-                        || entrance->getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
+                    const bool isRideEntranceExit = entrance->getEntranceType() == EntranceType::rideEntrance
+                        || entrance->getEntranceType() == EntranceType::rideExit;
                     if (!isRideEntranceExit)
                         continue;
                     if (entrance->getRideIndex() != ride.id)

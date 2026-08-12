@@ -426,7 +426,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     switch (tileElement->asEntrance()->getEntranceType())
                     {
-                        case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                        case EntranceType::rideEntrance:
                             direction = tileElement->getDirection();
                             if (direction == chosenDirection)
                             {
@@ -434,7 +434,7 @@ namespace OpenRCT2::PathFinding
                                 return PathSearchResult::rideEntrance;
                             }
                             break;
-                        case ENTRANCE_TYPE_RIDE_EXIT:
+                        case EntranceType::rideExit:
                             direction = tileElement->getDirection();
                             if (direction == chosenDirection)
                             {
@@ -442,7 +442,7 @@ namespace OpenRCT2::PathFinding
                                 return PathSearchResult::rideExit;
                             }
                             break;
-                        case ENTRANCE_TYPE_PARK_ENTRANCE:
+                        case EntranceType::parkEntrance:
                             return PathSearchResult::parkExit;
                     }
                     break;
@@ -797,7 +797,7 @@ namespace OpenRCT2::PathFinding
                     searchResult = PathSearchResult::other;
                     switch (tileElement->asEntrance()->getEntranceType())
                     {
-                        case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                        case EntranceType::rideEntrance:
                             /* For peeps heading for a ride without a queue, the
                              * goal is the ride entrance tile.
                              * For mechanics heading for the ride entrance
@@ -814,13 +814,13 @@ namespace OpenRCT2::PathFinding
                                 break;
                             }
                             continue; // Ride entrance is not facing the right direction.
-                        case ENTRANCE_TYPE_PARK_ENTRANCE:
+                        case EntranceType::parkEntrance:
                             /* For peeps leaving the park, the goal is the park
                              * entrance/exit tile. */
                             searchResult = PathSearchResult::parkExit;
                             found = true;
                             break;
-                        case ENTRANCE_TYPE_RIDE_EXIT:
+                        case EntranceType::rideExit:
                             /* For mechanics heading for the ride exit, the
                              * goal is the ride exit tile. */
                             direction = tileElement->getDirection();

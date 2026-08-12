@@ -333,7 +333,7 @@ namespace OpenRCT2::Ui
                 if (tileElement->getType() == TileElementType::entrance)
                 {
                     StringId stringId;
-                    if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                    if (tileElement->asEntrance()->getEntranceType() == EntranceType::rideEntrance)
                     {
                         if (ride->numStations > 1)
                         {

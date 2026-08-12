@@ -431,7 +431,7 @@ uint8_t RCT12WallElement::GetRCT1Slope() const
     return EntryIndex & 0b00011111;
 }
 
-uint8_t RCT12EntranceElement::GetEntranceType() const
+OpenRCT2::EntranceType RCT12EntranceElement::GetEntranceType() const
 {
     return EntranceType;
 }

@@ -1622,10 +1622,10 @@ namespace OpenRCT2
     static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_t& pathing_result)
     {
         auto tile_element = coords.element;
-        uint8_t entranceType = tile_element->asEntrance()->getEntranceType();
+        auto entranceType = tile_element->asEntrance()->getEntranceType();
         auto rideIndex = tile_element->asEntrance()->getRideIndex();
 
-        if ((entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) || (entranceType == ENTRANCE_TYPE_RIDE_EXIT))
+        if ((entranceType == EntranceType::rideEntrance) || (entranceType == EntranceType::rideExit))
         {
             // If an entrance or exit that doesn't belong to the ride we are queuing for ignore the entrance/exit
             // This can happen when paths clip through entrance/exits
@@ -1637,18 +1637,18 @@ namespace OpenRCT2
         // Store some details to determine when to override the default
         // behaviour (defined below) for when staff attempt to enter a ride
         // to fix/inspect it.
-        if (entranceType == ENTRANCE_TYPE_RIDE_EXIT)
+        if (entranceType == EntranceType::rideExit)
         {
             pathing_result |= PATHING_RIDE_EXIT;
             _peepRideEntranceExitElement = tile_element;
         }
-        else if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        else if (entranceType == EntranceType::rideEntrance)
         {
             pathing_result |= PATHING_RIDE_ENTRANCE;
             _peepRideEntranceExitElement = tile_element;
         }
 
-        if (entranceType == ENTRANCE_TYPE_RIDE_EXIT)
+        if (entranceType == EntranceType::rideExit)
         {
             // Default guest/staff behaviour attempting to enter a
             // ride exit is to turn around.
@@ -1657,7 +1657,7 @@ namespace OpenRCT2
             return true;
         }
 
-        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (entranceType == EntranceType::rideEntrance)
         {
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)

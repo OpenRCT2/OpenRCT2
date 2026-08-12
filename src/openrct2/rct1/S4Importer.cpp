@@ -1823,7 +1823,7 @@ namespace OpenRCT2::RCT1
                     dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->setSequenceIndex(src2->GetSequenceIndex());
 
-                    if (src2->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (src2->GetEntranceType() == EntranceType::parkEntrance)
                     {
                         auto pathType = src2->GetPathType();
                         if (pathType == 0)
@@ -2537,7 +2537,7 @@ namespace OpenRCT2::RCT1
 
                 if (element->getType() != TileElementType::entrance)
                     continue;
-                if (element->asEntrance()->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (element->asEntrance()->getEntranceType() != EntranceType::parkEntrance)
                     continue;
                 if ((element->asEntrance()->getSequenceIndex()) != 0)
                     continue;

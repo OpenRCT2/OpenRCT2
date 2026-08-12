@@ -631,7 +631,7 @@ namespace OpenRCT2
                                 }
                                 else
                                 {
-                                    if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                                    if (tileElement->asEntrance()->getEntranceType() != EntranceType::parkEntrance)
                                     {
                                         FootpathQueueChainPush(tileElement->asEntrance()->getRideIndex());
                                     }
@@ -956,7 +956,7 @@ namespace OpenRCT2
                     {
                         if (tileElement->getType() != TileElementType::entrance)
                             continue;
-                        if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                        if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideEntrance)
                             continue;
                         if (tileElement->asEntrance()->getRideIndex() != rideIndex)
                             continue;
@@ -1564,7 +1564,7 @@ namespace OpenRCT2
         }
         else if (elementType == TileElementType::entrance)
         {
-            if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            if (tileElement->asEntrance()->getEntranceType() == EntranceType::rideEntrance)
             {
                 FootpathQueueChainPush(tileElement->asEntrance()->getRideIndex());
                 FootpathChainRideQueue(

@@ -241,17 +241,17 @@ namespace OpenRCT2::TileInspector
                         auto& station = ride->getStation(stationIndex);
                         auto entrance = station.Entrance;
                         auto exit = station.Exit;
-                        uint8_t entranceType = tileElement->asEntrance()->getEntranceType();
+                        auto entranceType = tileElement->asEntrance()->getEntranceType();
                         uint8_t z = tileElement->baseHeight;
 
                         // Make sure this is the correct entrance or exit
-                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / kCoordsXYStep
+                        if (entranceType == EntranceType::rideEntrance && entrance.x == loc.x / kCoordsXYStep
                             && entrance.y == loc.y / kCoordsXYStep && entrance.z == z)
                         {
                             station.Entrance = { entrance, newRotation };
                         }
                         else if (
-                            entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / kCoordsXYStep
+                            entranceType == EntranceType::rideExit && exit.x == loc.x / kCoordsXYStep
                             && exit.y == loc.y / kCoordsXYStep && exit.z == z)
                         {
                             station.Exit = { exit, newRotation };
@@ -460,8 +460,8 @@ namespace OpenRCT2::TileInspector
         {
             if (tileElement->getType() == TileElementType::entrance)
             {
-                uint8_t entranceType = tileElement->asEntrance()->getEntranceType();
-                if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
+                auto entranceType = tileElement->asEntrance()->getEntranceType();
+                if (entranceType != EntranceType::parkEntrance)
                 {
                     // Update the ride's known entrance or exit height
                     auto ride = GetRide(tileElement->asEntrance()->getRideIndex());
@@ -474,9 +474,9 @@ namespace OpenRCT2::TileInspector
                         uint8_t z = tileElement->baseHeight;
 
                         // Make sure this is the correct entrance or exit
-                        if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entranceLoc == TileCoordsXYZ{ loc, z })
+                        if (entranceType == EntranceType::rideEntrance && entranceLoc == TileCoordsXYZ{ loc, z })
                             station.Entrance = { entranceLoc, z + heightOffset, entranceLoc.direction };
-                        else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exitLoc == TileCoordsXYZ{ loc, z })
+                        else if (entranceType == EntranceType::rideExit && exitLoc == TileCoordsXYZ{ loc, z })
                             station.Exit = { exitLoc, z + heightOffset, exitLoc.direction };
                     }
                 }
@@ -655,11 +655,13 @@ namespace OpenRCT2::TileInspector
 
             switch (entranceElement->asEntrance()->getEntranceType())
             {
-                case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                case EntranceType::rideEntrance:
                     station.Entrance = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
                     break;
-                case ENTRANCE_TYPE_RIDE_EXIT:
+                case EntranceType::rideExit:
                     station.Exit = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
+                    break;
+                default:
                     break;
             }
         }

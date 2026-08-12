@@ -21,11 +21,11 @@ namespace OpenRCT2
     class FootpathSurfaceObject;
     struct PathSurfaceDescriptor;
 
-    enum
+    enum class EntranceType : uint8_t
     {
-        ENTRANCE_TYPE_RIDE_ENTRANCE,
-        ENTRANCE_TYPE_RIDE_EXIT,
-        ENTRANCE_TYPE_PARK_ENTRANCE
+        rideEntrance,
+        rideExit,
+        parkEntrance
     };
 
     enum
@@ -47,7 +47,7 @@ namespace OpenRCT2
         static constexpr TileElementType kElementType = TileElementType::entrance;
 
     private:
-        uint8_t entranceType;        // 5
+        EntranceType entranceType;   // 5
         uint8_t sequenceIndex;       // 6. Only uses the lower nibble.
         StationIndex stationIndex;   // 7
         ObjectEntryIndex pathType;   // 8
@@ -60,8 +60,8 @@ namespace OpenRCT2
 #pragma clang diagnostic pop
 
     public:
-        uint8_t getEntranceType() const;
-        void setEntranceType(uint8_t newType);
+        EntranceType getEntranceType() const;
+        void setEntranceType(EntranceType newType);
 
         RideId getRideIndex() const;
         void setRideIndex(RideId newRideIndex);

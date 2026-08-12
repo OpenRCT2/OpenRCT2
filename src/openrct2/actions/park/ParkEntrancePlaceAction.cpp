@@ -161,7 +161,7 @@ namespace OpenRCT2::GameActions
             entranceElement->setGhost(flags.has(CommandFlag::ghost));
             entranceElement->setDirection(_loc.direction);
             entranceElement->setSequenceIndex(index);
-            entranceElement->setEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
+            entranceElement->setEntranceType(EntranceType::parkEntrance);
             entranceElement->setEntryIndex(_entranceType);
             if (!_pathTypeIsLegacy)
             {
