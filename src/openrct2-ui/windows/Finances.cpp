@@ -684,8 +684,8 @@ namespace OpenRCT2::Ui::Windows
                 {
                     campaignButton.setVisible();
                     campaignButton.top = y;
-                    campaignButton.bottom = y + kButtonFaceHeight + 1;
-                    y += kButtonFaceHeight + 2;
+                    campaignButton.bottom = y + kButtonFaceHeight;
+                    y += kButtonFaceHeight + 1;
                 }
                 else
                 {
