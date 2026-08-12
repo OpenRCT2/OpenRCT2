@@ -560,7 +560,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                return JS_NewUint32(ctx, el->getSequenceIndex());
+                return JS_NewUint32(ctx, EnumValue(el->getSequenceIndex()));
             }
             default:
             {
@@ -613,7 +613,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                el->setSequenceIndex(value);
+                el->setSequenceIndex(static_cast<ParkEntranceSequence>(std::clamp<uint8_t>(value, 0, 2)));
                 Invalidate(data);
                 break;
             }

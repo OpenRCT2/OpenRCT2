@@ -672,11 +672,13 @@ namespace OpenRCT2::Ui
         int32_t rotation = entranceElement.getDirectionWithOffset(1);
         switch (entranceElement.getSequenceIndex())
         {
-            case 1:
+            case ParkEntranceSequence::left:
                 mapCoords += CoordsDirectionDelta[rotation];
                 break;
-            case 2:
+            case ParkEntranceSequence::right:
                 mapCoords -= CoordsDirectionDelta[rotation];
+                break;
+            default:
                 break;
         }
         auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(

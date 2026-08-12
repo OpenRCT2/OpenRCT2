@@ -53,15 +53,15 @@ namespace OpenRCT2
         stationIndex = newStationIndex;
     }
 
-    uint8_t EntranceElement::getSequenceIndex() const
+    ParkEntranceSequence EntranceElement::getSequenceIndex() const
     {
-        return sequenceIndex & 0xF;
+        return static_cast<ParkEntranceSequence>(sequenceIndex & 0xF);
     }
 
-    void EntranceElement::setSequenceIndex(uint8_t newSequenceIndex)
+    void EntranceElement::setSequenceIndex(ParkEntranceSequence newSequenceIndex)
     {
         sequenceIndex &= ~0xF;
-        sequenceIndex |= (newSequenceIndex & 0xF);
+        sequenceIndex |= (EnumValue(newSequenceIndex) & 0xF);
     }
 
     bool EntranceElement::hasLegacyPathEntry() const
@@ -129,7 +129,7 @@ namespace OpenRCT2
 
     int32_t EntranceElement::getDirections() const
     {
-        return kEntranceDirections[EnumValue(getEntranceType())][getSequenceIndex()];
+        return kEntranceDirections[EnumValue(getEntranceType())][EnumValue(getSequenceIndex())];
     }
 
     ObjectEntryIndex EntranceElement::getEntryIndex() const

@@ -1423,7 +1423,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Entrance part
                 ft = Formatter();
-                ft.Add<StringId>(kParkEntrancePartStringIds[entranceEl.getSequenceIndex()]);
+                ft.Add<StringId>(kParkEntrancePartStringIds[EnumValue(entranceEl.getSequenceIndex())]);
                 drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_PART, ft, { colours[1] });
             }
             else

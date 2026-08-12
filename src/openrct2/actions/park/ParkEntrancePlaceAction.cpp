@@ -132,14 +132,21 @@ namespace OpenRCT2::GameActions
         auto zLow = _loc.z;
         auto zHigh = zLow + ParkEntranceHeight;
         CoordsXY entranceLoc = { _loc.x, _loc.y };
-        for (uint8_t index = 0; index < 3; index++)
+
+        constexpr auto kEntranceSequences = std::to_array(
+            {
+                ParkEntranceSequence::centre,
+                ParkEntranceSequence::left,
+                ParkEntranceSequence::right,
+            });
+        for (const auto index : kEntranceSequences)
         {
-            if (index == 1)
+            if (index == ParkEntranceSequence::left)
             {
                 entranceLoc.x += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].x;
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].y;
             }
-            else if (index == 2)
+            else if (index == ParkEntranceSequence::right)
             {
                 entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
@@ -185,7 +192,7 @@ namespace OpenRCT2::GameActions
 
             MapInvalidateTile({ entranceLoc, entranceElement->getBaseZ(), entranceElement->getClearanceZ() });
 
-            if (index == 0)
+            if (index == ParkEntranceSequence::centre)
             {
                 MapAnimations::MarkTileForInvalidation(TileCoordsXY(entranceLoc));
             }

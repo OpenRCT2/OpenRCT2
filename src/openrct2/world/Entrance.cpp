@@ -218,7 +218,7 @@ void ParkEntranceUpdateLocations()
     {
         auto entranceElement = it.element->asEntrance();
         if (entranceElement != nullptr && entranceElement->getEntranceType() == EntranceType::parkEntrance
-            && entranceElement->getSequenceIndex() == 0 && !entranceElement->isGhost())
+            && entranceElement->getSequenceIndex() == ParkEntranceSequence::centre && !entranceElement->isGhost())
         {
             auto entrance = TileCoordsXYZD(it.x, it.y, it.element->baseHeight, it.element->getDirection()).ToCoordsXYZD();
             park.entrances.push_back(entrance);

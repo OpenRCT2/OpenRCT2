@@ -271,7 +271,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     auto sequence = entranceEl.getSequenceIndex();
     switch (sequence)
     {
-        case EntranceSequence::Centre:
+        case ParkEntranceSequence::centre:
         {
             // Footpath
             auto surfaceDescriptor = entranceEl.getPathSurfaceDescriptor();
@@ -294,8 +294,8 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             }
             break;
         }
-        case EntranceSequence::Left:
-        case EntranceSequence::Right:
+        case ParkEntranceSequence::left:
+        case ParkEntranceSequence::right:
             if (entrance != nullptr)
             {
                 auto imageIndex = entrance->GetImage(sequence, direction);

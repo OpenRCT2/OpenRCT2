@@ -108,7 +108,8 @@ static bool UpdateEntranceAnimation(
             }
         }
     }
-    else if (entrance.getEntranceType() == EntranceType::parkEntrance && entrance.getSequenceIndex() == 0)
+    else if (
+        entrance.getEntranceType() == EntranceType::parkEntrance && entrance.getSequenceIndex() == ParkEntranceSequence::centre)
     {
         if constexpr (invalidate)
         {
@@ -559,7 +560,8 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::entrance:
         {
             const auto* const entrance = element.asEntrance();
-            if (entrance->getEntranceType() == EntranceType::parkEntrance && entrance->getSequenceIndex() == 0)
+            if (entrance->getEntranceType() == EntranceType::parkEntrance
+                && entrance->getSequenceIndex() == ParkEntranceSequence::centre)
             {
                 return std::optional(UpdateType::invalidate);
             }

@@ -1406,11 +1406,13 @@ namespace OpenRCT2
                 auto seqLoc = loc;
                 switch (element->asEntrance()->getSequenceIndex())
                 {
-                    case 1:
+                    case ParkEntranceSequence::left:
                         seqLoc += CoordsDirectionDelta[rotation];
                         break;
-                    case 2:
+                    case ParkEntranceSequence::right:
                         seqLoc -= CoordsDirectionDelta[rotation];
+                        break;
+                    default:
                         break;
                 }
                 auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->getBaseZ() });

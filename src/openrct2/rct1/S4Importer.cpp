@@ -2539,7 +2539,7 @@ namespace OpenRCT2::RCT1
                     continue;
                 if (element->asEntrance()->getEntranceType() != EntranceType::parkEntrance)
                     continue;
-                if ((element->asEntrance()->getSequenceIndex()) != 0)
+                if ((element->asEntrance()->getSequenceIndex()) != ParkEntranceSequence::centre)
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->getBaseZ(), element->getDirection() };

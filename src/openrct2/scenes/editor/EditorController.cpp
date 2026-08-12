@@ -399,8 +399,7 @@ namespace OpenRCT2::Editor
                     type = iter.element->asEntrance()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::parkEntrance, type, ObjectSelectionFlags::InUse);
 
-                    // Skip if not the middle part
-                    if (parkEntranceEl->getSequenceIndex() != 0)
+                    if (parkEntranceEl->getSequenceIndex() != ParkEntranceSequence::centre)
                         break;
 
                     auto legacyPathEntryIndex = parkEntranceEl->getLegacyPathEntryIndex();
