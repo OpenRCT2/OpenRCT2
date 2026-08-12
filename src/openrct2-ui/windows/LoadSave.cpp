@@ -700,15 +700,15 @@ namespace OpenRCT2::Ui::Windows
 
             if (action == LoadSaveAction::save)
             {
-                widgets[WIDX_SCROLL].bottom -= 18;
+                widgets[WIDX_SCROLL].bottom -= kButtonFaceHeight + 7;
 
                 // Get 'Save' button string width
                 auto saveLabel = LanguageGetString(STR_FILEBROWSER_SAVE_BUTTON);
                 auto saveLabelWidth = getStringWidth(saveLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_SAVE].setVisible();
-                widgets[WIDX_SAVE].top = height - paddingBottom - 15;
-                widgets[WIDX_SAVE].bottom = height - paddingBottom - 3;
+                widgets[WIDX_SAVE].bottom = height - paddingBottom - 2;
+                widgets[WIDX_SAVE].top = widgets[WIDX_SAVE].bottom - kButtonFaceHeight;
                 widgets[WIDX_SAVE].right = widgets[WIDX_SCROLL].right;
                 widgets[WIDX_SAVE].left = widgets[WIDX_SAVE].right - saveLabelWidth;
 
@@ -717,8 +717,8 @@ namespace OpenRCT2::Ui::Windows
                 auto filenameLabelWidth = getStringWidth(filenameLabel, FontStyle::medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].setVisible();
-                widgets[WIDX_FILENAME_TEXTBOX].top = height - paddingBottom - 15;
-                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - paddingBottom - 3;
+                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - paddingBottom - 2;
+                widgets[WIDX_FILENAME_TEXTBOX].top = widgets[WIDX_FILENAME_TEXTBOX].bottom - kButtonFaceHeight;
                 widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
                 widgets[WIDX_FILENAME_TEXTBOX].right = widgets[WIDX_SAVE].left - 5;
             }
@@ -786,7 +786,7 @@ namespace OpenRCT2::Ui::Windows
             if (action == LoadSaveAction::save)
             {
                 auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
-                drawText(rt, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, { Drawing::Colour::grey });
+                drawText(rt, windowPos + ScreenCoordsXY{ 5, widget.top + 1 }, STR_FILENAME_LABEL, { Drawing::Colour::grey });
             }
         }
 
