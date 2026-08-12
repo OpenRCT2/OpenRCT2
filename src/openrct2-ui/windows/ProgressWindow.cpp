@@ -17,12 +17,10 @@
 #include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/RenderTarget.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <random>
-#include <sstream>
 
 namespace OpenRCT2::Ui::Windows
 {

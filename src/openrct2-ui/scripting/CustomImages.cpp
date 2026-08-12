@@ -19,7 +19,6 @@
     #include <openrct2/drawing/ImageImporter.h>
     #include <openrct2/drawing/NewDrawing.h>
     #include <openrct2/drawing/X8DrawingEngine.h>
-    #include <openrct2/scripting/Plugin.h>
     #include <thirdparty/base64.hpp>
 
 using namespace OpenRCT2::Drawing;

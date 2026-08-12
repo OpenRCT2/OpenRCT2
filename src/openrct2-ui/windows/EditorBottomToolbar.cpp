@@ -19,7 +19,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ResultWithMessage.h>
-#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
@@ -29,8 +28,6 @@
 #include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Park.h>
-#include <openrct2/world/Scenery.h>
 #include <string>
 
 using namespace OpenRCT2::Drawing;

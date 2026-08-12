@@ -11,21 +11,21 @@
 
     #include "CustomListView.h"
 
-    #include "../interface/Viewport.h"
-    #include "../interface/Widget.h"
-    #include "../windows/Windows.h"
-
     #include <numeric>
+    #include <openrct2-ui/interface/Window.h>
     #include <openrct2/Context.h>
     #include <openrct2/core/String.hpp>
     #include <openrct2/drawing/ColourMap.h>
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/drawing/FilterPaletteIds.h>
     #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/drawing/Text.h>
+    #include <openrct2/interface/Widget.h>
     #include <openrct2/localisation/Formatter.h>
-    #include <openrct2/localisation/Formatting.h>
+    #include <openrct2/localisation/StringIds.h>
+    #include <openrct2/scripting/ScriptEngine.h>
 
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Scripting;

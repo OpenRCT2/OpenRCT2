@@ -13,7 +13,6 @@
 #include "interface/Theme.h"
 #include "interface/Window.h"
 #include "ride/VehicleSounds.h"
-#include "windows/Windows.h"
 
 #include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
@@ -23,18 +22,15 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
-#include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 

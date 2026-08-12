@@ -9,13 +9,11 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL_mouse.h>
 #include <functional>
 #include <map>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/interface/Cursors.h>
-
-struct SDL_Cursor;
 
 namespace OpenRCT2::Ui
 {

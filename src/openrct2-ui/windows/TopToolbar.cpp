@@ -11,11 +11,7 @@
 #include "../interface/InGameConsole.h"
 #include "../scripting/CustomMenu.h"
 
-#include <iterator>
-#include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/LandTool.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -23,9 +19,7 @@
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/ParkImporter.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/Version.h>
 #include <openrct2/actions/GameActionRunner.h>
@@ -38,18 +32,15 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Footpath.h>
-#include <openrct2/world/Park.h>
-#include <openrct2/world/Scenery.h>
 #include <string>
 
 #ifdef __EMSCRIPTEN__

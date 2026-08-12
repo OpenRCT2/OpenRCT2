@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <iterator>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -24,15 +23,11 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
-#include <openrct2/object/DefaultObjects.h>
 #include <openrct2/object/ObjectList.h>
-#include <openrct2/object/ObjectManager.h>
-#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Scenery.h>
 
 using namespace OpenRCT2::Drawing;
 

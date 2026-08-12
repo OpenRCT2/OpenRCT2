@@ -16,8 +16,6 @@
     #include "../scripting/ScWidget.hpp"
     #include "../windows/Windows.h"
     #include "CustomListView.h"
-    #include "ScUi.hpp"
-    #include "ScWindow.h"
 
     #include <limits>
     #include <openrct2/SpriteIds.h>
@@ -26,7 +24,6 @@
     #include <openrct2/interface/ColourWithFlags.h>
     #include <openrct2/interface/Viewport.h>
     #include <openrct2/interface/WindowTypes.h>
-    #include <openrct2/scripting/Plugin.h>
     #include <optional>
     #include <string>
     #include <utility>
