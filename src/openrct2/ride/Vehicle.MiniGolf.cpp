@@ -284,9 +284,9 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
             }
 
             flags.unset(VehicleFlag::onLiftHill);
-            SetTrackType(tileElement->asTrack()->GetTrackType());
+            SetTrackType(tileElement->asTrack()->getTrackType());
             SetTrackDirection(direction);
-            brake_speed = tileElement->asTrack()->GetBrakeBoosterSpeed();
+            brake_speed = tileElement->asTrack()->getBrakeBoosterSpeed();
             track_progress = 0;
         }
         else
@@ -470,9 +470,9 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
                 }
             }
 
-            SetTrackType(tileElement->asTrack()->GetTrackType());
+            SetTrackType(tileElement->asTrack()->getTrackType());
             SetTrackDirection(direction);
-            brake_speed = tileElement->asTrack()->GetBrakeBoosterSpeed();
+            brake_speed = tileElement->asTrack()->getBrakeBoosterSpeed();
 
             // There are two bytes before the move info list
             track_progress = GetTrackProgress();

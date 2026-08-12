@@ -63,7 +63,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
-    auto banner = bannerElement.GetBanner();
+    auto banner = bannerElement.getBanner();
     if (banner == nullptr)
     {
         return;
@@ -79,7 +79,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
 
     height -= 16;
 
-    direction += bannerElement.GetPosition();
+    direction += bannerElement.getPosition();
     direction &= 3;
 
     ImageId imageTemplate;

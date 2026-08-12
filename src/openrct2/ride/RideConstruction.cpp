@@ -558,7 +558,7 @@ namespace OpenRCT2
             {
                 for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
                 {
-                    if (trackElement->GetRideIndex() != ride.id)
+                    if (trackElement->getRideIndex() != ride.id)
                         continue;
 
                     // Unblock footpath element that is at same position
@@ -568,7 +568,7 @@ namespace OpenRCT2
                     if (footpathElement == nullptr)
                         continue;
 
-                    footpathElement->SetIsBlockedByVehicle(false);
+                    footpathElement->setIsBlockedByVehicle(false);
                 }
             }
         }
@@ -604,7 +604,7 @@ namespace OpenRCT2
         const auto& ted = GetTrackElementDescriptor(type);
 
         // Now find all the elements that belong to this track piece
-        int32_t sequence = trackElement->GetSequenceIndex();
+        int32_t sequence = trackElement->getSequenceIndex();
         uint8_t mapDirection = trackElement->getDirection();
         if (sequence >= ted.sequenceData.numSequences)
             return std::nullopt;
@@ -643,16 +643,16 @@ namespace OpenRCT2
             }
             if (flags.has(TrackElementSetFlag::highlightOff))
             {
-                trackElement->SetHighlight(false);
+                trackElement->setHighlight(false);
             }
             if (flags.has(TrackElementSetFlag::highlightOn))
             {
-                trackElement->SetHighlight(true);
+                trackElement->setHighlight(true);
             }
             if (flags.has(TrackElementSetFlag::colourScheme))
             {
                 auto newScheme = static_cast<RideColourScheme>(extra_params & 0xFF);
-                trackElement->SetColourScheme(newScheme);
+                trackElement->setColourScheme(newScheme);
 
                 if (_previousTrackPiece == retCoordsXYZ)
                 {
@@ -661,23 +661,23 @@ namespace OpenRCT2
             }
             if (flags.has(TrackElementSetFlag::seatRotation))
             {
-                trackElement->SetSeatRotation(static_cast<uint8_t>(extra_params & 0xFF));
+                trackElement->setSeatRotation(static_cast<uint8_t>(extra_params & 0xFF));
             }
             if (flags.has(TrackElementSetFlag::cableLiftOn))
             {
-                trackElement->SetHasCableLift(true);
+                trackElement->setHasCableLift(true);
             }
             if (flags.has(TrackElementSetFlag::cableLiftOff))
             {
-                trackElement->SetHasCableLift(false);
+                trackElement->setHasCableLift(false);
             }
             if (flags.has(TrackElementSetFlag::brakeClosed))
             {
-                trackElement->SetBrakeClosed(extra_params != 0);
+                trackElement->setBrakeClosed(extra_params != 0);
             }
             if (flags.has(TrackElementSetFlag::brakeBoosterSpeed))
             {
-                trackElement->SetBrakeBoosterSpeed(static_cast<uint8_t>(extra_params & 0xFF));
+                trackElement->setBrakeBoosterSpeed(static_cast<uint8_t>(extra_params & 0xFF));
             }
         }
         return retCoordsXYZ;
@@ -809,7 +809,7 @@ namespace OpenRCT2
                     return;
                 }
                 tileElement = trackBeginEnd.begin_element;
-                trackType = tileElement->asTrack()->GetTrackType();
+                trackType = tileElement->asTrack()->getTrackType();
 
                 if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                 {
@@ -821,7 +821,7 @@ namespace OpenRCT2
                 _currentTrackAlternative.unset(AlternativeTrackFlag::inverted);
                 if (rtd.flags.has(RtdFlag::hasInvertedVariant))
                 {
-                    if (tileElement->asTrack()->IsInverted())
+                    if (tileElement->asTrack()->isInverted())
                     {
                         _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
                     }
@@ -851,14 +851,14 @@ namespace OpenRCT2
                 // Set track slope and lift hill
                 _currentTrackPitchEnd = slope;
                 _previousTrackPitchEnd = slope;
-                _currentTrackHasLiftHill = trackElement->HasChain()
+                _currentTrackHasLiftHill = trackElement->hasChain()
                     && ((slope != TrackPitch::down25 && slope != TrackPitch::down60)
                         || getGameState().cheats.enableChainLiftOnAllTrack);
 
-                if (trackTypeHasSpeedSetting(trackElement->GetTrackType()))
-                    _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
-                _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
-                _currentSeatRotationAngle = trackElement->GetSeatRotation();
+                if (trackTypeHasSpeedSetting(trackElement->getTrackType()))
+                    _currentBrakeSpeed = trackElement->getBrakeBoosterSpeed();
+                _currentColourScheme = static_cast<RideColourScheme>(trackElement->getColourScheme());
+                _currentSeatRotationAngle = trackElement->getSeatRotation();
 
                 _previousTrackPiece.x = trackBeginEnd.begin_x;
                 _previousTrackPiece.y = trackBeginEnd.begin_y;
@@ -874,13 +874,13 @@ namespace OpenRCT2
                     return;
                 }
                 tileElement = xyElement.element;
-                trackType = tileElement->asTrack()->GetTrackType();
+                trackType = tileElement->asTrack()->getTrackType();
 
                 // Set whether track is covered
                 _currentTrackAlternative.unset(AlternativeTrackFlag::inverted);
                 if (rtd.flags.has(RtdFlag::hasInvertedVariant))
                 {
-                    if (tileElement->asTrack()->IsInverted())
+                    if (tileElement->asTrack()->isInverted())
                     {
                         _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
                     }
@@ -912,13 +912,13 @@ namespace OpenRCT2
                 _previousTrackPitchEnd = slope;
                 if (!getGameState().cheats.enableChainLiftOnAllTrack)
                 {
-                    _currentTrackHasLiftHill = trackElement->HasChain();
+                    _currentTrackHasLiftHill = trackElement->hasChain();
                 }
 
-                if (trackTypeHasSpeedSetting(trackElement->GetTrackType()))
-                    _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
-                _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
-                _currentSeatRotationAngle = trackElement->GetSeatRotation();
+                if (trackTypeHasSpeedSetting(trackElement->getTrackType()))
+                    _currentBrakeSpeed = trackElement->getBrakeBoosterSpeed();
+                _currentColourScheme = static_cast<RideColourScheme>(trackElement->getColourScheme());
+                _currentSeatRotationAngle = trackElement->getSeatRotation();
 
                 _previousTrackPiece.x = xyElement.x;
                 _previousTrackPiece.y = xyElement.y;
@@ -962,7 +962,7 @@ namespace OpenRCT2
                 tileElement = outputElement.element;
                 _currentTrackBegin = *newCoords;
                 _currentTrackPieceDirection = tileElement->getDirection();
-                _currentTrackPieceType = tileElement->asTrack()->GetTrackType();
+                _currentTrackPieceType = tileElement->asTrack()->getTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 WindowRideConstructionUpdateActiveElements();
             }
@@ -971,7 +971,7 @@ namespace OpenRCT2
                 _rideConstructionState = RideConstructionState::front;
                 _currentTrackBegin = { outputElement, newCoords->z };
                 _currentTrackPieceDirection = direction;
-                _currentTrackPieceType = tileElement->asTrack()->GetTrackType();
+                _currentTrackPieceType = tileElement->asTrack()->getTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 RideConstructionSetDefaultNextPiece();
                 WindowRideConstructionUpdateActiveElements();
@@ -1016,7 +1016,7 @@ namespace OpenRCT2
                 _currentTrackBegin.y = trackBeginEnd.begin_y;
                 _currentTrackBegin.z = trackBeginEnd.begin_z;
                 _currentTrackPieceDirection = trackBeginEnd.begin_direction;
-                _currentTrackPieceType = trackBeginEnd.begin_element->asTrack()->GetTrackType();
+                _currentTrackPieceType = trackBeginEnd.begin_element->asTrack()->getTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 WindowRideConstructionUpdateActiveElements();
             }
@@ -1027,7 +1027,7 @@ namespace OpenRCT2
                 _currentTrackBegin.y = trackBeginEnd.end_y;
                 _currentTrackBegin.z = trackBeginEnd.begin_z;
                 _currentTrackPieceDirection = trackBeginEnd.end_direction;
-                _currentTrackPieceType = tileElement->asTrack()->GetTrackType();
+                _currentTrackPieceType = tileElement->asTrack()->getTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 RideConstructionSetDefaultNextPiece();
                 WindowRideConstructionUpdateActiveElements();
@@ -1057,16 +1057,16 @@ namespace OpenRCT2
         if (entranceElement == nullptr)
             return false;
 
-        auto rideIndex = entranceElement->GetRideIndex();
+        auto rideIndex = entranceElement->getRideIndex();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             return false;
 
-        auto entranceType = entranceElement->GetEntranceType();
+        auto entranceType = entranceElement->getEntranceType();
         if (entranceType != ENTRANCE_TYPE_RIDE_ENTRANCE && entranceType != ENTRANCE_TYPE_RIDE_EXIT)
             return false;
 
-        auto stationIndex = entranceElement->GetStationIndex();
+        auto stationIndex = entranceElement->getStationIndex();
 
         // Get or create construction window for ride
         auto* windowMgr = Ui::GetWindowManager();
@@ -1138,7 +1138,7 @@ namespace OpenRCT2
             auto trackElement = tileElement.element->asTrack();
             if (trackElement != nullptr)
             {
-                _currentRideIndex = trackElement->GetRideIndex();
+                _currentRideIndex = trackElement->getRideIndex();
                 _rideConstructionState = RideConstructionState::mazeBuild;
                 _currentTrackBegin.x = tileElement.x;
                 _currentTrackBegin.y = tileElement.y;
@@ -1165,7 +1165,7 @@ namespace OpenRCT2
         if (tileElement.element == nullptr)
             return false;
 
-        auto rideIndex = tileElement.element->GetRideIndex();
+        auto rideIndex = tileElement.element->getRideIndex();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
         {
@@ -1208,7 +1208,7 @@ namespace OpenRCT2
 
         const auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->getBaseZ() };
         const auto direction = tileElement.element->getDirection();
-        const auto type = tileElement.element->asTrack()->GetTrackType();
+        const auto type = tileElement.element->asTrack()->getTrackType();
 
         ride_create_or_find_construction_window(rideIndex);
 
@@ -1335,7 +1335,7 @@ namespace OpenRCT2
         do
         {
             auto trackRemoveAction = GameActions::TrackRemoveAction(
-                trackElement.element->asTrack()->GetTrackType(), trackElement.element->asTrack()->GetSequenceIndex(),
+                trackElement.element->asTrack()->getTrackType(), trackElement.element->asTrack()->getSequenceIndex(),
                 { trackElement.x, trackElement.y, trackElement.element->getBaseZ(), direction });
             trackRemoveAction.SetFlags(CommandFlag::allowDuringPaused);
 
@@ -1422,12 +1422,12 @@ namespace OpenRCT2
                             continue;
                         if (tileElement->getType() != TileElementType::track)
                             continue;
-                        if (tileElement->asTrack()->GetRideIndex() != id)
+                        if (tileElement->asTrack()->getRideIndex() != id)
                             continue;
-                        if (tileElement->asTrack()->GetSequenceIndex() != 0)
+                        if (tileElement->asTrack()->getSequenceIndex() != 0)
                             continue;
 
-                        const auto& ted = GetTrackElementDescriptor(tileElement->asTrack()->GetTrackType());
+                        const auto& ted = GetTrackElementDescriptor(tileElement->asTrack()->getTrackType());
                         // keep searching for a station piece (coaster station, tower ride base, shops, and flat ride base)
                         if (!ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
                             continue;
@@ -1441,7 +1441,7 @@ namespace OpenRCT2
                         break;
                     }
                     // update the StationIndex, get the TrackElement's rotation
-                    tileElement->asTrack()->SetStationIndex(getStationIndex(&station));
+                    tileElement->asTrack()->setStationIndex(getStationIndex(&station));
                     direction = tileElement->getDirection();
 
                     // In the future this could look at the TED and see if the station has a sequence longer than 1
@@ -1460,7 +1460,7 @@ namespace OpenRCT2
                     continue;
                 }
                 // update all the blocks with StationIndex
-                const auto& ted = GetTrackElementDescriptor(tileElement->asTrack()->GetTrackType());
+                const auto& ted = GetTrackElementDescriptor(tileElement->asTrack()->getTrackType());
                 for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
                     const auto& block = ted.sequenceData.sequences[i].clearance;
@@ -1478,7 +1478,7 @@ namespace OpenRCT2
                         if (tileElement->getType() != TileElementType::track)
                             continue;
 
-                        const auto& ted2 = GetTrackElementDescriptor(tileElement->asTrack()->GetTrackType());
+                        const auto& ted2 = GetTrackElementDescriptor(tileElement->asTrack()->getTrackType());
                         if (!ted2.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
                             continue;
 
@@ -1492,7 +1492,7 @@ namespace OpenRCT2
                         break;
                     }
 
-                    tileElement->asTrack()->SetStationIndex(getStationIndex(&station));
+                    tileElement->asTrack()->setStationIndex(getStationIndex(&station));
                 }
             }
         }
@@ -1548,10 +1548,10 @@ namespace OpenRCT2
                     continue;
                 if (tileElement->baseHeight != locationCoords.z)
                     continue;
-                if (tileElement->asEntrance()->GetRideIndex() != id)
+                if (tileElement->asEntrance()->getRideIndex() != id)
                     continue;
                 // if it's a park entrance continue to the next tile element
-                if (tileElement->asEntrance()->GetEntranceType() > ENTRANCE_TYPE_RIDE_EXIT)
+                if (tileElement->asEntrance()->getEntranceType() > ENTRANCE_TYPE_RIDE_EXIT)
                     continue;
 
                 // find the station that's connected to this ride entrance
@@ -1568,18 +1568,18 @@ namespace OpenRCT2
                 {
                     if (trackElement->getType() != TileElementType::track)
                         continue;
-                    if (trackElement->asTrack()->GetRideIndex() != id)
+                    if (trackElement->asTrack()->getRideIndex() != id)
                         continue;
                     if (trackElement->baseHeight != tileElement->baseHeight)
                         continue;
 
-                    auto trackType = trackElement->asTrack()->GetTrackType();
+                    auto trackType = trackElement->asTrack()->getTrackType();
 
                     // get the StationIndex for the station
                     StationIndex stationId = StationIndex::FromUnderlying(0);
                     if (trackType != TrackElemType::maze)
                     {
-                        uint8_t trackSequence = trackElement->asTrack()->GetSequenceIndex();
+                        uint8_t trackSequence = trackElement->asTrack()->getSequenceIndex();
 
                         // determine where the ride entrance is relative to the station track
                         Direction direction = (tileElement->getDirection() - DirectionReverse(trackElement->getDirection()))
@@ -1593,11 +1593,11 @@ namespace OpenRCT2
                             continue;
                         }
 
-                        stationId = trackElement->asTrack()->GetStationIndex();
+                        stationId = trackElement->asTrack()->getStationIndex();
                     }
 
                     auto& station = getStation(stationId);
-                    if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+                    if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
                     {
                         // if the location is already set for this station, big problem!
                         if (!station.Exit.IsNull())
@@ -1616,7 +1616,7 @@ namespace OpenRCT2
                         station.Entrance = TileCoordsXYZD{ loc };
                     }
                     // set the entrance's StationIndex as this station
-                    tileElement->asEntrance()->SetStationIndex(stationId);
+                    tileElement->asEntrance()->setStationIndex(stationId);
                     shouldRemove = false;
                 } while (!(trackElement++)->isLastForTile());
 
@@ -1649,7 +1649,7 @@ namespace OpenRCT2
                 _currentTrackBegin.y = trackBeginEnd.begin_y;
                 _currentTrackBegin.z = trackBeginEnd.begin_z;
                 _currentTrackPieceDirection = trackBeginEnd.begin_direction;
-                _currentTrackPieceType = trackBeginEnd.begin_element->asTrack()->GetTrackType();
+                _currentTrackPieceType = trackBeginEnd.begin_element->asTrack()->getTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 return true;
             }
@@ -1674,7 +1674,7 @@ namespace OpenRCT2
                 _currentTrackBegin.y = next_track.y;
                 _currentTrackBegin.z = z;
                 _currentTrackPieceDirection = next_track.element->getDirection();
-                _currentTrackPieceType = next_track.element->asTrack()->GetTrackType();
+                _currentTrackPieceType = next_track.element->asTrack()->getTrackType();
                 _currentTrackSelectionFlags.clearAll();
                 return true;
             }

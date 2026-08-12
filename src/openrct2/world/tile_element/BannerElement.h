@@ -24,24 +24,24 @@ namespace OpenRCT2
     private:
         BannerIndex index;    // 5
         uint8_t position;     // 7
-        uint8_t AllowedEdges; // 8
+        uint8_t allowedEdges; // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t Pad09[7];
+        uint8_t pad09[7];
 #pragma clang diagnostic pop
     public:
-        Banner* GetBanner() const;
-        const BannerSceneryEntry* GetEntry() const;
+        Banner* getBanner() const;
+        const BannerSceneryEntry* getEntry() const;
 
-        BannerIndex GetIndex() const;
-        void SetIndex(BannerIndex newIndex);
+        BannerIndex getIndex() const;
+        void setIndex(BannerIndex newIndex);
 
-        uint8_t GetPosition() const;
-        void SetPosition(uint8_t newPosition);
+        uint8_t getPosition() const;
+        void setPosition(uint8_t newPosition);
 
-        uint8_t GetAllowedEdges() const;
-        void SetAllowedEdges(uint8_t newEdges);
-        void ResetAllowedEdges();
+        uint8_t getAllowedEdges() const;
+        void setAllowedEdges(uint8_t newEdges);
+        void resetAllowedEdges();
     };
     static_assert(sizeof(BannerElement) == kTileElementSize);
 #pragma pack(pop)

@@ -478,7 +478,7 @@ static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackE
         return true;
     }
 
-    if (surfaceElement->GetSlope() != kTileSlopeFlat)
+    if (surfaceElement->getSlope() != kTileSlopeFlat)
     {
         return true;
     }

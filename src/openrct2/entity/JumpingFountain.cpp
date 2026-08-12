@@ -264,12 +264,12 @@ namespace OpenRCT2
                 continue;
             if (tileElement->getBaseZ() != newLoc.z)
                 continue;
-            if (tileElement->asPath()->AdditionIsGhost())
+            if (tileElement->asPath()->additionIsGhost())
                 continue;
-            if (!tileElement->asPath()->HasAddition())
+            if (!tileElement->asPath()->hasAddition())
                 continue;
 
-            auto* pathAdditionEntry = tileElement->asPath()->GetAdditionEntry();
+            auto* pathAdditionEntry = tileElement->asPath()->getAdditionEntry();
             if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
             {
                 return true;

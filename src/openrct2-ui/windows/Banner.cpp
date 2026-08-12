@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (auto* bannerElement : TileElementsView<BannerElement>(banner->position))
             {
-                if (bannerElement->GetIndex() == GetBannerIndex())
+                if (bannerElement->getIndex() == GetBannerIndex())
                 {
                     return bannerElement;
                 }
@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->GetPosition() });
+                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->getPosition() });
                     GameActions::Execute(&bannerRemoveAction, gameState);
                     break;
                 }

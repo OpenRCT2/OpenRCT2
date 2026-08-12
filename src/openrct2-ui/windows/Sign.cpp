@@ -117,9 +117,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return false;
                 }
-                _mainColour = wallElement->GetPrimaryColour();
-                _textColour = wallElement->GetSecondaryColour();
-                _sceneryEntry = wallElement->GetEntryIndex();
+                _mainColour = wallElement->getPrimaryColour();
+                _textColour = wallElement->getSecondaryColour();
+                _sceneryEntry = wallElement->getEntryIndex();
             }
             else
             {
@@ -128,9 +128,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return false;
                 }
-                _mainColour = sceneryElement->GetPrimaryColour();
-                _textColour = sceneryElement->GetSecondaryColour();
-                _sceneryEntry = sceneryElement->GetEntryIndex();
+                _mainColour = sceneryElement->getPrimaryColour();
+                _textColour = sceneryElement->getSecondaryColour();
+                _sceneryEntry = sceneryElement->getEntryIndex();
             }
 
             // Create viewport
@@ -180,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto sceneryRemoveAction = GameActions::LargeSceneryRemoveAction(
                             { bannerCoords, tileElement->getBaseZ(), tileElement->getDirection() },
-                            tileElement->asLargeScenery()->GetSequenceIndex());
+                            tileElement->asLargeScenery()->getSequenceIndex());
                         GameActions::Execute(&sceneryRemoveAction, gameState);
                     }
                     break;

@@ -448,10 +448,10 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                if (surfaceElement != nullptr && (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
-                    && surfaceElement->GetWaterHeight() == 0 && surfaceElement->CanGrassGrow())
+                if (surfaceElement != nullptr && (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
+                    && surfaceElement->getWaterHeight() == 0 && surfaceElement->canGrassGrow())
                 {
-                    surfaceElement->SetGrassLength(length);
+                    surfaceElement->setGrassLength(length);
                 }
             }
         }
@@ -468,7 +468,7 @@ namespace OpenRCT2::GameActions
         {
             if (it.element->getType() == TileElementType::smallScenery)
             {
-                it.element->asSmallScenery()->SetAge(0);
+                it.element->asSmallScenery()->setAge(0);
             }
         } while (TileElementIteratorNext(&it));
 
@@ -485,10 +485,10 @@ namespace OpenRCT2::GameActions
             if (it.element->getType() != TileElementType::path)
                 continue;
 
-            if (!(it.element)->asPath()->HasAddition())
+            if (!(it.element)->asPath()->hasAddition())
                 continue;
 
-            it.element->asPath()->SetIsBroken(false);
+            it.element->asPath()->setIsBroken(false);
         } while (TileElementIteratorNext(&it));
 
         GfxInvalidateScreen();
@@ -509,12 +509,12 @@ namespace OpenRCT2::GameActions
                 continue;
 
             auto* path = it.element->asPath();
-            if (!path->HasAddition())
+            if (!path->hasAddition())
                 continue;
 
-            auto* pathAdditionEntry = path->GetAdditionEntry();
+            auto* pathAdditionEntry = path->getAdditionEntry();
             if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
-                path->SetAdditionStatus(0xFF);
+                path->setAdditionStatus(0xFF);
 
         } while (TileElementIteratorNext(&it));
 
@@ -791,7 +791,7 @@ namespace OpenRCT2::GameActions
                     continue;
 
                 // Ignore already owned tiles.
-                if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
+                if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
                     continue;
 
                 int32_t baseZ = surfaceElement->getBaseZ();
@@ -800,7 +800,7 @@ namespace OpenRCT2::GameActions
                 // only own tiles that were not set to 0
                 if (destOwnership != OWNERSHIP_UNOWNED)
                 {
-                    surfaceElement->SetOwnership(destOwnership);
+                    surfaceElement->setOwnership(destOwnership);
                     Park::UpdateFencesAroundTile(coords);
                     MapInvalidateTile({ coords, baseZ, baseZ + 16 });
                 }
@@ -813,7 +813,7 @@ namespace OpenRCT2::GameActions
             auto* surfaceElement = MapGetSurfaceElementAt(spawn);
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                surfaceElement->setOwnership(OWNERSHIP_UNOWNED);
                 Park::UpdateFencesAroundTile(spawn);
                 uint16_t baseZ = surfaceElement->getBaseZ();
                 MapInvalidateTile({ spawn, baseZ, baseZ + 16 });
@@ -851,7 +851,7 @@ namespace OpenRCT2::GameActions
             if (it.element->getType() == TileElementType::surface)
             {
                 // Remove all park fence flags
-                it.element->asSurface()->SetParkFences(0);
+                it.element->asSurface()->setParkFences(0);
             }
         } while (TileElementIteratorNext(&it));
 

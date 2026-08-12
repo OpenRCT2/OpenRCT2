@@ -311,7 +311,7 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType ty
 
 static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& surfaceElement, int32_t rotation)
 {
-    const uint8_t slope = surfaceElement.GetSlope();
+    const uint8_t slope = surfaceElement.getSlope();
     const uint8_t slopeHeight = slope & kTileSlopeDiagonalFlag;
     uint16_t slopeCorners = (slope & kTileSlopeRaisedCornersMask) << rotation;
     slopeCorners = ((slopeCorners >> 4) | slopeCorners) & 0x0F;
@@ -503,7 +503,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     if (isWater && neighbour.tile_element != nullptr)
     {
-        auto waterHeight = neighbour.tile_element->asSurface()->GetWaterHeight() / (kCoordsZStep * 2);
+        auto waterHeight = neighbour.tile_element->asSurface()->getWaterHeight() / (kCoordsZStep * 2);
         if (waterHeight == height && !neighbourIsClippedAway)
         {
             // Don't draw the edge when the neighbour's water level is the same
@@ -689,7 +689,7 @@ static void ViewportSurfaceDrawTileSideTop(
     {
         if (isWater)
         {
-            auto waterHeight = neighbour.tile_element->asSurface()->GetWaterHeight() / (kCoordsZStep * 2);
+            auto waterHeight = neighbour.tile_element->asSurface()->getWaterHeight() / (kCoordsZStep * 2);
             if (height == waterHeight)
             {
                 return;
@@ -782,9 +782,9 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
     int32_t localSurfaceShape = surfaceShape;
     int32_t localHeight = height;
 
-    if (surfaceElement.GetWaterHeight() > 0)
+    if (surfaceElement.getWaterHeight() > 0)
     {
-        int32_t waterHeight = surfaceElement.GetWaterHeight();
+        int32_t waterHeight = surfaceElement.getWaterHeight();
         if (waterHeight > height)
         {
             localHeight += kLandHeightStep;
@@ -859,7 +859,7 @@ static void PaintSurfaceLandOwnership(
     auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
     // Loc660E9A:
-    if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
+    if (tileElement.getOwnership() & OWNERSHIP_OWNED)
     {
         assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
@@ -877,7 +877,7 @@ static void PaintSurfaceLandOwnership(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
+    else if (tileElement.getOwnership() & OWNERSHIP_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -893,7 +893,7 @@ static void PaintSurfaceConstructionRights(
 {
     auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-    if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+    if (tileElement.getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
     {
         assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
@@ -911,7 +911,7 @@ static void PaintSurfaceConstructionRights(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+    else if (tileElement.getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -940,8 +940,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const auto cornerHeights = GetSlopeRelativeCornerHeights(surfaceShape);
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
-    const auto* surfaceObject = tileElement.GetSurfaceObject();
-    const auto* edgeObject = tileElement.GetEdgeObject();
+    const auto* surfaceObject = tileElement.getSurfaceObject();
+    const auto* edgeObject = tileElement.getEdgeObject();
 
     const auto selfDescriptor = TileDescriptor{
         TileCoordsXY(base),
@@ -983,7 +983,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
-        descriptor.surfaceObject = surfaceElement->GetSurfaceObject();
+        descriptor.surfaceObject = surfaceElement->getSurfaceObject();
         descriptor.slope = surfaceSlope;
         descriptor.corner_heights.top = baseHeight + ch.top;
         descriptor.corner_heights.right = baseHeight + ch.right;
@@ -1035,7 +1035,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             {
                 if ((session.ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
                 {
-                    grassLength = tileElement.GetGrassLength() & 0x7;
+                    grassLength = tileElement.getGrassLength() & 0x7;
                 }
             }
             imageId = surfaceObject->GetImageId(session.MapPosition, grassLength, rotation, image_offset, showGridlines, false);
@@ -1080,7 +1080,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.GetOwnership() & OWNERSHIP_OWNED))
+    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.getOwnership() & OWNERSHIP_OWNED))
     {
         PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }
@@ -1226,7 +1226,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1], false);
     }
 
-    const uint16_t waterHeight = tileElement.GetWaterHeight();
+    const uint16_t waterHeight = tileElement.getWaterHeight();
     const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
     const bool waterIsTransparent = Config::Get().general.transparentWater
         || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
@@ -1266,12 +1266,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if ((tileElement.GetParkFences()) && !gTrackDesignSaveMode)
+    if ((tileElement.getParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
         session.InteractionType = ViewportInteractionItem::parkEntrance;
 
-        uint8_t rotatedFences = Numerics::rol4(tileElement.GetParkFences(), rotation);
+        uint8_t rotatedFences = Numerics::rol4(tileElement.getParkFences(), rotation);
 
         for (const auto& fenceData : _tileSurfaceBoundaries)
         {

@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
         }
 
         BannerElement* bannerElement = tileElement->asBanner();
-        CoordsXYZD loc = { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->GetPosition() };
+        CoordsXYZD loc = { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->getPosition() };
 
         if (!LocationValid(loc))
         {

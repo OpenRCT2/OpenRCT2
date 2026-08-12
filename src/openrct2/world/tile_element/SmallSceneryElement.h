@@ -32,31 +32,31 @@ namespace OpenRCT2
     private:
         ObjectEntryIndex entryIndex; // 5
         uint8_t age;                 // 7
-        Drawing::Colour Colour[3];   // 8
-        uint8_t Flags2;              // B
+        Drawing::Colour colour[3];   // 8
+        uint8_t flags2;              // B
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t Pad0B[4];
+        uint8_t pad0B[4];
 #pragma clang diagnostic pop
 
     public:
-        ObjectEntryIndex GetEntryIndex() const;
-        void SetEntryIndex(ObjectEntryIndex newIndex);
-        const SmallSceneryEntry* GetEntry() const;
-        uint8_t GetAge() const;
-        void SetAge(uint8_t newAge);
-        void IncreaseAge(const CoordsXY& sceneryPos);
-        uint8_t GetSceneryQuadrant() const;
-        void SetSceneryQuadrant(uint8_t newQuadrant);
-        Drawing::Colour GetPrimaryColour() const;
-        void SetPrimaryColour(Drawing::Colour colour);
-        Drawing::Colour GetSecondaryColour() const;
-        void SetSecondaryColour(Drawing::Colour colour);
-        Drawing::Colour GetTertiaryColour() const;
-        void SetTertiaryColour(Drawing::Colour colour);
-        bool NeedsSupports() const;
-        void SetNeedsSupports();
-        void UpdateAge(const CoordsXY& sceneryPos);
+        ObjectEntryIndex getEntryIndex() const;
+        void setEntryIndex(ObjectEntryIndex newIndex);
+        const SmallSceneryEntry* getEntry() const;
+        uint8_t getAge() const;
+        void setAge(uint8_t newAge);
+        void increaseAge(const CoordsXY& sceneryPos);
+        uint8_t getSceneryQuadrant() const;
+        void setSceneryQuadrant(uint8_t newQuadrant);
+        Drawing::Colour getPrimaryColour() const;
+        void setPrimaryColour(Drawing::Colour colour);
+        Drawing::Colour getSecondaryColour() const;
+        void setSecondaryColour(Drawing::Colour colour);
+        Drawing::Colour getTertiaryColour() const;
+        void setTertiaryColour(Drawing::Colour colour);
+        bool needsSupports() const;
+        void setNeedsSupports();
+        void updateAge(const CoordsXY& sceneryPos);
     };
     static_assert(sizeof(SmallSceneryElement) == kTileElementSize);
 #pragma pack(pop)

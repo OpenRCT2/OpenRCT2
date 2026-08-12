@@ -64,7 +64,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         return false;
     }
 
-    auto rideIndex = tileElement->asTrack()->GetRideIndex();
+    auto rideIndex = tileElement->asTrack()->getRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride == nullptr || !(ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
@@ -76,7 +76,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
      * to sync with adjacent stations, so it will return true.
      * Still to determine if a vehicle to sync can be identified. */
 
-    auto stationIndex = tileElement->asTrack()->GetStationIndex();
+    auto stationIndex = tileElement->asTrack()->getStationIndex();
 
     SynchronisedVehicle* sv = _lastSynchronisedVehicle;
     sv->ride_id = rideIndex;
@@ -776,7 +776,7 @@ void Vehicle::UpdateWaitingToDepart()
         uint8_t trackDirection = GetTrackDirection();
         if (trackBlockGetNextFromZero(TrackLocation, *curRide, trackDirection, &track, &zUnused, &direction, false))
         {
-            if (track.element->asTrack()->HasCableLift())
+            if (track.element->asTrack()->hasCableLift())
             {
                 SetState(Status::waitingForCableLift, sub_state);
             }
@@ -1679,7 +1679,7 @@ void Vehicle::UpdateArriving()
         return;
     }
 
-    current_station = trackElement->GetStationIndex();
+    current_station = trackElement->getStationIndex();
     NumLaps++;
 
     if (sub_state != 0)

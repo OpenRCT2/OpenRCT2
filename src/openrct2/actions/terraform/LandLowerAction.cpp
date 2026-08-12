@@ -103,16 +103,16 @@ namespace OpenRCT2::GameActions
                 withinOwnership = true;
 
                 uint8_t height = surfaceElement->baseHeight;
-                if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+                if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
                     height += 2;
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                     height += 2;
 
                 if (height < maxHeight)
                     continue;
 
                 height = surfaceElement->baseHeight;
-                uint8_t currentSlope = surfaceElement->GetSlope();
+                uint8_t currentSlope = surfaceElement->getSlope();
                 uint8_t newSlope = LowerSurfaceCornerFlags(tableRow, currentSlope);
                 if (newSlope & kTileSlopeRaiseOrLowerBaseHeight)
                     height -= 2;

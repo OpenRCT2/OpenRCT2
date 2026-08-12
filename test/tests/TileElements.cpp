@@ -75,7 +75,7 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
     // Sloped paths only want to connect in two directions, of which is one at a higher offset
     const auto* slopedPathElement = MapGetFootpathElement(TileCoordsXYZ{ 18, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(slopedPathElement, nullptr);
-    ASSERT_TRUE(slopedPathElement->asPath()->IsSloped());
+    ASSERT_TRUE(slopedPathElement->asPath()->isSloped());
     // Bottom and top of sloped path want a path connection
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 14, 2 }, nullptr));
     EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 16, 0 }, nullptr));
@@ -161,7 +161,7 @@ TEST_F(TileElementWantsFootpathConnection, MapEdge)
     // Calculate the connected edges and set the appropriate edge flags
     // FIXME: The footpath functions should only take PathElement and not TileElement.
     FootpathConnectEdges({ 16, 64 }, pathElement->as<TileElement>(), {});
-    auto edges = pathElement->GetEdges();
+    auto edges = pathElement->getEdges();
 
     // The tiles alongside in the Y direction are both on the map edge so should be marked as an edge
     EXPECT_TRUE(edges & (1 << 1));

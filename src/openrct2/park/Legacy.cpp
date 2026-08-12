@@ -2391,9 +2391,9 @@ std::string_view GetClimateObjectIdFromLegacyClimateType(RCT12::ClimateType clim
 
 bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, const int32_t parkFileVersion)
 {
-    const auto rideType = trackElement.GetRideType();
-    const auto trackType = trackElement.GetTrackType();
-    const auto isInverted = trackElement.IsInverted();
+    const auto rideType = trackElement.getRideType();
+    const auto trackType = trackElement.getTrackType();
+    const auto isInverted = trackElement.isInverted();
 
     // Lots of Log Flumes exist where the downward slopes are simulated by using other track
     // types like the Splash Boats, but not actually made invisible, because they never needed

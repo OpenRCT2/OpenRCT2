@@ -85,7 +85,7 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         {
             auto trackElement = MapGetTrackElementAt(TrackLocation);
             if (trackElement != nullptr)
-                SetTrackType(trackElement->GetTrackType());
+                SetTrackType(trackElement->getTrackType());
 
             SetTrackDirection(curRide->boatHireReturnDirection);
             BoatLocation.SetNull();
@@ -470,7 +470,7 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
 
         if (tileElement->getType() == TileElementType::surface)
         {
-            int32_t waterZ = tileElement->asSurface()->GetWaterHeight();
+            int32_t waterZ = tileElement->asSurface()->getWaterHeight();
             if (location.z != waterZ)
             {
                 return false;

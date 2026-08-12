@@ -132,14 +132,14 @@ namespace OpenRCT2
             total++;
 
             /* Check if path has an edge in adjac_dir */
-            if (!(path->asPath()->GetEdges() & (1u << adjac_dir)))
+            if (!(path->asPath()->getEdges() & (1u << adjac_dir)))
             {
                 continue;
             }
 
-            if (path->asPath()->IsSloped())
+            if (path->asPath()->isSloped())
             {
-                if (path->asPath()->GetSlopeDirection() == adjac_dir)
+                if (path->asPath()->getSlopeDirection() == adjac_dir)
                 {
                     adjacPos.z += kPathHeightStep;
                 }
@@ -170,7 +170,7 @@ namespace OpenRCT2
                     pathcount++;
                 }
 
-                if (adjacentPathElement->IsWide())
+                if (adjacentPathElement->isWide())
                 {
                     if (!widefound)
                     {
@@ -423,10 +423,10 @@ namespace OpenRCT2
 
             if (GetNextIsSloped())
             {
-                if (surfaceElement->GetSlope() != kPathSlopeToLandSlope[GetNextDirection()])
+                if (surfaceElement->getSlope() != kPathSlopeToLandSlope[GetNextDirection()])
                     return kInvalidDirection;
             }
-            else if (surfaceElement->GetSlope() != kTileSlopeFlat)
+            else if (surfaceElement->getSlope() != kTileSlopeFlat)
                 return kInvalidDirection;
         }
 
@@ -450,7 +450,7 @@ namespace OpenRCT2
             {
                 if (std::abs(surfaceElement->getBaseZ() - NextLoc.z) <= 2 * kCoordsZStep)
                 {
-                    if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
+                    if (surfaceElement->canGrassGrow() && (surfaceElement->getGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                     {
                         if (!isHandymanAlreadyServicingTile(chosenTile, PeepState::mowing))
                             return chosenDirection;
@@ -523,7 +523,7 @@ namespace OpenRCT2
                 if (pathElement == nullptr)
                     return true;
 
-                uint8_t pathDirections = (pathElement->GetEdges() & validDirections) & 0xF;
+                uint8_t pathDirections = (pathElement->getEdges() & validDirections) & 0xF;
                 if (pathDirections == 0)
                 {
                     newDirection = handymanDirectionRandSurface(validDirections);
@@ -534,7 +534,7 @@ namespace OpenRCT2
                     if (litterDirection != kInvalidDirection && pathDirections & (1 << litterDirection))
                     {
                         // Check whether path is a queue path and connected to a ride
-                        bool connectedQueue = (pathElement->IsQueue() && !pathElement->GetRideIndex().IsNull());
+                        bool connectedQueue = (pathElement->isQueue() && !pathElement->getRideIndex().IsNull());
                         // When in a queue path make the probability of following litter much lower (10% instead of 90%)
                         // as handymen often get stuck when there is litter on a normal path next to a queue they are in
                         uint32_t chooseRandomProbability = connectedQueue ? 0xE666 : 0x1999;
@@ -676,7 +676,7 @@ namespace OpenRCT2
      */
     Direction Staff::mechanicDirectionPath(uint8_t validDirections, PathElement* pathElement)
     {
-        uint32_t pathDirections = pathElement->GetEdges();
+        uint32_t pathDirections = pathElement->getEdges();
         pathDirections &= validDirections;
 
         if (pathDirections == 0)
@@ -792,7 +792,7 @@ namespace OpenRCT2
      */
     Direction Staff::directionPath(uint8_t validDirections, PathElement* pathElement) const
     {
-        uint32_t pathDirections = pathElement->GetEdges();
+        uint32_t pathDirections = pathElement->getEdges();
         if (State != PeepState::answering && State != PeepState::headingToInspection)
         {
             pathDirections &= validDirections;
@@ -875,7 +875,7 @@ namespace OpenRCT2
         if (trackElement == nullptr)
             return false;
 
-        auto ride = GetRide(trackElement->GetRideIndex());
+        auto ride = GetRide(trackElement->getRideIndex());
         if (ride == nullptr)
             return false;
 
@@ -1068,9 +1068,9 @@ namespace OpenRCT2
                 continue;
 
             auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
-            if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
+            if (surfaceElement != nullptr && surfaceElement->canGrassGrow())
             {
-                surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
+                surfaceElement->setGrassLength(GRASS_LENGTH_MOWED);
                 MapInvalidateTileZoom0({ NextLoc, surfaceElement->getBaseZ(), surfaceElement->getBaseZ() + 16 });
             }
             staffLawnsMown = AddClamp(staffLawnsMown, 1u);
@@ -1125,12 +1125,12 @@ namespace OpenRCT2
                 if (abs(NextLoc.z - tile_element->getBaseZ()) > 4 * kCoordsZStep)
                     continue;
 
-                const auto* sceneryEntry = tile_element->asSmallScenery()->GetEntry();
+                const auto* sceneryEntry = tile_element->asSmallScenery()->getEntry();
 
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
                     continue;
 
-                tile_element->asSmallScenery()->SetAge(0);
+                tile_element->asSmallScenery()->setAge(0);
                 MapInvalidateTileZoom0({ actionLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
                 staffGardensWatered = AddClamp(staffGardensWatered, 1u);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -1197,22 +1197,22 @@ namespace OpenRCT2
                 }
             }
 
-            if (!tile_element->asPath()->HasAddition())
+            if (!tile_element->asPath()->hasAddition())
             {
                 StateReset();
                 return;
             }
 
-            auto* pathAddEntry = tile_element->asPath()->GetAdditionEntry();
-            if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->asPath()->IsBroken()
-                || tile_element->asPath()->AdditionIsGhost())
+            auto* pathAddEntry = tile_element->asPath()->getAdditionEntry();
+            if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->asPath()->isBroken()
+                || tile_element->asPath()->additionIsGhost())
             {
                 StateReset();
                 return;
             }
 
-            uint8_t additionStatus = tile_element->asPath()->GetAdditionStatus() | ((3 << Var37) << Var37);
-            tile_element->asPath()->SetAdditionStatus(additionStatus);
+            uint8_t additionStatus = tile_element->asPath()->getAdditionStatus() | ((3 << Var37) << Var37);
+            tile_element->asPath()->setAdditionStatus(additionStatus);
 
             MapInvalidateTileZoom0({ NextLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
             staffBinsEmptied = AddClamp(staffBinsEmptied, 1u);
@@ -1314,10 +1314,10 @@ namespace OpenRCT2
                 return;
             }
 
-            if (CurrentRide != rideEntranceExitElement->asEntrance()->GetRideIndex())
+            if (CurrentRide != rideEntranceExitElement->asEntrance()->getRideIndex())
                 return;
 
-            StationIndex exitIndex = rideEntranceExitElement->asEntrance()->GetStationIndex();
+            StationIndex exitIndex = rideEntranceExitElement->asEntrance()->getStationIndex();
             if (CurrentRideStation != exitIndex)
                 return;
 
@@ -1419,10 +1419,10 @@ namespace OpenRCT2
                 return;
             }
 
-            if (CurrentRide != rideEntranceExitElement->asEntrance()->GetRideIndex())
+            if (CurrentRide != rideEntranceExitElement->asEntrance()->getRideIndex())
                 return;
 
-            StationIndex exitIndex = rideEntranceExitElement->asEntrance()->GetStationIndex();
+            StationIndex exitIndex = rideEntranceExitElement->asEntrance()->getStationIndex();
             if (CurrentRideStation != exitIndex)
                 return;
 
@@ -1507,21 +1507,21 @@ namespace OpenRCT2
                     continue;
                 }
 
-                auto* sceneryEntry = tile_element->asSmallScenery()->GetEntry();
+                auto* sceneryEntry = tile_element->asSmallScenery()->getEntry();
 
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
                 {
                     continue;
                 }
 
-                if (tile_element->asSmallScenery()->GetAge() < kSceneryWitherAgeThreshold2)
+                if (tile_element->asSmallScenery()->getAge() < kSceneryWitherAgeThreshold2)
                 {
                     if (chosen_position >= 4)
                     {
                         continue;
                     }
 
-                    if (tile_element->asSmallScenery()->GetAge() < kSceneryWitherAgeThreshold1)
+                    if (tile_element->asSmallScenery()->getAge() < kSceneryWitherAgeThreshold1)
                     {
                         continue;
                     }
@@ -1568,23 +1568,23 @@ namespace OpenRCT2
                 return false;
         }
 
-        if (!tileElement->asPath()->HasAddition())
+        if (!tileElement->asPath()->hasAddition())
             return false;
-        auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
+        auto* pathAddEntry = tileElement->asPath()->getAdditionEntry();
         if (pathAddEntry == nullptr)
             return false;
 
         if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
             return false;
 
-        if (tileElement->asPath()->IsBroken())
+        if (tileElement->asPath()->isBroken())
             return false;
 
-        if (tileElement->asPath()->AdditionIsGhost())
+        if (tileElement->asPath()->additionIsGhost())
             return false;
 
-        uint8_t bin_positions = tileElement->asPath()->GetEdges();
-        uint8_t bin_quantity = tileElement->asPath()->GetAdditionStatus();
+        uint8_t bin_positions = tileElement->asPath()->getEdges();
+        uint8_t bin_quantity = tileElement->asPath()->getAdditionStatus();
         uint8_t chosen_position = 0;
 
         for (; chosen_position < 4; ++chosen_position)
@@ -1626,9 +1626,9 @@ namespace OpenRCT2
             return false;
 
         auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
-        if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
+        if (surfaceElement != nullptr && surfaceElement->canGrassGrow())
         {
-            if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1
+            if ((surfaceElement->getGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1
                 && !isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::mowing))
             {
                 SetState(PeepState::mowing);
@@ -1870,7 +1870,7 @@ namespace OpenRCT2
 
             if (surfaceElement != nullptr)
             {
-                int32_t water_height = surfaceElement->GetWaterHeight();
+                int32_t water_height = surfaceElement->getWaterHeight();
                 if (water_height > 0)
                 {
                     moveTo({ x, y, water_height });
@@ -2382,7 +2382,7 @@ namespace OpenRCT2
             TrackBeginEnd trackBeginEnd;
             while (trackBlockGetPrevious(input, &trackBeginEnd))
             {
-                if (trackBeginEnd.begin_element->asTrack()->IsStation())
+                if (trackBeginEnd.begin_element->asTrack()->isStation())
                 {
                     input.x = trackBeginEnd.begin_x;
                     input.y = trackBeginEnd.begin_y;

@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
                 if (height > minHeight)
                     continue;
 
-                uint8_t currentSlope = surfaceElement->GetSlope();
+                uint8_t currentSlope = surfaceElement->getSlope();
                 uint8_t newSlope = RaiseSurfaceCornerFlags(tableRow, currentSlope);
                 if (newSlope & kTileSlopeRaiseOrLowerBaseHeight)
                 {

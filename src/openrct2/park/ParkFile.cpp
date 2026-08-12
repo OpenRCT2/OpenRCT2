@@ -1211,24 +1211,24 @@ namespace OpenRCT2
                         if (it.element->getType() == TileElementType::path)
                         {
                             auto* pathElement = it.element->asPath();
-                            if (pathElement->HasLegacyPathEntry())
+                            if (pathElement->hasLegacyPathEntry())
                             {
-                                auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
+                                auto pathEntryIndex = pathElement->getLegacyPathEntryIndex();
                                 if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
                                 {
-                                    if (pathElement->IsQueue())
-                                        pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
+                                    if (pathElement->isQueue())
+                                        pathElement->setSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
                                     else
-                                        pathElement->SetSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
+                                        pathElement->setSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
 
-                                    pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                    pathElement->setRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
                                 }
                             }
                         }
                         else if (it.element->getType() == TileElementType::track)
                         {
                             auto* trackElement = it.element->asTrack();
-                            auto trackType = trackElement->GetTrackType();
+                            auto trackType = trackElement->getTrackType();
                             if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
                             {
                                 it.element->setInvisible(true);
@@ -1236,9 +1236,9 @@ namespace OpenRCT2
                             if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
                             {
                                 if (trackType == TrackElemType::brakes)
-                                    trackElement->SetBrakeClosed(true);
+                                    trackElement->setBrakeClosed(true);
                                 if (trackType == TrackElemType::blockBrakes)
-                                    trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                                    trackElement->setBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                             }
                         }
                         else if (it.element->getType() == TileElementType::smallScenery && os.getHeader().targetVersion < 23)
@@ -1246,14 +1246,14 @@ namespace OpenRCT2
                             auto* sceneryElement = it.element->asSmallScenery();
                             // Previous formats stored the needs supports flag in the primary colour
                             // We have moved it into a flags field to support extended colour sets
-                            bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
+                            bool needsSupports = EnumValue(sceneryElement->getPrimaryColour())
                                 & kRCT12SmallSceneryElementNeedsSupportsFlag;
                             if (needsSupports)
                             {
-                                const auto valueWithoutFlag = EnumValue(sceneryElement->GetPrimaryColour())
+                                const auto valueWithoutFlag = EnumValue(sceneryElement->getPrimaryColour())
                                     & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
-                                sceneryElement->SetPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
-                                sceneryElement->SetNeedsSupports();
+                                sceneryElement->setPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
+                                sceneryElement->setNeedsSupports();
                             }
                         }
                     }
@@ -1275,10 +1275,10 @@ namespace OpenRCT2
                 {
                     for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY{ x, y }))
                     {
-                        const auto* ride = GetRide(trackElement->GetRideIndex());
+                        const auto* ride = GetRide(trackElement->getRideIndex());
                         if (ride != nullptr)
                         {
-                            trackElement->SetRideType(ride->type);
+                            trackElement->setRideType(ride->type);
                         }
                     }
                 }

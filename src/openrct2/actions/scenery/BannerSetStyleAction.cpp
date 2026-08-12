@@ -164,9 +164,9 @@ namespace OpenRCT2::GameActions
                 uint8_t allowedEdges = 0xF;
                 if (banner->flags.has(BannerFlag::noEntry))
                 {
-                    allowedEdges &= ~(1 << bannerElement->GetPosition());
+                    allowedEdges &= ~(1 << bannerElement->getPosition());
                 }
-                bannerElement->SetAllowedEdges(allowedEdges);
+                bannerElement->setAllowedEdges(allowedEdges);
                 break;
             }
             default:

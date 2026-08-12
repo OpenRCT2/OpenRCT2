@@ -43,10 +43,10 @@ static void PaintRideEntranceExitScrollingText(
     if (stationObj.ScrollingMode == kScrollingModeNone)
         return;
 
-    if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
+    if (entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
         return;
 
-    const auto* ride = GetRide(entranceEl.GetRideIndex());
+    const auto* ride = GetRide(entranceEl.getRideIndex());
     if (ride == nullptr)
         return;
 
@@ -71,7 +71,7 @@ static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t hei
 
     if (LightFx::IsAvailable())
     {
-        if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
             LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::lantern3);
         }
@@ -98,7 +98,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 {
     PROFILED_FUNCTION();
 
-    auto rideIndex = entranceEl.GetRideIndex();
+    auto rideIndex = entranceEl.getRideIndex();
     if ((session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         || (gTrackDesignSaveMode && rideIndex != gTrackDesignSaveRideIndex))
     {
@@ -157,7 +157,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     // Each entrance is split into 2 images for drawing
     // Certain entrance styles have another 2 images to draw for coloured windows
 
-    auto isExit = entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
+    auto isExit = entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
     // Back
     ImageIndex backImageIndex = (isExit ? stationObj->exitBackIndex : stationObj->entranceBackIndex) + direction;
@@ -268,13 +268,13 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto* entrance = objManager.GetLoadedObject<EntranceObject>(entranceEl.getEntryIndex());
-    auto sequence = entranceEl.GetSequenceIndex();
+    auto sequence = entranceEl.getSequenceIndex();
     switch (sequence)
     {
         case EntranceSequence::Centre:
         {
             // Footpath
-            auto surfaceDescriptor = entranceEl.GetPathSurfaceDescriptor();
+            auto surfaceDescriptor = entranceEl.getPathSurfaceDescriptor();
             if (surfaceDescriptor != nullptr)
             {
                 auto imageIndex = (surfaceDescriptor->image + 5 * (1 + (direction & 1)));
@@ -323,7 +323,7 @@ static void PaintHeightMarkers(PaintSession& session, const EntranceElement& ent
 
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
-        if (entranceEl.GetDirections() & 0xF)
+        if (entranceEl.getDirections() & 0xF)
         {
             auto heightMarkerBaseZ = entranceEl.getBaseZ() + 3;
             ImageIndex baseImageIndex = SPR_HEIGHT_MARKER_BASE;
@@ -343,7 +343,7 @@ void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, con
     session.InteractionType = ViewportInteractionItem::label;
 
     PaintHeightMarkers(session, entranceElement, height);
-    switch (entranceElement.GetEntranceType())
+    switch (entranceElement.getEntranceType())
     {
         case ENTRANCE_TYPE_RIDE_ENTRANCE:
         case ENTRANCE_TYPE_RIDE_EXIT:

@@ -52,13 +52,13 @@ namespace OpenRCT2::GameActions
     {
         for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
         {
-            if (entranceElement->GetRideIndex() != rideIndex)
+            if (entranceElement->getRideIndex() != rideIndex)
                 continue;
 
-            if (entranceElement->GetStationIndex() != stationNum)
+            if (entranceElement->getStationIndex() != stationNum)
                 continue;
 
-            if (entranceElement->GetEntranceType() != entranceType)
+            if (entranceElement->getEntranceType() != entranceType)
                 continue;
 
             return entranceElement->as<TileElement>();

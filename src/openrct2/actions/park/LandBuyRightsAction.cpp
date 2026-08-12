@@ -122,38 +122,38 @@ namespace OpenRCT2::GameActions
         switch (_setting)
         {
             case LandBuyRightSetting::buyLand: // 0
-                if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) != 0)
+                if ((surfaceElement->getOwnership() & OWNERSHIP_OWNED) != 0)
                 { // If the land is already owned
                     return res;
                 }
 
-                if (gLegacyScene == LegacyScene::scenarioEditor || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
+                if (gLegacyScene == LegacyScene::scenarioEditor || (surfaceElement->getOwnership() & OWNERSHIP_AVAILABLE) == 0)
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
                 }
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(OWNERSHIP_OWNED);
+                    surfaceElement->setOwnership(OWNERSHIP_OWNED);
                     Park::UpdateFencesAroundTile(loc);
                 }
                 res.cost = gameState.scenarioOptions.landPrice;
                 return res;
 
             case LandBuyRightSetting::buyConstructionRights: // 2
-                if ((surfaceElement->GetOwnership() & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
+                if ((surfaceElement->getOwnership() & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
                 { // If the land or construction rights are already owned
                     return res;
                 }
 
                 if (gLegacyScene == LegacyScene::scenarioEditor
-                    || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
+                    || (surfaceElement->getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
                 }
 
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    surfaceElement->setOwnership(surfaceElement->getOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }

@@ -582,7 +582,7 @@ static ImageId MiniatureRailwayTrackToGroovedIndent(const TileElement* path, uin
 
     uint32_t imageIdAlt = SPR_TRACKS_MINIATURE_RAILWAY_GROOVED_SW_NE;
 
-    uint8_t correctedEdges = path->asPath()->GetEdges();
+    uint8_t correctedEdges = path->asPath()->getEdges();
     correctedEdges |= correctedEdges << 4;
     correctedEdges >>= 4 - rotation;
     correctedEdges &= 0x0F;
@@ -1545,7 +1545,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isRightEighthToOrthog = trackElement.GetTrackType() == TrackElemType::rightEighthToOrthogonal;
+    bool isRightEighthToOrthog = trackElement.getTrackType() == TrackElemType::rightEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isRightEighthToOrthog)
@@ -1713,7 +1713,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isLeftEighthToOrthog = trackElement.GetTrackType() == TrackElemType::leftEighthToOrthogonal;
+    bool isLeftEighthToOrthog = trackElement.getTrackType() == TrackElemType::leftEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isLeftEighthToOrthog)

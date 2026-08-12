@@ -69,7 +69,7 @@ namespace OpenRCT2::GameActions
         GameState_t& gameState, int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
     {
         int32_t targetBaseZ = surfaceElement->baseHeight;
-        int32_t slope = surfaceElement->GetSlope();
+        int32_t slope = surfaceElement->getSlope();
         if (_isLowering)
         {
             slope = LowerSurfaceCornerFlags(direction, slope);
@@ -181,7 +181,7 @@ namespace OpenRCT2::GameActions
 
             // change land of current tile
             int32_t targetBaseZ = surfaceElement->baseHeight;
-            int32_t slope = surfaceElement->GetSlope();
+            int32_t slope = surfaceElement->getSlope();
             int32_t oldSlope = slope;
             if (_isLowering)
             {
@@ -462,7 +462,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     break;
                 uint8_t newBaseZ = surfaceElement->baseHeight;
-                uint8_t newSlope = surfaceElement->GetSlope();
+                uint8_t newSlope = surfaceElement->getSlope();
                 auto direction = static_cast<Direction>(selectionType);
 
                 if (raiseLand)
@@ -565,7 +565,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     break;
                 uint8_t newBaseZ = surfaceElement->baseHeight;
-                uint8_t oldSlope = surfaceElement->GetSlope();
+                uint8_t oldSlope = surfaceElement->getSlope();
                 int32_t rowIndex = EnumValue(selectionType)
                     - (EnumValue(MapSelectType::edge0) - EnumValue(MapSelectType::full) - 1);
                 uint8_t newSlope = raiseLand ? RaiseSurfaceCornerFlags(rowIndex, oldSlope)

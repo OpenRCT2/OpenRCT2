@@ -461,11 +461,11 @@ namespace OpenRCT2
             stream->WriteValue(tileElement.baseHeight);
             stream->WriteValue(tileElement.clearanceHeight);
             stream->WriteValue(tileElement.owner);
-            for (auto v : tileElement.Pad05)
+            for (auto v : tileElement.pad05)
             {
                 stream->WriteValue(v);
             }
-            for (auto v : tileElement.Pad08)
+            for (auto v : tileElement.pad08)
             {
                 stream->WriteValue(v);
             }
@@ -477,11 +477,11 @@ namespace OpenRCT2
             tileElement.baseHeight = stream->ReadValue<uint8_t>();
             tileElement.clearanceHeight = stream->ReadValue<uint8_t>();
             tileElement.owner = stream->ReadValue<uint8_t>();
-            for (auto& v : tileElement.Pad05)
+            for (auto& v : tileElement.pad05)
             {
                 v = stream->ReadValue<uint8_t>();
             }
-            for (auto& v : tileElement.Pad08)
+            for (auto& v : tileElement.pad08)
             {
                 v = stream->ReadValue<uint8_t>();
             }

@@ -470,9 +470,9 @@ namespace OpenRCT2::Ui::Windows
             int32_t mapZ = tileElement->getBaseZ();
             if (tileElement->getType() == TileElementType::surface)
             {
-                if ((tileElement->asSurface()->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
+                if ((tileElement->asSurface()->getSlope() & kTileSlopeRaisedCornersMask) != 0)
                     mapZ += 16;
-                if (tileElement->asSurface()->GetSlope() & kTileSlopeDiagonalFlag)
+                if (tileElement->asSurface()->getSlope() & kTileSlopeDiagonalFlag)
                     mapZ += 16;
             }
 
@@ -857,14 +857,14 @@ namespace OpenRCT2::Ui::Windows
                 return { PaletteIndex::transparent, PaletteIndex::transparent };
 
             auto colour = ColourPair(PaletteIndex::transparent);
-            const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+            const auto* surfaceObject = surfaceElement->getSurfaceObject();
             if (surfaceObject != nullptr)
                 colour = ColourPair(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
 
-            if (surfaceElement->GetWaterHeight() > 0)
+            if (surfaceElement->getWaterHeight() > 0)
                 colour = kWaterColour;
 
-            if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
+            if (!(surfaceElement->getOwnership() & OWNERSHIP_OWNED))
                 colour = MapColourUnowned(colour);
 
             const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(kElementTypeOverwriteColour));
@@ -917,10 +917,10 @@ namespace OpenRCT2::Ui::Windows
                 switch (tileElement->getType())
                 {
                     case TileElementType::surface:
-                        if (tileElement->asSurface()->GetWaterHeight() > 0)
+                        if (tileElement->asSurface()->getWaterHeight() > 0)
                             // Why is this a different water colour as above (195)?
                             colourB = ColourPair(PaletteIndex::pi194);
-                        if (!(tileElement->asSurface()->GetOwnership() & OWNERSHIP_OWNED))
+                        if (!(tileElement->asSurface()->getOwnership() & OWNERSHIP_OWNED))
                             colourB = MapColourUnowned(colourB);
                         break;
                     case TileElementType::path:
@@ -928,9 +928,9 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case TileElementType::entrance:
                     {
-                        if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                        if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                             break;
-                        Ride* targetRide = GetRide(tileElement->asEntrance()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asEntrance()->getRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
@@ -940,7 +940,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case TileElementType::track:
                     {
-                        Ride* targetRide = GetRide(tileElement->asTrack()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asTrack()->getRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;

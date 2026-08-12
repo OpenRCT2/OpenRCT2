@@ -548,7 +548,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
 
             if (isFiveCoasterObjective)
             {
-                auto ride = GetRide(it.element->asTrack()->GetRideIndex());
+                auto ride = GetRide(it.element->asTrack()->getRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->flags.has(RideFlag::indestructibleTrack))
@@ -557,7 +557,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
                 }
             }
 
-            it.element->asTrack()->SetIsIndestructible(markTrackAsIndestructible);
+            it.element->asTrack()->setIsIndestructible(markTrackAsIndestructible);
         }
     } while (TileElementIteratorNext(&it));
 

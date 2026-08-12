@@ -1455,7 +1455,7 @@ namespace OpenRCT2::Ui::Windows
                 if (it.element->getType() != TileElementType::track)
                     continue;
 
-                if (it.element->asTrack()->GetRideIndex() != ride.id)
+                if (it.element->asTrack()->getRideIndex() != ride.id)
                     continue;
 
                 auto location = TileCoordsXY(it.x, it.y).ToCoordsXY();
@@ -4282,15 +4282,15 @@ namespace OpenRCT2::Ui::Windows
                 return;
             if (info.Element->getType() != TileElementType::track)
                 return;
-            if (info.Element->asTrack()->GetRideIndex() != rideId)
+            if (info.Element->asTrack()->getRideIndex() != rideId)
                 return;
-            if (info.Element->asTrack()->GetColourScheme() == newColourScheme)
+            if (info.Element->asTrack()->getColourScheme() == newColourScheme)
                 return;
 
             auto z = info.Element->getBaseZ();
             auto direction = info.Element->getDirection();
             auto gameAction = GameActions::RideSetColourSchemeAction(
-                CoordsXYZD{ info.Loc, z, direction }, info.Element->asTrack()->GetTrackType(), newColourScheme);
+                CoordsXYZD{ info.Loc, z, direction }, info.Element->asTrack()->getTrackType(), newColourScheme);
             GameActions::Execute(&gameAction, getGameState());
         }
 
@@ -7296,7 +7296,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideOpenTrack(TileElement* tileElement)
     {
         assert(tileElement != nullptr);
-        auto rideIndex = tileElement->GetRideIndex();
+        auto rideIndex = tileElement->getRideIndex();
         if (!rideIndex.IsNull())
         {
             auto ride = GetRide(rideIndex);
@@ -7307,18 +7307,18 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Open ride window in station view
                     auto entranceElement = tileElement->asEntrance();
-                    auto stationIndex = entranceElement->GetStationIndex();
+                    auto stationIndex = entranceElement->getStationIndex();
                     return WindowRideOpenStation(*ride, stationIndex);
                 }
                 else if (type == TileElementType::track)
                 {
                     // Open ride window in station view
                     auto trackElement = tileElement->asTrack();
-                    auto trackType = trackElement->GetTrackType();
+                    auto trackType = trackElement->getTrackType();
                     const auto& ted = GetTrackElementDescriptor(trackType);
                     if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
                     {
-                        auto stationIndex = trackElement->GetStationIndex();
+                        auto stationIndex = trackElement->getStationIndex();
                         return WindowRideOpenStation(*ride, stationIndex);
                     }
                 }

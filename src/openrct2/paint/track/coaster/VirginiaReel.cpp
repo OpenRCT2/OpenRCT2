@@ -160,7 +160,7 @@ static void PaintVirginiaReelTrackFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     const uint32_t* sprites = kPiecesFlat;
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         sprites = kPiecesFlatLiftHill;
     }
@@ -190,7 +190,7 @@ static void PaintVirginiaReelTrack25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     const uint32_t* sprites = kPieces25DegUp;
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         sprites = kPieces25DegUpLiftHill;
     }
@@ -240,7 +240,7 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     const uint32_t* sprites = kPiecesFlatTo25DegUp;
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         sprites = kPiecesFlatTo25DegUpLiftHill;
     }
@@ -280,7 +280,7 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     const uint32_t* sprites = kPieces25DegUpToFlat;
-    if (trackElement.HasChain())
+    if (trackElement.hasChain())
     {
         sprites = kPieces25DegUpToFlatLiftHill;
     }

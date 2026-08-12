@@ -32,7 +32,7 @@ JSValue ScTrackIterator::FromElement(JSContext* ctx, const CoordsXY& position, i
         return JS_NULL;
 
     auto trackEl = el->asTrack();
-    return gScTrackIterator.New(ctx, *origin, trackEl->GetTrackType());
+    return gScTrackIterator.New(ctx, *origin, trackEl->getTrackType());
 }
 
 void ScTrackIterator::Register(JSContext* ctx)
@@ -142,7 +142,7 @@ JSValue ScTrackIterator::previous(JSContext* ctx, JSValue thisVal, int argc, JSV
         if (origin)
         {
             data->_position = *origin;
-            data->_type = prev.element->asTrack()->GetTrackType();
+            data->_type = prev.element->asTrack()->getTrackType();
             return JS_NewBool(ctx, true);
         }
     }
@@ -171,7 +171,7 @@ JSValue ScTrackIterator::next(JSContext* ctx, JSValue thisVal, int argc, JSValue
         if (origin)
         {
             data->_position = *origin;
-            data->_type = next.element->asTrack()->GetTrackType();
+            data->_type = next.element->asTrack()->getTrackType();
             return JS_NewBool(ctx, true);
         }
     }

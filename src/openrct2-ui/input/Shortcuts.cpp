@@ -510,12 +510,12 @@ static void ShortcutToggleWallSlope()
     }
 
     // Ensure a wall can be built on a slope
-    if (tileElement->asWall()->GetEntry()->flags.has(WallSceneryFlag::cannotBuildOnSlope))
+    if (tileElement->asWall()->getEntry()->flags.has(WallSceneryFlag::cannotBuildOnSlope))
     {
         return;
     }
 
-    int32_t currSlopeValue = tileElement->asWall()->GetSlope();
+    int32_t currSlopeValue = tileElement->asWall()->getSlope();
     int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;

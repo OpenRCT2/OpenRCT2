@@ -164,7 +164,7 @@ namespace OpenRCT2::GameActions
                 continue;
 
             auto bannerRemoveAction = BannerRemoveAction(
-                { loc, tileElement->getBaseZ(), tileElement->asBanner()->GetPosition() });
+                { loc, tileElement->getBaseZ(), tileElement->asBanner()->getPosition() });
             bool isGhost = tileElement->isGhost();
             auto bannerFlags = GetFlags();
             if (isGhost)

@@ -137,7 +137,7 @@ namespace OpenRCT2
             if (tileElement->getType() == TileElementType::track)
             {
                 const TrackElement* trackElement = tileElement->asTrack();
-                const auto* ride = GetRide(trackElement->GetRideIndex());
+                const auto* ride = GetRide(trackElement->getRideIndex());
                 if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::hasRoofOverWholeRide))
                 {
                     check_ceiling = true;
