@@ -362,45 +362,45 @@ namespace OpenRCT2::Ui::Windows
                 entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == EntranceType::rideExit);
 
-            rideEntranceExitPlaceAction.SetCallback([=, this](
-                                                        const GameActions::GameAction* ga, const GameActions::Result* result) {
-                if (result->error != GameActions::Status::ok)
-                    return;
+            rideEntranceExitPlaceAction.SetCallback(
+                [=, this](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                    if (result->error != GameActions::Status::ok)
+                        return;
 
-                Audio::Play3D(Audio::SoundId::placeItem, result->position);
+                    Audio::Play3D(Audio::SoundId::placeItem, result->position);
 
-                auto* windowMgr = GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
 
-                auto currentRide = GetRide(rideIndex);
-                if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
-                {
-                    ToolCancel();
-                    if (!currentRide->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
+                    auto currentRide = GetRide(rideIndex);
+                    if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                     {
-                        windowMgr->CloseByClass(WindowClass::rideConstruction);
-                    }
-                }
-                else
-                {
-                    WidgetIndex newToolWidgetIndex;
-                    if (gRideEntranceExitPlaceType == EntranceType::rideEntrance)
-                    {
-                        gRideEntranceExitPlaceType = EntranceType::rideExit;
-                        newToolWidgetIndex = WIDX_MAZE_EXIT;
+                        ToolCancel();
+                        if (!currentRide->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
+                        {
+                            windowMgr->CloseByClass(WindowClass::rideConstruction);
+                        }
                     }
                     else
                     {
-                        gRideEntranceExitPlaceType = EntranceType::rideEntrance;
-                        newToolWidgetIndex = WIDX_MAZE_ENTRANCE;
+                        WidgetIndex newToolWidgetIndex;
+                        if (gRideEntranceExitPlaceType == EntranceType::rideEntrance)
+                        {
+                            gRideEntranceExitPlaceType = EntranceType::rideExit;
+                            newToolWidgetIndex = WIDX_MAZE_EXIT;
+                        }
+                        else
+                        {
+                            gRideEntranceExitPlaceType = EntranceType::rideEntrance;
+                            newToolWidgetIndex = WIDX_MAZE_ENTRANCE;
+                        }
+
+                        windowMgr->InvalidateByClass(WindowClass::rideConstruction);
+                        ToolCancel();
+                        ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
+
+                        WindowMazeConstructionUpdatePressedWidgets();
                     }
-
-                    windowMgr->InvalidateByClass(WindowClass::rideConstruction);
-                    ToolCancel();
-                    ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
-
-                    WindowMazeConstructionUpdatePressedWidgets();
-                }
-            });
+                });
             auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
         }
 
