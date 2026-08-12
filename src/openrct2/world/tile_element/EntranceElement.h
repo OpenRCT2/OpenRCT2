@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../core/FlagHolder.hpp"
 #include "../../object/ObjectTypes.h"
 #include "TileElementBase.h"
 
@@ -28,10 +29,11 @@ namespace OpenRCT2
         parkEntrance
     };
 
-    enum
+    enum class EntranceElementFlag : uint8_t
     {
-        ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
+        isLegacyPathEntry,
     };
+    using EntranceElementFlags = FlagHolder<uint8_t, EntranceElementFlag>;
 
     enum class ParkEntranceSequence : uint8_t
     {
@@ -52,7 +54,7 @@ namespace OpenRCT2
         StationIndex stationIndex;   // 7
         ObjectEntryIndex pathType;   // 8
         RideId rideIndex;            // A
-        uint8_t flags2;              // C
+        EntranceElementFlags flags2; // C
         ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
