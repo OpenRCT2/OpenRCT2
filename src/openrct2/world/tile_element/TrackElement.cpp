@@ -9,7 +9,6 @@
 
 #include "TrackElement.h"
 
-#include "../../GameState.h"
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 
@@ -229,7 +228,7 @@ namespace OpenRCT2
 
     bool TrackElement::isIndestructible() const
     {
-        return flags2.has(TrackTileElementFlag::isIndestructible) && !getGameState().cheats.makeAllDestructible;
+        return flags2.has(TrackTileElementFlag::isIndestructible);
     }
 
     void TrackElement::setIsIndestructible(bool isIndestructible)
