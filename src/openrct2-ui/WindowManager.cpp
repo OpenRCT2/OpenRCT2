@@ -74,6 +74,8 @@ public:
                 return ClearSceneryOpen();
             case WindowClass::customCurrencyConfig:
                 return CustomCurrencyOpen();
+            case WindowClass::dateInfoPanel:
+                return dateInfoPanelOpen();
             case WindowClass::debugPaint:
                 return DebugPaintOpen();
             case WindowClass::editorInventionList:
@@ -104,6 +106,8 @@ public:
                 return NewRideOpen();
             case WindowClass::parkInformation:
                 return ParkEntranceOpen();
+            case WindowClass::parkInfoPanel:
+                return parkInfoPanelOpen();
             case WindowClass::recentNews:
                 return NewsOpen();
             case WindowClass::rideConstruction:

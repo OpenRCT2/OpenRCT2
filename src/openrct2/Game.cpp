@@ -120,6 +120,8 @@ void GameCreateWindows()
     ContextOpenWindow(WindowClass::mainWindow);
     ContextOpenWindow(WindowClass::topToolbar);
     ContextOpenWindow(WindowClass::bottomToolbar);
+    ContextOpenWindow(WindowClass::parkInfoPanel);
+    ContextOpenWindow(WindowClass::dateInfoPanel);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 }
 

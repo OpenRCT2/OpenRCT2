@@ -171,19 +171,20 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             windowMgr->CloseByClass(WindowClass::dropdown);
             windowMgr->CloseByClass(WindowClass::topToolbar);
             windowMgr->CloseByClass(WindowClass::bottomToolbar);
+            windowMgr->CloseByClass(WindowClass::parkInfoPanel);
+            windowMgr->CloseByClass(WindowClass::dateInfoPanel);
+        }
+        else if (gLegacyScene == LegacyScene::playing)
+        {
+            ContextOpenWindow(WindowClass::topToolbar);
+            ContextOpenWindow(WindowClass::bottomToolbar);
+            ContextOpenWindow(WindowClass::parkInfoPanel);
+            ContextOpenWindow(WindowClass::dateInfoPanel);
         }
         else
         {
-            if (gLegacyScene == LegacyScene::playing)
-            {
-                ContextOpenWindow(WindowClass::topToolbar);
-                ContextOpenWindow(WindowClass::bottomToolbar);
-            }
-            else
-            {
-                ContextOpenWindow(WindowClass::topToolbar);
-                ContextOpenWindowView(WindowView::editorBottomToolbar);
-            }
+            ContextOpenWindow(WindowClass::topToolbar);
+            ContextOpenWindowView(WindowView::editorBottomToolbar);
         }
     }
     GfxInvalidateScreen();

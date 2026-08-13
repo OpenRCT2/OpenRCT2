@@ -81,6 +81,9 @@ namespace OpenRCT2::Ui::Windows
     // CustomCurrency
     WindowBase* CustomCurrencyOpen();
 
+    // DateInfoPanel
+    WindowBase* dateInfoPanelOpen();
+
     // DebugPaint
     WindowBase* DebugPaintOpen();
 
@@ -212,6 +215,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ParkGuestsOpen();
     WindowBase* ParkObjectiveOpen();
     WindowBase* ParkRatingOpen();
+
+    // ParkInfoPanel
+    WindowBase* parkInfoPanelOpen();
 
     // Player
     WindowBase* PlayerOpen(uint8_t id);
