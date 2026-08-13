@@ -3670,7 +3670,7 @@ STR_6674    :{MONTH}, jaar {COMMA16}
 STR_6675    :Bezoekersnamen
 STR_6676    :Er moet tenminste één object voor bezoekersnamen zijn geselecteerd.
 STR_6677    :Stranden toevoegen aan meer- en rivieroevers
-STR_6678    :Bronbestand:
+STR_6678    :Bron:
 STR_6679    :Vlak land
 STR_6680    :Simplex-ruis
 STR_6681    :Hoogtekaart
