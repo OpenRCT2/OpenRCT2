@@ -279,8 +279,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MIDDLE_INSET].bottom = line_height * 3 + 1;
 
             // Anchor the middle and right panel to the right
-            const auto width = ContextGetWidth();
-            auto x = width - 1 - 2 - 137 - 2 - 1;
+            const auto newWidth = ContextGetWidth();
+            auto x = newWidth - 1 - 2 - 137 - 2 - 1;
             widgets[WIDX_MIDDLE_OUTSET].right = x;
             x -= 2;
             widgets[WIDX_MIDDLE_INSET].right = x;

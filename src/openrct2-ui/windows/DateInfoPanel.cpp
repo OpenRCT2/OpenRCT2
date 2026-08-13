@@ -163,9 +163,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DATE].bottom = line_height + 1;
 
             // Anchor the middle and right panel to the right
-            int32_t x = ContextGetWidth();
-            width = x;
-            x--;
+            int32_t newWidth = ContextGetWidth();
+            x = newWidth - 1;
             widgets[WIDX_RIGHT_OUTSET].right = x;
             x -= 2;
             widgets[WIDX_RIGHT_INSET].right = x;
