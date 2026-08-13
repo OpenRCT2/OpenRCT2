@@ -560,7 +560,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                return JS_NewUint32(ctx, el->getSequenceIndex());
+                return JS_NewUint32(ctx, EnumValue(el->getSequenceIndex()));
             }
             default:
             {
@@ -613,7 +613,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                el->setSequenceIndex(value);
+                el->setSequenceIndex(static_cast<ParkEntranceSequence>(std::clamp<uint8_t>(value, 0, 2)));
                 Invalidate(data);
                 break;
             }
@@ -1286,7 +1286,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::entrance:
             {
                 auto* el = element->asEntrance();
-                return JS_NewUint32(ctx, el->getEntranceType());
+                return JS_NewUint32(ctx, EnumValue(el->getEntranceType()));
             }
             case TileElementType::banner:
             {
@@ -1349,7 +1349,8 @@ namespace OpenRCT2::Scripting
             {
                 JS_UNPACK_UINT32(index, ctx, jsValue);
                 auto* el = element->asEntrance();
-                el->setEntranceType(index);
+                index = std::clamp<uint32_t>(index, 0, 2);
+                el->setEntranceType(static_cast<EntranceType>(index));
                 Invalidate(data);
                 break;
             }

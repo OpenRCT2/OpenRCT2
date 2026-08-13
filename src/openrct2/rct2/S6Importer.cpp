@@ -1469,7 +1469,7 @@ namespace OpenRCT2::RCT2
                     dst2->setStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->setSequenceIndex(src2->GetSequenceIndex());
 
-                    if (src2->GetSequenceIndex() == 0)
+                    if (src2->GetSequenceIndex() == ParkEntranceSequence::centre)
                     {
                         auto pathEntryIndex = src2->GetPathType();
                         auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];

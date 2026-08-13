@@ -29,10 +29,10 @@ CoordsXYZD gRideEntranceExitGhostPosition;
 StationIndex gRideEntranceExitGhostStationIndex;
 
 static money64 RideEntranceExitPlaceGhost(
-    RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
+    RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, EntranceType placeType, StationIndex stationNum)
 {
     auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
-        entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
+        entranceExitCoords, direction, rideIndex, stationNum, placeType == EntranceType::rideExit);
     rideEntranceExitPlaceAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::ghost });
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
 
@@ -89,7 +89,7 @@ void OpenRCT2::RideEntranceExitRemoveGhost()
     {
         auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
             gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
-            gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
+            gRideEntranceExitPlaceType == EntranceType::rideExit);
 
         rideEntranceExitRemove.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
         GameActions::Execute(&rideEntranceExitRemove, getGameState());
@@ -101,7 +101,7 @@ void OpenRCT2::RideEntranceExitRemoveGhost()
  *  rct2: 0x006CA28C
  */
 money64 OpenRCT2::RideEntranceExitPlaceGhost(
-    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
+    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, EntranceType placeType, StationIndex stationNum)
 {
     RideConstructionRemoveGhosts();
     money64 result = RideEntranceExitPlaceGhost(ride.id, entranceExitCoords, direction, placeType, stationNum);
@@ -217,8 +217,8 @@ void ParkEntranceUpdateLocations()
     while (TileElementIteratorNext(&it))
     {
         auto entranceElement = it.element->asEntrance();
-        if (entranceElement != nullptr && entranceElement->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
-            && entranceElement->getSequenceIndex() == 0 && !entranceElement->isGhost())
+        if (entranceElement != nullptr && entranceElement->getEntranceType() == EntranceType::parkEntrance
+            && entranceElement->getSequenceIndex() == ParkEntranceSequence::centre && !entranceElement->isGhost())
         {
             auto entrance = TileCoordsXYZD(it.x, it.y, it.element->baseHeight, it.element->getDirection()).ToCoordsXYZD();
             park.entrances.push_back(entrance);

@@ -564,9 +564,9 @@ static bool TrackDesignSaveShouldSelectSceneryAround(RideId rideIndex, TileEleme
             break;
         case TileElementType::entrance:
             // FIXME: This will always break and return false!
-            if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+            if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideEntrance)
                 break;
-            if (tileElement->asEntrance()->getEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+            if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideExit)
                 break;
             if (tileElement->asEntrance()->getRideIndex() == rideIndex)
                 return true;

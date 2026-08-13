@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../core/FlagHolder.hpp"
 #include "../../object/ObjectTypes.h"
 #include "TileElementBase.h"
 
@@ -21,24 +22,25 @@ namespace OpenRCT2
     class FootpathSurfaceObject;
     struct PathSurfaceDescriptor;
 
-    enum
+    enum class EntranceType : uint8_t
     {
-        ENTRANCE_TYPE_RIDE_ENTRANCE,
-        ENTRANCE_TYPE_RIDE_EXIT,
-        ENTRANCE_TYPE_PARK_ENTRANCE
+        rideEntrance,
+        rideExit,
+        parkEntrance
     };
 
-    enum
+    enum class EntranceElementFlag : uint8_t
     {
-        ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
+        isLegacyPathEntry,
     };
+    using EntranceElementFlags = FlagHolder<uint8_t, EntranceElementFlag>;
 
-    namespace EntranceSequence
+    enum class ParkEntranceSequence : uint8_t
     {
-        constexpr uint8_t Centre = 0;
-        constexpr uint8_t Left = 1;
-        constexpr uint8_t Right = 2;
-    } // namespace EntranceSequence
+        centre = 0,
+        left = 1,
+        right = 2,
+    };
 
 #pragma pack(push, 1)
 
@@ -47,12 +49,12 @@ namespace OpenRCT2
         static constexpr TileElementType kElementType = TileElementType::entrance;
 
     private:
-        uint8_t entranceType;        // 5
+        EntranceType entranceType;   // 5
         uint8_t sequenceIndex;       // 6. Only uses the lower nibble.
         StationIndex stationIndex;   // 7
         ObjectEntryIndex pathType;   // 8
         RideId rideIndex;            // A
-        uint8_t flags2;              // C
+        EntranceElementFlags flags2; // C
         ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
@@ -60,8 +62,8 @@ namespace OpenRCT2
 #pragma clang diagnostic pop
 
     public:
-        uint8_t getEntranceType() const;
-        void setEntranceType(uint8_t newType);
+        EntranceType getEntranceType() const;
+        void setEntranceType(EntranceType newType);
 
         RideId getRideIndex() const;
         void setRideIndex(RideId newRideIndex);
@@ -69,8 +71,8 @@ namespace OpenRCT2
         StationIndex getStationIndex() const;
         void setStationIndex(StationIndex newStationIndex);
 
-        uint8_t getSequenceIndex() const;
-        void setSequenceIndex(uint8_t newSequenceIndex);
+        ParkEntranceSequence getSequenceIndex() const;
+        void setSequenceIndex(ParkEntranceSequence newSequenceIndex);
 
         bool hasLegacyPathEntry() const;
 

@@ -20,6 +20,7 @@
 #include "../ride/ted/TrackElemType.h"
 #include "../scenario/Scenario.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SmallSceneryElement.h"
@@ -431,7 +432,7 @@ uint8_t RCT12WallElement::GetRCT1Slope() const
     return EntryIndex & 0b00011111;
 }
 
-uint8_t RCT12EntranceElement::GetEntranceType() const
+OpenRCT2::EntranceType RCT12EntranceElement::GetEntranceType() const
 {
     return EntranceType;
 }
@@ -446,9 +447,9 @@ uint8_t RCT12EntranceElement::GetStationIndex() const
     return (Index & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
-uint8_t RCT12EntranceElement::GetSequenceIndex() const
+OpenRCT2::ParkEntranceSequence RCT12EntranceElement::GetSequenceIndex() const
 {
-    return Index & 0xF;
+    return static_cast<OpenRCT2::ParkEntranceSequence>(Index & 0xF);
 }
 
 uint8_t RCT12EntranceElement::GetPathType() const

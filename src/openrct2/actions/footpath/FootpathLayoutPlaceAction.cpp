@@ -138,8 +138,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
-        // Make sure the entrance part is the middle
-        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == 0)
+        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == ParkEntranceSequence::centre)
         {
             entrancePath = true;
             // Make the price the same as replacing a path
@@ -207,8 +206,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
-        // Make sure the entrance part is the middle
-        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == 0)
+        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == ParkEntranceSequence::centre)
         {
             entrancePath = true;
             // Make the price the same as replacing a path

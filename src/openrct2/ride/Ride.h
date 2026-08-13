@@ -47,6 +47,7 @@ namespace OpenRCT2
     struct TileElement;
     struct TrackElement;
 
+    enum class EntranceType : uint8_t;
     enum class RideMode : uint8_t;
     enum class RideStatus : uint8_t;
 
@@ -852,7 +853,8 @@ namespace OpenRCT2
     void RideGetStartOfTrack(CoordsXYE* output);
 
     money64 RideEntranceExitPlaceGhost(
-        const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
+        const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, EntranceType placeType,
+        StationIndex stationNum);
 
     ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride);
     void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor);

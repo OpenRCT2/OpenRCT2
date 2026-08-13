@@ -9,7 +9,6 @@
 
 #include "TrackElement.h"
 
-#include "../../GameState.h"
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 
@@ -17,19 +16,12 @@ namespace OpenRCT2
 {
     bool TrackElement::hasChain() const
     {
-        return flags2 & TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
+        return flags2.has(TrackTileElementFlag::hasChainLift);
     }
 
     void TrackElement::setHasChain(bool on)
     {
-        if (on)
-        {
-            flags2 |= TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
-        }
-        else
-        {
-            flags2 &= ~TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
-        }
+        flags2.set(TrackTileElementFlag::hasChainLift, on);
     }
 
     /**
@@ -206,65 +198,42 @@ namespace OpenRCT2
 
     bool TrackElement::hasCableLift() const
     {
-        return flags2 & TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
+        return flags2.has(TrackTileElementFlag::isCableLift);
     }
 
     void TrackElement::setHasCableLift(bool on)
     {
-        flags2 &= ~TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
-        if (on)
-            flags2 |= TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
+        return flags2.set(TrackTileElementFlag::isCableLift, on);
     }
 
     bool TrackElement::isInverted() const
     {
-        return flags2 & TRACK_ELEMENT_FLAGS2_INVERTED;
+        return flags2.has(TrackTileElementFlag::inverted);
     }
 
     void TrackElement::setInverted(bool inverted)
     {
-        if (inverted)
-        {
-            flags2 |= TRACK_ELEMENT_FLAGS2_INVERTED;
-        }
-        else
-        {
-            flags2 &= ~TRACK_ELEMENT_FLAGS2_INVERTED;
-        }
+        return flags2.set(TrackTileElementFlag::inverted, inverted);
     }
 
     bool TrackElement::isBrakeClosed() const
     {
-        return (flags2 & TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED) != 0;
+        return flags2.has(TrackTileElementFlag::brakeClosed);
     }
 
     void TrackElement::setBrakeClosed(bool isClosed)
     {
-        if (isClosed)
-        {
-            flags2 |= TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
-        }
-        else
-        {
-            flags2 &= ~TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
-        }
+        return flags2.set(TrackTileElementFlag::brakeClosed, isClosed);
     }
 
     bool TrackElement::isIndestructible() const
     {
-        return (flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !getGameState().cheats.makeAllDestructible;
+        return flags2.has(TrackTileElementFlag::isIndestructible);
     }
 
     void TrackElement::setIsIndestructible(bool isIndestructible)
     {
-        if (isIndestructible)
-        {
-            flags2 |= TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
-        }
-        else
-        {
-            flags2 &= ~TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
-        }
+        return flags2.set(TrackTileElementFlag::isIndestructible, isIndestructible);
     }
 
     uint8_t TrackElement::getBrakeBoosterSpeed() const
@@ -279,27 +248,21 @@ namespace OpenRCT2
 
     bool TrackElement::hasGreenLight() const
     {
-        return (flags2 & TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT) != 0;
+        return flags2.has(TrackTileElementFlag::hasGreenLight);
     }
 
     void TrackElement::setHasGreenLight(bool on)
     {
-        flags2 &= ~TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
-        if (on)
-        {
-            flags2 |= TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
-        }
+        return flags2.set(TrackTileElementFlag::hasGreenLight, on);
     }
 
     bool TrackElement::isHighlighted() const
     {
-        return (flags2 & TRACK_ELEMENT_FLAGS2_HIGHLIGHT);
+        return flags2.has(TrackTileElementFlag::highlight);
     }
 
     void TrackElement::setHighlight(bool on)
     {
-        flags2 &= ~TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
-        if (on)
-            flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
+        return flags2.set(TrackTileElementFlag::highlight, on);
     }
 } // namespace OpenRCT2

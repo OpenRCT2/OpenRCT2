@@ -20,10 +20,14 @@ namespace OpenRCT2
 {
     class LargeSceneryObject;
 
-    enum
+    enum class LargeSceneryElementFlag : uint8_t
     {
-        LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,
+        /**
+         * Tile has been accounted for during operations on the whole piece.
+         */
+        accounted,
     };
+    using LargeSceneryElementFlags = FlagHolder<uint8_t, LargeSceneryElementFlag>;
 
 #pragma pack(push, 1)
     struct LargeSceneryElement : TileElementBase
@@ -35,7 +39,7 @@ namespace OpenRCT2
         ::BannerIndex bannerIndex;
         uint8_t sequenceIndex;
         Drawing::Colour colour[3];
-        uint8_t flags2;
+        LargeSceneryElementFlags flags2;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
         uint8_t pad[2];

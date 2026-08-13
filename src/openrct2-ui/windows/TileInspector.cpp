@@ -1389,10 +1389,10 @@ namespace OpenRCT2::Ui::Windows
             // Details
             // Entrance type
             auto ft = Formatter();
-            ft.Add<StringId>(kEntranceTypeStringIds[entranceEl.getEntranceType()]);
+            ft.Add<StringId>(kEntranceTypeStringIds[EnumValue(entranceEl.getEntranceType())]);
             drawText(rt, screenCoords, STR_TILE_INSPECTOR_ENTRANCE_TYPE, ft, { colours[1] });
 
-            if (entranceEl.getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (entranceEl.getEntranceType() == EntranceType::parkEntrance)
             {
                 // TODO: Make this work with Left/Right park entrance parts
                 ft = Formatter();
@@ -1404,7 +1404,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft = Formatter();
                 ft.Add<int16_t>(entranceEl.getStationIndex().ToUnderlying());
-                if (entranceEl.getEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                if (entranceEl.getEntranceType() == EntranceType::rideEntrance)
                 {
                     // Ride entrance ID
                     drawText(
@@ -1419,11 +1419,11 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (entranceEl.getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (entranceEl.getEntranceType() == EntranceType::parkEntrance)
             {
                 // Entrance part
                 ft = Formatter();
-                ft.Add<StringId>(kParkEntrancePartStringIds[entranceEl.getSequenceIndex()]);
+                ft.Add<StringId>(kParkEntrancePartStringIds[EnumValue(entranceEl.getSequenceIndex())]);
                 drawText(rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_PART, ft, { colours[1] });
             }
             else
@@ -2343,7 +2343,7 @@ namespace OpenRCT2::Ui::Windows
 
                     setWidgetDisabled(
                         WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
-                        tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE);
+                        tileElement->asEntrance()->getEntranceType() == EntranceType::parkEntrance);
                     break;
 
                 case TileElementType::wall:

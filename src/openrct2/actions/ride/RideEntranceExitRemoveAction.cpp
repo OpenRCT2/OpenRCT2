@@ -48,7 +48,7 @@ namespace OpenRCT2::GameActions
     }
 
     static TileElement* FindEntranceElement(
-        const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, int32_t entranceType)
+        const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, EntranceType entranceType)
     {
         for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
         {
@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* entranceElement = FindEntranceElement(
-            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
+            _loc, _rideIndex, _stationNum, _isExit ? EntranceType::rideExit : EntranceType::rideEntrance);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
         if (entranceElement != nullptr && (GetFlags().has(CommandFlag::ghost)) && !(entranceElement->isGhost()))
@@ -127,7 +127,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* entranceElement = FindEntranceElement(
-            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
+            _loc, _rideIndex, _stationNum, _isExit ? EntranceType::rideExit : EntranceType::rideEntrance);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
         if (entranceElement != nullptr && isGhost && !(entranceElement->isGhost()))

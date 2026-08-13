@@ -922,7 +922,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case TileElementType::entrance:
                     {
-                        if (tileElement->asEntrance()->getEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                        if (tileElement->asEntrance()->getEntranceType() == EntranceType::parkEntrance)
                             break;
                         Ride* targetRide = GetRide(tileElement->asEntrance()->getRideIndex());
                         if (targetRide != nullptr)

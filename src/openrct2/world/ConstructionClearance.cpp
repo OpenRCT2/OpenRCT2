@@ -365,13 +365,13 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         case TileElementType::entrance:
             switch (tileElement->asEntrance()->getEntranceType())
             {
-                case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                case EntranceType::rideEntrance:
                     res.errorMessage = STR_RIDE_ENTRANCE_IN_THE_WAY;
                     break;
-                case ENTRANCE_TYPE_RIDE_EXIT:
+                case EntranceType::rideExit:
                     res.errorMessage = STR_RIDE_EXIT_IN_THE_WAY;
                     break;
-                case ENTRANCE_TYPE_PARK_ENTRANCE:
+                case EntranceType::parkEntrance:
                     res.errorMessage = STR_PARK_ENTRANCE_IN_THE_WAY;
                     break;
             }

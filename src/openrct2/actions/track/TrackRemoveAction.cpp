@@ -113,7 +113,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
-        if (foundElement->isIndestructible())
+        if (foundElement->isIndestructible() && !getGameState().cheats.makeAllDestructible)
         {
             return Result(
                 Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../core/FlagHolder.hpp"
 #include "TileElementBase.h"
 
 using ride_type_t = uint16_t;
@@ -19,17 +20,18 @@ namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
 
-    enum
+    enum class TrackTileElementFlag : uint8_t
     {
-        TRACK_ELEMENT_FLAGS2_CHAIN_LIFT = 1 << 0,
-        TRACK_ELEMENT_FLAGS2_INVERTED = 1 << 1,
+        hasChainLift,
+        inverted,
         // Used for giga coaster
-        TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
-        TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
-        TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
-        TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED = 1 << 5,
-        TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE = 1 << 6,
+        isCableLift,
+        highlight,
+        hasGreenLight,
+        brakeClosed,
+        isIndestructible,
     };
+    using TrackTileElementFlags = FlagHolder<uint8_t, TrackTileElementFlag>;
 
     enum
     {
@@ -77,7 +79,7 @@ namespace OpenRCT2
                 uint16_t mazeEntry; // 6
             } uMaze;
         };
-        uint8_t flags2;
+        TrackTileElementFlags flags2;
         RideId rideIndex;
         ride_type_t rideType;
 

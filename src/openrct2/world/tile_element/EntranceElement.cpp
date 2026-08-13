@@ -17,18 +17,18 @@
 namespace OpenRCT2
 {
     // rct2: 0x0097B974
-    static constexpr uint16_t kEntranceDirections[] = {
-        (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,
-        (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_EXIT,
-        (4 | 1), 0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_PARK_ENTRANCE
-    };
+    static constexpr std::array<std::array<uint16_t, 8>, 3> kEntranceDirections = { {
+        { (4), 0, 0, 0, 0, 0, 0, 0 },     // EntranceType::rideEntrance,
+        { (4), 0, 0, 0, 0, 0, 0, 0 },     // EntranceType::rideExit,
+        { (4 | 1), 0, 0, 0, 0, 0, 0, 0 }, // EntranceType::parkEntrance
+    } };
 
-    uint8_t EntranceElement::getEntranceType() const
+    EntranceType EntranceElement::getEntranceType() const
     {
         return entranceType;
     }
 
-    void EntranceElement::setEntranceType(uint8_t newType)
+    void EntranceElement::setEntranceType(EntranceType newType)
     {
         entranceType = newType;
     }
@@ -53,20 +53,20 @@ namespace OpenRCT2
         stationIndex = newStationIndex;
     }
 
-    uint8_t EntranceElement::getSequenceIndex() const
+    ParkEntranceSequence EntranceElement::getSequenceIndex() const
     {
-        return sequenceIndex & 0xF;
+        return static_cast<ParkEntranceSequence>(sequenceIndex & 0xF);
     }
 
-    void EntranceElement::setSequenceIndex(uint8_t newSequenceIndex)
+    void EntranceElement::setSequenceIndex(ParkEntranceSequence newSequenceIndex)
     {
         sequenceIndex &= ~0xF;
-        sequenceIndex |= (newSequenceIndex & 0xF);
+        sequenceIndex |= (EnumValue(newSequenceIndex) & 0xF);
     }
 
     bool EntranceElement::hasLegacyPathEntry() const
     {
-        return (flags2 & ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
+        return flags2.has(EntranceElementFlag::isLegacyPathEntry);
     }
 
     ObjectEntryIndex EntranceElement::getLegacyPathEntryIndex() const
@@ -86,7 +86,7 @@ namespace OpenRCT2
     void EntranceElement::setLegacyPathEntryIndex(ObjectEntryIndex newPathType)
     {
         pathType = newPathType;
-        flags2 |= ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+        flags2.set(EntranceElementFlag::isLegacyPathEntry);
     }
 
     ObjectEntryIndex EntranceElement::getSurfaceEntryIndex() const
@@ -106,7 +106,7 @@ namespace OpenRCT2
     void EntranceElement::setSurfaceEntryIndex(ObjectEntryIndex newIndex)
     {
         pathType = newIndex;
-        flags2 &= ~ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+        flags2.unset(EntranceElementFlag::isLegacyPathEntry);
     }
 
     const PathSurfaceDescriptor* EntranceElement::getPathSurfaceDescriptor() const
@@ -129,7 +129,7 @@ namespace OpenRCT2
 
     int32_t EntranceElement::getDirections() const
     {
-        return kEntranceDirections[(getEntranceType() * 8) + getSequenceIndex()];
+        return kEntranceDirections[EnumValue(getEntranceType())][EnumValue(getSequenceIndex())];
     }
 
     ObjectEntryIndex EntranceElement::getEntryIndex() const
