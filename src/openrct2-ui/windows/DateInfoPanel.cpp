@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
     class DateInfoPanel final : public Window
     {
     private:
-        Drawing::Colour GetHoverWidgetColour(WidgetIndex index)
+        Drawing::Colour getHoverWidgetColour(WidgetIndex index)
         {
             return (
                 gHoverWidget.windowClassification == WindowClass::dateInfoPanel && gHoverWidget.widgetIndex == index
@@ -55,19 +55,19 @@ namespace OpenRCT2::Ui::Windows
                     : colours[0].colour);
         }
 
-        void DrawRightPanel(RenderTarget& rt)
+        void drawPanel(RenderTarget& rt)
         {
-            const auto& rightPanelWidget = widgets[WIDX_RIGHT_OUTSET];
+            const auto& panelWidget = widgets[WIDX_RIGHT_OUTSET];
+            const auto topLeft = windowPos + ScreenCoordsXY{ panelWidget.left + 1, panelWidget.top + 1 };
+            const auto bottomRight = windowPos + ScreenCoordsXY{ panelWidget.right - 1, panelWidget.bottom - 1 };
 
-            const auto topLeft = windowPos + ScreenCoordsXY{ rightPanelWidget.left + 1, rightPanelWidget.top + 1 };
-            const auto bottomRight = windowPos + ScreenCoordsXY{ rightPanelWidget.right - 1, rightPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
             Rectangle::fillInset(
                 rt, { topLeft, bottomRight }, colours[0], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
                 Rectangle::FillMode::none);
 
-            auto screenCoords = ScreenCoordsXY{ (rightPanelWidget.left + rightPanelWidget.right) / 2 + windowPos.x,
-                                                rightPanelWidget.top + windowPos.y + 2 };
+            auto screenCoords = ScreenCoordsXY{ (panelWidget.left + panelWidget.right) / 2 + windowPos.x,
+                                                panelWidget.top + windowPos.y + 2 };
 
             // Date
             auto& date = GetDate();
@@ -75,7 +75,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t month = date.GetMonth();
             int32_t day = date.GetDay();
 
-            auto colour = GetHoverWidgetColour(WIDX_DATE);
+            auto colour = getHoverWidgetColour(WIDX_DATE);
             StringId stringId = DateFormatStringFormatIds[Config::Get().general.dateFormat];
             auto ft = Formatter();
             ft.Add<StringId>(DateDayNames[day]);
@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
             uint32_t line_height = FontGetLineHeight(FontStyle::medium);
 
             // Temperature
-            screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
+            screenCoords = { windowPos.x + panelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
             int32_t temperature = getGameState().weatherCurrent.temperature;
             StringId format = STR_CELSIUS_VALUE;
@@ -149,7 +149,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DATE].bottom = line_height + 1;
 
             // Anchor the middle and right panel to the right
-            // TODO: replace offset to full width with window size/position
             auto x = width - 1;
             widgets[WIDX_RIGHT_OUTSET].right = x;
             x -= 2;
@@ -174,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
 
             drawWidgets(rt);
 
-            DrawRightPanel(rt);
+            drawPanel(rt);
         }
 
         CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override

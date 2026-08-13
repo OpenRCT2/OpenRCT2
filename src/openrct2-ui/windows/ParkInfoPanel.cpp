@@ -49,7 +49,7 @@ namespace OpenRCT2::Ui::Windows
     class ParkInfoPanel final : public Window
     {
     private:
-        Drawing::Colour GetHoverWidgetColour(WidgetIndex index)
+        Drawing::Colour getHoverWidgetColour(WidgetIndex index)
         {
             return (
                 gHoverWidget.windowClassification == WindowClass::parkInfoPanel && gHoverWidget.widgetIndex == index
@@ -57,12 +57,12 @@ namespace OpenRCT2::Ui::Windows
                     : colours[0].colour);
         }
 
-        void DrawLeftPanel(RenderTarget& rt)
+        void drawPanel(RenderTarget& rt)
         {
-            const auto& leftPanelWidget = widgets[WIDX_LEFT_OUTSET];
+            const auto& panelWidget = widgets[WIDX_LEFT_OUTSET];
+            const auto topLeft = windowPos + ScreenCoordsXY{ panelWidget.left + 1, panelWidget.top + 1 };
+            const auto bottomRight = windowPos + ScreenCoordsXY{ panelWidget.right - 1, panelWidget.bottom - 1 };
 
-            const auto topLeft = windowPos + ScreenCoordsXY{ leftPanelWidget.left + 1, leftPanelWidget.top + 1 };
-            const auto bottomRight = windowPos + ScreenCoordsXY{ leftPanelWidget.right - 1, leftPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
             Rectangle::fillInset(
                 rt, { topLeft, bottomRight }, colours[0], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
-                auto colour = GetHoverWidgetColour(WIDX_MONEY);
+                auto colour = getHoverWidgetColour(WIDX_MONEY);
                 StringId stringId = gameState.park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.park.cash);
@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
                 StringId stringId = gameState.park.numGuestsInPark == 1
                     ? kGuestCountFormatsSingular[gameState.park.guestChangeModifier]
                     : kGuestCountFormats[gameState.park.guestChangeModifier];
-                auto colour = GetHoverWidgetColour(WIDX_GUESTS);
+                auto colour = getHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.park.numGuestsInPark);
                 drawText(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
@@ -118,12 +118,12 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-                DrawParkRating(
+                drawParkRating(
                     rt, colours[1].colour, false, screenCoords, std::max(10, ((gameState.park.rating / 4) * 263) / 256));
             }
         }
 
-        void DrawParkRating(RenderTarget& rt, Colour colour, bool blink, const ScreenCoordsXY& coords, uint8_t factor)
+        void drawParkRating(RenderTarget& rt, Colour colour, bool blink, const ScreenCoordsXY& coords, uint8_t factor)
         {
             int16_t bar_width = (factor * 114) / 255;
             Rectangle::fillInset(
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
 
             drawWidgets(rt);
 
-            DrawLeftPanel(rt);
+            drawPanel(rt);
         }
 
         CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
