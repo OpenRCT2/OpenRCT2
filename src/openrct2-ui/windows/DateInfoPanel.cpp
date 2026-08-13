@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
-
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -16,23 +14,12 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
-#include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/entity/EntityRegistry.h>
-#include <openrct2/entity/Guest.h>
-#include <openrct2/entity/Staff.h>
-#include <openrct2/interface/ColourWithFlags.h>
-#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
-#include <openrct2/localisation/StringIds.h>
-#include <openrct2/management/NewsItem.h>
-#include <openrct2/object/ObjectManager.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Drawing;
