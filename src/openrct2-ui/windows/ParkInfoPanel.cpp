@@ -100,13 +100,13 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, screenCoords, stringId, ft, { colour, TextAlignment::centre });
             }
 
-            static constexpr StringId _guestCountFormats[] = {
+            static constexpr StringId kGuestCountFormats[] = {
                 STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
                 STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
                 STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
             };
 
-            static constexpr StringId _guestCountFormatsSingular[] = {
+            static constexpr StringId kGuestCountFormatsSingular[] = {
                 STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR,
                 STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR,
                 STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE_SINGULAR,
@@ -118,8 +118,8 @@ namespace OpenRCT2::Ui::Windows
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
                 StringId stringId = gameState.park.numGuestsInPark == 1
-                    ? _guestCountFormatsSingular[gameState.park.guestChangeModifier]
-                    : _guestCountFormats[gameState.park.guestChangeModifier];
+                    ? kGuestCountFormatsSingular[gameState.park.guestChangeModifier]
+                    : kGuestCountFormats[gameState.park.guestChangeModifier];
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.park.numGuestsInPark);
