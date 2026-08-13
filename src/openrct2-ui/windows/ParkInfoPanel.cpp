@@ -212,8 +212,11 @@ namespace OpenRCT2::Ui::Windows
             windowPos.y = ContextGetHeight() - height;
 
             // Change height of widgets in accordance with line height.
+            // TODO: replace offset to full width with window size/position
             widgets[WIDX_LEFT_OUTSET].bottom = line_height * 3 + 3;
             widgets[WIDX_LEFT_INSET].bottom = line_height * 3 + 1;
+
+            width = ContextGetWidth();
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
             if (getGameState().park.flags.has(ParkFlag::noMoney))
