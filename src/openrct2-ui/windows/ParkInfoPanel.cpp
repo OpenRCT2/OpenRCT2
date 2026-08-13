@@ -157,27 +157,6 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(rt, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
         }
 
-        void InvalidateDirtyWidgets()
-        {
-            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::money))
-            {
-                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::money);
-                invalidateWidget(WIDX_LEFT_INSET);
-            }
-
-            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::guestCount))
-            {
-                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::guestCount);
-                invalidateWidget(WIDX_LEFT_INSET);
-            }
-
-            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::parkRating))
-            {
-                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::parkRating);
-                invalidateWidget(WIDX_LEFT_INSET);
-            }
-        }
-
     public:
         ParkInfoPanel()
         {
@@ -275,8 +254,6 @@ namespace OpenRCT2::Ui::Windows
             currentFrame++;
             if (currentFrame >= 24)
                 currentFrame = 0;
-
-            InvalidateDirtyWidgets();
         }
 
         CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
@@ -290,11 +267,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
             return cursorId;
-        }
-
-        void onPeriodicUpdate() override
-        {
-            InvalidateDirtyWidgets();
         }
     };
 

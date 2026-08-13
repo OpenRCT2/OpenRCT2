@@ -59,8 +59,6 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    BottomToolbarDirtyFlags gToolbarDirtyFlags;
-
     class GameBottomToolbar final : public Window
     {
     private:

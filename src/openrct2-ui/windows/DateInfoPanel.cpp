@@ -128,21 +128,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void InvalidateDirtyWidgets()
-        {
-            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::date))
-            {
-                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::date);
-                invalidateWidget(WIDX_RIGHT_INSET);
-            }
-
-            if (gToolbarDirtyFlags.has(BottomToolbarDirtyFlag::weather))
-            {
-                gToolbarDirtyFlags.unset(BottomToolbarDirtyFlag::weather);
-                invalidateWidget(WIDX_RIGHT_INSET);
-            }
-        }
-
     public:
         DateInfoPanel()
         {
@@ -212,8 +197,6 @@ namespace OpenRCT2::Ui::Windows
             currentFrame++;
             if (currentFrame >= 24)
                 currentFrame = 0;
-
-            InvalidateDirtyWidgets();
         }
 
         CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
@@ -225,11 +208,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
             return cursorId;
-        }
-
-        void onPeriodicUpdate() override
-        {
-            InvalidateDirtyWidgets();
         }
     };
 
