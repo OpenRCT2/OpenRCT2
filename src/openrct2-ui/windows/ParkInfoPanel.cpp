@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
         Drawing::Colour GetHoverWidgetColour(WidgetIndex index)
         {
             return (
-                gHoverWidget.windowClassification == WindowClass::bottomToolbar && gHoverWidget.widgetIndex == index
+                gHoverWidget.windowClassification == WindowClass::parkInfoPanel && gHoverWidget.widgetIndex == index
                     ? static_cast<Drawing::Colour>(Drawing::Colour::white)
                     : colours[0].colour);
         }
