@@ -157,7 +157,7 @@ namespace OpenRCT2::GameActions
                 SurfaceElement* surfaceElement = MapGetSurfaceElementAt(entranceLoc);
                 if (surfaceElement != nullptr)
                 {
-                    surfaceElement->setOwnership(OWNERSHIP_UNOWNED);
+                    surfaceElement->setOwnership(kUnowned);
                 }
             }
 

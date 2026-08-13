@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../world/MapOwnership.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
@@ -28,12 +29,12 @@ namespace OpenRCT2::GameActions
     private:
         MapRange _range;
         LandSetRightSetting _setting{ LandSetRightSetting::count };
-        uint8_t _ownership{};
+        OwnershipFlags _ownership{};
 
     public:
         LandSetRightsAction() = default;
-        LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership = 0);
-        LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership = 0);
+        LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, OwnershipFlags ownership = kUnowned);
+        LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, OwnershipFlags ownership = kUnowned);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

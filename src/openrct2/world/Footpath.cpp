@@ -1025,30 +1025,30 @@ namespace OpenRCT2
     static void FootpathFixOwnership(const CoordsXY& mapPos)
     {
         const auto* surfaceElement = MapGetSurfaceElementAt(mapPos);
-        uint16_t ownership;
+        OwnershipFlags ownership;
 
         // Unlikely to be NULL unless deliberate.
         if (surfaceElement != nullptr)
         {
             // If the tile is not safe to own construction rights of, erase them.
-            if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->baseHeight << 3 }) == OWNERSHIP_UNOWNED)
+            if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->baseHeight << 3 }) == kUnowned)
             {
-                ownership = OWNERSHIP_UNOWNED;
+                ownership = kUnowned;
             }
             // If the tile is safe to own construction rights of, do not erase construction rights.
             else
             {
                 ownership = surfaceElement->getOwnership();
                 // You can't own the entrance path.
-                if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
+                if (ownership == OwnershipFlag::owned || ownership == OwnershipFlag::forSale)
                 {
-                    ownership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                    ownership = OwnershipFlag::constructionRightsOwned;
                 }
             }
         }
         else
         {
-            ownership = OWNERSHIP_UNOWNED;
+            ownership = kUnowned;
         }
 
         auto landSetRightsAction = GameActions::LandSetRightsAction(

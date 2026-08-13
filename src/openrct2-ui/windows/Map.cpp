@@ -858,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
             if (surfaceElement->getWaterHeight() > 0)
                 colour = kWaterColour;
 
-            if (!(surfaceElement->getOwnership() & OWNERSHIP_OWNED))
+            if (!(surfaceElement->getOwnership().has(OwnershipFlag::owned)))
                 colour = MapColourUnowned(colour);
 
             const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(kElementTypeOverwriteColour));
@@ -914,7 +914,7 @@ namespace OpenRCT2::Ui::Windows
                         if (tileElement->asSurface()->getWaterHeight() > 0)
                             // Why is this a different water colour as above (195)?
                             colourB = ColourPair(PaletteIndex::pi194);
-                        if (!(tileElement->asSurface()->getOwnership() & OWNERSHIP_OWNED))
+                        if (!(tileElement->asSurface()->getOwnership().has(OwnershipFlag::owned)))
                             colourB = MapColourUnowned(colourB);
                         break;
                     case TileElementType::path:

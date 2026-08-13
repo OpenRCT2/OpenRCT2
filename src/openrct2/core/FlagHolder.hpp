@@ -124,4 +124,14 @@ struct FlagHolder
         holder |= other.holder;
         return *this;
     }
+
+    constexpr bool operator==(const FlagHolder& other) const noexcept
+    {
+        return this->holder == other.holder;
+    }
+
+    constexpr bool operator!=(const FlagHolder& other) const noexcept
+    {
+        return this->holder != other.holder;
+    }
 };

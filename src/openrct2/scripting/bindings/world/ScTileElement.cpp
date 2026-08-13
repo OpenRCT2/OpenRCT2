@@ -362,7 +362,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewBool(ctx, el->getOwnership() & OWNERSHIP_OWNED);
+            return JS_NewBool(ctx, el->getOwnership().has(OwnershipFlag::owned));
         }
         else
         {
@@ -379,7 +379,7 @@ namespace OpenRCT2::Scripting
         if (el != nullptr)
         {
             auto ownership = el->getOwnership();
-            return JS_NewBool(ctx, (ownership & OWNERSHIP_OWNED) || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
+            return JS_NewBool(ctx, ownership.hasAny(OwnershipFlag::owned, OwnershipFlag::constructionRightsOwned));
         }
         else
         {
@@ -395,7 +395,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewUint32(ctx, el->getOwnership());
+            return JS_NewUint32(ctx, el->getOwnership().holder);
         }
         else
         {
@@ -417,7 +417,9 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        el->setOwnership(value);
+        OwnershipFlags newFlags;
+        newFlags.holder = value;
+        el->setOwnership(newFlags);
         Invalidate(data);
         return JS_UNDEFINED;
     }

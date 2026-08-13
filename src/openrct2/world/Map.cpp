@@ -143,7 +143,7 @@ namespace OpenRCT2
         el.asSurface()->setWaterHeight(0);
         el.asSurface()->setSlope(kTileSlopeFlat);
         el.asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
-        el.asSurface()->setOwnership(OWNERSHIP_UNOWNED);
+        el.asSurface()->setOwnership(kUnowned);
         el.asSurface()->setParkFences(0);
         el.asSurface()->setSurfaceObjectIndex(0);
         el.asSurface()->setEdgeObjectIndex(0);
@@ -474,18 +474,19 @@ namespace OpenRCT2
                     continue;
                 }
 
-                uint8_t flags = surfaceElement->getOwnership();
+                auto flags = surfaceElement->getOwnership();
 
-                // Do not combine this condition with (flags & OWNERSHIP_AVAILABLE)
+                // Do not combine this condition with (flags & OwnershipFlag::forSale)
                 // As some RCT1 parks have owned tiles with the 'construction rights available' flag also set
-                if (!(flags & OWNERSHIP_OWNED))
+                if (!flags.has(OwnershipFlag::owned))
                 {
-                    if (flags & OWNERSHIP_AVAILABLE)
+                    if (flags.has(OwnershipFlag::forSale))
                     {
                         gLandRemainingOwnershipSales++;
                     }
                     else if (
-                        (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) && (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) == 0)
+                        flags.has(OwnershipFlag::constructionRightsAvailable)
+                        && !flags.has(OwnershipFlag::constructionRightsOwned))
                     {
                         gLandRemainingConstructionSales++;
                     }
@@ -819,10 +820,10 @@ namespace OpenRCT2
             auto* surfaceElement = MapGetSurfaceElementAt(loc);
             if (surfaceElement != nullptr)
             {
-                if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
+                if (surfaceElement->getOwnership().has(OwnershipFlag::owned))
                     return true;
 
-                if (surfaceElement->getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+                if (surfaceElement->getOwnership().has(OwnershipFlag::constructionRightsOwned))
                 {
                     if (loc.z < surfaceElement->getBaseZ()
                         || loc.z >= surfaceElement->getBaseZ() + kConstructionRightsClearanceBig)
@@ -844,7 +845,7 @@ namespace OpenRCT2
             auto surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 return false;
-            if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
+            if (surfaceElement->getOwnership().has(OwnershipFlag::owned))
                 return true;
         }
         return false;
@@ -859,9 +860,9 @@ namespace OpenRCT2
             {
                 return false;
             }
-            if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
+            if (surfaceElement->getOwnership().has(OwnershipFlag::owned))
                 return true;
-            if (surfaceElement->getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+            if (surfaceElement->getOwnership().has(OwnershipFlag::constructionRightsOwned))
                 return true;
         }
         return false;
@@ -1250,7 +1251,7 @@ namespace OpenRCT2
                     auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
                     if (surfaceElement != nullptr)
                     {
-                        surfaceElement->setOwnership(OWNERSHIP_UNOWNED);
+                        surfaceElement->setOwnership(kUnowned);
                         Park::UpdateFencesAroundTile({ x, y });
                     }
                     ClearElementsAt({ x, y });
@@ -1268,7 +1269,7 @@ namespace OpenRCT2
         destTile.setSurfaceObjectIndex(sourceTile.getSurfaceObjectIndex());
         destTile.setEdgeObjectIndex(sourceTile.getEdgeObjectIndex());
         destTile.setGrassLength(sourceTile.getGrassLength());
-        destTile.setOwnership(OWNERSHIP_UNOWNED);
+        destTile.setOwnership(kUnowned);
         destTile.setWaterHeight(sourceTile.getWaterHeight());
 
         auto z = sourceTile.baseHeight;
@@ -1393,7 +1394,7 @@ namespace OpenRCT2
                 element->asSurface()->setSurfaceObjectIndex(0);
                 element->asSurface()->setEdgeObjectIndex(0);
                 element->asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
-                element->asSurface()->setOwnership(OWNERSHIP_UNOWNED);
+                element->asSurface()->setOwnership(kUnowned);
                 element->asSurface()->setParkFences(0);
                 element->asSurface()->setWaterHeight(0);
                 // Because this element is not completely removed, the pointer must be updated manually
@@ -2113,15 +2114,15 @@ namespace OpenRCT2
         return nullptr;
     }
 
-    uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
+    OwnershipFlags CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
     {
         TileElement* tileElement = MapGetFirstElementAt(tileMapPos);
-        uint16_t destOwnership = OWNERSHIP_OWNED;
+        OwnershipFlags destOwnership = { OwnershipFlag::owned };
 
         // Sometimes done deliberately.
         if (tileElement == nullptr)
         {
-            return OWNERSHIP_OWNED;
+            return destOwnership;
         }
 
         auto tilePos = TileCoordsXYZ{ tileMapPos };
@@ -2132,12 +2133,12 @@ namespace OpenRCT2
                 || (type == TileElementType::entrance
                     && tileElement->asEntrance()->getEntranceType() == EntranceType::parkEntrance))
             {
-                destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                destOwnership = OwnershipFlag::constructionRightsOwned;
                 // Do not own construction rights if too high/below surface
                 if (tileElement->baseHeight - kConstructionRightsClearanceSmall > tilePos.z
                     || tileElement->baseHeight < tilePos.z)
                 {
-                    destOwnership = OWNERSHIP_UNOWNED;
+                    destOwnership = kUnowned;
                     break;
                 }
             }
@@ -2146,7 +2147,7 @@ namespace OpenRCT2
         return destOwnership;
     }
 
-    void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership)
+    void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, OwnershipFlags ownership)
     {
         for (const auto& tile : tiles)
         {

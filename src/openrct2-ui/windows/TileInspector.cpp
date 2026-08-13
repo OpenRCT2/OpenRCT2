@@ -1156,13 +1156,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Land ownership
             StringId landOwnership;
-            if (surfaceEl.getOwnership() & OWNERSHIP_OWNED)
+            if (surfaceEl.getOwnership().has(OwnershipFlag::owned))
                 landOwnership = STR_LAND_OWNED;
-            else if (surfaceEl.getOwnership() & OWNERSHIP_AVAILABLE)
+            else if (surfaceEl.getOwnership().has(OwnershipFlag::forSale))
                 landOwnership = STR_LAND_SALE;
-            else if (surfaceEl.getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+            else if (surfaceEl.getOwnership().has(OwnershipFlag::constructionRightsOwned))
                 landOwnership = STR_CONSTRUCTION_RIGHTS_OWNED;
-            else if (surfaceEl.getOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+            else if (surfaceEl.getOwnership().has(OwnershipFlag::constructionRightsAvailable))
                 landOwnership = STR_CONSTRUCTION_RIGHTS_SALE;
             else
                 landOwnership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;

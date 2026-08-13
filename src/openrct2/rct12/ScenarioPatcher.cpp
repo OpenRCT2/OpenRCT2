@@ -84,21 +84,19 @@ static const std::string _surfaceKey = "surface";
 static const std::string _directionKey = "slope_direction";
 static const std::string _isQueue = "queue";
 
-static u8string ToOwnershipJsonKey(int ownershipType)
+static u8string ToOwnershipJsonKey(OwnershipFlags ownershipType)
 {
-    switch (ownershipType)
-    {
-        case OWNERSHIP_UNOWNED:
-            return "unowned";
-        case OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED:
-            return "construction_rights_owned";
-        case OWNERSHIP_OWNED:
-            return "owned";
-        case OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE:
-            return "construction_rights_available";
-        case OWNERSHIP_AVAILABLE:
-            return "available";
-    }
+    if (ownershipType == kUnowned)
+        return "unowned";
+    if (ownershipType.has(OwnershipFlag::constructionRightsOwned))
+        return "construction_rights_owned";
+    if (ownershipType.has(OwnershipFlag::owned))
+        return "owned";
+    if (ownershipType.has(OwnershipFlag::constructionRightsAvailable))
+        return "construction_rights_available";
+    if (ownershipType.has(OwnershipFlag::forSale))
+        return "available";
+
     Guard::Assert(false, "Unrecognized ownership type flag");
     return {};
 }
@@ -204,7 +202,7 @@ static bool IsQueue(const json_t& parameters)
     }
 }
 
-static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int ownershipType)
+static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, OwnershipFlags ownershipType)
 {
     auto ownershipTypeKey = ToOwnershipJsonKey(ownershipType);
     if (!landOwnershipFixes.contains(ownershipTypeKey))
@@ -229,8 +227,14 @@ static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
     }
 
     auto landOwnershipFixes = scenarioPatch[_landOwnershipKey];
-    for (const auto& ownershipType : { OWNERSHIP_UNOWNED, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, OWNERSHIP_OWNED,
-                                       OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE, OWNERSHIP_AVAILABLE })
+    constexpr auto kTypesToCheck = std::to_array<OwnershipFlags>({
+        kUnowned,
+        { OwnershipFlag::constructionRightsOwned },
+        { OwnershipFlag::owned },
+        { OwnershipFlag::constructionRightsAvailable },
+        { OwnershipFlag::forSale },
+    });
+    for (const OwnershipFlags& ownershipType : kTypesToCheck)
     {
         ApplyLandOwnershipFixes(landOwnershipFixes, ownershipType);
     }

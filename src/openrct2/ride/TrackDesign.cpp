@@ -2177,7 +2177,7 @@ static void TrackDesignPreviewClearMap()
         element->asSurface()->setSurfaceObjectIndex(0);
         element->asSurface()->setEdgeObjectIndex(0);
         element->asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
-        element->asSurface()->setOwnership(OWNERSHIP_OWNED);
+        element->asSurface()->setOwnership(OwnershipFlag::owned);
         element->asSurface()->setParkFences(0);
     }
 

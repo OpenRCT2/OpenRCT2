@@ -98,9 +98,11 @@ uint8_t RCT12SurfaceElement::GetGrassLength() const
     return GrassLength;
 }
 
-uint8_t RCT12SurfaceElement::GetOwnership() const
+OwnershipFlags RCT12SurfaceElement::GetOwnership() const
 {
-    return (Ownership & kTileElementSurfaceOwnershipMask);
+    OwnershipFlags ret;
+    ret.holder = (Ownership & kTileElementSurfaceOwnershipMask) >> 4;
+    return ret;
 }
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
