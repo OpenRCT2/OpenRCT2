@@ -374,7 +374,8 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::bottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - toolbarHeight), { toolbarWidth, toolbarHeight },
+            WindowClass::bottomToolbar, ScreenCoordsXY(kPanelWidth, ContextGetHeight() - toolbarHeight),
+            { toolbarWidth, toolbarHeight },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;
