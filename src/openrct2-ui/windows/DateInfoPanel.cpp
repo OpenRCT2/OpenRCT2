@@ -30,8 +30,8 @@ namespace OpenRCT2::Ui::Windows
 
     enum DateInfoPanelWidgetIdx : WidgetIndex
     {
-        WIDX_RIGHT_OUTSET,
-        WIDX_RIGHT_INSET,
+        WIDX_PANEL_OUTSET,
+        WIDX_PANEL_INSET,
         WIDX_DATE
     };
 
@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
 
         void drawPanel(RenderTarget& rt)
         {
-            const auto& panelWidget = widgets[WIDX_RIGHT_OUTSET];
+            const auto& panelWidget = widgets[WIDX_PANEL_OUTSET];
             const auto topLeft = windowPos + ScreenCoordsXY{ panelWidget.left + 1, panelWidget.top + 1 };
             const auto bottomRight = windowPos + ScreenCoordsXY{ panelWidget.right - 1, panelWidget.bottom - 1 };
 
@@ -127,7 +127,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_RIGHT_OUTSET:
+                case WIDX_PANEL_OUTSET:
                 case WIDX_DATE:
                     ContextOpenWindow(WindowClass::recentNews);
                     break;
@@ -144,14 +144,14 @@ namespace OpenRCT2::Ui::Windows
             windowPos.y = ContextGetHeight() - height;
 
             // Change height of widgets in accordance with line height.
-            widgets[WIDX_RIGHT_OUTSET].bottom = line_height * 3 + 3;
-            widgets[WIDX_RIGHT_INSET].bottom = line_height * 3 + 1;
+            widgets[WIDX_PANEL_OUTSET].bottom = line_height * 3 + 3;
+            widgets[WIDX_PANEL_INSET].bottom = line_height * 3 + 1;
             widgets[WIDX_DATE].bottom = line_height + 1;
         }
 
         void onDraw(RenderTarget& rt) override
         {
-            const auto& rightWidget = widgets[WIDX_RIGHT_OUTSET];
+            const auto& rightWidget = widgets[WIDX_PANEL_OUTSET];
 
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };

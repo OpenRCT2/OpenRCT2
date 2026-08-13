@@ -35,8 +35,8 @@ namespace OpenRCT2::Ui::Windows
 {
     enum WindowGameBottomToolbarWidgetIdx : WidgetIndex
     {
-        WIDX_MIDDLE_OUTSET,
-        WIDX_MIDDLE_INSET,
+        WIDX_PANEL_OUTSET,
+        WIDX_PANEL_INSET,
         WIDX_NEWS_SUBJECT,
         WIDX_NEWS_LOCATE,
     };
@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         void DrawNewsItem(RenderTarget& rt)
         {
-            const auto& middleOutsetWidget = widgets[WIDX_MIDDLE_OUTSET];
+            const auto& middleOutsetWidget = widgets[WIDX_PANEL_OUTSET];
             auto* newsItem = News::GetItem(0);
 
             // Current news item
@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawMiddlePanel(RenderTarget& rt)
         {
-            Widget* middleOutsetWidget = &widgets[WIDX_MIDDLE_OUTSET];
+            Widget* middleOutsetWidget = &widgets[WIDX_PANEL_OUTSET];
 
             Rectangle::fillInset(
                 rt,
@@ -214,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
-            widgets[WIDX_MIDDLE_OUTSET].setHidden();
+            widgets[WIDX_PANEL_OUTSET].setHidden();
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (widgetIndex)
             {
-                case WIDX_MIDDLE_INSET:
+                case WIDX_PANEL_INSET:
                     if (News::IsQueueEmpty())
                     {
                         ContextOpenWindow(WindowClass::recentNews);
@@ -267,37 +267,37 @@ namespace OpenRCT2::Ui::Windows
             windowPos.y = ContextGetHeight() - height;
 
             // Change height of widgets in accordance with line height.
-            widgets[WIDX_MIDDLE_OUTSET].bottom = line_height * 3 + 3;
-            widgets[WIDX_MIDDLE_INSET].bottom = line_height * 3 + 1;
+            widgets[WIDX_PANEL_OUTSET].bottom = line_height * 3 + 3;
+            widgets[WIDX_PANEL_INSET].bottom = line_height * 3 + 1;
 
             // Anchor the middle and right panel to the right
-            widgets[WIDX_MIDDLE_OUTSET].right = width - 1;
-            widgets[WIDX_MIDDLE_INSET].right = width - 3;
+            widgets[WIDX_PANEL_OUTSET].right = width - 1;
+            widgets[WIDX_PANEL_INSET].right = width - 3;
             widgets[WIDX_NEWS_LOCATE].right = width - 6;
 
             if (News::IsQueueEmpty())
             {
                 bool useFullToolbar = ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR;
-                widgets[WIDX_MIDDLE_OUTSET].setVisible(useFullToolbar);
-                widgets[WIDX_MIDDLE_INSET].setVisible(useFullToolbar);
+                widgets[WIDX_PANEL_OUTSET].setVisible(useFullToolbar);
+                widgets[WIDX_PANEL_INSET].setVisible(useFullToolbar);
                 widgets[WIDX_NEWS_SUBJECT].setHidden();
                 widgets[WIDX_NEWS_LOCATE].setHidden();
 
                 if (useFullToolbar)
                 {
-                    widgets[WIDX_MIDDLE_OUTSET].colour = 0;
-                    widgets[WIDX_MIDDLE_INSET].colour = 0;
+                    widgets[WIDX_PANEL_OUTSET].colour = 0;
+                    widgets[WIDX_PANEL_INSET].colour = 0;
                 }
             }
             else
             {
                 News::Item* newsItem = News::GetItem(0);
-                widgets[WIDX_MIDDLE_OUTSET].setVisible();
-                widgets[WIDX_MIDDLE_INSET].setVisible();
+                widgets[WIDX_PANEL_OUTSET].setVisible();
+                widgets[WIDX_PANEL_INSET].setVisible();
                 widgets[WIDX_NEWS_SUBJECT].setVisible();
                 widgets[WIDX_NEWS_LOCATE].setVisible();
-                widgets[WIDX_MIDDLE_OUTSET].colour = 2;
-                widgets[WIDX_MIDDLE_INSET].colour = 2;
+                widgets[WIDX_PANEL_OUTSET].colour = 2;
+                widgets[WIDX_PANEL_INSET].colour = 2;
                 setWidgetDisabled(WIDX_NEWS_SUBJECT, false);
                 setWidgetDisabled(WIDX_NEWS_LOCATE, false);
 
@@ -323,7 +323,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(RenderTarget& rt) override
         {
-            const auto& middleWidget = widgets[WIDX_MIDDLE_OUTSET];
+            const auto& middleWidget = widgets[WIDX_PANEL_OUTSET];
 
             if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
             {
@@ -383,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
         if (gLegacyScene == LegacyScene::playing)
         {
             auto* windowMgr = GetWindowManager();
-            windowMgr->InvalidateWidgetByClass(WindowClass::bottomToolbar, WIDX_MIDDLE_OUTSET);
+            windowMgr->InvalidateWidgetByClass(WindowClass::bottomToolbar, WIDX_PANEL_OUTSET);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

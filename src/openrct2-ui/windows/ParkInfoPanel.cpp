@@ -28,8 +28,8 @@ namespace OpenRCT2::Ui::Windows
 
     enum ParkInfoPanelWidgetIdx : WidgetIndex
     {
-        WIDX_LEFT_OUTSET,
-        WIDX_LEFT_INSET,
+        WIDX_PANEL_OUTSET,
+        WIDX_PANEL_INSET,
         WIDX_MONEY,
         WIDX_GUESTS,
         WIDX_PARK_RATING,
@@ -59,7 +59,7 @@ namespace OpenRCT2::Ui::Windows
 
         void drawPanel(RenderTarget& rt)
         {
-            const auto& panelWidget = widgets[WIDX_LEFT_OUTSET];
+            const auto& panelWidget = widgets[WIDX_PANEL_OUTSET];
             const auto topLeft = windowPos + ScreenCoordsXY{ panelWidget.left + 1, panelWidget.top + 1 };
             const auto bottomRight = windowPos + ScreenCoordsXY{ panelWidget.right - 1, panelWidget.bottom - 1 };
 
@@ -154,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_LEFT_OUTSET:
+                case WIDX_PANEL_OUTSET:
                 case WIDX_MONEY:
                     if (!getGameState().park.flags.has(ParkFlag::noMoney))
                         ContextOpenWindow(WindowClass::finances);
@@ -197,8 +197,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Change height of widgets in accordance with line height.
             // TODO: replace offset to full width with window size/position
-            widgets[WIDX_LEFT_OUTSET].bottom = line_height * 3 + 3;
-            widgets[WIDX_LEFT_INSET].bottom = line_height * 3 + 1;
+            widgets[WIDX_PANEL_OUTSET].bottom = line_height * 3 + 3;
+            widgets[WIDX_PANEL_INSET].bottom = line_height * 3 + 1;
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
             if (getGameState().park.flags.has(ParkFlag::noMoney))
@@ -222,7 +222,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onDraw(RenderTarget& rt) override
         {
-            const auto& leftWidget = widgets[WIDX_LEFT_OUTSET];
+            const auto& leftWidget = widgets[WIDX_PANEL_OUTSET];
 
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
