@@ -161,9 +161,6 @@ namespace OpenRCT2::Ui::Windows
         ParkInfoPanel()
         {
             setWidgets(kParkInfoPanelWidgets);
-
-            currentFrame = 0;
-            initScrollWidgets();
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -250,13 +247,6 @@ namespace OpenRCT2::Ui::Windows
             drawWidgets(rt);
 
             DrawLeftPanel(rt);
-        }
-
-        void onUpdate() override
-        {
-            currentFrame++;
-            if (currentFrame >= 24)
-                currentFrame = 0;
         }
 
         CursorID onCursor(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID cursorId) override
