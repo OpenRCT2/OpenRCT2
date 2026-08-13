@@ -274,6 +274,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PANEL_OUTSET].right = width - 1;
             widgets[WIDX_PANEL_INSET].right = width - 3;
             widgets[WIDX_NEWS_LOCATE].right = width - 6;
+            widgets[WIDX_NEWS_LOCATE].left = widgets[WIDX_NEWS_LOCATE].right - 24;
 
             if (News::IsQueueEmpty())
             {
