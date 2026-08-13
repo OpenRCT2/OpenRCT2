@@ -24,6 +24,8 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
+    constexpr auto kPanelWidth = 142;
+
     enum ParkInfoPanelWidgetIdx : WidgetIndex
     {
         WIDX_LEFT_OUTSET,
@@ -36,11 +38,11 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget kParkInfoPanelWidgets[] =
     {
-        makeWidget({  0,  0}, {142, 34}, WidgetType::imgBtn,       WindowColour::primary                                                    ), // Left outset panel
-        makeWidget({  2,  2}, {138, 30}, WidgetType::empty,        WindowColour::primary                                                    ), // Left inset panel
-        makeWidget({  2,  1}, {138, 12}, WidgetType::hiddenButton, WindowColour::primary, 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money
-        makeWidget({  2, 11}, {138, 12}, WidgetType::hiddenButton, WindowColour::primary                                                    ), // Guests
-        makeWidget({  2, 21}, {138, 11}, WidgetType::hiddenButton, WindowColour::primary, 0xFFFFFFFF, STR_PARK_RATING_TIP                   )  // Park rating
+        makeWidget({0,  0}, {kPanelWidth - 0, 34}, WidgetType::imgBtn,       WindowColour::primary                                                    ), // Left outset panel
+        makeWidget({2,  2}, {kPanelWidth - 4, 30}, WidgetType::empty,        WindowColour::primary                                                    ), // Left inset panel
+        makeWidget({2,  1}, {kPanelWidth - 4, 12}, WidgetType::hiddenButton, WindowColour::primary, 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money
+        makeWidget({2, 11}, {kPanelWidth - 4, 12}, WidgetType::hiddenButton, WindowColour::primary                                                    ), // Guests
+        makeWidget({2, 21}, {kPanelWidth - 4, 11}, WidgetType::hiddenButton, WindowColour::primary, 0xFFFFFFFF, STR_PARK_RATING_TIP                   )  // Park rating
     };
     // clang-format on
 
@@ -198,8 +200,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LEFT_OUTSET].bottom = line_height * 3 + 3;
             widgets[WIDX_LEFT_INSET].bottom = line_height * 3 + 1;
 
-            width = ContextGetWidth();
-
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
             if (getGameState().park.flags.has(ParkFlag::noMoney))
             {
@@ -250,16 +250,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* parkInfoPanelOpen()
     {
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
-
         // Figure out how much line height we have to work with.
         uint32_t lineHeight = FontGetLineHeight(FontStyle::medium);
-        int32_t toolbarHeight = lineHeight * 2 + 12;
+        int32_t panelHeight = lineHeight * 2 + 12;
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<ParkInfoPanel>(
-            WindowClass::parkInfoPanel, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
+            WindowClass::parkInfoPanel, ScreenCoordsXY(0, ContextGetHeight() - panelHeight), { kPanelWidth, panelHeight },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;

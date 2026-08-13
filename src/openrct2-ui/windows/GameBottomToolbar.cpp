@@ -44,10 +44,10 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget kGameBottomToolbarWidgets[] =
     {
-        makeWidget({142,  0}, {356, 34}, WidgetType::imgBtn,      WindowColour::tertiary                                                    ), // Middle outset panel
-        makeWidget({144,  2}, {352, 30}, WidgetType::hiddenButton,WindowColour::tertiary                                                    ), // Middle inset panel
-        makeWidget({147,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::secondary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                 ), // Associated news item window
-        makeWidget({469,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP      )  // Scroll to news item target
+        makeWidget({  0, 0}, {356, 34}, WidgetType::imgBtn,       WindowColour::tertiary                                              ), // Middle outset panel
+        makeWidget({  2, 2}, {352, 30}, WidgetType::hiddenButton, WindowColour::tertiary                                              ), // Middle inset panel
+        makeWidget({  5, 5}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary,          0xFFFFFFFF, STR_SHOW_SUBJECT_TIP  ), // Associated news item window
+        makeWidget({327, 5}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP)  // Scroll to news item target
     };
     // clang-format on
 
@@ -271,16 +271,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MIDDLE_INSET].bottom = line_height * 3 + 1;
 
             // Anchor the middle and right panel to the right
-            // TODO: replace offset to full width with window size/position
-            width = ContextGetWidth();
-            auto x = width - 1 - 2 - 137 - 2 - 1;
+            auto x = width - 1;
             widgets[WIDX_MIDDLE_OUTSET].right = x;
             x -= 2;
             widgets[WIDX_MIDDLE_INSET].right = x;
             x -= 3;
             widgets[WIDX_NEWS_LOCATE].right = x;
-            x -= 23;
-            widgets[WIDX_NEWS_LOCATE].left = x;
 
             if (News::IsQueueEmpty())
             {
@@ -365,8 +361,12 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* GameBottomToolbarOpen()
     {
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
+        // TODO: query ParkInfoPanel, DateInfoPanel
+        constexpr auto kPanelWidth = 142;
+
+        // Toolbar width depends on whether we're showing panels besides
+        // TODO: read config when applicable
+        auto toolbarWidth = ContextGetWidth() - kPanelWidth * 2;
 
         // Figure out how much line height we have to work with.
         uint32_t lineHeight = FontGetLineHeight(FontStyle::medium);
@@ -374,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::bottomToolbar, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
+            WindowClass::bottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - toolbarHeight), { toolbarWidth, toolbarHeight },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;

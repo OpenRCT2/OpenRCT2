@@ -26,6 +26,8 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
+    constexpr auto kPanelWidth = 142;
+
     enum DateInfoPanelWidgetIdx : WidgetIndex
     {
         WIDX_RIGHT_OUTSET,
@@ -36,9 +38,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget kDateInfoPanelWidgets[] =
     {
-        makeWidget({498,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary), // Right outset panel
-        makeWidget({500,  2}, {138, 30}, WidgetType::empty,       WindowColour::primary), // Right inset panel
-        makeWidget({500,  2}, {138, 12}, WidgetType::hiddenButton,WindowColour::primary)  // Date
+        makeWidget({0, 0}, {kPanelWidth - 0, 34}, WidgetType::imgBtn,       WindowColour::primary), // Right outset panel
+        makeWidget({2, 2}, {kPanelWidth - 4, 30}, WidgetType::empty,        WindowColour::primary), // Right inset panel
+        makeWidget({2, 2}, {kPanelWidth - 4, 12}, WidgetType::hiddenButton, WindowColour::primary)  // Date
     };
     // clang-format on
 
@@ -148,7 +150,6 @@ namespace OpenRCT2::Ui::Windows
 
             // Anchor the middle and right panel to the right
             // TODO: replace offset to full width with window size/position
-            width = ContextGetWidth();
             auto x = width - 1;
             widgets[WIDX_RIGHT_OUTSET].right = x;
             x -= 2;
@@ -190,16 +191,14 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* dateInfoPanelOpen()
     {
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
-
         // Figure out how much line height we have to work with.
         uint32_t lineHeight = FontGetLineHeight(FontStyle::medium);
-        int32_t toolbarHeight = lineHeight * 2 + 12;
+        int32_t panelHeight = lineHeight * 2 + 12;
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<DateInfoPanel>(
-            WindowClass::dateInfoPanel, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
+            WindowClass::dateInfoPanel, ScreenCoordsXY(ContextGetWidth() - kPanelWidth - 1, ContextGetHeight() - panelHeight),
+            { kPanelWidth, panelHeight },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;
