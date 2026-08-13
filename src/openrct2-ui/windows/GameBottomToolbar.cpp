@@ -271,12 +271,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MIDDLE_INSET].bottom = line_height * 3 + 1;
 
             // Anchor the middle and right panel to the right
-            auto x = width - 1;
-            widgets[WIDX_MIDDLE_OUTSET].right = x;
-            x -= 2;
-            widgets[WIDX_MIDDLE_INSET].right = x;
-            x -= 3;
-            widgets[WIDX_NEWS_LOCATE].right = x;
+            widgets[WIDX_MIDDLE_OUTSET].right = width - 1;
+            widgets[WIDX_MIDDLE_INSET].right = width - 3;
+            widgets[WIDX_NEWS_LOCATE].right = width - 6;
 
             if (News::IsQueueEmpty())
             {

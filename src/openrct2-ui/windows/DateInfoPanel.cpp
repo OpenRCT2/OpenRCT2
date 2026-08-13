@@ -147,19 +147,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_RIGHT_OUTSET].bottom = line_height * 3 + 3;
             widgets[WIDX_RIGHT_INSET].bottom = line_height * 3 + 1;
             widgets[WIDX_DATE].bottom = line_height + 1;
-
-            // Anchor the middle and right panel to the right
-            auto x = width - 1;
-            widgets[WIDX_RIGHT_OUTSET].right = x;
-            x -= 2;
-            widgets[WIDX_RIGHT_INSET].right = x;
-            x -= 137;
-            widgets[WIDX_RIGHT_INSET].left = x;
-            x -= 2;
-            widgets[WIDX_RIGHT_OUTSET].left = x;
-            x--;
-            widgets[WIDX_DATE].left = widgets[WIDX_RIGHT_OUTSET].left + 2;
-            widgets[WIDX_DATE].right = widgets[WIDX_RIGHT_OUTSET].right - 2;
         }
 
         void onDraw(RenderTarget& rt) override
