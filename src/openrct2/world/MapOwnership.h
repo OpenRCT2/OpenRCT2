@@ -16,9 +16,9 @@ namespace OpenRCT2
     enum class OwnershipFlag : uint8_t
     {
         constructionRightsOwned,
-        owned,
-        constructionRightsAvailable,
-        forSale,
+        landOwned,
+        constructionRightsForSale,
+        landForSale,
     };
     using OwnershipFlags = FlagHolder<uint8_t, OwnershipFlag>;
 

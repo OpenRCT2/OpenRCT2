@@ -448,7 +448,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                if (surfaceElement != nullptr && (surfaceElement->hasOwnership(OwnershipFlag::owned))
+                if (surfaceElement != nullptr && (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                     && surfaceElement->getWaterHeight() == 0 && surfaceElement->canGrassGrow())
                 {
                     surfaceElement->setGrassLength(length);
@@ -791,7 +791,7 @@ namespace OpenRCT2::GameActions
                     continue;
 
                 // Ignore already owned tiles.
-                if (surfaceElement->hasOwnership(OwnershipFlag::owned))
+                if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                     continue;
 
                 int32_t baseZ = surfaceElement->getBaseZ();

@@ -358,7 +358,7 @@ namespace OpenRCT2::Park
             if (it.element->getType() == TileElementType::surface)
             {
                 if (it.element->asSurface()->getOwnership().hasAny(
-                        OwnershipFlag::constructionRightsOwned, OwnershipFlag::owned))
+                        OwnershipFlag::constructionRightsOwned, OwnershipFlag::landOwned))
                 {
                     tiles++;
                 }
@@ -641,7 +641,7 @@ namespace OpenRCT2::Park
             return;
 
         uint8_t newFences = 0;
-        if (!surfaceElement->hasOwnership(OwnershipFlag::owned))
+        if (!surfaceElement->hasOwnership(OwnershipFlag::landOwned))
         {
             bool fenceRequired = true;
 

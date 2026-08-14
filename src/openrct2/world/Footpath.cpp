@@ -1040,7 +1040,7 @@ namespace OpenRCT2
             {
                 ownership = surfaceElement->getOwnership();
                 // You can't own the entrance path.
-                if (ownership == OwnershipFlag::owned || ownership == OwnershipFlag::forSale)
+                if (ownership == OwnershipFlag::landOwned || ownership == OwnershipFlag::landForSale)
                 {
                     ownership = OwnershipFlag::constructionRightsOwned;
                 }

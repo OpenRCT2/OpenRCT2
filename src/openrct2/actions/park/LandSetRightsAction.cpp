@@ -124,8 +124,8 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::unownLand:
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(
-                        surfaceElement->getOwnership().without(OwnershipFlag::owned, OwnershipFlag::constructionRightsOwned));
+                    surfaceElement->setOwnership(surfaceElement->getOwnership().without(
+                        OwnershipFlag::landOwned, OwnershipFlag::constructionRightsOwned));
                     Park::UpdateFencesAroundTile(loc);
                 }
                 return res;
@@ -141,7 +141,7 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::setForSale:
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(surfaceElement->getOwnership().with(OwnershipFlag::forSale));
+                    surfaceElement->setOwnership(surfaceElement->getOwnership().with(OwnershipFlag::landForSale));
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -149,8 +149,7 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::setConstructionRightsForSale:
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(
-                        surfaceElement->getOwnership().with(OwnershipFlag::constructionRightsAvailable));
+                    surfaceElement->setOwnership(surfaceElement->getOwnership().with(OwnershipFlag::constructionRightsForSale));
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -168,13 +167,13 @@ namespace OpenRCT2::GameActions
                         continue;
 
                     // Do not allow ownership of park entrance.
-                    if (_ownership == OwnershipFlag::owned || _ownership == OwnershipFlag::forSale)
+                    if (_ownership == OwnershipFlag::landOwned || _ownership == OwnershipFlag::landForSale)
                         return res;
 
                     // Allow construction rights available / for sale on park entrances on surface.
                     // There is no need to check the height if _ownership is 0 (unowned and no rights available).
                     if (_ownership == OwnershipFlag::constructionRightsOwned
-                        || _ownership == OwnershipFlag::constructionRightsAvailable)
+                        || _ownership == OwnershipFlag::constructionRightsForSale)
                     {
                         if (entranceElement->baseHeight - 3 > surfaceElement->baseHeight
                             || entranceElement->baseHeight < surfaceElement->baseHeight)
@@ -187,10 +186,10 @@ namespace OpenRCT2::GameActions
                 const auto currentOwnership = surfaceElement->getOwnership();
 
                 // Are land rights or construction rights currently owned?
-                if (!currentOwnership.hasAny(OwnershipFlag::owned, OwnershipFlag::constructionRightsOwned))
+                if (!currentOwnership.hasAny(OwnershipFlag::landOwned, OwnershipFlag::constructionRightsOwned))
                 {
                     // Buying land
-                    if (!(currentOwnership.has(OwnershipFlag::owned) && _ownership.has(OwnershipFlag::owned)))
+                    if (!(currentOwnership.has(OwnershipFlag::landOwned) && _ownership.has(OwnershipFlag::landOwned)))
                         res.cost = gameState.scenarioOptions.landPrice;
 
                     // Buying construction rights
@@ -201,7 +200,7 @@ namespace OpenRCT2::GameActions
                 else
                 {
                     // Selling land
-                    if ((currentOwnership.has(OwnershipFlag::owned)) && !(_ownership.has(OwnershipFlag::owned)))
+                    if ((currentOwnership.has(OwnershipFlag::landOwned)) && !(_ownership.has(OwnershipFlag::landOwned)))
                         res.cost = -gameState.scenarioOptions.landPrice;
 
                     // Selling construction rights

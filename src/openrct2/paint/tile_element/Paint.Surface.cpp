@@ -859,7 +859,7 @@ static void PaintSurfaceLandOwnership(
     auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
     // Loc660E9A:
-    if (tileElement.hasOwnership(OwnershipFlag::owned))
+    if (tileElement.hasOwnership(OwnershipFlag::landOwned))
     {
         assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
@@ -877,7 +877,7 @@ static void PaintSurfaceLandOwnership(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.hasOwnership(OwnershipFlag::forSale))
+    else if (tileElement.hasOwnership(OwnershipFlag::landForSale))
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -911,7 +911,7 @@ static void PaintSurfaceConstructionRights(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.hasOwnership(OwnershipFlag::constructionRightsAvailable))
+    else if (tileElement.hasOwnership(OwnershipFlag::constructionRightsForSale))
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -1080,7 +1080,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.hasOwnership(OwnershipFlag::owned)))
+    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.hasOwnership(OwnershipFlag::landOwned)))
     {
         PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }

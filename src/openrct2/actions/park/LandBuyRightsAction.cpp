@@ -122,31 +122,31 @@ namespace OpenRCT2::GameActions
         switch (_setting)
         {
             case LandBuyRightSetting::buyLand: // 0
-                if (surfaceElement->hasOwnership(OwnershipFlag::owned))
+                if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                 { // If the land is already owned
                     return res;
                 }
 
-                if (gLegacyScene == LegacyScene::scenarioEditor || !surfaceElement->hasOwnership(OwnershipFlag::forSale))
+                if (gLegacyScene == LegacyScene::scenarioEditor || !surfaceElement->hasOwnership(OwnershipFlag::landForSale))
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
                 }
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(OwnershipFlag::owned);
+                    surfaceElement->setOwnership(OwnershipFlag::landOwned);
                     Park::UpdateFencesAroundTile(loc);
                 }
                 res.cost = gameState.scenarioOptions.landPrice;
                 return res;
 
             case LandBuyRightSetting::buyConstructionRights: // 2
-                if (surfaceElement->getOwnership().hasAny(OwnershipFlag::owned, OwnershipFlag::constructionRightsOwned))
+                if (surfaceElement->getOwnership().hasAny(OwnershipFlag::landOwned, OwnershipFlag::constructionRightsOwned))
                 { // If the land or construction rights are already owned
                     return res;
                 }
 
                 if (gLegacyScene == LegacyScene::scenarioEditor
-                    || !surfaceElement->hasOwnership(OwnershipFlag::constructionRightsAvailable))
+                    || !surfaceElement->hasOwnership(OwnershipFlag::constructionRightsForSale))
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
                 }

@@ -90,11 +90,11 @@ static u8string ToOwnershipJsonKey(OwnershipFlags ownershipType)
         return "unowned";
     if (ownershipType.has(OwnershipFlag::constructionRightsOwned))
         return "construction_rights_owned";
-    if (ownershipType.has(OwnershipFlag::owned))
+    if (ownershipType.has(OwnershipFlag::landOwned))
         return "owned";
-    if (ownershipType.has(OwnershipFlag::constructionRightsAvailable))
+    if (ownershipType.has(OwnershipFlag::constructionRightsForSale))
         return "construction_rights_available";
-    if (ownershipType.has(OwnershipFlag::forSale))
+    if (ownershipType.has(OwnershipFlag::landForSale))
         return "available";
 
     Guard::Assert(false, "Unrecognized ownership type flag");
@@ -230,9 +230,9 @@ static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
     constexpr auto kTypesToCheck = std::to_array<OwnershipFlags>({
         kUnowned,
         { OwnershipFlag::constructionRightsOwned },
-        { OwnershipFlag::owned },
-        { OwnershipFlag::constructionRightsAvailable },
-        { OwnershipFlag::forSale },
+        { OwnershipFlag::landOwned },
+        { OwnershipFlag::constructionRightsForSale },
+        { OwnershipFlag::landForSale },
     });
     for (const OwnershipFlags& ownershipType : kTypesToCheck)
     {

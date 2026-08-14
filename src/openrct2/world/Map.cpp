@@ -478,14 +478,14 @@ namespace OpenRCT2
 
                 // Do not combine this condition with (flags & OwnershipFlag::forSale)
                 // As some RCT1 parks have owned tiles with the 'construction rights available' flag also set
-                if (!flags.has(OwnershipFlag::owned))
+                if (!flags.has(OwnershipFlag::landOwned))
                 {
-                    if (flags.has(OwnershipFlag::forSale))
+                    if (flags.has(OwnershipFlag::landForSale))
                     {
                         gLandRemainingOwnershipSales++;
                     }
                     else if (
-                        flags.has(OwnershipFlag::constructionRightsAvailable)
+                        flags.has(OwnershipFlag::constructionRightsForSale)
                         && !flags.has(OwnershipFlag::constructionRightsOwned))
                     {
                         gLandRemainingConstructionSales++;
@@ -820,7 +820,7 @@ namespace OpenRCT2
             auto* surfaceElement = MapGetSurfaceElementAt(loc);
             if (surfaceElement != nullptr)
             {
-                if (surfaceElement->hasOwnership(OwnershipFlag::owned))
+                if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                     return true;
 
                 if (surfaceElement->hasOwnership(OwnershipFlag::constructionRightsOwned))
@@ -845,7 +845,7 @@ namespace OpenRCT2
             auto surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 return false;
-            if (surfaceElement->hasOwnership(OwnershipFlag::owned))
+            if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                 return true;
         }
         return false;
@@ -860,7 +860,7 @@ namespace OpenRCT2
             {
                 return false;
             }
-            if (surfaceElement->hasOwnership(OwnershipFlag::owned))
+            if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                 return true;
             if (surfaceElement->hasOwnership(OwnershipFlag::constructionRightsOwned))
                 return true;
@@ -2117,7 +2117,7 @@ namespace OpenRCT2
     OwnershipFlags CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
     {
         TileElement* tileElement = MapGetFirstElementAt(tileMapPos);
-        OwnershipFlags destOwnership = { OwnershipFlag::owned };
+        OwnershipFlags destOwnership = { OwnershipFlag::landOwned };
 
         // Sometimes done deliberately.
         if (tileElement == nullptr)

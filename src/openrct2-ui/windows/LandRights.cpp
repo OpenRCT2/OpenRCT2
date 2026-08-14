@@ -438,11 +438,11 @@ namespace OpenRCT2::Ui::Windows
             switch (_landRightsMode)
             {
                 case LandRightsMode::setLandForSale:
-                    return { OwnershipFlag::forSale };
+                    return { OwnershipFlag::landForSale };
                 case LandRightsMode::setLandOwned:
-                    return { OwnershipFlag::owned };
+                    return { OwnershipFlag::landOwned };
                 case LandRightsMode::setConstructionRightsForSale:
-                    return { OwnershipFlag::constructionRightsAvailable };
+                    return { OwnershipFlag::constructionRightsForSale };
                 case LandRightsMode::setConstructionRightsOwned:
                     return { OwnershipFlag::constructionRightsOwned };
                 case LandRightsMode::setLandUnowned:
