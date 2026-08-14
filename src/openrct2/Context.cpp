@@ -1001,7 +1001,7 @@ namespace OpenRCT2
             return true;
         }
 
-        void RememberStartUpParkDirectory()
+        void rememberStartUpParkDirectory()
         {
             const bool isContinuedSaveGame = gScenarioSavePath == gOpenRCT2StartupActionPath;
             if (!isContinuedSaveGame || gScenarioSavePath.empty())
@@ -1086,7 +1086,7 @@ namespace OpenRCT2
                             break;
                         }
 
-                        RememberStartUpParkDirectory();
+                        rememberStartUpParkDirectory();
                     }
 
                     // Successfully loaded a file
