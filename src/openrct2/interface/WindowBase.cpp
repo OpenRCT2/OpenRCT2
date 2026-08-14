@@ -109,7 +109,7 @@ namespace OpenRCT2
 
         // Figure out if we need to push the other widgets down to accommodate a resized title/caption
         auto preferredHeight = getTitleBarTargetHeight();
-        auto currentHeight = titleWidget.height() - 1;
+        auto currentHeight = titleWidget.height();
         auto heightDifference = preferredHeight - currentHeight;
 
         if (!hasTitleWidget || heightDifference == 0)
@@ -151,7 +151,7 @@ namespace OpenRCT2
     int16_t WindowBase::getTitleBarCurrentHeight() const
     {
         if (!flags.has(WindowFlag::noTitleBar) && widgets.size() > 2)
-            return widgets[1].height() - 1;
+            return widgets[1].height();
         else
             return 0;
     }

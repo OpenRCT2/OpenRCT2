@@ -5,6 +5,7 @@
 - Improved: [#26099] The ride type selection cheat has been moved into the ride operations tab.
 - Improved: [#26099] The ride visiblity cheat has been moved into the ride colour/appearance tab.
 - Improved: [#26862] Add a Liquid Glass app icon for macOS 26 and later.
+- Fix: [#24610] Graph tabs get a little bit longer every time you switch between them.
 - Fix: [#25169] The convert command strips custom objects from the resulting park.
 - Fix: [#26811] Crash when a ride points to a non-existing station object.
 - Fix: [#26816] Water rides ignore zero clearances, preventing adjacent terrain modifications and building them anywhere.
