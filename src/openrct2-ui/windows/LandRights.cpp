@@ -433,21 +433,21 @@ namespace OpenRCT2::Ui::Windows
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, mode);
         }
 
-        uint8_t GetDesiredOwnership()
+        OwnershipFlags GetDesiredOwnership()
         {
             switch (_landRightsMode)
             {
                 case LandRightsMode::setLandForSale:
-                    return OWNERSHIP_AVAILABLE;
+                    return { OwnershipFlag::landForSale };
                 case LandRightsMode::setLandOwned:
-                    return OWNERSHIP_OWNED;
+                    return { OwnershipFlag::landOwned };
                 case LandRightsMode::setConstructionRightsForSale:
-                    return OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
+                    return { OwnershipFlag::constructionRightsForSale };
                 case LandRightsMode::setConstructionRightsOwned:
-                    return OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                    return { OwnershipFlag::constructionRightsOwned };
                 case LandRightsMode::setLandUnowned:
                 default:
-                    return OWNERSHIP_UNOWNED;
+                    return kUnowned;
             }
         }
 

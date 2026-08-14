@@ -16,6 +16,7 @@
 #include "../drawing/Colour.h"
 #include "../entity/JumpingFountain.h"
 #include "../management/Research.h"
+#include "../world/MapOwnership.h"
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
@@ -718,7 +719,7 @@ public:
     uint32_t GetSurfaceStyle() const;
     uint32_t GetEdgeStyle() const;
     uint8_t GetGrassLength() const;
-    uint8_t GetOwnership() const;
+    OpenRCT2::OwnershipFlags GetOwnership() const;
     uint32_t GetWaterHeight() const;
     uint8_t GetParkFences() const;
     bool HasTrackThatNeedsWater() const;

@@ -34,6 +34,7 @@
 #include "../../util/Util.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/MapOwnership.h"
 #include "../../world/Park.h"
 #include "../../world/Weather.h"
 #include "../../world/tile_element/PathElement.h"
@@ -448,7 +449,7 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                if (surfaceElement != nullptr && (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
+                if (surfaceElement != nullptr && (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                     && surfaceElement->getWaterHeight() == 0 && surfaceElement->canGrassGrow())
                 {
                     surfaceElement->setGrassLength(length);
@@ -791,14 +792,13 @@ namespace OpenRCT2::GameActions
                     continue;
 
                 // Ignore already owned tiles.
-                if (surfaceElement->getOwnership() & OWNERSHIP_OWNED)
+                if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                     continue;
 
                 int32_t baseZ = surfaceElement->getBaseZ();
-                int32_t destOwnership = CheckMaxAllowableLandRightsForTile({ coords, baseZ });
+                auto destOwnership = CheckMaxAllowableLandRightsForTile({ coords, baseZ });
 
-                // only own tiles that were not set to 0
-                if (destOwnership != OWNERSHIP_UNOWNED)
+                if (destOwnership != kUnowned)
                 {
                     surfaceElement->setOwnership(destOwnership);
                     Park::UpdateFencesAroundTile(coords);
@@ -813,7 +813,7 @@ namespace OpenRCT2::GameActions
             auto* surfaceElement = MapGetSurfaceElementAt(spawn);
             if (surfaceElement != nullptr)
             {
-                surfaceElement->setOwnership(OWNERSHIP_UNOWNED);
+                surfaceElement->setOwnership(kUnowned);
                 Park::UpdateFencesAroundTile(spawn);
                 uint16_t baseZ = surfaceElement->getBaseZ();
                 MapInvalidateTile({ spawn, baseZ, baseZ + 16 });

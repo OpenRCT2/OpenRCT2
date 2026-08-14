@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
-        if (surfaceMapElement->getOwnership() != OWNERSHIP_UNOWNED)
+        if (surfaceMapElement->getOwnership() != kUnowned)
         {
             return Result(
                 Status::invalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);

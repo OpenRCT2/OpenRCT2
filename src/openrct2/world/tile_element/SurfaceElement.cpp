@@ -191,15 +191,22 @@ namespace OpenRCT2
         }
     }
 
-    uint8_t SurfaceElement::getOwnership() const
+    OwnershipFlags SurfaceElement::getOwnership() const
     {
-        return (ownership & kTileElementSurfaceOwnershipMask);
+        OwnershipFlags ret;
+        ret.holder = (ownership & kTileElementSurfaceOwnershipMask) >> 4;
+        return ret;
     }
 
-    void SurfaceElement::setOwnership(uint8_t newOwnership)
+    void SurfaceElement::setOwnership(OwnershipFlags newOwnership)
     {
         ownership &= ~kTileElementSurfaceOwnershipMask;
-        ownership |= (newOwnership & kTileElementSurfaceOwnershipMask);
+        ownership |= (((newOwnership.holder) << 4) & kTileElementSurfaceOwnershipMask);
+    }
+
+    bool SurfaceElement::hasOwnership(OwnershipFlag flag) const
+    {
+        return getOwnership().has(flag);
     }
 
     uint8_t SurfaceElement::getParkFences() const
