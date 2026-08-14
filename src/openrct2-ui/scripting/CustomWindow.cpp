@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
         bool IsDisabled{};
         bool IsVisible{};
         bool IsPressed{};
-        bool HasBorder{};
+        std::optional<bool> HasBorder;
         bool ShowColumnHeaders{};
         bool IsStriped{};
         bool CanSelect{};
@@ -105,12 +105,10 @@ namespace OpenRCT2::Ui::Windows
                 if (JS_IsString(jsImage) || JS_IsNumber(jsImage))
                 {
                     result.Image = ImageId(ImageFromJSValue(ctx, jsImage));
-                    result.HasBorder = false;
                 }
                 else
                 {
                     result.Text = AsOrDefault(ctx, desc, "text", "");
-                    result.HasBorder = true;
                 }
                 JS_FreeValue(ctx, jsImage);
                 result.IsPressed = AsOrDefault(ctx, desc, "isPressed", false);
@@ -191,7 +189,12 @@ namespace OpenRCT2::Ui::Windows
                 result.MaxLength = AsOrDefault(ctx, desc, "maxLength", 32);
                 result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
-            result.HasBorder = AsOrDefault(ctx, desc, "border", result.HasBorder);
+            JSValue jsBorder = JS_GetPropertyStr(ctx, desc, "border");
+            if (JS_IsBool(jsBorder))
+            {
+                result.HasBorder = JS_ToBool(ctx, jsBorder) > 0;
+            }
+            JS_FreeValue(ctx, jsBorder);
             return result;
         }
     };
@@ -963,7 +966,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (desc.Image.HasValue())
                 {
-                    widget.type = desc.HasBorder ? WidgetType::imgBtn : WidgetType::flatBtn;
+                    // When the border is not specified, flatBtn lets the theme decide whether to draw one.
+                    if (!desc.HasBorder.has_value())
+                        widget.type = WidgetType::flatBtn;
+                    else
+                        widget.type = *desc.HasBorder ? WidgetType::imgBtn : WidgetType::hiddenButton;
                     widget.image = desc.Image;
                 }
                 else
