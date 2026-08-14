@@ -9,12 +9,9 @@
 
 #pragma once
 
-#include "../Identifiers.h"
 #include "../object/ObjectTypes.h"
 
 #include <cstdint>
-#include <limits>
-#include <type_traits>
 
 namespace OpenRCT2
 {

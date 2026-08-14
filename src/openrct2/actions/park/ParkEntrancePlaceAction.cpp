@@ -132,14 +132,21 @@ namespace OpenRCT2::GameActions
         auto zLow = _loc.z;
         auto zHigh = zLow + ParkEntranceHeight;
         CoordsXY entranceLoc = { _loc.x, _loc.y };
-        for (uint8_t index = 0; index < 3; index++)
+
+        constexpr auto kEntranceSequences = std::to_array(
+            {
+                ParkEntranceSequence::centre,
+                ParkEntranceSequence::left,
+                ParkEntranceSequence::right,
+            });
+        for (const auto index : kEntranceSequences)
         {
-            if (index == 1)
+            if (index == ParkEntranceSequence::left)
             {
                 entranceLoc.x += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].x;
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].y;
             }
-            else if (index == 2)
+            else if (index == ParkEntranceSequence::right)
             {
                 entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
@@ -150,7 +157,7 @@ namespace OpenRCT2::GameActions
                 SurfaceElement* surfaceElement = MapGetSurfaceElementAt(entranceLoc);
                 if (surfaceElement != nullptr)
                 {
-                    surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                    surfaceElement->setOwnership(OWNERSHIP_UNOWNED);
                 }
             }
 
@@ -160,16 +167,16 @@ namespace OpenRCT2::GameActions
             entranceElement->setClearanceZ(zHigh);
             entranceElement->setGhost(flags.has(CommandFlag::ghost));
             entranceElement->setDirection(_loc.direction);
-            entranceElement->SetSequenceIndex(index);
-            entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
+            entranceElement->setSequenceIndex(index);
+            entranceElement->setEntranceType(EntranceType::parkEntrance);
             entranceElement->setEntryIndex(_entranceType);
             if (!_pathTypeIsLegacy)
             {
-                entranceElement->SetSurfaceEntryIndex(_pathType);
+                entranceElement->setSurfaceEntryIndex(_pathType);
             }
             else
             {
-                entranceElement->SetLegacyPathEntryIndex(_pathType);
+                entranceElement->setLegacyPathEntryIndex(_pathType);
             }
 
             if (!entranceElement->isGhost())
@@ -185,7 +192,7 @@ namespace OpenRCT2::GameActions
 
             MapInvalidateTile({ entranceLoc, entranceElement->getBaseZ(), entranceElement->getClearanceZ() });
 
-            if (index == 0)
+            if (index == ParkEntranceSequence::centre)
             {
                 MapAnimations::MarkTileForInvalidation(TileCoordsXY(entranceLoc));
             }

@@ -127,7 +127,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
 {
     for (auto* trackElement : TileElementsView<TrackElement>(CoordsXY(x, y)))
     {
-        if (trackElement->GetRideIndex() != ride.id)
+        if (trackElement->getRideIndex() != ride.id)
             continue;
         if (trackElement->baseHeight != z && trackElement->baseHeight != z - 1)
             continue;
@@ -141,7 +141,7 @@ static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
 static bool ChairliftPaintUtilIsFirstTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, TrackElemType trackType)
 {
-    if (trackElement.GetTrackType() != TrackElemType::beginStation)
+    if (trackElement.getTrackType() != TrackElemType::beginStation)
     {
         return false;
     }
@@ -161,7 +161,7 @@ static bool ChairliftPaintUtilIsFirstTrack(
 static bool ChairliftPaintUtilIsLastTrack(
     const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, TrackElemType trackType)
 {
-    if (trackElement.GetTrackType() != TrackElemType::endStation)
+    if (trackElement.getTrackType() != TrackElemType::endStation)
     {
         return false;
     }
@@ -183,7 +183,7 @@ static void ChairliftPaintStationNeSw(
     const TrackElement& trackElement, SupportType supportType)
 {
     const CoordsXY pos = session.MapPosition;
-    auto trackType = trackElement.GetTrackType();
+    auto trackType = trackElement.getTrackType();
     ImageId imageId;
 
     bool isStart = ChairliftPaintUtilIsFirstTrack(ride, trackElement, pos, trackType);
@@ -274,7 +274,7 @@ static void ChairliftPaintStationSeNw(
     const TrackElement& trackElement, SupportType supportType)
 {
     const CoordsXY pos = session.MapPosition;
-    auto trackType = trackElement.GetTrackType();
+    auto trackType = trackElement.getTrackType();
     ImageId imageId;
 
     bool isStart = ChairliftPaintUtilIsFirstTrack(ride, trackElement, pos, trackType);

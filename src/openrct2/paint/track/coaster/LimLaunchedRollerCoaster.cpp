@@ -55,9 +55,9 @@ static void LimLaunchedRCTrackStation(
         15019,
     };
 
-    if (trackElement.GetTrackType() == TrackElemType::endStation)
+    if (trackElement.getTrackType() == TrackElemType::endStation)
     {
-        bool isClosed = trackElement.IsBrakeClosed();
+        bool isClosed = trackElement.isBrakeClosed();
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(kLimLauncherBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
@@ -1821,7 +1821,7 @@ static void LimLaunchedRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isClosed = trackElement.IsBrakeClosed();
+    bool isClosed = trackElement.isBrakeClosed();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(kLimLauncherBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });

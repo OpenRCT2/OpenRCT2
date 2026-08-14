@@ -11,7 +11,6 @@
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -42,6 +41,7 @@
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
@@ -50,9 +50,7 @@
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/ObjectLimits.h>
-#include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SceneryGroupEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
@@ -64,7 +62,6 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>
@@ -2246,15 +2243,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 case ViewportInteractionItem::scenery:
                 {
-                    auto* sceneryEntry = info.Element->asSmallScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asSmallScenery()->getEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.hasAny(SmallSceneryFlag::hasPrimaryColour, SmallSceneryFlag::hasGlass))
                         return;
 
-                    uint8_t quadrant = info.Element->asSmallScenery()->GetSceneryQuadrant();
+                    uint8_t quadrant = info.Element->asSmallScenery()->getSceneryQuadrant();
                     auto repaintScenery = GameActions::SmallScenerySetColourAction(
-                        { info.Loc, info.Element->getBaseZ() }, quadrant, info.Element->asSmallScenery()->GetEntryIndex(),
+                        { info.Loc, info.Element->getBaseZ() }, quadrant, info.Element->asSmallScenery()->getEntryIndex(),
                         _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2262,7 +2259,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto* scenery_entry = info.Element->asWall()->GetEntry();
+                    auto* scenery_entry = info.Element->asWall()->getEntry();
 
                     // If can't repaint
                     if (!scenery_entry->flags.hasAny(WallSceneryFlag::hasPrimaryColour, WallSceneryFlag::hasGlass))
@@ -2277,7 +2274,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto* sceneryEntry = info.Element->asLargeScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asLargeScenery()->getEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
@@ -2285,7 +2282,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto repaintScenery = GameActions::LargeScenerySetColourAction(
                         { info.Loc, info.Element->getBaseZ(), info.Element->getDirection() },
-                        info.Element->asLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
+                        info.Element->asLargeScenery()->getSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
                         _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2293,14 +2290,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->asBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                         {
                             auto repaintScenery = GameActions::BannerSetColourAction(
-                                { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->GetPosition() },
+                                { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->getPosition() },
                                 _sceneryPrimaryColour);
 
                             GameActions::Execute(&repaintScenery, gameState);
@@ -2324,47 +2321,47 @@ namespace OpenRCT2::Ui::Windows
                 case ViewportInteractionItem::scenery:
                 {
                     SmallSceneryElement* sceneryElement = info.Element->asSmallScenery();
-                    auto entryIndex = sceneryElement->GetEntryIndex();
+                    auto entryIndex = sceneryElement->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
-                            sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
+                            { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->getPrimaryColour(),
+                            sceneryElement->getSecondaryColour(), sceneryElement->getTertiaryColour(),
                             sceneryElement->getDirectionWithOffset(GetCurrentRotation()));
                     }
                     break;
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto entryIndex = info.Element->asWall()->GetEntryIndex();
+                    auto entryIndex = info.Element->asWall()->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->asWall()->GetPrimaryColour(),
-                            info.Element->asWall()->GetSecondaryColour(), info.Element->asWall()->GetTertiaryColour(),
+                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->asWall()->getPrimaryColour(),
+                            info.Element->asWall()->getSecondaryColour(), info.Element->asWall()->getTertiaryColour(),
                             std::nullopt);
                     }
                     break;
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto entryIndex = info.Element->asLargeScenery()->GetEntryIndex();
+                    auto entryIndex = info.Element->asLargeScenery()->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->asLargeScenery()->GetPrimaryColour(),
-                            info.Element->asLargeScenery()->GetSecondaryColour(),
-                            info.Element->asLargeScenery()->GetTertiaryColour(),
+                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->asLargeScenery()->getPrimaryColour(),
+                            info.Element->asLargeScenery()->getSecondaryColour(),
+                            info.Element->asLargeScenery()->getTertiaryColour(),
                             (GetCurrentRotation() + info.Element->getDirection()) & 3);
                     }
                     break;
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->asBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         auto sceneryEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
@@ -2378,7 +2375,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::pathAddition:
                 {
-                    auto entryIndex = info.Element->asPath()->GetAdditionEntryIndex();
+                    auto entryIndex = info.Element->asPath()->getAdditionEntryIndex();
                     auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
                     if (pathAdditionEntry != nullptr)
                     {
@@ -2881,9 +2878,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto z = info.Element->getBaseZ();
 
-            if (info.Element->asPath()->IsSloped())
+            if (info.Element->asPath()->isSloped())
             {
-                if (rotation != DirectionReverse(info.Element->asPath()->GetSlopeDirection()))
+                if (rotation != DirectionReverse(info.Element->asPath()->getSlopeDirection()))
                 {
                     z += (2 * kCoordsZStep);
                 }

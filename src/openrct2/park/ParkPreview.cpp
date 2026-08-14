@@ -82,20 +82,20 @@ namespace OpenRCT2
                         break;
                     }
 
-                    if (surfaceElement->GetWaterHeight() > 0)
+                    if (surfaceElement->getWaterHeight() > 0)
                     {
                         surfaceColour = paletteIndex = PaletteIndex::pi195;
                     }
                     else
                     {
-                        const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+                        const auto* surfaceObject = surfaceElement->getSurfaceObject();
                         if (surfaceObject != nullptr)
                         {
                             surfaceColour = paletteIndex = surfaceObject->MapColours[_tileColourIndex];
                         }
                     }
 
-                    isOutsidePark |= !(surfaceElement->GetOwnership() & OWNERSHIP_OWNED);
+                    isOutsidePark |= !(surfaceElement->getOwnership() & OWNERSHIP_OWNED);
                     break;
                 }
 

@@ -9,7 +9,6 @@
 
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/LandTool.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -20,12 +19,11 @@
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/terraform/WaterLowerAction.h>
 #include <openrct2/actions/terraform/WaterRaiseAction.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {

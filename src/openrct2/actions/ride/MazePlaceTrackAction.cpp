@@ -190,10 +190,10 @@ namespace OpenRCT2::GameActions
         Guard::Assert(trackElement != nullptr);
 
         trackElement->setClearanceZ(clearanceHeight);
-        trackElement->SetTrackType(TrackElemType::maze);
-        trackElement->SetRideType(ride->type);
-        trackElement->SetRideIndex(_rideIndex);
-        trackElement->SetMazeEntry(_mazeEntry);
+        trackElement->setTrackType(TrackElemType::maze);
+        trackElement->setRideType(ride->type);
+        trackElement->setRideIndex(_rideIndex);
+        trackElement->setMazeEntry(_mazeEntry);
         trackElement->setGhost(flags.has(CommandFlag::ghost));
 
         MapInvalidateTileFull(startLoc);

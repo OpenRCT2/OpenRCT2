@@ -19,7 +19,6 @@
     #include <openrct2/Diagnostic.h>
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
-    #include <openrct2/core/Json.hpp>
     #include <openrct2/drawing/ColourMap.h>
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
@@ -29,9 +28,7 @@
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/network/Network.h>
     #include <openrct2/network/ServerList.h>
-    #include <openrct2/platform/Platform.h>
     #include <openrct2/ui/WindowManager.h>
-    #include <tuple>
 
 using namespace OpenRCT2::Drawing;
 

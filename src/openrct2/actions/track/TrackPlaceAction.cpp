@@ -328,7 +328,7 @@ namespace OpenRCT2::GameActions
 
                 if (!gameState.cheats.disableClearanceChecks)
                 {
-                    auto waterHeight = surfaceElement->GetWaterHeight();
+                    auto waterHeight = surfaceElement->getWaterHeight();
                     if (waterHeight == 0)
                     {
                         return Result(
@@ -345,7 +345,7 @@ namespace OpenRCT2::GameActions
                     waterHeight -= kLandHeightStep;
                     if (waterHeight == surfaceElement->getBaseZ())
                     {
-                        uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
+                        uint8_t slope = surfaceElement->getSlope() & kTileSlopeRaisedCornersMask;
                         if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
                             || slope == kTileSlopeNCornerDown)
                         {
@@ -494,9 +494,9 @@ namespace OpenRCT2::GameActions
             if (crossingMode == CreateCrossingMode::trackOverPath && !GetFlags().has(CommandFlag::ghost))
             {
                 auto footpathElement = MapGetFootpathElement(mapLoc);
-                if (footpathElement != nullptr && footpathElement->HasAddition())
+                if (footpathElement != nullptr && footpathElement->hasAddition())
                 {
-                    footpathElement->SetAddition(0);
+                    footpathElement->setAddition(0);
                 }
             }
 
@@ -577,11 +577,11 @@ namespace OpenRCT2::GameActions
 
             trackElement->setClearanceZ(clearanceZ);
             trackElement->setDirection(_origin.direction);
-            trackElement->SetHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
-            trackElement->SetSequenceIndex(blockIndex);
-            trackElement->SetRideIndex(_rideIndex);
-            trackElement->SetTrackType(_trackType);
-            trackElement->SetRideType(_rideType);
+            trackElement->setHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
+            trackElement->setSequenceIndex(blockIndex);
+            trackElement->setRideIndex(_rideIndex);
+            trackElement->setTrackType(_trackType);
+            trackElement->setRideType(_rideType);
             trackElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             switch (_trackType)
@@ -594,31 +594,31 @@ namespace OpenRCT2::GameActions
                     break;
                 case TrackElemType::brakes:
                 case TrackElemType::diagBrakes:
-                    trackElement->SetBrakeClosed(true);
+                    trackElement->setBrakeClosed(true);
                     break;
                 default:
                     break;
             }
             if (trackTypeHasSpeedSetting(_trackType))
             {
-                trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
+                trackElement->setBrakeBoosterSpeed(_brakeSpeed);
             }
 
             if (rtd.flags.has(RtdFlag::hasLandscapeDoors))
             {
-                trackElement->SetDoorAState(kLandEdgeDoorFrameClosed);
-                trackElement->SetDoorBState(kLandEdgeDoorFrameClosed);
+                trackElement->setDoorAState(kLandEdgeDoorFrameClosed);
+                trackElement->setDoorBState(kLandEdgeDoorFrameClosed);
             }
             else
             {
-                trackElement->SetSeatRotation(_seatRotation);
+                trackElement->setSeatRotation(_seatRotation);
             }
 
             if (_trackPlaceFlags.has(LiftHillAndInverted::inverted))
             {
-                trackElement->SetInverted(true);
+                trackElement->setInverted(true);
             }
-            trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
+            trackElement->setColourScheme(static_cast<RideColourScheme>(_colour));
 
             if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::connectsToPath))
             {
@@ -663,7 +663,7 @@ namespace OpenRCT2::GameActions
                 auto* waterSurfaceElement = MapGetSurfaceElementAt(mapLoc);
                 if (waterSurfaceElement != nullptr)
                 {
-                    waterSurfaceElement->SetHasTrackThatNeedsWater(true);
+                    waterSurfaceElement->setHasTrackThatNeedsWater(true);
                     tileElement = waterSurfaceElement->as<TileElement>();
                 }
             }

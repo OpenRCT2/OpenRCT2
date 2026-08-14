@@ -11,9 +11,17 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include <openrct2/interface/WindowBase.h>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <quickjs.h>
+
+namespace OpenRCT2
+{
+    enum class WindowClass : uint8_t;
+
+    using WindowNumber = int16_t;
+
+    struct WindowBase;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {

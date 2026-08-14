@@ -10,6 +10,8 @@
 - Fix: [#26816] Water rides ignore zero clearances, preventing adjacent terrain modifications and building them anywhere.
 - Fix: [#26880] Max negative G-Force stat on flat track erroneously reads as 0.49g.
 - Fix: [#26903] Making a ride visible or invisible is always denied in multiplayer.
+- Fix: [#26917] Tile Inspector does not show indestructible track status correctly when ‘Make all track pieces destructible’ cheat is enabled.
+- Fix: [#26921] The bottom panel buttons for finances, park rating, date, etc. are not invalidating properly.
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------

@@ -65,11 +65,11 @@ namespace OpenRCT2
         auto& station = ride.getStation(stationIndex);
 
         if ((ride.status == RideStatus::closed && ride.numRiders == 0)
-            || (tileElement != nullptr && tileElement->asTrack()->IsBrakeClosed()))
+            || (tileElement != nullptr && tileElement->asTrack()->isBrakeClosed()))
         {
             station.Depart &= ~kStationDepartFlag;
 
-            if ((station.Depart & kStationDepartFlag) || (tileElement != nullptr && tileElement->asTrack()->HasGreenLight()))
+            if ((station.Depart & kStationDepartFlag) || (tileElement != nullptr && tileElement->asTrack()->hasGreenLight()))
                 RideInvalidateStationStart(ride, stationIndex, false);
         }
         else
@@ -79,7 +79,7 @@ namespace OpenRCT2
                 station.Depart |= kStationDepartFlag;
                 RideInvalidateStationStart(ride, stationIndex, true);
             }
-            else if (tileElement != nullptr && tileElement->asTrack()->HasGreenLight())
+            else if (tileElement != nullptr && tileElement->asTrack()->hasGreenLight())
             {
                 RideInvalidateStationStart(ride, stationIndex, true);
             }
@@ -333,9 +333,9 @@ namespace OpenRCT2
             return;
 
         TrackElement* const trackElement = tileElement->asTrack();
-        if (trackElement->HasGreenLight() != greenLight)
+        if (trackElement->hasGreenLight() != greenLight)
         {
-            trackElement->SetHasGreenLight(greenLight);
+            trackElement->setHasGreenLight(greenLight);
             MapInvalidateTileZoom1({ startPos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
         }
     }

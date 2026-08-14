@@ -34,7 +34,7 @@ static void FlyingRCTrackStation(
         { 17155, 17151 },
     };
 
-    if (trackElement.GetTrackType() == TrackElemType::endStation)
+    if (trackElement.getTrackType() == TrackElemType::endStation)
     {
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },

@@ -293,8 +293,8 @@ static void FixInvalidSurfaces()
             {
                 surfaceElement->setBaseZ(kMinimumLandZ);
                 surfaceElement->setClearanceZ(kMinimumLandZ);
-                surfaceElement->SetSlope(0);
-                surfaceElement->SetWaterHeight(0);
+                surfaceElement->setSlope(0);
+                surfaceElement->setWaterHeight(0);
             }
         }
     }

@@ -10,11 +10,9 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
@@ -22,13 +20,11 @@
 #include <openrct2/actions/scenery/BannerSetNameAction.h>
 #include <openrct2/actions/scenery/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/drawing/TextColour.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/Map.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/tile_element/BannerElement.h>
 
@@ -113,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (auto* bannerElement : TileElementsView<BannerElement>(banner->position))
             {
-                if (bannerElement->GetIndex() == GetBannerIndex())
+                if (bannerElement->getIndex() == GetBannerIndex())
                 {
                     return bannerElement;
                 }
@@ -199,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->GetPosition() });
+                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->getPosition() });
                     GameActions::Execute(&bannerRemoveAction, gameState);
                     break;
                 }

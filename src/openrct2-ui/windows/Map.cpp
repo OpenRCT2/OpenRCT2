@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/Viewport.h>
-#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -17,13 +15,11 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/general/MapChangeSizeAction.h>
 #include <openrct2/actions/peep/PeepSpawnPlaceAction.h>
-#include <openrct2/actions/terraform/SurfaceSetStyleAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.String.h>
@@ -34,16 +30,14 @@
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/Slope.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
@@ -470,9 +464,9 @@ namespace OpenRCT2::Ui::Windows
             int32_t mapZ = tileElement->getBaseZ();
             if (tileElement->getType() == TileElementType::surface)
             {
-                if ((tileElement->asSurface()->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
+                if ((tileElement->asSurface()->getSlope() & kTileSlopeRaisedCornersMask) != 0)
                     mapZ += 16;
-                if (tileElement->asSurface()->GetSlope() & kTileSlopeDiagonalFlag)
+                if (tileElement->asSurface()->getSlope() & kTileSlopeDiagonalFlag)
                     mapZ += 16;
             }
 
@@ -857,14 +851,14 @@ namespace OpenRCT2::Ui::Windows
                 return { PaletteIndex::transparent, PaletteIndex::transparent };
 
             auto colour = ColourPair(PaletteIndex::transparent);
-            const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+            const auto* surfaceObject = surfaceElement->getSurfaceObject();
             if (surfaceObject != nullptr)
                 colour = ColourPair(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
 
-            if (surfaceElement->GetWaterHeight() > 0)
+            if (surfaceElement->getWaterHeight() > 0)
                 colour = kWaterColour;
 
-            if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
+            if (!(surfaceElement->getOwnership() & OWNERSHIP_OWNED))
                 colour = MapColourUnowned(colour);
 
             const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(kElementTypeOverwriteColour));
@@ -917,10 +911,10 @@ namespace OpenRCT2::Ui::Windows
                 switch (tileElement->getType())
                 {
                     case TileElementType::surface:
-                        if (tileElement->asSurface()->GetWaterHeight() > 0)
+                        if (tileElement->asSurface()->getWaterHeight() > 0)
                             // Why is this a different water colour as above (195)?
                             colourB = ColourPair(PaletteIndex::pi194);
-                        if (!(tileElement->asSurface()->GetOwnership() & OWNERSHIP_OWNED))
+                        if (!(tileElement->asSurface()->getOwnership() & OWNERSHIP_OWNED))
                             colourB = MapColourUnowned(colourB);
                         break;
                     case TileElementType::path:
@@ -928,9 +922,9 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case TileElementType::entrance:
                     {
-                        if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                        if (tileElement->asEntrance()->getEntranceType() == EntranceType::parkEntrance)
                             break;
-                        Ride* targetRide = GetRide(tileElement->asEntrance()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asEntrance()->getRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
@@ -940,7 +934,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case TileElementType::track:
                     {
-                        Ride* targetRide = GetRide(tileElement->asTrack()->GetRideIndex());
+                        Ride* targetRide = GetRide(tileElement->asTrack()->getRideIndex());
                         if (targetRide != nullptr)
                         {
                             const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;

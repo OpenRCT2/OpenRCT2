@@ -223,13 +223,13 @@ namespace OpenRCT2::World::MapGenerator
                 surfaceElement->clearanceHeight = surfaceElement->baseHeight;
 
                 // Set textures
-                surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
-                surfaceElement->SetEdgeObjectIndex(edgeTextureId);
+                surfaceElement->setSurfaceObjectIndex(surfaceTextureId);
+                surfaceElement->setEdgeObjectIndex(edgeTextureId);
 
                 // Set water level
                 if (surfaceElement->baseHeight < settings->waterLevel)
                 {
-                    surfaceElement->SetWaterHeight(settings->waterLevel * kCoordsZStep);
+                    surfaceElement->setWaterHeight(settings->waterLevel * kCoordsZStep);
                 }
             }
         }

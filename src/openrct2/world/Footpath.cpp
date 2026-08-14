@@ -107,7 +107,7 @@ namespace OpenRCT2
 
     static bool entrance_has_direction(const EntranceElement& entranceElement, int32_t direction)
     {
-        return entranceElement.GetDirections() & (1 << (direction & 3));
+        return entranceElement.getDirections() & (1 << (direction & 3));
     }
 
     PathElement* MapGetFootpathElement(const CoordsXYZ& coords)
@@ -185,11 +185,11 @@ namespace OpenRCT2
             if (tileElement->getType() != TileElementType::path)
                 continue;
             auto pathElement = tileElement->asPath();
-            if (pathElement->IsQueue())
+            if (pathElement->isQueue())
                 continue;
             if (tileElement->getBaseZ() != footpathPos.z)
                 continue;
-            if (!(pathElement->GetEdgesAndCorners() & requireEdges))
+            if (!(pathElement->getEdgesAndCorners() & requireEdges))
                 continue;
 
             return pathElement;
@@ -211,9 +211,9 @@ namespace OpenRCT2
         using PathElementCoordsPair = std::pair<PathElement*, CoordsXY>;
         std::array<PathElementCoordsPair, 4> tileElements;
 
-        if (initialTileElement->IsQueue())
+        if (initialTileElement->isQueue())
             return;
-        if (initialTileElement->IsSloped())
+        if (initialTileElement->isSloped())
             return;
 
         std::get<0>(tileElements) = { initialTileElement, footpathPos };
@@ -252,24 +252,24 @@ namespace OpenRCT2
                 continue;
 
             direction = DirectionNext(direction);
-            std::get<3>(tileElements).first->SetCorners(std::get<3>(tileElements).first->GetCorners() | (1 << (direction)));
+            std::get<3>(tileElements).first->setCorners(std::get<3>(tileElements).first->getCorners() | (1 << (direction)));
             MapInvalidateElement(
                 std::get<3>(tileElements).second, reinterpret_cast<TileElement*>(std::get<3>(tileElements).first));
 
             direction = DirectionPrev(direction);
-            std::get<2>(tileElements).first->SetCorners(std::get<2>(tileElements).first->GetCorners() | (1 << (direction)));
+            std::get<2>(tileElements).first->setCorners(std::get<2>(tileElements).first->getCorners() | (1 << (direction)));
 
             MapInvalidateElement(
                 std::get<2>(tileElements).second, reinterpret_cast<TileElement*>(std::get<2>(tileElements).first));
 
             direction = DirectionPrev(direction);
-            std::get<1>(tileElements).first->SetCorners(std::get<1>(tileElements).first->GetCorners() | (1 << (direction)));
+            std::get<1>(tileElements).first->setCorners(std::get<1>(tileElements).first->getCorners() | (1 << (direction)));
 
             MapInvalidateElement(
                 std::get<1>(tileElements).second, reinterpret_cast<TileElement*>(std::get<1>(tileElements).first));
 
             direction = initialDirection;
-            std::get<0>(tileElements).first->SetCorners(std::get<0>(tileElements).first->GetCorners() | (1 << (direction)));
+            std::get<0>(tileElements).first->setCorners(std::get<0>(tileElements).first->getCorners() | (1 << (direction)));
             MapInvalidateElement(
                 std::get<0>(tileElements).second, reinterpret_cast<TileElement*>(std::get<0>(tileElements).first));
         }
@@ -363,9 +363,9 @@ namespace OpenRCT2
 
             if (footpathPos.clearanceZ == tileElement->getBaseZ())
             {
-                if (tileElement->asPath()->IsSloped())
+                if (tileElement->asPath()->isSloped())
                 {
-                    auto slope = tileElement->asPath()->GetSlopeDirection();
+                    auto slope = tileElement->asPath()->getSlopeDirection();
                     if (slope != direction)
                         break;
                 }
@@ -373,10 +373,10 @@ namespace OpenRCT2
             }
             if (footpathPos.baseZ == tileElement->getBaseZ())
             {
-                if (!tileElement->asPath()->IsSloped())
+                if (!tileElement->asPath()->isSloped())
                     break;
 
-                auto slope = DirectionReverse(tileElement->asPath()->GetSlopeDirection());
+                auto slope = DirectionReverse(tileElement->asPath()->getSlopeDirection());
                 if (slope != direction)
                     break;
 
@@ -392,7 +392,7 @@ namespace OpenRCT2
     static bool FootpathReconnectQueueToPath(
         const CoordsXY& footpathPos, TileElement* tileElement, int32_t action, int32_t direction)
     {
-        if (((tileElement->asPath()->GetEdges() & (1 << direction)) == 0) ^ (action < 0))
+        if (((tileElement->asPath()->getEdges() & (1 << direction)) == 0) ^ (action < 0))
             return false;
 
         auto targetQueuePos = footpathPos + CoordsDirectionDelta[direction];
@@ -409,21 +409,21 @@ namespace OpenRCT2
 
         int32_t z = tileElement->getBaseZ();
         TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - kLandHeightStep, z }, direction);
-        if (targetFootpathElement != nullptr && !targetFootpathElement->asPath()->IsQueue())
+        if (targetFootpathElement != nullptr && !targetFootpathElement->asPath()->isQueue())
         {
             auto targetQueueElement = targetFootpathElement->asPath();
-            tileElement->asPath()->SetSlopeDirection(0);
+            tileElement->asPath()->setSlopeDirection(0);
             if (action > 0)
             {
-                tileElement->asPath()->SetEdges(tileElement->asPath()->GetEdges() & ~(1 << direction));
-                targetQueueElement->SetEdges(targetQueueElement->GetEdges() & ~(1 << (DirectionReverse(direction) & 3)));
+                tileElement->asPath()->setEdges(tileElement->asPath()->getEdges() & ~(1 << direction));
+                targetQueueElement->setEdges(targetQueueElement->getEdges() & ~(1 << (DirectionReverse(direction) & 3)));
                 if (action >= 2)
-                    tileElement->asPath()->SetSlopeDirection(direction);
+                    tileElement->asPath()->setSlopeDirection(direction);
             }
             else if (action < 0)
             {
-                tileElement->asPath()->SetEdges(tileElement->asPath()->GetEdges() | (1 << direction));
-                targetQueueElement->SetEdges(targetQueueElement->GetEdges() | (1 << (DirectionReverse(direction) & 3)));
+                tileElement->asPath()->setEdges(tileElement->asPath()->getEdges() | (1 << direction));
+                targetQueueElement->setEdges(targetQueueElement->getEdges() | (1 << (DirectionReverse(direction) & 3)));
             }
             if (action != 0)
                 MapInvalidateTileFull(targetQueuePos);
@@ -434,26 +434,26 @@ namespace OpenRCT2
 
     static bool FootpathDisconnectQueueFromPath(const CoordsXY& footpathPos, TileElement* tileElement, int32_t action)
     {
-        if (!tileElement->asPath()->IsQueue())
+        if (!tileElement->asPath()->isQueue())
             return false;
 
-        if (tileElement->asPath()->IsSloped())
+        if (tileElement->asPath()->isSloped())
             return false;
 
-        uint8_t c = connected_path_count[tileElement->asPath()->GetEdges()];
+        uint8_t c = connected_path_count[tileElement->asPath()->getEdges()];
         if ((action < 0) ? (c >= 2) : (c < 2))
             return false;
 
         if (action < 0)
         {
-            uint8_t direction = tileElement->asPath()->GetSlopeDirection();
+            uint8_t direction = tileElement->asPath()->getSlopeDirection();
             if (FootpathReconnectQueueToPath(footpathPos, tileElement, action, direction))
                 return true;
         }
 
         for (Direction direction : kAllDirections)
         {
-            if ((action < 0) && (direction == tileElement->asPath()->GetSlopeDirection()))
+            if ((action < 0) && (direction == tileElement->asPath()->getSlopeDirection()))
                 continue;
             if (FootpathReconnectQueueToPath(footpathPos, tileElement, action, direction))
                 return true;
@@ -474,7 +474,7 @@ namespace OpenRCT2
         {
             if (!query)
             {
-                initialTileElement->asPath()->SetEdges(initialTileElement->asPath()->GetEdges() | (1 << direction));
+                initialTileElement->asPath()->setEdges(initialTileElement->asPath()->getEdges() | (1 << direction));
                 MapInvalidateElement(initialTileElementPos, initialTileElement);
             }
         }
@@ -490,23 +490,23 @@ namespace OpenRCT2
             {
                 return;
             }
-            if (tileElement->asPath()->IsQueue())
+            if (tileElement->asPath()->isQueue())
             {
-                if (connected_path_count[tileElement->asPath()->GetEdges()] < 2)
+                if (connected_path_count[tileElement->asPath()->getEdges()] < 2)
                 {
                     FootpathNeighbourListPush(
-                        neighbourList, 4, direction, tileElement->asPath()->GetRideIndex(),
-                        tileElement->asPath()->GetStationIndex());
+                        neighbourList, 4, direction, tileElement->asPath()->getRideIndex(),
+                        tileElement->asPath()->getStationIndex());
                 }
                 else
                 {
-                    if ((initialTileElement)->getType() == TileElementType::path && initialTileElement->asPath()->IsQueue())
+                    if ((initialTileElement)->getType() == TileElementType::path && initialTileElement->asPath()->isQueue())
                     {
                         if (FootpathDisconnectQueueFromPath(targetPos, tileElement, 0))
                         {
                             FootpathNeighbourListPush(
-                                neighbourList, 3, direction, tileElement->asPath()->GetRideIndex(),
-                                tileElement->asPath()->GetStationIndex());
+                                neighbourList, 3, direction, tileElement->asPath()->getRideIndex(),
+                                tileElement->asPath()->getStationIndex());
                         }
                     }
                 }
@@ -520,10 +520,10 @@ namespace OpenRCT2
         {
             const bool isGhost = flags.has(CommandFlag::ghost);
             FootpathDisconnectQueueFromPath(targetPos, tileElement, isGhost ? 2 : 1);
-            tileElement->asPath()->SetEdges(tileElement->asPath()->GetEdges() | (1 << DirectionReverse(direction)));
-            if (tileElement->asPath()->IsQueue())
+            tileElement->asPath()->setEdges(tileElement->asPath()->getEdges() | (1 << DirectionReverse(direction)));
+            if (tileElement->asPath()->isQueue())
             {
-                FootpathQueueChainPush(tileElement->asPath()->GetRideIndex());
+                FootpathQueueChainPush(tileElement->asPath()->getRideIndex());
             }
         }
         if (!flags.hasAny(CommandFlag::ghost, CommandFlag::allowDuringPaused))
@@ -559,7 +559,7 @@ namespace OpenRCT2
                     case TileElementType::path:
                         if (tileElement->getBaseZ() == initialTileElementPos.z)
                         {
-                            if (!tileElement->asPath()->IsSloped() || tileElement->asPath()->GetSlopeDirection() == direction)
+                            if (!tileElement->asPath()->isSloped() || tileElement->asPath()->getSlopeDirection() == direction)
                             {
                                 Loc6A6F1F(
                                     initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
@@ -569,8 +569,8 @@ namespace OpenRCT2
                         }
                         if (tileElement->getBaseZ() == initialTileElementPos.z - kLandHeightStep)
                         {
-                            if (tileElement->asPath()->IsSloped()
-                                && tileElement->asPath()->GetSlopeDirection() == DirectionReverse(direction))
+                            if (tileElement->asPath()->isSloped()
+                                && tileElement->asPath()->getSlopeDirection() == DirectionReverse(direction))
                             {
                                 Loc6A6F1F(
                                     initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
@@ -582,7 +582,7 @@ namespace OpenRCT2
                     case TileElementType::track:
                         if (initialTileElementPos.z == tileElement->getBaseZ())
                         {
-                            auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
+                            auto ride = GetRide(tileElement->asTrack()->getRideIndex());
                             if (ride == nullptr)
                             {
                                 continue;
@@ -593,8 +593,8 @@ namespace OpenRCT2
                                 continue;
                             }
 
-                            const auto trackType = tileElement->asTrack()->GetTrackType();
-                            const uint8_t trackSequence = tileElement->asTrack()->GetSequenceIndex();
+                            const auto trackType = tileElement->asTrack()->getTrackType();
+                            const uint8_t trackSequence = tileElement->asTrack()->getSequenceIndex();
                             const auto& ted = GetTrackElementDescriptor(trackType);
                             if (!ted.sequenceData.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath))
                             {
@@ -610,7 +610,7 @@ namespace OpenRCT2
                             if (query)
                             {
                                 FootpathNeighbourListPush(
-                                    neighbourList, 1, direction, tileElement->asTrack()->GetRideIndex(),
+                                    neighbourList, 1, direction, tileElement->asTrack()->getRideIndex(),
                                     StationIndex::GetNull());
                             }
                             Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
@@ -626,14 +626,14 @@ namespace OpenRCT2
                                 if (query)
                                 {
                                     FootpathNeighbourListPush(
-                                        neighbourList, 8, direction, tileElement->asEntrance()->GetRideIndex(),
-                                        tileElement->asEntrance()->GetStationIndex());
+                                        neighbourList, 8, direction, tileElement->asEntrance()->getRideIndex(),
+                                        tileElement->asEntrance()->getStationIndex());
                                 }
                                 else
                                 {
-                                    if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                                    if (tileElement->asEntrance()->getEntranceType() != EntranceType::parkEntrance)
                                     {
-                                        FootpathQueueChainPush(tileElement->asEntrance()->GetRideIndex());
+                                        FootpathQueueChainPush(tileElement->asEntrance()->getRideIndex());
                                     }
                                 }
                                 Loc6A6FD2(initialTileElementPos, direction, initialTileElement, query);
@@ -671,7 +671,7 @@ namespace OpenRCT2
 
         if (tileElementPos.element->getType() == TileElementType::track)
         {
-            auto ride = GetRide(tileElementPos.element->asTrack()->GetRideIndex());
+            auto ride = GetRide(tileElementPos.element->asTrack()->getRideIndex());
             if (ride == nullptr)
             {
                 return;
@@ -682,8 +682,8 @@ namespace OpenRCT2
                 return;
             }
 
-            const auto trackType = tileElementPos.element->asTrack()->GetTrackType();
-            const uint8_t trackSequence = tileElementPos.element->asTrack()->GetSequenceIndex();
+            const auto trackType = tileElementPos.element->asTrack()->getTrackType();
+            const uint8_t trackSequence = tileElementPos.element->asTrack()->getSequenceIndex();
             const auto& ted = GetTrackElementDescriptor(trackType);
             if (!ted.sequenceData.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath))
             {
@@ -700,13 +700,13 @@ namespace OpenRCT2
         auto pos = CoordsXYZ{ tileElementPos, tileElementPos.element->getBaseZ() };
         if (tileElementPos.element->getType() == TileElementType::path)
         {
-            if (tileElementPos.element->asPath()->IsSloped())
+            if (tileElementPos.element->asPath()->isSloped())
             {
-                if ((tileElementPos.element->asPath()->GetSlopeDirection() - direction) & 1)
+                if ((tileElementPos.element->asPath()->getSlopeDirection() - direction) & 1)
                 {
                     return;
                 }
-                if (tileElementPos.element->asPath()->GetSlopeDirection() == direction)
+                if (tileElementPos.element->asPath()->getSlopeDirection() == direction)
                 {
                     pos.z += kLandHeightStep;
                 }
@@ -737,7 +737,7 @@ namespace OpenRCT2
 
         FoopathNeighbourListSort(&neighbourList);
 
-        if (tileElement->getType() == TileElementType::path && tileElement->asPath()->IsQueue())
+        if (tileElement->getType() == TileElementType::path && tileElement->asPath()->isQueue())
         {
             RideId rideIndex = RideId::GetNull();
             StationIndex entranceIndex = StationIndex::GetNull();
@@ -809,9 +809,9 @@ namespace OpenRCT2
                 lastPathElement = tileElement;
                 lastPath = curQueuePos;
                 lastPathDirection = direction;
-                if (tileElement->asPath()->IsSloped())
+                if (tileElement->asPath()->isSloped())
                 {
-                    if (tileElement->asPath()->GetSlopeDirection() == direction)
+                    if (tileElement->asPath()->getSlopeDirection() == direction)
                     {
                         baseZ += kLandHeightStep;
                     }
@@ -831,9 +831,9 @@ namespace OpenRCT2
                         continue;
                     if (tileElement->getBaseZ() == baseZ)
                     {
-                        if (tileElement->asPath()->IsSloped())
+                        if (tileElement->asPath()->isSloped())
                         {
-                            if (tileElement->asPath()->GetSlopeDirection() != direction)
+                            if (tileElement->asPath()->getSlopeDirection() != direction)
                                 break;
                         }
                         foundQueue = true;
@@ -841,10 +841,10 @@ namespace OpenRCT2
                     }
                     if (tileElement->getBaseZ() == baseZ - kLandHeightStep)
                     {
-                        if (!tileElement->asPath()->IsSloped())
+                        if (!tileElement->asPath()->isSloped())
                             break;
 
-                        if (DirectionReverse(tileElement->asPath()->GetSlopeDirection()) != direction)
+                        if (DirectionReverse(tileElement->asPath()->getSlopeDirection()) != direction)
                             break;
 
                         baseZ -= kLandHeightStep;
@@ -856,11 +856,11 @@ namespace OpenRCT2
             if (!foundQueue)
                 break;
 
-            if (tileElement->asPath()->IsQueue())
+            if (tileElement->asPath()->isQueue())
             {
                 // Fix #2051: Stop queue paths that are already connected to two other tiles
                 //            from connecting to the tile we are coming from.
-                uint32_t edges = tileElement->asPath()->GetEdges();
+                uint32_t edges = tileElement->asPath()->getEdges();
                 uint32_t numEdges = std::popcount(edges);
                 if (numEdges >= 2)
                 {
@@ -871,10 +871,10 @@ namespace OpenRCT2
                     }
                 }
 
-                tileElement->asPath()->SetHasQueueBanner(false);
-                tileElement->asPath()->SetEdges(tileElement->asPath()->GetEdges() | (1 << DirectionReverse(direction)));
-                tileElement->asPath()->SetRideIndex(rideIndex);
-                tileElement->asPath()->SetStationIndex(entranceIndex);
+                tileElement->asPath()->setHasQueueBanner(false);
+                tileElement->asPath()->setEdges(tileElement->asPath()->getEdges() | (1 << DirectionReverse(direction)));
+                tileElement->asPath()->setRideIndex(rideIndex);
+                tileElement->asPath()->setStationIndex(entranceIndex);
 
                 curQueuePos = targetQueuePos;
                 MapInvalidateElement(targetQueuePos, tileElement);
@@ -884,15 +884,15 @@ namespace OpenRCT2
                     lastQueuePathElement = tileElement;
                 }
 
-                if (tileElement->asPath()->GetEdges() & (1 << direction))
+                if (tileElement->asPath()->getEdges() & (1 << direction))
                     continue;
 
                 direction = (direction + 1) & 3;
-                if (tileElement->asPath()->GetEdges() & (1 << direction))
+                if (tileElement->asPath()->getEdges() & (1 << direction))
                     continue;
 
                 direction = DirectionReverse(direction);
-                if (tileElement->asPath()->GetEdges() & (1 << direction))
+                if (tileElement->asPath()->getEdges() & (1 << direction))
                     continue;
             }
             break;
@@ -900,10 +900,10 @@ namespace OpenRCT2
 
         if (!rideIndex.IsNull() && lastPathElement != nullptr)
         {
-            if (lastPathElement->asPath()->IsQueue())
+            if (lastPathElement->asPath()->isQueue())
             {
-                lastPathElement->asPath()->SetHasQueueBanner(true);
-                lastPathElement->asPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
+                lastPathElement->asPath()->setHasQueueBanner(true);
+                lastPathElement->asPath()->setQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
                 MapAnimations::MarkTileForInvalidation(TileCoordsXY(lastPath));
             }
@@ -956,9 +956,9 @@ namespace OpenRCT2
                     {
                         if (tileElement->getType() != TileElementType::entrance)
                             continue;
-                        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                        if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideEntrance)
                             continue;
-                        if (tileElement->asEntrance()->GetRideIndex() != rideIndex)
+                        if (tileElement->asEntrance()->getRideIndex() != rideIndex)
                             continue;
 
                         Direction direction = DirectionReverse(tileElement->getDirection());
@@ -976,7 +976,7 @@ namespace OpenRCT2
         for (const Direction direction : kAllDirections)
         {
             const uint8_t edge = 1 << direction;
-            if (pathElement.GetEdges() & edge)
+            if (pathElement.getEdges() & edge)
             {
                 const CoordsXY adjacentPathPosition = position + CoordsDirectionDelta[direction];
                 const int32_t z = pathElement.getBaseZ();
@@ -1009,7 +1009,7 @@ namespace OpenRCT2
 
                 const PathElement& adjacentPath = *tileElement->asPath();
 
-                if (adjacentPath.GetEdges() & Numerics::rol4(edge, 2))
+                if (adjacentPath.getEdges() & Numerics::rol4(edge, 2))
                 {
                     connectionCount++;
                 }
@@ -1038,7 +1038,7 @@ namespace OpenRCT2
             // If the tile is safe to own construction rights of, do not erase construction rights.
             else
             {
-                ownership = surfaceElement->GetOwnership();
+                ownership = surfaceElement->getOwnership();
                 // You can't own the entrance path.
                 if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
                 {
@@ -1137,8 +1137,8 @@ namespace OpenRCT2
             if (ste_tileElement->getType() != TileElementType::path)
                 return true;
 
-            if (ste_tileElement->asPath()->IsSloped()
-                && (ste_slopeDirection = ste_tileElement->asPath()->GetSlopeDirection()) != ste_direction)
+            if (ste_tileElement->asPath()->isSloped()
+                && (ste_slopeDirection = ste_tileElement->asPath()->getSlopeDirection()) != ste_direction)
             {
                 if (DirectionReverse(ste_slopeDirection) != ste_direction)
                     return true;
@@ -1149,7 +1149,7 @@ namespace OpenRCT2
                 return true;
 
             if (!(ste_flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES))
-                if (ste_tileElement->asPath()->IsQueue())
+                if (ste_tileElement->asPath()->isQueue())
                     return true;
             return false;
         };
@@ -1191,7 +1191,7 @@ namespace OpenRCT2
                 if (flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN)
                     FootpathFixOwnership(targetPos);
 
-                edges = tileElement->asPath()->GetEdges();
+                edges = tileElement->asPath()->getEdges();
                 currentTile.direction = DirectionReverse(currentTile.direction);
                 if (!tileElement->isLastForTile() && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
                 {
@@ -1205,7 +1205,7 @@ namespace OpenRCT2
                         {
                             continue;
                         }
-                        edges &= tileElement[elementIndex].asBanner()->GetAllowedEdges();
+                        edges &= tileElement[elementIndex].asBanner()->getAllowedEdges();
                     } while (!tileElement[elementIndex++].isLastForTile());
                 }
 
@@ -1220,8 +1220,8 @@ namespace OpenRCT2
                 if (edges == 0)
                 {
                     // Only possible direction to go
-                    if (tileElement->asPath()->IsSloped()
-                        && tileElement->asPath()->GetSlopeDirection() == currentTile.direction)
+                    if (tileElement->asPath()->isSloped()
+                        && tileElement->asPath()->getSlopeDirection() == currentTile.direction)
                         targetPos.z += kPathHeightStep;
 
                     // Prepare the next iteration
@@ -1248,8 +1248,8 @@ namespace OpenRCT2
                     do
                     {
                         edges &= ~(1 << currentTile.direction);
-                        if (tileElement->asPath()->IsSloped()
-                            && tileElement->asPath()->GetSlopeDirection() == currentTile.direction)
+                        if (tileElement->asPath()->isSloped()
+                            && tileElement->asPath()->getSlopeDirection() == currentTile.direction)
                         {
                             targetPos.z += kPathHeightStep;
                         }
@@ -1294,7 +1294,7 @@ namespace OpenRCT2
         {
             if (tileElement->getType() != TileElementType::path)
                 continue;
-            tileElement->asPath()->SetWide(false);
+            tileElement->asPath()->setWide(false);
         } while (!(tileElement++)->isLastForTile());
     }
 
@@ -1315,9 +1315,9 @@ namespace OpenRCT2
                 continue;
             if (footpathPos.z != tileElement->getBaseZ())
                 continue;
-            if (tileElement->asPath()->IsQueue())
+            if (tileElement->asPath()->isQueue())
                 continue;
-            if (tileElement->asPath()->IsSloped())
+            if (tileElement->asPath()->isSloped())
                 continue;
             return tileElement;
         } while (!(tileElement++)->isLastForTile());
@@ -1366,13 +1366,13 @@ namespace OpenRCT2
             if (tileElement->getType() != TileElementType::path)
                 continue;
 
-            if (tileElement->asPath()->IsQueue())
+            if (tileElement->asPath()->isQueue())
                 continue;
 
-            if (tileElement->asPath()->IsSloped())
+            if (tileElement->asPath()->isSloped())
                 continue;
 
-            if (tileElement->asPath()->GetEdges() == 0)
+            if (tileElement->asPath()->getEdges() == 0)
                 continue;
 
             auto height = tileElement->getBaseZ();
@@ -1387,27 +1387,27 @@ namespace OpenRCT2
             }
 
             uint8_t pathConnections = 0;
-            if (tileElement->asPath()->GetEdges() & EDGE_NW)
+            if (tileElement->asPath()->getEdges() & EDGE_NW)
             {
                 pathConnections |= FOOTPATH_CONNECTION_NW;
                 const auto* pathElement = std::get<3>(pathList);
-                if (pathElement != nullptr && pathElement->asPath()->IsWide())
+                if (pathElement != nullptr && pathElement->asPath()->isWide())
                 {
                     pathConnections &= ~FOOTPATH_CONNECTION_NW;
                 }
             }
 
-            if (tileElement->asPath()->GetEdges() & EDGE_NE)
+            if (tileElement->asPath()->getEdges() & EDGE_NE)
             {
                 pathConnections |= FOOTPATH_CONNECTION_NE;
                 const auto* pathElement = std::get<0>(pathList);
-                if (pathElement != nullptr && pathElement->asPath()->IsWide())
+                if (pathElement != nullptr && pathElement->asPath()->isWide())
                 {
                     pathConnections &= ~FOOTPATH_CONNECTION_NE;
                 }
             }
 
-            if (tileElement->asPath()->GetEdges() & EDGE_SE)
+            if (tileElement->asPath()->getEdges() & EDGE_SE)
             {
                 pathConnections |= FOOTPATH_CONNECTION_SE;
                 /* In the following:
@@ -1422,7 +1422,7 @@ namespace OpenRCT2
                 //}
             }
 
-            if (tileElement->asPath()->GetEdges() & EDGE_SW)
+            if (tileElement->asPath()->getEdges() & EDGE_SW)
             {
                 pathConnections |= FOOTPATH_CONNECTION_SW;
                 /* In the following:
@@ -1438,14 +1438,14 @@ namespace OpenRCT2
             }
 
             if ((pathConnections & FOOTPATH_CONNECTION_NW) && std::get<3>(pathList) != nullptr
-                && !std::get<3>(pathList)->asPath()->IsWide())
+                && !std::get<3>(pathList)->asPath()->isWide())
             {
                 constexpr uint8_t edgeMask1 = EDGE_SE | EDGE_SW;
                 const auto* pathElement0 = std::get<0>(pathList);
                 const auto* pathElement7 = std::get<7>(pathList);
-                if ((pathConnections & FOOTPATH_CONNECTION_NE) && pathElement7 != nullptr && !pathElement7->asPath()->IsWide()
-                    && (pathElement7->asPath()->GetEdges() & edgeMask1) == edgeMask1 && pathElement0 != nullptr
-                    && !pathElement0->asPath()->IsWide())
+                if ((pathConnections & FOOTPATH_CONNECTION_NE) && pathElement7 != nullptr && !pathElement7->asPath()->isWide()
+                    && (pathElement7->asPath()->getEdges() & edgeMask1) == edgeMask1 && pathElement0 != nullptr
+                    && !pathElement0->asPath()->isWide())
                 {
                     pathConnections |= FOOTPATH_CONNECTION_S;
                 }
@@ -1458,8 +1458,8 @@ namespace OpenRCT2
                 constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_SE;
                 const auto* pathElement2 = std::get<2>(pathList);
                 const auto* pathElement6 = std::get<6>(pathList);
-                if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement6 != nullptr && !(pathElement6)->asPath()->IsWide()
-                    && (pathElement6->asPath()->GetEdges() & edgeMask2) == edgeMask2 && pathElement2 != nullptr)
+                if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement6 != nullptr && !(pathElement6)->asPath()->isWide()
+                    && (pathElement6->asPath()->getEdges() & edgeMask2) == edgeMask2 && pathElement2 != nullptr)
                 {
                     pathConnections |= FOOTPATH_CONNECTION_E;
                 }
@@ -1477,8 +1477,8 @@ namespace OpenRCT2
                 const auto* pathElement0 = std::get<0>(pathList);
                 const auto* pathElement4 = std::get<4>(pathList);
                 if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathElement4 != nullptr)
-                    && (pathElement4->asPath()->GetEdges() & edgeMask1) == edgeMask1 && pathElement0 != nullptr
-                    && !pathElement0->asPath()->IsWide())
+                    && (pathElement4->asPath()->getEdges() & edgeMask1) == edgeMask1 && pathElement0 != nullptr
+                    && !pathElement0->asPath()->isWide())
                 {
                     pathConnections |= FOOTPATH_CONNECTION_W;
                 }
@@ -1493,7 +1493,7 @@ namespace OpenRCT2
                 const auto* pathElement2 = std::get<2>(pathList);
                 const auto* pathElement5 = std::get<5>(pathList);
                 if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement5 != nullptr
-                    && (pathElement5->asPath()->GetEdges() & edgeMask2) == edgeMask2 && pathElement2 != nullptr)
+                    && (pathElement5->asPath()->getEdges() & edgeMask2) == edgeMask2 && pathElement2 != nullptr)
                 {
                     pathConnections |= FOOTPATH_CONNECTION_N;
                 }
@@ -1526,9 +1526,9 @@ namespace OpenRCT2
             if (!(pathConnections
                   & (FOOTPATH_CONNECTION_NE | FOOTPATH_CONNECTION_SE | FOOTPATH_CONNECTION_SW | FOOTPATH_CONNECTION_NW)))
             {
-                uint8_t e = tileElement->asPath()->GetEdgesAndCorners();
+                uint8_t e = tileElement->asPath()->getEdgesAndCorners();
                 if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
-                    tileElement->asPath()->SetWide(true);
+                    tileElement->asPath()->setWide(true);
             }
         } while (!(tileElement++)->isLastForTile());
     }
@@ -1536,7 +1536,7 @@ namespace OpenRCT2
     bool FootpathIsBlockedByVehicle(const TileCoordsXYZ& position)
     {
         auto pathElement = MapGetFirstTileElementWithBaseHeightBetween<PathElement>({ position, position.z + kPathHeightStep });
-        return pathElement != nullptr && pathElement->IsBlockedByVehicle();
+        return pathElement != nullptr && pathElement->isBlockedByVehicle();
     }
 
     /**
@@ -1548,25 +1548,25 @@ namespace OpenRCT2
         const auto elementType = tileElement->getType();
         if (elementType == TileElementType::path)
         {
-            if (tileElement->asPath()->IsQueue())
+            if (tileElement->asPath()->isQueue())
             {
-                FootpathQueueChainPush(tileElement->asPath()->GetRideIndex());
+                FootpathQueueChainPush(tileElement->asPath()->getRideIndex());
                 for (int32_t direction = 0; direction < kNumOrthogonalDirections; direction++)
                 {
-                    if (tileElement->asPath()->GetEdges() & (1 << direction))
+                    if (tileElement->asPath()->getEdges() & (1 << direction))
                     {
                         FootpathChainRideQueue(
                             RideId::GetNull(), StationIndex::FromUnderlying(0), footpathPos, tileElement, direction);
                     }
                 }
-                tileElement->asPath()->SetRideIndex(RideId::GetNull());
+                tileElement->asPath()->setRideIndex(RideId::GetNull());
             }
         }
         else if (elementType == TileElementType::entrance)
         {
-            if (tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            if (tileElement->asEntrance()->getEntranceType() == EntranceType::rideEntrance)
             {
-                FootpathQueueChainPush(tileElement->asEntrance()->GetRideIndex());
+                FootpathQueueChainPush(tileElement->asEntrance()->getRideIndex());
                 FootpathChainRideQueue(
                     RideId::GetNull(), StationIndex::FromUnderlying(0), footpathPos, tileElement,
                     DirectionReverse(tileElement->getDirection()));
@@ -1581,17 +1581,17 @@ namespace OpenRCT2
     static void FootpathRemoveEdgesTowardsHere(
         const CoordsXYZ& footpathPos, int32_t direction, TileElement* tileElement, bool isQueue)
     {
-        if (tileElement->asPath()->IsQueue())
+        if (tileElement->asPath()->isQueue())
         {
-            FootpathQueueChainPush(tileElement->asPath()->GetRideIndex());
+            FootpathQueueChainPush(tileElement->asPath()->getRideIndex());
         }
 
         auto d = DirectionReverse(direction);
-        tileElement->asPath()->SetEdges(tileElement->asPath()->GetEdges() & ~(1 << d));
+        tileElement->asPath()->setEdges(tileElement->asPath()->getEdges() & ~(1 << d));
         int32_t cd = ((d - 1) & 3);
-        tileElement->asPath()->SetCorners(tileElement->asPath()->GetCorners() & ~(1 << cd));
+        tileElement->asPath()->setCorners(tileElement->asPath()->getCorners() & ~(1 << cd));
         cd = ((cd + 1) & 3);
-        tileElement->asPath()->SetCorners(tileElement->asPath()->GetCorners() & ~(1 << cd));
+        tileElement->asPath()->setCorners(tileElement->asPath()->getCorners() & ~(1 << cd));
         MapInvalidateTile({ footpathPos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
 
         if (isQueue)
@@ -1610,11 +1610,11 @@ namespace OpenRCT2
             if (tileElement->getBaseZ() != targetFootPathPos.z)
                 continue;
 
-            if (tileElement->asPath()->IsSloped())
+            if (tileElement->asPath()->isSloped())
                 break;
 
             cd = ((shiftedDirection + 1) & 3);
-            tileElement->asPath()->SetCorners(tileElement->asPath()->GetCorners() & ~(1 << cd));
+            tileElement->asPath()->setCorners(tileElement->asPath()->getCorners() & ~(1 << cd));
             MapInvalidateTile({ targetFootPathPos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
             break;
         } while (!(tileElement++)->isLastForTile());
@@ -1641,9 +1641,9 @@ namespace OpenRCT2
 
             if (footPathPos.clearanceZ == tileElement->getBaseZ())
             {
-                if (tileElement->asPath()->IsSloped())
+                if (tileElement->asPath()->isSloped())
                 {
-                    uint8_t slope = tileElement->asPath()->GetSlopeDirection();
+                    uint8_t slope = tileElement->asPath()->getSlopeDirection();
                     if (slope != direction)
                         break;
                 }
@@ -1653,10 +1653,10 @@ namespace OpenRCT2
 
             if (footPathPos.baseZ == tileElement->getBaseZ())
             {
-                if (!tileElement->asPath()->IsSloped())
+                if (!tileElement->asPath()->isSloped())
                     break;
 
-                uint8_t slope = DirectionReverse(tileElement->asPath()->GetSlopeDirection());
+                uint8_t slope = DirectionReverse(tileElement->asPath()->getSlopeDirection());
                 if (slope != direction)
                     break;
 
@@ -1684,16 +1684,16 @@ namespace OpenRCT2
                 case TileElementType::path:
                     if (tileElement->baseHeight == coords.z)
                     {
-                        if (!tileElement->asPath()->IsSloped())
+                        if (!tileElement->asPath()->isSloped())
                             // The footpath is flat, it can be connected to from any direction
                             return true;
-                        if (tileElement->asPath()->GetSlopeDirection() == DirectionReverse(coords.direction))
+                        if (tileElement->asPath()->getSlopeDirection() == DirectionReverse(coords.direction))
                             // The footpath is sloped and its lowest point matches the edge connection
                             return true;
                     }
                     else if (tileElement->baseHeight + 2 == coords.z)
                     {
-                        if (tileElement->asPath()->IsSloped() && tileElement->asPath()->GetSlopeDirection() == coords.direction)
+                        if (tileElement->asPath()->isSloped() && tileElement->asPath()->getSlopeDirection() == coords.direction)
                             // The footpath is sloped and its higher point matches the edge connection
                             return true;
                     }
@@ -1701,15 +1701,15 @@ namespace OpenRCT2
                 case TileElementType::track:
                     if (tileElement->baseHeight == coords.z)
                     {
-                        auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
+                        auto ride = GetRide(tileElement->asTrack()->getRideIndex());
                         if (ride == nullptr)
                             continue;
 
                         if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::isFlatRide))
                             break;
 
-                        const auto trackType = tileElement->asTrack()->GetTrackType();
-                        const uint8_t trackSequence = tileElement->asTrack()->GetSequenceIndex();
+                        const auto trackType = tileElement->asTrack()->getTrackType();
+                        const uint8_t trackSequence = tileElement->asTrack()->getSequenceIndex();
                         const auto& ted = GetTrackElementDescriptor(trackType);
                         if (ted.sequenceData.sequences[trackSequence].flags.has(SequenceFlag::connectsToPath))
                         {
@@ -1752,7 +1752,7 @@ namespace OpenRCT2
     {
         if (tileElement->getType() == TileElementType::track)
         {
-            auto rideIndex = tileElement->asTrack()->GetRideIndex();
+            auto rideIndex = tileElement->asTrack()->getRideIndex();
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)
                 return;
@@ -1768,9 +1768,9 @@ namespace OpenRCT2
             int32_t z1 = tileElement->baseHeight;
             if (tileElement->getType() == TileElementType::path)
             {
-                if (tileElement->asPath()->IsSloped())
+                if (tileElement->asPath()->isSloped())
                 {
-                    int32_t slope = tileElement->asPath()->GetSlopeDirection();
+                    int32_t slope = tileElement->asPath()->getSlopeDirection();
                     // Sloped footpaths don't connect sideways
                     if ((slope - direction) & 1)
                         continue;
@@ -1785,7 +1785,7 @@ namespace OpenRCT2
             // connected to.
             if (!TileElementWantsPathConnectionTowards({ TileCoordsXY{ footpathPos }, z1, direction }, tileElement))
             {
-                bool isQueue = tileElement->getType() == TileElementType::path ? tileElement->asPath()->IsQueue() : false;
+                bool isQueue = tileElement->getType() == TileElementType::path ? tileElement->asPath()->isQueue() : false;
                 int32_t z0 = z1 - 2;
                 FootpathRemoveEdgesTowards(
                     { footpathPos + CoordsDirectionDelta[direction], z0 * kCoordsZStep, z1 * kCoordsZStep }, direction,
@@ -1794,7 +1794,7 @@ namespace OpenRCT2
         }
 
         if (tileElement->getType() == TileElementType::path)
-            tileElement->asPath()->SetEdgesAndCorners(0);
+            tileElement->asPath()->setEdgesAndCorners(0);
     }
 
     const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
@@ -1815,59 +1815,59 @@ namespace OpenRCT2
         return objMgr.GetLoadedObject<FootpathRailingsObject>(entryIndex);
     }
 
-    RideId PathElement::GetRideIndex() const
+    RideId PathElement::getRideIndex() const
     {
         return rideIndex;
     }
 
-    void PathElement::SetRideIndex(RideId newRideIndex)
+    void PathElement::setRideIndex(RideId newRideIndex)
     {
         rideIndex = newRideIndex;
     }
 
-    uint8_t PathElement::GetAdditionStatus() const
+    uint8_t PathElement::getAdditionStatus() const
     {
-        return AdditionStatus;
+        return additionStatus;
     }
 
-    void PathElement::SetAdditionStatus(uint8_t newStatus)
+    void PathElement::setAdditionStatus(uint8_t newStatus)
     {
-        AdditionStatus = newStatus;
+        additionStatus = newStatus;
     }
 
-    uint8_t PathElement::GetEdges() const
+    uint8_t PathElement::getEdges() const
     {
-        return EdgesAndCorners & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+        return edgesAndCorners & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     }
 
-    void PathElement::SetEdges(uint8_t newEdges)
+    void PathElement::setEdges(uint8_t newEdges)
     {
-        EdgesAndCorners &= ~FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
-        EdgesAndCorners |= (newEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK);
+        edgesAndCorners &= ~FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+        edgesAndCorners |= (newEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK);
     }
 
-    uint8_t PathElement::GetCorners() const
+    uint8_t PathElement::getCorners() const
     {
-        return EdgesAndCorners >> 4;
+        return edgesAndCorners >> 4;
     }
 
-    void PathElement::SetCorners(uint8_t newCorners)
+    void PathElement::setCorners(uint8_t newCorners)
     {
-        EdgesAndCorners &= ~FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK;
-        EdgesAndCorners |= (newCorners << 4);
+        edgesAndCorners &= ~FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK;
+        edgesAndCorners |= (newCorners << 4);
     }
 
-    uint8_t PathElement::GetEdgesAndCorners() const
+    uint8_t PathElement::getEdgesAndCorners() const
     {
-        return EdgesAndCorners;
+        return edgesAndCorners;
     }
 
-    void PathElement::SetEdgesAndCorners(uint8_t newEdgesAndCorners)
+    void PathElement::setEdgesAndCorners(uint8_t newEdgesAndCorners)
     {
-        EdgesAndCorners = newEdgesAndCorners;
+        edgesAndCorners = newEdgesAndCorners;
     }
 
-    bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
+    bool PathElement::isLevelCrossing(const CoordsXY& coords) const
     {
         auto trackElement = MapGetTrackElementAt({ coords, getBaseZ() });
         if (trackElement == nullptr)
@@ -1875,12 +1875,12 @@ namespace OpenRCT2
             return false;
         }
 
-        if (trackElement->GetTrackType() != TrackElemType::flat)
+        if (trackElement->getTrackType() != TrackElemType::flat)
         {
             return false;
         }
 
-        auto ride = GetRide(trackElement->GetRideIndex());
+        auto ride = GetRide(trackElement->getRideIndex());
         if (ride == nullptr)
         {
             return false;
@@ -1891,9 +1891,9 @@ namespace OpenRCT2
 
     bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, int32_t currentDirection)
     {
-        if (pathElement.IsSloped())
+        if (pathElement.isSloped())
         {
-            int32_t slopeDirection = pathElement.GetSlopeDirection();
+            int32_t slopeDirection = pathElement.getSlopeDirection();
             if (slopeDirection == currentDirection)
             {
                 if (currentZ != pathElement.baseHeight)
@@ -1928,7 +1928,7 @@ namespace OpenRCT2
     FootpathPlacementResult FootpathGetOnTerrainPlacement(const SurfaceElement& surfaceElement)
     {
         int32_t baseZ = surfaceElement.getBaseZ();
-        auto slope = kDefaultPathSlope[surfaceElement.GetSlope() & kTileSlopeRaisedCornersMask];
+        auto slope = kDefaultPathSlope[surfaceElement.getSlope() & kTileSlopeRaisedCornersMask];
         if (slope.type == FootpathSlopeType::raise)
         {
             slope.type = FootpathSlopeType::flat;

@@ -17,119 +17,119 @@
 namespace OpenRCT2
 {
     // rct2: 0x0097B974
-    static constexpr uint16_t kEntranceDirections[] = {
-        (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,
-        (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_EXIT,
-        (4 | 1), 0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_PARK_ENTRANCE
-    };
+    static constexpr std::array<std::array<uint16_t, 8>, 3> kEntranceDirections = { {
+        { (4), 0, 0, 0, 0, 0, 0, 0 },     // EntranceType::rideEntrance,
+        { (4), 0, 0, 0, 0, 0, 0, 0 },     // EntranceType::rideExit,
+        { (4 | 1), 0, 0, 0, 0, 0, 0, 0 }, // EntranceType::parkEntrance
+    } };
 
-    uint8_t EntranceElement::GetEntranceType() const
+    EntranceType EntranceElement::getEntranceType() const
     {
         return entranceType;
     }
 
-    void EntranceElement::SetEntranceType(uint8_t newType)
+    void EntranceElement::setEntranceType(EntranceType newType)
     {
         entranceType = newType;
     }
 
-    RideId EntranceElement::GetRideIndex() const
+    RideId EntranceElement::getRideIndex() const
     {
         return rideIndex;
     }
 
-    void EntranceElement::SetRideIndex(RideId newRideIndex)
+    void EntranceElement::setRideIndex(RideId newRideIndex)
     {
         rideIndex = newRideIndex;
     }
 
-    StationIndex EntranceElement::GetStationIndex() const
+    StationIndex EntranceElement::getStationIndex() const
     {
         return stationIndex;
     }
 
-    void EntranceElement::SetStationIndex(StationIndex newStationIndex)
+    void EntranceElement::setStationIndex(StationIndex newStationIndex)
     {
         stationIndex = newStationIndex;
     }
 
-    uint8_t EntranceElement::GetSequenceIndex() const
+    ParkEntranceSequence EntranceElement::getSequenceIndex() const
     {
-        return SequenceIndex & 0xF;
+        return static_cast<ParkEntranceSequence>(sequenceIndex & 0xF);
     }
 
-    void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
+    void EntranceElement::setSequenceIndex(ParkEntranceSequence newSequenceIndex)
     {
-        SequenceIndex &= ~0xF;
-        SequenceIndex |= (newSequenceIndex & 0xF);
+        sequenceIndex &= ~0xF;
+        sequenceIndex |= (EnumValue(newSequenceIndex) & 0xF);
     }
 
-    bool EntranceElement::HasLegacyPathEntry() const
+    bool EntranceElement::hasLegacyPathEntry() const
     {
-        return (flags2 & ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
+        return flags2.has(EntranceElementFlag::isLegacyPathEntry);
     }
 
-    ObjectEntryIndex EntranceElement::GetLegacyPathEntryIndex() const
+    ObjectEntryIndex EntranceElement::getLegacyPathEntryIndex() const
     {
-        if (HasLegacyPathEntry())
-            return PathType;
+        if (hasLegacyPathEntry())
+            return pathType;
 
         return kObjectEntryIndexNull;
     }
 
-    const FootpathObject* EntranceElement::GetLegacyPathEntry() const
+    const FootpathObject* EntranceElement::getLegacyPathEntry() const
     {
         auto& objMgr = GetContext()->GetObjectManager();
-        return objMgr.GetLoadedObject<FootpathObject>(GetLegacyPathEntryIndex());
+        return objMgr.GetLoadedObject<FootpathObject>(getLegacyPathEntryIndex());
     }
 
-    void EntranceElement::SetLegacyPathEntryIndex(ObjectEntryIndex newPathType)
+    void EntranceElement::setLegacyPathEntryIndex(ObjectEntryIndex newPathType)
     {
-        PathType = newPathType;
-        flags2 |= ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+        pathType = newPathType;
+        flags2.set(EntranceElementFlag::isLegacyPathEntry);
     }
 
-    ObjectEntryIndex EntranceElement::GetSurfaceEntryIndex() const
+    ObjectEntryIndex EntranceElement::getSurfaceEntryIndex() const
     {
-        if (HasLegacyPathEntry())
+        if (hasLegacyPathEntry())
             return kObjectEntryIndexNull;
 
-        return PathType;
+        return pathType;
     }
 
-    const FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
+    const FootpathSurfaceObject* EntranceElement::getSurfaceEntry() const
     {
         auto& objMgr = GetContext()->GetObjectManager();
-        return objMgr.GetLoadedObject<FootpathSurfaceObject>(GetSurfaceEntryIndex());
+        return objMgr.GetLoadedObject<FootpathSurfaceObject>(getSurfaceEntryIndex());
     }
 
-    void EntranceElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
+    void EntranceElement::setSurfaceEntryIndex(ObjectEntryIndex newIndex)
     {
-        PathType = newIndex;
-        flags2 &= ~ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+        pathType = newIndex;
+        flags2.unset(EntranceElementFlag::isLegacyPathEntry);
     }
 
-    const PathSurfaceDescriptor* EntranceElement::GetPathSurfaceDescriptor() const
+    const PathSurfaceDescriptor* EntranceElement::getPathSurfaceDescriptor() const
     {
-        if (HasLegacyPathEntry())
+        if (hasLegacyPathEntry())
         {
-            const auto* legacyPathEntry = GetLegacyPathEntry();
+            const auto* legacyPathEntry = getLegacyPathEntry();
             if (legacyPathEntry == nullptr)
                 return nullptr;
 
             return &legacyPathEntry->GetPathSurfaceDescriptor();
         }
 
-        const auto* surfaceEntry = GetSurfaceEntry();
+        const auto* surfaceEntry = getSurfaceEntry();
         if (surfaceEntry == nullptr)
             return nullptr;
 
         return &surfaceEntry->GetDescriptor();
     }
 
-    int32_t EntranceElement::GetDirections() const
+    int32_t EntranceElement::getDirections() const
     {
-        return kEntranceDirections[(GetEntranceType() * 8) + GetSequenceIndex()];
+        return kEntranceDirections[EnumValue(getEntranceType())][EnumValue(getSequenceIndex())];
     }
 
     ObjectEntryIndex EntranceElement::getEntryIndex() const

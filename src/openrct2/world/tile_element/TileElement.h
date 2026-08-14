@@ -21,20 +21,20 @@ namespace OpenRCT2
      */
     struct TileElement : public TileElementBase
     {
-        uint8_t Pad05[3];
-        uint8_t Pad08[8];
+        uint8_t pad05[3];
+        uint8_t pad08[8];
 
-        void ClearAs(TileElementType newType);
+        void clearAs(TileElementType newType);
 
-        RideId GetRideIndex() const;
+        RideId getRideIndex() const;
 
-        void SetBannerIndex(BannerIndex newIndex);
-        void RemoveBannerEntry();
-        BannerIndex GetBannerIndex() const;
+        void setBannerIndex(BannerIndex newIndex);
+        void removeBannerEntry();
+        BannerIndex getBannerIndex() const;
     };
     static_assert(sizeof(TileElement) == kTileElementSize);
 
-    bool TileElementIsUnderground(TileElement* tileElement);
+    bool tileElementIsUnderground(TileElement* tileElement);
 
 #pragma pack(pop)
 } // namespace OpenRCT2

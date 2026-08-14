@@ -116,7 +116,7 @@ namespace OpenRCT2::GameActions
             TileElement* tileElement = BannerGetTileElement(_bannerIndex);
             if (!MapLargeScenerySignSetColour(
                     { coords, tileElement->getBaseZ(), tileElement->getDirection() },
-                    tileElement->asLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
+                    tileElement->asLargeScenery()->getSequenceIndex(), _mainColour, _textColour))
             {
                 return Result(Status::unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
@@ -125,8 +125,8 @@ namespace OpenRCT2::GameActions
         {
             WallElement* wallElement = BannerGetScrollingWallTileElement(_bannerIndex);
 
-            wallElement->SetPrimaryColour(_mainColour);
-            wallElement->SetSecondaryColour(_textColour);
+            wallElement->setPrimaryColour(_mainColour);
+            wallElement->setSecondaryColour(_textColour);
             MapInvalidateTile({ coords, wallElement->getBaseZ(), wallElement->getClearanceZ() });
         }
 

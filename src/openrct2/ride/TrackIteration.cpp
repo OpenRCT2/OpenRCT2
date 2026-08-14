@@ -167,12 +167,12 @@ namespace OpenRCT2
                     return nullptr;
                 }
             }
-        } while (!(trackBeginEnd.begin_element->asTrack()->IsBlockStart()));
+        } while (!(trackBeginEnd.begin_element->asTrack()->isBlockStart()));
 
         // Get the start of the track block instead of the end
         location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         auto trackOrigin = OpenRCT2::MapGetTrackElementAtOfTypeSeq(
-            location, trackBeginEnd.begin_element->asTrack()->GetTrackType(), 0);
+            location, trackBeginEnd.begin_element->asTrack()->getTrackType(), 0);
         if (trackOrigin == nullptr)
         {
             return nullptr;
@@ -214,16 +214,16 @@ namespace OpenRCT2
             if (trackElement == nullptr)
                 continue;
 
-            if (trackElement->GetRideIndex() != ride.id)
+            if (trackElement->getRideIndex() != ride.id)
                 continue;
 
-            if (trackElement->GetSequenceIndex() != 0)
+            if (trackElement->getSequenceIndex() != 0)
                 continue;
 
             if (tileElement->isGhost() != isGhost)
                 continue;
 
-            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->GetTrackType());
+            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->getTrackType());
             if (ted.sequenceData.numSequences == 0)
                 continue;
 
@@ -267,13 +267,13 @@ namespace OpenRCT2
         if (inputElement == nullptr)
             return false;
 
-        auto rideIndex = inputElement->GetRideIndex();
+        auto rideIndex = inputElement->getRideIndex();
         const auto* ride = GetRide(rideIndex);
         if (ride == nullptr)
             return false;
 
-        const auto& ted = TrackMetadata::GetTrackElementDescriptor(inputElement->GetTrackType());
-        auto sequenceIndex = inputElement->GetSequenceIndex();
+        const auto& ted = TrackMetadata::GetTrackElementDescriptor(inputElement->getTrackType());
+        auto sequenceIndex = inputElement->getSequenceIndex();
         if (sequenceIndex >= ted.sequenceData.numSequences)
             return false;
 
@@ -337,14 +337,14 @@ namespace OpenRCT2
             if (trackElement == nullptr)
                 continue;
 
-            if (trackElement->GetRideIndex() != ride.id)
+            if (trackElement->getRideIndex() != ride.id)
                 continue;
 
-            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->GetTrackType());
+            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->getTrackType());
             if (ted.sequenceData.numSequences == 0)
                 continue;
 
-            auto sequenceIndex = trackElement->GetSequenceIndex();
+            auto sequenceIndex = trackElement->getSequenceIndex();
             if ((sequenceIndex + 1) != ted.sequenceData.numSequences)
                 continue;
 
@@ -409,14 +409,14 @@ namespace OpenRCT2
         if (trackElement == nullptr)
             return false;
 
-        const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->GetTrackType());
+        const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->getTrackType());
 
-        auto rideIndex = trackElement->GetRideIndex();
+        auto rideIndex = trackElement->getRideIndex();
         const auto* ride = GetRide(rideIndex);
         if (ride == nullptr)
             return false;
 
-        auto sequenceIndex = trackElement->GetSequenceIndex();
+        auto sequenceIndex = trackElement->getSequenceIndex();
         if (sequenceIndex >= ted.sequenceData.numSequences)
             return false;
 

@@ -149,9 +149,9 @@ namespace OpenRCT2::GameActions
         Guard::Assert(bannerElement != nullptr);
 
         bannerElement->setClearanceZ(_loc.z + kPathClearance);
-        bannerElement->SetPosition(_loc.direction);
-        bannerElement->ResetAllowedEdges();
-        bannerElement->SetIndex(banner->id);
+        bannerElement->setPosition(_loc.direction);
+        bannerElement->resetAllowedEdges();
+        bannerElement->setIndex(banner->id);
         bannerElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
         MapInvalidateTileFull(_loc);
@@ -168,7 +168,7 @@ namespace OpenRCT2::GameActions
             if (pathElement->getBaseZ() != _loc.z && pathElement->getBaseZ() != _loc.z - kPathHeightStep)
                 continue;
 
-            if (!(pathElement->GetEdges() & (1 << _loc.direction)))
+            if (!(pathElement->getEdges() & (1 << _loc.direction)))
                 continue;
 
             if (pathElement->isGhost() && !GetFlags().has(CommandFlag::ghost))

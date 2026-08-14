@@ -10,10 +10,7 @@
 #include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
-#include <openrct2-ui/input/ShortcutIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
-#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -32,6 +29,7 @@
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/object/FootpathObject.h>
@@ -46,7 +44,6 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 #include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>
@@ -1017,9 +1014,9 @@ namespace OpenRCT2::Ui::Windows
                     auto pathElement = info.Element->asPath();
                     if (pathElement != nullptr)
                     {
-                        auto slopeDirection = pathElement->GetSlopeDirection();
+                        auto slopeDirection = pathElement->getSlopeDirection();
                         FootpathSlope slope = { FootpathSlopeType::flat, slopeDirection };
-                        if (pathElement->IsSloped())
+                        if (pathElement->isSloped())
                         {
                             slope.type = FootpathSlopeType::sloped;
                         }
@@ -1160,7 +1157,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (tileElement->getType() == TileElementType::surface)
             {
-                uint8_t slope = tileElement->asSurface()->GetSlope();
+                uint8_t slope = tileElement->asSurface()->getSlope();
                 if (slope & kTileSlopeRaisedCornersMask)
                 {
                     z += kPathHeightStep;
@@ -1425,7 +1422,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // If we start the path on a slope, the arrow is slightly raised, so we
                 // expect the path to be slightly raised as well.
-                uint8_t slope = tileElement->asSurface()->GetSlope();
+                uint8_t slope = tileElement->asSurface()->getSlope();
                 z = tileElement->getBaseZ();
                 if (slope & kTileSlopeDiagonalFlag)
                 {
@@ -1443,9 +1440,9 @@ namespace OpenRCT2::Ui::Windows
                 z = tileElement->getBaseZ();
                 if (tileElement->getType() == TileElementType::path)
                 {
-                    if (tileElement->asPath()->IsSloped())
+                    if (tileElement->asPath()->isSloped())
                     {
-                        if (direction == (tileElement->asPath()->GetSlopeDirection()))
+                        if (direction == (tileElement->asPath()->getSlopeDirection()))
                         {
                             z += kPathHeightStep;
                         }
@@ -1533,9 +1530,9 @@ namespace OpenRCT2::Ui::Windows
         void FootpathRemoveTileElement(PathElement* pathElement)
         {
             auto z = pathElement->getBaseZ();
-            if (pathElement->IsSloped())
+            if (pathElement->isSloped())
             {
-                uint8_t slopeDirection = pathElement->GetSlopeDirection();
+                uint8_t slopeDirection = pathElement->getSlopeDirection();
                 slopeDirection = DirectionReverse(slopeDirection);
                 if (slopeDirection == _footpathConstructDirection)
                 {
@@ -1545,16 +1542,16 @@ namespace OpenRCT2::Ui::Windows
 
             // Find a connected edge
             int32_t edge = DirectionReverse(_footpathConstructDirection);
-            if (!(pathElement->GetEdges() & (1 << edge)))
+            if (!(pathElement->getEdges() & (1 << edge)))
             {
                 edge = (edge + 1) & 3;
-                if (!(pathElement->GetEdges() & (1 << edge)))
+                if (!(pathElement->getEdges() & (1 << edge)))
                 {
                     edge = (edge + 2) & 3;
-                    if (!(pathElement->GetEdges() & (1 << edge)))
+                    if (!(pathElement->getEdges() & (1 << edge)))
                     {
                         edge = (edge - 1) & 3;
-                        if (!(pathElement->GetEdges() & (1 << edge)))
+                        if (!(pathElement->getEdges() & (1 << edge)))
                         {
                             edge = DirectionReverse(edge);
                         }
@@ -1595,9 +1592,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (pathElement->getBaseZ() == z)
                 {
-                    if (pathElement->IsSloped())
+                    if (pathElement->isSloped())
                     {
-                        if (DirectionReverse(pathElement->GetSlopeDirection()) != _footpathConstructDirection)
+                        if (DirectionReverse(pathElement->getSlopeDirection()) != _footpathConstructDirection)
                         {
                             continue;
                         }
@@ -1607,9 +1604,9 @@ namespace OpenRCT2::Ui::Windows
                 }
                 if (pathElement->getBaseZ() == zLow)
                 {
-                    if (!pathElement->IsSloped())
+                    if (!pathElement->isSloped())
                     {
-                        if ((pathElement->GetSlopeDirection()) == _footpathConstructDirection)
+                        if ((pathElement->getSlopeDirection()) == _footpathConstructDirection)
                         {
                             continue;
                         }

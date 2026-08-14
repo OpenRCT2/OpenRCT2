@@ -188,7 +188,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->getClearanceZ()));
             if (element->getType() == TileElementType::surface)
             {
-                maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->asSurface()->GetWaterHeight()));
+                maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->asSurface()->getWaterHeight()));
             }
         } while (!(element++)->isLastForTile());
     }

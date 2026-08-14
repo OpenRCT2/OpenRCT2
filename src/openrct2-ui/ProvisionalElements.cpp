@@ -10,14 +10,11 @@
 #include "ProvisionalElements.h"
 
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Context.h>
 #include <openrct2/interface/WindowClasses.h>
-#include <openrct2/interface/WindowTypes.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Footpath.h>
 
 using namespace OpenRCT2::Ui::Windows;
 

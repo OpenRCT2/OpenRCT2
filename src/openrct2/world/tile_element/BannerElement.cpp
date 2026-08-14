@@ -6,14 +6,14 @@
 
 namespace OpenRCT2
 {
-    Banner* BannerElement::GetBanner() const
+    Banner* BannerElement::getBanner() const
     {
-        return ::GetBanner(GetIndex());
+        return ::GetBanner(getIndex());
     }
 
-    const BannerSceneryEntry* BannerElement::GetEntry() const
+    const BannerSceneryEntry* BannerElement::getEntry() const
     {
-        auto banner = GetBanner();
+        auto banner = getBanner();
         if (banner != nullptr)
         {
             return OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
@@ -21,39 +21,39 @@ namespace OpenRCT2
         return nullptr;
     }
 
-    BannerIndex BannerElement::GetIndex() const
+    BannerIndex BannerElement::getIndex() const
     {
         return index;
     }
 
-    void BannerElement::SetIndex(BannerIndex newIndex)
+    void BannerElement::setIndex(BannerIndex newIndex)
     {
         index = newIndex;
     }
 
-    uint8_t BannerElement::GetPosition() const
+    uint8_t BannerElement::getPosition() const
     {
         return position;
     }
 
-    void BannerElement::SetPosition(uint8_t newPosition)
+    void BannerElement::setPosition(uint8_t newPosition)
     {
         position = newPosition;
     }
 
-    uint8_t BannerElement::GetAllowedEdges() const
+    uint8_t BannerElement::getAllowedEdges() const
     {
-        return AllowedEdges & 0b00001111;
+        return allowedEdges & 0b00001111;
     }
 
-    void BannerElement::SetAllowedEdges(uint8_t newEdges)
+    void BannerElement::setAllowedEdges(uint8_t newEdges)
     {
-        AllowedEdges &= ~0b00001111;
-        AllowedEdges |= (newEdges & 0b00001111);
+        allowedEdges &= ~0b00001111;
+        allowedEdges |= (newEdges & 0b00001111);
     }
 
-    void BannerElement::ResetAllowedEdges()
+    void BannerElement::resetAllowedEdges()
     {
-        AllowedEdges |= 0b00001111;
+        allowedEdges |= 0b00001111;
     }
 } // namespace OpenRCT2

@@ -15,7 +15,6 @@
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Theme.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -27,11 +26,8 @@
 #include <openrct2/actions/general/ScenarioSetSettingAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioContext.h>
-#include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/core/File.h>
-#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
@@ -39,6 +35,7 @@
 #include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>

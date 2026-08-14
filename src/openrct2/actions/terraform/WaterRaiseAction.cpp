@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
                 }
                 withinOwnership = true;
 
-                uint8_t height = surfaceElement->GetWaterHeight() / kCoordsZStep;
+                uint8_t height = surfaceElement->getWaterHeight() / kCoordsZStep;
 
                 if (surfaceElement->baseHeight > maxHeight)
                     continue;
@@ -166,9 +166,9 @@ namespace OpenRCT2::GameActions
                     continue;
 
                 auto height = surfaceElement->getBaseZ();
-                if (surfaceElement->GetWaterHeight() > 0)
+                if (surfaceElement->getWaterHeight() > 0)
                 {
-                    height = surfaceElement->GetWaterHeight();
+                    height = surfaceElement->getWaterHeight();
                 }
 
                 if (maxHeight > height)

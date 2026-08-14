@@ -18,8 +18,6 @@
     #include <string>
     #include <vector>
 
-enum class CursorID : uint8_t;
-
 namespace OpenRCT2::Scripting
 {
     enum class CustomToolbarMenuItemKind

@@ -305,7 +305,7 @@ namespace OpenRCT2::GameActions
             SetNewLargeSceneryElement(*newSceneryElement, tile.index);
             if (banner != nullptr)
             {
-                newSceneryElement->SetBannerIndex(banner->id);
+                newSceneryElement->setBannerIndex(banner->id);
             }
 
             MapAnimations::MarkTileForInvalidation(TileCoordsXY(curTile));
@@ -362,7 +362,7 @@ namespace OpenRCT2::GameActions
                 continue;
 
             int32_t baseZ = surfaceElement->getBaseZ();
-            int32_t slope = surfaceElement->GetSlope();
+            int32_t slope = surfaceElement->getSlope();
 
             if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
             {
@@ -384,11 +384,11 @@ namespace OpenRCT2::GameActions
     void LargeSceneryPlaceAction::SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const
     {
         sceneryElement.setDirection(_loc.direction);
-        sceneryElement.SetEntryIndex(_sceneryType);
-        sceneryElement.SetSequenceIndex(tileNum);
-        sceneryElement.SetPrimaryColour(_primaryColour);
-        sceneryElement.SetSecondaryColour(_secondaryColour);
-        sceneryElement.SetTertiaryColour(_tertiaryColour);
+        sceneryElement.setEntryIndex(_sceneryType);
+        sceneryElement.setSequenceIndex(tileNum);
+        sceneryElement.setPrimaryColour(_primaryColour);
+        sceneryElement.setSecondaryColour(_secondaryColour);
+        sceneryElement.setTertiaryColour(_tertiaryColour);
 
         if (GetFlags().has(CommandFlag::ghost))
         {

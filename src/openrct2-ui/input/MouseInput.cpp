@@ -1020,7 +1020,8 @@ namespace OpenRCT2
         if (w != nullptr)
         {
             w->onPrepareDraw();
-            if (w->widgets[gHoverWidget.widgetIndex].type == WidgetType::flatBtn)
+            if (w->widgets[gHoverWidget.widgetIndex].type == WidgetType::flatBtn
+                || w->widgets[gHoverWidget.widgetIndex].type == WidgetType::hiddenButton)
             {
                 windowMgr->InvalidateWidgetByNumber(
                     gHoverWidget.windowClassification, gHoverWidget.windowNumber, gHoverWidget.widgetIndex);

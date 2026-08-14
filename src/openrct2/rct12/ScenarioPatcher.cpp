@@ -273,7 +273,7 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
         for (const auto& tile : coordinatesVector)
         {
             auto surfaceElement = MapGetSurfaceElementAt(tile);
-            surfaceElement->SetWaterHeight(waterHeight);
+            surfaceElement->setWaterHeight(waterHeight);
         }
     }
 }
@@ -339,10 +339,10 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tile))
             {
-                if (trackElement->GetTrackType() != fromTrackType)
+                if (trackElement->getTrackType() != fromTrackType)
                     continue;
 
-                trackElement->SetTrackType(destinationTrackType);
+                trackElement->setTrackType(destinationTrackType);
             }
         }
     }
@@ -427,7 +427,7 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
         for (const auto& tile : coordinatesVector)
         {
             auto surfaceElement = MapGetSurfaceElementAt(tile);
-            surfaceElement->SetSurfaceObjectIndex(surfaceObjIndex);
+            surfaceElement->setSurfaceObjectIndex(surfaceObjIndex);
         }
     }
 }
@@ -512,9 +512,9 @@ static void SwapRideEntranceAndExit(RideId rideId)
         station.Exit = exitCoords;
 
         auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
-        entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
+        entranceElement->setEntranceType(EntranceType::rideEntrance);
         auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
-        exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
+        exitElement->setEntranceType(EntranceType::rideExit);
 
         // Trigger footpath update
         FootpathQueueChainReset();

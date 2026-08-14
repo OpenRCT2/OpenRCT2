@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../core/FlagHolder.hpp"
 #include "TileElementBase.h"
 
 using ride_type_t = uint16_t;
@@ -19,17 +20,18 @@ namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
 
-    enum
+    enum class TrackTileElementFlag : uint8_t
     {
-        TRACK_ELEMENT_FLAGS2_CHAIN_LIFT = 1 << 0,
-        TRACK_ELEMENT_FLAGS2_INVERTED = 1 << 1,
+        hasChainLift,
+        inverted,
         // Used for giga coaster
-        TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
-        TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
-        TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
-        TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED = 1 << 5,
-        TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE = 1 << 6,
+        isCableLift,
+        highlight,
+        hasGreenLight,
+        brakeClosed,
+        isIndestructible,
     };
+    using TrackTileElementFlags = FlagHolder<uint8_t, TrackTileElementFlag>;
 
     enum
     {
@@ -54,99 +56,99 @@ namespace OpenRCT2
         static constexpr TileElementType kElementType = TileElementType::track;
 
     private:
-        TrackElemType TrackType;
+        TrackElemType trackType;
         union
         {
             struct
             {
-                uint8_t Sequence;
-                uint8_t ColourScheme;
+                uint8_t sequence;
+                uint8_t colourScheme;
                 union
                 {
                     // - Bits 3 and 4 are never set
                     // - Bits 1 and 2 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
                     // - If any of the bits 1-4 are set, the game counts it as a photo being taken.
-                    uint8_t OnridePhotoBits;
+                    uint8_t onridePhotoBits;
                     // Contains the brake/booster speed, divided by 2.
-                    uint8_t BrakeBoosterSpeed;
+                    uint8_t brakeBoosterSpeed;
                 };
                 StationIndex stationIndex;
-            } URide;
+            } uRide;
             struct
             {
-                uint16_t MazeEntry; // 6
-            } UMaze;
+                uint16_t mazeEntry; // 6
+            } uMaze;
         };
-        uint8_t Flags2;
-        RideId RideIndex;
-        ride_type_t RideType;
+        TrackTileElementFlags flags2;
+        RideId rideIndex;
+        ride_type_t rideType;
 
     public:
-        TrackElemType GetTrackType() const;
-        void SetTrackType(TrackElemType newType);
+        TrackElemType getTrackType() const;
+        void setTrackType(TrackElemType newType);
 
-        ride_type_t GetRideType() const;
-        void SetRideType(ride_type_t rideType);
+        ride_type_t getRideType() const;
+        void setRideType(ride_type_t rideType);
 
-        uint8_t GetSequenceIndex() const;
-        void SetSequenceIndex(uint8_t newSequenceIndex);
+        uint8_t getSequenceIndex() const;
+        void setSequenceIndex(uint8_t newSequenceIndex);
 
-        RideId GetRideIndex() const;
-        void SetRideIndex(RideId newRideIndex);
+        RideId getRideIndex() const;
+        void setRideIndex(RideId newRideIndex);
 
-        uint8_t GetColourScheme() const;
-        void SetColourScheme(RideColourScheme newColourScheme);
+        uint8_t getColourScheme() const;
+        void setColourScheme(RideColourScheme newColourScheme);
 
-        StationIndex GetStationIndex() const;
-        void SetStationIndex(StationIndex newStationIndex);
+        StationIndex getStationIndex() const;
+        void setStationIndex(StationIndex newStationIndex);
 
-        bool HasChain() const;
-        void SetHasChain(bool on);
+        bool hasChain() const;
+        void setHasChain(bool on);
 
-        bool HasCableLift() const;
-        void SetHasCableLift(bool on);
+        bool hasCableLift() const;
+        void setHasCableLift(bool on);
 
-        bool IsInverted() const;
-        void SetInverted(bool inverted);
+        bool isInverted() const;
+        void setInverted(bool inverted);
 
-        bool IsBrakeClosed() const;
-        void SetBrakeClosed(bool isClosed);
+        bool isBrakeClosed() const;
+        void setBrakeClosed(bool isClosed);
 
-        bool IsIndestructible() const;
-        void SetIsIndestructible(bool isIndestructible);
+        bool isIndestructible() const;
+        void setIsIndestructible(bool isIndestructible);
 
-        uint8_t GetBrakeBoosterSpeed() const;
-        void SetBrakeBoosterSpeed(uint8_t speed);
+        uint8_t getBrakeBoosterSpeed() const;
+        void setBrakeBoosterSpeed(uint8_t speed);
 
-        bool HasGreenLight() const;
-        void SetHasGreenLight(bool on);
+        bool hasGreenLight() const;
+        void setHasGreenLight(bool on);
 
-        uint8_t GetSeatRotation() const;
-        void SetSeatRotation(uint8_t newSeatRotation);
+        uint8_t getSeatRotation() const;
+        void setSeatRotation(uint8_t newSeatRotation);
 
-        uint16_t GetMazeEntry() const;
-        void SetMazeEntry(uint16_t newMazeEntry);
-        void MazeEntryAdd(uint16_t addVal);
-        void MazeEntrySubtract(uint16_t subVal);
+        uint16_t getMazeEntry() const;
+        void setMazeEntry(uint16_t newMazeEntry);
+        void mazeEntryAdd(uint16_t addVal);
+        void mazeEntrySubtract(uint16_t subVal);
 
-        bool IsTakingPhoto() const;
-        void SetPhotoTimeout();
-        void SetPhotoTimeout(uint8_t newValue);
-        void DecrementPhotoTimeout();
-        uint8_t GetPhotoTimeout() const;
+        bool isTakingPhoto() const;
+        void setPhotoTimeout();
+        void setPhotoTimeout(uint8_t newValue);
+        void decrementPhotoTimeout();
+        uint8_t getPhotoTimeout() const;
 
-        bool IsHighlighted() const;
-        void SetHighlight(bool on);
+        bool isHighlighted() const;
+        void setHighlight(bool on);
 
         // Used by ghost train, RCT1 feature, will be reintroduced at some point.
         // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
-        uint8_t GetDoorAState() const;
-        uint8_t GetDoorBState() const;
-        void SetDoorAState(uint8_t newState);
-        void SetDoorBState(uint8_t newState);
+        uint8_t getDoorAState() const;
+        uint8_t getDoorBState() const;
+        void setDoorAState(uint8_t newState);
+        void setDoorBState(uint8_t newState);
 
-        bool IsStation() const;
-        bool IsBlockStart() const;
+        bool isStation() const;
+        bool isBlockStart() const;
     };
     static_assert(sizeof(TrackElement) == kTileElementSize);
 

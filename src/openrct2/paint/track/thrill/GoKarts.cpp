@@ -1566,7 +1566,7 @@ static void PaintGoKartsStation(
     ImageId imageId;
     const uint32_t (*sprites)[2] = go_karts_track_pieces_starting_grid;
 
-    if (trackElement.GetTrackType() == TrackElemType::endStation)
+    if (trackElement.getTrackType() == TrackElemType::endStation)
     {
         sprites = go_karts_track_pieces_starting_grid_end;
     }
@@ -1618,9 +1618,9 @@ static void PaintGoKartsStation(
         TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
     }
 
-    if (trackElement.GetTrackType() == TrackElemType::endStation)
+    if (trackElement.getTrackType() == TrackElemType::endStation)
     {
-        const bool hasGreenLight = trackElement.HasGreenLight();
+        const bool hasGreenLight = trackElement.hasGreenLight();
 
         switch (direction)
         {

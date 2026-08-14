@@ -19,10 +19,8 @@
 #include <openrct2/Diagnostic.h>
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
-#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
@@ -43,16 +41,10 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
-#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/park/ParkPreview.h>
 #include <openrct2/platform/Platform.h>
-#include <openrct2/rct2/T6Exporter.h>
-#include <openrct2/ride/TrackDesign.h>
-#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/windows/Intent.h>
-#include <openrct2/world/Park.h>
 #include <string>
 #include <vector>
 
@@ -700,15 +692,15 @@ namespace OpenRCT2::Ui::Windows
 
             if (action == LoadSaveAction::save)
             {
-                widgets[WIDX_SCROLL].bottom -= 18;
+                widgets[WIDX_SCROLL].bottom -= kButtonFaceHeight + 7;
 
                 // Get 'Save' button string width
                 auto saveLabel = LanguageGetString(STR_FILEBROWSER_SAVE_BUTTON);
                 auto saveLabelWidth = getStringWidth(saveLabel, FontStyle::medium) + 12;
 
                 widgets[WIDX_SAVE].setVisible();
-                widgets[WIDX_SAVE].top = height - paddingBottom - 15;
-                widgets[WIDX_SAVE].bottom = height - paddingBottom - 3;
+                widgets[WIDX_SAVE].bottom = height - paddingBottom - 2;
+                widgets[WIDX_SAVE].top = widgets[WIDX_SAVE].bottom - kButtonFaceHeight;
                 widgets[WIDX_SAVE].right = widgets[WIDX_SCROLL].right;
                 widgets[WIDX_SAVE].left = widgets[WIDX_SAVE].right - saveLabelWidth;
 
@@ -717,8 +709,8 @@ namespace OpenRCT2::Ui::Windows
                 auto filenameLabelWidth = getStringWidth(filenameLabel, FontStyle::medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].setVisible();
-                widgets[WIDX_FILENAME_TEXTBOX].top = height - paddingBottom - 15;
-                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - paddingBottom - 3;
+                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - paddingBottom - 2;
+                widgets[WIDX_FILENAME_TEXTBOX].top = widgets[WIDX_FILENAME_TEXTBOX].bottom - kButtonFaceHeight;
                 widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
                 widgets[WIDX_FILENAME_TEXTBOX].right = widgets[WIDX_SAVE].left - 5;
             }
@@ -786,7 +778,7 @@ namespace OpenRCT2::Ui::Windows
             if (action == LoadSaveAction::save)
             {
                 auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
-                drawText(rt, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, { Drawing::Colour::grey });
+                drawText(rt, windowPos + ScreenCoordsXY{ 5, widget.top + 1 }, STR_FILENAME_LABEL, { Drawing::Colour::grey });
             }
         }
 

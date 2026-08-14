@@ -71,7 +71,7 @@ namespace OpenRCT2
     {
         static_assert(tunnelCount <= TrackMetadata::kSequenceTunnelMaxPerSequence);
 
-        const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.GetTrackType());
+        const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.getTrackType());
         const auto& sequenceDescriptor = ted.sequenceData.sequences[trackSequence];
 
         uint8_t modifiedTrackSequence = trackSequence;

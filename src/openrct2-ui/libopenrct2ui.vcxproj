@@ -75,7 +75,6 @@
     <ClInclude Include="interface\LandTool.h" />
     <ClInclude Include="interface\Objective.h" />
     <ClInclude Include="interface\Theme.h" />
-    <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\ViewportInteraction.h" />
     <ClInclude Include="interface\ViewportQuery.h" />
     <ClInclude Include="interface\Widget.h" />

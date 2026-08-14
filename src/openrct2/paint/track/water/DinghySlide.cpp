@@ -230,7 +230,7 @@ static void DinghySlideTrackFlat(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
@@ -308,7 +308,7 @@ static void DinghySlideTrack25DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
@@ -395,7 +395,7 @@ static void DinghySlideTrackFlatTo25DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
@@ -521,7 +521,7 @@ static void DinghySlideTrack25DegUpToFlat(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 

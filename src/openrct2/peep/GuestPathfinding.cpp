@@ -177,7 +177,7 @@ namespace OpenRCT2::PathFinding
         {
             do
             {
-                edges &= bannerElement->asBanner()->GetAllowedEdges();
+                edges &= bannerElement->asBanner()->getAllowedEdges();
             } while ((bannerElement = GetBannerOnPath(bannerElement)) != nullptr);
         }
         return edges;
@@ -188,7 +188,7 @@ namespace OpenRCT2::PathFinding
      */
     static int32_t PathGetPermittedEdges(bool ignoreBanners, const PathElement* pathElement)
     {
-        return BannerClearPathEdges(ignoreBanners, pathElement, pathElement->GetEdgesAndCorners()) & 0x0F;
+        return BannerClearPathEdges(ignoreBanners, pathElement, pathElement->getEdgesAndCorners()) & 0x0F;
     }
 
     /**
@@ -341,9 +341,9 @@ namespace OpenRCT2::PathFinding
     static PathSearchResult FootpathElementNextInDirection(
         TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection)
     {
-        if (pathElement->IsSloped())
+        if (pathElement->isSloped())
         {
-            if (pathElement->GetSlopeDirection() == chosenDirection)
+            if (pathElement->getSlopeDirection() == chosenDirection)
             {
                 loc.z += 2;
             }
@@ -362,10 +362,10 @@ namespace OpenRCT2::PathFinding
             const auto* nextPathElement = nextTileElement->asPath();
             if (!FootpathIsZAndDirectionValid(*nextPathElement, loc.z, chosenDirection))
                 continue;
-            if (nextPathElement->IsWide())
+            if (nextPathElement->isWide())
                 return PathSearchResult::wide;
             // Only queue tiles that are connected to a ride are returned as ride queues.
-            if (nextPathElement->IsQueue() && !nextPathElement->GetRideIndex().IsNull())
+            if (nextPathElement->isQueue() && !nextPathElement->getRideIndex().IsNull())
                 return PathSearchResult::rideQueue;
 
             return PathSearchResult::other;
@@ -412,7 +412,7 @@ namespace OpenRCT2::PathFinding
                 {
                     if (loc.z != tileElement->baseHeight)
                         continue;
-                    RideId rideIndex = tileElement->asTrack()->GetRideIndex();
+                    RideId rideIndex = tileElement->asTrack()->getRideIndex();
                     auto ride = GetRide(rideIndex);
                     if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
                     {
@@ -424,25 +424,25 @@ namespace OpenRCT2::PathFinding
                 case TileElementType::entrance:
                     if (loc.z != tileElement->baseHeight)
                         continue;
-                    switch (tileElement->asEntrance()->GetEntranceType())
+                    switch (tileElement->asEntrance()->getEntranceType())
                     {
-                        case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                        case EntranceType::rideEntrance:
                             direction = tileElement->getDirection();
                             if (direction == chosenDirection)
                             {
-                                *outRideIndex = tileElement->asEntrance()->GetRideIndex();
+                                *outRideIndex = tileElement->asEntrance()->getRideIndex();
                                 return PathSearchResult::rideEntrance;
                             }
                             break;
-                        case ENTRANCE_TYPE_RIDE_EXIT:
+                        case EntranceType::rideExit:
                             direction = tileElement->getDirection();
                             if (direction == chosenDirection)
                             {
-                                *outRideIndex = tileElement->asEntrance()->GetRideIndex();
+                                *outRideIndex = tileElement->asEntrance()->getRideIndex();
                                 return PathSearchResult::rideExit;
                             }
                             break;
-                        case ENTRANCE_TYPE_PARK_ENTRANCE:
+                        case EntranceType::parkEntrance:
                             return PathSearchResult::parkExit;
                     }
                     break;
@@ -451,7 +451,7 @@ namespace OpenRCT2::PathFinding
                     const auto* pathElement = tileElement->asPath();
                     if (!FootpathIsZAndDirectionValid(*pathElement, loc.z, chosenDirection))
                         continue;
-                    if (tileElement->asPath()->IsWide())
+                    if (tileElement->asPath()->isWide())
                         return PathSearchResult::wide;
 
                     uint8_t edges = PathGetPermittedEdges(ignoreBanners, pathElement);
@@ -467,9 +467,9 @@ namespace OpenRCT2::PathFinding
                         if (edges != 0)
                             return PathSearchResult::junction;
 
-                        if (tileElement->asPath()->IsSloped())
+                        if (tileElement->asPath()->isSloped())
                         {
-                            if (tileElement->asPath()->GetSlopeDirection() == dir)
+                            if (tileElement->asPath()->getSlopeDirection() == dir)
                             {
                                 loc.z += 2;
                             }
@@ -512,9 +512,9 @@ namespace OpenRCT2::PathFinding
     static PathSearchResult FootpathElementDestinationInDirection(
         TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, RideId* outRideIndex)
     {
-        if (pathElement->IsSloped())
+        if (pathElement->isSloped())
         {
-            if (pathElement->GetSlopeDirection() == chosenDirection)
+            if (pathElement->getSlopeDirection() == chosenDirection)
             {
                 loc.z += 2;
             }
@@ -590,7 +590,7 @@ namespace OpenRCT2::PathFinding
     {
         PROFILED_FUNCTION();
 
-        uint32_t edges = path->GetEdges();
+        uint32_t edges = path->getEdges();
 
         int32_t testEdge = Numerics::bitScanForward(edges);
         if (testEdge == -1)
@@ -719,7 +719,7 @@ namespace OpenRCT2::PathFinding
     {
         PathSearchResult searchResult = PathSearchResult::failed;
 
-        bool currentElementIsWide = currentTileElement->asPath()->IsWide();
+        bool currentElementIsWide = currentTileElement->asPath()->isWide();
         if (currentElementIsWide)
         {
             const Staff* staff = peep.as<Staff>();
@@ -781,7 +781,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     /* For peeps heading for a shop, the goal is the shop
                      * tile. */
-                    rideIndex = tileElement->asTrack()->GetRideIndex();
+                    rideIndex = tileElement->asTrack()->getRideIndex();
                     auto ride = GetRide(rideIndex);
                     if (ride == nullptr || !ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
                         continue;
@@ -795,9 +795,9 @@ namespace OpenRCT2::PathFinding
                         continue;
                     Direction direction;
                     searchResult = PathSearchResult::other;
-                    switch (tileElement->asEntrance()->GetEntranceType())
+                    switch (tileElement->asEntrance()->getEntranceType())
                     {
-                        case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                        case EntranceType::rideEntrance:
                             /* For peeps heading for a ride without a queue, the
                              * goal is the ride entrance tile.
                              * For mechanics heading for the ride entrance
@@ -808,19 +808,19 @@ namespace OpenRCT2::PathFinding
                             {
                                 /* The rideIndex will be useful for
                                  * adding transport rides later. */
-                                rideIndex = tileElement->asEntrance()->GetRideIndex();
+                                rideIndex = tileElement->asEntrance()->getRideIndex();
                                 searchResult = PathSearchResult::rideEntrance;
                                 found = true;
                                 break;
                             }
                             continue; // Ride entrance is not facing the right direction.
-                        case ENTRANCE_TYPE_PARK_ENTRANCE:
+                        case EntranceType::parkEntrance:
                             /* For peeps leaving the park, the goal is the park
                              * entrance/exit tile. */
                             searchResult = PathSearchResult::parkExit;
                             found = true;
                             break;
-                        case ENTRANCE_TYPE_RIDE_EXIT:
+                        case EntranceType::rideExit:
                             /* For mechanics heading for the ride exit, the
                              * goal is the ride exit tile. */
                             direction = tileElement->getDirection();
@@ -847,7 +847,7 @@ namespace OpenRCT2::PathFinding
                     // Path may be sloped, so set z to path base height.
                     loc.z = tileElement->baseHeight;
 
-                    if (pathElement->IsWide())
+                    if (pathElement->isWide())
                     {
                         /* Check if staff can ignore this wide flag. */
                         if (staff == nullptr || !staff->canIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
@@ -860,7 +860,7 @@ namespace OpenRCT2::PathFinding
 
                     searchResult = PathSearchResult::thin;
 
-                    uint8_t numEdges = std::popcount(pathElement->GetEdges());
+                    uint8_t numEdges = std::popcount(pathElement->getEdges());
 
                     if (numEdges < 2)
                     {
@@ -872,14 +872,14 @@ namespace OpenRCT2::PathFinding
                     }
                     else
                     { // numEdges == 2
-                        if (pathElement->IsQueue() && pathElement->GetRideIndex() != state.queueRideIndex)
+                        if (pathElement->isQueue() && pathElement->getRideIndex() != state.queueRideIndex)
                         {
-                            if (state.ignoreForeignQueues && !pathElement->GetRideIndex().IsNull())
+                            if (state.ignoreForeignQueues && !pathElement->getRideIndex().IsNull())
                             {
                                 // Path is a queue we aren't interested in
                                 /* The rideIndex will be useful for
                                  * adding transport rides later. */
-                                rideIndex = pathElement->GetRideIndex();
+                                rideIndex = pathElement->getRideIndex();
                                 searchResult = PathSearchResult::rideQueue;
                             }
                         }
@@ -1155,7 +1155,7 @@ namespace OpenRCT2::PathFinding
                 uint8_t savedNumJunctions = state.junctionCount;
 
                 uint8_t height = loc.z;
-                if (tileElement->asPath()->IsSloped() && tileElement->asPath()->GetSlopeDirection() == nextTestEdge)
+                if (tileElement->asPath()->isSloped() && tileElement->asPath()->getSlopeDirection() == nextTestEdge)
                 {
                     height += 2;
                 }
@@ -1393,7 +1393,7 @@ namespace OpenRCT2::PathFinding
                 edges &= ~(1 << testEdge);
                 uint8_t height = loc.z;
 
-                if (firstTileElement->asPath()->IsSloped() && firstTileElement->asPath()->GetSlopeDirection() == testEdge)
+                if (firstTileElement->asPath()->isSloped() && firstTileElement->asPath()->getSlopeDirection() == testEdge)
                 {
                     height += 0x2;
                 }
@@ -1736,9 +1736,9 @@ namespace OpenRCT2::PathFinding
                 // Update the current queue end
                 queueEnd = nextTile;
                 // queueEnd.direction = direction;
-                if (tileElement->asPath()->IsSloped())
+                if (tileElement->asPath()->isSloped())
                 {
-                    if (tileElement->asPath()->GetSlopeDirection() == direction)
+                    if (tileElement->asPath()->getSlopeDirection() == direction)
                     {
                         baseZ += 2;
                     }
@@ -1760,9 +1760,9 @@ namespace OpenRCT2::PathFinding
 
                 if (baseZ == tileElement->baseHeight)
                 {
-                    if (tileElement->asPath()->IsSloped())
+                    if (tileElement->asPath()->isSloped())
                     {
-                        if (tileElement->asPath()->GetSlopeDirection() != direction)
+                        if (tileElement->asPath()->getSlopeDirection() != direction)
                         {
                             break;
                         }
@@ -1773,10 +1773,10 @@ namespace OpenRCT2::PathFinding
 
                 if (baseZ - 2 == tileElement->baseHeight)
                 {
-                    if (!tileElement->asPath()->IsSloped())
+                    if (!tileElement->asPath()->isSloped())
                         break;
 
-                    if (tileElement->asPath()->GetSlopeDirection() != DirectionReverse(direction))
+                    if (tileElement->asPath()->getSlopeDirection() != DirectionReverse(direction))
                         break;
 
                     baseZ -= 2;
@@ -1788,28 +1788,28 @@ namespace OpenRCT2::PathFinding
             if (!found)
                 break;
 
-            if (!tileElement->asPath()->IsQueue())
+            if (!tileElement->asPath()->isQueue())
                 break;
 
-            if (!(tileElement->asPath()->GetEdges() & (1 << DirectionReverse(direction))))
+            if (!(tileElement->asPath()->getEdges() & (1 << DirectionReverse(direction))))
                 break;
 
             if (firstPathElement == nullptr)
                 firstPathElement = tileElement;
 
             // More queue to go.
-            if (tileElement->asPath()->GetEdges() & (1 << (direction)))
+            if (tileElement->asPath()->getEdges() & (1 << (direction)))
                 continue;
 
             direction++;
             direction &= 3;
             // More queue to go.
-            if (tileElement->asPath()->GetEdges() & (1 << (direction)))
+            if (tileElement->asPath()->getEdges() & (1 << (direction)))
                 continue;
 
             direction = DirectionReverse(direction);
             // More queue to go.
-            if (tileElement->asPath()->GetEdges() & (1 << (direction)))
+            if (tileElement->asPath()->getEdges() & (1 << (direction)))
                 continue;
 
             break;
@@ -1822,7 +1822,7 @@ namespace OpenRCT2::PathFinding
         if (tileElement == nullptr)
             return;
 
-        if (!tileElement->asPath()->IsQueue())
+        if (!tileElement->asPath()->isQueue())
             return;
 
         loc.x = queueEnd.x;

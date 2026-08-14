@@ -11,15 +11,12 @@
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/peep/PeepPickupAction.h>
@@ -27,7 +24,6 @@
 #include <openrct2/actions/peep/StaffHireNewAction.h>
 #include <openrct2/actions/peep/StaffSetColourAction.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
@@ -38,17 +34,13 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/management/Finance.h>
-#include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Footpath.h>
-#include <openrct2/world/Park.h>
 #include <vector>
 
 using namespace OpenRCT2::Drawing;

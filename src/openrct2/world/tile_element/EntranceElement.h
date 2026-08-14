@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Identifiers.h"
+#include "../../core/FlagHolder.hpp"
 #include "../../object/ObjectTypes.h"
 #include "TileElementBase.h"
 
@@ -21,24 +22,25 @@ namespace OpenRCT2
     class FootpathSurfaceObject;
     struct PathSurfaceDescriptor;
 
-    enum
+    enum class EntranceType : uint8_t
     {
-        ENTRANCE_TYPE_RIDE_ENTRANCE,
-        ENTRANCE_TYPE_RIDE_EXIT,
-        ENTRANCE_TYPE_PARK_ENTRANCE
+        rideEntrance,
+        rideExit,
+        parkEntrance
     };
 
-    enum
+    enum class EntranceElementFlag : uint8_t
     {
-        ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
+        isLegacyPathEntry,
     };
+    using EntranceElementFlags = FlagHolder<uint8_t, EntranceElementFlag>;
 
-    namespace EntranceSequence
+    enum class ParkEntranceSequence : uint8_t
     {
-        constexpr uint8_t Centre = 0;
-        constexpr uint8_t Left = 1;
-        constexpr uint8_t Right = 2;
-    } // namespace EntranceSequence
+        centre = 0,
+        left = 1,
+        right = 2,
+    };
 
 #pragma pack(push, 1)
 
@@ -47,44 +49,44 @@ namespace OpenRCT2
         static constexpr TileElementType kElementType = TileElementType::entrance;
 
     private:
-        uint8_t entranceType;        // 5
-        uint8_t SequenceIndex;       // 6. Only uses the lower nibble.
+        EntranceType entranceType;   // 5
+        uint8_t sequenceIndex;       // 6. Only uses the lower nibble.
         StationIndex stationIndex;   // 7
-        ObjectEntryIndex PathType;   // 8
+        ObjectEntryIndex pathType;   // 8
         RideId rideIndex;            // A
-        uint8_t flags2;              // C
+        EntranceElementFlags flags2; // C
         ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t Pad0F[1];
+        uint8_t pad0F[1];
 #pragma clang diagnostic pop
 
     public:
-        uint8_t GetEntranceType() const;
-        void SetEntranceType(uint8_t newType);
+        EntranceType getEntranceType() const;
+        void setEntranceType(EntranceType newType);
 
-        RideId GetRideIndex() const;
-        void SetRideIndex(RideId newRideIndex);
+        RideId getRideIndex() const;
+        void setRideIndex(RideId newRideIndex);
 
-        StationIndex GetStationIndex() const;
-        void SetStationIndex(StationIndex newStationIndex);
+        StationIndex getStationIndex() const;
+        void setStationIndex(StationIndex newStationIndex);
 
-        uint8_t GetSequenceIndex() const;
-        void SetSequenceIndex(uint8_t newSequenceIndex);
+        ParkEntranceSequence getSequenceIndex() const;
+        void setSequenceIndex(ParkEntranceSequence newSequenceIndex);
 
-        bool HasLegacyPathEntry() const;
+        bool hasLegacyPathEntry() const;
 
-        ObjectEntryIndex GetLegacyPathEntryIndex() const;
-        const FootpathObject* GetLegacyPathEntry() const;
-        void SetLegacyPathEntryIndex(ObjectEntryIndex newPathType);
+        ObjectEntryIndex getLegacyPathEntryIndex() const;
+        const FootpathObject* getLegacyPathEntry() const;
+        void setLegacyPathEntryIndex(ObjectEntryIndex newPathType);
 
-        ObjectEntryIndex GetSurfaceEntryIndex() const;
-        const FootpathSurfaceObject* GetSurfaceEntry() const;
-        void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+        ObjectEntryIndex getSurfaceEntryIndex() const;
+        const FootpathSurfaceObject* getSurfaceEntry() const;
+        void setSurfaceEntryIndex(ObjectEntryIndex newIndex);
 
-        const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
+        const PathSurfaceDescriptor* getPathSurfaceDescriptor() const;
 
-        int32_t GetDirections() const;
+        int32_t getDirections() const;
 
         ObjectEntryIndex getEntryIndex() const;
         void setEntryIndex(ObjectEntryIndex newIndex);

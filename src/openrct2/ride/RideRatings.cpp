@@ -381,7 +381,7 @@ namespace OpenRCT2
                 continue;
             if (tileElement->getBaseZ() != loc.z)
                 continue;
-            if (tileElement->asTrack()->GetRideIndex() != ride->id)
+            if (tileElement->asTrack()->getRideIndex() != ride->id)
             {
                 // Only check that the track belongs to the same ride if ride does not have buildable track
                 if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
@@ -389,11 +389,11 @@ namespace OpenRCT2
             }
 
             if (trackType == TrackElemType::none
-                || (tileElement->asTrack()->GetSequenceIndex() == 0 && trackType == tileElement->asTrack()->GetTrackType()))
+                || (tileElement->asTrack()->getSequenceIndex() == 0 && trackType == tileElement->asTrack()->getTrackType()))
             {
                 if (trackType == TrackElemType::endStation)
                 {
-                    auto entranceIndex = tileElement->asTrack()->GetStationIndex();
+                    auto entranceIndex = tileElement->asTrack()->getStationIndex();
                     state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                     if (ride->getStation(entranceIndex).Entrance.IsNull())
                     {
@@ -419,7 +419,7 @@ namespace OpenRCT2
                     return;
                 }
                 state.Proximity = loc;
-                state.ProximityTrackType = tileElement->asTrack()->GetTrackType();
+                state.ProximityTrackType = tileElement->asTrack()->getTrackType();
                 return;
             }
         } while (!(tileElement++)->isLastForTile());
@@ -486,14 +486,14 @@ namespace OpenRCT2
                 continue;
             if (tileElement->getBaseZ() != loc.z)
                 continue;
-            if (tileElement->asTrack()->GetRideIndex() != ride->id)
+            if (tileElement->asTrack()->getRideIndex() != ride->id)
             {
                 // Only check that the track belongs to the same ride if ride does not have buildable track
                 if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                     continue;
             }
 
-            if (trackType == TrackElemType::none || trackType == tileElement->asTrack()->GetTrackType())
+            if (trackType == TrackElemType::none || trackType == tileElement->asTrack()->getTrackType())
             {
                 ride_ratings_score_close_proximity(state, tileElement);
 
@@ -513,7 +513,7 @@ namespace OpenRCT2
                     return;
                 }
                 state.Proximity = loc;
-                state.ProximityTrackType = trackBeginEnd.begin_element->asTrack()->GetTrackType();
+                state.ProximityTrackType = trackBeginEnd.begin_element->asTrack()->getTrackType();
                 return;
             }
         } while (!(tileElement++)->isLastForTile());
@@ -604,7 +604,7 @@ namespace OpenRCT2
                     }
                     break;
                 case TileElementType::track:
-                    if (inputTileElement->asTrack()->GetRideIndex() != tileElement->asTrack()->GetRideIndex())
+                    if (inputTileElement->asTrack()->getRideIndex() != tileElement->asTrack()->getRideIndex())
                     {
                         if (abs(inputTileElement->getBaseZ() - tileElement->getBaseZ()) <= 2 * kCoordsZStep)
                         {
@@ -662,8 +662,8 @@ namespace OpenRCT2
                     if (zDiff >= 0 && zDiff <= 16)
                     {
                         proximity_score_increment(state, PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
-                        if (tileElement->asTrack()->GetTrackType() == TrackElemType::leftVerticalLoop
-                            || tileElement->asTrack()->GetTrackType() == TrackElemType::rightVerticalLoop)
+                        if (tileElement->asTrack()->getTrackType() == TrackElemType::leftVerticalLoop
+                            || tileElement->asTrack()->getTrackType() == TrackElemType::rightVerticalLoop)
                         {
                             proximity_score_increment(state, PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                         }
@@ -679,7 +679,7 @@ namespace OpenRCT2
      */
     static void ride_ratings_score_close_proximity_loops(RideRating::UpdateState& state, TileElement* inputTileElement)
     {
-        auto trackType = inputTileElement->asTrack()->GetTrackType();
+        auto trackType = inputTileElement->asTrack()->getTrackType();
         if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop)
         {
             ride_ratings_score_close_proximity_loops_helper(state, { state.Proximity, inputTileElement });
@@ -719,7 +719,7 @@ namespace OpenRCT2
                     {
                         proximity_score_increment(state, PROXIMITY_SURFACE_TOUCH);
                     }
-                    waterHeight = tileElement->asSurface()->GetWaterHeight();
+                    waterHeight = tileElement->asSurface()->getWaterHeight();
                     if (waterHeight != 0)
                     {
                         auto z = waterHeight;
@@ -744,7 +744,7 @@ namespace OpenRCT2
                     }
                     break;
                 case TileElementType::path:
-                    if (!tileElement->asPath()->IsQueue())
+                    if (!tileElement->asPath()->isQueue())
                     {
                         if (tileElement->getClearanceZ() == inputTileElement->getBaseZ())
                         {
@@ -773,10 +773,10 @@ namespace OpenRCT2
                     break;
                 case TileElementType::track:
                 {
-                    auto trackType = tileElement->asTrack()->GetTrackType();
+                    auto trackType = tileElement->asTrack()->getTrackType();
                     if (trackType == TrackElemType::leftVerticalLoop || trackType == TrackElemType::rightVerticalLoop)
                     {
-                        int32_t sequence = tileElement->asTrack()->GetSequenceIndex();
+                        int32_t sequence = tileElement->asTrack()->getSequenceIndex();
                         if (sequence == 3 || sequence == 6)
                         {
                             if (tileElement->baseHeight - inputTileElement->clearanceHeight <= 10)
@@ -785,7 +785,7 @@ namespace OpenRCT2
                             }
                         }
                     }
-                    if (inputTileElement->asTrack()->GetRideIndex() != tileElement->asTrack()->GetRideIndex())
+                    if (inputTileElement->asTrack()->getRideIndex() != tileElement->asTrack()->getRideIndex())
                     {
                         proximity_score_increment(state, PROXIMITY_FOREIGN_TRACK_ABOVE_OR_BELOW);
                         if (tileElement->getClearanceZ() == inputTileElement->getBaseZ())
@@ -813,7 +813,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        bool isStation = tileElement->asTrack()->IsStation();
+                        bool isStation = tileElement->asTrack()->isStation();
                         if (tileElement->clearanceHeight == inputTileElement->baseHeight)
                         {
                             proximity_score_increment(state, PROXIMITY_OWN_TRACK_TOUCH_ABOVE);

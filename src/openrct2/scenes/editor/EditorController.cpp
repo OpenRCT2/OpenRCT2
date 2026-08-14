@@ -355,8 +355,8 @@ namespace OpenRCT2::Editor
                 case TileElementType::surface:
                 {
                     auto surfaceEl = iter.element->asSurface();
-                    auto surfaceIndex = surfaceEl->GetSurfaceObjectIndex();
-                    auto edgeIndex = surfaceEl->GetEdgeObjectIndex();
+                    auto surfaceIndex = surfaceEl->getSurfaceObjectIndex();
+                    auto edgeIndex = surfaceEl->getEdgeObjectIndex();
 
                     Editor::SetSelectedObject(ObjectType::terrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);
                     Editor::SetSelectedObject(ObjectType::terrainEdge, edgeIndex, ObjectSelectionFlags::InUse);
@@ -367,11 +367,11 @@ namespace OpenRCT2::Editor
                 case TileElementType::path:
                 {
                     auto footpathEl = iter.element->asPath();
-                    auto legacyPathEntryIndex = footpathEl->GetLegacyPathEntryIndex();
+                    auto legacyPathEntryIndex = footpathEl->getLegacyPathEntryIndex();
                     if (legacyPathEntryIndex == kObjectEntryIndexNull)
                     {
-                        auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
-                        auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
+                        auto surfaceEntryIndex = footpathEl->getSurfaceEntryIndex();
+                        auto railingEntryIndex = footpathEl->getRailingsEntryIndex();
                         Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
                         Editor::SetSelectedObject(ObjectType::footpathRailings, railingEntryIndex, ObjectSelectionFlags::InUse);
                     }
@@ -379,34 +379,33 @@ namespace OpenRCT2::Editor
                     {
                         Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
                     }
-                    if (footpathEl->HasAddition())
+                    if (footpathEl->hasAddition())
                     {
-                        auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
+                        auto pathAdditionEntryIndex = footpathEl->getAdditionEntryIndex();
                         SetSelectedObject(ObjectType::pathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
                     }
                     break;
                 }
                 case TileElementType::smallScenery:
-                    type = iter.element->asSmallScenery()->GetEntryIndex();
+                    type = iter.element->asSmallScenery()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::smallScenery, type, ObjectSelectionFlags::InUse);
                     break;
                 case TileElementType::entrance:
                 {
                     auto parkEntranceEl = iter.element->asEntrance();
-                    if (parkEntranceEl->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (parkEntranceEl->getEntranceType() != EntranceType::parkEntrance)
                         break;
 
                     type = iter.element->asEntrance()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::parkEntrance, type, ObjectSelectionFlags::InUse);
 
-                    // Skip if not the middle part
-                    if (parkEntranceEl->GetSequenceIndex() != 0)
+                    if (parkEntranceEl->getSequenceIndex() != ParkEntranceSequence::centre)
                         break;
 
-                    auto legacyPathEntryIndex = parkEntranceEl->GetLegacyPathEntryIndex();
+                    auto legacyPathEntryIndex = parkEntranceEl->getLegacyPathEntryIndex();
                     if (legacyPathEntryIndex == kObjectEntryIndexNull)
                     {
-                        auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
+                        auto surfaceEntryIndex = parkEntranceEl->getSurfaceEntryIndex();
                         Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
                     }
                     else
@@ -416,16 +415,16 @@ namespace OpenRCT2::Editor
                     break;
                 }
                 case TileElementType::wall:
-                    type = iter.element->asWall()->GetEntryIndex();
+                    type = iter.element->asWall()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::walls, type, ObjectSelectionFlags::InUse);
                     break;
                 case TileElementType::largeScenery:
-                    type = iter.element->asLargeScenery()->GetEntryIndex();
+                    type = iter.element->asLargeScenery()->getEntryIndex();
                     Editor::SetSelectedObject(ObjectType::largeScenery, type, ObjectSelectionFlags::InUse);
                     break;
                 case TileElementType::banner:
                 {
-                    auto banner = iter.element->asBanner()->GetBanner();
+                    auto banner = iter.element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         type = banner->type;

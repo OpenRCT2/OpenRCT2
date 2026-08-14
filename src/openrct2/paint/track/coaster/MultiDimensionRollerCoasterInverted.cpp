@@ -3105,7 +3105,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3137,7 +3137,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3168,7 +3168,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3200,7 +3200,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3262,7 +3262,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3294,7 +3294,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3325,7 +3325,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3357,7 +3357,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3521,7 +3521,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3553,7 +3553,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3584,7 +3584,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3616,7 +3616,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3882,7 +3882,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3914,7 +3914,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3945,7 +3945,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -3977,7 +3977,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.HasChain())
+                if (trackElement.hasChain())
                 {
                     switch (direction)
                     {
@@ -6302,7 +6302,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
         const TrackElement& trackElement, const SupportType supportType)
     {
-        const bool isClosed = trackElement.IsBrakeClosed();
+        const bool isClosed = trackElement.isBrakeClosed();
         static constexpr uint32_t imageIds[kNumOrthogonalDirections][2] = {
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
@@ -6546,7 +6546,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         const TrackElement& trackElement, const SupportType supportType)
     {
         TrackPaintUtilDiagTilesPaint(
-            session, -3, height + 24, direction, trackSequence, kMultidimDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+            session, -3, height + 24, direction, trackSequence, kMultidimDiagBlockBrakeImages[trackElement.isBrakeClosed()],
             defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
         const uint16_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];

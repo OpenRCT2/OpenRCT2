@@ -192,7 +192,7 @@ static void WoodenWildMouseTrack25DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 1 } });
 
@@ -232,7 +232,7 @@ static void WoodenWildMouseTrack60DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction]);
     if (direction == 0 || direction == 3)
     {
@@ -280,7 +280,7 @@ static void WoodenWildMouseTrackFlatTo25DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 1 } });
 
@@ -320,7 +320,7 @@ static void WoodenWildMouseTrack25DegUpTo60DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     ImageId imageId;
     if (direction == 0 || direction == 3)
     {
@@ -371,7 +371,7 @@ static void WoodenWildMouseTrack60DegTo25DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     ImageId imageId;
     if (direction == 0 || direction == 3)
     {
@@ -423,7 +423,7 @@ static void WoodenWildMouseTrack25DegUpToFlat(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 1 } });
 
@@ -613,7 +613,7 @@ static void WoodenWildMouseTrackFlatTo60DegUp(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     ImageId imageId;
     if (direction == 0 || direction == 3)
     {
@@ -664,7 +664,7 @@ static void WoodenWildMouseTrack60DegUpToFlat(
         },
     };
 
-    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.hasChain() ? 1 : 0;
     ImageId imageId;
     if (direction == 0 || direction == 3)
     {

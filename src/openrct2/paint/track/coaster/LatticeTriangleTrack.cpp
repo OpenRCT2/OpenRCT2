@@ -98,7 +98,7 @@ static void LatticeTriangleTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasCableLift())
+    if (trackElement.hasCableLift())
     {
         switch (direction)
         {
@@ -120,7 +120,7 @@ static void LatticeTriangleTrackFlat(
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
         }
     }
-    else if (trackElement.HasChain())
+    else if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -188,9 +188,9 @@ static void LatticeTriangleTrackStation(
         18085,
     };
 
-    if (trackElement.GetTrackType() == TrackElemType::endStation)
+    if (trackElement.getTrackType() == TrackElemType::endStation)
     {
-        bool isClosed = trackElement.IsBrakeClosed();
+        bool isClosed = trackElement.isBrakeClosed();
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(kLatticeTriangleBrakeImages[direction][isClosed][0]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
@@ -220,7 +220,7 @@ static void LatticeTriangleTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasCableLift())
+    if (trackElement.hasCableLift())
     {
         switch (direction)
         {
@@ -250,7 +250,7 @@ static void LatticeTriangleTrack25DegUp(
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
         }
     }
-    else if (trackElement.HasChain())
+    else if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -327,7 +327,7 @@ static void LatticeTriangleTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasCableLift())
+    if (trackElement.hasCableLift())
     {
         switch (direction)
         {
@@ -404,7 +404,7 @@ static void LatticeTriangleTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasCableLift())
+    if (trackElement.hasCableLift())
     {
         switch (direction)
         {
@@ -434,7 +434,7 @@ static void LatticeTriangleTrackFlatTo25DegUp(
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 3, height, session.SupportColours);
         }
     }
-    else if (trackElement.HasChain())
+    else if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -511,7 +511,7 @@ static void LatticeTriangleTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasCableLift())
+    if (trackElement.hasCableLift())
     {
         switch (direction)
         {
@@ -600,7 +600,7 @@ static void LatticeTriangleTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasCableLift())
+    if (trackElement.hasCableLift())
     {
         switch (direction)
         {
@@ -689,7 +689,7 @@ static void LatticeTriangleTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasCableLift())
+    if (trackElement.hasCableLift())
     {
         switch (direction)
         {
@@ -719,7 +719,7 @@ static void LatticeTriangleTrack25DegUpToFlat(
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.SupportColours);
         }
     }
-    else if (trackElement.HasChain())
+    else if (trackElement.hasChain())
     {
         switch (direction)
         {
@@ -4572,7 +4572,7 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasCableLift())
+            if (trackElement.hasCableLift())
             {
                 switch (direction)
                 {
@@ -4643,7 +4643,7 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            if (trackElement.HasCableLift())
+            if (trackElement.hasCableLift())
             {
                 switch (direction)
                 {
@@ -4710,7 +4710,7 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            if (trackElement.HasCableLift())
+            if (trackElement.hasCableLift())
             {
                 switch (direction)
                 {
@@ -4777,7 +4777,7 @@ static void LatticeTriangleTrackFlatTo60DegUpLongBase(
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
-            if (trackElement.HasCableLift())
+            if (trackElement.hasCableLift())
             {
                 switch (direction)
                 {
@@ -5907,7 +5907,7 @@ static void LatticeTriangleTrackDiagFlat(
     };
 
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType.metal);
+        session, 3, height, direction, trackSequence, images[trackElement.hasChain()], supportType.metal);
 }
 
 /** rct2: 0x008ADB04 */
@@ -5918,7 +5918,7 @@ static void LatticeTriangleTrackDiag25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -5949,7 +5949,7 @@ static void LatticeTriangleTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -5980,7 +5980,7 @@ static void LatticeTriangleTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6012,7 +6012,7 @@ static void LatticeTriangleTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6174,7 +6174,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6205,7 +6205,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6236,7 +6236,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6268,7 +6268,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6523,7 +6523,7 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6554,7 +6554,7 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6585,7 +6585,7 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6617,7 +6617,7 @@ static void LatticeTriangleTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6686,7 +6686,7 @@ static void LatticeTriangleTrackDiag25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6717,7 +6717,7 @@ static void LatticeTriangleTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6748,7 +6748,7 @@ static void LatticeTriangleTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6780,7 +6780,7 @@ static void LatticeTriangleTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6942,7 +6942,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -6972,7 +6972,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
                 0xFFFF, 0);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -7002,7 +7002,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
                 0xFFFF, 0);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -7033,7 +7033,7 @@ static void LatticeTriangleTrackDiagFlatTo25DegDown(
                 0xFFFF, 0);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -7289,7 +7289,7 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -7320,7 +7320,7 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -7351,7 +7351,7 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -7383,7 +7383,7 @@ static void LatticeTriangleTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
-            if (trackElement.HasChain())
+            if (trackElement.hasChain())
             {
                 switch (direction)
                 {
@@ -8783,7 +8783,7 @@ static void LatticeTriangleTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isClosed = trackElement.IsBrakeClosed();
+    bool isClosed = trackElement.isBrakeClosed();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(kLatticeTriangleBrakeImages[direction][isClosed][0]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
@@ -18160,11 +18160,11 @@ static void LatticeTriangleTrackDiagBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, kLatticeTriangleDiagBrakeImages[trackElement.IsBrakeClosed()][0],
+        session, 3, height, direction, trackSequence, kLatticeTriangleDiagBrakeImages[trackElement.isBrakeClosed()][0],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, kLatticeTriangleDiagBrakeImages[trackElement.IsBrakeClosed()][1],
+        session, 3, height, direction, trackSequence, kLatticeTriangleDiagBrakeImages[trackElement.isBrakeClosed()][1],
         defaultDiagTileOffsets, defaultDiagBoundLengths, diagBrakeBoundsOffsets);
 
     if (trackSequence == 3)

@@ -29,6 +29,8 @@
 namespace OpenRCT2
 {
     class ObjectList;
+    enum class ParkEntranceSequence : uint8_t;
+    enum class EntranceType : uint8_t;
     enum class TrackElemType : uint16_t;
 } // namespace OpenRCT2
 
@@ -862,15 +864,15 @@ static_assert(sizeof(RCT12WallElement) == 8);
 struct RCT12EntranceElement : RCT12TileElementBase
 {
 private:
-    uint8_t EntranceType; // 4
-    uint8_t Index;        // 5. 0bUSSS????, S = station index.
-    uint8_t PathType;     // 6
-    uint8_t RideIndex;    // 7
+    OpenRCT2::EntranceType EntranceType; // 4
+    uint8_t Index;                       // 5. 0bUSSS????, S = station index.
+    uint8_t PathType;                    // 6
+    uint8_t RideIndex;                   // 7
 public:
-    uint8_t GetEntranceType() const;
+    OpenRCT2::EntranceType GetEntranceType() const;
     uint8_t GetRideIndex() const;
     uint8_t GetStationIndex() const;
-    uint8_t GetSequenceIndex() const;
+    OpenRCT2::ParkEntranceSequence GetSequenceIndex() const;
     uint8_t GetPathType() const;
 };
 static_assert(sizeof(RCT12EntranceElement) == 8);

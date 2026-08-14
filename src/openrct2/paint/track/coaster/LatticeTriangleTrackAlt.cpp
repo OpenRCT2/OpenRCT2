@@ -66,9 +66,9 @@ static void LatticeTriangleTrackAltStation(
             SPR_TRACKS_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SW_NE,
             SPR_TRACKS_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SE_NW,
         };
-        if (trackElement.GetTrackType() == TrackElemType::endStation)
+        if (trackElement.getTrackType() == TrackElemType::endStation)
         {
-            bool isClosed = trackElement.IsBrakeClosed();
+            bool isClosed = trackElement.isBrakeClosed();
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
@@ -98,7 +98,7 @@ static void LatticeTriangleTrackAltBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isClosed = trackElement.IsBrakeClosed();
+    bool isClosed = trackElement.isBrakeClosed();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
@@ -117,7 +117,7 @@ static void LatticeTriangleTrackAltBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isClosed = trackElement.IsBrakeClosed();
+    bool isClosed = trackElement.isBrakeClosed();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
@@ -225,7 +225,7 @@ static void LatticeTriangleTrackAltDiagBlockBrake(
     };
 
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, images[trackElement.IsBrakeClosed()], supportType.metal);
+        session, 3, height, direction, trackSequence, images[trackElement.isBrakeClosed()], supportType.metal);
 }
 
 static void LatticeTriangleTrackAltDiagBrake(
@@ -248,7 +248,7 @@ static void LatticeTriangleTrackAltDiagBrake(
     };
 
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, images[trackElement.IsBrakeClosed()], supportType.metal);
+        session, 3, height, direction, trackSequence, images[trackElement.isBrakeClosed()], supportType.metal);
 }
 
 TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType trackType)

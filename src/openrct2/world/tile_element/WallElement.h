@@ -37,45 +37,45 @@ namespace OpenRCT2
 
     private:
         ObjectEntryIndex entryIndex; // 05
-        Drawing::Colour colour_1;    // 07
-        Drawing::Colour colour_2;    // 08
-        Drawing::Colour colour_3;    // 09
-        BannerIndex banner_index;    // 0A
+        Drawing::Colour colour1;     // 07
+        Drawing::Colour colour2;     // 08
+        Drawing::Colour colour3;     // 09
+        BannerIndex bannerIndex;     // 0A
         uint8_t animation; // 0C 0b_dfff_fta0 d = direction, f = frame num, t = across track flag (not used), a = animating
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t Pad0D[3];
+        uint8_t pad0D[3];
 #pragma clang diagnostic pop
 
     public:
-        uint16_t GetEntryIndex() const;
-        void SetEntryIndex(uint16_t newIndex);
-        const WallSceneryEntry* GetEntry() const;
+        uint16_t getEntryIndex() const;
+        void setEntryIndex(uint16_t newIndex);
+        const WallSceneryEntry* getEntry() const;
 
-        uint8_t GetSlope() const;
-        void SetSlope(uint8_t newslope);
+        uint8_t getSlope() const;
+        void setSlope(uint8_t newslope);
 
-        Drawing::Colour GetPrimaryColour() const;
-        void SetPrimaryColour(Drawing::Colour newColour);
-        Drawing::Colour GetSecondaryColour() const;
-        void SetSecondaryColour(Drawing::Colour newColour);
-        Drawing::Colour GetTertiaryColour() const;
-        void SetTertiaryColour(Drawing::Colour newColour);
+        Drawing::Colour getPrimaryColour() const;
+        void setPrimaryColour(Drawing::Colour newColour);
+        Drawing::Colour getSecondaryColour() const;
+        void setSecondaryColour(Drawing::Colour newColour);
+        Drawing::Colour getTertiaryColour() const;
+        void setTertiaryColour(Drawing::Colour newColour);
 
-        uint8_t GetAnimationFrame() const;
-        void SetAnimationFrame(uint8_t frameNum);
+        uint8_t getAnimationFrame() const;
+        void setAnimationFrame(uint8_t frameNum);
 
-        bool IsAnimating() const;
-        void SetIsAnimating(bool isAnimating);
+        bool isAnimating() const;
+        void setIsAnimating(bool isAnimating);
 
-        Banner* GetBanner() const;
-        BannerIndex GetBannerIndex() const;
-        void SetBannerIndex(BannerIndex newIndex);
+        Banner* getBanner() const;
+        BannerIndex getBannerIndex() const;
+        void setBannerIndex(BannerIndex newIndex);
 
-        bool IsAcrossTrack() const;
-        void SetAcrossTrack(bool acrossTrack);
-        bool AnimationIsBackwards() const;
-        void SetAnimationIsBackwards(bool isBackwards);
+        bool isAcrossTrack() const;
+        void setAcrossTrack(bool acrossTrack);
+        bool animationIsBackwards() const;
+        void setAnimationIsBackwards(bool isBackwards);
     };
     static_assert(sizeof(WallElement) == kTileElementSize);
 

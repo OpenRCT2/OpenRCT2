@@ -76,9 +76,9 @@ namespace OpenRCT2::World::MapGenerator
 
         sceneryElement->setClearanceZ(surfaceZ + sceneryEntry->height);
         sceneryElement->setDirection(UtilRand() & 3);
-        sceneryElement->SetEntryIndex(type);
-        sceneryElement->SetAge(0);
-        sceneryElement->SetPrimaryColour(Drawing::Colour::yellow);
+        sceneryElement->setEntryIndex(type);
+        sceneryElement->setAge(0);
+        sceneryElement->setPrimaryColour(Drawing::Colour::yellow);
     }
 
     static bool surfaceTakesGrassTrees(const TerrainSurfaceObject& surface)
@@ -160,7 +160,7 @@ namespace OpenRCT2::World::MapGenerator
                     continue;
 
                 // Don't place on water
-                if (surfaceElement->GetWaterHeight() > 0)
+                if (surfaceElement->getWaterHeight() > 0)
                     continue;
 
                 if (settings->minTreeAltitude > surfaceElement->baseHeight
@@ -171,7 +171,7 @@ namespace OpenRCT2::World::MapGenerator
                 // vegetation
                 float oasisScore = 0.0f;
                 ObjectEntryIndex treeObjectEntryIndex = kObjectEntryIndexNull;
-                const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceObjectIndex());
+                const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->getSurfaceObjectIndex());
                 if (surfaceTakesSandTrees(surfaceStyleObject))
                 {
                     oasisScore = -0.5f;
@@ -189,7 +189,7 @@ namespace OpenRCT2::World::MapGenerator
                                 neighbourPos.y, kCoordsXYStep, kCoordsXYStep * (gameState.mapSize.y - 1));
 
                             const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
-                            if (neighboutSurface != nullptr && neighboutSurface->GetWaterHeight() > 0)
+                            if (neighboutSurface != nullptr && neighboutSurface->getWaterHeight() > 0)
                             {
                                 float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
                                 oasisScore += 0.5f / (maxOasisDistance * distance);

@@ -188,10 +188,10 @@ namespace OpenRCT2::Scripting
         {
             auto element = &first[index];
             if (element->getType() != TileElementType::largeScenery
-                || element->asLargeScenery()->GetEntry()->scrolling_mode == kScrollingModeNone
+                || element->asLargeScenery()->getEntry()->scrolling_mode == kScrollingModeNone
                 || ScTileElement::GetOtherLargeSceneryElement(coords, element->asLargeScenery()) == nullptr)
             {
-                element->RemoveBannerEntry();
+                element->removeBannerEntry();
             }
             TileElementRemove(&first[index]);
             MapInvalidateTileFull(coords);

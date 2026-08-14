@@ -20,10 +20,14 @@ namespace OpenRCT2
 {
     class LargeSceneryObject;
 
-    enum
+    enum class LargeSceneryElementFlag : uint8_t
     {
-        LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,
+        /**
+         * Tile has been accounted for during operations on the whole piece.
+         */
+        accounted,
     };
+    using LargeSceneryElementFlags = FlagHolder<uint8_t, LargeSceneryElementFlag>;
 
 #pragma pack(push, 1)
     struct LargeSceneryElement : TileElementBase
@@ -31,38 +35,37 @@ namespace OpenRCT2
         static constexpr TileElementType kElementType = TileElementType::largeScenery;
 
     private:
-        ObjectEntryIndex EntryIndex;
-        ::BannerIndex BannerIndex;
-        uint8_t SequenceIndex;
-        Drawing::Colour Colour[3];
-        uint8_t Flags2;
+        ObjectEntryIndex entryIndex;
+        ::BannerIndex bannerIndex;
+        uint8_t sequenceIndex;
+        Drawing::Colour colour[3];
+        LargeSceneryElementFlags flags2;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
         uint8_t pad[2];
 #pragma clang diagnostic pop
 
     public:
-        ObjectEntryIndex GetEntryIndex() const;
-        void SetEntryIndex(ObjectEntryIndex newIndex);
-        const LargeSceneryEntry* GetEntry() const;
-        const LargeSceneryObject* GetObject() const;
+        ObjectEntryIndex getEntryIndex() const;
+        void setEntryIndex(ObjectEntryIndex newIndex);
+        const LargeSceneryEntry* getEntry() const;
 
-        uint8_t GetSequenceIndex() const;
-        void SetSequenceIndex(uint8_t newIndex);
+        uint8_t getSequenceIndex() const;
+        void setSequenceIndex(uint8_t newIndex);
 
-        Drawing::Colour GetPrimaryColour() const;
-        void SetPrimaryColour(Drawing::Colour colour);
-        Drawing::Colour GetSecondaryColour() const;
-        void SetSecondaryColour(Drawing::Colour colour);
-        Drawing::Colour GetTertiaryColour() const;
-        void SetTertiaryColour(Drawing::Colour colour);
+        Drawing::Colour getPrimaryColour() const;
+        void setPrimaryColour(Drawing::Colour colour);
+        Drawing::Colour getSecondaryColour() const;
+        void setSecondaryColour(Drawing::Colour colour);
+        Drawing::Colour getTertiaryColour() const;
+        void setTertiaryColour(Drawing::Colour colour);
 
-        Banner* GetBanner() const;
-        ::BannerIndex GetBannerIndex() const;
-        void SetBannerIndex(::BannerIndex newIndex);
+        Banner* getBanner() const;
+        ::BannerIndex getBannerIndex() const;
+        void setBannerIndex(::BannerIndex newIndex);
 
-        bool IsAccounted() const;
-        void SetIsAccounted(bool isAccounted);
+        bool isAccounted() const;
+        void setIsAccounted(bool isAccounted);
     };
     static_assert(sizeof(LargeSceneryElement) == kTileElementSize);
 #pragma pack(pop)

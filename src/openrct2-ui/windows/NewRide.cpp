@@ -15,7 +15,6 @@
 #include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
@@ -29,21 +28,16 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/LocalisationService.h>
-#include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
-#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
-#include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Park.h>
 
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetadata;

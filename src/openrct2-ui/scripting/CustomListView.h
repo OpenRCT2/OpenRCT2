@@ -11,14 +11,24 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../interface/Window.h"
-
     #include <cstdint>
     #include <memory>
-    #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/scripting/Plugin.h>
     #include <optional>
     #include <string>
     #include <vector>
+
+namespace OpenRCT2
+{
+    struct ScrollArea;
+    struct Widget;
+    struct WindowBase;
+} // namespace OpenRCT2
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 namespace OpenRCT2::Ui::Windows
 {

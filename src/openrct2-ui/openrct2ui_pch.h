@@ -19,6 +19,5 @@
 // Note: These must be in dependency order
 #include "../openrct2/interface/Viewport.h"
 #include "../openrct2/interface/Window.h"
-#include "interface/Viewport.h"
 #include "interface/Widget.h"
 #include "interface/Window.h"
