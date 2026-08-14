@@ -34,6 +34,7 @@
 #include "../../util/Util.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/MapOwnership.h"
 #include "../../world/Park.h"
 #include "../../world/Weather.h"
 #include "../../world/tile_element/PathElement.h"

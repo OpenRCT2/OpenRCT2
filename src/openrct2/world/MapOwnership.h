@@ -11,6 +11,8 @@
 
 #include "../core/FlagHolder.hpp"
 
+struct CoordsXYZ;
+
 namespace OpenRCT2
 {
     enum class OwnershipFlag : uint8_t
@@ -23,4 +25,6 @@ namespace OpenRCT2
     using OwnershipFlags = FlagHolder<uint8_t, OwnershipFlag>;
 
     constexpr OwnershipFlags kUnowned = {};
+
+    OwnershipFlags CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 } // namespace OpenRCT2

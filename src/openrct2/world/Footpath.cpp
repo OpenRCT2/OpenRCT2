@@ -27,6 +27,7 @@
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
+#include "MapOwnership.h"
 #include "Wall.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"

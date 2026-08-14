@@ -2114,52 +2114,6 @@ namespace OpenRCT2
         return nullptr;
     }
 
-    OwnershipFlags CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
-    {
-        TileElement* tileElement = MapGetFirstElementAt(tileMapPos);
-        OwnershipFlags destOwnership = { OwnershipFlag::landOwned };
-
-        // Sometimes done deliberately.
-        if (tileElement == nullptr)
-        {
-            return destOwnership;
-        }
-
-        auto tilePos = TileCoordsXYZ{ tileMapPos };
-        do
-        {
-            auto type = tileElement->getType();
-            if (type == TileElementType::path
-                || (type == TileElementType::entrance
-                    && tileElement->asEntrance()->getEntranceType() == EntranceType::parkEntrance))
-            {
-                destOwnership = OwnershipFlag::constructionRightsOwned;
-                // Do not own construction rights if too high/below surface
-                if (tileElement->baseHeight - kConstructionRightsClearanceSmall > tilePos.z
-                    || tileElement->baseHeight < tilePos.z)
-                {
-                    destOwnership = kUnowned;
-                    break;
-                }
-            }
-        } while (!(tileElement++)->isLastForTile());
-
-        return destOwnership;
-    }
-
-    void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, OwnershipFlags ownership)
-    {
-        for (const auto& tile : tiles)
-        {
-            auto surfaceElement = MapGetSurfaceElementAt(tile);
-            if (surfaceElement != nullptr)
-            {
-                surfaceElement->setOwnership(ownership);
-                Park::UpdateFencesAroundTile(tile.ToCoordsXY());
-            }
-        }
-    }
-
     MapRange ClampRangeWithinMap(const MapRange& range)
     {
         auto mapSizeMax = GetMapSizeMaxXY();

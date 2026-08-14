@@ -169,9 +169,6 @@ namespace OpenRCT2
     TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);
     TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
 
-    OwnershipFlags CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
-
-    void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, OwnershipFlags ownership);
     MapRange ClampRangeWithinMap(const MapRange& range);
     void ShiftMap(const TileCoordsXY& amount);
 } // namespace OpenRCT2
