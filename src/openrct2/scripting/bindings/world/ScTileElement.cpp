@@ -362,7 +362,7 @@ namespace OpenRCT2::Scripting
         auto* el = data->element->asSurface();
         if (el != nullptr)
         {
-            return JS_NewBool(ctx, el->getOwnership().has(OwnershipFlag::owned));
+            return JS_NewBool(ctx, el->hasOwnership(OwnershipFlag::owned));
         }
         else
         {

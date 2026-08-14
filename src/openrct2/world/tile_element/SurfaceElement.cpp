@@ -204,6 +204,11 @@ namespace OpenRCT2
         ownership |= (((newOwnership.holder) << 4) & kTileElementSurfaceOwnershipMask);
     }
 
+    bool SurfaceElement::hasOwnership(OwnershipFlag flag) const
+    {
+        return getOwnership().has(flag);
+    }
+
     uint8_t SurfaceElement::getParkFences() const
     {
         return (ownership & kTileElementSurfaceParkFenceMask);

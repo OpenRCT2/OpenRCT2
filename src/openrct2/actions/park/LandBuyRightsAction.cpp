@@ -122,12 +122,12 @@ namespace OpenRCT2::GameActions
         switch (_setting)
         {
             case LandBuyRightSetting::buyLand: // 0
-                if (surfaceElement->getOwnership().has(OwnershipFlag::owned))
+                if (surfaceElement->hasOwnership(OwnershipFlag::owned))
                 { // If the land is already owned
                     return res;
                 }
 
-                if (gLegacyScene == LegacyScene::scenarioEditor || !surfaceElement->getOwnership().has(OwnershipFlag::forSale))
+                if (gLegacyScene == LegacyScene::scenarioEditor || !surfaceElement->hasOwnership(OwnershipFlag::forSale))
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
                 }
@@ -146,7 +146,7 @@ namespace OpenRCT2::GameActions
                 }
 
                 if (gLegacyScene == LegacyScene::scenarioEditor
-                    || !surfaceElement->getOwnership().has(OwnershipFlag::constructionRightsAvailable))
+                    || !surfaceElement->hasOwnership(OwnershipFlag::constructionRightsAvailable))
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
                 }

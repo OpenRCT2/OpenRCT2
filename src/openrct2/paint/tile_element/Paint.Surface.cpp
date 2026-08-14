@@ -859,7 +859,7 @@ static void PaintSurfaceLandOwnership(
     auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
     // Loc660E9A:
-    if (tileElement.getOwnership().has(OwnershipFlag::owned))
+    if (tileElement.hasOwnership(OwnershipFlag::owned))
     {
         assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
@@ -877,7 +877,7 @@ static void PaintSurfaceLandOwnership(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.getOwnership().has(OwnershipFlag::forSale))
+    else if (tileElement.hasOwnership(OwnershipFlag::forSale))
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -893,7 +893,7 @@ static void PaintSurfaceConstructionRights(
 {
     auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-    if (tileElement.getOwnership().has(OwnershipFlag::constructionRightsOwned))
+    if (tileElement.hasOwnership(OwnershipFlag::constructionRightsOwned))
     {
         assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
@@ -911,7 +911,7 @@ static void PaintSurfaceConstructionRights(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.getOwnership().has(OwnershipFlag::constructionRightsAvailable))
+    else if (tileElement.hasOwnership(OwnershipFlag::constructionRightsAvailable))
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -1080,7 +1080,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.getOwnership().has(OwnershipFlag::owned)))
+    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.hasOwnership(OwnershipFlag::owned)))
     {
         PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }

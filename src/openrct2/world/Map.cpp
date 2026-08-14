@@ -820,10 +820,10 @@ namespace OpenRCT2
             auto* surfaceElement = MapGetSurfaceElementAt(loc);
             if (surfaceElement != nullptr)
             {
-                if (surfaceElement->getOwnership().has(OwnershipFlag::owned))
+                if (surfaceElement->hasOwnership(OwnershipFlag::owned))
                     return true;
 
-                if (surfaceElement->getOwnership().has(OwnershipFlag::constructionRightsOwned))
+                if (surfaceElement->hasOwnership(OwnershipFlag::constructionRightsOwned))
                 {
                     if (loc.z < surfaceElement->getBaseZ()
                         || loc.z >= surfaceElement->getBaseZ() + kConstructionRightsClearanceBig)
@@ -845,7 +845,7 @@ namespace OpenRCT2
             auto surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 return false;
-            if (surfaceElement->getOwnership().has(OwnershipFlag::owned))
+            if (surfaceElement->hasOwnership(OwnershipFlag::owned))
                 return true;
         }
         return false;
@@ -860,9 +860,9 @@ namespace OpenRCT2
             {
                 return false;
             }
-            if (surfaceElement->getOwnership().has(OwnershipFlag::owned))
+            if (surfaceElement->hasOwnership(OwnershipFlag::owned))
                 return true;
-            if (surfaceElement->getOwnership().has(OwnershipFlag::constructionRightsOwned))
+            if (surfaceElement->hasOwnership(OwnershipFlag::constructionRightsOwned))
                 return true;
         }
         return false;

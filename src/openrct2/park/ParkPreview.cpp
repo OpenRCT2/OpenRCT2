@@ -95,7 +95,7 @@ namespace OpenRCT2
                         }
                     }
 
-                    isOutsidePark |= !(surfaceElement->getOwnership().has(OwnershipFlag::owned));
+                    isOutsidePark |= !(surfaceElement->hasOwnership(OwnershipFlag::owned));
                     break;
                 }
 

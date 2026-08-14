@@ -74,6 +74,7 @@ namespace OpenRCT2
 
         OwnershipFlags getOwnership() const;
         void setOwnership(OwnershipFlags newOwnership);
+        bool hasOwnership(OwnershipFlag flag) const;
 
         int32_t getWaterHeight() const;
         void setWaterHeight(int32_t newWaterHeight);
