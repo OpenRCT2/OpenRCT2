@@ -1257,12 +1257,20 @@ namespace OpenRCT2::Ui::Windows
 
         void AlignButtonsLeftRight()
         {
+            if (windowPos.x != 0)
+            {
+                invalidate();
+                windowPos.x = 0;
+                width = ContextGetWidth();
+                invalidate();
+            }
+
             // Align left hand side toolbar buttons
             AlignButtons(kWidgetOrderLeftGroup, 0);
 
             // Align right hand side toolbar buttons
             auto totalWidth = GetToolbarWidth(kWidgetOrderRightGroup);
-            auto xPos = ContextGetWidth() - totalWidth;
+            auto xPos = width - totalWidth;
             AlignButtons(kWidgetOrderRightGroup, xPos);
         }
 
@@ -1274,8 +1282,16 @@ namespace OpenRCT2::Ui::Windows
             // We'll start from the centre of the UI...
             auto xPos = (ContextGetWidth() - totalWidth) / 2;
 
+            if (windowPos.x != xPos)
+            {
+                invalidate();
+                windowPos.x = xPos;
+                width = totalWidth;
+                invalidate();
+            }
+
             // And finally, align the buttons in the centre
-            AlignButtons(kWidgetOrderCombined, xPos);
+            AlignButtons(kWidgetOrderCombined, 0);
         }
 
         void onPrepareDraw() override
