@@ -841,7 +841,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide(thisVal);
         if (ride != nullptr && ride->canBreakDown())
         {
-            RideFixBreakdown(*ride, 0);
+            ride->forceFixBreakdown();
         }
         return JS_UNDEFINED;
     }
