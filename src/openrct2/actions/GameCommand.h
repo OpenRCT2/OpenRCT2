@@ -100,6 +100,7 @@ namespace OpenRCT2
         setGameSpeed,
         setRestrictedScenery,
         setRideVisibility,
+        setRideBreakdown,
         count,
     };
 }

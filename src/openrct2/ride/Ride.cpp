@@ -1222,6 +1222,17 @@ namespace OpenRCT2
         return entry != nullptr && !entry->flags.has(RideEntryFlag::cannotBreakDown);
     }
 
+    FlagHolder<uint8_t, Breakdown> Ride::getSupportedBreakdowns() const
+    {
+        auto breakdowns = getRideTypeDescriptor().availableBreakdowns;
+
+        // Brakes failure can not happen if block brakes are used (so long as there is more than one train).
+        if (isBlockSectioned() && numTrains != 1)
+            breakdowns.unset(Breakdown::brakesFailure);
+
+        return breakdowns;
+    }
+
     void Ride::forceFixBreakdown()
     {
         // Send away any mechanic, who would otherwise carry on servicing a ride that is no longer broken.

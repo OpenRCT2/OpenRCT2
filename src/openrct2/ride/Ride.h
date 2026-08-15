@@ -438,6 +438,7 @@ namespace OpenRCT2
 
     public:
         bool canBreakDown() const;
+        FlagHolder<uint8_t, Breakdown> getSupportedBreakdowns() const;
         void forceFixBreakdown();
         RideClassification getClassification() const;
         bool isRide() const;
