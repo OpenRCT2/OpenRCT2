@@ -125,19 +125,12 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseUp(WidgetIndex widgetIndex) override
         {
-            WindowBase* windowToOpen = nullptr;
-
             auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
                 case WIDX_START_NEW_GAME:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::scenarioSelect);
-                    if (windowToOpen != nullptr)
-                    {
-                        windowMgr->BringToFront(*windowToOpen);
-                    }
-                    else
+                    if (auto* window = windowMgr->BringToFrontByClass(WindowClass::scenarioSelect); window == nullptr)
                     {
                         windowMgr->CloseByClass(WindowClass::loadsave);
                         windowMgr->CloseByClass(WindowClass::serverList);
@@ -145,12 +138,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_CONTINUE_SAVED_GAME:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::loadsave);
-                    if (windowToOpen != nullptr)
-                    {
-                        windowMgr->BringToFront(*windowToOpen);
-                    }
-                    else
+                    if (auto* window = windowMgr->BringToFrontByClass(WindowClass::loadsave); window == nullptr)
                     {
                         windowMgr->CloseByClass(WindowClass::scenarioSelect);
                         windowMgr->CloseByClass(WindowClass::serverList);
@@ -159,12 +147,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_MULTIPLAYER:
-                    windowToOpen = windowMgr->FindByClass(WindowClass::serverList);
-                    if (windowToOpen != nullptr)
-                    {
-                        windowMgr->BringToFront(*windowToOpen);
-                    }
-                    else
+                    if (auto* window = windowMgr->BringToFrontByClass(WindowClass::serverList); window == nullptr)
                     {
                         windowMgr->CloseByClass(WindowClass::scenarioSelect);
                         windowMgr->CloseByClass(WindowClass::loadsave);
