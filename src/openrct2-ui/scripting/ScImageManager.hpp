@@ -156,7 +156,7 @@ namespace OpenRCT2::Scripting
             {
                 JSSetPixelData(ctx, id, pixelData);
             }
-            catch (const std::runtime_error& e)
+            catch (const std::exception& e)
             {
                 JS_ThrowInternalError(ctx, "%s", e.what());
                 return JS_EXCEPTION;
