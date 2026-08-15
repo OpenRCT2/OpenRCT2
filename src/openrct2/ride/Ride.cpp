@@ -1222,6 +1222,21 @@ namespace OpenRCT2
         return entry != nullptr && !entry->flags.has(RideEntryFlag::cannotBreakDown);
     }
 
+    void Ride::forceFixBreakdown()
+    {
+        // Send away any mechanic, who would otherwise carry on servicing a ride that is no longer broken.
+        auto* assignedMechanic = RideGetAssignedMechanic(*this);
+        if (assignedMechanic != nullptr)
+        {
+            if (mechanicStatus == MechanicStatus::fixing)
+                assignedMechanic->rideSubState = PeepRideSubState::approachExit;
+            else if (mechanicStatus == MechanicStatus::calling || mechanicStatus == MechanicStatus::heading)
+                assignedMechanic->removeFromRide();
+        }
+
+        RideFixBreakdown(*this, 0);
+    }
+
     static void ChooseRandomTrainToBreakdownSafe(Ride& ride)
     {
         // Prevent integer division by zero in case of hacked ride.

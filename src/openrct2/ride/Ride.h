@@ -438,6 +438,7 @@ namespace OpenRCT2
 
     public:
         bool canBreakDown() const;
+        void forceFixBreakdown();
         RideClassification getClassification() const;
         bool isRide() const;
         void renew();
