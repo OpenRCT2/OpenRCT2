@@ -75,6 +75,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("numLiftHills", ScRide::numLiftHills_get, nullptr),
             JS_CGETSET_DEF("highestDropHeight", ScRide::highestDropHeight_get, nullptr),
             JS_CGETSET_DEF("breakdown", ScRide::breakdown_get, nullptr),
+            JS_CGETSET_DEF("supportedBreakdowns", ScRide::supportedBreakdowns_get, nullptr),
             JS_CFUNC_DEF("setBreakdown", 1, ScRide::setBreakdown),
             JS_CFUNC_DEF("fixBreakdown", 0, ScRide::fixBreakdown),
         };
@@ -808,13 +809,35 @@ namespace OpenRCT2::Scripting
         {
             if (!ride->flags.has(RideFlag::brokenDown))
             {
-                return JSFromStdString(ctx, "none");
+                return JSFromStdString(ctx, kBreakdownNoneName);
             }
             auto it = kBreakdownMap.find(ride->breakdownReason);
             if (it != kBreakdownMap.end())
                 return JSFromStdString(ctx, std::string(it->first));
         }
-        return JSFromStdString(ctx, "");
+        // Report an unmappable breakdown reason as ‘none’ as well, so the value is always a BreakdownType.
+        return JSFromStdString(ctx, kBreakdownNoneName);
+    }
+
+    JSValue ScRide::supportedBreakdowns_get(JSContext* ctx, JSValue thisVal)
+    {
+        JSValue result = JS_NewArray(ctx);
+        auto ride = GetRide(thisVal);
+        if (ride != nullptr)
+        {
+            const auto supported = ride->getSupportedBreakdowns();
+            int64_t index = 0;
+            for (auto breakdown : kAllBreakdownTypes)
+            {
+                if (!supported.has(breakdown))
+                    continue;
+
+                auto it = kBreakdownMap.find(breakdown);
+                if (it != kBreakdownMap.end())
+                    JS_SetPropertyInt64(ctx, result, index++, JSFromStdString(ctx, it->first));
+            }
+        }
+        return result;
     }
 
     JSValue ScRide::setBreakdown(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)

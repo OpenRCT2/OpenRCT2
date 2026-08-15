@@ -385,6 +385,7 @@ declare global {
         queryAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetappearance", args: RideSetAppearanceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetbreakdown", args: RideSetBreakdownArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetcolourscheme", args: RideSetColourSchemeArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetname", args: RideSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetprice", args: RideSetPriceArgs, callback?: (result: GameActionResult) => void): void;
@@ -476,6 +477,7 @@ declare global {
         executeAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetappearance", args: RideSetAppearanceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetbreakdown", args: RideSetBreakdownArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetcolourscheme", args: RideSetColourSchemeArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetname", args: RideSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetprice", args: RideSetPriceArgs, callback?: (result: GameActionResult) => void): void;
@@ -739,6 +741,7 @@ declare global {
         "rideentranceexitremove" |
         "ridefreezerating" |
         "ridesetappearance" |
+        "ridesetbreakdown" |
         "ridesetcolourscheme" |
         "ridesetname" |
         "ridesetprice" |
@@ -1307,6 +1310,15 @@ declare global {
          * Color scheme index, only used if {@link RideSetAppearanceArgs.type} is one of the track or vehicle colours
          */
         index: number;
+    }
+
+    interface RideSetBreakdownArgs extends GameActionArgs {
+        ride: number;
+        /**
+         * @see `Breakdown` in
+         * {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/ride/Ride.h}
+         */
+        breakdown: number;
     }
 
     interface RideSetColourSchemeArgs extends GameActionArgs {
@@ -2590,9 +2602,14 @@ declare global {
         readonly highestDropHeight: number;
 
         /**
-        * The current breakdown of the ride.
+        * The current breakdown of the ride, or `"none"` if it is not broken down.
         */
-        readonly breakdown: BreakdownType;
+        readonly breakdown: BreakdownType | "none";
+
+        /**
+         * The breakdowns this ride can currently be given. Depends on its configuration, not just its type.
+         */
+        readonly supportedBreakdowns: BreakdownType[];
 
         /**
          * Set a breakdown on a ride.

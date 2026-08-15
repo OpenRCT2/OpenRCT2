@@ -146,6 +146,7 @@ namespace OpenRCT2::Scripting
         static JSValue numLiftHills_get(JSContext* ctx, JSValue thisVal);
         static JSValue highestDropHeight_get(JSContext* ctx, JSValue thisVal);
         static JSValue breakdown_get(JSContext* ctx, JSValue thisVal);
+        static JSValue supportedBreakdowns_get(JSContext* ctx, JSValue thisVal);
         static JSValue setBreakdown(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
         static JSValue fixBreakdown(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
     };

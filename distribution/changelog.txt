@@ -1,7 +1,9 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Feature: [#14221] [Plugin] Add `ridesetbreakdown` game action and `Ride.supportedBreakdowns`.
 - Improved: [#14544] Forcing a ride breakdown is now a game action, making it available in multiplayer.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
+- Fix: [#26290] [Plugin] The BreakdownType declaration does not cover the ‘none’ value that ride.breakdown reports.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
 
 0.5.5 (2026-09-06)
