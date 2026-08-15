@@ -57,6 +57,7 @@
 #include "ride/RideEntranceExitRemoveAction.h"
 #include "ride/RideFreezeRatingAction.h"
 #include "ride/RideSetAppearanceAction.h"
+#include "ride/RideSetBreakdownAction.h"
 #include "ride/RideSetColourSchemeAction.h"
 #include "ride/RideSetNameAction.h"
 #include "ride/RideSetPriceAction.h"
@@ -166,6 +167,7 @@ namespace OpenRCT2::GameActions
         REGISTER_ACTION(RideSetStatusAction);
         REGISTER_ACTION(RideFreezeRatingAction);
         REGISTER_ACTION(RideSetAppearanceAction);
+        REGISTER_ACTION(RideSetBreakdownAction);
         REGISTER_ACTION(RideSetVehicleAction);
         REGISTER_ACTION(RideSetSettingAction);
         REGISTER_ACTION(ScenarioSetSettingAction);
