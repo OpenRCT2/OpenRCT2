@@ -472,6 +472,16 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widgetScrollUpdateThumbs(*this, widgetIndex);
                 }
+                if (widget.type == WidgetType::textBox)
+                {
+                    auto currentTextBox = GetCurrentTextBox();
+                    if (currentTextBox.window.classification == classification && currentTextBox.window.number == number
+                        && currentTextBox.widgetIndex == widgetIndex)
+                    {
+                        WindowUpdateTextboxCaret();
+                        GetWindowManager()->InvalidateWidget(*this, widgetIndex);
+                    }
+                }
                 widgetIndex++;
             }
 

@@ -617,6 +617,14 @@ namespace OpenRCT2::Ui::Windows
     {
         _textInput = session;
     }
+    void SetTextboxCaret(size_t position)
+    {
+        if (_textInput != nullptr)
+        {
+            _textInput->SelectionStart = std::clamp<size_t>(position, 0, _textInput->Length);
+            _textInput->SelectionSize = 0;
+        }
+    }
     bool IsUsingWidgetTextBox()
     {
         return _usingWidgetTextBox;
