@@ -39,98 +39,110 @@ namespace OpenRCT2
         return z;
     }
 
-    std::vector<FootpathDragPlacement> calculateConnectedPathSlopes(MapRange range, CoordsXY dragStart)
+    struct ConnectedPathSlopes
     {
-        std::vector<FootpathDragPlacement> result;
+    private:
+        int32_t dragWidth;
+        int32_t dragHeight;
+        CoordsXY startPos;
 
-        int32_t dragWidth = range.GetX2() - range.GetX1();
-        int32_t dragHeight = range.GetY2() - range.GetY1();
-        CoordsXY startPos = dragStart.ToTileStart();
-
-        startPos.x = std::clamp(startPos.x, range.GetX1(), range.GetX2());
-        startPos.y = std::clamp(startPos.y, range.GetY1(), range.GetY2());
-
-        bool primaryIsX = dragWidth >= dragHeight;
+        bool primaryIsX;
         int32_t primaryStart, primaryEnd, primaryStep;
         int32_t secondaryStart, secondaryEnd;
+
         Direction slopeDirection;
 
-        if (primaryIsX)
+    public:
+        ConnectedPathSlopes(MapRange range, CoordsXY dragStart)
         {
-            secondaryStart = range.GetY1();
-            secondaryEnd = range.GetY2();
+            dragWidth = range.GetX2() - range.GetX1();
+            dragHeight = range.GetY2() - range.GetY1();
+            startPos = dragStart.ToTileStart();
 
-            if (startPos.x <= (range.GetX1() + range.GetX2()) / 2)
-            {
-                primaryStart = range.GetX1();
-                primaryEnd = range.GetX2();
-                primaryStep = kCoordsXYStep;
-                slopeDirection = TILE_ELEMENT_DIRECTION_EAST;
-            }
-            else
-            {
-                primaryStart = range.GetX2();
-                primaryEnd = range.GetX1();
-                primaryStep = -kCoordsXYStep;
-                slopeDirection = TILE_ELEMENT_DIRECTION_WEST;
-            }
-        }
-        else
-        {
-            secondaryStart = range.GetX1();
-            secondaryEnd = range.GetX2();
+            startPos.x = std::clamp(startPos.x, range.GetX1(), range.GetX2());
+            startPos.y = std::clamp(startPos.y, range.GetY1(), range.GetY2());
 
-            if (startPos.y <= (range.GetY1() + range.GetY2()) / 2)
-            {
-                primaryStart = range.GetY1();
-                primaryEnd = range.GetY2();
-                primaryStep = kCoordsXYStep;
-                slopeDirection = TILE_ELEMENT_DIRECTION_NORTH;
-            }
-            else
-            {
-                primaryStart = range.GetY2();
-                primaryEnd = range.GetY1();
-                primaryStep = -kCoordsXYStep;
-                slopeDirection = TILE_ELEMENT_DIRECTION_SOUTH;
-            }
-        }
+            primaryIsX = dragWidth >= dragHeight;
 
-        // Gather terrain heights: baseZ for going down, maxZ for going up
-        std::vector<SliceInfo> slices;
-
-        for (int32_t primary = primaryStart; primaryStep > 0 ? primary <= primaryEnd : primary >= primaryEnd;
-             primary += primaryStep)
-        {
-            int32_t sliceBaseZ = INT32_MIN;
-            int32_t sliceMaxZ = INT32_MIN;
-
-            for (int32_t secondary = secondaryStart; secondary <= secondaryEnd; secondary += kCoordsXYStep)
+            if (primaryIsX)
             {
-                CoordsXY pos = primaryIsX ? CoordsXY{ primary, secondary } : CoordsXY{ secondary, primary };
-                auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(pos));
-                if (surfaceElement != nullptr)
+                secondaryStart = range.GetY1();
+                secondaryEnd = range.GetY2();
+
+                if (startPos.x <= (range.GetX1() + range.GetX2()) / 2)
                 {
-                    int32_t base = surfaceElement->getBaseZ();
-                    int32_t top = getMaxSurfaceHeight(*surfaceElement);
-
-                    sliceBaseZ = std::max(sliceBaseZ, base);
-                    sliceMaxZ = std::max(sliceMaxZ, top);
+                    primaryStart = range.GetX1();
+                    primaryEnd = range.GetX2();
+                    primaryStep = kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_EAST;
+                }
+                else
+                {
+                    primaryStart = range.GetX2();
+                    primaryEnd = range.GetX1();
+                    primaryStep = -kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_WEST;
                 }
             }
+            else
+            {
+                secondaryStart = range.GetX1();
+                secondaryEnd = range.GetX2();
 
-            if (sliceBaseZ == INT32_MIN)
-                continue;
-
-            slices.push_back({ primary, sliceBaseZ, sliceMaxZ });
+                if (startPos.y <= (range.GetY1() + range.GetY2()) / 2)
+                {
+                    primaryStart = range.GetY1();
+                    primaryEnd = range.GetY2();
+                    primaryStep = kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_NORTH;
+                }
+                else
+                {
+                    primaryStart = range.GetY2();
+                    primaryEnd = range.GetY1();
+                    primaryStep = -kCoordsXYStep;
+                    slopeDirection = TILE_ELEMENT_DIRECTION_SOUTH;
+                }
+            }
         }
 
-        if (slices.empty())
-            return {};
-
-        // Filter out obstacle spikes (isolated height jumps)
-        if (slices.size() > 1)
+        std::vector<SliceInfo> calculateSlices()
         {
+            // Gather terrain heights: baseZ for going down, maxZ for going up
+            std::vector<SliceInfo> slices;
+
+            for (int32_t primary = primaryStart; primaryStep > 0 ? primary <= primaryEnd : primary >= primaryEnd;
+                 primary += primaryStep)
+            {
+                int32_t sliceBaseZ = INT32_MIN;
+                int32_t sliceMaxZ = INT32_MIN;
+
+                for (int32_t secondary = secondaryStart; secondary <= secondaryEnd; secondary += kCoordsXYStep)
+                {
+                    CoordsXY pos = primaryIsX ? CoordsXY{ primary, secondary } : CoordsXY{ secondary, primary };
+                    auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(pos));
+                    if (surfaceElement != nullptr)
+                    {
+                        int32_t base = surfaceElement->getBaseZ();
+                        int32_t top = getMaxSurfaceHeight(*surfaceElement);
+
+                        sliceBaseZ = std::max(sliceBaseZ, base);
+                        sliceMaxZ = std::max(sliceMaxZ, top);
+                    }
+                }
+
+                if (sliceBaseZ == INT32_MIN)
+                    continue;
+
+                slices.push_back({ primary, sliceBaseZ, sliceMaxZ });
+            }
+
+            return slices;
+        }
+
+        void flattenSpikes(std::vector<SliceInfo>& slices)
+        {
+            // Filter out obstacle spikes (isolated height jumps)
             for (size_t i = 0; i < slices.size(); i++)
             {
                 int32_t prevZ = (i > 0) ? slices[i - 1].maxZ : slices[1].maxZ;
@@ -148,14 +160,11 @@ namespace OpenRCT2
             }
         }
 
-        // Build path: terrain slopes (maxZ > baseZ) slope ON tile, raised blocks slope BEFORE
-        int32_t secondaryCount = (secondaryEnd - secondaryStart) / kCoordsXYStep + 1;
-        result.reserve(slices.size() * secondaryCount);
-
-        // Initial height: start at baseZ for slopes heading up, midpoint for steep diagonals,
-        // but 3-corner-up tiles aren't traversable so always maxZ. WTF so many edge cases!?
-        bool firstTileIsRaiseType = false;
+        int32_t getInitPathZFromSlices(std::vector<SliceInfo>& slices)
         {
+            // Initial height: start at baseZ for slopes heading up, midpoint for steep diagonals,
+            // but 3-corner-up tiles aren't traversable so always maxZ. WTF so many edge cases!?
+            bool firstTileIsRaiseType = false;
             CoordsXY firstPos = primaryIsX ? CoordsXY{ slices[0].primaryCoord, secondaryStart }
                                            : CoordsXY{ secondaryStart, slices[0].primaryCoord };
             auto* firstSurf = MapGetSurfaceElementAt(TileCoordsXY(firstPos));
@@ -167,161 +176,187 @@ namespace OpenRCT2
                 firstTileIsRaiseType = !isDiag
                     && (corners == 0b0111 || corners == 0b1011 || corners == 0b1101 || corners == 0b1110);
             }
+
+            bool firstTileIsSlope = (slices[0].maxZ - slices[0].baseZ) >= kPathHeightStep && !firstTileIsRaiseType;
+            bool firstTileIsSteep = (slices[0].maxZ - slices[0].baseZ) >= 2 * kPathHeightStep;
+            bool nextTileIsHigher = (slices.size() > 1) && (slices[1].maxZ > slices[0].maxZ); // > not >=
+            int32_t currentPathZ;
+            if (firstTileIsSlope && nextTileIsHigher)
+                currentPathZ = firstTileIsSteep ? slices[0].baseZ + kPathHeightStep : slices[0].baseZ;
+            else
+                currentPathZ = slices[0].maxZ;
+
+            return currentPathZ;
         }
-        bool firstTileIsSlope = (slices[0].maxZ - slices[0].baseZ) >= kPathHeightStep && !firstTileIsRaiseType;
-        bool firstTileIsSteep = (slices[0].maxZ - slices[0].baseZ) >= 2 * kPathHeightStep;
-        bool nextTileIsHigher = (slices.size() > 1) && (slices[1].maxZ > slices[0].maxZ); // > not >=
-        int32_t currentPathZ;
-        if (firstTileIsSlope && nextTileIsHigher)
-            currentPathZ = firstTileIsSteep ? slices[0].baseZ + kPathHeightStep : slices[0].baseZ;
-        else
-            currentPathZ = slices[0].maxZ;
 
-        // Track slope direction to distinguish landing from descent
-        bool justWentUp = false;
-        bool justWentDown = false;
-
-        for (size_t i = 0; i < slices.size(); i++)
+        std::vector<FootpathDragPlacement> calculateConnectedPathSlopes()
         {
-            int32_t thisBaseZ = slices[i].baseZ;
-            int32_t thisMaxZ = slices[i].maxZ;
-            int32_t nextMaxZ = (i + 1 < slices.size()) ? slices[i + 1].maxZ : thisMaxZ;
-            int32_t nextBaseZ = (i + 1 < slices.size()) ? slices[i + 1].baseZ : thisBaseZ;
+            std::vector<FootpathDragPlacement> result;
 
-            bool thisIsSlope = (thisMaxZ - thisBaseZ) >= kPathHeightStep;
-            bool nextIsRaisedBlock = (nextMaxZ == nextBaseZ) && (nextBaseZ > currentPathZ);
+            auto slices = calculateSlices();
+            if (slices.empty())
+                return {};
 
-            int32_t useZ = currentPathZ;
-            FootpathSlope useSlope = { FootpathSlopeType::flat, 0 };
+            flattenSpikes(slices);
 
-            bool isLastTile = (i == slices.size() - 1);
+            // Build path: terrain slopes (maxZ > baseZ) slope ON tile, raised blocks slope BEFORE
+            int32_t secondaryCount = (secondaryEnd - secondaryStart) / kCoordsXYStep + 1;
+            result.reserve(slices.size() * secondaryCount);
 
-            // Going UP
-            if (thisIsSlope && thisMaxZ > currentPathZ)
+            int32_t currentPathZ = getInitPathZFromSlices(slices);
+
+            // Track slope direction to distinguish landing from descent
+            bool justWentUp = false;
+            bool justWentDown = false;
+
+            for (size_t i = 0; i < slices.size(); i++)
             {
-                useSlope = { FootpathSlopeType::sloped, slopeDirection };
-                currentPathZ += kPathHeightStep;
-                justWentUp = true;
-                justWentDown = false;
-            }
-            else if (nextIsRaisedBlock && (nextBaseZ - currentPathZ) >= kPathHeightStep)
-            {
-                useSlope = { FootpathSlopeType::sloped, slopeDirection };
-                currentPathZ += kPathHeightStep;
-                justWentUp = true;
-                justWentDown = false;
-            }
-            // Going DOWN: on slopes go down ON tile, on flat blocks go down AFTER
-            else if ((currentPathZ - nextMaxZ) >= kPathHeightStep)
-            {
-                bool thisIsFlatBlock = !thisIsSlope && (thisMaxZ >= currentPathZ);
-                if (!thisIsFlatBlock)
+                int32_t thisBaseZ = slices[i].baseZ;
+                int32_t thisMaxZ = slices[i].maxZ;
+                int32_t nextMaxZ = (i + 1 < slices.size()) ? slices[i + 1].maxZ : thisMaxZ;
+                int32_t nextBaseZ = (i + 1 < slices.size()) ? slices[i + 1].baseZ : thisBaseZ;
+
+                bool thisIsSlope = (thisMaxZ - thisBaseZ) >= kPathHeightStep;
+                bool nextIsRaisedBlock = (nextMaxZ == nextBaseZ) && (nextBaseZ > currentPathZ);
+
+                int32_t useZ = currentPathZ;
+                FootpathSlope useSlope = { FootpathSlopeType::flat, 0 };
+
+                bool isLastTile = (i == slices.size() - 1);
+
+                // Going UP
+                if (thisIsSlope && thisMaxZ > currentPathZ)
                 {
-                    useZ = currentPathZ - kPathHeightStep;
-                    useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
-                    currentPathZ -= kPathHeightStep;
-                    justWentDown = true;
-                }
-                else
-                {
+                    useSlope = { FootpathSlopeType::sloped, slopeDirection };
+                    currentPathZ += kPathHeightStep;
+                    justWentUp = true;
                     justWentDown = false;
                 }
-                justWentUp = false;
-            }
-            // Last tile: check if we should slope down (not if we just came up)
-            else if (isLastTile && thisIsSlope && !justWentUp && currentPathZ >= thisMaxZ)
-            {
-                bool shouldSlopeDown = false;
-
-                if (justWentDown)
+                else if (nextIsRaisedBlock && (nextBaseZ - currentPathZ) >= kPathHeightStep)
                 {
-                    shouldSlopeDown = true;
+                    useSlope = { FootpathSlopeType::sloped, slopeDirection };
+                    currentPathZ += kPathHeightStep;
+                    justWentUp = true;
+                    justWentDown = false;
                 }
-                else
+                // Going DOWN: on slopes go down ON tile, on flat blocks go down AFTER
+                else if ((currentPathZ - nextMaxZ) >= kPathHeightStep)
                 {
-                    CoordsXY tilePos = primaryIsX ? CoordsXY{ slices[i].primaryCoord, secondaryStart }
-                                                  : CoordsXY{ secondaryStart, slices[i].primaryCoord };
-                    auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(tilePos));
-
-                    if (surfaceElement != nullptr)
+                    bool thisIsFlatBlock = !thisIsSlope && (thisMaxZ >= currentPathZ);
+                    if (!thisIsFlatBlock)
                     {
-                        uint8_t slope = surfaceElement->GetSlope();
-                        uint8_t corners = slope & kTileSlopeRaisedCornersMask;
-                        bool isDiagonal = (slope & kTileSlopeDiagonalFlag) != 0;
+                        useZ = currentPathZ - kPathHeightStep;
+                        useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
+                        currentPathZ -= kPathHeightStep;
+                        justWentDown = true;
+                    }
+                    else
+                    {
+                        justWentDown = false;
+                    }
+                    justWentUp = false;
+                }
+                // Last tile: check if we should slope down (not if we just came up)
+                else if (isLastTile && thisIsSlope && !justWentUp && currentPathZ >= thisMaxZ)
+                {
+                    bool shouldSlopeDown = false;
 
-                        if (isDiagonal)
-                        {
-                            // Diagonal: down corner indicates descent direction
-                            Direction downDirection = TILE_ELEMENT_DIRECTION_WEST;
-                            if (corners == kTileSlopeNCornerDown)
-                                downDirection = TILE_ELEMENT_DIRECTION_NORTH;
-                            else if (corners == kTileSlopeECornerDown)
-                                downDirection = TILE_ELEMENT_DIRECTION_EAST;
-                            else if (corners == kTileSlopeSCornerDown)
-                                downDirection = TILE_ELEMENT_DIRECTION_SOUTH;
-                            else if (corners == kTileSlopeWCornerDown)
-                                downDirection = TILE_ELEMENT_DIRECTION_WEST;
+                    if (justWentDown)
+                    {
+                        shouldSlopeDown = true;
+                    }
+                    else
+                    {
+                        CoordsXY tilePos = primaryIsX ? CoordsXY{ slices[i].primaryCoord, secondaryStart }
+                                                      : CoordsXY{ secondaryStart, slices[i].primaryCoord };
+                        auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(tilePos));
 
-                            if (downDirection == slopeDirection)
-                                shouldSlopeDown = true;
-                        }
-                        else
+                        if (surfaceElement != nullptr)
                         {
-                            auto terrainPlacement = FootpathGetOnTerrainPlacement(*surfaceElement);
-                            if (terrainPlacement.slope.type == FootpathSlopeType::sloped
-                                && terrainPlacement.slope.direction == DirectionReverse(slopeDirection))
+                            uint8_t slope = surfaceElement->GetSlope();
+                            uint8_t corners = slope & kTileSlopeRaisedCornersMask;
+                            bool isDiagonal = (slope & kTileSlopeDiagonalFlag) != 0;
+
+                            if (isDiagonal)
                             {
-                                shouldSlopeDown = true;
+                                // Diagonal: down corner indicates descent direction
+                                Direction downDirection = TILE_ELEMENT_DIRECTION_WEST;
+                                if (corners == kTileSlopeNCornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_NORTH;
+                                else if (corners == kTileSlopeECornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_EAST;
+                                else if (corners == kTileSlopeSCornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_SOUTH;
+                                else if (corners == kTileSlopeWCornerDown)
+                                    downDirection = TILE_ELEMENT_DIRECTION_WEST;
+
+                                if (downDirection == slopeDirection)
+                                    shouldSlopeDown = true;
+                            }
+                            else
+                            {
+                                auto terrainPlacement = FootpathGetOnTerrainPlacement(*surfaceElement);
+                                if (terrainPlacement.slope.type == FootpathSlopeType::sloped
+                                    && terrainPlacement.slope.direction == DirectionReverse(slopeDirection))
+                                {
+                                    shouldSlopeDown = true;
+                                }
                             }
                         }
                     }
-                }
 
-                if (shouldSlopeDown)
+                    if (shouldSlopeDown)
+                    {
+                        useZ = currentPathZ - kPathHeightStep;
+                        useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
+                        currentPathZ -= kPathHeightStep;
+                    }
+                    justWentUp = false;
+                    justWentDown = false;
+                }
+                else
                 {
-                    useZ = currentPathZ - kPathHeightStep;
-                    useSlope = { FootpathSlopeType::sloped, DirectionReverse(slopeDirection) };
-                    currentPathZ -= kPathHeightStep;
+                    useZ = thisMaxZ;
+                    currentPathZ = thisMaxZ;
+                    justWentUp = false;
+                    justWentDown = false;
                 }
-                justWentUp = false;
-                justWentDown = false;
-            }
-            else
-            {
-                useZ = thisMaxZ;
-                currentPathZ = thisMaxZ;
-                justWentUp = false;
-                justWentDown = false;
-            }
 
-            for (int32_t secondary = secondaryStart; secondary <= secondaryEnd; secondary += kCoordsXYStep)
-            {
-                CoordsXY pos = primaryIsX ? CoordsXY{ slices[i].primaryCoord, secondary }
-                                          : CoordsXY{ secondary, slices[i].primaryCoord };
-
-                int32_t tileZ = useZ;
-                FootpathSlope tileSlope = useSlope;
-
-                // Handle 3-corner-up tiles (raise flat paths to match terrain)
-                auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(pos));
-                if (surfaceElement != nullptr)
+                for (int32_t secondary = secondaryStart; secondary <= secondaryEnd; secondary += kCoordsXYStep)
                 {
-                    auto terrainPlacement = FootpathGetOnTerrainPlacement(*surfaceElement);
-                    uint8_t rawSlope = surfaceElement->GetSlope();
-                    uint8_t corners = rawSlope & kTileSlopeRaisedCornersMask;
-                    bool isDiagonal = (rawSlope & kTileSlopeDiagonalFlag) != 0;
-                    bool isRaiseType = !isDiagonal
-                        && (corners == 0b0111 || corners == 0b1011 || corners == 0b1101 || corners == 0b1110);
+                    CoordsXY pos = primaryIsX ? CoordsXY{ slices[i].primaryCoord, secondary }
+                                              : CoordsXY{ secondary, slices[i].primaryCoord };
 
-                    if (isRaiseType && tileSlope.type == FootpathSlopeType::flat && terrainPlacement.baseZ > tileZ)
-                        tileZ = terrainPlacement.baseZ;
+                    int32_t tileZ = useZ;
+                    FootpathSlope tileSlope = useSlope;
+
+                    // Handle 3-corner-up tiles (raise flat paths to match terrain)
+                    auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY(pos));
+                    if (surfaceElement != nullptr)
+                    {
+                        auto terrainPlacement = FootpathGetOnTerrainPlacement(*surfaceElement);
+                        uint8_t rawSlope = surfaceElement->GetSlope();
+                        uint8_t corners = rawSlope & kTileSlopeRaisedCornersMask;
+                        bool isDiagonal = (rawSlope & kTileSlopeDiagonalFlag) != 0;
+                        bool isRaiseType = !isDiagonal
+                            && (corners == 0b0111 || corners == 0b1011 || corners == 0b1101 || corners == 0b1110);
+
+                        if (isRaiseType && tileSlope.type == FootpathSlopeType::flat && terrainPlacement.baseZ > tileZ)
+                            tileZ = terrainPlacement.baseZ;
+                    }
+
+                    result.push_back({ CoordsXYZ(pos.x, pos.y, tileZ), tileSlope });
                 }
-
-                result.push_back({ CoordsXYZ(pos.x, pos.y, tileZ), tileSlope });
             }
+
+            return result;
         }
+    };
 
-        return result;
+    std::vector<FootpathDragPlacement> calculateConnectedPathSlopes(MapRange range, CoordsXY dragStart)
+    {
+        ConnectedPathSlopes calc(range, dragStart);
+        return calc.calculateConnectedPathSlopes();
     }
 
 } // namespace OpenRCT2
