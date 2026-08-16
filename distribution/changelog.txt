@@ -13,6 +13,7 @@
 - Fix: [#26903] Making a ride visible or invisible is always denied in multiplayer.
 - Fix: [#26917] Tile Inspector does not show indestructible track status correctly when ‘Make all track pieces destructible’ cheat is enabled.
 - Fix: [#26921] The bottom panel buttons for finances, park rating, date, etc. are not invalidating properly.
+- Fix: [#26935] Windows opened on the title screen do not ‘flash’ around the edges when bringing them back into focus.
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
