@@ -130,7 +130,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_START_NEW_GAME:
-                    if (auto* window = windowMgr->BringToFrontByClass(WindowClass::scenarioSelect); window == nullptr)
+                    if (windowMgr->BringToFrontByClass(WindowClass::scenarioSelect) == nullptr)
                     {
                         windowMgr->CloseByClass(WindowClass::loadsave);
                         windowMgr->CloseByClass(WindowClass::serverList);
@@ -138,7 +138,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_CONTINUE_SAVED_GAME:
-                    if (auto* window = windowMgr->BringToFrontByClass(WindowClass::loadsave); window == nullptr)
+                    if (windowMgr->BringToFrontByClass(WindowClass::loadsave) == nullptr)
                     {
                         windowMgr->CloseByClass(WindowClass::scenarioSelect);
                         windowMgr->CloseByClass(WindowClass::serverList);
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_MULTIPLAYER:
-                    if (auto* window = windowMgr->BringToFrontByClass(WindowClass::serverList); window == nullptr)
+                    if (windowMgr->BringToFrontByClass(WindowClass::serverList) == nullptr)
                     {
                         windowMgr->CloseByClass(WindowClass::scenarioSelect);
                         windowMgr->CloseByClass(WindowClass::loadsave);
