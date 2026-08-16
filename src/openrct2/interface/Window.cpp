@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.String.h"
@@ -20,6 +19,7 @@
 #include "../drawing/RenderTarget.h"
 #include "../entity/EntityRegistry.h"
 #include "../ride/RideAudio.h"
+#include "../scenes/SceneManager.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
@@ -363,7 +363,8 @@ static constexpr float kWindowScrollLocations[][2] = {
         auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
         int32_t i = 0;
-        if (gLegacyScene != LegacyScene::titleSequence)
+        auto sceneManager = GetContext()->GetSceneManager();
+        if (sceneManager->getActiveScene() != sceneManager->getTitleScene())
         {
             bool found = false;
             while (!found)
@@ -721,62 +722,9 @@ static constexpr float kWindowScrollLocations[][2] = {
     }
 
     /**
-     * rct2: 0x0066B905
-     */
-    void WindowResizeGui(int32_t width, int32_t height)
-    {
-        WindowResizeGuiScenarioEditor(width, height);
-        if (isInEditorMode())
-            return;
-
-        auto* windowMgr = Ui::GetWindowManager();
-        WindowBase* titleWind = windowMgr->FindByClass(WindowClass::titleMenu);
-        if (titleWind != nullptr)
-        {
-            titleWind->windowPos.x = (width - titleWind->width) / 2;
-            titleWind->windowPos.y = height - 182;
-        }
-
-        WindowBase* versionWind = windowMgr->FindByClass(WindowClass::titleVersion);
-        if (versionWind != nullptr)
-            versionWind->windowPos.y = height - 30;
-
-        WindowBase* exitWind = windowMgr->FindByClass(WindowClass::titleExit);
-        if (exitWind != nullptr)
-        {
-            exitWind->windowPos.x = width - 40;
-            exitWind->windowPos.y = height - 64;
-        }
-
-        WindowBase* optionsWind = windowMgr->FindByClass(WindowClass::titleOptions);
-        if (optionsWind != nullptr)
-        {
-            optionsWind->windowPos.x = width - 80;
-        }
-
-        // Keep options window centred after a resize
-        WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::options);
-        if (optionsWindow != nullptr)
-        {
-            optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
-            optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
-        }
-
-        // Keep progress bar window centred after a resize
-        WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::progressWindow);
-        if (ProgressWindow != nullptr)
-        {
-            ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
-            ProgressWindow->windowPos.y = (ContextGetHeight() - ProgressWindow->height) / 2;
-        }
-
-        GfxInvalidateScreen();
-    }
-
-    /**
      * rct2: 0x0066F0DD
      */
-    void WindowResizeGuiScenarioEditor(int32_t width, int32_t height)
+    static void WindowResizeGuiMainToolbars(const int32_t width, const int32_t height)
     {
         auto* mainWind = WindowGetMain();
         if (mainWind != nullptr)
@@ -801,12 +749,90 @@ static constexpr float kWindowScrollLocations[][2] = {
             topWind->width = std::max(640, width);
         }
 
+        WindowBase* parkInfoPanel = windowMgr->FindByClass(WindowClass::parkInfoPanel);
+        if (parkInfoPanel != nullptr)
+        {
+            parkInfoPanel->windowPos.y = height - 32;
+        }
+
+        WindowBase* dateInfoPanel = windowMgr->FindByClass(WindowClass::dateInfoPanel);
+        if (dateInfoPanel != nullptr)
+        {
+            dateInfoPanel->windowPos.x = width - dateInfoPanel->width;
+            dateInfoPanel->windowPos.y = height - 32;
+        }
+
         WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::bottomToolbar);
         if (bottomWind != nullptr)
         {
+            bottomWind->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
+            bottomWind->windowPos.x = parkInfoPanel->width;
             bottomWind->windowPos.y = height - 32;
-            bottomWind->width = std::max(640, width);
         }
+    }
+
+    static void WindowResizeGuiTitleScreen(const int32_t width, const int32_t height)
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+        WindowBase* titleWind = windowMgr->FindByClass(WindowClass::titleMenu);
+        if (titleWind != nullptr)
+        {
+            titleWind->windowPos.x = (width - titleWind->width) / 2;
+            titleWind->windowPos.y = height - 182;
+        }
+
+        WindowBase* versionWind = windowMgr->FindByClass(WindowClass::titleVersion);
+        if (versionWind != nullptr)
+            versionWind->windowPos.y = height - 30;
+
+        WindowBase* exitWind = windowMgr->FindByClass(WindowClass::titleExit);
+        if (exitWind != nullptr)
+        {
+            exitWind->windowPos.x = width - 40;
+            exitWind->windowPos.y = height - 64;
+        }
+
+        WindowBase* optionsWind = windowMgr->FindByClass(WindowClass::titleOptions);
+        if (optionsWind != nullptr)
+        {
+            optionsWind->windowPos.x = width - 80;
+        }
+    }
+
+    static void WindowResizeGuiCentredWindows(const int32_t width, const int32_t height)
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+
+        // Keep options window centred after a resize
+        WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::options);
+        if (optionsWindow != nullptr)
+        {
+            optionsWindow->windowPos.x = (width - optionsWindow->width) / 2;
+            optionsWindow->windowPos.y = (height - optionsWindow->height) / 2;
+        }
+
+        // Keep progress bar window centred after a resize
+        WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::progressWindow);
+        if (ProgressWindow != nullptr)
+        {
+            ProgressWindow->windowPos.x = (width - ProgressWindow->width) / 2;
+            ProgressWindow->windowPos.y = (height - ProgressWindow->height) / 2;
+        }
+    }
+
+    void WindowResizeGui(const int32_t width, const int32_t height)
+    {
+        WindowResizeGuiMainToolbars(width, height);
+
+        auto sceneManager = GetContext()->GetSceneManager();
+        if (sceneManager->getActiveScene() == sceneManager->getTitleScene())
+        {
+            return WindowResizeGuiTitleScreen(width, height);
+        }
+
+        WindowResizeGuiCentredWindows(width, height);
+
+        GfxInvalidateScreen();
     }
 
     /**

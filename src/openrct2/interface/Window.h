@@ -86,9 +86,7 @@ namespace OpenRCT2
 
     Viewport* WindowGetViewport(WindowBase* window);
 
-    // Open window functions
     void WindowResizeGui(int32_t width, int32_t height);
-    void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
 
     void TextinputCancel();
 

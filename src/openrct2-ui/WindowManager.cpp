@@ -74,6 +74,8 @@ public:
                 return ClearSceneryOpen();
             case WindowClass::customCurrencyConfig:
                 return CustomCurrencyOpen();
+            case WindowClass::dateInfoPanel:
+                return dateInfoPanelOpen();
             case WindowClass::debugPaint:
                 return DebugPaintOpen();
             case WindowClass::editorInventionList:
@@ -104,6 +106,8 @@ public:
                 return NewRideOpen();
             case WindowClass::parkInformation:
                 return ParkEntranceOpen();
+            case WindowClass::parkInfoPanel:
+                return parkInfoPanelOpen();
             case WindowClass::recentNews:
                 return NewsOpen();
             case WindowClass::rideConstruction:
@@ -500,29 +504,29 @@ public:
             }
 
             case INTENT_ACTION_UPDATE_CLIMATE:
-                gToolbarDirtyFlags.set(BottomToolbarDirtyFlag::weather);
+                InvalidateByClass(WindowClass::dateInfoPanel);
                 InvalidateByClass(WindowClass::guestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
-                gToolbarDirtyFlags.set(BottomToolbarDirtyFlag::guestCount);
                 InvalidateByClass(WindowClass::guestList);
                 InvalidateByClass(WindowClass::parkInformation);
+                InvalidateByClass(WindowClass::parkInfoPanel);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
-                gToolbarDirtyFlags.set(BottomToolbarDirtyFlag::parkRating);
                 InvalidateByClass(WindowClass::parkInformation);
+                InvalidateByClass(WindowClass::parkInfoPanel);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
-                gToolbarDirtyFlags.set(BottomToolbarDirtyFlag::date);
+                InvalidateByClass(WindowClass::dateInfoPanel);
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
                 InvalidateByClass(WindowClass::finances);
-                gToolbarDirtyFlags.set(BottomToolbarDirtyFlag::money);
+                InvalidateByClass(WindowClass::parkInfoPanel);
                 break;
 
             case INTENT_ACTION_UPDATE_BANNER:
