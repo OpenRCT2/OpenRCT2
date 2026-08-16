@@ -4366,7 +4366,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (allowChangingBodyColour)
                         {
-                            auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
+                            auto colour = getRandomColour();
                             auto vehicleSetBodyColourAction = GameActions::RideSetAppearanceAction(
                                 rideId, GameActions::RideSetAppearanceType::vehicleColourBody, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetBodyColourAction, gameState);
@@ -4374,7 +4374,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if (allowChangingTrimColour)
                         {
-                            auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
+                            auto colour = getRandomColour();
                             auto vehicleSetTrimColourAction = GameActions::RideSetAppearanceAction(
                                 rideId, GameActions::RideSetAppearanceType::vehicleColourTrim, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTrimColourAction, gameState);
@@ -4382,7 +4382,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if (allowChangingTertiaryColour)
                         {
-                            auto colour = static_cast<Colour>(UtilRand() % kColourNumNormal);
+                            auto colour = getRandomColour();
                             auto vehicleSetTertiaryColourAction = GameActions::RideSetAppearanceAction(
                                 rideId, GameActions::RideSetAppearanceType::vehicleColourTertiary, EnumValue(colour), i);
                             GameActions::Execute(&vehicleSetTertiaryColourAction, gameState);
@@ -5126,7 +5126,7 @@ namespace OpenRCT2::Ui::Windows
         {
             Colour spriteColour = ride->trackColours[0].main;
             if (ride->flags.has(RideFlag::randomShopColours))
-                spriteColour = Colour((getGameState().currentTicks / 32) % kColourNumNormal);
+                spriteColour = getCycleColour(getGameState().currentTicks);
 
             auto* image = GfxGetG1Element(shopItem.Image);
             if (image == nullptr)
