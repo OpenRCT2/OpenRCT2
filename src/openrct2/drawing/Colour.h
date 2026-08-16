@@ -94,4 +94,17 @@ namespace OpenRCT2::Drawing
 
     Colour colourFromString(u8string s, Colour defaultValue = Colour::black);
     u8string colourToString(Colour colour);
+
+    /**
+     * Get a random colour. NOT network safe!
+     */
+    Colour getRandomColour();
+    /**
+     * Get a random colour in a way that works the same across all clients.
+     */
+    Colour getRandomColourNetworkSafe();
+    /**
+     * Get a colour based on the current time (in ticks), which will cycle through all available colours.
+     */
+    Colour getCycleColour(uint32_t ticks);
 } // namespace OpenRCT2::Drawing

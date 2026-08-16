@@ -1579,23 +1579,16 @@ namespace OpenRCT2
         switch (shopItem)
         {
             case ShopItem::tShirt:
-                guest.TshirtColour = hasRandomShopColour
-                    ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
-                    : ride.trackColours[0].main;
+                guest.TshirtColour = hasRandomShopColour ? Drawing::getRandomColourNetworkSafe() : ride.trackColours[0].main;
                 break;
             case ShopItem::hat:
-                guest.hatColour = hasRandomShopColour ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
-                                                      : ride.trackColours[0].main;
+                guest.hatColour = hasRandomShopColour ? Drawing::getRandomColourNetworkSafe() : ride.trackColours[0].main;
                 break;
             case ShopItem::balloon:
-                guest.balloonColour = hasRandomShopColour
-                    ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
-                    : ride.trackColours[0].main;
+                guest.balloonColour = hasRandomShopColour ? Drawing::getRandomColourNetworkSafe() : ride.trackColours[0].main;
                 break;
             case ShopItem::umbrella:
-                guest.umbrellaColour = hasRandomShopColour
-                    ? static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal))
-                    : ride.trackColours[0].main;
+                guest.umbrellaColour = hasRandomShopColour ? Drawing::getRandomColourNetworkSafe() : ride.trackColours[0].main;
                 break;
             case ShopItem::map:
                 guest.ResetPathfindGoal();
