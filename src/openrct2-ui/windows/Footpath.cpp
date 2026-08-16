@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Calculate max surface height including raised corners and steep slopes
             int32_t z = surfaceElement->getBaseZ();
-            uint8_t slope = surfaceElement->GetSlope();
+            uint8_t slope = surfaceElement->getSlope();
             if (slope & kTileSlopeRaisedCornersMask)
                 z += kPathHeightStep;
             if (slope & kTileSlopeDiagonalFlag)
@@ -985,7 +985,7 @@ namespace OpenRCT2::Ui::Windows
                     int32_t mapZ = info.Element->getBaseZ();
                     if (info.Element->getType() == TileElementType::surface)
                     {
-                        uint8_t slope = info.Element->asSurface()->GetSlope();
+                        uint8_t slope = info.Element->asSurface()->getSlope();
                         if (slope & kTileSlopeRaisedCornersMask)
                             mapZ += kPathHeightStep;
                         if (slope & kTileSlopeDiagonalFlag)

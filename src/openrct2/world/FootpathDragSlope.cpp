@@ -31,7 +31,7 @@ namespace OpenRCT2
     static int32_t getMaxSurfaceHeight(const SurfaceElement& surface)
     {
         int32_t z = surface.getBaseZ();
-        uint8_t slope = surface.GetSlope();
+        uint8_t slope = surface.getSlope();
         if (slope & kTileSlopeRaisedCornersMask)
             z += kPathHeightStep;
         if (slope & kTileSlopeDiagonalFlag)
@@ -170,7 +170,7 @@ namespace OpenRCT2
             auto* firstSurf = MapGetSurfaceElementAt(TileCoordsXY(firstPos));
             if (firstSurf != nullptr)
             {
-                uint8_t slope = firstSurf->GetSlope();
+                uint8_t slope = firstSurf->getSlope();
                 uint8_t corners = slope & kTileSlopeRaisedCornersMask;
                 bool isDiag = (slope & kTileSlopeDiagonalFlag) != 0;
                 firstTileIsRaiseType = !isDiag
@@ -273,7 +273,7 @@ namespace OpenRCT2
 
                         if (surfaceElement != nullptr)
                         {
-                            uint8_t slope = surfaceElement->GetSlope();
+                            uint8_t slope = surfaceElement->getSlope();
                             uint8_t corners = slope & kTileSlopeRaisedCornersMask;
                             bool isDiagonal = (slope & kTileSlopeDiagonalFlag) != 0;
 
@@ -335,7 +335,7 @@ namespace OpenRCT2
                     if (surfaceElement != nullptr)
                     {
                         auto terrainPlacement = FootpathGetOnTerrainPlacement(*surfaceElement);
-                        uint8_t rawSlope = surfaceElement->GetSlope();
+                        uint8_t rawSlope = surfaceElement->getSlope();
                         uint8_t corners = rawSlope & kTileSlopeRaisedCornersMask;
                         bool isDiagonal = (rawSlope & kTileSlopeDiagonalFlag) != 0;
                         bool isRaiseType = !isDiagonal
