@@ -55,9 +55,12 @@
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 #include "../world/Weather.h"
+#include "../world/tile_element/BannerElement.h"
+#include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "Legacy.h"
 #include "ParkPreview.h"
 
@@ -1205,56 +1208,113 @@ namespace OpenRCT2
                     cs.read(tileElements.data(), tileElements.size() * sizeof(TileElement));
                     SetTileElements(gameState, std::move(tileElements));
 
+                    auto targetVersion = os.getHeader().targetVersion;
                     TileElementIterator it;
                     TileElementIteratorBegin(&it);
                     while (TileElementIteratorNext(&it))
                     {
-                        if (it.element->getType() == TileElementType::path)
+                        switch (it.element->getType())
                         {
-                            auto* pathElement = it.element->asPath();
-                            if (pathElement->hasLegacyPathEntry())
+                            case TileElementType::banner:
                             {
-                                auto pathEntryIndex = pathElement->getLegacyPathEntryIndex();
-                                if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
+                                if (targetVersion < kExtendedColoursGoldVersion)
                                 {
-                                    if (pathElement->isQueue())
-                                        pathElement->setSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
-                                    else
-                                        pathElement->setSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
-
-                                    pathElement->setRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                    auto* banner = it.element->asBanner()->getBanner();
+                                    if (banner != nullptr)
+                                    {
+                                        banner->colour = convertPre62Colour(banner->colour);
+                                    }
                                 }
+                                break;
                             }
-                        }
-                        else if (it.element->getType() == TileElementType::track)
-                        {
-                            auto* trackElement = it.element->asTrack();
-                            auto trackType = trackElement->getTrackType();
-                            if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
+                            case TileElementType::surface:
+                                break;
+                            case TileElementType::path:
                             {
-                                it.element->setInvisible(true);
+                                auto* pathElement = it.element->asPath();
+                                if (pathElement->hasLegacyPathEntry())
+                                {
+                                    auto pathEntryIndex = pathElement->getLegacyPathEntryIndex();
+                                    if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
+                                    {
+                                        if (pathElement->isQueue())
+                                            pathElement->setSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
+                                        else
+                                            pathElement->setSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
+
+                                        pathElement->setRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                    }
+                                }
+                                break;
                             }
-                            if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
+                            case TileElementType::track:
                             {
-                                if (trackType == TrackElemType::brakes)
-                                    trackElement->setBrakeClosed(true);
-                                if (trackType == TrackElemType::blockBrakes)
-                                    trackElement->setBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                                auto* trackElement = it.element->asTrack();
+                                auto trackType = trackElement->getTrackType();
+                                if (TrackTypeMustBeMadeInvisible(*trackElement, targetVersion))
+                                {
+                                    it.element->setInvisible(true);
+                                }
+                                if (targetVersion < kBlockBrakeImprovementsVersion)
+                                {
+                                    if (trackType == TrackElemType::brakes)
+                                        trackElement->setBrakeClosed(true);
+                                    if (trackType == TrackElemType::blockBrakes)
+                                        trackElement->setBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                                }
+                                break;
                             }
-                        }
-                        else if (it.element->getType() == TileElementType::smallScenery && os.getHeader().targetVersion < 23)
-                        {
-                            auto* sceneryElement = it.element->asSmallScenery();
-                            // Previous formats stored the needs supports flag in the primary colour
-                            // We have moved it into a flags field to support extended colour sets
-                            bool needsSupports = EnumValue(sceneryElement->getPrimaryColour())
-                                & kRCT12SmallSceneryElementNeedsSupportsFlag;
-                            if (needsSupports)
+                            case TileElementType::smallScenery:
                             {
-                                const auto valueWithoutFlag = EnumValue(sceneryElement->getPrimaryColour())
-                                    & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
-                                sceneryElement->setPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
-                                sceneryElement->setNeedsSupports();
+                                if (targetVersion < 23)
+                                {
+                                    auto* sceneryElement = it.element->asSmallScenery();
+                                    // Previous formats stored the needs supports flag in the primary colour
+                                    // We have moved it into a flags field to support extended colour sets
+                                    bool needsSupports = EnumValue(sceneryElement->getPrimaryColour())
+                                        & kRCT12SmallSceneryElementNeedsSupportsFlag;
+                                    if (needsSupports)
+                                    {
+                                        const auto valueWithoutFlag = EnumValue(sceneryElement->getPrimaryColour())
+                                            & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
+                                        sceneryElement->setPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
+                                        sceneryElement->setNeedsSupports();
+                                    }
+                                }
+                                if (targetVersion < kExtendedColoursGoldVersion)
+                                {
+                                    auto* sceneryElement = it.element->asSmallScenery();
+                                    sceneryElement->setPrimaryColour(convertPre62Colour(sceneryElement->getPrimaryColour()));
+                                    sceneryElement->setSecondaryColour(
+                                        convertPre62Colour(sceneryElement->getSecondaryColour()));
+                                    sceneryElement->setTertiaryColour(convertPre62Colour(sceneryElement->getTertiaryColour()));
+                                }
+                                break;
+                            }
+                            case TileElementType::entrance:
+                                break;
+                            case TileElementType::wall:
+                            {
+                                if (targetVersion < kExtendedColoursGoldVersion)
+                                {
+                                    auto* wallElement = it.element->asWall();
+                                    wallElement->setPrimaryColour(convertPre62Colour(wallElement->getPrimaryColour()));
+                                    wallElement->setSecondaryColour(convertPre62Colour(wallElement->getSecondaryColour()));
+                                    wallElement->setTertiaryColour(convertPre62Colour(wallElement->getTertiaryColour()));
+                                }
+                                break;
+                            }
+                            case TileElementType::largeScenery:
+                            {
+                                if (targetVersion < kExtendedColoursGoldVersion)
+                                {
+                                    auto* sceneryElement = it.element->asLargeScenery();
+                                    sceneryElement->setPrimaryColour(convertPre62Colour(sceneryElement->getPrimaryColour()));
+                                    sceneryElement->setSecondaryColour(
+                                        convertPre62Colour(sceneryElement->getSecondaryColour()));
+                                    sceneryElement->setTertiaryColour(convertPre62Colour(sceneryElement->getTertiaryColour()));
+                                }
+                                break;
                             }
                         }
                     }

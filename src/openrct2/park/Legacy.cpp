@@ -3152,6 +3152,26 @@ std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedVa
     return std::make_pair(numDrops, numPoweredLifts);
 }
 
+Colour convertPre62Colour(uint8_t colour)
+{
+    // In many cases, colours are interpreted as FilterPaletteId. Of course, this has been abused to render rides
+    // using e.g. water effects (which start right after the last valid colour). Account for this by shifting the
+    // number by the number of newly added colours.
+    constexpr auto kOldNumColours = 56;
+    constexpr auto kNumNewColours = 18;
+    if (colour >= kOldNumColours)
+    {
+        colour += kNumNewColours;
+    }
+
+    return static_cast<Colour>(colour);
+}
+
+Colour convertPre62Colour(Colour colour)
+{
+    return convertPre62Colour(EnumValue(colour));
+}
+
 void readWriteColour(OrcaStream::ChunkStream& cs, Colour& colourField, uint32_t parkFileVersion)
 {
     if (parkFileVersion >= kExtendedColoursGoldVersion)
@@ -3160,18 +3180,7 @@ void readWriteColour(OrcaStream::ChunkStream& cs, Colour& colourField, uint32_t 
         return;
     }
 
-    // In many cases, colours are interpreted as FilterPaletteId. Of course, this has been abused to render rides
-    // using e.g. water effects (which start right after the last valid colour). Account for this by shifting the
-    // number by the number of newly added colours.
-    constexpr auto kOldNumColours = 56;
-    constexpr auto kNumNewColours = 18;
     uint8_t tempColour{};
     cs.readWrite(tempColour);
-
-    if (tempColour >= kOldNumColours)
-    {
-        tempColour += kNumNewColours;
-    }
-
-    colourField = static_cast<Colour>(tempColour);
+    colourField = convertPre62Colour(tempColour);
 }

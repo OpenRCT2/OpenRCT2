@@ -75,4 +75,7 @@ bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, in
 
 std::pair<uint8_t, OpenRCT2::SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
 std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);
+
+OpenRCT2::Drawing::Colour convertPre62Colour(uint8_t colour);
+OpenRCT2::Drawing::Colour convertPre62Colour(OpenRCT2::Drawing::Colour colour);
 void readWriteColour(OpenRCT2::OrcaStream::ChunkStream& cs, OpenRCT2::Drawing::Colour& colourField, uint32_t parkFileVersion);
