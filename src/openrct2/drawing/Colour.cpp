@@ -107,18 +107,26 @@ namespace OpenRCT2::Drawing
         return "black";
     }
 
+    static Colour skipNonNormalColour(uint8_t input)
+    {
+        if (input >= EnumValue(Colour::invisible))
+            return static_cast<Colour>(input + 2);
+
+        return static_cast<Colour>(input);
+    }
+
     Colour getRandomColour()
     {
-        return static_cast<Colour>(UtilRand() % kColourNumNormal);
+        return skipNonNormalColour(UtilRand() % kColourNumNormal);
     }
 
     Colour getRandomColourNetworkSafe()
     {
-        return static_cast<Colour>(ScenarioRandMax(kColourNumNormal));
+        return skipNonNormalColour(ScenarioRandMax(kColourNumNormal));
     }
 
     Colour getCycleColour(uint32_t ticks)
     {
-        return Colour((ticks / 32) % kColourNumNormal);
+        return skipNonNormalColour((ticks / 32) % kColourNumNormal);
     }
 } // namespace OpenRCT2::Drawing
