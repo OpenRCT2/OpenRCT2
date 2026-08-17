@@ -20,7 +20,7 @@
 #include "../drawing/Rectangle.h"
 #include "../drawing/Text.h"
 #include "../interface/ColourWithFlags.h"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Formatting.h"
 #include "../network/Network.h"
 #include "../platform/Platform.h"

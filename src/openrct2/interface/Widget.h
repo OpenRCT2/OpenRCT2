@@ -12,7 +12,7 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../drawing/ImageId.hpp"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/StringIdType.h"
 
 #include <cstdint>

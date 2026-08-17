@@ -17,7 +17,7 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
 #include "../drawing/Text.h"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 

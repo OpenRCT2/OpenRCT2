@@ -11,7 +11,7 @@
 
 #include "../Context.h"
 #include "../drawing/Drawing.h"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../interface/Screenshot.h"
 #include "../platform/Platform.h"
 #include "../ui/UiContext.h"

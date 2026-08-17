@@ -17,7 +17,7 @@
 #include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../object/ObjectEntryManager.h"
 #include "../object/WaterEntry.h"
 #include "../util/Util.h"

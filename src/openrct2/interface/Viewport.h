@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
 #include "Window.h"

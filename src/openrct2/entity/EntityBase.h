@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 
 struct CoordsXYZ;
 

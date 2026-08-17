@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../interface/Screen.hpp"
+    #include "../interface/ScreenCoords.hpp"
     #include "../world/Location.hpp"
 
     #include <functional>

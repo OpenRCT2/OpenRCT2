@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../interface/ZoomLevel.h"
 
 namespace OpenRCT2::Drawing

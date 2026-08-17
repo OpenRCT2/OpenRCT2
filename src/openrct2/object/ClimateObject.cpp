@@ -14,7 +14,7 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Text.h"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
 

@@ -40,7 +40,7 @@
 #include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/Screen.hpp>
+#include <openrct2/interface/ScreenCoords.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>

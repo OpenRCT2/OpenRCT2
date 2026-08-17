@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../interface/WindowFlags.h"
 #include "../localisation/StringIdType.h"
 #include "../windows/Intent.h"

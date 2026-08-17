@@ -12,7 +12,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../interface/Screen.hpp"
+#include "../interface/ScreenCoords.hpp"
 
 namespace OpenRCT2
 {

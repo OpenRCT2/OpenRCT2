@@ -11,7 +11,7 @@
 
 #include "core/FlagHolder.hpp"
 #include "core/StringTypes.h"
-#include "interface/Screen.hpp"
+#include "interface/ScreenCoords.hpp"
 
 namespace OpenRCT2
 {
