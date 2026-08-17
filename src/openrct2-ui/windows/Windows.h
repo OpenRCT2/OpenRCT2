@@ -133,7 +133,6 @@ namespace OpenRCT2::Ui::Windows
 
     // GameBottomToolbar
     WindowBase* GameBottomToolbarOpen();
-    void WindowGameBottomToolbarInvalidateNewsItem();
 
     // Guest
     WindowBase* GuestOpen(Peep* peep);
@@ -194,6 +193,10 @@ namespace OpenRCT2::Ui::Windows
 
     // News
     WindowBase* NewsOpen();
+
+    // NewsTicker
+    WindowBase* newsTickerOpen();
+    void newsTickerInvalidateNewsItem();
 
     // NetworkStatus
     WindowBase* NetworkStatusOpen(const std::string& text, CloseCallback onClose);

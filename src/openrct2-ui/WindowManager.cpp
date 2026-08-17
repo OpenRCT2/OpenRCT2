@@ -471,7 +471,7 @@ public:
                 break;
 
             case INTENT_ACTION_TRIGGER_TICKER_NEWS:
-                WindowGameBottomToolbarInvalidateNewsItem();
+                newsTickerInvalidateNewsItem();
                 break;
 
             case INTENT_ACTION_REFRESH_GUEST_LIST:

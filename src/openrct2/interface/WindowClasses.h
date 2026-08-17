@@ -22,6 +22,7 @@ namespace OpenRCT2
         dateInfoPanel = 4,
         tooltip = 5,
         dropdown = 6,
+        newsTicker = 7,
         about = 8,
         // publisherCredits = 9,
         // musicCredits = 10,

@@ -204,6 +204,7 @@
     <ClCompile Include="windows\NewCampaign.cpp" />
     <ClCompile Include="windows\NewRide.cpp" />
     <ClCompile Include="windows\News.cpp" />
+    <ClCompile Include="windows\NewsTicker.cpp" />
     <ClCompile Include="windows\ObjectLoadError.cpp" />
     <ClCompile Include="windows\Options.cpp" />
     <ClCompile Include="windows\OverwritePrompt.cpp" />
