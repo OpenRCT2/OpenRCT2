@@ -7,14 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ScParticle.hpp"
-
-#include "../../../GameState.h"
-#include "../../../core/EnumMap.hpp"
-#include "../../../entity/Particle.h"
-#include "../../../world/Location.hpp"
-
 #ifdef ENABLE_SCRIPTING
+
+    #include "ScParticle.hpp"
+
+    #include "../../../GameState.h"
+    #include "../../../core/EnumMap.hpp"
+    #include "../../../entity/Particle.h"
+    #include "../../../world/Location.hpp"
 
 namespace OpenRCT2::Scripting
 {

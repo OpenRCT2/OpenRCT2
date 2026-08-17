@@ -7,20 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ScVehicle.hpp"
-
-#include "../../../GameState.h"
-#include "../../../core/EnumMap.hpp"
-#include "../../../entity/EntityTweener.h"
-#include "../../../ride/Track.h"
-#include "../../../ride/TrackData.h"
-#include "../../../ride/Vehicle.h"
-#include "../../../ride/ted/TrackElementDescriptor.h"
-#include "../../../world/Map.h"
-#include "../../../world/tile_element/TrackElement.h"
-#include "../ride/ScRide.hpp"
-
 #ifdef ENABLE_SCRIPTING
+
+    #include "ScVehicle.hpp"
+
+    #include "../../../GameState.h"
+    #include "../../../core/EnumMap.hpp"
+    #include "../../../entity/EntityTweener.h"
+    #include "../../../ride/Track.h"
+    #include "../../../ride/TrackData.h"
+    #include "../../../ride/Vehicle.h"
+    #include "../../../ride/ted/TrackElementDescriptor.h"
+    #include "../../../world/Map.h"
+    #include "../../../world/tile_element/TrackElement.h"
+    #include "../ride/ScRide.hpp"
 
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetadata;
