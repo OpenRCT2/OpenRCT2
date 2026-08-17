@@ -1537,7 +1537,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* windowMgr = GetWindowManager();
                 windowMgr->InvalidateByClass(WindowClass::finances);
-                windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+                windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
             }
         }
 

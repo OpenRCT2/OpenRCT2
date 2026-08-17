@@ -591,7 +591,7 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::peep);
         windowMgr->InvalidateByClass(WindowClass::parkInformation);
         windowMgr->InvalidateByClass(WindowClass::finances);
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
         windowMgr->InvalidateByClass(WindowClass::topToolbar);
         windowMgr->InvalidateByClass(WindowClass::cheats);
     }
@@ -602,7 +602,7 @@ namespace OpenRCT2::GameActions
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
     }
 
     void CheatSetAction::AddMoney(Park::ParkData& park, money64 amount) const
@@ -611,7 +611,7 @@ namespace OpenRCT2::GameActions
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
     }
 
     void CheatSetAction::ClearLoan(GameState_t& gameState, Park::ParkData& park) const
@@ -632,7 +632,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
     }
 
     void CheatSetAction::SetGuestParameter(int32_t parameter, int32_t value) const
