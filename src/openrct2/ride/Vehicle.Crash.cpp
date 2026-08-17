@@ -126,11 +126,11 @@ void Vehicle::UpdateCollisionSetup()
 
         Play3D(SoundId::crash, trainLoc);
 
-        ExplosionCloud::Create(trainLoc);
+        ExplosionCloud::create(trainLoc);
 
         for (int32_t i = 0; i < 10; i++)
         {
-            VehicleCrashParticle::Create(train->colours, trainLoc);
+            VehicleCrashParticle::create(train->colours, trainLoc);
         }
 
         train->flags.set(VehicleFlag::crashed);
@@ -403,13 +403,13 @@ void Vehicle::CrashOnLand()
     const auto curLoc = getLocation();
     Play3D(SoundId::crash, curLoc);
 
-    ExplosionCloud::Create(curLoc);
-    ExplosionFlare::Create(curLoc);
+    ExplosionCloud::create(curLoc);
+    ExplosionFlare::create(curLoc);
 
     uint8_t numParticles = std::min(spriteData.width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
-        VehicleCrashParticle::Create(colours, curLoc);
+        VehicleCrashParticle::create(colours, curLoc);
 
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
@@ -471,14 +471,14 @@ void Vehicle::CrashOnWater()
     const auto curLoc = getLocation();
     Play3D(SoundId::water1, curLoc);
 
-    CrashSplashParticle::Create(curLoc);
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -8, -9, 0 });
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, -9, 0 });
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, 8, 0 });
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -4, 8, 0 });
+    CrashSplashParticle::create(curLoc);
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ -8, -9, 0 });
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ 11, -9, 0 });
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ 11, 8, 0 });
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ -4, 8, 0 });
 
     for (int32_t i = 0; i < 10; ++i)
-        VehicleCrashParticle::Create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
+        VehicleCrashParticle::create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
 
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
@@ -513,7 +513,7 @@ void Vehicle::UpdateCrash()
                     int32_t xOffset = (ScenarioRand() & 2) - 1;
                     int32_t yOffset = (ScenarioRand() & 2) - 1;
 
-                    ExplosionCloud::Create(curPos + CoordsXYZ{ xOffset, yOffset, 0 });
+                    ExplosionCloud::create(curPos + CoordsXYZ{ xOffset, yOffset, 0 });
                 }
             }
             if (curVehicle->animationState <= 0xe388)

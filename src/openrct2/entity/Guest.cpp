@@ -858,8 +858,8 @@ namespace OpenRCT2
             {
                 Audio::Play3D(Audio::SoundId::crash, getLocation());
 
-                ExplosionCloud::Create({ x, y, z + 16 });
-                ExplosionFlare::Create({ x, y, z + 16 });
+                ExplosionCloud::create({ x, y, z + 16 });
+                ExplosionFlare::create({ x, y, z + 16 });
 
                 Remove();
                 return;
@@ -2267,7 +2267,7 @@ namespace OpenRCT2
 
         FinancePayment(-amount, expenditure);
 
-        MoneyEffect::CreateAt(amount, getLocation(), true);
+        MoneyEffect::createAt(amount, getLocation(), true);
 
         Audio::Play3D(Audio::SoundId::purchase, getLocation());
     }
@@ -5428,7 +5428,7 @@ namespace OpenRCT2
                     int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
                     Direction litterDirection = (ScenarioRand() & 0x3);
 
-                    Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
+                    Litter::create({ litterX, litterY, loc.z, litterDirection }, litterType);
                 }
             }
         }
@@ -5455,7 +5455,7 @@ namespace OpenRCT2
                 int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
                 Direction litterDirection = (ScenarioRand() & 0x3);
 
-                Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
+                Litter::create({ litterX, litterY, loc.z, litterDirection }, litterType);
             }
         }
 
@@ -5988,7 +5988,7 @@ namespace OpenRCT2
                     int32_t litterX = x + (ScenarioRand() & 7) - 3;
                     int32_t litterY = y + (ScenarioRand() & 7) - 3;
 
-                    Litter::Create({ litterX, litterY, z, static_cast<Direction>(ScenarioRand() & 3) }, litterType);
+                    Litter::create({ litterX, litterY, z, static_cast<Direction>(ScenarioRand() & 3) }, litterType);
                     removeItem(item);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -6859,7 +6859,7 @@ namespace OpenRCT2
                     isBalloonPopped = true;
                     Audio::Play3D(Audio::SoundId::balloonPop, { x, y, z });
                 }
-                Balloon::Create({ x, y, z + 9 }, balloonColour, isBalloonPopped);
+                Balloon::create({ x, y, z + 9 }, balloonColour, isBalloonPopped);
             }
             removeItem(ShopItem::balloon);
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -7697,7 +7697,7 @@ namespace OpenRCT2
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
         const auto curLoc = getLocation();
-        Litter::Create({ curLoc, orientation }, (id.ToUnderlying() & 1) ? Litter::Type::vomitAlt : Litter::Type::vomit);
+        Litter::create({ curLoc, orientation }, (id.ToUnderlying() & 1) ? Litter::Type::vomitAlt : Litter::Type::vomit);
 
         static constexpr Audio::SoundId coughs[4] = {
             Audio::SoundId::cough1,

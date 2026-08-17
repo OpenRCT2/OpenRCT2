@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui
                             auto duck = entity->as<Duck>();
                             if (duck != nullptr)
                             {
-                                duck->Press();
+                                duck->press();
                             }
                         }
                     }

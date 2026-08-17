@@ -41,7 +41,7 @@ void PaintJumpingFountain(PaintSession& session, const JumpingFountain& jumpingF
         isAntiClockwise = !isAntiClockwise;
     }
 
-    uint32_t baseImageId = (jumpingFountain.FountainType == JumpingFountainType::snow) ? SPR_JUMPING_FOUNTAIN_SNOW
+    uint32_t baseImageId = (jumpingFountain.fountainType == JumpingFountainType::snow) ? SPR_JUMPING_FOUNTAIN_SNOW
                                                                                        : SPR_JUMPING_FOUNTAIN_WATER;
     auto imageId = ImageId(baseImageId + imageDirection * 16 + jumpingFountain.frame);
     constexpr std::array kAntiClockWiseBoundingBoxes = {

@@ -1750,7 +1750,7 @@ static void ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& 
     Drawing::Colour colour = Drawing::Colour::brightRed;
     if (argv.size() > 3)
         colour = static_cast<Drawing::Colour>(atoi(argv[3].c_str()) % Drawing::kColourNumNormal);
-    Balloon::Create({ x, y, z }, colour, false);
+    Balloon::create({ x, y, z }, colour, false);
 }
 
 using console_command_func = void (*)(InteractiveConsole& console, const arguments_t& argv);

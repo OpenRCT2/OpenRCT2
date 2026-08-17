@@ -58,7 +58,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
         }
 
-        balloon->Press();
+        balloon->press();
 
         return Result();
     }

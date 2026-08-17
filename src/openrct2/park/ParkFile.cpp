@@ -2524,7 +2524,7 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
     {
         ReadWriteEntityCommon(cs, steamParticle);
-        cs.readWrite(steamParticle.time_to_move);
+        cs.readWrite(steamParticle.timeToMove);
         cs.readWrite(steamParticle.frame);
     }
 
@@ -2545,17 +2545,17 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, vehicleCrashParticle);
         cs.readWrite(vehicleCrashParticle.frame);
-        cs.readWrite(vehicleCrashParticle.time_to_live);
+        cs.readWrite(vehicleCrashParticle.timeToLive);
         cs.readWrite(vehicleCrashParticle.frame);
         cs.readWrite(vehicleCrashParticle.colour[0]);
         cs.readWrite(vehicleCrashParticle.colour[1]);
-        cs.readWrite(vehicleCrashParticle.crashed_sprite_base);
-        cs.readWrite(vehicleCrashParticle.velocity_x);
-        cs.readWrite(vehicleCrashParticle.velocity_y);
-        cs.readWrite(vehicleCrashParticle.velocity_z);
-        cs.readWrite(vehicleCrashParticle.acceleration_x);
-        cs.readWrite(vehicleCrashParticle.acceleration_y);
-        cs.readWrite(vehicleCrashParticle.acceleration_z);
+        cs.readWrite(vehicleCrashParticle.crashedSpriteBase);
+        cs.readWrite(vehicleCrashParticle.velocityX);
+        cs.readWrite(vehicleCrashParticle.velocityY);
+        cs.readWrite(vehicleCrashParticle.velocityZ);
+        cs.readWrite(vehicleCrashParticle.accelerationX);
+        cs.readWrite(vehicleCrashParticle.accelerationY);
+        cs.readWrite(vehicleCrashParticle.accelerationZ);
     }
 
     template<>
@@ -2583,13 +2583,13 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, JumpingFountain& fountain)
     {
         ReadWriteEntityCommon(cs, fountain);
-        cs.readWrite(fountain.NumTicksAlive);
+        cs.readWrite(fountain.numTicksAlive);
         cs.readWrite(fountain.frame);
         cs.readWrite(fountain.fountainFlags.holder);
-        cs.readWrite(fountain.TargetX);
-        cs.readWrite(fountain.TargetY);
-        cs.readWrite(fountain.TargetY);
-        cs.readWrite(fountain.Iteration);
+        cs.readWrite(fountain.targetX);
+        cs.readWrite(fountain.targetY);
+        cs.readWrite(fountain.targetY);
+        cs.readWrite(fountain.iteration);
     }
 
     template<>
@@ -2597,7 +2597,7 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, balloon);
         cs.readWrite(balloon.popped);
-        cs.readWrite(balloon.time_to_move);
+        cs.readWrite(balloon.timeToMove);
         cs.readWrite(balloon.frame);
         cs.readWrite(balloon.colour);
     }
@@ -2607,8 +2607,8 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, duck);
         cs.readWrite(duck.frame);
-        cs.readWrite(duck.target_x);
-        cs.readWrite(duck.target_y);
+        cs.readWrite(duck.targetX);
+        cs.readWrite(duck.targetY);
         cs.readWrite(duck.state);
     }
 
@@ -2633,7 +2633,7 @@ namespace OpenRCT2
             }
             return res;
         }();
-        cs.write(T::cEntityType);
+        cs.write(T::kEntityType);
         cs.write(count);
         for (auto* ent : entityList)
         {
@@ -2652,7 +2652,7 @@ namespace OpenRCT2
     void ParkFile::ReadEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         [[maybe_unused]] auto t = cs.read<EntityType>();
-        assert(t == T::cEntityType);
+        assert(t == T::kEntityType);
         auto count = cs.read<uint16_t>();
         for (auto i = 0; i < count; ++i)
         {

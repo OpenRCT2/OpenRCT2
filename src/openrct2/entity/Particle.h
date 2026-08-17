@@ -31,64 +31,68 @@ namespace OpenRCT2
 
     struct VehicleCrashParticle : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::crashedVehicleParticle;
+        static constexpr auto kEntityType = EntityType::crashedVehicleParticle;
+
         uint16_t frame;
-        uint16_t time_to_live;
+        uint16_t timeToLive;
         Drawing::Colour colour[2];
-        uint16_t crashed_sprite_base;
-        int16_t velocity_x;
-        int16_t velocity_y;
-        int16_t velocity_z;
-        int32_t acceleration_x;
-        int32_t acceleration_y;
-        int32_t acceleration_z;
-        static void Create(VehicleColour& colours, const CoordsXYZ& vehiclePos);
-        void SetSpriteData();
-        void Launch();
-        void Update();
-        void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
+        uint16_t crashedSpriteBase;
+        int16_t velocityX;
+        int16_t velocityY;
+        int16_t velocityZ;
+        int32_t accelerationX;
+        int32_t accelerationY;
+        int32_t accelerationZ;
+
+        static void create(VehicleColour& colours, const CoordsXYZ& vehiclePos);
+        void setSpriteData();
+        void launch();
+        void update();
+        void serialise(DataSerialiser& stream);
     };
 
     struct CrashSplashParticle : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::crashSplash;
+        static constexpr auto kEntityType = EntityType::crashSplash;
+
         uint16_t frame;
-        static void Create(const CoordsXYZ& splashPos);
-        void Update();
-        void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
+
+        static void create(const CoordsXYZ& splashPos);
+        void update();
+        void serialise(DataSerialiser& stream);
     };
 
     struct ExplosionFlare : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::explosionFlare;
+        static constexpr auto kEntityType = EntityType::explosionFlare;
+
         uint16_t frame;
-        static void Create(const CoordsXYZ& flarePos);
-        void Update();
-        void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
+
+        static void create(const CoordsXYZ& flarePos);
+        void update();
+        void serialise(DataSerialiser& stream);
     };
 
     struct ExplosionCloud : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::explosionCloud;
+        static constexpr auto kEntityType = EntityType::explosionCloud;
+
         uint16_t frame;
-        static void Create(const CoordsXYZ& cloudPos);
-        void Update();
-        void Serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
+
+        static void create(const CoordsXYZ& cloudPos);
+        void update();
+        void serialise(DataSerialiser& stream);
     };
 
     struct SteamParticle : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::steamParticle;
-        uint16_t frame;
-        uint16_t time_to_move;
+        static constexpr auto kEntityType = EntityType::steamParticle;
 
-        static void Create(const CoordsXYZ& coords);
-        void Update();
+        uint16_t frame;
+        uint16_t timeToMove;
+
+        static void create(const CoordsXYZ& coords);
+        void update();
         void serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
     };
 } // namespace OpenRCT2

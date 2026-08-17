@@ -161,7 +161,7 @@ namespace OpenRCT2
 
     public:
         EntityList()
-            : vec(getGameState().entities.GetEntityList(T::cEntityType))
+            : vec(getGameState().entities.GetEntityList(T::kEntityType))
         {
         }
 

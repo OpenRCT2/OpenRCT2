@@ -1233,7 +1233,7 @@ namespace OpenRCT2
         if (Action == PeepActionType::staffSweep && AnimationFrameNum == 8)
         {
             // Remove sick at this location
-            Litter::RemoveAt(getLocation());
+            Litter::removeAt(getLocation());
             staffLitterSwept = AddClamp(staffLitterSwept, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
@@ -1758,7 +1758,7 @@ namespace OpenRCT2
         return assignedStaffType == StaffType::entertainer;
     }
 
-    void Staff::Update()
+    void Staff::update()
     {
         if (peepFlags.has(PeepFlag::positionFrozen))
         {

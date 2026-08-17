@@ -121,7 +121,7 @@ void ScenarioReset(GameState_t& gameState)
     AwardReset();
     ResetAllRideBuildDates();
     ResetDate();
-    Duck::RemoveAll();
+    Duck::removeAll();
     Park::UpdateSize(park);
     MapCountRemainingLandRights();
     Staff::resetStats();
@@ -463,7 +463,7 @@ bool ScenarioCreateDucks()
         CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
 
         Guard::Assert(MapIsLocationValid(targetPos));
-        Duck::Create(targetPos);
+        Duck::create(targetPos);
     }
 
     return true;

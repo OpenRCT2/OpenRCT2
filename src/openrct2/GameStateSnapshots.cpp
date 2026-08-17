@@ -485,32 +485,32 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const SteamParticle& spriteBase, const SteamParticle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(SteamParticle, frame);
-        COMPARE_FIELD(SteamParticle, time_to_move);
+        COMPARE_FIELD(SteamParticle, timeToMove);
     }
 
     void CompareSpriteDataVehicleCrashParticle(
         const VehicleCrashParticle& spriteBase, const VehicleCrashParticle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(VehicleCrashParticle, frame);
-        COMPARE_FIELD(VehicleCrashParticle, time_to_live);
+        COMPARE_FIELD(VehicleCrashParticle, timeToLive);
         for (std::size_t i = 0; i < sizeof(VehicleCrashParticle::colour) / sizeof(*VehicleCrashParticle::colour); i++)
         {
             COMPARE_FIELD(VehicleCrashParticle, colour[i]);
         }
-        COMPARE_FIELD(VehicleCrashParticle, crashed_sprite_base);
-        COMPARE_FIELD(VehicleCrashParticle, velocity_x);
-        COMPARE_FIELD(VehicleCrashParticle, velocity_y);
-        COMPARE_FIELD(VehicleCrashParticle, velocity_z);
-        COMPARE_FIELD(VehicleCrashParticle, acceleration_x);
-        COMPARE_FIELD(VehicleCrashParticle, acceleration_y);
-        COMPARE_FIELD(VehicleCrashParticle, acceleration_z);
+        COMPARE_FIELD(VehicleCrashParticle, crashedSpriteBase);
+        COMPARE_FIELD(VehicleCrashParticle, velocityX);
+        COMPARE_FIELD(VehicleCrashParticle, velocityY);
+        COMPARE_FIELD(VehicleCrashParticle, velocityZ);
+        COMPARE_FIELD(VehicleCrashParticle, accelerationX);
+        COMPARE_FIELD(VehicleCrashParticle, accelerationY);
+        COMPARE_FIELD(VehicleCrashParticle, accelerationZ);
     }
 
     void CompareSpriteDataDuck(const Duck& spriteBase, const Duck& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Duck, frame);
-        COMPARE_FIELD(Duck, target_x);
-        COMPARE_FIELD(Duck, target_y);
+        COMPARE_FIELD(Duck, targetX);
+        COMPARE_FIELD(Duck, targetY);
         COMPARE_FIELD(Duck, state);
     }
 
@@ -518,7 +518,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         COMPARE_FIELD(Balloon, frame);
         COMPARE_FIELD(Balloon, popped);
-        COMPARE_FIELD(Balloon, time_to_move);
+        COMPARE_FIELD(Balloon, timeToMove);
         COMPARE_FIELD(Balloon, colour);
     }
 
@@ -526,12 +526,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const JumpingFountain& spriteBase, const JumpingFountain& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(JumpingFountain, frame);
-        COMPARE_FIELD(JumpingFountain, FountainType);
-        COMPARE_FIELD(JumpingFountain, NumTicksAlive);
+        COMPARE_FIELD(JumpingFountain, fountainType);
+        COMPARE_FIELD(JumpingFountain, numTicksAlive);
         COMPARE_FIELD(JumpingFountain, fountainFlags);
-        COMPARE_FIELD(JumpingFountain, TargetX);
-        COMPARE_FIELD(JumpingFountain, TargetY);
-        COMPARE_FIELD(JumpingFountain, Iteration);
+        COMPARE_FIELD(JumpingFountain, targetX);
+        COMPARE_FIELD(JumpingFountain, targetY);
+        COMPARE_FIELD(JumpingFountain, iteration);
     }
 
     void CompareSpriteDataExplosionCloud(

@@ -84,7 +84,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            entity->crashed_sprite_base = CrashParticleTypeMap[value];
+            entity->crashedSpriteBase = CrashParticleTypeMap[value];
             entity->invalidate();
         }
         return JS_UNDEFINED;
@@ -94,7 +94,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            return JSFromStdString(ctx, CrashParticleTypeMap[entity->crashed_sprite_base]);
+            return JSFromStdString(ctx, CrashParticleTypeMap[entity->crashedSpriteBase]);
         }
         return JS_UNDEFINED;
     }
@@ -106,14 +106,14 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            entity->time_to_live = value;
+            entity->timeToLive = value;
         }
         return JS_UNDEFINED;
     }
     JSValue ScCrashedVehicleParticle::timeToLive_get(JSContext* ctx, JSValue thisVal)
     {
         auto entity = GetCrashedVehicleParticle(thisVal);
-        return JS_NewUint32(ctx, entity == nullptr ? 0 : entity->time_to_live);
+        return JS_NewUint32(ctx, entity == nullptr ? 0 : entity->timeToLive);
     }
 
     JSValue ScCrashedVehicleParticle::velocity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
@@ -124,9 +124,9 @@ namespace OpenRCT2::Scripting
         if (entity != nullptr)
         {
             auto velocity = JSToCoordsXYZ(ctx, obj);
-            entity->velocity_x = velocity.x;
-            entity->velocity_y = velocity.y;
-            entity->velocity_z = velocity.z;
+            entity->velocityX = velocity.x;
+            entity->velocityY = velocity.y;
+            entity->velocityZ = velocity.z;
         }
         return JS_UNDEFINED;
     }
@@ -135,7 +135,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            return ToJSValue(ctx, CoordsXYZ(entity->velocity_x, entity->velocity_y, entity->velocity_z));
+            return ToJSValue(ctx, CoordsXYZ(entity->velocityX, entity->velocityY, entity->velocityZ));
         }
         return JS_UNDEFINED;
     }
@@ -148,9 +148,9 @@ namespace OpenRCT2::Scripting
         if (entity != nullptr)
         {
             auto acceleration = JSToCoordsXYZ(ctx, obj);
-            entity->acceleration_x = acceleration.x;
-            entity->acceleration_y = acceleration.y;
-            entity->acceleration_z = acceleration.z;
+            entity->accelerationX = acceleration.x;
+            entity->accelerationY = acceleration.y;
+            entity->accelerationZ = acceleration.z;
         }
         return JS_UNDEFINED;
     }
@@ -159,7 +159,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            return ToJSValue(ctx, CoordsXYZ(entity->acceleration_x, entity->acceleration_y, entity->acceleration_z));
+            return ToJSValue(ctx, CoordsXYZ(entity->accelerationX, entity->accelerationY, entity->accelerationZ));
         }
         return JS_UNDEFINED;
     }
@@ -171,8 +171,8 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            entity->SetSpriteData();
-            entity->Launch();
+            entity->setSpriteData();
+            entity->launch();
 
             if (JS_IsUndefined(obj))
                 return JS_UNDEFINED;
@@ -192,20 +192,20 @@ namespace OpenRCT2::Scripting
             if (JS_IsObject(acceleration))
             {
                 auto accelerationXYZ = JSToCoordsXYZ(ctx, acceleration);
-                entity->acceleration_x = accelerationXYZ.x;
-                entity->acceleration_y = accelerationXYZ.y;
-                entity->acceleration_z = accelerationXYZ.z;
+                entity->accelerationX = accelerationXYZ.x;
+                entity->accelerationY = accelerationXYZ.y;
+                entity->accelerationZ = accelerationXYZ.z;
             }
             if (JS_IsObject(velocity))
             {
                 auto velocityXYZ = JSToCoordsXYZ(ctx, velocity);
-                entity->velocity_x = velocityXYZ.x;
-                entity->velocity_y = velocityXYZ.y;
-                entity->velocity_z = velocityXYZ.z;
+                entity->velocityX = velocityXYZ.x;
+                entity->velocityY = velocityXYZ.y;
+                entity->velocityZ = velocityXYZ.z;
             }
             if (JS_IsNumber(timeToLive))
             {
-                entity->time_to_live = JSToUint(ctx, timeToLive);
+                entity->timeToLive = JSToUint(ctx, timeToLive);
             }
             if (JS_IsNumber(frame))
             {
@@ -215,7 +215,7 @@ namespace OpenRCT2::Scripting
             if (JS_IsString(crashParticleType))
             {
                 auto key = JSToStdString(ctx, crashParticleType);
-                entity->crashed_sprite_base = CrashParticleTypeMap[key];
+                entity->crashedSpriteBase = CrashParticleTypeMap[key];
             }
             entity->invalidate();
 

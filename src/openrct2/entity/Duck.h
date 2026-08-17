@@ -19,7 +19,7 @@ namespace OpenRCT2
 
     struct Duck : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::duck;
+        static constexpr auto kEntityType = EntityType::duck;
         enum class DuckState : uint8_t
         {
             flyToWater,
@@ -29,24 +29,24 @@ namespace OpenRCT2
             flyAway,
         };
         uint16_t frame;
-        int16_t target_x;
-        int16_t target_y;
+        int16_t targetX;
+        int16_t targetY;
         DuckState state;
 
-        static void Create(const CoordsXY& pos);
-        static void RemoveAll();
-        void Press();
-        void Update();
-        uint32_t GetFrameImage(int32_t direction) const;
-        bool IsFlying();
-        void Remove();
+        static void create(const CoordsXY& pos);
+        static void removeAll();
+        void press();
+        void update();
+        uint32_t getFrameImage(int32_t direction) const;
+        bool isFlying();
+        void remove();
         void serialise(DataSerialiser& stream);
 
     private:
-        void UpdateFlyToWater();
-        void UpdateSwim();
-        void UpdateDrink();
-        void UpdateDoubleDrink();
-        void UpdateFlyAway();
+        void updateFlyToWater();
+        void updateSwim();
+        void updateDrink();
+        void updateDoubleDrink();
+        void updateFlyAway();
     };
 } // namespace OpenRCT2

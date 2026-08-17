@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
         auto moneyEffect = GetMoneyEffect(thisVal);
         if (moneyEffect != nullptr)
         {
-            moneyEffect->SetValue(value);
+            moneyEffect->setValue(value);
         }
         return JS_UNDEFINED;
     }
