@@ -57,7 +57,7 @@ namespace OpenRCT2::GameActions
                     windowMgr->InvalidateByClass(WindowClass::peep);
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                     windowMgr->InvalidateByClass(WindowClass::finances);
-                    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
                     windowMgr->InvalidateByClass(WindowClass::topToolbar);
                 }
                 break;
@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
                 gameState.scenarioOptions.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
                 park.cash = gameState.scenarioOptions.initialCash;
                 windowMgr->InvalidateByClass(WindowClass::finances);
-                windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+                windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
                 break;
             case ScenarioSetSetting::initialLoan:
                 park.bankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
