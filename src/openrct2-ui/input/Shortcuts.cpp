@@ -171,6 +171,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             windowMgr->CloseByClass(WindowClass::dropdown);
             windowMgr->CloseByClass(WindowClass::topToolbar);
             windowMgr->CloseByClass(WindowClass::bottomToolbar);
+            windowMgr->CloseByClass(WindowClass::newsTicker);
             windowMgr->CloseByClass(WindowClass::parkInfoPanel);
             windowMgr->CloseByClass(WindowClass::dateInfoPanel);
         }
