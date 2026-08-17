@@ -470,7 +470,7 @@ public:
                 WindowSceneryResetSelectedSceneryItems();
                 break;
 
-            case INTENT_ACTION_INVALIDATE_TICKER_NEWS:
+            case INTENT_ACTION_UPDATE_NEWS_TICKER:
                 WindowGameBottomToolbarInvalidateNewsItem();
                 break;
 

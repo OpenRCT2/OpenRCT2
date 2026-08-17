@@ -116,7 +116,7 @@ void News::InitQueue(GameState_t& gameState)
         warningThrottle = 0;
     }
 
-    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
     ContextBroadcastIntent(&intent);
 }
 
@@ -163,7 +163,7 @@ void News::UpdateCurrentItem()
     if (gameState.newsItems.isEmpty())
         return;
 
-    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
     ContextBroadcastIntent(&intent);
 
     // Update the current news item
@@ -199,7 +199,7 @@ void News::ItemQueues::archiveCurrent()
     _recent.pop_front();
 
     // Invalidate current news item bar
-    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
     ContextBroadcastIntent(&intent);
 }
 
@@ -447,7 +447,7 @@ void News::DisableNewsItems(ItemType type, uint32_t assoc)
             newsItem.setFlags(ItemFlags::hasButton);
             if (&newsItem == &gameState.newsItems.current())
             {
-                auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+                auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
                 ContextBroadcastIntent(&intent);
             }
         }
