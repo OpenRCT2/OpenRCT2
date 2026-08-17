@@ -40,8 +40,8 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(
                 this,
-                gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::editorScenarioBottomToolbar
-                                                            : WindowClass::editorTrackBottomToolbar);
+                gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::editorStepControlScenario
+                                                            : WindowClass::editorStepControlTrack);
         }
 
         void onDraw(RenderTarget& rt) override
