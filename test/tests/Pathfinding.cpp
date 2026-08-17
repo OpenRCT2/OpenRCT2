@@ -96,9 +96,9 @@ protected:
         // 'destination' which is a close position that they will walk towards in a straight line - in this case, one
         // tile away. Stepping the peep will move them towards their destination, and once they reach it, a new
         // destination will be picked, to try and get the peep towards the overall pathfinding goal.
-        peep->PeepDirection = moveDir;
+        peep->peepDirection = moveDir;
         auto destination = CoordsDirectionDelta[moveDir] + peep->getLocation();
-        peep->SetDestination(destination, 2);
+        peep->setDestination(destination, 2);
 
         // Repeatedly step the peep, until they reach the target position or until the expected number of steps have
         // elapsed. Each step, check that the tile they are standing on is not marked as forbidden in the test data
@@ -106,7 +106,7 @@ protected:
         int step = 0;
         while (*pos != goal && step < expectedSteps)
         {
-            peep->PerformNextAction();
+            peep->performNextAction();
             ++step;
 
             *pos = TileCoordsXYZ(peep->getLocation());
@@ -115,7 +115,7 @@ protected:
 
             // Check that the peep is still on a footpath. Use next_z instead of pos->z here because pos->z will change
             // when the peep is halfway up a slope, but next_z will not change until they move to the next tile.
-            EXPECT_NE(MapGetFootpathElement({ pos->ToCoordsXY(), peep->NextLoc.z }), nullptr);
+            EXPECT_NE(MapGetFootpathElement({ pos->ToCoordsXY(), peep->nextLoc.z }), nullptr);
         }
 
         // Clean up the peep, because we're reusing this loaded context for all tests.

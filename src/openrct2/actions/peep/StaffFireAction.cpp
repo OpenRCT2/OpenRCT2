@@ -54,11 +54,11 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 
-        if (staff->State == PeepState::fixing)
+        if (staff->state == PeepState::fixing)
         {
             return Result(Status::disallowed, STR_CANT_FIRE_STAFF_FIXING, kStringIdNone);
         }
-        else if (staff->State == PeepState::inspecting)
+        else if (staff->state == PeepState::inspecting)
         {
             return Result(Status::disallowed, STR_CANT_FIRE_STAFF_INSPECTING, kStringIdNone);
         }

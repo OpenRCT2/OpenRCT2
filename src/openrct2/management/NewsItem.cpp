@@ -238,14 +238,14 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             if (subjectLoc->x != kLocationNull)
                 break;
 
-            if (peep->State != PeepState::onRide && peep->State != PeepState::enteringRide)
+            if (peep->state != PeepState::onRide && peep->state != PeepState::enteringRide)
             {
                 subjectLoc = std::nullopt;
                 break;
             }
 
             // Find which ride peep is on
-            Ride* ride = GetRide(peep->CurrentRide);
+            Ride* ride = GetRide(peep->currentRide);
             if (ride == nullptr || !ride->flags.has(RideFlag::onTrack))
             {
                 subjectLoc = std::nullopt;
@@ -253,9 +253,9 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             }
 
             // Find the first car of the train peep is on
-            auto sprite = gameState.entities.TryGetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+            auto sprite = gameState.entities.TryGetEntity<Vehicle>(ride->vehicles[peep->currentTrain]);
             // Find the actual car peep is on
-            for (int32_t i = 0; i < peep->CurrentCar && sprite != nullptr; i++)
+            for (int32_t i = 0; i < peep->currentCar && sprite != nullptr; i++)
             {
                 sprite = gameState.entities.TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
             }

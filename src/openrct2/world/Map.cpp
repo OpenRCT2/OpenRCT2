@@ -2215,11 +2215,11 @@ namespace OpenRCT2
                         auto peep = entity->as<Peep>();
                         if (peep != nullptr)
                         {
-                            shiftIfNotNull(peep->NextLoc, amountToMove);
-                            peep->DestinationX += amountToMove.x;
-                            peep->DestinationY += amountToMove.y;
-                            shiftIfNotNull(peep->PathfindGoal, amount);
-                            for (auto& h : peep->PathfindHistory)
+                            shiftIfNotNull(peep->nextLoc, amountToMove);
+                            peep->destinationX += amountToMove.x;
+                            peep->destinationY += amountToMove.y;
+                            shiftIfNotNull(peep->pathfindGoal, amount);
+                            for (auto& h : peep->pathfindHistory)
                                 shiftIfNotNull(h, amount);
                         }
                         break;

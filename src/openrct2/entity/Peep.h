@@ -307,135 +307,135 @@ namespace OpenRCT2
 
     struct Peep : EntityBase
     {
-        char* Name;
-        CoordsXYZ NextLoc;
-        uint8_t NextFlags;
-        PeepState State;
+        char* name;
+        CoordsXYZ nextLoc;
+        uint8_t nextFlags;
+        PeepState state;
         union
         {
-            uint8_t SubState;
-            PeepSittingSubState SittingSubState;
-            PeepRideSubState RideSubState;
-            PeepUsingBinSubState UsingBinSubState;
+            uint8_t subState;
+            PeepSittingSubState sittingSubState;
+            PeepRideSubState rideSubState;
+            PeepUsingBinSubState usingBinSubState;
         };
-        ObjectEntryIndex AnimationObjectIndex;
-        PeepAnimationGroup AnimationGroup;
-        Drawing::Colour TshirtColour;
-        Drawing::Colour TrousersColour;
+        ObjectEntryIndex animationObjectIndex;
+        PeepAnimationGroup animationGroup;
+        Drawing::Colour tShirtColour;
+        Drawing::Colour trousersColour;
         union
         {
-            uint16_t DestinationX;
+            uint16_t destinationX;
             PeepSpiralSlideSubState spiralSlideSubstate;
         };
         union
         {
-            uint16_t DestinationY;
+            uint16_t destinationY;
             uint16_t spiralSlideGoingUpTimer;
         };
-        uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
-        uint8_t Var37;
-        uint8_t Energy;
-        uint8_t EnergyTarget;
-        uint8_t Mass;
-        uint8_t WindowInvalidateFlags;
-        RideId CurrentRide;
-        StationIndex CurrentRideStation;
-        uint8_t CurrentTrain;
+        uint8_t destinationTolerance; // How close to destination before next action/state 0 = exact
+        uint8_t var37;
+        uint8_t energy;
+        uint8_t energyTarget;
+        uint8_t mass;
+        uint8_t windowInvalidateFlags;
+        RideId currentRide;
+        StationIndex currentRideStation;
+        uint8_t currentTrain;
         union
         {
             struct
             {
-                uint8_t CurrentCar;
-                uint8_t CurrentSeat;
+                uint8_t currentCar;
+                uint8_t currentSeat;
             };
-            uint16_t TimeToSitdown;
+            uint16_t timeToSitdown;
             struct
             {
-                uint8_t TimeToStand;
-                uint8_t StandingFlags;
+                uint8_t timeToStand;
+                uint8_t standingFlags;
             };
             uint8_t timesSlidDown;
         };
         // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-        uint8_t SpecialSprite;
-        PeepAnimationType AnimationType;
+        uint8_t specialSprite;
+        PeepAnimationType animationType;
         // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which
         // reads this again
-        PeepAnimationType NextAnimationType;
-        uint8_t AnimationImageIdOffset;
-        PeepActionType Action;
-        uint8_t AnimationFrameNum;
-        uint8_t StepProgress;
+        PeepAnimationType nextAnimationType;
+        uint8_t animationImageIdOffset;
+        PeepActionType action;
+        uint8_t animationFrameNum;
+        uint8_t stepProgress;
         union
         {
-            uint8_t MazeLastEdge;
-            ::Direction PeepDirection; // Direction ?
+            uint8_t mazeLastEdge;
+            ::Direction peepDirection; // Direction ?
         };
-        RideId InteractionRideIndex;
-        uint32_t PeepId;
-        uint8_t PathCheckOptimisation; // see peep.checkForPath
-        TileCoordsXYZD PathfindGoal;
-        std::array<TileCoordsXYZD, 4> PathfindHistory;
-        uint8_t WalkingAnimationFrameNum;
+        RideId interactionRideIndex;
+        uint32_t peepId;
+        uint8_t pathCheckOptimisation; // see peep.checkForPath
+        TileCoordsXYZD pathfindGoal;
+        std::array<TileCoordsXYZD, 4> pathfindHistory;
+        uint8_t walkingAnimationFrameNum;
         PeepFlags peepFlags;
 
     public: // Peep
-        std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
-        std::optional<CoordsXY> UpdateAction();
-        bool UpdateActionAnimation();
-        std::optional<CoordsXY> UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance);
-        void UpdateWalkingAnimation();
-        void SetState(PeepState new_state);
-        void Remove();
-        void UpdateCurrentAnimationType();
-        void UpdateSpriteBoundingBox();
-        void SwitchToSpecialSprite(uint8_t special_sprite_id);
-        void StateReset();
-        [[nodiscard]] uint8_t GetNextDirection() const;
-        bool GetNextIsSloped() const;
-        bool GetNextIsSurface() const;
-        void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
-        bool CanBePickedUp() const;
-        void Pickup();
-        void PickupAbort(int32_t old_x);
-        [[nodiscard]] GameActions::Result Place(const TileCoordsXYZ& location, bool apply);
-        void RemoveFromRide();
-        void FormatActionTo(Formatter&) const;
-        void FormatNameTo(Formatter&) const;
-        [[nodiscard]] std::string GetName() const;
-        bool SetName(std::string_view value);
-        bool IsActionWalking() const;
-        bool IsActionIdle() const;
-        bool IsActionInterruptable() const;
-        bool IsActionInterruptableSafely() const;
+        std::optional<CoordsXY> updateAction(int16_t& xy_distance);
+        std::optional<CoordsXY> updateAction();
+        bool updateActionAnimation();
+        std::optional<CoordsXY> updateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance);
+        void updateWalkingAnimation();
+        void setState(PeepState new_state);
+        void remove();
+        void updateCurrentAnimationType();
+        void updateSpriteBoundingBox();
+        void switchToSpecialSprite(uint8_t special_sprite_id);
+        void stateReset();
+        [[nodiscard]] uint8_t getNextDirection() const;
+        bool getNextIsSloped() const;
+        bool getNextIsSurface() const;
+        void setNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
+        bool canBePickedUp() const;
+        void pickup();
+        void pickupAbort(int32_t old_x);
+        [[nodiscard]] GameActions::Result place(const TileCoordsXYZ& location, bool apply);
+        void removeFromRide();
+        void formatActionTo(Formatter&) const;
+        void formatNameTo(Formatter&) const;
+        [[nodiscard]] std::string getName() const;
+        bool setName(std::string_view value);
+        bool isActionWalking() const;
+        bool isActionIdle() const;
+        bool isActionInterruptable() const;
+        bool isActionInterruptableSafely() const;
 
         // Reset the peep's stored goal, which means they will forget any stored pathfinding history
         // on the next GuestPathfinding::ChooseDirection call.
-        void ResetPathfindGoal();
+        void resetPathfindGoal();
 
-        void SetDestination(const CoordsXY& coords);
-        void SetDestination(const CoordsXY& coords, int32_t tolerance);
-        [[nodiscard]] CoordsXY GetDestination() const;
+        void setDestination(const CoordsXY& coords);
+        void setDestination(const CoordsXY& coords, int32_t tolerance);
+        [[nodiscard]] CoordsXY getDestination() const;
 
         void serialise(class DataSerialiser& stream);
 
         // TODO: Make these private again when done refactoring
     public: // Peep
-        [[nodiscard]] bool CheckForPath();
-        std::pair<uint8_t, TileElement*> PerformNextAction();
-        [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
-        void SwitchNextAnimationType();
-        [[nodiscard]] PeepAnimationType GetAnimationType();
+        [[nodiscard]] bool checkForPath();
+        std::pair<uint8_t, TileElement*> performNextAction();
+        [[nodiscard]] int32_t getZOnSlope(int32_t tile_x, int32_t tile_y);
+        void switchNextAnimationType();
+        [[nodiscard]] PeepAnimationType getAnimationType();
 
     protected:
-        bool ShouldWaitForLevelCrossing() const;
-        bool IsOnLevelCrossing() const;
-        bool IsOnPathBlockedByVehicle() const;
-        void UpdateWaitingAtCrossing();
-        void UpdateFalling();
-        void Update1();
-        void UpdatePicked();
-        uint32_t GetStepsToTake() const;
+        bool shouldWaitForLevelCrossing() const;
+        bool isOnLevelCrossing() const;
+        bool isOnPathBlockedByVehicle() const;
+        void updateWaitingAtCrossing();
+        void updateFalling();
+        void update1();
+        void updatePicked();
+        uint32_t getStepsToTake() const;
     };
 
     enum

@@ -178,11 +178,11 @@ void EditorScene::clearMapForEditing()
 
     for (auto* guest : EntityList<Guest>())
     {
-        guest->SetName({});
+        guest->setName({});
     }
     for (auto* staff : EntityList<Staff>())
     {
-        staff->SetName({});
+        staff->setName({});
     }
 
     auto& gameState = getGameState();

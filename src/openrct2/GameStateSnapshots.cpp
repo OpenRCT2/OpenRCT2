@@ -264,50 +264,50 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange& changeData) const
     {
-        COMPARE_FIELD(Peep, NextLoc.x);
-        COMPARE_FIELD(Peep, NextLoc.y);
-        COMPARE_FIELD(Peep, NextLoc.z);
-        COMPARE_FIELD(Peep, NextFlags);
-        COMPARE_FIELD(Peep, State);
-        COMPARE_FIELD(Peep, SubState);
-        COMPARE_FIELD(Peep, AnimationGroup);
-        COMPARE_FIELD(Peep, TshirtColour);
-        COMPARE_FIELD(Peep, TrousersColour);
-        COMPARE_FIELD(Peep, DestinationX);
-        COMPARE_FIELD(Peep, DestinationY);
-        COMPARE_FIELD(Peep, DestinationTolerance);
-        COMPARE_FIELD(Peep, Var37);
-        COMPARE_FIELD(Peep, Energy);
-        COMPARE_FIELD(Peep, EnergyTarget);
-        COMPARE_FIELD(Peep, Mass);
-        COMPARE_FIELD(Peep, WindowInvalidateFlags);
-        COMPARE_FIELD(Peep, CurrentRide);
-        COMPARE_FIELD(Peep, CurrentRideStation);
-        COMPARE_FIELD(Peep, CurrentTrain);
-        COMPARE_FIELD(Peep, TimeToSitdown);
-        COMPARE_FIELD(Peep, SpecialSprite);
-        COMPARE_FIELD(Peep, AnimationType);
-        COMPARE_FIELD(Peep, NextAnimationType);
-        COMPARE_FIELD(Peep, AnimationImageIdOffset);
-        COMPARE_FIELD(Peep, Action);
-        COMPARE_FIELD(Peep, AnimationFrameNum);
-        COMPARE_FIELD(Peep, StepProgress);
-        COMPARE_FIELD(Peep, MazeLastEdge);
-        COMPARE_FIELD(Peep, InteractionRideIndex);
-        COMPARE_FIELD(Peep, PeepId);
-        COMPARE_FIELD(Peep, PathCheckOptimisation);
-        COMPARE_FIELD(Peep, PathfindGoal.x);
-        COMPARE_FIELD(Peep, PathfindGoal.y);
-        COMPARE_FIELD(Peep, PathfindGoal.z);
-        COMPARE_FIELD(Peep, PathfindGoal.direction);
-        for (std::size_t i = 0; i < spriteCmp.PathfindHistory.size(); i++)
+        COMPARE_FIELD(Peep, nextLoc.x);
+        COMPARE_FIELD(Peep, nextLoc.y);
+        COMPARE_FIELD(Peep, nextLoc.z);
+        COMPARE_FIELD(Peep, nextFlags);
+        COMPARE_FIELD(Peep, state);
+        COMPARE_FIELD(Peep, subState);
+        COMPARE_FIELD(Peep, animationGroup);
+        COMPARE_FIELD(Peep, tShirtColour);
+        COMPARE_FIELD(Peep, trousersColour);
+        COMPARE_FIELD(Peep, destinationX);
+        COMPARE_FIELD(Peep, destinationY);
+        COMPARE_FIELD(Peep, destinationTolerance);
+        COMPARE_FIELD(Peep, var37);
+        COMPARE_FIELD(Peep, energy);
+        COMPARE_FIELD(Peep, energyTarget);
+        COMPARE_FIELD(Peep, mass);
+        COMPARE_FIELD(Peep, windowInvalidateFlags);
+        COMPARE_FIELD(Peep, currentRide);
+        COMPARE_FIELD(Peep, currentRideStation);
+        COMPARE_FIELD(Peep, currentTrain);
+        COMPARE_FIELD(Peep, timeToSitdown);
+        COMPARE_FIELD(Peep, specialSprite);
+        COMPARE_FIELD(Peep, animationType);
+        COMPARE_FIELD(Peep, nextAnimationType);
+        COMPARE_FIELD(Peep, animationImageIdOffset);
+        COMPARE_FIELD(Peep, action);
+        COMPARE_FIELD(Peep, animationFrameNum);
+        COMPARE_FIELD(Peep, stepProgress);
+        COMPARE_FIELD(Peep, mazeLastEdge);
+        COMPARE_FIELD(Peep, interactionRideIndex);
+        COMPARE_FIELD(Peep, peepId);
+        COMPARE_FIELD(Peep, pathCheckOptimisation);
+        COMPARE_FIELD(Peep, pathfindGoal.x);
+        COMPARE_FIELD(Peep, pathfindGoal.y);
+        COMPARE_FIELD(Peep, pathfindGoal.z);
+        COMPARE_FIELD(Peep, pathfindGoal.direction);
+        for (std::size_t i = 0; i < spriteCmp.pathfindHistory.size(); i++)
         {
-            COMPARE_FIELD(Peep, PathfindHistory[i].x);
-            COMPARE_FIELD(Peep, PathfindHistory[i].y);
-            COMPARE_FIELD(Peep, PathfindHistory[i].z);
-            COMPARE_FIELD(Peep, PathfindHistory[i].direction);
+            COMPARE_FIELD(Peep, pathfindHistory[i].x);
+            COMPARE_FIELD(Peep, pathfindHistory[i].y);
+            COMPARE_FIELD(Peep, pathfindHistory[i].z);
+            COMPARE_FIELD(Peep, pathfindHistory[i].direction);
         }
-        COMPARE_FIELD(Peep, WalkingAnimationFrameNum);
+        COMPARE_FIELD(Peep, walkingAnimationFrameNum);
         COMPARE_FIELD(Peep, peepFlags);
     }
 

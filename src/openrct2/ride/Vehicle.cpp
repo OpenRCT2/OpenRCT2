@@ -900,7 +900,7 @@ namespace OpenRCT2
                 auto* curPeep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
                 if (curPeep != nullptr && curPeep->peepFlags.has(PeepFlag::hereWeAre))
                 {
-                    curPeep->insertNewThought(PeepThoughtType::hereWeAre, curPeep->CurrentRide);
+                    curPeep->insertNewThought(PeepThoughtType::hereWeAre, curPeep->currentRide);
                 }
             }
         }

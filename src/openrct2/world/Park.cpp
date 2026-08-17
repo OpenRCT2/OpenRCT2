@@ -543,10 +543,10 @@ namespace OpenRCT2::Park
                 peep->orientation = direction << 3;
 
                 auto destination = peep->getLocation().ToTileCentre();
-                peep->SetDestination(destination, 5);
-                peep->PeepDirection = direction;
-                peep->Var37 = 0;
-                peep->State = PeepState::enteringPark;
+                peep->setDestination(destination, 5);
+                peep->peepDirection = direction;
+                peep->var37 = 0;
+                peep->state = PeepState::enteringPark;
             }
         }
         return peep;

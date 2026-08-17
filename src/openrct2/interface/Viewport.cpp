@@ -681,7 +681,7 @@ namespace OpenRCT2
         Focus focus = Focus(peep.id);
         window->viewportTargetSprite = peep.id;
 
-        if (peep.State == PeepState::picked)
+        if (peep.state == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();
@@ -690,16 +690,16 @@ namespace OpenRCT2
         }
 
         bool overallFocus = true;
-        if (peep.State == PeepState::onRide || peep.State == PeepState::enteringRide
-            || (peep.State == PeepState::leavingRide && peep.x == kLocationNull))
+        if (peep.state == PeepState::onRide || peep.state == PeepState::enteringRide
+            || (peep.state == PeepState::leavingRide && peep.x == kLocationNull))
         {
-            auto ride = GetRide(peep.CurrentRide);
+            auto ride = GetRide(peep.currentRide);
             if (ride != nullptr && ride->flags.has(RideFlag::onTrack))
             {
-                auto train = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
+                auto train = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[peep.currentTrain]);
                 if (train != nullptr)
                 {
-                    const auto car = train->GetCar(peep.CurrentCar);
+                    const auto car = train->GetCar(peep.currentCar);
                     if (car != nullptr)
                     {
                         focus = Focus(car->id);
@@ -712,7 +712,7 @@ namespace OpenRCT2
 
         if (peep.x == kLocationNull && overallFocus)
         {
-            auto ride = GetRide(peep.CurrentRide);
+            auto ride = GetRide(peep.currentRide);
             if (ride != nullptr)
             {
                 auto xy = ride->overallView.ToTileCentre();
@@ -730,7 +730,7 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep)
     {
-        if (peep.State == PeepState::picked)
+        if (peep.state == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();

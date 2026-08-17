@@ -65,8 +65,8 @@ namespace OpenRCT2::GameActions
         {
             if (peep->assignedStaffType == static_cast<StaffType>(_staffType))
             {
-                peep->TshirtColour = _colour;
-                peep->TrousersColour = _colour;
+                peep->tShirtColour = _colour;
+                peep->trousersColour = _colour;
             }
         }
 

@@ -446,18 +446,18 @@ namespace OpenRCT2::Editor
         ObjectEntryIndex lastIndex = kObjectEntryIndexNull;
         for (auto* peep : EntityList<Guest>())
         {
-            if (peep->AnimationObjectIndex == lastIndex)
+            if (peep->animationObjectIndex == lastIndex)
                 continue;
 
-            lastIndex = peep->AnimationObjectIndex;
+            lastIndex = peep->animationObjectIndex;
             Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlags::InUse);
         }
         for (auto* peep : EntityList<Staff>())
         {
-            if (peep->AnimationObjectIndex == lastIndex)
+            if (peep->animationObjectIndex == lastIndex)
                 continue;
 
-            lastIndex = peep->AnimationObjectIndex;
+            lastIndex = peep->animationObjectIndex;
             Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlags::InUse);
         }
 

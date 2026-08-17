@@ -1685,67 +1685,67 @@ namespace OpenRCT2::RCT2
             ImportEntityCommonProperties(static_cast<EntityBase*>(dst), src);
             if (IsUserStringID(src->NameStringIdx))
             {
-                dst->SetName(GetUserString(src->NameStringIdx));
+                dst->setName(GetUserString(src->NameStringIdx));
             }
-            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * kCoordsZStep };
-            dst->NextFlags = src->NextFlags;
-            dst->State = static_cast<PeepState>(src->State);
-            dst->SubState = src->SubState;
+            dst->nextLoc = { src->NextX, src->NextY, src->NextZ * kCoordsZStep };
+            dst->nextFlags = src->NextFlags;
+            dst->state = static_cast<PeepState>(src->State);
+            dst->subState = src->SubState;
 
             // TODO
-            dst->AnimationObjectIndex = kObjectEntryIndexNull;
-            dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
+            dst->animationObjectIndex = kObjectEntryIndexNull;
+            dst->animationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
 
-            dst->TshirtColour = src->TshirtColour;
-            dst->TrousersColour = src->TrousersColour;
-            dst->DestinationX = src->DestinationX;
-            dst->DestinationY = src->DestinationY;
-            dst->DestinationTolerance = src->DestinationTolerance;
-            dst->Var37 = src->Var37;
-            dst->Energy = src->Energy;
-            dst->EnergyTarget = src->EnergyTarget;
-            dst->Mass = src->Mass;
-            dst->WindowInvalidateFlags = src->WindowInvalidateFlags;
-            dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->CurrentRide);
-            dst->CurrentRideStation = StationIndex::FromUnderlying(src->CurrentRideStation);
-            dst->CurrentTrain = src->CurrentTrain;
-            dst->TimeToSitdown = src->TimeToSitdown;
-            dst->SpecialSprite = src->SpecialSprite;
-            dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
-            dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
-            dst->AnimationImageIdOffset = src->AnimationImageIdOffset;
-            dst->Action = static_cast<PeepActionType>(src->Action);
-            dst->AnimationFrameNum = src->AnimationFrameNum;
-            dst->StepProgress = src->StepProgress;
-            dst->PeepDirection = src->Direction;
-            dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
-            dst->PeepId = src->Id;
-            dst->PathCheckOptimisation = src->PathCheckOptimisation;
+            dst->tShirtColour = src->TshirtColour;
+            dst->trousersColour = src->TrousersColour;
+            dst->destinationX = src->DestinationX;
+            dst->destinationY = src->DestinationY;
+            dst->destinationTolerance = src->DestinationTolerance;
+            dst->var37 = src->Var37;
+            dst->energy = src->Energy;
+            dst->energyTarget = src->EnergyTarget;
+            dst->mass = src->Mass;
+            dst->windowInvalidateFlags = src->WindowInvalidateFlags;
+            dst->currentRide = RCT12RideIdToOpenRCT2RideId(src->CurrentRide);
+            dst->currentRideStation = StationIndex::FromUnderlying(src->CurrentRideStation);
+            dst->currentTrain = src->CurrentTrain;
+            dst->timeToSitdown = src->TimeToSitdown;
+            dst->specialSprite = src->SpecialSprite;
+            dst->animationType = static_cast<PeepAnimationType>(src->AnimationType);
+            dst->nextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
+            dst->animationImageIdOffset = src->AnimationImageIdOffset;
+            dst->action = static_cast<PeepActionType>(src->Action);
+            dst->animationFrameNum = src->AnimationFrameNum;
+            dst->stepProgress = src->StepProgress;
+            dst->peepDirection = src->Direction;
+            dst->interactionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
+            dst->peepId = src->Id;
+            dst->pathCheckOptimisation = src->PathCheckOptimisation;
             dst->peepFlags.holder = src->PeepFlags;
             if (isNullLocation(src->PathfindGoal))
             {
-                dst->PathfindGoal.SetNull();
-                dst->PathfindGoal.direction = kInvalidDirection;
+                dst->pathfindGoal.SetNull();
+                dst->pathfindGoal.direction = kInvalidDirection;
             }
             else
             {
-                dst->PathfindGoal = { src->PathfindGoal.x, src->PathfindGoal.y, src->PathfindGoal.z,
+                dst->pathfindGoal = { src->PathfindGoal.x, src->PathfindGoal.y, src->PathfindGoal.z,
                                       src->PathfindGoal.direction };
             }
             for (size_t i = 0; i < std::size(src->PathfindHistory); i++)
             {
                 if (isNullLocation(src->PathfindHistory[i]))
                 {
-                    dst->PathfindHistory[i].SetNull();
-                    dst->PathfindHistory[i].direction = kInvalidDirection;
+                    dst->pathfindHistory[i].SetNull();
+                    dst->pathfindHistory[i].direction = kInvalidDirection;
                 }
                 else
                 {
-                    dst->PathfindHistory[i] = { src->PathfindHistory[i].x, src->PathfindHistory[i].y, src->PathfindHistory[i].z,
+                    dst->pathfindHistory[i] = { src->PathfindHistory[i].x, src->PathfindHistory[i].y, src->PathfindHistory[i].z,
                                                 src->PathfindHistory[i].direction };
                 }
             }
-            dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
+            dst->walkingAnimationFrameNum = src->NoActionFrameNum;
         }
 
         constexpr EntityType GetEntityTypeFromRCT2Sprite(const RCT12EntityBase* src)

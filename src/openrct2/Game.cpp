@@ -175,7 +175,7 @@ static void FixGuestsHeadingToParkCount()
 
     for (auto* peep : EntityList<Guest>())
     {
-        if (peep->outsideOfPark && peep->State != PeepState::leavingPark)
+        if (peep->outsideOfPark && peep->state != PeepState::leavingPark)
         {
             guestsHeadingToPark++;
         }
@@ -221,10 +221,10 @@ static void FixPeepsWithInvalidRideReference()
     // Fix possibly invalid field values
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->CurrentRideStation.ToUnderlying() >= Limits::kMaxStationsPerRide)
+        if (peep->currentRideStation.ToUnderlying() >= Limits::kMaxStationsPerRide)
         {
-            const auto srcStation = peep->CurrentRideStation;
-            const auto rideIdx = peep->CurrentRide;
+            const auto srcStation = peep->currentRideStation;
+            const auto rideIdx = peep->currentRide;
             if (rideIdx.IsNull())
             {
                 continue;
@@ -233,10 +233,10 @@ static void FixPeepsWithInvalidRideReference()
             if (ride == nullptr)
             {
                 LOG_WARNING("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->id);
-                peep->CurrentRide = RideId::GetNull();
+                peep->currentRide = RideId::GetNull();
                 continue;
             }
-            auto curName = peep->GetName();
+            auto curName = peep->getName();
             LOG_WARNING(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->id, curName.c_str(), srcStation.ToUnderlying(),
                 rideIdx);
@@ -249,7 +249,7 @@ static void FixPeepsWithInvalidRideReference()
             else
             {
                 LOG_WARNING("Amending ride station to %u.", station);
-                peep->CurrentRideStation = station;
+                peep->currentRideStation = station;
             }
         }
     }
@@ -262,7 +262,7 @@ static void FixPeepsWithInvalidRideReference()
 
     for (auto ptr : peepsToRemove)
     {
-        ptr->Remove();
+        ptr->remove();
     }
 }
 

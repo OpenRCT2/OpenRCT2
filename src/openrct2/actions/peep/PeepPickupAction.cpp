@@ -75,7 +75,7 @@ namespace OpenRCT2::GameActions
             case PeepPickupType::pickup:
             {
                 res.position = peep->getLocation();
-                if (!peep->CanBePickedUp())
+                if (!peep->canBePickedUp())
                 {
                     return Result(Status::disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
@@ -105,7 +105,7 @@ namespace OpenRCT2::GameActions
                     return Result(Status::unknown, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
 
-                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2.error != Status::ok)
+                if (auto res2 = peep->place(TileCoordsXYZ(_loc), false); res2.error != Status::ok)
                 {
                     return res2;
                 }
@@ -156,7 +156,7 @@ namespace OpenRCT2::GameActions
 
                 Network::SetPickupPeep(_owner, peep);
                 Network::SetPickupPeepOldX(_owner, peep->x);
-                peep->Pickup();
+                peep->pickup();
             }
             break;
             case PeepPickupType::cancel:
@@ -166,14 +166,14 @@ namespace OpenRCT2::GameActions
                 Peep* const pickedUpPeep = Network::GetPickupPeep(_owner);
                 if (pickedUpPeep != nullptr)
                 {
-                    pickedUpPeep->PickupAbort(_loc.x);
+                    pickedUpPeep->pickupAbort(_loc.x);
                 }
                 Network::SetPickupPeep(_owner, nullptr);
             }
             break;
             case PeepPickupType::place:
                 res.position = _loc;
-                if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2.error != Status::ok)
+                if (auto res2 = peep->place(TileCoordsXYZ(_loc), true); res2.error != Status::ok)
                 {
                     return res2;
                 }

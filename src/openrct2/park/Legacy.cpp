@@ -2327,14 +2327,14 @@ static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
 template<typename TPeepType>
 static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable& table)
 {
-    if (peep->AnimationObjectIndex != kObjectEntryIndexNull)
+    if (peep->animationObjectIndex != kObjectEntryIndexNull)
         return false;
 
     // TODO: catch missings
-    auto legacyPAG = RCT12PeepAnimationGroup(peep->AnimationGroup);
+    auto legacyPAG = RCT12PeepAnimationGroup(peep->animationGroup);
     auto& conversion = table[legacyPAG];
-    peep->AnimationObjectIndex = conversion.first;
-    peep->AnimationGroup = static_cast<PeepAnimationGroup>(conversion.second);
+    peep->animationObjectIndex = conversion.first;
+    peep->animationGroup = static_cast<PeepAnimationGroup>(conversion.second);
 
     if (!peep->template is<Staff>())
         return true;
@@ -2343,12 +2343,12 @@ static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable&
     // Assigned sprites were found to be identical to those of 'Wave2', hence the mapping.
     // However, it appears to have been used by JavaScript plugins, still, hence the
     // need to convert any existing sprites.
-    if (peep->AnimationType == PeepAnimationType::eatFood)
-        peep->AnimationType = PeepAnimationType::wave2;
+    if (peep->animationType == PeepAnimationType::eatFood)
+        peep->animationType = PeepAnimationType::wave2;
 
     // NB: this is likely unnecessary, but a precautionary measure considering the above.
-    if (peep->NextAnimationType == PeepAnimationType::eatFood)
-        peep->NextAnimationType = PeepAnimationType::wave2;
+    if (peep->nextAnimationType == PeepAnimationType::eatFood)
+        peep->nextAnimationType = PeepAnimationType::wave2;
 
     return true;
 }

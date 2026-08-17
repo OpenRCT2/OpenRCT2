@@ -358,14 +358,14 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
                     {
                         if (animation == MiniGolfAnimation::swingLeft)
                         {
-                            if (curPeep->PeepId & 7)
+                            if (curPeep->peepId & 7)
                             {
                                 animation = MiniGolfAnimation::swing;
                             }
                         }
                         if (animation == MiniGolfAnimation::puttLeft)
                         {
-                            if (curPeep->PeepId & 7)
+                            if (curPeep->peepId & 7)
                             {
                                 animation = MiniGolfAnimation::putt;
                             }

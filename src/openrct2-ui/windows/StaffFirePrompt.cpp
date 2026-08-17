@@ -84,7 +84,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
             auto ft = Formatter();
-            peep->FormatNameTo(ft);
+            peep->formatNameTo(ft);
 
             ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ kWindowSize.width / 2, (kWindowSize.height / 2) - 3 });
             drawTextWrapped(rt, textCoords, kWindowSize.width - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::centre });

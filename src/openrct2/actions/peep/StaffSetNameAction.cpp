@@ -71,13 +71,13 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
         }
 
-        auto curName = staff->GetName();
+        auto curName = staff->getName();
         if (curName == _name)
         {
             return Result();
         }
 
-        if (!staff->SetName(_name))
+        if (!staff->setName(_name))
         {
             return Result(Status::unknown, STR_CANT_NAME_GUEST, kStringIdNone);
         }

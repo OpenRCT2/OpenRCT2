@@ -79,13 +79,13 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 
-        auto curName = guest->GetName();
+        auto curName = guest->getName();
         if (curName == _name)
         {
             return Result();
         }
 
-        if (!guest->SetName(_name))
+        if (!guest->setName(_name))
         {
             return Result(Status::unknown, STR_CANT_NAME_GUEST, kStringIdNone);
         }

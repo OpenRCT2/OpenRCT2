@@ -484,20 +484,20 @@ namespace OpenRCT2
         // Place all the guests at exit
         for (auto peep : EntityList<Guest>())
         {
-            if (peep->State == PeepState::queuingFront || peep->State == PeepState::enteringRide
-                || peep->State == PeepState::leavingRide || peep->State == PeepState::onRide)
+            if (peep->state == PeepState::queuingFront || peep->state == PeepState::enteringRide
+                || peep->state == PeepState::leavingRide || peep->state == PeepState::onRide)
             {
-                if (peep->CurrentRide != id)
+                if (peep->currentRide != id)
                     continue;
 
                 PeepDecrementNumRiders(peep);
-                if (peep->State == PeepState::queuingFront && peep->RideSubState == PeepRideSubState::atEntrance)
+                if (peep->state == PeepState::queuingFront && peep->rideSubState == PeepRideSubState::atEntrance)
                     peep->removeFromQueue();
 
                 if (exitPosition.direction == kInvalidDirection)
                 {
-                    CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
-                    if (peep->GetNextIsSloped())
+                    CoordsXYZ newLoc = { peep->nextLoc.ToTileCentre(), peep->nextLoc.z };
+                    if (peep->getNextIsSloped())
                         newLoc.z += kCoordsZStep;
                     newLoc.z++;
                     peep->moveTo(newLoc);
@@ -508,26 +508,26 @@ namespace OpenRCT2
                     peep->orientation = exitPosition.direction;
                 }
 
-                peep->State = PeepState::falling;
-                peep->SwitchToSpecialSprite(0);
+                peep->state = PeepState::falling;
+                peep->switchToSpecialSprite(0);
 
                 peep->happiness = std::min(peep->happiness, peep->happinessTarget) / 2;
                 peep->happinessTarget = peep->happiness;
-                peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
+                peep->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
             }
         }
         // Place all the staff at exit
         for (auto peep : EntityList<Staff>())
         {
-            if (peep->State == PeepState::fixing || peep->State == PeepState::inspecting)
+            if (peep->state == PeepState::fixing || peep->state == PeepState::inspecting)
             {
-                if (peep->CurrentRide != id)
+                if (peep->currentRide != id)
                     continue;
 
                 if (exitPosition.direction == kInvalidDirection)
                 {
-                    CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
-                    if (peep->GetNextIsSloped())
+                    CoordsXYZ newLoc = { peep->nextLoc.ToTileCentre(), peep->nextLoc.z };
+                    if (peep->getNextIsSloped())
                         newLoc.z += kCoordsZStep;
                     newLoc.z++;
                     peep->moveTo(newLoc);
@@ -538,10 +538,10 @@ namespace OpenRCT2
                     peep->orientation = exitPosition.direction;
                 }
 
-                peep->State = PeepState::falling;
-                peep->SwitchToSpecialSprite(0);
+                peep->state = PeepState::falling;
+                peep->switchToSpecialSprite(0);
 
-                peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
+                peep->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
             }
         }
         numRiders = 0;
