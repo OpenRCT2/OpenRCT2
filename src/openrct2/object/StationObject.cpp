@@ -13,7 +13,7 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
-#include "../world/Location.hpp"
+#include "../interface/Screen.hpp"
 
 namespace OpenRCT2
 {

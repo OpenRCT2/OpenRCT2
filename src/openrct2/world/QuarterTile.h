@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "../world/Location.hpp"
-
 #include <cstdint>
+
+struct TileCornersZ;
 
 class QuarterTile
 {

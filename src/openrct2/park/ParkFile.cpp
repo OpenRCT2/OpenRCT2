@@ -42,6 +42,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/RCT12.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"

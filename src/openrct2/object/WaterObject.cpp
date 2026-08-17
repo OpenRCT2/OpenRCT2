@@ -17,9 +17,9 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
 #include "../drawing/Text.h"
+#include "../interface/Screen.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
-#include "../world/Location.hpp"
 
 namespace OpenRCT2
 {

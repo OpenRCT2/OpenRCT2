@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <openrct2/world/Location.hpp>
+#include <openrct2/interface/Screen.hpp>
 #include <queue>
 #include <string_view>
 

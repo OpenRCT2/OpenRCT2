@@ -12,7 +12,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Money.hpp>
 #include <openrct2/interface/ColourWithFlags.h>
-#include <openrct2/world/Location.hpp>
+#include <openrct2/interface/Screen.hpp>
 
 namespace OpenRCT2::Drawing
 {

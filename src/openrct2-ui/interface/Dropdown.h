@@ -19,9 +19,10 @@
 #include <openrct2/drawing/Colour.h>
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/interface/Window.h>
-#include <openrct2/world/Location.hpp>
 #include <optional>
 #include <span>
+
+struct ScreenCoordsXY;
 
 namespace OpenRCT2
 {

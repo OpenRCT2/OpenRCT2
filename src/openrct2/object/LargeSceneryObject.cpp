@@ -17,8 +17,8 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
 #include "../interface/Cursors.h"
+#include "../interface/Screen.hpp"
 #include "../localisation/Language.h"
-#include "../world/Location.hpp"
 
 #include <iterator>
 

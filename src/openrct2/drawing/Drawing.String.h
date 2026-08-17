@@ -12,7 +12,7 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../interface/ColourWithFlags.h"
-#include "../world/Location.hpp"
+#include "../interface/Screen.hpp"
 #include "TextColour.h"
 
 #include <cstdint>

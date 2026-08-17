@@ -18,7 +18,7 @@
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/FilterPaletteIds.h>
     #include <openrct2/drawing/RenderTarget.h>
-    #include <openrct2/world/Location.hpp>
+    #include <openrct2/interface/Screen.hpp>
     #include <stdexcept>
     #include <vector>
 

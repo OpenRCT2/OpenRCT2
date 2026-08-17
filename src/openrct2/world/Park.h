@@ -10,7 +10,8 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "Location.hpp"
+
+struct CoordsXY;
 
 namespace OpenRCT2
 {

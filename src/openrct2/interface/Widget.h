@@ -12,8 +12,8 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../drawing/ImageId.hpp"
+#include "../interface/Screen.hpp"
 #include "../localisation/StringIdType.h"
-#include "../world/Location.hpp"
 
 #include <cstdint>
 

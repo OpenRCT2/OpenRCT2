@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include "../../world/Location.hpp"
-
 #include <cstdint>
 
 struct PaintSession;
+using Direction = uint8_t;
 
 constexpr uint8_t kTunnelMaxCount = 65;
 

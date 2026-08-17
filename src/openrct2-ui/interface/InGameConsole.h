@@ -12,7 +12,7 @@
 #include <deque>
 #include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/InteractiveConsole.h>
-#include <openrct2/world/Location.hpp>
+#include <openrct2/interface/Screen.hpp>
 #include <vector>
 
 namespace OpenRCT2

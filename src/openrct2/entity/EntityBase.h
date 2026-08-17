@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../world/Location.hpp"
+#include "../interface/Screen.hpp"
+
+struct CoordsXYZ;
 
 namespace OpenRCT2
 {

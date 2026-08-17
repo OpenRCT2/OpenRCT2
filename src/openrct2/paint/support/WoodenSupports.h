@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "../../world/Location.hpp"
-
 #include <cstdint>
+
+using Direction = uint8_t;
 
 namespace OpenRCT2
 {

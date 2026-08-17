@@ -12,7 +12,7 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "../world/Location.hpp"
+#include "../interface/Screen.hpp"
 #include "G1Element.h"
 
 namespace OpenRCT2::Drawing
