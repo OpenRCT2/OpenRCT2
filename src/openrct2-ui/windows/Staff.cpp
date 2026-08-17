@@ -354,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            _windowTitle = staff->GetName();
+            _windowTitle = staff->getName();
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
         }
 
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_RENAME:
                 {
-                    auto peepName = staff->GetName();
+                    auto peepName = staff->getName();
                     WindowTextInputRawOpen(
                         this, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, {}, peepName.c_str(),
                         32);
@@ -558,7 +558,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
             auto ft = Formatter();
-            staff->FormatActionTo(ft);
+            staff->formatActionTo(ft);
             const auto& widget = widgets[WIDX_BTM_LABEL];
             auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
             int32_t widgetWidth = widget.width() - 1;
@@ -595,15 +595,15 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y++;
 
             auto& objManager = GetContext()->GetObjectManager();
-            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->animationObjectIndex);
 
-            const auto& anim = animObj->GetPeepAnimation(staff->AnimationGroup);
+            const auto& anim = animObj->GetPeepAnimation(staff->animationGroup);
             int32_t animFrame = 0;
             if (page == WINDOW_STAFF_OVERVIEW)
                 animFrame = _tabAnimationOffset / 4;
 
             auto imageIndex = anim.baseImage + 1 + anim.frameOffsets[animFrame] * 4;
-            GfxDrawSprite(clippedRT, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
+            GfxDrawSprite(clippedRT, ImageId(imageIndex, staff->tShirtColour, staff->trousersColour), screenCoords);
         }
 
         void OverviewResize()
@@ -633,10 +633,10 @@ namespace OpenRCT2::Ui::Windows
             if (staff == nullptr)
                 return;
             auto& objManager = GetContext()->GetObjectManager();
-            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->animationObjectIndex);
 
             // Get walking animation length
-            const auto& walkingAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::walking);
+            const auto& walkingAnim = animObj->GetPeepAnimation(staff->animationGroup, PeepAnimationType::walking);
             const auto walkingAnimLength = walkingAnim.frameOffsets.size();
 
             // Overview tab animation offset
@@ -644,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
             _tabAnimationOffset %= walkingAnimLength * 4;
 
             // Get pickup animation length
-            const auto& pickAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::hanging);
+            const auto& pickAnim = animObj->GetPeepAnimation(staff->animationGroup, PeepAnimationType::hanging);
             const auto pickAnimLength = pickAnim.frameOffsets.size();
 
             // Update pickup animation frame
@@ -653,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
 
             invalidateWidget(WIDX_TAB_1);
 
-            const std::optional<Focus> tempFocus = staff->State != PeepState::picked ? std::optional(Focus(staff->id))
+            const std::optional<Focus> tempFocus = staff->state != PeepState::picked ? std::optional(Focus(staff->id))
                                                                                      : std::nullopt;
             if (focus != tempFocus)
             {
@@ -699,11 +699,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& objManager = GetContext()->GetObjectManager();
-            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->animationObjectIndex);
 
-            auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::hanging);
+            auto& pickupAnim = animObj->GetPeepAnimation(staff->animationGroup, PeepAnimationType::hanging);
             auto baseImageId = pickupAnim.baseImage + pickupAnim.frameOffsets[pickedPeepFrame >> 2];
-            gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
+            gPickupPeepImage = ImageId(baseImageId, staff->tShirtColour, staff->trousersColour);
         }
 
         void OverviewToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -798,7 +798,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Remember what item to check for the end of this event function
                 auto costumeIndex = _availableCostumes[i].index;
-                if (staff->AnimationObjectIndex == costumeIndex)
+                if (staff->animationObjectIndex == costumeIndex)
                     checkedIndex = i;
             }
 
@@ -847,7 +847,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].setVisible();
 
                     auto pos = std::find_if(_availableCostumes.begin(), _availableCostumes.end(), [staff](auto costume) {
-                        return costume.index == staff->AnimationObjectIndex;
+                        return costume.index == staff->animationObjectIndex;
                     });
 
                     if (pos != _availableCostumes.end())
@@ -1016,9 +1016,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (staff->WindowInvalidateFlags & PEEP_INVALIDATE_STAFF_STATS)
+            if (staff->windowInvalidateFlags & PEEP_INVALIDATE_STAFF_STATS)
             {
-                staff->WindowInvalidateFlags &= ~PEEP_INVALIDATE_STAFF_STATS;
+                staff->windowInvalidateFlags &= ~PEEP_INVALIDATE_STAFF_STATS;
                 invalidate();
             }
         }
@@ -1043,7 +1043,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (page == WINDOW_STAFF_OVERVIEW)
             {
-                if (staff->CanBePickedUp())
+                if (staff->canBePickedUp())
                 {
                     setWidgetDisabled(WIDX_PICKUP, false);
                 }
@@ -1052,7 +1052,7 @@ namespace OpenRCT2::Ui::Windows
                     setWidgetDisabled(WIDX_PICKUP, true);
                 }
 
-                setWidgetDisabled(WIDX_FIRE, staff->State == PeepState::fixing || staff->State == PeepState::inspecting);
+                setWidgetDisabled(WIDX_FIRE, staff->state == PeepState::fixing || staff->state == PeepState::inspecting);
             }
         }
 
@@ -1127,7 +1127,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             std::optional<Focus> tempFocus;
-            if (staff->State != PeepState::picked)
+            if (staff->state != PeepState::picked)
             {
                 tempFocus = Focus(staff->id);
             }
@@ -1153,7 +1153,7 @@ namespace OpenRCT2::Ui::Windows
 
             focus = tempFocus;
 
-            if (staff->State != PeepState::picked)
+            if (staff->state != PeepState::picked)
             {
                 if (viewport == nullptr)
                 {

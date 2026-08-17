@@ -384,16 +384,16 @@ namespace OpenRCT2
         assert(peep != nullptr);
 
         peep->guestNextInQueue = EntityId::GetNull();
-        auto* queueHeadGuest = getQueueHeadGuest(peep->CurrentRideStation);
+        auto* queueHeadGuest = getQueueHeadGuest(peep->currentRideStation);
         if (queueHeadGuest == nullptr)
         {
-            getStation(peep->CurrentRideStation).LastPeepInQueue = peep->id;
+            getStation(peep->currentRideStation).LastPeepInQueue = peep->id;
         }
         else
         {
             queueHeadGuest->guestNextInQueue = peep->id;
         }
-        updateQueueLength(peep->CurrentRideStation);
+        updateQueueLength(peep->currentRideStation);
     }
 
     /**
@@ -569,7 +569,7 @@ namespace OpenRCT2
             if (peep != nullptr)
             {
                 ft.Add<StringId>(STR_RACE_WON_BY);
-                peep->FormatNameTo(ft);
+                peep->formatNameTo(ft);
             }
             else
             {
@@ -1424,15 +1424,15 @@ namespace OpenRCT2
                 auto mechanic = RideGetMechanic(ride);
                 bool rideNeedsRepair = ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown);
                 if (mechanic == nullptr
-                    || (mechanic->State != PeepState::headingToInspection && mechanic->State != PeepState::answering)
-                    || mechanic->CurrentRide != ride.id)
+                    || (mechanic->state != PeepState::headingToInspection && mechanic->state != PeepState::answering)
+                    || mechanic->currentRide != ride.id)
                 {
                     ride.mechanicStatus = MechanicStatus::calling;
                     ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
                     RideMechanicStatusUpdate(ride, MechanicStatus::calling);
                 }
                 // if the ride is broken down, but a mechanic was heading for an inspection, update orders to fix
-                else if (rideNeedsRepair && mechanic->State == PeepState::headingToInspection)
+                else if (rideNeedsRepair && mechanic->state == PeepState::headingToInspection)
                 {
                     // updates orders for mechanic already heading to inspect ride
                     // forInspection == false means start repair (goes to PeepState::answering)
@@ -1444,8 +1444,8 @@ namespace OpenRCT2
             {
                 auto mechanic = RideGetMechanic(ride);
                 if (mechanic == nullptr
-                    || (mechanic->State != PeepState::headingToInspection && mechanic->State != PeepState::fixing
-                        && mechanic->State != PeepState::inspecting && mechanic->State != PeepState::answering))
+                    || (mechanic->state != PeepState::headingToInspection && mechanic->state != PeepState::fixing
+                        && mechanic->state != PeepState::inspecting && mechanic->state != PeepState::answering))
                 {
                     ride.mechanicStatus = MechanicStatus::calling;
                     ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
@@ -1464,13 +1464,13 @@ namespace OpenRCT2
      */
     static void RideCallMechanic(Ride& ride, Peep* mechanic, int32_t forInspection)
     {
-        mechanic->SetState(forInspection ? PeepState::headingToInspection : PeepState::answering);
-        mechanic->SubState = 0;
+        mechanic->setState(forInspection ? PeepState::headingToInspection : PeepState::answering);
+        mechanic->subState = 0;
         ride.mechanicStatus = MechanicStatus::heading;
         ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
         ride.mechanic = mechanic->id;
-        mechanic->CurrentRide = ride.id;
-        mechanic->CurrentRideStation = ride.inspectionStation;
+        mechanic->currentRide = ride.id;
+        mechanic->currentRideStation = ride.inspectionStation;
     }
 
     /**
@@ -1530,12 +1530,12 @@ namespace OpenRCT2
 
             if (!forInspection)
             {
-                if (peep->State == PeepState::headingToInspection)
+                if (peep->state == PeepState::headingToInspection)
                 {
-                    if (peep->SubState >= 4)
+                    if (peep->subState >= 4)
                         continue;
                 }
-                else if (peep->State != PeepState::patrolling)
+                else if (peep->state != PeepState::patrolling)
                     continue;
 
                 if (!(peep->staffOrders & STAFF_ORDERS_FIX_RIDES))
@@ -1543,7 +1543,7 @@ namespace OpenRCT2
             }
             else
             {
-                if (peep->State != PeepState::patrolling || !(peep->staffOrders & STAFF_ORDERS_INSPECT_RIDES))
+                if (peep->state != PeepState::patrolling || !(peep->staffOrders & STAFF_ORDERS_INSPECT_RIDES))
                     continue;
             }
 
@@ -3973,13 +3973,13 @@ namespace OpenRCT2
     {
         for (auto peep : EntityList<Guest>())
         {
-            if (peep->State != PeepState::queuing)
+            if (peep->state != PeepState::queuing)
                 continue;
-            if (peep->CurrentRide != id)
+            if (peep->currentRide != id)
                 continue;
 
             peep->removeFromQueue();
-            peep->SetState(PeepState::falling);
+            peep->setState(PeepState::falling);
         }
     }
 

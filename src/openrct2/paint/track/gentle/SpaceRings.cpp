@@ -76,7 +76,7 @@ static void PaintSpaceRingsStructure(
         auto* rider = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
         if (rider != nullptr)
         {
-            stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
+            stationColour = ImageId(0, rider->tShirtColour, rider->trousersColour);
             imageId = stationColour.WithIndex(baseImageId + 352 + frameNum);
             PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
         }

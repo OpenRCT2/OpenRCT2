@@ -470,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            _windowTitle = peep->GetName();
+            _windowTitle = peep->getName();
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
@@ -486,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (page == WINDOW_GUEST_OVERVIEW)
             {
-                const bool disablePickup = !peep->CanBePickedUp();
+                const bool disablePickup = !peep->canBePickedUp();
                 if (disablePickup != isWidgetDisabled(WIDX_PICKUP))
                     invalidate();
                 setWidgetDisabled(WIDX_PICKUP, disablePickup);
@@ -560,9 +560,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& objManager = GetContext()->GetObjectManager();
-            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).baseImage + 1;
+            int32_t animationFrame = animObj->GetPeepAnimation(peep->animationGroup).baseImage + 1;
             int32_t animationFrameOffset = 0;
 
             if (page == WINDOW_GUEST_OVERVIEW)
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
             }
             animationFrame += animationFrameOffset;
 
-            auto spriteId = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
+            auto spriteId = ImageId(animationFrame, peep->tShirtColour, peep->trousersColour);
             GfxDrawSprite(clipRT, spriteId, screenCoords);
 
             auto* guest = peep->as<Guest>();
@@ -582,21 +582,21 @@ namespace OpenRCT2::Ui::Windows
             // There are only 6 walking frames available for each item.
             auto itemFrame = (_guestAnimationFrame / 4) % 6;
 
-            if (guest->AnimationGroup == PeepAnimationGroup::hat)
+            if (guest->animationGroup == PeepAnimationGroup::hat)
             {
                 auto itemOffset = kPeepSpriteHatItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->hatColour);
                 GfxDrawSprite(clipRT, imageId, screenCoords);
             }
 
-            if (guest->AnimationGroup == PeepAnimationGroup::balloon)
+            if (guest->animationGroup == PeepAnimationGroup::balloon)
             {
                 auto itemOffset = kPeepSpriteBalloonItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->balloonColour);
                 GfxDrawSprite(clipRT, imageId, screenCoords);
             }
 
-            if (guest->AnimationGroup == PeepAnimationGroup::umbrella)
+            if (guest->animationGroup == PeepAnimationGroup::umbrella)
             {
                 auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
                 auto imageId = ImageId(itemOffset + itemFrame * 4, guest->umbrellaColour);
@@ -639,7 +639,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_PICKUP:
                 {
-                    if (!peep->CanBePickedUp())
+                    if (!peep->canBePickedUp())
                     {
                         return;
                     }
@@ -665,7 +665,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
                 case WIDX_RENAME:
                 {
-                    auto peepName = peep->GetName();
+                    auto peepName = peep->getName();
                     WindowTextInputRawOpen(
                         this, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, {}, peepName.c_str(), 32);
                     break;
@@ -754,7 +754,7 @@ namespace OpenRCT2::Ui::Windows
 
             onPrepareDraw();
 
-            if (peep->State != PeepState::picked && viewport == nullptr)
+            if (peep->state != PeepState::picked && viewport == nullptr)
             {
                 const auto& viewWidget = widgets[WIDX_VIEWPORT];
                 auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
@@ -805,7 +805,7 @@ namespace OpenRCT2::Ui::Windows
 
             {
                 auto ft = Formatter();
-                peep->FormatActionTo(ft);
+                peep->formatActionTo(ft);
                 int32_t textWidth = actionLabelWidget.width() - 1;
                 drawTextEllipsised(rt, screenPos, textWidth, STR_BLACK_STRING, ft, { TextAlignment::centre });
             }
@@ -887,14 +887,14 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& objManager = GetContext()->GetObjectManager();
-            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
             // Overview tab animation offset
             _guestAnimationFrame++;
             _guestAnimationFrame %= 24;
 
             // Get pickup animation length
-            const auto& pickAnim = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::hanging);
+            const auto& pickAnim = animObj->GetPeepAnimation(peep->animationGroup, PeepAnimationType::hanging);
             const auto pickAnimLength = pickAnim.frameOffsets.size();
 
             // Update pickup animation, can only happen in this tab.
@@ -904,9 +904,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_1);
             invalidateWidget(WIDX_TAB_2);
 
-            if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
+            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
             {
-                peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
+                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
                 invalidateWidget(WIDX_ACTION_LBL);
             }
 
@@ -931,12 +931,12 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            const std::optional<Focus> currentFocus = peep->State != PeepState::picked ? std::optional(Focus(peep->id))
+            const std::optional<Focus> currentFocus = peep->state != PeepState::picked ? std::optional(Focus(peep->id))
                                                                                        : std::nullopt;
             // Check if guest is in a vehicle (on ride, entering, or leaving but still on vehicle)
             auto isGuestInVehicle = [&peep]() {
-                return peep->State == PeepState::onRide || peep->State == PeepState::enteringRide
-                    || (peep->State == PeepState::leavingRide && peep->x == kLocationNull);
+                return peep->state == PeepState::onRide || peep->state == PeepState::enteringRide
+                    || (peep->state == PeepState::leavingRide && peep->x == kLocationNull);
             };
 
             // Also update when guest is on a ride but viewport still points to the guest (not the vehicle)
@@ -1007,11 +1007,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& objManager = GetContext()->GetObjectManager();
-            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::hanging).baseImage;
+            auto baseImageId = animObj->GetPeepAnimation(peep->animationGroup, PeepAnimationType::hanging).baseImage;
             baseImageId += pickedPeepFrame >> 2;
-            gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
+            gPickupPeepImage = ImageId(baseImageId, peep->tShirtColour, peep->trousersColour);
         }
 
         void onToolDownOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -1095,7 +1095,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_STATS;
+            peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_STATS;
 
             invalidate();
         }
@@ -1123,7 +1123,7 @@ namespace OpenRCT2::Ui::Windows
             widgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
 
             int32_t energyPercentage = NormalizeGuestStatValue(
-                peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 3);
+                peep->energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 3);
             widgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
 
             int32_t hungerPercentage = NormalizeGuestStatValue(peep->hunger - 32, 158, 0);
@@ -1550,9 +1550,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_THOUGHTS)
+            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_THOUGHTS)
             {
-                peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
+                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
                 invalidate();
             }
         }
@@ -1621,9 +1621,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_INVENTORY)
+            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_INVENTORY)
             {
-                peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
+                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
                 invalidate();
             }
         }
@@ -1701,7 +1701,7 @@ namespace OpenRCT2::Ui::Windows
                     itemImage = ImageId(itemDesc.Image, guest.hatColour);
                     break;
                 case ShopItem::tShirt:
-                    itemImage = ImageId(itemDesc.Image, guest.TshirtColour);
+                    itemImage = ImageId(itemDesc.Image, guest.tShirtColour);
                     break;
                 case ShopItem::photo2:
                     invRide = GetRide(guest.photo2RideRef);
@@ -1848,19 +1848,19 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y += kListRowHeight;
             {
                 auto ft = Formatter();
-                ft.Add<int32_t>(peep->NextLoc.x);
-                ft.Add<int32_t>(peep->NextLoc.y);
-                ft.Add<int32_t>(peep->NextLoc.z);
+                ft.Add<int32_t>(peep->nextLoc.x);
+                ft.Add<int32_t>(peep->nextLoc.y);
+                ft.Add<int32_t>(peep->nextLoc.z);
                 FormatStringLegacy(buffer, sizeof(buffer), STR_PEEP_DEBUG_NEXT, ft.Data());
-                if (peep->GetNextIsSurface())
+                if (peep->getNextIsSurface())
                 {
                     FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
                     String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
-                if (peep->GetNextIsSloped())
+                if (peep->getNextIsSloped())
                 {
                     auto ft2 = Formatter();
-                    ft2.Add<int32_t>(peep->GetNextDirection());
+                    ft2.Add<int32_t>(peep->getNextDirection());
                     FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
                     String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
@@ -1869,18 +1869,18 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y += kListRowHeight;
             {
                 auto ft = Formatter();
-                ft.Add<int32_t>(peep->DestinationX);
-                ft.Add<int32_t>(peep->DestinationY);
-                ft.Add<int32_t>(peep->DestinationTolerance);
+                ft.Add<int32_t>(peep->destinationX);
+                ft.Add<int32_t>(peep->destinationY);
+                ft.Add<int32_t>(peep->destinationTolerance);
                 drawText(rt, screenCoords, STR_PEEP_DEBUG_DEST, ft);
             }
             screenCoords.y += kListRowHeight;
             {
                 auto ft = Formatter();
-                ft.Add<int32_t>(peep->PathfindGoal.x);
-                ft.Add<int32_t>(peep->PathfindGoal.y);
-                ft.Add<int32_t>(peep->PathfindGoal.z);
-                ft.Add<int32_t>(peep->PathfindGoal.direction);
+                ft.Add<int32_t>(peep->pathfindGoal.x);
+                ft.Add<int32_t>(peep->pathfindGoal.y);
+                ft.Add<int32_t>(peep->pathfindGoal.z);
+                ft.Add<int32_t>(peep->pathfindGoal.direction);
                 drawText(rt, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
             }
             screenCoords.y += kListRowHeight;
@@ -1888,7 +1888,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y += kListRowHeight;
 
             screenCoords.x += 10;
-            for (auto& point : peep->PathfindHistory)
+            for (auto& point : peep->pathfindHistory)
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(point.x);

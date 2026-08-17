@@ -534,11 +534,11 @@ namespace OpenRCT2::GameActions
                 {
                     if (ride.mechanicStatus == MechanicStatus::fixing)
                     {
-                        mechanic->RideSubState = PeepRideSubState::approachExit;
+                        mechanic->rideSubState = PeepRideSubState::approachExit;
                     }
                     else if (ride.mechanicStatus == MechanicStatus::calling || ride.mechanicStatus == MechanicStatus::heading)
                     {
-                        mechanic->RemoveFromRide();
+                        mechanic->removeFromRide();
                     }
                 }
 
@@ -652,8 +652,8 @@ namespace OpenRCT2::GameActions
                     }
                     break;
                 case GUEST_PARAMETER_ENERGY:
-                    peep->Energy = value;
-                    peep->EnergyTarget = value;
+                    peep->energy = value;
+                    peep->energyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
                     peep->hunger = value;
@@ -733,13 +733,13 @@ namespace OpenRCT2::GameActions
                             break;
 
                         auto peep = gameState.entities.TryGetEntity<Guest>(peepInTrainIndex);
-                        if (peep != nullptr && peep->CurrentRide == ride.id)
+                        if (peep != nullptr && peep->currentRide == ride.id)
                         {
-                            if ((peep->State == PeepState::onRide && peep->RideSubState == PeepRideSubState::onRide)
-                                || (peep->State == PeepState::leavingRide
-                                    && peep->RideSubState == PeepRideSubState::leaveVehicle))
+                            if ((peep->state == PeepState::onRide && peep->rideSubState == PeepRideSubState::onRide)
+                                || (peep->state == PeepState::leavingRide
+                                    && peep->rideSubState == PeepRideSubState::leaveVehicle))
                             {
-                                vehicle->ApplyMass(-peep->Mass);
+                                vehicle->ApplyMass(-peep->mass);
                             }
                         }
                         peepInTrainIndex = EntityId::GetNull();
@@ -761,7 +761,7 @@ namespace OpenRCT2::GameActions
             if (guest->peepFlags.has(PeepFlag::positionFrozen))
                 continue;
 
-            guest->Remove();
+            guest->remove();
         }
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -773,8 +773,8 @@ namespace OpenRCT2::GameActions
     {
         for (auto peep : EntityList<Staff>())
         {
-            peep->Energy = value;
-            peep->EnergyTarget = value;
+            peep->energy = value;
+            peep->energyTarget = value;
         }
     }
 

@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
                     item.Id = peep->id;
 
                     Formatter ft;
-                    peep->FormatNameTo(ft);
+                    peep->formatNameTo(ft);
                     FormatStringLegacy(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
                 }
 
@@ -662,7 +662,7 @@ namespace OpenRCT2::Ui::Windows
                         continue;
                     }
                     auto ft = Formatter();
-                    peep->FormatNameTo(ft);
+                    peep->formatNameTo(ft);
                     drawTextEllipsised(rt, { 0, y }, 113, format, ft);
 
                     switch (_selectedView)
@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
 
                             // Action
                             ft = Formatter();
-                            peep->FormatActionTo(ft);
+                            peep->formatActionTo(ft);
                             drawTextEllipsised(rt, { 133, y }, 314, format, ft);
                             break;
                         case GuestViewType::thoughts:
@@ -766,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
                 char name[256]{};
 
                 Formatter ft;
-                peep.FormatNameTo(ft);
+                peep.formatNameTo(ft);
                 FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
                 if (!String::contains(name, _filterName.c_str(), true))
                 {
@@ -867,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 case GuestViewType::actions:
-                    peep.FormatActionTo(ft);
+                    peep.formatActionTo(ft);
                     break;
                 case GuestViewType::thoughts:
                 {
@@ -924,10 +924,10 @@ namespace OpenRCT2::Ui::Windows
                 // Compare name
                 if constexpr (!TRealNames)
                 {
-                    if (peepA->Name == nullptr && peepB->Name == nullptr)
+                    if (peepA->name == nullptr && peepB->name == nullptr)
                     {
                         // Simple ID comparison for when both peeps use a number or a generated name
-                        return peepA->PeepId < peepB->PeepId;
+                        return peepA->peepId < peepB->peepId;
                     }
                 }
             }

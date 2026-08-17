@@ -97,7 +97,7 @@ namespace OpenRCT2::PathFinding
 
             if (peep != nullptr)
             {
-                LOG_INFO("[%05u:%s] %s", peep->id.ToUnderlying(), peep->GetName().c_str(), buffer);
+                LOG_INFO("[%05u:%s] %s", peep->id.ToUnderlying(), peep->getName().c_str(), buffer);
             }
             else
             {
@@ -198,7 +198,7 @@ namespace OpenRCT2::PathFinding
     static int32_t PeepMoveOneTile(Direction direction, Peep& peep)
     {
         assert(DirectionValid(direction));
-        auto newTile = CoordsXY{ CoordsXY{ peep.NextLoc } + CoordsDirectionDelta[direction] }.ToTileCentre();
+        auto newTile = CoordsXY{ CoordsXY{ peep.nextLoc } + CoordsDirectionDelta[direction] }.ToTileCentre();
 
         if (newTile.x >= kMaximumMapSizeBig || newTile.y >= kMaximumMapSizeBig)
         {
@@ -206,8 +206,8 @@ namespace OpenRCT2::PathFinding
             return GuestSurfacePathFinding(peep);
         }
 
-        peep.PeepDirection = direction;
-        if (peep.State != PeepState::queuing)
+        peep.peepDirection = direction;
+        if (peep.state != PeepState::queuing)
         {
             // When peeps are walking along a path, we would like them to be spread out across the width of the path,
             // instead of all walking along the exact centre line of the path.
@@ -242,7 +242,7 @@ namespace OpenRCT2::PathFinding
                 newTile.y += offset;
             }
         }
-        peep.SetDestination(newTile, 2);
+        peep.setDestination(newTile, 2);
 
         return 0;
     }
@@ -253,7 +253,7 @@ namespace OpenRCT2::PathFinding
      */
     static int32_t GuestSurfacePathFinding(Peep& peep)
     {
-        auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + kPathClearance };
+        auto pathPos = CoordsXYRangedZ{ peep.nextLoc, peep.nextLoc.z, peep.nextLoc.z + kPathClearance };
         Direction randDirection = ScenarioRand() & 3;
 
         if (!WallInTheWay(pathPos, randDirection))
@@ -279,8 +279,8 @@ namespace OpenRCT2::PathFinding
         }
         randDirection &= 3;
 
-        pathPos.x = peep.NextLoc.x;
-        pathPos.y = peep.NextLoc.y;
+        pathPos.x = peep.nextLoc.x;
+        pathPos.y = peep.nextLoc.y;
         if (!WallInTheWay(pathPos, randDirection))
         {
             pathPos.x += CoordsDirectionDelta[randDirection].x;
@@ -299,8 +299,8 @@ namespace OpenRCT2::PathFinding
         randDirection -= 2;
         randDirection &= 3;
 
-        pathPos.x = peep.NextLoc.x;
-        pathPos.y = peep.NextLoc.y;
+        pathPos.x = peep.nextLoc.x;
+        pathPos.y = peep.nextLoc.y;
         if (!WallInTheWay(pathPos, randDirection))
         {
             pathPos.x += CoordsDirectionDelta[randDirection].x;
@@ -533,9 +533,9 @@ namespace OpenRCT2::PathFinding
         if (ScenarioRand() & 1)
         {
             // If possible go straight
-            if (edges & (1 << peep.PeepDirection))
+            if (edges & (1 << peep.peepDirection))
             {
-                return PeepMoveOneTile(peep.PeepDirection, peep);
+                return PeepMoveOneTile(peep.peepDirection, peep);
             }
         }
 
@@ -1065,7 +1065,7 @@ namespace OpenRCT2::PathFinding
                     bool pathLoop = false;
                     /* Check the peep.PathfindHistory to see if this junction has
                      * already been visited by the peep while heading for this goal. */
-                    for (auto& pathfindHistory : peep.PathfindHistory)
+                    for (auto& pathfindHistory : peep.pathfindHistory)
                     {
                         if (pathfindHistory == loc)
                         {
@@ -1293,7 +1293,7 @@ namespace OpenRCT2::PathFinding
 
         permittedEdges &= 0xF;
         uint32_t edges = permittedEdges;
-        if (isThin && peep.PathfindGoal == goal)
+        if (isThin && peep.pathfindGoal == goal)
         {
             /* Use of peep.PathfindHistory[]:
              * When walking to a goal, the peep PathfindHistory stores
@@ -1310,7 +1310,7 @@ namespace OpenRCT2::PathFinding
             /* If the peep remembers walking through this junction
              * previously while heading for its goal, retrieve the
              * directions it has not yet tried. */
-            for (auto& pathfindHistory : peep.PathfindHistory)
+            for (auto& pathfindHistory : peep.pathfindHistory)
             {
                 if (pathfindHistory == loc)
                 {
@@ -1350,15 +1350,15 @@ namespace OpenRCT2::PathFinding
 
         /* If this is a new goal for the peep. Store it and reset the peep's
          * PathfindHistory. */
-        if (!DirectionValid(peep.PathfindGoal.direction) || peep.PathfindGoal != goal)
+        if (!DirectionValid(peep.pathfindGoal.direction) || peep.pathfindGoal != goal)
         {
-            peep.PathfindGoal = { goal, 0 };
+            peep.pathfindGoal = { goal, 0 };
 
             // Clear pathfinding history
             TileCoordsXYZD nullPos;
             nullPos.SetNull();
 
-            std::fill(std::begin(peep.PathfindHistory), std::end(peep.PathfindHistory), nullPos);
+            std::fill(std::begin(peep.pathfindHistory), std::end(peep.pathfindHistory), nullPos);
 
             LogPathfinding(&peep, "New goal; clearing pf_history.");
         }
@@ -1446,7 +1446,7 @@ namespace OpenRCT2::PathFinding
                     /* Mechanics are the only staff type that
                      * pathfind to a destination. Determine if the
                      * mechanic is in their patrol area. */
-                    inPatrolArea = staff->isLocationInPatrol(peep.NextLoc);
+                    inPatrolArea = staff->isLocationInPatrol(peep.nextLoc);
                 }
 
                 LogPathfinding(
@@ -1516,20 +1516,20 @@ namespace OpenRCT2::PathFinding
 
         if (isThin)
         {
-            for (std::size_t i = 0; i < peep.PathfindHistory.size(); ++i)
+            for (std::size_t i = 0; i < peep.pathfindHistory.size(); ++i)
             {
-                if (peep.PathfindHistory[i] == loc)
+                if (peep.pathfindHistory[i] == loc)
                 {
                     /* Peep remembers this junction, so remove the
                      * chosen_edge from those left to try. */
-                    peep.PathfindHistory[i].direction &= ~(1 << chosenEdge);
+                    peep.pathfindHistory[i].direction &= ~(1 << chosenEdge);
                     /* Also remove the edge through which the peep
                      * entered the junction from those left to try. */
-                    peep.PathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.PeepDirection));
+                    peep.pathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.peepDirection));
 
                     LogPathfinding(
                         &peep, "Updating existing pf_history (in index: %u) for %d,%d,%d without entry edge %d & exit edge %d.",
-                        i, loc.x, loc.y, loc.z, DirectionReverse(peep.PeepDirection), chosenEdge);
+                        i, loc.x, loc.y, loc.z, DirectionReverse(peep.peepDirection), chosenEdge);
 
                     return chosenEdge;
                 }
@@ -1537,18 +1537,18 @@ namespace OpenRCT2::PathFinding
 
             /* Peep does not remember this junction, so forget a junction
              * and remember this junction. */
-            int32_t i = peep.PathfindGoal.direction++;
-            peep.PathfindGoal.direction &= 3;
-            peep.PathfindHistory[i] = { loc, permittedEdges };
+            int32_t i = peep.pathfindGoal.direction++;
+            peep.pathfindGoal.direction &= 3;
+            peep.pathfindHistory[i] = { loc, permittedEdges };
             /* Remove the chosen_edge from those left to try. */
-            peep.PathfindHistory[i].direction &= ~(1 << chosenEdge);
+            peep.pathfindHistory[i].direction &= ~(1 << chosenEdge);
             /* Also remove the edge through which the peep
              * entered the junction from those left to try. */
-            peep.PathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.PeepDirection));
+            peep.pathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.peepDirection));
 
             LogPathfinding(
                 &peep, "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x,
-                loc.y, loc.z, DirectionReverse(peep.PeepDirection), chosenEdge);
+                loc.y, loc.z, DirectionReverse(peep.peepDirection), chosenEdge);
         }
 
         return chosenEdge;
@@ -1583,14 +1583,14 @@ namespace OpenRCT2::PathFinding
     int32_t GuestPathFindParkEntranceEntering(Peep& peep, uint8_t edges)
     {
         // Send peeps to the nearest park entrance.
-        auto chosenEntrance = GetNearestParkEntrance(peep.NextLoc);
+        auto chosenEntrance = GetNearestParkEntrance(peep.nextLoc);
 
         // If no defined park entrances are found, walk aimlessly.
         if (!chosenEntrance.has_value())
             return GuestPathfindAimless(peep, edges);
 
         const auto goalPos = TileCoordsXYZ(chosenEntrance.value());
-        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
+        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.nextLoc }, goalPos, peep, true, RideId::GetNull());
 
         if (chosenDirection == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
@@ -1629,7 +1629,7 @@ namespace OpenRCT2::PathFinding
     int32_t GuestPathFindPeepSpawn(Peep& peep, uint8_t edges)
     {
         // Send peeps to the nearest spawn point.
-        uint8_t chosenSpawn = GetNearestPeepSpawnIndex(peep.NextLoc.x, peep.NextLoc.y);
+        uint8_t chosenSpawn = GetNearestPeepSpawnIndex(peep.nextLoc.x, peep.nextLoc.y);
 
         // If no defined spawns were found, walk aimlessly.
         if (chosenSpawn == 0xFF)
@@ -1638,13 +1638,13 @@ namespace OpenRCT2::PathFinding
         const auto peepSpawnLoc = getGameState().peepSpawns[chosenSpawn].ToTileStart();
         Direction direction = peepSpawnLoc.direction;
 
-        if (peepSpawnLoc.x == peep.NextLoc.x && peepSpawnLoc.y == peep.NextLoc.y)
+        if (peepSpawnLoc.x == peep.nextLoc.x && peepSpawnLoc.y == peep.nextLoc.y)
         {
             return PeepMoveOneTile(direction, peep);
         }
 
         const auto goalPos = TileCoordsXYZ(peepSpawnLoc);
-        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
+        direction = ChooseDirection(TileCoordsXYZ{ peep.nextLoc }, goalPos, peep, true, RideId::GetNull());
         if (direction == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
@@ -1660,7 +1660,7 @@ namespace OpenRCT2::PathFinding
         TileCoordsXYZ entranceGoal{};
         if (peep.peepFlags.has(PeepFlag::parkEntranceChosen))
         {
-            entranceGoal = peep.PathfindGoal;
+            entranceGoal = peep.pathfindGoal;
             auto* entranceElement = MapGetParkEntranceElementAt(entranceGoal.ToCoordsXYZ(), false);
             // If entrance no longer exists, choose a new one
             if (entranceElement == nullptr)
@@ -1671,7 +1671,7 @@ namespace OpenRCT2::PathFinding
 
         if (!peep.peepFlags.has(PeepFlag::parkEntranceChosen))
         {
-            auto chosenEntrance = GetNearestParkEntrance(peep.NextLoc);
+            auto chosenEntrance = GetNearestParkEntrance(peep.nextLoc);
 
             if (!chosenEntrance.has_value())
                 return GuestPathfindAimless(peep, edges);
@@ -1680,7 +1680,7 @@ namespace OpenRCT2::PathFinding
             entranceGoal = TileCoordsXYZ(*chosenEntrance);
         }
 
-        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, entranceGoal, peep, true, RideId::GetNull());
+        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.nextLoc }, entranceGoal, peep, true, RideId::GetNull());
         if (chosenDirection == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
@@ -1876,12 +1876,12 @@ namespace OpenRCT2::PathFinding
     {
         LogPathfinding(&peep, "Starting CalculateNextDestination");
 
-        if (peep.GetNextIsSurface())
+        if (peep.getNextIsSurface())
         {
             return GuestSurfacePathFinding(peep);
         }
 
-        TileCoordsXYZ loc{ peep.NextLoc };
+        TileCoordsXYZ loc{ peep.nextLoc };
 
         auto* pathElement = MapGetPathElementAt(loc);
         if (pathElement == nullptr)
@@ -1919,7 +1919,7 @@ namespace OpenRCT2::PathFinding
                 edges = adjustedEdges;
         }
 
-        int32_t direction = DirectionReverse(peep.PeepDirection);
+        int32_t direction = DirectionReverse(peep.peepDirection);
         // Check if in a dead end (i.e. only edge is where the peep came from)
         if (!(edges & ~(1 << direction)))
         {
@@ -1952,7 +1952,7 @@ namespace OpenRCT2::PathFinding
         {
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is outside the park.");
 
-            switch (peep.State)
+            switch (peep.state)
             {
                 case PeepState::enteringPark:
                     return GuestPathFindParkEntranceEntering(peep, edges);
@@ -2060,7 +2060,7 @@ namespace OpenRCT2::PathFinding
             entranceStations[stationIndex.ToUnderlying()] = true;
 
             TileCoordsXYZD entranceLocation = station.Entrance;
-            auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep.NextLoc });
+            auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep.nextLoc });
             if (score < bestScore)
             {
                 bestScore = score;
@@ -2096,7 +2096,7 @@ namespace OpenRCT2::PathFinding
 
         GetRideQueueEnd(loc);
 
-        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, loc, peep, true, rideIndex);
+        direction = ChooseDirection(TileCoordsXYZ{ peep.nextLoc }, loc, peep, true, rideIndex);
 
         if (direction == kInvalidDirection)
         {
@@ -2106,7 +2106,7 @@ namespace OpenRCT2::PathFinding
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the
              * save game (e.g. with a worse version of the pathfinding). */
-            peep.ResetPathfindGoal();
+            peep.resetPathfindGoal();
 
             LogPathfinding(&peep, "Completed CalculateNextDestination - failed to choose a direction == aimless.");
 

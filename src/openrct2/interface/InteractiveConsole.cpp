@@ -448,9 +448,9 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
         {
             for (auto peep : EntityList<Staff>())
             {
-                auto name = peep->GetName();
+                auto name = peep->getName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->assignedStaffType, peep->Energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->assignedStaffType, peep->energy,
                     name.c_str());
             }
         }
@@ -484,8 +484,8 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     Peep* peep = gameState.entities.GetEntity<Peep>(EntityId::FromUnderlying(int_val[0]));
                     if (peep != nullptr)
                     {
-                        peep->Energy = int_val[1];
-                        peep->EnergyTarget = int_val[1];
+                        peep->energy = int_val[1];
+                        peep->energyTarget = int_val[1];
                     }
                 }
             }
@@ -1564,7 +1564,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->TshirtColour = Drawing::getRandomColour();
+                guest->tShirtColour = Drawing::getRandomColour();
                 guest->invalidate();
             }
             break;
@@ -1580,7 +1580,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->Remove();
+                guest->remove();
             }
             break;
         }

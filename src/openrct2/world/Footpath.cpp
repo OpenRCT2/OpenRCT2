@@ -157,15 +157,15 @@ namespace OpenRCT2
         auto quad = EntityTileList<Peep>(footpathPos);
         for (auto peep : quad)
         {
-            if (peep->State == PeepState::sitting || peep->State == PeepState::watching)
+            if (peep->state == PeepState::sitting || peep->state == PeepState::watching)
             {
                 auto location = peep->getLocation();
                 if (location.z == footpathPos.z)
                 {
                     auto destination = location.ToTileCentre();
-                    peep->SetState(PeepState::walking);
-                    peep->SetDestination(destination, 5);
-                    peep->UpdateCurrentAnimationType();
+                    peep->setState(PeepState::walking);
+                    peep->setDestination(destination, 5);
+                    peep->updateCurrentAnimationType();
                 }
             }
         }

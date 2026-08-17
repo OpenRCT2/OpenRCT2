@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::tshirtColour_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->TshirtColour) : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->tShirtColour) : 0);
     }
     JSValue ScGuest::tshirtColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -216,7 +216,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->TshirtColour = static_cast<Drawing::Colour>(value);
+            peep->tShirtColour = static_cast<Drawing::Colour>(value);
             peep->invalidate();
         }
         return JS_UNDEFINED;
@@ -225,7 +225,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::trousersColour_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->TrousersColour) : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->trousersColour) : 0);
     }
     JSValue ScGuest::trousersColour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -234,7 +234,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->TrousersColour = static_cast<Drawing::Colour>(value);
+            peep->trousersColour = static_cast<Drawing::Colour>(value);
             peep->invalidate();
         }
         return JS_UNDEFINED;
@@ -416,7 +416,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::mass_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->Mass : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->mass : 0);
     }
     JSValue ScGuest::mass_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -425,7 +425,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->Mass = value;
+            peep->mass = value;
         }
         return JS_UNDEFINED;
     }
@@ -936,9 +936,9 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-            const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, *animationType);
+            const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, *animationType);
             auto idx = 0;
             for (auto frameOffset : animationGroup.frameOffsets)
             {
@@ -963,11 +963,11 @@ namespace OpenRCT2::Scripting
         }
 
         auto& availableGuestAnimations = getAnimationsByPeepType(AnimationPeepType::guest);
-        std::string_view action = availableGuestAnimations[peep->AnimationType];
+        std::string_view action = availableGuestAnimations[peep->animationType];
 
         // Special consideration for sitting peeps
         // TODO: something funky going on in the state machine
-        if (peep->AnimationType == PeepAnimationType::walking && peep->State == PeepState::sitting)
+        if (peep->animationType == PeepAnimationType::walking && peep->state == PeepState::sitting)
             action = availableGuestAnimations[PeepAnimationType::sittingIdle];
 
         return JSFromStdString(ctx, action);
@@ -987,21 +987,21 @@ namespace OpenRCT2::Scripting
         }
 
         auto* peep = GetGuest(thisVal);
-        peep->AnimationType = peep->NextAnimationType = *newType;
+        peep->animationType = peep->nextAnimationType = *newType;
 
         auto offset = 0;
-        if (peep->IsActionWalking())
-            peep->WalkingAnimationFrameNum = offset;
+        if (peep->isActionWalking())
+            peep->walkingAnimationFrameNum = offset;
         else
-            peep->AnimationFrameNum = offset;
+            peep->animationFrameNum = offset;
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, peep->animationType);
+        peep->animationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->invalidate();
-        peep->UpdateSpriteBoundingBox();
+        peep->updateSpriteBoundingBox();
         peep->invalidate();
         return JS_UNDEFINED;
     }
@@ -1014,7 +1014,7 @@ namespace OpenRCT2::Scripting
             return JS_NewUint32(ctx, 0);
         }
 
-        auto frame = peep->IsActionWalking() ? peep->WalkingAnimationFrameNum : peep->AnimationFrameNum;
+        auto frame = peep->isActionWalking() ? peep->walkingAnimationFrameNum : peep->animationFrameNum;
         return JS_NewUint32(ctx, frame);
     }
 
@@ -1026,19 +1026,19 @@ namespace OpenRCT2::Scripting
         auto* peep = GetGuest(thisVal);
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, peep->animationType);
         auto length = animationGroup.frameOffsets.size();
         offset %= length;
 
-        if (peep->IsActionWalking())
-            peep->WalkingAnimationFrameNum = offset;
+        if (peep->isActionWalking())
+            peep->walkingAnimationFrameNum = offset;
         else
-            peep->AnimationFrameNum = offset;
+            peep->animationFrameNum = offset;
 
-        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
-        peep->UpdateSpriteBoundingBox();
+        peep->animationImageIdOffset = animationGroup.frameOffsets[offset];
+        peep->updateSpriteBoundingBox();
         return JS_UNDEFINED;
     }
 
@@ -1051,9 +1051,9 @@ namespace OpenRCT2::Scripting
         }
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, peep->animationType);
         return JS_NewUint32(ctx, static_cast<uint32_t>(animationGroup.frameOffsets.size()));
     }
 
