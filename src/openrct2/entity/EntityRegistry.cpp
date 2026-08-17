@@ -471,7 +471,7 @@ namespace OpenRCT2
         }
         for (auto* duck : EntityList<Duck>())
         {
-            if (duck->IsFlying())
+            if (duck->isFlying())
             {
                 EntityRemove(duck);
                 removed++;

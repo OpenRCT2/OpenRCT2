@@ -980,7 +980,7 @@ namespace OpenRCT2
                         CoordsXYZ steamOffset = ComputeSteamOffset(
                             carEntry.steamEffect.vertical, carEntry.steamEffect.longitudinal, vehicle.pitch,
                             vehicle.orientation);
-                        SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
+                        SteamParticle::create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
                     }
                 }
             }

@@ -2239,8 +2239,8 @@ namespace OpenRCT2
                         auto duck = entity->as<Duck>();
                         if (duck != nullptr)
                         {
-                            duck->target_x += amountToMove.x;
-                            duck->target_y += amountToMove.y;
+                            duck->targetX += amountToMove.x;
+                            duck->targetY += amountToMove.y;
                         }
                         break;
                     }
@@ -2249,8 +2249,8 @@ namespace OpenRCT2
                         auto fountain = entity->as<JumpingFountain>();
                         if (fountain != nullptr)
                         {
-                            fountain->TargetX += amountToMove.x;
-                            fountain->TargetY += amountToMove.y;
+                            fountain->targetX += amountToMove.x;
+                            fountain->targetY += amountToMove.y;
                         }
                         break;
                     }

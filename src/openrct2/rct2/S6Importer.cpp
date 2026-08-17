@@ -2203,7 +2203,7 @@ namespace OpenRCT2::RCT2
         auto dst = getGameState().entities.CreateEntityAt<::SteamParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntitySteamParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
-        dst->time_to_move = src->TimeToMove;
+        dst->timeToMove = src->TimeToMove;
         dst->frame = src->Frame;
     }
 
@@ -2229,17 +2229,17 @@ namespace OpenRCT2::RCT2
         auto src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->time_to_live = src->TimeToLive;
+        dst->timeToLive = src->TimeToLive;
         dst->frame = src->Frame;
         dst->colour[0] = static_cast<Drawing::Colour>(src->Colour[0]);
         dst->colour[1] = static_cast<Drawing::Colour>(src->Colour[1]);
-        dst->crashed_sprite_base = src->CrashedEntityBase;
-        dst->velocity_x = src->VelocityX;
-        dst->velocity_y = src->VelocityY;
-        dst->velocity_z = src->VelocityZ;
-        dst->acceleration_x = src->AccelerationX;
-        dst->acceleration_y = src->AccelerationY;
-        dst->acceleration_z = src->AccelerationZ;
+        dst->crashedSpriteBase = src->CrashedEntityBase;
+        dst->velocityX = src->VelocityX;
+        dst->velocityY = src->VelocityY;
+        dst->velocityZ = src->VelocityZ;
+        dst->accelerationX = src->AccelerationX;
+        dst->accelerationY = src->AccelerationY;
+        dst->accelerationZ = src->AccelerationZ;
     }
 
     template<>
@@ -2275,13 +2275,13 @@ namespace OpenRCT2::RCT2
         auto dst = getGameState().entities.CreateEntityAt<::JumpingFountain>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityJumpingFountain*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
-        dst->NumTicksAlive = src->NumTicksAlive;
+        dst->numTicksAlive = src->NumTicksAlive;
         dst->frame = src->Frame;
         dst->fountainFlags = src->fountainFlags;
-        dst->TargetX = src->TargetX;
-        dst->TargetY = src->TargetY;
-        dst->Iteration = src->Iteration;
-        dst->FountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::jumpingFountainSnow
+        dst->targetX = src->TargetX;
+        dst->targetY = src->TargetY;
+        dst->iteration = src->Iteration;
+        dst->fountainType = RCT12MiscEntityType(src->Type) == RCT12MiscEntityType::jumpingFountainSnow
             ? ::JumpingFountainType::snow
             : ::JumpingFountainType::water;
     }
@@ -2293,7 +2293,7 @@ namespace OpenRCT2::RCT2
         auto src = static_cast<const RCT12EntityBalloon*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->popped = src->Popped;
-        dst->time_to_move = src->TimeToMove;
+        dst->timeToMove = src->TimeToMove;
         dst->frame = src->Frame;
         dst->colour = static_cast<Drawing::Colour>(src->Colour);
     }
@@ -2305,8 +2305,8 @@ namespace OpenRCT2::RCT2
         auto src = static_cast<const RCT12EntityDuck*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->target_x = src->TargetX;
-        dst->target_y = src->TargetY;
+        dst->targetX = src->TargetX;
+        dst->targetY = src->TargetY;
         dst->state = static_cast<::Duck::DuckState>(src->State);
     }
 

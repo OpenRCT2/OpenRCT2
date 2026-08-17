@@ -3046,7 +3046,7 @@ namespace OpenRCT2::RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->time_to_move = src->TimeToMove;
+        dst->timeToMove = src->TimeToMove;
     }
 
     template<>
@@ -3071,16 +3071,16 @@ namespace OpenRCT2::RCT1
         auto* src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->time_to_live = src->TimeToLive;
+        dst->timeToLive = src->TimeToLive;
         dst->colour[0] = GetColour(src->Colour[0]);
         dst->colour[1] = GetColour(src->Colour[1]);
-        dst->crashed_sprite_base = src->CrashedEntityBase;
-        dst->velocity_x = src->VelocityX;
-        dst->velocity_y = src->VelocityY;
-        dst->velocity_z = src->VelocityZ;
-        dst->acceleration_x = src->AccelerationX;
-        dst->acceleration_y = src->AccelerationY;
-        dst->acceleration_z = src->AccelerationZ;
+        dst->crashedSpriteBase = src->CrashedEntityBase;
+        dst->velocityX = src->VelocityX;
+        dst->velocityY = src->VelocityY;
+        dst->velocityZ = src->VelocityZ;
+        dst->accelerationX = src->AccelerationX;
+        dst->accelerationY = src->AccelerationY;
+        dst->accelerationZ = src->AccelerationZ;
     }
 
     template<>
@@ -3122,12 +3122,12 @@ namespace OpenRCT2::RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->FountainType = fountainType;
-        dst->NumTicksAlive = src->NumTicksAlive;
+        dst->fountainType = fountainType;
+        dst->numTicksAlive = src->NumTicksAlive;
         dst->fountainFlags = src->fountainFlags;
-        dst->TargetX = src->TargetX;
-        dst->TargetY = src->TargetY;
-        dst->Iteration = src->Iteration;
+        dst->targetX = src->TargetX;
+        dst->targetY = src->TargetY;
+        dst->iteration = src->Iteration;
     }
 
     template<>
@@ -3139,7 +3139,7 @@ namespace OpenRCT2::RCT1
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
         dst->popped = src->Popped;
-        dst->time_to_move = src->TimeToMove;
+        dst->timeToMove = src->TimeToMove;
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
@@ -3159,8 +3159,8 @@ namespace OpenRCT2::RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->target_x = src->TargetX;
-        dst->target_y = src->TargetY;
+        dst->targetX = src->TargetX;
+        dst->targetY = src->TargetY;
         dst->state = static_cast<Duck::DuckState>(src->State);
     }
 

@@ -219,7 +219,7 @@ namespace OpenRCT2
                 staff->tick128UpdateStaff();
             }
 
-            staff->Update();
+            staff->update();
 
             index++;
         }
@@ -2644,7 +2644,7 @@ namespace OpenRCT2
 
             if (peep->AnimationGroup == PeepAnimationGroup::balloon && peep->x != kLocationNull)
             {
-                Balloon::Create({ peep->x, peep->y, spawn_height }, peep->balloonColour, false);
+                Balloon::create({ peep->x, peep->y, spawn_height }, peep->balloonColour, false);
                 peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 peep->updateAnimationGroup();
             }

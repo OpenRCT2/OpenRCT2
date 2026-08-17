@@ -258,7 +258,7 @@ namespace OpenRCT2::GameActions
                 CreateDucks(_param1);
                 break;
             case CheatType::removeDucks:
-                Duck::RemoveAll();
+                Duck::removeAll();
                 break;
             case CheatType::allowTrackPlaceInvalidHeights:
                 gameState.cheats.allowTrackPlaceInvalidHeights = _param1 != 0;

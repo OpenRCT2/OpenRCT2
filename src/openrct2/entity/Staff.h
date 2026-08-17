@@ -40,7 +40,7 @@ namespace OpenRCT2
 
     struct Staff : Peep
     {
-        static constexpr auto cEntityType = EntityType::staff;
+        static constexpr auto kEntityType = EntityType::staff;
 
     public:
         PatrolArea* patrolInfo;
@@ -71,7 +71,7 @@ namespace OpenRCT2
             uint32_t staffBinsEmptied;
         };
 
-        void Update();
+        void update();
         void tick128UpdateStaff();
         bool isMechanic() const;
         bool isEntertainer() const;
