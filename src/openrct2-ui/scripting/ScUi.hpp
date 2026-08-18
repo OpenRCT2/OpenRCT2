@@ -23,6 +23,8 @@
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/Input.h>
+    #include <openrct2/audio/Audio.h>
+    #include <openrct2/core/EnumMap.hpp>
     #include <openrct2/interface/WindowTypes.h>
     #include <openrct2/scenario/ScenarioCategory.h>
     #include <openrct2/scenario/ScenarioRepository.h>
@@ -53,6 +55,77 @@ namespace OpenRCT2::Scripting
         { "rct2", ScenarioSource::rct2 }, { "rct2_ww", ScenarioSource::rct2WW }, { "rct2_tt", ScenarioSource::rct2TT },
         { "real", ScenarioSource::real }, { "extras", ScenarioSource::extras },  { "other", ScenarioSource::other },
     };
+
+    // Plugins refer to sounds by name so that the numeric SoundId values remain free to shift around.
+    static const EnumMap<Audio::SoundId> SoundNameMap{ {
+        { "lift_classic", Audio::SoundId::liftClassic },
+        { "track_friction_classic_wood", Audio::SoundId::trackFrictionClassicWood },
+        { "friction_classic", Audio::SoundId::frictionClassic },
+        { "scream_1", Audio::SoundId::scream1 },
+        { "click_1", Audio::SoundId::click1 },
+        { "click_2", Audio::SoundId::click2 },
+        { "place_item", Audio::SoundId::placeItem },
+        { "scream_2", Audio::SoundId::scream2 },
+        { "scream_3", Audio::SoundId::scream3 },
+        { "scream_4", Audio::SoundId::scream4 },
+        { "scream_5", Audio::SoundId::scream5 },
+        { "scream_6", Audio::SoundId::scream6 },
+        { "lift_friction_wheels", Audio::SoundId::liftFrictionWheels },
+        { "purchase", Audio::SoundId::purchase },
+        { "crash", Audio::SoundId::crash },
+        { "laying_out_water", Audio::SoundId::layingOutWater },
+        { "water_1", Audio::SoundId::water1 },
+        { "water_2", Audio::SoundId::water2 },
+        { "train_whistle", Audio::SoundId::trainWhistle },
+        { "train_departing", Audio::SoundId::trainDeparting },
+        { "water_splash", Audio::SoundId::waterSplash },
+        { "go_kart_engine", Audio::SoundId::goKartEngine },
+        { "ride_launch_1", Audio::SoundId::rideLaunch1 },
+        { "ride_launch_2", Audio::SoundId::rideLaunch2 },
+        { "cough_1", Audio::SoundId::cough1 },
+        { "cough_2", Audio::SoundId::cough2 },
+        { "cough_3", Audio::SoundId::cough3 },
+        { "cough_4", Audio::SoundId::cough4 },
+        { "rain", Audio::SoundId::rain },
+        { "thunder_1", Audio::SoundId::thunder1 },
+        { "thunder_2", Audio::SoundId::thunder2 },
+        { "track_friction_train", Audio::SoundId::trackFrictionTrain },
+        { "track_friction_water", Audio::SoundId::trackFrictionWater },
+        { "balloon_pop", Audio::SoundId::balloonPop },
+        { "mechanic_fix", Audio::SoundId::mechanicFix },
+        { "scream_7", Audio::SoundId::scream7 },
+        { "toilet_flush", Audio::SoundId::toiletFlush },
+        { "click_3", Audio::SoundId::click3 },
+        { "quack", Audio::SoundId::quack },
+        { "news_item", Audio::SoundId::newsItem },
+        { "window_open", Audio::SoundId::windowOpen },
+        { "laugh_1", Audio::SoundId::laugh1 },
+        { "laugh_2", Audio::SoundId::laugh2 },
+        { "laugh_3", Audio::SoundId::laugh3 },
+        { "applause", Audio::SoundId::applause },
+        { "haunted_house_scare", Audio::SoundId::hauntedHouseScare },
+        { "haunted_house_scream_1", Audio::SoundId::hauntedHouseScream1 },
+        { "haunted_house_scream_2", Audio::SoundId::hauntedHouseScream2 },
+        { "block_brake_close", Audio::SoundId::blockBrakeClose },
+        { "block_brake_release", Audio::SoundId::blockBrakeRelease },
+        { "error", Audio::SoundId::error },
+        { "brake_release", Audio::SoundId::brakeRelease },
+        { "lift_arrow", Audio::SoundId::liftArrow },
+        { "lift_wood", Audio::SoundId::liftWood },
+        { "track_friction_wood", Audio::SoundId::trackFrictionWood },
+        { "lift_wild_mouse", Audio::SoundId::liftWildMouse },
+        { "lift_bm", Audio::SoundId::liftBM },
+        { "track_friction_bm", Audio::SoundId::trackFrictionBM },
+        { "scream_8", Audio::SoundId::scream8 },
+        { "tram", Audio::SoundId::tram },
+        { "door_open", Audio::SoundId::doorOpen },
+        { "door_close", Audio::SoundId::doorClose },
+        { "portcullis", Audio::SoundId::portcullis },
+        { "crowd_ambience", Audio::SoundId::crowdAmbience },
+        { "lift_rmc", Audio::SoundId::liftRMC },
+        { "track_friction_rmc", Audio::SoundId::trackFrictionRMC },
+        { "lift_flume", Audio::SoundId::liftFlume },
+    } };
 
     static std::unordered_set<std::shared_ptr<Plugin>> _pluginsShowingGridlines;
 
@@ -476,6 +549,42 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
+        static JSValue playSound(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            JSValue options = argv[0];
+            if (!JS_IsObject(options))
+            {
+                JS_ThrowInternalError(ctx, "Invalid parameters.");
+                return JS_EXCEPTION;
+            }
+
+            const auto soundName = JSToStdString(ctx, options, "soundName");
+            const auto soundEntry = SoundNameMap.find(soundName);
+            if (soundEntry == SoundNameMap.end())
+            {
+                JS_ThrowTypeError(ctx, "Unknown sound name: %s", soundName.c_str());
+                return JS_EXCEPTION;
+            }
+            const auto soundId = soundEntry->second;
+
+            JSValue location = JS_GetPropertyStr(ctx, options, "location");
+            const bool positional = JS_IsObject(location);
+            const auto loc = positional ? JSToCoordsXYZ(ctx, location) : CoordsXYZ{};
+            JS_FreeValue(ctx, location);
+
+            if (positional)
+            {
+                Audio::Play3D(soundId, loc);
+            }
+            else
+            {
+                auto volume = JSToInt(ctx, options, "volume");
+                auto pan = AsOrDefault(ctx, options, "pan", 0);
+                Audio::Play(soundId, volume, pan);
+            }
+            return JS_UNDEFINED;
+        }
+
     public:
         static void hidePluginGridlines(std::shared_ptr<Plugin> plugin)
         {
@@ -524,6 +633,7 @@ namespace OpenRCT2::Scripting
                 JS_CFUNC_DEF("registerShortcut", 1, ScUi::registerShortcut),
                 JS_CFUNC_DEF("showGridlines", 0, ScUi::showCurrentPluginGridlines),
                 JS_CFUNC_DEF("hideGridlines", 0, ScUi::hideCurrentPluginGridlines),
+                JS_CFUNC_DEF("playSound", 1, ScUi::playSound),
             };
             RegisterBase(ctx, "Ui", Finalize, funcs);
         }
