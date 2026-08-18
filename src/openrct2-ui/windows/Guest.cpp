@@ -473,6 +473,8 @@ namespace OpenRCT2::Ui::Windows
             _windowTitle = peep->getName();
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
 
+            DisableWidgets();
+
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
@@ -606,7 +608,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onResizeOverview()
         {
-            DisableWidgets();
             onPrepareDraw();
             invalidateWidget(WIDX_MARQUEE);
             onResizeCommon();

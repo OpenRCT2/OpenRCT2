@@ -8,6 +8,7 @@
 - Improved: [#26936] Rain is now drawn next to the top toolbar, but only when it is centred.
 - Fix: [#21632] [Plugin] Crash when loading custom image larger than 300 by 300 pixels.
 - Fix: [#25169] The convert command strips custom objects from the resulting park.
+- Fix: [#25496] The guest pickup button does not grey out when the guest’s state changes while the window is open.
 - Fix: [#26811] Crash when a ride points to a non-existing station object.
 - Fix: [#26816] Water rides ignore zero clearances, preventing adjacent terrain modifications and building them anywhere.
 - Fix: [#26880] Max negative G-Force stat on flat track erroneously reads as 0.49g.
