@@ -33,7 +33,7 @@ namespace OpenRCT2::Scripting
             return JS_NULL;
 
         TileCoordsXYZ tilePos(TileCoordsXY(position), el->baseHeight);
-        return gScPathNavigator.create(ctx, tilePos, elementIndex, -1, options);
+        return gScPathNavigator.New(ctx, tilePos, elementIndex, -1, options);
     }
 
     JSValue ScPathNavigator::fromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options)
@@ -53,13 +53,13 @@ namespace OpenRCT2::Scripting
                 index++;
                 continue;
             }
-            return gScPathNavigator.create(ctx, tilePos, index, -1, options);
+            return gScPathNavigator.New(ctx, tilePos, index, -1, options);
         } while (!(tileElement++)->isLastForTile());
 
         return JS_NULL;
     }
 
-    void ScPathNavigator::registerClass(JSContext* ctx)
+    void ScPathNavigator::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry kFuncs[] = {
             JS_CGETSET_DEF("current", ScPathNavigator::getCurrent, nullptr),
@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
         RegisterBase(ctx, "PathNavigator", finalize, kFuncs);
     }
 
-    JSValue ScPathNavigator::create(
+    JSValue ScPathNavigator::New(
         JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection,
         const PathNavigationOptions& options)
     {
@@ -167,7 +167,7 @@ namespace OpenRCT2::Scripting
         auto* data = getPathNavigatorData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        return gScPathConnection.create(ctx, data->position, data->elementIndex, data->lastDirection);
+        return gScPathConnection.New(ctx, data->position, data->elementIndex, data->lastDirection);
     }
 
     JSValue ScPathNavigator::getEdges(JSContext* ctx, JSValue thisVal)
@@ -251,7 +251,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 TileCoordsXYZ actualPos(neighborPos.x, neighborPos.y, nextEl->baseHeight);
-                JSValue conn = gScPathConnection.create(ctx, actualPos, nextIndex, direction);
+                JSValue conn = gScPathConnection.New(ctx, actualPos, nextIndex, direction);
                 JS_SetPropertyUint32(ctx, result, resultIndex++, conn);
                 break;
             } while (!(nextEl++)->isLastForTile());

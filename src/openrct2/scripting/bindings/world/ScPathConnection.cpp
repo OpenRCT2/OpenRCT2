@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    void ScPathConnection::registerClass(JSContext* ctx)
+    void ScPathConnection::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry kFuncs[] = {
             JS_CGETSET_DEF("position", ScPathConnection::getPosition, nullptr),
@@ -33,7 +33,7 @@ namespace OpenRCT2::Scripting
         RegisterBase(ctx, "PathConnection", finalize, kFuncs);
     }
 
-    JSValue ScPathConnection::create(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction)
+    JSValue ScPathConnection::New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction)
     {
         return MakeWithOpaque(ctx, new PathConnectionData{ position, elementIndex, direction });
     }

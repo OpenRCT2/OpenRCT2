@@ -30,8 +30,8 @@ namespace OpenRCT2::Scripting
         };
 
     public:
-        void registerClass(JSContext* ctx);
-        JSValue create(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction);
+        void Register(JSContext* ctx);
+        JSValue New(JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t direction);
 
     private:
         static void finalize(JSRuntime* rt, JSValue thisVal);

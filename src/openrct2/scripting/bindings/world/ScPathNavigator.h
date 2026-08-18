@@ -42,8 +42,8 @@ namespace OpenRCT2::Scripting
         static JSValue fromElement(
             JSContext* ctx, const CoordsXY& position, int32_t elementIndex, const PathNavigationOptions& options);
         static JSValue fromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options);
-        void registerClass(JSContext* ctx);
-        JSValue create(
+        void Register(JSContext* ctx);
+        JSValue New(
             JSContext* ctx, const TileCoordsXYZ& position, int32_t elementIndex, int32_t lastDirection,
             const PathNavigationOptions& options);
 
