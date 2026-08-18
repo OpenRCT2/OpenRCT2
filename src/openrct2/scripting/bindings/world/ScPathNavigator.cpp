@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
         int32_t index = 0;
         do
         {
-            if (tileElement->getType() != TileElementType::Path || tileElement->baseHeight != tilePos.z
+            if (tileElement->getType() != TileElementType::path || tileElement->baseHeight != tilePos.z
                 || (tileElement->isGhost() && !options.includeGhosts))
             {
                 index++;
@@ -95,7 +95,7 @@ namespace OpenRCT2::Scripting
         const bool includeGhost = data->options.includeGhosts;
         auto coords = data->position.ToCoordsXY();
         auto* el = MapGetNthElementAt(coords, data->elementIndex);
-        if (el != nullptr && el->getType() == TileElementType::Path && el->baseHeight == data->position.z
+        if (el != nullptr && el->getType() == TileElementType::path && el->baseHeight == data->position.z
             && (includeGhost || !el->isGhost()))
         {
             return el->asPath();
@@ -107,7 +107,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         do
         {
-            if (scan->getType() != TileElementType::Path)
+            if (scan->getType() != TileElementType::path)
                 continue;
             if (scan->baseHeight != data->position.z)
                 continue;
@@ -127,9 +127,9 @@ namespace OpenRCT2::Scripting
         const TileElement* bannerElement = pathElement + 1;
         do
         {
-            if (bannerElement->getType() == TileElementType::Path)
+            if (bannerElement->getType() == TileElementType::path)
                 return nullptr;
-            if (bannerElement->getType() == TileElementType::Banner)
+            if (bannerElement->getType() == TileElementType::banner)
                 return bannerElement;
             if (bannerElement->isLastForTile())
                 return nullptr;
@@ -140,14 +140,14 @@ namespace OpenRCT2::Scripting
 
     int32_t ScPathNavigator::computePermittedEdges(const PathElement* pathElement, const PathNavigationOptions& options)
     {
-        int32_t edges = pathElement->GetEdgesAndCorners() & 0x0F;
+        int32_t edges = pathElement->getEdgesAndCorners() & 0x0F;
         if (!options.respectBanners)
             return edges;
 
         const TileElement* bannerElement = getBannerOnPath(reinterpret_cast<const TileElement*>(pathElement));
         while (bannerElement != nullptr)
         {
-            edges &= bannerElement->asBanner()->GetAllowedEdges();
+            edges &= bannerElement->asBanner()->getAllowedEdges();
             bannerElement = getBannerOnPath(bannerElement);
         }
         return edges;
@@ -155,9 +155,9 @@ namespace OpenRCT2::Scripting
 
     bool ScPathNavigator::isTraversableNeighbor(const PathElement* pathElement, const PathNavigationOptions& options)
     {
-        if (pathElement->IsQueue() && !options.includeQueues)
+        if (pathElement->isQueue() && !options.includeQueues)
             return false;
-        if (pathElement->IsWide() && !options.includeWidePaths)
+        if (pathElement->isWide() && !options.includeWidePaths)
             return false;
         return true;
     }
@@ -178,7 +178,7 @@ namespace OpenRCT2::Scripting
         auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
-        return JS_NewInt32(ctx, pathEl->GetEdges());
+        return JS_NewInt32(ctx, pathEl->getEdges());
     }
 
     JSValue ScPathNavigator::getPermittedEdges(JSContext* ctx, JSValue thisVal)
@@ -215,7 +215,7 @@ namespace OpenRCT2::Scripting
 
             TileCoordsXYZ neighborPos = data->position;
 
-            if (pathElement->IsSloped() && pathElement->GetSlopeDirection() == direction)
+            if (pathElement->isSloped() && pathElement->getSlopeDirection() == direction)
             {
                 neighborPos.z += 2;
             }
@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
             int32_t nextIndex = 0;
             do
             {
-                if ((nextEl->isGhost() && !options.includeGhosts) || nextEl->getType() != TileElementType::Path)
+                if ((nextEl->isGhost() && !options.includeGhosts) || nextEl->getType() != TileElementType::path)
                 {
                     nextIndex++;
                     continue;
@@ -281,7 +281,7 @@ namespace OpenRCT2::Scripting
 
         TileCoordsXYZ neighborPos = data->position;
 
-        if (pathElement->IsSloped() && pathElement->GetSlopeDirection() == direction)
+        if (pathElement->isSloped() && pathElement->getSlopeDirection() == direction)
         {
             neighborPos.z += 2;
         }
@@ -297,7 +297,7 @@ namespace OpenRCT2::Scripting
         int32_t nextIndex = 0;
         do
         {
-            if ((nextEl->isGhost() && !options.includeGhosts) || nextEl->getType() != TileElementType::Path)
+            if ((nextEl->isGhost() && !options.includeGhosts) || nextEl->getType() != TileElementType::path)
             {
                 nextIndex++;
                 continue;

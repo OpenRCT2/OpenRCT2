@@ -56,7 +56,7 @@ namespace OpenRCT2::Scripting
         auto* el = MapGetNthElementAt(coords, data->elementIndex);
         if (el == nullptr)
             return nullptr;
-        if (el->getType() != TileElementType::Path)
+        if (el->getType() != TileElementType::path)
             return nullptr;
         if (el->baseHeight != data->position.z)
             return nullptr;
@@ -95,7 +95,7 @@ namespace OpenRCT2::Scripting
         auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
-        return JS_NewBool(ctx, pathEl->IsSloped());
+        return JS_NewBool(ctx, pathEl->isSloped());
     }
 
     JSValue ScPathConnection::getSlopeDirection(JSContext* ctx, JSValue thisVal)
@@ -104,9 +104,9 @@ namespace OpenRCT2::Scripting
         if (data == nullptr)
             return JS_NULL;
         auto* pathEl = findPathElement(data);
-        if (pathEl == nullptr || !pathEl->IsSloped())
+        if (pathEl == nullptr || !pathEl->isSloped())
             return JS_NULL;
-        return JS_NewInt32(ctx, pathEl->GetSlopeDirection());
+        return JS_NewInt32(ctx, pathEl->getSlopeDirection());
     }
 
     JSValue ScPathConnection::isQueue(JSContext* ctx, JSValue thisVal)
@@ -117,7 +117,7 @@ namespace OpenRCT2::Scripting
         auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
-        return JS_NewBool(ctx, pathEl->IsQueue());
+        return JS_NewBool(ctx, pathEl->isQueue());
     }
 
     JSValue ScPathConnection::isWide(JSContext* ctx, JSValue thisVal)
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
         auto* pathEl = findPathElement(data);
         if (pathEl == nullptr)
             return JS_NULL;
-        return JS_NewBool(ctx, pathEl->IsWide());
+        return JS_NewBool(ctx, pathEl->isWide());
     }
 
     JSValue ScPathConnection::getRide(JSContext* ctx, JSValue thisVal)
@@ -137,9 +137,9 @@ namespace OpenRCT2::Scripting
         if (data == nullptr)
             return JS_NULL;
         auto* pathEl = findPathElement(data);
-        if (pathEl == nullptr || !pathEl->IsQueue())
+        if (pathEl == nullptr || !pathEl->isQueue())
             return JS_NULL;
-        auto rideIndex = pathEl->GetRideIndex();
+        auto rideIndex = pathEl->getRideIndex();
         if (rideIndex.IsNull())
             return JS_NULL;
         return JS_NewInt32(ctx, rideIndex.ToUnderlying());
@@ -151,9 +151,9 @@ namespace OpenRCT2::Scripting
         if (data == nullptr)
             return JS_NULL;
         auto* pathEl = findPathElement(data);
-        if (pathEl == nullptr || !pathEl->IsQueue())
+        if (pathEl == nullptr || !pathEl->isQueue())
             return JS_NULL;
-        auto stationIndex = pathEl->GetStationIndex();
+        auto stationIndex = pathEl->getStationIndex();
         if (stationIndex.IsNull())
             return JS_NULL;
         return JS_NewInt32(ctx, stationIndex.ToUnderlying());
