@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "../../ScriptEngine.h"
-
 #ifdef ENABLE_SCRIPTING
+
+    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
