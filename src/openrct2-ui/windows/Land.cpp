@@ -306,7 +306,8 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += 50;
 
                 // Draw paint price
-                numTiles = gLandToolSize * gLandToolSize;
+                const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
+                numTiles = mapCtrlPressed ? gLandToolSize : gLandToolSize * gLandToolSize;
                 price = 0;
                 if (gLandToolTerrainSurface != kObjectEntryIndexNull)
                 {
