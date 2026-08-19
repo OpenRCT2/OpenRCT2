@@ -3827,3 +3827,6 @@ STR_7036    :Estilo do Veículo
 STR_7037    :Modo de operação
 STR_7038    :Espera e carregamento
 STR_7039    :Tipo de atração
+STR_7040    :Acréscimos dos caminhos
+STR_7041    :Painel de informações do parque
+STR_7042    :Painel de informações da data
