@@ -334,6 +334,28 @@ namespace OpenRCT2::Ui::Windows
                 return STR_OBJECT_SELECTION_PARK_ENTRANCE;
             case ObjectType::water:
                 return STR_OBJECT_SELECTION_WATER;
+            case ObjectType::terrainSurface:
+                return STR_OBJECT_SELECTION_TERRAIN_SURFACES;
+            case ObjectType::terrainEdge:
+                return STR_OBJECT_SELECTION_TERRAIN_EDGES;
+            case ObjectType::station:
+                return STR_OBJECT_SELECTION_STATIONS;
+            case ObjectType::music:
+                return STR_OBJECT_SELECTION_MUSIC;
+            case ObjectType::footpathSurface:
+                return STR_OBJECT_SELECTION_FOOTPATH_SURFACES;
+            case ObjectType::footpathRailings:
+                return STR_OBJECT_SELECTION_FOOTPATH_RAILINGS;
+            case ObjectType::peepNames:
+                return STR_OBJECT_SELECTION_PEEP_NAMES;
+            case ObjectType::peepAnimations:
+                return STR_OBJECT_SELECTION_PEEP_ANIMATIONS;
+            case ObjectType::climate:
+                return STR_OBJECT_SELECTION_CLIMATE;
+            // Intransient objects, should never pop up here
+            case ObjectType::scenarioMeta:
+                return STR_OBJECT_SELECTION_SCENARIO_TEXTS;
+            case ObjectType::audio:
             default:
                 return STR_UNKNOWN_OBJECT_TYPE;
         }
