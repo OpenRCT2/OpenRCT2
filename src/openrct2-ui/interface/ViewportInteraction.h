@@ -8,7 +8,9 @@
  *****************************************************************************/
 
 #pragma once
-#include <openrct2/world/Location.hpp>
+
+struct CoordsXY;
+struct ScreenCoordsXY;
 
 namespace OpenRCT2::Ui
 {

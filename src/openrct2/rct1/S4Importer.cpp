@@ -1257,7 +1257,7 @@ namespace OpenRCT2::RCT1
             auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::guest);
             for (auto* peep : EntityList<Guest>())
             {
-                const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
+                const auto& spriteBounds = animObj->GetSpriteBounds(peep->animationGroup, peep->animationType);
                 peep->spriteData.width = spriteBounds.spriteWidth;
                 peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
                 peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
@@ -1266,8 +1266,8 @@ namespace OpenRCT2::RCT1
             auto& objManager = GetContext()->GetObjectManager();
             for (auto* peep : EntityList<Staff>())
             {
-                animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
-                const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
+                animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
+                const auto& spriteBounds = animObj->GetSpriteBounds(peep->animationGroup, peep->animationType);
                 peep->spriteData.width = spriteBounds.spriteWidth;
                 peep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
                 peep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
@@ -1328,17 +1328,17 @@ namespace OpenRCT2::RCT1
 
         void ImportPeep(::Peep* dst, const Peep* src)
         {
-            dst->AnimationObjectIndex = kObjectEntryIndexNull;
+            dst->animationObjectIndex = kObjectEntryIndexNull;
             auto rct12AnimGroup = GetPeepAnimationGroup(src->AnimationGroup);
-            dst->AnimationGroup = static_cast<::PeepAnimationGroup>(rct12AnimGroup);
+            dst->animationGroup = static_cast<::PeepAnimationGroup>(rct12AnimGroup);
 
-            dst->Action = static_cast<PeepActionType>(src->Action);
-            dst->SpecialSprite = src->SpecialSprite;
-            dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
-            dst->AnimationImageIdOffset = src->AnimationImageIdOffset;
-            dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
-            dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
-            dst->AnimationFrameNum = src->AnimationFrameNum;
+            dst->action = static_cast<PeepActionType>(src->Action);
+            dst->specialSprite = src->SpecialSprite;
+            dst->nextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
+            dst->animationImageIdOffset = src->AnimationImageIdOffset;
+            dst->walkingAnimationFrameNum = src->NoActionFrameNum;
+            dst->animationType = static_cast<PeepAnimationType>(src->AnimationType);
+            dst->animationFrameNum = src->AnimationFrameNum;
 
             // Peep sprite bounds used to be set here. These are now set in a finishing step after loading peep anim objects.
 
@@ -1349,38 +1349,38 @@ namespace OpenRCT2::RCT1
             // Peep name
             if (IsUserStringID(src->NameStringID))
             {
-                dst->SetName(GetUserString(src->NameStringID));
+                dst->setName(GetUserString(src->NameStringID));
             }
 
-            dst->State = static_cast<PeepState>(src->State);
-            dst->SubState = src->SubState;
-            dst->NextLoc = { src->NextX, src->NextY, src->NextZ * Limits::kCoordsZStep };
-            dst->NextFlags = src->NextFlags;
-            dst->Var37 = src->Var37;
-            dst->StepProgress = src->StepProgress;
-            dst->TshirtColour = GetColour(src->TshirtColour);
-            dst->TrousersColour = GetColour(src->TrousersColour);
-            dst->DestinationX = src->DestinationX;
-            dst->DestinationY = src->DestinationY;
-            dst->DestinationTolerance = src->DestinationTolerance;
-            dst->PeepDirection = src->Direction;
-            dst->Energy = src->Energy;
-            dst->EnergyTarget = src->EnergyTarget;
-            dst->Mass = src->Mass;
-            dst->WindowInvalidateFlags = 0;
-            dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->CurrentRide);
-            dst->CurrentRideStation = StationIndex::FromUnderlying(src->CurrentRideStation);
-            dst->CurrentTrain = src->CurrentTrain;
-            dst->CurrentCar = src->CurrentCar;
-            dst->CurrentSeat = src->CurrentSeat;
-            dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
-            dst->PeepId = src->ID;
-            dst->PathCheckOptimisation = 0;
+            dst->state = static_cast<PeepState>(src->State);
+            dst->subState = src->SubState;
+            dst->nextLoc = { src->NextX, src->NextY, src->NextZ * Limits::kCoordsZStep };
+            dst->nextFlags = src->NextFlags;
+            dst->var37 = src->Var37;
+            dst->stepProgress = src->StepProgress;
+            dst->tShirtColour = GetColour(src->TshirtColour);
+            dst->trousersColour = GetColour(src->TrousersColour);
+            dst->destinationX = src->DestinationX;
+            dst->destinationY = src->DestinationY;
+            dst->destinationTolerance = src->DestinationTolerance;
+            dst->peepDirection = src->Direction;
+            dst->energy = src->Energy;
+            dst->energyTarget = src->EnergyTarget;
+            dst->mass = src->Mass;
+            dst->windowInvalidateFlags = 0;
+            dst->currentRide = RCT12RideIdToOpenRCT2RideId(src->CurrentRide);
+            dst->currentRideStation = StationIndex::FromUnderlying(src->CurrentRideStation);
+            dst->currentTrain = src->CurrentTrain;
+            dst->currentCar = src->CurrentCar;
+            dst->currentSeat = src->CurrentSeat;
+            dst->interactionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
+            dst->peepId = src->ID;
+            dst->pathCheckOptimisation = 0;
             dst->peepFlags = {};
-            dst->PathfindGoal.x = 0xFF;
-            dst->PathfindGoal.y = 0xFF;
-            dst->PathfindGoal.z = 0xFF;
-            dst->PathfindGoal.direction = kInvalidDirection;
+            dst->pathfindGoal.x = 0xFF;
+            dst->pathfindGoal.y = 0xFF;
+            dst->pathfindGoal.z = 0xFF;
+            dst->pathfindGoal.direction = kInvalidDirection;
         }
 
         void ImportStaffPatrolArea(Staff* staffmember, uint8_t staffId)
@@ -2642,7 +2642,7 @@ namespace OpenRCT2::RCT1
             // in the passed gameState.
             for (auto peep : EntityList<Guest>())
             {
-                nextGuestNumber = std::max(nextGuestNumber, peep->PeepId);
+                nextGuestNumber = std::max(nextGuestNumber, peep->peepId);
             }
 
             gameState.nextGuestNumber = nextGuestNumber + 1;
@@ -3046,7 +3046,7 @@ namespace OpenRCT2::RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->time_to_move = src->TimeToMove;
+        dst->timeToMove = src->TimeToMove;
     }
 
     template<>
@@ -3071,16 +3071,16 @@ namespace OpenRCT2::RCT1
         auto* src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->time_to_live = src->TimeToLive;
+        dst->timeToLive = src->TimeToLive;
         dst->colour[0] = GetColour(src->Colour[0]);
         dst->colour[1] = GetColour(src->Colour[1]);
-        dst->crashed_sprite_base = src->CrashedEntityBase;
-        dst->velocity_x = src->VelocityX;
-        dst->velocity_y = src->VelocityY;
-        dst->velocity_z = src->VelocityZ;
-        dst->acceleration_x = src->AccelerationX;
-        dst->acceleration_y = src->AccelerationY;
-        dst->acceleration_z = src->AccelerationZ;
+        dst->crashedSpriteBase = src->CrashedEntityBase;
+        dst->velocityX = src->VelocityX;
+        dst->velocityY = src->VelocityY;
+        dst->velocityZ = src->VelocityZ;
+        dst->accelerationX = src->AccelerationX;
+        dst->accelerationY = src->AccelerationY;
+        dst->accelerationZ = src->AccelerationZ;
     }
 
     template<>
@@ -3122,12 +3122,12 @@ namespace OpenRCT2::RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->FountainType = fountainType;
-        dst->NumTicksAlive = src->NumTicksAlive;
+        dst->fountainType = fountainType;
+        dst->numTicksAlive = src->NumTicksAlive;
         dst->fountainFlags = src->fountainFlags;
-        dst->TargetX = src->TargetX;
-        dst->TargetY = src->TargetY;
-        dst->Iteration = src->Iteration;
+        dst->targetX = src->TargetX;
+        dst->targetY = src->TargetY;
+        dst->iteration = src->Iteration;
     }
 
     template<>
@@ -3139,7 +3139,7 @@ namespace OpenRCT2::RCT1
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
         dst->popped = src->Popped;
-        dst->time_to_move = src->TimeToMove;
+        dst->timeToMove = src->TimeToMove;
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
@@ -3159,8 +3159,8 @@ namespace OpenRCT2::RCT1
 
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
-        dst->target_x = src->TargetX;
-        dst->target_y = src->TargetY;
+        dst->targetX = src->TargetX;
+        dst->targetY = src->TargetY;
         dst->state = static_cast<Duck::DuckState>(src->State);
     }
 

@@ -27,6 +27,7 @@
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
+#include "MapOwnership.h"
 #include "Wall.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
@@ -156,15 +157,15 @@ namespace OpenRCT2
         auto quad = EntityTileList<Peep>(footpathPos);
         for (auto peep : quad)
         {
-            if (peep->State == PeepState::sitting || peep->State == PeepState::watching)
+            if (peep->state == PeepState::sitting || peep->state == PeepState::watching)
             {
                 auto location = peep->getLocation();
                 if (location.z == footpathPos.z)
                 {
                     auto destination = location.ToTileCentre();
-                    peep->SetState(PeepState::walking);
-                    peep->SetDestination(destination, 5);
-                    peep->UpdateCurrentAnimationType();
+                    peep->setState(PeepState::walking);
+                    peep->setDestination(destination, 5);
+                    peep->updateCurrentAnimationType();
                 }
             }
         }
@@ -1025,30 +1026,30 @@ namespace OpenRCT2
     static void FootpathFixOwnership(const CoordsXY& mapPos)
     {
         const auto* surfaceElement = MapGetSurfaceElementAt(mapPos);
-        uint16_t ownership;
+        OwnershipFlags ownership;
 
         // Unlikely to be NULL unless deliberate.
         if (surfaceElement != nullptr)
         {
             // If the tile is not safe to own construction rights of, erase them.
-            if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->baseHeight << 3 }) == OWNERSHIP_UNOWNED)
+            if (CheckMaxAllowableLandRightsForTile({ mapPos, surfaceElement->baseHeight << 3 }) == kUnowned)
             {
-                ownership = OWNERSHIP_UNOWNED;
+                ownership = kUnowned;
             }
             // If the tile is safe to own construction rights of, do not erase construction rights.
             else
             {
                 ownership = surfaceElement->getOwnership();
                 // You can't own the entrance path.
-                if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
+                if (ownership == OwnershipFlag::landOwned || ownership == OwnershipFlag::landForSale)
                 {
-                    ownership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                    ownership = OwnershipFlag::constructionRightsOwned;
                 }
             }
         }
         else
         {
-            ownership = OWNERSHIP_UNOWNED;
+            ownership = kUnowned;
         }
 
         auto landSetRightsAction = GameActions::LandSetRightsAction(

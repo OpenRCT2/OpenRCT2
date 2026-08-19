@@ -408,11 +408,11 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     auto ft = Formatter();
-                    peep->FormatNameTo(ft);
+                    peep->formatNameTo(ft);
                     drawTextEllipsised(rt, { 0, y }, nameColumnSize, format, ft);
 
                     ft = Formatter();
-                    peep->FormatActionTo(ft);
+                    peep->formatActionTo(ft);
                     drawTextEllipsised(rt, { actionOffset, y }, actionColumnSize, format, ft);
 
                     // True if a patrol path is set for the worker
@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        GfxDrawSprite(rt, GetCostumeInlineSprite(peep->AnimationObjectIndex), { staffOrderIcon_x, y });
+                        GfxDrawSprite(rt, GetCostumeInlineSprite(peep->animationObjectIndex), { staffOrderIcon_x, y });
                     }
                 }
 
@@ -494,7 +494,7 @@ namespace OpenRCT2::Ui::Windows
 
                     StaffEntry entry;
                     entry.Id = peep->id;
-                    entry.Name = peep->GetName();
+                    entry.Name = peep->getName();
 
                     _staffList.push_back(std::move(entry));
                 }
@@ -552,7 +552,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 // If autoposition of staff is disabled, pickup peep and then open the staff window
-                if (staff->State == PeepState::picked)
+                if (staff->state == PeepState::picked)
                 {
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();

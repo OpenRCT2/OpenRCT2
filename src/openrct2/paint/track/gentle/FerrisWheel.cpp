@@ -51,7 +51,7 @@ static void PaintFerrisWheelRiders(
     for (int32_t i = 0; i < 32; i += 2)
     {
         auto* peep = getGameState().entities.GetEntity<Guest>(vehicle.peep[i]);
-        if (peep == nullptr || peep->State != PeepState::onRide)
+        if (peep == nullptr || peep->state != PeepState::onRide)
             continue;
 
         auto frameNum = (vehicle.flatRideAnimationFrame + i * 4) % 128;

@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../GameState.h"
-#include "../rct12/RCT12.h"
 #include "../world/Location.hpp"
 #include "EntityBase.h"
 #include "EntityRegistry.h"
@@ -161,7 +160,7 @@ namespace OpenRCT2
 
     public:
         EntityList()
-            : vec(getGameState().entities.GetEntityList(T::cEntityType))
+            : vec(getGameState().entities.GetEntityList(T::kEntityType))
         {
         }
 

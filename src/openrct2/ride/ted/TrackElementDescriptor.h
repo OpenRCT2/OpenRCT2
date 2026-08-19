@@ -15,6 +15,7 @@
 #include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Paint.Tunnel.h"
 #include "../../paint/tile_element/Segment.h"
+#include "../../world/Location.hpp"
 #include "../../world/QuarterTile.h"
 #include "PitchAndRoll.h"
 #include "TrackElemType.h"

@@ -82,8 +82,8 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 
-        staff->AnimationObjectIndex = _costume;
-        staff->AnimationGroup = PeepAnimationGroup::normal;
+        staff->animationObjectIndex = _costume;
+        staff->animationGroup = PeepAnimationGroup::normal;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
@@ -92,8 +92,8 @@ namespace OpenRCT2::GameActions
         if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
             staff->peepFlags.set(PeepFlag::slowWalk);
 
-        staff->AnimationFrameNum = 0;
-        staff->UpdateCurrentAnimationType();
+        staff->animationFrameNum = 0;
+        staff->updateCurrentAnimationType();
         staff->invalidate();
 
         auto* windowMgr = Ui::GetWindowManager();

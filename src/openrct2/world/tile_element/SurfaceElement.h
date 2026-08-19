@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../object/ObjectTypes.h"
+#include "../MapOwnership.h"
 #include "TileElementBase.h"
 
 namespace OpenRCT2
@@ -28,15 +29,6 @@ namespace OpenRCT2
         GRASS_LENGTH_CLUMPS_0,
         GRASS_LENGTH_CLUMPS_1,
         GRASS_LENGTH_CLUMPS_2,
-    };
-
-    enum
-    {
-        OWNERSHIP_UNOWNED = 0,
-        OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
-        OWNERSHIP_OWNED = (1 << 5),
-        OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6),
-        OWNERSHIP_AVAILABLE = (1 << 7)
     };
 
     constexpr uint8_t kTileElementSurfaceOwnershipMask = 0xF0;
@@ -80,8 +72,9 @@ namespace OpenRCT2
         void setGrassLengthAndInvalidate(uint8_t newLength, const CoordsXY& coords);
         void updateGrassLength(const CoordsXY& coords);
 
-        uint8_t getOwnership() const;
-        void setOwnership(uint8_t newOwnership);
+        OwnershipFlags getOwnership() const;
+        void setOwnership(OwnershipFlags newOwnership);
+        bool hasOwnership(OwnershipFlag flag) const;
 
         int32_t getWaterHeight() const;
         void setWaterHeight(int32_t newWaterHeight);

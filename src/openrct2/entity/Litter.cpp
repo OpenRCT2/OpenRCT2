@@ -47,7 +47,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0067375D
      */
-    void Litter::Create(const CoordsXYZD& litterPos, Type type)
+    void Litter::create(const CoordsXYZD& litterPos, Type type)
     {
         auto& gameState = getGameState();
         if (gameState.cheats.disableLittering)
@@ -97,7 +97,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006738E1
      */
-    void Litter::RemoveAt(const CoordsXYZ& litterPos)
+    void Litter::removeAt(const CoordsXYZ& litterPos)
     {
         // There can be a lot of litter entities on the same tile, avoid heap allocations
         // by having the first 512 stored in a small_vector which is on the stack.

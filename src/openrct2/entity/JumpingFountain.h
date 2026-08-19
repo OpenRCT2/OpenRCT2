@@ -12,6 +12,8 @@
 #include "../core/FlagHolder.hpp"
 #include "EntityBase.h"
 
+struct CoordsXY;
+
 namespace OpenRCT2
 {
     class DataSerialiser;
@@ -37,29 +39,29 @@ namespace OpenRCT2
 
     struct JumpingFountain : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::jumpingFountain;
+        static constexpr auto kEntityType = EntityType::jumpingFountain;
 
         uint16_t frame;
-        JumpingFountainType FountainType;
-        uint8_t NumTicksAlive;
+        JumpingFountainType fountainType;
+        uint8_t numTicksAlive;
         FountainFlags fountainFlags;
-        int16_t TargetX;
-        int16_t TargetY;
-        uint16_t Iteration;
-        void Update();
-        static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
+        int16_t targetX;
+        int16_t targetY;
+        uint16_t iteration;
+        void update();
+        static void startAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
         void serialise(DataSerialiser& stream);
 
     private:
-        JumpingFountainType GetType() const;
-        void AdvanceAnimation();
-        void GoToEdge(const CoordsXYZ& newLoc, int32_t availableDirections) const;
-        void Bounce(const CoordsXYZ& newLoc, int32_t availableDirections);
-        void Split(const CoordsXYZ& newLoc, int32_t availableDirections) const;
-        void Random(const CoordsXYZ& newLoc, int32_t availableDirections) const;
-        void CreateNext(const CoordsXYZ& newLoc, int32_t direction) const;
-        static void Create(
+        JumpingFountainType getType() const;
+        void advanceAnimation();
+        void goToEdge(const CoordsXYZ& newLoc, int32_t availableDirections) const;
+        void bounce(const CoordsXYZ& newLoc, int32_t availableDirections);
+        void split(const CoordsXYZ& newLoc, int32_t availableDirections) const;
+        void random(const CoordsXYZ& newLoc, int32_t availableDirections) const;
+        void createNext(const CoordsXYZ& newLoc, int32_t direction) const;
+        static void create(
             JumpingFountainType newType, const CoordsXYZ& newLoc, int32_t direction, FountainFlags newFlags, int32_t iteration);
-        static bool IsJumpingFountain(JumpingFountainType newType, const CoordsXYZ& newLoc);
+        static bool isJumpingFountain(JumpingFountainType newType, const CoordsXYZ& newLoc);
     };
 } // namespace OpenRCT2

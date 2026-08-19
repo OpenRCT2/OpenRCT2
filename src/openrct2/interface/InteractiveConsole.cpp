@@ -448,9 +448,9 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
         {
             for (auto peep : EntityList<Staff>())
             {
-                auto name = peep->GetName();
+                auto name = peep->getName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->assignedStaffType, peep->Energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->assignedStaffType, peep->energy,
                     name.c_str());
             }
         }
@@ -484,8 +484,8 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     Peep* peep = gameState.entities.GetEntity<Peep>(EntityId::FromUnderlying(int_val[0]));
                     if (peep != nullptr)
                     {
-                        peep->Energy = int_val[1];
-                        peep->EnergyTarget = int_val[1];
+                        peep->energy = int_val[1];
+                        peep->energyTarget = int_val[1];
                     }
                 }
             }
@@ -1305,7 +1305,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     GameActions::Execute(&setDateAction, getGameState());
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+    windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1564,7 +1564,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->TshirtColour = static_cast<Drawing::Colour>(UtilRand() % Drawing::kColourNumNormal);
+                guest->tShirtColour = Drawing::getRandomColour();
                 guest->invalidate();
             }
             break;
@@ -1580,7 +1580,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->Remove();
+                guest->remove();
             }
             break;
         }
@@ -1750,7 +1750,7 @@ static void ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& 
     Drawing::Colour colour = Drawing::Colour::brightRed;
     if (argv.size() > 3)
         colour = static_cast<Drawing::Colour>(atoi(argv[3].c_str()) % Drawing::kColourNumNormal);
-    Balloon::Create({ x, y, z }, colour, false);
+    Balloon::create({ x, y, z }, colour, false);
 }
 
 using console_command_func = void (*)(InteractiveConsole& console, const arguments_t& argv);

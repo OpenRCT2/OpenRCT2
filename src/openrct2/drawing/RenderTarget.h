@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../interface/ScreenCoords.hpp"
 #include "../interface/ZoomLevel.h"
-#include "../world/Location.hpp"
 
 namespace OpenRCT2::Drawing
 {

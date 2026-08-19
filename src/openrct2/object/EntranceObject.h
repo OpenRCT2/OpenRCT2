@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "../world/Location.hpp"
 #include "EntranceEntry.h"
 #include "Object.h"
+
+using Direction = uint8_t;
 
 namespace OpenRCT2
 {

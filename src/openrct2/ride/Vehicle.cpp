@@ -237,7 +237,7 @@ namespace OpenRCT2
 
         for (auto vehicle : TrainManager::View())
         {
-            vehicle->Update();
+            vehicle->update();
         }
     }
 
@@ -753,7 +753,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006D77F2
      */
-    void Vehicle::Update()
+    void Vehicle::update()
     {
         if (IsCableLift())
         {
@@ -900,7 +900,7 @@ namespace OpenRCT2
                 auto* curPeep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
                 if (curPeep != nullptr && curPeep->peepFlags.has(PeepFlag::hereWeAre))
                 {
-                    curPeep->insertNewThought(PeepThoughtType::hereWeAre, curPeep->CurrentRide);
+                    curPeep->insertNewThought(PeepThoughtType::hereWeAre, curPeep->currentRide);
                 }
             }
         }

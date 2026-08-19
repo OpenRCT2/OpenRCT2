@@ -76,18 +76,18 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         return type == EntityType::duck;
     }
 
-    bool Duck::IsFlying()
+    bool Duck::isFlying()
     {
         return this->state == DuckState::flyAway || this->state == DuckState::flyToWater;
     }
 
-    void Duck::Remove()
+    void Duck::remove()
     {
         invalidate();
         getGameState().entities.EntityRemove(this);
     }
 
-    void Duck::UpdateFlyToWater()
+    void Duck::updateFlyToWater()
     {
         const auto currentTicks = getGameState().currentTicks;
 
@@ -101,17 +101,17 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
 
         invalidate();
-        int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
+        int32_t manhattanDistance = abs(targetX - x) + abs(targetY - y);
         int32_t direction = orientation >> 3;
         auto destination = CoordsXYZ{ CoordsXY{ x, y } + kDuckMoveOffset[direction], 0 };
-        int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
+        int32_t manhattanDistanceN = abs(targetX - destination.x) + abs(targetY - destination.y);
 
-        auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ target_x, target_y });
+        auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ targetX, targetY });
         int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->getWaterHeight() : 0;
         if (waterHeight == 0)
         {
             state = DuckState::flyAway;
-            UpdateFlyAway();
+            updateFlyAway();
         }
         else
         {
@@ -139,19 +139,19 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                 if (destination.z > 4)
                 {
                     state = DuckState::flyAway;
-                    UpdateFlyAway();
+                    updateFlyAway();
                 }
                 else
                 {
                     state = DuckState::swim;
                     frame = 0;
-                    UpdateSwim();
+                    updateSwim();
                 }
             }
         }
     }
 
-    void Duck::UpdateSwim()
+    void Duck::updateSwim()
     {
         const auto currentTicks = getGameState().currentTicks;
 
@@ -165,13 +165,13 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             {
                 state = DuckState::doubleDrink;
                 frame = std::numeric_limits<uint16_t>::max();
-                UpdateDoubleDrink();
+                updateDoubleDrink();
             }
             else
             {
                 state = DuckState::drink;
                 frame = std::numeric_limits<uint16_t>::max();
-                UpdateDrink();
+                updateDrink();
             }
         }
         else
@@ -180,7 +180,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
             {
                 state = DuckState::flyAway;
-                UpdateFlyAway();
+                updateFlyAway();
             }
             else
             {
@@ -191,7 +191,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                 if (z < landZ || waterZ == 0)
                 {
                     state = DuckState::flyAway;
-                    UpdateFlyAway();
+                    updateFlyAway();
                 }
                 else
                 {
@@ -219,14 +219,14 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
     }
 
-    void Duck::UpdateDrink()
+    void Duck::updateDrink()
     {
         frame++;
         if (kDuckAnimationDrink[frame] == 0xFF)
         {
             state = DuckState::swim;
             frame = 0;
-            UpdateSwim();
+            updateSwim();
         }
         else
         {
@@ -234,14 +234,14 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
     }
 
-    void Duck::UpdateDoubleDrink()
+    void Duck::updateDoubleDrink()
     {
         frame++;
         if (kDuckAnimationDoubleDrink[frame] == 0xFF)
         {
             state = DuckState::swim;
             frame = 0;
-            UpdateSwim();
+            updateSwim();
         }
         else
         {
@@ -249,7 +249,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
     }
 
-    void Duck::UpdateFlyAway()
+    void Duck::updateFlyAway()
     {
         if ((getGameState().currentTicks & 3) == 0)
         {
@@ -270,12 +270,12 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             }
             else
             {
-                Remove();
+                remove();
             }
         }
     }
 
-    uint32_t Duck::GetFrameImage(int32_t direction) const
+    uint32_t Duck::getFrameImage(int32_t direction) const
     {
         uint32_t imageId = 0;
         if (EnumValue(state) < kDuckMaxStates)
@@ -287,7 +287,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         return imageId;
     }
 
-    void Duck::Create(const CoordsXY& pos)
+    void Duck::create(const CoordsXY& pos)
     {
         auto* duck = getGameState().entities.CreateEntity<Duck>();
         if (duck == nullptr)
@@ -302,8 +302,8 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         duck->spriteData.width = 9;
         duck->spriteData.heightMin = 12;
         duck->spriteData.heightMax = 9;
-        duck->target_x = targetPos.x;
-        duck->target_y = targetPos.y;
+        duck->targetX = targetPos.x;
+        duck->targetY = targetPos.y;
         uint8_t direction = ScenarioRand() & 3;
         switch (direction)
         {
@@ -326,38 +326,38 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         duck->frame = 0;
     }
 
-    void Duck::Update()
+    void Duck::update()
     {
         switch (state)
         {
             case DuckState::flyToWater:
-                UpdateFlyToWater();
+                updateFlyToWater();
                 break;
             case DuckState::swim:
-                UpdateSwim();
+                updateSwim();
                 break;
             case DuckState::drink:
-                UpdateDrink();
+                updateDrink();
                 break;
             case DuckState::doubleDrink:
-                UpdateDoubleDrink();
+                updateDoubleDrink();
                 break;
             case DuckState::flyAway:
-                UpdateFlyAway();
+                updateFlyAway();
                 break;
         }
     }
 
-    void Duck::Press()
+    void Duck::press()
     {
         OpenRCT2::Audio::Play3D(Audio::SoundId::quack, { x, y, z });
     }
 
-    void Duck::RemoveAll()
+    void Duck::removeAll()
     {
         for (auto duck : EntityList<Duck>())
         {
-            duck->Remove();
+            duck->remove();
         }
     }
 
@@ -365,8 +365,8 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
     {
         EntityBase::serialise(stream);
         stream << frame;
-        stream << target_x;
-        stream << target_y;
+        stream << targetX;
+        stream << targetY;
         stream << state;
     }
 } // namespace OpenRCT2

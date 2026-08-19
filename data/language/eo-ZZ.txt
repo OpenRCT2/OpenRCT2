@@ -3827,3 +3827,6 @@ STR_7036    :Veturilostilo
 STR_7037    :Reĝimo de funkciado
 STR_7038    :Atendo kaj ŝarĝo
 STR_7039    :Atrakciotipo
+STR_7040    :Adicioj de trotuaro
+STR_7041    :Panelo de parkinformoj
+STR_7042    :Panelo de datoinformoj

@@ -359,7 +359,7 @@ namespace OpenRCT2::GameActions
             if (result.error == Status::ok && FinanceCheckMoneyRequired(flags) && result.cost != 0)
             {
                 FinancePayment(result.cost, result.expenditure);
-                MoneyEffect::Create(result.cost, result.position);
+                MoneyEffect::create(result.cost, result.position);
             }
 
             if (!(actionFlags & Flags::ClientOnly) && result.error == Status::ok)

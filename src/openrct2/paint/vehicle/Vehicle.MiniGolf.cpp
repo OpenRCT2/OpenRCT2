@@ -125,7 +125,7 @@ namespace OpenRCT2
         uint32_t ebx = (frame << 2) + Entity::Yaw::YawTo4(imageDirection);
 
         ImageIndex index = rideEntry->Cars[0].baseImageId + 1 + ebx;
-        auto image = ImageId(index, peep->TshirtColour, peep->TrousersColour);
+        auto image = ImageId(index, peep->tShirtColour, peep->trousersColour);
         PaintAddImageAsParent(session, image, { 0, 0, z }, { { 0, 0, z + 5 }, { 1, 1, 11 } });
     }
 

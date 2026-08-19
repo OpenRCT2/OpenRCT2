@@ -428,12 +428,12 @@ namespace OpenRCT2
         auto* staff = entity.as<Staff>();
         if (staff != nullptr)
         {
-            staff->SetName({});
+            staff->setName({});
             staff->clearPatrolArea();
         }
         else if (guest != nullptr)
         {
-            guest->SetName({});
+            guest->setName({});
             guest->guestNextInQueue = EntityId::GetNull();
 
             RideUse::GetHistory().RemoveHandle(guest->id);
@@ -471,7 +471,7 @@ namespace OpenRCT2
         }
         for (auto* duck : EntityList<Duck>())
         {
-            if (duck->IsFlying())
+            if (duck->isFlying())
             {
                 EntityRemove(duck);
                 removed++;

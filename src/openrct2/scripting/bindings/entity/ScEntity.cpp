@@ -154,12 +154,12 @@ namespace OpenRCT2::Scripting
                     auto peep = entity->as<Peep>();
                     // We can't remove a single peep from a ride at the moment as this can cause complications with the
                     // vehicle car having an unsupported peep capacity.
-                    if (peep == nullptr || peep->State == PeepState::onRide || peep->State == PeepState::enteringRide)
+                    if (peep == nullptr || peep->state == PeepState::onRide || peep->state == PeepState::enteringRide)
                     {
                         JS_ThrowPlainError(ctx, "Removing a peep that is on a ride is currently unsupported.");
                         return JS_EXCEPTION;
                     }
-                    peep->Remove();
+                    peep->remove();
                     break;
                 }
                 case EntityType::steamParticle:

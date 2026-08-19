@@ -42,6 +42,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/RCT12.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
@@ -1788,15 +1789,15 @@ namespace OpenRCT2
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
                 auto name = cs.read<std::string>();
-                entity.SetName(name);
+                entity.setName(name);
             }
             else
             {
-                cs.write(static_cast<const char*>(entity.Name));
+                cs.write(static_cast<const char*>(entity.name));
             }
 
-            cs.readWrite(entity.NextLoc);
-            cs.readWrite(entity.NextFlags);
+            cs.readWrite(entity.nextLoc);
+            cs.readWrite(entity.nextFlags);
 
             if (version <= 1)
             {
@@ -1810,15 +1811,15 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.State);
-            cs.readWrite(entity.SubState);
+            cs.readWrite(entity.state);
+            cs.readWrite(entity.subState);
 
             if (version >= kPeepAnimationObjectsVersion)
-                cs.readWrite(entity.AnimationObjectIndex);
+                cs.readWrite(entity.animationObjectIndex);
             else
-                entity.AnimationObjectIndex = kObjectEntryIndexNull;
+                entity.animationObjectIndex = kObjectEntryIndexNull;
 
-            cs.readWrite(entity.AnimationGroup);
+            cs.readWrite(entity.animationGroup);
 
             if (version <= 1)
             {
@@ -1832,14 +1833,14 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.TshirtColour);
-            cs.readWrite(entity.TrousersColour);
-            cs.readWrite(entity.DestinationX);
-            cs.readWrite(entity.DestinationY);
-            cs.readWrite(entity.DestinationTolerance);
-            cs.readWrite(entity.Var37);
-            cs.readWrite(entity.Energy);
-            cs.readWrite(entity.EnergyTarget);
+            cs.readWrite(entity.tShirtColour);
+            cs.readWrite(entity.trousersColour);
+            cs.readWrite(entity.destinationX);
+            cs.readWrite(entity.destinationY);
+            cs.readWrite(entity.destinationTolerance);
+            cs.readWrite(entity.var37);
+            cs.readWrite(entity.energy);
+            cs.readWrite(entity.energyTarget);
 
             if (version <= 1)
             {
@@ -1865,7 +1866,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.Mass);
+            cs.readWrite(entity.mass);
 
             if (version <= 1)
             {
@@ -1901,7 +1902,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.WindowInvalidateFlags);
+            cs.readWrite(entity.windowInvalidateFlags);
 
             if (version <= 1)
             {
@@ -1937,17 +1938,17 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.CurrentRide);
-            cs.readWrite(entity.CurrentRideStation);
-            cs.readWrite(entity.CurrentTrain);
-            cs.readWrite(entity.TimeToSitdown);
-            cs.readWrite(entity.SpecialSprite);
-            cs.readWrite(entity.AnimationType);
-            cs.readWrite(entity.NextAnimationType);
-            cs.readWrite(entity.AnimationImageIdOffset);
-            cs.readWrite(entity.Action);
-            cs.readWrite(entity.AnimationFrameNum);
-            cs.readWrite(entity.StepProgress);
+            cs.readWrite(entity.currentRide);
+            cs.readWrite(entity.currentRideStation);
+            cs.readWrite(entity.currentTrain);
+            cs.readWrite(entity.timeToSitdown);
+            cs.readWrite(entity.specialSprite);
+            cs.readWrite(entity.animationType);
+            cs.readWrite(entity.nextAnimationType);
+            cs.readWrite(entity.animationImageIdOffset);
+            cs.readWrite(entity.action);
+            cs.readWrite(entity.animationFrameNum);
+            cs.readWrite(entity.stepProgress);
 
             if (version <= 1)
             {
@@ -1961,8 +1962,8 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PeepDirection);
-            cs.readWrite(entity.InteractionRideIndex);
+            cs.readWrite(entity.peepDirection);
+            cs.readWrite(entity.interactionRideIndex);
 
             if (version <= 1)
             {
@@ -1988,7 +1989,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PeepId);
+            cs.readWrite(entity.peepId);
 
             if (version <= 1)
             {
@@ -2044,7 +2045,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PathCheckOptimisation);
+            cs.readWrite(entity.pathCheckOptimisation);
 
             if (version <= 1)
             {
@@ -2063,18 +2064,18 @@ namespace OpenRCT2
             }
 
             cs.readWrite(entity.peepFlags.holder);
-            cs.readWrite(entity.PathfindGoal.x);
-            cs.readWrite(entity.PathfindGoal.y);
-            cs.readWrite(entity.PathfindGoal.z);
-            cs.readWrite(entity.PathfindGoal.direction);
-            for (size_t i = 0; i < std::size(entity.PathfindHistory); i++)
+            cs.readWrite(entity.pathfindGoal.x);
+            cs.readWrite(entity.pathfindGoal.y);
+            cs.readWrite(entity.pathfindGoal.z);
+            cs.readWrite(entity.pathfindGoal.direction);
+            for (size_t i = 0; i < std::size(entity.pathfindHistory); i++)
             {
-                cs.readWrite(entity.PathfindHistory[i].x);
-                cs.readWrite(entity.PathfindHistory[i].y);
-                cs.readWrite(entity.PathfindHistory[i].z);
-                cs.readWrite(entity.PathfindHistory[i].direction);
+                cs.readWrite(entity.pathfindHistory[i].x);
+                cs.readWrite(entity.pathfindHistory[i].y);
+                cs.readWrite(entity.pathfindHistory[i].z);
+                cs.readWrite(entity.pathfindHistory[i].direction);
             }
-            cs.readWrite(entity.WalkingAnimationFrameNum);
+            cs.readWrite(entity.walkingAnimationFrameNum);
 
             if (version <= 1)
             {
@@ -2524,7 +2525,7 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
     {
         ReadWriteEntityCommon(cs, steamParticle);
-        cs.readWrite(steamParticle.time_to_move);
+        cs.readWrite(steamParticle.timeToMove);
         cs.readWrite(steamParticle.frame);
     }
 
@@ -2545,17 +2546,17 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, vehicleCrashParticle);
         cs.readWrite(vehicleCrashParticle.frame);
-        cs.readWrite(vehicleCrashParticle.time_to_live);
+        cs.readWrite(vehicleCrashParticle.timeToLive);
         cs.readWrite(vehicleCrashParticle.frame);
         cs.readWrite(vehicleCrashParticle.colour[0]);
         cs.readWrite(vehicleCrashParticle.colour[1]);
-        cs.readWrite(vehicleCrashParticle.crashed_sprite_base);
-        cs.readWrite(vehicleCrashParticle.velocity_x);
-        cs.readWrite(vehicleCrashParticle.velocity_y);
-        cs.readWrite(vehicleCrashParticle.velocity_z);
-        cs.readWrite(vehicleCrashParticle.acceleration_x);
-        cs.readWrite(vehicleCrashParticle.acceleration_y);
-        cs.readWrite(vehicleCrashParticle.acceleration_z);
+        cs.readWrite(vehicleCrashParticle.crashedSpriteBase);
+        cs.readWrite(vehicleCrashParticle.velocityX);
+        cs.readWrite(vehicleCrashParticle.velocityY);
+        cs.readWrite(vehicleCrashParticle.velocityZ);
+        cs.readWrite(vehicleCrashParticle.accelerationX);
+        cs.readWrite(vehicleCrashParticle.accelerationY);
+        cs.readWrite(vehicleCrashParticle.accelerationZ);
     }
 
     template<>
@@ -2583,13 +2584,13 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, JumpingFountain& fountain)
     {
         ReadWriteEntityCommon(cs, fountain);
-        cs.readWrite(fountain.NumTicksAlive);
+        cs.readWrite(fountain.numTicksAlive);
         cs.readWrite(fountain.frame);
         cs.readWrite(fountain.fountainFlags.holder);
-        cs.readWrite(fountain.TargetX);
-        cs.readWrite(fountain.TargetY);
-        cs.readWrite(fountain.TargetY);
-        cs.readWrite(fountain.Iteration);
+        cs.readWrite(fountain.targetX);
+        cs.readWrite(fountain.targetY);
+        cs.readWrite(fountain.targetY);
+        cs.readWrite(fountain.iteration);
     }
 
     template<>
@@ -2597,7 +2598,7 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, balloon);
         cs.readWrite(balloon.popped);
-        cs.readWrite(balloon.time_to_move);
+        cs.readWrite(balloon.timeToMove);
         cs.readWrite(balloon.frame);
         cs.readWrite(balloon.colour);
     }
@@ -2607,8 +2608,8 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, duck);
         cs.readWrite(duck.frame);
-        cs.readWrite(duck.target_x);
-        cs.readWrite(duck.target_y);
+        cs.readWrite(duck.targetX);
+        cs.readWrite(duck.targetY);
         cs.readWrite(duck.state);
     }
 
@@ -2633,7 +2634,7 @@ namespace OpenRCT2
             }
             return res;
         }();
-        cs.write(T::cEntityType);
+        cs.write(T::kEntityType);
         cs.write(count);
         for (auto* ent : entityList)
         {
@@ -2652,7 +2653,7 @@ namespace OpenRCT2
     void ParkFile::ReadEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         [[maybe_unused]] auto t = cs.read<EntityType>();
-        assert(t == T::cEntityType);
+        assert(t == T::kEntityType);
         auto count = cs.read<uint16_t>();
         for (auto i = 0; i < count; ++i)
         {

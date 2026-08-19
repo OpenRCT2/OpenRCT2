@@ -14,9 +14,9 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Text.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
-#include "../world/Location.hpp"
 
 #include <algorithm>
 

@@ -390,8 +390,8 @@ namespace OpenRCT2
         {
             for (auto* staff : EntityList<Staff>())
             {
-                if (staff->State == PeepState::watering
-                    && CoordsXY{ staff->NextLoc } + CoordsDirectionDelta[staff->Var37] == tile)
+                if (staff->state == PeepState::watering
+                    && CoordsXY{ staff->nextLoc } + CoordsDirectionDelta[staff->var37] == tile)
                     return true;
             }
         }
@@ -399,7 +399,7 @@ namespace OpenRCT2
         {
             for (auto* staff : EntityTileList<Staff>(tile))
             {
-                if (staff->State == state)
+                if (staff->state == state)
                     return true;
             }
         }
@@ -412,18 +412,18 @@ namespace OpenRCT2
      */
     uint8_t Staff::handymanDirectionToUncutGrass(uint8_t valid_directions) const
     {
-        if (!(GetNextIsSurface()))
+        if (!(getNextIsSurface()))
         {
-            auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
+            auto surfaceElement = MapGetSurfaceElementAt(nextLoc);
             if (surfaceElement == nullptr)
                 return kInvalidDirection;
 
-            if (NextLoc.z != surfaceElement->getBaseZ())
+            if (nextLoc.z != surfaceElement->getBaseZ())
                 return kInvalidDirection;
 
-            if (GetNextIsSloped())
+            if (getNextIsSloped())
             {
-                if (surfaceElement->getSlope() != kPathSlopeToLandSlope[GetNextDirection()])
+                if (surfaceElement->getSlope() != kPathSlopeToLandSlope[getNextDirection()])
                     return kInvalidDirection;
             }
             else if (surfaceElement->getSlope() != kTileSlopeFlat)
@@ -440,7 +440,7 @@ namespace OpenRCT2
                 continue;
             }
 
-            CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[chosenDirection];
+            CoordsXY chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[chosenDirection];
 
             if (!MapIsLocationValid(chosenTile))
                 continue;
@@ -448,7 +448,7 @@ namespace OpenRCT2
             auto surfaceElement = MapGetSurfaceElementAt(chosenTile);
             if (surfaceElement != nullptr)
             {
-                if (std::abs(surfaceElement->getBaseZ() - NextLoc.z) <= 2 * kCoordsZStep)
+                if (std::abs(surfaceElement->getBaseZ() - nextLoc.z) <= 2 * kCoordsZStep)
                 {
                     if (surfaceElement->canGrassGrow() && (surfaceElement->getGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
                     {
@@ -474,7 +474,7 @@ namespace OpenRCT2
             if (!(validDirections & (1 << newDirection)))
                 continue;
 
-            CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
+            CoordsXY chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[newDirection];
 
             if (MapSurfaceIsBlocked(chosenTile))
                 continue;
@@ -497,7 +497,7 @@ namespace OpenRCT2
         staffMowingTimeout++;
 
         Direction litterDirection = kInvalidDirection;
-        uint8_t validDirections = getValidPatrolDirections(NextLoc);
+        uint8_t validDirections = getValidPatrolDirections(nextLoc);
 
         if ((staffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + id.ToUnderlying()) & 0xFFF) > 110)
         {
@@ -512,13 +512,13 @@ namespace OpenRCT2
 
         if (newDirection == kInvalidDirection)
         {
-            if (GetNextIsSurface())
+            if (getNextIsSurface())
             {
                 newDirection = handymanDirectionRandSurface(validDirections);
             }
             else
             {
-                auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
+                auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ nextLoc });
 
                 if (pathElement == nullptr)
                     return true;
@@ -546,10 +546,10 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        pathDirections &= ~(1 << DirectionReverse(PeepDirection));
+                        pathDirections &= ~(1 << DirectionReverse(peepDirection));
                         if (pathDirections == 0)
                         {
-                            pathDirections |= 1 << DirectionReverse(PeepDirection);
+                            pathDirections |= 1 << DirectionReverse(peepDirection);
                         }
                     }
 
@@ -567,19 +567,19 @@ namespace OpenRCT2
         // newDirection can only contain a cardinal direction at this point, no diagonals
         assert(DirectionValid(newDirection));
 
-        CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
+        CoordsXY chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[newDirection];
 
         while (!MapIsLocationValid(chosenTile))
         {
             newDirection = handymanDirectionRandSurface(validDirections);
-            chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
+            chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[newDirection];
         }
 
-        PeepDirection = newDirection;
-        SetDestination(chosenTile + CoordsXY{ 16, 16 }, 3);
-        if (State == PeepState::queuing)
+        peepDirection = newDirection;
+        setDestination(chosenTile + CoordsXY{ 16, 16 }, 3);
+        if (state == PeepState::queuing)
         {
-            DestinationTolerance = (ScenarioRand() & 7) + 2;
+            destinationTolerance = (ScenarioRand() & 7) + 2;
         }
         return false;
     }
@@ -606,13 +606,13 @@ namespace OpenRCT2
 
             direction &= 3;
 
-            if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + kPeepClearanceHeight }, direction))
+            if (WallInTheWay({ nextLoc, nextLoc.z, nextLoc.z + kPeepClearanceHeight }, direction))
                 continue;
 
-            if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + kPeepClearanceHeight }, DirectionReverse(direction)))
+            if (WallInTheWay({ nextLoc, nextLoc.z, nextLoc.z + kPeepClearanceHeight }, DirectionReverse(direction)))
                 continue;
 
-            CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[direction];
+            CoordsXY chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[direction];
 
             if (!MapSurfaceIsBlocked(chosenTile))
             {
@@ -630,14 +630,14 @@ namespace OpenRCT2
     {
         Direction direction = ScenarioRand() & 3;
 
-        auto ride = GetRide(CurrentRide);
-        if (ride != nullptr && (State == PeepState::answering || State == PeepState::headingToInspection)
+        auto ride = GetRide(currentRide);
+        if (ride != nullptr && (state == PeepState::answering || state == PeepState::headingToInspection)
             && (ScenarioRand() & 1))
         {
-            auto location = ride->getStation(CurrentRideStation).Exit;
+            auto location = ride->getStation(currentRideStation).Exit;
             if (location.IsNull())
             {
-                location = ride->getStation(CurrentRideStation).Entrance;
+                location = ride->getStation(currentRideStation).Entrance;
             }
 
             direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
@@ -654,8 +654,8 @@ namespace OpenRCT2
     {
         if (ScenarioRand() & 1)
         {
-            if (pathDirections & (1 << PeepDirection))
-                return PeepDirection;
+            if (pathDirections & (1 << peepDirection))
+                return peepDirection;
         }
 
         // Modified from original to spam scenario_rand less
@@ -667,7 +667,7 @@ namespace OpenRCT2
                 return direction;
         }
         // This will never happen as pathDirections always has a bit set.
-        return PeepDirection;
+        return peepDirection;
     }
 
     /**
@@ -685,40 +685,40 @@ namespace OpenRCT2
         }
 
         // Check if this is dead end - i.e. only way out is the reverse direction.
-        pathDirections &= ~(1 << DirectionReverse(PeepDirection));
+        pathDirections &= ~(1 << DirectionReverse(peepDirection));
         if (pathDirections == 0)
         {
-            pathDirections |= (1 << DirectionReverse(PeepDirection));
+            pathDirections |= (1 << DirectionReverse(peepDirection));
         }
 
         Direction direction = Numerics::bitScanForward(pathDirections);
         pathDirections &= ~(1 << direction);
         if (pathDirections == 0)
         {
-            if (State != PeepState::answering && State != PeepState::headingToInspection)
+            if (state != PeepState::answering && state != PeepState::headingToInspection)
             {
                 return direction;
             }
 
-            if (SubState != 2)
+            if (subState != 2)
             {
                 return direction;
             }
-            SubState = 3;
+            subState = 3;
         }
 
         pathDirections |= (1 << direction);
 
         // Mechanic is heading to ride (either broken down or for inspection).
-        auto ride = GetRide(CurrentRide);
-        if (ride != nullptr && (State == PeepState::answering || State == PeepState::headingToInspection))
+        auto ride = GetRide(currentRide);
+        if (ride != nullptr && (state == PeepState::answering || state == PeepState::headingToInspection))
         {
             /* Find location of the exit for the target ride station
              * or if the ride has no exit, the entrance. */
-            TileCoordsXYZD location = ride->getStation(CurrentRideStation).Exit;
+            TileCoordsXYZD location = ride->getStation(currentRideStation).Exit;
             if (location.IsNull())
             {
-                location = ride->getStation(CurrentRideStation).Entrance;
+                location = ride->getStation(currentRideStation).Entrance;
 
                 // If no entrance is present either. This is an incorrect state.
                 if (location.IsNull())
@@ -729,7 +729,7 @@ namespace OpenRCT2
 
             const auto goalPos = TileCoordsXYZ{ location };
             Direction pathfindDirection = PathFinding::ChooseDirection(
-                TileCoordsXYZ{ NextLoc }, goalPos, *this, false, RideId::GetNull());
+                TileCoordsXYZ{ nextLoc }, goalPos, *this, false, RideId::GetNull());
             if (pathfindDirection == kInvalidDirection)
             {
                 /* Heuristic search failed for all directions.
@@ -738,7 +738,7 @@ namespace OpenRCT2
                  * This lets the heuristic search "try again" in case the player has
                  * edited the path layout or the mechanic was already stuck in the
                  * save game (e.g. with a worse version of the pathfinding). */
-                ResetPathfindGoal();
+                resetPathfindGoal();
                 return mechanicDirectionPathRand(pathDirections);
             }
 
@@ -753,15 +753,15 @@ namespace OpenRCT2
      */
     bool Staff::doMechanicPathFinding()
     {
-        uint8_t validDirections = getValidPatrolDirections(NextLoc);
+        uint8_t validDirections = getValidPatrolDirections(nextLoc);
         Direction newDirection = kInvalidDirection;
-        if (GetNextIsSurface())
+        if (getNextIsSurface())
         {
             newDirection = mechanicDirectionSurface();
         }
         else
         {
-            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
+            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ nextLoc });
             if (pathElement == nullptr)
                 return true;
 
@@ -771,17 +771,17 @@ namespace OpenRCT2
         // countof(CoordsDirectionDelta)
         assert(DirectionValid(newDirection));
 
-        CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
+        CoordsXY chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[newDirection];
 
         while (!MapIsLocationValid(chosenTile))
         {
             newDirection = mechanicDirectionSurface();
-            chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
+            chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[newDirection];
         }
 
-        PeepDirection = newDirection;
+        peepDirection = newDirection;
         auto tolerance = (ScenarioRand() & 7) + 2;
-        SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
+        setDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
         return false;
     }
@@ -793,7 +793,7 @@ namespace OpenRCT2
     Direction Staff::directionPath(uint8_t validDirections, PathElement* pathElement) const
     {
         uint32_t pathDirections = pathElement->getEdges();
-        if (State != PeepState::answering && State != PeepState::headingToInspection)
+        if (state != PeepState::answering && state != PeepState::headingToInspection)
         {
             pathDirections &= validDirections;
         }
@@ -803,10 +803,10 @@ namespace OpenRCT2
             return directionSurface(ScenarioRand() & 3);
         }
 
-        pathDirections &= ~(1u << DirectionReverse(PeepDirection));
+        pathDirections &= ~(1u << DirectionReverse(peepDirection));
         if (pathDirections == 0)
         {
-            pathDirections |= (1u << DirectionReverse(PeepDirection));
+            pathDirections |= (1u << DirectionReverse(peepDirection));
         }
 
         Direction direction = Numerics::bitScanForward(pathDirections);
@@ -833,33 +833,33 @@ namespace OpenRCT2
      */
     bool Staff::doMiscPathFinding()
     {
-        uint8_t validDirections = getValidPatrolDirections(NextLoc);
+        uint8_t validDirections = getValidPatrolDirections(nextLoc);
 
         Direction newDirection = kInvalidDirection;
-        if (GetNextIsSurface())
+        if (getNextIsSurface())
         {
             newDirection = directionSurface(ScenarioRand() & 3);
         }
         else
         {
-            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ NextLoc });
+            auto* pathElement = MapGetPathElementAt(TileCoordsXYZ{ nextLoc });
             if (pathElement == nullptr)
                 return true;
 
             newDirection = directionPath(validDirections, pathElement);
         }
 
-        CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
+        CoordsXY chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[newDirection];
 
         while (!MapIsLocationValid(chosenTile))
         {
             newDirection = directionSurface(ScenarioRand() & 3);
-            chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
+            chosenTile = CoordsXY{ nextLoc } + CoordsDirectionDelta[newDirection];
         }
 
-        PeepDirection = newDirection;
+        peepDirection = newDirection;
         auto tolerance = (ScenarioRand() & 7) + 2;
-        SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
+        setDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
         return false;
     }
@@ -869,7 +869,7 @@ namespace OpenRCT2
         if (!isMechanic())
             return false;
 
-        auto tileCoords = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
+        auto tileCoords = TileCoordsXYZ(CoordsXYZ{ getDestination(), nextLoc.z });
         auto trackElement = MapGetFirstTileElementWithBaseHeightBetween<TrackElement>(
             { tileCoords, tileCoords.z + kPathHeightStep });
         if (trackElement == nullptr)
@@ -879,7 +879,7 @@ namespace OpenRCT2
         if (ride == nullptr)
             return false;
 
-        return ride->id == CurrentRide;
+        return ride->id == currentRide;
     }
 
     /**
@@ -914,18 +914,18 @@ namespace OpenRCT2
                     if (y_dist > kLookupRadius)
                         continue;
 
-                    if (guest->State == PeepState::walking)
+                    if (guest->state == PeepState::walking)
                     {
                         guest->happinessTarget = std::min(guest->happinessTarget + 4, kPeepMaxHappiness);
                         staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
-                        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                        windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }
-                    else if (guest->State == PeepState::queuing)
+                    else if (guest->state == PeepState::queuing)
                     {
                         guest->timeInQueue = std::max(0, guest->timeInQueue - 200);
                         guest->happinessTarget = std::min(guest->happinessTarget + 3, kPeepMaxHappiness);
                         staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
-                        WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                        windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                     }
                 }
             }
@@ -938,13 +938,13 @@ namespace OpenRCT2
      */
     bool Staff::doEntertainerPathFinding()
     {
-        if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptableSafely())
+        if (((ScenarioRand() & 0xFFFF) <= 0x4000) && isActionInterruptableSafely())
         {
-            Action = (ScenarioRand() & 1) ? PeepActionType::wave2 : PeepActionType::joy;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
+            action = (ScenarioRand() & 1) ? PeepActionType::wave2 : PeepActionType::joy;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
 
-            UpdateCurrentAnimationType();
+            updateCurrentAnimationType();
             entertainerUpdateNearbyPeeps();
         }
 
@@ -1036,45 +1036,45 @@ namespace OpenRCT2
      */
     void Staff::updateMowing()
     {
-        if (!CheckForPath())
+        if (!checkForPath())
             return;
 
         while (true)
         {
-            if (auto loc = UpdateAction(); loc.has_value())
+            if (auto loc = updateAction(); loc.has_value())
             {
                 int16_t checkZ = TileElementHeight(*loc);
                 moveTo({ loc.value(), checkZ });
                 return;
             }
 
-            Var37++;
+            var37++;
 
-            if (Var37 == 1)
+            if (var37 == 1)
             {
-                SwitchToSpecialSprite(2);
+                switchToSpecialSprite(2);
             }
 
-            if (Var37 == std::size(kMowingWaypoints))
+            if (var37 == std::size(kMowingWaypoints))
             {
-                StateReset();
+                stateReset();
                 return;
             }
 
-            auto destination = kMowingWaypoints[Var37] + NextLoc;
-            SetDestination(destination);
+            auto destination = kMowingWaypoints[var37] + nextLoc;
+            setDestination(destination);
 
-            if (Var37 != 7)
+            if (var37 != 7)
                 continue;
 
-            auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
+            auto surfaceElement = MapGetSurfaceElementAt(nextLoc);
             if (surfaceElement != nullptr && surfaceElement->canGrassGrow())
             {
                 surfaceElement->setGrassLength(GRASS_LENGTH_MOWED);
-                MapInvalidateTileZoom0({ NextLoc, surfaceElement->getBaseZ(), surfaceElement->getBaseZ() + 16 });
+                MapInvalidateTileZoom0({ nextLoc, surfaceElement->getBaseZ(), surfaceElement->getBaseZ() + 16 });
             }
             staffLawnsMown = AddClamp(staffLawnsMown, 1u);
-            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
     }
 
@@ -1085,33 +1085,33 @@ namespace OpenRCT2
     void Staff::updateWatering()
     {
         staffMowingTimeout = 0;
-        if (SubState == 0)
+        if (subState == 0)
         {
-            if (!CheckForPath())
+            if (!checkForPath())
                 return;
 
-            const auto [pathingResult, _] = PerformNextAction();
+            const auto [pathingResult, _] = performNextAction();
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            orientation = (Var37 & 3) << 3;
-            Action = PeepActionType::staffWatering;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-            UpdateCurrentAnimationType();
+            orientation = (var37 & 3) << 3;
+            action = PeepActionType::staffWatering;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
+            updateCurrentAnimationType();
 
-            SubState = 1;
+            subState = 1;
         }
-        else if (SubState == 1)
+        else if (subState == 1)
         {
-            if (!IsActionWalking())
+            if (!isActionWalking())
             {
-                UpdateAction();
+                updateAction();
                 invalidate();
                 return;
             }
 
-            auto actionLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[Var37];
+            auto actionLoc = CoordsXY{ nextLoc } + CoordsDirectionDelta[var37];
 
             TileElement* tile_element = MapGetFirstElementAt(actionLoc);
             if (tile_element == nullptr)
@@ -1122,7 +1122,7 @@ namespace OpenRCT2
                 if (tile_element->getType() != TileElementType::smallScenery)
                     continue;
 
-                if (abs(NextLoc.z - tile_element->getBaseZ()) > 4 * kCoordsZStep)
+                if (abs(nextLoc.z - tile_element->getBaseZ()) > 4 * kCoordsZStep)
                     continue;
 
                 const auto* sceneryEntry = tile_element->asSmallScenery()->getEntry();
@@ -1133,10 +1133,10 @@ namespace OpenRCT2
                 tile_element->asSmallScenery()->setAge(0);
                 MapInvalidateTileZoom0({ actionLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
                 staffGardensWatered = AddClamp(staffGardensWatered, 1u);
-                WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
             } while (!(tile_element++)->isLastForTile());
 
-            StateReset();
+            stateReset();
         }
     }
 
@@ -1148,38 +1148,38 @@ namespace OpenRCT2
     {
         staffMowingTimeout = 0;
 
-        if (SubState == 0)
+        if (subState == 0)
         {
-            if (!CheckForPath())
+            if (!checkForPath())
                 return;
 
-            const auto [pathingResult, _] = PerformNextAction();
+            const auto [pathingResult, _] = performNextAction();
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            orientation = (Var37 & 3) << 3;
-            Action = PeepActionType::staffEmptyBin;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-            UpdateCurrentAnimationType();
+            orientation = (var37 & 3) << 3;
+            action = PeepActionType::staffEmptyBin;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
+            updateCurrentAnimationType();
 
-            SubState = 1;
+            subState = 1;
         }
-        else if (SubState == 1)
+        else if (subState == 1)
         {
-            if (IsActionWalking())
+            if (isActionWalking())
             {
-                StateReset();
+                stateReset();
                 return;
             }
 
-            UpdateAction();
+            updateAction();
             invalidate();
 
-            if (AnimationFrameNum != 11)
+            if (animationFrameNum != 11)
                 return;
 
-            TileElement* tile_element = MapGetFirstElementAt(NextLoc);
+            TileElement* tile_element = MapGetFirstElementAt(nextLoc);
             if (tile_element == nullptr)
                 return;
 
@@ -1187,19 +1187,19 @@ namespace OpenRCT2
             {
                 if (tile_element->getType() == TileElementType::path)
                 {
-                    if (NextLoc.z == tile_element->getBaseZ())
+                    if (nextLoc.z == tile_element->getBaseZ())
                         break;
                 }
                 if ((tile_element)->isLastForTile())
                 {
-                    StateReset();
+                    stateReset();
                     return;
                 }
             }
 
             if (!tile_element->asPath()->hasAddition())
             {
-                StateReset();
+                stateReset();
                 return;
             }
 
@@ -1207,16 +1207,16 @@ namespace OpenRCT2
             if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->asPath()->isBroken()
                 || tile_element->asPath()->additionIsGhost())
             {
-                StateReset();
+                stateReset();
                 return;
             }
 
-            uint8_t additionStatus = tile_element->asPath()->getAdditionStatus() | ((3 << Var37) << Var37);
+            uint8_t additionStatus = tile_element->asPath()->getAdditionStatus() | ((3 << var37) << var37);
             tile_element->asPath()->setAdditionStatus(additionStatus);
 
-            MapInvalidateTileZoom0({ NextLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
+            MapInvalidateTileZoom0({ nextLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
             staffBinsEmptied = AddClamp(staffBinsEmptied, 1u);
-            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
     }
 
@@ -1227,33 +1227,33 @@ namespace OpenRCT2
     void Staff::updateSweeping()
     {
         staffMowingTimeout = 0;
-        if (!CheckForPath())
+        if (!checkForPath())
             return;
 
-        if (Action == PeepActionType::staffSweep && AnimationFrameNum == 8)
+        if (action == PeepActionType::staffSweep && animationFrameNum == 8)
         {
             // Remove sick at this location
-            Litter::RemoveAt(getLocation());
+            Litter::removeAt(getLocation());
             staffLitterSwept = AddClamp(staffLitterSwept, 1u);
-            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         }
-        if (auto loc = UpdateAction(); loc.has_value())
+        if (auto loc = updateAction(); loc.has_value())
         {
-            int16_t actionZ = GetZOnSlope(loc->x, loc->y);
+            int16_t actionZ = getZOnSlope(loc->x, loc->y);
             moveTo({ loc.value(), actionZ });
             return;
         }
 
-        Var37++;
-        if (Var37 != 2)
+        var37++;
+        if (var37 != 2)
         {
-            Action = PeepActionType::staffSweep;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-            UpdateCurrentAnimationType();
+            action = PeepActionType::staffSweep;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
+            updateCurrentAnimationType();
             return;
         }
-        StateReset();
+        stateReset();
     }
 
     /**
@@ -1262,34 +1262,34 @@ namespace OpenRCT2
      */
     void Staff::updateHeadingToInspect()
     {
-        auto ride = GetRide(CurrentRide);
+        auto ride = GetRide(currentRide);
         if (ride == nullptr)
         {
-            SetState(PeepState::falling);
+            setState(PeepState::falling);
             return;
         }
 
-        if (ride->getStation(CurrentRideStation).Exit.IsNull())
+        if (ride->getStation(currentRideStation).Exit.IsNull())
         {
             ride->flags.unset(RideFlag::dueInspection);
-            SetState(PeepState::falling);
+            setState(PeepState::falling);
             return;
         }
 
         if (ride->mechanicStatus != MechanicStatus::heading || !ride->flags.has(RideFlag::dueInspection))
         {
-            SetState(PeepState::falling);
+            setState(PeepState::falling);
             return;
         }
 
-        if (SubState == 0)
+        if (subState == 0)
         {
             mechanicTimeSinceCall = 0;
-            ResetPathfindGoal();
-            SubState = 2;
+            resetPathfindGoal();
+            subState = 2;
         }
 
-        if (SubState <= 3)
+        if (subState <= 3)
         {
             mechanicTimeSinceCall++;
             if (mechanicTimeSinceCall > 2500)
@@ -1298,27 +1298,27 @@ namespace OpenRCT2
                 {
                     ride->mechanicStatus = MechanicStatus::calling;
                 }
-                SetState(PeepState::falling);
+                setState(PeepState::falling);
                 return;
             }
 
-            if (!CheckForPath())
+            if (!checkForPath())
                 return;
 
-            if (ShouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
+            if (shouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
                 return;
 
-            const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
+            const auto [pathingResult, rideEntranceExitElement] = performNextAction();
             if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
             {
                 return;
             }
 
-            if (CurrentRide != rideEntranceExitElement->asEntrance()->getRideIndex())
+            if (currentRide != rideEntranceExitElement->asEntrance()->getRideIndex())
                 return;
 
             StationIndex exitIndex = rideEntranceExitElement->asEntrance()->getStationIndex();
-            if (CurrentRideStation != exitIndex)
+            if (currentRideStation != exitIndex)
                 return;
 
             if (pathingResult & PATHING_RIDE_ENTRANCE)
@@ -1329,21 +1329,21 @@ namespace OpenRCT2
                 }
             }
 
-            PeepDirection = rideEntranceExitElement->getDirection();
+            peepDirection = rideEntranceExitElement->getDirection();
 
-            auto newDestination = CoordsXY{ 16, 16 } + NextLoc + (DirectionOffsets[PeepDirection] * 53);
-            SetDestination(newDestination, 2);
-            orientation = PeepDirection << 3;
+            auto newDestination = CoordsXY{ 16, 16 } + nextLoc + (DirectionOffsets[peepDirection] * 53);
+            setDestination(newDestination, 2);
+            orientation = peepDirection << 3;
 
             z = rideEntranceExitElement->baseHeight * 4;
-            SubState = 4;
+            subState = 4;
             // Falls through into SubState 4
         }
 
-        int16_t delta_y = abs(getLocation().y - GetDestination().y);
-        if (auto loc = UpdateAction(); loc.has_value())
+        int16_t delta_y = abs(getLocation().y - getDestination().y);
+        if (auto loc = updateAction(); loc.has_value())
         {
-            auto newZ = ride->getStation(CurrentRideStation).GetBaseZ();
+            auto newZ = ride->getStation(currentRideStation).GetBaseZ();
             if (delta_y < 20)
             {
                 newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
@@ -1353,8 +1353,8 @@ namespace OpenRCT2
             return;
         }
 
-        SetState(PeepState::inspecting);
-        SubState = 0;
+        setState(PeepState::inspecting);
+        subState = 0;
     }
 
     /**
@@ -1363,67 +1363,67 @@ namespace OpenRCT2
      */
     void Staff::updateAnswering()
     {
-        auto ride = GetRide(CurrentRide);
+        auto ride = GetRide(currentRide);
         if (ride == nullptr || ride->mechanicStatus != MechanicStatus::heading)
         {
-            SetState(PeepState::falling);
+            setState(PeepState::falling);
             return;
         }
 
-        if (SubState == 0)
+        if (subState == 0)
         {
-            Action = PeepActionType::staffAnswerCall;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
+            action = PeepActionType::staffAnswerCall;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
 
-            UpdateCurrentAnimationType();
+            updateCurrentAnimationType();
 
-            SubState = 1;
+            subState = 1;
             PeepWindowStateUpdate(this);
             return;
         }
-        if (SubState == 1)
+        if (subState == 1)
         {
-            if (IsActionWalking())
+            if (isActionWalking())
             {
-                SubState = 2;
+                subState = 2;
                 PeepWindowStateUpdate(this);
                 mechanicTimeSinceCall = 0;
-                ResetPathfindGoal();
+                resetPathfindGoal();
                 return;
             }
-            UpdateAction();
+            updateAction();
             invalidate();
             return;
         }
-        if (SubState <= 3)
+        if (subState <= 3)
         {
             mechanicTimeSinceCall++;
             if (mechanicTimeSinceCall > 2500)
             {
                 ride->mechanicStatus = MechanicStatus::calling;
                 ride->windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
-                SetState(PeepState::falling);
+                setState(PeepState::falling);
                 return;
             }
 
-            if (!CheckForPath())
+            if (!checkForPath())
                 return;
 
-            if (ShouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
+            if (shouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
                 return;
 
-            const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
+            const auto [pathingResult, rideEntranceExitElement] = performNextAction();
             if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
             {
                 return;
             }
 
-            if (CurrentRide != rideEntranceExitElement->asEntrance()->getRideIndex())
+            if (currentRide != rideEntranceExitElement->asEntrance()->getRideIndex())
                 return;
 
             StationIndex exitIndex = rideEntranceExitElement->asEntrance()->getStationIndex();
-            if (CurrentRideStation != exitIndex)
+            if (currentRideStation != exitIndex)
                 return;
 
             if (pathingResult & PATHING_RIDE_ENTRANCE)
@@ -1434,23 +1434,23 @@ namespace OpenRCT2
                 }
             }
 
-            PeepDirection = rideEntranceExitElement->getDirection();
+            peepDirection = rideEntranceExitElement->getDirection();
 
-            int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
-            int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
+            int32_t destX = nextLoc.x + 16 + DirectionOffsets[peepDirection].x * 53;
+            int32_t destY = nextLoc.y + 16 + DirectionOffsets[peepDirection].y * 53;
 
-            SetDestination({ destX, destY }, 2);
-            orientation = PeepDirection << 3;
+            setDestination({ destX, destY }, 2);
+            orientation = peepDirection << 3;
 
             z = rideEntranceExitElement->baseHeight * 4;
-            SubState = 4;
+            subState = 4;
             // Falls through into SubState 4
         }
 
-        int16_t delta_y = abs(y - GetDestination().y);
-        if (auto loc = UpdateAction(); loc.has_value())
+        int16_t delta_y = abs(y - getDestination().y);
+        if (auto loc = updateAction(); loc.has_value())
         {
-            auto newZ = ride->getStation(CurrentRideStation).GetBaseZ();
+            auto newZ = ride->getStation(currentRideStation).GetBaseZ();
             if (delta_y < 20)
             {
                 newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
@@ -1460,8 +1460,8 @@ namespace OpenRCT2
             return;
         }
 
-        SetState(PeepState::fixing);
-        SubState = 0;
+        setState(PeepState::fixing);
+        subState = 0;
     }
 
     /** rct2: 0x00992A5C */
@@ -1483,7 +1483,7 @@ namespace OpenRCT2
         {
             chosen_position &= 7;
 
-            auto chosenLoc = CoordsXY{ NextLoc } + CoordsDirectionDelta[chosen_position];
+            auto chosenLoc = CoordsXY{ nextLoc } + CoordsDirectionDelta[chosen_position];
 
             TileElement* tile_element = MapGetFirstElementAt(chosenLoc);
 
@@ -1500,7 +1500,7 @@ namespace OpenRCT2
                     continue;
                 }
 
-                auto z_diff = abs(NextLoc.z - tile_element->getBaseZ());
+                auto z_diff = abs(nextLoc.z - tile_element->getBaseZ());
 
                 if (z_diff >= 4 * kCoordsZStep)
                 {
@@ -1530,12 +1530,12 @@ namespace OpenRCT2
                 if (isHandymanAlreadyServicingTile(chosenLoc, PeepState::watering))
                     continue;
 
-                SetState(PeepState::watering);
-                Var37 = chosen_position;
+                setState(PeepState::watering);
+                var37 = chosen_position;
 
-                SubState = 0;
+                subState = 0;
                 auto destination = kWateringUseOffsets[chosen_position] + getLocation().ToTileStart();
-                SetDestination(destination, 3);
+                setDestination(destination, 3);
 
                 return true;
             } while (!(tile_element++)->isLastForTile());
@@ -1552,16 +1552,16 @@ namespace OpenRCT2
         if (!(staffOrders & STAFF_ORDERS_EMPTY_BINS))
             return false;
 
-        if (GetNextIsSurface())
+        if (getNextIsSurface())
             return false;
 
-        TileElement* tileElement = MapGetFirstElementAt(NextLoc);
+        TileElement* tileElement = MapGetFirstElementAt(nextLoc);
         if (tileElement == nullptr)
             return false;
 
         for (;; tileElement++)
         {
-            if (tileElement->getType() == TileElementType::path && (tileElement->getBaseZ() == NextLoc.z))
+            if (tileElement->getType() == TileElementType::path && (tileElement->getBaseZ() == nextLoc.z))
                 break;
 
             if (tileElement->isLastForTile())
@@ -1598,15 +1598,15 @@ namespace OpenRCT2
         if (chosen_position == 4)
             return false;
 
-        if (isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::emptyingBin))
+        if (isHandymanAlreadyServicingTile(CoordsXY{ nextLoc }, PeepState::emptyingBin))
             return false;
 
-        Var37 = chosen_position;
-        SetState(PeepState::emptyingBin);
+        var37 = chosen_position;
+        setState(PeepState::emptyingBin);
 
-        SubState = 0;
+        subState = 0;
         auto destination = BinUseOffsets[chosen_position] + getLocation().ToTileStart();
-        SetDestination(destination, 3);
+        setDestination(destination, 3);
         return true;
     }
 
@@ -1622,21 +1622,21 @@ namespace OpenRCT2
         if (staffMowingTimeout < 12)
             return false;
 
-        if (!(GetNextIsSurface()))
+        if (!(getNextIsSurface()))
             return false;
 
-        auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
+        auto surfaceElement = MapGetSurfaceElementAt(nextLoc);
         if (surfaceElement != nullptr && surfaceElement->canGrassGrow())
         {
             if ((surfaceElement->getGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1
-                && !isHandymanAlreadyServicingTile(CoordsXY{ NextLoc }, PeepState::mowing))
+                && !isHandymanAlreadyServicingTile(CoordsXY{ nextLoc }, PeepState::mowing))
             {
-                SetState(PeepState::mowing);
-                Var37 = 0;
+                setState(PeepState::mowing);
+                var37 = 0;
                 // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
 
-                auto destination = kMowingWaypoints[0] + NextLoc;
-                SetDestination(destination, 3);
+                auto destination = kMowingWaypoints[0] + nextLoc;
+                setDestination(destination, 3);
                 return true;
             }
         }
@@ -1662,10 +1662,10 @@ namespace OpenRCT2
             if (isHandymanAlreadyServicingTile(litter->getLocation(), PeepState::sweeping))
                 continue;
 
-            SetState(PeepState::sweeping);
+            setState(PeepState::sweeping);
 
-            Var37 = 0;
-            SetDestination(litter->getLocation(), 5);
+            var37 = 0;
+            setDestination(litter->getLocation(), 5);
             return true;
         }
 
@@ -1702,7 +1702,7 @@ namespace OpenRCT2
                     if (yDist > kLookupRadius)
                         continue;
 
-                    if (!guest->IsActionWalking())
+                    if (!guest->isActionWalking())
                         continue;
 
                     guestCount++;
@@ -1722,20 +1722,20 @@ namespace OpenRCT2
 
         // Alternate between walking animations based on crowd size
         auto newAnimationGroup = PeepAnimationGroup::normal;
-        if (State == PeepState::patrolling && securityGuardPathIsCrowded())
+        if (state == PeepState::patrolling && securityGuardPathIsCrowded())
             newAnimationGroup = PeepAnimationGroup::alternate;
 
-        if (AnimationGroup == newAnimationGroup)
+        if (animationGroup == newAnimationGroup)
             return;
 
-        AnimationGroup = newAnimationGroup;
-        AnimationImageIdOffset = 0;
-        WalkingAnimationFrameNum = 0;
-        if (Action < PeepActionType::idle)
-            Action = PeepActionType::walking;
+        animationGroup = newAnimationGroup;
+        animationImageIdOffset = 0;
+        walkingAnimationFrameNum = 0;
+        if (action < PeepActionType::idle)
+            action = PeepActionType::walking;
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animationObjectIndex);
 
         // NB: security staff have two animations groups: one regular, and one slow-walking
         peepFlags.unset(PeepFlag::slowWalk);
@@ -1744,8 +1744,8 @@ namespace OpenRCT2
             peepFlags.set(PeepFlag::slowWalk);
         }
 
-        AnimationType = PeepAnimationType::invalid;
-        UpdateCurrentAnimationType();
+        animationType = PeepAnimationType::invalid;
+        updateCurrentAnimationType();
     }
 
     bool Staff::isMechanic() const
@@ -1758,7 +1758,7 @@ namespace OpenRCT2
         return assignedStaffType == StaffType::entertainer;
     }
 
-    void Staff::Update()
+    void Staff::update()
     {
         if (peepFlags.has(PeepFlag::positionFrozen))
         {
@@ -1767,10 +1767,10 @@ namespace OpenRCT2
                 // This is circumventing other logic, so only update every few ticks
                 if ((getGameState().currentTicks & 3) == 0)
                 {
-                    if (IsActionWalking())
-                        UpdateWalkingAnimation();
+                    if (isActionWalking())
+                        updateWalkingAnimation();
                     else
-                        UpdateActionAnimation();
+                        updateActionAnimation();
                     invalidate();
                 }
             }
@@ -1785,9 +1785,9 @@ namespace OpenRCT2
         }
 
         // Walking speed logic
-        const auto stepsToTake = GetStepsToTake();
-        const auto carryCheck = StepProgress + stepsToTake;
-        StepProgress = carryCheck;
+        const auto stepsToTake = getStepsToTake();
+        const auto carryCheck = stepProgress + stepsToTake;
+        stepProgress = carryCheck;
 
         if (carryCheck <= 255)
         {
@@ -1796,19 +1796,19 @@ namespace OpenRCT2
         else
         {
             // Loc68FD2F
-            switch (State)
+            switch (state)
             {
                 case PeepState::falling:
-                    UpdateFalling();
+                    updateFalling();
                     break;
                 case PeepState::one:
-                    Update1();
+                    update1();
                     break;
                 case PeepState::onRide:
                     // No action
                     break;
                 case PeepState::picked:
-                    UpdatePicked();
+                    updatePicked();
                     break;
                 case PeepState::patrolling:
                     updatePatrolling();
@@ -1851,22 +1851,22 @@ namespace OpenRCT2
      */
     void Staff::updatePatrolling()
     {
-        if (!CheckForPath())
+        if (!checkForPath())
             return;
 
-        if (ShouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
+        if (shouldWaitForLevelCrossing() && !isMechanicHeadingToFixRideBlockingPath())
         {
-            UpdateWaitingAtCrossing();
+            updateWaitingAtCrossing();
             return;
         }
 
-        const auto [pathingResult, _] = PerformNextAction();
+        const auto [pathingResult, _] = performNextAction();
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        if (GetNextIsSurface())
+        if (getNextIsSurface())
         {
-            auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
+            auto surfaceElement = MapGetSurfaceElementAt(nextLoc);
 
             if (surfaceElement != nullptr)
             {
@@ -1874,7 +1874,7 @@ namespace OpenRCT2
                 if (water_height > 0)
                 {
                     moveTo({ x, y, water_height });
-                    SetState(PeepState::falling);
+                    setState(PeepState::falling);
                     return;
                 }
             }
@@ -2002,29 +2002,29 @@ namespace OpenRCT2
      */
     void Staff::updateFixing(int32_t steps)
     {
-        auto ride = GetRide(CurrentRide);
+        auto ride = GetRide(currentRide);
         if (ride == nullptr)
         {
-            SetState(PeepState::falling);
+            setState(PeepState::falling);
             return;
         }
 
         bool progressToNextSubstate = true;
         bool firstRun = true;
 
-        if ((State == PeepState::inspecting) && (ride->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)))
+        if ((state == PeepState::inspecting) && (ride->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)))
         {
             // Ride has broken down since Mechanic was called to inspect it.
             // Mechanic identifies the breakdown and switches to fixing it.
-            State = PeepState::fixing;
+            state = PeepState::fixing;
         }
 
         while (progressToNextSubstate)
         {
-            switch (SubState)
+            switch (subState)
             {
                 case PEEP_FIXING_ENTER_STATION:
-                    NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+                    nextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
                     progressToNextSubstate = updateFixingEnterStation(*ride);
                     break;
 
@@ -2087,20 +2087,20 @@ namespace OpenRCT2
                 break;
             }
 
-            int32_t subState = SubState;
+            int32_t newSubState = subState;
             uint32_t sub_state_sequence_mask = FixingSubstatesForBreakdown[8];
 
-            if (State != PeepState::inspecting)
+            if (state != PeepState::inspecting)
             {
                 sub_state_sequence_mask = FixingSubstatesForBreakdown[EnumValue(ride->breakdownReasonPending)];
             }
 
             do
             {
-                subState++;
-            } while ((sub_state_sequence_mask & (1 << subState)) == 0);
+                newSubState++;
+            } while ((sub_state_sequence_mask & (1 << newSubState)) == 0);
 
-            SubState = subState & 0xFF;
+            subState = newSubState & 0xFF;
         }
     }
 
@@ -2151,12 +2151,12 @@ namespace OpenRCT2
                 }
             }
 
-            CoordsXY offset = DirectionOffsets[PeepDirection];
+            CoordsXY offset = DirectionOffsets[peepDirection];
             auto destination = (offset * -12) + vehicle->getLocation();
-            SetDestination(destination, 2);
+            setDestination(destination, 2);
         }
 
-        if (auto loc = UpdateAction(); loc.has_value())
+        if (auto loc = updateAction(); loc.has_value())
         {
             moveTo({ loc.value(), z });
             return false;
@@ -2178,24 +2178,24 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            orientation = PeepDirection << 3;
+            orientation = peepDirection << 3;
 
-            Action = (ScenarioRand() & 1) ? PeepActionType::staffFix2 : PeepActionType::staffFix;
-            AnimationImageIdOffset = 0;
-            AnimationFrameNum = 0;
-            UpdateCurrentAnimationType();
+            action = (ScenarioRand() & 1) ? PeepActionType::staffFix2 : PeepActionType::staffFix;
+            animationImageIdOffset = 0;
+            animationFrameNum = 0;
+            updateCurrentAnimationType();
         }
 
-        if (IsActionWalking())
+        if (isActionWalking())
         {
             return true;
         }
 
-        UpdateAction();
+        updateAction();
         invalidate();
 
-        uint8_t actionFrame = (Action == PeepActionType::staffFix) ? 0x25 : 0x50;
-        if (AnimationFrameNum != actionFrame)
+        uint8_t actionFrame = (action == PeepActionType::staffFix) ? 0x25 : 0x50;
+        if (animationFrameNum != actionFrame)
         {
             return false;
         }
@@ -2220,23 +2220,23 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            orientation = PeepDirection << 3;
-            Action = PeepActionType::staffFix3;
-            AnimationImageIdOffset = 0;
-            AnimationFrameNum = 0;
+            orientation = peepDirection << 3;
+            action = PeepActionType::staffFix3;
+            animationImageIdOffset = 0;
+            animationFrameNum = 0;
 
-            UpdateCurrentAnimationType();
+            updateCurrentAnimationType();
         }
 
-        if (IsActionWalking())
+        if (isActionWalking())
         {
             return true;
         }
 
-        UpdateAction();
+        updateAction();
         invalidate();
 
-        if (AnimationFrameNum != 0x65)
+        if (animationFrameNum != 0x65)
         {
             return false;
         }
@@ -2276,7 +2276,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            auto stationPos = ride.getStation(CurrentRideStation).GetStart();
+            auto stationPos = ride.getStation(currentRideStation).GetStart();
             if (stationPos.IsNull())
             {
                 return true;
@@ -2295,19 +2295,19 @@ namespace OpenRCT2
             stationPos.x += 16 + offset.x;
             if (offset.x == 0)
             {
-                stationPos.x = GetDestination().x;
+                stationPos.x = getDestination().x;
             }
 
             stationPos.y += 16 + offset.y;
             if (offset.y == 0)
             {
-                stationPos.y = GetDestination().y;
+                stationPos.y = getDestination().y;
             }
 
-            SetDestination(stationPos, 2);
+            setDestination(stationPos, 2);
         }
 
-        if (auto loc = UpdateAction(); loc.has_value())
+        if (auto loc = updateAction(); loc.has_value())
         {
             moveTo({ loc.value(), z });
             return false;
@@ -2326,20 +2326,20 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            orientation = PeepDirection << 3;
-            Action = PeepActionType::staffCheckBoard;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
+            orientation = peepDirection << 3;
+            action = PeepActionType::staffCheckBoard;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
 
-            UpdateCurrentAnimationType();
+            updateCurrentAnimationType();
         }
 
-        if (IsActionWalking())
+        if (isActionWalking())
         {
             return true;
         }
 
-        UpdateAction();
+        updateAction();
         invalidate();
 
         return false;
@@ -2363,7 +2363,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            auto stationPosition = ride.getStation(CurrentRideStation).GetStart();
+            auto stationPosition = ride.getStation(currentRideStation).GetStart();
             if (stationPosition.IsNull())
             {
                 return true;
@@ -2372,7 +2372,7 @@ namespace OpenRCT2
             CoordsXYE input;
             input.x = stationPosition.x;
             input.y = stationPosition.y;
-            input.element = MapGetTrackElementAtFromRide({ input.x, input.y, stationPosition.z }, CurrentRide);
+            input.element = MapGetTrackElementAtFromRide({ input.x, input.y, stationPosition.z }, currentRide);
             if (input.element == nullptr)
             {
                 return true;
@@ -2402,19 +2402,19 @@ namespace OpenRCT2
             destination.x -= offset.x;
             if (offset.x == 0)
             {
-                destination.x = GetDestination().x;
+                destination.x = getDestination().x;
             }
 
             destination.y -= offset.y;
             if (offset.y == 0)
             {
-                destination.y = GetDestination().y;
+                destination.y = getDestination().y;
             }
 
-            SetDestination(destination, 2);
+            setDestination(destination, 2);
         }
 
-        if (auto loc = UpdateAction(); loc.has_value())
+        if (auto loc = updateAction(); loc.has_value())
         {
             moveTo({ loc.value(), z });
             return false;
@@ -2440,21 +2440,21 @@ namespace OpenRCT2
                 return true;
             }
 
-            orientation = PeepDirection << 3;
+            orientation = peepDirection << 3;
 
-            Action = PeepActionType::staffFix;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
+            action = PeepActionType::staffFix;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
 
-            UpdateCurrentAnimationType();
+            updateCurrentAnimationType();
         }
 
-        if (IsActionWalking())
+        if (isActionWalking())
         {
             return true;
         }
 
-        UpdateAction();
+        updateAction();
 
         return false;
     }
@@ -2468,31 +2468,31 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            orientation = PeepDirection << 3;
+            orientation = peepDirection << 3;
 
-            Action = PeepActionType::staffFixGround;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
+            action = PeepActionType::staffFixGround;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
 
-            UpdateCurrentAnimationType();
+            updateCurrentAnimationType();
         }
 
-        if (IsActionWalking())
+        if (isActionWalking())
         {
             return true;
         }
 
-        UpdateAction();
+        updateAction();
         invalidate();
 
-        if (AnimationFrameNum == 0x28)
+        if (animationFrameNum == 0x28)
         {
             ride.mechanicStatus = MechanicStatus::hasFixedStationBrakes;
             ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance);
         }
 
-        if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
-            || AnimationFrameNum == 0x2B)
+        if (animationFrameNum == 0x13 || animationFrameNum == 0x19 || animationFrameNum == 0x1F || animationFrameNum == 0x25
+            || animationFrameNum == 0x2B)
         {
             Audio::Play3D(Audio::SoundId::mechanicFix, getLocation());
         }
@@ -2509,10 +2509,10 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            auto stationPosition = ride.getStation(CurrentRideStation).Exit.ToCoordsXY();
+            auto stationPosition = ride.getStation(currentRideStation).Exit.ToCoordsXY();
             if (stationPosition.IsNull())
             {
-                stationPosition = ride.getStation(CurrentRideStation).Entrance.ToCoordsXY();
+                stationPosition = ride.getStation(currentRideStation).Entrance.ToCoordsXY();
 
                 if (stationPosition.IsNull())
                 {
@@ -2522,14 +2522,14 @@ namespace OpenRCT2
 
             stationPosition = stationPosition.ToTileCentre();
 
-            CoordsXY stationPlatformDirection = DirectionOffsets[PeepDirection];
+            CoordsXY stationPlatformDirection = DirectionOffsets[peepDirection];
             stationPosition.x += stationPlatformDirection.x * 20;
             stationPosition.y += stationPlatformDirection.y * 20;
 
-            SetDestination(stationPosition, 2);
+            setDestination(stationPosition, 2);
         }
 
-        if (auto loc = UpdateAction(); loc.has_value())
+        if (auto loc = updateAction(); loc.has_value())
         {
             moveTo({ loc.value(), z });
             return false;
@@ -2547,30 +2547,30 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            if (State == PeepState::inspecting)
+            if (state == PeepState::inspecting)
             {
-                updateRideInspected(CurrentRide);
+                updateRideInspected(currentRide);
 
                 staffRidesInspected = AddClamp(staffRidesInspected, 1u);
-                WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
                 ride.mechanicStatus = MechanicStatus::undefined;
                 return true;
             }
 
             staffRidesFixed = AddClamp(staffRidesFixed, 1u);
-            WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
 
-            orientation = PeepDirection << 3;
-            Action = PeepActionType::staffAnswerCall2;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
+            orientation = peepDirection << 3;
+            action = PeepActionType::staffAnswerCall2;
+            animationFrameNum = 0;
+            animationImageIdOffset = 0;
 
-            UpdateCurrentAnimationType();
+            updateCurrentAnimationType();
         }
 
-        if (!IsActionWalking())
+        if (!isActionWalking())
         {
-            UpdateAction();
+            updateAction();
             invalidate();
             return false;
         }
@@ -2589,31 +2589,31 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            auto exitPosition = ride.getStation(CurrentRideStation).Exit.ToCoordsXY();
+            auto exitPosition = ride.getStation(currentRideStation).Exit.ToCoordsXY();
             if (exitPosition.IsNull())
             {
-                exitPosition = ride.getStation(CurrentRideStation).Entrance.ToCoordsXY();
+                exitPosition = ride.getStation(currentRideStation).Entrance.ToCoordsXY();
 
                 if (exitPosition.IsNull())
                 {
-                    SetState(PeepState::falling);
+                    setState(PeepState::falling);
                     return false;
                 }
             }
 
             exitPosition = exitPosition.ToTileCentre();
 
-            CoordsXY ebx_direction = DirectionOffsets[PeepDirection];
+            CoordsXY ebx_direction = DirectionOffsets[peepDirection];
             exitPosition.x -= ebx_direction.x * 19;
             exitPosition.y -= ebx_direction.y * 19;
 
-            SetDestination(exitPosition, 2);
+            setDestination(exitPosition, 2);
         }
 
         int16_t xy_distance;
-        if (auto loc = UpdateAction(xy_distance); loc.has_value())
+        if (auto loc = updateAction(xy_distance); loc.has_value())
         {
-            auto stationHeight = ride.getStation(CurrentRideStation).GetBaseZ();
+            auto stationHeight = ride.getStation(currentRideStation).GetBaseZ();
             if (xy_distance >= 16)
             {
                 stationHeight += ride.getRideTypeDescriptor().Heights.PlatformHeight;
@@ -2622,7 +2622,7 @@ namespace OpenRCT2
             moveTo({ loc.value(), stationHeight });
             return false;
         }
-        SetState(PeepState::falling);
+        setState(PeepState::falling);
         return false;
     }
 

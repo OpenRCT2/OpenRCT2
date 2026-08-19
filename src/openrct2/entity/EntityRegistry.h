@@ -18,6 +18,8 @@
 #include <string>
 #include <vector>
 
+struct CoordsXY;
+
 namespace OpenRCT2
 {
     constexpr uint16_t kMaxEntities = 65535;
@@ -113,7 +115,7 @@ namespace OpenRCT2
         template<typename T>
         T* CreateEntity()
         {
-            return static_cast<T*>(CreateEntity(T::cEntityType));
+            return static_cast<T*>(CreateEntity(T::kEntityType));
         }
 
         // Use only with imports that must happen at a specified index
@@ -122,7 +124,7 @@ namespace OpenRCT2
         template<typename T>
         T* CreateEntityAt(EntityId index)
         {
-            return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
+            return static_cast<T*>(CreateEntityAt(index, T::kEntityType));
         }
 
         const std::list<EntityId>& GetEntityList(EntityType id);
@@ -157,7 +159,7 @@ namespace OpenRCT2
         {
             for (auto misc : EntityList<T>())
             {
-                misc->Update();
+                misc->update();
             }
         }
 

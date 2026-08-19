@@ -10,7 +10,7 @@
 #include "Rectangle.h"
 
 #include "../interface/ColourWithFlags.h"
-#include "../world/Location.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "ColourMap.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"

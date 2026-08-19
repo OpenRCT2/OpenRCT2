@@ -10,9 +10,13 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "Location.hpp"
 
 #include <vector>
+
+using Direction = uint8_t;
+struct CoordsXY;
+struct CoordsXYZ;
+struct MapRange;
 
 enum class MapSelectFlag : uint8_t
 {
