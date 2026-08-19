@@ -198,6 +198,7 @@
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Compression.h" />
     <ClInclude Include="core\Console.hpp" />
+    <ClInclude Include="core\CoordsRange.h" />
     <ClInclude Include="core\Crypt.h" />
     <ClInclude Include="core\DataSerialiser.h" />
     <ClInclude Include="core\DataSerialiserTag.h" />
@@ -301,6 +302,7 @@
     <ClInclude Include="interface\FontFamilies.h" />
     <ClInclude Include="interface\Fonts.h" />
     <ClInclude Include="interface\InteractiveConsole.h" />
+    <ClInclude Include="interface\ScreenCoords.hpp" />
     <ClInclude Include="interface\Screenshot.h" />
     <ClInclude Include="interface\ScrollArea.h" />
     <ClInclude Include="interface\Viewport.h" />

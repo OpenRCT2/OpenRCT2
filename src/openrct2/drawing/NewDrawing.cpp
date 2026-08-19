@@ -11,10 +11,10 @@
 
 #include "../Context.h"
 #include "../drawing/Drawing.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../interface/Screenshot.h"
 #include "../platform/Platform.h"
 #include "../ui/UiContext.h"
-#include "../world/Location.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "RenderTarget.h"

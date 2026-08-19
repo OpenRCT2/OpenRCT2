@@ -14,6 +14,7 @@
     #include "../../../entity/Balloon.h"
     #include "../../../entity/Duck.h"
     #include "../../../entity/EntityList.h"
+    #include "../../../entity/JumpingFountain.h"
     #include "../../../entity/MoneyEffect.h"
     #include "../../../entity/Particle.h"
     #include "../../../entity/Staff.h"

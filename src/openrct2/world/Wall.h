@@ -9,7 +9,11 @@
 
 #pragma once
 
-#include "Location.hpp"
+#include <cstdint>
+
+using Direction = uint8_t;
+struct CoordsXYRangedZ;
+struct CoordsXYZ;
 
 enum EDGE_SLOPE
 {

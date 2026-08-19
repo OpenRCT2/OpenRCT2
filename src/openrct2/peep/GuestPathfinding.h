@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../world/Location.hpp"
+
+using Direction = uint8_t;
+struct TileCoordsXYZ;
 
 namespace OpenRCT2
 {

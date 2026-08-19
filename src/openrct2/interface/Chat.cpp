@@ -20,10 +20,10 @@
 #include "../drawing/Rectangle.h"
 #include "../drawing/Text.h"
 #include "../interface/ColourWithFlags.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Formatting.h"
 #include "../network/Network.h"
 #include "../platform/Platform.h"
-#include "../world/Location.hpp"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;

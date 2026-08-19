@@ -14,7 +14,7 @@
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
-#include "../world/Location.hpp"
+#include "../interface/ScreenCoords.hpp"
 
 namespace OpenRCT2
 {

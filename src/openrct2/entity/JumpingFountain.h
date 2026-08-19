@@ -12,6 +12,8 @@
 #include "../core/FlagHolder.hpp"
 #include "EntityBase.h"
 
+struct CoordsXY;
+
 namespace OpenRCT2
 {
     class DataSerialiser;
