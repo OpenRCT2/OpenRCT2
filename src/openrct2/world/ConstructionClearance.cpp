@@ -45,15 +45,18 @@ static bool MapPlaceClearFunc(
 
     // It’s possible that there is a tree or something like that on ground we only own construction rights for.
     // In this case, make sure it doesn’t get autoremoved.
-    const auto* surfaceElement = MapGetSurfaceElementAt(coords);
-    if (surfaceElement != nullptr)
+    if (!getGameState().cheats.sandboxMode)
     {
-        if (surfaceElement->asSurface()->hasOwnership(OwnershipFlag::constructionRightsOwned))
+        const auto* surfaceElement = MapGetSurfaceElementAt(coords);
+        if (surfaceElement != nullptr)
         {
-            auto surfaceZ = surfaceElement->getBaseZ();
-            auto sceneryZ = smallSceneryElement.getBaseZ();
-            if (sceneryZ >= surfaceZ && sceneryZ < (surfaceZ + kConstructionRightsClearanceBig))
-                return false;
+            if (surfaceElement->asSurface()->hasOwnership(OwnershipFlag::constructionRightsOwned))
+            {
+                auto surfaceZ = surfaceElement->getBaseZ();
+                auto sceneryZ = smallSceneryElement.getBaseZ();
+                if (sceneryZ >= surfaceZ && sceneryZ < (surfaceZ + kConstructionRightsClearanceBig))
+                    return false;
+            }
         }
     }
 
