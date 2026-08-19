@@ -607,7 +607,10 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::objectLoadError);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::objectLoadError, kWindowSize, {});
+            // The ‘stick to front’ flag is needed because ‘Load game’ also has it set, and not setting it would cause our
+            // window to get displayed _under_ ‘Load game’.
+            window = windowMgr->Create<ObjectLoadErrorWindow>(
+                WindowClass::objectLoadError, kWindowSize, { WindowFlag::stickToFront });
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->initialise(path, numMissingObjects, missingObjects);
