@@ -1001,6 +1001,16 @@ namespace OpenRCT2
             return true;
         }
 
+        void rememberStartUpParkDirectory()
+        {
+            const bool isContinuedSaveGame = gScenarioSavePath == gOpenRCT2StartupActionPath;
+            if (!isContinuedSaveGame || gScenarioSavePath.empty())
+                return;
+
+            Config::Get().general.lastSaveGameDirectory = Path::GetDirectory(Path::GetAbsolute(gScenarioSavePath));
+            Config::Save();
+        }
+
         void SwitchToStartUpScene()
         {
             if (gOpenRCT2Headless)
@@ -1075,6 +1085,8 @@ namespace OpenRCT2
                             nextScene = _sceneManager->getTitleScene();
                             break;
                         }
+
+                        rememberStartUpParkDirectory();
                     }
 
                     // Successfully loaded a file
