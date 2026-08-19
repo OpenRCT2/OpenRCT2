@@ -234,6 +234,11 @@ public:
         return (windowFlags & SDL_WINDOW_INPUT_FOCUS) != 0;
     }
 
+    void requestUserAttention() override
+    {
+        SDL_FlashWindow(_window, SDL_FLASH_UNTIL_FOCUSED);
+    }
+
     bool IsMinimised() override
     {
         uint32_t windowFlags = GetWindowFlags();
