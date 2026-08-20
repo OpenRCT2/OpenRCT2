@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui::Windows
     class EditorStepController final : public Window
     {
     private:
-        using FuncPtr = void (EditorStepController::*)() const;
+        using FuncPtr = void (*)();
 
         static constexpr StringId kEditorStepNames[] = {
             STR_EDITOR_STEP_OBJECT_SELECTION,       // Editor::Step::objectSelection
@@ -148,16 +148,16 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
-                ((this)->*(kPreviousButtonMouseUp[EnumValue(gameState.editorStep)]))();
+                kPreviousButtonMouseUp[EnumValue(gameState.editorStep)]();
             }
             else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
             {
-                ((this)->*(kNextButtonMouseUp[EnumValue(gameState.editorStep)]))();
+                kNextButtonMouseUp[EnumValue(gameState.editorStep)]();
             }
         }
 
     private:
-        void JumpBackToObjectSelection() const
+        static void jumpBackToObjectSelection()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpBackToLandscapeEditor() const
+        static void jumpBackToLandscapeEditor()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -178,7 +178,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpBackToInventionListSetUp() const
+        static void jumpBackToInventionListSetUp()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -188,7 +188,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpBackToObjectiveSelection() const
+        static void jumpBackToObjectiveSelection()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpBackToOptionsSelection() const
+        static void jumpBackToOptionsSelection()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -208,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpForwardFromObjectSelection() const
+        static void jumpForwardFromObjectSelection()
         {
             if (!EditorObjectSelectionWindowCheck())
                 return;
@@ -228,7 +228,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void JumpForwardToInventionListSetUp() const
+        static void jumpForwardToInventionListSetUp()
         {
             auto [checksPassed, errorString] = Editor::CheckPark();
             if (checksPassed)
@@ -246,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpForwardToObjectiveSelection() const
+        static void jumpForwardToObjectiveSelection()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -256,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpForwardToOptionsSelection() const
+        static void jumpForwardToOptionsSelection()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -266,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpForwardToScenarioDetails() const
+        static void jumpForwardToScenarioDetails()
         {
             auto* windowMgr = GetWindowManager();
             windowMgr->CloseAll();
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        static void SaveScenarioCallback(ModalResult result, const utf8* path)
+        static void saveScenarioCallback(ModalResult result, const utf8* path)
         {
             if (result == ModalResult::ok)
             {
@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void JumpForwardToSaveScenario() const
+        static void jumpForwardToSaveScenario()
         {
             auto& gameState = getGameState();
             gameState.editorStep = Editor::Step::saveScenario;
@@ -314,7 +314,7 @@ namespace OpenRCT2::Ui::Windows
             intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
             intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::scenario);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.scenarioOptions.name);
-            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(SaveScenarioCallback));
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(saveScenarioCallback));
             ContextOpenIntent(&intent);
         }
 
@@ -413,23 +413,23 @@ namespace OpenRCT2::Ui::Windows
 
         static constexpr FuncPtr kPreviousButtonMouseUp[] = {
             /* ObjectSelection       */ nullptr,
-            /* LandscapeEditor       */ &EditorStepController::JumpBackToObjectSelection,
-            /* InventionsListSetUp   */ &EditorStepController::JumpBackToLandscapeEditor,
-            /* OptionsSelection      */ &EditorStepController::JumpBackToInventionListSetUp,
-            /* ObjectiveSelection    */ &EditorStepController::JumpBackToOptionsSelection,
-            /* ScenarioDetails       */ &EditorStepController::JumpBackToObjectiveSelection,
+            /* LandscapeEditor       */ &EditorStepController::jumpBackToObjectSelection,
+            /* InventionsListSetUp   */ &EditorStepController::jumpBackToLandscapeEditor,
+            /* OptionsSelection      */ &EditorStepController::jumpBackToInventionListSetUp,
+            /* ObjectiveSelection    */ &EditorStepController::jumpBackToOptionsSelection,
+            /* ScenarioDetails       */ &EditorStepController::jumpBackToObjectiveSelection,
             /* SaveScenario          */ nullptr,
-            /* RollercoasterDesigner */ &EditorStepController::JumpBackToObjectSelection,
+            /* RollercoasterDesigner */ &EditorStepController::jumpBackToObjectSelection,
             /* DesignsManager        */ nullptr,
         };
 
         static constexpr FuncPtr kNextButtonMouseUp[] = {
-            /* ObjectSelection       */ &EditorStepController::JumpForwardFromObjectSelection,
-            /* LandscapeEditor       */ &EditorStepController::JumpForwardToInventionListSetUp,
-            /* InventionsListSetUp   */ &EditorStepController::JumpForwardToOptionsSelection,
-            /* OptionsSelection      */ &EditorStepController::JumpForwardToObjectiveSelection,
-            /* ObjectiveSelection    */ &EditorStepController::JumpForwardToScenarioDetails,
-            /* ScenarioDetails       */ &EditorStepController::JumpForwardToSaveScenario,
+            /* ObjectSelection       */ &EditorStepController::jumpForwardFromObjectSelection,
+            /* LandscapeEditor       */ &EditorStepController::jumpForwardToInventionListSetUp,
+            /* InventionsListSetUp   */ &EditorStepController::jumpForwardToOptionsSelection,
+            /* OptionsSelection      */ &EditorStepController::jumpForwardToObjectiveSelection,
+            /* ObjectiveSelection    */ &EditorStepController::jumpForwardToScenarioDetails,
+            /* ScenarioDetails       */ &EditorStepController::jumpForwardToSaveScenario,
             /* SaveScenario          */ nullptr,
             /* RollercoasterDesigner */ nullptr,
             /* DesignsManager        */ nullptr,
