@@ -162,6 +162,8 @@ public:
                 return AssetPacksOpen();
             case WindowClass::editorParkEntrance:
                 return EditorParkEntranceOpen();
+            case WindowClass::editorStepController:
+                return editorStepControllerOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -192,8 +194,6 @@ public:
                 return MazeConstructionOpen();
             case WindowView::networkPassword:
                 return NetworkStatusOpenPassword();
-            case WindowView::editorBottomToolbar:
-                return EditorBottomToolbarOpen();
             case WindowView::changelog:
                 return ChangelogOpen(WindowView::changelog);
             case WindowView::newVersionInfo:

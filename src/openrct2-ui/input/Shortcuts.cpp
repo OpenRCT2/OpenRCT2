@@ -184,7 +184,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
         else
         {
             ContextOpenWindow(WindowClass::topToolbar);
-            ContextOpenWindowView(WindowView::editorBottomToolbar);
+            ContextOpenWindow(WindowClass::editorStepController);
         }
     }
     GfxInvalidateScreen();

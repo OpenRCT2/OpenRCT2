@@ -35,7 +35,6 @@ namespace OpenRCT2
         rideResearch,
         mazeConstruction,
         networkPassword,
-        editorBottomToolbar,
         changelog,
         newVersionInfo,
         financeMarketing,

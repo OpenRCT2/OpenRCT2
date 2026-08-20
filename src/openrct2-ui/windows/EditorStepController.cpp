@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
-
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -36,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t kToolbarHeight = 32;
 
-    enum WindowEditorBottomToolbarWidgetIdx : WidgetIndex
+    enum EditorStepControllerWidgetIdx : WidgetIndex
     {
         WIDX_PREVIOUS_IMAGE,       // 1
         WIDX_PREVIOUS_STEP_BUTTON, // 2
@@ -45,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget kEditorBottomToolbarWidgets[] = {
+    static constexpr Widget kEditorStepControllerWidgets[] = {
         makeWidget({  0, 0}, {200, 34}, WidgetType::imgBtn,  WindowColour::primary),
         makeWidget({  2, 2}, {196, 30}, WidgetType::flatBtn, WindowColour::primary),
         makeWidget({440, 0}, {200, 34}, WidgetType::imgBtn,  WindowColour::primary),
@@ -53,10 +52,10 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    class EditorBottomToolbarWindow final : public Window
+    class EditorStepController final : public Window
     {
     private:
-        using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
+        using FuncPtr = void (EditorStepController::*)() const;
 
         static constexpr StringId kEditorStepNames[] = {
             STR_EDITOR_STEP_OBJECT_SELECTION,       // Editor::Step::objectSelection
@@ -73,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            setWidgets(kEditorBottomToolbarWidgets);
+            setWidgets(kEditorStepControllerWidgets);
 
             initScrollWidgets();
             SetAllSceneryItemsInvented();
@@ -426,23 +425,23 @@ namespace OpenRCT2::Ui::Windows
 
         static constexpr FuncPtr kPreviousButtonMouseUp[] = {
             /* ObjectSelection       */ nullptr,
-            /* LandscapeEditor       */ &EditorBottomToolbarWindow::JumpBackToObjectSelection,
-            /* InventionsListSetUp   */ &EditorBottomToolbarWindow::JumpBackToLandscapeEditor,
-            /* OptionsSelection      */ &EditorBottomToolbarWindow::JumpBackToInventionListSetUp,
-            /* ObjectiveSelection    */ &EditorBottomToolbarWindow::JumpBackToOptionsSelection,
-            /* ScenarioDetails       */ &EditorBottomToolbarWindow::JumpBackToObjectiveSelection,
+            /* LandscapeEditor       */ &EditorStepController::JumpBackToObjectSelection,
+            /* InventionsListSetUp   */ &EditorStepController::JumpBackToLandscapeEditor,
+            /* OptionsSelection      */ &EditorStepController::JumpBackToInventionListSetUp,
+            /* ObjectiveSelection    */ &EditorStepController::JumpBackToOptionsSelection,
+            /* ScenarioDetails       */ &EditorStepController::JumpBackToObjectiveSelection,
             /* SaveScenario          */ nullptr,
-            /* RollercoasterDesigner */ &EditorBottomToolbarWindow::JumpBackToObjectSelection,
+            /* RollercoasterDesigner */ &EditorStepController::JumpBackToObjectSelection,
             /* DesignsManager        */ nullptr,
         };
 
         static constexpr FuncPtr kNextButtonMouseUp[] = {
-            /* ObjectSelection       */ &EditorBottomToolbarWindow::JumpForwardFromObjectSelection,
-            /* LandscapeEditor       */ &EditorBottomToolbarWindow::JumpForwardToInventionListSetUp,
-            /* InventionsListSetUp   */ &EditorBottomToolbarWindow::JumpForwardToOptionsSelection,
-            /* OptionsSelection      */ &EditorBottomToolbarWindow::JumpForwardToObjectiveSelection,
-            /* ObjectiveSelection    */ &EditorBottomToolbarWindow::JumpForwardToScenarioDetails,
-            /* ScenarioDetails       */ &EditorBottomToolbarWindow::JumpForwardToSaveScenario,
+            /* ObjectSelection       */ &EditorStepController::JumpForwardFromObjectSelection,
+            /* LandscapeEditor       */ &EditorStepController::JumpForwardToInventionListSetUp,
+            /* InventionsListSetUp   */ &EditorStepController::JumpForwardToOptionsSelection,
+            /* OptionsSelection      */ &EditorStepController::JumpForwardToObjectiveSelection,
+            /* ObjectiveSelection    */ &EditorStepController::JumpForwardToScenarioDetails,
+            /* ScenarioDetails       */ &EditorStepController::JumpForwardToSaveScenario,
             /* SaveScenario          */ nullptr,
             /* RollercoasterDesigner */ nullptr,
             /* DesignsManager        */ nullptr,
@@ -450,14 +449,14 @@ namespace OpenRCT2::Ui::Windows
     };
 
     /**
-     * Creates the main editor top toolbar window.
+     * Creates the main editor bottom toolbar window.
      * rct2: 0x0066F052 (part of 0x0066EF38)
      */
-    WindowBase* EditorBottomToolbarOpen()
+    WindowBase* editorStepControllerOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
-            WindowClass::bottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - kToolbarHeight),
+        auto* window = windowMgr->Create<EditorStepController>(
+            WindowClass::editorStepController, ScreenCoordsXY(0, ContextGetHeight() - kToolbarHeight),
             { ContextGetWidth(), kToolbarHeight },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
