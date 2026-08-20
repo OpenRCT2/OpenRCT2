@@ -33,24 +33,26 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t kToolbarHeight = 32;
+    static constexpr ScreenSize kWindowSize = { 200, 32 };
 
     enum EditorStepControllerWidgetIdx : WidgetIndex
     {
-        WIDX_PREVIOUS_IMAGE,       // 1
-        WIDX_PREVIOUS_STEP_BUTTON, // 2
-        WIDX_NEXT_IMAGE,           // 4
-        WIDX_NEXT_STEP_BUTTON,     // 8
+        WIDX_IMAGE,
+        WIDX_STEP_BUTTON,
     };
 
     // clang-format off
     static constexpr Widget kEditorStepControllerWidgets[] = {
         makeWidget({  0, 0}, {200, 34}, WidgetType::imgBtn,  WindowColour::primary),
         makeWidget({  2, 2}, {196, 30}, WidgetType::flatBtn, WindowColour::primary),
-        makeWidget({440, 0}, {200, 34}, WidgetType::imgBtn,  WindowColour::primary),
-        makeWidget({442, 2}, {196, 30}, WidgetType::flatBtn, WindowColour::primary),
     };
     // clang-format on
+
+    enum class StepDirection : uint8_t
+    {
+        previous,
+        next,
+    };
 
     class EditorStepController final : public Window
     {
@@ -70,6 +72,8 @@ namespace OpenRCT2::Ui::Windows
         };
 
     public:
+        StepDirection direction;
+
         void onOpen() override
         {
             setWidgets(kEditorStepControllerWidgets);
@@ -92,65 +96,44 @@ namespace OpenRCT2::Ui::Windows
                 gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::editorScenarioBottomToolbar
                                                             : WindowClass::editorTrackBottomToolbar);
 
-            uint16_t screenWidth = ContextGetWidth();
-            widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
-            widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
-            widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
-            widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
-
-            widgets[WIDX_PREVIOUS_STEP_BUTTON].setHidden(false);
-            widgets[WIDX_NEXT_STEP_BUTTON].setHidden(false);
-            widgets[WIDX_PREVIOUS_IMAGE].setHidden(false);
-            widgets[WIDX_NEXT_IMAGE].setHidden(false);
-
             auto& gameState = getGameState();
-            if (gLegacyScene == LegacyScene::trackDesignsManager || gameState.editorStep == Editor::Step::saveScenario)
-            {
-                HidePreviousStepButton();
-                HideNextStepButton();
-            }
-            else
+            bool stepVisible = !(
+                gLegacyScene == LegacyScene::trackDesignsManager || gameState.editorStep == Editor::Step::saveScenario);
+            if (stepVisible)
             {
                 if (gameState.editorStep == Editor::Step::objectSelection
                     || (GameHasEntities() && gameState.editorStep == Editor::Step::optionsSelection))
                 {
-                    HidePreviousStepButton();
+                    stepVisible = direction == StepDirection::next;
                 }
                 else if (gameState.editorStep == Editor::Step::rollerCoasterDesigner)
                 {
-                    HideNextStepButton();
+                    stepVisible = direction == StepDirection::previous;
                 }
             }
+
+            widgets[WIDX_STEP_BUTTON].setVisible(stepVisible);
+            widgets[WIDX_IMAGE].setVisible(stepVisible);
         }
 
         void onDraw(RenderTarget& rt) override
         {
-            auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].isVisible();
-            auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].isVisible();
+            if (!widgets[WIDX_STEP_BUTTON].isVisible())
+                return;
 
-            if (drawPreviousButton)
-                DrawLeftButtonBack(rt);
-
-            if (drawNextButton)
-                DrawRightButtonBack(rt);
-
+            drawButtonBackground(rt);
             drawWidgets(rt);
-
-            if (drawPreviousButton)
-                DrawLeftButton(rt);
-
-            if (drawNextButton)
-                DrawRightButton(rt);
+            drawButtonCaption(rt);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
         {
             auto& gameState = getGameState();
-            if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
+            if (direction == StepDirection::previous)
             {
                 kPreviousButtonMouseUp[EnumValue(gameState.editorStep)]();
             }
-            else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
+            else if (direction == StepDirection::next)
             {
                 kNextButtonMouseUp[EnumValue(gameState.editorStep)]();
             }
@@ -318,97 +301,59 @@ namespace OpenRCT2::Ui::Windows
             ContextOpenIntent(&intent);
         }
 
-        void HidePreviousStepButton()
+        void drawButtonBackground(RenderTarget& rt)
         {
-            widgets[WIDX_PREVIOUS_STEP_BUTTON].setHidden(true);
-            widgets[WIDX_PREVIOUS_IMAGE].setHidden(true);
-        }
-
-        void HideNextStepButton()
-        {
-            widgets[WIDX_NEXT_STEP_BUTTON].setHidden(true);
-            widgets[WIDX_NEXT_IMAGE].setHidden(true);
-        }
-
-        void DrawLeftButtonBack(RenderTarget& rt)
-        {
-            const auto& previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
-            auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
-            auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
+            const auto& widget = widgets[WIDX_IMAGE];
+            auto leftTop = windowPos + ScreenCoordsXY{ widget.left, widget.top };
+            auto rightBottom = windowPos + ScreenCoordsXY{ widget.right, widget.bottom };
             Rectangle::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
         }
 
-        void DrawLeftButton(RenderTarget& rt)
+        struct StepFrame
         {
-            const auto topLeft = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
+            StringId label;
+            uint32_t image;
+            ScreenCoordsXY labelOffset;
+            ScreenCoordsXY imageOffset;
+        };
+
+        static constexpr std::array kStepFrames = std::to_array<StepFrame>({
+            { STR_BACK_TO_PREVIOUS_STEP, SPR_PREVIOUS, { (kWindowSize.width + 30) / 2, 6 }, { 6, 6 } },
+            { STR_FORWARD_TO_NEXT_STEP, SPR_NEXT, { (kWindowSize.width - 31) / 2, 6 }, { kWindowSize.width - 29, 6 } },
+        });
+
+        void drawButtonCaption(RenderTarget& rt)
+        {
+            const auto topLeft = windowPos + ScreenCoordsXY{ widgets[WIDX_IMAGE].left + 1, widgets[WIDX_IMAGE].top + 1 };
             const auto bottomRight = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
+                + ScreenCoordsXY{ widgets[WIDX_IMAGE].right - 1, widgets[WIDX_IMAGE].bottom - 1 };
             Rectangle::fillInset(
                 rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
                 Rectangle::FillMode::none);
 
-            GfxDrawSprite(
-                rt, ImageId(SPR_PREVIOUS),
-                windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
+            const bool isPrevious = direction == StepDirection::previous;
+            const auto& layout = isPrevious ? kStepFrames[0] : kStepFrames[1];
+
+            GfxDrawSprite(rt, ImageId(layout.image), windowPos + layout.imageOffset);
 
             Drawing::Colour textColour = colours[1].colour;
-            if (gHoverWidget.windowClassification == WindowClass::bottomToolbar
-                && gHoverWidget.widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
+            if (widgetIsHighlighted(*this, WIDX_STEP_BUTTON))
             {
                 textColour = Drawing::Colour::white;
             }
 
-            int16_t textX = (widgets[WIDX_PREVIOUS_IMAGE].left + 30 + widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + windowPos.x;
-            int16_t textY = widgets[WIDX_PREVIOUS_IMAGE].top + 6 + windowPos.y;
+            drawText(rt, windowPos + layout.labelOffset, layout.label, { textColour, TextAlignment::centre });
 
-            StringId stringId = kEditorStepNames[EnumValue(getGameState().editorStep) - 1];
-            if (gLegacyScene == LegacyScene::trackDesigner)
+            auto step = EnumValue(getGameState().editorStep) + (isPrevious ? -1 : 1);
+            auto stringId = kEditorStepNames[step];
+
+            if (isPrevious && gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
-
-            drawText(rt, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, { textColour, TextAlignment::centre });
-            drawText(rt, { textX, textY + 10 }, stringId, { textColour, TextAlignment::centre });
-        }
-
-        void DrawRightButtonBack(RenderTarget& rt)
-        {
-            auto nextWidget = widgets[WIDX_NEXT_IMAGE];
-            auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
-            auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-            Rectangle::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
-        }
-
-        void DrawRightButton(RenderTarget& rt)
-        {
-            const auto topLeft = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
-            const auto bottomRight = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-            Rectangle::fillInset(
-                rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
-                Rectangle::FillMode::none);
-
-            GfxDrawSprite(
-                rt, ImageId(SPR_NEXT),
-                windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
-
-            Drawing::Colour textColour = colours[1].colour;
-
-            if (gHoverWidget.windowClassification == WindowClass::bottomToolbar
-                && gHoverWidget.widgetIndex == WIDX_NEXT_STEP_BUTTON)
-            {
-                textColour = Drawing::Colour::white;
-            }
-
-            int16_t textX = (widgets[WIDX_NEXT_IMAGE].left + widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + windowPos.x;
-            int16_t textY = widgets[WIDX_NEXT_IMAGE].top + 6 + windowPos.y;
-
-            StringId stringId = kEditorStepNames[EnumValue(getGameState().editorStep) + 1];
-            if (gLegacyScene == LegacyScene::trackDesigner)
+            else if (!isPrevious && gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
-            drawText(rt, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, { textColour, TextAlignment::centre });
-            drawText(rt, { textX, textY + 10 }, stringId, { textColour, TextAlignment::centre });
+            drawText(
+                rt, windowPos + layout.labelOffset + ScreenCoordsXY{ 0, 10 }, stringId, { textColour, TextAlignment::centre });
         }
 
         static constexpr FuncPtr kPreviousButtonMouseUp[] = {
@@ -442,11 +387,20 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* editorStepControllerOpen()
     {
+        auto direction = StepDirection::previous;
         auto* windowMgr = GetWindowManager();
+        if (windowMgr->FindByNumber(WindowClass::editorStepController, 0) != nullptr)
+        {
+            direction = StepDirection::next;
+        }
+
+        auto xPos = direction == StepDirection::previous ? 0 : ContextGetWidth() - kWindowSize.width;
         auto* window = windowMgr->Create<EditorStepController>(
-            WindowClass::editorStepController, ScreenCoordsXY(0, ContextGetHeight() - kToolbarHeight),
-            { ContextGetWidth(), kToolbarHeight },
+            WindowClass::editorStepController, ScreenCoordsXY(xPos, ContextGetHeight() - kWindowSize.height), kWindowSize,
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
+
+        window->direction = direction;
+        window->number = EnumValue(direction);
 
         return window;
     }
