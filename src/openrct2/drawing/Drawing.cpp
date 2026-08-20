@@ -503,6 +503,24 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
     kWindowPaletteDarkBrown,              // Colour::beige
     { FilterPaletteID::paletteDarken1,           FilterPaletteID::paletteDarken1,      FilterPaletteID::paletteDarken1 },
     { FilterPaletteID::paletteDarken2,           FilterPaletteID::paletteDarken2,      FilterPaletteID::paletteDarken2 },
+    kWindowPaletteYellow,                 // Colour::gold
+    kWindowPaletteLightOrange,            // Colour::amber
+    kWindowPaletteBrightPurple,           // Colour::amethyst
+    kWindowPaletteOliveGreen,             // Colour::asparagus
+    kWindowPaletteDarkBrown,              // Colour::brown
+    kWindowPaletteBrightPink,             // Colour::burntPink
+    kWindowPaletteMossGreen,              // Colour::cactus
+    kWindowPaletteLightBrown,             // Colour::caramel
+    kWindowPaletteSalmonPink,             // Colour::copper
+    kWindowPaletteBordeauxRed,            // Colour::crimson
+    kWindowPaletteTeal,                   // Colour::darkerWater
+    kWindowPaletteBrightGreen,            // Colour::emerald
+    kWindowPaletteLightPurple,            // Colour::indigo
+    kWindowPaletteDarkOliveGreen,         // Colour::pesto
+    kWindowPaletteDarkGreen,              // Colour::pineGreen
+    kWindowPaletteBrightRed,              // Colour::ruby
+    kWindowPaletteLightBlue,              // Colour::sapphire
+    kWindowPaletteGrey,                   // Colour::silver
 };
 // clang-format on
 
