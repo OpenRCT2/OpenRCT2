@@ -557,6 +557,11 @@ namespace OpenRCT2::Scripting
         }
 
     private:
+        static bool isImageButton(WidgetType type)
+        {
+            return type == WidgetType::flatBtn || type == WidgetType::imgBtn || type == WidgetType::hiddenButton;
+        }
+
         static JSValue border_get(JSContext* ctx, JSValue thisVal)
         {
             auto widget = GetWidget(thisVal);
@@ -571,12 +576,10 @@ namespace OpenRCT2::Scripting
             JS_UNPACK_BOOL(valueBool, ctx, value);
 
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
+            if (widget != nullptr && isImageButton(widget->type))
             {
-                if (valueBool)
-                    widget->type = WidgetType::imgBtn;
-                else
-                    widget->type = WidgetType::flatBtn;
+                // hiddenButton rather than flatBtn, so that themes do not draw a border anyway.
+                widget->type = valueBool ? WidgetType::imgBtn : WidgetType::hiddenButton;
                 Invalidate(thisVal);
             }
             return JS_UNDEFINED;
@@ -610,7 +613,7 @@ namespace OpenRCT2::Scripting
         static JSValue image_get(JSContext* ctx, JSValue thisVal)
         {
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
+            if (widget != nullptr && isImageButton(widget->type))
             {
                 if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
                 {
@@ -624,7 +627,7 @@ namespace OpenRCT2::Scripting
         static JSValue image_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
+            if (widget != nullptr && isImageButton(widget->type))
             {
                 widget->image = ImageId(ImageFromJSValue(ctx, value));
                 Invalidate(thisVal);
@@ -1145,6 +1148,7 @@ namespace OpenRCT2::Scripting
             case WidgetType::button:
             case WidgetType::flatBtn:
             case WidgetType::imgBtn:
+            case WidgetType::hiddenButton:
                 ScButtonWidget::AddFuncs(ctx, newObj);
                 break;
             case WidgetType::checkbox:
