@@ -141,8 +141,6 @@ namespace OpenRCT2::Ui::Windows
 
             if (drawNextButton)
                 DrawRightButton(rt);
-
-            DrawStepText(rt);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -411,16 +409,6 @@ namespace OpenRCT2::Ui::Windows
 
             drawText(rt, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, { textColour, TextAlignment::centre });
             drawText(rt, { textX, textY + 10 }, stringId, { textColour, TextAlignment::centre });
-        }
-
-        void DrawStepText(RenderTarget& rt)
-        {
-            int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
-            int16_t stateY = height - 0x0C + windowPos.y;
-            auto colour = colours[2].withFlag(ColourFlag::translucent, false).withFlag(ColourFlag::withOutline, true);
-            drawText(
-                rt, { stateX, stateY }, kEditorStepNames[EnumValue(getGameState().editorStep)],
-                { colour, TextAlignment::centre });
         }
 
         static constexpr FuncPtr kPreviousButtonMouseUp[] = {

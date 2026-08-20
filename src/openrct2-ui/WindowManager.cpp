@@ -164,6 +164,8 @@ public:
                 return EditorParkEntranceOpen();
             case WindowClass::editorStepController:
                 return editorStepControllerOpen();
+            case WindowClass::editorStatusLine:
+                return editorStatusLineOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;

@@ -104,6 +104,9 @@ namespace OpenRCT2::Ui::Windows
     // EditorScenarioOptions
     WindowBase* EditorScenarioOptionsOpen();
 
+    // EditorStatusLine
+    WindowBase* editorStatusLineOpen();
+
     // EditorStepController
     WindowBase* editorStepControllerOpen();
 
