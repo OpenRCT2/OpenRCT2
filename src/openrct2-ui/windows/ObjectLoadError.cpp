@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <chrono>
 #include <mutex>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -68,6 +69,7 @@ namespace OpenRCT2::Ui::Windows
         std::mutex _downloadedEntriesMutex;
         std::mutex _queueMutex;
         bool _nextDownloadQueued{};
+        std::vector<std::shared_future<void>> _pendingRequests; // Store futures to prevent blocking destructors
 
         DownloadStatusInfo _lastDownloadStatusInfo;
         DownloadStatusInfo _downloadStatusInfo;
@@ -80,6 +82,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void Begin(const std::vector<ObjectEntryDescriptor>& entries)
         {
+            _pendingRequests.clear();
             _lastDownloadStatusInfo = {};
             _downloadStatusInfo = {};
             _lastDownloadSource = {};
@@ -102,6 +105,10 @@ namespace OpenRCT2::Ui::Windows
 
         void Update()
         {
+            std::erase_if(_pendingRequests, [](const std::shared_future<void>& f) {
+                return f.wait_for(std::chrono::seconds::zero()) == std::future_status::ready;
+            });
+
             std::lock_guard guard(_queueMutex);
             if (_nextDownloadQueued)
             {
@@ -169,11 +176,10 @@ namespace OpenRCT2::Ui::Windows
         {
             try
             {
-                Console::WriteLine("Downloading %s", url.c_str());
                 Http::Request req;
                 req.method = Http::Method::get;
                 req.url = url;
-                Http::DoAsync(req, [this, entry, name](Http::Response response) {
+                _pendingRequests.push_back(Http::DoAsync(req, [this, entry, name](Http::Response response) {
                     if (response.status == Http::Status::ok)
                     {
                         // Check that download operation hasn't been cancelled
@@ -194,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
                         Console::Error::WriteLine("  Failed to download %s", name.c_str());
                     }
                     QueueNextDownload();
-                });
+                }));
             }
             catch (const std::exception&)
             {
@@ -223,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
                 Http::Request req;
                 req.method = Http::Method::get;
                 req.url = kOpenRCT2ApiLegacyObjectURL + name;
-                Http::DoAsync(req, [this, entry, name](Http::Response response) {
+                _pendingRequests.push_back(Http::DoAsync(req, [this, entry, name](Http::Response response) {
                     if (response.status == Http::Status::ok)
                     {
                         auto jresponse = Json::FromString(response.body);
@@ -251,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
                             "  %s query failed (status %d)", name.c_str(), static_cast<int32_t>(response.status));
                         QueueNextDownload();
                     }
-                });
+                }));
             }
             catch (const std::exception&)
             {
