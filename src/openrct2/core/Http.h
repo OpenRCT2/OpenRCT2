@@ -53,7 +53,7 @@ namespace OpenRCT2::Http
 
     Response Do(const Request& req);
 
-    inline auto DoAsync(const Request& req, std::function<void(Response& res)> fn)
+    [[nodiscard]] inline auto DoAsync(const Request& req, std::function<void(Response& res)> fn)
     {
         return std::async(std::launch::async, [=]() {
             Response res{};
