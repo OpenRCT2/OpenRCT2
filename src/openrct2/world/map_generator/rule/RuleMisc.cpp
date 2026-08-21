@@ -142,20 +142,20 @@ namespace OpenRCT2::World::MapGenerator::Rule
         SceneryPresetItem{ "rct2.scenery_small.tsh4", 1 }, SceneryPresetItem{ "rct2.scenery_small.tsh5", 1 },
     };
 
-    constexpr SceneryPresetItem kWaterfallNw[] = {
-        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 3, Wall },
-    };
-
     constexpr SceneryPresetItem kWaterfallNe[] = {
-        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 0, Wall },
+        SceneryPresetItem{ "official.scenery_wall.wallwf16", 1, std::nullopt, 0, Wall },
     };
 
     constexpr SceneryPresetItem kWaterfallSe[] = {
-        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 1, Wall },
+        SceneryPresetItem{ "official.scenery_wall.wallwf16", 1, std::nullopt, 1, Wall },
     };
 
     constexpr SceneryPresetItem kWaterfallSw[] = {
-        SceneryPresetItem{ "rct2.scenery_wall.wallwf16", 1, std::nullopt, 2, Wall },
+        SceneryPresetItem{ "official.scenery_wall.wallwf16", 1, std::nullopt, 2, Wall },
+    };
+
+    constexpr SceneryPresetItem kWaterfallNw[] = {
+        SceneryPresetItem{ "official.scenery_wall.wallwf16", 1, std::nullopt, 3, Wall },
     };
 
     static std::optional<ObjectEntryIndex> lookupObjectEntryIdxByIdentifier(const std::string_view identifier)
