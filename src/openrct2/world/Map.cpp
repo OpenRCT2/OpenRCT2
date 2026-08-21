@@ -697,7 +697,7 @@ namespace OpenRCT2
             return 0;
         }
 
-        return surfaceElement->GetSlope();
+        return surfaceElement->getSlope();
     }
 
     /**

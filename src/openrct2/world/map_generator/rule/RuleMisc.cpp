@@ -12,6 +12,7 @@
 #include "../../../Context.h"
 #include "../../../GameState.h"
 #include "../../../localisation/Formatting.h"
+#include "../../../localisation/StringIds.h"
 #include "../../../object/ObjectEntryManager.h"
 #include "../../../object/ObjectManager.h"
 #include "../../Map.h"

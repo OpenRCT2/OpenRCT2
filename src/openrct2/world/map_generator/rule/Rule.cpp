@@ -639,7 +639,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         }
 
         const int32_t baseHeight = surfaceElement->baseHeight;
-        const int32_t waterHeight = surfaceElement->GetWaterHeight() / kCoordsZStep;
+        const int32_t waterHeight = surfaceElement->getWaterHeight() / kCoordsZStep;
         const int32_t clearanceHeight = surfaceElement->clearanceHeight;
 
         return std::make_optional(
@@ -683,7 +683,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
                 }
 
                 evalCtx.evaluationHeights = getHeightsAt(genCtx, evalCtx.worldCoords);
-                evalCtx.landTexture = surfaceElement->GetSurfaceObjectIndex();
+                evalCtx.landTexture = surfaceElement->getSurfaceObjectIndex();
 
                 auto result = evaluateAtFn(rules, evalCtx);
                 callback(evalCtx.worldCoords, result);

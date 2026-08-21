@@ -15,6 +15,7 @@
 #include "../BaseMap.hpp"
 #include "../Noise.h"
 #include "../SettingsTypes.hpp"
+#include "../../../drawing/Colour.h"
 
 #include <functional>
 #include <optional>

@@ -11,6 +11,8 @@
 
 #include "../../../Context.h"
 #include "../../../object/ObjectManager.h"
+#include "../../../object/TerrainEdgeObject.h"
+#include "../../../object/TerrainSurfaceObject.h"
 #include "../SettingsTypesSerDe.hpp"
 #include "Rule.h"
 

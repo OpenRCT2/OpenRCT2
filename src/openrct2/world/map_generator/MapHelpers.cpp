@@ -82,7 +82,7 @@ namespace OpenRCT2::World::MapGenerator
         int8_t proposedHeight = surfaceElement->baseHeight;
         int8_t proposedSlope = kTileSlopeFlat;
         bool riverTile = isRiverTile(ctx, tileCoords);
-        int8_t tileWaterLevel = static_cast<int8_t>(surfaceElement->GetWaterHeight() / kCoordsZStep);
+        int8_t tileWaterLevel = static_cast<int8_t>(surfaceElement->getWaterHeight() / kCoordsZStep);
         std::optional<MapDirection> doubleCorner = std::nullopt;
 
         // gather neighbour info
@@ -102,8 +102,8 @@ namespace OpenRCT2::World::MapGenerator
             else
             {
                 neighbourHeights.direction[neighbour.direction] = neighbourSurfaceElement->baseHeight;
-                neighbourWaterDeltas.direction[neighbour.direction] = neighbourSurfaceElement->GetWaterHeight()
-                    - surfaceElement->GetWaterHeight();
+                neighbourWaterDeltas.direction[neighbour.direction] = neighbourSurfaceElement->getWaterHeight()
+                    - surfaceElement->getWaterHeight();
                 neighbourIsRiver.direction[neighbour.direction] = isRiverTile(ctx, neighbourPos);
             }
         }
@@ -304,17 +304,17 @@ namespace OpenRCT2::World::MapGenerator
             if (neighbourSurfaceElement != nullptr)
             {
                 neighbourHeightDeltas.direction[neighbour.direction] = neighbourSurfaceElement->baseHeight;
-                neighbourWaterDeltas.direction[neighbour.direction] = neighbourSurfaceElement->GetWaterHeight();
+                neighbourWaterDeltas.direction[neighbour.direction] = neighbourSurfaceElement->getWaterHeight();
             }
             else
             {
                 neighbourHeightDeltas.direction[neighbour.direction] = surfaceElement->baseHeight;
-                neighbourWaterDeltas.direction[neighbour.direction] = surfaceElement->GetWaterHeight();
+                neighbourWaterDeltas.direction[neighbour.direction] = surfaceElement->getWaterHeight();
             }
 
             // Make the height relative to the current surface element
             neighbourHeightDeltas.direction[neighbour.direction] -= surfaceElement->baseHeight;
-            neighbourWaterDeltas.direction[neighbour.direction] -= surfaceElement->GetWaterHeight();
+            neighbourWaterDeltas.direction[neighbour.direction] -= surfaceElement->getWaterHeight();
 
             // Check if this is a river tile
             neighbourIsRiver.direction[neighbour.direction] = isRiverTile(ctx, neighbourCoords);

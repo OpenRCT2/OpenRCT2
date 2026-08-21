@@ -22,6 +22,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/map_generator/rule/Rule.h>
 
@@ -1356,7 +1357,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        StayOpen, itemSize);
+                        {}, itemSize);
                     break;
                 }
                 case WIDX_FEATURE_DROPDOWN:
@@ -1383,7 +1384,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        StayOpen, itemSize);
+                        {}, itemSize);
                     break;
                 }
                 case WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN:
@@ -1431,7 +1432,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        StayOpen, itemSize);
+                        {}, itemSize);
                     break;
                 }
                 case WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN:
@@ -1470,7 +1471,7 @@ namespace OpenRCT2::Ui::Windows
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        StayOpen, itemSize);
+                        {}, itemSize);
                     break;
                 }
                 case WIDX_VALUE_DOWN:

@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/object/StationObject.h"
+
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -19,6 +21,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/ObjectLimits.h>
@@ -319,11 +322,11 @@ namespace OpenRCT2::Ui::Windows
                     switch (colourSlot)
                     {
                         case ColourSlot::Primary:
-                            return wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR;
+                            return wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour);
                         case ColourSlot::Secondary:
-                            return wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR;
+                            return wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour);
                         case ColourSlot::Tertiary:
-                            return wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR;
+                            return wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour);
                     }
                 }
             }
@@ -428,15 +431,15 @@ namespace OpenRCT2::Ui::Windows
 
                     auto imageId = ImageId(wallEntry->image + directionImgOffset);
 
-                    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
                     {
                         imageId = imageId.WithPrimary(colours[0]);
                     }
-                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                     {
                         imageId = imageId.WithSecondary(colours[1]);
                     }
-                    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
                     {
                         imageId = imageId.WithTertiary(colours[2]);
                     }
@@ -451,11 +454,11 @@ namespace OpenRCT2::Ui::Windows
 
                     GfxDrawSprite(rt, imageId, spritePosition);
 
-                    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+                    if (wallEntry->flags.has(WallSceneryFlag::isDoor))
                     {
                         GfxDrawSprite(rt, imageId.WithIndexOffset(1), spritePosition);
                     }
-                    if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasGlass))
                     {
                         auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(colours[1]);
                         GfxDrawSprite(rt, glassImageId, spritePosition);

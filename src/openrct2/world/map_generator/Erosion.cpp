@@ -12,6 +12,7 @@
 #include "../../Context.h"
 #include "../../GameState.h"
 #include "../Vec.hpp"
+#include "../../localisation/StringIds.h"
 
 namespace OpenRCT2::World::MapGenerator
 {

@@ -28,6 +28,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
@@ -503,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1],
-                        Dropdown::Flag::StayOpen, std::size(items));
+                        {}, std::size(items));
 
                     break;
                 }
@@ -683,7 +684,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
-                        Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
+                        {}, std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.noise.algorithm)].setChecked(true);
                     break;
@@ -1087,7 +1088,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        Dropdown::Flag::StayOpen, std::size(items));
+                        {}, std::size(items));
                     break;
                 }
                 case WIDX_RULE_SC_CONDITION_ADD:
@@ -1112,7 +1113,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        Dropdown::Flag::StayOpen, std::size(items));
+                        {}, std::size(items));
 
                     // TODO implement
                     gDropdown.items[4].setDisabled(true);
@@ -1389,15 +1390,15 @@ namespace OpenRCT2::Ui::Windows
 
                     auto imageId = ImageId(wallEntry->image + directionImgOffset);
 
-                    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
                     {
                         imageId = imageId.WithPrimary(item.colours[0]);
                     }
-                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                     {
                         imageId = imageId.WithSecondary(item.colours[1]);
                     }
-                    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
                     {
                         imageId = imageId.WithTertiary(item.colours[2]);
                     }
@@ -1413,11 +1414,11 @@ namespace OpenRCT2::Ui::Windows
 
                     GfxDrawSprite(rt, imageId, spritePosition);
 
-                    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+                    if (wallEntry->flags.has(WallSceneryFlag::isDoor))
                     {
                         GfxDrawSprite(rt, imageId.WithIndexOffset(1), spritePosition);
                     }
-                    if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasGlass))
                     {
                         const auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(item.colours[1]);
                         GfxDrawSprite(rt, glassImageId, spritePosition);
@@ -2033,7 +2034,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
-                        Flag::StayOpen, std::size(items), ddWidget->width() - 2);
+                        {}, std::size(items), ddWidget->width() - 2);
 
                     setCheckboxValue(EnumValue(_settings.noise.bias.type), true);
                     break;
@@ -2209,7 +2210,7 @@ namespace OpenRCT2::Ui::Windows
                         const Widget* ddWidget = &widgets[widgetIndex - 1];
                         WindowDropdownShowTextCustomWidth(
                             { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
-                            Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
+                            {}, std::size(items), ddWidget->width() - 3);
 
                         gDropdown.items[EnumValue(_settings.filter.type)].setChecked(true);
                         break;
@@ -2229,7 +2230,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
-                        Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
+                        {}, std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.slopeSmooth)].setChecked(true);
                     break;
@@ -2635,7 +2636,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        Dropdown::Flag::StayOpen, std::size(items));
+                        {}, std::size(items));
                     break;
                 }
                 case WIDX_RULE_TX_CONDITION_ADD:
@@ -2661,7 +2662,7 @@ namespace OpenRCT2::Ui::Windows
                     const Widget* ddWidget = &widgets[widgetIndex];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        Dropdown::Flag::StayOpen, std::size(items));
+                        {}, std::size(items));
 
                     // TODO implement
                     gDropdown.items[4].setDisabled(true);
