@@ -20,8 +20,8 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/drawing/RenderTarget.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/ObjectLimits.h>
@@ -911,9 +911,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseDown(WidgetIndex widgetIndex) override
         {
-            switch (widgetIndex)
-            {
-            }
+            switch (widgetIndex) {}
         }
 
         bool WasCalledFrom(const WindowBase* call_w, const WidgetIndex call_widget) const

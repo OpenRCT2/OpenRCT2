@@ -27,8 +27,8 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/Text.h>
 #include <openrct2/drawing/RenderTarget.h>
+#include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
@@ -503,8 +503,8 @@ namespace OpenRCT2::Ui::Windows
 
                     const Widget* ddWidget = &widgets[widgetIndex];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1],
-                        {}, std::size(items));
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], {},
+                        std::size(items));
 
                     break;
                 }
@@ -683,8 +683,8 @@ namespace OpenRCT2::Ui::Windows
 
                     const Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
-                        {}, std::size(items), ddWidget->width() - 3);
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0, {},
+                        std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.noise.algorithm)].setChecked(true);
                     break;
@@ -861,8 +861,8 @@ namespace OpenRCT2::Ui::Windows
         void ToggleSimplexWidgets(const bool state)
         {
             widgets[WIDX_SIMPLEX_GROUP].setVisible(state);
-            widgets[WIDX_SIMPLEX_TYPE].type           = state ? WidgetType::dropdownMenu : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_TYPE_DROPDOWN].type  = state ? WidgetType::button       : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_TYPE].type = state ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_TYPE_DROPDOWN].type = state ? WidgetType::button : WidgetType::empty;
             widgets[WIDX_SIMPLEX_BASE_FREQ].setVisible(state);
             widgets[WIDX_SIMPLEX_BASE_FREQ_UP].setVisible(state);
             widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].setVisible(state);
@@ -1087,8 +1087,8 @@ namespace OpenRCT2::Ui::Windows
 
                     const Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        {}, std::size(items));
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], {},
+                        std::size(items));
                     break;
                 }
                 case WIDX_RULE_SC_CONDITION_ADD:
@@ -1112,8 +1112,8 @@ namespace OpenRCT2::Ui::Windows
 
                     const Widget* ddWidget = &widgets[widgetIndex];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        {}, std::size(items));
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], {},
+                        std::size(items));
 
                     // TODO implement
                     gDropdown.items[4].setDisabled(true);

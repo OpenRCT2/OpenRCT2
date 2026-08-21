@@ -9,13 +9,13 @@
 
 #pragma once
 
+#include "../../../drawing/Colour.h"
 #include "../../../localisation/Formatting.h"
 #include "../../../util/Hash.hpp"
 #include "../../tile_element/SurfaceElement.h"
 #include "../BaseMap.hpp"
 #include "../Noise.h"
 #include "../SettingsTypes.hpp"
-#include "../../../drawing/Colour.h"
 
 #include <functional>
 #include <optional>

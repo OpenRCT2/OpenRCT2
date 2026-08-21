@@ -1356,8 +1356,8 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        {}, itemSize);
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], {},
+                        itemSize);
                     break;
                 }
                 case WIDX_FEATURE_DROPDOWN:
@@ -1383,8 +1383,8 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        {}, itemSize);
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], {},
+                        itemSize);
                     break;
                 }
                 case WIDX_HEIGHT_SOURCE_FIRST_DROPDOWN:
@@ -1431,8 +1431,8 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        {}, itemSize);
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], {},
+                        itemSize);
                     break;
                 }
                 case WIDX_HEIGHT_SOURCE_SECOND_DROPDOWN:
@@ -1470,8 +1470,8 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        {}, itemSize);
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], {},
+                        itemSize);
                     break;
                 }
                 case WIDX_VALUE_DOWN:
