@@ -27,13 +27,13 @@
 
 using namespace OpenRCT2;
 
-static constexpr int32_t kSpriteFontLineHeight[FontStyleCount] = {
+static constexpr int32_t kSpriteFontLineHeight[kFontStyleCount] = {
     10,
     10,
     6,
 };
 
-static uint8_t _spriteFontCharacterWidths[FontStyleCount][SPR_FONTS_GLYPH_COUNT] = {};
+static uint8_t _spriteFontCharacterWidths[kFontStyleCount][SPR_FONTS_GLYPH_COUNT] = {};
 
 #ifndef DISABLE_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
