@@ -909,6 +909,7 @@
     <ClCompile Include="drawing\LightFX.cpp" />
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
+    <ClCompile Include="drawing\PaletteMap.cpp" />
     <ClCompile Include="drawing\Rectangle.cpp" />
     <ClCompile Include="drawing\RenderTarget.cpp" />
     <ClCompile Include="drawing\ScrollingText.cpp" />
