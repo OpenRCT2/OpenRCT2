@@ -464,7 +464,7 @@ namespace OpenRCT2::Scripting
         return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint8_t>(vehicle->TrackSubposition) : 0);
     }
 
-        JSValue ScVehicle::subposition_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
+    JSValue ScVehicle::subposition_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
