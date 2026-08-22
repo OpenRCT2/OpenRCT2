@@ -93,7 +93,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("trackLocation", &ScVehicle::trackLocation_get, nullptr),
             JS_CGETSET_DEF("trackProgress", &ScVehicle::trackProgress_get, nullptr),
             JS_CGETSET_DEF("remainingDistance", &ScVehicle::remainingDistance_get, nullptr),
-            JS_CGETSET_DEF("subposition", &ScVehicle::subposition_get, nullptr),
+            JS_CGETSET_DEF("subposition", &ScVehicle::subposition_get, &ScVehicle::subposition_set),
             JS_CGETSET_DEF("poweredAcceleration", &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set),
             JS_CGETSET_DEF("poweredMaxSpeed", &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set),
             JS_CGETSET_DEF("status", &ScVehicle::status_get, &ScVehicle::status_set),
@@ -462,6 +462,22 @@ namespace OpenRCT2::Scripting
     {
         auto vehicle = GetVehicle(thisVal);
         return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint8_t>(vehicle->TrackSubposition) : 0);
+    }
+
+        JSValue ScVehicle::subposition_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
+    {
+        JS_UNPACK_UINT32(value, ctx, jsValue);
+        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
+
+        auto vehicle = GetVehicle(thisVal);
+        if (vehicle != nullptr)
+        {
+            vehicle->TrackSubposition = static_cast<VehicleTrackSubposition>(value);
+            vehicle->UpdateTrackChange();
+            EntityTweener::Get().RemoveEntity(vehicle);
+        }
+
+        return JS_UNDEFINED;
     }
 
     JSValue ScVehicle::poweredAcceleration_get(JSContext* ctx, JSValue thisVal)
