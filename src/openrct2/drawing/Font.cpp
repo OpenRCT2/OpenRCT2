@@ -266,7 +266,7 @@ void FontSpriteInitialiseCharacters()
         _biggestCodepointValue = std::max(_biggestCodepointValue, entry.first);
     }
 
-    for (const auto& fontStyle : FontStyles)
+    for (const auto& fontStyle : kFontStyles)
     {
         int32_t glyphOffset = EnumValue(fontStyle) * SPR_FONTS_GLYPH_COUNT;
         for (auto glyphIndex = 0u; glyphIndex < SPR_FONTS_GLYPH_COUNT; glyphIndex++)

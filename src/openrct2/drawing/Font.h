@@ -24,7 +24,7 @@ enum class FontStyle : uint8_t
 };
 
 constexpr uint8_t kFontStyleCount = 3;
-constexpr std::array<FontStyle, kFontStyleCount> kFontStyles = { FontStyle::small, FontStyle::medium, FontStyle::tiny };
+inline constexpr std::array<FontStyle, kFontStyleCount> kFontStyles = { FontStyle::small, FontStyle::medium, FontStyle::tiny };
 
 #ifndef DISABLE_TTF
 
