@@ -919,7 +919,7 @@ namespace OpenRCT2
     static constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, VehiclePitch pitch, uint8_t yaw)
     {
         uint8_t trueYaw = Entity::Yaw::YawTo64(yaw);
-        auto offsets = Math::Trigonometry::PitchToDirectionVectorFromGeometry[EnumValue(pitch)];
+        auto offsets = Math::Trigonometry::kPitchToDirectionVectorFromGeometry[EnumValue(pitch)];
         int32_t projectedRun = (offsets.x * length - offsets.y * height) / 256;
         int32_t projectedHeight = (offsets.x * height + offsets.y * length) / 256;
         return { Math::Trigonometry::ComputeXYVector(projectedRun, trueYaw), projectedHeight };

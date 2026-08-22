@@ -159,7 +159,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             if (direction < 0x14)
                 continue;
 
-            const CoordsXY directionVector = Math::Trigonometry::YawToDirectionVector[Entity::Yaw::YawTo64(orientation)];
+            const CoordsXY directionVector = Math::Trigonometry::kYawToDirectionVector[Entity::Yaw::YawTo64(orientation)];
 
             const CoordsXY directionVectorToVehicle2 = { vehicle2->x - loc.x, vehicle2->y - loc.y };
             const int32_t directionVectorToVehicle2Length = (directionVectorToVehicle2.x * directionVectorToVehicle2.x)
