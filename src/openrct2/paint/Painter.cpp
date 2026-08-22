@@ -60,8 +60,8 @@ void Painter::Paint(IDrawingEngine& de)
         UpdatePaletteEffects();
         _uiContext.Draw(*rt);
 
-        GfxDrawPickedUpPeep(*rt);
-        GfxInvalidatePickedUpPeep();
+        pickupPeepDraw(*rt);
+        pickupPeepInvalidate();
 
         de.PaintWeather();
     }

@@ -11,18 +11,20 @@
 
 #include <cstdint>
 
+using ImageIndex = uint32_t;
+
 struct ImageId;
+struct ScreenCoordsXY;
 struct ZoomLevel;
 
 namespace OpenRCT2::Drawing
 {
+    enum class Colour : uint8_t;
     struct RenderTarget;
-}
 
-extern ImageId gPickupPeepImage;
-extern int32_t gPickupPeepX;
-extern int32_t gPickupPeepY;
-extern ZoomLevel gPickupPeepZoom;
-
-void GfxInvalidatePickedUpPeep();
-void GfxDrawPickedUpPeep(OpenRCT2::Drawing::RenderTarget& rt);
+    void pickupPeepSetImage(ImageIndex baseImageId, Colour primaryColour, Colour secondaryColour);
+    void pickupPeepSetPosition(ScreenCoordsXY position);
+    void pickupPeepClear();
+    void pickupPeepInvalidate();
+    void pickupPeepDraw(RenderTarget& rt);
+} // namespace OpenRCT2::Drawing

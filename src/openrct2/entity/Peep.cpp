@@ -647,7 +647,7 @@ namespace OpenRCT2
             pathCheckOptimisation = 0;
         }
 
-        gPickupPeepImage = ImageId();
+        pickupPeepClear();
     }
 
     // Returns GameActions::Status::ok when a peep can be dropped at the given location. When apply is set to true the peep gets

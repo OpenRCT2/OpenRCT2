@@ -1,60 +1,85 @@
 #include "PickupPeep.h"
 
 #include "../interface/ScreenCoords.hpp"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../interface/WindowBase.h"
 #include "../interface/ZoomLevel.h"
 #include "Drawing.Sprite.h"
 #include "Drawing.h"
 #include "ImageId.hpp"
 #include "RenderTarget.h"
 
-ImageId gPickupPeepImage;
-int32_t gPickupPeepX;
-int32_t gPickupPeepY;
-ZoomLevel gPickupPeepZoom;
-
-constexpr std::array<int8_t, 3> kPickedUpPeepYOffsets = { 0, 16, 48 };
-
-using OpenRCT2::Drawing::RenderTarget;
-
-void GfxInvalidatePickedUpPeep()
+namespace OpenRCT2::Drawing
 {
-    if (!gPickupPeepImage.HasValue())
-        return;
+    static ImageId _pickupPeepImage{};
+    static ScreenCoordsXY _pickupPeepPosition{};
+    static ZoomLevel _pickupPeepZoom{};
 
-    auto* g1 = GfxGetG1Element(gPickupPeepImage);
-    if (g1 == nullptr)
-        return;
+    static constexpr std::array<int8_t, 3> kPickedUpPeepYOffsets = { 0, 16, 48 };
 
-    auto zoom = gPickupPeepZoom;
-    auto xOffset = -int8_t(gPickupPeepZoom);
-    auto yOffset = kPickedUpPeepYOffsets[xOffset];
+    void pickupPeepSetImage(ImageIndex baseImageId, Colour primaryColour, Colour secondaryColour)
+    {
+        _pickupPeepImage = ImageId(baseImageId, primaryColour, secondaryColour);
+    }
 
-    int32_t left = gPickupPeepX + zoom.ApplyInversedTo(g1->xOffset) + xOffset;
-    int32_t top = gPickupPeepY + zoom.ApplyInversedTo(g1->yOffset) + yOffset;
-    int32_t right = left + zoom.ApplyInversedTo(g1->width);
-    int32_t bottom = top + zoom.ApplyInversedTo(g1->height);
+    void pickupPeepSetPosition(ScreenCoordsXY position)
+    {
+        _pickupPeepPosition = position;
 
-    GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
-}
+        auto* mainWindow = WindowGetMain();
+        if (mainWindow != nullptr)
+        {
+            _pickupPeepZoom = std::min(mainWindow->viewport->zoom, ZoomLevel{ 0 });
+        }
+    }
 
-void GfxDrawPickedUpPeep(RenderTarget& rt)
-{
-    if (!gPickupPeepImage.HasValue())
-        return;
+    void pickupPeepClear()
+    {
+        _pickupPeepImage = ImageId();
+    }
 
-    assert(rt.zoom_level == ZoomLevel{ 0 });
+    void pickupPeepInvalidate()
+    {
+        if (!_pickupPeepImage.HasValue())
+            return;
 
-    auto zoom = gPickupPeepZoom;
-    auto xOffset = -int8_t(gPickupPeepZoom);
-    auto yOffset = kPickedUpPeepYOffsets[xOffset];
+        auto* g1 = GfxGetG1Element(_pickupPeepImage);
+        if (g1 == nullptr)
+            return;
 
-    auto pos = ScreenCoordsXY{ zoom.ApplyTo(gPickupPeepX + xOffset), zoom.ApplyTo(gPickupPeepY + yOffset) };
+        auto zoom = _pickupPeepZoom;
+        auto xOffset = -int8_t(_pickupPeepZoom);
+        auto yOffset = kPickedUpPeepYOffsets[xOffset];
 
-    rt.zoom_level = zoom;
-    rt.pitch = zoom.ApplyTo(rt.pitch);
+        int32_t left = _pickupPeepPosition.x + zoom.ApplyInversedTo(g1->xOffset) + xOffset;
+        int32_t top = _pickupPeepPosition.y + zoom.ApplyInversedTo(g1->yOffset) + yOffset;
+        int32_t right = left + zoom.ApplyInversedTo(g1->width);
+        int32_t bottom = top + zoom.ApplyInversedTo(g1->height);
 
-    GfxDrawSprite(rt, gPickupPeepImage, pos);
+        GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
+    }
 
-    rt.pitch = zoom.ApplyInversedTo(rt.pitch);
-    rt.zoom_level = ZoomLevel{ 0 };
-}
+    void pickupPeepDraw(RenderTarget& rt)
+    {
+        if (!_pickupPeepImage.HasValue())
+            return;
+
+        assert(rt.zoom_level == ZoomLevel{ 0 });
+
+        auto zoom = _pickupPeepZoom;
+        auto xOffset = -int8_t(_pickupPeepZoom);
+        auto yOffset = kPickedUpPeepYOffsets[xOffset];
+
+        auto pos = ScreenCoordsXY{ zoom.ApplyTo(_pickupPeepPosition.x + xOffset),
+                                   zoom.ApplyTo(_pickupPeepPosition.y + yOffset) };
+
+        rt.zoom_level = zoom;
+        rt.pitch = zoom.ApplyTo(rt.pitch);
+
+        GfxDrawSprite(rt, _pickupPeepImage, pos);
+
+        rt.pitch = zoom.ApplyInversedTo(rt.pitch);
+        rt.zoom_level = ZoomLevel{ 0 };
+    }
+} // namespace OpenRCT2::Drawing

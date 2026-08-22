@@ -520,7 +520,7 @@ namespace OpenRCT2
             gInputFlags.clearAll();
             InputSetState(InputState::reset);
             gPressedWidget.windowClassification = WindowClass::null;
-            gPickupPeepImage = ImageId();
+            Drawing::pickupPeepClear();
             ResetTooltipNotShown();
             gMapSelectFlags.clearAll();
             ClearPatrolAreaToRender();
