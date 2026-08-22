@@ -22,6 +22,7 @@
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/PickupPeep.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
@@ -646,7 +647,7 @@ namespace OpenRCT2
             pathCheckOptimisation = 0;
         }
 
-        gPickupPeepImage = ImageId();
+        pickupPeepClear();
     }
 
     // Returns GameActions::Status::ok when a peep can be dropped at the given location. When apply is set to true the peep gets

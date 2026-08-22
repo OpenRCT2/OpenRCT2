@@ -49,11 +49,6 @@ extern uint32_t gPaletteEffectFrame;
 
 extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalettes[OpenRCT2::Drawing::kColourNumTotal];
 
-extern ImageId gPickupPeepImage;
-extern int32_t gPickupPeepX;
-extern int32_t gPickupPeepY;
-extern ZoomLevel gPickupPeepZoom;
-
 extern bool gPaintForceRedraw;
 
 bool ClipRenderTarget(
@@ -70,8 +65,6 @@ void LoadPalette();
 void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::Drawing::PaletteIndex paletteIndex);
 void GfxFilterPixel(
     OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, OpenRCT2::Drawing::FilterPaletteID palette);
-void GfxInvalidatePickedUpPeep();
-void GfxDrawPickedUpPeep(OpenRCT2::Drawing::RenderTarget& rt);
 
 // line
 void GfxDrawLine(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, OpenRCT2::Drawing::PaletteIndex colour);

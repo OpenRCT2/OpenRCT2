@@ -26,6 +26,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/PickupPeep.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
@@ -986,20 +987,13 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectPositionB = mapCoords;
             }
 
-            gPickupPeepImage = ImageId();
+            pickupPeepClear();
 
             auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
             if (info.interactionType == ViewportInteractionItem::none)
                 return;
 
-            gPickupPeepX = screenCoords.x - 1;
-            gPickupPeepY = screenCoords.y + 16;
-
-            auto* mainWindow = WindowGetMain();
-            if (mainWindow != nullptr)
-            {
-                gPickupPeepZoom = std::min(mainWindow->viewport->zoom, ZoomLevel{ 0 });
-            }
+            pickupPeepSetPosition({ screenCoords.x - 1, screenCoords.y + 16 });
 
             const auto peep = GetGuest();
             if (peep == nullptr)
@@ -1012,7 +1006,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto baseImageId = animObj->GetPeepAnimation(peep->animationGroup, PeepAnimationType::hanging).baseImage;
             baseImageId += pickedPeepFrame >> 2;
-            gPickupPeepImage = ImageId(baseImageId, peep->tShirtColour, peep->trousersColour);
+            pickupPeepSetImage(baseImageId, peep->tShirtColour, peep->trousersColour);
         }
 
         void onToolDownOverview(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -1034,7 +1028,7 @@ namespace OpenRCT2::Ui::Windows
                 if (result->error != GameActions::Status::ok)
                     return;
                 ToolCancel();
-                gPickupPeepImage = ImageId();
+                pickupPeepClear();
             });
             GameActions::Execute(&pickupAction, getGameState());
         }

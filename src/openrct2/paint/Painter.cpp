@@ -16,6 +16,7 @@
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/PickupPeep.h"
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"
 #include "../interface/Widget.h"
@@ -59,8 +60,8 @@ void Painter::Paint(IDrawingEngine& de)
         UpdatePaletteEffects();
         _uiContext.Draw(*rt);
 
-        GfxDrawPickedUpPeep(*rt);
-        GfxInvalidatePickedUpPeep();
+        pickupPeepDraw(*rt);
+        pickupPeepInvalidate();
 
         de.PaintWeather();
     }
