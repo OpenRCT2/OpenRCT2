@@ -468,12 +468,12 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        
+
         if (value >= static_cast<uint32_t>(VehicleTrackSubposition::count))
         {
             return JS_ThrowRangeError(ctx, "Invalid vehicle subposition");
         }
-        
+
         auto vehicle = GetVehicle(thisVal);
         if (vehicle != nullptr)
         {
