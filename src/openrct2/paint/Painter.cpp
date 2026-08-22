@@ -16,6 +16,7 @@
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/PickupPeep.h"
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"
 #include "../interface/Widget.h"
