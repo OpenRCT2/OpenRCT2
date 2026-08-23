@@ -35,10 +35,10 @@ struct SynchronisedVehicle
     EntityId vehicle_id;
 };
 
-constexpr int32_t SYNCHRONISED_VEHICLE_COUNT = 16;
+static constexpr int32_t kSynchronisedVehicleCount = 16;
 
 // Synchronised vehicle info
-static SynchronisedVehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = {};
+static SynchronisedVehicle _synchronisedVehicles[kSynchronisedVehicleCount] = {};
 
 static SynchronisedVehicle* _lastSynchronisedVehicle = nullptr;
 
@@ -169,7 +169,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     constexpr uint8_t maxCheckDistance = kRideAdjacencyCheckDistance;
     uint8_t spaceBetween = maxCheckDistance;
 
-    while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
+    while (_lastSynchronisedVehicle < &_synchronisedVehicles[kSynchronisedVehicleCount - 1])
     {
         location += CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
         if (try_add_synchronised_station(location))
@@ -187,7 +187,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     location = station.GetStart();
     direction = DirectionReverse(direction) & 3;
     spaceBetween = maxCheckDistance;
-    while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
+    while (_lastSynchronisedVehicle < &_synchronisedVehicles[kSynchronisedVehicleCount - 1])
     {
         location += CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
         if (try_add_synchronised_station(location))
