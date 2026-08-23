@@ -454,7 +454,7 @@ namespace OpenRCT2::RCT1
             {
                 const ResearchItem* researchItem = &researchList[i];
 
-                if (researchItem->Flags == RCT1ResearchFlagsSeparator)
+                if (researchItem->Flags == kRCT1ResearchFlagsSeparator)
                 {
                     if (researchItem->Item == RCT1_RESEARCH_END)
                     {
@@ -1966,7 +1966,7 @@ namespace OpenRCT2::RCT1
             for (size_t i = 0; i < researchListCount; i++)
             {
                 const auto& researchItem = researchList[i];
-                if (researchItem.Flags == RCT1ResearchFlagsSeparator)
+                if (researchItem.Flags == kRCT1ResearchFlagsSeparator)
                 {
                     if (researchItem.Item == RCT1_RESEARCH_END_AVAILABLE)
                     {
@@ -2009,7 +2009,7 @@ namespace OpenRCT2::RCT1
                             for (size_t j = 0; j < researchListCount; j++)
                             {
                                 const auto& researchItem2 = researchList[j];
-                                if (researchItem2.Flags == RCT1ResearchFlagsSeparator)
+                                if (researchItem2.Flags == kRCT1ResearchFlagsSeparator)
                                 {
                                     if (researchItem2.Item == RCT1_RESEARCH_END_RESEARCHABLE
                                         || researchItem2.Item == RCT1_RESEARCH_END)
@@ -2147,7 +2147,7 @@ namespace OpenRCT2::RCT1
             for (size_t i = 0; i < researchListCount; i++)
             {
                 const auto& researchItem = researchList[i];
-                if (researchItem.Flags == RCT1ResearchFlagsSeparator)
+                if (researchItem.Flags == kRCT1ResearchFlagsSeparator)
                 {
                     if (researchItem.Item == RCT1_RESEARCH_END_AVAILABLE || researchItem.Item == RCT1_RESEARCH_END_RESEARCHABLE)
                     {
