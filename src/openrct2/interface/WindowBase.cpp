@@ -51,15 +51,14 @@ namespace OpenRCT2
     static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth, bool translucent)
     {
         auto closeButtonSize = Config::Get().interface.enlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
+        closeButton.setWidth(closeButtonSize);
         if (Config::Get().interface.windowButtonsOnTheLeft)
         {
-            closeButton.left = 2;
-            closeButton.right = 2 + closeButtonSize;
+            closeButton.moveToX(2);
         }
         else
         {
-            closeButton.left = windowWidth - 3 - closeButtonSize;
-            closeButton.right = windowWidth - 3;
+            closeButton.moveToX(windowWidth - 2 - closeButtonSize);
         }
 
         // Set appropriate close button
@@ -119,7 +118,7 @@ namespace OpenRCT2
 
         // Offset title and close button
         titleWidget.bottom += heightDifference;
-        closeButton.bottom += heightDifference;
+        closeButton.bottom = titleWidget.bottom - 1;
 
         height += heightDifference;
         minHeight += heightDifference;
