@@ -393,7 +393,8 @@ namespace OpenRCT2
                     loadedObject = object;
                     list[*slot] = object;
                     UpdateSceneryGroupIndexes();
-                    ResetTypeToRideEntryIndexMap();
+                    if (objectType == ObjectType::ride)
+                        ResetTypeToRideEntryIndexMap();
                 }
             }
             return loadedObject;
