@@ -89,7 +89,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetadata;
 
-constexpr TileCoordsXY TRACK_DESIGN_PREVIEW_MAP_SIZE = TileCoordsXY{ 256, 256 };
+static constexpr TileCoordsXY kTrackDesignPreviewMapSize = TileCoordsXY{ 256, 256 };
 
 bool gTrackDesignSceneryToggle;
 bool _trackDesignDrawingPreview;
@@ -2161,7 +2161,7 @@ static void TrackDesignPreviewClearMap()
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
     auto& gameState = getGameState();
-    gameState.mapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    gameState.mapSize = kTrackDesignPreviewMapSize;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;
