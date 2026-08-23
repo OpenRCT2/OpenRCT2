@@ -27,13 +27,13 @@
 
 using namespace OpenRCT2;
 
-static constexpr int32_t kSpriteFontLineHeight[FontStyleCount] = {
+static constexpr int32_t kSpriteFontLineHeight[kFontStyleCount] = {
     10,
     10,
     6,
 };
 
-static uint8_t _spriteFontCharacterWidths[FontStyleCount][SPR_FONTS_GLYPH_COUNT] = {};
+static uint8_t _spriteFontCharacterWidths[kFontStyleCount][SPR_FONTS_GLYPH_COUNT] = {};
 
 #ifndef DISABLE_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
@@ -266,7 +266,7 @@ void FontSpriteInitialiseCharacters()
         _biggestCodepointValue = std::max(_biggestCodepointValue, entry.first);
     }
 
-    for (const auto& fontStyle : FontStyles)
+    for (const auto& fontStyle : kFontStyles)
     {
         int32_t glyphOffset = EnumValue(fontStyle) * SPR_FONTS_GLYPH_COUNT;
         for (auto glyphIndex = 0u; glyphIndex < SPR_FONTS_GLYPH_COUNT; glyphIndex++)
