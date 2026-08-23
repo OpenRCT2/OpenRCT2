@@ -82,6 +82,7 @@ namespace OpenRCT2::Scripting
         static JSValue remainingDistance_get(JSContext* ctx, JSValue thisVal);
 
         static JSValue subposition_get(JSContext* ctx, JSValue thisVal);
+        static JSValue subposition_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
 
         static JSValue poweredAcceleration_get(JSContext* ctx, JSValue thisVal);
         static JSValue poweredAcceleration_set(JSContext* ctx, JSValue thisVal, JSValue jsValue);
