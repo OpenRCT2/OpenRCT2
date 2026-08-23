@@ -72,7 +72,7 @@ namespace OpenRCT2
         { -1, 0 }, { 0, +1 }, { +1, 0 }, { 0, -1 }, { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 },
     };
 
-    constexpr size_t MIN_TILE_ELEMENTS = 1024;
+    static constexpr size_t kMinTileElements = 1024;
 
     uint32_t gLandRemainingOwnershipSales;
     uint32_t gLandRemainingConstructionSales;
@@ -153,7 +153,7 @@ namespace OpenRCT2
     std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
     {
         std::vector<TileElement> newElements;
-        newElements.reserve(std::max(MIN_TILE_ELEMENTS, getGameState().tileElements.size()));
+        newElements.reserve(std::max(kMinTileElements, getGameState().tileElements.size()));
         for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
         {
             for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
@@ -193,7 +193,7 @@ namespace OpenRCT2
         ContextSetCurrentCursor(CursorID::zzz);
 
         std::vector<TileElement> newElements;
-        newElements.reserve(std::max(MIN_TILE_ELEMENTS, capacity));
+        newElements.reserve(std::max(kMinTileElements, capacity));
         for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
         {
             for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
