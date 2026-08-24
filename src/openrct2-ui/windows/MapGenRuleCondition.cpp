@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ScreenSize kWindowSize = { 300, 156 };
     static constexpr ScreenSize kItemSize = { 47, 36 };
-    static constexpr auto _widgets = makeWidgets(
+    static constexpr auto kWidgets = makeWidgets(
         // clang-format off
         makeWindowShim(STR_MAPGEN_RULE_CONDITION_EDIT_WINDOW_TITLE, kWindowSize),
         makeWidget(         { 186, 134 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_CANCEL),
@@ -159,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            setWidgets(_widgets);
+            setWidgets(kWidgets);
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, kWindowSize);
 
@@ -1331,13 +1331,13 @@ namespace OpenRCT2::Ui::Windows
                     size_t itemSize;
                     if (condition.type == Type::LandStyle)
                     {
-                        constexpr ItemExt items[] = {
+                        constexpr ItemExt kItems[] = {
                             ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_IN),
                             ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_NOT_IN),
                         };
 
-                        SetItems(items);
-                        itemSize = std::size(items);
+                        SetItems(kItems);
+                        itemSize = std::size(kItems);
                     }
                     else
                     {
@@ -1366,7 +1366,7 @@ namespace OpenRCT2::Ui::Windows
 
                     int32_t selectedIndex = static_cast<int32_t>(getFeature());
 
-                    constexpr ItemExt items[] = {
+                    constexpr ItemExt kItems[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_WATER),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_RIVER),
                         ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_SEA),
@@ -1376,8 +1376,8 @@ namespace OpenRCT2::Ui::Windows
                         ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_LAND),
                     };
 
-                    SetItems(items);
-                    size_t itemSize = std::size(items);
+                    SetItems(kItems);
+                    size_t itemSize = std::size(kItems);
 
                     gDropdown.items[selectedIndex].setChecked(true);
 
@@ -1403,7 +1403,7 @@ namespace OpenRCT2::Ui::Windows
                         selectedIndex = static_cast<int32_t>(heightData.sourceFirst);
                     }
 
-                    constexpr ItemExt items[] = {
+                    constexpr ItemExt kItems[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
                         ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_CLEARANCE),
@@ -1424,8 +1424,8 @@ namespace OpenRCT2::Ui::Windows
                         ItemExt(17, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL),
                     };
 
-                    SetItems(items);
-                    size_t itemSize = std::size(items);
+                    SetItems(kItems);
+                    size_t itemSize = std::size(kItems);
 
                     gDropdown.items[selectedIndex].setChecked(true);
 
@@ -1442,7 +1442,7 @@ namespace OpenRCT2::Ui::Windows
                     auto& heightData = std::get<HeightRelativeData>(condition.data);
                     int32_t selectedIndex = static_cast<int32_t>(heightData.sourceSecond);
 
-                    constexpr ItemExt items[] = {
+                    constexpr ItemExt kItems[] = {
                         ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_LAND),
                         ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_WATER),
                         ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_SELF_CLEARANCE),
@@ -1463,8 +1463,8 @@ namespace OpenRCT2::Ui::Windows
                         ItemExt(17, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_HEIGHT_SOURCE_GLOBAL_WATER_LEVEL),
                     };
 
-                    SetItems(items);
-                    size_t itemSize = std::size(items);
+                    SetItems(kItems);
+                    size_t itemSize = std::size(kItems);
 
                     gDropdown.items[selectedIndex].setChecked(true);
 

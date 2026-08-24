@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ScreenSize kWindowSize = { 618, 400 };
     static constexpr ScreenSize kItemSize = { 66, 80 };
-    static constexpr auto _widgets = makeWidgets(
+    static constexpr auto kWidgets = makeWidgets(
         // clang-format off
         makeWindowShim(STR_MAPGEN_RULE_SCENERY_SELECT_WINDOW_TITLE, kWindowSize),
         makeWidget({ 504, 381 }, { 109,  14 }, WidgetType::button,    WindowColour::secondary, STR_CANCEL),
@@ -99,9 +99,9 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ColourSlot
     {
-        Primary,
-        Secondary,
-        Tertiary,
+        primary,
+        secondary,
+        tertiary,
     };
 
     class MapGenRuleScenerySelectWindow final : public Window
@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            setWidgets(_widgets);
+            setWidgets(kWidgets);
             WindowSetResize(*this, kWindowSize, kWindowSize);
             WindowInitScrollWidgets(*this);
 
@@ -303,11 +303,11 @@ namespace OpenRCT2::Ui::Windows
                     auto sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(si.index);
                     switch (colourSlot)
                     {
-                        case ColourSlot::Primary:
+                        case ColourSlot::primary:
                             return sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour);
-                        case ColourSlot::Secondary:
+                        case ColourSlot::secondary:
                             return sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour);
-                        case ColourSlot::Tertiary:
+                        case ColourSlot::tertiary:
                             return sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour);
                     }
                 }
@@ -321,11 +321,11 @@ namespace OpenRCT2::Ui::Windows
                     auto wallEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(si.index);
                     switch (colourSlot)
                     {
-                        case ColourSlot::Primary:
+                        case ColourSlot::primary:
                             return wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour);
-                        case ColourSlot::Secondary:
+                        case ColourSlot::secondary:
                             return wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour);
-                        case ColourSlot::Tertiary:
+                        case ColourSlot::tertiary:
                             return wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour);
                     }
                 }
@@ -593,15 +593,15 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // draw colour buttons
-                if (selected && hasColourSlot(item, ColourSlot::Primary))
+                if (selected && hasColourSlot(item, ColourSlot::primary))
                 {
                     drawColourButton(rt, item, 0, itemRect);
                 }
-                if (selected && hasColourSlot(item, ColourSlot::Secondary))
+                if (selected && hasColourSlot(item, ColourSlot::secondary))
                 {
                     drawColourButton(rt, item, 1, itemRect);
                 }
-                if (selected && hasColourSlot(item, ColourSlot::Tertiary))
+                if (selected && hasColourSlot(item, ColourSlot::tertiary))
                 {
                     drawColourButton(rt, item, 2, itemRect);
                 }
@@ -677,15 +677,15 @@ namespace OpenRCT2::Ui::Windows
 
                 auto rectRotation = itemRectToRotationBtnRect(box);
 
-                if (hasColourSlot(sceneryItem, ColourSlot::Primary) && rectPrimaryColour.Contains(screenCoords))
+                if (hasColourSlot(sceneryItem, ColourSlot::primary) && rectPrimaryColour.Contains(screenCoords))
                 {
                     ShowColourDropdown(sceneryItem, 0, selectedItem.colours[0], rectPrimaryColour);
                 }
-                else if (hasColourSlot(sceneryItem, ColourSlot::Secondary) && rectSecondaryColour.Contains(screenCoords))
+                else if (hasColourSlot(sceneryItem, ColourSlot::secondary) && rectSecondaryColour.Contains(screenCoords))
                 {
                     ShowColourDropdown(sceneryItem, 1, selectedItem.colours[1], rectSecondaryColour);
                 }
-                else if (hasColourSlot(sceneryItem, ColourSlot::Tertiary) && rectTertiaryColour.Contains(screenCoords))
+                else if (hasColourSlot(sceneryItem, ColourSlot::tertiary) && rectTertiaryColour.Contains(screenCoords))
                 {
                     ShowColourDropdown(sceneryItem, 2, selectedItem.colours[2], rectTertiaryColour);
                 }
@@ -911,7 +911,6 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseDown(WidgetIndex widgetIndex) override
         {
-            switch (widgetIndex) {}
         }
 
         bool WasCalledFrom(const WindowBase* call_w, const WidgetIndex call_widget) const
