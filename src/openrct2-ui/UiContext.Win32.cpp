@@ -22,7 +22,6 @@
     // Then the rest
     #include "UiContext.h"
 
-    #include <SDL.h>
     #include <SDL_syswm.h>
     #include <openrct2/Diagnostic.h>
     #include <openrct2/core/Path.hpp>
