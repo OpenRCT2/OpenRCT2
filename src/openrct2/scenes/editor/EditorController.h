@@ -24,6 +24,8 @@ namespace OpenRCT2
 {
     struct ObjectEntryDescriptor;
     struct ObjectRepositoryItem;
+    enum class ObjectSelectionFlag : uint8_t;
+    using ObjectSelectionFlags = FlagHolder<uint8_t, ObjectSelectionFlag>;
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Editor
@@ -38,16 +40,16 @@ namespace OpenRCT2::Editor
     using InputFlags = FlagHolder<uint8_t, InputFlag>;
 
     extern u8string gSceneryGroupPartialSelectError;
-    extern std::vector<uint8_t> _objectSelectionFlags;
+    extern std::vector<ObjectSelectionFlags> _objectSelectionFlags;
     extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
 
     void ObjectListLoad();
     ResultWithMessage CheckPark();
     std::pair<ObjectType, StringId> CheckObjectSelection();
 
-    uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
-    void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
-    void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
+    ObjectSelectionFlags GetSelectedObjectFlags(ObjectType objectType, size_t index);
+    void ClearSelectedObject(ObjectType objectType, size_t index);
+    void SetSelectedObject(ObjectType objectType, size_t index, ObjectSelectionFlags flags);
 
     bool CheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
     bool CheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType);

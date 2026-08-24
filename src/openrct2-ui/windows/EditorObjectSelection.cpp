@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
     {
         const ObjectRepositoryItem* repositoryItem;
         std::unique_ptr<RideFilters> filter;
-        uint8_t* flags;
+        ObjectSelectionFlags* flags;
     };
 
     static constexpr uint8_t _numSourceGameItems = 8;
@@ -615,8 +615,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             ObjectListItem* listItem = &_listItems[selected_object];
-            uint8_t object_selection_flags = *listItem->flags;
-            if (object_selection_flags & ObjectSelectionFlags::Flag6)
+            ObjectSelectionFlags objectSelectionFlags = *listItem->flags;
+            if (objectSelectionFlags.has(ObjectSelectionFlag::flag5))
                 return;
 
             invalidate();
@@ -651,7 +651,7 @@ namespace OpenRCT2::Ui::Windows
 
             Editor::InputFlags inputFlags = { Editor::InputFlag::unk1, Editor::InputFlag::selectObjectsInSceneryGroup };
             // If already selected
-            if (!(object_selection_flags & ObjectSelectionFlags::Selected))
+            if (!objectSelectionFlags.has(ObjectSelectionFlag::selected))
                 inputFlags.set(Editor::InputFlag::select);
 
             Editor::gSceneryGroupPartialSelectError.clear();
@@ -691,8 +691,8 @@ namespace OpenRCT2::Ui::Windows
             if (selectedObject != -1)
             {
                 ObjectListItem* listItem = &_listItems[selectedObject];
-                uint8_t objectSelectionFlags = *listItem->flags;
-                if (objectSelectionFlags & ObjectSelectionFlags::Flag6)
+                ObjectSelectionFlags objectSelectionFlags = *listItem->flags;
+                if (objectSelectionFlags.has(ObjectSelectionFlag::flag5))
                 {
                     selectedObject = -1;
                 }
@@ -738,7 +738,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + kScrollableRowHeight >= rt.y && screenCoords.y <= rt.y + rt.height)
                 {
                     // Draw checkbox
-                    if (gLegacyScene != LegacyScene::trackDesignsManager && !(*listItem.flags & 0x20))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && !listItem.flags->has(ObjectSelectionFlag::flag5))
                         Rectangle::fillInset(
                             rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1],
                             Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
@@ -746,7 +746,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // Highlight background
                     auto highlighted = i == static_cast<size_t>(selectedListItem)
-                        && !(*listItem.flags & ObjectSelectionFlags::Flag6);
+                        && !listItem.flags->has(ObjectSelectionFlag::flag5);
                     if (highlighted)
                     {
                         auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
@@ -754,12 +754,12 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw checkmark
-                    if (gLegacyScene != LegacyScene::trackDesignsManager && (*listItem.flags & ObjectSelectionFlags::Selected))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && listItem.flags->has(ObjectSelectionFlag::selected))
                     {
                         screenCoords.x = 2;
                         auto darkness = highlighted ? TextDarkness::extraDark : TextDarkness::dark;
                         auto colour2 = colours[1].withFlag(ColourFlag::translucent, false);
-                        if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
+                        if (listItem.flags->hasAny(ObjectSelectionFlag::inUse, ObjectSelectionFlag::alwaysRequired))
                             colour2.flags.set(ColourFlag::inset, true);
 
                         drawText(rt, screenCoords, kCheckMarkString, { colour2, FontStyle::medium, darkness });
@@ -773,7 +773,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Drawing::Colour colour = Drawing::Colour::black;
                     auto darkness = TextDarkness::regular;
-                    if (*listItem.flags & ObjectSelectionFlags::Flag6)
+                    if (listItem.flags->has(ObjectSelectionFlag::flag5))
                     {
                         colour = colours[1].colour;
                         darkness = TextDarkness::dark;
@@ -1180,9 +1180,9 @@ namespace OpenRCT2::Ui::Windows
             const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
             for (int32_t i = 0; i < numObjects; i++)
             {
-                uint8_t selectionFlags = Editor::_objectSelectionFlags[i];
+                auto selectionFlags = Editor::_objectSelectionFlags[i];
                 const ObjectRepositoryItem* item = &items[i];
-                if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6)
+                if (item->Type == GetSelectedObjectType() && !selectionFlags.has(ObjectSelectionFlag::flag5)
                     && FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags)
                     && FilterCompatibilityObject(*item, selectionFlags))
                 {
@@ -1410,7 +1410,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        bool FilterSelected(uint8_t objectFlag)
+        bool FilterSelected(ObjectSelectionFlags objectFlags)
         {
             // Track Manager has no concept of selection filtering, so always return true
             if (gLegacyScene == LegacyScene::trackDesignsManager)
@@ -1421,11 +1421,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 return true;
             }
-            if (IsFilterActive(FILTER_SELECTED) && (objectFlag & ObjectSelectionFlags::Selected))
+            if (IsFilterActive(FILTER_SELECTED) && objectFlags.has(ObjectSelectionFlag::selected))
             {
                 return true;
             }
-            if (IsFilterActive(FILTER_NONSELECTED) && !(objectFlag & ObjectSelectionFlags::Selected))
+            if (IsFilterActive(FILTER_NONSELECTED) && !objectFlags.has(ObjectSelectionFlag::selected))
             {
                 return true;
             }
@@ -1433,10 +1433,10 @@ namespace OpenRCT2::Ui::Windows
             return false;
         }
 
-        bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
+        bool FilterCompatibilityObject(const ObjectRepositoryItem& item, ObjectSelectionFlags objectFlags)
         {
             // only show compat objects if they are selected already.
-            return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
+            return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || objectFlags.has(ObjectSelectionFlag::selected);
         }
 
         bool IsFilterActive(const uint16_t filter) const
@@ -1682,7 +1682,7 @@ namespace OpenRCT2::Ui::Windows
         bool showFallbackWarning = false;
         for (int32_t i = 0; i < numItems; i++)
         {
-            if (Editor::_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
+            if (Editor::_objectSelectionFlags[i].has(ObjectSelectionFlag::selected))
             {
                 const auto* item = &items[i];
                 auto descriptor = ObjectEntryDescriptor(*item);
