@@ -264,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
         {
             float items = static_cast<float>(filteredItems.size());
             float columns = static_cast<float>(GetNumColumns());
-            return static_cast<int32_t>(std::ceil<float>(items / columns));
+            return static_cast<int32_t>(std::ceil(items / columns));
         }
 
         ScreenSize onScrollGetSize(int32_t scrollIndex) override
@@ -335,15 +335,15 @@ namespace OpenRCT2::Ui::Windows
 
         void SceneryDrawItem(Drawing::RenderTarget& rt, const SceneryItem& si)
         {
-            std::array<Drawing::Colour, 3> colours = { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow,
-                                                       Drawing::Colour::darkBrown };
+            std::array<Drawing::Colour, 3> itemColours = { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow,
+                                                           Drawing::Colour::darkBrown };
             uint8_t direction = 0;
             int32_t weight = 1;
 
             if (selectedItems.contains(si))
             {
                 auto& effectItem = selectedItems[si];
-                colours = effectItem.colours;
+                itemColours = effectItem.colours;
                 direction = effectItem.direction.value_or(0);
                 weight = effectItem.weight;
             }
@@ -357,15 +357,15 @@ namespace OpenRCT2::Ui::Windows
 
                     if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
                     {
-                        imageId = imageId.WithPrimary(colours[0]);
+                        imageId = imageId.WithPrimary(itemColours[0]);
                     }
                     if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
                     {
-                        imageId = imageId.WithSecondary(colours[1]);
+                        imageId = imageId.WithSecondary(itemColours[1]);
                     }
                     if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
                     {
-                        imageId = imageId.WithTertiary(colours[2]);
+                        imageId = imageId.WithTertiary(itemColours[2]);
                     }
 
                     auto spriteTop = (kItemSize.height / 2) + (sceneryEntry->height / 2);
@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (sceneryEntry->flags.has(SmallSceneryFlag::hasGlass))
                     {
-                        imageId = ImageId(sceneryEntry->image + 4 + direction).WithTransparency(colours[0]);
+                        imageId = ImageId(sceneryEntry->image + 4 + direction).WithTransparency(itemColours[0]);
                         GfxDrawSprite(rt, imageId, spritePosition);
                     }
 
@@ -433,15 +433,15 @@ namespace OpenRCT2::Ui::Windows
 
                     if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
                     {
-                        imageId = imageId.WithPrimary(colours[0]);
+                        imageId = imageId.WithPrimary(itemColours[0]);
                     }
                     if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                     {
-                        imageId = imageId.WithSecondary(colours[1]);
+                        imageId = imageId.WithSecondary(itemColours[1]);
                     }
                     if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
                     {
-                        imageId = imageId.WithTertiary(colours[2]);
+                        imageId = imageId.WithTertiary(itemColours[2]);
                     }
 
                     if (weight == 0)
@@ -460,7 +460,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     if (wallEntry->flags.has(WallSceneryFlag::hasGlass))
                     {
-                        auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(colours[1]);
+                        auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(itemColours[1]);
                         GfxDrawSprite(rt, glassImageId, spritePosition);
                     }
 
@@ -500,8 +500,8 @@ namespace OpenRCT2::Ui::Windows
             // draw text
             auto& direction = selectedItems[si].direction;
 
-            auto width = btnRect.GetWidth() - 2;
-            auto coords = btnRect.Point1 + ScreenCoordsXY{ 1 + width / 2, 0 };
+            auto btnWidth = btnRect.GetWidth() - 2;
+            auto coords = btnRect.Point1 + ScreenCoordsXY{ 1 + btnWidth / 2, 0 };
             auto stringId = STR_MAPGEN_SCENERY_EFFECT_ROTATION_RND;
             if (direction.has_value())
             {
@@ -523,7 +523,7 @@ namespace OpenRCT2::Ui::Windows
             }
             Formatter ft;
             auto textPaint = TextPaint{ colours[2], TextAlignment::centre };
-            drawTextEllipsised(rt, coords, width, stringId, ft, textPaint);
+            drawTextEllipsised(rt, coords, btnWidth, stringId, ft, textPaint);
         }
 
         ScreenRect itemRectToWeightBtnRect(const ScreenRect& rect, const uint8_t nthButton)
@@ -551,12 +551,12 @@ namespace OpenRCT2::Ui::Windows
                 pressed ? Drawing::Rectangle::BorderStyle::inset : Drawing::Rectangle::BorderStyle::outset);
 
             // draw text
-            auto width = btnRect.GetWidth() - 2;
-            auto coords = btnRect.Point1 + ScreenCoordsXY{ 1 + width / 2, 0 };
+            auto btnWidth = btnRect.GetWidth() - 2;
+            auto coords = btnRect.Point1 + ScreenCoordsXY{ 1 + btnWidth / 2, 0 };
             auto stringId = nthButton == 0 ? STR_NUMERIC_UP : STR_NUMERIC_DOWN;
             Formatter ft;
             auto textPaint = TextPaint{ colours[2], TextAlignment::centre };
-            drawTextEllipsised(rt, coords, width, stringId, ft, textPaint);
+            drawTextEllipsised(rt, coords, btnWidth, stringId, ft, textPaint);
         }
 
         void SceneryDrawItems(Drawing::RenderTarget& rt)

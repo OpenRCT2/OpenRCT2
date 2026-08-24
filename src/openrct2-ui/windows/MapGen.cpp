@@ -1500,7 +1500,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        StringId featureToStringId(MapGenerator::Rule::Feature& feature)
+        StringId featureToStringId(const MapGenerator::Rule::Feature& feature)
         {
             switch (feature)
             {
@@ -1518,6 +1518,8 @@ namespace OpenRCT2::Ui::Windows
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_BREACH;
                 case MapGenerator::Rule::Feature::Land:
                     return STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_FEATURE_LAND;
+                default:
+                    throw std::runtime_error("unknown feature");
             }
         }
 
@@ -3470,24 +3472,24 @@ namespace OpenRCT2::Ui::Windows
             return length;
         }
 
-        int32_t baseZToDisplayHeight(int32_t height)
+        int32_t baseZToDisplayHeight(int32_t value)
         {
-            height = BaseZToMetres(height);
+            value = BaseZToMetres(value);
             if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
             {
-                height =MetresToFeet(height);
+                value =MetresToFeet(value);
             }
-            return height;
+            return value;
         }
 
-        int32_t heightUnitsToDisplayHeight(int32_t height)
+        int32_t heightUnitsToDisplayHeight(int32_t value)
         {
-            height = HeightUnitsToMetres(height);
+            value = HeightUnitsToMetres(value);
             if (Config::Get().general.measurementFormat == MeasurementFormat::imperial)
             {
-                height = MetresToFeet(height);
+                value = MetresToFeet(value);
             }
-            return height;
+            return value;
         }
 
         int32_t displayAreaToTileUnits(int32_t displayArea)

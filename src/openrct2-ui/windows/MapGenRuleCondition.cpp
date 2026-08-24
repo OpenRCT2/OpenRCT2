@@ -1558,7 +1558,7 @@ namespace OpenRCT2::Ui::Windows
         {
             float items = static_cast<float>(landStyles.size());
             float columns = static_cast<float>(GetNumColumns());
-            return static_cast<int32_t>(std::ceil<float>(items / columns));
+            return static_cast<int32_t>(std::ceil(items / columns));
         }
 
         ScreenSize onScrollGetSize(int32_t scrollIndex) override
