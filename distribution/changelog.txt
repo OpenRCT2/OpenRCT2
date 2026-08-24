@@ -26,6 +26,7 @@
 - Fix: [#26954] Land paint price is not updated when selecting columns or rows of tiles by holding down Ctrl.
 - Fix: [#26965] When showing missing objects, some types show up as ‘Unknown type’.
 - Fix: [#26965] The window with missing objects is displayed under the ‘Load game’ window.
+- Fix: [#26982] The ‘Best value park’ award can be won while park entry is free and rides are charged for.
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------

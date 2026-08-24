@@ -184,7 +184,10 @@ static bool AwardIsDeservedBestValue(GameState_t& gameState, Park::ParkData& par
     if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
-    if (park.flags.has(ParkFlag::noMoney) || !Park::EntranceFeeUnlocked(park))
+    if (park.flags.has(ParkFlag::noMoney))
+        return false;
+
+    if (Park::RidePricesUnlocked(park) && Park::GetEntranceFee(park) == 0.00_GBP)
         return false;
 
     if (park.totalRideValueForMoney < 10.00_GBP)
