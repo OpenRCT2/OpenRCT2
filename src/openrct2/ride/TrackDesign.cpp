@@ -628,9 +628,31 @@ static void TrackDesignLoadSceneryObjects(const TrackDesign& td)
     {
         if (scenery.sceneryObject.HasValue())
         {
-            objectManager.LoadObject(scenery.sceneryObject);
+            // When dealing with a legacy path entry, we must first check if a mapping exists, because calling LoadObject()
+            // on the old DAT identifier will return null for official objects. If no mapping exists, it’s likely a custom DAT
+            // object, which can be loaded as normal.
+            if (scenery.sceneryObject.GetType() == ObjectType::paths)
+            {
+                auto mapping = RCT2::GetFootpathSurfaceId(ObjectEntryDescriptor(scenery.sceneryObject));
+                if (mapping != nullptr)
+                {
+                    objectManager.LoadObject(mapping->NormalSurface);
+                    objectManager.LoadObject(mapping->QueueSurface);
+                    objectManager.LoadObject(mapping->Railing);
+                }
+                else
+                {
+                    objectManager.LoadObject(scenery.sceneryObject);
+                }
+            }
+            else
+            {
+                objectManager.LoadObject(scenery.sceneryObject);
+            }
         }
     }
+
+    objectManager.LoadObject(td.appearance.stationObjectIdentifier);
 }
 
 struct TrackSceneryEntry
@@ -706,12 +728,15 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
             result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
         }
 
+        // Legacy footpaths consist of a single object for both surface and railing.
+        const bool secondaryIndexRequired = result.Type != ObjectType::paths;
+
         if (result.Index == kObjectEntryIndexNull)
             result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.isQueue());
-        if (result.SecondaryIndex == kObjectEntryIndexNull)
+        if (secondaryIndexRequired && result.SecondaryIndex == kObjectEntryIndexNull)
             result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
 
-        if (result.Index == kObjectEntryIndexNull || result.SecondaryIndex == kObjectEntryIndexNull)
+        if (result.Index == kObjectEntryIndexNull || (secondaryIndexRequired && result.SecondaryIndex == kObjectEntryIndexNull))
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return {};
