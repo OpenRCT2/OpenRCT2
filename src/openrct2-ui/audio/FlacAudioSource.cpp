@@ -14,7 +14,7 @@
 
 #ifndef DISABLE_FLAC
     #include <FLAC/all.h>
-    #include <SDL.h>
+    #include <SDL3/SDL.h>
     #include <cstring>
     #include <vector>
 #endif
@@ -29,7 +29,7 @@ namespace OpenRCT2::Audio
     {
     private:
         AudioFormat _format = {};
-        SDL_RWops* _rw = nullptr;
+        SDL_IOStream* _rw = nullptr;
 
         FLAC__StreamDecoder* _decoder{};
         uint32_t _bitsPerSample{};
@@ -55,7 +55,7 @@ namespace OpenRCT2::Audio
             return _format;
         }
 
-        bool LoadFlac(SDL_RWops* rw)
+        bool LoadFlac(SDL_IOStream* rw)
         {
             _rw = rw;
             _decoder = FLAC__stream_decoder_new();
@@ -119,7 +119,7 @@ namespace OpenRCT2::Audio
             }
             if (_rw != nullptr)
             {
-                SDL_RWclose(_rw);
+                SDL_CloseIO(_rw);
                 _rw = nullptr;
             }
         }
@@ -174,7 +174,7 @@ namespace OpenRCT2::Audio
             auto* self = static_cast<FlacAudioSource*>(clientData);
             if (*bytes > 0)
             {
-                *bytes = SDL_RWread(self->_rw, buffer, sizeof(FLAC__byte), *bytes);
+                *bytes = SDL_ReadIO(self->_rw, buffer, *bytes);
                 if (*bytes == 0)
                 {
                     return FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
@@ -194,7 +194,7 @@ namespace OpenRCT2::Audio
             const FLAC__StreamDecoder* decoder, FLAC__uint64 absoluteByteOffset, void* clientData)
         {
             auto* self = static_cast<FlacAudioSource*>(clientData);
-            if (SDL_RWseek(self->_rw, absoluteByteOffset, RW_SEEK_SET) < 0)
+            if (SDL_SeekIO(self->_rw, absoluteByteOffset, SDL_IO_SEEK_SET) < 0)
             {
                 return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
             }
@@ -208,7 +208,7 @@ namespace OpenRCT2::Audio
             const FLAC__StreamDecoder* decoder, FLAC__uint64* absoluteByteOffset, void* clientData)
         {
             auto* self = static_cast<FlacAudioSource*>(clientData);
-            auto pos = SDL_RWtell(self->_rw);
+            auto pos = SDL_TellIO(self->_rw);
             if (pos < 0)
             {
                 return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
@@ -224,9 +224,9 @@ namespace OpenRCT2::Audio
             const FLAC__StreamDecoder* decoder, FLAC__uint64* streamLength, void* clientData)
         {
             auto* self = static_cast<FlacAudioSource*>(clientData);
-            auto pos = SDL_RWtell(self->_rw);
-            auto length = SDL_RWseek(self->_rw, 0, RW_SEEK_END);
-            if (SDL_RWseek(self->_rw, pos, RW_SEEK_SET) != pos || length < 0)
+            auto pos = SDL_TellIO(self->_rw);
+            auto length = SDL_SeekIO(self->_rw, 0, SDL_IO_SEEK_END);
+            if (SDL_SeekIO(self->_rw, pos, SDL_IO_SEEK_SET) != pos || length < 0)
             {
                 return FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
             }
@@ -240,15 +240,15 @@ namespace OpenRCT2::Audio
         static FLAC__bool FlacCallbackEof(const FLAC__StreamDecoder* decoder, void* clientData)
         {
             auto* self = static_cast<FlacAudioSource*>(clientData);
-            auto pos = SDL_RWtell(self->_rw);
-            auto end = SDL_RWseek(self->_rw, 0, RW_SEEK_END);
+            auto pos = SDL_TellIO(self->_rw);
+            auto end = SDL_SeekIO(self->_rw, 0, SDL_IO_SEEK_END);
             if (pos == end)
             {
                 return true;
             }
             else
             {
-                SDL_RWseek(self->_rw, pos, RW_SEEK_SET);
+                SDL_SeekIO(self->_rw, pos, SDL_IO_SEEK_SET);
                 return false;
             }
         }
@@ -307,7 +307,7 @@ namespace OpenRCT2::Audio
                 self->_bitsPerSample = metadata->data.stream_info.bits_per_sample;
                 self->_totalSamples = metadata->data.stream_info.total_samples;
                 self->_format.freq = metadata->data.stream_info.sample_rate;
-                self->_format.format = AUDIO_S16LSB;
+                self->_format.format = SDL_AUDIO_S16LE;
                 self->_format.channels = metadata->data.stream_info.channels;
                 self->_dataLength = self->_totalSamples * self->_format.channels * sizeof(int16_t);
             }
@@ -320,7 +320,7 @@ namespace OpenRCT2::Audio
     };
 #endif
 
-    std::unique_ptr<SDLAudioSource> CreateFlacAudioSource(SDL_RWops* rw)
+    std::unique_ptr<SDLAudioSource> CreateFlacAudioSource(SDL_IOStream* rw)
     {
 #ifndef DISABLE_FLAC
         auto source = std::make_unique<FlacAudioSource>();

@@ -11,7 +11,7 @@
 #include "AudioFormat.h"
 #include "SDLAudioSource.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <algorithm>
 #include <openrct2/audio/AudioSource.h>
 #include <stdexcept>
@@ -73,22 +73,17 @@ namespace OpenRCT2::Audio
     {
         if (target != src)
         {
-            SDL_AudioCVT cvt;
-            if (SDL_BuildAudioCVT(&cvt, src.format, src.channels, src.freq, target.format, target.channels, target.freq) >= 0)
+            SDL_AudioSpec srcSpec{ src.format, src.channels, src.freq };
+            SDL_AudioSpec dstSpec{ target.format, target.channels, target.freq };
+
+            Uint8* dstData = nullptr;
+            int dstLen = 0;
+            if (SDL_ConvertAudioSamples(
+                    &srcSpec, pcmData.data(), static_cast<int>(pcmData.size()), &dstSpec, &dstData, &dstLen))
             {
-                auto srcData = pcmData.data();
-                auto srcLen = pcmData.size();
-                auto cvtBuffer = std::vector<uint8_t>(srcLen * cvt.len_mult);
-                std::copy_n(srcData, srcLen, cvtBuffer.data());
-                cvt.len = static_cast<int32_t>(srcLen);
-                cvt.buf = cvtBuffer.data();
-                if (SDL_ConvertAudio(&cvt) >= 0)
-                {
-                    cvtBuffer.resize(cvt.len_cvt);
-                    cvtBuffer.shrink_to_fit();
-                    pcmData = std::move(cvtBuffer);
-                    return true;
-                }
+                pcmData.assign(dstData, dstData + dstLen);
+                SDL_free(dstData);
+                return true;
             }
         }
         return true;

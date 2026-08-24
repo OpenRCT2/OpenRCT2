@@ -23,7 +23,7 @@
     #include "TextureCache.h"
     #include "TransparencyDepth.h"
 
-    #include <SDL.h>
+    #include <SDL3/SDL.h>
     #include <algorithm>
     #include <cassert>
     #include <cmath>
@@ -240,7 +240,7 @@ public:
 
     ~OpenGLDrawingEngine() override
     {
-        SDL_GL_DeleteContext(_context);
+        SDL_GL_DestroyContext(_context);
     }
 
     void Initialise() override

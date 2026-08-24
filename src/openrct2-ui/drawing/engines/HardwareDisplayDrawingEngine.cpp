@@ -9,7 +9,7 @@
 
 #include "DrawingEngineFactory.hpp"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <cmath>
 #include <memory>
 #include <openrct2/Diagnostic.h>
@@ -39,7 +39,7 @@ private:
     SDL_Renderer* _sdlRenderer = nullptr;
     SDL_Texture* _screenTexture = nullptr;
     SDL_Texture* _scaledScreenTexture = nullptr;
-    SDL_PixelFormat* _screenTextureFormat = nullptr;
+    const SDL_PixelFormatDetails* _screenTextureFormat = nullptr;
     uint32_t _paletteHWMapped[256] = { 0 };
     uint32_t _lightPaletteHWMapped[256] = { 0 };
 
@@ -67,13 +67,13 @@ public:
         {
             SDL_DestroyTexture(_scaledScreenTexture);
         }
-        SDL_FreeFormat(_screenTextureFormat);
         SDL_DestroyRenderer(_sdlRenderer);
     }
 
     void Initialise() override
     {
-        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | (_useVsync ? SDL_RENDERER_PRESENTVSYNC : 0));
+        _sdlRenderer = SDL_CreateRenderer(_window, nullptr);
+        SDL_SetRenderVSync(_sdlRenderer, _useVsync ? 1 : 0);
     }
 
     void SetVSync(bool vsync) override
@@ -81,15 +81,7 @@ public:
         if (_useVsync != vsync)
         {
             _useVsync = vsync;
-#if SDL_VERSION_ATLEAST(2, 0, 18)
-            SDL_RenderSetVSync(_sdlRenderer, vsync ? 1 : 0);
-#else
-            SDL_DestroyRenderer(_sdlRenderer);
-            _screenTexture = nullptr;
-            _scaledScreenTexture = nullptr;
-            Initialise();
-            Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
-#endif
+            SDL_SetRenderVSync(_sdlRenderer, vsync ? 1 : 0);
         }
     }
 
@@ -104,20 +96,22 @@ public:
         {
             SDL_DestroyTexture(_screenTexture);
         }
-        SDL_FreeFormat(_screenTextureFormat);
 
-        SDL_RendererInfo rendererInfo = {};
-        int32_t result = SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
-        if (result < 0)
+        auto rendererProps = SDL_GetRendererProperties(_sdlRenderer);
+        auto* textureFormats = static_cast<const SDL_PixelFormat*>(
+            SDL_GetPointerProperty(rendererProps, SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER, nullptr));
+        if (textureFormats == nullptr)
         {
             LOG_WARNING("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
             return;
         }
-        uint32_t pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
-        for (uint32_t i = 0; i < rendererInfo.num_texture_formats; i++)
+        SDL_PixelFormat pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
+        for (size_t i = 0; textureFormats[i] != SDL_PIXELFORMAT_UNKNOWN; i++)
         {
-            uint32_t format = rendererInfo.texture_formats[i];
-            if (!SDL_ISPIXELFORMAT_FOURCC(format) && !SDL_ISPIXELFORMAT_INDEXED(format)
+            SDL_PixelFormat format = textureFormats[i];
+            // CopyBitsToTexture only has a correct implementation for 4-byte-per-pixel formats; narrower
+            // formats (e.g. RGB565) hit dead/broken packing code, so never select below 4 bytes per pixel.
+            if (!SDL_ISPIXELFORMAT_FOURCC(format) && !SDL_ISPIXELFORMAT_INDEXED(format) && SDL_BYTESPERPIXEL(format) == 4
                 && (pixelFormat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelFormat)))
             {
                 pixelFormat = format;
@@ -135,6 +129,8 @@ public:
             smoothNN = false;
         }
 
+        SDL_ScaleMode sdlScaleMode = scaleQuality == ScaleQuality::linear ? SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST;
+
         if (smoothNN)
         {
             if (_scaledScreenTexture != nullptr)
@@ -142,16 +138,11 @@ public:
                 SDL_DestroyTexture(_scaledScreenTexture);
             }
 
-            char scaleQualityBuffer[4];
-            snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%d", static_cast<int32_t>(scaleQuality));
-            SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
             Guard::Assert(
                 _screenTexture != nullptr, "Failed to create unscaled screen texture (%ux%u, pixelFormat = %u): %s", width,
                 height, pixelFormat, SDL_GetError());
-
-            SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
+            SDL_SetTextureScaleMode(_screenTexture, SDL_SCALEMODE_NEAREST);
 
             uint32_t scale = std::ceil(Config::Get().general.windowScale);
             _scaledScreenTexture = SDL_CreateTexture(
@@ -161,6 +152,7 @@ public:
                 _scaledScreenTexture != nullptr,
                 "Failed to create scaled screen texture (%ux%u, scale = %u, pixelFormat = %u): %s", width, height, scale,
                 pixelFormat, SDL_GetError());
+            SDL_SetTextureScaleMode(_scaledScreenTexture, sdlScaleMode);
         }
         else
         {
@@ -168,11 +160,10 @@ public:
             Guard::Assert(
                 _screenTexture != nullptr, "Failed to create screen texture (%ux%u, pixelFormat = %u): %s", width, height,
                 pixelFormat, SDL_GetError());
+            SDL_SetTextureScaleMode(_screenTexture, sdlScaleMode);
         }
 
-        uint32_t format;
-        SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
-        _screenTextureFormat = SDL_AllocFormat(format);
+        _screenTextureFormat = SDL_GetPixelFormatDetails(pixelFormat);
 
         X8DrawingEngine::Resize(width, height);
     }
@@ -183,7 +174,8 @@ public:
         {
             for (int32_t i = 0; i < 256; i++)
             {
-                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
+                _paletteHWMapped[i] = SDL_MapRGB(
+                    _screenTextureFormat, nullptr, palette[i].red, palette[i].green, palette[i].blue);
             }
 
             if (Config::Get().general.enableLightFx)
@@ -192,7 +184,8 @@ public:
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.red, src.green, src.blue, src.alpha);
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(
+                        _screenTextureFormat, nullptr, src.red, src.green, src.blue, src.alpha);
                 }
             }
         }
@@ -239,7 +232,7 @@ private:
         {
             void* pixels;
             int32_t pitch;
-            if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
+            if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch))
             {
                 LightFx::RenderToTexture(
                     *viewport, pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
@@ -254,14 +247,14 @@ private:
         if (smoothNN)
         {
             SDL_SetRenderTarget(_sdlRenderer, _scaledScreenTexture);
-            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+            SDL_RenderTexture(_sdlRenderer, _screenTexture, nullptr, nullptr);
 
             SDL_SetRenderTarget(_sdlRenderer, nullptr);
-            SDL_RenderCopy(_sdlRenderer, _scaledScreenTexture, nullptr, nullptr);
+            SDL_RenderTexture(_sdlRenderer, _scaledScreenTexture, nullptr, nullptr);
         }
         else
         {
-            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+            SDL_RenderTexture(_sdlRenderer, _screenTexture, nullptr, nullptr);
         }
 
         if (gShowDirtyVisuals)
@@ -276,7 +269,7 @@ private:
     {
         void* pixels;
         int32_t pitch;
-        if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0)
+        if (SDL_LockTexture(texture, nullptr, &pixels, &pitch))
         {
             int32_t padding = pitch - (width * 4);
             if (pitch == width * 4)
@@ -349,7 +342,7 @@ private:
     {
         int windowX, windowY, renderX, renderY;
         SDL_GetWindowSize(_window, &windowX, &windowY);
-        SDL_GetRendererOutputSize(_sdlRenderer, &renderX, &renderY);
+        SDL_GetCurrentRenderOutputSize(_sdlRenderer, &renderX, &renderY);
 
         float scaleX = Config::Get().general.windowScale * renderX / static_cast<float>(windowX);
         float scaleY = Config::Get().general.windowScale * renderY / static_cast<float>(windowY);
@@ -364,11 +357,11 @@ private:
                 if (timeLeft > 0)
                 {
                     uint8_t alpha = timeLeft * kDirtyRegionAlpha / kDirtyVisualTime;
-                    SDL_Rect ddRect;
-                    ddRect.x = static_cast<int32_t>(x * _invalidationGrid.getBlockWidth() * scaleX);
-                    ddRect.y = static_cast<int32_t>(y * _invalidationGrid.getBlockHeight() * scaleY);
-                    ddRect.w = static_cast<int32_t>(_invalidationGrid.getBlockWidth() * scaleX);
-                    ddRect.h = static_cast<int32_t>(_invalidationGrid.getBlockHeight() * scaleY);
+                    SDL_FRect ddRect;
+                    ddRect.x = static_cast<float>(x * _invalidationGrid.getBlockWidth() * scaleX);
+                    ddRect.y = static_cast<float>(y * _invalidationGrid.getBlockHeight() * scaleY);
+                    ddRect.w = static_cast<float>(_invalidationGrid.getBlockWidth() * scaleX);
+                    ddRect.h = static_cast<float>(_invalidationGrid.getBlockHeight() * scaleY);
 
                     SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
                     SDL_RenderFillRect(_sdlRenderer, &ddRect);

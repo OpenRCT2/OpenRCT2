@@ -22,7 +22,7 @@
     #include <ApplicationServices/ApplicationServices.h>
     #include <Cocoa/Cocoa.h>
     #include <CoreFoundation/CFBundle.h>
-    #include <SDL.h>
+    #include <SDL3/SDL.h>
     #include <mach-o/dyld.h>
     #pragma clang diagnostic pop
     #include <openrct2/Diagnostic.h>

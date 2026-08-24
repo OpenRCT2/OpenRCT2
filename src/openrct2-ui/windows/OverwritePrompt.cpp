@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <SDL_keycode.h>
+#include <SDL3/SDL_keycode.h>
 #include <openrct2-ui/interface/FileBrowser.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>

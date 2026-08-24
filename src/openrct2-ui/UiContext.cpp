@@ -20,7 +20,8 @@
 #include "scripting/UiExtensions.h"
 #include "title/TitleSequencePlayer.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
+#include <chrono>
 #include <cmath>
 #include <cstdlib>
 #include <memory>
@@ -58,9 +59,9 @@ using namespace OpenRCT2::Ui;
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
-    #define KB_PRIMARY_MODIFIER KMOD_GUI
+    #define KB_PRIMARY_MODIFIER SDL_KMOD_GUI
 #else
-    #define KB_PRIMARY_MODIFIER KMOD_CTRL
+    #define KB_PRIMARY_MODIFIER SDL_KMOD_CTRL
 #endif
 
 class UiContext final : public IUiContext
@@ -90,8 +91,6 @@ private:
     uint32_t _lastKeyPressed = 0;
     const uint8_t* _keysState = nullptr;
     uint8_t _keysPressed[256] = {};
-    uint32_t _lastGestureTimestamp = 0;
-    float _gestureRadius = 0;
 
     InGameConsole _inGameConsole;
     std::unique_ptr<ITitleSequencePlayer> _titleSequencePlayer;
@@ -118,7 +117,7 @@ public:
         , _shortcutManager(env)
     {
         LogSDLVersion();
-        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
+        if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK))
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
@@ -180,30 +179,38 @@ public:
     void SetFullscreenMode(FullscreenMode mode) override
     {
 #ifndef __EMSCRIPTEN__
-        static constexpr int32_t kSDLFullscreenFlags[] = {
-            0,
-            SDL_WINDOW_FULLSCREEN,
-            SDL_WINDOW_FULLSCREEN_DESKTOP,
-        };
-        uint32_t windowFlags = kSDLFullscreenFlags[EnumValue(mode)];
-
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FullscreenMode::fullscreen)
         {
-            SDL_SetWindowFullscreen(_window, 0);
+            SDL_SetWindowFullscreen(_window, false);
 
             // Set window size
             UpdateFullscreenResolutions();
             Resolution resolution = GetClosestResolution(
                 Config::Get().general.fullscreenWidth, Config::Get().general.fullscreenHeight);
             SDL_SetWindowSize(_window, resolution.Width, resolution.Height);
+
+            // Exclusive fullscreen needs an explicit display mode to switch to
+            SDL_DisplayMode closest{};
+            if (SDL_GetClosestFullscreenDisplayMode(
+                    SDL_GetDisplayForWindow(_window), resolution.Width, resolution.Height, 0, false, &closest))
+            {
+                SDL_SetWindowFullscreenMode(_window, &closest);
+            }
         }
         else if (mode == FullscreenMode::windowed)
         {
+            SDL_SetWindowFullscreenMode(_window, nullptr);
             SDL_SetWindowSize(_window, Config::Get().general.windowWidth, Config::Get().general.windowHeight);
         }
+        else
+        {
+            // Borderless "fullscreen desktop": a NULL mode means match the desktop resolution
+            SDL_SetWindowFullscreenMode(_window, nullptr);
+        }
 
-        if (SDL_SetWindowFullscreen(_window, windowFlags))
+        bool wantsFullscreen = mode == FullscreenMode::fullscreen || mode == FullscreenMode::fullscreenDesktop;
+        if (!SDL_SetWindowFullscreen(_window, wantsFullscreen))
         {
             LOG_FATAL("SDL_SetWindowFullscreen %s", SDL_GetError());
             exit(1);
@@ -283,14 +290,21 @@ public:
 
     void SetCursorVisible(bool value) override
     {
-        SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);
+        if (value)
+        {
+            SDL_ShowCursor();
+        }
+        else
+        {
+            SDL_HideCursor();
+        }
     }
 
     ScreenCoordsXY GetCursorPosition() override
     {
-        ScreenCoordsXY cursorPosition;
-        SDL_GetMouseState(&cursorPosition.x, &cursorPosition.y);
-        return cursorPosition;
+        float x{}, y{};
+        SDL_GetMouseState(&x, &y);
+        return { static_cast<int32_t>(x), static_cast<int32_t>(y) };
     }
 
     void SetCursorPosition(const ScreenCoordsXY& cursorPosition) override
@@ -300,7 +314,7 @@ public:
 
     void SetCursorTrap(bool value) override
     {
-        SDL_SetWindowGrab(_window, value ? SDL_TRUE : SDL_FALSE);
+        SDL_SetWindowMouseGrab(_window, value);
     }
 
     void SetKeysPressed(uint32_t keysym, uint8_t scancode) override
@@ -357,51 +371,43 @@ public:
         {
             switch (e.type)
             {
-                case SDL_QUIT:
+                case SDL_EVENT_QUIT:
                     ContextQuit();
                     break;
-                case SDL_WINDOWEVENT:
-                    if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+                case SDL_EVENT_WINDOW_RESIZED:
+                    LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
+                    OnResize(e.window.data1, e.window.data2);
+                    [[fallthrough]];
+                case SDL_EVENT_WINDOW_MOVED:
+                case SDL_EVENT_WINDOW_MAXIMIZED:
+                case SDL_EVENT_WINDOW_RESTORED:
+                {
+                    // Update default display index
+                    int32_t displayIndex = static_cast<int32_t>(SDL_GetDisplayForWindow(_window));
+                    if (displayIndex != Config::Get().general.defaultDisplay)
                     {
-                        LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
-                        OnResize(e.window.data1, e.window.data2);
-                    }
-
-                    switch (e.window.event)
-                    {
-                        case SDL_WINDOWEVENT_RESIZED:
-                        case SDL_WINDOWEVENT_MOVED:
-                        case SDL_WINDOWEVENT_MAXIMIZED:
-                        case SDL_WINDOWEVENT_RESTORED:
-                        {
-                            // Update default display index
-                            int32_t displayIndex = SDL_GetWindowDisplayIndex(_window);
-                            if (displayIndex != Config::Get().general.defaultDisplay)
-                            {
-                                Config::Get().general.defaultDisplay = displayIndex;
-                                Config::Save();
-                            }
-                            break;
-                        }
-                    }
-
-                    if (Config::Get().sound.audioFocus)
-                    {
-                        if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-                        {
-                            SetAudioVolume(1);
-                        }
-                        if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-                        {
-                            SetAudioVolume(0);
-                        }
+                        Config::Get().general.defaultDisplay = displayIndex;
+                        Config::Save();
                     }
                     break;
-                case SDL_MOUSEMOTION:
+                }
+                case SDL_EVENT_WINDOW_FOCUS_GAINED:
+                    if (Config::Get().sound.audioFocus)
+                    {
+                        SetAudioVolume(1);
+                    }
+                    break;
+                case SDL_EVENT_WINDOW_FOCUS_LOST:
+                    if (Config::Get().sound.audioFocus)
+                    {
+                        SetAudioVolume(0);
+                    }
+                    break;
+                case SDL_EVENT_MOUSE_MOTION:
                     _cursorState.position = { static_cast<int32_t>(e.motion.x / Config::Get().general.windowScale),
                                               static_cast<int32_t>(e.motion.y / Config::Get().general.windowScale) };
                     break;
-                case SDL_MOUSEWHEEL:
+                case SDL_EVENT_MOUSE_WHEEL:
                     if (_inGameConsole.IsOpen())
                     {
                         _inGameConsole.Scroll(e.wheel.y * 3); // Scroll 3 lines at a time
@@ -409,7 +415,7 @@ public:
                     }
                     _cursorState.wheel -= e.wheel.y;
                     break;
-                case SDL_MOUSEBUTTONDOWN:
+                case SDL_EVENT_MOUSE_BUTTON_DOWN:
                 {
                     if (e.button.which == SDL_TOUCH_MOUSEID)
                     {
@@ -445,7 +451,7 @@ public:
                     }
                     break;
                 }
-                case SDL_MOUSEBUTTONUP:
+                case SDL_EVENT_MOUSE_BUTTON_UP:
                 {
                     if (e.button.which == SDL_TOUCH_MOUSEID)
                     {
@@ -483,18 +489,18 @@ public:
                 }
                 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
-                case SDL_FINGERMOTION:
+                case SDL_EVENT_FINGER_MOTION:
                     _cursorState.position = { static_cast<int32_t>(e.tfinger.x * _width),
                                               static_cast<int32_t>(e.tfinger.y * _height) };
                     break;
-                case SDL_FINGERDOWN:
+                case SDL_EVENT_FINGER_DOWN:
                 {
                     ScreenCoordsXY fingerPos = { static_cast<int32_t>(e.tfinger.x * _width),
                                                  static_cast<int32_t>(e.tfinger.y * _height) };
 
                     _cursorState.touchIsDouble
                         = (!_cursorState.touchIsDouble
-                           && e.tfinger.timestamp - _cursorState.touchDownTimestamp < kTouchDoubleTimeout);
+                           && e.tfinger.timestamp / 1'000'000 - _cursorState.touchDownTimestamp < kTouchDoubleTimeout);
 
                     if (_cursorState.touchIsDouble)
                     {
@@ -509,10 +515,10 @@ public:
                         _cursorState.old = 1;
                     }
                     _cursorState.touch = true;
-                    _cursorState.touchDownTimestamp = e.tfinger.timestamp;
+                    _cursorState.touchDownTimestamp = static_cast<uint32_t>(e.tfinger.timestamp / 1'000'000);
                     break;
                 }
-                case SDL_FINGERUP:
+                case SDL_EVENT_FINGER_UP:
                 {
                     ScreenCoordsXY fingerPos = { static_cast<int32_t>(e.tfinger.x * _width),
                                                  static_cast<int32_t>(e.tfinger.y * _height) };
@@ -533,13 +539,13 @@ public:
                     break;
                 }
 #endif
-                case SDL_KEYDOWN:
+                case SDL_EVENT_KEY_DOWN:
                 {
 #ifndef __MACOSX__
                     // Ignore winkey keydowns. Handles edge case where tiling
                     // window managers don't eat the keypresses when changing
                     // workspaces.
-                    if (SDL_GetModState() & KMOD_GUI)
+                    if (SDL_GetModState() & SDL_KMOD_GUI)
                     {
                         break;
                     }
@@ -550,37 +556,20 @@ public:
                     _inputManager.queueInputEvent(std::move(ie));
                     break;
                 }
-                case SDL_KEYUP:
+                case SDL_EVENT_KEY_UP:
                 {
                     auto ie = GetInputEventFromSDLEvent(e);
                     ie.state = InputEventState::release;
                     _inputManager.queueInputEvent(std::move(ie));
                     break;
                 }
-                case SDL_MULTIGESTURE:
-                    if (e.mgesture.numFingers == 2)
-                    {
-                        if (e.mgesture.timestamp > _lastGestureTimestamp + 1000)
-                        {
-                            _gestureRadius = 0;
-                        }
-                        _lastGestureTimestamp = e.mgesture.timestamp;
-                        _gestureRadius += e.mgesture.dDist;
-
-                        // Zoom gesture
-                        constexpr int32_t tolerance = 128;
-                        int32_t gesturePixels = static_cast<int32_t>(_gestureRadius * _width);
-                        if (abs(gesturePixels) > tolerance)
-                        {
-                            _gestureRadius = 0;
-                            Windows::MainWindowZoom(gesturePixels > 0, true);
-                        }
-                    }
-                    break;
-                case SDL_TEXTEDITING:
+                // NOTE: SDL3 dropped the multi-finger pinch gesture API (SDL_MULTIGESTURE / SDL_GestureEvent).
+                // Trackpad pinch-to-zoom is unsupported until this is reimplemented on top of raw
+                // SDL_EVENT_FINGER_MOTION tracking.
+                case SDL_EVENT_TEXT_EDITING:
                     _textComposition.HandleMessage(&e);
                     break;
-                case SDL_TEXTINPUT:
+                case SDL_EVENT_TEXT_INPUT:
                     _textComposition.HandleMessage(&e);
                     break;
                 default:
@@ -595,7 +584,8 @@ public:
 
         // Updates the state of the keys
         int32_t numKeys = 256;
-        _keysState = SDL_GetKeyboardState(&numKeys);
+        // SDL3 returns bool*; false/true are guaranteed to be stored as 0/1, so this is safe to treat as a byte array.
+        _keysState = reinterpret_cast<const uint8_t*>(SDL_GetKeyboardState(&numKeys));
     }
 
     /**
@@ -604,21 +594,13 @@ public:
      */
     void TriggerResize() override
     {
-        char scaleQualityBuffer[4];
         _scaleQuality = ScaleQuality::smoothNearestNeighbour;
         if (Config::Get().general.windowScale == std::floor(Config::Get().general.windowScale))
         {
             _scaleQuality = ScaleQuality::nearestNeighbour;
         }
 
-        ScaleQuality scaleQuality = _scaleQuality;
-        if (_scaleQuality == ScaleQuality::smoothNearestNeighbour)
-        {
-            scaleQuality = ScaleQuality::linear;
-        }
-        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%d", static_cast<int32_t>(scaleQuality));
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
-
+        // Actual scale mode (SDL_ScaleMode) is applied per-texture by the drawing engine via GetScaleQuality().
         int32_t width, height;
         SDL_GetWindowSize(_window, &width, &height);
         OnResize(width, height);
@@ -671,7 +653,7 @@ public:
         auto message_box_button_data = std::make_unique<SDL_MessageBoxButtonData[]>(options.size());
         for (size_t i = 0; i < options.size(); i++)
         {
-            message_box_button_data[i].buttonid = static_cast<int>(i);
+            message_box_button_data[i].buttonID = static_cast<int>(i);
             message_box_button_data[i].text = options[i].c_str();
         }
 
@@ -732,7 +714,7 @@ public:
     bool SetClipboardText(const utf8* target) override
     {
 #ifndef __EMSCRIPTEN__
-        return (SDL_SetClipboardText(target) == 0);
+        return SDL_SetClipboardText(target);
 #else
         return (
             MAIN_THREAD_EM_ASM_INT(
@@ -764,9 +746,10 @@ public:
 private:
     void LogSDLVersion()
     {
-        SDL_version version{};
-        SDL_GetVersion(&version);
-        LOG_VERBOSE("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
+        int32_t version = SDL_GetVersion();
+        LOG_VERBOSE(
+            "SDL3 version: %d.%d.%d", SDL_VERSIONNUM_MAJOR(version), SDL_VERSIONNUM_MINOR(version),
+            SDL_VERSIONNUM_MICRO(version));
     }
 
     void InferDisplayDPI()
@@ -780,7 +763,7 @@ private:
 
         auto renderer = SDL_GetRenderer(_window);
         int rWidth, rHeight;
-        if (SDL_GetRendererOutputSize(renderer, &rWidth, &rHeight) == 0)
+        if (SDL_GetCurrentRenderOutputSize(renderer, &rWidth, &rHeight))
             config.windowScale = rWidth / wWidth;
 
         config.inferDisplayDPI = false;
@@ -810,21 +793,21 @@ private:
             height = 720;
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
-        uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+        SDL_WindowFlags flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY;
         if (Config::Get().general.drawingEngine == DrawingEngine::openGL)
         {
             flags |= SDL_WINDOW_OPENGL;
         }
 
-        _window = SDL_CreateWindow(OPENRCT2_NAME, windowPos.x, windowPos.y, width, height, flags);
+        _window = SDL_CreateWindow(OPENRCT2_NAME, width, height, flags);
         if (_window == nullptr)
         {
             const char* error = SDL_GetError();
             std::string errorMessage = String::stdFormat(
-                "SDL_CreateWindow(" OPENRCT2_NAME ", %d, %d, %d, %d, %d) failed: %s", windowPos.x, windowPos.y, width, height,
-                flags, error);
+                "SDL_CreateWindow(" OPENRCT2_NAME ", %d, %d, %d) failed: %s", width, height, flags, error);
             SDLException::Throw(errorMessage.c_str());
         }
+        SDL_SetWindowPosition(_window, windowPos.x, windowPos.y);
 
         ApplyScreenSaverLockSetting();
 
@@ -865,7 +848,7 @@ private:
 #ifndef __MACOSX__
             SDL_WINDOW_MAXIMIZED |
 #endif
-            SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
+            SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN;
 
         if (!(flags & nonWindowFlags))
         {
@@ -881,19 +864,20 @@ private:
     void UpdateFullscreenResolutions()
     {
         // Query number of display modes
-        int32_t displayIndex = SDL_GetWindowDisplayIndex(_window);
-        int32_t numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
+        SDL_DisplayID displayId = SDL_GetDisplayForWindow(_window);
+        int32_t numDisplayModes = 0;
+        SDL_DisplayMode** displayModes = SDL_GetFullscreenDisplayModes(displayId, &numDisplayModes);
 
         // Get desktop aspect ratio
-        SDL_DisplayMode mode;
-        SDL_GetDesktopDisplayMode(displayIndex, &mode);
+        const SDL_DisplayMode* desktopMode = SDL_GetDesktopDisplayMode(displayId);
+        SDL_DisplayMode mode = desktopMode != nullptr ? *desktopMode : SDL_DisplayMode{};
 
         // Get resolutions
         auto resolutions = std::vector<Resolution>();
         float desktopAspectRatio = static_cast<float>(mode.w) / mode.h;
         for (int32_t i = 0; i < numDisplayModes; i++)
         {
-            SDL_GetDisplayMode(displayIndex, i, &mode);
+            mode = *displayModes[i];
             if (mode.w > 0 && mode.h > 0)
             {
                 float aspectRatio = static_cast<float>(mode.w) / mode.h;
@@ -903,6 +887,7 @@ private:
                 }
             }
         }
+        SDL_free(displayModes);
 
         // Sort by area
         std::sort(resolutions.begin(), resolutions.end(), [](const Resolution& a, const Resolution& b) -> bool {
@@ -1049,13 +1034,13 @@ private:
     {
         InputEvent ie;
         ie.deviceKind = InputDeviceKind::keyboard;
-        ie.modifiers = e.key.keysym.mod;
-        ie.button = e.key.keysym.sym;
+        ie.modifiers = e.key.mod;
+        ie.button = e.key.key;
 
         // Handle dead keys
         if (ie.button == (SDLK_SCANCODE_MASK | 0))
         {
-            switch (e.key.keysym.scancode)
+            switch (e.key.scancode)
             {
                 case SDL_SCANCODE_APOSTROPHE:
                     ie.button = '\'';

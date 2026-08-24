@@ -19,7 +19,7 @@
     #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
-    #include <SDL.h>
+    #include <SDL3/SDL.h>
     #include <algorithm>
     #include <android/asset_manager.h>
     #include <android/asset_manager_jni.h>

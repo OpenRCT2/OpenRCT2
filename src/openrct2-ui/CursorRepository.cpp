@@ -123,9 +123,9 @@ void CursorRepository::GenerateScaledCursorSetHolder(uint8_t scale)
             {
                 // We can't scale the system cursors, but they should be appropriately scaled anyway
                 case CursorID::arrow:
-                    return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+                    return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_DEFAULT);
                 case CursorID::handPoint:
-                    return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+                    return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_POINTER);
                 default:
                     return this->Create(getCursorData(cursorId), scale);
             }

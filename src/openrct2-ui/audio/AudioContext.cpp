@@ -13,7 +13,7 @@
 #include "AudioMixer.h"
 #include "SDLAudioSource.h"
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <memory>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/audio/AudioContext.h>
@@ -32,7 +32,7 @@ namespace OpenRCT2::Audio
     public:
         AudioContext()
         {
-            if (SDL_Init(SDL_INIT_AUDIO) < 0)
+            if (!SDL_Init(SDL_INIT_AUDIO))
             {
                 Ui::SDLException::Throw("SDL_Init(SDL_INIT_AUDIO)");
             }
@@ -41,6 +41,9 @@ namespace OpenRCT2::Audio
 
         ~AudioContext() override
         {
+            // Must close the mixer (which destroys its SDL_AudioStream) before quitting the audio
+            // subsystem - otherwise the implicit ~AudioMixer() runs after SDL has torn it down.
+            _audioMixer->Close();
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
 
@@ -52,10 +55,15 @@ namespace OpenRCT2::Audio
         std::vector<std::string> GetOutputDevices() override
         {
             std::vector<std::string> devices;
-            int32_t numDevices = SDL_GetNumAudioDevices(SDL_FALSE);
-            for (int32_t i = 0; i < numDevices; i++)
+            int numDevices = 0;
+            auto* deviceIds = SDL_GetAudioPlaybackDevices(&numDevices);
+            if (deviceIds != nullptr)
             {
-                devices.emplace_back(String::toStd(SDL_GetAudioDeviceName(i, SDL_FALSE)));
+                for (int32_t i = 0; i < numDevices; i++)
+                {
+                    devices.emplace_back(String::toStd(SDL_GetAudioDeviceName(deviceIds[i])));
+                }
+                SDL_free(deviceIds);
             }
             return devices;
         }
@@ -88,7 +96,7 @@ namespace OpenRCT2::Audio
                 LOG_VERBOSE("Unable to create audio source: %s", e.what());
             }
 
-            SDL_RWclose(rw);
+            SDL_CloseIO(rw);
 
             if (source == nullptr)
             {
@@ -126,7 +134,7 @@ namespace OpenRCT2::Audio
             }
             catch (const std::exception& e)
             {
-                SDL_RWclose(rw);
+                SDL_CloseIO(rw);
                 LOG_VERBOSE("Unable to create audio source: %s", e.what());
                 return nullptr;
             }
@@ -168,36 +176,29 @@ namespace OpenRCT2::Audio
             return _audioMixer->AddSource(std::move(source));
         }
 
-        static SDL_RWops* StreamToSDL2(std::unique_ptr<IStream> stream)
+        static SDL_IOStream* StreamToSDL2(std::unique_ptr<IStream> stream)
         {
-            auto* rw = SDL_AllocRW();
-            if (rw == nullptr)
-                return nullptr;
-            *rw = {};
-
-            rw->type = SDL_RWOPS_UNKNOWN;
-            rw->hidden.unknown.data1 = stream.release();
-            rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) {
-                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-                ptr->Seek(offset, whence);
+            SDL_IOStreamInterface iface{};
+            SDL_INIT_INTERFACE(&iface);
+            iface.seek = [](void* userdata, Sint64 offset, SDL_IOWhence whence) {
+                auto ptr = static_cast<IStream*>(userdata);
+                ptr->Seek(offset, static_cast<int>(whence));
                 return static_cast<Sint64>(ptr->GetPosition());
             };
-            rw->read = [](SDL_RWops* ctx, void* buf, size_t size, size_t maxnum) {
-                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-                return static_cast<size_t>(ptr->TryRead(buf, size * maxnum) / size);
+            iface.read = [](void* userdata, void* buf, size_t size, SDL_IOStatus*) {
+                auto ptr = static_cast<IStream*>(userdata);
+                return static_cast<size_t>(ptr->TryRead(buf, size));
             };
-            rw->size = [](SDL_RWops* ctx) {
-                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+            iface.size = [](void* userdata) {
+                auto ptr = static_cast<IStream*>(userdata);
                 return static_cast<Sint64>(ptr->GetLength());
             };
-            rw->close = [](SDL_RWops* ctx) {
-                auto* ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+            iface.close = [](void* userdata) {
+                auto* ptr = static_cast<IStream*>(userdata);
                 delete ptr;
-                ctx->hidden.unknown.data1 = nullptr;
-                SDL_free(ctx);
-                return 0;
+                return true;
             };
-            return rw;
+            return SDL_OpenIO(&iface, stream.release());
         }
     };
 
