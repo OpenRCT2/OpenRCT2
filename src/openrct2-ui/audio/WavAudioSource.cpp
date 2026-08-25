@@ -9,7 +9,7 @@
 
 #include "SDLAudioSource.h"
 
-#include <SDL.h>
+#include <SDL_rwops.h>
 #include <stdexcept>
 
 namespace OpenRCT2::Audio
