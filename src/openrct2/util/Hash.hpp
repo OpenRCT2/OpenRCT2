@@ -22,7 +22,7 @@ namespace OpenRCT2::Util::Hash
     template<>
     struct HashMixer<8>
     {
-        static void mix(size_t& hash)
+        static uint64_t mix(uint64_t hash)
         {
             constexpr uint64_t kM = 0xe9846af9b1a615d;
 
@@ -31,13 +31,15 @@ namespace OpenRCT2::Util::Hash
             hash ^= hash >> 32;
             hash *= kM;
             hash ^= hash >> 28;
+
+            return hash;
         }
     };
 
     template<>
     struct HashMixer<4>
     {
-        static void mix(size_t& hash)
+        static uint32_t mix(uint32_t hash)
         {
             constexpr uint32_t kM1 = 0x21f0aaad;
             constexpr uint32_t kM2 = 0x735a2d97;
@@ -47,6 +49,8 @@ namespace OpenRCT2::Util::Hash
             hash ^= hash >> 15;
             hash *= kM2;
             hash ^= hash >> 15;
+
+            return hash;
         }
     };
 
@@ -69,7 +73,7 @@ namespace OpenRCT2::Util::Hash
     void update(size_t& hash, T const& value)
     {
         hash = hash + 0x9e3779b9 + std::hash<T>()(value);
-        HashMixer<sizeof(size_t)>::mix(hash);
+        hash = HashMixer<sizeof(size_t)>::mix(hash);
     }
 
 } // namespace OpenRCT2::Util::Hash
