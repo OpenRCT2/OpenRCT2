@@ -21,8 +21,8 @@
 #include "../MapHelpers.h"
 #include "RiverTypes.hpp"
 
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace OpenRCT2::World::MapGenerator::River
 {
