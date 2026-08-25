@@ -1341,7 +1341,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        constexpr ItemExt items[] = {
+                        constexpr ItemExt kItems[] = {
                             ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_EQUAL),
                             ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL),
                             ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_LESS_THAN),
@@ -1350,8 +1350,8 @@ namespace OpenRCT2::Ui::Windows
                             ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_GREATER_THAN_OR_EQUAL),
                         };
 
-                        SetItems(items);
-                        itemSize = std::size(items);
+                        SetItems(kItems);
+                        itemSize = std::size(kItems);
                     }
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];

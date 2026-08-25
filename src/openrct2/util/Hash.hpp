@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <functional>
 
 namespace OpenRCT2::Util::Hash
