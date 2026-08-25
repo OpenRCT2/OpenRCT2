@@ -26,7 +26,7 @@ namespace OpenRCT2::World::MapGenerator
 
     // increment for each breaking change
     constexpr size_t kMapGenSettingsFormat = 1;
-    const std::string kMapGenSettingsTypeValue = std::format("{}::MapGeneratorSettings", OPENRCT2_NAME);
+    const std::string kMapGenSettingsTypeValue = std::string(OPENRCT2_NAME) + "::MapGeneratorSettings";
 
     NLOHMANN_JSON_SERIALIZE_ENUM( // TODO replace with NLOHMANN_JSON_SERIALIZE_ENUM_STRICT added in 3.13.0
         HeightMapGenerator,

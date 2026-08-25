@@ -21,7 +21,9 @@
 #include "../MapHelpers.h"
 #include "RiverTypes.hpp"
 
+#include <cstdio>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 namespace OpenRCT2::World::MapGenerator::River
@@ -214,17 +216,23 @@ namespace OpenRCT2::World::MapGenerator::River
         auto time = Platform::GetTimeLocal();
         auto& env = GetContext()->GetPlatformEnvironment();
         auto mapgenDir = env.GetDirectoryPath(DirBase::user, DirId::mapgenSettings);
-        auto name = std::format(
-            "crw_{:04d}-{:02d}-{:02d}_{:02d}-{:02d}-{:02d}.mapgen.json", date.year, date.month, date.day, time.hour,
-            time.minute, time.second);
-        auto filePath = Path::Combine(mapgenDir, name);
+
+        char nameBuf[64];
+        std::snprintf(
+            nameBuf, sizeof(nameBuf), "crw_%04d-%02d-%02d_%02d-%02d-%02d.mapgen.json", date.year, date.month, date.day,
+            time.hour, time.minute, time.second);
+
+        auto filePath = Path::Combine(mapgenDir, nameBuf);
 
         saveMapgenSettingsToPath(ctx.settings, filePath);
 
         std::string actionStr = lowered ? "lowered below 0" : "raised above 256";
-        auto message = std::format(
-            "consistency runaway: ({},{}) of segment ({},{}) size={} {}, settings saved to {}", pos.x, pos.y, segment.x,
-            segment.y, segmentSize, actionStr, filePath);
+
+        std::ostringstream oss;
+        oss << "consistency runaway: (" << pos.x << "," << pos.y << ") of segment (" << segment.x << "," << segment.y
+            << ") size=" << segmentSize << " " << actionStr << ", settings saved to " << filePath;
+
+        std::string message = oss.str();
 
         LOG_FATAL("%s", message.c_str());
         throw std::runtime_error(message);
