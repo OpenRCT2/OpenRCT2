@@ -10,7 +10,10 @@
 #include "PaletteMap.h"
 
 #include "../core/EnumUtils.hpp"
+
+#ifdef _DEBUG
 #include "PaletteIndex.h"
+#endif
 
 #include <cassert>
 
