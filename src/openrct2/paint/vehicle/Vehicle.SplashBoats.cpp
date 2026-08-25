@@ -27,6 +27,14 @@ namespace OpenRCT2
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
         const CarEntry* carEntry)
     {
+        // Prevent infinite paint recursion for 0 or -1 cars per train
+        const auto ride = GetRide(vehicle->ride);
+        if (ride == nullptr)
+            return;
+        const auto rideEntry = ride->getRideEntry();
+        if (rideEntry == nullptr || ride->numCarsPerTrain - rideEntry->zero_cars < 1)
+            return;
+
         // TODO: pass as parameter?
         auto& entityRegistry = getGameState().entities;
 
