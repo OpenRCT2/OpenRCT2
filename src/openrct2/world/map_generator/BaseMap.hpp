@@ -205,16 +205,16 @@ namespace OpenRCT2::World::MapGenerator
         float distance;
     };
 
-    static constexpr std::array kMapDirectionOffsets = { TileCoordsXY{ -1, -1 }, TileCoordsXY{ -1, 0 }, TileCoordsXY{ -1, 1 },
+    inline constexpr std::array kMapDirectionOffsets = { TileCoordsXY{ -1, -1 }, TileCoordsXY{ -1, 0 }, TileCoordsXY{ -1, 1 },
                                                          TileCoordsXY{ 0, 1 },   TileCoordsXY{ 1, 1 },  TileCoordsXY{ 1, 0 },
                                                          TileCoordsXY{ 1, -1 },  TileCoordsXY{ 0, -1 } };
 
-    static constexpr std::array kMapDirectionDistance = { static_cast<float>(std::numbers::sqrt2), 1.0f,
+    inline constexpr std::array kMapDirectionDistance = { static_cast<float>(std::numbers::sqrt2), 1.0f,
                                                           static_cast<float>(std::numbers::sqrt2), 1.0f,
                                                           static_cast<float>(std::numbers::sqrt2), 1.0f,
                                                           static_cast<float>(std::numbers::sqrt2), 1.0f };
 
-    static constexpr std::array kNeighbourOpposites = {
+    inline constexpr std::array kNeighbourOpposites = {
         South, SouthWest, West, NorthWest, North, NorthEast, East, SouthEast,
     };
 
@@ -224,25 +224,25 @@ namespace OpenRCT2::World::MapGenerator
                           kMapDirectionDistance[mapDirection] };
     }
 
-    static constexpr Neighbour kNeighbourNorth = _makeNeighbour(North);
-    static constexpr Neighbour kNeighbourNorthEast = _makeNeighbour(NorthEast);
-    static constexpr Neighbour kNeighbourEast = _makeNeighbour(East);
-    static constexpr Neighbour kNeighbourSouthEast = _makeNeighbour(SouthEast);
-    static constexpr Neighbour kNeighbourSouth = _makeNeighbour(South);
-    static constexpr Neighbour kNeighbourSouthWest = _makeNeighbour(SouthWest);
-    static constexpr Neighbour kNeighbourWest = _makeNeighbour(West);
-    static constexpr Neighbour kNeighbourNorthWest = _makeNeighbour(NorthWest);
+    inline constexpr Neighbour kNeighbourNorth = _makeNeighbour(North);
+    inline constexpr Neighbour kNeighbourNorthEast = _makeNeighbour(NorthEast);
+    inline constexpr Neighbour kNeighbourEast = _makeNeighbour(East);
+    inline constexpr Neighbour kNeighbourSouthEast = _makeNeighbour(SouthEast);
+    inline constexpr Neighbour kNeighbourSouth = _makeNeighbour(South);
+    inline constexpr Neighbour kNeighbourSouthWest = _makeNeighbour(SouthWest);
+    inline constexpr Neighbour kNeighbourWest = _makeNeighbour(West);
+    inline constexpr Neighbour kNeighbourNorthWest = _makeNeighbour(NorthWest);
 
-    static constexpr std::array kNeighboursOrdinal = {
+    inline constexpr std::array kNeighboursOrdinal = {
         kNeighbourNorthEast,
         kNeighbourSouthWest,
         kNeighbourNorthWest,
         kNeighbourSouthEast,
     };
 
-    static constexpr std::array kNeighboursCardinal = { kNeighbourSouth, kNeighbourWest, kNeighbourEast, kNeighbourNorth };
+    inline constexpr std::array kNeighboursCardinal = { kNeighbourSouth, kNeighbourWest, kNeighbourEast, kNeighbourNorth };
 
-    static constexpr std::array kNeighbours = { kNeighbourNorthEast, kNeighbourSouthWest, kNeighbourNorthWest,
+    inline constexpr std::array kNeighbours = { kNeighbourNorthEast, kNeighbourSouthWest, kNeighbourNorthWest,
                                                 kNeighbourSouthEast, kNeighbourSouth,     kNeighbourWest,
                                                 kNeighbourEast,      kNeighbourNorth };
 
