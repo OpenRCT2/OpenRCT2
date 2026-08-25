@@ -21,7 +21,8 @@
 #include "../MapHelpers.h"
 #include "RiverTypes.hpp"
 
-#include <format>
+#include <string>
+#include <sstream>
 
 namespace OpenRCT2::World::MapGenerator::River
 {
@@ -158,62 +159,48 @@ namespace OpenRCT2::World::MapGenerator::River
     std::string summarizeRiverStatistics(const MapGenContext& ctx)
     {
         const auto& stats = ctx.riverContext.value().statistics;
+        std::ostringstream oss;
 
-        const auto pitSummary = std::format(
-            "\n[breach or fill]\n"
-            "    pits {}\n"
-            "    breach successes {}\n"
-            "    tiles breached {}\n"
-            "    tiles filled {}\n",
-            stats.pitsFound, stats.pitsBreachSuccess, stats.pitsBreachedTiles, stats.pitsFilledTiles);
+        oss << "\n[breach or fill]\n"
+            << "    pits " << stats.pitsFound << "\n"
+            << "    breach successes " << stats.pitsBreachSuccess << "\n"
+            << "    tiles breached " << stats.pitsBreachedTiles << "\n"
+            << "    tiles filled " << stats.pitsFilledTiles << "\n";
 
-        const auto flowSummary = std::format(
-            "\n[flow aggregation]\n"
-            "    catchment max theoretical {}\n"
-            "    catchment max actual {}\n"
-            "    river width max setting {}\n"
-            "    river width max actual {}\n",
-            calculateMaxCatchment(ctx), stats.flowAggMaxCatchment, ctx.settings.river.riverWidthMax.get(),
-            (stats.flowAggMaxCatchment / calculateMaxCatchment(ctx)) * ctx.settings.river.riverWidthMax);
+        oss << "\n[flow aggregation]\n"
+            << "    catchment max theoretical " << calculateMaxCatchment(ctx) << "\n"
+            << "    catchment max actual " << stats.flowAggMaxCatchment << "\n"
+            << "    river width max setting " << ctx.settings.river.riverWidthMax.get() << "\n"
+            << "    river width max actual "
+            << ((stats.flowAggMaxCatchment / calculateMaxCatchment(ctx)) * ctx.settings.river.riverWidthMax) << "\n";
 
-        const auto pruningSummary = std::format(
-            "\n[prune sources]\n"
-            "    found {}\n"
-            "    removed {}\n"
-            "    tiles removed {}\n"
-            "    longest {}\n",
-            stats.pruneSourcesFound, stats.pruneSourcesFound - stats.pruneSourcesRemaining, stats.pruneSourcesTilesRemoved,
-            stats.pruneSourcesLongest);
+        oss << "\n[prune sources]\n"
+            << "    found " << stats.pruneSourcesFound << "\n"
+            << "    removed " << (stats.pruneSourcesFound - stats.pruneSourcesRemaining) << "\n"
+            << "    tiles removed " << stats.pruneSourcesTilesRemoved << "\n"
+            << "    longest " << stats.pruneSourcesLongest << "\n";
 
-        const auto widthAdjust = std::format(
-            "\n[width adjustment]\n"
-            "    river tiles added {}\n",
-            stats.widthAdjustNewTiles);
+        oss << "\n[width adjustment]\n"
+            << "    river tiles added " << stats.widthAdjustNewTiles << "\n";
 
-        const auto ensureOrdinal = std::format(
-            "\n[ensure ordinal]\n"
-            "    river tiles added {}\n",
-            stats.ensureOrdinalNewTiles);
+        oss << "\n[ensure ordinal]\n"
+            << "    river tiles added " << stats.ensureOrdinalNewTiles << "\n";
 
-        const auto bankIndentationsSummary = std::format(
-            "\n[indentations]\n"
-            "    bank tiles adjusted {}\n"
-            "    river tiles adjusted {}\n",
-            stats.bankIndentationsAdjusted, stats.riverIndentationsAdjusted);
+        oss << "\n[indentations]\n"
+            << "    bank tiles adjusted " << stats.bankIndentationsAdjusted << "\n"
+            << "    river tiles adjusted " << stats.riverIndentationsAdjusted << "\n";
 
-        const auto consistencySummary = std::format(
-            "\n[consistency]\n"
-            "    segments raised {} (max size {})\n"
-            "    segments lowered {} (max size {})\n"
-            "    segments deleted {} (max size {})\n"
-            "    segments iterations {}\n"
-            "    banks raised {}\n",
-            stats.consistencySegmentsRaised, stats.consistencySegmentsRaisedMaxSize, stats.consistencySegmentsLowered,
-            stats.consistencySegmentsLoweredMaxSize, stats.consistencySegmentsRemoved, stats.consistencySegmentsRemovedMaxSize,
-            stats.consistencySegmentsIterations, stats.consistencyBanksRaised);
+        oss << "\n[consistency]\n"
+            << "    segments raised " << stats.consistencySegmentsRaised << " (max size "
+            << stats.consistencySegmentsRaisedMaxSize << ")\n"
+            << "    segments lowered " << stats.consistencySegmentsLowered << " (max size "
+            << stats.consistencySegmentsLoweredMaxSize << ")\n"
+            << "    segments deleted " << stats.consistencySegmentsRemoved << " (max size "
+            << stats.consistencySegmentsRemovedMaxSize << ")\n"
+            << "    segments iterations " << stats.consistencySegmentsIterations << "\n"
+            << "    banks raised " << stats.consistencyBanksRaised << "\n";
 
-        return pitSummary + flowSummary + pruningSummary + widthAdjust + ensureOrdinal + bankIndentationsSummary
-            + consistencySummary;
+        return oss.str();
     }
 
     /**

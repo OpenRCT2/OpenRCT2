@@ -11,7 +11,8 @@
 
 #include <algorithm>
 #include <exception>
-#include <format>
+#include <string>
+#include <sstream>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -104,9 +105,11 @@ namespace OpenRCT2::World::MapGenerator
 
     public:
         template<typename... Args>
-        SettingSerdeException(std::string_view rt_fmt_str, Args&&... args)
+        SettingSerdeException(Args&&... args)
         {
-            what_ = std::vformat(rt_fmt_str, std::make_format_args(args...));
+            std::ostringstream oss;
+            (oss << ... << std::forward<Args>(args));
+            what_ = oss.str();
         }
 
         const char* what() const noexcept override
