@@ -16,6 +16,7 @@
 #include "MapHelpers.h"
 #include "Noise.h"
 
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <memory>
 #include <variant>
