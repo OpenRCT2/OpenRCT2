@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <exception>
 #include <optional>
+#include <sstream>
 #include <string>
 
 namespace OpenRCT2::World::MapGenerator
