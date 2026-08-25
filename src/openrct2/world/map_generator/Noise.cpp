@@ -108,9 +108,9 @@ namespace OpenRCT2::World::MapGenerator
         {
             const TransformSettings& transformSettingsValue = transformSettings.value();
 
-            _transform = std::make_optional<Transform>({ .offset = transformSettingsValue.offset,
-                                                         .sin = std::sin(transformSettingsValue.rotateDeg),
-                                                         .cos = std::cos(transformSettingsValue.rotateDeg) });
+            _transform = { .offset = transformSettingsValue.offset,
+                           .sin = std::sin(transformSettingsValue.rotateDeg),
+                           .cos = std::cos(transformSettingsValue.rotateDeg) };
         }
         else
         {

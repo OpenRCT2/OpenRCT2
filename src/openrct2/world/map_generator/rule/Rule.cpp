@@ -717,13 +717,13 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         resetEvaluationContextRuleAndConditionState(evalCtx);
 
-        for (size_t r = 0; r < genCtx.settings.textureRules.size(); ++r)
+        for (int32_t r = 0; r < static_cast<int32_t>(genCtx.settings.textureRules.size()); ++r)
         {
             auto& rule = genCtx.settings.textureRules[r];
             for (size_t c = 0; c < rule.conditions.size(); ++c)
             {
                 auto& condition = rule.conditions[c];
-                auto key = ConditionKey{ static_cast<int32_t>(r), static_cast<int32_t>(c) };
+                auto key = ConditionKey{ r, static_cast<int32_t>(c) };
                 initializeEvaluationContextForCondition(genCtx, evalCtx, key, condition);
             }
         }
@@ -737,7 +737,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
     {
         resetEvaluationContextRuleAndConditionState(evalCtx);
 
-        for (size_t r = 0; r < genCtx.settings.sceneryRules.size(); ++r)
+        for (int32_t r = 0; r < static_cast<int32_t>(genCtx.settings.sceneryRules.size()); ++r)
         {
             auto& rule = genCtx.settings.sceneryRules[r];
 
@@ -748,7 +748,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             for (size_t c = 0; c < rule.conditions.size(); ++c)
             {
                 auto& condition = rule.conditions[c];
-                auto key = ConditionKey{ static_cast<int32_t>(r), static_cast<int32_t>(c) };
+                auto key = ConditionKey{ r, static_cast<int32_t>(c) };
                 initializeEvaluationContextForCondition(genCtx, evalCtx, key, condition);
             }
         }

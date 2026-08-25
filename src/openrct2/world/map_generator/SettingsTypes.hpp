@@ -10,6 +10,7 @@
 #pragma once
 
 #include <algorithm>
+#include <exception>
 #include <format>
 
 namespace OpenRCT2::World::MapGenerator
@@ -96,7 +97,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     };
 
-    class SettingSerdeException : std::exception
+    class SettingSerdeException : public std::exception
     {
     private:
         std::string what_;

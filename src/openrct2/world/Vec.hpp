@@ -114,7 +114,8 @@ struct VecXY
         return { static_cast<int32_t>(x), static_cast<int32_t>(y) };
     }
 
-    constexpr VecXY rotate(float degrees) const
+    // TODO can't be constexpr on windows
+    VecXY rotate(float degrees) const
     {
         const float sin = std::sin(degrees);
         const float cos = std::cos(degrees);

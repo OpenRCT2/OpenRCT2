@@ -852,8 +852,16 @@ namespace OpenRCT2::World::MapGenerator::River
                 break;
             }
 
-            const auto minIterator = std::ranges::min_element(segments | std::views::keys);
+            const auto segmentKeys = segments | std::views::keys;
+            const auto minIterator = std::ranges::min_element(segmentKeys);
+
+            if (minIterator == segmentKeys.end())
+            {
+                break; // shouldn't happen per if clause above but this guards against -Wnull-dereference below
+            }
+
             const auto& candidate = *minIterator;
+
             switch (candidate.operation)
             {
                 case ConsistencyOperation::lower:
