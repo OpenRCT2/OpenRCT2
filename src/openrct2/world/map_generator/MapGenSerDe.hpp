@@ -20,9 +20,10 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    constexpr std::string kMapGenSettingsTypeKey = "__type__";
-    constexpr std::string kMapGenSettingsVersionKey = "__version__";
-    constexpr std::string kMapGenSettingsFormatKey = "__format__";
+    // could be constexpr+string_view but causes issues with certain compilers
+    const std::string kMapGenSettingsTypeKey = "__type__";
+    const std::string kMapGenSettingsVersionKey = "__version__";
+    const std::string kMapGenSettingsFormatKey = "__format__";
 
     // increment for each breaking change
     constexpr size_t kMapGenSettingsFormat = 1;
