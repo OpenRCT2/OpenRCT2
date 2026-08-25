@@ -11,7 +11,7 @@
 
 #include <algorithm>
 #include <exception>
-#include <sstream>
+#include <optional>
 #include <string>
 
 namespace OpenRCT2::World::MapGenerator
@@ -105,7 +105,7 @@ namespace OpenRCT2::World::MapGenerator
 
     public:
         template<typename... Args>
-        SettingSerdeException(Args&&... args)
+        explicit SettingSerdeException(Args&&... args)
         {
             std::ostringstream oss;
             (oss << ... << std::forward<Args>(args));

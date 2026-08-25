@@ -26,6 +26,11 @@ namespace OpenRCT2::World::MapGenerator
 {
     static Settings gSettings;
 
+    std::string randomSeed()
+    {
+        return std::to_string(std::random_device{}());
+    }
+
     static void resetSurfaces(const MapGenContext& ctx)
     {
         MapClearAllElements();

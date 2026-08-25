@@ -113,7 +113,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             const auto obj = objectManager.GetLoadedObject<TerrainSurfaceObject>(idx);
             if (obj == nullptr)
             {
-                throw SettingSerdeException("failed to serialize TerrainSurfaceObject {}", idx);
+                throw SettingSerdeException("failed to serialize TerrainSurfaceObject ", idx);
             }
             j["styles"].push_back(obj->GetIdentifier());
         }
@@ -132,7 +132,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             ObjectEntryIndex idx = objectManager.GetLoadedObjectEntryIndex(identifier);
             if (idx == kObjectEntryIndexNull)
             {
-                throw SettingSerdeException("failed to deserialize TerrainSurfaceObject {}, not loaded?", identifier);
+                throw SettingSerdeException("failed to deserialize TerrainSurfaceObject ", identifier, ", not loaded?");
             }
             styles.insert(idx);
         }
@@ -260,13 +260,13 @@ namespace OpenRCT2::World::MapGenerator::Rule
         const auto* objLand = objectManager.GetLoadedObject<TerrainSurfaceObject>(textureEffect.landTexture);
         if (objLand == nullptr)
         {
-            throw SettingSerdeException("failed to serialize TerrainSurfaceObject {}", textureEffect.landTexture);
+            throw SettingSerdeException("failed to serialize TerrainSurfaceObject ", textureEffect.landTexture);
         }
         j["landTexture"] = objLand->GetIdentifier();
         const auto* objEdge = objectManager.GetLoadedObject<TerrainEdgeObject>(textureEffect.edgeTexture);
         if (objEdge == nullptr)
         {
-            throw SettingSerdeException("failed to serialize TerrainEdgeObject {}", textureEffect.edgeTexture);
+            throw SettingSerdeException("failed to serialize TerrainEdgeObject ", textureEffect.edgeTexture);
         }
         j["edgeTexture"] = objEdge->GetIdentifier();
     }
@@ -283,13 +283,13 @@ namespace OpenRCT2::World::MapGenerator::Rule
 
         if (landId == kObjectEntryIndexNull)
         {
-            throw SettingSerdeException("failed to deserialize TerrainSurfaceObject {}, not loaded?", landId);
+            throw SettingSerdeException("failed to deserialize TerrainSurfaceObject ", landId, ", not loaded?");
         }
         textureEffect.landTexture = landId;
 
         if (edgeId == kObjectEntryIndexNull)
         {
-            throw SettingSerdeException("failed to deserialize TerrainEdgeObject {}, not loaded?", edgeId);
+            throw SettingSerdeException("failed to deserialize TerrainEdgeObject ", edgeId, ", not loaded?");
         }
         textureEffect.edgeTexture = edgeId;
     }
@@ -306,7 +306,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
         if (obj == nullptr)
         {
             throw SettingSerdeException(
-                "failed to serialize sceneryEffectItem {} {}", static_cast<int32_t>(sceneryEffectItem.type),
+                "failed to serialize sceneryEffectItem ", static_cast<int32_t>(sceneryEffectItem.type), " ",
                 sceneryEffectItem.index);
         }
         j["identifier"] = obj->GetIdentifier();
@@ -334,8 +334,8 @@ namespace OpenRCT2::World::MapGenerator::Rule
         if (index == kObjectEntryIndexNull)
         {
             throw SettingSerdeException(
-                "failed to deserialize sceneryEffectItem {} {}, not loaded?", static_cast<int32_t>(sceneryEffectItem.type),
-                identifier);
+                "failed to deserialize sceneryEffectItem ", static_cast<int32_t>(sceneryEffectItem.type), " ", identifier,
+                ", not loaded?");
         }
         sceneryEffectItem.index = index;
 

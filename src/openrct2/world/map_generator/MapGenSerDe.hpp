@@ -20,9 +20,9 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    constexpr std::string_view kMapGenSettingsTypeKey = "__type__";
-    constexpr std::string_view kMapGenSettingsVersionKey = "__version__";
-    constexpr std::string_view kMapGenSettingsFormatKey = "__format__";
+    constexpr std::string kMapGenSettingsTypeKey = "__type__";
+    constexpr std::string kMapGenSettingsVersionKey = "__version__";
+    constexpr std::string kMapGenSettingsFormatKey = "__format__";
 
     // increment for each breaking change
     constexpr size_t kMapGenSettingsFormat = 1;
@@ -112,14 +112,14 @@ namespace OpenRCT2::World::MapGenerator
         if (typeValue != kMapGenSettingsTypeValue)
         {
             throw SettingSerdeException(
-                "Invalid {}, expected {} found {}", kMapGenSettingsTypeKey, kMapGenSettingsTypeValue, typeValue);
+                "Invalid ", kMapGenSettingsTypeKey, ", expected ", kMapGenSettingsTypeValue, " found ", typeValue);
         }
 
         auto formatValue = j.at(kMapGenSettingsFormatKey).get<size_t>();
         if (formatValue != kMapGenSettingsFormat)
         {
             throw SettingSerdeException(
-                "Invalid {}, expected {} found {}", kMapGenSettingsFormatKey, kMapGenSettingsFormat, formatValue);
+                "Invalid ", kMapGenSettingsFormatKey, ", expected ", kMapGenSettingsFormat, " found ", typeValue);
         }
 
         j.at("generator").get_to(settings.generator);

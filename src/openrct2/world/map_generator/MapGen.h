@@ -20,10 +20,7 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static inline std::string randomSeed()
-    {
-        return std::to_string(std::random_device{}());
-    }
+    std::string randomSeed();
 
     enum class HeightMapGenerator : uint8_t
     {
