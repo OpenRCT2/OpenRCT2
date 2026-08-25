@@ -12,7 +12,7 @@
 #include "../core/EnumUtils.hpp"
 
 #ifdef _DEBUG
-#include "PaletteIndex.h"
+    #include "PaletteIndex.h"
 #endif
 
 #include <cassert>
