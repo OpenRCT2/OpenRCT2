@@ -214,8 +214,8 @@ namespace OpenRCT2
     constexpr uint8_t kTitleHeightNormal = 14;
     constexpr uint8_t kTitleHeightLarge = 25;
 
-    constexpr uint8_t kCloseButtonSize = kTitleHeightNormal - 2;
-    constexpr uint8_t kCloseButtonSizeTouch = kTitleHeightLarge - 2;
+    constexpr ScreenSize kCloseButtonSize = { 11, kTitleHeightNormal - 2 };
+    constexpr ScreenSize kCloseButtonSizeTouch = { 21, kTitleHeightLarge - 2 };
 
     constexpr int32_t kScrollableRowHeight = 12;
     constexpr uint8_t kListRowHeight = 12;

@@ -578,14 +578,14 @@ namespace OpenRCT2::Ui
         if (static_cast<size_t>(widgetIndex + 1) < w.widgets.size()
             && (w.widgets[widgetIndex + 1]).type == WidgetType::closeBox)
         {
-            width -= kCloseButtonSize;
+            width -= kCloseButtonSize.width;
             if (static_cast<size_t>(widgetIndex + 2) < w.widgets.size()
                 && (w.widgets[widgetIndex + 2]).type == WidgetType::closeBox)
-                width -= kCloseButtonSize;
+                width -= kCloseButtonSize.width;
         }
         topLeft.x += width / 2;
         if (Config::Get().interface.windowButtonsOnTheLeft)
-            topLeft.x += kCloseButtonSize;
+            topLeft.x += kCloseButtonSize.width;
         if (Config::Get().interface.enlargedUi)
             topLeft.y += kTitleHeightLarge / 4;
 
