@@ -27,6 +27,7 @@
 - Fix: [#26954] Land paint price is not updated when selecting columns or rows of tiles by holding down Ctrl.
 - Fix: [#26965] When showing missing objects, some types show up as ‘Unknown type’.
 - Fix: [#26965] The window with missing objects is displayed under the ‘Load game’ window.
+- Fix: [#26992] A partial or no car is drawn on the ride vehicle tab if the ride has 0 or less cars per train.
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------

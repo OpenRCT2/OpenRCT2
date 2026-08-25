@@ -1331,7 +1331,7 @@ namespace OpenRCT2::Ui::Windows
                     spriteCoords.y *= 2;
                 }
 
-                const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, rideEntry->TabCar);
+                const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, rideEntry->zero_cars + 1, rideEntry->TabCar);
                 const auto& carEntry = rideEntry->Cars[vehicle];
 
                 spriteCoords.y += carEntry.tabHeight;
