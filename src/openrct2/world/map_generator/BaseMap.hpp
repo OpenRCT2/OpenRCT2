@@ -13,7 +13,6 @@
 #include "../../util/Hash.hpp"
 #include "../Location.hpp"
 #include "../Vec.hpp"
-#include "filesystem.hpp"
 
 #include <cassert>
 #include <cstddef>

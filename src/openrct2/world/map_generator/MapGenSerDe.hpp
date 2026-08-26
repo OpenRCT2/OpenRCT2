@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../Version.h"
+#include "../../core/FileSystem.hpp"
 #include "BaseMap.hpp"
 #include "MapGen.h"
 #include "SettingsTypesSerDe.hpp"
