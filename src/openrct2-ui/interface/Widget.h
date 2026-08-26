@@ -191,7 +191,7 @@ namespace OpenRCT2::Ui
         std::array<Widget, 3> out = {
             makeWidget({ 0, 0 }, { size.width, size.height }, WidgetType::frame, WindowColour::primary),
             makeWidget({ 1, 1 }, { size.width - 1, kTitleHeightNormal }, WidgetType::caption, WindowColour::primary, title, STR_WINDOW_TITLE_TIP),
-            makeWidget({ size.width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
+            makeWidget({ size.width - kCloseButtonSize.width, 2 }, kCloseButtonSize, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
         };
         // clang-format on
 

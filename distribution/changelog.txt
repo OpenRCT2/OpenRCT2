@@ -13,6 +13,7 @@
 - Improved: [#26936] Rain is now drawn next to the top toolbar, but only when it is centred.
 - Fix: [#18197] Track Designs Manager does not autoload scenery.
 - Fix: [#21632] [Plugin] Crash when loading custom image larger than 300 by 300 pixels.
+- Fix: [#24610] Graph tabs on Finances window get a little bit longer every time you switch between them.
 - Fix: [#25169] The convert command strips custom objects from the resulting park.
 - Fix: [#25496] The guest pickup button does not grey out when the guest’s state changes while the window is open.
 - Fix: [#25558] [Plugin] Image buttons ignore their explicit border setting when a theme draws borders around them.
