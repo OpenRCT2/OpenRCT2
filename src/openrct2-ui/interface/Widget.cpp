@@ -216,14 +216,6 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
 
-        // Dead code?
-        if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
-        {
-            // Draw border with no fill
-            Rectangle::fillInset(rt, rect, colour, borderStyle, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
-            return;
-        }
-
         // Draw the border with fill
         Rectangle::fillInset(rt, rect, colour, borderStyle);
 
@@ -303,16 +295,6 @@ namespace OpenRCT2::Ui
         // Check if the button is pressed down
         if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
         {
-            // Dead code?
-            if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
-            {
-                // Draw border with no fill
-                Rectangle::fillInset(
-                    rt, rect, colour, Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
-                    Rectangle::FillMode::none);
-                return;
-            }
-
             // Draw the border with fill
             Rectangle::fillInset(rt, rect, colour, Rectangle::BorderStyle::inset);
         }
