@@ -18,6 +18,7 @@
 #include "river/RiverSerDe.hpp"
 #include "rule/RuleSerDe.hpp"
 
+#include <fstream>
 #include <nlohmann/json.hpp>
 
 namespace OpenRCT2::World::MapGenerator
