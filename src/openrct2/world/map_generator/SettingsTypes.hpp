@@ -99,7 +99,7 @@ namespace OpenRCT2::World::MapGenerator
         }
     };
 
-    class SettingSerdeException : public std::exception
+    class SettingSerdeException final : public std::exception
     {
     private:
         std::string what_;
