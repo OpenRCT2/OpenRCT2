@@ -33,6 +33,7 @@
 - Fix: [#26965] The window with missing objects is displayed under the ‘Load game’ window.
 - Fix: [#26992] A partial or no car is drawn on the ride vehicle tab if the ride has 0 or fewer cars per train.
 - Fix: [#26996] Correct spelling of some rides in Heide-Park, Diamond Heights and Alton Towers.
+- Fix: [#26996] Scenario patch for Okinawa Coast doesn’t work (meaning landscape ownership fixes do not get applied).
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
