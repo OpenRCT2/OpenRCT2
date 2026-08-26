@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
@@ -315,11 +316,11 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES), // WIDX_SURFACE_BUTTON_REMOVE_FENCES
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES), // WIDX_SURFACE_BUTTON_RESTORE_FENCES
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_N
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_E
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_S
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_W
-        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_DIAGONAL) // WIDX_SURFACE_CHECK_DIAGONAL
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 0), { 12, 12 }, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_N
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1), { 12, 12 }, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_E
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 2), { 12, 12 }, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_S
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1), { 12, 12 }, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_W
+        Widgets::Checkbox(PropertyRowCol({ 12, 0 }, 3, 0), kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_DIAGONAL) // WIDX_SURFACE_CHECK_DIAGONAL
     );
 
     constexpr int32_t kNumPathProperties = 6;
@@ -329,17 +330,17 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kPathWidgets = makeWidgets(
         kMainTileInspectorWidgets,
         makeHoldableSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 1, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
-        makeWidget(PropertyRowCol({ 12, 0 }, 2, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_SLOPED), // WIDX_PATH_CHECK_SLOPED
-        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS), // WIDX_PATH_CHECK_JUNCTION_RAILINGS
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_NE
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 4, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_E
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_SE
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 2, 4), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_S
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 1, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_SW
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 0, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_W
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 1, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_NW
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 2, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary)  // WIDX_PATH_CHECK_EDGE_N
+        Widgets::Checkbox(PropertyRowCol({ 12, 0 }, 1, 0), kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
+        Widgets::Checkbox(PropertyRowCol({ 12, 0 }, 2, 0), kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_SLOPED), // WIDX_PATH_CHECK_SLOPED
+        Widgets::Checkbox(PropertyRowCol({ 12, 0 }, 3, 0), kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS), // WIDX_PATH_CHECK_JUNCTION_RAILINGS
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 1), { 12, 12 }, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_NE
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 4, 2), { 12, 12 }, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_E
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 3), { 12, 12 }, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_SE
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 2, 4), { 12, 12 }, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_S
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 1, 3), { 12, 12 }, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_SW
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 0, 2), { 12, 12 }, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_W
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 1, 1), { 12, 12 }, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_NW
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 2, 0), { 12, 12 }, WindowColour::secondary)  // WIDX_PATH_CHECK_EDGE_N
     );
 
     constexpr int32_t kNumTrackProperties = 5;
@@ -348,11 +349,11 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t kTrackDetailsHeight = 20 + kNumTrackDetails * 11;
     static constexpr auto kTrackWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeWidget(PropertyRowCol({ 12, 0}, 0, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
+        Widgets::Checkbox(PropertyRowCol({ 12, 0}, 0, 0),          kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
         makeHoldableSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0}, 2, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
-        makeWidget(PropertyRowCol({ 12, 0}, 3, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
-        makeWidget(PropertyRowCol({ 12, 0}, 4, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE) // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
+        Widgets::Checkbox(PropertyRowCol({ 12, 0}, 2, 0),          kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
+        Widgets::Checkbox(PropertyRowCol({ 12, 0}, 3, 0),          kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
+        Widgets::Checkbox(PropertyRowCol({ 12, 0}, 4, 0),          kPropertyFullWidth, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE) // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
     );
 
     constexpr int32_t kNumSceneryProperties = 4; // The checkbox groups both count for 2 rows
@@ -362,14 +363,14 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kSceneryWidgets = makeWidgets(
         kMainTileInspectorWidgets,
         makeHoldableSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0 + 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_N
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 2, 0 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_E
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0 + 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_S
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 0, 0 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_W
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 1 + 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_N
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_E
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 1 + 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_S
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1 + 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary)  // WIDX_SCENERY_CHECK_COLLISION_W
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0 + 0), { 12, 12 }, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_N
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 2, 0 + 1), { 12, 12 }, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_E
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0 + 2), { 12, 12 }, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_S
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 0, 0 + 1), { 12, 12 }, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_W
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 1 + 0), { 12, 12 }, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_N
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1 + 1), { 12, 12 }, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_E
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 1 + 2), { 12, 12 }, WindowColour::secondary), // WIDX_SCENERY_CHECK_COLLISION_S
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1 + 1), { 12, 12 }, WindowColour::secondary)  // WIDX_SCENERY_CHECK_COLLISION_W
     );
 
     constexpr int32_t kNumEntranceProperties = 2;
@@ -392,7 +393,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                                  kPropertyButtonSize, WidgetType::dropdownMenu, WindowColour::secondary), // WIDX_WALL_DROPDOWN_SLOPE
         makeWidget(PropertyRowCol({ 12 + kPropertyButtonSize.width - 12, 0 }, 1, 1), { 11,  12},          WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH), // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
         makeHoldableSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                          kPropertySpinnerSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0),                                  kPropertyFullWidth,  WidgetType::checkbox,     WindowColour::secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS) // WIDX_WALL_ANIMATION_IS_BACKWARDS
+        Widgets::Checkbox(PropertyRowCol({ 12, 0 }, 3, 0),                                  kPropertyFullWidth,      WindowColour::secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS) // WIDX_WALL_ANIMATION_IS_BACKWARDS
     );
 
     constexpr int32_t kNumLargeSceneryProperties = 1;
@@ -411,10 +412,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kBannerWidgets = makeWidgets(
         kMainTileInspectorWidgets,
         makeHoldableSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertySpinnerSize, WidgetType::spinner, WindowColour::secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_NE
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SE
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SW
-        makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary)  // WIDX_BANNER_CHECK_BLOCK_NW
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 1), { 12, 12 }, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_NE
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 3), { 12, 12 }, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SE
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 3), { 12, 12 }, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SW
+        Widgets::Checkbox(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 1), { 12, 12 }, WindowColour::secondary)  // WIDX_BANNER_CHECK_BLOCK_NW
     );
 
     static constexpr std::span<const Widget> kWidgetsByPage[] = {

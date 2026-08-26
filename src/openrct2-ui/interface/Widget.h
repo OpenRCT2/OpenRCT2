@@ -11,6 +11,7 @@
 
 #include <initializer_list>
 #include <openrct2-ui/UiStringIds.h>
+#include <openrct2-ui/widget/CaptionWidget.h>
 #include <openrct2/drawing/FilterPaletteIds.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/interface/WindowBase.h>
@@ -23,7 +24,6 @@ namespace OpenRCT2::Ui
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
     constexpr auto kBarBlink = (1u << 31);
     constexpr uint8_t kScrollBarWidth = 10;
-    constexpr ScreenSize kTabSize = { 31, 27 };
 
     constexpr const char* kBlackUpArrowString = u8"{BLACK}▲";
     constexpr const char* kBlackDownArrowString = u8"{BLACK}▼";
@@ -31,14 +31,6 @@ namespace OpenRCT2::Ui
     constexpr const char* kBlackRightArrowString = u8"{BLACK}▶";
     constexpr const char* kCheckMarkString = u8"✓";
     constexpr const char* kEyeString = u8"👁";
-
-    enum class WindowColour : uint8_t
-    {
-        primary,
-        secondary,
-        tertiary,
-        quaternary,
-    };
 
     constexpr Widget makeWidget(
         const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour,
@@ -79,16 +71,6 @@ namespace OpenRCT2::Ui
         StringId tooltip = kStringIdNone)
     {
         return makeWidget(origin, size, type, colour, ImageId(content, Drawing::FilterPaletteID::paletteNull), tooltip);
-    }
-
-    constexpr Widget makeTab(const ScreenCoordsXY& origin, StringId tooltip = kStringIdNone)
-    {
-        const ScreenSize size = kTabSize;
-        const WidgetType type = WidgetType::tab;
-        const WindowColour colour = WindowColour::secondary;
-        const auto content = ImageId(kImageIndexUndefined);
-
-        return makeWidget(origin, size, type, colour, content, tooltip);
     }
 
     constexpr Widget withFlag(Widget w, WidgetFlag flag)
@@ -188,11 +170,11 @@ namespace OpenRCT2::Ui
     constexpr std::array<Widget, 3> makeWindowShim(StringId title, ScreenSize size)
     {
         // clang-format off
-        std::array<Widget, 3> out = {
+        auto out = makeWidgets(
             makeWidget({ 0, 0 }, { size.width, size.height }, WidgetType::frame, WindowColour::primary),
-            makeWidget({ 1, 1 }, { size.width - 1, kTitleHeightNormal }, WidgetType::caption, WindowColour::primary, title, STR_WINDOW_TITLE_TIP),
-            makeWidget({ size.width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
-        };
+            Widgets::Caption({ 1, 1 }, { size.width - 1, kTitleHeightNormal }, WindowColour::primary, title),
+            makeWidget({ size.width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP)
+        );
         // clang-format on
 
         out[2].string = kCloseBoxStringBlackNormal;
@@ -272,6 +254,7 @@ namespace OpenRCT2::Ui
     };
 
     void widgetDraw(Drawing::RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    void WidgetDrawImage(Drawing::RenderTarget& rt, const WindowBase& w, WidgetIndex widgetIndex);
 
     bool widgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
     bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);

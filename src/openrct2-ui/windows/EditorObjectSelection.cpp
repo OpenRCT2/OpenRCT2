@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
@@ -233,17 +234,17 @@ namespace OpenRCT2::Ui::Windows
         makeWidget         ({  4, 45}, {              211,  14}, WidgetType::textBox,      WindowColour::secondary                                                                 ),
         makeWidget         ({218, 45}, {               70,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                        ),
         makeWidget         ({  3, 73}, {              285,   4}, WidgetType::imgBtn,       WindowColour::secondary                                                                 ),
-        makeTab            ({  3, 47}                                                                                                                                              ),
-        makeTab            ({ 34, 47}                                                                                                                                              ),
-        makeTab            ({ 65, 47}                                                                                                                                              ),
-        makeTab            ({ 96, 47}                                                                                                                                              ),
-        makeTab            ({127, 47}                                                                                                                                              ),
-        makeTab            ({158, 47}                                                                                                                                              ),
-        makeTab            ({189, 47}                                                                                                                                              ),
+        Widgets::Tab({  3, 47}),
+        Widgets::Tab({ 34, 47}),
+        Widgets::Tab({ 65, 47}),
+        Widgets::Tab({ 96, 47}),
+        Widgets::Tab({127, 47}),
+        Widgets::Tab({158, 47}),
+        Widgets::Tab({189, 47}),
         makeWidget         ({  4, 80}, {              145,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
         makeWidget         ({149, 80}, {              143,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
         makeWidget         ({700, 50}, {               24,  24}, WidgetType::imgBtn,      WindowColour::secondary,  SPR_G2_RELOAD,                STR_RELOAD_OBJECT_TIP            ),
-        makeTab            ({  3, 17},                                                                                                            STR_STRING_DEFINED_TOOLTIP       )
+        Widgets::Tab({  3, 17},                                                                                                            STR_STRING_DEFINED_TOOLTIP       )
         // Copied object type times...
     );
     // clang-format on

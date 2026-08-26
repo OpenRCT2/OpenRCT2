@@ -17,6 +17,8 @@
 #include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
@@ -258,16 +260,16 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMainRideWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {kMinimumWindowWidth, 137}, WidgetType::resize, WindowColour::secondary),
-        makeTab({   3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
-        makeTab({  34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),
-        makeTab({  65, 17 }, STR_OPERATING_OPTIONS_TIP),
-        makeTab({  96, 17 }, STR_MAINTENANCE_OPTIONS_TIP),
-        makeTab({ 127, 17 }, STR_COLOUR_SCHEME_OPTIONS_TIP),
-        makeTab({ 158, 17 }, STR_SOUND_AND_MUSIC_OPTIONS_TIP),
-        makeTab({ 189, 17 }, STR_MEASUREMENTS_AND_TEST_DATA_TIP),
-        makeTab({ 220, 17 }, STR_GRAPHS_TIP),
-        makeTab({ 251, 17 }, STR_INCOME_AND_COSTS_TIP),
-        makeTab({ 282, 17 }, STR_CUSTOMER_INFORMATION_TIP)
+        Widgets::Tab({   3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
+        Widgets::Tab({  34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),
+        Widgets::Tab({  65, 17 }, STR_OPERATING_OPTIONS_TIP),
+        Widgets::Tab({  96, 17 }, STR_MAINTENANCE_OPTIONS_TIP),
+        Widgets::Tab({ 127, 17 }, STR_COLOUR_SCHEME_OPTIONS_TIP),
+        Widgets::Tab({ 158, 17 }, STR_SOUND_AND_MUSIC_OPTIONS_TIP),
+        Widgets::Tab({ 189, 17 }, STR_MEASUREMENTS_AND_TEST_DATA_TIP),
+        Widgets::Tab({ 220, 17 }, STR_GRAPHS_TIP),
+        Widgets::Tab({ 251, 17 }, STR_INCOME_AND_COSTS_TIP),
+        Widgets::Tab({ 282, 17 }, STR_CUSTOMER_INFORMATION_TIP)
     );
 
     // 0x009ADC34
@@ -293,7 +295,7 @@ namespace OpenRCT2::Ui::Windows
         kMainRideWidgets,
         makeWidget        ({  7,  50}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                          ),
         makeWidget        ({297,  51}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
-        makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
+        Widgets::Checkbox        ({  7, 137}, {302, 12},                           WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
         makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                          ),
         makeHoldableSpinnerWidgets({  7, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT,    STR_MAX_VEHICLES_TIP         ),
         makeHoldableSpinnerWidgets({164, 203}, {145, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty,            STR_MAX_CARS_PER_TRAIN_TIP   )
@@ -315,20 +317,16 @@ namespace OpenRCT2::Ui::Windows
 
         // Load/wait/sync group
         makeWidget                ({  3,   0}, {310, 67}, WidgetType::groupbox,     WindowColour::secondary, STR_WAIT_AND_LOAD_GROUP                                                             ),
-        makeWidget                ({  7, 118}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
+        Widgets::Checkbox         ({  7, 118}, { 80, 12},                           WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
         makeWidget                ({ 87, 117}, {222, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
         makeWidget                ({297, 118}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
-        makeWidget                ({  7, 135}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
-        makeWidget                ({  7, 151}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+        Widgets::Checkbox         ({  7, 135}, {302, 12},                           WindowColour::secondary                                                                                      ),
+        Widgets::Checkbox         ({  7, 151}, {150, 12},                           WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
         makeHoldableSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
-        makeWidget                ({  7, 168}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+        Widgets::Checkbox         ({  7, 168}, {150, 12},                           WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
         makeHoldableSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
-        makeWidget                ({  7, 184}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  ),
+        Widgets::Checkbox         ({  7, 184}, {302, 12},                           WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
 
-        // Ride type group (cheat)
-        makeWidget                ({  3,   0}, {310, 35}, WidgetType::groupbox,     WindowColour::secondary, STR_RIDE_TYPE_GROUP                                                                 ),
-        makeWidget                ({  7, 225}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                                      ),
-        makeWidget                ({297, 226}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  )
     );
 
     // 0x009AE190
@@ -359,7 +357,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({289,  68}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_PAINTBRUSH),       STR_PAINT_INDIVIDUAL_AREA_TIP                ),
 
         // Shops only
-        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
+        Widgets::Checkbox({100,  74}, {239, 12},                    WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
 
         // Mazes only
         makeWidget({ 74,  49}, {229, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
@@ -390,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE4C8
     static constexpr auto _musicWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget({  7, 47}, {302,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
+        Widgets::Checkbox({  7, 47}, {302,  12},                    WindowColour::secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
         makeWidget({  7, 62}, {302,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                ),
         makeWidget({297, 63}, { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
         makeWidget({154, 90}, {114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                ),
@@ -420,12 +418,12 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE844
     static constexpr auto _incomeWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget        ({ 19,  51}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
+        makeWidget                ({ 19,  51}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                                    ),
         makeHoldableSpinnerWidgets({147,  50}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                            ), // NB: 3 widgets
-        makeWidget                ({  5,  62}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
+        Widgets::Checkbox         ({  5,  62}, {306, 13},                       WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
         makeWidget                ({ 19,  95}, {126, 14}, WidgetType::label,    WindowColour::secondary                                                            ),
         makeHoldableSpinnerWidgets({147,  94}, {162, 14}, WidgetType::spinner,  WindowColour::secondary, kStringIdEmpty                                            ), // NB: 3 widgets
-        makeWidget        ({  5, 106}, {306, 13}, WidgetType::checkbox, WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP)
+        Widgets::Checkbox         ({  5, 106}, {306, 13},                       WindowColour::secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP)
     );
 
     // 0x009AE9C8

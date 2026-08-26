@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -82,10 +83,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _staffListWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, { kWindowSize.width, kWindowSize.height - 43}, WidgetType::resize,    WindowColour::secondary                                                    ), // tab content panel
-        makeTab   ({  3, 17},                                                                                                STR_STAFF_HANDYMEN_TAB_TIP                        ), // handymen tab
-        makeTab   ({ 34, 17},                                                                                                STR_STAFF_MECHANICS_TAB_TIP                       ), // mechanics tab
-        makeTab   ({ 65, 17},                                                                                                STR_STAFF_SECURITY_TAB_TIP                        ), // security guards tab
-        makeTab   ({ 96, 17},                                                                                                STR_STAFF_ENTERTAINERS_TAB_TIP                    ), // entertainers tab
+        Widgets::Tab({  3, 17}, STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
+        Widgets::Tab({ 34, 17}, STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
+        Widgets::Tab({ 65, 17}, STR_STAFF_SECURITY_TAB_TIP    ), // security guards tab
+        Widgets::Tab({ 96, 17}, STR_STAFF_ENTERTAINERS_TAB_TIP), // entertainers tab
         makeWidget({  3, 72}, {kWindowSize.width - 6, 195},                  WidgetType::scroll,    WindowColour::secondary, SCROLL_VERTICAL                                   ), // staff list
         makeWidget({130, 58}, {    12,      12},                             WidgetType::colourBtn, WindowColour::secondary, kStringIdNone,           STR_UNIFORM_COLOUR_TIP   ), // uniform colour picker
         makeWidget({165, 17}, {   145,      13},                             WidgetType::button,    WindowColour::primary  , kStringIdNone,           STR_HIRE_STAFF_TIP       ), // hire button

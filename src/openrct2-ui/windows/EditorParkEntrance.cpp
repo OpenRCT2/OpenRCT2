@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -74,7 +75,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget     ({                      0, 43 }, { kWindowSize.width, kWindowSize.height - 43 }, WidgetType::resize,  WindowColour::secondary                                                   ),
-        makeTab        ({                      3, 17 },                                                                                               kStringIdNone                                    ),
+        Widgets::Tab({ 3, 17 }),
         makeWidget     ({                      2, 45 }, {      kScrollWidth,           kScrollHeight }, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                                  ),
         makeWidget     ({ kWindowSize.width - 26, 59 }, {                24,                      24 }, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 )
     );

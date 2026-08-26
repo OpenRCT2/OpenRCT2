@@ -12,6 +12,8 @@
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -87,9 +89,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMainStaffWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({ 0, 43 }, { 190, 137 }, WidgetType::resize, WindowColour::secondary),
-        makeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),
-        makeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),
-        makeTab({ 65, 17 }, STR_STAFF_STATS_TIP)
+        Widgets::Tab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),
+        Widgets::Tab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),
+        Widgets::Tab({ 65, 17 }, STR_STAFF_STATS_TIP)
     );
 
     static constexpr auto _staffOverviewWidgets = makeWidgets(
@@ -106,12 +108,12 @@ namespace OpenRCT2::Ui::Windows
     //0x9AF910
     static constexpr auto _staffOptionsWidgets = makeWidgets(
         kMainStaffWidgets,
-        makeWidget     ({      5,  50},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 1
-        makeWidget     ({      5,  67},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 2
-        makeWidget     ({      5,  84},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 3
-        makeWidget     ({      5, 101},                {180,  12}, WidgetType::checkbox,     WindowColour::secondary                                            ), // Checkbox 4
-        makeWidget     ({      5,  50},                {180,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                            ), // Costume Dropdown
-        makeWidget     ({kWindowSize.width - 17,  51}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP) // Costume Dropdown Button
+        Widgets::Checkbox({      5,  50},                {180,  12},                           WindowColour::secondary                                            ), // Checkbox 1
+        Widgets::Checkbox({      5,  67},                {180,  12},                           WindowColour::secondary                                            ), // Checkbox 2
+        Widgets::Checkbox({      5,  84},                {180,  12},                           WindowColour::secondary                                            ), // Checkbox 3
+        Widgets::Checkbox({      5, 101},                {180,  12},                           WindowColour::secondary                                            ), // Checkbox 4
+        makeWidget       ({      5,  50},                {180,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                            ), // Costume Dropdown
+        makeWidget       ({kWindowSize.width - 17,  51}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP) // Costume Dropdown Button
     );
 
     // 0x9AF9F4

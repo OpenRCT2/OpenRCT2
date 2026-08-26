@@ -48,15 +48,12 @@ namespace OpenRCT2::Ui
     static void WidgetProgressBarDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetHorizontalSeparatorDraw(RenderTarget& rt, WindowBase& w, const Widget& widget);
     static void WidgetGroupboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCaptionDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCheckboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetCloseboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetScrollDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetHScrollbarDraw(
         RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
     static void WidgetVScrollbarDraw(
         RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
-    static void WidgetDrawImage(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
     /**
      *
@@ -64,7 +61,7 @@ namespace OpenRCT2::Ui
      */
     void widgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
-        const auto* widget = getWidgetByIndex(w, widgetIndex);
+        auto* widget = getWidgetByIndex(w, widgetIndex);
         if (widget == nullptr)
         {
             LOG_ERROR("Tried drawing an out-of-bounds widget index!");
@@ -73,6 +70,12 @@ namespace OpenRCT2::Ui
 
         if (!widget->isVisible())
             return;
+
+        if (widget->events.draw != nullptr)
+        {
+            widget->events.draw(rt, *widget, widgetIndex, w);
+            return;
+        }
 
         switch (widget->type)
         {
@@ -87,7 +90,6 @@ namespace OpenRCT2::Ui
                 break;
             case WidgetType::colourBtn:
             case WidgetType::trnBtn:
-            case WidgetType::tab:
                 WidgetTabDraw(rt, w, widgetIndex);
                 break;
             case WidgetType::flatBtn:
@@ -112,17 +114,11 @@ namespace OpenRCT2::Ui
             case WidgetType::groupbox:
                 WidgetGroupboxDraw(rt, w, widgetIndex);
                 break;
-            case WidgetType::caption:
-                WidgetCaptionDraw(rt, w, widgetIndex);
-                break;
             case WidgetType::closeBox:
                 WidgetCloseboxDraw(rt, w, widgetIndex);
                 break;
             case WidgetType::scroll:
                 WidgetScrollDraw(rt, w, widgetIndex);
-                break;
-            case WidgetType::checkbox:
-                WidgetCheckboxDraw(rt, w, widgetIndex);
                 break;
             case WidgetType::textBox:
                 WidgetTextBoxDraw(rt, w, widgetIndex);
@@ -537,74 +533,6 @@ namespace OpenRCT2::Ui
 
     /**
      *
-     *  rct2: 0x006EB2F9
-     */
-    static void WidgetCaptionDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
-    {
-        // Get the widget
-        const auto* widget = &w.widgets[widgetIndex];
-
-        // Resolve the absolute ltrb
-        auto topLeft = w.windowPos + ScreenCoordsXY{ widget->left, widget->top };
-        auto bottomRight = w.windowPos + ScreenCoordsXY{ widget->right, widget->bottom };
-
-        auto colour = w.colours[widget->colour];
-
-        auto brightness = Rectangle::FillBrightness::light;
-        if (w.flags.has(WindowFlag::higherContrastOnPress))
-            brightness = Rectangle::FillBrightness::dark;
-
-        Rectangle::fillInset(
-            rt, { topLeft, bottomRight }, colour, Rectangle::BorderStyle::inset, brightness,
-            Rectangle::FillMode::dontLightenWhenInset);
-
-        // Black caption bars look slightly green, this fixes that
-        if (colour.colour == Drawing::Colour::black)
-            Rectangle::fill(
-                rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
-                getColourMap(colour.colour).dark);
-        else
-            Rectangle::filter(
-                rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
-                FilterPaletteID::paletteDarken3);
-
-        // Draw text
-        if (!widget->flags.has(WidgetFlag::textIsString) && widget->text == kStringIdNone)
-            return;
-
-        topLeft = w.windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
-        int32_t width = widget->width() - 5;
-
-        if (static_cast<size_t>(widgetIndex + 1) < w.widgets.size()
-            && (w.widgets[widgetIndex + 1]).type == WidgetType::closeBox)
-        {
-            width -= kCloseButtonSize;
-            if (static_cast<size_t>(widgetIndex + 2) < w.widgets.size()
-                && (w.widgets[widgetIndex + 2]).type == WidgetType::closeBox)
-                width -= kCloseButtonSize;
-        }
-        topLeft.x += width / 2;
-        if (Config::Get().interface.windowButtonsOnTheLeft)
-            topLeft.x += kCloseButtonSize;
-        if (Config::Get().interface.enlargedUi)
-            topLeft.y += kTitleHeightLarge / 4;
-
-        Formatter ft{};
-        bool hasStringPtr = widget->flags.has(WidgetFlag::textIsString);
-        auto formatString = widget->text;
-        if (hasStringPtr)
-        {
-            formatString = STR_STRING;
-            ft.Add<const utf8*>(widget->string);
-        }
-
-        drawTextEllipsised(
-            rt, topLeft, width, formatString, ft,
-            { ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true), TextAlignment::centre });
-    }
-
-    /**
-     *
      *  rct2: 0x006EBB85
      */
     static void WidgetCloseboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
@@ -639,56 +567,6 @@ namespace OpenRCT2::Ui
             colour.flags.set(ColourFlag::inset, true);
 
         drawText(rt, crossMidPoint, widget.string, { colour, TextAlignment::centre });
-    }
-
-    /**
-     *
-     *  rct2: 0x006EBAD9
-     */
-    static void WidgetCheckboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
-    {
-        // Get the widget
-        const auto& widget = w.widgets[widgetIndex];
-
-        // Resolve the absolute ltb
-        ScreenCoordsXY topLeft = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
-        ScreenCoordsXY bottomRight = w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom };
-        ScreenCoordsXY midLeft = { topLeft.x, (topLeft.y + bottomRight.y) / 2 };
-
-        auto colour = w.colours[widget.colour];
-
-        // checkbox
-        Rectangle::fillInset(
-            rt, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, Rectangle::BorderStyle::inset,
-            Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
-
-        if (widgetIsDisabled(w, widgetIndex))
-        {
-            colour.flags.set(ColourFlag::inset, true);
-        }
-
-        // fill it when checkbox is pressed
-        if (widgetIsPressed(w, widgetIndex))
-        {
-            drawText(
-                rt, { midLeft - ScreenCoordsXY{ 0, 5 } }, kCheckMarkString,
-                { colour.withFlag(ColourFlag::translucent, false) });
-        }
-
-        // draw the text
-        if (widget.text == kStringIdNone)
-            return;
-
-        auto stringId = widget.text;
-        auto ft = Formatter();
-        if (widget.flags.has(WidgetFlag::textIsString))
-        {
-            stringId = STR_STRING;
-            ft.Add<utf8*>(widget.string);
-        }
-
-        drawTextEllipsised(
-            rt, w.windowPos + ScreenCoordsXY{ widget.left + 14, widget.textTop() }, widget.width() - 15, stringId, ft, colour);
     }
 
     /**
@@ -865,7 +743,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB951
      */
-    static void WidgetDrawImage(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
+    void WidgetDrawImage(RenderTarget& rt, const WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -879,8 +757,10 @@ namespace OpenRCT2::Ui
         auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
         if (widget.type == WidgetType::colourBtn || widget.type == WidgetType::trnBtn || widget.type == WidgetType::tab)
+        {
             if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
                 image = image.WithIndexOffset(1);
+        }
 
         const auto colour = w.colours[widget.colour].colour;
         if (widgetIsDisabled(w, widgetIndex))
