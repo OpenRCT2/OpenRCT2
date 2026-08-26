@@ -18,6 +18,7 @@
 #include "../SettingsTypes.hpp"
 
 #include <functional>
+#include <memory>
 #include <optional>
 #include <random>
 #include <unordered_map>
