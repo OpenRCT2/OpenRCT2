@@ -11,6 +11,10 @@
 
 #include "../core/EnumUtils.hpp"
 
+#ifdef _DEBUG
+    #include "PaletteIndex.h"
+#endif
+
 #include <cassert>
 
 namespace OpenRCT2::Drawing
