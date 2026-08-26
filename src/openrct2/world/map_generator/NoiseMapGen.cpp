@@ -16,14 +16,15 @@
 #include "MapHelpers.h"
 #include "Noise.h"
 
-#define _USE_MATH_DEFINES
-#include <cmath>
 #include <memory>
 #include <variant>
 
 namespace OpenRCT2::World::MapGenerator
 {
     using BiasData = std::variant<std::unique_ptr<Noise>, VecXY>;
+
+    // TODO msvc _USE_MATH_DEFINES bs
+    static constexpr auto kPi = 3.14159265358979323846264338327950288;
 
     static BiasData prepareBias(const MapGenContext& ctx)
     {
@@ -102,7 +103,7 @@ namespace OpenRCT2::World::MapGenerator
                 const float xr = r.x * nx + r.y * ny;
                 const float yr = -r.y * nx + r.x * ny;
                 const float z = std::clamp(16.0f * std::pow(yr, 4.0f) - 8.0f * std::pow(xr, 3.0f), 0.0f, 1.0f);
-                const float d = std::pow(0.5f * std::sin(M_PI * 0.5f * z) + 0.5f, 3.0f);
+                const float d = std::pow(0.5f * std::sin(kPi * 0.5f * z) + 0.5f, 3.0f);
                 return Smoothstep(0.0f, 1.0f, 1.0f - (1.0f - d) * biasStrength) * noise;
             }
             case Bias::coastal:
