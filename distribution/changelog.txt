@@ -12,6 +12,7 @@
 - Improved: [#26931] The save prompt now bounces the macOS dock icon, flashes the Windows taskbar button and marks Linux windows urgent when it blocks quitting an unfocused game.
 - Improved: [#26936] Rain is now drawn next to the top toolbar, but only when it is centred.
 - Fix: [#18197] Track Designs Manager does not autoload scenery.
+- Fix: [#18415] Preview in the Track Designs Manager is not updated after deleting the first design.
 - Fix: [#21632] [Plugin] Crash when loading custom image larger than 300 by 300 pixels.
 - Fix: [#24610] Graph tabs on Finances window get a little bit longer every time you switch between them.
 - Fix: [#25169] The convert command strips custom objects from the resulting park.
