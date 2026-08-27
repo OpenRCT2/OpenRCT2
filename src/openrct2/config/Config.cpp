@@ -47,12 +47,33 @@ static constexpr bool kWindowButtonsOnTheLeftDefault = false;
 #endif
 #ifdef __ANDROID__
 static constexpr bool kEnlargedUiDefault = true;
+// On touchscreens, committing a tool on touch-down means a single tap builds. See #17101.
+static constexpr bool kTouchPlaceOnReleaseDefault = true;
+// One finger pans and two fingers pinch-zoom, rather than a finger acting as a mouse.
+static constexpr bool kTouchGesturesDefault = true;
+// A gesture that removes what is under it is far too easy to trigger by accident. See #6146.
+static constexpr bool kTouchNoSecondaryActionDefault = true;
+// Without a visible confirm step there is nothing on screen saying a tap is about to build.
+static constexpr bool kTouchActionBarDefault = true;
+// A finger cannot hover, so without this the first touch on a list item is already the choice.
+static constexpr bool kTouchTapToPreviewDefault = true;
+// Cascading from a corner suits a monitor, not a phone held in two hands.
+static constexpr bool kTouchCentreWindowsDefault = true;
+// A gesture that fires without moving anything visible needs some other sign that it landed.
+static constexpr bool kTouchHapticsDefault = true;
 // Android phones can come with rounded screen corners, making corner buttons harder to access.
 static constexpr bool kToolbarButtonsCentredDefault = true;
 // Android platform code returns a more appropiate default than SDL.
 static constexpr bool kInferDisplayDPIDefault = false;
 #else
 static constexpr bool kEnlargedUiDefault = false;
+static constexpr bool kTouchPlaceOnReleaseDefault = false;
+static constexpr bool kTouchGesturesDefault = false;
+static constexpr bool kTouchNoSecondaryActionDefault = false;
+static constexpr bool kTouchActionBarDefault = false;
+static constexpr bool kTouchTapToPreviewDefault = false;
+static constexpr bool kTouchCentreWindowsDefault = false;
+static constexpr bool kTouchHapticsDefault = false;
 static constexpr bool kToolbarButtonsCentredDefault = false;
 static constexpr bool kInferDisplayDPIDefault = true;
 #endif
@@ -408,6 +429,13 @@ namespace OpenRCT2::Config
             model->windowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
             model->enlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
             model->touchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
+            model->touchPlaceOnRelease = reader->GetBoolean("touch_place_on_release", kTouchPlaceOnReleaseDefault);
+            model->touchGestures = reader->GetBoolean("touch_gestures", kTouchGesturesDefault);
+            model->touchNoSecondaryAction = reader->GetBoolean("touch_no_secondary_action", kTouchNoSecondaryActionDefault);
+            model->touchActionBar = reader->GetBoolean("touch_action_bar", kTouchActionBarDefault);
+            model->touchTapToPreview = reader->GetBoolean("touch_tap_to_preview", kTouchTapToPreviewDefault);
+            model->touchCentreWindows = reader->GetBoolean("touch_centre_windows", kTouchCentreWindowsDefault);
+            model->touchHaptics = reader->GetBoolean("touch_haptics", kTouchHapticsDefault);
         }
     }
 
@@ -435,6 +463,13 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("window_buttons_on_the_left", model->windowButtonsOnTheLeft);
         writer->WriteBoolean("enlarged_ui", model->enlargedUi);
         writer->WriteBoolean("touch_enhancements", model->touchEnhancements);
+        writer->WriteBoolean("touch_place_on_release", model->touchPlaceOnRelease);
+        writer->WriteBoolean("touch_gestures", model->touchGestures);
+        writer->WriteBoolean("touch_no_secondary_action", model->touchNoSecondaryAction);
+        writer->WriteBoolean("touch_action_bar", model->touchActionBar);
+        writer->WriteBoolean("touch_tap_to_preview", model->touchTapToPreview);
+        writer->WriteBoolean("touch_centre_windows", model->touchCentreWindows);
+        writer->WriteBoolean("touch_haptics", model->touchHaptics);
     }
 
     static void ReadSound(IIniReader* reader)

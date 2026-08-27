@@ -29,6 +29,7 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/WindowTypes.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
 #include <optional>
@@ -66,6 +67,34 @@ namespace OpenRCT2
 
     static std::optional<uint32_t> _clickRepeatTicks;
 
+    // Set when a touch interaction has positioned a tool but not yet committed it.
+    // Only ever set when Config::interface.touchPlaceOnRelease is enabled AND the
+    // input originated from a touchscreen; a mouse can never set this.
+    static bool _touchToolArmed = false;
+    static ScreenCoordsXY _touchToolArmPos = {};
+
+    // How far a finger must travel before an armed tool is treated as a drag rather than a tap.
+    static constexpr int32_t kTouchDragThreshold = 5;
+
+    // Long enough to feel as a distinct tick, short enough not to read as an error buzz.
+    static constexpr int32_t kTouchCommitVibrationMs = 20;
+
+    // Set while a one-finger drag is panning the viewport, so the release is not also a tap.
+    static bool _touchPanning = false;
+
+    // Set while the touch action bar is holding a positioned but uncommitted tool. Unlike
+    // _touchToolArmed this survives the input state resetting, because it is owned by the bar
+    // rather than by the press that created it, and is cleared only by the bar or by the tool
+    // going away.
+    static bool _touchToolHeld = false;
+    static ScreenCoordsXY _touchToolHeldPos = {};
+
+    // Set while a multi-finger gesture owns the screen. Queued button input is discarded rather
+    // than acted on, because events are stored during the event pump and only drained afterwards:
+    // without this, a press queued before the second finger landed would still be processed and
+    // would re-arm the very interaction the gesture just cancelled.
+    static bool _touchGestureActive = false;
+
     static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
     static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex);
     static void InputWidgetOverChangeCheck(WindowClass windowClass, WindowNumber windowNumber, WidgetIndex widgetIndex);
@@ -86,6 +115,7 @@ namespace OpenRCT2
     static void InputWindowResizeBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
     static void InputWindowResizeContinue(WindowBase& w, const ScreenCoordsXY& screenCoords);
     static void InputWindowResizeEnd();
+    static bool InputTouchPanContinue(WindowBase& w, const ScreenCoordsXY& screenCoords);
     static void InputViewportDragBegin(WindowBase& w);
     static void InputViewportDragContinue();
     static void InputViewportDragEnd();
@@ -130,8 +160,37 @@ namespace OpenRCT2
 
             GameHandleInputMouse(screenCoords, state);
             ProcessMouseOver(screenCoords);
-            ProcessMouseTool(screenCoords);
+
+            // Once the action bar is holding a positioned tool, the preview belongs on the tile the
+            // player chose rather than under the finger. Otherwise reaching for the bar drags the
+            // ghost off the map, where there is no tile, and the tool deletes it -- which is why
+            // rotating made the ghost disappear.
+            ProcessMouseTool(_touchToolHeld ? _touchToolHeldPos : screenCoords);
         }
+    }
+
+    static bool IsTouchInput()
+    {
+        const CursorState* cursorState = ContextGetCursorState();
+        return cursorState != nullptr && cursorState->touch;
+    }
+
+    static bool ShouldUseTouchGestures()
+    {
+        return Config::Get().interface.touchGestures && IsTouchInput();
+    }
+
+    static bool ShouldDeferToolCommit()
+    {
+        return Config::Get().interface.touchPlaceOnRelease && IsTouchInput();
+    }
+
+    /**
+     * Whether the commit should wait for an explicit Confirm rather than happening on release.
+     */
+    static bool ShouldHoldToolForActionBar()
+    {
+        return Config::Get().interface.touchActionBar && ShouldDeferToolCommit();
     }
 
     /**
@@ -276,6 +335,9 @@ namespace OpenRCT2
      */
     static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState state)
     {
+        if (_touchGestureActive)
+            return;
+
         WindowBase* w;
         Widget* widget;
         WidgetIndex widgetIndex;
@@ -290,6 +352,8 @@ namespace OpenRCT2
         switch (_inputState)
         {
             case InputState::reset:
+                _touchToolArmed = false;
+                _touchPanning = false;
                 WindowTooltipReset(screenCoords);
                 [[fallthrough]];
             case InputState::normal:
@@ -387,6 +451,20 @@ namespace OpenRCT2
                             break;
                         }
 
+                        // A finger has no second button to drag the view with, so a one-finger drag
+                        // pans, and it does so whether or not a tool is active. Panning is the most
+                        // frequent thing a player does; making it conditional on the tool means there
+                        // are moments when the map simply cannot be moved.
+                        //
+                        // The title sequence drives its own camera, and the mouse is refused a drag
+                        // there for that reason, so a finger is refused it too.
+                        if (ShouldUseTouchGestures() && !w->flags.has(WindowFlag::noScrolling)
+                            && gLegacyScene != LegacyScene::titleSequence)
+                        {
+                            if (InputTouchPanContinue(*w, screenCoords))
+                                break;
+                        }
+
                         if (!gInputFlags.has(InputFlag::leftMousePressed))
                             break;
 
@@ -402,23 +480,55 @@ namespace OpenRCT2
                             break;
                         }
 
+                        if (_touchToolArmed)
+                        {
+                            // A drag belongs to the camera, so a tool must never see one from a finger.
+                            // onToolDrag is the path that sizes an area by dragging; on touch the tools
+                            // that offer that (Land, Water, Clear Scenery) are sized by their own +/-
+                            // buttons instead, which keeps one meaning for a drag everywhere.
+                            break;
+                        }
+
                         w->onToolDrag(gCurrentToolWidget.widgetIndex, screenCoords);
                         break;
                     case MouseState::leftRelease:
                         _inputState = InputState::reset;
                         if (_dragWidget.windowNumber == w->number)
                         {
-                            if (gInputFlags.has(InputFlag::toolActive))
+                            if (_touchPanning)
+                            {
+                                // The gesture was a pan. It neither positions a tool nor selects
+                                // whatever it happened to finish over.
+                                _touchPanning = false;
+                            }
+                            else if (gInputFlags.has(InputFlag::toolActive))
                             {
                                 w = windowMgr->FindByNumber(
                                     gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber);
                                 if (w != nullptr)
                                 {
+                                    if (_touchToolArmed && ShouldHoldToolForActionBar())
+                                    {
+                                        // Hand the positioned tool to the action bar and wait for
+                                        // Confirm. Lifting the finger has only chosen a tile.
+                                        _touchToolArmed = false;
+                                        _touchToolHeld = true;
+                                        _touchToolHeldPos = screenCoords;
+                                        Windows::TouchActionBarOpen();
+                                        break;
+                                    }
+
+                                    if (_touchToolArmed)
+                                    {
+                                        w->onToolDown(gCurrentToolWidget.widgetIndex, screenCoords);
+                                        _touchToolArmed = false;
+                                    }
                                     w->onToolUp(gCurrentToolWidget.widgetIndex, screenCoords);
                                 }
                             }
-                            else if (!gInputFlags.has(InputFlag::leftMousePressed))
+                            else if (!gInputFlags.has(InputFlag::leftMousePressed) && !_touchPanning)
                             {
+                                // A pan is not a tap, so it must not also select whatever it finished over.
                                 ViewportInteractionLeftClick(screenCoords);
                             }
                         }
@@ -530,6 +640,71 @@ namespace OpenRCT2
 
 #pragma region Viewport dragging
 
+    /**
+     * Scrolls a window's viewport by a screen-space delta.
+     *
+     * Shared by mouse dragging and by touch panning, so the two feel identical.
+     */
+    static void ApplyViewportDrag(WindowBase& w, const Viewport& viewport, ScreenCoordsXY differentialCoords)
+    {
+        // applying the zoom only with negative values avoids a "deadzone" effect where small positive value round to
+        // zero.
+        const bool posX = differentialCoords.x > 0;
+        const bool posY = differentialCoords.y > 0;
+        differentialCoords.x = (viewport.zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+        differentialCoords.y = (viewport.zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+        differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+        differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
+        if (Config::Get().general.invertViewportDrag)
+        {
+            w.savedViewPos -= differentialCoords;
+        }
+        else
+        {
+            w.savedViewPos += differentialCoords;
+        }
+    }
+
+    /**
+     * Pans a viewport with a one-finger drag.
+     *
+     * @return true if the gesture is a pan and has been handled, false if the finger has not yet
+     *         travelled far enough and the gesture may still turn out to be a tap.
+     */
+    static bool InputTouchPanContinue(WindowBase& w, const ScreenCoordsXY& screenCoords)
+    {
+        const auto delta = screenCoords - gInputDragLast;
+
+        if (!_touchPanning)
+        {
+            if (std::abs(delta.x) < kTouchDragThreshold && std::abs(delta.y) < kTouchDragThreshold)
+                return false;
+
+            _touchPanning = true;
+
+            // The press that started this drag may have positioned a tool. A drag is not a tap,
+            // so that positioning is abandoned rather than confirmed when the finger lifts.
+            _touchToolArmed = false;
+            w.flags.unset(WindowFlag::scrollingToLocation);
+
+            // Only unfollow sprites for the main window or 'extra viewport' windows.
+            // Don't unfollow for windows where the viewport is always supposed to follow (e.g. Ride, Guest, Staff).
+            auto* mainWindow = WindowGetMain();
+            if (&w == mainWindow || w.classification == WindowClass::viewport)
+            {
+                WindowUnfollowSprite(w);
+            }
+        }
+
+        if (delta.x != 0 || delta.y != 0)
+        {
+            ApplyViewportDrag(w, *w.viewport, delta);
+            gInputDragLast = screenCoords;
+        }
+        return true;
+    }
+
     static void InputViewportDragBegin(WindowBase& w)
     {
         w.flags.unset(WindowFlag::scrollingToLocation);
@@ -591,23 +766,7 @@ namespace OpenRCT2
                 // As the user moved the mouse, don't interpret it as right click in any case.
                 _ticksSinceDragStart = std::nullopt;
 
-                // applying the zoom only with negative values avoids a "deadzone" effect where small positive value round to
-                // zero.
-                const bool posX = differentialCoords.x > 0;
-                const bool posY = differentialCoords.y > 0;
-                differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
-                differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
-                differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
-                differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
-
-                if (Config::Get().general.invertViewportDrag)
-                {
-                    w->savedViewPos -= differentialCoords;
-                }
-                else
-                {
-                    w->savedViewPos += differentialCoords;
-                }
+                ApplyViewportDrag(*w, *viewport, differentialCoords);
             }
         }
 
@@ -1088,7 +1247,18 @@ namespace OpenRCT2
                     if (w != nullptr)
                     {
                         gInputFlags.set(InputFlag::leftMousePressed);
-                        w->onToolDown(gCurrentToolWidget.widgetIndex, screenCoords);
+                        if (ShouldDeferToolCommit())
+                        {
+                            // Touch: move the ghost to the touched tile and arm the tool. The commit happens
+                            // on release, or as soon as the finger travels far enough to be a drag. See #17101.
+                            _touchToolArmed = true;
+                            _touchToolArmPos = screenCoords;
+                            w->onToolUpdate(gCurrentToolWidget.widgetIndex, screenCoords);
+                        }
+                        else
+                        {
+                            w->onToolDown(gCurrentToolWidget.widgetIndex, screenCoords);
+                        }
                     }
                 }
                 break;
@@ -1230,7 +1400,10 @@ namespace OpenRCT2
             WindowBase* w = windowMgr->FindByNumber(gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber);
 
             if (w == nullptr)
+            {
+                _touchToolArmed = false;
                 ToolCancel();
+            }
             else if (InputGetState() != InputState::viewportRight)
                 w->onToolUpdate(gCurrentToolWidget.widgetIndex, screenCoords);
         }
@@ -1627,6 +1800,88 @@ namespace OpenRCT2
             scrollY = 1;
 
         InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
+    }
+
+    /**
+     * Marks a multi-finger gesture as owning the screen.
+     *
+     * Entering one abandons any in-flight single-finger interaction without committing it: a
+     * pinch must not also place whatever the first finger had armed, nor leave the state machine
+     * stranded mid-drag. While active, button input is ignored entirely.
+     */
+    /**
+     * Abandons an in-flight one-finger interaction without committing it.
+     *
+     * Used when a long press reinterprets the touch as a secondary action: the tool was armed on
+     * press but nothing has been placed yet, so the arming is simply dropped.
+     */
+    ScreenCoordsXY InputGetHeldTouchToolPosition()
+    {
+        return _touchToolHeldPos;
+    }
+
+    bool InputIsTouchToolHeld()
+    {
+        return _touchToolHeld && gInputFlags.has(InputFlag::toolActive);
+    }
+
+    /**
+     * Commits the tool the action bar is holding, at the tile the player positioned it on.
+     */
+    void InputCommitHeldTouchTool()
+    {
+        if (!InputIsTouchToolHeld())
+        {
+            _touchToolHeld = false;
+            return;
+        }
+
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->FindByNumber(gCurrentToolWidget.windowClassification, gCurrentToolWidget.windowNumber);
+        _touchToolHeld = false;
+        if (w == nullptr)
+            return;
+
+        // A touchscreen has no click to feel, so without this the only confirmation that the
+        // button did anything is the result appearing on the map.
+        if (Config::Get().interface.touchHaptics)
+        {
+            Platform::Vibrate(kTouchCommitVibrationMs);
+        }
+
+        w->onToolDown(gCurrentToolWidget.widgetIndex, _touchToolHeldPos);
+        w->onToolUp(gCurrentToolWidget.widgetIndex, _touchToolHeldPos);
+    }
+
+    void InputReleaseHeldTouchTool()
+    {
+        _touchToolHeld = false;
+    }
+
+    void InputCancelTouchInteraction()
+    {
+        _touchToolArmed = false;
+        _touchPanning = false;
+        gInputFlags.unset(InputFlag::leftMousePressed);
+        if (_inputState == InputState::viewportLeft)
+        {
+            _inputState = InputState::reset;
+        }
+    }
+
+    void InputSetTouchGestureActive(bool active)
+    {
+        _touchGestureActive = active;
+        if (!active)
+            return;
+
+        _touchToolArmed = false;
+        _touchPanning = false;
+        gInputFlags.unset(InputFlag::leftMousePressed);
+        if (_inputState == InputState::viewportLeft || _inputState == InputState::viewportRight)
+        {
+            _inputState = InputState::reset;
+        }
     }
 
     void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)

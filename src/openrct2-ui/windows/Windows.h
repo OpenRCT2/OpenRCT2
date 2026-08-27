@@ -359,6 +359,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleOptionsOpen();
 
     // TitleVersion
+    WindowBase* TouchActionBarOpen();
     WindowBase* TitleVersionOpen();
 
     // Tooltip

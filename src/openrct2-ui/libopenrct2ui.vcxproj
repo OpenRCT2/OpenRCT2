@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
@@ -68,6 +68,7 @@
     <ClInclude Include="input\MouseInput.h" />
     <ClInclude Include="input\ShortcutIds.h" />
     <ClInclude Include="input\ShortcutManager.h" />
+    <ClInclude Include="input\TouchInput.h" />
     <ClInclude Include="interface\Dropdown.h" />
     <ClInclude Include="interface\Graph.h" />
     <ClInclude Include="interface\FileBrowser.h" />
@@ -136,6 +137,7 @@
     <ClCompile Include="input\MouseInput.cpp" />
     <ClCompile Include="input\ShortcutInput.cpp" />
     <ClCompile Include="input\ShortcutManager.cpp" />
+    <ClCompile Include="input\TouchInput.cpp" />
     <ClCompile Include="interface\Graph.cpp" />
     <ClCompile Include="interface\FileBrowser.cpp" />
     <ClCompile Include="interface\InGameConsole.cpp" />
@@ -234,6 +236,7 @@
     <ClCompile Include="windows\TitleLogo.cpp" />
     <ClCompile Include="windows\TitleMenu.cpp" />
     <ClCompile Include="windows\TitleOptions.cpp" />
+    <ClCompile Include="windows\TouchActionBar.cpp" />
     <ClCompile Include="windows\TitleVersion.cpp" />
     <ClCompile Include="windows\Tooltip.cpp" />
     <ClCompile Include="windows\TopToolbar.cpp" />

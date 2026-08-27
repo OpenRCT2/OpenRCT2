@@ -3839,3 +3839,24 @@ STR_7039    :Ride type
 STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
+STR_7043    :Place on touch release
+STR_7044    :When using a touchscreen, the item is placed where you lift your finger rather than where you first touch the screen.
+STR_7045    :Touch gestures
+STR_7046    :When using a touchscreen, drag with one finger to scroll the view and pinch with two fingers to zoom.
+STR_7047    :No demolish gesture
+STR_7048    :When using a touchscreen, holding or tapping twice no longer removes what is underneath. Use Clear Scenery and the Destroy button.
+STR_7049    :Rotate
+STR_7050    :Rotate the object before placing it.
+STR_7051    :Build
+STR_7052    :Build the object where you positioned it.
+STR_7053    :Cancel
+STR_7054    :Discard the object without building it.
+STR_7055    :Confirm before building on touch
+STR_7056    :When using a touchscreen, tapping the map positions the object and shows a bar to confirm or cancel, rather than building straight away.
+STR_7057    :Tap once to preview in lists
+STR_7058    :When using a touchscreen, tapping a ride, object or design shows what it is. Tap it again to choose it.
+STR_7059    :Centre ride and scenery windows
+STR_7060    :When using a touchscreen, open the ride, scenery and track design windows in the middle of the screen.
+STR_7061    :Vibration feedback
+STR_7062    :Vibrate briefly when something is built or removed, since a touchscreen has no click to feel.
+STR_7063    :Demolish everything inside the marked area.

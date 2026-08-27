@@ -172,6 +172,36 @@ namespace OpenRCT2::Platform
     bool ProcessIsElevated();
     float GetDefaultScale();
 
+    /**
+     * Screen edges that are physically obscured, in pixels.
+     *
+     * Phones put camera cutouts and rounded corners inside the drawable area, so the outermost
+     * pixels of a fullscreen window are not necessarily visible. Zero on platforms with no such
+     * notion, which is every desktop.
+     */
+    struct SafeAreaInsets
+    {
+        int32_t left{};
+        int32_t top{};
+        int32_t right{};
+        int32_t bottom{};
+
+        constexpr bool IsEmpty() const
+        {
+            return left == 0 && top == 0 && right == 0 && bottom == 0;
+        }
+    };
+
+    SafeAreaInsets GetSafeAreaInsets();
+
+    /**
+     * Briefly vibrates the device, where the platform has a vibrator. A no-op everywhere else.
+     *
+     * Touch has no click and no cursor, so a gesture that fires without moving anything visible --
+     * a long press in particular -- gives the player nothing to tell them it registered.
+     */
+    void Vibrate(int32_t durationMs);
+
     std::optional<RCT2Variant> classifyGamePath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);
 
