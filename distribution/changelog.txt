@@ -18,6 +18,7 @@
 - Fix: [#25496] The guest pickup button does not grey out when the guest’s state changes while the window is open.
 - Fix: [#25558] [Plugin] Image buttons ignore their explicit border setting when a theme draws borders around them.
 - Fix: [#26056] Freeze when trying to download all objects on save where they are missing.
+- Fix: [#26802] Opening rides with 0 or -1 water cars per train crash the game.
 - Fix: [#26811] Crash when a ride points to a non-existing station object.
 - Fix: [#26816] Water rides ignore zero clearances, preventing adjacent terrain modifications and building them anywhere.
 - Fix: [#26880] Max negative G-Force stat on flat track erroneously reads as 0.49g.
