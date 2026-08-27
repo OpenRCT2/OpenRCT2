@@ -20,6 +20,7 @@
 - Fix: [#15891] Lower case hard sign is drawn as upper case.
 - Fix: [#18197] Track Designs Manager does not autoload scenery.
 - Fix: [#18415] Preview in the Track Designs Manager is not updated after deleting the first design.
+- Fix: [#18782] Dropdowns do not close and become non-functional when mouse is released outside of the game window.
 - Fix: [#21632] [Plugin] Crash when loading custom image larger than 300 by 300 pixels.
 - Fix: [#22854] Network connections of plugins pile up every time another park is loaded.
 - Fix: [#24610] Graph tabs on Finances window get a little bit longer every time you switch between them.
@@ -42,6 +43,7 @@
 - Fix: [#26992] A partial or no car is drawn on the ride vehicle tab if the ride has 0 or fewer cars per train.
 - Fix: [#26996] Correct spelling of some rides in Heide-Park, Diamond Heights and Alton Towers.
 - Fix: [#26996] Scenario patch for Okinawa Coast doesn’t work for CD versions of Wacky Worlds (meaning landscape ownership fixes do not get applied).
+- Fix: [#27004] Windows are moved off-screen when mouse is released outside of the game window.
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
