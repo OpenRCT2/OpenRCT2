@@ -4241,7 +4241,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t HasTrackColour(const Ride& ride, int32_t trackColour)
         {
             // Get station flags (shops don't have them)
-            auto stationObjFlags = 0;
+            StationObjectFlags stationObjFlags{};
             if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             {
                 auto stationObj = ride.getStationObject();
@@ -4251,16 +4251,16 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (stationObjFlags == 0 && ride.getRideEntry()->flags.has(RideEntryFlag::disableColourTab))
+            if (stationObjFlags.isEmpty() && ride.getRideEntry()->flags.has(RideEntryFlag::disableColourTab))
                 return 0;
 
             switch (trackColour)
             {
                 case 0:
-                    return (stationObjFlags & StationObjectFlags::hasPrimaryColour)
+                    return stationObjFlags.has(StationObjectFlag::hasPrimaryColour)
                         || ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrackColourMain);
                 case 1:
-                    return (stationObjFlags & StationObjectFlags::hasSecondaryColour)
+                    return stationObjFlags.has(StationObjectFlag::hasSecondaryColour)
                         || ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrackColourAdditional);
                 case 2:
                     return ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrackColourSupports);
@@ -5233,7 +5233,7 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(rt, frontImageId, { 34, 20 });
 
             // Glass
-            if (stationObj->Flags & StationObjectFlags::isTransparent)
+            if (stationObj->Flags.has(StationObjectFlag::isTransparent))
             {
                 auto glassImageId = ImageId(stationObj->entranceFrontGlassIndex).WithTransparency(trackColour.main);
                 GfxDrawSprite(rt, glassImageId, { 34, 20 });

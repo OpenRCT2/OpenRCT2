@@ -5213,7 +5213,7 @@ namespace OpenRCT2
     bool RideHasStationShelter(const Ride& ride)
     {
         const auto* stationObj = ride.getStationObject();
-        return stationObj != nullptr && (stationObj->Flags & StationObjectFlags::hasShelter);
+        return stationObj != nullptr && stationObj->Flags.has(StationObjectFlag::hasShelter);
     }
 
     bool RideHasRatings(const Ride& ride)
