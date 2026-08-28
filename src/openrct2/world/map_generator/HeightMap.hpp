@@ -46,16 +46,16 @@ namespace OpenRCT2::World::MapGenerator
 
         HeightMap() = default;
 
-        uint8_t& operator[](TileCoordsXY pos)
+        uint8_t& operator[](const TileCoordsXY& position)
         {
-            assert(pos.x >= 0 || pos.y >= 0 || pos.x < width || pos.y < height);
-            return _height[pos.y * width + pos.x];
+            assert(0 <= position.x && position.x < width && 0 <= position.y && position.y < height);
+            return _height[position.y * width + position.x];
         }
 
-        const uint8_t& operator[](TileCoordsXY pos) const
+        const uint8_t& operator[](const TileCoordsXY& position) const
         {
-            assert(pos.x >= 0 || pos.y >= 0 || pos.x < width || pos.y < height);
-            return _height[pos.y * width + pos.x];
+            assert(0 <= position.x && position.x < width && 0 <= position.y && position.y < height);
+            return _height[position.y * width + position.x];
         }
 
         void clear()
