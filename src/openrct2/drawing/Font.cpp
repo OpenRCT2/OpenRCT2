@@ -237,11 +237,12 @@ static const std::unordered_map<UnicodeChar, int32_t> kCodepointOffsetMap = {
     { UnicodeChar::left, EnumValue(CSChar::left) - kCSSpriteFontOffset },
     { UnicodeChar::air, EnumValue(CSChar::air) - kCSSpriteFontOffset },
     { UnicodeChar::tick, EnumValue(CSChar::tick) - kCSSpriteFontOffset },
+    { UnicodeChar::dingbatMultiply, EnumValue(CSChar::cross) - kCSSpriteFontOffset },
     { UnicodeChar::plus, '+' - kCSSpriteFontOffset },
     { UnicodeChar::minus, '-' - kCSSpriteFontOffset },
 
     // Emoji
-    { UnicodeChar::cross, EnumValue(CSChar::cross) - kCSSpriteFontOffset },
+    { UnicodeChar::cross, 'X' - kCSSpriteFontOffset },
     { UnicodeChar::water, EnumValue(CSChar::water) - kCSSpriteFontOffset },
     { UnicodeChar::eye, SPR_FONTS_EYE - SPR_FONTS_BEGIN },
     { UnicodeChar::road, EnumValue(CSChar::road) - kCSSpriteFontOffset },

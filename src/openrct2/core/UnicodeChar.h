@@ -215,6 +215,7 @@ namespace OpenRCT2
         left = 0x25C0,
         air = 0x2601,
         tick = 0x2713,
+        dingbatMultiply = 0x2715,
         plus = 0x2795,
         minus = 0x2796,
 
