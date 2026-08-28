@@ -4241,7 +4241,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t HasTrackColour(const Ride& ride, int32_t trackColour)
         {
             // Get station flags (shops don't have them)
-            StationObjectFlags stationObjFlags;
+            StationObjectFlags stationObjFlags{};
             if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             {
                 auto stationObj = ride.getStationObject();
