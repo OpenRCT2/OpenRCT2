@@ -139,8 +139,7 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                CreateCrossingMode::none, isTree);
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -271,8 +270,7 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                CreateCrossingMode::none, isTree);
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
             if (canBuild.error != Status::ok)
             {
                 if (banner != nullptr)
