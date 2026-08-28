@@ -29,11 +29,12 @@
     #include <SDL_syswm.h>
     #include <mach-o/dyld.h>
     #pragma clang diagnostic pop
-    #include <openrct2/Diagnostic.h>
     #include "MacNativeInput.h"
+
+    #include <atomic>
+    #include <openrct2/Diagnostic.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/ui/UiContext.h>
-    #include <atomic>
     #include <string>
 
 namespace OpenRCT2::Ui
@@ -65,40 +66,42 @@ namespace OpenRCT2::Ui
             if (_nativeGestureMonitor != nil)
                 return;
 
-            _nativeGestureMonitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskScrollWheel | NSEventMaskMagnify
-                handler:^NSEvent*(NSEvent* event) {
-                    if (!Config::Get().general.nativeMacOSControls || event.window != _window)
-                        return event;
-                    if (event.type == NSEventTypeMagnify)
-                    {
-                        if (event.phase == NSEventPhaseBegan)
-                            _nativePinchHandled = false;
+            _nativeGestureMonitor = [NSEvent
+                addLocalMonitorForEventsMatchingMask:NSEventMaskScrollWheel | NSEventMaskMagnify
+                                             handler:^NSEvent*(NSEvent* event) {
+                                               if (!Config::Get().general.nativeMacOSControls || event.window != _window)
+                                                   return event;
+                                               if (event.type == NSEventTypeMagnify)
+                                               {
+                                                   if (event.phase == NSEventPhaseBegan)
+                                                       _nativePinchHandled = false;
 
-                        // Map the observed trackpad directions directly: pinch in zooms
-                        // out and pinch out zooms in. The first non-zero event completes
-                        // the gesture, so there is no distance threshold or slow buildup.
-                        if (!_nativePinchHandled && event.magnification > 0)
-                        {
-                            gNativePinch.fetch_add(1);
-                            _nativePinchHandled = true;
-                        }
-                        else if (!_nativePinchHandled && event.magnification < 0)
-                        {
-                            gNativePinch.fetch_sub(1);
-                            _nativePinchHandled = true;
-                        }
+                                                   // Map the observed trackpad directions directly: pinch in zooms
+                                                   // out and pinch out zooms in. The first non-zero event completes
+                                                   // the gesture, so there is no distance threshold or slow buildup.
+                                                   if (!_nativePinchHandled && event.magnification > 0)
+                                                   {
+                                                       gNativePinch.fetch_add(1);
+                                                       _nativePinchHandled = true;
+                                                   }
+                                                   else if (!_nativePinchHandled && event.magnification < 0)
+                                                   {
+                                                       gNativePinch.fetch_sub(1);
+                                                       _nativePinchHandled = true;
+                                                   }
 
-                        if (event.phase == NSEventPhaseEnded || event.phase == NSEventPhaseCancelled)
-                            _nativePinchHandled = false;
-                    }
-                    else
-                    {
-                        // Preserve both live and momentum scroll events. AppKit's scrollingDelta is already subpixel.
-                        gNativeScrollX.fetch_add(event.scrollingDeltaX);
-                        gNativeScrollY.fetch_add(event.scrollingDeltaY);
-                    }
-                    return nil;
-                }];
+                                                   if (event.phase == NSEventPhaseEnded || event.phase == NSEventPhaseCancelled)
+                                                       _nativePinchHandled = false;
+                                               }
+                                               else
+                                               {
+                                                   // Preserve both live and momentum scroll events. AppKit's scrollingDelta is
+                                                   // already subpixel.
+                                                   gNativeScrollX.fetch_add(event.scrollingDeltaX);
+                                                   gNativeScrollY.fetch_add(event.scrollingDeltaY);
+                                               }
+                                               return nil;
+                                             }];
         }
 
     public:

@@ -155,8 +155,7 @@ public:
         _nativeScrollY -= nativeScrollY;
 
         const auto pinch = PollNativeMacOSPinch();
-        if (Config::Get().general.nativeMacOSControls && pinch != 0
-            && ViewportFindFromPoint(_cursorState.position) != nullptr)
+        if (Config::Get().general.nativeMacOSControls && pinch != 0 && ViewportFindFromPoint(_cursorState.position) != nullptr)
         {
             for (auto i = std::abs(pinch); i > 0; --i)
                 Windows::MainWindowZoom(pinch > 0, true);
