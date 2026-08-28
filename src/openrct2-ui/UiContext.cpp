@@ -24,6 +24,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <memory>
+#include <openrct2-ui/MacNativeInput.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Window.h>
@@ -92,6 +93,10 @@ private:
     uint8_t _keysPressed[256] = {};
     uint32_t _lastGestureTimestamp = 0;
     float _gestureRadius = 0;
+#ifdef __APPLE__
+    float _nativeScrollX = 0;
+    float _nativeScrollY = 0;
+#endif
 
     InGameConsole _inGameConsole;
     std::unique_ptr<ITitleSequencePlayer> _titleSequencePlayer;
@@ -142,6 +147,45 @@ public:
 
     void Tick() override
     {
+#ifdef __APPLE__
+        float nativeScrollX = 0;
+        float nativeScrollY = 0;
+        PollNativeMacOSScroll(nativeScrollX, nativeScrollY);
+        _nativeScrollX -= nativeScrollX;
+        _nativeScrollY -= nativeScrollY;
+
+        const auto pinch = PollNativeMacOSPinch();
+        if (Config::Get().general.nativeMacOSControls && pinch != 0
+            && ViewportFindFromPoint(_cursorState.position) != nullptr)
+        {
+            for (auto i = std::abs(pinch); i > 0; --i)
+                Windows::MainWindowZoom(pinch > 0, true);
+        }
+
+        if (Config::Get().general.nativeMacOSControls)
+        {
+            auto* viewport = ViewportFindFromPoint(_cursorState.position);
+            auto* targetWindow = viewport == nullptr ? nullptr : _windowManager->GetOwner(viewport);
+            auto* mainWindow = WindowGetMain();
+            if (targetWindow != nullptr && targetWindow->viewport != nullptr
+                && (targetWindow == mainWindow || targetWindow->classification == WindowClass::viewport))
+            {
+                WindowUnfollowSprite(*targetWindow);
+                const auto scrollX = static_cast<int32_t>(std::lround(_nativeScrollX));
+                const auto scrollY = static_cast<int32_t>(std::lround(_nativeScrollY));
+                _nativeScrollX -= scrollX;
+                _nativeScrollY -= scrollY;
+                if (scrollX != 0 || scrollY != 0)
+                    InputScrollViewportSmooth({ scrollX, scrollY }, targetWindow);
+            }
+        }
+        else
+        {
+            _nativeScrollX = 0;
+            _nativeScrollY = 0;
+        }
+#endif
+
         _inGameConsole.Update();
 
         _windowManager->UpdateMapTooltip();
@@ -407,6 +451,15 @@ public:
                         _inGameConsole.Scroll(e.wheel.y * 3); // Scroll 3 lines at a time
                         break;
                     }
+#ifdef __APPLE__
+                    if (Config::Get().general.nativeMacOSControls && ViewportFindFromPoint(_cursorState.position) != nullptr)
+                    {
+                        // Fallback for precise events not intercepted by the native monitor.
+                        _nativeScrollX -= (e.wheel.preciseX != 0 ? e.wheel.preciseX : e.wheel.x);
+                        _nativeScrollY -= (e.wheel.preciseY != 0 ? e.wheel.preciseY : e.wheel.y);
+                        break;
+                    }
+#endif
                     _cursorState.wheel -= e.wheel.y;
                     break;
                 case SDL_MOUSEBUTTONDOWN:
@@ -558,6 +611,10 @@ public:
                     break;
                 }
                 case SDL_MULTIGESTURE:
+#ifdef __APPLE__
+                    if (Config::Get().general.nativeMacOSControls)
+                        break;
+#endif
                     if (e.mgesture.numFingers == 2)
                     {
                         if (e.mgesture.timestamp > _lastGestureTimestamp + 1000)

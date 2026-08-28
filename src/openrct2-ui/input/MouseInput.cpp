@@ -1696,6 +1696,16 @@ namespace OpenRCT2
         }
     }
 
+    void InputScrollViewportSmooth(float x, float y, WindowBase* targetWindow)
+    {
+        if (targetWindow == nullptr || targetWindow->viewport == nullptr || targetWindow->flags.has(WindowFlag::noScrolling))
+            return;
+
+        targetWindow->savedViewPos.x += static_cast<int32_t>(std::lround(x));
+        targetWindow->savedViewPos.y += static_cast<int32_t>(std::lround(y));
+        gInputFlags.set(InputFlag::viewportScrolling);
+    }
+
     void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords, WindowBase* targetWindow)
     {
         if (targetWindow == nullptr)
