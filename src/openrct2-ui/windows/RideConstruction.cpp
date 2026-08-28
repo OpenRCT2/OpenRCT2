@@ -1749,12 +1749,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STRAIGHT].setVisible(IsTrackEnabled(TrackGroup::straight));
             widgets[WIDX_LEFT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
             widgets[WIDX_RIGHT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
-            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
-            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_LEFT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
             widgets[WIDX_RIGHT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
-            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
-            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
+            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(
+                IsTrackEnabled(TrackGroup::curveSmall) || IsTrackEnabled(TrackGroup::curveVertical));
+            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(
+                IsTrackEnabled(TrackGroup::curveSmall) || IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_LEFT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
             widgets[WIDX_RIGHT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
 
