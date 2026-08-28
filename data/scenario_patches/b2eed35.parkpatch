@@ -1,6 +1,6 @@
 {
-    "scenario_name": "Okinawa Coast",
-    "sha256": "810829891e1bafa33b9ccc6c296bcfb1fc86b6d812c1fea28899b5e47c048628",
+    "scenario_name": "Okinawa Coast (CD)",
+    "sha256": "b2eed35919d3992139041b68eb3fbbfa5e3fd06e2cb9058e8f50c5d9f15974bf",
     "land_ownership": {
         "owned": {
             "coordinates": [
