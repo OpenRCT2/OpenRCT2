@@ -22,8 +22,20 @@ namespace OpenRCT2::RCT1
 {
     Drawing::Colour getColour(uint8_t colour, bool isBaseGame)
     {
-        if (isBaseGame && colour == 15)
-            return Drawing::Colour::gold;
+        if (isBaseGame)
+        {
+            switch (colour)
+            {
+                case 8:
+                    return Drawing::Colour::emerald;
+                case 15:
+                    return Drawing::Colour::gold;
+                case 17:
+                    return Drawing::Colour::amber;
+                case 23:
+                    return Drawing::Colour::ruby;
+            }
+        }
         
         static constexpr Drawing::Colour map[] =
         {
