@@ -225,7 +225,7 @@ static void PaintMagicCarpet(
             DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
             const StationObject* stationObject = ride.getStationObject();
 
-            if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
+            if (stationObject != nullptr && !stationObject->Flags.has(StationObjectFlag::noPlatforms))
             {
                 auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
