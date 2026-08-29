@@ -291,6 +291,37 @@ namespace OpenRCT2::GameActions
                 }
             }
 
+            const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
+            if (GetFlags().has(CommandFlag::ghost))
+            {
+                FootpathRemoveLitter(mapLoc);
+                if (rtd.flags.has(RtdFlag::noWallsAroundTrack))
+                {
+                    if (!WallCanRemoveAt(mapLocWithClearance))
+                    {
+                        return Result(Status::disallowed, STR_CANT_REMOVE_INTERSECTING_WALLS, STR_LAND_NOT_OWNED_BY_PARK);
+                    }
+                }
+                else
+                {
+                    // Remove walls in the directions this track intersects
+                    uint8_t intersectingDirections = ted.sequenceData.sequences[blockIndex].allowedWallEdges;
+                    intersectingDirections ^= 0x0F;
+                    intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
+                    for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
+                    {
+                        if (intersectingDirections & (1 << i))
+                        {
+                            if (!WallCanRemoveIntersectingWalls(mapLocWithClearance, i))
+                            {
+                                return Result(
+                                    Status::disallowed, STR_CANT_REMOVE_INTERSECTING_WALLS, STR_LAND_NOT_OWNED_BY_PARK);
+                            }
+                        }
+                    }
+                }
+            }
+
             resultData.GroundFlags = mapGroundFlags;
             if (ted.flags.has(TrackElementFlag::onlyAboveGround))
             {

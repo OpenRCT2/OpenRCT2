@@ -10,6 +10,7 @@
 #include "Wall.h"
 
 #include "Map.h"
+#include "TileElementsView.h"
 #include "tile_element/TileElement.h"
 #include "tile_element/WallElement.h"
 
@@ -38,15 +39,46 @@ void WallRemoveAtZ(const CoordsXYZ& wallPos)
     WallRemoveAt({ wallPos, wallPos.z, wallPos.z + 48 });
 }
 
+bool WallCanRemoveAt(const CoordsXYRangedZ& wallPos)
+{
+    for (const auto* wallElement : TileElementsView<WallElement>(wallPos))
+    {
+        if (wallElement->getClearanceZ() <= wallPos.baseZ || wallElement->getBaseZ() >= wallPos.clearanceZ)
+            continue;
+
+        if (!MapCanBuildAt({ wallPos, wallElement->getBaseZ() }))
+            return false;
+    }
+
+    return true;
+}
+
+bool WallCanRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
+{
+    for (const auto* wallElement : TileElementsView<WallElement>(wallPos))
+    {
+        if (wallElement->getClearanceZ() <= wallPos.baseZ || wallElement->getBaseZ() >= wallPos.clearanceZ)
+            continue;
+
+        if (direction != wallElement->getDirection())
+            continue;
+
+        if (!MapCanBuildAt({ wallPos, wallElement->getBaseZ() }))
+            return false;
+    }
+
+    return true;
+}
+
 /**
  *
  *  rct2: 0x006E5935
  */
-void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
+bool WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
 {
     TileElement* tileElement = MapGetFirstElementAt(wallPos);
     if (tileElement == nullptr)
-        return;
+        return true;
     do
     {
         if (tileElement->getType() != TileElementType::wall)
@@ -63,6 +95,8 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         TileElementRemove(tileElement);
         tileElement--;
     } while (!(tileElement++)->isLastForTile());
+
+    return true;
 }
 
 #pragma region Edge Slopes Table
