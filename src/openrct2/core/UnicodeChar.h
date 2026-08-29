@@ -200,6 +200,7 @@ namespace OpenRCT2::UnicodeChar
     // Currency
     constexpr char32_t guilder = 0x192;
     constexpr char32_t euro = 0x20AC;
+    constexpr char32_t won = 0x20A9;
     constexpr char32_t rouble = 0x20BD;
 
     // Dingbats

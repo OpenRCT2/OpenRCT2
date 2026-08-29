@@ -1444,6 +1444,11 @@
         "format": "raw"
     },
     {
+        "path": "currency/U+20A9-won-sign-small.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "german-openquotes-small.png",
         "y": 6,
         "palette": "keep",
@@ -3251,6 +3256,11 @@
     {
         "path": "cyrillic/U+0491-bold.png",
         "y": 1,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "currency/U+20A9-won-sign-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -5067,6 +5077,11 @@
     {
         "path": "cyrillic/U+0491-tiny.png",
         "y": 1,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "currency/U+20A9-won-sign-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
