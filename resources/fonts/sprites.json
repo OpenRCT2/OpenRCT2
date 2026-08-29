@@ -1,387 +1,387 @@
 [
     {
-        "path": "latin/U32-small.png",
+        "path": "latin/U+0020-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U33-small.png",
+        "path": "latin/U+0021-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U34-small.png",
+        "path": "latin/U+0022-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U35-small.png",
+        "path": "latin/U+0023-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U36-small.png",
+        "path": "latin/U+0024-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U37-small.png",
+        "path": "latin/U+0025-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U38-small.png",
+        "path": "latin/U+0026-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U39-small.png",
+        "path": "latin/U+0027-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U40-small.png",
+        "path": "latin/U+0028-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U41-small.png",
+        "path": "latin/U+0029-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U42-small.png",
+        "path": "latin/U+002A-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U43-small.png",
+        "path": "latin/U+002B-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U44-small.png",
+        "path": "latin/U+002C-small.png",
         "y": 7,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U45-small.png",
+        "path": "latin/U+002D-small.png",
         "y": 4,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U46-small.png",
+        "path": "latin/U+002E-small.png",
         "y": 6,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U47-small.png",
+        "path": "latin/U+002F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U48-small.png",
+        "path": "latin/U+0030-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U49-small.png",
+        "path": "latin/U+0031-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U50-small.png",
+        "path": "latin/U+0032-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U51-small.png",
+        "path": "latin/U+0033-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U52-small.png",
+        "path": "latin/U+0034-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U53-small.png",
+        "path": "latin/U+0035-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U54-small.png",
+        "path": "latin/U+0036-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U55-small.png",
+        "path": "latin/U+0037-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U56-small.png",
+        "path": "latin/U+0038-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U57-small.png",
+        "path": "latin/U+0039-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U58-small.png",
+        "path": "latin/U+003A-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U59-small.png",
+        "path": "latin/U+003B-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U60-small.png",
+        "path": "latin/U+003C-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U61-small.png",
+        "path": "latin/U+003D-small.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U62-small.png",
+        "path": "latin/U+003E-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U63-small.png",
+        "path": "latin/U+003F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U64-small.png",
+        "path": "latin/U+0040-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U65-small.png",
+        "path": "latin/U+0041-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U66-small.png",
+        "path": "latin/U+0042-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U67-small.png",
+        "path": "latin/U+0043-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U68-small.png",
+        "path": "latin/U+0044-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U69-small.png",
+        "path": "latin/U+0045-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U70-small.png",
+        "path": "latin/U+0046-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U71-small.png",
+        "path": "latin/U+0047-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U72-small.png",
+        "path": "latin/U+0048-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U73-small.png",
+        "path": "latin/U+0049-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U74-small.png",
+        "path": "latin/U+004A-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U75-small.png",
+        "path": "latin/U+004B-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U76-small.png",
+        "path": "latin/U+004C-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U77-small.png",
+        "path": "latin/U+004D-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U78-small.png",
+        "path": "latin/U+004E-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U79-small.png",
+        "path": "latin/U+004F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U80-small.png",
+        "path": "latin/U+0050-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U81-small.png",
+        "path": "latin/U+0051-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U82-small.png",
+        "path": "latin/U+0052-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U83-small.png",
+        "path": "latin/U+0053-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U84-small.png",
+        "path": "latin/U+0054-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U85-small.png",
+        "path": "latin/U+0055-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U86-small.png",
+        "path": "latin/U+0056-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U87-small.png",
+        "path": "latin/U+0057-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U88-small.png",
+        "path": "latin/U+0058-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U89-small.png",
+        "path": "latin/U+0059-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U90-small.png",
+        "path": "latin/U+005A-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U91-small.png",
+        "path": "latin/U+005B-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U92-small.png",
+        "path": "latin/U+005C-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U93-small.png",
+        "path": "latin/U+005D-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U94-small.png",
+        "path": "latin/U+005E-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U95-small.png",
+        "path": "latin/U+005F-small.png",
         "y": 7,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U96-small.png",
+        "path": "latin/U+0060-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U97-small.png",
+        "path": "latin/U+0061-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U98-small.png",
+        "path": "latin/U+0062-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U99-small.png",
+        "path": "latin/U+0063-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U100-small.png",
+        "path": "latin/U+0064-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U101-small.png",
+        "path": "latin/U+0065-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U102-small.png",
+        "path": "latin/U+0066-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U103-small.png",
+        "path": "latin/U+0067-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U104-small.png",
+        "path": "latin/U+0068-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U105-small.png",
+        "path": "latin/U+0069-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -392,7 +392,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U107-small.png",
+        "path": "latin/U+006B-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -402,85 +402,85 @@
         "format": "raw"
     },
     {
-        "path": "latin/U109-small.png",
+        "path": "latin/U+006D-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U110-small.png",
+        "path": "latin/U+006E-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U111-small.png",
+        "path": "latin/U+006F-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U112-small.png",
+        "path": "latin/U+0070-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U113-small.png",
+        "path": "latin/U+0071-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U114-small.png",
+        "path": "latin/U+0072-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U115-small.png",
+        "path": "latin/U+0073-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U116-small.png",
+        "path": "latin/U+0074-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U117-small.png",
+        "path": "latin/U+0075-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U118-small.png",
+        "path": "latin/U+0076-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U119-small.png",
+        "path": "latin/U+0077-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U120-small.png",
+        "path": "latin/U+0078-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U121-small.png",
+        "path": "latin/U+0079-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U122-small.png",
+        "path": "latin/U+007A-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
@@ -666,28 +666,28 @@
         "y": 11
     },
     {
-        "path": "latin/U159-small.png",
+        "path": "latin/U+009F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U160-small.png",
+        "path": "latin/U+00A0-small.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U161-small.png",
+        "path": "latin/U+00A1-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U162-small.png",
+        "path": "latin/U+00A2-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U163-small.png",
+        "path": "latin/U+00A3-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -695,17 +695,17 @@
         "path": "../g2/empty.png"
     },
     {
-        "path": "latin/U165-small.png",
+        "path": "latin/U+00A5-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U166-small.png",
+        "path": "latin/U+00A6-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U167-small.png",
+        "path": "latin/U+00A7-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -715,30 +715,30 @@
         "y": 11
     },
     {
-        "path": "latin/U169-small.png",
+        "path": "latin/U+00A9-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U170-small.png",
+        "path": "latin/U+00AA-small.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U171-small.png",
+        "path": "latin/U+00AB-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U172-small.png",
+        "path": "latin/U+00AC-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U173-small.png",
+        "path": "latin/U+00AD-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
@@ -749,24 +749,24 @@
         "y": 11
     },
     {
-        "path": "latin/U175-small.png",
+        "path": "latin/U+00AF-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U176-small.png",
+        "path": "latin/U+00B0-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U177-small.png",
+        "path": "latin/U+00B1-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U178-small.png",
+        "path": "latin/U+00B2-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -776,386 +776,386 @@
         "y": 11
     },
     {
-        "path": "latin/U180-small.png",
+        "path": "latin/U+00B4-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U181-small.png",
+        "path": "latin/U+00B5-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U182-small.png",
+        "path": "latin/U+00B6-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U183-small.png",
+        "path": "latin/U+00B7-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U184-small.png",
+        "path": "latin/U+00B8-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U185-small.png",
+        "path": "latin/U+00B9-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U186-small.png",
+        "path": "latin/U+00BA-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U187-small.png",
+        "path": "latin/U+00BB-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U188-small.png",
+        "path": "latin/U+00BC-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U189-small.png",
+        "path": "latin/U+00BD-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U190-small.png",
+        "path": "latin/U+00BE-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U191-small.png",
+        "path": "latin/U+00BF-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U192-small.png",
+        "path": "latin/U+00C0-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U193-small.png",
+        "path": "latin/U+00C1-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U194-small.png",
+        "path": "latin/U+00C2-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U195-small.png",
+        "path": "latin/U+00C3-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U196-small.png",
+        "path": "latin/U+00C4-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U197-small.png",
+        "path": "latin/U+00C5-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U198-small.png",
+        "path": "latin/U+00C6-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U199-small.png",
+        "path": "latin/U+00C7-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U200-small.png",
+        "path": "latin/U+00C8-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U201-small.png",
+        "path": "latin/U+00C9-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U202-small.png",
+        "path": "latin/U+00CA-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U203-small.png",
+        "path": "latin/U+00CB-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U204-small.png",
+        "path": "latin/U+00CC-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U205-small.png",
+        "path": "latin/U+00CD-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U206-small.png",
+        "path": "latin/U+00CE-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U207-small.png",
+        "path": "latin/U+00CF-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U208-small.png",
+        "path": "latin/U+00D0-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U209-small.png",
+        "path": "latin/U+00D1-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U210-small.png",
+        "path": "latin/U+00D2-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U211-small.png",
+        "path": "latin/U+00D3-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U212-small.png",
+        "path": "latin/U+00D4-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U213-small.png",
+        "path": "latin/U+00D5-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U214-small.png",
+        "path": "latin/U+00D6-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U215-small.png",
+        "path": "latin/U+00D7-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U216-small.png",
+        "path": "latin/U+00D8-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U217-small.png",
+        "path": "latin/U+00D9-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U218-small.png",
+        "path": "latin/U+00DA-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U219-small.png",
+        "path": "latin/U+00DB-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U220-small.png",
+        "path": "latin/U+00DC-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U221-small.png",
+        "path": "latin/U+00DD-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U222-small.png",
+        "path": "latin/U+00DE-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U223-small.png",
+        "path": "latin/U+00DF-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U224-small.png",
+        "path": "latin/U+00E0-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U225-small.png",
+        "path": "latin/U+00E1-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U226-small.png",
+        "path": "latin/U+00E2-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U227-small.png",
+        "path": "latin/U+00E3-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U228-small.png",
+        "path": "latin/U+00E4-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U229-small.png",
+        "path": "latin/U+00E5-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U230-small.png",
+        "path": "latin/U+00E6-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U231-small.png",
+        "path": "latin/U+00E7-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U232-small.png",
+        "path": "latin/U+00E8-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U233-small.png",
+        "path": "latin/U+00E9-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U234-small.png",
+        "path": "latin/U+00EA-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U235-small.png",
+        "path": "latin/U+00EB-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U236-small.png",
+        "path": "latin/U+00EC-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U237-small.png",
+        "path": "latin/U+00ED-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U238-small.png",
+        "path": "latin/U+00EE-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U239-small.png",
+        "path": "latin/U+00EF-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U240-small.png",
+        "path": "latin/U+00F0-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U241-small.png",
+        "path": "latin/U+00F1-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U242-small.png",
+        "path": "latin/U+00F2-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U243-small.png",
+        "path": "latin/U+00F3-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U244-small.png",
+        "path": "latin/U+00F4-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U245-small.png",
+        "path": "latin/U+00F5-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U246-small.png",
+        "path": "latin/U+00F6-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U247-small.png",
+        "path": "latin/U+00F7-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U248-small.png",
+        "path": "latin/U+00F8-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U249-small.png",
+        "path": "latin/U+00F9-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U250-small.png",
+        "path": "latin/U+00FA-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U251-small.png",
+        "path": "latin/U+00FB-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U252-small.png",
+        "path": "latin/U+00FC-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U253-small.png",
+        "path": "latin/U+00FD-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U254-small.png",
+        "path": "latin/U+00FE-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -1190,250 +1190,250 @@
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1028-small.png",
+        "path": "cyrillic/U+0404-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1041-small.png",
+        "path": "cyrillic/U+0411-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1043-small.png",
+        "path": "cyrillic/U+0413-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1044-small.png",
+        "path": "cyrillic/U+0414-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1046-small.png",
+        "path": "cyrillic/U+0416-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1047-small.png",
+        "path": "cyrillic/U+0417-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1048-small.png",
+        "path": "cyrillic/U+0418-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1049-small.png",
+        "path": "cyrillic/U+0419-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1051-small.png",
+        "path": "cyrillic/U+041B-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1055-small.png",
+        "path": "cyrillic/U+041F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1059-small.png",
+        "path": "cyrillic/U+0423-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1060-small.png",
+        "path": "cyrillic/U+0424-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1062-small.png",
+        "path": "cyrillic/U+0426-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1063-small.png",
+        "path": "cyrillic/U+0427-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1064-small.png",
+        "path": "cyrillic/U+0428-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1065-small.png",
+        "path": "cyrillic/U+0429-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1066-small.png",
+        "path": "cyrillic/U+042A-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1067-small.png",
+        "path": "cyrillic/U+042B-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1068-small.png",
+        "path": "cyrillic/U+042C-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1069-small.png",
+        "path": "cyrillic/U+042D-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1070-small.png",
+        "path": "cyrillic/U+042E-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1071-small.png",
+        "path": "cyrillic/U+042F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1073-small.png",
+        "path": "cyrillic/U+0431-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1074-small.png",
+        "path": "cyrillic/U+0432-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1075-small.png",
+        "path": "cyrillic/U+0433-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1076-small.png",
+        "path": "cyrillic/U+0434-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1078-small.png",
+        "path": "cyrillic/U+0436-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1079-small.png",
+        "path": "cyrillic/U+0437-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1080-small.png",
+        "path": "cyrillic/U+0438-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1081-small.png",
+        "path": "cyrillic/U+0439-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1082-small.png",
+        "path": "cyrillic/U+043A-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1083-small.png",
+        "path": "cyrillic/U+043B-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1084-small.png",
+        "path": "cyrillic/U+043C-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1085-small.png",
+        "path": "cyrillic/U+043D-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1087-small.png",
+        "path": "cyrillic/U+043F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1090-small.png",
+        "path": "cyrillic/U+0442-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1092-small.png",
+        "path": "cyrillic/U+0444-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1094-small.png",
+        "path": "cyrillic/U+0446-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1095-small.png",
+        "path": "cyrillic/U+0447-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1096-small.png",
+        "path": "cyrillic/U+0448-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1097-small.png",
+        "path": "cyrillic/U+0449-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1099-small.png",
+        "path": "cyrillic/U+044B-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1100-small.png",
+        "path": "cyrillic/U+044C-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1101-small.png",
+        "path": "cyrillic/U+044D-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1102-small.png",
+        "path": "cyrillic/U+044E-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1103-small.png",
+        "path": "cyrillic/U+044F-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1108-small.png",
+        "path": "cyrillic/U+0454-small.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1168-small.png",
+        "path": "cyrillic/U+0490-small.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1169-small.png",
+        "path": "cyrillic/U+0491-small.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
@@ -1804,388 +1804,388 @@
         "format": "raw"
     },
     {
-        "path": "latin/U32-bold.png",
+        "path": "latin/U+0020-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U33-bold.png",
+        "path": "latin/U+0021-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U34-bold.png",
+        "path": "latin/U+0022-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U35-bold.png",
+        "path": "latin/U+0023-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U36-bold.png",
+        "path": "latin/U+0024-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U37-bold.png",
+        "path": "latin/U+0025-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U38-bold.png",
+        "path": "latin/U+0026-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U39-bold.png",
+        "path": "latin/U+0027-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U40-bold.png",
+        "path": "latin/U+0028-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U41-bold.png",
+        "path": "latin/U+0029-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U42-bold.png",
+        "path": "latin/U+002A-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U43-bold.png",
+        "path": "latin/U+002B-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U44-bold.png",
+        "path": "latin/U+002C-bold.png",
         "y": 6,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U45-bold.png",
+        "path": "latin/U+002D-bold.png",
         "y": 4,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U46-bold.png",
+        "path": "latin/U+002E-bold.png",
         "y": 6,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U47-bold.png",
+        "path": "latin/U+002F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U48-bold.png",
+        "path": "latin/U+0030-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U49-bold.png",
+        "path": "latin/U+0031-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U50-bold.png",
+        "path": "latin/U+0032-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U51-bold.png",
+        "path": "latin/U+0033-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U52-bold.png",
+        "path": "latin/U+0034-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U53-bold.png",
+        "path": "latin/U+0035-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U54-bold.png",
+        "path": "latin/U+0036-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U55-bold.png",
+        "path": "latin/U+0037-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U56-bold.png",
+        "path": "latin/U+0038-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U57-bold.png",
+        "path": "latin/U+0039-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U58-bold.png",
+        "path": "latin/U+003A-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U59-bold.png",
+        "path": "latin/U+003B-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U60-bold.png",
+        "path": "latin/U+003C-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U61-bold.png",
+        "path": "latin/U+003D-bold.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U62-bold.png",
+        "path": "latin/U+003E-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U63-bold.png",
+        "path": "latin/U+003F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U64-bold.png",
+        "path": "latin/U+0040-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U65-bold.png",
+        "path": "latin/U+0041-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U66-bold.png",
+        "path": "latin/U+0042-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U67-bold.png",
+        "path": "latin/U+0043-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U68-bold.png",
+        "path": "latin/U+0044-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U69-bold.png",
+        "path": "latin/U+0045-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U70-bold.png",
+        "path": "latin/U+0046-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U71-bold.png",
+        "path": "latin/U+0047-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U72-bold.png",
+        "path": "latin/U+0048-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U73-bold.png",
+        "path": "latin/U+0049-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U74-bold.png",
+        "path": "latin/U+004A-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U75-bold.png",
+        "path": "latin/U+004B-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U76-bold.png",
+        "path": "latin/U+004C-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U77-bold.png",
+        "path": "latin/U+004D-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U78-bold.png",
+        "path": "latin/U+004E-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U79-bold.png",
+        "path": "latin/U+004F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U80-bold.png",
+        "path": "latin/U+0050-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U81-bold.png",
+        "path": "latin/U+0051-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U82-bold.png",
+        "path": "latin/U+0052-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U83-bold.png",
+        "path": "latin/U+0053-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U84-bold.png",
+        "path": "latin/U+0054-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U85-bold.png",
+        "path": "latin/U+0055-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U86-bold.png",
+        "path": "latin/U+0056-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U87-bold.png",
+        "path": "latin/U+0057-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U88-bold.png",
+        "path": "latin/U+0058-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U89-bold.png",
+        "path": "latin/U+0059-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U90-bold.png",
+        "path": "latin/U+005A-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U91-bold.png",
+        "path": "latin/U+005B-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U92-bold.png",
+        "path": "latin/U+005C-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U93-bold.png",
+        "path": "latin/U+005D-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U94-bold.png",
+        "path": "latin/U+005E-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U95-bold.png",
+        "path": "latin/U+005F-bold.png",
         "y": 7,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U96-bold.png",
+        "path": "latin/U+0060-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U97-bold.png",
+        "path": "latin/U+0061-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U98-bold.png",
+        "path": "latin/U+0062-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U99-bold.png",
+        "path": "latin/U+0063-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U100-bold.png",
+        "path": "latin/U+0064-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U101-bold.png",
+        "path": "latin/U+0065-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U102-bold.png",
+        "path": "latin/U+0066-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U103-bold.png",
+        "path": "latin/U+0067-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U104-bold.png",
+        "path": "latin/U+0068-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U105-bold.png",
+        "path": "latin/U+0069-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -2196,7 +2196,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U107-bold.png",
+        "path": "latin/U+006B-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -2206,85 +2206,85 @@
         "format": "raw"
     },
     {
-        "path": "latin/U109-bold.png",
+        "path": "latin/U+006D-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U110-bold.png",
+        "path": "latin/U+006E-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U111-bold.png",
+        "path": "latin/U+006F-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U112-bold.png",
+        "path": "latin/U+0070-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U113-bold.png",
+        "path": "latin/U+0071-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U114-bold.png",
+        "path": "latin/U+0072-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U115-bold.png",
+        "path": "latin/U+0073-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U116-bold.png",
+        "path": "latin/U+0074-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U117-bold.png",
+        "path": "latin/U+0075-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U118-bold.png",
+        "path": "latin/U+0076-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U119-bold.png",
+        "path": "latin/U+0077-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U120-bold.png",
+        "path": "latin/U+0078-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U121-bold.png",
+        "path": "latin/U+0079-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U122-bold.png",
+        "path": "latin/U+007A-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
@@ -2470,28 +2470,28 @@
         "y": 11
     },
     {
-        "path": "latin/U159-bold.png",
+        "path": "latin/U+009F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U160-bold.png",
+        "path": "latin/U+00A0-bold.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U161-bold.png",
+        "path": "latin/U+00A1-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U162-bold.png",
+        "path": "latin/U+00A2-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U163-bold.png",
+        "path": "latin/U+00A3-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -2499,51 +2499,17 @@
         "path": "../g2/empty.png"
     },
     {
-        "path": "latin/U165-bold.png",
+        "path": "latin/U+00A5-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U166-bold.png",
+        "path": "latin/U+00A6-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U167-bold.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "../g2/empty.png",
-        "x": 19,
-        "y": 11
-    },
-    {
-        "path": "latin/U169-bold.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U170-bold.png",
-        "y": 2,
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U171-bold.png",
-        "y": 2,
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U172-bold.png",
-        "y": 1,
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U173-bold.png",
-        "y": 2,
+        "path": "latin/U+00A7-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -2553,24 +2519,31 @@
         "y": 11
     },
     {
-        "path": "latin/U175-bold.png",
+        "path": "latin/U+00A9-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00AA-bold.png",
+        "y": 2,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00AB-bold.png",
+        "y": 2,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00AC-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U176-bold.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U177-bold.png",
-        "y": 1,
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U178-bold.png",
+        "path": "latin/U+00AD-bold.png",
+        "y": 2,
         "palette": "keep",
         "format": "raw"
     },
@@ -2580,387 +2553,414 @@
         "y": 11
     },
     {
-        "path": "latin/U180-bold.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U181-bold.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U182-bold.png",
+        "path": "latin/U+00AF-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U183-bold.png",
+        "path": "latin/U+00B0-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00B1-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U184-bold.png",
+        "path": "latin/U+00B2-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "../g2/empty.png",
+        "x": 19,
+        "y": 11
+    },
+    {
+        "path": "latin/U+00B4-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00B5-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00B6-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U185-bold.png",
-        "palette": "keep",
-        "format": "raw"
-    },
-    {
-        "path": "latin/U186-bold.png",
+        "path": "latin/U+00B7-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U187-bold.png",
+        "path": "latin/U+00B8-bold.png",
+        "y": 1,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00B9-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00BA-bold.png",
+        "y": 1,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+00BB-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U188-bold.png",
+        "path": "latin/U+00BC-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U189-bold.png",
+        "path": "latin/U+00BD-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U190-bold.png",
+        "path": "latin/U+00BE-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U191-bold.png",
+        "path": "latin/U+00BF-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U192-bold.png",
+        "path": "latin/U+00C0-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U193-bold.png",
+        "path": "latin/U+00C1-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U194-bold.png",
+        "path": "latin/U+00C2-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U195-bold.png",
+        "path": "latin/U+00C3-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U196-bold.png",
+        "path": "latin/U+00C4-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U197-bold.png",
+        "path": "latin/U+00C5-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U198-bold.png",
+        "path": "latin/U+00C6-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U199-bold.png",
+        "path": "latin/U+00C7-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U200-bold.png",
+        "path": "latin/U+00C8-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U201-bold.png",
+        "path": "latin/U+00C9-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U202-bold.png",
+        "path": "latin/U+00CA-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U203-bold.png",
+        "path": "latin/U+00CB-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U204-bold.png",
+        "path": "latin/U+00CC-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U205-bold.png",
+        "path": "latin/U+00CD-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U206-bold.png",
+        "path": "latin/U+00CE-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U207-bold.png",
+        "path": "latin/U+00CF-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U208-bold.png",
+        "path": "latin/U+00D0-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U209-bold.png",
+        "path": "latin/U+00D1-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U210-bold.png",
+        "path": "latin/U+00D2-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U211-bold.png",
+        "path": "latin/U+00D3-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U212-bold.png",
+        "path": "latin/U+00D4-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U213-bold.png",
+        "path": "latin/U+00D5-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U214-bold.png",
+        "path": "latin/U+00D6-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U215-bold.png",
+        "path": "latin/U+00D7-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U216-bold.png",
+        "path": "latin/U+00D8-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U217-bold.png",
+        "path": "latin/U+00D9-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U218-bold.png",
+        "path": "latin/U+00DA-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U219-bold.png",
+        "path": "latin/U+00DB-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U220-bold.png",
+        "path": "latin/U+00DC-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U221-bold.png",
+        "path": "latin/U+00DD-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U222-bold.png",
+        "path": "latin/U+00DE-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U223-bold.png",
+        "path": "latin/U+00DF-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U224-bold.png",
+        "path": "latin/U+00E0-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U225-bold.png",
+        "path": "latin/U+00E1-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U226-bold.png",
+        "path": "latin/U+00E2-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U227-bold.png",
+        "path": "latin/U+00E3-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U228-bold.png",
+        "path": "latin/U+00E4-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U229-bold.png",
+        "path": "latin/U+00E5-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U230-bold.png",
+        "path": "latin/U+00E6-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U231-bold.png",
+        "path": "latin/U+00E7-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U232-bold.png",
+        "path": "latin/U+00E8-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U233-bold.png",
+        "path": "latin/U+00E9-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U234-bold.png",
+        "path": "latin/U+00EA-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U235-bold.png",
+        "path": "latin/U+00EB-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U236-bold.png",
+        "path": "latin/U+00EC-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U237-bold.png",
+        "path": "latin/U+00ED-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U238-bold.png",
+        "path": "latin/U+00EE-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U239-bold.png",
+        "path": "latin/U+00EF-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U240-bold.png",
+        "path": "latin/U+00F0-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U241-bold.png",
+        "path": "latin/U+00F1-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U242-bold.png",
+        "path": "latin/U+00F2-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U243-bold.png",
+        "path": "latin/U+00F3-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U244-bold.png",
+        "path": "latin/U+00F4-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U245-bold.png",
+        "path": "latin/U+00F5-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U246-bold.png",
+        "path": "latin/U+00F6-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U247-bold.png",
+        "path": "latin/U+00F7-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U248-bold.png",
+        "path": "latin/U+00F8-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U249-bold.png",
+        "path": "latin/U+00F9-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U250-bold.png",
+        "path": "latin/U+00FA-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U251-bold.png",
+        "path": "latin/U+00FB-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U252-bold.png",
+        "path": "latin/U+00FC-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U253-bold.png",
+        "path": "latin/U+00FD-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U254-bold.png",
+        "path": "latin/U+00FE-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -2996,250 +2996,250 @@
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1028-bold.png",
+        "path": "cyrillic/U+0404-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1041-bold.png",
+        "path": "cyrillic/U+0411-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1043-bold.png",
+        "path": "cyrillic/U+0413-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1044-bold.png",
+        "path": "cyrillic/U+0414-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1046-bold.png",
+        "path": "cyrillic/U+0416-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1047-bold.png",
+        "path": "cyrillic/U+0417-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1048-bold.png",
+        "path": "cyrillic/U+0418-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1049-bold.png",
+        "path": "cyrillic/U+0419-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1051-bold.png",
+        "path": "cyrillic/U+041B-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1055-bold.png",
+        "path": "cyrillic/U+041F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1059-bold.png",
+        "path": "cyrillic/U+0423-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1060-bold.png",
+        "path": "cyrillic/U+0424-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1062-bold.png",
+        "path": "cyrillic/U+0426-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1063-bold.png",
+        "path": "cyrillic/U+0427-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1064-bold.png",
+        "path": "cyrillic/U+0428-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1065-bold.png",
+        "path": "cyrillic/U+0429-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1066-bold.png",
+        "path": "cyrillic/U+042A-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1067-bold.png",
+        "path": "cyrillic/U+042B-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1068-bold.png",
+        "path": "cyrillic/U+042C-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1069-bold.png",
+        "path": "cyrillic/U+042D-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1070-bold.png",
+        "path": "cyrillic/U+042E-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1071-bold.png",
+        "path": "cyrillic/U+042F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1073-bold.png",
+        "path": "cyrillic/U+0431-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1074-bold.png",
+        "path": "cyrillic/U+0432-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1075-bold.png",
+        "path": "cyrillic/U+0433-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1076-bold.png",
+        "path": "cyrillic/U+0434-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1078-bold.png",
+        "path": "cyrillic/U+0436-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1079-bold.png",
+        "path": "cyrillic/U+0437-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1080-bold.png",
+        "path": "cyrillic/U+0438-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1081-bold.png",
+        "path": "cyrillic/U+0439-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1082-bold.png",
+        "path": "cyrillic/U+043A-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1083-bold.png",
+        "path": "cyrillic/U+043B-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1084-bold.png",
+        "path": "cyrillic/U+043C-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1085-bold.png",
+        "path": "cyrillic/U+043D-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1087-bold.png",
+        "path": "cyrillic/U+043F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1090-bold.png",
+        "path": "cyrillic/U+0442-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1092-bold.png",
+        "path": "cyrillic/U+0444-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1094-bold.png",
+        "path": "cyrillic/U+0446-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1095-bold.png",
+        "path": "cyrillic/U+0447-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1096-bold.png",
+        "path": "cyrillic/U+0448-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1097-bold.png",
+        "path": "cyrillic/U+0449-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1099-bold.png",
+        "path": "cyrillic/U+044B-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1100-bold.png",
+        "path": "cyrillic/U+044C-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1101-bold.png",
+        "path": "cyrillic/U+044D-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1102-bold.png",
+        "path": "cyrillic/U+044E-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1103-bold.png",
+        "path": "cyrillic/U+044F-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1108-bold.png",
+        "path": "cyrillic/U+0454-bold.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1168-bold.png",
+        "path": "cyrillic/U+0490-bold.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1169-bold.png",
+        "path": "cyrillic/U+0491-bold.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
@@ -3610,387 +3610,387 @@
         "format": "raw"
     },
     {
-        "path": "latin/U32-tiny.png",
+        "path": "latin/U+0020-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U33-tiny.png",
+        "path": "latin/U+0021-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U34-tiny.png",
+        "path": "latin/U+0022-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U35-tiny.png",
+        "path": "latin/U+0023-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U36-tiny.png",
+        "path": "latin/U+0024-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U37-tiny.png",
+        "path": "latin/U+0025-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U38-tiny.png",
+        "path": "latin/U+0026-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U39-tiny.png",
+        "path": "latin/U+0027-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U40-tiny.png",
+        "path": "latin/U+0028-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U41-tiny.png",
+        "path": "latin/U+0029-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U42-tiny.png",
+        "path": "latin/U+002A-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U43-tiny.png",
+        "path": "latin/U+002B-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U44-tiny.png",
+        "path": "latin/U+002C-tiny.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U45-tiny.png",
+        "path": "latin/U+002D-tiny.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U46-tiny.png",
+        "path": "latin/U+002E-tiny.png",
         "y": 4,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U47-tiny.png",
+        "path": "latin/U+002F-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U48-tiny.png",
+        "path": "latin/U+0030-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U49-tiny.png",
+        "path": "latin/U+0031-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U50-tiny.png",
+        "path": "latin/U+0032-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U51-tiny.png",
+        "path": "latin/U+0033-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U52-tiny.png",
+        "path": "latin/U+0034-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U53-tiny.png",
+        "path": "latin/U+0035-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U54-tiny.png",
+        "path": "latin/U+0036-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U55-tiny.png",
+        "path": "latin/U+0037-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U56-tiny.png",
+        "path": "latin/U+0038-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U57-tiny.png",
+        "path": "latin/U+0039-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U58-tiny.png",
+        "path": "latin/U+003A-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U59-tiny.png",
+        "path": "latin/U+003B-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U60-tiny.png",
+        "path": "latin/U+003C-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U61-tiny.png",
+        "path": "latin/U+003D-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U62-tiny.png",
+        "path": "latin/U+003E-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U63-tiny.png",
+        "path": "latin/U+003F-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U64-tiny.png",
+        "path": "latin/U+0040-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U65-tiny.png",
+        "path": "latin/U+0041-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U66-tiny.png",
+        "path": "latin/U+0042-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U67-tiny.png",
+        "path": "latin/U+0043-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U68-tiny.png",
+        "path": "latin/U+0044-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U69-tiny.png",
+        "path": "latin/U+0045-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U70-tiny.png",
+        "path": "latin/U+0046-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U71-tiny.png",
+        "path": "latin/U+0047-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U72-tiny.png",
+        "path": "latin/U+0048-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U73-tiny.png",
+        "path": "latin/U+0049-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U74-tiny.png",
+        "path": "latin/U+004A-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U75-tiny.png",
+        "path": "latin/U+004B-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U76-tiny.png",
+        "path": "latin/U+004C-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U77-tiny.png",
+        "path": "latin/U+004D-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U78-tiny.png",
+        "path": "latin/U+004E-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U79-tiny.png",
+        "path": "latin/U+004F-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U80-tiny.png",
+        "path": "latin/U+0050-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U81-tiny.png",
+        "path": "latin/U+0051-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U82-tiny.png",
+        "path": "latin/U+0052-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U83-tiny.png",
+        "path": "latin/U+0053-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U84-tiny.png",
+        "path": "latin/U+0054-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U85-tiny.png",
+        "path": "latin/U+0055-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U86-tiny.png",
+        "path": "latin/U+0056-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U87-tiny.png",
+        "path": "latin/U+0057-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U88-tiny.png",
+        "path": "latin/U+0058-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U89-tiny.png",
+        "path": "latin/U+0059-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U90-tiny.png",
+        "path": "latin/U+005A-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U91-tiny.png",
+        "path": "latin/U+005B-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U92-tiny.png",
+        "path": "latin/U+005C-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U93-tiny.png",
+        "path": "latin/U+005D-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U94-tiny.png",
+        "path": "latin/U+005E-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U95-tiny.png",
+        "path": "latin/U+005F-tiny.png",
         "y": 4,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U96-tiny.png",
+        "path": "latin/U+0060-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U97-tiny.png",
+        "path": "latin/U+0061-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U98-tiny.png",
+        "path": "latin/U+0062-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U99-tiny.png",
+        "path": "latin/U+0063-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U100-tiny.png",
+        "path": "latin/U+0064-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U101-tiny.png",
+        "path": "latin/U+0065-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U102-tiny.png",
+        "path": "latin/U+0066-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U103-tiny.png",
+        "path": "latin/U+0067-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U104-tiny.png",
+        "path": "latin/U+0068-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U105-tiny.png",
+        "path": "latin/U+0069-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4000,7 +4000,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U107-tiny.png",
+        "path": "latin/U+006B-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4010,84 +4010,84 @@
         "format": "raw"
     },
     {
-        "path": "latin/U109-tiny.png",
+        "path": "latin/U+006D-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U110-tiny.png",
+        "path": "latin/U+006E-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U111-tiny.png",
+        "path": "latin/U+006F-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U112-tiny.png",
+        "path": "latin/U+0070-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U113-tiny.png",
+        "path": "latin/U+0071-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U114-tiny.png",
+        "path": "latin/U+0072-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U115-tiny.png",
+        "path": "latin/U+0073-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U116-tiny.png",
+        "path": "latin/U+0074-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U117-tiny.png",
+        "path": "latin/U+0075-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U118-tiny.png",
+        "path": "latin/U+0076-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U119-tiny.png",
+        "path": "latin/U+0077-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U120-tiny.png",
+        "path": "latin/U+0078-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U121-tiny.png",
+        "path": "latin/U+0079-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U122-tiny.png",
+        "path": "latin/U+007A-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
@@ -4273,28 +4273,28 @@
         "y": 11
     },
     {
-        "path": "latin/U159-tiny.png",
+        "path": "latin/U+009F-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U160-tiny.png",
+        "path": "latin/U+00A0-tiny.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U161-tiny.png",
+        "path": "latin/U+00A1-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U162-tiny.png",
+        "path": "latin/U+00A2-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U163-tiny.png",
+        "path": "latin/U+00A3-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4302,17 +4302,17 @@
         "path": "../g2/empty.png"
     },
     {
-        "path": "latin/U165-tiny.png",
+        "path": "latin/U+00A5-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U166-tiny.png",
+        "path": "latin/U+00A6-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U167-tiny.png",
+        "path": "latin/U+00A7-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4322,30 +4322,30 @@
         "y": 11
     },
     {
-        "path": "latin/U169-tiny.png",
+        "path": "latin/U+00A9-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U170-tiny.png",
+        "path": "latin/U+00AA-tiny.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U171-tiny.png",
+        "path": "latin/U+00AB-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U172-tiny.png",
+        "path": "latin/U+00AC-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U173-tiny.png",
+        "path": "latin/U+00AD-tiny.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
@@ -4356,23 +4356,23 @@
         "y": 11
     },
     {
-        "path": "latin/U175-tiny.png",
+        "path": "latin/U+00AF-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U176-tiny.png",
+        "path": "latin/U+00B0-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U177-tiny.png",
+        "path": "latin/U+00B1-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U178-tiny.png",
+        "path": "latin/U+00B2-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4382,386 +4382,386 @@
         "y": 11
     },
     {
-        "path": "latin/U180-tiny.png",
+        "path": "latin/U+00B4-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U181-tiny.png",
+        "path": "latin/U+00B5-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U182-tiny.png",
+        "path": "latin/U+00B6-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U183-tiny.png",
+        "path": "latin/U+00B7-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U184-tiny.png",
+        "path": "latin/U+00B8-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U185-tiny.png",
+        "path": "latin/U+00B9-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U186-tiny.png",
+        "path": "latin/U+00BA-tiny.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U187-tiny.png",
+        "path": "latin/U+00BB-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U188-tiny.png",
+        "path": "latin/U+00BC-tiny.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U189-tiny.png",
+        "path": "latin/U+00BD-tiny.png",
         "y": 3,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U190-tiny.png",
+        "path": "latin/U+00BE-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U191-tiny.png",
+        "path": "latin/U+00BF-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U192-tiny.png",
+        "path": "latin/U+00C0-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U193-tiny.png",
+        "path": "latin/U+00C1-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U194-tiny.png",
+        "path": "latin/U+00C2-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U195-tiny.png",
+        "path": "latin/U+00C3-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U196-tiny.png",
+        "path": "latin/U+00C4-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U197-tiny.png",
+        "path": "latin/U+00C5-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U198-tiny.png",
+        "path": "latin/U+00C6-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U199-tiny.png",
+        "path": "latin/U+00C7-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U200-tiny.png",
+        "path": "latin/U+00C8-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U201-tiny.png",
+        "path": "latin/U+00C9-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U202-tiny.png",
+        "path": "latin/U+00CA-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U203-tiny.png",
+        "path": "latin/U+00CB-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U204-tiny.png",
+        "path": "latin/U+00CC-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U205-tiny.png",
+        "path": "latin/U+00CD-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U206-tiny.png",
+        "path": "latin/U+00CE-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U207-tiny.png",
+        "path": "latin/U+00CF-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U208-tiny.png",
+        "path": "latin/U+00D0-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U209-tiny.png",
+        "path": "latin/U+00D1-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U210-tiny.png",
+        "path": "latin/U+00D2-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U211-tiny.png",
+        "path": "latin/U+00D3-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U212-tiny.png",
+        "path": "latin/U+00D4-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U213-tiny.png",
+        "path": "latin/U+00D5-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U214-tiny.png",
+        "path": "latin/U+00D6-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U215-tiny.png",
+        "path": "latin/U+00D7-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U216-tiny.png",
+        "path": "latin/U+00D8-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U217-tiny.png",
+        "path": "latin/U+00D9-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U218-tiny.png",
+        "path": "latin/U+00DA-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U219-tiny.png",
+        "path": "latin/U+00DB-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U220-tiny.png",
+        "path": "latin/U+00DC-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U221-tiny.png",
+        "path": "latin/U+00DD-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U222-tiny.png",
+        "path": "latin/U+00DE-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U223-tiny.png",
+        "path": "latin/U+00DF-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U224-tiny.png",
+        "path": "latin/U+00E0-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U225-tiny.png",
+        "path": "latin/U+00E1-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U226-tiny.png",
+        "path": "latin/U+00E2-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U227-tiny.png",
+        "path": "latin/U+00E3-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U228-tiny.png",
+        "path": "latin/U+00E4-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U229-tiny.png",
+        "path": "latin/U+00E5-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U230-tiny.png",
+        "path": "latin/U+00E6-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U231-tiny.png",
+        "path": "latin/U+00E7-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U232-tiny.png",
+        "path": "latin/U+00E8-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U233-tiny.png",
+        "path": "latin/U+00E9-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U234-tiny.png",
+        "path": "latin/U+00EA-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U235-tiny.png",
+        "path": "latin/U+00EB-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U236-tiny.png",
+        "path": "latin/U+00EC-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U237-tiny.png",
+        "path": "latin/U+00ED-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U238-tiny.png",
+        "path": "latin/U+00EE-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U239-tiny.png",
+        "path": "latin/U+00EF-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U240-tiny.png",
+        "path": "latin/U+00F0-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U241-tiny.png",
+        "path": "latin/U+00F1-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U242-tiny.png",
+        "path": "latin/U+00F2-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U243-tiny.png",
+        "path": "latin/U+00F3-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U244-tiny.png",
+        "path": "latin/U+00F4-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U245-tiny.png",
+        "path": "latin/U+00F5-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U246-tiny.png",
+        "path": "latin/U+00F6-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U247-tiny.png",
+        "path": "latin/U+00F7-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U248-tiny.png",
+        "path": "latin/U+00F8-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U249-tiny.png",
+        "path": "latin/U+00F9-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U250-tiny.png",
+        "path": "latin/U+00FA-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U251-tiny.png",
+        "path": "latin/U+00FB-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U252-tiny.png",
+        "path": "latin/U+00FC-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U253-tiny.png",
+        "path": "latin/U+00FD-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "latin/U254-tiny.png",
+        "path": "latin/U+00FE-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4795,261 +4795,261 @@
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1028-tiny.png",
+        "path": "cyrillic/U+0404-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1041-tiny.png",
+        "path": "cyrillic/U+0411-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1043-tiny.png",
+        "path": "cyrillic/U+0413-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1044-tiny.png",
+        "path": "cyrillic/U+0414-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1046-tiny.png",
+        "path": "cyrillic/U+0416-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1047-tiny.png",
+        "path": "cyrillic/U+0417-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1048-tiny.png",
+        "path": "cyrillic/U+0418-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1049-tiny.png",
+        "path": "cyrillic/U+0419-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1051-tiny.png",
+        "path": "cyrillic/U+041B-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1055-tiny.png",
+        "path": "cyrillic/U+041F-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1059-tiny.png",
+        "path": "cyrillic/U+0423-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1060-tiny.png",
+        "path": "cyrillic/U+0424-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1062-tiny.png",
+        "path": "cyrillic/U+0426-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1063-tiny.png",
+        "path": "cyrillic/U+0427-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1064-tiny.png",
+        "path": "cyrillic/U+0428-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1065-tiny.png",
+        "path": "cyrillic/U+0429-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1066-tiny.png",
+        "path": "cyrillic/U+042A-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1067-tiny.png",
+        "path": "cyrillic/U+042B-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1068-tiny.png",
+        "path": "cyrillic/U+042C-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1069-tiny.png",
+        "path": "cyrillic/U+042D-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1070-tiny.png",
+        "path": "cyrillic/U+042E-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1071-tiny.png",
+        "path": "cyrillic/U+042F-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1073-tiny.png",
+        "path": "cyrillic/U+0431-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1074-tiny.png",
+        "path": "cyrillic/U+0432-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1075-tiny.png",
+        "path": "cyrillic/U+0433-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1076-tiny.png",
+        "path": "cyrillic/U+0434-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1078-tiny.png",
+        "path": "cyrillic/U+0436-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1079-tiny.png",
+        "path": "cyrillic/U+0437-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1080-tiny.png",
+        "path": "cyrillic/U+0438-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1081-tiny.png",
+        "path": "cyrillic/U+0439-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1082-tiny.png",
+        "path": "cyrillic/U+043A-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1083-tiny.png",
+        "path": "cyrillic/U+043B-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1084-tiny.png",
+        "path": "cyrillic/U+043C-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1085-tiny.png",
+        "path": "cyrillic/U+043D-tiny.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1087-tiny.png",
+        "path": "cyrillic/U+043F-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1090-tiny.png",
+        "path": "cyrillic/U+0442-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1092-tiny.png",
+        "path": "cyrillic/U+0444-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1094-tiny.png",
+        "path": "cyrillic/U+0446-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1095-tiny.png",
+        "path": "cyrillic/U+0447-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1096-tiny.png",
+        "path": "cyrillic/U+0448-tiny.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1097-tiny.png",
+        "path": "cyrillic/U+0449-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1099-tiny.png",
+        "path": "cyrillic/U+044B-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1100-tiny.png",
+        "path": "cyrillic/U+044C-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1101-tiny.png",
+        "path": "cyrillic/U+044D-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1102-tiny.png",
+        "path": "cyrillic/U+044E-tiny.png",
         "y": 2,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1103-tiny.png",
+        "path": "cyrillic/U+044F-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1108-tiny.png",
+        "path": "cyrillic/U+0454-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1168-tiny.png",
+        "path": "cyrillic/U+0490-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
     {
-        "path": "cyrillic/U1169-tiny.png",
+        "path": "cyrillic/U+0491-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
