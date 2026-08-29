@@ -230,7 +230,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
         }
         case ItemType::peepOnRide:
         {
-            auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = gameState.entities.tryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep == nullptr)
                 break;
 
@@ -253,11 +253,11 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             }
 
             // Find the first car of the train peep is on
-            auto sprite = gameState.entities.TryGetEntity<Vehicle>(ride->vehicles[peep->currentTrain]);
+            auto sprite = gameState.entities.tryGetEntity<Vehicle>(ride->vehicles[peep->currentTrain]);
             // Find the actual car peep is on
             for (int32_t i = 0; i < peep->currentCar && sprite != nullptr; i++)
             {
-                sprite = gameState.entities.TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
+                sprite = gameState.entities.tryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
             }
             if (sprite != nullptr)
             {
@@ -267,7 +267,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
         }
         case ItemType::peep:
         {
-            auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = gameState.entities.tryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
                 subjectLoc = peep->getLocation();
@@ -380,7 +380,7 @@ void News::OpenSubject(ItemType type, int32_t subject)
         case ItemType::peepOnRide:
         case ItemType::peep:
         {
-            auto peep = getGameState().entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = getGameState().entities.tryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
                 auto intent = Intent(WindowClass::peep);

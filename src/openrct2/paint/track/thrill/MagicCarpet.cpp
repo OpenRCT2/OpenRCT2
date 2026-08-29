@@ -93,7 +93,7 @@ static Vehicle* GetFirstVehicle(const Ride& ride)
 {
     if (ride.flags.has(RideFlag::onTrack))
     {
-        return getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        return getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
     }
     return nullptr;
 }

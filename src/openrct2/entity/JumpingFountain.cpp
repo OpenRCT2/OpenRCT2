@@ -140,7 +140,7 @@ namespace OpenRCT2
         const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const FountainFlags newFlags,
         const int32_t iteration)
     {
-        auto* jumpingFountain = getGameState().entities.CreateEntity<JumpingFountain>();
+        auto* jumpingFountain = getGameState().entities.createEntity<JumpingFountain>();
         if (jumpingFountain != nullptr)
         {
             jumpingFountain->iteration = iteration;
@@ -195,7 +195,7 @@ namespace OpenRCT2
 
         if (frame == 16)
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 

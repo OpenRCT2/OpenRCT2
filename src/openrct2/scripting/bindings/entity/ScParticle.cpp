@@ -54,7 +54,7 @@ namespace OpenRCT2::Scripting
     VehicleCrashParticle* ScCrashedVehicleParticle::GetCrashedVehicleParticle(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<VehicleCrashParticle>(id);
+        return getGameState().entities.getEntity<VehicleCrashParticle>(id);
     }
 
     JSValue ScCrashedVehicleParticle::frame_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)

@@ -259,9 +259,9 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         for (int32_t i = 0; i < ride->numTrains; ++i)
                         {
-                            for (Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[i]);
+                            for (Vehicle* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[i]);
                                  vehicle != nullptr;
-                                 vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                                 vehicle = gameState.entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
                             {
                                 vehicle->mass = mass;
                             }
@@ -481,7 +481,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
 
                 if (int_valid[0] && int_valid[1])
                 {
-                    Peep* peep = gameState.entities.GetEntity<Peep>(EntityId::FromUnderlying(int_val[0]));
+                    Peep* peep = gameState.entities.getEntity<Peep>(EntityId::FromUnderlying(int_val[0]));
                     if (peep != nullptr)
                     {
                         peep->energy = int_val[1];
@@ -500,7 +500,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     console.WriteLineError("Invalid staff ID");
                     return;
                 }
-                auto staff = gameState.entities.GetEntity<Staff>(EntityId::FromUnderlying(int_val[0]));
+                auto staff = gameState.entities.getEntity<Staff>(EntityId::FromUnderlying(int_val[0]));
                 if (staff == nullptr)
                 {
                     console.WriteLineError("Invalid staff ID");
@@ -1225,7 +1225,7 @@ static void ConsoleCommandRemoveUnusedObjects(InteractiveConsole& console, [[may
 
 static void ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, const arguments_t& argv)
 {
-    uint16_t result = getGameState().entities.RemoveFloatingEntities();
+    uint16_t result = getGameState().entities.removeFloatingEntities();
     console.WriteFormatLine("Removed %d flying objects", result);
 }
 
@@ -1239,7 +1239,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
     for (int32_t i = 0; i < static_cast<uint8_t>(EntityType::count); ++i)
     {
         auto& gameState = getGameState();
-        spriteCount += gameState.entities.GetEntityListCount(EntityType(i));
+        spriteCount += gameState.entities.getEntityListCount(EntityType(i));
     }
 
     auto bannerCount = GetNumBanners();

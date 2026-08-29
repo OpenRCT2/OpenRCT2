@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
         bool GameHasEntities() const
         {
             auto& gameState = getGameState();
-            return gameState.entities.GetNumFreeEntities() != kMaxEntities
+            return gameState.entities.getNumFreeEntities() != kMaxEntities
                 || gameState.park.flags.has(ParkFlag::spritesInitialised);
         }
 
