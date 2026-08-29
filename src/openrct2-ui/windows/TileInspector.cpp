@@ -24,6 +24,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -278,9 +279,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({3, 57}, {kWindowSize.width - 6, kWindowSize.height - kBottomPadding - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
         /* X and Y spinners */
         makeWidget                ({ 4, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),
-        makeHoldableSpinnerWidgets({20, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
-        makeWidget                ({74, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
-        makeHoldableSpinnerWidgets({90, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
+        makeHoldableSpinnerWidgets({20, 23}, {58, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
+        makeWidget                ({81, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
+        makeHoldableSpinnerWidgets({97, 23}, {58, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
         /* Top buttons */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 0,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1,                     kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,                    STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
@@ -761,6 +762,15 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
+                case WIDX_SPINNER_X:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(0);
+                    ft.Add<int16_t>(kMaximumMapSizeTechnical - 1);
+                    const std::string text = FormatStringID(STR_FORMAT_INTEGER, windowTileInspectorTile.x);
+                    WindowTextInputRawOpen(this, WIDX_SPINNER_X, STR_ENTER_NEW_VALUE, STR_ENTER_VALUE, ft, text.c_str(), 4);
+                    break;
+                }
                 case WIDX_SPINNER_X_INCREASE:
                     windowTileInspectorTile.x = std::min<int32_t>(windowTileInspectorTile.x + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.x = std::min<int32_t>(_toolMap.x + 32, kMaximumTileStartXY);
@@ -773,6 +783,15 @@ namespace OpenRCT2::Ui::Windows
                     LoadTile(nullptr);
                     break;
 
+                case WIDX_SPINNER_Y:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(0);
+                    ft.Add<int16_t>(kMaximumMapSizeTechnical - 1);
+                    const std::string text = FormatStringID(STR_FORMAT_INTEGER, windowTileInspectorTile.y);
+                    WindowTextInputRawOpen(this, WIDX_SPINNER_Y, STR_ENTER_NEW_VALUE, STR_ENTER_VALUE, ft, text.c_str(), 4);
+                    break;
+                }
                 case WIDX_SPINNER_Y_INCREASE:
                     windowTileInspectorTile.y = std::min<int32_t>(windowTileInspectorTile.y + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.y = std::min<int32_t>(_toolMap.y + 32, kMaximumTileStartXY);
@@ -1045,18 +1064,18 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int32_t>(tileCoords.x);
                 drawText(
-                    rt, screenCoords + ScreenCoordsXY{ 43, yOffset }, STR_FORMAT_INTEGER, ft,
+                    rt, screenCoords + ScreenCoordsXY{ 50, yOffset }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
                 ft = Formatter();
                 ft.Add<int32_t>(tileCoords.y);
                 drawText(
-                    rt, screenCoords + ScreenCoordsXY{ 113, yOffset }, STR_FORMAT_INTEGER, ft,
+                    rt, screenCoords + ScreenCoordsXY{ 127, yOffset }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
             }
             else
             {
-                drawText(rt, screenCoords + ScreenCoordsXY(43 - 7, yOffset), "-", { colours[1] });
-                drawText(rt, screenCoords + ScreenCoordsXY(113 - 7, yOffset), "-", { colours[1] });
+                drawText(rt, screenCoords + ScreenCoordsXY(50 - 7, yOffset), "-", { colours[1] });
+                drawText(rt, screenCoords + ScreenCoordsXY(127 - 7, yOffset), "-", { colours[1] });
             }
 
             if (windowTileInspectorSelectedIndex != -1)
@@ -1740,6 +1759,29 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords.y -= kScrollableRowHeight;
                 i++;
+            }
+        }
+
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_SPINNER_X:
+                {
+                    const int32_t input = std::stol(std::string(text));
+                    windowTileInspectorTile.x = std::clamp<int32_t>(input, 0, kMaximumMapSizeTechnical - 1);
+                    _toolMap.x = windowTileInspectorTile.x * kCoordsXYStep;
+                    invalidateWidget(WIDX_SPINNER_X);
+                    break;
+                }
+                case WIDX_SPINNER_Y:
+                {
+                    const int32_t input = std::stol(std::string(text));
+                    windowTileInspectorTile.y = std::clamp<int32_t>(input, 0, kMaximumMapSizeTechnical - 1);
+                    _toolMap.y = windowTileInspectorTile.y * kCoordsXYStep;
+                    invalidateWidget(WIDX_SPINNER_Y);
+                    break;
+                }
             }
         }
 
