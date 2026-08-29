@@ -9,6 +9,7 @@
 
 #include "CSStringConverter.h"
 
+#include "../core/EnumUtils.hpp"
 #include "../core/String.hpp"
 #include "../core/UnicodeChar.h"
 #include "../localisation/Language.h"
@@ -22,12 +23,10 @@ namespace OpenRCT2
     struct EncodingConvertEntry
     {
         uint16_t code;
-        uint32_t unicode;
+        UnicodeChar unicode;
     };
 
-    extern const EncodingConvertEntry RCT2ToUnicodeTable[];
-
-    const EncodingConvertEntry RCT2ToUnicodeTable[] = {
+    static constexpr EncodingConvertEntry kRCT2ToUnicodeTable[] = {
         // { 1, FORMAT_MOVE_X },
         // { 2, FORMAT_ADJUST_PALETTE },
         // { 5, FORMAT_NEWLINE },
@@ -76,38 +75,38 @@ namespace OpenRCT2
         // { 153, FORMAT_LIGHTPINK },
         // { 154, FORMAT_PEARLAQUA },
         // { 155, FORMAT_PALESILVER },
-        { CSChar::a_ogonek_uc, UnicodeChar::a_ogonek_uc },
+        { CSChar::a_ogonek_uc, UnicodeChar::aOgonekUc },
         { CSChar::up, UnicodeChar::up },
-        { CSChar::c_acute_uc, UnicodeChar::c_acute_uc },
-        { CSChar::e_ogonek_uc, UnicodeChar::e_ogonek_uc },
-        { CSChar::l_stroke_uc, UnicodeChar::l_stroke_uc },
+        { CSChar::c_acute_uc, UnicodeChar::cAcuteUc },
+        { CSChar::e_ogonek_uc, UnicodeChar::eOgonekUc },
+        { CSChar::l_stroke_uc, UnicodeChar::lStrokeUc },
         { CSChar::down, UnicodeChar::down },
         { CSChar::tick, UnicodeChar::tick },
         { CSChar::cross, UnicodeChar::cross },
         { CSChar::right, UnicodeChar::right },
         { CSChar::railway, UnicodeChar::railway },
-        { CSChar::quote_open, UnicodeChar::quote_open },
+        { CSChar::quote_open, UnicodeChar::quoteOpen },
         { CSChar::euro, UnicodeChar::euro },
         { CSChar::road, UnicodeChar::road },
         { CSChar::air, UnicodeChar::air },
         { CSChar::water, UnicodeChar::water },
-        { CSChar::superscript_minus_one, UnicodeChar::superscript_minus_one },
+        { CSChar::superscript_minus_one, UnicodeChar::superscriptMinusOne },
         { CSChar::bullet, UnicodeChar::bullet },
-        { CSChar::small_up, UnicodeChar::small_up },
-        { CSChar::small_down, UnicodeChar::small_down },
+        { CSChar::small_up, UnicodeChar::smallUp },
+        { CSChar::small_down, UnicodeChar::smallDown },
         { CSChar::left, UnicodeChar::left },
-        { CSChar::n_acute_uc, UnicodeChar::n_acute_uc },
-        { CSChar::s_acute_uc, UnicodeChar::s_acute_uc },
-        { CSChar::z_acute_uc, UnicodeChar::z_acute_uc },
-        { CSChar::z_dot_uc, UnicodeChar::z_dot_uc },
-        { CSChar::a_ogonek, UnicodeChar::a_ogonek },
-        { CSChar::c_acute, UnicodeChar::c_acute },
-        { CSChar::e_ogonek, UnicodeChar::e_ogonek },
-        { CSChar::n_acute, UnicodeChar::n_acute },
-        { CSChar::l_stroke, UnicodeChar::l_stroke },
-        { CSChar::s_acute, UnicodeChar::s_acute },
-        { CSChar::z_dot, UnicodeChar::z_dot },
-        { CSChar::z_acute, UnicodeChar::z_acute },
+        { CSChar::n_acute_uc, UnicodeChar::nAcuteUc },
+        { CSChar::s_acute_uc, UnicodeChar::sAcuteUc },
+        { CSChar::z_acute_uc, UnicodeChar::zAcuteUc },
+        { CSChar::z_dot_uc, UnicodeChar::zDotUc },
+        { CSChar::a_ogonek, UnicodeChar::aOgonek },
+        { CSChar::c_acute, UnicodeChar::cAcute },
+        { CSChar::e_ogonek, UnicodeChar::eOgonek },
+        { CSChar::n_acute, UnicodeChar::nAcute },
+        { CSChar::l_stroke, UnicodeChar::lStroke },
+        { CSChar::s_acute, UnicodeChar::sAcute },
+        { CSChar::z_dot, UnicodeChar::zDot },
+        { CSChar::z_acute, UnicodeChar::zAcute },
     };
 
     static int32_t EncodingSearchCompare(const void* pKey, const void* pEntry)
@@ -121,12 +120,13 @@ namespace OpenRCT2
         return 0;
     }
 
-    wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str)
+    UnicodeChar EncodingConvertRCT2ToUnicode(wchar_t rct2str)
     {
         EncodingConvertEntry* entry = static_cast<EncodingConvertEntry*>(std::bsearch(
-            &rct2str, RCT2ToUnicodeTable, std::size(RCT2ToUnicodeTable), sizeof(EncodingConvertEntry), EncodingSearchCompare));
+            &rct2str, kRCT2ToUnicodeTable, std::size(kRCT2ToUnicodeTable), sizeof(EncodingConvertEntry),
+            EncodingSearchCompare));
         if (entry == nullptr)
-            return rct2str;
+            return static_cast<UnicodeChar>(rct2str);
         return entry->unicode;
     }
 
@@ -222,7 +222,7 @@ namespace OpenRCT2
         u16.reserve(decoded.size());
         for (auto cc : decoded)
         {
-            u16.push_back(func(cc));
+            u16.push_back(EnumValue(func(cc)));
         }
         return String::toUtf8(u16);
     }
