@@ -711,6 +711,25 @@ namespace OpenRCT2::Ui::Windows
             scrollIndex++;
         }
     }
+
+    static void WindowInitScrollWidget(WindowBase& w, int32_t scroll_index, Widget widget, WidgetIndex widgetIndex)
+    {
+        auto& scroll = w.scrolls[scroll_index];
+        scroll.flags.clearAll();
+        ScreenSize scrollSize = w.onScrollGetSize(scroll_index);
+        scroll.contentOffsetX = 0;
+        scroll.contentWidth = scrollSize.width + 1;
+        scroll.contentOffsetY = 0;
+        scroll.contentHeight = scrollSize.height + 1;
+
+        if (widget.content & SCROLL_HORIZONTAL)
+            scroll.flags.set(ScrollFlag::hScrollbarVisible);
+        if (widget.content & SCROLL_VERTICAL)
+            scroll.flags.set(ScrollFlag::vScrollbarVisible);
+
+        widgetScrollUpdateThumbs(w, widgetIndex);
+    }
+
     /**
      * Initialises scroll widgets to their virtual size.
      *  rct2: 0x006EAEB8
@@ -726,21 +745,27 @@ namespace OpenRCT2::Ui::Windows
                 continue;
             }
 
-            auto& scroll = w.scrolls[scroll_index];
-            scroll.flags.clearAll();
-            ScreenSize scrollSize = w.onScrollGetSize(scroll_index);
-            scroll.contentOffsetX = 0;
-            scroll.contentWidth = scrollSize.width + 1;
-            scroll.contentOffsetY = 0;
-            scroll.contentHeight = scrollSize.height + 1;
-
-            if (widget.content & SCROLL_HORIZONTAL)
-                scroll.flags.set(ScrollFlag::hScrollbarVisible);
-            if (widget.content & SCROLL_VERTICAL)
-                scroll.flags.set(ScrollFlag::vScrollbarVisible);
-
-            widgetScrollUpdateThumbs(w, widgetIndex);
+            WindowInitScrollWidget(w, scroll_index, widget, widgetIndex);
             scroll_index++;
+        }
+    }
+
+    void WindowResetScrollWidget(WindowBase& w, int32_t targetScrollIndex)
+    {
+        int32_t scrollIndex = -1;
+        for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
+        {
+            auto& widget = w.widgets[widgetIndex];
+            if (widget.type != WidgetType::scroll)
+            {
+                continue;
+            }
+            scrollIndex++;
+            if (scrollIndex == targetScrollIndex)
+            {
+                WindowInitScrollWidget(w, scrollIndex, widget, widgetIndex);
+                return;
+            }
         }
     }
 

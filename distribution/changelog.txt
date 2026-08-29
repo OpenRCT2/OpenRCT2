@@ -1,5 +1,6 @@
 0.5.5 (in development)
 ------------------------------------------------------------------------
+- Feature: [#20326] Implement campaign (scenario group) objects.
 - Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.

@@ -3839,3 +3839,14 @@ STR_7039    :Ride type
 STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
+STR_7043    :Bonus parks
+STR_7044    :Graphite Group
+STR_7045    :Emerald Group
+STR_7046    :Ruby Group
+STR_7047    :Sapphire Group
+STR_7048    :Amethyst Group
+STR_7049    :Coral Group
+STR_7050    :Ivory Group
+STR_7051    :Bronze Group
+STR_7052    :Silver Group
+STR_7053    :Gold Group

@@ -609,7 +609,7 @@ namespace OpenRCT2::Editor
             if (!(_objectSelectionFlags[i].has(ObjectSelectionFlag::selected)))
             {
                 auto descriptor = ObjectEntryDescriptor(items[i]);
-                if (!IsIntransientObjectType(items[i].Type))
+                if (!ObjectTypeIsIntransient(items[i].Type))
                 {
                     RemoveSelectedObjectsFromResearch(descriptor);
                     objectsToUnload.push_back(descriptor);
