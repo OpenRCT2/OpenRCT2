@@ -22,7 +22,7 @@ namespace OpenRCT2
 {
     struct EncodingConvertEntry
     {
-        uint16_t code;
+        CSChar code;
         UnicodeChar unicode;
     };
 
@@ -75,47 +75,31 @@ namespace OpenRCT2
         // { 153, FORMAT_LIGHTPINK },
         // { 154, FORMAT_PEARLAQUA },
         // { 155, FORMAT_PALESILVER },
-        { CSChar::a_ogonek_uc, UnicodeChar::aOgonekUc },
-        { CSChar::up, UnicodeChar::up },
-        { CSChar::c_acute_uc, UnicodeChar::cAcuteUc },
-        { CSChar::e_ogonek_uc, UnicodeChar::eOgonekUc },
-        { CSChar::l_stroke_uc, UnicodeChar::lStrokeUc },
-        { CSChar::down, UnicodeChar::down },
-        { CSChar::tick, UnicodeChar::tick },
-        { CSChar::cross, UnicodeChar::cross },
-        { CSChar::right, UnicodeChar::right },
-        { CSChar::railway, UnicodeChar::railway },
-        { CSChar::quote_open, UnicodeChar::quoteOpen },
-        { CSChar::euro, UnicodeChar::euro },
-        { CSChar::road, UnicodeChar::road },
-        { CSChar::air, UnicodeChar::air },
-        { CSChar::water, UnicodeChar::water },
-        { CSChar::superscript_minus_one, UnicodeChar::superscriptMinusOne },
-        { CSChar::bullet, UnicodeChar::bullet },
-        { CSChar::small_up, UnicodeChar::smallUp },
-        { CSChar::small_down, UnicodeChar::smallDown },
-        { CSChar::left, UnicodeChar::left },
-        { CSChar::n_acute_uc, UnicodeChar::nAcuteUc },
-        { CSChar::s_acute_uc, UnicodeChar::sAcuteUc },
-        { CSChar::z_acute_uc, UnicodeChar::zAcuteUc },
-        { CSChar::z_dot_uc, UnicodeChar::zDotUc },
-        { CSChar::a_ogonek, UnicodeChar::aOgonek },
-        { CSChar::c_acute, UnicodeChar::cAcute },
-        { CSChar::e_ogonek, UnicodeChar::eOgonek },
-        { CSChar::n_acute, UnicodeChar::nAcute },
-        { CSChar::l_stroke, UnicodeChar::lStroke },
-        { CSChar::s_acute, UnicodeChar::sAcute },
-        { CSChar::z_dot, UnicodeChar::zDot },
-        { CSChar::z_acute, UnicodeChar::zAcute },
+        { CSChar::aOgonekUc, UnicodeChar::aOgonekUc }, { CSChar::up, UnicodeChar::up },
+        { CSChar::cAcuteUc, UnicodeChar::cAcuteUc },   { CSChar::eOgonekUc, UnicodeChar::eOgonekUc },
+        { CSChar::lStrokeUc, UnicodeChar::lStrokeUc }, { CSChar::down, UnicodeChar::down },
+        { CSChar::tick, UnicodeChar::tick },           { CSChar::cross, UnicodeChar::cross },
+        { CSChar::right, UnicodeChar::right },         { CSChar::railway, UnicodeChar::railway },
+        { CSChar::quoteOpen, UnicodeChar::quoteOpen }, { CSChar::euro, UnicodeChar::euro },
+        { CSChar::road, UnicodeChar::road },           { CSChar::air, UnicodeChar::air },
+        { CSChar::water, UnicodeChar::water },         { CSChar::superscriptMinusOne, UnicodeChar::superscriptMinusOne },
+        { CSChar::bullet, UnicodeChar::bullet },       { CSChar::smallUp, UnicodeChar::smallUp },
+        { CSChar::smallDown, UnicodeChar::smallDown }, { CSChar::left, UnicodeChar::left },
+        { CSChar::nAcuteUc, UnicodeChar::nAcuteUc },   { CSChar::sAcuteUc, UnicodeChar::sAcuteUc },
+        { CSChar::zAcuteUc, UnicodeChar::zAcuteUc },   { CSChar::zDotUc, UnicodeChar::zDotUc },
+        { CSChar::aOgonek, UnicodeChar::aOgonek },     { CSChar::cAcute, UnicodeChar::cAcute },
+        { CSChar::eOgonek, UnicodeChar::eOgonek },     { CSChar::nAcute, UnicodeChar::nAcute },
+        { CSChar::lStroke, UnicodeChar::lStroke },     { CSChar::sAcute, UnicodeChar::sAcute },
+        { CSChar::zDot, UnicodeChar::zDot },           { CSChar::zAcute, UnicodeChar::zAcute },
     };
 
     static int32_t EncodingSearchCompare(const void* pKey, const void* pEntry)
     {
         const uint16_t key = *reinterpret_cast<const uint16_t*>(pKey);
         const EncodingConvertEntry* entry = static_cast<const EncodingConvertEntry*>(pEntry);
-        if (key < entry->code)
+        if (key < EnumValue(entry->code))
             return -1;
-        if (key > entry->code)
+        if (key > EnumValue(entry->code))
             return 1;
         return 0;
     }
