@@ -33,5 +33,11 @@
             "surface": "rct2.footpath_surface.dirt",
             "coordinates": [ [ 86, 74, 12 ], [ 86, 75, 12 ], [ 86, 76, 12 ], [ 86, 77, 12 ], [ 86, 78, 12 ] ]
         }
+    ],
+    "rides": [
+        {
+            "id": [ 1, 3, 5, 6, 7 ],
+            "operation": "clear_name"
+        }
     ]
 }
