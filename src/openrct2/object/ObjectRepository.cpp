@@ -598,7 +598,7 @@ namespace OpenRCT2
 
             // Needs to be converted to string first because convertToUtf8() does not properly handle the string view length.
             auto cp1252name = std::string(entry.GetName());
-            auto name = String::convertToUtf8(cp1252name, CodePage::CP_1252);
+            auto name = String::convertToUtf8(cp1252name, CodePage::cp1252);
             return name + "." + u8string(flagsBuffer) + '.' + u8string(checksumBuffer);
         }
     };

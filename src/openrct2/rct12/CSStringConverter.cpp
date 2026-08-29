@@ -181,20 +181,20 @@ namespace OpenRCT2
         return result;
     }
 
-    static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
+    static CodePage GetCodePageForRCT2Language(RCT2LanguageId languageId)
     {
         switch (languageId)
         {
             case RCT2LanguageId::japanese:
-                return CodePage::CP_932;
+                return CodePage::cp932;
             case RCT2LanguageId::chineseSimplified:
-                return CodePage::CP_936;
+                return CodePage::cp936;
             case RCT2LanguageId::korean:
-                return CodePage::CP_949;
+                return CodePage::cp949;
             case RCT2LanguageId::chineseTraditional:
-                return CodePage::CP_950;
+                return CodePage::cp950;
             default:
-                return CodePage::CP_1252;
+                return CodePage::cp1252;
         }
     }
 
@@ -214,7 +214,7 @@ namespace OpenRCT2
     std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId)
     {
         auto codePage = GetCodePageForRCT2Language(languageId);
-        if (codePage == CodePage::CP_1252)
+        if (codePage == CodePage::cp1252)
         {
             // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.
             return DecodeConvertWithTable(src, EncodingConvertRCT2ToUnicode);
