@@ -1,0 +1,10 @@
+{
+    "scenario_name": "Rainbow Summit",
+    "sha256": "725a16e9dcd6d001a933db804968e48a29538a2a03994c658423f687f86e66f0",
+    "rides": [
+        {
+            "id": [ 2, 3 ],
+            "operation": "clear_name"
+        }
+    ]
+}
