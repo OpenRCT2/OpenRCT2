@@ -234,7 +234,9 @@ void EditorScene::OpenEditorWindows()
 {
     ContextOpenWindow(WindowClass::mainWindow);
     ContextOpenWindow(WindowClass::topToolbar);
-    ContextOpenWindowView(WindowView::editorBottomToolbar);
+    ContextOpenWindow(WindowClass::editorStepController); // previous step
+    ContextOpenWindow(WindowClass::editorStatusLine);
+    ContextOpenWindow(WindowClass::editorStepController); // next step
 }
 
 /**

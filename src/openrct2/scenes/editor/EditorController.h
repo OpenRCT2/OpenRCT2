@@ -39,6 +39,8 @@ namespace OpenRCT2::Editor
     };
     using InputFlags = FlagHolder<uint8_t, InputFlag>;
 
+    enum class Step : uint8_t;
+
     extern u8string gSceneryGroupPartialSelectError;
     extern std::vector<ObjectSelectionFlags> _objectSelectionFlags;
     extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
@@ -70,4 +72,6 @@ namespace OpenRCT2::Editor
      * @return The number of removed objects.
      */
     int32_t RemoveUnusedObjects();
+
+    StringId getStepStringId(Step step);
 } // namespace OpenRCT2::Editor
