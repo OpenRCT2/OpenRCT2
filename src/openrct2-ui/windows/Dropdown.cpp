@@ -519,6 +519,10 @@ namespace OpenRCT2::Ui::Windows
         Colour::forestGreen,    Colour::saturatedGreen, Colour::deepWater,    Colour::darkBlue,
         Colour::violet,
 
+        Colour::silver,         Colour::ruby,           Colour::amber,        Colour::gold,
+        Colour::cactus,         Colour::emerald,        Colour::darkerWater,  Colour::sapphire,
+        Colour::amethyst,
+
         Colour::grey,           Colour::brightRed,      Colour::lightOrange,  Colour::yellow,
         Colour::mossGreen,      Colour::brightGreen,    Colour::darkWater,    Colour::lightBlue,
         Colour::brightPurple,
@@ -531,7 +535,11 @@ namespace OpenRCT2::Ui::Windows
         Colour::armyGreen,      Colour::hunterGreen,    Colour::viridian,     Colour::darkPurple,
         Colour::darkPink,
 
-        Colour::darkBrown,      Colour::bordeauxRed,    Colour::salmonPink,   Colour::lightBrown,
+        Colour::darkBrown,      Colour::crimson,        Colour::copper,       Colour::caramel,
+        Colour::pesto,          Colour::asparagus,      Colour::pineGreen,    Colour::indigo,
+        Colour::burntPink,
+
+        Colour::brown,          Colour::bordeauxRed,    Colour::salmonPink,   Colour::lightBrown,
         Colour::darkOliveGreen, Colour::oliveGreen,     Colour::darkGreen,    Colour::lightPurple,
         Colour::brightPink,
 
@@ -552,6 +560,16 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_DEEP_WATER_TIP,
         STR_COLOUR_DARK_BLUE_TIP,
         STR_COLOUR_SATURATED_PURPLE_DARK_TIP,
+
+        STR_COLOUR_SILVER_TIP,
+        STR_COLOUR_RUBY_TIP,
+        STR_COLOUR_AMBER_TIP,
+        STR_COLOUR_GOLD_TIP,
+        STR_COLOUR_CACTUS_TIP,
+        STR_COLOUR_EMERALD_TIP,
+        STR_COLOUR_DARKER_WATER_TIP,
+        STR_COLOUR_SAPPHIRE_TIP,
+        STR_COLOUR_AMETHYST_TIP,
 
         STR_COLOUR_GREY_TIP,
         STR_COLOUR_BRIGHT_RED_TIP,
@@ -584,6 +602,16 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_DARK_PINK_TIP,
 
         STR_COLOUR_DARK_BROWN_TIP,
+        STR_COLOUR_CRIMSON_TIP,
+        STR_COLOUR_COPPER_TIP,
+        STR_COLOUR_CARAMEL_TIP,
+        STR_COLOUR_PESTO_TIP,
+        STR_COLOUR_ASPARAGUS_TIP,
+        STR_COLOUR_PINE_GREEN_TIP,
+        STR_COLOUR_INDIGO_TIP,
+        STR_COLOUR_BURNT_PINK_TIP,
+
+        STR_COLOUR_BROWN_TIP,
         STR_COLOUR_BORDEAUX_RED_TIP,
         STR_COLOUR_SALMON_PINK_TIP,
         STR_COLOUR_LIGHT_BROWN_TIP,
@@ -606,6 +634,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_INVISIBLE_TIP,
         STR_COLOUR_VOID_TIP,
     };
+    static_assert(kColourTooltips.size() == kColourNumTotal);
 
     Colour ColourDropDownIndexToColour(uint8_t ddidx)
     {

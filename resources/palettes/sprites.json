@@ -665,6 +665,96 @@
         "format": "raw"
     },
     {
+        "path": "map_base/palette_map_gold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_amber.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_amethyst.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_asparagus.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_burnt_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_cactus.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_caramel.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_copper.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_crimson.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_darker_water.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_emerald.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_indigo.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_pesto.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_pine_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_ruby.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_sapphire.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_base/palette_map_silver.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "map_base/palette_map_water.png",
         "palette": "keep",
         "format": "raw"
@@ -1341,6 +1431,96 @@
     },
     {
         "path": "map_glass/palette_map_glass_void.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_gold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_amber.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_amethyst.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_asparagus.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_brown.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_burnt_pink.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_cactus.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_caramel.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_copper.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_crimson.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_darker_water.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_emerald.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_indigo.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_pesto.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_pine_green.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_ruby.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_sapphire.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_silver.png",
         "palette": "keep",
         "format": "raw"
     }

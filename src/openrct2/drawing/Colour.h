@@ -80,10 +80,28 @@ namespace OpenRCT2::Drawing
         beige,
         invisible,
         voidBackground,
+        gold,
+        amber,
+        amethyst,
+        asparagus,
+        brown,
+        burntPink,
+        cactus,
+        caramel,
+        copper,
+        crimson,
+        darkerWater,
+        emerald,
+        indigo,
+        pesto,
+        pineGreen,
+        ruby,
+        sapphire,
+        silver,
     };
 
-    constexpr uint8_t kColourNumNormal = 54;
-    constexpr uint8_t kColourNumTotal = 56;
+    constexpr uint8_t kColourNumNormal = 72;
+    constexpr uint8_t kColourNumTotal = 74;
 
     constexpr auto kColourNull = static_cast<Colour>(255);
 
