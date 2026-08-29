@@ -1,0 +1,31 @@
+{
+    "scenario_name": "Dragon's Cove",
+    "sha256": "2d9e0030431174db25ce560b39f7c2578e35192172925bcd15a403bd940cb9d5",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Dragon's Drop"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Dangling Dragons"
+        },
+        {
+            "id": 2,
+            "operation": "set_name",
+            "name": "Dragon Loops"
+        },
+        {
+            "id": 3,
+            "operation": "set_name",
+            "name": "Dragon Planes"
+        },
+        {
+            "id": 4,
+            "operation": "set_name",
+            "name": "Dragon Sleigher"
+        }
+    ]
+}
