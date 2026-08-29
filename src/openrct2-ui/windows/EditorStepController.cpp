@@ -85,8 +85,8 @@ namespace OpenRCT2::Ui::Windows
                                                             : WindowClass::editorTrackBottomToolbar);
 
             auto& gameState = getGameState();
-            bool stepVisible = !(
-                gLegacyScene == LegacyScene::trackDesignsManager || gameState.editorStep == Editor::Step::saveScenario);
+            bool stepVisible = gLegacyScene != LegacyScene::trackDesignsManager
+                && gameState.editorStep != Editor::Step::saveScenario;
             if (stepVisible)
             {
                 if (gameState.editorStep == Editor::Step::objectSelection
