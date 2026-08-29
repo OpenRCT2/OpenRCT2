@@ -57,7 +57,7 @@ static void GameInit(bool retainSpatialIndices)
 {
     auto& gameState = getGameState();
     if (!retainSpatialIndices)
-        gameState.entities.ResetEntitySpatialIndices();
+        gameState.entities.resetEntitySpatialIndices();
 
     ResetAllSpriteQuadrantPlacements();
     LoadPalette();

@@ -61,7 +61,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
-        auto* const peep = gameState.entities.TryGetEntity<Peep>(_entityId);
+        auto* const peep = gameState.entities.tryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
 
     Result PeepPickupAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        Peep* const peep = gameState.entities.TryGetEntity<Peep>(_entityId);
+        Peep* const peep = gameState.entities.tryGetEntity<Peep>(_entityId);
         if (peep == nullptr)
         {
             LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);

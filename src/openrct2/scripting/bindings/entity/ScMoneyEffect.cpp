@@ -33,7 +33,7 @@ namespace OpenRCT2::Scripting
     MoneyEffect* ScMoneyEffect::GetMoneyEffect(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<MoneyEffect>(id);
+        return getGameState().entities.getEntity<MoneyEffect>(id);
     }
 
     JSValue ScMoneyEffect::value_get(JSContext* ctx, JSValue thisVal)

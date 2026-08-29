@@ -62,7 +62,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetPatrolAreaAction::QueryExecute(GameState_t& gameState, bool executing) const
     {
-        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteID %u", _spriteId.ToUnderlying());

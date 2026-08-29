@@ -2195,10 +2195,10 @@ namespace OpenRCT2
         for (auto i = 0; i < EnumValue(EntityType::count); i++)
         {
             auto entityType = static_cast<EntityType>(i);
-            auto& list = getGameState().entities.GetEntityList(entityType);
+            auto& list = getGameState().entities.getEntityList(entityType);
             for (const auto& entityId : list)
             {
-                auto entity = getGameState().entities.GetEntity(entityId);
+                auto entity = getGameState().entities.getEntity(entityId);
 
                 // Do not tween the entity
                 entityTweener.RemoveEntity(entity);

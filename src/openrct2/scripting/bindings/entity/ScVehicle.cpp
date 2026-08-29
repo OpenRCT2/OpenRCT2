@@ -110,7 +110,7 @@ namespace OpenRCT2::Scripting
     Vehicle* ScVehicle::GetVehicle(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<Vehicle>(id);
+        return getGameState().entities.getEntity<Vehicle>(id);
     }
 
     JSValue ScVehicle::rideObject_get(JSContext* ctx, JSValue thisVal)

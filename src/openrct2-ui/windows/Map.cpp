@@ -977,7 +977,7 @@ namespace OpenRCT2::Ui::Windows
             auto leftTop = ScreenCoordsXY{ c.x, c.y } + offset;
             auto rightBottom = leftTop;
             auto colour = DefaultPeepMapColour;
-            if (getGameState().entities.EntityGetFlashing(peep))
+            if (getGameState().entities.entityGetFlashing(peep))
             {
                 colour = flashColour;
                 // If flashing then map peep pixel size is increased (by moving left top downwards)
@@ -1019,7 +1019,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto train : TrainManager::View())
             {
                 for (Vehicle* vehicle = train; vehicle != nullptr;
-                     vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                     vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     if (vehicle->x == kLocationNull)
                         continue;

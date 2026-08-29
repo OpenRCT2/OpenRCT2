@@ -38,7 +38,7 @@ static void PaintTwistStructure(
 
     if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
-        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
 
         session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;

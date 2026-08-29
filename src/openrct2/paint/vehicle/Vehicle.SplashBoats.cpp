@@ -38,8 +38,8 @@ namespace OpenRCT2
         // TODO: pass as parameter?
         auto& entityRegistry = getGameState().entities;
 
-        auto* vehicleToPaint = vehicle->IsHead() ? entityRegistry.GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
-                                                 : entityRegistry.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+        auto* vehicleToPaint = vehicle->IsHead() ? entityRegistry.getEntity<Vehicle>(vehicle->next_vehicle_on_ride)
+                                                 : entityRegistry.getEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         if (vehicleToPaint == nullptr)
         {
             return;
