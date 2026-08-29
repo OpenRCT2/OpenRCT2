@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
 
             auto clearResult = MapCanConstructWithClearAt(
                 { _coords, _height * kCoordsZStep, zCorner * kCoordsZStep }, MapSetLandHeightClearFunc, { 0b1111, 0 }, {},
-                _style, CreateCrossingMode::none);
+                { .slope = _style });
             if (clearResult.error != Status::ok)
             {
                 clearResult.error = Status::disallowed;
