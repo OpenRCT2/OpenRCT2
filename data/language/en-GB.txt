@@ -3839,3 +3839,4 @@ STR_7039    :Ride type
 STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
+STR_7043    :Land style picker. Click any tile on the map to select the same style for terraforming.
