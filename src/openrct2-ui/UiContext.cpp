@@ -93,11 +93,6 @@ private:
     uint8_t _keysPressed[256] = {};
     uint32_t _lastGestureTimestamp = 0;
     float _gestureRadius = 0;
-#ifdef __APPLE__
-    float _nativeScrollX = 0;
-    float _nativeScrollY = 0;
-#endif
-
     InGameConsole _inGameConsole;
     std::unique_ptr<ITitleSequencePlayer> _titleSequencePlayer;
 
@@ -148,12 +143,6 @@ public:
     void Tick() override
     {
 #ifdef __APPLE__
-        float nativeScrollX = 0;
-        float nativeScrollY = 0;
-        PollNativeMacOSScroll(nativeScrollX, nativeScrollY);
-        _nativeScrollX -= nativeScrollX;
-        _nativeScrollY -= nativeScrollY;
-
         const auto pinch = PollNativeMacOSPinch();
         if (Config::Get().general.nativeMacOSControls && pinch != 0 && ViewportFindFromPoint(_cursorState.position) != nullptr)
         {
@@ -161,28 +150,6 @@ public:
                 Windows::MainWindowZoom(pinch > 0, true);
         }
 
-        if (Config::Get().general.nativeMacOSControls)
-        {
-            auto* viewport = ViewportFindFromPoint(_cursorState.position);
-            auto* targetWindow = viewport == nullptr ? nullptr : _windowManager->GetOwner(viewport);
-            auto* mainWindow = WindowGetMain();
-            if (targetWindow != nullptr && targetWindow->viewport != nullptr
-                && (targetWindow == mainWindow || targetWindow->classification == WindowClass::viewport))
-            {
-                WindowUnfollowSprite(*targetWindow);
-                const auto scrollX = static_cast<int32_t>(std::lround(_nativeScrollX));
-                const auto scrollY = static_cast<int32_t>(std::lround(_nativeScrollY));
-                _nativeScrollX -= scrollX;
-                _nativeScrollY -= scrollY;
-                if (scrollX != 0 || scrollY != 0)
-                    InputScrollViewportSmooth({ scrollX, scrollY }, targetWindow);
-            }
-        }
-        else
-        {
-            _nativeScrollX = 0;
-            _nativeScrollY = 0;
-        }
 #endif
 
         _inGameConsole.Update();
@@ -453,9 +420,16 @@ public:
 #ifdef __APPLE__
                     if (Config::Get().general.nativeMacOSControls && ViewportFindFromPoint(_cursorState.position) != nullptr)
                     {
-                        // Fallback for precise events not intercepted by the native monitor.
-                        _nativeScrollX -= (e.wheel.preciseX != 0 ? e.wheel.preciseX : e.wheel.x);
-                        _nativeScrollY -= (e.wheel.preciseY != 0 ? e.wheel.preciseY : e.wheel.y);
+                        auto* viewport = ViewportFindFromPoint(_cursorState.position);
+                        auto* targetWindow = _windowManager->GetOwner(viewport);
+                        if (targetWindow != nullptr && targetWindow->viewport != nullptr
+                            && (targetWindow == WindowGetMain() || targetWindow->classification == WindowClass::viewport))
+                        {
+                            WindowUnfollowSprite(*targetWindow);
+                            const auto scrollX = e.wheel.preciseX != 0 ? e.wheel.preciseX : e.wheel.x;
+                            const auto scrollY = e.wheel.preciseY != 0 ? e.wheel.preciseY : e.wheel.y;
+                            InputScrollViewportSmooth(scrollX, scrollY, targetWindow);
+                        }
                         break;
                     }
 #endif

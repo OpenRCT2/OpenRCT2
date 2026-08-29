@@ -39,15 +39,7 @@
 
 namespace OpenRCT2::Ui
 {
-    static std::atomic<float> gNativeScrollX{ 0 };
-    static std::atomic<float> gNativeScrollY{ 0 };
     static std::atomic<int> gNativePinch{ 0 };
-
-    void PollNativeMacOSScroll(float& x, float& y)
-    {
-        x = gNativeScrollX.exchange(0);
-        y = gNativeScrollY.exchange(0);
-    }
 
     int PollNativeMacOSPinch()
     {
@@ -67,7 +59,7 @@ namespace OpenRCT2::Ui
                 return;
 
             _nativeGestureMonitor = [NSEvent
-                addLocalMonitorForEventsMatchingMask:NSEventMaskScrollWheel | NSEventMaskMagnify
+                addLocalMonitorForEventsMatchingMask:NSEventMaskMagnify
                                              handler:^NSEvent*(NSEvent* event) {
                                                if (!Config::Get().general.nativeMacOSControls || event.window != _window)
                                                    return event;
@@ -92,13 +84,6 @@ namespace OpenRCT2::Ui
 
                                                    if (event.phase == NSEventPhaseEnded || event.phase == NSEventPhaseCancelled)
                                                        _nativePinchHandled = false;
-                                               }
-                                               else
-                                               {
-                                                   // Preserve both live and momentum scroll events. AppKit's scrollingDelta is
-                                                   // already subpixel.
-                                                   gNativeScrollX.fetch_add(event.scrollingDeltaX);
-                                                   gNativeScrollY.fetch_add(event.scrollingDeltaY);
                                                }
                                                return nil;
                                              }];

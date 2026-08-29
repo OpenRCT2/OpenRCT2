@@ -3,7 +3,6 @@
 #ifdef __APPLE__
 namespace OpenRCT2::Ui
 {
-    void PollNativeMacOSScroll(float& x, float& y);
     int PollNativeMacOSPinch();
 } // namespace OpenRCT2::Ui
 #endif
