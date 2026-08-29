@@ -1397,6 +1397,11 @@
         "format": "raw"
     },
     {
+        "path": "cyrillic/U+044A-small.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "cyrillic/U+044B-small.png",
         "palette": "keep",
         "format": "raw"
@@ -3203,6 +3208,11 @@
         "format": "raw"
     },
     {
+        "path": "cyrillic/U+044A-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "cyrillic/U+044B-bold.png",
         "palette": "keep",
         "format": "raw"
@@ -5004,6 +5014,12 @@
     },
     {
         "path": "cyrillic/U+0449-tiny.png",
+        "y": 1,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "cyrillic/U+044A-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
