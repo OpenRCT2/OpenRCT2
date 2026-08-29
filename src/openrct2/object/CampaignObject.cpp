@@ -61,7 +61,7 @@ namespace OpenRCT2
         }
 
         // Exclude group if no scenarios were linked
-        if (groupEntry->scenarioList.size() > 0)
+        if (!groupEntry->scenarioList.empty())
         {
             // Read group header
             if (!group.contains("header"))
