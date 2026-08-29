@@ -22,18 +22,73 @@
     #include <ApplicationServices/ApplicationServices.h>
     #include <Cocoa/Cocoa.h>
     #include <CoreFoundation/CFBundle.h>
-    #include <SDL_video.h>
+    #include <SDL.h>
+    #ifndef SDL_VIDEO_DRIVER_COCOA
+        #define SDL_VIDEO_DRIVER_COCOA 1
+    #endif
+    #include <SDL_syswm.h>
     #include <mach-o/dyld.h>
     #pragma clang diagnostic pop
+    #include "MacNativeInput.h"
+
+    #include <atomic>
     #include <openrct2/Diagnostic.h>
+    #include <openrct2/config/Config.h>
     #include <openrct2/ui/UiContext.h>
     #include <string>
 
 namespace OpenRCT2::Ui
 {
+    static std::atomic<int> gNativePinch{ 0 };
+
+    int PollNativeMacOSPinch()
+    {
+        return gNativePinch.exchange(0);
+    }
+
     class macOSContext final : public IPlatformUiContext
     {
     private:
+        id _nativeGestureMonitor = nil;
+        NSWindow* _window = nil;
+        bool _nativePinchHandled = false;
+
+        void InstallNativeGestureMonitor()
+        {
+            if (_nativeGestureMonitor != nil)
+                return;
+
+            _nativeGestureMonitor = [NSEvent
+                addLocalMonitorForEventsMatchingMask:NSEventMaskMagnify
+                                             handler:^NSEvent*(NSEvent* event) {
+                                               if (!Config::Get().general.nativeMacOSControls || event.window != _window)
+                                                   return event;
+                                               if (event.type == NSEventTypeMagnify)
+                                               {
+                                                   if (event.phase == NSEventPhaseBegan)
+                                                       _nativePinchHandled = false;
+
+                                                   // Map the observed trackpad directions directly: pinch in zooms
+                                                   // out and pinch out zooms in. The first non-zero event completes
+                                                   // the gesture, so there is no distance threshold or slow buildup.
+                                                   if (!_nativePinchHandled && event.magnification > 0)
+                                                   {
+                                                       gNativePinch.fetch_add(1);
+                                                       _nativePinchHandled = true;
+                                                   }
+                                                   else if (!_nativePinchHandled && event.magnification < 0)
+                                                   {
+                                                       gNativePinch.fetch_sub(1);
+                                                       _nativePinchHandled = true;
+                                                   }
+
+                                                   if (event.phase == NSEventPhaseEnded || event.phase == NSEventPhaseCancelled)
+                                                       _nativePinchHandled = false;
+                                               }
+                                               return nil;
+                                             }];
+        }
+
     public:
         macOSContext()
         {
@@ -46,8 +101,27 @@ namespace OpenRCT2::Ui
             }
         }
 
+        ~macOSContext() override
+        {
+            @autoreleasepool
+            {
+                if (_nativeGestureMonitor != nil)
+                {
+                    [NSEvent removeMonitor:_nativeGestureMonitor];
+                    _nativeGestureMonitor = nil;
+                }
+            }
+        }
+
         void SetWindowIcon(SDL_Window* window) override
         {
+            SDL_SysWMinfo wmInfo;
+            SDL_VERSION(&wmInfo.version);
+            if (SDL_GetWindowWMInfo(window, &wmInfo) == SDL_TRUE && wmInfo.subsystem == SDL_SYSWM_COCOA)
+            {
+                _window = wmInfo.info.cocoa.window;
+                InstallNativeGestureMonitor();
+            }
         }
 
         bool IsSteamOverlayAttached() override
