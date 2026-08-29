@@ -3,6 +3,7 @@
 - Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.
+- Improved: [#16269] Unnamed rides in sc4 format Added Attractions & Loopy Landscapes scenarios now use their official names from Rollercoaster Tycoon Classic.
 - Improved: [#19000] Add sprite font glyph for the Won (₩).
 - Improved: [#21441] Add sprite font glyph for the Hryvnia (₴).
 - Improved: [#23872] Loading a park outside the game now sets the folder of the load/save window, as loading one in-game does.
