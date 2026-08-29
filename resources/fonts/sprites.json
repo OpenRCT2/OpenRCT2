@@ -1449,6 +1449,11 @@
         "format": "raw"
     },
     {
+        "path": "currency/U+20B4-hryvnia-sign-small.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "german-openquotes-small.png",
         "y": 6,
         "palette": "keep",
@@ -3261,6 +3266,11 @@
     },
     {
         "path": "currency/U+20A9-won-sign-bold.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "currency/U+20B4-hryvnia-sign-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -5082,6 +5092,11 @@
     },
     {
         "path": "currency/U+20A9-won-sign-tiny.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "currency/U+20B4-hryvnia-sign-tiny.png",
         "palette": "keep",
         "format": "raw"
     },

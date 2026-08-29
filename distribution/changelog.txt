@@ -4,6 +4,7 @@
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.
 - Improved: [#19000] Add sprite font glyph for the Won (₩).
+- Improved: [#21441] Add sprite font glyph for the Hryvnia (₴).
 - Improved: [#23872] Loading a park outside the game now sets the folder of the load/save window, as loading one in-game does.
 - Improved: [#25362] When dragging footpaths, they will now properly adapt to uneven terrain.
 - Improved: [#26099] The ride type selection cheat has been moved into the ride operations tab.

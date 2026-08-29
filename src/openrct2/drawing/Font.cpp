@@ -225,6 +225,7 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::guilder, SPR_FONTS_GUILDER_SIGN - SPR_FONTS_BEGIN },
     { UnicodeChar::euro, CSChar::euro - kCSSpriteFontOffset },
     { UnicodeChar::won, SPR_FONTS_WON_SIGN - SPR_FONTS_BEGIN },
+    { UnicodeChar::hryvnia, SPR_FONTS_HRYVNIA_SIGN - SPR_FONTS_BEGIN },
     { UnicodeChar::rouble, SPR_FONTS_ROUBLE_SIGN - SPR_FONTS_BEGIN },
 
     // Dingbats
