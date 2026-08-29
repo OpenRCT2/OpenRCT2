@@ -687,7 +687,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U+00A3-small.png",
+        "path": "currency/U+00A3-pound-sign-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -695,7 +695,7 @@
         "path": "../g2/empty.png"
     },
     {
-        "path": "latin/U+00A5-small.png",
+        "path": "currency/U+00A5-yen-sign-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -781,7 +781,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U+00B5-small.png",
+        "path": "currency/U+20AC-euro-sign-small.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -1455,7 +1455,7 @@
         "format": "raw"
     },
     {
-        "path": "guilder-small.png",
+        "path": "currency/U+0192-guilder-sign-small.png",
         "y": 0,
         "palette": "keep",
         "format": "raw"
@@ -1707,7 +1707,7 @@
         "format": "raw"
     },
     {
-        "path": "rouble-small.png",
+        "path": "currency/U+20BD-ruble-sign-small.png",
         "y": 0,
         "palette": "keep",
         "format": "raw"
@@ -2501,7 +2501,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U+00A3-bold.png",
+        "path": "currency/U+00A3-pound-sign-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -2509,7 +2509,7 @@
         "path": "../g2/empty.png"
     },
     {
-        "path": "latin/U+00A5-bold.png",
+        "path": "currency/U+00A5-yen-sign-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -2595,7 +2595,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U+00B5-bold.png",
+        "path": "currency/U+20AC-euro-sign-bold.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -3271,7 +3271,7 @@
         "format": "raw"
     },
     {
-        "path": "guilder-bold.png",
+        "path": "currency/U+0192-guilder-sign-bold.png",
         "y": 0,
         "palette": "keep",
         "format": "raw"
@@ -3523,7 +3523,7 @@
         "format": "raw"
     },
     {
-        "path": "rouble-bold.png",
+        "path": "currency/U+20BD-ruble-sign-bold.png",
         "y": 0,
         "palette": "keep",
         "format": "raw"
@@ -4314,7 +4314,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U+00A3-tiny.png",
+        "path": "currency/U+00A3-pound-sign-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4322,7 +4322,7 @@
         "path": "../g2/empty.png"
     },
     {
-        "path": "latin/U+00A5-tiny.png",
+        "path": "currency/U+00A5-yen-sign-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -4407,7 +4407,7 @@
         "format": "raw"
     },
     {
-        "path": "latin/U+00B5-tiny.png",
+        "path": "currency/U+20AC-euro-sign-tiny.png",
         "palette": "keep",
         "format": "raw"
     },
@@ -5092,7 +5092,7 @@
         "format": "raw"
     },
     {
-        "path": "guilder-tiny.png",
+        "path": "currency/U+0192-guilder-sign-tiny.png",
         "y": 1,
         "palette": "keep",
         "format": "raw"
@@ -5344,7 +5344,7 @@
         "format": "raw"
     },
     {
-        "path": "rouble-tiny.png",
+        "path": "currency/U+20BD-ruble-sign-tiny.png",
         "y": 0,
         "palette": "keep",
         "format": "raw"
