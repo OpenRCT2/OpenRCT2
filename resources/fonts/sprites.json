@@ -3282,7 +3282,7 @@
     },
     {
         "path": "currency/U+0192-guilder-sign-bold.png",
-        "y": 0,
+        "x": -1,
         "palette": "keep",
         "format": "raw"
     },
@@ -5108,7 +5108,6 @@
     },
     {
         "path": "currency/U+0192-guilder-sign-tiny.png",
-        "y": 1,
         "palette": "keep",
         "format": "raw"
     },
