@@ -59,18 +59,6 @@ namespace OpenRCT2::Ui::Windows
     private:
         using FuncPtr = void (*)();
 
-        static constexpr StringId kEditorStepNames[] = {
-            STR_EDITOR_STEP_OBJECT_SELECTION,       // Editor::Step::objectSelection
-            STR_EDITOR_STEP_LANDSCAPE_EDITOR,       // Editor::Step::landscapeEditor
-            STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, // Editor::Step::inventionsListSetUp
-            STR_EDITOR_STEP_OPTIONS_SELECTION,      // Editor::Step::optionsSelection
-            STR_EDITOR_STEP_OBJECTIVE_SELECTION,    // Editor::Step::objectiveSelection
-            STR_EDITOR_STEP_SCENARIO_DETAILS,       // Editor::Step::scenarioDetails
-            STR_EDITOR_STEP_SAVE_SCENARIO,          // Editor::Step::saveScenario
-            STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // Editor::Step::rollerCoasterDesigner
-            STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,  // Editor::Step::designsManager
-        };
-
     public:
         StepDirection direction;
 
@@ -344,8 +332,8 @@ namespace OpenRCT2::Ui::Windows
 
             drawText(rt, windowPos + layout.labelOffset, layout.label, { textColour, TextAlignment::centre });
 
-            auto step = EnumValue(getGameState().editorStep) + (isPrevious ? -1 : 1);
-            auto stringId = kEditorStepNames[step];
+            auto step = Editor::Step(EnumValue(getGameState().editorStep) + (isPrevious ? -1 : 1));
+            auto stringId = Editor::getStepStringId(step);
 
             if (isPrevious && gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;

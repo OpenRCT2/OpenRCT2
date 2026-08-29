@@ -22,6 +22,7 @@
 #include "../../entity/Staff.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/LocalisationService.h"
+#include "../../localisation/StringIds.h"
 #include "../../management/Research.h"
 #include "../../object/DefaultObjects.h"
 #include "../../object/FootpathEntry.h"
@@ -970,4 +971,22 @@ namespace OpenRCT2::Editor
 
         return numUnselectedObjects;
     }
+
+    static constexpr StringId kEditorStepNames[] = {
+        STR_EDITOR_STEP_OBJECT_SELECTION,       // Editor::Step::objectSelection
+        STR_EDITOR_STEP_LANDSCAPE_EDITOR,       // Editor::Step::landscapeEditor
+        STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, // Editor::Step::inventionsListSetUp
+        STR_EDITOR_STEP_OPTIONS_SELECTION,      // Editor::Step::optionsSelection
+        STR_EDITOR_STEP_OBJECTIVE_SELECTION,    // Editor::Step::objectiveSelection
+        STR_EDITOR_STEP_SCENARIO_DETAILS,       // Editor::Step::scenarioDetails
+        STR_EDITOR_STEP_SAVE_SCENARIO,          // Editor::Step::saveScenario
+        STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // Editor::Step::rollerCoasterDesigner
+        STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,  // Editor::Step::designsManager
+    };
+
+    StringId getStepStringId(Step step)
+    {
+        return kEditorStepNames[EnumValue(step)];
+    }
+
 } // namespace OpenRCT2::Editor
