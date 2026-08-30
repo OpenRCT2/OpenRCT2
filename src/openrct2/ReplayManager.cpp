@@ -539,7 +539,7 @@ namespace OpenRCT2
                 auto& gameState = getGameState();
                 importer->Import(gameState);
 
-                EntityTweener::Get().Reset();
+                EntityTweener::get().reset();
 
                 // Load all map global variables.
                 DataSerialiser parkParamsDs(false, data.parkParams);

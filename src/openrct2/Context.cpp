@@ -793,7 +793,7 @@ namespace OpenRCT2
                 gFirstTimeSaving = true;
                 GameFixSaveVars();
                 MapAnimations::MarkAllTiles();
-                EntityTweener::Get().Reset();
+                EntityTweener::get().reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = kAutosavePause;
 
@@ -1266,9 +1266,9 @@ namespace OpenRCT2
 
                 // Switching from variable to fixed frame requires reseting
                 // of entity positions back to end of tick positions
-                auto& tweener = EntityTweener::Get();
-                tweener.Restore();
-                tweener.Reset();
+                auto& tweener = EntityTweener::get();
+                tweener.restore();
+                tweener.reset();
             }
 
             UpdateTimeAccumulators(deltaTime);
@@ -1338,7 +1338,7 @@ namespace OpenRCT2
             PROFILED_FUNCTION();
 
             const bool shouldDraw = ShouldDraw();
-            auto& tweener = EntityTweener::Get();
+            auto& tweener = EntityTweener::get();
 
             _uiContext->ProcessMessages();
 
@@ -1346,7 +1346,7 @@ namespace OpenRCT2
             {
                 // Get the original position of each sprite
                 if (shouldDraw)
-                    tweener.PreTick();
+                    tweener.preTick();
 
                 Tick();
 
@@ -1354,7 +1354,7 @@ namespace OpenRCT2
 
                 // Get the next position of each sprite
                 if (shouldDraw)
-                    tweener.PostTick();
+                    tweener.postTick();
             }
 
             _backgroundWorker.dispatchCompleted();
@@ -1365,7 +1365,7 @@ namespace OpenRCT2
             if (shouldDraw)
             {
                 const float alpha = std::min(_ticksAccumulator / kGameUpdateTimeMS, 1.0f);
-                tweener.Tween(alpha);
+                tweener.tween(alpha);
 
                 Draw();
             }

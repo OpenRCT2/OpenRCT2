@@ -24,23 +24,23 @@ namespace OpenRCT2
 
     class EntityTweener
     {
-        std::vector<EntityBase*> Entities;
-        std::vector<CoordsXYZ> PrePos;
-        std::vector<CoordsXYZ> PostPos;
+        std::vector<EntityBase*> entities;
+        std::vector<CoordsXYZ> prePos;
+        std::vector<CoordsXYZ> postPos;
 
     private:
-        void PopulateEntities();
-        void AddEntity(const ViewportList& vp, EntityBase* entity);
+        void populateEntities();
+        void addEntity(const ViewportList& vp, EntityBase* entity);
 
     public:
-        static EntityTweener& Get();
+        static EntityTweener& get();
 
-        void PreTick();
-        void PostTick();
-        void RemoveEntity(EntityBase* entity);
-        void Tween(float alpha);
-        void Restore();
-        void Reset();
+        void preTick();
+        void postTick();
+        void removeEntity(EntityBase* entity);
+        void tween(float alpha);
+        void restore();
+        void reset();
     };
 
 } // namespace OpenRCT2

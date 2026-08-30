@@ -449,7 +449,7 @@ namespace OpenRCT2
     {
         freeEntity(*entity);
 
-        EntityTweener::Get().RemoveEntity(entity);
+        EntityTweener::get().removeEntity(entity);
         removeFromEntityList(*entity); // remove from existing list
         addToFreeList(entity->id);
 
