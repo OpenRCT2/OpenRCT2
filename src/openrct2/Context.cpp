@@ -204,6 +204,9 @@ namespace OpenRCT2
             auto* windowMgr = GetWindowManager();
             windowMgr->Cleanup();
 
+            // Keep entities alive until the final frame has finished drawing.
+            getGameState().entities.resetAllEntities();
+
             // Unload objects after closing all windows, this is to overcome windows like
             // the object selection window which loads objects when closed.
             if (_objectManager != nullptr)
