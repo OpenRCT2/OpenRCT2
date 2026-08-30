@@ -763,18 +763,18 @@ static constexpr float kWindowScrollLocations[][2] = {
             dateInfoPanel->windowPos.y = height - 32;
         }
 
-        WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::gameStatusBar);
-        if (bottomWind != nullptr && parkInfoPanel != nullptr && dateInfoPanel != nullptr)
+        WindowBase* statusBar = windowMgr->FindByClass(WindowClass::gameStatusBar);
+        if (statusBar != nullptr && parkInfoPanel != nullptr && dateInfoPanel != nullptr)
         {
-            bottomWind->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
-            bottomWind->windowPos.x = parkInfoPanel->width;
-            bottomWind->windowPos.y = height - 32;
+            statusBar->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
+            statusBar->windowPos.x = parkInfoPanel->width;
+            statusBar->windowPos.y = height - 32;
         }
-        else if (bottomWind != nullptr)
+        else if (statusBar != nullptr)
         {
-            bottomWind->width = std::max(640, width);
-            bottomWind->windowPos.x = 0;
-            bottomWind->windowPos.y = height - 32;
+            statusBar->width = std::max(640, width);
+            statusBar->windowPos.x = 0;
+            statusBar->windowPos.y = height - 32;
         }
     }
 
