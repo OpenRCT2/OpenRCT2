@@ -588,7 +588,7 @@ namespace OpenRCT2::Drawing
     }
 
 #ifndef DISABLE_TTF
-    static bool shouldUseSpriteForCodepoint(char32_t codepoint)
+    static bool shouldUseSpriteForCodepoint(UnicodeChar codepoint)
     {
         switch (codepoint)
         {
@@ -599,15 +599,15 @@ namespace OpenRCT2::Drawing
             case UnicodeChar::cross:
             case UnicodeChar::right:
             case UnicodeChar::rightguillemet:
-            case UnicodeChar::small_up:
-            case UnicodeChar::small_down:
+            case UnicodeChar::smallUp:
+            case UnicodeChar::smallDown:
             case UnicodeChar::left:
-            case UnicodeChar::quote_open:
-            case UnicodeChar::quote_close:
-            case UnicodeChar::german_quote_open:
+            case UnicodeChar::quoteOpen:
+            case UnicodeChar::quoteClose:
+            case UnicodeChar::germanQuoteOpen:
             case UnicodeChar::plus:
             case UnicodeChar::minus:
-            case UnicodeChar::variation_selector:
+            case UnicodeChar::variationSelector:
             case UnicodeChar::eye:
             case UnicodeChar::road:
             case UnicodeChar::railway:
@@ -638,7 +638,7 @@ namespace OpenRCT2::Drawing
             for (auto it = codepoints.begin(); it != codepoints.end(); it++)
             {
                 auto codepoint = *it;
-                if (shouldUseSpriteForCodepoint(codepoint))
+                if (shouldUseSpriteForCodepoint(static_cast<UnicodeChar>(codepoint)))
                 {
                     if (ttfRunIndex.has_value())
                     {
