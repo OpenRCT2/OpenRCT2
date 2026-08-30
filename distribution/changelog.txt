@@ -4,7 +4,6 @@
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.
 - Feature: [#26938] [Plugin] Allow getting and setting caret position for textbox while it is in focus.
-
 - Improved: [#16269] Unnamed rides in the original Added Attractions & Loopy Landscapes scenarios now use their official names from Rollercoaster Tycoon Classic.
 - Improved: [#19000] Add sprite font glyph for the Won (₩).
 - Improved: [#21441] Add sprite font glyph for the Hryvnia (₴).
