@@ -3838,3 +3838,4 @@ STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Can’t change land height here…
+STR_7044    :News ticker
