@@ -737,7 +737,6 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
-            getGameState().entities.resetAllEntities();
             GetContext()->Finish();
             break;
     }
