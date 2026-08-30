@@ -881,7 +881,7 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<money64>(parkEntranceFee);
 
-            StringId stringId = STR_BOTTOM_TOOLBAR_CASH;
+            StringId stringId = STR_CURRENCY2DP;
             if (parkEntranceFee == 0)
                 stringId = STR_FREE;
 

@@ -6837,7 +6837,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                _spinnerCaption0 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ridePrimaryPrice);
+                _spinnerCaption0 = FormatStringID(STR_CURRENCY2DP, ridePrimaryPrice);
                 widgets[WIDX_PRIMARY_PRICE].setString(_spinnerCaption0.c_str());
             }
 
@@ -6881,7 +6881,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    _spinnerCaption1 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ride->price[1]);
+                    _spinnerCaption1 = FormatStringID(STR_CURRENCY2DP, ride->price[1]);
                     widgets[WIDX_SECONDARY_PRICE].setString(_spinnerCaption1.c_str());
                 }
             }
