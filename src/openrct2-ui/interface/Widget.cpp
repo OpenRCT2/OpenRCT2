@@ -1149,7 +1149,7 @@ namespace OpenRCT2::Ui
         topLeft.y = w.windowPos.y + widget.textTop();
 
         auto* textInput = Windows::GetTextboxSession();
-        if (!active || textInput == nullptr)
+        if (!active || textInput == nullptr || textInput->Buffer == nullptr)
         {
             if (widget.text != 0)
             {
