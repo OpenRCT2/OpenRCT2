@@ -1780,6 +1780,11 @@ enum : StringId
 
     STR_CANT_CHANGE_LAND_HEIGHT_HERE = 7043,
 
+    STR_ENABLE_TRANSPORT_RIDE_NAVIGATION = 7044,
+    STR_ENABLE_TRANSPORT_RIDE_NAVIGATION_TIP = 7045,
+    STR_TAKING_TRANSPORT_RIDE_TO_DESTINATION = 7046,
+    STR_TAKING_TRANSPORT_RIDE_TO_PARK_EXIT = 7047,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

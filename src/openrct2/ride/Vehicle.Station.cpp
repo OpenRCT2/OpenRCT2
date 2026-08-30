@@ -42,6 +42,62 @@ static SynchronisedVehicle _synchronisedVehicles[kSynchronisedVehicleCount] = {}
 
 static SynchronisedVehicle* _lastSynchronisedVehicle = nullptr;
 
+static bool GuestShouldStayOnTransportRide(const Guest& guest, const Ride& ride, StationIndex currentStation)
+{
+    const auto& navigation = guest.transportRideNavigation;
+    const auto& gameState = getGameState();
+    if (!gameState.park.flags.has(ParkFlag::transportRideNavigation) || !navigation.isActive() || navigation.rideId != ride.id
+        || ride.status != RideStatus::open || ride.flags.has(RideFlag::brokenDown)
+        || !ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide))
+    {
+        return false;
+    }
+
+    const auto alightingIndex = navigation.alightingStation.ToUnderlying();
+    const auto stations = ride.getStations();
+    return alightingIndex < stations.size() && !stations[alightingIndex].Exit.IsNull()
+        && currentStation != navigation.alightingStation;
+}
+
+static void PreparePassengersForUnloading(Vehicle& vehicle, const Ride& ride, StationIndex currentStation)
+{
+    static constexpr size_t kMaxPassengersPerVehicle = 32;
+    std::array<EntityId, kMaxPassengersPerVehicle> orderedPeeps;
+    std::array<Drawing::Colour, kMaxPassengersPerVehicle> orderedColours;
+
+    uint8_t writeIndex = 0;
+    uint8_t stayingGuests = 0;
+    for (const bool selectStayingGuests : { true, false })
+    {
+        for (uint8_t peepIndex = 0; peepIndex < vehicle.num_peeps; peepIndex++)
+        {
+            auto* guest = getGameState().entities.getEntity<Guest>(vehicle.peep[peepIndex]);
+            const bool shouldStay = guest != nullptr && GuestShouldStayOnTransportRide(*guest, ride, currentStation);
+            if (shouldStay != selectStayingGuests)
+                continue;
+
+            orderedPeeps[writeIndex] = vehicle.peep[peepIndex];
+            orderedColours[writeIndex] = vehicle.peep_tshirt_colours[peepIndex];
+            if (guest != nullptr)
+            {
+                guest->currentSeat = writeIndex;
+                if (!shouldStay)
+                {
+                    guest->setState(PeepState::leavingRide);
+                    guest->rideSubState = PeepRideSubState::leaveVehicle;
+                }
+            }
+            writeIndex++;
+        }
+        if (selectStayingGuests)
+            stayingGuests = writeIndex;
+    }
+
+    std::copy_n(orderedPeeps.begin(), writeIndex, std::begin(vehicle.peep));
+    std::copy_n(orderedColours.begin(), writeIndex, std::begin(vehicle.peep_tshirt_colours));
+    vehicle.next_free_seat = stayingGuests;
+}
+
 /**
  * Checks if a map position contains a synchronised ride station and adds the vehicle
  * to synchronise to the vehicle synchronisation list.
@@ -973,16 +1029,7 @@ void Vehicle::UpdateUnloadingPassengers()
             if (train->next_free_seat == 0)
                 continue;
 
-            train->next_free_seat = 0;
-            for (uint8_t peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
-            {
-                Peep* curPeep = getGameState().entities.getEntity<Guest>(train->peep[peepIndex]);
-                if (curPeep != nullptr)
-                {
-                    curPeep->setState(PeepState::leavingRide);
-                    curPeep->rideSubState = PeepRideSubState::leaveVehicle;
-                }
-            }
+            PreparePassengersForUnloading(*train, *curRide, current_station);
         }
     }
 

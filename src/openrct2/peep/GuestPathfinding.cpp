@@ -15,6 +15,7 @@
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../profiling/Profiling.h"
+#include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
@@ -40,9 +41,13 @@ namespace OpenRCT2::PathFinding
     static constexpr uint8_t kMaxJunctionsGuestLeavingParkLost = 8;
 
     // Maximum amount of junctions.
-    static constexpr uint8_t kMaxJunctions = std::max(
-        { kMaxJunctionsStaff, kMaxJunctionsGuest, kMaxJunctionsGuestWithMap, kMaxJunctionsGuestLeavingPark,
-          kMaxJunctionsGuestLeavingParkLost });
+    static constexpr uint8_t kMaxJunctions = std::max({ kMaxJunctionsStaff, kMaxJunctionsGuest, kMaxJunctionsGuestWithMap,
+                                                        kMaxJunctionsGuestLeavingPark, kMaxJunctionsGuestLeavingParkLost });
+
+    static constexpr uint8_t kMaxPathfindSteps = 200;
+    static constexpr uint8_t kMaxTransportRidesPerSearch = 2;
+    static constexpr uint8_t kTransportQueueTimeDivisor = 10;
+    static constexpr uint8_t kTransportSegmentTimeDivisor = 3;
 
     struct PathFindingState
     {
@@ -58,6 +63,12 @@ namespace OpenRCT2::PathFinding
             TileCoordsXYZ location;
             Direction direction;
         } history[kMaxJunctions + 1];
+    };
+
+    struct TransportSearchState
+    {
+        GuestTransportRideNavigation firstLeg;
+        uint8_t ridesUsed{};
     };
 
     static int32_t GuestSurfacePathFinding(Peep& peep);
@@ -635,6 +646,87 @@ namespace OpenRCT2::PathFinding
         return xDelta + yDelta + zDelta;
     }
 
+    static bool CanUseRideForTransportNavigation(const Guest& guest, const Ride& ride, StationIndex boardingStation)
+    {
+        const auto& gameState = getGameState();
+        if (!gameState.park.flags.has(ParkFlag::transportRideNavigation) || guest.transportRideNavigation.isActive())
+            return false;
+
+        if (ride.id == guest.guestHeadingToRideId || ride.status != RideStatus::open
+            || ride.flags.hasAny(RideFlag::brokenDown, RideFlag::queueFull)
+            || !ride.getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide))
+        {
+            return false;
+        }
+
+        const auto stations = ride.getStations();
+        if (boardingStation.ToUnderlying() >= stations.size() || stations.size() < 2
+            || stations[boardingStation.ToUnderlying()].Entrance.IsNull())
+        {
+            return false;
+        }
+
+        // Navigation currently treats transport rides like public transit. Restricting
+        // routing to free rides avoids planning a route that could strand a guest.
+        return gameState.park.flags.has(ParkFlag::noMoney) || RideGetPrice(ride) == 0;
+    }
+
+    static std::optional<uint32_t> GetTransportNavigationPenalty(
+        const Guest& guest, const Ride& ride, StationIndex boardingStation, StationIndex alightingStation)
+    {
+        const auto stations = ride.getStations();
+        const auto boardingIndex = boardingStation.ToUnderlying();
+        const auto alightingIndex = alightingStation.ToUnderlying();
+        if (boardingIndex >= stations.size() || alightingIndex >= stations.size() || boardingIndex == alightingIndex)
+            return std::nullopt;
+
+        uint32_t segmentTime = 0;
+        auto currentIndex = boardingIndex;
+        for (size_t stationsVisited = 0; stationsVisited < stations.size(); stationsVisited++)
+        {
+            segmentTime += stations[currentIndex].SegmentTime;
+            currentIndex = (currentIndex + 1) % stations.size();
+            if (currentIndex == alightingIndex)
+                break;
+        }
+        if (currentIndex != alightingIndex)
+            return std::nullopt;
+
+        const uint32_t queuePenalty = stations[boardingIndex].QueueTime / kTransportQueueTimeDivisor;
+        const uint32_t ridePenalty = segmentTime / kTransportSegmentTimeDivisor;
+        const uint32_t unscaledPenalty = std::max<uint32_t>(1, queuePenalty + ridePenalty);
+
+        // The same wait represents more walkable distance to an energetic guest and
+        // less to a tired guest, so energy naturally influences the route choice.
+        const uint32_t energy = std::clamp<uint32_t>(guest.energy, 32, 128);
+        const uint32_t penalty = std::max<uint32_t>(1, (unscaledPenalty * energy + 95) / 96);
+        return penalty;
+    }
+
+    static bool IsTransportNavigationValid(const Guest& guest)
+    {
+        const auto& navigation = guest.transportRideNavigation;
+        const auto& gameState = getGameState();
+        if (!navigation.isActive() || !gameState.park.flags.has(ParkFlag::transportRideNavigation))
+        {
+            return false;
+        }
+
+        const auto* ride = GetRide(navigation.rideId);
+        if (ride == nullptr || ride->status != RideStatus::open || ride->flags.hasAny(RideFlag::brokenDown, RideFlag::queueFull)
+            || !ride->getRideTypeDescriptor().flags.has(RtdFlag::isTransportRide)
+            || (!gameState.park.flags.has(ParkFlag::noMoney) && RideGetPrice(*ride) != 0))
+        {
+            return false;
+        }
+
+        const auto stations = ride->getStations();
+        const auto boardingIndex = navigation.boardingStation.ToUnderlying();
+        const auto alightingIndex = navigation.alightingStation.ToUnderlying();
+        return boardingIndex < stations.size() && alightingIndex < stations.size() && boardingIndex != alightingIndex
+            && !stations[boardingIndex].Entrance.IsNull() && !stations[alightingIndex].Exit.IsNull();
+    }
+
     /**
      * Searches for the tile with the best heuristic score within the search limits
      * starting from the given tile x,y,z and going in the given direction test_edge.
@@ -643,48 +735,58 @@ namespace OpenRCT2::PathFinding
      * (junctions passed through and directions taken).
      *
      * The primary heuristic used is distance from the goal; the secondary
-     * heuristic used (when the primary heuristic gives equal scores) is the number
-     * of steps. i.e. the search gets as close as possible to the goal in as few
-     * steps as possible.
+     * heuristic used (when the primary heuristic
+     * gives equal scores) is route
+     * cost. The search gets as close as possible to the goal with as little
+     * walking,
+     * queuing, and travel time as possible.
      *
      * Each tile is checked to determine if the goal is reached.
-     * When the goal is not reached the search result is only updated at the END
-     * of each search path (some map element that is not a path or a path at which
+     * When
+     * the goal is not reached the search result is only updated at the END
+     * of each search path (some map element that is
+     * not a path or a path at which
      * a search limit is reached), NOT at each step along the way.
-     * This means that the search ignores thin paths that are "no through paths"
-     * no matter how close to the goal they get, but will follow possible "through
+     * This means that
+     * the search ignores thin paths that are "no through paths"
+     * no matter how close to the goal they get, but will
+     * follow possible "through
      * paths".
      *
-     * The implementation is a depth first search of the path layout in xyz
+     * The implementation is a depth first search of the path layout in
+     * xyz
      * according to the search limits.
      * Unlike an A* search, which tracks for each tile a heuristic score (a
-     * function of the xyz distances to the goal) and cost of reaching that tile
-     * (steps to the tile), a single best result "so far" (best heuristic score
-     * with least cost) is tracked via the score parameter.
-     * With this approach, explicit loop detection is necessary to limit the
-     * search space, and each alternate route through the same tile can be
-     * returned as the best result, rather than only the shortest route with A*.
+
+     * * function of the xyz distances to the goal) and cost of reaching that tile (steps to the tile), a single best result "so
+     * far" (best heuristic score with least cost) is tracked via the score parameter. With this approach, explicit loop
+     * detection is necessary to limit the search space, and each alternate route through the same tile can be returned as the
+     * best result, rather than only the shortest route with A*.
      *
      * The parameters that hold the best search result so far are:
      *   - score - the least heuristic distance from the goal
-     *   - endSteps - the least number of steps that achieve the score.
+     *   - endPathCost - the lowest walking and transport cost that achieves the score.
      *
      * The following parameters provide telemetry information on best search path so far:
      *   - endXYZ tracks the end location of the search path.
-     *   - endSteps tracks the number of steps to the end of the search path.
-     *   - endJunctions tracks the number of junctions passed through in the
+     *   - endPathCost tracks the walking and transport cost to the end of the search path.
+     *   - endJunctions tracks the
+     * number of junctions passed through in the
      *     search path.
-     *   - junctionList[] and directionList[] track the junctions and
+     *   - junctionList[] and directionList[] track the
+     * junctions and
      *     corresponding directions of the search path.
-     * Other than debugging purposes, these could potentially be used to visualise
+     * Other than debugging purposes, these could
+     * potentially be used to visualise
      * the pathfinding on the map.
-     *
-     * The parameters/variables that limit the search space are:
-     *   - counter (param) - number of steps walked in the current search path;
-     *   - _peepPathFindTilesChecked (variable) - cumulative number of tiles that can be
+     * The parameters/variables that limit the search
+     * space are:
+     *   - numSteps (param) - number of steps walked in the current search path;
+     *   - _peepPathFindTilesChecked (variable)
+     * - cumulative number of tiles that can be
      *     checked in the entire search;
-     *   - _peepPathFindNumJunctions (variable) - number of thin junctions that can be
-     *     checked in a single search path;
+     *   - _peepPathFindNumJunctions
+     * (variable) - number of thin junctions that can be checked in a single search path;
      *
      * Other global variables/state that affect the search space are:
      *   - Wide paths - to handle broad paths (> 1 tile wide), the search navigates
@@ -713,13 +815,15 @@ namespace OpenRCT2::PathFinding
      */
     static void PeepPathfindHeuristicSearch(
         PathFindingState& state, TileCoordsXYZ loc, const TileCoordsXYZ& goal, const Peep& peep,
-        TileElement* currentTileElement, const bool inPatrolArea, uint8_t numSteps, uint16_t* endScore, Direction testEdge,
-        uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ,
-        uint8_t* endSteps)
+        TileElement* currentTileElement, const bool inPatrolArea, uint8_t numSteps, uint32_t pathCost, uint16_t* endScore,
+        Direction testEdge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
+        TileCoordsXYZ* endXYZ, uint32_t* endPathCost, TransportSearchState& transportState)
     {
+        const auto previousTransportState = transportState;
         PathSearchResult searchResult = PathSearchResult::failed;
 
-        bool currentElementIsWide = currentTileElement->asPath()->isWide();
+        const auto* currentPathElement = currentTileElement->asPath();
+        bool currentElementIsWide = currentPathElement != nullptr && currentPathElement->isWide();
         if (currentElementIsWide)
         {
             const Staff* staff = peep.as<Staff>();
@@ -730,6 +834,7 @@ namespace OpenRCT2::PathFinding
         loc += TileDirectionDelta[testEdge];
 
         ++numSteps;
+        ++pathCost;
         state.countTilesChecked--;
 
         /* If this is where the search started this is a search loop and the
@@ -806,11 +911,61 @@ namespace OpenRCT2::PathFinding
                             direction = tileElement->getDirection();
                             if (direction == testEdge)
                             {
-                                /* The rideIndex will be useful for
-                                 * adding transport rides later. */
                                 rideIndex = tileElement->asEntrance()->getRideIndex();
                                 searchResult = PathSearchResult::rideEntrance;
                                 found = true;
+
+                                const auto* guest = peep.as<Guest>();
+                                auto* ride = GetRide(rideIndex);
+                                const auto boardingStation = tileElement->asEntrance()->getStationIndex();
+                                if (guest != nullptr && ride != nullptr
+                                    && previousTransportState.ridesUsed < kMaxTransportRidesPerSearch
+                                    && (previousTransportState.ridesUsed == 0
+                                        || previousTransportState.firstLeg.rideId != rideIndex)
+                                    && CanUseRideForTransportNavigation(*guest, *ride, boardingStation))
+                                {
+                                    const auto transportAtEntrance = previousTransportState;
+                                    for (const auto& station : ride->getStations())
+                                    {
+                                        const auto alightingStation = ride->getStationIndex(&station);
+                                        if (alightingStation == boardingStation || station.Exit.IsNull())
+                                            continue;
+
+                                        const auto penalty = GetTransportNavigationPenalty(
+                                            *guest, *ride, boardingStation, alightingStation);
+                                        if (!penalty.has_value())
+                                            continue;
+
+                                        auto* exitElement = RideGetStationExitElement(station.Exit.ToCoordsXYZ());
+                                        if (exitElement == nullptr)
+                                            continue;
+
+                                        auto branchTransportState = transportAtEntrance;
+                                        if (branchTransportState.ridesUsed == 0)
+                                        {
+                                            branchTransportState.firstLeg.rideId = rideIndex;
+                                            branchTransportState.firstLeg.boardingStation = boardingStation;
+                                            branchTransportState.firstLeg.alightingStation = alightingStation;
+                                        }
+                                        branchTransportState.ridesUsed++;
+
+                                        const auto scoreBeforeTransport = *endScore;
+                                        const auto costBeforeTransport = *endPathCost;
+                                        const auto savedJunctionCount = state.junctionCount;
+                                        PeepPathfindHeuristicSearch(
+                                            state, TileCoordsXYZ{ station.Exit }, goal, peep, exitElement, nextInPatrolArea,
+                                            numSteps, pathCost + penalty.value(), endScore,
+                                            DirectionReverse(station.Exit.direction), endJunctions, junctionList, directionList,
+                                            endXYZ, endPathCost, branchTransportState);
+                                        state.junctionCount = savedJunctionCount;
+
+                                        if (*endScore < scoreBeforeTransport
+                                            || (*endScore == scoreBeforeTransport && *endPathCost < costBeforeTransport))
+                                        {
+                                            transportState = branchTransportState;
+                                        }
+                                    }
+                                }
                                 break;
                             }
                             continue; // Ride entrance is not facing the right direction.
@@ -910,11 +1065,11 @@ namespace OpenRCT2::PathFinding
             {
                 /* If the search result is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
-                if (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps))
+                if (newScore < *endScore || (newScore == *endScore && pathCost < *endPathCost))
                 {
                     // Update the search results
                     *endScore = newScore;
-                    *endSteps = numSteps;
+                    *endPathCost = pathCost;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -938,8 +1093,11 @@ namespace OpenRCT2::PathFinding
 
             /* If this map element is not a path, the search cannot be continued.
              * Continue to the next map element without updating the parameters (best result so far). */
+            const bool canSearchTransportQueue = searchResult == PathSearchResult::rideQueue && peep.is<Guest>()
+                && getGameState().park.flags.has(ParkFlag::transportRideNavigation);
             if (searchResult != PathSearchResult::deadEnd && searchResult != PathSearchResult::thin
-                && searchResult != PathSearchResult::junction && searchResult != PathSearchResult::wide)
+                && searchResult != PathSearchResult::junction && searchResult != PathSearchResult::wide
+                && !canSearchTransportQueue)
             {
                 LogPathfinding(
                     &peep, "Search path ends at %d,%d,%d; Steps: %u; Not a path", loc.x >> 5, loc.y >> 5, loc.z, numSteps);
@@ -961,11 +1119,11 @@ namespace OpenRCT2::PathFinding
                  * If the search result is better than the best so far
                  * (in the parameters), then update the parameters with
                  * this search before continuing to the next map element. */
-                if (currentElementIsWide && (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps)))
+                if (currentElementIsWide && (newScore < *endScore || (newScore == *endScore && pathCost < *endPathCost)))
                 {
                     // Update the search results
                     *endScore = newScore;
-                    *endSteps = numSteps;
+                    *endPathCost = pathCost;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -1012,17 +1170,17 @@ namespace OpenRCT2::PathFinding
 
             /* Check if either of the search limits has been reached:
              * - max number of steps or max tiles checked. */
-            if (numSteps >= 200 || state.countTilesChecked <= 0)
+            if (numSteps >= kMaxPathfindSteps || state.countTilesChecked <= 0)
             {
                 /* The current search ends here.
                  * The path continues, so the goal could still be reachable from here.
                  * If the search result is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
-                if (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps))
+                if (newScore < *endScore || (newScore == *endScore && pathCost < *endPathCost))
                 {
                     // Update the search results
                     *endScore = newScore;
-                    *endSteps = numSteps;
+                    *endPathCost = pathCost;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -1116,11 +1274,11 @@ namespace OpenRCT2::PathFinding
                      * then update the parameters with this search before continuing to the next map element. */
                     if (state.junctionCount <= 0)
                     {
-                        if (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps))
+                        if (newScore < *endScore || (newScore == *endScore && pathCost < *endPathCost))
                         {
                             // Update the search results
                             *endScore = newScore;
-                            *endSteps = numSteps;
+                            *endPathCost = pathCost;
                             // Update the end x,y,z
                             *endXYZ = loc;
                             // Update the telemetry
@@ -1187,10 +1345,18 @@ namespace OpenRCT2::PathFinding
                     state.history[state.junctionCount + 1].direction = nextTestEdge;
                 }
 
+                auto branchTransportState = previousTransportState;
+                const auto scoreBeforeBranch = *endScore;
+                const auto costBeforeBranch = *endPathCost;
                 PeepPathfindHeuristicSearch(
-                    state, { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, numSteps, endScore,
-                    nextTestEdge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+                    state, { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, numSteps, pathCost, endScore,
+                    nextTestEdge, endJunctions, junctionList, directionList, endXYZ, endPathCost, branchTransportState);
                 state.junctionCount = savedNumJunctions;
+
+                if (*endScore < scoreBeforeBranch || (*endScore == scoreBeforeBranch && *endPathCost < costBeforeBranch))
+                {
+                    transportState = branchTransportState;
+                }
 
                 LogPathfinding(
                     &peep, "Returned to %d,%d,%d; Steps: %u; edge: %d; Score: %d", loc.x >> 5, loc.y >> 5, loc.z, numSteps,
@@ -1378,7 +1544,8 @@ namespace OpenRCT2::PathFinding
             TileCoordsXYZ bestXYZ;
 
             uint16_t bestScore = 0xFFFF;
-            uint8_t bestSub = 0xFF;
+            uint32_t bestPathCost = std::numeric_limits<uint32_t>::max();
+            TransportSearchState bestTransportState;
 
             LogPathfinding(
                 &peep, "Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, loc.x, loc.y, loc.z);
@@ -1386,7 +1553,7 @@ namespace OpenRCT2::PathFinding
             /* Call the search heuristic on each edge, keeping track of the
              * edge that gives the best (i.e. smallest) value (best_score)
              * or for different edges with equal value, the edge with the
-             * least steps (best_sub). */
+             * lowest route cost. */
             int32_t numEdges = std::popcount(edges);
             for (int32_t testEdge = chosenEdge; testEdge != -1; testEdge = Numerics::bitScanForward(edges))
             {
@@ -1426,7 +1593,7 @@ namespace OpenRCT2::PathFinding
                 endXYZ.y = 0;
                 endXYZ.z = 0;
 
-                uint8_t endSteps = 255;
+                uint32_t endPathCost = std::numeric_limits<uint32_t>::max();
 
                 /* Variable endJunctions is the number of junctions
                  * passed through in the search path.
@@ -1438,6 +1605,7 @@ namespace OpenRCT2::PathFinding
                 uint8_t endJunctions = 0;
                 TileCoordsXYZ endJunctionList[16];
                 uint8_t endDirectionList[16] = { 0 };
+                TransportSearchState transportState;
 
                 bool inPatrolArea = false;
                 auto* staff = peep.as<Staff>();
@@ -1453,14 +1621,14 @@ namespace OpenRCT2::PathFinding
                     &peep, "Pathfind searching in direction: %d from %d,%d,%d", testEdge, loc.x >> 5, loc.y >> 5, loc.z);
 
                 PeepPathfindHeuristicSearch(
-                    state, { loc.x, loc.y, height }, goal, peep, firstTileElement, inPatrolArea, 0, &score, testEdge,
-                    &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
+                    state, { loc.x, loc.y, height }, goal, peep, firstTileElement, inPatrolArea, 0, 0, &score, testEdge,
+                    &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endPathCost, transportState);
 
                 if constexpr (kLogPathfinding)
                 {
                     LogPathfinding(
-                        &peep, "Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", testEdge, score,
-                        endSteps, endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
+                        &peep, "Pathfind test edge: %d score: %d cost: %u end: %d,%d,%d junctions: %d", testEdge, score,
+                        endPathCost, endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
                     for (uint8_t listIdx = 0; listIdx < endJunctions; listIdx++)
                     {
                         LogPathfinding(
@@ -1469,11 +1637,12 @@ namespace OpenRCT2::PathFinding
                     }
                 }
 
-                if (score < bestScore || (score == bestScore && endSteps < bestSub))
+                if (score < bestScore || (score == bestScore && endPathCost < bestPathCost))
                 {
                     chosenEdge = testEdge;
                     bestScore = score;
-                    bestSub = endSteps;
+                    bestPathCost = endPathCost;
+                    bestTransportState = transportState;
 
                     if constexpr (kLogPathfinding)
                     {
@@ -1501,9 +1670,14 @@ namespace OpenRCT2::PathFinding
                 return kInvalidDirection;
             }
 
+            if (auto* guest = peep.as<Guest>(); guest != nullptr && bestTransportState.firstLeg.isActive())
+            {
+                guest->transportRideNavigation = bestTransportState.firstLeg;
+            }
+
             if constexpr (kLogPathfinding)
             {
-                LogPathfinding(&peep, "Pathfind best edge %d with score %d steps %d", chosenEdge, bestScore, bestSub);
+                LogPathfinding(&peep, "Pathfind best edge %d with score %d cost %u", chosenEdge, bestScore, bestPathCost);
                 for (uint8_t listIdx = 0; listIdx < bestJunctions; listIdx++)
                 {
                     LogPathfinding(
@@ -1830,6 +2004,45 @@ namespace OpenRCT2::PathFinding
         loc.z = tileElement->baseHeight;
     }
 
+    static std::optional<int32_t> GuestPathfindToTransportRide(Guest& peep, bool preserveUltimateGoal)
+    {
+        if (!peep.transportRideNavigation.isActive())
+            return std::nullopt;
+
+        if (IsTransportNavigationValid(peep))
+        {
+            const auto ultimateGoal = peep.pathfindGoal;
+            const auto ultimateHistory = peep.pathfindHistory;
+
+            const auto* transportRide = GetRide(peep.transportRideNavigation.rideId);
+            const auto& boardingStation = transportRide->getStation(peep.transportRideNavigation.boardingStation);
+            TileCoordsXYZ boardingGoal = boardingStation.Entrance;
+            GetRideQueueEnd(boardingGoal);
+
+            const auto direction = ChooseDirection(
+                TileCoordsXYZ{ peep.nextLoc }, boardingGoal, peep, true, peep.transportRideNavigation.rideId);
+
+            if (preserveUltimateGoal)
+            {
+                peep.pathfindGoal = ultimateGoal;
+                peep.pathfindHistory = ultimateHistory;
+            }
+
+            if (direction != kInvalidDirection)
+            {
+                LogPathfinding(&peep, "Completed CalculateNextDestination - heading for transport ride: %d.", direction);
+                return PeepMoveOneTile(direction, peep);
+            }
+        }
+
+        peep.transportRideNavigation.clear();
+        if (!preserveUltimateGoal)
+        {
+            peep.resetPathfindGoal();
+        }
+        return std::nullopt;
+    }
+
     /*
      * If a ride has multiple entrance stations and is set to sync with
      * adjacent stations, cycle through the entrance stations (based on
@@ -2017,6 +2230,11 @@ namespace OpenRCT2::PathFinding
 
         if (peep.peepFlags.has(PeepFlag::leavingPark))
         {
+            if (const auto transportDirection = GuestPathfindToTransportRide(peep, true); transportDirection.has_value())
+            {
+                return transportDirection.value();
+            }
+
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is leaving the park.");
 
             return GuestPathFindParkEntranceLeaving(peep, edges);
@@ -2024,6 +2242,7 @@ namespace OpenRCT2::PathFinding
 
         if (peep.guestHeadingToRideId.IsNull())
         {
+            peep.transportRideNavigation.clear();
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is aimless.");
 
             return GuestPathfindAimless(peep, edges);
@@ -2034,14 +2253,20 @@ namespace OpenRCT2::PathFinding
         auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->status != RideStatus::open)
         {
+            peep.transportRideNavigation.clear();
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is heading to closed ride == aimless.");
 
             return GuestPathfindAimless(peep, edges);
         }
 
+        if (const auto transportDirection = GuestPathfindToTransportRide(peep, false); transportDirection.has_value())
+        {
+            return transportDirection.value();
+        }
+
         /* Find the ride's closest entrance station to the peep.
-         * At the same time, count how many entrance stations there are and
-         * which stations are entrance stations. */
+         * At the same time, count how many entrance stations
+         * there are and which stations are entrance stations. */
         auto bestScore = std::numeric_limits<int32_t>::max();
         StationIndex closestStationNum = StationIndex::FromUnderlying(0);
 

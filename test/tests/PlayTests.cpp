@@ -25,10 +25,12 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
+#include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideManager.hpp>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
 #include <string>
@@ -210,4 +212,104 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
         ASSERT_LE(numRiding, 2);
         gameStateUpdateLogic();
     }
+}
+
+TEST_F(PlayTests, GuestCanBoardPairedTransportCarBesideThroughPassenger)
+{
+    auto context = localStartGame(TestData::GetParkPath("BigMapTest.sv6"));
+    ASSERT_NE(context.get(), nullptr);
+
+    auto& gameState = getGameState();
+    auto rideManager = RideManager(gameState);
+    auto rideIt = std::find_if(
+        rideManager.begin(), rideManager.end(), [](const auto& ride) { return ride.type == RIDE_TYPE_MINIATURE_RAILWAY; });
+    ASSERT_NE(rideIt, rideManager.end());
+    auto& ride = *rideIt;
+
+    Vehicle* pairedCar = nullptr;
+    uint8_t trainIndex = 0;
+    uint8_t carIndex = 0;
+    for (; trainIndex < ride.numTrains && pairedCar == nullptr; trainIndex++)
+    {
+        uint8_t candidateCarIndex = 0;
+        for (auto* car = gameState.entities.getEntity<Vehicle>(ride.vehicles[trainIndex]); car != nullptr;
+             car = gameState.entities.getEntity<Vehicle>(car->next_vehicle_on_train), candidateCarIndex++)
+        {
+            if (car->IsUsedInPairs() && (car->num_seats & kVehicleSeatNumMask) >= 2 && car->num_peeps == 0)
+            {
+                pairedCar = car;
+                carIndex = candidateCarIndex;
+                break;
+            }
+        }
+    }
+    ASSERT_NE(pairedCar, nullptr);
+    trainIndex--;
+
+    auto* throughPassenger = Park::GenerateGuest();
+    auto* boardingGuest = Park::GenerateGuest();
+    ASSERT_NE(throughPassenger, nullptr);
+    ASSERT_NE(boardingGuest, nullptr);
+
+    throughPassenger->currentRide = ride.id;
+    throughPassenger->currentTrain = trainIndex;
+    throughPassenger->currentCar = carIndex;
+    throughPassenger->currentSeat = 0;
+    throughPassenger->setState(PeepState::onRide);
+    throughPassenger->rideSubState = PeepRideSubState::onRide;
+
+    boardingGuest->currentRide = ride.id;
+    boardingGuest->currentTrain = trainIndex;
+    boardingGuest->currentCar = carIndex;
+    boardingGuest->currentSeat = 1;
+    boardingGuest->setState(PeepState::enteringRide);
+    boardingGuest->rideSubState = PeepRideSubState::enterVehicle;
+    boardingGuest->stepProgress = 255;
+
+    pairedCar->peep[0] = throughPassenger->id;
+    pairedCar->peep[1] = boardingGuest->id;
+    pairedCar->num_peeps = 1;
+    pairedCar->next_free_seat = 2;
+
+    boardingGuest->update();
+
+    EXPECT_EQ(pairedCar->num_peeps, 2);
+    EXPECT_EQ(throughPassenger->state, PeepState::onRide);
+    EXPECT_EQ(throughPassenger->rideSubState, PeepRideSubState::onRide);
+    EXPECT_EQ(boardingGuest->state, PeepState::onRide);
+    EXPECT_EQ(boardingGuest->rideSubState, PeepRideSubState::onRide);
+}
+
+TEST_F(PlayTests, TransportTripToParkExitPreservesChosenEntrance)
+{
+    auto context = localStartGame(TestData::GetParkPath("BigMapTest.sv6"));
+    ASSERT_NE(context.get(), nullptr);
+
+    auto& gameState = getGameState();
+    auto rideManager = RideManager(gameState);
+    auto rideIt = std::find_if(
+        rideManager.begin(), rideManager.end(), [](const auto& ride) { return ride.type == RIDE_TYPE_MINIATURE_RAILWAY; });
+    ASSERT_NE(rideIt, rideManager.end());
+    auto& ride = *rideIt;
+
+    auto* guest = Park::GenerateGuest();
+    ASSERT_NE(guest, nullptr);
+
+    const TileCoordsXYZ expectedGoal{ 12, 34, 6 };
+    guest->peepFlags.set(PeepFlag::leavingPark);
+    guest->peepFlags.set(PeepFlag::parkEntranceChosen);
+    guest->pathfindGoal = { expectedGoal, 2 };
+    guest->pathfindHistory[0] = { TileCoordsXYZ{ 3, 4, 5 }, 1 };
+    guest->transportRideNavigation = { ride.id, StationIndex::FromUnderlying(0), StationIndex::FromUnderlying(1) };
+
+    guest->onExitRide(ride);
+
+    EXPECT_FALSE(guest->transportRideNavigation.isActive());
+    EXPECT_TRUE(guest->peepFlags.has(PeepFlag::parkEntranceChosen));
+    EXPECT_EQ(guest->pathfindGoal.x, expectedGoal.x);
+    EXPECT_EQ(guest->pathfindGoal.y, expectedGoal.y);
+    EXPECT_EQ(guest->pathfindGoal.z, expectedGoal.z);
+    EXPECT_EQ(guest->pathfindGoal.direction, kInvalidDirection);
+    EXPECT_TRUE(std::all_of(
+        guest->pathfindHistory.begin(), guest->pathfindHistory.end(), [](const auto& location) { return location.IsNull(); }));
 }

@@ -248,6 +248,7 @@ namespace OpenRCT2::Config
 #endif // _DEBUG
             model->trapCursor = reader->GetBoolean("trap_cursor", false);
             model->autoOpenShops = reader->GetBoolean("auto_open_shops", false);
+            model->enableTransportRideNavigation = reader->GetBoolean("enable_transport_ride_navigation", false);
 
             // Gamepad settings
             model->gamepadDeadzone = reader->GetInt32("gamepad_deadzone", 3600);
@@ -345,6 +346,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("multithreading", model->multiThreading);
         writer->WriteBoolean("trap_cursor", model->trapCursor);
         writer->WriteBoolean("auto_open_shops", model->autoOpenShops);
+        writer->WriteBoolean("enable_transport_ride_navigation", model->enableTransportRideNavigation);
 
         // Gamepad settings
         writer->WriteInt32("gamepad_deadzone", model->gamepadDeadzone);

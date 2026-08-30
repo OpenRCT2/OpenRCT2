@@ -56,8 +56,9 @@ enum class ParkFlag : uint32_t
     spritesInitialised = 18,            // After a scenario is loaded this prevents edits in the scenario editor
     sixFlagsDeprecated = 19,            // Not used anymore
 
-    rct1Interest = 30,    // OpenRCT2 only
-    unlockAllPrices = 31, // OpenRCT2 only
+    rct1Interest = 30,            // OpenRCT2 only
+    unlockAllPrices = 31,         // OpenRCT2 only
+    transportRideNavigation = 32, // OpenRCT2 only
 };
 using ParkFlags = FlagHolder<uint64_t, ParkFlag>;
 

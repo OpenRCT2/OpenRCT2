@@ -106,8 +106,9 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t kReplayVersion = 11;
+        static constexpr uint16_t kReplayVersion = 12;
         static constexpr uint16_t kReplayMinCompatVersion = 10;
+        static constexpr uint16_t kTransportRideNavigationReplayVersion = 12;
         static constexpr uint32_t kReplayMagic = 0x5243524F; // ORCR.
         static constexpr int kReplayCompressionLevel = 18;
         static constexpr int kNormalRecordingChecksumTicks = 1;
@@ -538,6 +539,10 @@ namespace OpenRCT2
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = getGameState();
                 importer->Import(gameState);
+                if (data.version < kTransportRideNavigationReplayVersion)
+                {
+                    gameState.park.flags.unset(ParkFlag::transportRideNavigation);
+                }
 
                 EntityTweener::get().reset();
 

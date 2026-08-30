@@ -13,6 +13,7 @@
 #include "../GameState.h"
 #include "../ParkImporter.h"
 #include "../audio/Audio.h"
+#include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
@@ -2305,6 +2306,7 @@ namespace OpenRCT2::RCT1
 
             // Flags
             park.flags.holder = _s4.parkFlags.without(ParkFlag::antiCheatDeprecated).holder;
+            park.flags.set(OpenRCT2ParkFlag::transportRideNavigation, Config::Get().general.enableTransportRideNavigation);
             park.flags.set(OpenRCT2ParkFlag::rct1Interest);
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
@@ -2990,6 +2992,7 @@ namespace OpenRCT2::RCT1
         dst->previousRide = RCT12RideIdToOpenRCT2RideId(src->PreviousRide);
         dst->previousRideTimeOut = src->PreviousRideTimeOut;
         dst->guestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->GuestHeadingToRideID);
+        dst->transportRideNavigation.clear();
         dst->guestIsLostCountdown = src->PeepIsLostCountdown;
         dst->guestNextInQueue = EntityId::FromUnderlying(src->NextInQueue);
         // Guests' favourite ride was only saved in LL.

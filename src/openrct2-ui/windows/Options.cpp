@@ -229,6 +229,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_REAL_NAMES_STAFF_CHECKBOX,
         WIDX_AUTO_STAFF_PLACEMENT,
         WIDX_AUTO_OPEN_SHOPS,
+        WIDX_ENABLE_TRANSPORT_RIDE_NAVIGATION,
         WIDX_DEFAULT_INSPECTION_INTERVAL_LABEL,
         WIDX_DEFAULT_INSPECTION_INTERVAL,
         WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
@@ -429,14 +430,15 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kScenarioOptionsGroupStart + 32}, {275, 16}, WidgetType::checkbox,     WindowColour::tertiary,  STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
         makeWidget({ 10, kScenarioOptionsGroupStart + 47}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ALLOW_EARLY_COMPLETION,     STR_EARLY_COMPLETION_TIP  ), // Allow early scenario completion
 
-        makeWidget({  5,  kTweaksStart + 0}, {300, 96}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
+        makeWidget({  5,  kTweaksStart + 0}, {300,111}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
         makeWidget({ 10, kTweaksStart + 15}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
         makeWidget({ 10, kTweaksStart + 30}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_STAFF,      STR_REAL_NAME_STAFF_TIP                   ), // Show 'real' names of staff
         makeWidget({ 10, kTweaksStart + 45}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
         makeWidget({ 10, kTweaksStart + 60}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
-        makeWidget({ 10, kTweaksStart + 77}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
-        makeWidget({175, kTweaksStart + 76}, {125, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
-        makeWidget({288, kTweaksStart + 77}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
+        makeWidget({ 10, kTweaksStart + 75}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_ENABLE_TRANSPORT_RIDE_NAVIGATION, STR_ENABLE_TRANSPORT_RIDE_NAVIGATION_TIP),
+        makeWidget({ 10, kTweaksStart + 92}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
+        makeWidget({175, kTweaksStart + 91}, {125, 14}, WidgetType::dropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
+        makeWidget({288, kTweaksStart + 92}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
     );
 
     constexpr int32_t kRCT1Start = 53;
@@ -1848,6 +1850,18 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     invalidate();
                     break;
+                case WIDX_ENABLE_TRANSPORT_RIDE_NAVIGATION:
+                {
+                    auto& gameState = getGameState();
+                    const bool enabled = !gameState.park.flags.has(ParkFlag::transportRideNavigation);
+                    Config::Get().general.enableTransportRideNavigation = enabled;
+                    Config::Save();
+                    auto action = GameActions::ScenarioSetSettingAction(
+                        GameActions::ScenarioSetSetting::transportRideNavigation, enabled);
+                    GameActions::Execute(&action, gameState);
+                    invalidate();
+                    break;
+                }
                 case WIDX_ALLOW_EARLY_COMPLETION:
                     Config::Get().general.allowEarlyCompletion ^= 1;
                     // only the server can control this setting and needs to send the
@@ -1977,9 +1991,13 @@ namespace OpenRCT2::Ui::Windows
             // The real name setting of clients is fixed to that of the server
             // and the server cannot change the setting during gameplay to prevent desyncs
             const bool inNetwork = Network::GetMode() != Network::Mode::none;
+            const bool isNetworkClient = Network::GetMode() == Network::Mode::client;
             setWidgetDisabled(WIDX_REAL_NAMES_GUESTS_CHECKBOX, inNetwork);
             setWidgetDisabled(WIDX_REAL_NAMES_STAFF_CHECKBOX, inNetwork);
-            setWidgetDisabled(WIDX_ALLOW_EARLY_COMPLETION, Network::GetMode() == Network::Mode::client);
+            setWidgetDisabled(WIDX_ALLOW_EARLY_COMPLETION, isNetworkClient);
+            setWidgetDisabled(WIDX_ENABLE_TRANSPORT_RIDE_NAVIGATION, isNetworkClient);
+            widgets[WIDX_ENABLE_TRANSPORT_RIDE_NAVIGATION].tooltip = isNetworkClient ? STR_OPTION_DISABLED_DURING_NETWORK_PLAY
+                                                                                     : STR_ENABLE_TRANSPORT_RIDE_NAVIGATION_TIP;
             if (inNetwork)
             {
                 widgets[WIDX_REAL_NAMES_GUESTS_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
@@ -1988,7 +2006,7 @@ namespace OpenRCT2::Ui::Windows
                 // Disable the use of the allow_early_completion option during network play on clients.
                 // This is to prevent confusion on clients because changing this setting during network play wouldn't change
                 // the way scenarios are completed during this network-session
-                if (Network::GetMode() == Network::Mode::client)
+                if (isNetworkClient)
                 {
                     widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
                 }
@@ -1998,6 +2016,8 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(WIDX_REAL_NAMES_STAFF_CHECKBOX, Config::Get().general.showRealNamesOfStaff);
             setCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, Config::Get().general.autoStaffPlacement);
             setCheckboxValue(WIDX_AUTO_OPEN_SHOPS, Config::Get().general.autoOpenShops);
+            setCheckboxValue(
+                WIDX_ENABLE_TRANSPORT_RIDE_NAVIGATION, getGameState().park.flags.has(ParkFlag::transportRideNavigation));
             setCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, Config::Get().general.allowEarlyCompletion);
 
             if (Config::Get().interface.scenarioPreviewScreenshots)

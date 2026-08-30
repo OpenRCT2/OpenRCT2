@@ -12,6 +12,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../ParkImporter.h"
+#include "../config/Config.h"
 #include "../core/FileStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -376,6 +377,7 @@ namespace OpenRCT2::RCT2
             park.bankLoan = ToMoney64(_s6.CurrentLoan);
 
             park.flags.holder = _s6.ParkFlags;
+            park.flags.set(ParkFlag::transportRideNavigation, Config::Get().general.enableTransportRideNavigation);
             auto hadNoMoneyScenarioFlag = park.flags.has(ParkFlag::noMoneyScenario);
             park.flags.unset(ParkFlag::noMoneyScenario);
 
@@ -2151,6 +2153,7 @@ namespace OpenRCT2::RCT2
             dstThought->fresh_timeout = srcThought->FreshTimeout;
         }
         dst->guestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->GuestHeadingToRideId);
+        dst->transportRideNavigation.clear();
         dst->guestIsLostCountdown = src->PeepIsLostCountdown;
         dst->litterCount = src->LitterCount;
         dst->guestTimeOnRide = src->TimeOnRide;

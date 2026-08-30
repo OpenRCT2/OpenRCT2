@@ -178,6 +178,10 @@ namespace OpenRCT2::GameActions
                 park.flags.set(ParkFlag::rct1Interest, _value != 0);
                 break;
             }
+            case ScenarioSetSetting::transportRideNavigation:
+                park.flags.set(ParkFlag::transportRideNavigation, _value != 0);
+                windowMgr->InvalidateByClass(WindowClass::options);
+                break;
             default:
                 LOG_ERROR("Invalid scenario setting %u", _setting);
                 return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);

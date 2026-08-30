@@ -3840,3 +3840,7 @@ STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Can’t change land height here…
+STR_7044    :Use free transport rides for navigation
+STR_7045    :Allow guests to use free transport rides as part of a route to another destination.
+STR_7046    :Taking {STRINGID} to reach {STRINGID}
+STR_7047    :Taking {STRINGID} to reach the park exit

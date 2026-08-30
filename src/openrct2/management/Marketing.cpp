@@ -163,6 +163,7 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
             peep->voucherType = VOUCHER_TYPE_RIDE_FREE;
             peep->voucherRideId = campaign->rideId;
             peep->guestHeadingToRideId = campaign->rideId;
+            peep->transportRideNavigation.clear();
             peep->guestIsLostCountdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
@@ -178,6 +179,7 @@ void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
             break;
         case ADVERTISING_CAMPAIGN_RIDE:
             peep->guestHeadingToRideId = campaign->rideId;
+            peep->transportRideNavigation.clear();
             peep->guestIsLostCountdown = 240;
             break;
     }

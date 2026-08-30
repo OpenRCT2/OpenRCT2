@@ -16,6 +16,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ReplayManager.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
@@ -65,6 +66,25 @@ static std::vector<ReplayTestData> GetReplayFiles()
 class ReplayTests : public testing::TestWithParam<ReplayTestData>
 {
 protected:
+    void EnableTransportRideNavigationDefault()
+    {
+        auto& value = Config::Get().general.enableTransportRideNavigation;
+        _originalTransportRideNavigationDefault = value;
+        value = true;
+        _transportRideNavigationDefaultChanged = true;
+    }
+
+    void TearDown() override
+    {
+        if (_transportRideNavigationDefaultChanged)
+        {
+            Config::Get().general.enableTransportRideNavigation = _originalTransportRideNavigationDefault;
+        }
+    }
+
+private:
+    bool _originalTransportRideNavigationDefault = false;
+    bool _transportRideNavigationDefaultChanged = false;
 };
 
 TEST_P(ReplayTests, RunReplay)
@@ -78,6 +98,7 @@ TEST_P(ReplayTests, RunReplay)
     auto context = CreateContext();
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
+    EnableTransportRideNavigationDefault();
 
     IReplayManager* replayManager = context->GetReplayManager();
     ASSERT_NE(replayManager, nullptr);

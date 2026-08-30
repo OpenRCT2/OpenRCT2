@@ -43,6 +43,8 @@ static_assert(sizeof(EntitySnapshot) == 0x200);
 
 struct GameStateSnapshot_t
 {
+    static constexpr uint32_t kGuestTransportRideNavigationFlag = 1u << 31;
+
     GameStateSnapshot_t& operator=(GameStateSnapshot_t&& mv) noexcept
     {
         tick = mv.tick;
@@ -73,6 +75,20 @@ struct GameStateSnapshot_t
         return (EntitySizeCheck<T>(ds) && ...);
     }
 
+    bool GuestEntitySizeCheck(DataSerialiser& ds, bool& includeTransportRideNavigation)
+    {
+        uint32_t size = sizeof(Guest);
+        if (ds.IsSaving() && getGameState().park.flags.has(ParkFlag::transportRideNavigation))
+        {
+            size |= kGuestTransportRideNavigationFlag;
+        }
+
+        ds << size;
+        includeTransportRideNavigation = (size & kGuestTransportRideNavigationFlag) != 0;
+        size &= ~kGuestTransportRideNavigationFlag;
+        return !ds.IsLoading() || size == sizeof(Guest);
+    }
+
     // Must pass a function that can access the sprite.
     void SerialiseSprites(std::function<EntitySnapshot*(EntityId)> getEntity, const size_t numSprites, bool saving)
     {
@@ -100,7 +116,9 @@ struct GameStateSnapshot_t
 
         // Encodes and checks the size of each of the entity so that we
         // can fail gracefully when fields added/removed
-        if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
+        bool includeTransportRideNavigation = false;
+        if (!EntitiesSizeCheck<Vehicle>(ds) || !GuestEntitySizeCheck(ds, includeTransportRideNavigation)
+            || !EntitiesSizeCheck<Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
         {
             LOG_ERROR("Entity index corrupted!");
             return;
@@ -133,7 +151,7 @@ struct GameStateSnapshot_t
                     reinterpret_cast<Vehicle&>(sprite).serialise(ds);
                     break;
                 case EntityType::guest:
-                    reinterpret_cast<Guest&>(sprite).serialise(ds);
+                    reinterpret_cast<Guest&>(sprite).serialise(ds, includeTransportRideNavigation);
                     break;
                 case EntityType::staff:
                     reinterpret_cast<Staff&>(sprite).serialise(ds);
@@ -334,6 +352,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, guestNextInQueue);
         COMPARE_FIELD(Guest, parkEntryTime);
         COMPARE_FIELD(Guest, guestHeadingToRideId);
+        COMPARE_FIELD(Guest, transportRideNavigation);
         COMPARE_FIELD(Guest, guestIsLostCountdown);
         COMPARE_FIELD(Guest, guestTimeOnRide);
         COMPARE_FIELD(Guest, paidToEnter);

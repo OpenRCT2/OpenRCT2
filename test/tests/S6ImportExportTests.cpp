@@ -22,8 +22,10 @@
 #include <openrct2/core/MemoryStream.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
+#include <openrct2/entity/Guest.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/park/ParkFile.h>
 #include <openrct2/rct2/RCT2.h>
@@ -227,6 +229,50 @@ TEST(S6ImportExportBasic, all)
     CompareStates(importBuffer, exportBuffer, snapshotStream);
 
     SUCCEED();
+}
+
+TEST(ParkFileGuestState, TransportRideNavigationRoundTrips)
+{
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
+
+    MemoryStream sourceBuffer;
+    MemoryStream exportBuffer;
+    EntityId guestId = EntityId::GetNull();
+    const GuestTransportRideNavigation expected = { RideId::FromUnderlying(1), StationIndex::FromUnderlying(0),
+                                                    StationIndex::FromUnderlying(1) };
+
+    {
+        auto context = CreateContext();
+        ASSERT_NE(context, nullptr);
+        ASSERT_TRUE(context->Initialise());
+
+        const auto testParkPath = TestData::GetParkPath("BigMapTest.sv6");
+        ASSERT_TRUE(LoadFileToBuffer(sourceBuffer, testParkPath));
+        ASSERT_TRUE(ImportS6(sourceBuffer, context, false));
+
+        auto guests = EntityList<Guest>();
+        ASSERT_NE(guests.begin(), guests.end());
+        auto* guest = *guests.begin();
+        EXPECT_FALSE(guest->transportRideNavigation.isActive());
+        guestId = guest->id;
+        guest->transportRideNavigation = expected;
+
+        ASSERT_TRUE(ExportSave(exportBuffer, context));
+    }
+
+    {
+        auto context = CreateContext();
+        ASSERT_NE(context, nullptr);
+        ASSERT_TRUE(context->Initialise());
+        ASSERT_TRUE(ImportPark(exportBuffer, context, true));
+
+        const auto* guest = getGameState().entities.getEntity<Guest>(guestId);
+        ASSERT_NE(guest, nullptr);
+        EXPECT_EQ(guest->transportRideNavigation.rideId, expected.rideId);
+        EXPECT_EQ(guest->transportRideNavigation.boardingStation, expected.boardingStation);
+        EXPECT_EQ(guest->transportRideNavigation.alightingStation, expected.alightingStation);
+    }
 }
 
 TEST(S6ImportExportAdvanceTicks, all)

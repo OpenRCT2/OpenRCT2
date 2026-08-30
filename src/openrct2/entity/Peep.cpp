@@ -1329,13 +1329,33 @@ namespace OpenRCT2
                         auto ride = GetRide(guest->guestHeadingToRideId);
                         if (ride != nullptr)
                         {
-                            ft.Add<StringId>(STR_HEADING_FOR);
-                            ride->formatNameTo(ft);
+                            auto transportRide = GetRide(guest->transportRideNavigation.rideId);
+                            if (guest->transportRideNavigation.isActive() && transportRide != nullptr)
+                            {
+                                ft.Add<StringId>(STR_TAKING_TRANSPORT_RIDE_TO_DESTINATION);
+                                transportRide->formatNameTo(ft);
+                                ride->formatNameTo(ft);
+                            }
+                            else
+                            {
+                                ft.Add<StringId>(STR_HEADING_FOR);
+                                ride->formatNameTo(ft);
+                            }
                         }
                     }
                     else
                     {
-                        ft.Add<StringId>(peepFlags.has(PeepFlag::leavingPark) ? STR_LEAVING_PARK : STR_WALKING);
+                        auto transportRide = GetRide(guest->transportRideNavigation.rideId);
+                        if (peepFlags.has(PeepFlag::leavingPark) && guest->transportRideNavigation.isActive()
+                            && transportRide != nullptr)
+                        {
+                            ft.Add<StringId>(STR_TAKING_TRANSPORT_RIDE_TO_PARK_EXIT);
+                            transportRide->formatNameTo(ft);
+                        }
+                        else
+                        {
+                            ft.Add<StringId>(peepFlags.has(PeepFlag::leavingPark) ? STR_LEAVING_PARK : STR_WALKING);
+                        }
                     }
                 }
                 break;
@@ -2308,7 +2328,10 @@ namespace OpenRCT2
         else
         {
             if (guest->guestHeadingToRideId == rideIndex)
+            {
                 guest->guestHeadingToRideId = RideId::GetNull();
+                guest->transportRideNavigation.clear();
+            }
             guest->animationImageIdOffset = _backupAnimationImageIdOffset;
             guest->setState(PeepState::buying);
             guest->currentRide = rideIndex;

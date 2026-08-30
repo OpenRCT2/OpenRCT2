@@ -38,6 +38,7 @@ namespace OpenRCT2::GameActions
         guestGenerationHigherDifficultyLevel,
         allowEarlyCompletion,
         useRCT1Interest,
+        transportRideNavigation,
         count
     };
 

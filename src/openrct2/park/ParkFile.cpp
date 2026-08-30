@@ -17,6 +17,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../Version.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
@@ -898,6 +899,10 @@ namespace OpenRCT2
                     cs.readWrite(park.maxBankLoan);
                     cs.readWrite(park.bankLoanInterestRate);
                     cs.readWrite(park.flags.holder);
+                    if (cs.getMode() == OrcaStream::Mode::reading && version < kTransportRideNavigationVersion)
+                    {
+                        park.flags.set(ParkFlag::transportRideNavigation, Config::Get().general.enableTransportRideNavigation);
+                    }
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
@@ -2316,6 +2321,16 @@ namespace OpenRCT2
         cs.readWrite(guest.guestNextInQueue);
         cs.readWrite(guest.parkEntryTime);
         cs.readWrite(guest.guestHeadingToRideId);
+        if (version >= kTransportRideNavigationVersion)
+        {
+            cs.readWrite(guest.transportRideNavigation.rideId);
+            cs.readWrite(guest.transportRideNavigation.boardingStation);
+            cs.readWrite(guest.transportRideNavigation.alightingStation);
+        }
+        else if (cs.getMode() == OrcaStream::Mode::reading)
+        {
+            guest.transportRideNavigation.clear();
+        }
         cs.readWrite(guest.guestIsLostCountdown);
         cs.readWrite(guest.guestTimeOnRide);
 

@@ -15,6 +15,7 @@
 #include "../GameState.h"
 #include "../actions/GameActionRunner.h"
 #include "../actions/park/ParkSetParameterAction.h"
+#include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Litter.h"
@@ -302,6 +303,7 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.landPrice = 90.00_GBP;
         gameState.scenarioOptions.constructionRightsPrice = 40.00_GBP;
         park.flags = { ParkFlag::noMoney, ParkFlag::showRealGuestNames };
+        park.flags.set(ParkFlag::transportRideNavigation, Config::Get().general.enableTransportRideNavigation);
 
         ResetHistories(park);
         FinanceResetHistory();

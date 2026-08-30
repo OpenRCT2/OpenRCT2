@@ -103,6 +103,7 @@ namespace OpenRCT2::Config
         bool autoStaffPlacement;
         bool handymenMowByDefault;
         bool autoOpenShops;
+        bool enableTransportRideNavigation;
         RideInspection defaultInspectionInterval;
         int32_t windowLimit;
         bool scenarioUnlockingEnabled;

@@ -256,6 +256,26 @@ namespace OpenRCT2
         }
     };
 
+    struct GuestTransportRideNavigation
+    {
+        RideId rideId{ RideId::GetNull() };
+        StationIndex boardingStation{ StationIndex::GetNull() };
+        StationIndex alightingStation{ StationIndex::GetNull() };
+
+        [[nodiscard]] bool isActive() const
+        {
+            return !rideId.IsNull();
+        }
+
+        void clear()
+        {
+            rideId = RideId::GetNull();
+            boardingStation = StationIndex::GetNull();
+            alightingStation = StationIndex::GetNull();
+        }
+    };
+    static_assert(sizeof(GuestTransportRideNavigation) == 4);
+
     struct Guest : Peep
     {
         static constexpr auto kEntityType = EntityType::guest;
@@ -265,6 +285,7 @@ namespace OpenRCT2
         EntityId guestNextInQueue;
         int32_t parkEntryTime;
         RideId guestHeadingToRideId;
+        GuestTransportRideNavigation transportRideNavigation;
         uint8_t guestIsLostCountdown;
         uint8_t guestTimeOnRide;
         money64 paidToEnter;
@@ -360,6 +381,7 @@ namespace OpenRCT2
         void giveItem(ShopItem item);
         bool hasItem(ShopItem peepItem) const;
         void serialise(DataSerialiser& stream);
+        void serialise(DataSerialiser& stream, bool includeTransportRideNavigation);
 
         // Removes the ride from the guests memory, this includes
         // the history, thoughts, etc.
