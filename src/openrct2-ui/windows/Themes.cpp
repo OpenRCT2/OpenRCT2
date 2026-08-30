@@ -840,7 +840,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t GetColourSchemeTabCount()
         {
             auto& tabInfo = kThemeTabInfo[_selectedTab];
-            return tabInfo.windowClasses.size();
+            return static_cast<int32_t>(tabInfo.windowClasses.size());
         }
 
         void WindowThemesDrawTabImages(RenderTarget& rt)
