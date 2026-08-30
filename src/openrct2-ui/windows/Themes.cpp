@@ -116,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Tabs
 
-    static constexpr std::array kThemesTab1Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTabMainClasses = std::to_array<WindowClass>({
         WindowClass::topToolbar,
         WindowClass::bottomToolbar,
         WindowClass::parkInfoPanel,
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::scenarioSelect,
     });
 
-    static constexpr std::array kThemesTab2Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTabParkClasses = std::to_array<WindowClass>({
         WindowClass::parkInformation,
         WindowClass::editorParkEntrance,
         WindowClass::finances,
@@ -140,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::recentNews,
     });
 
-    static constexpr std::array kThemesTab3Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTabToolsClasses = std::to_array<WindowClass>({
         WindowClass::land,
         WindowClass::water,
         WindowClass::clearScenery,
@@ -155,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::patrolArea,
     });
 
-    static constexpr std::array kThemesTab4Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTabRidesGuestsClasses = std::to_array<WindowClass>({
         WindowClass::ride,
         WindowClass::rideList,
         WindowClass::peep,
@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::banner,
     });
 
-    static constexpr std::array kThemesTab5Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTabEditorsClasses = std::to_array<WindowClass>({
         WindowClass::editorObjectSelection,
         WindowClass::editorInventionList,
         WindowClass::editorScenarioOptions,
@@ -174,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::installTrack,
     });
 
-    static constexpr std::array kThemesTab6Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTabMiscClasses = std::to_array<WindowClass>({
         WindowClass::cheats,
         WindowClass::tileInspector,
         WindowClass::viewClipping,
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::console,
     });
 
-    static constexpr std::array kThemesTab7Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTabPromptsClasses = std::to_array<WindowClass>({
         WindowClass::error,
         WindowClass::savePrompt,
         WindowClass::demolishRidePrompt,
@@ -217,15 +217,15 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr std::array kThemeTabInfo = std::to_array<ThemeTabInfo>({
-        { WINDOW_THEMES_TAB_SETTINGS,     WIDX_THEMES_SETTINGS_TAB,    SPR_TAB_PAINT_0,                  32,  4,  {}                 },
-        { WINDOW_THEMES_TAB_MAIN_UI,      WIDX_THEMES_MAIN_UI_TAB,     SPR_TAB_KIOSKS_AND_FACILITIES_0,  32,  4,  kThemesTab1Classes },
-        { WINDOW_THEMES_TAB_PARK,         WIDX_THEMES_PARK_TAB,        SPR_TAB_PARK_ENTRANCE,            1,   1,  kThemesTab2Classes },
-        { WINDOW_THEMES_TAB_TOOLS,        WIDX_THEMES_TOOLS_TAB,       SPR_G2_TAB_LAND,                  1,   1,  kThemesTab3Classes },
-        { WINDOW_THEMES_TAB_RIDES_PEEPS,  WIDX_THEMES_RIDE_PEEPS_TAB,  SPR_TAB_RIDE_0,                   64,  4,  kThemesTab4Classes },
-        { WINDOW_THEMES_TAB_EDITORS,      WIDX_THEMES_EDITORS_TAB,     SPR_TAB_WRENCH_0,                 32,  2,  kThemesTab5Classes },
-        { WINDOW_THEMES_TAB_MISC,         WIDX_THEMES_MISC_TAB,        SPR_TAB_GEARS_0,                  8,   2,  kThemesTab6Classes },
-        { WINDOW_THEMES_TAB_PROMPTS,      WIDX_THEMES_PROMPTS_TAB,     SPR_TAB_STAFF_OPTIONS_0,          14,  2,  kThemesTab7Classes },
-        { WINDOW_THEMES_TAB_FEATURES,     WIDX_THEMES_FEATURES_TAB,    SPR_TAB_FINANCES_MARKETING_0,     38,  2,  {}                 },
+        { WINDOW_THEMES_TAB_SETTINGS,     WIDX_THEMES_SETTINGS_TAB,    SPR_TAB_PAINT_0,                  32,  4,  {}                           },
+        { WINDOW_THEMES_TAB_MAIN_UI,      WIDX_THEMES_MAIN_UI_TAB,     SPR_TAB_KIOSKS_AND_FACILITIES_0,  32,  4,  kThemesTabMainClasses        },
+        { WINDOW_THEMES_TAB_PARK,         WIDX_THEMES_PARK_TAB,        SPR_TAB_PARK_ENTRANCE,            1,   1,  kThemesTabParkClasses        },
+        { WINDOW_THEMES_TAB_TOOLS,        WIDX_THEMES_TOOLS_TAB,       SPR_G2_TAB_LAND,                  1,   1,  kThemesTabToolsClasses       },
+        { WINDOW_THEMES_TAB_RIDES_PEEPS,  WIDX_THEMES_RIDE_PEEPS_TAB,  SPR_TAB_RIDE_0,                   64,  4,  kThemesTabRidesGuestsClasses },
+        { WINDOW_THEMES_TAB_EDITORS,      WIDX_THEMES_EDITORS_TAB,     SPR_TAB_WRENCH_0,                 32,  2,  kThemesTabEditorsClasses     },
+        { WINDOW_THEMES_TAB_MISC,         WIDX_THEMES_MISC_TAB,        SPR_TAB_GEARS_0,                  8,   2,  kThemesTabMiscClasses        },
+        { WINDOW_THEMES_TAB_PROMPTS,      WIDX_THEMES_PROMPTS_TAB,     SPR_TAB_STAFF_OPTIONS_0,          14,  2,  kThemesTabPromptsClasses     },
+        { WINDOW_THEMES_TAB_FEATURES,     WIDX_THEMES_FEATURES_TAB,    SPR_TAB_FINANCES_MARKETING_0,     38,  2,  {}                           },
     });
     // clang-format on
 
