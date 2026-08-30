@@ -154,6 +154,7 @@ namespace OpenRCT2::Ui::Windows
     static WindowClass window_themes_tab_1_classes[] = {
         WindowClass::topToolbar,
         WindowClass::bottomToolbar,
+        WindowClass::newsTicker,
         WindowClass::parkInfoPanel,
         WindowClass::dateInfoPanel,
         WindowClass::editorScenarioBottomToolbar,
