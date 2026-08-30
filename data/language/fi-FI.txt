@@ -2679,7 +2679,7 @@ STR_5573    :Poista suosikeista
 STR_5574    :Palvelimen nimi:
 STR_5575    :Maks. pelaajat:
 STR_5576    :Portti:
-STR_5577    :Etelä-Korean won (W)
+STR_5577    :Etelä-Korean won (₩)
 STR_5578    :Venäjän rupla (₽)
 STR_5579    :Ikkunan skaalaus:
 STR_5580    :Tšekin koruna (Kč)

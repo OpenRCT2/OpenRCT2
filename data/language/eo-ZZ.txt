@@ -2675,7 +2675,7 @@ STR_5573    :Forigi el preferatoj
 STR_5574    :Servilonomo:
 STR_5575    :Maks. ludantoj:
 STR_5576    :Pordo:
-STR_5577    :Sud-Koreia vono (W)
+STR_5577    :Sud-Koreia vono (₩)
 STR_5578    :Rusa rublo (₽)
 STR_5579    :Skalo de fenestro:
 STR_5580    :Ĉeĥia krono (Kč)

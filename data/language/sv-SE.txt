@@ -2681,7 +2681,7 @@ STR_5573    :Ta bort från favoriter
 STR_5574    :Servernamn:
 STR_5575    :Max antal spelare:
 STR_5576    :Port:
-STR_5577    :Sydkoreansk won (W)
+STR_5577    :Sydkoreansk won (₩)
 STR_5578    :Rysk rubel (₽)
 STR_5579    :Fönsterskalning:
 STR_5580    :Tjeckisk krona (Kč)

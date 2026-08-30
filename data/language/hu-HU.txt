@@ -2675,7 +2675,7 @@ STR_5573    :Eltávolítás a kedvencekből
 STR_5574    :Szerver neve:
 STR_5575    :Max. játékosszám:
 STR_5576    :Port:
-STR_5577    :Dél-koreai von (W)
+STR_5577    :Dél-koreai von (₩)
 STR_5578    :Orosz rubel (₽)
 STR_5579    :Ablak méretezése:
 STR_5580    :Cseh korona (Kč)

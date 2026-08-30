@@ -2675,7 +2675,7 @@ STR_5573    :Remover dos Favoritos
 STR_5574    :Nome do Servidor:
 STR_5575    :Máximo de Jogadores:
 STR_5576    :Porta:
-STR_5577    :Won Sul-Coreano(W)
+STR_5577    :Won Sul-Coreano(₩)
 STR_5578    :Rublo Russo (₽)
 STR_5579    :Fator escalar da janela:
 STR_5580    :Coroa Tcheca (Kč)

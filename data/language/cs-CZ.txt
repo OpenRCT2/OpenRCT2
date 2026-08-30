@@ -2680,7 +2680,7 @@ STR_5573    :Odstranit z oblíbených
 STR_5574    :Jméno serveru:
 STR_5575    :Hráčů maximálně:
 STR_5576    :Port:
-STR_5577    :Jihokorejský won (W)
+STR_5577    :Jihokorejský won (₩)
 STR_5578    :Ruský rubl (₽)
 STR_5579    :Koeficient velikosti okna:
 STR_5580    :Česká koruna (Kč)

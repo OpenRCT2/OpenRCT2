@@ -2621,7 +2621,7 @@ STR_5573    :Xóa khỏi mục yêu thích
 STR_5574    :Tên máy chủ:
 STR_5575    :Số người chơi tối đa:
 STR_5576    :Cổng:
-STR_5577    :Won Hàn Quốc (W)
+STR_5577    :Won Hàn Quốc (₩)
 STR_5578    :Rúp Nga (₽)
 STR_5579    :Hệ số tỷ lệ cửa sổ:
 STR_5580    :Koruna Séc (Kč)

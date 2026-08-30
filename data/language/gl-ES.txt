@@ -2676,7 +2676,7 @@ STR_5573    :Eliminar dos favoritos
 STR_5574    :Nome do servidor:
 STR_5575    :Número máximo de xogadores:
 STR_5576    :Porto:
-STR_5577    :won surcoreano (W)
+STR_5577    :won surcoreano (₩)
 STR_5578    :Rublo ruso (₽)
 STR_5579    :Factor de escala da xanela:
 STR_5580    :Coroa checa (Kč)
