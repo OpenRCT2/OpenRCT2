@@ -109,8 +109,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
-            kTileSlopeFlat);
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -175,7 +174,7 @@ namespace OpenRCT2::GameActions
 
         auto canBuild = MapCanConstructWithClearAt(
             { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
-            GetFlags().with(CommandFlag::apply), kTileSlopeFlat);
+            GetFlags().with(CommandFlag::apply));
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;

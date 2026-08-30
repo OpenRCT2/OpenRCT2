@@ -1978,7 +1978,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::Vehicle>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::Vehicle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const Vehicle*>(&baseSrc);
         const auto& ride = _s6.Rides[src->Ride];
 
@@ -2104,7 +2104,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::Guest>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::Guest>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::Guest>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const Peep*>(&baseSrc);
         ImportEntityPeep(dst, src);
 
@@ -2179,7 +2179,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::Staff>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::Staff>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::Staff>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const Peep*>(&baseSrc);
         ImportEntityPeep(dst, src);
 
@@ -2200,7 +2200,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::SteamParticle>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::SteamParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::SteamParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntitySteamParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->timeToMove = src->TimeToMove;
@@ -2210,7 +2210,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::MoneyEffect>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::MoneyEffect>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::MoneyEffect>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityMoneyEffect*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->moveDelay = src->MoveDelay;
@@ -2224,7 +2224,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::VehicleCrashParticle>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::VehicleCrashParticle>(
+        auto dst = getGameState().entities.createEntityAt<::VehicleCrashParticle>(
             EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
@@ -2245,7 +2245,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::ExplosionCloud>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::ExplosionCloud>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::ExplosionCloud>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -2254,7 +2254,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::ExplosionFlare>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::ExplosionFlare>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::ExplosionFlare>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -2263,7 +2263,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::CrashSplashParticle>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::CrashSplashParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::CrashSplashParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -2272,7 +2272,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::JumpingFountain>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::JumpingFountain>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::JumpingFountain>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityJumpingFountain*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->numTicksAlive = src->NumTicksAlive;
@@ -2289,7 +2289,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::Balloon>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::Balloon>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::Balloon>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityBalloon*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->popped = src->Popped;
@@ -2301,7 +2301,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::Duck>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::Duck>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::Duck>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityDuck*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -2313,7 +2313,7 @@ namespace OpenRCT2::RCT2
     template<>
     void S6Importer::ImportEntity<::Litter>(GameState_t& gameState, const RCT12EntityBase& baseSrc)
     {
-        auto dst = getGameState().entities.CreateEntityAt<::Litter>(EntityId::FromUnderlying(baseSrc.EntityIndex));
+        auto dst = getGameState().entities.createEntityAt<::Litter>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityLitter*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->subType = ::Litter::Type(src->Type);

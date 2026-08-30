@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
+        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetNameAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
+        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);

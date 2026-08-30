@@ -1920,7 +1920,7 @@ namespace OpenRCT2
                 else
                 {
                     // Check if there's room in the queue for the peep to enter.
-                    Guest* lastPeepInQueue = getGameState().entities.GetEntity<Guest>(station.LastPeepInQueue);
+                    Guest* lastPeepInQueue = getGameState().entities.getEntity<Guest>(station.LastPeepInQueue);
                     if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                     {
                         int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2409,7 +2409,7 @@ namespace OpenRCT2
 
         guest.currentCar = carArray[chosen_car];
 
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[guest.currentTrain]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[guest.currentTrain]);
         if (vehicle == nullptr)
         {
             return nullptr;
@@ -2500,7 +2500,7 @@ namespace OpenRCT2
 
             for (int32_t i = 0; i < ride.numTrains; ++i)
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
                 if (vehicle == nullptr)
                     continue;
 
@@ -2527,8 +2527,8 @@ namespace OpenRCT2
         int32_t i = 0;
 
         auto vehicle_id = ride.vehicles[chosen_train];
-        for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
+        for (Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(vehicle_id); vehicle != nullptr;
+             vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
         {
             uint8_t num_seats = vehicle->num_seats;
             if (vehicle->IsUsedInPairs())
@@ -3594,7 +3594,7 @@ namespace OpenRCT2
 
         uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->getDirection());
 
-        auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[currentTrain]);
+        auto vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             // TODO: Goto ride exit on failure.
@@ -3684,7 +3684,7 @@ namespace OpenRCT2
             return;
         }
 
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -3920,7 +3920,7 @@ namespace OpenRCT2
         }
 
         auto& gameState = getGameState();
-        Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             // TODO: Leave ride on failure goes for all returns on nullptr in this function
@@ -3942,11 +3942,11 @@ namespace OpenRCT2
 
             for (size_t i = 0; i < ride->numTrains; ++i)
             {
-                Vehicle* train = gameState.entities.GetEntity<Vehicle>(ride->vehicles[i]);
+                Vehicle* train = gameState.entities.getEntity<Vehicle>(ride->vehicles[i]);
                 if (train == nullptr)
                     continue;
 
-                Vehicle* second_vehicle = gameState.entities.GetEntity<Vehicle>(train->next_vehicle_on_train);
+                Vehicle* second_vehicle = gameState.entities.getEntity<Vehicle>(train->next_vehicle_on_train);
                 if (second_vehicle == nullptr)
                     continue;
 
@@ -3984,7 +3984,7 @@ namespace OpenRCT2
             }
         }
 
-        Vehicle* currentTrainEntity = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* currentTrainEntity = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (currentTrainEntity == nullptr)
         {
             return;
@@ -4023,7 +4023,7 @@ namespace OpenRCT2
         auto* ride = GetRide(currentRide);
         if (ride != nullptr)
         {
-            auto* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+            auto* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
             if (vehicle != nullptr)
             {
                 vehicle = vehicle->GetCar(currentCar);
@@ -4040,7 +4040,7 @@ namespace OpenRCT2
 
                 if (vehicle->IsUsedInPairs())
                 {
-                    auto* seatedGuest = gameState.entities.GetEntity<Guest>(vehicle->peep[currentSeat ^ 1]);
+                    auto* seatedGuest = gameState.entities.getEntity<Guest>(vehicle->peep[currentSeat ^ 1]);
                     if (seatedGuest != nullptr)
                     {
                         if (seatedGuest->rideSubState != PeepRideSubState::enterVehicle)
@@ -4086,7 +4086,7 @@ namespace OpenRCT2
         if (ride == nullptr)
             return;
 
-        Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
             return;
 
@@ -4147,7 +4147,7 @@ namespace OpenRCT2
             if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::vehicleIsIntegral))
             {
                 for (; vehicle != nullptr && !vehicle->IsHead();
-                     vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
+                     vehicle = gameState.entities.getEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
                 {
                     auto trackType = vehicle->GetTrackType();
                     if (trackType == TrackElemType::flat || trackType > TrackElemType::middleStation)
@@ -4265,7 +4265,7 @@ namespace OpenRCT2
 
         Direction station_direction = (trackElement == nullptr ? 0 : trackElement->getDirection());
 
-        vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -4447,7 +4447,7 @@ namespace OpenRCT2
         // This is incrementing the actual peep waypoint
         var37++;
 
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -4544,7 +4544,7 @@ namespace OpenRCT2
             }
 
             var37--;
-            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+            Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
             if (vehicle == nullptr)
             {
                 return;
@@ -5647,7 +5647,7 @@ namespace OpenRCT2
             // first check if the next in queue is actually nearby
             // if they are not then it's safe to assume that this is
             // the front of the queue.
-            Peep* nextGuest = getGameState().entities.GetEntity<Guest>(guestNextInQueue);
+            Peep* nextGuest = getGameState().entities.getEntity<Guest>(guestNextInQueue);
             if (nextGuest != nullptr)
             {
                 if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
@@ -7147,10 +7147,10 @@ namespace OpenRCT2
     Guest* Guest::generate(const CoordsXYZ& coords)
     {
         auto& gameState = getGameState();
-        if (gameState.entities.GetNumFreeEntities() < 400)
+        if (gameState.entities.getNumFreeEntities() < 400)
             return nullptr;
 
-        Guest* peep = gameState.entities.CreateEntity<Guest>();
+        Guest* peep = gameState.entities.createEntity<Guest>();
 
         peep->animationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::guest);
         peep->animationGroup = PeepAnimationGroup::normal;
@@ -7437,7 +7437,7 @@ namespace OpenRCT2
     {
         timeInQueue = AddClamp<uint16_t>(timeInQueue, 1);
 
-        auto* guestNext = getGameState().entities.GetEntity<Guest>(guestNextInQueue);
+        auto* guestNext = getGameState().entities.getEntity<Guest>(guestNextInQueue);
         if (guestNext == nullptr)
         {
             return false;
@@ -7528,13 +7528,13 @@ namespace OpenRCT2
         }
 
         auto& gameState = getGameState();
-        auto* otherGuest = gameState.entities.GetEntity<Guest>(station.LastPeepInQueue);
+        auto* otherGuest = gameState.entities.getEntity<Guest>(station.LastPeepInQueue);
         if (otherGuest == nullptr)
         {
             LOG_ERROR("Invalid Guest Queue list!");
             return;
         }
-        for (; otherGuest != nullptr; otherGuest = gameState.entities.GetEntity<Guest>(otherGuest->guestNextInQueue))
+        for (; otherGuest != nullptr; otherGuest = gameState.entities.getEntity<Guest>(otherGuest->guestNextInQueue))
         {
             if (id == otherGuest->guestNextInQueue)
             {

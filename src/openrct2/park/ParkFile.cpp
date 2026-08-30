@@ -2660,7 +2660,7 @@ namespace OpenRCT2
             T placeholder{};
 
             auto index = cs.read<EntityId>();
-            auto* ent = getGameState().entities.CreateEntityAt<T>(index);
+            auto* ent = getGameState().entities.createEntityAt<T>(index);
             if (ent == nullptr)
             {
                 // Unable to allocate entity
@@ -2681,7 +2681,7 @@ namespace OpenRCT2
         os.readWriteChunk(ParkFileChunkType::entities, [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
-                getGameState().entities.ResetAllEntities();
+                getGameState().entities.resetAllEntities();
             }
 
             std::vector<uint16_t> entityIndices;

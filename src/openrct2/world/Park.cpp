@@ -518,9 +518,9 @@ namespace OpenRCT2::Park
         for (uint8_t n = 1; n < 55; n++)
         {
             // Avoid floating point math by rescaling PI up.
-            constexpr int32_t SCALE = 100000;
-            constexpr int32_t PI_SCALED = 314159; // PI * SCALE;
-            if (((PI_SCALED * (9 + n)) / SCALE) / 2 >= percentage)
+            constexpr int32_t kScale = 100000;
+            constexpr int32_t kScaled = 314159; // PI * kScale;
+            if (((kScaled * (9 + n)) / kScale) / 2 >= percentage)
             {
                 return (9 + n) * 4;
             }

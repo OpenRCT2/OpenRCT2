@@ -1,0 +1,16 @@
+{
+    "scenario_name": "Heide-Park",
+    "sha256": "5973a6ae5e629cb0f0a62d9383bfd5d63e7ed69669ef055b847cb98ea0aaea01",
+    "rides": [
+        {
+            "id": 24,
+            "operation": "set_name",
+            "name": "„Santa-Maria“-Schiffschaukel"
+        },
+        {
+            "id": 25,
+            "operation": "set_name",
+            "name": "„Bounty“-Schiffschaukel"
+        }
+    ]
+}

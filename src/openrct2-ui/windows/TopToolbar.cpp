@@ -1149,6 +1149,9 @@ namespace OpenRCT2::Ui::Windows
 
         void ApplyNetworkMode()
         {
+            if (isInEditorMode())
+                return;
+
             const auto mode = Network::GetMode();
             widgets[WIDX_NETWORK].setHidden(mode == Network::Mode::none);
             widgets[WIDX_CHAT].setHidden(mode == Network::Mode::none);

@@ -431,7 +431,7 @@ namespace OpenRCT2::Title
             auto windowManager = Ui::GetWindowManager();
             auto& gameState = getGameState();
             windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
-            gameState.entities.ResetEntitySpatialIndices();
+            gameState.entities.resetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
 
             // Invalidate scrolling text cache to prevent stale text from previous park

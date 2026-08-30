@@ -216,14 +216,6 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
 
-        // Dead code?
-        if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
-        {
-            // Draw border with no fill
-            Rectangle::fillInset(rt, rect, colour, borderStyle, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
-            return;
-        }
-
         // Draw the border with fill
         Rectangle::fillInset(rt, rect, colour, borderStyle);
 
@@ -303,16 +295,6 @@ namespace OpenRCT2::Ui
         // Check if the button is pressed down
         if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
         {
-            // Dead code?
-            if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
-            {
-                // Draw border with no fill
-                Rectangle::fillInset(
-                    rt, rect, colour, Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
-                    Rectangle::FillMode::none);
-                return;
-            }
-
             // Draw the border with fill
             Rectangle::fillInset(rt, rect, colour, Rectangle::BorderStyle::inset);
         }
@@ -578,14 +560,14 @@ namespace OpenRCT2::Ui
         if (static_cast<size_t>(widgetIndex + 1) < w.widgets.size()
             && (w.widgets[widgetIndex + 1]).type == WidgetType::closeBox)
         {
-            width -= kCloseButtonSize;
+            width -= kCloseButtonSize.width;
             if (static_cast<size_t>(widgetIndex + 2) < w.widgets.size()
                 && (w.widgets[widgetIndex + 2]).type == WidgetType::closeBox)
-                width -= kCloseButtonSize;
+                width -= kCloseButtonSize.width;
         }
         topLeft.x += width / 2;
         if (Config::Get().interface.windowButtonsOnTheLeft)
-            topLeft.x += kCloseButtonSize;
+            topLeft.x += kCloseButtonSize.width;
         if (Config::Get().interface.enlargedUi)
             topLeft.y += kTitleHeightLarge / 4;
 

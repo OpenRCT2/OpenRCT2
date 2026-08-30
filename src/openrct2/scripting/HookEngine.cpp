@@ -47,8 +47,8 @@ HookType OpenRCT2::Scripting::GetHookType(const std::string& name)
 HookEngine::HookEngine(ScriptEngine& scriptEngine)
     : _scriptEngine(scriptEngine)
 {
-    _hookMap.resize(NUM_HookTypeS);
-    for (size_t i = 0; i < NUM_HookTypeS; i++)
+    _hookMap.resize(kHookTypeCount);
+    for (size_t i = 0; i < kHookTypeCount; i++)
     {
         _hookMap[i].Type = static_cast<HookType>(i);
     }

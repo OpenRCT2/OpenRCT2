@@ -23,7 +23,7 @@
     #include "TextureCache.h"
     #include "TransparencyDepth.h"
 
-    #include <SDL.h>
+    #include <SDL_video.h>
     #include <algorithm>
     #include <cassert>
     #include <cmath>

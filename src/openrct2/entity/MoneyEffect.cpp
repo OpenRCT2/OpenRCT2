@@ -46,7 +46,7 @@ namespace OpenRCT2
         if (value == 0.00_GBP)
             return;
 
-        MoneyEffect* moneyEffect = getGameState().entities.CreateEntity<MoneyEffect>();
+        MoneyEffect* moneyEffect = getGameState().entities.createEntity<MoneyEffect>();
         if (moneyEffect == nullptr)
             return;
 
@@ -150,7 +150,7 @@ namespace OpenRCT2
             return;
         }
 
-        getGameState().entities.EntityRemove(this);
+        getGameState().entities.entityRemove(this);
     }
 
     std::pair<StringId, money64> MoneyEffect::getStringId() const

@@ -2663,7 +2663,7 @@ STR_5573    :Favorilerden sil
 STR_5574    :Server ismi:
 STR_5575    :Oyuncu sayısı:
 STR_5576    :Port:
-STR_5577    :Güney Kore Wonu (W)
+STR_5577    :Güney Kore Wonu (₩)
 STR_5578    :Rus Rublesi (₽)
 STR_5579    :Pencere ölçeği:
 STR_5580    :Çek Korunası (Kč)

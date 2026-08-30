@@ -373,11 +373,11 @@ namespace OpenRCT2
                 {
                     if (IsOnCoveredTrack())
                     {
-                        Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
+                        Vehicle* nextVehicle = getGameState().entities.getEntity<Vehicle>(next_vehicle_on_ride);
                         if (nextVehicle == nullptr)
                             return;
 
-                        Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(
+                        Vehicle* nextNextVehicle = getGameState().entities.getEntity<Vehicle>(
                             nextVehicle->next_vehicle_on_ride);
                         if (nextNextVehicle == nullptr)
                             return;
@@ -933,7 +933,7 @@ namespace OpenRCT2
                             remaining_distance = -1;
 
                             // Might need to be bp rather than this, but hopefully not
-                            auto otherVeh = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
+                            auto otherVeh = getGameState().entities.getEntity<Vehicle>(otherVehicleIndex);
                             if (otherVeh == nullptr)
                             {
                                 // This can never happen as prev_vehicle_on_ride will always be set to a vehicle
@@ -1229,7 +1229,7 @@ namespace OpenRCT2
                             _vehicleRemainingDistance -= remaining_distance - 0x368A;
                             remaining_distance = 0x368A;
 
-                            Vehicle* v3 = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
+                            Vehicle* v3 = getGameState().entities.getEntity<Vehicle>(otherVehicleIndex);
                             Vehicle* v4 = gCurrentVehicle;
                             if (v3 == nullptr)
                             {
@@ -1494,7 +1494,7 @@ namespace OpenRCT2
         auto spriteId = vehicle->id;
         while (!spriteId.IsNull())
         {
-            Vehicle* car = getGameState().entities.GetEntity<Vehicle>(spriteId);
+            Vehicle* car = getGameState().entities.getEntity<Vehicle>(spriteId);
             if (car == nullptr)
             {
                 break;
@@ -1542,7 +1542,7 @@ namespace OpenRCT2
         // ebx
         int32_t numVehicles = 0;
 
-        for (; vehicle != nullptr; vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+        for (; vehicle != nullptr; vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
             numVehicles++;
             totalMass += vehicle->mass;

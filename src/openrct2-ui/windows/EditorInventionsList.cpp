@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
             auto maxObjects = getObjectEntryGroupCount(objectType);
             for (auto i = 0u; i < maxObjects; i++)
             {
-                Editor::ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
+                Editor::ClearSelectedObject(objectType, i);
             }
         }
 
@@ -99,7 +99,7 @@ namespace OpenRCT2::Ui::Windows
         for (const auto& ride : RideManager(gameState))
         {
             Editor::SetSelectedObject(
-                ObjectType::ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
+                ObjectType::ride, ride.subtype, { ObjectSelectionFlag::selected, ObjectSelectionFlag::inUse });
         }
     }
 

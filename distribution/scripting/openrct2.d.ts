@@ -3154,7 +3154,7 @@ declare global {
          * The type of subposition coordinates that this vehicle is using to find its
          * position on the track.
          */
-        readonly subposition: number;
+        subposition: number;
 
         /**
          * List of guest IDs ordered by seat.

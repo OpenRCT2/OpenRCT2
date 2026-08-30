@@ -2675,7 +2675,7 @@ STR_5573    :Eltávolítás a kedvencekből
 STR_5574    :Szerver neve:
 STR_5575    :Max. játékosszám:
 STR_5576    :Port:
-STR_5577    :Dél-koreai von (W)
+STR_5577    :Dél-koreai von (₩)
 STR_5578    :Orosz rubel (₽)
 STR_5579    :Ablak méretezése:
 STR_5580    :Cseh korona (Kč)
@@ -3827,3 +3827,7 @@ STR_7036    :Jármű stílusa
 STR_7037    :Üzemmód
 STR_7038    :Várakozás és beszállás
 STR_7039    :Játéktípus
+STR_7040    :Útkiegészítők
+STR_7041    :Parkinformációs panel
+STR_7042    :Dátuminformációs panel
+

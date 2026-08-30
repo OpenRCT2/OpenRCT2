@@ -51,15 +51,14 @@ namespace OpenRCT2
     static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth, bool translucent)
     {
         auto closeButtonSize = Config::Get().interface.enlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
+        closeButton.setWidth(closeButtonSize.width);
         if (Config::Get().interface.windowButtonsOnTheLeft)
         {
-            closeButton.left = 2;
-            closeButton.right = 2 + closeButtonSize;
+            closeButton.moveToX(2);
         }
         else
         {
-            closeButton.left = windowWidth - 3 - closeButtonSize;
-            closeButton.right = windowWidth - 3;
+            closeButton.moveToX(windowWidth - 2 - closeButtonSize.width);
         }
 
         // Set appropriate close button
@@ -109,7 +108,7 @@ namespace OpenRCT2
 
         // Figure out if we need to push the other widgets down to accommodate a resized title/caption
         auto preferredHeight = getTitleBarTargetHeight();
-        auto currentHeight = titleWidget.height() - 1;
+        auto currentHeight = titleWidget.height();
         auto heightDifference = preferredHeight - currentHeight;
 
         if (!hasTitleWidget || heightDifference == 0)
@@ -119,7 +118,7 @@ namespace OpenRCT2
 
         // Offset title and close button
         titleWidget.bottom += heightDifference;
-        closeButton.bottom += heightDifference;
+        closeButton.bottom = titleWidget.bottom - 1;
 
         height += heightDifference;
         minHeight += heightDifference;
@@ -151,7 +150,7 @@ namespace OpenRCT2
     int16_t WindowBase::getTitleBarCurrentHeight() const
     {
         if (!flags.has(WindowFlag::noTitleBar) && widgets.size() > 2)
-            return widgets[1].height() - 1;
+            return widgets[1].height();
         else
             return 0;
     }

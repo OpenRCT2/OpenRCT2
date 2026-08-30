@@ -108,7 +108,7 @@ namespace OpenRCT2
             int32_t dh = (dx >> 8) & 0xFF;
             for (size_t i = 0; i < ride.numTrains; i++)
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
                 if (vehicle == nullptr)
                     continue;
 
@@ -129,7 +129,7 @@ namespace OpenRCT2
             // Check if all vehicles are ready to go
             for (size_t i = 0; i < ride.numTrains; i++)
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
                 if (vehicle == nullptr)
                     continue;
 
@@ -206,7 +206,7 @@ namespace OpenRCT2
 
             for (size_t i = 0; i < ride.numTrains; i++)
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
                 if (vehicle == nullptr)
                     continue;
 
@@ -215,7 +215,7 @@ namespace OpenRCT2
                     // Found a winner
                     if (vehicle->num_peeps != 0)
                     {
-                        auto* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
+                        auto* peep = getGameState().entities.getEntity<Guest>(vehicle->peep[0]);
                         if (peep != nullptr)
                         {
                             ride.raceWinner = peep->id;
@@ -242,7 +242,7 @@ namespace OpenRCT2
             // Check if all vehicles are ready to go
             for (size_t i = 0; i < ride.numTrains; i++)
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
                 if (vehicle == nullptr)
                     continue;
 
@@ -279,7 +279,7 @@ namespace OpenRCT2
     {
         for (size_t i = 0; i < ride.numTrains; i++)
         {
-            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+            Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -291,7 +291,7 @@ namespace OpenRCT2
 
             if (vehicle->num_peeps != 0)
             {
-                auto* guest = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
+                auto* guest = getGameState().entities.getEntity<Guest>(vehicle->peep[0]);
 
                 // Easter egg names should only work on guests
                 if (guest != nullptr)

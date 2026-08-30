@@ -2680,7 +2680,7 @@ STR_5573    :Treure dels favorits
 STR_5574    :Nom del servidor:
 STR_5575    :Nombre màx. de jugadors:
 STR_5576    :Port:
-STR_5577    :Won sud-coreà (W)
+STR_5577    :Won sud-coreà (₩)
 STR_5578    :Ruble rus (₽)
 STR_5579    :Factor d’escala:
 STR_5580    :Corona txeca (Kč)

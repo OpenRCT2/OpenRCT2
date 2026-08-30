@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
             auto mapTile = GetBestCoordsFromPos(screenCoords);
             if (mapTile)
             {
-                auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
+                auto staff = getGameState().entities.getEntity<Staff>(_staffId);
                 if (staff != nullptr)
                 {
                     _mode = staff->isPatrolAreaSet(*mapTile) ? GameActions::StaffSetPatrolAreaMode::unset
@@ -212,7 +212,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
+            auto staff = getGameState().entities.getEntity<Staff>(_staffId);
             if (staff != nullptr)
             {
                 MapRange range(gMapSelectPositionA, gMapSelectPositionB);

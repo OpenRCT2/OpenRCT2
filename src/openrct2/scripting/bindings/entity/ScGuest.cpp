@@ -201,7 +201,7 @@ namespace OpenRCT2::Scripting
     Guest* ScGuest::GetGuest(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<Guest>(id);
+        return getGameState().entities.getEntity<Guest>(id);
     }
 
     JSValue ScGuest::tshirtColour_get(JSContext* ctx, JSValue thisVal)

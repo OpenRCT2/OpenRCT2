@@ -198,7 +198,7 @@ namespace OpenRCT2::Scripting
         static Peep* GetPeep(JSValue thisVal)
         {
             auto id = GetEntityId(thisVal);
-            return getGameState().entities.GetEntity<Peep>(id);
+            return getGameState().entities.getEntity<Peep>(id);
         }
     };
 

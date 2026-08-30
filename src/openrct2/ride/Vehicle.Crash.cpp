@@ -112,8 +112,8 @@ void Vehicle::UpdateCollisionSetup()
     KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
-    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(id); train != nullptr;
-         train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
+    for (Vehicle* train = getGameState().entities.getEntity<Vehicle>(id); train != nullptr;
+         train = getGameState().entities.getEntity<Vehicle>(train->next_vehicle_on_train))
     {
         lastVehicle = train;
 
@@ -147,8 +147,8 @@ void Vehicle::UpdateCollisionSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.getEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -187,7 +187,7 @@ void Vehicle::UpdateCrashSetup()
     auto spriteId = id;
     for (Vehicle* trainVehicle; !spriteId.IsNull(); spriteId = trainVehicle->next_vehicle_on_train)
     {
-        trainVehicle = getGameState().entities.GetEntity<Vehicle>(spriteId);
+        trainVehicle = getGameState().entities.getEntity<Vehicle>(spriteId);
         if (trainVehicle == nullptr)
         {
             break;
@@ -225,8 +225,8 @@ void Vehicle::UpdateCrashSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.getEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -321,8 +321,8 @@ void Vehicle::KillAllPassengersInTrain()
 
     ride_train_crash(*curRide, NumPeepsUntilTrainTail());
 
-    for (Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(id); trainCar != nullptr;
-         trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+    for (Vehicle* trainCar = getGameState().entities.getEntity<Vehicle>(id); trainCar != nullptr;
+         trainCar = getGameState().entities.getEntity<Vehicle>(trainCar->next_vehicle_on_train))
     {
         trainCar->KillPassengers(*curRide);
     }
@@ -338,7 +338,7 @@ void Vehicle::KillPassengers(const Ride& curRide)
 
     for (auto i = 0; i < num_peeps; i++)
     {
-        auto* curPeep = getGameState().entities.GetEntity<Guest>(peep[i]);
+        auto* curPeep = getGameState().entities.getEntity<Guest>(peep[i]);
         if (curPeep == nullptr)
             continue;
 
@@ -498,8 +498,8 @@ void Vehicle::CrashOnWater()
  */
 void Vehicle::UpdateCrash()
 {
-    for (Vehicle* curVehicle = getGameState().entities.GetEntity<Vehicle>(id); curVehicle != nullptr;
-         curVehicle = getGameState().entities.GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
+    for (Vehicle* curVehicle = getGameState().entities.getEntity<Vehicle>(id); curVehicle != nullptr;
+         curVehicle = getGameState().entities.getEntity<Vehicle>(curVehicle->next_vehicle_on_train))
     {
         CoordsXYZ curPos = curVehicle->getLocation();
 

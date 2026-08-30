@@ -34,15 +34,15 @@ namespace OpenRCT2
     using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
     static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
-    namespace ObjectSelectionFlags
+    enum class ObjectSelectionFlag : uint8_t
     {
-        constexpr uint8_t Selected = (1 << 0);
-        constexpr uint8_t InUse = (1 << 2);
-        // constexpr uint8_t Required = (1 << 3);               // Unused feature
-        constexpr uint8_t AlwaysRequired = (1 << 4);
-        constexpr uint8_t Flag6 = (1 << 5);
-        constexpr uint8_t AllFlags = 0xFF;
-    } // namespace ObjectSelectionFlags
+        selected,
+        inUse = 2,
+        // required = 3, // Unused feature
+        alwaysRequired = 4,
+        flag5 = 5,
+    };
+    using ObjectSelectionFlags = FlagHolder<uint8_t, ObjectSelectionFlag>;
 
 #pragma pack(push, 1)
     /**
