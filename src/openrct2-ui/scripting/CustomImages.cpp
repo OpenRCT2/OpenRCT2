@@ -441,7 +441,7 @@ namespace OpenRCT2::Scripting
             newg1.offset = reinterpret_cast<uint8_t*>(rt.bits);
             newg1.width = size.width;
             newg1.height = size.height;
-            newg1.flags = G1Flag::hasTransparency;
+            newg1.flags = { G1Flag::hasTransparency };
             GfxSetG1Element(id, &newg1);
         }
 
