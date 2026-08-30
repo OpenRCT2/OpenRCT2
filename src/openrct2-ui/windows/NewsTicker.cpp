@@ -71,8 +71,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
             int32_t itemWidth = middleOutsetWidget.width() - 63;
             drawNewsTicker(
-                rt, screenCoords, itemWidth, Drawing::Colour::brightGreen, STR_NEWS_ITEM_TEXT, newsItem->text,
-                newsItem->ticks);
+                rt, screenCoords, itemWidth, Drawing::Colour::brightGreen, STR_NEWS_ITEM_TEXT, newsItem->text, newsItem->ticks);
 
             const auto& newsSubjectWidget = widgets[WIDX_NEWS_SUBJECT];
             screenCoords = windowPos + ScreenCoordsXY{ newsSubjectWidget.left, newsSubjectWidget.top };

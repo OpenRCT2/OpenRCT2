@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowMapTooltipUpdateVisibility()
     {
-        if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+        if (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR)
         {
             // The map tooltip is drawn by the bottom toolbar
             auto* windowMgr = GetWindowManager();

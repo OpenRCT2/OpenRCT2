@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PANEL_OUTSET].right = width - 1;
             widgets[WIDX_PANEL_INSET].right = width - 3;
 
-            bool useFullToolbar = News::IsQueueEmpty() && (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+            bool useFullToolbar = News::IsQueueEmpty() && (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR)
                 && gLegacyScene == LegacyScene::playing;
 
             widgets[WIDX_PANEL_OUTSET].setVisible(useFullToolbar);
@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
             if (middleWidget.isHidden())
                 return;
 
-            if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+            if (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR)
             {
                 // Draw grey background
                 auto leftTop = windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
 
             drawWidgets(rt);
 
-            if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+            if (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR)
             {
                 DrawMiddlePanel(rt);
             }
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
     {
         // Don't create window when theme does not require it
         // NB: bailing out here as Game.cpp calls this function without access to themes
-        if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
+        if (!(ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR))
             return nullptr;
 
         // TODO: query ParkInfoPanel, DateInfoPanel

@@ -100,8 +100,8 @@ namespace OpenRCT2
 
         // Only used for colour schemes
         staff = 220,
-        editorTrackBottomToolbar = 221,
-        editorScenarioBottomToolbar = 222,
+        editorStepControlTrack = 221,
+        editorStepControlScenario = 222,
         chat = 223,
         console = 224,
         custom = 225,
