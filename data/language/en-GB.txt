@@ -3839,3 +3839,4 @@ STR_7045    :RCT1 style status bar
 STR_7046    :Status bar (RCT1 style)
 STR_7047    :Step control (Track Editor)
 STR_7048    :Step control (Scenario Editor)
+STR_7049    :OpenRCT2

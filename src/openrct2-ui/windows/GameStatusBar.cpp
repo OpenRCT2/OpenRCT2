@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // TODO: this string probably shouldn't be reused for this
                 drawTextWrapped(
-                    rt, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft, { colours[0], TextAlignment::centre });
+                    rt, middleWidgetCoords, panelWidth, STR_STATUS_BAR_OPENRCT2, ft, { colours[0], TextAlignment::centre });
             }
             else
             {

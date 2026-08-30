@@ -714,6 +714,9 @@ namespace OpenRCT2
         STR_SLOPE_UP_TIP = 1188,
         STR_TYPE = 1182,
 
+        // Window: GameStatusBar
+        STR_STATUS_BAR_OPENRCT2 = 7049,
+
         // Window: Guest
         STR_CARRYING = 1810,
         STR_FAVOURITE_RIDE = 3093,
