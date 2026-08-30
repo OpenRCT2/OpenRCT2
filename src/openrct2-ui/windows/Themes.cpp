@@ -116,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Tabs
 
-    static std::array kThemesTab1Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTab1Classes = std::to_array<WindowClass>({
         WindowClass::topToolbar,
         WindowClass::bottomToolbar,
         WindowClass::parkInfoPanel,
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::scenarioSelect,
     });
 
-    static std::array kThemesTab2Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTab2Classes = std::to_array<WindowClass>({
         WindowClass::parkInformation,
         WindowClass::editorParkEntrance,
         WindowClass::finances,
@@ -140,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::recentNews,
     });
 
-    static std::array kThemesTab3Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTab3Classes = std::to_array<WindowClass>({
         WindowClass::land,
         WindowClass::water,
         WindowClass::clearScenery,
@@ -155,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::patrolArea,
     });
 
-    static std::array kThemesTab4Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTab4Classes = std::to_array<WindowClass>({
         WindowClass::ride,
         WindowClass::rideList,
         WindowClass::peep,
@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::banner,
     });
 
-    static std::array kThemesTab5Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTab5Classes = std::to_array<WindowClass>({
         WindowClass::editorObjectSelection,
         WindowClass::editorInventionList,
         WindowClass::editorScenarioOptions,
@@ -174,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::installTrack,
     });
 
-    static std::array kThemesTab6Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTab6Classes = std::to_array<WindowClass>({
         WindowClass::cheats,
         WindowClass::tileInspector,
         WindowClass::viewClipping,
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::console,
     });
 
-    static std::array kThemesTab7Classes = std::to_array<WindowClass>({
+    static constexpr std::array kThemesTab7Classes = std::to_array<WindowClass>({
         WindowClass::error,
         WindowClass::savePrompt,
         WindowClass::demolishRidePrompt,
@@ -212,11 +212,11 @@ namespace OpenRCT2::Ui::Windows
         int32_t baseImageId;
         int32_t numAnimationFrames;
         int32_t animationDivisor;
-        std::span<WindowClass> windowClasses;
+        std::span<const WindowClass> windowClasses;
     };
 
     // clang-format off
-    static std::array kThemeTabInfo = std::to_array<ThemeTabInfo>({
+    static constexpr std::array kThemeTabInfo = std::to_array<ThemeTabInfo>({
         { WINDOW_THEMES_TAB_SETTINGS,     WIDX_THEMES_SETTINGS_TAB,    SPR_TAB_PAINT_0,                  32,  4,  {}                 },
         { WINDOW_THEMES_TAB_MAIN_UI,      WIDX_THEMES_MAIN_UI_TAB,     SPR_TAB_KIOSKS_AND_FACILITIES_0,  32,  4,  kThemesTab1Classes },
         { WINDOW_THEMES_TAB_PARK,         WIDX_THEMES_PARK_TAB,        SPR_TAB_PARK_ENTRANCE,            1,   1,  kThemesTab2Classes },
