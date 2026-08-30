@@ -156,7 +156,7 @@ namespace OpenRCT2::Ui
     {
         // WindowClass                              WindowClassSZ                        WindowName                                        windowColours
         { WindowClass::topToolbar,                  "WC_TOP_TOOLBAR",                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    { opaque(Drawing::Colour::lightBlue),               opaque(Drawing::Colour::darkGreen),               opaque(Drawing::Colour::darkBrown),             opaque(Drawing::Colour::grey)         } },
-        { WindowClass::bottomToolbar,               "WC_BOTTOM_TOOLBAR",                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,                 { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::black),                    opaque(Drawing::Colour::black)                                                        } },
+        { WindowClass::gameStatusBar,               "WC_GAME_STATUS_BAR"                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,                 { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::black),                    opaque(Drawing::Colour::black)                                                        } },
         { WindowClass::newsTicker,                  "WC_NEWS_TICKER",                    STR_THEMES_WINDOW_NEWS_TICKER,                    { opaque(Drawing::Colour::black),                   opaque(Drawing::Colour::black)                                                                                                           } },
         { WindowClass::parkInfoPanel,               "WC_PARK_INFO_PANEL",                STR_THEMES_WINDOW_PARK_INFO_PANEL,                { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::brightGreen)                                                                                                     } },
         { WindowClass::dateInfoPanel,               "WC_DATE_INFO_PANEL",                STR_THEMES_WINDOW_DATE_INFO_PANEL,                { translucent(Drawing::Colour::darkGreen)                                                                                                                                                    } },
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui
 
     static constexpr std::array kPredefinedThemeRCT1Entries = std::to_array<UIThemeWindowEntry>({
         { WindowClass::topToolbar,             { opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),                opaque(Drawing::Colour::grey),     opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
-        { WindowClass::bottomToolbar,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::grey) } },
+        { WindowClass::gameStatusBar,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::grey) } },
         { WindowClass::newsTicker,             { opaque(Drawing::Colour::voidBackground),   opaque(Drawing::Colour::grey) } },
         { WindowClass::parkInfoPanel,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::yellow) } },
         { WindowClass::dateInfoPanel,          { translucent(Drawing::Colour::grey) } },

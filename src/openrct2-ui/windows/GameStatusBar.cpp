@@ -23,21 +23,21 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum GameBottomToolbarWidgetIdx : WidgetIndex
+    enum GameStatusBarWidgetIdx : WidgetIndex
     {
         WIDX_PANEL_OUTSET,
         WIDX_PANEL_INSET,
     };
 
     // clang-format off
-    static constexpr Widget kGameBottomToolbarWidgets[] =
+    static constexpr Widget kGameStatusBarWidgets[] =
     {
         makeWidget({  0, 0}, {356, 34}, WidgetType::imgBtn,       WindowColour::primary), // Middle outset panel
         makeWidget({  2, 2}, {352, 30}, WidgetType::hiddenButton, WindowColour::primary), // Middle inset panel
     };
     // clang-format on
 
-    class GameBottomToolbar final : public Window
+    class GameStatusBar final : public Window
     {
         void DrawMiddlePanel(RenderTarget& rt)
         {
@@ -74,9 +74,9 @@ namespace OpenRCT2::Ui::Windows
         }
 
     public:
-        GameBottomToolbar()
+        GameStatusBar()
         {
-            setWidgets(kGameBottomToolbarWidgets);
+            setWidgets(kGameStatusBarWidgets);
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
     /**
      * Creates the main game bottom toolbar window.
      */
-    WindowBase* GameBottomToolbarOpen()
+    WindowBase* gameStatusBarOpen()
     {
         // Don't create window when theme does not require it
         // NB: bailing out here as Game.cpp calls this function without access to themes
@@ -162,8 +162,8 @@ namespace OpenRCT2::Ui::Windows
         int32_t toolbarHeight = lineHeight * 2 + 12;
 
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::bottomToolbar, ScreenCoordsXY(kPanelWidth, ContextGetHeight() - toolbarHeight),
+        auto* window = windowMgr->Create<GameStatusBar>(
+            WindowClass::gameStatusBar, ScreenCoordsXY(kPanelWidth, ContextGetHeight() - toolbarHeight),
             { toolbarWidth, toolbarHeight },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 

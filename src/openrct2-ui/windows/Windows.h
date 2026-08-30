@@ -131,8 +131,8 @@ namespace OpenRCT2::Ui::Windows
     void WindowFootpathKeyboardShortcutDemolishCurrent();
     bool WindowFootpathSelectDefault();
 
-    // GameBottomToolbar
-    WindowBase* GameBottomToolbarOpen();
+    // GameStatusBar
+    WindowBase* gameStatusBarOpen();
 
     // Guest
     WindowBase* GuestOpen(Peep* peep);

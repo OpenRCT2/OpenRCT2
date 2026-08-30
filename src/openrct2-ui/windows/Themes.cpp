@@ -153,7 +153,7 @@ namespace OpenRCT2::Ui::Windows
 
     static WindowClass window_themes_tab_1_classes[] = {
         WindowClass::topToolbar,
-        WindowClass::bottomToolbar,
+        WindowClass::gameStatusBar,
         WindowClass::newsTicker,
         WindowClass::parkInfoPanel,
         WindowClass::dateInfoPanel,
@@ -487,11 +487,11 @@ namespace OpenRCT2::Ui::Windows
 
                         if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
                         {
-                            windowMgr->OpenWindow(WindowClass::bottomToolbar);
+                            windowMgr->OpenWindow(WindowClass::gameStatusBar);
                         }
                         else
                         {
-                            windowMgr->CloseByClass(WindowClass::bottomToolbar);
+                            windowMgr->CloseByClass(WindowClass::gameStatusBar);
                         }
                     }
                     break;

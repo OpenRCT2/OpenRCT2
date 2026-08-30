@@ -64,8 +64,8 @@ public:
         {
             case WindowClass::about:
                 return AboutOpen();
-            case WindowClass::bottomToolbar:
-                return GameBottomToolbarOpen();
+            case WindowClass::gameStatusBar:
+                return GameStatusBarOpen();
             case WindowClass::changelog:
                 return openView(WindowView::changelog);
             case WindowClass::cheats:

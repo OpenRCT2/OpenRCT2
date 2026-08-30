@@ -17,7 +17,7 @@ namespace OpenRCT2
     {
         mainWindow = 0,
         topToolbar = 1,
-        bottomToolbar = 2,
+        gameStatusBar = 2,
         parkInfoPanel = 3,
         dateInfoPanel = 4,
         tooltip = 5,

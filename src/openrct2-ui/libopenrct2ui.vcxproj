@@ -187,7 +187,7 @@
     <ClCompile Include="windows\Error.cpp" />
     <ClCompile Include="windows\Finances.cpp" />
     <ClCompile Include="windows\Footpath.cpp" />
-    <ClCompile Include="windows\GameBottomToolbar.cpp" />
+    <ClCompile Include="windows\GameStatusBar.cpp" />
     <ClCompile Include="windows\Guest.cpp" />
     <ClCompile Include="windows\GuestList.cpp" />
     <ClCompile Include="windows\InstallTrack.cpp" />

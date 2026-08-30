@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // The map tooltip is drawn by the bottom toolbar
             auto* windowMgr = GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+            windowMgr->InvalidateByClass(WindowClass::gameStatusBar);
             return;
         }
 
