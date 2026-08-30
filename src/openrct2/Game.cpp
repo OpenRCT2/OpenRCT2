@@ -349,6 +349,7 @@ void GameLoadInit()
     // being displayed due to pointer value reuse in the cache matching logic
     Drawing::ScrollingText::invalidate();
 
+    // TODO: move relevant UI calls to UI subproject
     if (!gLoadKeepWindowsOpen)
     {
         ContextResetSubsystems();

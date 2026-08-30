@@ -145,6 +145,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* GameBottomToolbarOpen()
     {
+        // Don't create window when theme does not require it
+        // NB: bailing out here as Game.cpp calls this function without access to themes
         if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
             return nullptr;
 
