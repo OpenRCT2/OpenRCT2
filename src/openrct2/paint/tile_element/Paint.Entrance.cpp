@@ -121,7 +121,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
-    auto hasGlass = (stationObj->Flags & StationObjectFlags::isTransparent) != 0;
+    auto hasGlass = stationObj->Flags.has(StationObjectFlag::isTransparent);
     auto colourPrimary = ride->trackColours[0].main;
     auto imageTemplate = ImageId(0);
     ImageId glassImageTemplate;
@@ -141,11 +141,11 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     }
     else
     {
-        if (stationObj->Flags & StationObjectFlags::hasPrimaryColour)
+        if (stationObj->Flags.has(StationObjectFlag::hasPrimaryColour))
         {
             imageTemplate = imageTemplate.WithPrimary(colourPrimary);
         }
-        if (stationObj->Flags & StationObjectFlags::hasSecondaryColour)
+        if (stationObj->Flags.has(StationObjectFlag::hasSecondaryColour))
         {
             auto colourSecondary = ride->trackColours[0].additional;
             imageTemplate = imageTemplate.WithSecondary(colourSecondary);

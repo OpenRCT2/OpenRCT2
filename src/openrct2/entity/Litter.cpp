@@ -60,7 +60,7 @@ namespace OpenRCT2
         if (!IsLocationLitterable(offsetLitterPos))
             return;
 
-        if (gameState.entities.GetEntityListCount(EntityType::litter) >= 500)
+        if (gameState.entities.getEntityListCount(EntityType::litter) >= 500)
         {
             Litter* newestLitter = nullptr;
             uint32_t newestLitterCreationTick = 0;
@@ -76,11 +76,11 @@ namespace OpenRCT2
             if (newestLitter != nullptr)
             {
                 newestLitter->invalidate();
-                gameState.entities.EntityRemove(newestLitter);
+                gameState.entities.entityRemove(newestLitter);
             }
         }
 
-        Litter* litter = gameState.entities.CreateEntity<Litter>();
+        Litter* litter = gameState.entities.createEntity<Litter>();
         if (litter == nullptr)
             return;
 
@@ -115,7 +115,7 @@ namespace OpenRCT2
         for (auto* litter : removals)
         {
             litter->invalidate();
-            getGameState().entities.EntityRemove(litter);
+            getGameState().entities.entityRemove(litter);
         }
     }
 

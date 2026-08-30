@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.String.h"
@@ -763,10 +764,16 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
 
         WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::bottomToolbar);
-        if (bottomWind != nullptr)
+        if (bottomWind != nullptr && parkInfoPanel != nullptr && dateInfoPanel != nullptr)
         {
             bottomWind->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
             bottomWind->windowPos.x = parkInfoPanel->width;
+            bottomWind->windowPos.y = height - 32;
+        }
+        else if (bottomWind != nullptr)
+        {
+            bottomWind->width = std::max(640, width);
+            bottomWind->windowPos.x = 0;
             bottomWind->windowPos.y = height - 32;
         }
     }
@@ -820,6 +827,32 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
+    static void WindowResizeEditorController(const int32_t width, const int32_t height)
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+
+        auto* prevStep = windowMgr->FindByNumber(WindowClass::editorStepController, 0);
+        if (prevStep != nullptr)
+        {
+            prevStep->windowPos.x = 0;
+            prevStep->windowPos.y = height - prevStep->height;
+        }
+
+        auto* statusLine = windowMgr->FindByClass(WindowClass::editorStatusLine);
+        if (statusLine != nullptr)
+        {
+            statusLine->windowPos.x = (width - statusLine->width) / 2;
+            statusLine->windowPos.y = height - statusLine->height;
+        }
+
+        auto* nextStep = windowMgr->FindByNumber(WindowClass::editorStepController, 1);
+        if (nextStep != nullptr)
+        {
+            nextStep->windowPos.x = width - nextStep->width;
+            nextStep->windowPos.y = height - nextStep->height;
+        }
+    }
+
     void WindowResizeGui(const int32_t width, const int32_t height)
     {
         WindowResizeGuiMainToolbars(width, height);
@@ -828,6 +861,11 @@ static constexpr float kWindowScrollLocations[][2] = {
         if (sceneManager->getActiveScene() == sceneManager->getTitleScene())
         {
             return WindowResizeGuiTitleScreen(width, height);
+        }
+
+        if (isInEditorMode() || isInTrackDesignerOrManager())
+        {
+            WindowResizeEditorController(width, height);
         }
 
         WindowResizeGuiCentredWindows(width, height);

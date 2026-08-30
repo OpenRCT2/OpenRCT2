@@ -89,7 +89,7 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
     if (miniGolfFlags.has(MiniGolfFlag::flag0))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.getEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return UpdateMiniGolfSubroutineStatus::stop;
@@ -135,7 +135,7 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
     if (miniGolfFlags.has(MiniGolfFlag::flag1))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.getEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return UpdateMiniGolfSubroutineStatus::stop;
@@ -184,7 +184,7 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
 
         for (;;)
         {
-            vEDI = getGameState().entities.GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
+            vEDI = getGameState().entities.getEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
             if (vEDI == this || vEDI == nullptr)
             {
                 break;
@@ -271,7 +271,7 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
 
             if (!IsHead())
             {
-                Vehicle* prevVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+                Vehicle* prevVehicle = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
                 if (prevVehicle != nullptr)
                 {
                     TrackSubposition = prevVehicle->TrackSubposition;
@@ -353,7 +353,7 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
                     // When the ride is closed occasionally the peep is removed
                     // but the vehicle is still on the track. This will prevent
                     // it from crashing in that situation.
-                    auto* curPeep = getGameState().entities.TryGetEntity<Guest>(peep[0]);
+                    auto* curPeep = getGameState().entities.tryGetEntity<Guest>(peep[0]);
                     if (curPeep != nullptr)
                     {
                         if (animation == MiniGolfAnimation::swingLeft)
@@ -507,7 +507,7 @@ void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const 
                     _vehicleRemainingDistance -= remaining_distance - 0x368A;
                     remaining_distance = 0x368A;
                     {
-                        Vehicle* vEBP = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
+                        Vehicle* vEBP = getGameState().entities.getEntity<Vehicle>(otherVehicleIndex);
                         if (vEBP == nullptr)
                         {
                             return UpdateMiniGolfSubroutineStatus::stop;
@@ -644,7 +644,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
     uint16_t totalMass = 0;
 
     for (Vehicle* vehicle = this; vehicle != nullptr;
-         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+         vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numVehicles++;
         totalMass += vehicle->mass;
@@ -711,7 +711,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         }
         if (_vehicleVelocity >= 0)
         {
-            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+            vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
@@ -719,7 +719,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
             {
                 break;
             }
-            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 

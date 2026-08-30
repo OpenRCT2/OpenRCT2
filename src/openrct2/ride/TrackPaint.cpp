@@ -86,7 +86,7 @@ bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation)
 {
     const auto* stationObject = ride.getStationObject();
-    if (stationObject != nullptr && stationObject->Flags & StationObjectFlags::noPlatforms)
+    if (stationObject != nullptr && stationObject->Flags.has(StationObjectFlag::noPlatforms))
         return false;
 
     TileCoordsXY offset;
@@ -117,7 +117,7 @@ void TrackPaintUtilPaintFloor(
     PaintSession& session, uint8_t edges, ImageId colourFlags, uint16_t height, const uint32_t floorSprites[4],
     const StationObject* stationStyle)
 {
-    if (stationStyle != nullptr && stationStyle->Flags & StationObjectFlags::noPlatforms)
+    if (stationStyle != nullptr && stationStyle->Flags.has(StationObjectFlag::noPlatforms))
         return;
 
     uint32_t imageId;
@@ -217,7 +217,7 @@ static bool TrackPaintUtilDrawStationImpl(
     const auto* stationObj = ride.getStationObject();
     const bool hasGreenLight = trackElement.hasGreenLight();
 
-    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
+    if (stationObj != nullptr && stationObj->Flags.has(StationObjectFlag::noPlatforms))
         return false;
 
     bool hasFence;
@@ -431,7 +431,7 @@ bool TrackPaintUtilDrawStationInverted(
     const auto* stationObj = ride.getStationObject();
     const bool hasGreenLight = trackElement.hasGreenLight();
 
-    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
+    if (stationObj != nullptr && stationObj->Flags.has(StationObjectFlag::noPlatforms))
         return false;
 
     auto colour = GetStationColourScheme(session, trackElement);
@@ -698,16 +698,16 @@ bool TrackPaintUtilDrawStationCovers2(
     if (!session.TrackColours.IsRemap())
     {
         imageId = ImageId(shelterImageIndex + imageOffset);
-        if (stationObject->Flags & StationObjectFlags::hasPrimaryColour)
+        if (stationObject->Flags.has(StationObjectFlag::hasPrimaryColour))
             imageId = imageId.WithPrimary(session.TrackColours.GetPrimary());
-        if (stationObject->Flags & StationObjectFlags::hasSecondaryColour)
+        if (stationObject->Flags.has(StationObjectFlag::hasSecondaryColour))
             imageId = imageId.WithSecondary(session.TrackColours.GetSecondary());
     }
 
     PaintAddImageAsParent(session, imageId, offset, boundBox);
 
     // Glass
-    if (colour == TrackStationColour && (stationObject->Flags & StationObjectFlags::isTransparent))
+    if (colour == TrackStationColour && stationObject->Flags.has(StationObjectFlag::isTransparent))
     {
         auto shelterGlassImageIndex = stationObject->shelterGlassIndex;
         imageId = ImageId(shelterGlassImageIndex + imageOffset).WithTransparency(session.TrackColours.GetPrimary());
@@ -722,7 +722,7 @@ bool TrackPaintUtilDrawNarrowStationPlatform(
 {
     CoordsXY position = session.MapPosition;
     const auto* stationObj = ride.getStationObject();
-    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
+    if (stationObj != nullptr && stationObj->Flags.has(StationObjectFlag::noPlatforms))
         return false;
 
     auto colour = GetStationColourScheme(session, trackElement);
@@ -779,7 +779,7 @@ void TrackPaintUtilDrawPier(
     PaintSession& session, const Ride& ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation)
 {
-    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
+    if (stationObj != nullptr && stationObj->Flags.has(StationObjectFlag::noPlatforms))
         return;
     auto colour = GetStationColourScheme(session, trackElement);
     bool hasFence;

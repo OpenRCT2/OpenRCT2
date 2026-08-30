@@ -7,5 +7,17 @@
                 [ 62, 105 ], [ 101, 55 ]
             ]
         }
-    }
+    },
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Woodworm Railroad"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Woodworm Boats"
+        }
+    ]
 }

@@ -33,7 +33,7 @@
 
 using namespace OpenRCT2;
 
-constexpr int32_t TRACK_NEARBY_SCENERY_DISTANCE = 1;
+static constexpr int32_t kTrackNearbySceneryDistance = 1;
 
 bool gTrackDesignSaveMode = false;
 RideId gTrackDesignSaveRideIndex = RideId::GetNull();
@@ -581,9 +581,9 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
 {
     TileElement* tileElement;
 
-    for (int32_t y = cy - TRACK_NEARBY_SCENERY_DISTANCE; y <= cy + TRACK_NEARBY_SCENERY_DISTANCE; y++)
+    for (int32_t y = cy - kTrackNearbySceneryDistance; y <= cy + kTrackNearbySceneryDistance; y++)
     {
-        for (int32_t x = cx - TRACK_NEARBY_SCENERY_DISTANCE; x <= cx + TRACK_NEARBY_SCENERY_DISTANCE; x++)
+        for (int32_t x = cx - kTrackNearbySceneryDistance; x <= cx + kTrackNearbySceneryDistance; x++)
         {
             tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             if (tileElement == nullptr)

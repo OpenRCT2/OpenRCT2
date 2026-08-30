@@ -362,14 +362,14 @@ namespace OpenRCT2
             auto spriteIndex = ride.cableLift;
             do
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(spriteIndex);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(spriteIndex);
                 if (vehicle == nullptr)
                 {
                     return;
                 }
                 vehicle->invalidate();
                 spriteIndex = vehicle->next_vehicle_on_train;
-                getGameState().entities.EntityRemove(vehicle);
+                getGameState().entities.entityRemove(vehicle);
             } while (!spriteIndex.IsNull());
         }
     }
@@ -389,14 +389,14 @@ namespace OpenRCT2
                 auto spriteIndex = vehicles[i];
                 while (!spriteIndex.IsNull())
                 {
-                    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(spriteIndex);
+                    Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(spriteIndex);
                     if (vehicle == nullptr)
                     {
                         break;
                     }
                     vehicle->invalidate();
                     spriteIndex = vehicle->next_vehicle_on_train;
-                    getGameState().entities.EntityRemove(vehicle);
+                    getGameState().entities.entityRemove(vehicle);
                 }
 
                 vehicles[i] = EntityId::GetNull();
@@ -411,7 +411,7 @@ namespace OpenRCT2
                 if (vehicle->ride == id)
                 {
                     vehicle->invalidate();
-                    getGameState().entities.EntityRemove(vehicle);
+                    getGameState().entities.entityRemove(vehicle);
                 }
             }
         }

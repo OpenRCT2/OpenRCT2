@@ -1,0 +1,16 @@
+{
+    "scenario_name": "Wacky Warren",
+    "sha256": "b19b23b7d9ac1334d62d531dc4940172f2f1a102831797b5ae24eda48b9a6b10",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Wiggly Worm"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Rat Flyer"
+        }
+    ]
+}

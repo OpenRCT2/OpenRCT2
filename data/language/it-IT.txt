@@ -2679,7 +2679,7 @@ STR_5573    :Rimuovi dai preferiti
 STR_5574    :Nome del server:
 STR_5575    :Massimo numero giocatori:
 STR_5576    :Porta:
-STR_5577    :Won sudcoreani (W)
+STR_5577    :Won sudcoreani (₩)
 STR_5578    :Rubli russi (₽)
 STR_5579    :Fattore di scala:
 STR_5580    :Corona ceca (Kč)

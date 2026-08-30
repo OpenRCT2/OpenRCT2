@@ -13,7 +13,7 @@
 #include "AudioFormat.h"
 #include "SDLAudioSource.h"
 
-#include <SDL.h>
+#include <SDL_audio.h>
 #include <cstdint>
 #include <list>
 #include <memory>

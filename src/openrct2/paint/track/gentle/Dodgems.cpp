@@ -59,7 +59,7 @@ static void PaintDodgems(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
+    if (stationObject != nullptr && !stationObject->Flags.has(StationObjectFlag::noPlatforms))
     {
         auto imageId = session.SupportColours.WithIndex(SprDodgemsFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });

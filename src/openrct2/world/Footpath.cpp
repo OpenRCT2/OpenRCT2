@@ -144,7 +144,7 @@ namespace OpenRCT2
         for (auto* litter : removals)
         {
             litter->invalidate();
-            getGameState().entities.EntityRemove(litter);
+            getGameState().entities.entityRemove(litter);
         }
     }
 

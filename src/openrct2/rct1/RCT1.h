@@ -27,7 +27,7 @@ namespace OpenRCT2::Scenario
 
 namespace OpenRCT2::RCT1
 {
-    constexpr uint8_t RCT1ResearchFlagsSeparator = 0xFF;
+    constexpr uint8_t kRCT1ResearchFlagsSeparator = 0xFF;
 
     enum class RideType : uint8_t
     {

@@ -779,7 +779,7 @@ STR_1408    :{WINDOW_COLOUR_2}Custo: {BLACK}{CURRENCY}
 STR_1409    :Entrada/Saída Plataforma
 STR_1410    :Torre Vertical
 STR_1411    :{STRINGID} no caminho
-STR_1412    :{WINDOW_COLOUR_3}O registro de dados não estão disponíveis para este tipo de atração
+STR_1412    :{WINDOW_COLOUR_3}O registro de dados não está disponível para este tipo de atração
 STR_1413    :{WINDOW_COLOUR_3}O registro de dados vai começar quando o próximo {STRINGID} sair de {STRINGID}
 STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocidade
@@ -2292,7 +2292,7 @@ STR_3343    :Converter Jogo Salvo em Cenário
 STR_3344    :Construtor de Pista
 STR_3345    :Gerenciador de Projetos de Pista
 STR_3346    :Impossível salvar projeto de pista…
-STR_3347    :Atração é muito grande, contém muitos elementos, ou o cenários é muito espalhado
+STR_3347    :Atração é muito grande, contém muitos elementos, ou o cenário está muito espalhado
 STR_3348    :Renomear
 STR_3349    :Excluir
 STR_3350    :Nome do projeto de pista
@@ -2675,7 +2675,7 @@ STR_5573    :Remover dos Favoritos
 STR_5574    :Nome do Servidor:
 STR_5575    :Máximo de Jogadores:
 STR_5576    :Porta:
-STR_5577    :Won Sul-Coreano(W)
+STR_5577    :Won Sul-Coreano(₩)
 STR_5578    :Rublo Russo (₽)
 STR_5579    :Fator escalar da janela:
 STR_5580    :Coroa Tcheca (Kč)
@@ -2847,7 +2847,7 @@ STR_5788    :Intervalo de inspeção:
 STR_5789    :Desabilitar efeitos de relâmpago
 STR_5790    :Ativa preço estilo RCT1{NEWLINE}(atrações e entradas ambos pagos)
 STR_5791    :Define a confiança de todas as atrações em 100%{NEWLINE}e reinicia a data de construção para “este ano”
-STR_5792    :Conserta todos as atrações quebradas
+STR_5792    :Conserta todas as atrações quebradas
 STR_5793    :Reinicia o histórico de acidentes de uma atração,{NEWLINE}então visitantes não irão reclamar que não é seguro
 STR_5794    :Alguns cenários desabilitam a edição de algumas{NEWLINE}das atrações que já estão no parque.{NEWLINE}Esta trapaça desliga a restrição
 STR_5795    :Visitantes andam em todas as atrações{NEWLINE}do parque mesmo se a intensidade for extremamente alta
@@ -2926,7 +2926,7 @@ STR_5872    :Desabilita o envelhecimento das plantas para que elas não murchem.
 STR_5873    :Permitir corrente de elevação em todas{NEWLINE}as peças de pista
 STR_5874    :Permite que qualquer parte da pista tenha corrente de elevação
 STR_5875    :Motor gráfico:
-STR_5876    :Engine que será usada para renderizar o jogo.
+STR_5876    :Motor gráfico que será usado para renderizar o jogo.
 STR_5877    :Software
 STR_5878    :Software (exibição por hardware)
 STR_5879    :OpenGL (experimental)
@@ -3205,7 +3205,7 @@ STR_6165    :Usar sincronização vertical
 STR_6166    :Sincroniza cada quadro mostrado com a taxa de atualização do monitor, prevenindo cortes na tela.
 STR_6167    :Avançado
 STR_6168    :Sequência de Título
-STR_6170    :Melhoras de Interface
+STR_6170    :Melhorias de interface
 STR_6171    :Procurar
 STR_6172    :Procura
 STR_6173    :Por favor, forneça um nome para pesquisar:

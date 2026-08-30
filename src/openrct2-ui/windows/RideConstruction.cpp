@@ -1649,7 +1649,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
         }
 
-        static void onDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
+        static void onDrawUpdateCoveredPieces(
+            const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets, bool hasFlatRollBanking)
         {
             widgets[WIDX_U_TRACK].setHidden();
             widgets[WIDX_O_TRACK].setHidden();
@@ -1676,6 +1677,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_O_TRACK].image = ImageId(trackDrawerDescriptor.Covered.icon);
             widgets[WIDX_U_TRACK].tooltip = trackDrawerDescriptor.Regular.tooltip;
             widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
+
+            widgets[WIDX_U_TRACK].moveToX(hasFlatRollBanking ? 25 : 41);
+            widgets[WIDX_O_TRACK].moveToX(hasFlatRollBanking ? 128 : 144);
         }
 
         void onDraw(Drawing::RenderTarget& rt) override
@@ -1745,12 +1749,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STRAIGHT].setVisible(IsTrackEnabled(TrackGroup::straight));
             widgets[WIDX_LEFT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
             widgets[WIDX_RIGHT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
-            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
-            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_LEFT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
             widgets[WIDX_RIGHT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
-            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
-            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
+            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(
+                IsTrackEnabled(TrackGroup::curveSmall) || IsTrackEnabled(TrackGroup::curveVertical));
+            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(
+                IsTrackEnabled(TrackGroup::curveSmall) || IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_LEFT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
             widgets[WIDX_RIGHT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
 
@@ -1931,7 +1935,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_BANK_LEFT].setVisible(hasFlatRollBanking);
                 widgets[WIDX_BANK_STRAIGHT].setVisible(hasFlatRollBanking);
                 widgets[WIDX_BANK_RIGHT].setVisible(hasFlatRollBanking);
-                onDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
+                onDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets, hasFlatRollBanking);
             }
             else
             {

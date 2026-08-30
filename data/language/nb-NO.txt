@@ -2669,7 +2669,7 @@ STR_5573    :Fjern Fra Favoritter
 STR_5574    :Server Name:
 STR_5575    :Maks Spillere:
 STR_5576    :Port:
-STR_5577    :Sør-Koreanske Won (W)
+STR_5577    :Sør-Koreanske Won (₩)
 STR_5578    :Russiske Rubler (₽)
 STR_5579    :Vinduskaleringsfaktor:
 STR_5580    :Tsjekkiske koruna (Kč)
