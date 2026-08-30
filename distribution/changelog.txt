@@ -17,6 +17,7 @@
 - Improved: [#26931] The save prompt now bounces the macOS dock icon, flashes the Windows taskbar button and marks Linux windows urgent when it blocks quitting an unfocused game.
 - Improved: [#26936] Rain is now drawn next to the top toolbar, but only when it is centred.
 - Improved: [#26996] Ride names in scenarios can now be autopatched.
+- Fix: [#7858] Dropdowns do not close when an action by a plugin or another player in multiplayer closes their parent window.
 - Fix: [#15891] Lower case hard sign is drawn as upper case.
 - Fix: [#18197] Track Designs Manager does not autoload scenery.
 - Fix: [#18415] Preview in the Track Designs Manager is not updated after deleting the first design.
