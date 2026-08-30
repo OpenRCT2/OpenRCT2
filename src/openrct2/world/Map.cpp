@@ -2191,7 +2191,7 @@ namespace OpenRCT2
             shiftIfNotNull(entrance, amountToMove);
 
         // Entities
-        auto& entityTweener = EntityTweener::Get();
+        auto& entityTweener = EntityTweener::get();
         for (auto i = 0; i < EnumValue(EntityType::count); i++)
         {
             auto entityType = static_cast<EntityType>(i);
@@ -2201,7 +2201,7 @@ namespace OpenRCT2
                 auto entity = getGameState().entities.getEntity(entityId);
 
                 // Do not tween the entity
-                entityTweener.RemoveEntity(entity);
+                entityTweener.removeEntity(entity);
 
                 auto location = entity->getLocation();
                 shiftIfNotNull(location, amountToMove);

@@ -695,7 +695,7 @@ namespace OpenRCT2
             animationImageIdOffset = 0;
             animationType = PeepAnimationType::walking;
             pathCheckOptimisation = 0;
-            EntityTweener::Get().Reset();
+            EntityTweener::get().reset();
             if (auto* guest = as<Guest>(); guest != nullptr)
             {
                 animationType = PeepAnimationType::invalid;

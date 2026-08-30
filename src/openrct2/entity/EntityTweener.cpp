@@ -60,18 +60,18 @@ namespace OpenRCT2
         return false;
     }
 
-    void EntityTweener::AddEntity(const ViewportList& vpList, EntityBase* entity)
+    void EntityTweener::addEntity(const ViewportList& vpList, EntityBase* entity)
     {
         if (!IsEntityVisible(vpList, entity))
         {
             return;
         }
 
-        Entities.push_back(entity);
-        PrePos.emplace_back(entity->getLocation());
+        entities.push_back(entity);
+        prePos.emplace_back(entity->getLocation());
     }
 
-    void EntityTweener::PopulateEntities()
+    void EntityTweener::populateEntities()
     {
         const auto vpList = GetUnzoomedViewports();
         if (vpList.empty())
@@ -82,37 +82,37 @@ namespace OpenRCT2
 
         for (auto ent : EntityList<Guest>())
         {
-            AddEntity(vpList, ent);
+            addEntity(vpList, ent);
         }
         for (auto ent : EntityList<Staff>())
         {
-            AddEntity(vpList, ent);
+            addEntity(vpList, ent);
         }
         for (auto ent : EntityList<Vehicle>())
         {
-            AddEntity(vpList, ent);
+            addEntity(vpList, ent);
         }
     }
 
-    void EntityTweener::PreTick()
+    void EntityTweener::preTick()
     {
-        Restore();
-        Reset();
-        PopulateEntities();
+        restore();
+        reset();
+        populateEntities();
     }
 
-    void EntityTweener::PostTick()
+    void EntityTweener::postTick()
     {
-        for (auto* ent : Entities)
+        for (auto* ent : entities)
         {
             if (ent == nullptr)
             {
                 // Sprite was removed, add a dummy position to keep the index aligned.
-                PostPos.emplace_back(0, 0, 0);
+                postPos.emplace_back(0, 0, 0);
             }
             else
             {
-                PostPos.emplace_back(ent->getLocation());
+                postPos.emplace_back(ent->getLocation());
             }
         }
     }
@@ -124,7 +124,7 @@ namespace OpenRCT2
         return false;
     }
 
-    void EntityTweener::RemoveEntity(EntityBase* entity)
+    void EntityTweener::removeEntity(EntityBase* entity)
     {
         if (!CanTweenEntity(entity))
         {
@@ -132,22 +132,22 @@ namespace OpenRCT2
             return;
         }
 
-        auto it = std::find(Entities.begin(), Entities.end(), entity);
-        if (it != Entities.end())
+        auto it = std::find(entities.begin(), entities.end(), entity);
+        if (it != entities.end())
             *it = nullptr;
     }
 
-    void EntityTweener::Tween(float alpha)
+    void EntityTweener::tween(float alpha)
     {
         const float inv = (1.0f - alpha);
-        for (size_t i = 0; i < Entities.size(); ++i)
+        for (size_t i = 0; i < entities.size(); ++i)
         {
-            auto* ent = Entities[i];
+            auto* ent = entities[i];
             if (ent == nullptr)
                 continue;
 
-            auto& posA = PrePos[i];
-            auto& posB = PostPos[i];
+            auto& posA = prePos[i];
+            auto& posB = postPos[i];
 
             if (posA == posB)
                 continue;
@@ -159,28 +159,28 @@ namespace OpenRCT2
         }
     }
 
-    void EntityTweener::Restore()
+    void EntityTweener::restore()
     {
-        for (size_t i = 0; i < Entities.size(); ++i)
+        for (size_t i = 0; i < entities.size(); ++i)
         {
-            auto* ent = Entities[i];
-            if (ent == nullptr || PrePos[i] == PostPos[i])
+            auto* ent = entities[i];
+            if (ent == nullptr || prePos[i] == postPos[i])
                 continue;
 
-            ent->moveTo(PostPos[i]);
+            ent->moveTo(postPos[i]);
         }
     }
 
-    void EntityTweener::Reset()
+    void EntityTweener::reset()
     {
-        Entities.clear();
-        PrePos.clear();
-        PostPos.clear();
+        entities.clear();
+        prePos.clear();
+        postPos.clear();
     }
 
     static EntityTweener tweener;
 
-    EntityTweener& EntityTweener::Get()
+    EntityTweener& EntityTweener::get()
     {
         return tweener;
     }

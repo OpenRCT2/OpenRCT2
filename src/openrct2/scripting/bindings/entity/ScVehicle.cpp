@@ -479,7 +479,7 @@ namespace OpenRCT2::Scripting
         {
             vehicle->TrackSubposition = static_cast<VehicleTrackSubposition>(value);
             vehicle->UpdateTrackChange();
-            EntityTweener::Get().RemoveEntity(vehicle);
+            EntityTweener::get().removeEntity(vehicle);
         }
 
         return JS_UNDEFINED;
@@ -606,7 +606,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->MoveRelativeDistance(value);
-            EntityTweener::Get().RemoveEntity(vehicle);
+            EntityTweener::get().removeEntity(vehicle);
         }
         return JS_UNDEFINED;
     }
@@ -647,7 +647,7 @@ namespace OpenRCT2::Scripting
             vehicle->track_progress = trackTotalProgress - 1;
 
         vehicle->UpdateTrackChange();
-        EntityTweener::Get().RemoveEntity(vehicle);
+        EntityTweener::get().removeEntity(vehicle);
         return JS_UNDEFINED;
     }
 } // namespace OpenRCT2::Scripting
