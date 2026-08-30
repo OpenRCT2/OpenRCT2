@@ -145,6 +145,9 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* GameBottomToolbarOpen()
     {
+        if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
+            return nullptr;
+
         // TODO: query ParkInfoPanel, DateInfoPanel
         constexpr auto kPanelWidth = 142;
 

@@ -484,7 +484,15 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
                         ThemeSave();
-                        windowMgr->InvalidateAll();
+
+                        if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+                        {
+                            windowMgr->OpenWindow(WindowClass::bottomToolbar);
+                        }
+                        else
+                        {
+                            windowMgr->CloseByClass(WindowClass::bottomToolbar);
+                        }
                     }
                     break;
                 case WIDX_THEMES_USE_3D_IMAGE_BUTTONS:
