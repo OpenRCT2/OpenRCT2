@@ -1257,6 +1257,9 @@ namespace OpenRCT2
         WindowBase* cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
         if (cursor_w == nullptr)
         {
+            if (_inputState == InputState::dropdownActive)
+                WindowDropdownClose();
+
             _inputState = InputState::reset;
             return;
         }
