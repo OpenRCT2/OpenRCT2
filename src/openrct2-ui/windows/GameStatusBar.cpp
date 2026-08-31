@@ -62,7 +62,6 @@ namespace OpenRCT2::Ui::Windows
             std::memcpy(&stringId, ft.Data(), sizeof(StringId));
             if (stringId == kStringIdNone)
             {
-                // TODO: this string probably shouldn't be reused for this
                 drawTextWrapped(
                     rt, middleWidgetCoords, panelWidth, STR_STATUS_BAR_OPENRCT2, ft, { colours[0], TextAlignment::centre });
             }
