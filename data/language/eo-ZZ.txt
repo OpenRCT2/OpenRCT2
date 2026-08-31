@@ -3830,3 +3830,4 @@ STR_7039    :Atrakciotipo
 STR_7040    :Adicioj de trotuaro
 STR_7041    :Panelo de parkinformoj
 STR_7042    :Panelo de datoinformoj
+STR_7043    :Ne eblas ŝanĝi altecon de tero ĉi tie…
