@@ -262,10 +262,7 @@ namespace OpenRCT2::Ui::Windows
                 currentFrame = 0;
 
             if (News::IsQueueEmpty())
-            {
-                auto* windowMgr = GetWindowManager();
-                windowMgr->CloseByClass(WindowClass::newsTicker);
-            }
+                close();
         }
     };
 
