@@ -238,6 +238,7 @@ namespace OpenRCT2
         "NANCY STILLWAGON",
         "DAVID ELLIS",
     };
+    static_assert(std::size(gPeepEasterEggNames) == EnumValue(EasterEggPeepName::count));
     // clang-format on
 
     // Flags used by PeepThoughtToActionMap
@@ -601,7 +602,7 @@ namespace OpenRCT2
         }
     }
 
-    int32_t Guest::getEasterEggNameId() const
+    EasterEggPeepName Guest::getEasterEggNameId() const
     {
         char buffer[256]{};
 
@@ -612,20 +613,20 @@ namespace OpenRCT2
         for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         {
             if (String::iequals(buffer, gPeepEasterEggNames[i]))
-                return static_cast<int32_t>(i);
+                return static_cast<EasterEggPeepName>(i);
         }
 
-        return -1;
+        return EasterEggPeepName::none;
     }
 
     void Guest::handleEasterEggName()
     {
-        peepFlags.set(PeepFlag::waving, checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW));
-        peepFlags.set(PeepFlag::photo, checkEasterEggName(EASTEREGG_PEEP_NAME_CHRIS_SAWYER));
-        peepFlags.set(PeepFlag::painting, checkEasterEggName(EASTEREGG_PEEP_NAME_SIMON_FOSTER));
-        peepFlags.set(PeepFlag::wow, checkEasterEggName(EASTEREGG_PEEP_NAME_JOHN_WARDLEY));
+        peepFlags.set(PeepFlag::waving, checkEasterEggName(EasterEggPeepName::katieBrayshaw));
+        peepFlags.set(PeepFlag::photo, checkEasterEggName(EasterEggPeepName::chrisSawyer));
+        peepFlags.set(PeepFlag::painting, checkEasterEggName(EasterEggPeepName::simonFoster));
+        peepFlags.set(PeepFlag::wow, checkEasterEggName(EasterEggPeepName::johnWardley));
 
-        if (checkEasterEggName(EASTEREGG_PEEP_NAME_MELANIE_WARN))
+        if (checkEasterEggName(EasterEggPeepName::melanieWarn))
         {
             happiness = 250;
             happinessTarget = 250;
@@ -635,27 +636,27 @@ namespace OpenRCT2
             nauseaTarget = 0;
         }
 
-        peepFlags.set(PeepFlag::litter, checkEasterEggName(EASTEREGG_PEEP_NAME_LISA_STIRLING));
-        peepFlags.set(PeepFlag::lost, checkEasterEggName(EASTEREGG_PEEP_NAME_DONALD_MACRAE));
-        peepFlags.set(PeepFlag::hunger, checkEasterEggName(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN));
-        peepFlags.set(PeepFlag::toilet, checkEasterEggName(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN));
-        peepFlags.set(PeepFlag::crowded, checkEasterEggName(EASTEREGG_PEEP_NAME_CORINA_MASSOURA));
-        peepFlags.set(PeepFlag::happiness, checkEasterEggName(EASTEREGG_PEEP_NAME_CAROL_YOUNG));
-        peepFlags.set(PeepFlag::nausea, checkEasterEggName(EASTEREGG_PEEP_NAME_MIA_SHERIDAN));
+        peepFlags.set(PeepFlag::litter, checkEasterEggName(EasterEggPeepName::lisaStirling));
+        peepFlags.set(PeepFlag::lost, checkEasterEggName(EasterEggPeepName::donaldMacrae));
+        peepFlags.set(PeepFlag::hunger, checkEasterEggName(EasterEggPeepName::katherineMcGowan));
+        peepFlags.set(PeepFlag::toilet, checkEasterEggName(EasterEggPeepName::francesMcGowan));
+        peepFlags.set(PeepFlag::crowded, checkEasterEggName(EasterEggPeepName::corinaMassoura));
+        peepFlags.set(PeepFlag::happiness, checkEasterEggName(EasterEggPeepName::carolYoung));
+        peepFlags.set(PeepFlag::nausea, checkEasterEggName(EasterEggPeepName::miaSheridan));
 
-        if (checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_RODGER))
+        if (checkEasterEggName(EasterEggPeepName::katieRodger))
         {
             peepFlags.set(PeepFlag::leavingPark);
             peepFlags.unset(PeepFlag::parkEntranceChosen);
         }
 
-        peepFlags.set(PeepFlag::purple, checkEasterEggName(EASTEREGG_PEEP_NAME_EMMA_GARRELL));
-        peepFlags.set(PeepFlag::pizza, checkEasterEggName(EASTEREGG_PEEP_NAME_JOANNE_BARTON));
-        peepFlags.set(PeepFlag::contagious, checkEasterEggName(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON));
-        peepFlags.set(PeepFlag::joy, checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_SMITH));
-        peepFlags.set(PeepFlag::angry, checkEasterEggName(EASTEREGG_PEEP_NAME_EILIDH_BELL));
-        peepFlags.set(PeepFlag::iceCream, checkEasterEggName(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON));
-        peepFlags.set(PeepFlag::hereWeAre, checkEasterEggName(EASTEREGG_PEEP_NAME_DAVID_ELLIS));
+        peepFlags.set(PeepFlag::purple, checkEasterEggName(EasterEggPeepName::emmaGarrell));
+        peepFlags.set(PeepFlag::pizza, checkEasterEggName(EasterEggPeepName::joanneBarton));
+        peepFlags.set(PeepFlag::contagious, checkEasterEggName(EasterEggPeepName::felicityAnderson));
+        peepFlags.set(PeepFlag::joy, checkEasterEggName(EasterEggPeepName::katieSmith));
+        peepFlags.set(PeepFlag::angry, checkEasterEggName(EasterEggPeepName::eilidhBell));
+        peepFlags.set(PeepFlag::iceCream, checkEasterEggName(EasterEggPeepName::nancyStillwagon));
+        peepFlags.set(PeepFlag::hereWeAre, checkEasterEggName(EasterEggPeepName::davidEllis));
     }
 
     /**
@@ -663,7 +664,7 @@ namespace OpenRCT2
      *  rct2: 0x0069A5A0
      * tests if a peep's name matches a cheat code, normally returns using a register flag
      */
-    bool Guest::checkEasterEggName(int32_t index) const
+    bool Guest::checkEasterEggName(EasterEggPeepName peepName) const
     {
         char buffer[256]{};
 
@@ -671,7 +672,7 @@ namespace OpenRCT2
         formatNameTo(ft);
         FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
-        return String::iequals(buffer, gPeepEasterEggNames[index]);
+        return String::iequals(buffer, gPeepEasterEggNames[EnumValue(peepName)]);
     }
 
     void Guest::updateMotivesIdle()
