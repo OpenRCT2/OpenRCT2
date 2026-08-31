@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor kEnterpriseRTD =
         3,
         false,
         {
-            { RatingsModifierType::bonusOperationOption, 0, 1, 16, 16 }, 
+            { RatingsModifierType::bonusOperationOption, 0, 1, 16, 16 },
             { RatingsModifierType::bonusScenery,         0, 19521, 0, 0 },
         },
     },

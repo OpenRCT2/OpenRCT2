@@ -220,24 +220,24 @@ namespace OpenRCT2
         {
         }
 
-        uint8_t GetMinimum() const
+        uint8_t getMinimum() const
         {
             return _value & 0x0F;
         }
 
-        uint8_t GetMaximum() const
+        uint8_t getMaximum() const
         {
             return _value >> 4;
         }
 
-        IntensityRange WithMinimum(uint8_t value) const
+        IntensityRange withMinimum(uint8_t value) const
         {
-            return IntensityRange(value, GetMaximum());
+            return IntensityRange(value, getMaximum());
         }
 
-        IntensityRange WithMaximum(uint8_t value) const
+        IntensityRange withMaximum(uint8_t value) const
         {
-            return IntensityRange(GetMinimum(), value);
+            return IntensityRange(getMinimum(), value);
         }
 
         explicit operator uint8_t() const
@@ -418,8 +418,8 @@ namespace OpenRCT2
         void goToRideEntrance(const Ride& ride);
     };
 
-    void updateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
-    void updateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
+    void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
+    void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
 
     static_assert(sizeof(Guest) <= 512);
 
@@ -451,7 +451,7 @@ namespace OpenRCT2
         EASTEREGG_PEEP_NAME_DAVID_ELLIS
     };
 
-    void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
+    void peepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 
     void IncrementGuestsInPark();
     void IncrementGuestsHeadingForPark();

@@ -1726,9 +1726,9 @@ namespace OpenRCT2
 
         if (GuestShouldPreferredIntensityIncrease(*this))
         {
-            if (intensity.GetMaximum() < 15)
+            if (intensity.getMaximum() < 15)
             {
-                intensity = intensity.WithMaximum(intensity.GetMaximum() + 1);
+                intensity = intensity.withMaximum(intensity.getMaximum() + 1);
             }
         }
 
@@ -2033,8 +2033,8 @@ namespace OpenRCT2
                                 // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                                 // at 10.0 (before happiness calculations). A full happiness bar will increase the max
                                 // intensity and decrease the min intensity by about 2.5.
-                                RideRating_t maxIntensity = std::min(intensity.GetMaximum() * 100, 1000) + happiness;
-                                RideRating_t minIntensity = (intensity.GetMinimum() * 100) - happiness;
+                                RideRating_t maxIntensity = std::min(intensity.getMaximum() * 100, 1000) + happiness;
+                                RideRating_t minIntensity = (intensity.getMinimum() * 100) - happiness;
                                 if (ride.ratings.intensity < minIntensity)
                                 {
                                     if (peepAtRide)
@@ -2706,8 +2706,8 @@ namespace OpenRCT2
 
         uint8_t intensitySatisfaction = 3;
         uint8_t nauseaSatisfaction = 3;
-        RideRating_t maxIntensity = guest.intensity.GetMaximum() * 100;
-        RideRating_t minIntensity = guest.intensity.GetMinimum() * 100;
+        RideRating_t maxIntensity = guest.intensity.getMaximum() * 100;
+        RideRating_t minIntensity = guest.intensity.getMinimum() * 100;
         if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
         {
             intensitySatisfaction--;
@@ -4473,7 +4473,7 @@ namespace OpenRCT2
         setDestination(targetLoc);
     }
 
-    void updateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+    void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
     {
         auto ride = GetRide(guest.currentRide);
         // Motion simulators have steps. This moves the peeps up the steps.
@@ -4494,7 +4494,7 @@ namespace OpenRCT2
         guest.moveTo({ loc, actionZ });
     }
 
-    void updateRideApproachVehicleWaypointsDefault(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+    void UpdateRideApproachVehicleWaypointsDefault(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
     {
         guest.moveTo({ loc, guest.z });
     }

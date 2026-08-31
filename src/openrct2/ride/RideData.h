@@ -560,7 +560,7 @@ namespace OpenRCT2
         MusicTrackOffsetLengthFunc MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Default;
 
         UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints
-            = updateRideApproachVehicleWaypointsDefault;
+            = UpdateRideApproachVehicleWaypointsDefault;
         RtdSpecialType specialType = RtdSpecialType::none;
 
         /** @deprecated */

@@ -74,7 +74,7 @@ constexpr RideTypeDescriptor kMotionSimulatorRTD =
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default,
     .MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Default,
-    .UpdateRideApproachVehicleWaypoints = updateRideApproachVehicleWaypointsMotionSimulator,
+    .UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsMotionSimulator,
     .specialType = RtdSpecialType::motionSimulator,
 };
 } // namespace OpenRCT2
