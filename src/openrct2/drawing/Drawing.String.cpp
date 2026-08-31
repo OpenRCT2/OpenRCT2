@@ -596,6 +596,7 @@ namespace OpenRCT2::Drawing
             case UnicodeChar::down:
             case UnicodeChar::leftguillemet:
             case UnicodeChar::tick:
+            case UnicodeChar::dingbatMultiply:
             case UnicodeChar::cross:
             case UnicodeChar::right:
             case UnicodeChar::rightguillemet:

@@ -78,7 +78,7 @@ namespace OpenRCT2
         { CSChar::aOgonekUc, UnicodeChar::aOgonekUc }, { CSChar::up, UnicodeChar::up },
         { CSChar::cAcuteUc, UnicodeChar::cAcuteUc },   { CSChar::eOgonekUc, UnicodeChar::eOgonekUc },
         { CSChar::lStrokeUc, UnicodeChar::lStrokeUc }, { CSChar::down, UnicodeChar::down },
-        { CSChar::tick, UnicodeChar::tick },           { CSChar::cross, UnicodeChar::cross },
+        { CSChar::tick, UnicodeChar::tick },           { CSChar::cross, UnicodeChar::dingbatMultiply },
         { CSChar::right, UnicodeChar::right },         { CSChar::railway, UnicodeChar::railway },
         { CSChar::quoteOpen, UnicodeChar::quoteOpen }, { CSChar::euro, UnicodeChar::euro },
         { CSChar::road, UnicodeChar::road },           { CSChar::air, UnicodeChar::air },

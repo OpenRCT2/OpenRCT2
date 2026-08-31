@@ -276,8 +276,6 @@ namespace OpenRCT2
         STR_OR = 7000,
 
         // Widgets
-        STR_CLOSE_X = 824,
-        STR_CLOSE_X_WHITE = 6164,
         STR_DROPDOWN_BULLET_OPTION = 6795,
         STR_DROPDOWN_BULLET_OPTION_CHECKED = 6796, // Used as STR_DROPDOWN_BULLET_OPTION + 1
         STR_DROPDOWN_GLYPH = 876,

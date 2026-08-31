@@ -74,10 +74,10 @@ namespace OpenRCT2
         SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
     };
 
-    constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}❌";
-    constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}X";
-    constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}❌";
-    constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}X";
+    constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}✕";
+    constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}❌";
+    constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}✕";
+    constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}❌";
 
     struct Widget
     {
