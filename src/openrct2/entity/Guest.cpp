@@ -1662,6 +1662,26 @@ namespace OpenRCT2
         ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
         ride.windowInvalidateFlags.set(RideInvalidateFlag::customers);
 
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(Scripting::HookType::guestPurchase))
+        {
+            const bool noMoney = gameState.park.flags.has(ParkFlag::noMoney);
+            const money64 amountPaid = (hasVoucher || noMoney) ? 0.00_GBP : price;
+            hookEngine.Call(
+                Scripting::HookType::guestPurchase,
+                {
+                    { "guestId", static_cast<int32_t>(guest.id.ToUnderlying()) },
+                    { "rideId", static_cast<int32_t>(ride.id.ToUnderlying()) },
+                    { "item", static_cast<int32_t>(shopItem) },
+                    { "price", static_cast<int64_t>(price) },
+                    { "amountPaid", static_cast<int64_t>(amountPaid) },
+                    { "usedVoucher", hasVoucher },
+                },
+                true);
+        }
+#endif
+
         return true;
     }
 
