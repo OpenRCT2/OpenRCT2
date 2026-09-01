@@ -14,13 +14,16 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/competitive/CompetitiveModel.h>
 #include <openrct2/competitive/CompetitiveProtocol.h>
 #include <openrct2/competitive/CompetitiveSession.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/park/ParkFile.h>
 
+#include <chrono>
 #include <filesystem>
+#include <thread>
 
 using namespace OpenRCT2::Competitive;
 
@@ -154,6 +157,8 @@ TEST(CompetitiveTests, HostSessionRestoresFromNativeParkSave)
 
     auto& session = GetSession();
     session.Stop();
+    const auto advertiseBeforeTest = OpenRCT2::Config::Get().network.advertise;
+    OpenRCT2::Config::Get().network.advertise = false;
     HostConfiguration configuration;
     configuration.competitionName = "Recovery test";
     configuration.playerName = "Host Park";
@@ -163,6 +168,25 @@ TEST(CompetitiveTests, HostSessionRestoresFromNativeParkSave)
     std::string error;
     ASSERT_TRUE(session.StartHost(configuration, error)) << error;
     const auto matchId = session.GetState()->matchId;
+
+    Session spectator;
+    JoinConfiguration joinConfiguration;
+    joinConfiguration.host = "127.0.0.1";
+    joinConfiguration.port = configuration.port;
+    joinConfiguration.playerName = "Spectator";
+    joinConfiguration.role = Role::spectator;
+    ASSERT_TRUE(spectator.Join(joinConfiguration, error)) << error;
+    for (int32_t attempt = 0; attempt < 500 && !spectator.IsOnline(); attempt++)
+    {
+        session.Update();
+        spectator.Update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    ASSERT_TRUE(spectator.IsOnline());
+    ASSERT_NE(spectator.GetState(), nullptr);
+    EXPECT_EQ(spectator.GetState()->matchId, matchId);
+    spectator.Stop();
+    session.Update();
 
     const auto savePath = std::filesystem::temp_directory_path() / "openrct2-competitive-recovery-test.park";
     OpenRCT2::ParkFileExporter exporter;
@@ -176,5 +200,6 @@ TEST(CompetitiveTests, HostSessionRestoresFromNativeParkSave)
     EXPECT_EQ(session.GetConnectionStatus(), ConnectionStatus::online);
 
     session.Stop();
+    OpenRCT2::Config::Get().network.advertise = advertiseBeforeTest;
     std::filesystem::remove(savePath);
 }
