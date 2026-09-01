@@ -1,4 +1,6 @@
-# Competitive multiplayer migration checklist
+# Historical competitive multiplayer migration inventory
+
+> This is an archived feature inventory from the plugin-to-engine migration. It is not current implementation or user documentation. See [README.md](README.md) for authoritative native behaviour, limitations, and proposed work.
 
 This document is the migration contract from `openrct2-competitive` v0.9.0
 into the native `competitive-multiplayer` OpenRCT2 branch. A feature is not
@@ -271,4 +273,3 @@ Disposition labels:
 - [ ] **REMOVE** The installed JavaScript plugin and all launcher behaviour that
   automatically starts a background process once the native replacement passes
   its migration tests.
-

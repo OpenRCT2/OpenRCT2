@@ -6314,13 +6314,14 @@ namespace OpenRCT2
             {
                 innerPeep->staffVandalsStopped = AddClamp(innerPeep->staffVandalsStopped, 1u);
                 innerPeep->windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                Competitive::OnVandalAttempt(guest);
                 return;
             }
         }
 
         tileElement->setIsBroken(true);
 
-        Competitive::OnVandalDamage(guest);
+        Competitive::OnVandalAttempt(guest);
 
         MapInvalidateTileZoom1({ guest.nextLoc, tileElement->getBaseZ(), tileElement->getBaseZ() + 32 });
 

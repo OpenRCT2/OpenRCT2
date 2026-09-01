@@ -11,12 +11,14 @@
 
 #include "CompetitiveProtocol.h"
 
+#include "../Cheats.h"
 #include "../Context.h"
 #include "../Date.h"
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/Crypt.h"
 #include "../core/File.h"
@@ -51,6 +53,16 @@ namespace OpenRCT2::Competitive
     {
         constexpr uint32_t kHeartbeatIntervalMs = 5000;
         constexpr uint32_t kReconnectIntervalMs = 3000;
+        constexpr int32_t kAutomaticSaveFlag = static_cast<int32_t>(1u << 31);
+
+        struct WatchReturnState
+        {
+            bool active = false;
+            bool hasReturnPark = false;
+            std::string returnPath;
+        };
+
+        WatchReturnState gWatchReturnState;
 
         std::string MakeMatchId()
         {
@@ -227,6 +239,8 @@ namespace OpenRCT2::Competitive
         std::unordered_map<uint32_t, ActiveEffect> localEffects;
         std::vector<LocalVandal> localVandals;
         bool openWindowAfterRestore = false;
+        bool hostLossHandled = false;
+        bool startedWatchServer = false;
 
         void SetError(std::string message)
         {
@@ -285,6 +299,26 @@ namespace OpenRCT2::Competitive
                 News::AddItemToQueue(type, message.c_str(), subject);
         }
 
+        void HandleHostConnectionLoss(uint32_t now)
+        {
+            const bool wasOnline = status == ConnectionStatus::online;
+            status = ConnectionStatus::reconnecting;
+            nextReconnectAt = now + kReconnectIntervalMs;
+            if (auto* participant = FindParticipant(state, localParticipantId))
+                participant->online = false;
+
+            if (!wasOnline || hostLossHandled || localRole != Role::player || !scenarioLoaded
+                || state.phase != Phase::running || gLegacyScene != LegacyScene::playing)
+                return;
+
+            hostLossHandled = true;
+            GameAutosave();
+            AddLocalNotice(
+                "Connection to the competition host was lost. Your park was paused and recovery-autosaved; "
+                "OpenRCT2 will keep trying to reconnect.");
+            ContextOpenWindow(WindowClass::multiplayer);
+        }
+
         void NotifyParticipant(ParticipantId participantId, const std::string& message)
         {
             if (participantId == localParticipantId)
@@ -298,6 +332,58 @@ namespace OpenRCT2::Competitive
                     *peer->connection, Network::Command::competitiveEffectAck,
                     { { "notification", message } });
             }
+        }
+
+        bool EnsureLocalWatchServer(std::string& warning)
+        {
+            if (localRole == Role::spectator || !scenarioLoaded || gLegacyScene != LegacyScene::playing)
+                return true;
+
+            uint16_t port{};
+            if (Network::GetMode() == Network::Mode::server)
+            {
+                port = Network::GetListeningPort();
+            }
+            else if (Network::GetMode() == Network::Mode::none)
+            {
+                constexpr uint16_t kFirstWatchPort = 12000;
+                constexpr uint16_t kWatchPortCount = 1000;
+                const auto firstOffset = static_cast<uint16_t>(localParticipantId % kWatchPortCount);
+                for (uint16_t attempt = 0; attempt < 64; attempt++)
+                {
+                    const auto candidate = static_cast<uint16_t>(
+                        kFirstWatchPort + ((firstOffset + attempt) % kWatchPortCount));
+                    if (Network::BeginServer(candidate, Config::Get().network.listenAddress, false, true))
+                    {
+                        port = candidate;
+                        startedWatchServer = true;
+                        break;
+                    }
+                }
+            }
+
+            auto* participant = FindParticipant(state, localParticipantId);
+            if (participant == nullptr || port == 0)
+            {
+                warning = Network::GetMode() == Network::Mode::client
+                    ? "This park is itself a normal multiplayer client, so its server must publish the watch endpoint."
+                    : "No local port was available for native park spectating.";
+                return false;
+            }
+
+            participant->watchPort = port;
+            if (mode == SessionMode::host)
+            {
+                participant->watchHost = Config::Get().network.advertiseAddress;
+                SendSnapshot();
+            }
+            else if (serverConnection != nullptr && serverConnection->isValid())
+            {
+                QueueJson(
+                    *serverConnection, Network::Command::competitiveWatchEndpoint,
+                    { { "port", participant->watchPort } });
+            }
+            return true;
         }
 
         void SendLocalEffectReply(uint32_t effectId, bool accepted, const std::string& message, bool complete = false)
@@ -359,7 +445,8 @@ namespace OpenRCT2::Competitive
                     localVandals.push_back({ effect.id, guest->id, effect.potency });
                     AddLocalNotice(
                         sourceName + " sent a vandal into your park. Normal security guards can stop them; the quota is "
-                            + std::to_string(effect.potency) + " broken path additions.",
+                            + std::to_string(effect.potency)
+                            + " attempts, including attempts stopped by security.",
                         News::ItemType::peepOnRide, guest->id.ToUnderlying());
                     break;
                 }
@@ -542,6 +629,8 @@ namespace OpenRCT2::Competitive
                 }
                 existing->online = true;
                 existing->name = playerName;
+                existing->watchHost.clear();
+                existing->watchPort = 0;
                 peer.participantId = existing->id;
             }
             else
@@ -714,16 +803,15 @@ namespace OpenRCT2::Competitive
             if (sourceScore != nullptr)
                 sourceScore->lifetimeSpend += iterator->reservedCost;
             const auto* sourceReport = FindReport(state, sourceId);
-            const auto currentYear = sourceReport == nullptr ? uint16_t{ 1 } : sourceReport->metrics.localYear;
-            const auto availableYear = static_cast<uint16_t>(
-                std::min<uint32_t>(UINT16_MAX, currentYear + GetAbilityRule(state.rules, ability).cooldownYears));
+            const auto currentDay = sourceReport == nullptr ? uint32_t{ 1 } : sourceReport->metrics.localDay;
+            const auto availableAtDay = currentDay + GetAbilityRule(state.rules, ability).cooldownDays;
             auto cooldown = std::find_if(state.cooldowns.begin(), state.cooldowns.end(), [&](const auto& value) {
                 return value.participantId == sourceId && value.ability == ability;
             });
             if (cooldown == state.cooldowns.end())
-                state.cooldowns.push_back({ sourceId, ability, availableYear });
+                state.cooldowns.push_back({ sourceId, ability, availableAtDay });
             else
-                cooldown->availableYear = availableYear;
+                cooldown->availableAtDay = availableAtDay;
             NotifyParticipant(sourceId, std::string(AbilityName(ability)) + " was delivered successfully.");
             SendSnapshot();
         }
@@ -772,10 +860,10 @@ namespace OpenRCT2::Competitive
             const auto cooldown = std::find_if(state.cooldowns.begin(), state.cooldowns.end(), [&](const auto& value) {
                 return value.participantId == sourceId && value.ability == ability;
             });
-            if (cooldown != state.cooldowns.end() && sourceReport->metrics.localYear < cooldown->availableYear)
+            if (cooldown != state.cooldowns.end() && sourceReport->metrics.localDay < cooldown->availableAtDay)
             {
-                error = std::string(AbilityName(ability)) + " is on cooldown until your local Year "
-                    + std::to_string(cooldown->availableYear) + ".";
+                error = std::string(AbilityName(ability)) + " is on cooldown until your local day "
+                    + std::to_string(cooldown->availableAtDay) + ".";
                 return false;
             }
             if (sourceScore->competitiveCash < rule.cost)
@@ -909,6 +997,22 @@ namespace OpenRCT2::Competitive
                 case Network::Command::competitiveHeartbeat:
                     QueueJson(*peer.connection, Network::Command::competitiveHeartbeat, { { "reply", true } });
                     break;
+                case Network::Command::competitiveWatchEndpoint:
+                    if (peer.participantId != kInvalidParticipantId)
+                    {
+                        if (auto body = ReadJson(packet))
+                        {
+                            auto* participant = FindParticipant(state, peer.participantId);
+                            const auto port = body->value("port", uint16_t{});
+                            if (participant != nullptr && participant->role != Role::spectator && port != 0)
+                            {
+                                participant->watchHost = peer.connection->socket->GetIpAddress();
+                                participant->watchPort = port;
+                                SendSnapshot();
+                            }
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -949,9 +1053,10 @@ namespace OpenRCT2::Competitive
 
             if (state.phase == Phase::running && gLegacyScene == LegacyScene::playing)
             {
-                const auto metrics = CollectParkMetrics();
-                if (metrics.localDay != lastReportedDay)
+                const auto localDay = GetCurrentLocalDay();
+                if (localDay != lastReportedDay)
                 {
+                    const auto metrics = CollectParkMetrics();
                     lastReportedDay = metrics.localDay;
                     IngestMetrics(localParticipantId, metrics);
                 }
@@ -1031,6 +1136,7 @@ namespace OpenRCT2::Competitive
                     state = std::move(*parsed);
                     localParticipantId = participantId;
                     localRole = joinConfiguration.role;
+                    const bool reconnectedAfterHostLoss = hostLossHandled;
                     status = ConnectionStatus::online;
                     if (!scenarioLoaded && !LoadRequiredScenario())
                     {
@@ -1038,6 +1144,14 @@ namespace OpenRCT2::Competitive
                     }
                     else
                     {
+                        std::string watchWarning;
+                        if (!EnsureLocalWatchServer(watchWarning))
+                            AddLocalNotice("Park spectating is unavailable for this park: " + watchWarning);
+                        if (reconnectedAfterHostLoss)
+                        {
+                            hostLossHandled = false;
+                            AddLocalNotice("Reconnected to the competition host. Your park can continue.");
+                        }
                         ContextOpenWindow(WindowClass::multiplayer);
                     }
                     break;
@@ -1130,10 +1244,7 @@ namespace OpenRCT2::Competitive
             {
                 serverConnection.reset();
                 if (status != ConnectionStatus::error)
-                {
-                    status = ConnectionStatus::reconnecting;
-                }
-                nextReconnectAt = now + kReconnectIntervalMs;
+                    HandleHostConnectionLoss(now);
                 return;
             }
             if (socketStatus == Network::SocketStatus::connected && !helloSent)
@@ -1161,23 +1272,17 @@ namespace OpenRCT2::Competitive
             {
                 serverConnection.reset();
                 if (status != ConnectionStatus::error)
-                {
-                    status = ConnectionStatus::reconnecting;
-                }
-                nextReconnectAt = now + kReconnectIntervalMs;
-                if (auto* participant = FindParticipant(state, localParticipantId))
-                {
-                    participant->online = false;
-                }
+                    HandleHostConnectionLoss(now);
                 return;
             }
 
             if (status == ConnectionStatus::online && localRole == Role::player && scenarioLoaded
                 && state.phase == Phase::running && gLegacyScene == LegacyScene::playing)
             {
-                const auto metrics = CollectParkMetrics();
-                if (metrics.localDay != lastReportedDay)
+                const auto localDay = GetCurrentLocalDay();
+                if (localDay != lastReportedDay)
                 {
+                    const auto metrics = CollectParkMetrics();
                     lastReportedDay = metrics.localDay;
                     QueueJson(
                         *serverConnection, Network::Command::competitiveMetrics, { { "metrics", ToJson(metrics) } });
@@ -1268,6 +1373,9 @@ namespace OpenRCT2::Competitive
                     { "scenario", impl->state.scenario.name },
                 };
             });
+        std::string watchWarning;
+        if (!_impl->EnsureLocalWatchServer(watchWarning))
+            _impl->AddLocalNotice("Park spectating is unavailable for the host park: " + watchWarning);
         Config::Save();
         _impl->EnsurePauseState();
         return true;
@@ -1314,11 +1422,22 @@ namespace OpenRCT2::Competitive
         _impl->localEffects.clear();
         _impl->localVandals.clear();
         _impl->openWindowAfterRestore = false;
+        _impl->hostLossHandled = false;
+        if (_impl->startedWatchServer && Network::GetMode() == Network::Mode::server)
+            Network::Close();
+        _impl->startedWatchServer = false;
         _impl->EnsurePauseState();
     }
 
     void Session::Update()
     {
+        const auto* local = GetLocalParticipant();
+        if (gLegacyScene == LegacyScene::playing && local != nullptr && local->role != Role::spectator
+            && !local->finished && !local->forfeited
+            && (_impl->state.phase == Phase::lobby || _impl->state.phase == Phase::running))
+        {
+            CheatsReset();
+        }
         if (_impl->mode == SessionMode::host)
         {
             if (_impl->advertiser != nullptr)
@@ -1558,6 +1677,78 @@ namespace OpenRCT2::Competitive
         return true;
     }
 
+    bool Session::WatchParticipant(ParticipantId targetId, std::string& error)
+    {
+        if (gWatchReturnState.active)
+        {
+            error = "Return from the park currently being watched before choosing another.";
+            return false;
+        }
+        const auto* local = GetLocalParticipant();
+        const auto* target = FindParticipant(_impl->state, targetId);
+        if (_impl->status != ConnectionStatus::online || local == nullptr || target == nullptr || target->id == local->id
+            || target->role == Role::spectator || !target->online || target->watchPort == 0)
+        {
+            error = "Choose an online rival park with an available watch connection.";
+            return false;
+        }
+
+        auto host = target->watchHost;
+        const auto watchPort = target->watchPort;
+        const auto targetName = target->name;
+        if (host.empty() && target->id == _impl->state.hostId && _impl->mode == SessionMode::client)
+            host = _impl->joinConfiguration.host;
+        if (host.empty())
+        {
+            error = "The rival park has not published a reachable watch address.";
+            return false;
+        }
+
+        WatchReturnState returnState;
+        returnState.active = true;
+        if (local->role != Role::spectator)
+        {
+            if (gLegacyScene != LegacyScene::playing)
+            {
+                error = "Your competitive park must be loaded before watching a rival.";
+                return false;
+            }
+            auto& environment = GetContext()->GetPlatformEnvironment();
+            const auto returnDirectory = Path::Combine(
+                environment.GetDirectoryPath(DirBase::user, DirId::saves), u8"competitive-return");
+            if (!Path::CreateDirectory(returnDirectory))
+            {
+                error = "OpenRCT2 could not create the competitive return-save folder.";
+                return false;
+            }
+            returnState.returnPath = Path::Combine(
+                returnDirectory, "return-" + _impl->state.matchId + "-" + std::to_string(local->id) + ".park");
+            if (!ScenarioSave(getGameState(), returnState.returnPath, kAutomaticSaveFlag))
+            {
+                error = "OpenRCT2 could not save your park before spectating.";
+                return false;
+            }
+            returnState.hasReturnPark = true;
+        }
+
+        gWatchReturnState = returnState;
+        if (local->role != Role::spectator)
+            Stop();
+        if (Network::GetMode() != Network::Mode::none)
+            Network::Close();
+
+        if (!Network::BeginClient(host, watchPort, true))
+        {
+            const auto failedState = gWatchReturnState;
+            gWatchReturnState = {};
+            if (failedState.hasReturnPark)
+                GetContext()->LoadParkFromFile(failedState.returnPath);
+            error = "OpenRCT2 could not start the read-only connection to " + targetName + ".";
+            return false;
+        }
+        return true;
+    }
+
     void Session::UpdateGuestGenerationInterference()
     {
         if (_impl->state.phase != Phase::running || _impl->status != ConnectionStatus::online)
@@ -1588,6 +1779,8 @@ namespace OpenRCT2::Competitive
     {
         if (!isFoodOrDrink || _impl->state.phase != Phase::running || _impl->status != ConnectionStatus::online)
             return;
+        if (_impl->localEffects.empty())
+            return;
         const auto localDay = GetCurrentLocalDay();
         uint16_t chance{};
         for (const auto& [effectId, effect] : _impl->localEffects)
@@ -1605,7 +1798,7 @@ namespace OpenRCT2::Competitive
         guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
     }
 
-    void Session::OnVandalDamage(OpenRCT2::Guest& guest)
+    void Session::OnVandalAttempt(OpenRCT2::Guest& guest)
     {
         const auto iterator = std::find_if(_impl->localVandals.begin(), _impl->localVandals.end(), [&](const auto& vandal) {
             return vandal.guestId == guest.id;
@@ -1617,7 +1810,7 @@ namespace OpenRCT2::Competitive
         if (iterator->remainingQuota == 0)
         {
             const auto effectId = iterator->effectId;
-            _impl->CompleteLocalEffect(effectId, "the vandal reached its destruction quota and was sent home");
+            _impl->CompleteLocalEffect(effectId, "the vandal used its final attempt and was sent home");
         }
     }
 
@@ -1692,7 +1885,7 @@ namespace OpenRCT2::Competitive
         }
 
         return json_t{
-            { "schema", 1 },
+            { "schema", 2 },
             { "protocol", kProtocolVersion },
             { "mode", _impl->mode },
             { "localRole", _impl->localRole },
@@ -1722,7 +1915,7 @@ namespace OpenRCT2::Competitive
         if (storage.empty())
             return true;
         const auto body = json_t::parse(storage.begin(), storage.end(), nullptr, false);
-        if (body.is_discarded() || !body.is_object() || body.value("schema", 0) != 1
+        if (body.is_discarded() || !body.is_object() || body.value("schema", 0) != 2
             || body.value("protocol", 0) != kProtocolVersion)
         {
             error = "This park contains unsupported or malformed competitive session data.";
@@ -1884,6 +2077,9 @@ namespace OpenRCT2::Competitive
                         { "scenario", impl->state.scenario.name },
                     };
                 });
+            std::string watchWarning;
+            if (!_impl->EnsureLocalWatchServer(watchWarning))
+                _impl->AddLocalNotice("Park spectating is unavailable for the host park: " + watchWarning);
             if (_impl->state.phase == Phase::running)
                 _impl->IngestMetrics(_impl->localParticipantId, CollectParkMetrics());
         }
@@ -2067,9 +2263,9 @@ namespace OpenRCT2::Competitive
         GetSession().OnGuestPurchase(guest, rideId, isFoodOrDrink);
     }
 
-    void OnVandalDamage(OpenRCT2::Guest& guest)
+    void OnVandalAttempt(OpenRCT2::Guest& guest)
     {
-        GetSession().OnVandalDamage(guest);
+        GetSession().OnVandalAttempt(guest);
     }
 
     bool CanSpendConstruction(money64 cost)
@@ -2090,6 +2286,42 @@ namespace OpenRCT2::Competitive
     bool RestoreParkStorage(std::string_view storage, std::string& error)
     {
         return GetSession().RestoreParkStorage(storage, error);
+    }
+
+    bool IsWatchingPark()
+    {
+        return gWatchReturnState.active;
+    }
+
+    bool ReturnFromWatchedPark(std::string& error)
+    {
+        if (!gWatchReturnState.active)
+        {
+            error = "No rival park is currently being watched.";
+            return false;
+        }
+
+        const auto returnState = gWatchReturnState;
+        Network::Close();
+        if (returnState.hasReturnPark)
+        {
+            gWatchReturnState = {};
+            if (!GetContext()->LoadParkFromFile(returnState.returnPath))
+            {
+                gWatchReturnState = returnState;
+                error = "OpenRCT2 could not reload your competitive return save.";
+                return false;
+            }
+            File::Delete(returnState.returnPath);
+        }
+        else
+        {
+            gWatchReturnState = {};
+            if (!GameIsPaused())
+                PauseToggle();
+            ContextOpenWindow(WindowClass::multiplayer);
+        }
+        return true;
     }
 #else
     struct Session::Impl
@@ -2130,13 +2362,14 @@ namespace OpenRCT2::Competitive
     void Session::UpdateGuestGenerationInterference() {}
     bool Session::ConsumeGuestArrivalCancellation() { return false; }
     void Session::OnGuestPurchase(OpenRCT2::Guest&, RideId, bool) {}
-    void Session::OnVandalDamage(OpenRCT2::Guest&) {}
+    void Session::OnVandalAttempt(OpenRCT2::Guest&) {}
     money64 Session::GetAvailableCompetitiveCash() const { return 0; }
     money64 Session::GetConstructionSpend() const { return 0; }
     bool Session::CanSpendConstruction(money64) const { return true; }
     void Session::RecordConstructionSpend(money64) {}
     std::string Session::ExportParkStorage() const { return {}; }
     bool Session::RestoreParkStorage(std::string_view, std::string& error) { error = _impl->error; return false; }
+    bool Session::WatchParticipant(ParticipantId, std::string& error) { error = _impl->error; return false; }
     bool Session::Forfeit(ParticipantId, std::string& error) { error = _impl->error; return false; }
     bool Session::CloseEarly(std::string& error) { error = _impl->error; return false; }
     Session& GetSession() { static Session session; return session; }
@@ -2147,10 +2380,12 @@ namespace OpenRCT2::Competitive
     void UpdateGuestGenerationInterference() {}
     bool ConsumeGuestArrivalCancellation() { return false; }
     void OnGuestPurchase(OpenRCT2::Guest&, RideId, bool) {}
-    void OnVandalDamage(OpenRCT2::Guest&) {}
+    void OnVandalAttempt(OpenRCT2::Guest&) {}
     bool CanSpendConstruction(money64) { return true; }
     void RecordConstructionSpend(money64) {}
     std::string ExportParkStorage() { return {}; }
     bool RestoreParkStorage(std::string_view, std::string& error) { error = "Networking is disabled in this build."; return false; }
+    bool IsWatchingPark() { return false; }
+    bool ReturnFromWatchedPark(std::string& error) { error = "Networking is disabled in this build."; return false; }
 #endif
 } // namespace OpenRCT2::Competitive

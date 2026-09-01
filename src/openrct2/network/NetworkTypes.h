@@ -95,6 +95,7 @@ namespace OpenRCT2::Network
         competitiveEffectAck,
         competitiveControl,
         competitiveHeartbeat,
+        competitiveWatchEndpoint,
         competitiveError,
         max,
         invalid = static_cast<uint32_t>(-1),

@@ -125,6 +125,8 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     state.scenario = { "forest.sc6", "Forest Frontiers", "012345", 128, 128, false };
     state.participants.push_back(
         { 10, "host-key", "Host Park", Role::host, true, false, false, false, 0, 1, state.scenario });
+    state.participants[0].watchHost = "192.0.2.10";
+    state.participants[0].watchPort = 12010;
     state.scores.push_back({ .participantId = 10, .points = 123, .competitiveCash = 19000.00_GBP });
     ParkMetrics reportMetrics{ .localDay = 3, .rating = 700, .guests = 300 };
     reportMetrics.openFoodDrinkStalls.push_back({ 7, "Chief Beef" });
@@ -137,10 +139,13 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     EXPECT_EQ(parsed->matchId, state.matchId);
     EXPECT_EQ(parsed->scenario.contentHash, state.scenario.contentHash);
     EXPECT_EQ(parsed->participants.at(0).identityKey, "host-key");
+    EXPECT_EQ(parsed->participants.at(0).watchHost, "192.0.2.10");
+    EXPECT_EQ(parsed->participants.at(0).watchPort, 12010);
     EXPECT_EQ(parsed->scores.at(0).points, 123);
     EXPECT_EQ(parsed->reports.at(0).lastScoredDay, 3u);
     EXPECT_EQ(parsed->reports.at(0).metrics.openFoodDrinkStalls.at(0).rideId, 7);
     EXPECT_EQ(parsed->cooldowns.at(0).ability, Ability::poison);
+    EXPECT_EQ(parsed->cooldowns.at(0).availableAtDay, 2u);
     EXPECT_EQ(parsed->effects.at(0).endsAtDay, 17u);
 }
 

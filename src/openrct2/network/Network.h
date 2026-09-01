@@ -47,8 +47,11 @@ namespace OpenRCT2::Network
 
     void Reconnect();
     void ShutdownClient();
-    int32_t BeginClient(const std::string& host, int32_t port);
-    int32_t BeginServer(int32_t port, const std::string& address);
+    int32_t BeginClient(const std::string& host, int32_t port, bool spectator = false);
+    int32_t BeginServer(
+        int32_t port, const std::string& address, bool advertise = true, bool spectatorOnly = false);
+    void Close();
+    [[nodiscard]] uint16_t GetListeningPort();
 
     [[nodiscard]] Mode GetMode();
     [[nodiscard]] Status GetStatus();

@@ -86,13 +86,14 @@ namespace OpenRCT2::Competitive
         [[nodiscard]] bool StartMatch(std::string& error);
         [[nodiscard]] bool UpdateRules(const MatchRules& rules, std::string& error);
         [[nodiscard]] bool UseAbility(Ability ability, ParticipantId targetId, int32_t targetRideId, std::string& error);
+        [[nodiscard]] bool WatchParticipant(ParticipantId targetId, std::string& error);
         [[nodiscard]] bool Forfeit(ParticipantId participantId, std::string& error);
         [[nodiscard]] bool CloseEarly(std::string& error);
 
         void UpdateGuestGenerationInterference();
         [[nodiscard]] bool ConsumeGuestArrivalCancellation();
         void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
-        void OnVandalDamage(OpenRCT2::Guest& guest);
+        void OnVandalAttempt(OpenRCT2::Guest& guest);
         [[nodiscard]] money64 GetAvailableCompetitiveCash() const;
         [[nodiscard]] money64 GetConstructionSpend() const;
         [[nodiscard]] bool CanSpendConstruction(money64 cost) const;
@@ -115,9 +116,11 @@ namespace OpenRCT2::Competitive
     void UpdateGuestGenerationInterference();
     [[nodiscard]] bool ConsumeGuestArrivalCancellation();
     void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
-    void OnVandalDamage(OpenRCT2::Guest& guest);
+    void OnVandalAttempt(OpenRCT2::Guest& guest);
     [[nodiscard]] bool CanSpendConstruction(money64 cost);
     void RecordConstructionSpend(money64 cost);
     [[nodiscard]] std::string ExportParkStorage();
     [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
+    [[nodiscard]] bool IsWatchingPark();
+    [[nodiscard]] bool ReturnFromWatchedPark(std::string& error);
 } // namespace OpenRCT2::Competitive

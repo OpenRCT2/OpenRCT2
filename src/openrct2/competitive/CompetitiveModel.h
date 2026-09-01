@@ -86,7 +86,7 @@ namespace OpenRCT2::Competitive
     {
         bool enabled = true;
         money64 cost{};
-        uint8_t cooldownYears = 1;
+        uint16_t cooldownDays = 256;
         uint16_t durationDays{};
         uint16_t potency{};
     };
@@ -109,9 +109,9 @@ namespace OpenRCT2::Competitive
         bool allowLateJoin = false;
         uint8_t maxGameSpeed = 1;
         EconomyRules economy{};
-        AbilityRule vandal{ true, 2500.00_GBP, 1, 64, 4 };
-        AbilityRule misinformation{ true, 1800.00_GBP, 1, 14, 200 };
-        AbilityRule poison{ true, 2200.00_GBP, 1, 7, 25 };
+        AbilityRule vandal{ true, 2500.00_GBP, 256, 64, 4 };
+        AbilityRule misinformation{ true, 1800.00_GBP, 256, 14, 200 };
+        AbilityRule poison{ true, 2200.00_GBP, 256, 7, 25 };
     };
 
     struct ParkMetrics
@@ -163,6 +163,8 @@ namespace OpenRCT2::Competitive
         uint32_t joinedOrder{};
         uint16_t currentYear = 1;
         ScenarioIdentity scenario{};
+        std::string watchHost;
+        uint16_t watchPort{};
     };
 
     struct EconomyTotals

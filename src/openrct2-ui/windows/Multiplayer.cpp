@@ -84,6 +84,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_COMP_READY,
         WIDX_COMP_START,
         WIDX_COMP_ACTIONS,
+        WIDX_COMP_WATCH,
         WIDX_COMP_HOST_CONTROLS,
         WIDX_COMP_LEAVE,
     };
@@ -141,11 +142,12 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({363, 47}, { 60, 15}, WidgetType::tableHeader, WindowColour::primary, kStringIdEmpty),
         makeWidget({423, 47}, {194, 15}, WidgetType::tableHeader, WindowColour::primary, kStringIdEmpty),
         makeWidget({  3, 61}, {614,210}, WidgetType::scroll,      WindowColour::secondary, SCROLL_VERTICAL),
-        makeWidget({  6,292}, {110, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
-        makeWidget({121,292}, {110, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
-        makeWidget({236,292}, {110, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
-        makeWidget({351,292}, {130, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
-        makeWidget({486,292}, {128, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty)
+        makeWidget({  6,292}, { 90, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({101,292}, { 90, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({196,292}, {100, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({301,292}, {100, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({406,292}, {105, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({516,292}, { 98, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty)
     );
 
     static std::span<const Widget> window_multiplayer_page_widgets[] = {
@@ -262,8 +264,8 @@ namespace OpenRCT2::Ui::Windows
                 return value.participantId == local->id && value.ability == ability;
             });
             if (localReport != nullptr && cooldown != state->cooldowns.end()
-                && localReport->metrics.localYear < cooldown->availableYear)
-                return "On cooldown until your local Year " + std::to_string(cooldown->availableYear) + ".";
+                && localReport->metrics.localDay < cooldown->availableAtDay)
+                return "On cooldown until your local day " + std::to_string(cooldown->availableAtDay) + ".";
 
             const auto duplicate = std::find_if(state->effects.begin(), state->effects.end(), [&](const auto& effect) {
                 if (effect.targetId != _targetId || effect.ability != ability)
@@ -573,6 +575,7 @@ namespace OpenRCT2::Ui::Windows
         std::string _readyText;
         std::string _startText = "Start competition";
         std::string _actionsText = "Rival actions";
+        std::string _watchText = "Watch park";
         std::string _hostControlsText = "Host controls";
         std::string _leaveText = "Leave competition";
 
@@ -960,6 +963,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_COMP_YEAR].setString(_yearHeader.c_str());
                 widgets[WIDX_COMP_START].setString(_startText.c_str());
                 widgets[WIDX_COMP_ACTIONS].setString(_actionsText.c_str());
+                widgets[WIDX_COMP_WATCH].setString(_watchText.c_str());
                 widgets[WIDX_COMP_HOST_CONTROLS].setString(_hostControlsText.c_str());
                 widgets[WIDX_COMP_LEAVE].setString(_leaveText.c_str());
             }
@@ -1022,6 +1026,13 @@ namespace OpenRCT2::Ui::Windows
                                 break;
                             }
                             CompetitiveActionsOpen(target->id);
+                            break;
+                        }
+                        case WIDX_COMP_WATCH:
+                        {
+                            const auto* target = getSelectedCompetitionParticipant();
+                            if (target == nullptr || !session.WatchParticipant(target->id, error))
+                                ErrorOpen("Cannot watch park", error.empty() ? "Select an online rival park." : error);
                             break;
                         }
                         case WIDX_COMP_HOST_CONTROLS:
@@ -1202,6 +1213,8 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COMP_START].bottom = height - 15;
                     widgets[WIDX_COMP_ACTIONS].top = height - 28;
                     widgets[WIDX_COMP_ACTIONS].bottom = height - 15;
+                    widgets[WIDX_COMP_WATCH].top = height - 28;
+                    widgets[WIDX_COMP_WATCH].bottom = height - 15;
                     widgets[WIDX_COMP_HOST_CONTROLS].top = height - 28;
                     widgets[WIDX_COMP_HOST_CONTROLS].bottom = height - 15;
                     widgets[WIDX_COMP_LEAVE].top = height - 28;
@@ -1218,6 +1231,8 @@ namespace OpenRCT2::Ui::Windows
                     const auto* selected = getSelectedCompetitionParticipant();
                     const bool targetable = selected != nullptr && local != nullptr && selected->id != local->id
                         && Competitive::CanTarget(*selected);
+                    const bool watchable = selected != nullptr && local != nullptr && selected->id != local->id
+                        && selected->role != Competitive::Role::spectator && selected->online && selected->watchPort != 0;
                     const bool forfeitEligible = selected != nullptr && selected->id != session.GetLocalParticipantId()
                         && selected->role != Competitive::Role::spectator && !selected->online && !selected->finished
                         && !selected->forfeited;
@@ -1225,6 +1240,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COMP_START].setVisible(lobby && host);
                     widgets[WIDX_COMP_ACTIONS].setVisible(
                         state != nullptr && state->phase == Competitive::Phase::running && competitor && targetable);
+                    widgets[WIDX_COMP_WATCH].setVisible(watchable);
                     widgets[WIDX_COMP_HOST_CONTROLS].setVisible(
                         host && running);
                     widgets[WIDX_COMP_LEAVE].setVisible(!host || !running);

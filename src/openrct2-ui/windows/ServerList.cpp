@@ -102,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
         std::string _cooperativeTabText = "Cooperative";
         std::string _competitiveTabText = "Competitive";
         std::string _hostCompetitiveText = "Host competition";
-        std::string _spectateText = "Spectate";
+        std::string _spectateText = "Observe match";
 
     public:
     #pragma region Window Override Events

@@ -41,7 +41,7 @@ namespace OpenRCT2::Competitive
             return {
                 { "enabled", value.enabled },
                 { "cost", value.cost },
-                { "cooldownYears", value.cooldownYears },
+                { "cooldownDays", value.cooldownDays },
                 { "durationDays", value.durationDays },
                 { "potency", value.potency },
             };
@@ -56,7 +56,7 @@ namespace OpenRCT2::Competitive
             return {
                 Boolean(value, "enabled", fallback.enabled),
                 Number<money64>(value, "cost", fallback.cost),
-                Number<uint8_t>(value, "cooldownYears", fallback.cooldownYears),
+                Number<uint16_t>(value, "cooldownDays", fallback.cooldownDays),
                 Number<uint16_t>(value, "durationDays", fallback.durationDays),
                 Number<uint16_t>(value, "potency", fallback.potency),
             };
@@ -76,6 +76,8 @@ namespace OpenRCT2::Competitive
                 { "joinedOrder", value.joinedOrder },
                 { "currentYear", value.currentYear },
                 { "scenario", ToJson(value.scenario) },
+                { "watchHost", value.watchHost },
+                { "watchPort", value.watchPort },
             };
         }
 
@@ -104,6 +106,8 @@ namespace OpenRCT2::Competitive
                 Number<uint32_t>(value, "joinedOrder"),
                 Number<uint16_t>(value, "currentYear", 1),
                 std::move(*scenario),
+                String(value, "watchHost"),
+                Number<uint16_t>(value, "watchPort"),
             };
         }
 
@@ -255,7 +259,7 @@ namespace OpenRCT2::Competitive
             cooldowns.push_back({
                 { "participantId", cooldown.participantId },
                 { "ability", cooldown.ability },
-                { "availableYear", cooldown.availableYear },
+                { "availableAtDay", cooldown.availableAtDay },
             });
         }
         json_t effects = json_t::array();
@@ -480,7 +484,7 @@ namespace OpenRCT2::Competitive
                 const AbilityCooldown cooldown{
                     Number<ParticipantId>(item, "participantId"),
                     Number<Ability>(item, "ability", Ability::vandal),
-                    Number<uint16_t>(item, "availableYear"),
+                    Number<uint32_t>(item, "availableAtDay"),
                 };
                 if (cooldown.participantId == kInvalidParticipantId || cooldown.ability > Ability::poison)
                     return std::nullopt;

@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Competitive
 {
-    constexpr uint16_t kProtocolVersion = 2;
+    constexpr uint16_t kProtocolVersion = 3;
     constexpr uint16_t kDefaultPort = 11755;
 
     struct ActiveEffect
@@ -46,7 +46,7 @@ namespace OpenRCT2::Competitive
     {
         ParticipantId participantId = kInvalidParticipantId;
         Ability ability = Ability::vandal;
-        uint16_t availableYear{};
+        uint32_t availableAtDay{};
     };
 
     struct MatchState

@@ -107,6 +107,7 @@ namespace OpenRCT2
         ObjectList RequiredObjects;
         std::vector<const ObjectRepositoryItem*> ExportObjectsList;
         bool OmitTracklessRides{};
+        bool ExportCompetitiveSession = true;
 
     private:
         std::unique_ptr<OrcaStream> _os;
@@ -203,7 +204,8 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
-            ReadWriteCompetitiveChunk(gameState, os);
+            if (ExportCompetitiveSession)
+                ReadWriteCompetitiveChunk(gameState, os);
             ReadWritePreviewChunk(gameState, os);
             ReadWritePackedObjectsChunk(os);
         }
@@ -2733,6 +2735,7 @@ namespace OpenRCT2
     {
         auto parkFile = std::make_unique<ParkFile>();
         parkFile->ExportObjectsList = ExportObjectsList;
+        parkFile->ExportCompetitiveSession = ExportCompetitiveSession;
         parkFile->Save(gameState, path, compressionLevel);
     }
 
@@ -2740,6 +2743,7 @@ namespace OpenRCT2
     {
         auto parkFile = std::make_unique<ParkFile>();
         parkFile->ExportObjectsList = ExportObjectsList;
+        parkFile->ExportCompetitiveSession = ExportCompetitiveSession;
         parkFile->Save(gameState, stream, compressionLevel);
     }
 } // namespace OpenRCT2

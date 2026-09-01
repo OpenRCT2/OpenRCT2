@@ -775,7 +775,13 @@ namespace OpenRCT2::Ui::Windows
         void initNetworkMenu(Widget& widget)
         {
             const bool competitive = Competitive::GetSession().GetMode() != Competitive::SessionMode::none;
-            if (competitive)
+            const bool watching = Competitive::IsWatchingPark();
+            if (watching)
+            {
+                gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel("Watching rival park");
+                gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel("Return to my park");
+            }
+            else if (competitive)
             {
                 gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(
                     Network::GetMode() == Network::Mode::none ? "Competition" : "Multiplayer & competition");
@@ -791,7 +797,8 @@ namespace OpenRCT2::Ui::Windows
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), { Dropdown::Flag::autoClose }, TOP_TOOLBAR_NETWORK_COUNT);
 
-            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!competitive && !Network::IsDesynchronised());
+            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(
+                !watching && !competitive && !Network::IsDesynchronised());
 
             gDropdown.defaultIndex = DDIDX_MULTIPLAYER;
         }
@@ -807,7 +814,13 @@ namespace OpenRCT2::Ui::Windows
                         ContextOpenWindow(WindowClass::multiplayer);
                         break;
                     case DDIDX_MULTIPLAYER_RECONNECT:
-                        if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+                        if (Competitive::IsWatchingPark())
+                        {
+                            std::string error;
+                            if (!Competitive::ReturnFromWatchedPark(error))
+                                GetWindowManager()->ShowError("Cannot return to your park", error);
+                        }
+                        else if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
                         {
                             Competitive::GetSession().Stop();
                         }

@@ -662,13 +662,13 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 drawText(rt, windowPos + ScreenCoordsXY{ 112, 51 }, "Cost", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 226, 51 }, "Cooldown", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 226, 51 }, "Use cooldown", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 322, 51 }, "Victim time", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 443, 51 }, "Effect strength", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10, 88 }, "Angry guest; normal security applies. Ends after quota or maximum lifetime.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10, 88 }, "Angry guest; security-blocked attempts also consume its quota.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,145 }, "Cancels future arrivals at the reverse strength of a half-price entry campaign.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,202 }, "Exact buyers at the selected food/drink stall receive the configured nausea chance.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,231 }, "Cooldown follows the attacker's local year; duration follows the victim's local calendar.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,231 }, "Cooldown uses exact attacker-local days; duration uses the victim's local days.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,246 }, "Only online, unfinished rivals can be targeted. Failed delivery costs nothing and starts no cooldown.", { colour });
             }
         }
@@ -832,7 +832,8 @@ namespace OpenRCT2::Ui::Windows
                     rule->cost = std::clamp<money64>(rule->cost + (direction * 100.00_GBP), 0.00_GBP, 100000.00_GBP);
                     break;
                 case 1:
-                    rule->cooldownYears = static_cast<uint8_t>(std::clamp<int32_t>(rule->cooldownYears + direction, 0, 20));
+                    rule->cooldownDays = static_cast<uint16_t>(
+                        std::clamp<int32_t>(rule->cooldownDays + (direction * 7), 0, 4096));
                     break;
                 case 2:
                     rule->durationDays = static_cast<uint16_t>(std::clamp<int32_t>(rule->durationDays + direction, 1, 512));
@@ -848,9 +849,11 @@ namespace OpenRCT2::Ui::Windows
             return true;
         }
 
-        static std::string YearsCaption(uint8_t years)
+        static std::string CooldownCaption(uint16_t days)
         {
-            return std::to_string(years) + (years == 1 ? " year" : " years");
+            if (days == 256)
+                return "256 days (1 year)";
+            return std::to_string(days) + (days == 1 ? " day" : " days");
         }
 
         void UpdateCaptions()
@@ -867,15 +870,15 @@ namespace OpenRCT2::Ui::Windows
             _startingCashCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.economy.startingCash);
 
             _vandalCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.vandal.cost);
-            _vandalCooldownCaption = YearsCaption(_rules.vandal.cooldownYears);
+            _vandalCooldownCaption = CooldownCaption(_rules.vandal.cooldownDays);
             _vandalDurationCaption = std::to_string(_rules.vandal.durationDays) + " days max";
-            _vandalPotencyCaption = std::to_string(_rules.vandal.potency) + " items";
+            _vandalPotencyCaption = std::to_string(_rules.vandal.potency) + " attempts";
             _misinfoCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.misinformation.cost);
-            _misinfoCooldownCaption = YearsCaption(_rules.misinformation.cooldownYears);
+            _misinfoCooldownCaption = CooldownCaption(_rules.misinformation.cooldownDays);
             _misinfoDurationCaption = std::to_string(_rules.misinformation.durationDays) + " days";
             _misinfoPotencyCaption = std::to_string((_rules.misinformation.potency * 100) / 200) + "% half-price";
             _poisonCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.poison.cost);
-            _poisonCooldownCaption = YearsCaption(_rules.poison.cooldownYears);
+            _poisonCooldownCaption = CooldownCaption(_rules.poison.cooldownDays);
             _poisonDurationCaption = std::to_string(_rules.poison.durationDays) + " days";
             _poisonPotencyCaption = std::to_string(_rules.poison.potency) + "% buyers";
 

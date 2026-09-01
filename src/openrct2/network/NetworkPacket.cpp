@@ -64,6 +64,7 @@ namespace OpenRCT2::Network
             case Command::competitiveEffectAck:
             case Command::competitiveControl:
             case Command::competitiveHeartbeat:
+            case Command::competitiveWatchEndpoint:
             case Command::competitiveError:
                 return false;
             default:
