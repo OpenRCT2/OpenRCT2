@@ -104,17 +104,17 @@ void UiScriptExtensions::Unregister()
     gScUi.Unregister();
     gScViewport.Unregister();
 
-    gScViewportWidget.Unregister();
-    gScTextBoxWidget.Unregister();
-    gScSpinnerWidget.Unregister();
-    gScListViewWidget.Unregister();
-    gScLabelWidget.Unregister();
-    gScGroupBoxWidget.Unregister();
-    gScDropdownWidget.Unregister();
-    gScColourPickerWidget.Unregister();
-    gScCheckBoxWidget.Unregister();
-    gScButtonWidget.Unregister();
     gScWidget.Unregister();
+    gScButtonWidget.Unregister();
+    gScCheckBoxWidget.Unregister();
+    gScColourPickerWidget.Unregister();
+    gScDropdownWidget.Unregister();
+    gScGroupBoxWidget.Unregister();
+    gScLabelWidget.Unregister();
+    gScListViewWidget.Unregister();
+    gScSpinnerWidget.Unregister();
+    gScTextBoxWidget.Unregister();
+    gScViewportWidget.Unregister();
 
     gScTitleSequence.Unregister();
     gScTitleSequenceManager.Unregister();
