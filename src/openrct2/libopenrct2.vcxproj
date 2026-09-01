@@ -183,6 +183,7 @@
     <ClInclude Include="command_line\CommandLine.hpp" />
     <ClInclude Include="command_line\ExitCode.h" />
     <ClInclude Include="config\Config.h" />
+    <ClInclude Include="competitive\CompetitiveModel.h" />
     <ClInclude Include="config\ConfigEnum.hpp" />
     <ClInclude Include="config\ConfigTypes.h" />
     <ClInclude Include="config\IniReader.hpp" />
@@ -860,6 +861,7 @@
     <ClCompile Include="command_line\SimulateCommands.cpp" />
     <ClCompile Include="command_line\UriHandler.cpp" />
     <ClCompile Include="config\Config.cpp" />
+    <ClCompile Include="competitive\CompetitiveModel.cpp" />
     <ClCompile Include="config\IniReader.cpp" />
     <ClCompile Include="config\IniWriter.cpp" />
     <ClCompile Include="Context.cpp" />
