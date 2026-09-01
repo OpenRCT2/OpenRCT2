@@ -48,7 +48,7 @@ namespace OpenRCT2::World::MapGenerator
 
         uint8_t& operator[](const TileCoordsXY& pos)
         {
-            assert(0 <= pos.x && pos.x < width && 0 <= pos.y && pos.y < height);
+            assert(pos.x >= 0 && pos.y >= 0 && pos.x < width && pos.y < height);
             return _height[pos.y * width + pos.x];
         }
 
