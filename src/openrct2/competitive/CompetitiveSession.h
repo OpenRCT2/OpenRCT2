@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace OpenRCT2
@@ -96,6 +97,8 @@ namespace OpenRCT2::Competitive
         [[nodiscard]] money64 GetConstructionSpend() const;
         [[nodiscard]] bool CanSpendConstruction(money64 cost) const;
         void RecordConstructionSpend(money64 cost);
+        [[nodiscard]] std::string ExportParkStorage() const;
+        [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
 
     private:
         struct Impl;
@@ -115,4 +118,6 @@ namespace OpenRCT2::Competitive
     void OnVandalDamage(OpenRCT2::Guest& guest);
     [[nodiscard]] bool CanSpendConstruction(money64 cost);
     void RecordConstructionSpend(money64 cost);
+    [[nodiscard]] std::string ExportParkStorage();
+    [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
 } // namespace OpenRCT2::Competitive

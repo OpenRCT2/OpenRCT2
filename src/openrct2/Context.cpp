@@ -783,6 +783,7 @@ namespace OpenRCT2
                 MapAnimations::ClearAll();
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = ::getGameState();
+                gameState.competitiveStorage.clear();
                 parkImporter->Import(gameState);
                 SetProgress(100, 100, STR_STRING_M_PERCENT);
 
@@ -830,6 +831,22 @@ namespace OpenRCT2
                         _network.Close();
                     }
 #endif
+                }
+                if (!asScenario)
+                {
+                    if (!gameState.competitiveStorage.empty())
+                    {
+                        std::string competitiveError;
+                        if (!Competitive::RestoreParkStorage(gameState.competitiveStorage, competitiveError))
+                        {
+                            _uiContext->GetWindowManager()->ShowError(
+                                "Competition recovery failed", competitiveError);
+                        }
+                    }
+                    else if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+                    {
+                        Competitive::GetSession().Stop();
+                    }
                 }
                 // This ensures that the newly loaded save reflects the user's
                 // 'show real names of guests' option, now that it's a global setting

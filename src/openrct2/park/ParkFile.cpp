@@ -17,6 +17,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../Version.h"
+#include "../competitive/CompetitiveSession.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
@@ -95,6 +96,7 @@ namespace OpenRCT2
         restrictedObjects       = 0x37,
         pluginStorage           = 0x38,
         preview                 = 0x39,
+        competitive             = 0x3A,
         packedObjects           = 0x80
         // clang-format on
     };
@@ -166,6 +168,7 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
+            ReadWriteCompetitiveChunk(gameState, os);
             if (os.getHeader().targetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
@@ -200,6 +203,7 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
+            ReadWriteCompetitiveChunk(gameState, os);
             ReadWritePreviewChunk(gameState, os);
             ReadWritePackedObjectsChunk(os);
         }
@@ -764,6 +768,25 @@ namespace OpenRCT2
                 scriptEngine.SetParkStorageFromJSON(gameState.pluginStorage, gameState.scenarioFileName);
 #endif
             }
+        }
+
+        void ReadWriteCompetitiveChunk(GameState_t& gameState, OrcaStream& os)
+        {
+            if (os.getMode() == OrcaStream::Mode::writing)
+            {
+                gameState.competitiveStorage = Competitive::ExportParkStorage();
+                if (gameState.competitiveStorage.empty())
+                    return;
+            }
+            else
+            {
+                gameState.competitiveStorage.clear();
+            }
+
+            const auto found = os.readWriteChunk(ParkFileChunkType::competitive, [&gameState](OrcaStream::ChunkStream& cs) {
+                cs.readWrite(gameState.competitiveStorage);
+            });
+            static_cast<void>(found);
         }
 
         void ReadWritePackedObjectsChunk(OrcaStream& os)

@@ -7,10 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "TestData.h"
+
 #include <gtest/gtest.h>
+#include <openrct2/Context.h>
+#include <openrct2/Game.h>
+#include <openrct2/GameState.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/competitive/CompetitiveModel.h>
 #include <openrct2/competitive/CompetitiveProtocol.h>
+#include <openrct2/competitive/CompetitiveSession.h>
 #include <openrct2/core/Json.hpp>
+#include <openrct2/park/ParkFile.h>
+
+#include <filesystem>
 
 using namespace OpenRCT2::Competitive;
 
@@ -129,4 +139,42 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     EXPECT_EQ(parsed->reports.at(0).metrics.openFoodDrinkStalls.at(0).rideId, 7);
     EXPECT_EQ(parsed->cooldowns.at(0).ability, Ability::poison);
     EXPECT_EQ(parsed->effects.at(0).endsAtDay, 17u);
+}
+
+TEST(CompetitiveTests, HostSessionRestoresFromNativeParkSave)
+{
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
+    auto context = OpenRCT2::CreateContext();
+    ASSERT_TRUE(context->Initialise());
+
+    const auto sourcePath = TestData::GetParkPath("small_park_with_ferris_wheel.sv6");
+    ASSERT_TRUE(OpenRCT2::GetContext()->LoadParkFromFile(sourcePath));
+    GameLoadInit();
+
+    auto& session = GetSession();
+    session.Stop();
+    HostConfiguration configuration;
+    configuration.competitionName = "Recovery test";
+    configuration.playerName = "Host Park";
+    configuration.listenAddress = "127.0.0.1";
+    configuration.port = 21756;
+    configuration.scenario = GetScenarioIdentityForPath(sourcePath);
+    std::string error;
+    ASSERT_TRUE(session.StartHost(configuration, error)) << error;
+    const auto matchId = session.GetState()->matchId;
+
+    const auto savePath = std::filesystem::temp_directory_path() / "openrct2-competitive-recovery-test.park";
+    OpenRCT2::ParkFileExporter exporter;
+    exporter.Export(OpenRCT2::getGameState(), savePath.u8string(), OpenRCT2::kParkFileSaveCompressionLevel);
+    session.Stop();
+
+    ASSERT_TRUE(OpenRCT2::GetContext()->LoadParkFromFile(savePath.u8string()));
+    ASSERT_EQ(session.GetMode(), SessionMode::host);
+    ASSERT_NE(session.GetState(), nullptr);
+    EXPECT_EQ(session.GetState()->matchId, matchId);
+    EXPECT_EQ(session.GetConnectionStatus(), ConnectionStatus::online);
+
+    session.Stop();
+    std::filesystem::remove(savePath);
 }

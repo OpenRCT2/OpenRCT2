@@ -213,6 +213,7 @@ namespace OpenRCT2::Competitive
         std::unique_ptr<Network::INetworkServerAdvertiser> advertiser;
         std::list<Peer> peers;
         std::unique_ptr<Network::Connection> serverConnection;
+        HostConfiguration hostConfiguration{};
         JoinConfiguration joinConfiguration{};
         bool helloSent = false;
         bool scenarioLoaded = false;
@@ -225,6 +226,7 @@ namespace OpenRCT2::Competitive
         uint32_t pendingMisinformationCancellations{};
         std::unordered_map<uint32_t, ActiveEffect> localEffects;
         std::vector<LocalVandal> localVandals;
+        bool openWindowAfterRestore = false;
 
         void SetError(std::string message)
         {
@@ -1226,6 +1228,7 @@ namespace OpenRCT2::Competitive
         _impl->mode = SessionMode::host;
         _impl->status = ConnectionStatus::online;
         _impl->localRole = Role::host;
+        _impl->hostConfiguration = configuration;
         _impl->localParticipantId = MakeParticipantId();
         _impl->state = {};
         _impl->state.matchId = MakeMatchId();
@@ -1302,12 +1305,15 @@ namespace OpenRCT2::Competitive
         _impl->state = {};
         _impl->localParticipantId = kInvalidParticipantId;
         _impl->localRole = Role::none;
+        _impl->hostConfiguration = {};
+        _impl->joinConfiguration = {};
         _impl->lastError.clear();
         _impl->scenarioLoaded = false;
         _impl->constructionSpend = 0;
         _impl->pendingMisinformationCancellations = 0;
         _impl->localEffects.clear();
         _impl->localVandals.clear();
+        _impl->openWindowAfterRestore = false;
         _impl->EnsurePauseState();
     }
 
@@ -1325,6 +1331,11 @@ namespace OpenRCT2::Competitive
         }
         _impl->UpdateLocalEffects();
         _impl->EnsurePauseState();
+        if (_impl->openWindowAfterRestore && gLegacyScene == LegacyScene::playing)
+        {
+            _impl->openWindowAfterRestore = false;
+            ContextOpenWindow(WindowClass::multiplayer);
+        }
     }
 
     SessionMode Session::GetMode() const
@@ -1660,6 +1671,232 @@ namespace OpenRCT2::Competitive
         }
     }
 
+    std::string Session::ExportParkStorage() const
+    {
+        if (_impl->mode == SessionMode::none || _impl->state.phase == Phase::none
+            || _impl->localParticipantId == kInvalidParticipantId)
+            return {};
+
+        json_t localEffects = json_t::array();
+        for (const auto& [effectId, effect] : _impl->localEffects)
+            localEffects.push_back(ToJson(effect));
+
+        json_t localVandals = json_t::array();
+        for (const auto& vandal : _impl->localVandals)
+        {
+            localVandals.push_back({
+                { "effectId", vandal.effectId },
+                { "guestId", vandal.guestId.ToUnderlying() },
+                { "remainingQuota", vandal.remainingQuota },
+            });
+        }
+
+        return json_t{
+            { "schema", 1 },
+            { "protocol", kProtocolVersion },
+            { "mode", _impl->mode },
+            { "localRole", _impl->localRole },
+            { "localParticipantId", _impl->localParticipantId },
+            { "state", ToJson(_impl->state) },
+            { "host",
+              {
+                  { "listenAddress", _impl->hostConfiguration.listenAddress },
+                  { "port", _impl->hostConfiguration.port },
+              } },
+            { "join",
+              {
+                  { "host", _impl->joinConfiguration.host },
+                  { "port", _impl->joinConfiguration.port },
+                  { "playerName", _impl->joinConfiguration.playerName },
+                  { "role", _impl->joinConfiguration.role },
+              } },
+            { "constructionSpend", _impl->constructionSpend },
+            { "pendingMisinformationCancellations", _impl->pendingMisinformationCancellations },
+            { "localEffects", std::move(localEffects) },
+            { "localVandals", std::move(localVandals) },
+        }.dump();
+    }
+
+    bool Session::RestoreParkStorage(std::string_view storage, std::string& error)
+    {
+        if (storage.empty())
+            return true;
+        const auto body = json_t::parse(storage.begin(), storage.end(), nullptr, false);
+        if (body.is_discarded() || !body.is_object() || body.value("schema", 0) != 1
+            || body.value("protocol", 0) != kProtocolVersion)
+        {
+            error = "This park contains unsupported or malformed competitive session data.";
+            return false;
+        }
+
+        auto restoredState = MatchStateFromJson(body["state"]);
+        const auto restoredMode = body.value("mode", SessionMode::none);
+        const auto restoredRole = body.value("localRole", Role::none);
+        const auto restoredParticipantId = body.value("localParticipantId", kInvalidParticipantId);
+        const auto* restoredParticipant = restoredState.has_value()
+            ? FindParticipant(*restoredState, restoredParticipantId)
+            : nullptr;
+        if (!restoredState.has_value() || restoredParticipant == nullptr
+            || (restoredMode != SessionMode::host && restoredMode != SessionMode::client)
+            || (restoredRole != Role::host && restoredRole != Role::player && restoredRole != Role::spectator)
+            || restoredParticipant->role != restoredRole)
+        {
+            error = "The saved competitive membership is inconsistent.";
+            return false;
+        }
+        if ((restoredMode == SessionMode::host) != (restoredRole == Role::host)
+            || restoredState->hostId == kInvalidParticipantId)
+        {
+            error = "The saved competitive host role is inconsistent.";
+            return false;
+        }
+        const auto currentScenario = GetCurrentScenarioIdentity();
+        const auto currentMetrics = CollectParkMetrics();
+        const auto* savedLocalReport = FindReport(*restoredState, restoredParticipantId);
+        if (restoredRole != Role::spectator
+            && (currentScenario.mapWidth != restoredState->scenario.mapWidth
+                || currentScenario.mapHeight != restoredState->scenario.mapHeight
+                || savedLocalReport == nullptr || currentMetrics.localDay < savedLocalReport->metrics.localDay))
+        {
+            error = "The loaded park does not match this competitive membership or is older than its saved report.";
+            return false;
+        }
+        if (!currentScenario.contentHash.empty() && !IsSameScenario(currentScenario, restoredState->scenario))
+        {
+            error = "The loaded park's original scenario does not match the competition.";
+            return false;
+        }
+
+        const auto& host = body["host"];
+        const auto& join = body["join"];
+        HostConfiguration restoredHostConfiguration{
+            restoredState->name,
+            restoredParticipant->name,
+            host.is_object() ? host.value("listenAddress", std::string{}) : std::string{},
+            host.is_object() ? host.value("port", kDefaultPort) : kDefaultPort,
+            restoredState->rules,
+            restoredState->scenario,
+        };
+        JoinConfiguration restoredJoinConfiguration{
+            join.is_object() ? join.value("host", std::string{}) : std::string{},
+            join.is_object() ? join.value("port", kDefaultPort) : kDefaultPort,
+            join.is_object() ? join.value("playerName", restoredParticipant->name) : restoredParticipant->name,
+            join.is_object() ? join.value("role", restoredRole) : restoredRole,
+        };
+        const auto restoredIdentityKey = restoredParticipant->identityKey;
+        if ((restoredMode == SessionMode::host && restoredHostConfiguration.port == 0)
+            || (restoredMode == SessionMode::client
+                && (restoredJoinConfiguration.host.empty() || restoredJoinConfiguration.port == 0)))
+        {
+            error = "The saved competitive connection details are incomplete.";
+            return false;
+        }
+
+        Stop();
+        _impl->state = std::move(*restoredState);
+        _impl->mode = restoredMode;
+        _impl->localRole = restoredRole;
+        _impl->localParticipantId = restoredParticipantId;
+        _impl->hostConfiguration = restoredHostConfiguration;
+        _impl->joinConfiguration = restoredJoinConfiguration;
+        _impl->scenarioLoaded = true;
+        _impl->constructionSpend = std::max<money64>(0, body.value("constructionSpend", 0LL));
+        _impl->pendingMisinformationCancellations = std::min<uint32_t>(
+            1024, body.value("pendingMisinformationCancellations", 0u));
+        _impl->lastReportedDay = GetCurrentLocalDay();
+        _impl->openWindowAfterRestore = true;
+
+        Config::Get().network.competitiveIdentity = restoredIdentityKey;
+        Config::Save();
+
+        if (body.contains("localEffects") && body["localEffects"].is_array())
+        {
+            for (const auto& value : body["localEffects"])
+            {
+                auto effect = ActiveEffectFromJson(value);
+                if (!effect.has_value() || !effect->delivered || effect->targetId != restoredParticipantId)
+                    continue;
+                const auto authoritative = std::find_if(
+                    _impl->state.effects.begin(), _impl->state.effects.end(),
+                    [&](const auto& current) { return current.id == effect->id && current.delivered; });
+                if (authoritative != _impl->state.effects.end())
+                    _impl->localEffects.emplace(effect->id, *effect);
+            }
+        }
+        if (body.contains("localVandals") && body["localVandals"].is_array())
+        {
+            for (const auto& value : body["localVandals"])
+            {
+                if (!value.is_object())
+                    continue;
+                const auto effectId = value.value("effectId", 0u);
+                const auto guestIdValue = value.value("guestId", EntityId::GetNull().ToUnderlying());
+                const auto quota = value.value("remainingQuota", uint16_t{});
+                const auto effect = _impl->localEffects.find(effectId);
+                const auto guestId = EntityId::FromUnderlying(guestIdValue);
+                if (effect != _impl->localEffects.end() && effect->second.ability == Ability::vandal && quota > 0
+                    && getGameState().entities.getEntity<Guest>(guestId) != nullptr)
+                    _impl->localVandals.push_back({ effectId, guestId, quota });
+            }
+        }
+
+        if (_impl->mode == SessionMode::host)
+        {
+            for (auto& participant : _impl->state.participants)
+            {
+                participant.online = participant.id == _impl->localParticipantId;
+                if (!participant.online)
+                    participant.ready = false;
+            }
+            for (auto iterator = _impl->state.effects.begin(); iterator != _impl->state.effects.end();)
+            {
+                if (iterator->delivered)
+                {
+                    ++iterator;
+                    continue;
+                }
+                if (auto* score = FindScore(_impl->state, iterator->sourceId))
+                    score->competitiveCash += iterator->reservedCost;
+                iterator = _impl->state.effects.erase(iterator);
+            }
+
+            _impl->listener = Network::CreateTcpSocket();
+            try
+            {
+                _impl->listener->Listen(restoredHostConfiguration.listenAddress, restoredHostConfiguration.port);
+            }
+            catch (const std::exception& exception)
+            {
+                _impl->SetError(exception.what());
+                _impl->EnsurePauseState();
+                error = "The park was restored, but its competitive host port could not be reopened: "
+                    + std::string(exception.what());
+                return false;
+            }
+            _impl->status = ConnectionStatus::online;
+            _impl->advertiser = Network::CreateServerAdvertiser(
+                restoredHostConfiguration.port, [impl = _impl.get()] { return impl->GetServerInfo(); },
+                [impl = _impl.get()] { return CountCompetingParks(impl->state); },
+                [impl = _impl.get()] {
+                    return json_t{
+                        { "gameMode", "competitive" },
+                        { "phase", PhaseName(impl->state.phase) },
+                        { "scenario", impl->state.scenario.name },
+                    };
+                });
+            if (_impl->state.phase == Phase::running)
+                _impl->IngestMetrics(_impl->localParticipantId, CollectParkMetrics());
+        }
+        else
+        {
+            if (auto* participant = FindParticipant(_impl->state, _impl->localParticipantId))
+                participant->online = false;
+            _impl->BeginClientConnection(true);
+        }
+        _impl->EnsurePauseState();
+        return true;
+    }
+
     bool Session::Forfeit(ParticipantId participantId, std::string& error)
     {
         if (_impl->mode != SessionMode::host || _impl->state.phase == Phase::finished)
@@ -1844,6 +2081,16 @@ namespace OpenRCT2::Competitive
     {
         GetSession().RecordConstructionSpend(cost);
     }
+
+    std::string ExportParkStorage()
+    {
+        return GetSession().ExportParkStorage();
+    }
+
+    bool RestoreParkStorage(std::string_view storage, std::string& error)
+    {
+        return GetSession().RestoreParkStorage(storage, error);
+    }
 #else
     struct Session::Impl
     {
@@ -1888,6 +2135,8 @@ namespace OpenRCT2::Competitive
     money64 Session::GetConstructionSpend() const { return 0; }
     bool Session::CanSpendConstruction(money64) const { return true; }
     void Session::RecordConstructionSpend(money64) {}
+    std::string Session::ExportParkStorage() const { return {}; }
+    bool Session::RestoreParkStorage(std::string_view, std::string& error) { error = _impl->error; return false; }
     bool Session::Forfeit(ParticipantId, std::string& error) { error = _impl->error; return false; }
     bool Session::CloseEarly(std::string& error) { error = _impl->error; return false; }
     Session& GetSession() { static Session session; return session; }
@@ -1901,5 +2150,7 @@ namespace OpenRCT2::Competitive
     void OnVandalDamage(OpenRCT2::Guest&) {}
     bool CanSpendConstruction(money64) { return true; }
     void RecordConstructionSpend(money64) {}
+    std::string ExportParkStorage() { return {}; }
+    bool RestoreParkStorage(std::string_view, std::string& error) { error = "Networking is disabled in this build."; return false; }
 #endif
 } // namespace OpenRCT2::Competitive
