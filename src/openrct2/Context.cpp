@@ -29,6 +29,7 @@
 #include "audio/Audio.h"
 #include "audio/AudioContext.h"
 #include "config/Config.h"
+#include "competitive/CompetitiveSession.h"
 #include "core/BackgroundWorker.hpp"
 #include "core/Console.hpp"
 #include "core/File.h"
@@ -1274,6 +1275,7 @@ namespace OpenRCT2
             UpdateTimeAccumulators(deltaTime);
 
             Network::Update();
+            Competitive::Update();
 
             if (useVariableFrame)
             {

@@ -9,7 +9,10 @@
 
 #pragma once
 
+#include "../core/JsonFwd.hpp"
+
 #include <cstdint>
+#include <functional>
 #include <memory>
 
 namespace OpenRCT2::Network
@@ -33,4 +36,7 @@ namespace OpenRCT2::Network
     };
 
     [[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);
+    [[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(
+        uint16_t port, std::function<json_t()> serverInfoProvider, std::function<uint32_t()> playerCountProvider,
+        std::function<json_t()> gameInfoProvider);
 } // namespace OpenRCT2::Network

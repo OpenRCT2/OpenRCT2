@@ -9,6 +9,8 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/competitive/CompetitiveModel.h>
+#include <openrct2/competitive/CompetitiveProtocol.h>
+#include <openrct2/core/Json.hpp>
 
 using namespace OpenRCT2::Competitive;
 
@@ -99,3 +101,29 @@ TEST(CompetitiveTests, WinnerUsesMetricThenPointsThenStableId)
     EXPECT_EQ(ChooseWinner(scores, participants, Metric::guests), 10);
 }
 
+TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
+{
+    MatchState state;
+    state.matchId = "match-one";
+    state.name = "Forest Frontiers Competition";
+    state.phase = Phase::running;
+    state.hostId = 10;
+    state.startLocalDay = 1;
+    state.scenario = { "forest.sc6", "Forest Frontiers", "012345", 128, 128, false };
+    state.participants.push_back(
+        { 10, "host-key", "Host Park", Role::host, true, false, false, false, 0, 1, state.scenario });
+    state.scores.push_back({ .participantId = 10, .points = 123, .competitiveCash = 19000.00_GBP });
+    state.reports.push_back({ 10, { .localDay = 3, .rating = 700, .guests = 300 }, {}, 3 });
+    state.cooldowns.push_back({ 10, Ability::poison, 2 });
+    state.effects.push_back({ 1, Ability::misinformation, 10, 20, -1, true, 1800.00_GBP, 3, 17, 200 });
+
+    const auto parsed = MatchStateFromJson(ToJson(state));
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->matchId, state.matchId);
+    EXPECT_EQ(parsed->scenario.contentHash, state.scenario.contentHash);
+    EXPECT_EQ(parsed->participants.at(0).identityKey, "host-key");
+    EXPECT_EQ(parsed->scores.at(0).points, 123);
+    EXPECT_EQ(parsed->reports.at(0).lastScoredDay, 3u);
+    EXPECT_EQ(parsed->cooldowns.at(0).ability, Ability::poison);
+    EXPECT_EQ(parsed->effects.at(0).endsAtDay, 17u);
+}

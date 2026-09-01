@@ -37,6 +37,9 @@
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
+#include <cstdio>
+#include <random>
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
@@ -492,6 +495,15 @@ namespace OpenRCT2::Config
 
             auto model = &_config.network;
             model->playerName = std::move(playerName);
+            model->competitiveIdentity = reader->GetString("competitive_identity", "");
+            if (model->competitiveIdentity.empty())
+            {
+                std::random_device random;
+                char identity[33]{};
+                snprintf(
+                    identity, sizeof(identity), "%08x%08x%08x%08x", random(), random(), random(), random());
+                model->competitiveIdentity = identity;
+            }
             model->defaultPort = reader->GetInt32("default_port", ::Network::kDefaultPort);
             model->listenAddress = reader->GetString("listen_address", "");
             model->defaultPassword = reader->GetString("default_password", "");
@@ -519,6 +531,7 @@ namespace OpenRCT2::Config
         auto model = &_config.network;
         writer->WriteSection("network");
         writer->WriteString("player_name", model->playerName);
+        writer->WriteString("competitive_identity", model->competitiveIdentity);
         writer->WriteInt32("default_port", model->defaultPort);
         writer->WriteString("listen_address", model->listenAddress);
         writer->WriteString("default_password", model->defaultPassword);

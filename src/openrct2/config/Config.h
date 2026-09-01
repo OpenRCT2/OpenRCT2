@@ -170,6 +170,7 @@ namespace OpenRCT2::Config
     struct Network
     {
         u8string playerName;
+        u8string competitiveIdentity;
         int32_t defaultPort;
         u8string listenAddress;
         u8string defaultPassword;

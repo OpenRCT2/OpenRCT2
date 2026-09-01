@@ -50,6 +50,9 @@ namespace OpenRCT2::Network
     {
     private:
         uint16_t _port;
+        std::function<json_t()> _serverInfoProvider;
+        std::function<uint32_t()> _playerCountProvider;
+        std::function<json_t()> _gameInfoProvider;
 
         std::unique_ptr<IUdpSocket> _lanListener;
         std::shared_future<void> _currentRequest;
@@ -72,9 +75,14 @@ namespace OpenRCT2::Network
     #endif
 
     public:
-        explicit NetworkServerAdvertiser(uint16_t port)
+        explicit NetworkServerAdvertiser(
+            uint16_t port, std::function<json_t()> serverInfoProvider = {},
+            std::function<uint32_t()> playerCountProvider = {}, std::function<json_t()> gameInfoProvider = {})
         {
             _port = port;
+            _serverInfoProvider = std::move(serverInfoProvider);
+            _playerCountProvider = std::move(playerCountProvider);
+            _gameInfoProvider = std::move(gameInfoProvider);
             _lanListener = CreateUdpSocket();
     #ifndef DISABLE_HTTP
             _key = generateAdvertiseKey();
@@ -144,7 +152,7 @@ namespace OpenRCT2::Network
 
         json_t getBroadcastJson()
         {
-            json_t root = GetServerInfoAsJson();
+            json_t root = _serverInfoProvider ? _serverInfoProvider() : GetServerInfoAsJson();
             root["port"] = _port;
             return root;
         }
@@ -315,30 +323,37 @@ namespace OpenRCT2::Network
 
         json_t getHeartbeatJson()
         {
-            uint32_t numPlayers = GetNumVisiblePlayers();
+            uint32_t numPlayers = _playerCountProvider ? _playerCountProvider() : GetNumVisiblePlayers();
 
             json_t root = {
                 { "token", _token },
                 { "players", numPlayers },
             };
 
-            const auto& gameState = getGameState();
-            const auto& date = GetDate();
-            json_t mapSize = { { "x", gameState.mapSize.x - 2 }, { "y", gameState.mapSize.y - 2 } };
-            json_t gameInfo = {
-                { "mapSize", mapSize },
-                { "day", date.GetMonthTicks() },
-                { "month", date.GetMonthsElapsed() },
-                { "guests", gameState.park.numGuestsInPark },
-                { "parkValue", gameState.park.value },
-            };
-
-            if (!gameState.park.flags.has(ParkFlag::noMoney))
+            if (_gameInfoProvider)
             {
-                gameInfo["cash"] = gameState.park.cash;
+                root["gameInfo"] = _gameInfoProvider();
             }
+            else
+            {
+                const auto& gameState = getGameState();
+                const auto& date = GetDate();
+                json_t mapSize = { { "x", gameState.mapSize.x - 2 }, { "y", gameState.mapSize.y - 2 } };
+                json_t gameInfo = {
+                    { "mapSize", mapSize },
+                    { "day", date.GetMonthTicks() },
+                    { "month", date.GetMonthsElapsed() },
+                    { "guests", gameState.park.numGuestsInPark },
+                    { "parkValue", gameState.park.value },
+                };
 
-            root["gameInfo"] = gameInfo;
+                if (!gameState.park.flags.has(ParkFlag::noMoney))
+                {
+                    gameInfo["cash"] = gameState.park.cash;
+                }
+
+                root["gameInfo"] = gameInfo;
+            }
 
             return root;
         }
@@ -378,6 +393,14 @@ namespace OpenRCT2::Network
     std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)
     {
         return std::make_unique<NetworkServerAdvertiser>(port);
+    }
+
+    std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(
+        uint16_t port, std::function<json_t()> serverInfoProvider, std::function<uint32_t()> playerCountProvider,
+        std::function<json_t()> gameInfoProvider)
+    {
+        return std::make_unique<NetworkServerAdvertiser>(
+            port, std::move(serverInfoProvider), std::move(playerCountProvider), std::move(gameInfoProvider));
     }
 } // namespace OpenRCT2::Network
 

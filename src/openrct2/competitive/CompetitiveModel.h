@@ -145,6 +145,7 @@ namespace OpenRCT2::Competitive
     struct Participant
     {
         ParticipantId id = kInvalidParticipantId;
+        std::string identityKey;
         std::string name;
         Role role = Role::player;
         bool online = false;
@@ -181,4 +182,3 @@ namespace OpenRCT2::Competitive
         const std::vector<Score>& scores, const std::vector<Participant>& participants, Metric metric);
     [[nodiscard]] bool TargetReached(const Score& score, const MatchRules& rules);
 } // namespace OpenRCT2::Competitive
-
