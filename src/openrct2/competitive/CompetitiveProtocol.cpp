@@ -184,6 +184,11 @@ namespace OpenRCT2::Competitive
 
     json_t ToJson(const ParkMetrics& value)
     {
+        json_t stalls = json_t::array();
+        for (const auto& stall : value.openFoodDrinkStalls)
+        {
+            stalls.push_back({ { "rideId", stall.rideId }, { "name", stall.name } });
+        }
         return {
             { "localYear", value.localYear },
             { "monthsElapsed", value.monthsElapsed },
@@ -196,6 +201,23 @@ namespace OpenRCT2::Competitive
             { "constructionSpend", value.constructionSpend },
             { "rideCustomers", value.rideCustomers },
             { "stallCustomers", value.stallCustomers },
+            { "openFoodDrinkStalls", std::move(stalls) },
+        };
+    }
+
+    json_t ToJson(const ActiveEffect& value)
+    {
+        return {
+            { "id", value.id },
+            { "ability", value.ability },
+            { "sourceId", value.sourceId },
+            { "targetId", value.targetId },
+            { "targetRideId", value.targetRideId },
+            { "delivered", value.delivered },
+            { "reservedCost", value.reservedCost },
+            { "startsAtDay", value.startsAtDay },
+            { "endsAtDay", value.endsAtDay },
+            { "potency", value.potency },
         };
     }
 
@@ -239,18 +261,7 @@ namespace OpenRCT2::Competitive
         json_t effects = json_t::array();
         for (const auto& effect : value.effects)
         {
-            effects.push_back({
-                { "id", effect.id },
-                { "ability", effect.ability },
-                { "sourceId", effect.sourceId },
-                { "targetId", effect.targetId },
-                { "targetRideId", effect.targetRideId },
-                { "delivered", effect.delivered },
-                { "reservedCost", effect.reservedCost },
-                { "startsAtDay", effect.startsAtDay },
-                { "endsAtDay", effect.endsAtDay },
-                { "potency", effect.potency },
-            });
+            effects.push_back(ToJson(effect));
         }
 
         json_t result = {
@@ -348,11 +359,47 @@ namespace OpenRCT2::Competitive
             Number<uint64_t>(value, "rideCustomers"),
             Number<uint64_t>(value, "stallCustomers"),
         };
+        if (value.contains("openFoodDrinkStalls") && value["openFoodDrinkStalls"].is_array())
+        {
+            for (const auto& item : value["openFoodDrinkStalls"])
+            {
+                if (!item.is_object())
+                    continue;
+                ParkMetrics::Stall stall{ Number<int32_t>(item, "rideId", -1), String(item, "name") };
+                if (stall.rideId >= 0 && !stall.name.empty() && stall.name.size() <= 128)
+                    result.openFoodDrinkStalls.push_back(std::move(stall));
+            }
+        }
         if (result.localYear == 0 || result.rating > 999 || result.localDay == 0 || result.constructionSpend < 0)
         {
             return std::nullopt;
         }
         return result;
+    }
+
+    std::optional<ActiveEffect> ActiveEffectFromJson(const json_t& value)
+    {
+        if (!value.is_object())
+            return std::nullopt;
+        ActiveEffect effect{
+            Number<uint32_t>(value, "id"),
+            Number<Ability>(value, "ability", Ability::vandal),
+            Number<ParticipantId>(value, "sourceId"),
+            Number<ParticipantId>(value, "targetId"),
+            Number<int32_t>(value, "targetRideId", -1),
+            Boolean(value, "delivered"),
+            Number<money64>(value, "reservedCost"),
+            Number<uint32_t>(value, "startsAtDay"),
+            Number<uint32_t>(value, "endsAtDay"),
+            Number<uint16_t>(value, "potency"),
+        };
+        if (effect.id == 0 || effect.ability > Ability::poison || effect.sourceId == kInvalidParticipantId
+            || effect.targetId == kInvalidParticipantId || effect.sourceId == effect.targetId
+            || effect.endsAtDay <= effect.startsAtDay || effect.reservedCost < 0)
+        {
+            return std::nullopt;
+        }
+        return effect;
     }
 
     std::optional<MatchState> MatchStateFromJson(const json_t& value)
@@ -444,22 +491,10 @@ namespace OpenRCT2::Competitive
         {
             for (const auto& item : value["effects"])
             {
-                const ActiveEffect effect{
-                    Number<uint32_t>(item, "id"),
-                    Number<Ability>(item, "ability", Ability::vandal),
-                    Number<ParticipantId>(item, "sourceId"),
-                    Number<ParticipantId>(item, "targetId"),
-                    Number<int32_t>(item, "targetRideId", -1),
-                    Boolean(item, "delivered"),
-                    Number<money64>(item, "reservedCost"),
-                    Number<uint32_t>(item, "startsAtDay"),
-                    Number<uint32_t>(item, "endsAtDay"),
-                    Number<uint16_t>(item, "potency"),
-                };
-                if (effect.id == 0 || effect.ability > Ability::poison || effect.sourceId == kInvalidParticipantId
-                    || effect.targetId == kInvalidParticipantId)
+                auto effect = ActiveEffectFromJson(item);
+                if (!effect.has_value())
                     return std::nullopt;
-                result.effects.push_back(effect);
+                result.effects.push_back(*effect);
             }
         }
         return result;

@@ -10,10 +10,16 @@
 #pragma once
 
 #include "CompetitiveState.h"
+#include "../Identifiers.h"
 
 #include <memory>
 #include <string>
 #include <vector>
+
+namespace OpenRCT2
+{
+    struct Guest;
+}
 
 namespace OpenRCT2::Competitive
 {
@@ -78,8 +84,18 @@ namespace OpenRCT2::Competitive
         [[nodiscard]] bool SetReady(bool ready, std::string& error);
         [[nodiscard]] bool StartMatch(std::string& error);
         [[nodiscard]] bool UpdateRules(const MatchRules& rules, std::string& error);
+        [[nodiscard]] bool UseAbility(Ability ability, ParticipantId targetId, int32_t targetRideId, std::string& error);
         [[nodiscard]] bool Forfeit(ParticipantId participantId, std::string& error);
         [[nodiscard]] bool CloseEarly(std::string& error);
+
+        void UpdateGuestGenerationInterference();
+        [[nodiscard]] bool ConsumeGuestArrivalCancellation();
+        void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
+        void OnVandalDamage(OpenRCT2::Guest& guest);
+        [[nodiscard]] money64 GetAvailableCompetitiveCash() const;
+        [[nodiscard]] money64 GetConstructionSpend() const;
+        [[nodiscard]] bool CanSpendConstruction(money64 cost) const;
+        void RecordConstructionSpend(money64 cost);
 
     private:
         struct Impl;
@@ -92,5 +108,11 @@ namespace OpenRCT2::Competitive
     [[nodiscard]] ScenarioIdentity GetCurrentScenarioIdentity();
     [[nodiscard]] ScenarioIdentity GetScenarioIdentityForPath(const std::string& path);
     [[nodiscard]] ParkMetrics CollectParkMetrics();
-} // namespace OpenRCT2::Competitive
 
+    void UpdateGuestGenerationInterference();
+    [[nodiscard]] bool ConsumeGuestArrivalCancellation();
+    void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
+    void OnVandalDamage(OpenRCT2::Guest& guest);
+    [[nodiscard]] bool CanSpendConstruction(money64 cost);
+    void RecordConstructionSpend(money64 cost);
+} // namespace OpenRCT2::Competitive

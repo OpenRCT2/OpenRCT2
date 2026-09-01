@@ -16,6 +16,7 @@
 #include "../SpriteIds.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
+#include "../competitive/CompetitiveSession.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
@@ -1661,6 +1662,8 @@ namespace OpenRCT2
         ride.curNumCustomers++;
         ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
         ride.windowInvalidateFlags.set(RideInvalidateFlag::customers);
+
+        Competitive::OnGuestPurchase(guest, ride.id, shopItemDescriptor.IsFoodOrDrink());
 
 #ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -6316,6 +6319,8 @@ namespace OpenRCT2
         }
 
         tileElement->setIsBroken(true);
+
+        Competitive::OnVandalDamage(guest);
 
         MapInvalidateTileZoom1({ guest.nextLoc, tileElement->getBaseZ(), tileElement->getBaseZ() + 32 });
 

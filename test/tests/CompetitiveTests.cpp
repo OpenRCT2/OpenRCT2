@@ -113,7 +113,9 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     state.participants.push_back(
         { 10, "host-key", "Host Park", Role::host, true, false, false, false, 0, 1, state.scenario });
     state.scores.push_back({ .participantId = 10, .points = 123, .competitiveCash = 19000.00_GBP });
-    state.reports.push_back({ 10, { .localDay = 3, .rating = 700, .guests = 300 }, {}, 3 });
+    ParkMetrics reportMetrics{ .localDay = 3, .rating = 700, .guests = 300 };
+    reportMetrics.openFoodDrinkStalls.push_back({ 7, "Chief Beef" });
+    state.reports.push_back({ 10, reportMetrics, {}, 3 });
     state.cooldowns.push_back({ 10, Ability::poison, 2 });
     state.effects.push_back({ 1, Ability::misinformation, 10, 20, -1, true, 1800.00_GBP, 3, 17, 200 });
 
@@ -124,6 +126,7 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     EXPECT_EQ(parsed->participants.at(0).identityKey, "host-key");
     EXPECT_EQ(parsed->scores.at(0).points, 123);
     EXPECT_EQ(parsed->reports.at(0).lastScoredDay, 3u);
+    EXPECT_EQ(parsed->reports.at(0).metrics.openFoodDrinkStalls.at(0).rideId, 7);
     EXPECT_EQ(parsed->cooldowns.at(0).ability, Ability::poison);
     EXPECT_EQ(parsed->effects.at(0).endsAtDay, 17u);
 }

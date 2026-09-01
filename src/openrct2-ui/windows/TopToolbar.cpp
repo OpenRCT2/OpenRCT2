@@ -506,6 +506,21 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[5] = Dropdown::MenuLabel(STR_SPEED_HYPER);
             }
 
+            uint8_t competitionSpeedLimit = UINT8_MAX;
+            const auto& competition = Competitive::GetSession();
+            const auto* competitionState = competition.GetState();
+            const auto* localParticipant = competition.GetLocalParticipant();
+            if (competitionState != nullptr && competitionState->phase == Competitive::Phase::running
+                && localParticipant != nullptr && localParticipant->role != Competitive::Role::spectator
+                && !localParticipant->finished && !localParticipant->forfeited)
+            {
+                competitionSpeedLimit = competitionState->rules.maxGameSpeed;
+                for (uint8_t speed = competitionSpeedLimit + 1; speed <= 4; speed++)
+                    gDropdown.items[speed - 1].setDisabled(true);
+                if (num_items == 6 && competitionSpeedLimit < 8)
+                    gDropdown.items[5].setDisabled(true);
+            }
+
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), { Dropdown::Flag::autoClose }, num_items);
@@ -1120,6 +1135,19 @@ namespace OpenRCT2::Ui::Windows
 
             const bool hasFinanceButton = !(getGameState().park.flags.has(ParkFlag::noMoney) || !config.toolbarShowFinances);
             widgets[WIDX_FINANCES].setVisible(hasFinanceButton);
+
+            const auto& competition = Competitive::GetSession();
+            const auto* competitionState = competition.GetState();
+            const auto* localParticipant = competition.GetLocalParticipant();
+            const bool activeCompetitor = competitionState != nullptr
+                && competitionState->phase == Competitive::Phase::running && localParticipant != nullptr
+                && localParticipant->role != Competitive::Role::spectator && !localParticipant->finished
+                && !localParticipant->forfeited;
+            if (activeCompetitor)
+            {
+                widgets[WIDX_CHEATS].setHidden();
+                widgets[WIDX_DEBUG].setHidden();
+            }
         }
 
         void ApplyEditorMode()

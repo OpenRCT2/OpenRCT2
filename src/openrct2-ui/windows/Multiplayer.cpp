@@ -29,6 +29,8 @@
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
 
+#include <algorithm>
+
 using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
@@ -184,12 +186,383 @@ namespace OpenRCT2::Ui::Windows
         return Network::IsServerPlayerInvisible() && !Config::Get().general.debuggingTools;
     }
 
+    static const Competitive::AbilityRule& GetCompetitiveAbilityRule(
+        const Competitive::MatchRules& rules, Competitive::Ability ability)
+    {
+        switch (ability)
+        {
+            case Competitive::Ability::vandal:
+                return rules.vandal;
+            case Competitive::Ability::misinformation:
+                return rules.misinformation;
+            case Competitive::Ability::poison:
+                return rules.poison;
+        }
+        return rules.vandal;
+    }
+
+    enum CompetitiveActionsWidgetIdx : WidgetIndex
+    {
+        CAWIDX_BACKGROUND,
+        CAWIDX_TITLE,
+        CAWIDX_CLOSE,
+        CAWIDX_VANDAL,
+        CAWIDX_MISINFORMATION,
+        CAWIDX_STALL,
+        CAWIDX_STALL_DROPDOWN,
+        CAWIDX_POISON,
+        CAWIDX_CANCEL,
+    };
+
+    static constexpr ScreenSize kCompetitiveActionsWindowSize = { 520, 270 };
+    static constexpr auto kCompetitiveActionsWidgets = makeWidgets(
+        makeWindowShim(kStringIdNone, kCompetitiveActionsWindowSize),
+        makeWidget({ 12, 47 }, { 205, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 12, 101 }, { 205, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 145, 164 }, { 360, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 493, 165 }, { 11, 12 }, WidgetType::button, WindowColour::secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({ 12, 184 }, { 205, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 408, 244 }, { 100, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
+
+    class CompetitiveActionsWindow final : public Window
+    {
+    private:
+        Competitive::ParticipantId _targetId = Competitive::kInvalidParticipantId;
+        std::vector<Competitive::ParkMetrics::Stall> _stalls;
+        int32_t _selectedStall = -1;
+        std::string _title;
+        std::string _vandalLabel;
+        std::string _misinformationLabel;
+        std::string _poisonLabel;
+        std::string _stallLabel;
+        std::string _vandalProblem;
+        std::string _misinformationProblem;
+        std::string _poisonProblem;
+
+        std::string GetProblem(Competitive::Ability ability, int32_t targetRideId) const
+        {
+            const auto& session = Competitive::GetSession();
+            const auto* state = session.GetState();
+            const auto* local = session.GetLocalParticipant();
+            const auto* target = state == nullptr ? nullptr : Competitive::FindParticipant(*state, _targetId);
+            if (state == nullptr || state->phase != Competitive::Phase::running || local == nullptr
+                || local->role == Competitive::Role::spectator || local->finished || local->forfeited)
+                return "Rival actions are available only while your park is competing.";
+            if (target == nullptr || target->id == local->id || !Competitive::CanTarget(*target))
+                return "This rival is offline or has already finished.";
+
+            const auto& rule = GetCompetitiveAbilityRule(state->rules, ability);
+            if (!rule.enabled)
+                return "Disabled in this competition's rules.";
+            if (session.GetAvailableCompetitiveCash() < rule.cost)
+                return "Not enough competitive cash.";
+
+            const auto* localReport = Competitive::FindReport(*state, local->id);
+            const auto cooldown = std::find_if(state->cooldowns.begin(), state->cooldowns.end(), [&](const auto& value) {
+                return value.participantId == local->id && value.ability == ability;
+            });
+            if (localReport != nullptr && cooldown != state->cooldowns.end()
+                && localReport->metrics.localYear < cooldown->availableYear)
+                return "On cooldown until your local Year " + std::to_string(cooldown->availableYear) + ".";
+
+            const auto duplicate = std::find_if(state->effects.begin(), state->effects.end(), [&](const auto& effect) {
+                if (effect.targetId != _targetId || effect.ability != ability)
+                    return false;
+                return ability != Competitive::Ability::poison || effect.targetRideId == targetRideId;
+            });
+            if (duplicate != state->effects.end())
+                return "Already active until rival local day " + std::to_string(duplicate->endsAtDay) + ".";
+            if (ability == Competitive::Ability::poison && targetRideId < 0)
+                return _stalls.empty() ? "This rival has no open food or drink stall." : "Choose a target stall first.";
+            return {};
+        }
+
+        void SendAbility(Competitive::Ability ability, int32_t targetRideId)
+        {
+            std::string error;
+            if (!Competitive::GetSession().UseAbility(ability, _targetId, targetRideId, error))
+            {
+                ErrorOpen("Rival action failed", error);
+                return;
+            }
+            close();
+        }
+
+        void ShowStallDropdown()
+        {
+            if (_stalls.empty())
+                return;
+            const auto& widget = widgets[CAWIDX_STALL];
+            WindowDropdownShowTextCustomWidth(
+                windowPos + ScreenCoordsXY{ widget.left, widget.top }, widget.height(), colours[1], 0,
+                { Dropdown::Flag::autoClose }, static_cast<int32_t>(_stalls.size()), widget.width());
+            for (size_t index = 0; index < _stalls.size(); index++)
+            {
+                gDropdown.items[index] = Dropdown::MenuLabel(_stalls[index].name.c_str());
+                gDropdown.items[index].setChecked(static_cast<int32_t>(index) == _selectedStall);
+            }
+        }
+
+    public:
+        void SetTarget(Competitive::ParticipantId targetId)
+        {
+            _targetId = targetId;
+            const auto* state = Competitive::GetSession().GetState();
+            const auto* report = state == nullptr ? nullptr : Competitive::FindReport(*state, targetId);
+            _stalls = report == nullptr ? std::vector<Competitive::ParkMetrics::Stall>{}
+                                        : report->metrics.openFoodDrinkStalls;
+            _selectedStall = _stalls.empty() ? -1 : 0;
+            invalidate();
+        }
+
+        void onOpen() override
+        {
+            setWidgets(kCompetitiveActionsWidgets);
+            WindowInitScrollWidgets(*this);
+        }
+
+        void onPrepareDraw() override
+        {
+            const auto& session = Competitive::GetSession();
+            const auto* state = session.GetState();
+            const auto* target = state == nullptr ? nullptr : Competitive::FindParticipant(*state, _targetId);
+            _title = target == nullptr ? "Rival actions" : "Rival actions — " + target->name;
+            widgets[CAWIDX_TITLE].setString(_title.c_str());
+
+            const auto unavailableRule = Competitive::AbilityRule{};
+            const auto& vandal = state == nullptr ? unavailableRule : state->rules.vandal;
+            const auto& misinformation = state == nullptr ? unavailableRule : state->rules.misinformation;
+            const auto& poison = state == nullptr ? unavailableRule : state->rules.poison;
+            _vandalLabel = "Send vandal — " + FormatStringID(STR_CURRENCY_FORMAT, vandal.cost);
+            _misinformationLabel = "Run misinformation — " + FormatStringID(STR_CURRENCY_FORMAT, misinformation.cost);
+            _poisonLabel = "Poison selected stall — " + FormatStringID(STR_CURRENCY_FORMAT, poison.cost);
+            _stallLabel = _selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size())
+                ? _stalls[_selectedStall].name
+                : (_stalls.empty() ? "No open food or drink stalls reported" : "Choose a stall");
+            widgets[CAWIDX_VANDAL].setString(_vandalLabel.c_str());
+            widgets[CAWIDX_MISINFORMATION].setString(_misinformationLabel.c_str());
+            widgets[CAWIDX_POISON].setString(_poisonLabel.c_str());
+            widgets[CAWIDX_STALL].setString(_stallLabel.c_str());
+
+            const auto targetRideId = _selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size())
+                ? _stalls[_selectedStall].rideId
+                : -1;
+            _vandalProblem = GetProblem(Competitive::Ability::vandal, -1);
+            _misinformationProblem = GetProblem(Competitive::Ability::misinformation, -1);
+            _poisonProblem = GetProblem(Competitive::Ability::poison, targetRideId);
+            setWidgetDisabled(CAWIDX_VANDAL, !_vandalProblem.empty());
+            setWidgetDisabled(CAWIDX_MISINFORMATION, !_misinformationProblem.empty());
+            setWidgetDisabled(CAWIDX_STALL, _stalls.empty());
+            setWidgetDisabled(CAWIDX_STALL_DROPDOWN, _stalls.empty());
+            setWidgetDisabled(CAWIDX_POISON, !_poisonProblem.empty());
+        }
+
+        void onMouseUp(WidgetIndex widgetIndex) override
+        {
+            switch (widgetIndex)
+            {
+                case CAWIDX_CLOSE:
+                case CAWIDX_CANCEL:
+                    close();
+                    break;
+                case CAWIDX_VANDAL:
+                    SendAbility(Competitive::Ability::vandal, -1);
+                    break;
+                case CAWIDX_MISINFORMATION:
+                    SendAbility(Competitive::Ability::misinformation, -1);
+                    break;
+                case CAWIDX_POISON:
+                    if (_selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size()))
+                        SendAbility(Competitive::Ability::poison, _stalls[_selectedStall].rideId);
+                    break;
+            }
+        }
+
+        void onMouseDown(WidgetIndex widgetIndex) override
+        {
+            if (widgetIndex == CAWIDX_STALL || widgetIndex == CAWIDX_STALL_DROPDOWN)
+                ShowStallDropdown();
+        }
+
+        void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        {
+            if ((widgetIndex == CAWIDX_STALL || widgetIndex == CAWIDX_STALL_DROPDOWN) && selectedIndex >= 0
+                && selectedIndex < static_cast<int32_t>(_stalls.size()))
+            {
+                _selectedStall = selectedIndex;
+                invalidate();
+            }
+        }
+
+        void onDraw(RenderTarget& rt) override
+        {
+            drawWidgets(rt);
+            const auto* state = Competitive::GetSession().GetState();
+            const auto cash = Competitive::GetSession().GetAvailableCompetitiveCash();
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ 12, 27 },
+                "Available competitive cash: " + FormatStringID(STR_CURRENCY_FORMAT, cash), { colours[1] });
+
+            const auto vandalDescription = _vandalProblem.empty()
+                ? "A named guest uses normal vandal and security behaviour; leaves after "
+                    + std::to_string(state->rules.vandal.potency) + " breakages or "
+                    + std::to_string(state->rules.vandal.durationDays) + " target-park days."
+                : _vandalProblem;
+            const auto misinformationDescription = _misinformationProblem.empty()
+                ? "For " + std::to_string(state->rules.misinformation.durationDays)
+                    + " target-park days, removes arrivals at the full inverse strength of half-price entry ("
+                    + std::to_string(state->rules.misinformation.potency) + "/65535 per generation tick)."
+                : _misinformationProblem;
+            const auto poisonDescription = _poisonProblem.empty()
+                ? "For " + std::to_string(state->rules.poison.durationDays) + " target-park days, each exact successful purchase has a "
+                    + std::to_string(state->rules.poison.potency) + "% chance to give that buyer maximum nausea."
+                : _poisonProblem;
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 225, 48 }, 282, vandalDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 225, 102 }, 282, misinformationDescription, { colours[1] });
+            drawText(rt, windowPos + ScreenCoordsXY{ 12, 166 }, "Target stall", { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 225, 184 }, 282, poisonDescription, { colours[1] });
+        }
+    };
+
+    enum class CompetitiveHostDecision : uint8_t
+    {
+        forfeitPark,
+        closeEarly,
+        leaveCompetition,
+    };
+
+    enum CompetitiveHostPromptWidgetIdx : WidgetIndex
+    {
+        CHPWIDX_BACKGROUND,
+        CHPWIDX_TITLE,
+        CHPWIDX_CLOSE,
+        CHPWIDX_CONFIRM,
+        CHPWIDX_CANCEL,
+    };
+
+    static constexpr ScreenSize kCompetitiveHostPromptSize = { 380, 130 };
+    static constexpr auto kCompetitiveHostPromptWidgets = makeWidgets(
+        makeWindowShim(kStringIdNone, kCompetitiveHostPromptSize),
+        makeWidget({ 50, 104 }, { 130, 14 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 200, 104 }, { 130, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
+
+    class CompetitiveHostPromptWindow final : public Window
+    {
+    private:
+        CompetitiveHostDecision _decision = CompetitiveHostDecision::closeEarly;
+        Competitive::ParticipantId _targetId = Competitive::kInvalidParticipantId;
+        std::string _title;
+        std::string _message;
+        std::string _confirmLabel;
+
+    public:
+        void SetDecision(CompetitiveHostDecision decision, Competitive::ParticipantId targetId)
+        {
+            _decision = decision;
+            _targetId = targetId;
+            invalidate();
+        }
+
+        void onOpen() override
+        {
+            setWidgets(kCompetitiveHostPromptWidgets);
+            WindowInitScrollWidgets(*this);
+        }
+
+        void onPrepareDraw() override
+        {
+            const auto* state = Competitive::GetSession().GetState();
+            const auto* target = state == nullptr ? nullptr : Competitive::FindParticipant(*state, _targetId);
+            if (_decision == CompetitiveHostDecision::forfeitPark)
+            {
+                _title = "Confirm park forfeit";
+                _confirmLabel = "Forfeit park";
+                _message = "Forfeit " + (target == nullptr ? std::string("this park") : target->name)
+                    + "? It will be excluded from the result and cannot rejoin.";
+            }
+            else if (_decision == CompetitiveHostDecision::closeEarly)
+            {
+                _title = "Confirm early result";
+                _confirmLabel = "Calculate result now";
+                _message = "End the competition now? Every unfinished park's current score will be frozen and the winner calculated.";
+            }
+            else
+            {
+                const bool host = Competitive::GetSession().GetMode() == Competitive::SessionMode::host;
+                _title = "Confirm leaving competition";
+                _confirmLabel = "Leave competition";
+                _message = host
+                    ? "Leave and close the host session? Connected parks will pause and attempt to reconnect."
+                    : "Leave this competition? Your park will no longer be connected to the match.";
+            }
+            widgets[CHPWIDX_TITLE].setString(_title.c_str());
+            widgets[CHPWIDX_CONFIRM].setString(_confirmLabel.c_str());
+        }
+
+        void onMouseUp(WidgetIndex widgetIndex) override
+        {
+            if (widgetIndex == CHPWIDX_CLOSE || widgetIndex == CHPWIDX_CANCEL)
+            {
+                close();
+                return;
+            }
+            if (widgetIndex != CHPWIDX_CONFIRM)
+                return;
+            if (_decision == CompetitiveHostDecision::leaveCompetition)
+            {
+                Competitive::GetSession().Stop();
+                GetWindowManager()->CloseByClass(WindowClass::multiplayer);
+                close();
+                return;
+            }
+            std::string error;
+            auto& session = Competitive::GetSession();
+            const bool success = _decision == CompetitiveHostDecision::forfeitPark ? session.Forfeit(_targetId, error)
+                                                                                    : session.CloseEarly(error);
+            if (!success)
+            {
+                ErrorOpen("Host action failed", error);
+                return;
+            }
+            close();
+        }
+
+        void onDraw(RenderTarget& rt) override
+        {
+            drawWidgets(rt);
+            drawTextWrapped(
+                rt, windowPos + ScreenCoordsXY{ kCompetitiveHostPromptSize.width / 2, 42 },
+                kCompetitiveHostPromptSize.width - 30, _message, { colours[1], TextAlignment::centre });
+        }
+    };
+
+    static void CompetitiveActionsOpen(Competitive::ParticipantId targetId)
+    {
+        auto* windowMgr = GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::competitiveActions);
+        auto* window = windowMgr->Create<CompetitiveActionsWindow>(
+            WindowClass::competitiveActions, kCompetitiveActionsWindowSize,
+            { WindowFlag::centreScreen, WindowFlag::transparent });
+        window->SetTarget(targetId);
+    }
+
+    static void CompetitiveHostPromptOpen(CompetitiveHostDecision decision, Competitive::ParticipantId targetId)
+    {
+        auto* windowMgr = GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::competitiveHostPrompt);
+        auto* window = windowMgr->Create<CompetitiveHostPromptWindow>(
+            WindowClass::competitiveHostPrompt, kCompetitiveHostPromptSize,
+            { WindowFlag::centreScreen, WindowFlag::transparent });
+        window->SetDecision(decision, targetId);
+    }
+
     class MultiplayerWindow final : public Window
     {
     private:
         std::optional<ScreenSize> _windowInformationSize;
         uint8_t _selectedGroup{ 0 };
         std::vector<Competitive::ParticipantId> _competitionRows;
+        Competitive::ParticipantId _selectedCompetitionId = Competitive::kInvalidParticipantId;
         std::string _competitionTitle;
         std::string _competitionTabTooltip = "Competition leaderboard and lobby";
         std::string _placeHeader = "Place";
@@ -204,6 +577,12 @@ namespace OpenRCT2::Ui::Windows
         std::string _leaveText = "Leave competition";
 
     private:
+        const Competitive::Participant* getSelectedCompetitionParticipant() const
+        {
+            const auto* state = Competitive::GetSession().GetState();
+            return state == nullptr ? nullptr : Competitive::FindParticipant(*state, _selectedCompetitionId);
+        }
+
         void showGroupDropdown(WidgetIndex widgetIndex)
         {
             auto widget = &widgets[widgetIndex];
@@ -568,6 +947,7 @@ namespace OpenRCT2::Ui::Windows
             currentFrame = 0;
             numListItems = 0;
             selectedListItem = -1;
+            _selectedCompetitionId = Competitive::kInvalidParticipantId;
 
             setWidgets(window_multiplayer_page_widgets[page]);
             widgets[WIDX_TITLE].setString(WindowMultiplayerPageTitles[page]);
@@ -632,14 +1012,32 @@ namespace OpenRCT2::Ui::Windows
                                 ErrorOpen("Cannot start competition", error);
                             break;
                         case WIDX_COMP_ACTIONS:
-                            ErrorOpen("Rival actions", "Choose a rival action here once the native delivery controls are available.");
+                        {
+                            const auto* target = getSelectedCompetitionParticipant();
+                            const auto* local = session.GetLocalParticipant();
+                            if (target == nullptr || local == nullptr || target->id == local->id
+                                || !Competitive::CanTarget(*target))
+                            {
+                                ErrorOpen("Rival actions", "Select an online, unfinished rival park in the leaderboard.");
+                                break;
+                            }
+                            CompetitiveActionsOpen(target->id);
                             break;
+                        }
                         case WIDX_COMP_HOST_CONTROLS:
-                            ErrorOpen("Host controls", "Select an offline park in the leaderboard before forfeiting it, or close the match early.");
+                        {
+                            const auto* target = getSelectedCompetitionParticipant();
+                            const bool canForfeit = target != nullptr && target->id != session.GetLocalParticipantId()
+                                && target->role != Competitive::Role::spectator && !target->online && !target->finished
+                                && !target->forfeited;
+                            CompetitiveHostPromptOpen(
+                                canForfeit ? CompetitiveHostDecision::forfeitPark : CompetitiveHostDecision::closeEarly,
+                                canForfeit ? target->id : Competitive::kInvalidParticipantId);
                             break;
+                        }
                         case WIDX_COMP_LEAVE:
-                            session.Stop();
-                            close();
+                            CompetitiveHostPromptOpen(
+                                CompetitiveHostDecision::leaveCompetition, Competitive::kInvalidParticipantId);
                             break;
                     }
                     break;
@@ -814,12 +1212,26 @@ namespace OpenRCT2::Ui::Windows
                     const auto* state = session.GetState();
                     const auto* local = session.GetLocalParticipant();
                     const bool lobby = state != nullptr && state->phase == Competitive::Phase::lobby;
+                    const bool running = state != nullptr && state->phase == Competitive::Phase::running;
                     const bool host = session.GetMode() == Competitive::SessionMode::host;
                     const bool competitor = local != nullptr && local->role != Competitive::Role::spectator;
+                    const auto* selected = getSelectedCompetitionParticipant();
+                    const bool targetable = selected != nullptr && local != nullptr && selected->id != local->id
+                        && Competitive::CanTarget(*selected);
+                    const bool forfeitEligible = selected != nullptr && selected->id != session.GetLocalParticipantId()
+                        && selected->role != Competitive::Role::spectator && !selected->online && !selected->finished
+                        && !selected->forfeited;
                     widgets[WIDX_COMP_READY].setVisible(lobby && competitor);
                     widgets[WIDX_COMP_START].setVisible(lobby && host);
-                    widgets[WIDX_COMP_ACTIONS].setVisible(false);
-                    widgets[WIDX_COMP_HOST_CONTROLS].setVisible(false);
+                    widgets[WIDX_COMP_ACTIONS].setVisible(
+                        state != nullptr && state->phase == Competitive::Phase::running && competitor && targetable);
+                    widgets[WIDX_COMP_HOST_CONTROLS].setVisible(
+                        host && running);
+                    widgets[WIDX_COMP_LEAVE].setVisible(!host || !running);
+                    _actionsText = targetable ? "Actions vs " + selected->name : "Rival actions";
+                    _hostControlsText = forfeitEligible ? "Forfeit " + selected->name + "..." : "End early...";
+                    widgets[WIDX_COMP_ACTIONS].setString(_actionsText.c_str());
+                    widgets[WIDX_COMP_HOST_CONTROLS].setString(_hostControlsText.c_str());
                     setWidgetDisabled(WIDX_COMP_START, !host || !session.GetStartProblems().empty());
                     _readyText = local != nullptr && local->ready ? "Not ready" : "Ready";
                     widgets[WIDX_COMP_READY].setString(_readyText.c_str());
@@ -1027,7 +1439,17 @@ namespace OpenRCT2::Ui::Windows
                     const int32_t index = screenCoords.y / kScrollableRowHeight;
                     if (index >= 0 && index < static_cast<int32_t>(_competitionRows.size()))
                     {
-                        selectedListItem = index;
+                        const auto participantId = _competitionRows[index];
+                        if (_selectedCompetitionId == participantId)
+                        {
+                            _selectedCompetitionId = Competitive::kInvalidParticipantId;
+                            selectedListItem = -1;
+                        }
+                        else
+                        {
+                            _selectedCompetitionId = participantId;
+                            selectedListItem = index;
+                        }
                         invalidate();
                     }
                     break;
@@ -1041,7 +1463,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
                 case WINDOW_MULTIPLAYER_PAGE_GROUPS:
-                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
                 {
                     int32_t index = screenCoords.y / kScrollableRowHeight;
                     if (index >= numListItems)
@@ -1109,6 +1530,17 @@ namespace OpenRCT2::Ui::Windows
                         return lhsPoints > rhsPoints;
                     return lhsId < rhsId;
                 });
+                const auto selected = std::find(
+                    _competitionRows.begin(), _competitionRows.end(), _selectedCompetitionId);
+                if (selected == _competitionRows.end())
+                {
+                    _selectedCompetitionId = Competitive::kInvalidParticipantId;
+                    selectedListItem = -1;
+                }
+                else
+                {
+                    selectedListItem = static_cast<int32_t>(std::distance(_competitionRows.begin(), selected));
+                }
                 numListItems = static_cast<uint16_t>(_competitionRows.size());
             }
         }
@@ -1183,7 +1615,20 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, windowPos + ScreenCoordsXY{ 7, 70 }, session.GetStatusText(), { colours[1] });
                 return;
             }
-            std::string summary = std::string(competitionPhaseName(state->phase)) + " — " + state->scenario.name;
+            std::string summary = std::string(competitionPhaseName(state->phase));
+            const auto* local = Competitive::GetSession().GetLocalParticipant();
+            if (local != nullptr && local->role != Competitive::Role::spectator)
+            {
+                summary += " — Competitive cash: "
+                    + FormatStringID(STR_CURRENCY_FORMAT, Competitive::GetSession().GetAvailableCompetitiveCash());
+            }
+            if (state->phase == Competitive::Phase::finished && state->winnerId.has_value())
+            {
+                const auto* winner = Competitive::FindParticipant(*state, *state->winnerId);
+                if (winner != nullptr)
+                    summary += std::string(state->closedEarly ? " (resolved early)" : "") + " — Winner: " + winner->name;
+            }
+            summary += " — " + state->scenario.name;
             if (state->rules.victoryMode == Competitive::VictoryMode::deadline)
                 summary += " — highest " + _scoreHeader + " at local Year " + std::to_string(state->rules.deadlineYear);
             else
@@ -1195,6 +1640,13 @@ namespace OpenRCT2::Ui::Windows
                 else
                     target = std::to_string(state->rules.target);
                 summary += " — first to " + target + " " + _scoreHeader;
+            }
+            if (state->phase == Competitive::Phase::lobby
+                && Competitive::GetSession().GetMode() == Competitive::SessionMode::host)
+            {
+                const auto problems = Competitive::GetSession().GetStartProblems();
+                if (!problems.empty())
+                    summary = "Cannot start: " + problems.front() + " — " + summary;
             }
             drawTextEllipsised(rt, windowPos + ScreenCoordsXY{ 6, height - 43 }, width - 12, summary, { colours[1] });
         }

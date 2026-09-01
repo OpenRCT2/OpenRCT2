@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Competitive
 {
-    constexpr uint16_t kProtocolVersion = 1;
+    constexpr uint16_t kProtocolVersion = 2;
     constexpr uint16_t kDefaultPort = 11755;
 
     struct ActiveEffect

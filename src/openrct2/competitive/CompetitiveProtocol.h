@@ -19,11 +19,12 @@ namespace OpenRCT2::Competitive
     [[nodiscard]] json_t ToJson(const ScenarioIdentity& value);
     [[nodiscard]] json_t ToJson(const MatchRules& value);
     [[nodiscard]] json_t ToJson(const ParkMetrics& value);
+    [[nodiscard]] json_t ToJson(const ActiveEffect& value);
     [[nodiscard]] json_t ToJson(const MatchState& value);
 
     [[nodiscard]] std::optional<ScenarioIdentity> ScenarioIdentityFromJson(const json_t& value);
     [[nodiscard]] std::optional<MatchRules> MatchRulesFromJson(const json_t& value);
     [[nodiscard]] std::optional<ParkMetrics> ParkMetricsFromJson(const json_t& value);
+    [[nodiscard]] std::optional<ActiveEffect> ActiveEffectFromJson(const json_t& value);
     [[nodiscard]] std::optional<MatchState> MatchStateFromJson(const json_t& value);
 } // namespace OpenRCT2::Competitive
-

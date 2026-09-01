@@ -127,6 +127,14 @@ namespace OpenRCT2::Competitive
         money64 constructionSpend{};
         uint64_t rideCustomers{};
         uint64_t stallCustomers{};
+        struct Stall
+        {
+            int32_t rideId = -1;
+            std::string name;
+
+            bool operator==(const Stall&) const = default;
+        };
+        std::vector<Stall> openFoodDrinkStalls;
     };
 
     struct Score

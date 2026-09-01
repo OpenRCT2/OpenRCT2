@@ -25,18 +25,24 @@
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
+#include "../management/NewsItem.h"
 #include "../network/Network.h"
 #include "../network/NetworkConnection.h"
 #include "../network/NetworkServerAdvertiser.h"
 #include "../network/Socket.h"
 #include "../platform/Platform.h"
 #include "../ride/RideManager.hpp"
+#include "../ride/ShopItem.h"
+#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
+#include "../util/Util.h"
+#include "../world/Park.h"
 
 #include <algorithm>
 #include <cstdio>
 #include <list>
 #include <random>
+#include <unordered_map>
 
 namespace OpenRCT2::Competitive
 {
@@ -70,6 +76,12 @@ namespace OpenRCT2::Competitive
                 [](const Participant& participant) { return participant.role != Role::spectator && !participant.forfeited; }));
         }
 
+        uint32_t GetCurrentLocalDay()
+        {
+            const auto& date = getGameState().date;
+            return date.GetMonthsElapsed() * 32 + static_cast<uint32_t>(date.GetDay()) + 1;
+        }
+
         const AbilityRule& GetAbilityRule(const MatchRules& rules, Ability ability)
         {
             switch (ability)
@@ -82,6 +94,20 @@ namespace OpenRCT2::Competitive
                     return rules.vandal;
             }
             return rules.vandal;
+        }
+
+        const char* AbilityName(Ability ability)
+        {
+            switch (ability)
+            {
+                case Ability::vandal:
+                    return "Vandal";
+                case Ability::misinformation:
+                    return "Misinformation";
+                case Ability::poison:
+                    return "Poisoning";
+            }
+            return "Rival action";
         }
 
         std::string MetricName(Metric metric)
@@ -170,6 +196,13 @@ namespace OpenRCT2::Competitive
             uint32_t lastSeenAt{};
         };
 
+        struct LocalVandal
+        {
+            uint32_t effectId{};
+            EntityId guestId = EntityId::GetNull();
+            uint16_t remainingQuota{};
+        };
+
         SessionMode mode = SessionMode::none;
         ConnectionStatus status = ConnectionStatus::disconnected;
         MatchState state{};
@@ -188,6 +221,10 @@ namespace OpenRCT2::Competitive
         uint32_t lastReportedDay{};
         bool forcedPause = false;
         bool wasPausedBeforeForcedPause = false;
+        money64 constructionSpend{};
+        uint32_t pendingMisinformationCancellations{};
+        std::unordered_map<uint32_t, ActiveEffect> localEffects;
+        std::vector<LocalVandal> localVandals;
 
         void SetError(std::string message)
         {
@@ -230,6 +267,169 @@ namespace OpenRCT2::Competitive
                     PauseToggle();
                 }
             }
+        }
+
+        Peer* FindPeer(ParticipantId participantId)
+        {
+            const auto iterator = std::find_if(peers.begin(), peers.end(), [&](const auto& peer) {
+                return peer.participantId == participantId && peer.connection != nullptr && peer.connection->isValid();
+            });
+            return iterator == peers.end() ? nullptr : &*iterator;
+        }
+
+        void AddLocalNotice(const std::string& message, News::ItemType type = News::ItemType::campaign, uint32_t subject = 0)
+        {
+            if (gLegacyScene == LegacyScene::playing || localRole == Role::spectator)
+                News::AddItemToQueue(type, message.c_str(), subject);
+        }
+
+        void NotifyParticipant(ParticipantId participantId, const std::string& message)
+        {
+            if (participantId == localParticipantId)
+            {
+                AddLocalNotice(message);
+                return;
+            }
+            if (auto* peer = FindPeer(participantId))
+            {
+                QueueJson(
+                    *peer->connection, Network::Command::competitiveEffectAck,
+                    { { "notification", message } });
+            }
+        }
+
+        void SendLocalEffectReply(uint32_t effectId, bool accepted, const std::string& message, bool complete = false)
+        {
+            if (mode == SessionMode::client && serverConnection != nullptr && serverConnection->isValid())
+            {
+                QueueJson(
+                    *serverConnection, Network::Command::competitiveEffectAck,
+                    { { "effectId", effectId }, { "accepted", accepted }, { "message", message }, { "complete", complete } });
+            }
+        }
+
+        bool IsOpenFoodDrinkStall(int32_t rideId) const
+        {
+            if (rideId < 0 || rideId > std::numeric_limits<RideId::UnderlyingType>::max())
+                return false;
+            const auto* ride = GetRide(RideId::FromUnderlying(static_cast<RideId::UnderlyingType>(rideId)));
+            if (ride == nullptr || ride->status != RideStatus::open
+                || ride->getClassification() != RideClassification::shopOrStall)
+                return false;
+            const auto* rideEntry = ride->getRideEntry();
+            if (rideEntry == nullptr)
+                return false;
+            for (const auto item : rideEntry->shop_item)
+            {
+                if (item != ShopItem::none && GetShopItemDescriptor(item).IsFoodOrDrink())
+                    return true;
+            }
+            return false;
+        }
+
+        bool ApplyLocalEffect(const ActiveEffect& effect, std::string& error)
+        {
+            if (effect.targetId != localParticipantId || localRole == Role::spectator || gLegacyScene != LegacyScene::playing)
+            {
+                error = "This process is not the effect's active park.";
+                return false;
+            }
+            if (localEffects.contains(effect.id))
+                return true;
+
+            const auto* source = FindParticipant(state, effect.sourceId);
+            const auto sourceName = source == nullptr ? std::string("A rival park") : source->name;
+            switch (effect.ability)
+            {
+                case Ability::vandal:
+                {
+                    auto* guest = Park::GenerateGuest();
+                    if (guest == nullptr)
+                    {
+                        error = "The victim park has no valid guest spawn for the vandal.";
+                        return false;
+                    }
+                    guest->setName("Vandal sent by " + sourceName);
+                    guest->happiness = 0;
+                    guest->happinessTarget = 0;
+                    guest->peepFlags.set(PeepFlag::angry);
+                    guest->angriness = 255;
+                    localVandals.push_back({ effect.id, guest->id, effect.potency });
+                    AddLocalNotice(
+                        sourceName + " sent a vandal into your park. Normal security guards can stop them; the quota is "
+                            + std::to_string(effect.potency) + " broken path additions.",
+                        News::ItemType::peepOnRide, guest->id.ToUnderlying());
+                    break;
+                }
+                case Ability::misinformation:
+                    AddLocalNotice(
+                        sourceName + " started a misinformation campaign against your park for "
+                        + std::to_string(effect.endsAtDay - effect.startsAtDay)
+                        + " local days. It cancels future ordinary arrivals at the configured campaign strength.");
+                    break;
+                case Ability::poison:
+                {
+                    if (!IsOpenFoodDrinkStall(effect.targetRideId))
+                    {
+                        error = "The selected food or drink stall is no longer open and valid.";
+                        return false;
+                    }
+                    const auto* ride = GetRide(
+                        RideId::FromUnderlying(static_cast<RideId::UnderlyingType>(effect.targetRideId)));
+                    AddLocalNotice(
+                        sourceName + " poisoned " + ride->getName() + ". " + std::to_string(effect.potency)
+                            + "% of exact buyers receive maximum nausea for the next "
+                            + std::to_string(effect.endsAtDay - effect.startsAtDay) + " local days.",
+                        News::ItemType::ride, static_cast<uint32_t>(effect.targetRideId));
+                    break;
+                }
+            }
+            localEffects.emplace(effect.id, effect);
+            return true;
+        }
+
+        void EndLocalVandal(uint32_t effectId)
+        {
+            const auto iterator = std::find_if(localVandals.begin(), localVandals.end(), [&](const auto& vandal) {
+                return vandal.effectId == effectId;
+            });
+            if (iterator == localVandals.end())
+                return;
+            if (auto* guest = getGameState().entities.getEntity<Guest>(iterator->guestId))
+            {
+                guest->peepFlags.unset(PeepFlag::angry);
+                guest->peepFlags.set(PeepFlag::leavingPark);
+                guest->angriness = 0;
+            }
+            localVandals.erase(iterator);
+        }
+
+        void CompleteLocalEffect(uint32_t effectId, const std::string& reason)
+        {
+            const auto iterator = localEffects.find(effectId);
+            if (iterator == localEffects.end())
+                return;
+            const auto ability = iterator->second.ability;
+            if (ability == Ability::vandal)
+                EndLocalVandal(effectId);
+            AddLocalNotice(std::string(AbilityName(ability)) + " effect ended: " + reason);
+            localEffects.erase(iterator);
+            SendLocalEffectReply(effectId, true, reason, true);
+        }
+
+        void UpdateLocalEffects()
+        {
+            if (localEffects.empty() || gLegacyScene != LegacyScene::playing)
+                return;
+            const auto localDay = GetCurrentLocalDay();
+            std::vector<uint32_t> expired;
+            for (const auto& [effectId, effect] : localEffects)
+            {
+                if (localDay >= effect.endsAtDay)
+                    expired.push_back(effectId);
+            }
+            for (const auto effectId : expired)
+                CompleteLocalEffect(effectId, "its configured victim-local duration elapsed");
         }
 
         void SendSnapshot()
@@ -279,9 +479,11 @@ namespace OpenRCT2::Competitive
             connection.queuePacket(packet);
         }
 
-        void SendError(Network::Connection& connection, const std::string& message)
+        void SendError(Network::Connection& connection, const std::string& message, bool fatal = true)
         {
-            QueueJson(connection, Network::Command::competitiveError, { { "message", message } });
+            QueueJson(
+                connection, Network::Command::competitiveError,
+                { { "message", message }, { "fatal", fatal } });
         }
 
         void AcceptPeers()
@@ -409,6 +611,15 @@ namespace OpenRCT2::Competitive
             }
             ApplyEconomyDelta(*score, report->acceptedEconomy, metrics, state.rules.economy);
 
+            std::vector<uint32_t> expiredEffects;
+            for (const auto& effect : state.effects)
+            {
+                if (effect.targetId == participantId && effect.delivered && metrics.localDay >= effect.endsAtDay)
+                    expiredEffects.push_back(effect.id);
+            }
+            for (const auto effectId : expiredEffects)
+                ResolveEffectReply(participantId, effectId, true, "The configured duration elapsed.", true);
+
             if (DeadlineReached(metrics.monthsElapsed, state.rules.deadlineYear))
             {
                 FreezeScore(*score, metrics, metrics.localYear);
@@ -433,7 +644,7 @@ namespace OpenRCT2::Competitive
         {
             if (state.phase != Phase::lobby)
             {
-                SendError(*peer.connection, "The lobby is no longer accepting ready changes.");
+                SendError(*peer.connection, "The lobby is no longer accepting ready changes.", false);
                 return;
             }
             auto* participant = FindParticipant(state, peer.participantId);
@@ -448,7 +659,7 @@ namespace OpenRCT2::Competitive
                 || metrics->localDay != state.startLocalDay || metrics->localYear >= state.rules.deadlineYear)
             {
                 participant->ready = false;
-                SendError(*peer.connection, "The park does not match the lobby's scenario and starting date.");
+                SendError(*peer.connection, "The park does not match the lobby's scenario and starting date.", false);
                 SendSnapshot();
                 return;
             }
@@ -460,6 +671,184 @@ namespace OpenRCT2::Competitive
                 report->metrics = *metrics;
             }
             SendSnapshot();
+        }
+
+        void ResolveEffectReply(
+            ParticipantId targetId, uint32_t effectId, bool accepted, const std::string& message, bool complete)
+        {
+            const auto iterator = std::find_if(state.effects.begin(), state.effects.end(), [&](const auto& effect) {
+                return effect.id == effectId && effect.targetId == targetId;
+            });
+            if (iterator == state.effects.end())
+                return;
+
+            if (complete)
+            {
+                if (!iterator->delivered)
+                    return;
+                const auto sourceId = iterator->sourceId;
+                const auto ability = iterator->ability;
+                state.effects.erase(iterator);
+                NotifyParticipant(sourceId, std::string(AbilityName(ability)) + " effect has ended in the rival park.");
+                SendSnapshot();
+                return;
+            }
+
+            const auto sourceId = iterator->sourceId;
+            const auto ability = iterator->ability;
+            auto* sourceScore = FindScore(state, sourceId);
+            if (!accepted)
+            {
+                if (sourceScore != nullptr)
+                    sourceScore->competitiveCash += iterator->reservedCost;
+                state.effects.erase(iterator);
+                NotifyParticipant(
+                    sourceId, std::string(AbilityName(ability)) + " could not be delivered; its cost was refunded. " + message);
+                SendSnapshot();
+                return;
+            }
+
+            iterator->delivered = true;
+            if (sourceScore != nullptr)
+                sourceScore->lifetimeSpend += iterator->reservedCost;
+            const auto* sourceReport = FindReport(state, sourceId);
+            const auto currentYear = sourceReport == nullptr ? uint16_t{ 1 } : sourceReport->metrics.localYear;
+            const auto availableYear = static_cast<uint16_t>(
+                std::min<uint32_t>(UINT16_MAX, currentYear + GetAbilityRule(state.rules, ability).cooldownYears));
+            auto cooldown = std::find_if(state.cooldowns.begin(), state.cooldowns.end(), [&](const auto& value) {
+                return value.participantId == sourceId && value.ability == ability;
+            });
+            if (cooldown == state.cooldowns.end())
+                state.cooldowns.push_back({ sourceId, ability, availableYear });
+            else
+                cooldown->availableYear = availableYear;
+            NotifyParticipant(sourceId, std::string(AbilityName(ability)) + " was delivered successfully.");
+            SendSnapshot();
+        }
+
+        void RefundPendingEffectsForTarget(ParticipantId targetId)
+        {
+            std::vector<uint32_t> pending;
+            for (const auto& effect : state.effects)
+            {
+                if (effect.targetId == targetId && !effect.delivered)
+                    pending.push_back(effect.id);
+            }
+            for (const auto effectId : pending)
+                ResolveEffectReply(targetId, effectId, false, "The rival went offline before acknowledging it.", false);
+        }
+
+        bool BeginAbility(ParticipantId sourceId, Ability ability, ParticipantId targetId, int32_t targetRideId, std::string& error)
+        {
+            if (state.phase != Phase::running)
+            {
+                error = "Rival actions are available only while the competition is running.";
+                return false;
+            }
+            auto* source = FindParticipant(state, sourceId);
+            auto* target = FindParticipant(state, targetId);
+            auto* sourceScore = FindScore(state, sourceId);
+            const auto* sourceReport = FindReport(state, sourceId);
+            const auto* targetReport = FindReport(state, targetId);
+            if (source == nullptr || sourceScore == nullptr || sourceReport == nullptr || source->role == Role::spectator
+                || source->finished || source->forfeited)
+            {
+                error = "The attacking park is not eligible to use rival actions.";
+                return false;
+            }
+            if (target == nullptr || targetId == sourceId || !CanTarget(*target) || targetReport == nullptr)
+            {
+                error = "Choose an online, unfinished rival park.";
+                return false;
+            }
+            const auto& rule = GetAbilityRule(state.rules, ability);
+            if (!rule.enabled)
+            {
+                error = std::string(AbilityName(ability)) + " is disabled by the host's match rules.";
+                return false;
+            }
+            const auto cooldown = std::find_if(state.cooldowns.begin(), state.cooldowns.end(), [&](const auto& value) {
+                return value.participantId == sourceId && value.ability == ability;
+            });
+            if (cooldown != state.cooldowns.end() && sourceReport->metrics.localYear < cooldown->availableYear)
+            {
+                error = std::string(AbilityName(ability)) + " is on cooldown until your local Year "
+                    + std::to_string(cooldown->availableYear) + ".";
+                return false;
+            }
+            if (sourceScore->competitiveCash < rule.cost)
+            {
+                error = "Your park does not have enough competitive cash for this action.";
+                return false;
+            }
+            if (ability == Ability::poison)
+            {
+                const auto stall = std::find_if(
+                    targetReport->metrics.openFoodDrinkStalls.begin(), targetReport->metrics.openFoodDrinkStalls.end(),
+                    [&](const auto& value) { return value.rideId == targetRideId; });
+                if (stall == targetReport->metrics.openFoodDrinkStalls.end())
+                {
+                    error = "Choose an open food or drink stall reported by that rival park.";
+                    return false;
+                }
+            }
+            const auto duplicate = std::find_if(state.effects.begin(), state.effects.end(), [&](const auto& effect) {
+                if (effect.targetId != targetId || effect.ability != ability)
+                    return false;
+                if (ability == Ability::poison)
+                    return effect.targetRideId == targetRideId;
+                return ability == Ability::misinformation;
+            });
+            if (duplicate != state.effects.end())
+            {
+                error = std::string(AbilityName(ability)) + " is already active against that target.";
+                return false;
+            }
+
+            ActiveEffect effect{
+                state.nextEffectId++,
+                ability,
+                sourceId,
+                targetId,
+                ability == Ability::poison ? targetRideId : -1,
+                false,
+                rule.cost,
+                targetReport->metrics.localDay,
+                targetReport->metrics.localDay + rule.durationDays,
+                rule.potency,
+            };
+            sourceScore->competitiveCash -= rule.cost;
+            state.effects.push_back(effect);
+            SendSnapshot();
+
+            if (targetId == localParticipantId)
+            {
+                std::string deliveryError;
+                const bool delivered = ApplyLocalEffect(effect, deliveryError);
+                ResolveEffectReply(targetId, effect.id, delivered, deliveryError, false);
+                return delivered;
+            }
+            auto* targetPeer = FindPeer(targetId);
+            if (targetPeer == nullptr)
+            {
+                ResolveEffectReply(targetId, effect.id, false, "The rival is no longer connected.", false);
+                error = "The rival went offline before the action could be delivered.";
+                return false;
+            }
+            QueueJson(
+                *targetPeer->connection, Network::Command::competitiveAbility,
+                { { "effect", ToJson(effect) } });
+            return true;
+        }
+
+        void HandleEffectReply(Peer& peer, const json_t& body)
+        {
+            const auto effectId = body.value("effectId", 0u);
+            if (effectId == 0)
+                return;
+            ResolveEffectReply(
+                peer.participantId, effectId, body.value("accepted", false), body.value("message", std::string{}),
+                body.value("complete", false));
         }
 
         void HandleHostPacket(Peer& peer, Network::Packet& packet)
@@ -487,6 +876,32 @@ namespace OpenRCT2::Competitive
                             if (auto metrics = ParkMetricsFromJson((*body)["metrics"]))
                                 IngestMetrics(peer.participantId, *metrics);
                         }
+                    }
+                    break;
+                case Network::Command::competitiveAbility:
+                    if (peer.participantId != kInvalidParticipantId)
+                    {
+                        if (auto body = ReadJson(packet))
+                        {
+                            std::string error;
+                            const auto ability = body->value("ability", Ability::vandal);
+                            const auto targetId = body->value("targetId", kInvalidParticipantId);
+                            const auto targetRideId = body->value("targetRideId", -1);
+                            if (ability > Ability::poison
+                                || !BeginAbility(peer.participantId, ability, targetId, targetRideId, error))
+                            {
+                                QueueJson(
+                                    *peer.connection, Network::Command::competitiveEffectAck,
+                                    { { "notification", "Rival action failed: " + (error.empty() ? std::string("Invalid request.") : error) } });
+                            }
+                        }
+                    }
+                    break;
+                case Network::Command::competitiveEffectAck:
+                    if (peer.participantId != kInvalidParticipantId)
+                    {
+                        if (auto body = ReadJson(packet))
+                            HandleEffectReply(peer, *body);
                     }
                     break;
                 case Network::Command::competitiveHeartbeat:
@@ -517,6 +932,7 @@ namespace OpenRCT2::Competitive
                 {
                     if (auto* participant = FindParticipant(state, peer.participantId))
                     {
+                        RefundPendingEffectsForTarget(participant->id);
                         participant->online = false;
                         participant->ready = false;
                         SendSnapshot();
@@ -638,12 +1054,38 @@ namespace OpenRCT2::Competitive
                     }
                     break;
                 }
+                case Network::Command::competitiveAbility:
+                {
+                    const auto body = ReadJson(packet);
+                    const auto effect = body.has_value() ? ActiveEffectFromJson((*body)["effect"]) : std::nullopt;
+                    if (!effect.has_value())
+                        break;
+                    std::string error;
+                    const bool accepted = ApplyLocalEffect(*effect, error);
+                    SendLocalEffectReply(effect->id, accepted, error);
+                    break;
+                }
+                case Network::Command::competitiveEffectAck:
+                {
+                    const auto body = ReadJson(packet);
+                    if (body.has_value())
+                    {
+                        const auto notification = body->value("notification", std::string{});
+                        if (!notification.empty())
+                            AddLocalNotice(notification);
+                    }
+                    break;
+                }
                 case Network::Command::competitiveError:
                 {
                     const auto body = ReadJson(packet);
                     if (body.has_value())
                     {
-                        SetError(body->value("message", "The competitive host rejected the request."));
+                        const auto message = body->value("message", "The competitive host rejected the request.");
+                        if (body->value("fatal", true))
+                            SetError(message);
+                        else
+                            AddLocalNotice(message);
                     }
                     break;
                 }
@@ -849,6 +1291,11 @@ namespace OpenRCT2::Competitive
     {
         if (_impl == nullptr)
             return;
+        std::vector<uint32_t> localEffectIds;
+        for (const auto& [effectId, effect] : _impl->localEffects)
+            localEffectIds.push_back(effectId);
+        for (const auto effectId : localEffectIds)
+            _impl->EndLocalVandal(effectId);
         _impl->ClearTransport();
         _impl->mode = SessionMode::none;
         _impl->status = ConnectionStatus::disconnected;
@@ -857,6 +1304,10 @@ namespace OpenRCT2::Competitive
         _impl->localRole = Role::none;
         _impl->lastError.clear();
         _impl->scenarioLoaded = false;
+        _impl->constructionSpend = 0;
+        _impl->pendingMisinformationCancellations = 0;
+        _impl->localEffects.clear();
+        _impl->localVandals.clear();
         _impl->EnsurePauseState();
     }
 
@@ -872,6 +1323,7 @@ namespace OpenRCT2::Competitive
         {
             _impl->UpdateClient();
         }
+        _impl->UpdateLocalEffects();
         _impl->EnsurePauseState();
     }
 
@@ -1066,6 +1518,148 @@ namespace OpenRCT2::Competitive
         return true;
     }
 
+    bool Session::UseAbility(Ability ability, ParticipantId targetId, int32_t targetRideId, std::string& error)
+    {
+        if (ability > Ability::poison || _impl->status != ConnectionStatus::online)
+        {
+            error = "The competition connection is not online.";
+            return false;
+        }
+        if (_impl->mode == SessionMode::host)
+            return _impl->BeginAbility(_impl->localParticipantId, ability, targetId, targetRideId, error);
+        if (_impl->mode != SessionMode::client || _impl->serverConnection == nullptr
+            || !_impl->serverConnection->isValid())
+        {
+            error = "The competition connection is not online.";
+            return false;
+        }
+        const auto* local = GetLocalParticipant();
+        const auto* target = FindParticipant(_impl->state, targetId);
+        if (_impl->state.phase != Phase::running || local == nullptr || local->role == Role::spectator
+            || local->finished || target == nullptr || targetId == local->id || !CanTarget(*target))
+        {
+            error = "Choose an online, unfinished rival while the competition is running.";
+            return false;
+        }
+        QueueJson(
+            *_impl->serverConnection, Network::Command::competitiveAbility,
+            { { "ability", ability }, { "targetId", targetId }, { "targetRideId", targetRideId } });
+        return true;
+    }
+
+    void Session::UpdateGuestGenerationInterference()
+    {
+        if (_impl->state.phase != Phase::running || _impl->status != ConnectionStatus::online)
+            return;
+        const auto localDay = GetCurrentLocalDay();
+        uint16_t potency{};
+        for (const auto& [effectId, effect] : _impl->localEffects)
+        {
+            if (effect.ability == Ability::misinformation && localDay >= effect.startsAtDay && localDay < effect.endsAtDay)
+                potency = std::max(potency, effect.potency);
+        }
+        if (potency != 0 && ScenarioRandMax(std::numeric_limits<uint16_t>::max()) < potency)
+        {
+            _impl->pendingMisinformationCancellations = std::min<uint32_t>(
+                1024, _impl->pendingMisinformationCancellations + 1);
+        }
+    }
+
+    bool Session::ConsumeGuestArrivalCancellation()
+    {
+        if (_impl->pendingMisinformationCancellations == 0)
+            return false;
+        _impl->pendingMisinformationCancellations--;
+        return true;
+    }
+
+    void Session::OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink)
+    {
+        if (!isFoodOrDrink || _impl->state.phase != Phase::running || _impl->status != ConnectionStatus::online)
+            return;
+        const auto localDay = GetCurrentLocalDay();
+        uint16_t chance{};
+        for (const auto& [effectId, effect] : _impl->localEffects)
+        {
+            if (effect.ability == Ability::poison && effect.targetRideId == rideId.ToUnderlying()
+                && localDay >= effect.startsAtDay && localDay < effect.endsAtDay)
+            {
+                chance = std::max(chance, effect.potency);
+            }
+        }
+        if (chance == 0 || ScenarioRandMax(100) >= chance)
+            return;
+        guest.nausea = 255;
+        guest.nauseaTarget = 255;
+        guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+    }
+
+    void Session::OnVandalDamage(OpenRCT2::Guest& guest)
+    {
+        const auto iterator = std::find_if(_impl->localVandals.begin(), _impl->localVandals.end(), [&](const auto& vandal) {
+            return vandal.guestId == guest.id;
+        });
+        if (iterator == _impl->localVandals.end())
+            return;
+        if (iterator->remainingQuota > 0)
+            iterator->remainingQuota--;
+        if (iterator->remainingQuota == 0)
+        {
+            const auto effectId = iterator->effectId;
+            _impl->CompleteLocalEffect(effectId, "the vandal reached its destruction quota and was sent home");
+        }
+    }
+
+    money64 Session::GetAvailableCompetitiveCash() const
+    {
+        const auto* score = FindScore(_impl->state, _impl->localParticipantId);
+        const auto* report = FindReport(_impl->state, _impl->localParticipantId);
+        if (score == nullptr || report == nullptr)
+            return 0;
+        const auto unsettledSpend = std::max<money64>(0, _impl->constructionSpend - report->acceptedEconomy.constructionSpend);
+        return std::max<money64>(0, score->competitiveCash - unsettledSpend);
+    }
+
+    money64 Session::GetConstructionSpend() const
+    {
+        return _impl->constructionSpend;
+    }
+
+    bool Session::CanSpendConstruction(money64 cost) const
+    {
+        if (cost <= 0 || _impl->mode == SessionMode::none)
+            return true;
+        const auto* local = GetLocalParticipant();
+        if (local == nullptr || local->role == Role::spectator)
+            return true;
+        if (_impl->state.phase != Phase::running || local->finished || local->forfeited)
+            return false;
+        return cost <= GetAvailableCompetitiveCash();
+    }
+
+    void Session::RecordConstructionSpend(money64 cost)
+    {
+        if (cost <= 0 || _impl->state.phase != Phase::running)
+            return;
+        const auto* local = GetLocalParticipant();
+        if (local != nullptr && local->role != Role::spectator && !local->finished && !local->forfeited)
+        {
+            _impl->constructionSpend += cost;
+            const auto metrics = CollectParkMetrics();
+            if (_impl->mode == SessionMode::host)
+            {
+                _impl->IngestMetrics(_impl->localParticipantId, metrics);
+            }
+            else if (_impl->mode == SessionMode::client && _impl->serverConnection != nullptr
+                && _impl->serverConnection->isValid())
+            {
+                QueueJson(
+                    *_impl->serverConnection, Network::Command::competitiveMetrics,
+                    { { "metrics", ToJson(metrics) } });
+            }
+        }
+    }
+
     bool Session::Forfeit(ParticipantId participantId, std::string& error)
     {
         if (_impl->mode != SessionMode::host || _impl->state.phase == Phase::finished)
@@ -1179,15 +1773,32 @@ namespace OpenRCT2::Competitive
 
         uint64_t rideCustomers = 0;
         uint64_t stallCustomers = 0;
+        std::vector<ParkMetrics::Stall> openFoodDrinkStalls;
         for (const auto& ride : RideManager(gameState))
         {
             if (ride.getClassification() == RideClassification::shopOrStall)
+            {
                 stallCustomers += ride.totalCustomers;
+                if (ride.status == RideStatus::open)
+                {
+                    const auto* rideEntry = ride.getRideEntry();
+                    const bool sellsFoodOrDrink = rideEntry != nullptr
+                        && std::any_of(
+                            std::begin(rideEntry->shop_item), std::end(rideEntry->shop_item), [](const auto item) {
+                                return item != ShopItem::none && GetShopItemDescriptor(item).IsFoodOrDrink();
+                            });
+                    if (sellsFoodOrDrink)
+                    {
+                        openFoodDrinkStalls.push_back(
+                            { static_cast<int32_t>(ride.id.ToUnderlying()), ride.getName() });
+                    }
+                }
+            }
             else if (ride.getClassification() == RideClassification::ride)
                 rideCustomers += ride.totalCustomers;
         }
 
-        return {
+        ParkMetrics result{
             static_cast<uint16_t>(date.GetYear() + 1),
             date.GetMonthsElapsed(),
             date.GetMonthsElapsed() * 32 + static_cast<uint32_t>(date.GetDay()) + 1,
@@ -1196,10 +1807,42 @@ namespace OpenRCT2::Competitive
             gameState.park.value,
             static_cast<uint8_t>(guestCount == 0 ? 0 : happinessTotal / guestCount),
             gameState.park.totalAdmissions,
-            0,
+            GetSession().GetConstructionSpend(),
             rideCustomers,
             stallCustomers,
         };
+        result.openFoodDrinkStalls = std::move(openFoodDrinkStalls);
+        return result;
+    }
+
+    void UpdateGuestGenerationInterference()
+    {
+        GetSession().UpdateGuestGenerationInterference();
+    }
+
+    bool ConsumeGuestArrivalCancellation()
+    {
+        return GetSession().ConsumeGuestArrivalCancellation();
+    }
+
+    void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink)
+    {
+        GetSession().OnGuestPurchase(guest, rideId, isFoodOrDrink);
+    }
+
+    void OnVandalDamage(OpenRCT2::Guest& guest)
+    {
+        GetSession().OnVandalDamage(guest);
+    }
+
+    bool CanSpendConstruction(money64 cost)
+    {
+        return GetSession().CanSpendConstruction(cost);
+    }
+
+    void RecordConstructionSpend(money64 cost)
+    {
+        GetSession().RecordConstructionSpend(cost);
     }
 #else
     struct Session::Impl
@@ -1236,6 +1879,15 @@ namespace OpenRCT2::Competitive
     bool Session::SetReady(bool, std::string& error) { error = _impl->error; return false; }
     bool Session::StartMatch(std::string& error) { error = _impl->error; return false; }
     bool Session::UpdateRules(const MatchRules&, std::string& error) { error = _impl->error; return false; }
+    bool Session::UseAbility(Ability, ParticipantId, int32_t, std::string& error) { error = _impl->error; return false; }
+    void Session::UpdateGuestGenerationInterference() {}
+    bool Session::ConsumeGuestArrivalCancellation() { return false; }
+    void Session::OnGuestPurchase(OpenRCT2::Guest&, RideId, bool) {}
+    void Session::OnVandalDamage(OpenRCT2::Guest&) {}
+    money64 Session::GetAvailableCompetitiveCash() const { return 0; }
+    money64 Session::GetConstructionSpend() const { return 0; }
+    bool Session::CanSpendConstruction(money64) const { return true; }
+    void Session::RecordConstructionSpend(money64) {}
     bool Session::Forfeit(ParticipantId, std::string& error) { error = _impl->error; return false; }
     bool Session::CloseEarly(std::string& error) { error = _impl->error; return false; }
     Session& GetSession() { static Session session; return session; }
@@ -1243,5 +1895,11 @@ namespace OpenRCT2::Competitive
     ScenarioIdentity GetCurrentScenarioIdentity() { return {}; }
     ScenarioIdentity GetScenarioIdentityForPath(const std::string&) { return {}; }
     ParkMetrics CollectParkMetrics() { return {}; }
+    void UpdateGuestGenerationInterference() {}
+    bool ConsumeGuestArrivalCancellation() { return false; }
+    void OnGuestPurchase(OpenRCT2::Guest&, RideId, bool) {}
+    void OnVandalDamage(OpenRCT2::Guest&) {}
+    bool CanSpendConstruction(money64) { return true; }
+    void RecordConstructionSpend(money64) {}
 #endif
 } // namespace OpenRCT2::Competitive

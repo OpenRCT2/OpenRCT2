@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../ReplayManager.h"
+#include "../competitive/CompetitiveSession.h"
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../entity/MoneyEffect.h"
@@ -164,11 +165,54 @@ namespace OpenRCT2::GameActions
         return false;
     }
 
+    static bool IsCompetitiveConstructionExpenditure(ExpenditureType expenditure)
+    {
+        return expenditure == ExpenditureType::rideConstruction || expenditure == ExpenditureType::landPurchase
+            || expenditure == ExpenditureType::landscaping;
+    }
+
+    static bool IsCompetitiveSpend(const Result& result, CommandFlags flags, bool topLevel)
+    {
+        return topLevel && result.cost > 0 && IsCompetitiveConstructionExpenditure(result.expenditure)
+            && !flags.hasAny(CommandFlag::ghost, CommandFlag::noSpend);
+    }
+
+    static bool IsCompetitiveFairPlayAction(GameCommand command)
+    {
+        switch (command)
+        {
+            case GameCommand::cheat:
+            case GameCommand::modifyTile:
+            case GameCommand::editScenarioOptions:
+            case GameCommand::placePeepSpawn:
+            case GameCommand::setDate:
+            case GameCommand::changeMapSize:
+            case GameCommand::freezeRideRating:
+                return false;
+            default:
+                return true;
+        }
+    }
+
     static Result QueryInternal(const GameAction* action, GameState_t& gameState, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
+        const auto& competition = Competitive::GetSession();
+        const auto* competitionState = competition.GetState();
+        const auto* localParticipant = competition.GetLocalParticipant();
+        if (topLevel && competitionState != nullptr && competitionState->phase == Competitive::Phase::running
+            && localParticipant != nullptr && localParticipant->role != Competitive::Role::spectator
+            && !localParticipant->finished && !localParticipant->forfeited
+            && !IsCompetitiveFairPlayAction(action->GetType()))
+        {
+            Result result;
+            result.error = Status::disallowed;
+            result.errorTitle = "Unavailable during competition";
+            result.errorMessage = "This editor or cheat action would invalidate the competitive result.";
+            return result;
+        }
         if (topLevel && !CheckActionInPausedMode(gameState, actionFlags))
         {
             Result result = Result();
@@ -186,7 +230,14 @@ namespace OpenRCT2::GameActions
         auto result = action->Query(gameState, park);
         if (result.error == Status::ok)
         {
-            if (!FinanceCheckAffordability(result.cost, action->GetFlags()))
+            const auto flags = action->GetFlags();
+            if (IsCompetitiveSpend(result, flags, topLevel) && !Competitive::CanSpendConstruction(result.cost))
+            {
+                result.error = Status::insufficientFunds;
+                result.errorTitle = "Not enough competitive cash";
+                result.errorMessage = "This construction costs more than your available competitive cash.";
+            }
+            else if (!FinanceCheckAffordability(result.cost, flags))
             {
                 result.error = Status::insufficientFunds;
                 result.errorTitle = STR_CANT_DO_THIS;
@@ -356,6 +407,10 @@ namespace OpenRCT2::GameActions
                 return result;
 
             // Update money balance
+            if (result.error == Status::ok && IsCompetitiveSpend(result, flags, topLevel))
+            {
+                Competitive::RecordConstructionSpend(result.cost);
+            }
             if (result.error == Status::ok && FinanceCheckMoneyRequired(flags) && result.cost != 0)
             {
                 FinancePayment(result.cost, result.expenditure);
