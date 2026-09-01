@@ -307,7 +307,6 @@ namespace OpenRCT2::Ui::Windows
 #ifndef DISABLE_NETWORK
     // ServerList
     WindowBase* ServerListOpen();
-    WindowBase* ServerListOpenCompetitive();
 
     // ServerStart
     WindowBase* ServerStartOpen();

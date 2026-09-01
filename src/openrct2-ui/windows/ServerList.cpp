@@ -137,11 +137,6 @@ namespace OpenRCT2::Ui::Windows
             Config::Save();
         }
 
-        void ShowCompetitivePage()
-        {
-            SetPage(1);
-        }
-
         void onMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
@@ -706,13 +701,6 @@ namespace OpenRCT2::Ui::Windows
             WindowClass::serverList, kMinimumWindowSize,
             { WindowFlag::higherContrastOnPress, WindowFlag::resizable, WindowFlag::centreScreen });
 
-        return window;
-    }
-
-    WindowBase* ServerListOpenCompetitive()
-    {
-        auto* window = ServerListOpen();
-        static_cast<ServerListWindow*>(window)->ShowCompetitivePage();
         return window;
     }
 

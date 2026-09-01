@@ -574,7 +574,8 @@ namespace OpenRCT2::Ui::Windows
         std::string _scoreHeader;
         std::string _readyText;
         std::string _startText = "Start competition";
-        std::string _actionsText = "Rival actions";
+        std::string _actionsText = "Attack rival...";
+        std::string _actionsTooltip = "Select an online, unfinished rival in the leaderboard first.";
         std::string _watchText = "Watch park";
         std::string _hostControlsText = "Host controls";
         std::string _leaveText = "Leave competition";
@@ -963,6 +964,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_COMP_YEAR].setString(_yearHeader.c_str());
                 widgets[WIDX_COMP_START].setString(_startText.c_str());
                 widgets[WIDX_COMP_ACTIONS].setString(_actionsText.c_str());
+                widgets[WIDX_COMP_ACTIONS].setTooltip(_actionsTooltip.c_str());
                 widgets[WIDX_COMP_WATCH].setString(_watchText.c_str());
                 widgets[WIDX_COMP_HOST_CONTROLS].setString(_hostControlsText.c_str());
                 widgets[WIDX_COMP_LEAVE].setString(_leaveText.c_str());
@@ -1231,6 +1233,7 @@ namespace OpenRCT2::Ui::Windows
                     const auto* selected = getSelectedCompetitionParticipant();
                     const bool targetable = selected != nullptr && local != nullptr && selected->id != local->id
                         && Competitive::CanTarget(*selected);
+                    const bool canAttack = running && competitor && targetable;
                     const bool watchable = selected != nullptr && local != nullptr && selected->id != local->id
                         && selected->role != Competitive::Role::spectator && selected->online && selected->watchPort != 0;
                     const bool forfeitEligible = selected != nullptr && selected->id != session.GetLocalParticipantId()
@@ -1238,15 +1241,22 @@ namespace OpenRCT2::Ui::Windows
                         && !selected->forfeited;
                     widgets[WIDX_COMP_READY].setVisible(lobby && competitor);
                     widgets[WIDX_COMP_START].setVisible(lobby && host);
-                    widgets[WIDX_COMP_ACTIONS].setVisible(
-                        state != nullptr && state->phase == Competitive::Phase::running && competitor && targetable);
+                    widgets[WIDX_COMP_ACTIONS].setVisible((lobby || running) && competitor);
+                    setWidgetDisabled(WIDX_COMP_ACTIONS, !canAttack);
                     widgets[WIDX_COMP_WATCH].setVisible(watchable);
                     widgets[WIDX_COMP_HOST_CONTROLS].setVisible(
                         host && running);
                     widgets[WIDX_COMP_LEAVE].setVisible(!host || !running);
-                    _actionsText = targetable ? "Actions vs " + selected->name : "Rival actions";
+                    _actionsText = canAttack ? "Attack " + selected->name + "..." : "Attack rival...";
+                    if (lobby)
+                        _actionsTooltip = "Competitive attacks become available when the host starts the match.";
+                    else if (canAttack)
+                        _actionsTooltip = "Send a competitive attack to " + selected->name + ".";
+                    else
+                        _actionsTooltip = "Select an online, unfinished rival in the leaderboard first.";
                     _hostControlsText = forfeitEligible ? "Forfeit " + selected->name + "..." : "End early...";
                     widgets[WIDX_COMP_ACTIONS].setString(_actionsText.c_str());
+                    widgets[WIDX_COMP_ACTIONS].setTooltip(_actionsTooltip.c_str());
                     widgets[WIDX_COMP_HOST_CONTROLS].setString(_hostControlsText.c_str());
                     setWidgetDisabled(WIDX_COMP_START, !host || !session.GetStartProblems().empty());
                     _readyText = local != nullptr && local->ready ? "Not ready" : "Ready";

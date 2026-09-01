@@ -36,7 +36,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONTINUE_SAVED_GAME,
         WIDX_MULTIPLAYER,
         WIDX_GAME_TOOLS,
-        WIDX_COMPETITIVE_MULTIPLAYER,
         WIDX_NEW_VERSION,
     };
 
@@ -52,7 +51,6 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ScreenSize kMenuButtonDims = { 82, 82 };
     static constexpr ScreenSize kUpdateButtonDims = { kMenuButtonDims.width * 4, 28 };
-    static constexpr ScreenSize kCompetitiveButtonDims = { kUpdateButtonDims.width, 24 };
 
     // clang-format off
     static constexpr auto _titleMenuWidgets = makeWidgets(
@@ -60,7 +58,6 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({0, kUpdateButtonDims.height}, kMenuButtonDims,   WidgetType::imgBtn, WindowColour::tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
         makeWidget({0, kUpdateButtonDims.height}, kMenuButtonDims,   WidgetType::imgBtn, WindowColour::tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
         makeWidget({0, kUpdateButtonDims.height}, kMenuButtonDims,   WidgetType::imgBtn, WindowColour::tertiary,  ImageId(SPR_MENU_TOOLBOX),        STR_GAME_TOOLS_TIP),
-        makeWidget({0, kUpdateButtonDims.height + kMenuButtonDims.height}, kCompetitiveButtonDims, WidgetType::button, WindowColour::tertiary, kStringIdEmpty),
         makeWidget({0, kUpdateButtonDims.height}, kUpdateButtonDims, WidgetType::button, WindowColour::secondary, STR_UPDATE_AVAILABLE)
     );
     // clang-format on
@@ -97,21 +94,18 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         ScreenRect _filterRect;
-        std::string _competitiveMultiplayerText = "Competitive multiplayer";
 
     public:
         void onOpen() override
         {
             setWidgets(_titleMenuWidgets);
-            widgets[WIDX_COMPETITIVE_MULTIPLAYER].setString(_competitiveMultiplayerText.c_str());
 
 #ifdef DISABLE_NETWORK
             widgets[WIDX_MULTIPLAYER].setHidden();
-            widgets[WIDX_COMPETITIVE_MULTIPLAYER].setHidden();
 #endif
 
             int32_t x = 0;
-            for (Widget* widget = widgets.data(); widget != &widgets[WIDX_COMPETITIVE_MULTIPLAYER]; widget++)
+            for (Widget* widget = widgets.data(); widget != &widgets[WIDX_NEW_VERSION]; widget++)
             {
                 if (widget->isVisible())
                 {
@@ -159,13 +153,6 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->CloseByClass(WindowClass::loadsave);
                         ContextOpenWindow(WindowClass::serverList);
                     }
-                    break;
-                case WIDX_COMPETITIVE_MULTIPLAYER:
-#ifndef DISABLE_NETWORK
-                    windowMgr->CloseByClass(WindowClass::scenarioSelect);
-                    windowMgr->CloseByClass(WindowClass::loadsave);
-                    ServerListOpenCompetitive();
-#endif
                     break;
                 case WIDX_NEW_VERSION:
                     ContextOpenWindowView(WindowView::newVersionInfo);
@@ -269,10 +256,7 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDraw() override
         {
             _filterRect = { windowPos + ScreenCoordsXY{ 0, kUpdateButtonDims.height },
-                            windowPos
-                                + ScreenCoordsXY{
-                                    width - 1,
-                                    kMenuButtonDims.height + kUpdateButtonDims.height + kCompetitiveButtonDims.height - 1 } };
+                            windowPos + ScreenCoordsXY{ width - 1, kMenuButtonDims.height + kUpdateButtonDims.height - 1 } };
 
             const bool newVersionAvailable = GetContext()->HasNewVersionInfo();
             widgets[WIDX_NEW_VERSION].setVisible(newVersionAvailable);
@@ -293,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* TitleMenuOpen()
     {
-        const uint16_t windowHeight = kMenuButtonDims.height + kUpdateButtonDims.height + kCompetitiveButtonDims.height;
+        const uint16_t windowHeight = kMenuButtonDims.height + kUpdateButtonDims.height;
 
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<TitleMenuWindow>(

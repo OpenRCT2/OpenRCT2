@@ -33,6 +33,8 @@ While an unfinished competitor is in the lobby or a running match, OpenRCT2 chea
 
 Every current action has a host-configurable enable switch, competitive-cash cost, exact attacker-local-day cooldown, victim-local duration, and potency. The default cooldown is 256 local days (one RCT year). Cost is reserved by the host, then spent and put on cooldown only after the online victim acknowledges delivery; failed delivery is refunded.
 
+Open the in-park multiplayer window to reach the competition leaderboard. The **Attack rival...** button is visible but disabled in the lobby, where its tooltip explains that attacks begin with the match. During a running match, select an online, unfinished rival in the leaderboard, then choose Vandal, Misinformation, or Poisoning. When no valid rival is selected, the disabled button explains what is required instead of disappearing.
+
 ### Vandal
 
 The victim receives a named angry guest governed by normal path-addition vandalism and normal security-guard range. Default potency is four attempts. A successful break or an attempt stopped by security consumes one attempt, so security prevents damage and sends the vandal home sooner. The action also has a maximum victim-local lifetime.
