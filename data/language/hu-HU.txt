@@ -3830,4 +3830,4 @@ STR_7039    :Játéktípus
 STR_7040    :Útkiegészítők
 STR_7041    :Parkinformációs panel
 STR_7042    :Dátuminformációs panel
-
+STR_7043    :Itt nem lehet megváltoztatni a terep magasságát…

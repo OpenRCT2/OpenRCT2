@@ -3830,3 +3830,4 @@ STR_7039    :Tipo de atração
 STR_7040    :Acréscimos dos caminhos
 STR_7041    :Painel de informações do parque
 STR_7042    :Painel de informações da data
+STR_7043    :Não é possível mudar a altura do terreno aqui…
