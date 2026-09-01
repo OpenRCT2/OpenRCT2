@@ -448,8 +448,8 @@ namespace OpenRCT2
         void goToRideEntrance(const Ride& ride);
     };
 
-    void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
-    void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
+    void updateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
+    void updateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
 
     static_assert(sizeof(Guest) <= 512);
 

@@ -4474,7 +4474,7 @@ namespace OpenRCT2
         setDestination(targetLoc);
     }
 
-    void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+    void updateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
     {
         auto ride = GetRide(guest.currentRide);
         // Motion simulators have steps. This moves the peeps up the steps.
@@ -4495,7 +4495,7 @@ namespace OpenRCT2
         guest.moveTo({ loc, actionZ });
     }
 
-    void UpdateRideApproachVehicleWaypointsDefault(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+    void updateRideApproachVehicleWaypointsDefault(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
     {
         guest.moveTo({ loc, guest.z });
     }
