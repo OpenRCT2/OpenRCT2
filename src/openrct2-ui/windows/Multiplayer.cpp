@@ -17,6 +17,7 @@
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/network/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/competitive/CompetitiveSession.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
@@ -24,6 +25,7 @@
 #include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -36,7 +38,8 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MULTIPLAYER_PAGE_INFORMATION,
         WINDOW_MULTIPLAYER_PAGE_PLAYERS,
         WINDOW_MULTIPLAYER_PAGE_GROUPS,
-        WINDOW_MULTIPLAYER_PAGE_OPTIONS
+        WINDOW_MULTIPLAYER_PAGE_OPTIONS,
+        WINDOW_MULTIPLAYER_PAGE_COMPETITION,
     };
 
     enum WindowMultiplayerWidgetIdx : WidgetIndex
@@ -49,14 +52,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB2,
         WIDX_TAB3,
         WIDX_TAB4,
+        WIDX_TAB5,
 
-        WIDX_HEADER_PLAYER = 8,
+        WIDX_HEADER_PLAYER = 9,
         WIDX_HEADER_GROUP,
         WIDX_HEADER_LAST_ACTION,
         WIDX_HEADER_PING,
         WIDX_LIST,
 
-        WIDX_DEFAULT_GROUP = 8,
+        WIDX_DEFAULT_GROUP = 9,
         WIDX_DEFAULT_GROUP_DROPDOWN,
         WIDX_ADD_GROUP,
         WIDX_REMOVE_GROUP,
@@ -65,9 +69,21 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SELECTED_GROUP_DROPDOWN,
         WIDX_PERMISSIONS_LIST,
 
-        WIDX_LOG_CHAT_CHECKBOX = 8,
+        WIDX_LOG_CHAT_CHECKBOX = 9,
         WIDX_LOG_SERVER_ACTIONS_CHECKBOX,
         WIDX_KNOWN_KEYS_ONLY_CHECKBOX,
+
+        WIDX_COMP_PLACE = 9,
+        WIDX_COMP_PARK,
+        WIDX_COMP_STATUS,
+        WIDX_COMP_YEAR,
+        WIDX_COMP_SCORE,
+        WIDX_COMP_LIST,
+        WIDX_COMP_READY,
+        WIDX_COMP_START,
+        WIDX_COMP_ACTIONS,
+        WIDX_COMP_HOST_CONTROLS,
+        WIDX_COMP_LEAVE,
     };
 
     static constexpr ScreenSize kWindowSize = { 340, 240 };
@@ -79,7 +95,8 @@ namespace OpenRCT2::Ui::Windows
         makeTab   ({  3, 17},                                                          STR_SHOW_SERVER_INFO_TIP),
         makeTab   ({ 34, 17},                                                          STR_PLAYERS_TIP         ),
         makeTab   ({ 65, 17},                                                          STR_GROUPS_TIP          ),
-        makeTab   ({ 96, 17},                                                          STR_OPTIONS_TIP         )
+        makeTab   ({ 96, 17},                                                          STR_OPTIONS_TIP         ),
+        makeTab   ({127, 17},                                                          kStringIdNone            )
     );
 
     static constexpr auto window_multiplayer_information_widgets = makeWidgets(
@@ -114,11 +131,27 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({3, 78}, {295, 12}, WidgetType::checkbox, WindowColour::secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP)
     );
 
+    static constexpr auto window_multiplayer_competition_widgets = makeWidgets(
+        kMainMultiplayerWidgets,
+        makeWidget({  3, 47}, { 40, 15}, WidgetType::tableHeader, WindowColour::primary, kStringIdEmpty),
+        makeWidget({ 43, 47}, {220, 15}, WidgetType::tableHeader, WindowColour::primary, kStringIdEmpty),
+        makeWidget({263, 47}, {100, 15}, WidgetType::tableHeader, WindowColour::primary, kStringIdEmpty),
+        makeWidget({363, 47}, { 60, 15}, WidgetType::tableHeader, WindowColour::primary, kStringIdEmpty),
+        makeWidget({423, 47}, {194, 15}, WidgetType::tableHeader, WindowColour::primary, kStringIdEmpty),
+        makeWidget({  3, 61}, {614,210}, WidgetType::scroll,      WindowColour::secondary, SCROLL_VERTICAL),
+        makeWidget({  6,292}, {110, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({121,292}, {110, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({236,292}, {110, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({351,292}, {130, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty),
+        makeWidget({486,292}, {128, 14}, WidgetType::button,      WindowColour::secondary, kStringIdEmpty)
+    );
+
     static std::span<const Widget> window_multiplayer_page_widgets[] = {
         window_multiplayer_information_widgets,
         window_multiplayer_players_widgets,
         window_multiplayer_groups_widgets,
         window_multiplayer_options_widgets,
+        window_multiplayer_competition_widgets,
     };
 
     static constexpr StringId WindowMultiplayerPageTitles[] = {
@@ -126,6 +159,7 @@ namespace OpenRCT2::Ui::Windows
         STR_MULTIPLAYER_PLAYERS_TITLE,
         STR_MULTIPLAYER_GROUPS_TITLE,
         STR_MULTIPLAYER_OPTIONS_TITLE,
+        kStringIdNone,
     };
 
     // clang-format on
@@ -135,12 +169,14 @@ namespace OpenRCT2::Ui::Windows
         4,
         2,
         2,
+        1,
     };
     static constexpr int32_t window_multiplayer_animation_frames[] = {
         8,
         8,
         7,
         4,
+        1,
     };
 
     static bool IsServerPlayerInvisible()
@@ -153,6 +189,19 @@ namespace OpenRCT2::Ui::Windows
     private:
         std::optional<ScreenSize> _windowInformationSize;
         uint8_t _selectedGroup{ 0 };
+        std::vector<Competitive::ParticipantId> _competitionRows;
+        std::string _competitionTitle;
+        std::string _competitionTabTooltip = "Competition leaderboard and lobby";
+        std::string _placeHeader = "Place";
+        std::string _parkHeader = "Park / player";
+        std::string _statusHeader = "Status";
+        std::string _yearHeader = "Year";
+        std::string _scoreHeader;
+        std::string _readyText;
+        std::string _startText = "Start competition";
+        std::string _actionsText = "Rival actions";
+        std::string _hostControlsText = "Host controls";
+        std::string _leaveText = "Leave competition";
 
     private:
         void showGroupDropdown(WidgetIndex widgetIndex)
@@ -448,6 +497,8 @@ namespace OpenRCT2::Ui::Windows
             drawTabImage(rt, WINDOW_MULTIPLAYER_PAGE_PLAYERS, SPR_TAB_GUESTS_0);
             drawTabImage(rt, WINDOW_MULTIPLAYER_PAGE_GROUPS, SPR_TAB_STAFF_OPTIONS_0);
             drawTabImage(rt, WINDOW_MULTIPLAYER_PAGE_OPTIONS, SPR_TAB_GEARS_0);
+            if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+                drawTabImage(rt, WINDOW_MULTIPLAYER_PAGE_COMPETITION, SPR_TAB_AWARDS);
         }
 
         ScreenSize informationGetSize()
@@ -499,7 +550,10 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
-            setPage(WINDOW_MULTIPLAYER_PAGE_INFORMATION);
+            setPage(
+                Competitive::GetSession().GetMode() == Competitive::SessionMode::none
+                    ? WINDOW_MULTIPLAYER_PAGE_INFORMATION
+                    : WINDOW_MULTIPLAYER_PAGE_COMPETITION);
         }
 
         void setPage(int32_t page_number)
@@ -516,7 +570,19 @@ namespace OpenRCT2::Ui::Windows
             selectedListItem = -1;
 
             setWidgets(window_multiplayer_page_widgets[page]);
-            widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
+            widgets[WIDX_TITLE].setString(WindowMultiplayerPageTitles[page]);
+            widgets[WIDX_TAB5].setTooltip(_competitionTabTooltip.c_str());
+            if (page == WINDOW_MULTIPLAYER_PAGE_COMPETITION)
+            {
+                widgets[WIDX_COMP_PLACE].setString(_placeHeader.c_str());
+                widgets[WIDX_COMP_PARK].setString(_parkHeader.c_str());
+                widgets[WIDX_COMP_STATUS].setString(_statusHeader.c_str());
+                widgets[WIDX_COMP_YEAR].setString(_yearHeader.c_str());
+                widgets[WIDX_COMP_START].setString(_startText.c_str());
+                widgets[WIDX_COMP_ACTIONS].setString(_actionsText.c_str());
+                widgets[WIDX_COMP_HOST_CONTROLS].setString(_hostControlsText.c_str());
+                widgets[WIDX_COMP_LEAVE].setString(_leaveText.c_str());
+            }
             setWidgetPressed(WIDX_TAB1 + page, true);
 
             refreshList();
@@ -537,6 +603,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB2:
                 case WIDX_TAB3:
                 case WIDX_TAB4:
+                case WIDX_TAB5:
                     if (page != widgetIndex - WIDX_TAB1)
                     {
                         setPage(widgetIndex - WIDX_TAB1);
@@ -547,6 +614,36 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             switch (page)
             {
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
+                {
+                    auto& session = Competitive::GetSession();
+                    std::string error;
+                    switch (widgetIndex)
+                    {
+                        case WIDX_COMP_READY:
+                        {
+                            const auto* local = session.GetLocalParticipant();
+                            if (local != nullptr && !session.SetReady(!local->ready, error))
+                                ErrorOpen("Cannot change readiness", error);
+                            break;
+                        }
+                        case WIDX_COMP_START:
+                            if (!session.StartMatch(error))
+                                ErrorOpen("Cannot start competition", error);
+                            break;
+                        case WIDX_COMP_ACTIONS:
+                            ErrorOpen("Rival actions", "Choose a rival action here once the native delivery controls are available.");
+                            break;
+                        case WIDX_COMP_HOST_CONTROLS:
+                            ErrorOpen("Host controls", "Select an offline park in the leaderboard before forfeiting it, or close the match early.");
+                            break;
+                        case WIDX_COMP_LEAVE:
+                            session.Stop();
+                            close();
+                            break;
+                    }
+                    break;
+                }
                 case WINDOW_MULTIPLAYER_PAGE_GROUPS:
                 {
                     switch (widgetIndex)
@@ -633,6 +730,13 @@ namespace OpenRCT2::Ui::Windows
                     WindowSetResize(*this, { 300, 100 }, { 300, 100 });
                     break;
                 }
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
+                {
+                    WindowSetResize(*this, { 620, 320 }, { 900, 650 });
+                    selectedListItem = -1;
+                    invalidate();
+                    break;
+                }
             }
         }
 
@@ -640,6 +744,11 @@ namespace OpenRCT2::Ui::Windows
         {
             currentFrame++;
             invalidateWidget(WIDX_TAB1 + page);
+            if (page == WINDOW_MULTIPLAYER_PAGE_COMPETITION)
+            {
+                refreshList();
+                invalidate();
+            }
         }
 
         void onPrepareDraw() override
@@ -682,7 +791,54 @@ namespace OpenRCT2::Ui::Windows
                     setCheckboxValue(WIDX_KNOWN_KEYS_ONLY_CHECKBOX, Config::Get().network.knownKeysOnly);
                     break;
                 }
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
+                {
+                    widgets[WIDX_CONTENT_PANEL].right = width - 1;
+                    widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
+                    widgets[WIDX_COMP_LIST].right = width - 4;
+                    widgets[WIDX_COMP_LIST].bottom = height - 49;
+                    widgets[WIDX_COMP_SCORE].right = width - 4;
+                    widgets[WIDX_COMP_READY].top = height - 28;
+                    widgets[WIDX_COMP_READY].bottom = height - 15;
+                    widgets[WIDX_COMP_START].top = height - 28;
+                    widgets[WIDX_COMP_START].bottom = height - 15;
+                    widgets[WIDX_COMP_ACTIONS].top = height - 28;
+                    widgets[WIDX_COMP_ACTIONS].bottom = height - 15;
+                    widgets[WIDX_COMP_HOST_CONTROLS].top = height - 28;
+                    widgets[WIDX_COMP_HOST_CONTROLS].bottom = height - 15;
+                    widgets[WIDX_COMP_LEAVE].top = height - 28;
+                    widgets[WIDX_COMP_LEAVE].bottom = height - 15;
+                    WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB5);
+
+                    auto& session = Competitive::GetSession();
+                    const auto* state = session.GetState();
+                    const auto* local = session.GetLocalParticipant();
+                    const bool lobby = state != nullptr && state->phase == Competitive::Phase::lobby;
+                    const bool host = session.GetMode() == Competitive::SessionMode::host;
+                    const bool competitor = local != nullptr && local->role != Competitive::Role::spectator;
+                    widgets[WIDX_COMP_READY].setVisible(lobby && competitor);
+                    widgets[WIDX_COMP_START].setVisible(lobby && host);
+                    widgets[WIDX_COMP_ACTIONS].setVisible(false);
+                    widgets[WIDX_COMP_HOST_CONTROLS].setVisible(false);
+                    setWidgetDisabled(WIDX_COMP_START, !host || !session.GetStartProblems().empty());
+                    _readyText = local != nullptr && local->ready ? "Not ready" : "Ready";
+                    widgets[WIDX_COMP_READY].setString(_readyText.c_str());
+                    if (state != nullptr)
+                    {
+                        _competitionTitle = "Competition — " + state->name;
+                        _scoreHeader = competitionMetricName(state->rules.metric);
+                    }
+                    else
+                    {
+                        _competitionTitle = "Competition";
+                        _scoreHeader = "Score";
+                    }
+                    widgets[WIDX_TITLE].setString(_competitionTitle.c_str());
+                    widgets[WIDX_COMP_SCORE].setString(_scoreHeader.c_str());
+                    break;
+                }
             }
+            widgets[WIDX_TAB5].setVisible(Competitive::GetSession().GetMode() != Competitive::SessionMode::none);
         }
 
         void onDraw(RenderTarget& rt) override
@@ -706,6 +862,9 @@ namespace OpenRCT2::Ui::Windows
                     groupsPaint(rt);
                     break;
                 }
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
+                    competitionPaint(rt);
+                    break;
             }
         }
 
@@ -823,6 +982,9 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
+                    screenSize = { 0, static_cast<int32_t>(_competitionRows.size()) * kScrollableRowHeight };
+                    break;
             }
             return screenSize;
         }
@@ -860,6 +1022,16 @@ namespace OpenRCT2::Ui::Windows
                     GameActions::Execute(&networkModifyGroup, getGameState());
                     break;
                 }
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
+                {
+                    const int32_t index = screenCoords.y / kScrollableRowHeight;
+                    if (index >= 0 && index < static_cast<int32_t>(_competitionRows.size()))
+                    {
+                        selectedListItem = index;
+                        invalidate();
+                    }
+                    break;
+                }
             }
         }
 
@@ -869,6 +1041,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
                 case WINDOW_MULTIPLAYER_PAGE_GROUPS:
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
                 {
                     int32_t index = screenCoords.y / kScrollableRowHeight;
                     if (index >= numListItems)
@@ -892,6 +1065,10 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_MULTIPLAYER_PAGE_GROUPS:
                     groupsScrollPaint(scrollIndex, rt);
                     break;
+
+                case WINDOW_MULTIPLAYER_PAGE_COMPETITION:
+                    competitionScrollPaint(rt);
+                    break;
             }
         }
 
@@ -900,6 +1077,153 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_MULTIPLAYER_PAGE_PLAYERS)
             {
                 numListItems = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
+            }
+            else if (page == WINDOW_MULTIPLAYER_PAGE_COMPETITION)
+            {
+                _competitionRows.clear();
+                const auto* state = Competitive::GetSession().GetState();
+                if (state == nullptr)
+                {
+                    numListItems = 0;
+                    return;
+                }
+                for (const auto& participant : state->participants)
+                {
+                    if (participant.role != Competitive::Role::spectator)
+                        _competitionRows.push_back(participant.id);
+                }
+                std::sort(_competitionRows.begin(), _competitionRows.end(), [state](auto lhsId, auto rhsId) {
+                    const auto* lhsParticipant = Competitive::FindParticipant(*state, lhsId);
+                    const auto* rhsParticipant = Competitive::FindParticipant(*state, rhsId);
+                    if (lhsParticipant->forfeited != rhsParticipant->forfeited)
+                        return !lhsParticipant->forfeited;
+                    const auto* lhsScore = Competitive::FindScore(*state, lhsId);
+                    const auto* rhsScore = Competitive::FindScore(*state, rhsId);
+                    const auto lhsMetric = lhsScore == nullptr ? INT64_MIN : Competitive::GetMetricValue(*lhsScore, state->rules.metric);
+                    const auto rhsMetric = rhsScore == nullptr ? INT64_MIN : Competitive::GetMetricValue(*rhsScore, state->rules.metric);
+                    if (lhsMetric != rhsMetric)
+                        return lhsMetric > rhsMetric;
+                    const auto lhsPoints = lhsScore == nullptr ? INT64_MIN : lhsScore->points;
+                    const auto rhsPoints = rhsScore == nullptr ? INT64_MIN : rhsScore->points;
+                    if (lhsPoints != rhsPoints)
+                        return lhsPoints > rhsPoints;
+                    return lhsId < rhsId;
+                });
+                numListItems = static_cast<uint16_t>(_competitionRows.size());
+            }
+        }
+
+        static const char* competitionStatusName(const Competitive::Participant& participant, Competitive::Phase phase)
+        {
+            switch (Competitive::GetParticipantStatus(participant, phase))
+            {
+                case Competitive::ParticipantStatus::lobby:
+                    return "In lobby";
+                case Competitive::ParticipantStatus::ready:
+                    return "Ready";
+                case Competitive::ParticipantStatus::playing:
+                    return "Playing";
+                case Competitive::ParticipantStatus::offline:
+                    return "Offline — paused";
+                case Competitive::ParticipantStatus::finished:
+                    return "Finished";
+                case Competitive::ParticipantStatus::forfeited:
+                    return "Forfeited";
+            }
+            return "Unknown";
+        }
+
+        static const char* competitionPhaseName(Competitive::Phase phase)
+        {
+            switch (phase)
+            {
+                case Competitive::Phase::lobby:
+                    return "Lobby";
+                case Competitive::Phase::running:
+                    return "Running";
+                case Competitive::Phase::finished:
+                    return "Finished";
+                default:
+                    return "Connecting";
+            }
+        }
+
+        static const char* competitionMetricName(Competitive::Metric metric)
+        {
+            switch (metric)
+            {
+                case Competitive::Metric::points:
+                    return "Points";
+                case Competitive::Metric::rating:
+                    return "Rating";
+                case Competitive::Metric::guests:
+                    return "Guests";
+                case Competitive::Metric::competitiveCash:
+                    return "Competitive cash";
+                case Competitive::Metric::parkValue:
+                    return "Park value";
+            }
+            return "Score";
+        }
+
+        static std::string competitionMetricValue(const Competitive::Score& score, Competitive::Metric metric)
+        {
+            const auto value = Competitive::GetMetricValue(score, metric);
+            if (metric == Competitive::Metric::competitiveCash || metric == Competitive::Metric::parkValue)
+                return FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(value));
+            return std::to_string(value);
+        }
+
+        void competitionPaint(RenderTarget& rt)
+        {
+            const auto& session = Competitive::GetSession();
+            const auto* state = session.GetState();
+            if (state == nullptr)
+            {
+                drawText(rt, windowPos + ScreenCoordsXY{ 7, 70 }, session.GetStatusText(), { colours[1] });
+                return;
+            }
+            std::string summary = std::string(competitionPhaseName(state->phase)) + " — " + state->scenario.name;
+            if (state->rules.victoryMode == Competitive::VictoryMode::deadline)
+                summary += " — highest " + _scoreHeader + " at local Year " + std::to_string(state->rules.deadlineYear);
+            else
+            {
+                std::string target;
+                if (state->rules.metric == Competitive::Metric::competitiveCash
+                    || state->rules.metric == Competitive::Metric::parkValue)
+                    target = FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(state->rules.target));
+                else
+                    target = std::to_string(state->rules.target);
+                summary += " — first to " + target + " " + _scoreHeader;
+            }
+            drawTextEllipsised(rt, windowPos + ScreenCoordsXY{ 6, height - 43 }, width - 12, summary, { colours[1] });
+        }
+
+        void competitionScrollPaint(RenderTarget& rt) const
+        {
+            const auto* state = Competitive::GetSession().GetState();
+            if (state == nullptr)
+                return;
+            int32_t y = 0;
+            for (size_t row = 0; row < _competitionRows.size(); row++, y += kScrollableRowHeight)
+            {
+                const auto* participant = Competitive::FindParticipant(*state, _competitionRows[row]);
+                const auto* score = Competitive::FindScore(*state, _competitionRows[row]);
+                if (participant == nullptr || score == nullptr)
+                    continue;
+                if (static_cast<int32_t>(row) == selectedListItem)
+                {
+                    Rectangle::filter(rt, { 0, y, 1000, y + kScrollableRowHeight - 1 }, FilterPaletteID::paletteDarken1);
+                }
+                auto colour = participant->online ? colours[2] : ColourWithFlags{ Drawing::Colour::grey };
+                drawText(rt, { 5, y }, std::to_string(row + 1), { colour });
+                std::string name = participant->name;
+                if (participant->id == Competitive::GetSession().GetLocalParticipantId())
+                    name += " (you)";
+                drawTextEllipsised(rt, { 45, y }, 214, name, { colour });
+                drawTextEllipsised(rt, { 265, y }, 94, competitionStatusName(*participant, state->phase), { colour });
+                drawText(rt, { 370, y }, std::to_string(participant->currentYear), { colour });
+                drawTextEllipsised(rt, { 425, y }, 185, competitionMetricValue(*score, state->rules.metric), { colour });
             }
         }
     };

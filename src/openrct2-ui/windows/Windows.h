@@ -310,6 +310,7 @@ namespace OpenRCT2::Ui::Windows
 
     // ServerStart
     WindowBase* ServerStartOpen();
+    WindowBase* ServerStartOpenCompetitive();
 #endif
 
     // ShortcutKeys

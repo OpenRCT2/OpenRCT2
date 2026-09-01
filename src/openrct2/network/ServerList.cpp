@@ -72,6 +72,11 @@ namespace OpenRCT2::Network
         return Version.empty() || Version == GetVersion();
     }
 
+    bool ServerListEntry::IsCompetitive() const noexcept
+    {
+        return Kind == ServerKind::competitive;
+    }
+
     std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)
     {
         Guard::Assert(server.is_object(), "ServerListEntry::FromJson expects parameter server to be object");
@@ -83,6 +88,7 @@ namespace OpenRCT2::Network
         const auto version = Json::GetString(server["version"]);
         const auto players = Json::GetNumber<uint8_t>(server["players"]);
         const auto maxPlayers = Json::GetNumber<uint8_t>(server["maxPlayers"]);
+        const auto gameMode = Json::GetString(server["gameMode"]);
         std::string ip;
         // if server["ip"] or server["ip"]["v4"] are values, this will throw an exception, so check first
         if (server["ip"].is_object() && server["ip"]["v4"].is_array())
@@ -106,6 +112,17 @@ namespace OpenRCT2::Network
         entry.RequiresPassword = requiresPassword;
         entry.Players = players;
         entry.MaxPlayers = maxPlayers;
+        if (gameMode == "competitive")
+        {
+            entry.Kind = ServerKind::competitive;
+            entry.CompetitiveProtocol = Json::GetNumber<uint16_t>(server["competitiveProtocol"]);
+            entry.CompetitionPhase = Json::GetString(server["phase"]);
+            entry.ScenarioName = Json::GetString(server["scenarioName"]);
+            entry.ScenarioFileName = Json::GetString(server["scenarioFileName"]);
+            entry.ScenarioHash = Json::GetString(server["scenarioHash"]);
+            entry.Victory = Json::GetString(server["victory"]);
+            entry.AllowLateJoin = Json::GetBoolean(server["allowLateJoin"]);
+        }
 
         return entry;
     }

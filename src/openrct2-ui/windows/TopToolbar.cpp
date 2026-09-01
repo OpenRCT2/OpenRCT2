@@ -28,6 +28,7 @@
 #include <openrct2/actions/general/PauseToggleAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/competitive/CompetitiveSession.h>
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -758,14 +759,24 @@ namespace OpenRCT2::Ui::Windows
 
         void initNetworkMenu(Widget& widget)
         {
-            gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER);
-            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
+            const bool competitive = Competitive::GetSession().GetMode() != Competitive::SessionMode::none;
+            if (competitive)
+            {
+                gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(
+                    Network::GetMode() == Network::Mode::none ? "Competition" : "Multiplayer & competition");
+                gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel("Leave competition");
+            }
+            else
+            {
+                gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER);
+                gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
+            }
 
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), { Dropdown::Flag::autoClose }, TOP_TOOLBAR_NETWORK_COUNT);
 
-            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!Network::IsDesynchronised());
+            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!competitive && !Network::IsDesynchronised());
 
             gDropdown.defaultIndex = DDIDX_MULTIPLAYER;
         }
@@ -781,7 +792,14 @@ namespace OpenRCT2::Ui::Windows
                         ContextOpenWindow(WindowClass::multiplayer);
                         break;
                     case DDIDX_MULTIPLAYER_RECONNECT:
-                        Network::Reconnect();
+                        if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+                        {
+                            Competitive::GetSession().Stop();
+                        }
+                        else
+                        {
+                            Network::Reconnect();
+                        }
                         break;
                 }
             }
@@ -1153,7 +1171,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             const auto mode = Network::GetMode();
-            widgets[WIDX_NETWORK].setHidden(mode == Network::Mode::none);
+            const bool competitive = Competitive::GetSession().GetMode() != Competitive::SessionMode::none;
+            widgets[WIDX_NETWORK].setHidden(mode == Network::Mode::none && !competitive);
             widgets[WIDX_CHAT].setHidden(mode == Network::Mode::none);
             widgets[WIDX_PAUSE].setHidden(mode == Network::Mode::client);
             widgets[WIDX_FASTFORWARD].setHidden(mode == Network::Mode::server);
@@ -1429,9 +1448,23 @@ namespace OpenRCT2::Ui::Windows
                 imgId = (Network::IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
                 GfxDrawSprite(rt, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
-                // Draw number of players.
+                // Draw the relevant online park/player count.
+                int32_t onlineCount = Network::GetNumVisiblePlayers();
+                if (Network::GetMode() == Network::Mode::none)
+                {
+                    onlineCount = 0;
+                    const auto* state = Competitive::GetSession().GetState();
+                    if (state != nullptr)
+                    {
+                        for (const auto& participant : state->participants)
+                        {
+                            if (participant.online && participant.role != Competitive::Role::spectator)
+                                onlineCount++;
+                        }
+                    }
+                }
                 auto ft = Formatter();
-                ft.Add<int32_t>(Network::GetNumVisiblePlayers());
+                ft.Add<int32_t>(onlineCount);
                 auto colour = ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true);
                 drawText(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
             }

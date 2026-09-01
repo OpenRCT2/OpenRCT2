@@ -618,6 +618,10 @@ namespace OpenRCT2::Competitive
                     {
                         serverConnection->disconnect();
                     }
+                    else
+                    {
+                        ContextOpenWindow(WindowClass::multiplayer);
+                    }
                     break;
                 }
                 case Network::Command::competitiveSnapshot:
