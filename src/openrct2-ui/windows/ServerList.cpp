@@ -73,8 +73,8 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _serverListWidgets = makeWidgets(
         makeWindowShim(STR_SERVER_LIST, kWindowSize),
-        makeWidget({  3, 17}, {120,  26}, WidgetType::tab,      WindowColour::secondary, kStringIdEmpty                         ), // cooperative tab
-        makeWidget({123, 17}, {120,  26}, WidgetType::tab,      WindowColour::secondary, kStringIdEmpty                         ), // competitive tab
+        makeWidget({  3, 17}, {120,  26}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty                         ), // cooperative tab
+        makeWidget({123, 17}, {120,  26}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty                         ), // competitive tab
         makeWidget({100, 47}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
         makeWidget({  6, 64}, {589, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
         makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
@@ -135,6 +135,11 @@ namespace OpenRCT2::Ui::Windows
             _serverList = {};
             _fetchFuture = {};
             Config::Save();
+        }
+
+        void ShowCompetitivePage()
+        {
+            SetPage(1);
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -701,6 +706,13 @@ namespace OpenRCT2::Ui::Windows
             WindowClass::serverList, kMinimumWindowSize,
             { WindowFlag::higherContrastOnPress, WindowFlag::resizable, WindowFlag::centreScreen });
 
+        return window;
+    }
+
+    WindowBase* ServerListOpenCompetitive()
+    {
+        auto* window = ServerListOpen();
+        static_cast<ServerListWindow*>(window)->ShowCompetitivePage();
         return window;
     }
 
