@@ -298,20 +298,22 @@ namespace OpenRCT2
                 {
                     switch (guest->getEasterEggNameId())
                     {
-                        case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
+                        case EasterEggPeepName::michaelSchumacher:
                             vehicle->speed += 35;
                             break;
-                        case EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE:
+                        case EasterEggPeepName::jacquesVilleneuve:
                             vehicle->speed += 25;
                             break;
-                        case EASTEREGG_PEEP_NAME_DAMON_HILL:
+                        case EasterEggPeepName::damonHill:
                             vehicle->speed += 55;
                             break;
-                        case EASTEREGG_PEEP_NAME_CHRIS_SAWYER:
+                        case EasterEggPeepName::chrisSawyer:
                             vehicle->speed += 14;
                             break;
-                        case EASTEREGG_PEEP_NAME_MR_BEAN:
+                        case EasterEggPeepName::mrBean:
                             vehicle->speed = 9;
+                            break;
+                        default:
                             break;
                     }
                 }

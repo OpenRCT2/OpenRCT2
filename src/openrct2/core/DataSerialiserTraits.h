@@ -881,7 +881,7 @@ namespace OpenRCT2
         static void log(IStream* stream, const IntensityRange& val)
         {
             char msg[128] = {};
-            snprintf(msg, sizeof(msg), "IntensityRange(min = %d, max = %d)", val.GetMinimum(), val.GetMaximum());
+            snprintf(msg, sizeof(msg), "IntensityRange(min = %d, max = %d)", val.getMinimum(), val.getMaximum());
             stream->Write(msg, strlen(msg));
         }
     };
