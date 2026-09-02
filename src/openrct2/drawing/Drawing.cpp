@@ -45,7 +45,7 @@ static constexpr uint8_t kPaletteLengthWaterWaves = 5;
 static constexpr uint8_t kPaletteLengthWaterSparkles = 5;
 
 static constexpr auto kPaletteOffsetAnimated = PaletteIndex::waterWaves0;
-static constexpr uint8_t kPaletteLengthAnimated = 16;
+static constexpr uint8_t kPaletteLengthAnimated = 13;
 
 GamePalette gPalette;
 GamePalette gGamePalette;
