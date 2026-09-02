@@ -826,9 +826,11 @@ namespace OpenRCT2::Competitive
                         guest->setName(std::string(memberName) + " sent by " + sourceName);
                         if (effect.ability == Ability::karens)
                         {
-                            // thirst is inverted (low = thirsty); toilet is not (high = needs to go).
-                            guest->thirst = 10;
-                            guest->toilet = 200;
+                            // Noticeably thirsty and needing the toilet, but not maxed out - they get
+                            // there on their own as the stats decay. thirst is inverted (low = thirsty);
+                            // toilet is not (high = needs to go).
+                            guest->thirst = 50;
+                            guest->toilet = 170;
                             guest->happiness = 60;
                             guest->happinessTarget = 60;
                             // Their own umbrella: guests never buy an item they already carry.
@@ -836,11 +838,12 @@ namespace OpenRCT2::Competitive
                         }
                         else
                         {
-                            // The munchies: spawn hungry (hunger is inverted - low means hungry) so they
-                            // head for food, and lethargic so they shuffle slowly and stand around.
-                            guest->hunger = 10;
-                            guest->energy = kPeepMinEnergy;
-                            guest->energyTarget = kPeepMinEnergy;
+                            // The munchies: spawn a bit hungry (hunger is inverted - low means hungry)
+                            // so they drift toward food, and low on energy so they shuffle slowly and
+                            // linger - but not pinned at the minimum.
+                            guest->hunger = 50;
+                            guest->energy = 50;
+                            guest->energyTarget = 50;
                         }
                         group.guestIds.push_back(guest->id);
                     }
