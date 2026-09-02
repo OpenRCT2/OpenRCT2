@@ -835,7 +835,11 @@ namespace OpenRCT2::Competitive
                         }
                         else
                         {
-                            guest->hunger = 200;
+                            // The munchies: spawn hungry (hunger is inverted - low means hungry) so they
+                            // head for food, and lethargic so they shuffle slowly and stand around.
+                            guest->hunger = 10;
+                            guest->energy = kPeepMinEnergy;
+                            guest->energyTarget = kPeepMinEnergy;
                         }
                         group.guestIds.push_back(guest->id);
                     }

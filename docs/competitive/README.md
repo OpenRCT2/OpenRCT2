@@ -86,7 +86,7 @@ A coach party (default 20, host-configurable) of guests arrives in the victim's 
 
 ### Stoners
 
-A coach party (default 20, host-configurable) of guests arrives at once with high hunger. They ignore prices - they never raise the "I'm not paying that much" thought and are not deterred by low happiness - and they are far more likely than ordinary guests to stop and stare at rides instead of spending. They behave normally otherwise and leave on their own accord, completing the action when the party has gone.
+A coach party (default 20, host-configurable) of guests arrives at once, spawned hungry and lethargic (low energy). They ignore prices - they never raise the "I'm not paying that much" thought and are not deterred by low happiness - and they are far more likely than ordinary guests to stop and stare at anything: rides, food/drink stalls, or scenery, thinking their own vacant thoughts while they do. Every few minutes each Stoner puffs a small cloud of smoke; an ordinary guest sharing that tile takes a minor mood hit and thinks "It smells strongly of weed here!". They behave normally otherwise and leave of their own accord, completing the action when the party has gone.
 
 ### Hitman
 
