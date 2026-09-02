@@ -2269,7 +2269,7 @@ namespace OpenRCT2
                             for (auto& p : positions)
                                 shiftIfNotNull(p, amount);
                             patrol->clear();
-                            patrol->Union(positions);
+                            patrol->unify(positions);
                         }
                     }
                 }

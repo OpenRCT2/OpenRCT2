@@ -2497,7 +2497,7 @@ namespace OpenRCT2
                     entity.patrolInfo = new PatrolArea();
                 else
                     entity.patrolInfo->clear();
-                entity.patrolInfo->Union(patrolArea);
+                entity.patrolInfo->unify(patrolArea);
             }
         }
 

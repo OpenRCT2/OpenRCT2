@@ -52,8 +52,8 @@ namespace OpenRCT2
         bool get(const CoordsXY& pos) const;
         void set(const TileCoordsXY& pos, bool value);
         void set(const CoordsXY& pos, bool value);
-        void Union(const PatrolArea& other);
-        void Union(const std::vector<TileCoordsXY>& other);
+        void unify(const PatrolArea& other);
+        void unify(const std::vector<TileCoordsXY>& other);
         std::vector<TileCoordsXY> toVector() const;
     };
 

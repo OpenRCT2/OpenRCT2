@@ -100,7 +100,7 @@ namespace OpenRCT2
         set(TileCoordsXY(pos), value);
     }
 
-    void PatrolArea::Union(const PatrolArea& other)
+    void PatrolArea::unify(const PatrolArea& other)
     {
         for (size_t i = 0; i < areas.size(); i++)
         {
@@ -111,7 +111,7 @@ namespace OpenRCT2
         }
     }
 
-    void PatrolArea::Union(const std::vector<TileCoordsXY>& other)
+    void PatrolArea::unify(const std::vector<TileCoordsXY>& other)
     {
         for (const auto& pos : other)
         {
@@ -153,7 +153,7 @@ namespace OpenRCT2
                 if (staff->patrolInfo == nullptr)
                     continue;
 
-                mergedArea.Union(*staff->patrolInfo);
+                mergedArea.unify(*staff->patrolInfo);
             }
         }
     }
