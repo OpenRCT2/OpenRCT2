@@ -647,7 +647,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr && staff->patrolInfo != nullptr)
         {
-            auto tiles = staff->patrolInfo->ToVector();
+            auto tiles = staff->patrolInfo->toVector();
 
             auto index = 0;
             for (const auto& tile : tiles)
