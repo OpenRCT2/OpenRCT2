@@ -340,7 +340,7 @@ namespace OpenRCT2::Competitive
         static constexpr uint32_t kStaffComplaintCooldownTicks = 600;  // ~15s of peace for a released staff member
         static constexpr uint32_t kStonerPuffMinTicks = 4800;         // ~2 min minimum between a Stoner's smoke puffs
         static constexpr uint32_t kStonerPuffJitterTicks = 7200;      // + up to ~3 min of random jitter (so ~2-5 min)
-        static constexpr uint32_t kStonerStareGuardTicks = 2400;      // ~60s a Stoner must wander before staring again
+        static constexpr uint32_t kStonerStareGuardTicks = 1800;      // ~45s of wandering after a stare before the next one
         static constexpr int32_t kStonerPuffHappinessHit = 5;        // minor mood hit for a bystander in the smoke
 
         SessionMode mode = SessionMode::none;
@@ -379,7 +379,7 @@ namespace OpenRCT2::Competitive
         std::unordered_map<uint32_t, uint32_t> karenComplaintCooldown; // Karen guest id -> earliest tick it may corner staff again
         std::unordered_map<uint32_t, uint32_t> staffComplaintCooldown; // staff id -> earliest tick it may be cornered again
         std::unordered_map<uint32_t, uint32_t> stonerNextPuffTick;     // Stoner guest id -> next tick it puffs smoke
-        std::unordered_map<uint32_t, uint32_t> stonerLastStareTick;    // Stoner guest id -> tick it last started staring
+        std::unordered_map<uint32_t, uint32_t> stonerLastStareTick;    // Stoner guest id -> tick it last finished staring
         bool openWindowAfterRestore = false;
         bool hostLossHandled = false;
         bool startedWatchServer = false;
@@ -985,7 +985,7 @@ namespace OpenRCT2::Competitive
             return it == stonerLastStareTick.end() || getGameState().currentTicks - it->second >= kStonerStareGuardTicks;
         }
 
-        void NoteStonerStareStarted(EntityId guestId)
+        void NoteStonerStareEnded(EntityId guestId)
         {
             stonerLastStareTick[guestId.ToUnderlying()] = getGameState().currentTicks;
         }
@@ -3079,9 +3079,9 @@ namespace OpenRCT2::Competitive
         return _impl->StonerMayStare(guestId);
     }
 
-    void Session::NoteStonerStareStarted(EntityId guestId)
+    void Session::NoteStonerStareEnded(EntityId guestId)
     {
-        _impl->NoteStonerStareStarted(guestId);
+        _impl->NoteStonerStareEnded(guestId);
     }
 
     std::string Session::ExportParkStorage() const
@@ -3686,9 +3686,9 @@ namespace OpenRCT2::Competitive
         return GetSession().StonerMayStare(guestId);
     }
 
-    void NoteStonerStareStarted(EntityId guestId)
+    void NoteStonerStareEnded(EntityId guestId)
     {
-        GetSession().NoteStonerStareStarted(guestId);
+        GetSession().NoteStonerStareEnded(guestId);
     }
 
     std::string ExportParkStorage()
@@ -3785,7 +3785,7 @@ namespace OpenRCT2::Competitive
     bool Session::IsStaffDetained(EntityId) const { return false; }
     bool Session::IsKarenConfrontingStaff(EntityId) const { return false; }
     bool Session::StonerMayStare(EntityId) const { return true; }
-    void Session::NoteStonerStareStarted(EntityId) {}
+    void Session::NoteStonerStareEnded(EntityId) {}
     std::string Session::ExportParkStorage() const { return {}; }
     bool Session::RestoreParkStorage(std::string_view, std::string& error) { error = _impl->error; return false; }
     bool Session::WatchParticipant(ParticipantId, std::string& error) { error = _impl->error; return false; }
@@ -3809,7 +3809,7 @@ namespace OpenRCT2::Competitive
     bool IsStaffDetained(EntityId) { return false; }
     bool IsKarenConfrontingStaff(EntityId) { return false; }
     bool StonerMayStare(EntityId) { return true; }
-    void NoteStonerStareStarted(EntityId) {}
+    void NoteStonerStareEnded(EntityId) {}
     std::string ExportParkStorage() { return {}; }
     bool RestoreParkStorage(std::string_view, std::string& error) { error = "Networking is disabled in this build."; return false; }
     bool IsWatchingPark() { return false; }

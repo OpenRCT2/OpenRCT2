@@ -5663,7 +5663,9 @@ namespace OpenRCT2
 
         if (isStoner)
         {
-            Competitive::NoteStonerStareStarted(id);
+            // Baseline cooldown stamp in case they leave the watch state by some path other than the
+            // normal timeout below; that path refreshes it so the full guard is walk time.
+            Competitive::NoteStonerStareEnded(id);
             static constexpr PeepThoughtType kStonerThoughts[] = {
                 PeepThoughtType::stonerWhoa,
                 PeepThoughtType::stonerDeep,
@@ -5953,6 +5955,10 @@ namespace OpenRCT2
             timeToStand--;
             if (timeToStand != 0)
                 return;
+
+            // Start the Stoner's wander-between-stares cooldown now, on leaving the watch state.
+            if (Competitive::gLocalActorsActive && Competitive::GetGroupGuestKind(id) == 2)
+                Competitive::NoteStonerStareEnded(id);
 
             setState(PeepState::walking);
             updateAnimationGroup();
