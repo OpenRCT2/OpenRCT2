@@ -48,6 +48,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../util/Util.h"
+#include "../world/Location.hpp"
 #include "../world/Park.h"
 
 #include <algorithm>
@@ -328,6 +329,13 @@ namespace OpenRCT2::Competitive
             uint32_t nextKarenScanTick{};
         };
 
+        // One staff member cornered by a Karen: both stand frozen, face to face, until releaseTick.
+        struct StaffDetention
+        {
+            uint32_t releaseTick{};
+            EntityId karenId = EntityId::GetNull();
+        };
+
         SessionMode mode = SessionMode::none;
         ConnectionStatus status = ConnectionStatus::disconnected;
         MatchState state{};
@@ -359,7 +367,7 @@ namespace OpenRCT2::Competitive
         // hooks (pathfinding, guest AI) resolve "is this a bad actor / which group" in O(1). Rebuilt
         // whenever actors are added or removed.
         std::unordered_map<uint32_t, Ability> actorKinds;
-        std::unordered_map<uint32_t, uint32_t> detainedStaff; // staff entity id -> tick the karen releases them
+        std::unordered_map<uint32_t, StaffDetention> detainedStaff; // staff entity id -> who holds them and until when
         bool openWindowAfterRestore = false;
         bool hostLossHandled = false;
         bool startedWatchServer = false;
@@ -880,15 +888,45 @@ namespace OpenRCT2::Competitive
             localOperatives.erase(iterator);
         }
 
+        // Hold a peep still with a static sprite (no walking-in-place shuffle) facing `faceToward`.
+        static void FreezeFacing(Peep& peep, const CoordsXY& faceToward)
+        {
+            peep.orientation = DirectionFromTo({ peep.x, peep.y }, faceToward) << 3;
+            peep.animationImageIdOffset = 0;
+            peep.peepFlags.set(PeepFlag::positionFrozen);
+            peep.peepFlags.set(PeepFlag::animationFrozen);
+        }
+
+        static void Unfreeze(Peep& peep)
+        {
+            peep.peepFlags.unset(PeepFlag::positionFrozen);
+            peep.peepFlags.unset(PeepFlag::animationFrozen);
+        }
+
+        void EndDetention(uint32_t staffId, const StaffDetention& detention)
+        {
+            if (auto* staff = getGameState().entities.getEntity<Staff>(
+                    EntityId::FromUnderlying(static_cast<EntityId::UnderlyingType>(staffId))))
+                Unfreeze(*staff);
+            if (!detention.karenId.IsNull())
+                if (auto* karen = getGameState().entities.getEntity<Guest>(detention.karenId))
+                    Unfreeze(*karen);
+        }
+
         void ReleaseAllDetainedStaff()
         {
-            for (const auto& [staffId, releaseTick] : detainedStaff)
-            {
-                if (auto* staff = getGameState().entities.getEntity<Staff>(
-                        EntityId::FromUnderlying(static_cast<EntityId::UnderlyingType>(staffId))))
-                    staff->peepFlags.unset(PeepFlag::positionFrozen);
-            }
+            for (const auto& [staffId, detention] : detainedStaff)
+                EndDetention(staffId, detention);
             detainedStaff.clear();
+        }
+
+        // True while this Karen is cornering a staff member (both are frozen face to face).
+        bool IsKarenConfrontingStaff(EntityId guestId) const
+        {
+            for (const auto& [staffId, detention] : detainedStaff)
+                if (detention.karenId == guestId)
+                    return true;
+            return false;
         }
 
         void EndLocalGroup(uint32_t effectId)
@@ -918,20 +956,23 @@ namespace OpenRCT2::Competitive
                 return;
             const auto currentTicks = getGameState().currentTicks;
 
-            // Release staff whose "speak to a manager" hold has expired; keep the rest frozen in place.
+            // Release staff whose "speak to a manager" hold has expired; keep the rest - and the Karen
+            // cornering them - frozen in place, face to face.
             for (auto it = detainedStaff.begin(); it != detainedStaff.end();)
             {
                 auto* staff = getGameState().entities.getEntity<Staff>(EntityId::FromUnderlying(
                     static_cast<EntityId::UnderlyingType>(it->first)));
-                if (currentTicks >= it->second || staff == nullptr)
+                auto* karen = getGameState().entities.getEntity<Guest>(it->second.karenId);
+                if (currentTicks >= it->second.releaseTick || staff == nullptr || karen == nullptr)
                 {
-                    if (staff != nullptr)
-                        staff->peepFlags.unset(PeepFlag::positionFrozen);
+                    EndDetention(it->first, it->second);
                     it = detainedStaff.erase(it);
                 }
                 else
                 {
-                    staff->peepFlags.set(PeepFlag::positionFrozen);
+                    // Re-assert the hold each tick in case other logic cleared a flag.
+                    FreezeFacing(*staff, { karen->x, karen->y });
+                    FreezeFacing(*karen, { staff->x, staff->y });
                     ++it;
                 }
             }
@@ -961,18 +1002,25 @@ namespace OpenRCT2::Competitive
                             continue;
                         // Keep them grumpy so they complain (including in the rain) and leave on their own.
                         karen->happinessTarget = std::min<uint8_t>(karen->happinessTarget, 70);
+                        // A Karen already cornering someone stays put until that hold expires.
+                        if (IsKarenConfrontingStaff(karen->id))
+                            continue;
                         for (auto* staff : EntityTileList<Staff>({ karen->x, karen->y }))
                         {
                             const auto key = staff->id.ToUnderlying();
                             if (detainedStaff.count(key) != 0)
                                 continue;
-                            detainedStaff[key] = currentTicks + 400; // ~10 seconds at 40 ticks/s
-                            staff->peepFlags.set(PeepFlag::positionFrozen);
+                            detainedStaff[key] = { currentTicks + 400, karen->id }; // ~10 seconds at 40 ticks/s
+                            // Both stop dead where they are (no walking-in-place shuffle) and turn to
+                            // face each other for the duration of the hold.
+                            FreezeFacing(*staff, { karen->x, karen->y });
+                            FreezeFacing(*karen, { staff->x, staff->y });
                             karen->insertNewThought(PeepThoughtType::speakToManager);
                             karen->happinessTarget = static_cast<uint8_t>(std::max(0, karen->happinessTarget - 10));
                             AlertVictimOnce(
                                 group.effectId,
                                 "A group of guests is hounding your staff, demanding to speak to a manager.");
+                            break; // this Karen has its target
                         }
                     }
                 }
@@ -1041,7 +1089,7 @@ namespace OpenRCT2::Competitive
         bool IsStaffDetained(EntityId staffId) const
         {
             const auto it = detainedStaff.find(staffId.ToUnderlying());
-            return it != detainedStaff.end() && getGameState().currentTicks < it->second;
+            return it != detainedStaff.end() && getGameState().currentTicks < it->second.releaseTick;
         }
 
         void ApplySingleAccidentConsequence()
@@ -2900,6 +2948,11 @@ namespace OpenRCT2::Competitive
         return _impl->IsStaffDetained(staffId);
     }
 
+    bool Session::IsKarenConfrontingStaff(EntityId guestId) const
+    {
+        return _impl->IsKarenConfrontingStaff(guestId);
+    }
+
     std::string Session::ExportParkStorage() const
     {
         if (_impl->mode == SessionMode::none || _impl->state.phase == Phase::none
@@ -2945,8 +2998,10 @@ namespace OpenRCT2::Competitive
         }
 
         json_t detainedStaff = json_t::array();
-        for (const auto& [staffId, releaseTick] : _impl->detainedStaff)
-            detainedStaff.push_back({ { "staffId", staffId }, { "releaseTick", releaseTick } });
+        for (const auto& [staffId, detention] : _impl->detainedStaff)
+            detainedStaff.push_back({ { "staffId", staffId },
+                                      { "releaseTick", detention.releaseTick },
+                                      { "karenId", detention.karenId.ToUnderlying() } });
 
         json_t localOperatives = json_t::array();
         for (const auto& operative : _impl->localOperatives)
@@ -3196,7 +3251,11 @@ namespace OpenRCT2::Competitive
             for (const auto& value : body["detainedStaff"])
             {
                 if (value.is_object() && value.contains("staffId") && value.contains("releaseTick"))
-                    _impl->detainedStaff[value.value("staffId", 0u)] = value.value("releaseTick", 0u);
+                    _impl->detainedStaff[value.value("staffId", 0u)] = {
+                        value.value("releaseTick", 0u),
+                        EntityId::FromUnderlying(
+                            static_cast<EntityId::UnderlyingType>(value.value("karenId", 0xFFFFu))),
+                    };
             }
         }
         _impl->RebuildActorKinds();
@@ -3486,6 +3545,11 @@ namespace OpenRCT2::Competitive
         return GetSession().IsStaffDetained(staffId);
     }
 
+    bool IsKarenConfrontingStaff(EntityId guestId)
+    {
+        return GetSession().IsKarenConfrontingStaff(guestId);
+    }
+
     std::string ExportParkStorage()
     {
         return GetSession().ExportParkStorage();
@@ -3578,6 +3642,7 @@ namespace OpenRCT2::Competitive
     int32_t Session::GetStaffWageMultiplier() const { return 1; }
     uint8_t Session::GetGroupGuestKind(EntityId) const { return 0; }
     bool Session::IsStaffDetained(EntityId) const { return false; }
+    bool Session::IsKarenConfrontingStaff(EntityId) const { return false; }
     std::string Session::ExportParkStorage() const { return {}; }
     bool Session::RestoreParkStorage(std::string_view, std::string& error) { error = _impl->error; return false; }
     bool Session::WatchParticipant(ParticipantId, std::string& error) { error = _impl->error; return false; }
@@ -3599,6 +3664,7 @@ namespace OpenRCT2::Competitive
     int32_t GetStaffWageMultiplier() { return 1; }
     uint8_t GetGroupGuestKind(EntityId) { return 0; }
     bool IsStaffDetained(EntityId) { return false; }
+    bool IsKarenConfrontingStaff(EntityId) { return false; }
     std::string ExportParkStorage() { return {}; }
     bool RestoreParkStorage(std::string_view, std::string& error) { error = "Networking is disabled in this build."; return false; }
     bool IsWatchingPark() { return false; }

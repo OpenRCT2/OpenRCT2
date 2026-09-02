@@ -1782,6 +1782,8 @@ enum : StringId
     STR_PEEP_THOUGHT_TYPE_RUDE_GUEST = 7044,
     STR_COMPETITIVE_RIDE_LOCKED_BY_RIVAL_ACTION = 7045,
     STR_PEEP_THOUGHT_TYPE_SPEAK_TO_MANAGER = 7046,
+    STR_COMPETITIVE_STAFF_LISTENING_TO_COMPLAINT = 7047,
+    STR_COMPETITIVE_KAREN_DEMANDING_MANAGER = 7048,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
