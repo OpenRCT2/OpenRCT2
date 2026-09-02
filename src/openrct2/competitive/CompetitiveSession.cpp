@@ -801,7 +801,9 @@ namespace OpenRCT2::Competitive
                         auto* guest = Park::GenerateGuest();
                         if (guest == nullptr)
                             break;
-                        guest->setName(std::string(AbilityName(effect.ability)) + " sent by " + sourceName);
+                        // Name each party member in the singular ("Karen sent by ...", "Stoner sent by ...").
+                        const char* memberName = effect.ability == Ability::karens ? "Karen" : "Stoner";
+                        guest->setName(std::string(memberName) + " sent by " + sourceName);
                         if (effect.ability == Ability::karens)
                         {
                             guest->thirst = 200;
