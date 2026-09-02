@@ -335,6 +335,9 @@ namespace OpenRCT2::Competitive
             uint32_t releaseTick{};
             EntityId karenId = EntityId::GetNull();
         };
+        static constexpr uint32_t kStaffDetentionTicks = 400;        // ~10s that a staff member is held
+        static constexpr uint32_t kKarenComplaintCooldownTicks = 2400; // ~60s before a Karen demands again
+        static constexpr uint32_t kStaffComplaintCooldownTicks = 600;  // ~15s of peace for a released staff member
 
         SessionMode mode = SessionMode::none;
         ConnectionStatus status = ConnectionStatus::disconnected;
@@ -368,6 +371,8 @@ namespace OpenRCT2::Competitive
         // whenever actors are added or removed.
         std::unordered_map<uint32_t, Ability> actorKinds;
         std::unordered_map<uint32_t, StaffDetention> detainedStaff; // staff entity id -> who holds them and until when
+        std::unordered_map<uint32_t, uint32_t> karenComplaintCooldown; // Karen guest id -> earliest tick it may corner staff again
+        std::unordered_map<uint32_t, uint32_t> staffComplaintCooldown; // staff id -> earliest tick it may be cornered again
         bool openWindowAfterRestore = false;
         bool hostLossHandled = false;
         bool startedWatchServer = false;
@@ -918,6 +923,8 @@ namespace OpenRCT2::Competitive
             for (const auto& [staffId, detention] : detainedStaff)
                 EndDetention(staffId, detention);
             detainedStaff.clear();
+            karenComplaintCooldown.clear();
+            staffComplaintCooldown.clear();
         }
 
         // True while this Karen is cornering a staff member (both are frozen face to face).
@@ -956,6 +963,10 @@ namespace OpenRCT2::Competitive
                 return;
             const auto currentTicks = getGameState().currentTicks;
 
+            // Drop expired cooldown entries (also clears them for guests/staff that have since left).
+            std::erase_if(karenComplaintCooldown, [&](const auto& kv) { return currentTicks >= kv.second; });
+            std::erase_if(staffComplaintCooldown, [&](const auto& kv) { return currentTicks >= kv.second; });
+
             // Release staff whose "speak to a manager" hold has expired; keep the rest - and the Karen
             // cornering them - frozen in place, face to face.
             for (auto it = detainedStaff.begin(); it != detainedStaff.end();)
@@ -966,6 +977,11 @@ namespace OpenRCT2::Competitive
                 if (currentTicks >= it->second.releaseTick || staff == nullptr || karen == nullptr)
                 {
                     EndDetention(it->first, it->second);
+                    // Give both sides a breather so they walk apart instead of re-locking instantly.
+                    staffComplaintCooldown[it->first] = currentTicks + kStaffComplaintCooldownTicks;
+                    if (!it->second.karenId.IsNull())
+                        karenComplaintCooldown[it->second.karenId.ToUnderlying()]
+                            = currentTicks + kKarenComplaintCooldownTicks;
                     it = detainedStaff.erase(it);
                 }
                 else
@@ -1002,15 +1018,16 @@ namespace OpenRCT2::Competitive
                             continue;
                         // Keep them grumpy so they complain (including in the rain) and leave on their own.
                         karen->happinessTarget = std::min<uint8_t>(karen->happinessTarget, 70);
-                        // A Karen already cornering someone stays put until that hold expires.
-                        if (IsKarenConfrontingStaff(karen->id))
+                        // A Karen already cornering someone stays put until that hold expires; one that
+                        // just finished a demand waits out its cooldown before starting another.
+                        if (IsKarenConfrontingStaff(karen->id) || karenComplaintCooldown.count(karen->id.ToUnderlying()))
                             continue;
                         for (auto* staff : EntityTileList<Staff>({ karen->x, karen->y }))
                         {
                             const auto key = staff->id.ToUnderlying();
-                            if (detainedStaff.count(key) != 0)
+                            if (detainedStaff.count(key) != 0 || staffComplaintCooldown.count(key) != 0)
                                 continue;
-                            detainedStaff[key] = { currentTicks + 400, karen->id }; // ~10 seconds at 40 ticks/s
+                            detainedStaff[key] = { currentTicks + kStaffDetentionTicks, karen->id };
                             // Both stop dead where they are (no walking-in-place shuffle) and turn to
                             // face each other for the duration of the hold.
                             FreezeFacing(*staff, { karen->x, karen->y });
@@ -2368,7 +2385,7 @@ namespace OpenRCT2::Competitive
         _impl->localOperatives.clear();
         _impl->localGroups.clear();
         _impl->actorKinds.clear();
-        _impl->ReleaseAllDetainedStaff();
+        _impl->ReleaseAllDetainedStaff(); // also clears the complaint cooldowns
         gLocalActorsActive = false;
         _impl->openWindowAfterRestore = false;
         _impl->hostLossHandled = false;
