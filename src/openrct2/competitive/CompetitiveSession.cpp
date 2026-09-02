@@ -826,7 +826,8 @@ namespace OpenRCT2::Competitive
                         guest->setName(std::string(memberName) + " sent by " + sourceName);
                         if (effect.ability == Ability::karens)
                         {
-                            guest->thirst = 200;
+                            // thirst is inverted (low = thirsty); toilet is not (high = needs to go).
+                            guest->thirst = 10;
                             guest->toilet = 200;
                             guest->happiness = 60;
                             guest->happinessTarget = 60;

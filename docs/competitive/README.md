@@ -82,7 +82,7 @@ No operative is sent. The victim's staff wage payments (weekly wages and the fin
 
 ### Karens
 
-A coach party (default 20, host-configurable) of guests arrives in the victim's park at once. They spawn with high thirst and toilet need and low mood, and they carry their own umbrella so they never buy one - but low happiness still makes them complain often, including in the rain. While a Karen shares a tile with a staff member, that staff member is frozen in place for about ten seconds ("demanding to speak to a manager") and cannot continue its duties; the Karen gets the matching thought. In every other respect they behave as ordinary guests and leave of their own accord. The action completes once the whole party has left; there is no host-set duration.
+A coach party (default 20, host-configurable) of guests arrives in the victim's park at once. They spawn thirsty, needing the toilet, and in a low mood, and they carry their own umbrella so they never buy one - but low happiness still makes them complain often, including in the rain. While a Karen shares a tile with a staff member, that staff member is frozen in place for about ten seconds ("demanding to speak to a manager") and cannot continue its duties; the Karen gets the matching thought. In every other respect they behave as ordinary guests and leave of their own accord. The action completes once the whole party has left; there is no host-set duration.
 
 ### Stoners
 
