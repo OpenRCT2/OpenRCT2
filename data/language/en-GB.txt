@@ -3843,3 +3843,7 @@ STR_7045    :Not while a rival operation is under way at this ride…
 STR_7046    :“I'd like to speak to a manager”
 STR_7047    :Listening to a complaint
 STR_7048    :Demanding to speak to a manager
+STR_7049    :It smells strongly of weed here!
+STR_7050    :Whoa... heavy.
+STR_7051    :That's, like, really deep if you think about it.
+STR_7052    :I could look at this all day.

@@ -106,6 +106,9 @@ namespace OpenRCT2::Competitive
         [[nodiscard]] bool IsStaffDetained(EntityId staffId) const;
         // True while this Karen guest is cornering a staff member (both frozen face to face).
         [[nodiscard]] bool IsKarenConfrontingStaff(EntityId guestId) const;
+        // Stoner "stop and stare" gate: false while the guest is on its wander-between-stares cooldown.
+        [[nodiscard]] bool StonerMayStare(EntityId guestId) const;
+        void NoteStonerStareStarted(EntityId guestId);
         [[nodiscard]] std::string ExportParkStorage() const;
         [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
 
@@ -140,6 +143,8 @@ namespace OpenRCT2::Competitive
     [[nodiscard]] uint8_t GetGroupGuestKind(EntityId guestId);
     [[nodiscard]] bool IsStaffDetained(EntityId staffId);
     [[nodiscard]] bool IsKarenConfrontingStaff(EntityId guestId);
+    [[nodiscard]] bool StonerMayStare(EntityId guestId);
+    void NoteStonerStareStarted(EntityId guestId);
     [[nodiscard]] std::string ExportParkStorage();
     [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
     [[nodiscard]] bool IsWatchingPark();

@@ -326,7 +326,7 @@ namespace OpenRCT2::Competitive
             uint32_t effectId{};
             Ability ability = Ability::karens;
             std::vector<EntityId> guestIds;
-            uint32_t nextKarenScanTick{};
+            uint32_t nextScanTick{}; // throttles the per-member Karen / Stoner behaviour scan
         };
 
         // One staff member cornered by a Karen: both stand frozen, face to face, until releaseTick.
@@ -338,6 +338,10 @@ namespace OpenRCT2::Competitive
         static constexpr uint32_t kStaffDetentionTicks = 400;        // ~10s that a staff member is held
         static constexpr uint32_t kKarenComplaintCooldownTicks = 2400; // ~60s before a Karen demands again
         static constexpr uint32_t kStaffComplaintCooldownTicks = 600;  // ~15s of peace for a released staff member
+        static constexpr uint32_t kStonerPuffMinTicks = 4800;         // ~2 min minimum between a Stoner's smoke puffs
+        static constexpr uint32_t kStonerPuffJitterTicks = 7200;      // + up to ~3 min of random jitter (so ~2-5 min)
+        static constexpr uint32_t kStonerStareGuardTicks = 2400;      // ~60s a Stoner must wander before staring again
+        static constexpr int32_t kStonerPuffHappinessHit = 5;        // minor mood hit for a bystander in the smoke
 
         SessionMode mode = SessionMode::none;
         ConnectionStatus status = ConnectionStatus::disconnected;
@@ -373,6 +377,8 @@ namespace OpenRCT2::Competitive
         std::unordered_map<uint32_t, StaffDetention> detainedStaff; // staff entity id -> who holds them and until when
         std::unordered_map<uint32_t, uint32_t> karenComplaintCooldown; // Karen guest id -> earliest tick it may corner staff again
         std::unordered_map<uint32_t, uint32_t> staffComplaintCooldown; // staff id -> earliest tick it may be cornered again
+        std::unordered_map<uint32_t, uint32_t> stonerNextPuffTick;     // Stoner guest id -> next tick it puffs smoke
+        std::unordered_map<uint32_t, uint32_t> stonerLastStareTick;    // Stoner guest id -> tick it last started staring
         bool openWindowAfterRestore = false;
         bool hostLossHandled = false;
         bool startedWatchServer = false;
@@ -955,6 +961,69 @@ namespace OpenRCT2::Competitive
             });
             if (!anyKarens)
                 ReleaseAllDetainedStaff();
+            const bool anyStoners = std::any_of(localGroups.begin(), localGroups.end(), [](const auto& g) {
+                return g.ability == Ability::stoners;
+            });
+            if (!anyStoners)
+            {
+                stonerNextPuffTick.clear();
+                stonerLastStareTick.clear();
+            }
+        }
+
+        // A Stoner may enter the "stop and stare" state only once per guard window, so they wander
+        // between stares instead of re-locking onto the same spot. Called from the core guest AI.
+        bool StonerMayStare(EntityId guestId) const
+        {
+            const auto it = stonerLastStareTick.find(guestId.ToUnderlying());
+            return it == stonerLastStareTick.end() || getGameState().currentTicks - it->second >= kStonerStareGuardTicks;
+        }
+
+        void NoteStonerStareStarted(EntityId guestId)
+        {
+            stonerLastStareTick[guestId.ToUnderlying()] = getGameState().currentTicks;
+        }
+
+        // Each live Stoner puffs a small cloud of smoke every ~2-5 minutes; any ordinary guest sharing
+        // the tile at that moment gets a minor mood hit and a "smells of weed" thought.
+        void UpdateLocalStoners(const LocalGroup& group, uint32_t currentTicks)
+        {
+            for (const auto guestId : group.guestIds)
+            {
+                auto* stoner = getGameState().entities.getEntity<Guest>(guestId);
+                if (stoner == nullptr || stoner->x == kLocationNull || stoner->outsideOfPark)
+                    continue;
+
+                const auto key = stoner->id.ToUnderlying();
+                auto& nextPuff = stonerNextPuffTick[key];
+                if (nextPuff == 0)
+                {
+                    // First puff lands 30s-2.5min after arrival so the effect is visible early on.
+                    nextPuff = currentTicks + 1200 + (ScenarioRand() % kStonerPuffJitterTicks);
+                    continue;
+                }
+                if (currentTicks < nextPuff)
+                    continue;
+                nextPuff = currentTicks + kStonerPuffMinTicks + (ScenarioRand() % kStonerPuffJitterTicks);
+
+                // A small, short-lived wisp: start the steam animation partway through.
+                SteamParticle::create({ stoner->x, stoner->y, stoner->z + 4 }, 256 * 6);
+
+                bool hitSomeone = false;
+                for (auto* bystander : EntityTileList<Guest>({ stoner->x, stoner->y }))
+                {
+                    if (bystander->id == stoner->id || bystander->outsideOfPark || bystander->x == kLocationNull
+                        || IsCompetitiveAgent(bystander->id))
+                        continue;
+                    bystander->insertNewThought(PeepThoughtType::weedSmell);
+                    bystander->happinessTarget = static_cast<uint8_t>(
+                        std::max(0, bystander->happinessTarget - kStonerPuffHappinessHit));
+                    bystander->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+                    hitSomeone = true;
+                }
+                if (hitSomeone)
+                    AlertVictimOnce(group.effectId, "A group of guests is fouling the air in your park with drug smoke.");
+            }
         }
 
         void UpdateLocalGroups()
@@ -1006,11 +1075,20 @@ namespace OpenRCT2::Competitive
                     continue;
                 }
 
+                if (group.ability == Ability::stoners)
+                {
+                    if (currentTicks < group.nextScanTick)
+                        continue;
+                    group.nextScanTick = currentTicks + 8;
+                    UpdateLocalStoners(group, currentTicks);
+                    continue;
+                }
+
                 if (group.ability == Ability::karens)
                 {
-                    if (currentTicks < group.nextKarenScanTick)
+                    if (currentTicks < group.nextScanTick)
                         continue;
-                    group.nextKarenScanTick = currentTicks + 8;
+                    group.nextScanTick = currentTicks + 8;
                     for (const auto guestId : group.guestIds)
                     {
                         auto* karen = getGameState().entities.getEntity<Guest>(guestId);
@@ -2386,6 +2464,8 @@ namespace OpenRCT2::Competitive
         _impl->localGroups.clear();
         _impl->actorKinds.clear();
         _impl->ReleaseAllDetainedStaff(); // also clears the complaint cooldowns
+        _impl->stonerNextPuffTick.clear();
+        _impl->stonerLastStareTick.clear();
         gLocalActorsActive = false;
         _impl->openWindowAfterRestore = false;
         _impl->hostLossHandled = false;
@@ -2968,6 +3048,16 @@ namespace OpenRCT2::Competitive
     bool Session::IsKarenConfrontingStaff(EntityId guestId) const
     {
         return _impl->IsKarenConfrontingStaff(guestId);
+    }
+
+    bool Session::StonerMayStare(EntityId guestId) const
+    {
+        return _impl->StonerMayStare(guestId);
+    }
+
+    void Session::NoteStonerStareStarted(EntityId guestId)
+    {
+        _impl->NoteStonerStareStarted(guestId);
     }
 
     std::string Session::ExportParkStorage() const
@@ -3567,6 +3657,16 @@ namespace OpenRCT2::Competitive
         return GetSession().IsKarenConfrontingStaff(guestId);
     }
 
+    bool StonerMayStare(EntityId guestId)
+    {
+        return GetSession().StonerMayStare(guestId);
+    }
+
+    void NoteStonerStareStarted(EntityId guestId)
+    {
+        GetSession().NoteStonerStareStarted(guestId);
+    }
+
     std::string ExportParkStorage()
     {
         return GetSession().ExportParkStorage();
@@ -3660,6 +3760,8 @@ namespace OpenRCT2::Competitive
     uint8_t Session::GetGroupGuestKind(EntityId) const { return 0; }
     bool Session::IsStaffDetained(EntityId) const { return false; }
     bool Session::IsKarenConfrontingStaff(EntityId) const { return false; }
+    bool Session::StonerMayStare(EntityId) const { return true; }
+    void Session::NoteStonerStareStarted(EntityId) {}
     std::string Session::ExportParkStorage() const { return {}; }
     bool Session::RestoreParkStorage(std::string_view, std::string& error) { error = _impl->error; return false; }
     bool Session::WatchParticipant(ParticipantId, std::string& error) { error = _impl->error; return false; }
@@ -3682,6 +3784,8 @@ namespace OpenRCT2::Competitive
     uint8_t GetGroupGuestKind(EntityId) { return 0; }
     bool IsStaffDetained(EntityId) { return false; }
     bool IsKarenConfrontingStaff(EntityId) { return false; }
+    bool StonerMayStare(EntityId) { return true; }
+    void NoteStonerStareStarted(EntityId) {}
     std::string ExportParkStorage() { return {}; }
     bool RestoreParkStorage(std::string_view, std::string& error) { error = "Networking is disabled in this build."; return false; }
     bool IsWatchingPark() { return false; }

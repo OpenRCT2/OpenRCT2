@@ -432,8 +432,12 @@ namespace OpenRCT2
         { PeepActionType::walking, PEEP_THOUGHT_ACTION_FLAG_RIDE }, // 173
         { PeepActionType::shakeHead, PEEP_THOUGHT_ACTION_NO_FLAGS }, // 174 rudeGuest
         { PeepActionType::shakeHead, PEEP_THOUGHT_ACTION_NO_FLAGS }, // 175 speakToManager (competitive Karen group)
+        { PeepActionType::disgust,   PEEP_THOUGHT_ACTION_NO_FLAGS }, // 176 weedSmell
+        { PeepActionType::wow,       PEEP_THOUGHT_ACTION_NO_FLAGS }, // 177 stonerWhoa
+        { PeepActionType::walking,   PEEP_THOUGHT_ACTION_NO_FLAGS }, // 178 stonerDeep
+        { PeepActionType::walking,   PEEP_THOUGHT_ACTION_NO_FLAGS }, // 179 stonerForever
     };
-    static_assert(std::size(PeepThoughtToActionMap) == 176, "PeepThoughtToActionMap must cover every PeepThoughtType");
+    static_assert(std::size(PeepThoughtToActionMap) == 180, "PeepThoughtToActionMap must cover every PeepThoughtType");
 
     // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
     static constexpr RideRating_t kNauseaMinimumThresholds[] = {
@@ -464,6 +468,7 @@ namespace OpenRCT2
     static bool Loc690FD0(Guest& guest, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
     static void GuestUpdateWalkingBreakScenery(Guest& guest);
     static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView);
+    static bool GuestStonerFindThingToStareAt(Guest& guest, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView);
     static bool GuestShouldGoToShop(Guest& guest, Ride& ride, bool peepAtShop);
     static bool GuestShouldRideWhileRaining(Guest& guest, const Ride& ride);
     static void GuestPickRideToGoOn(Guest& guest);
@@ -5540,9 +5545,12 @@ namespace OpenRCT2
         if (nausea > 140)
             return;
 
-        // Competitive "Stoner" group guests are far more likely to stop and stare at rides, and are
-        // not put off by low happiness.
+        // Competitive "Stoner" group guests are far more likely to stop and stare - at anything, not
+        // just rides - and are not put off by low happiness. A per-guest guard makes them wander
+        // between stares instead of re-locking onto the same spot.
         const bool isStoner = Competitive::gLocalActorsActive && Competitive::GetGroupGuestKind(id) == 2;
+        if (isStoner && !Competitive::StonerMayStare(id))
+            return;
 
         if (happiness < 120 && !isStoner)
             return;
@@ -5609,8 +5617,14 @@ namespace OpenRCT2
 
         RideId ride_to_view;
         uint8_t ride_seat_to_view;
-        if (isOnLevelCrossing() || !GuestFindRideToLookAt(*this, chosen_edge, &ride_to_view, &ride_seat_to_view))
+        if (isOnLevelCrossing())
             return;
+        if (!GuestFindRideToLookAt(*this, chosen_edge, &ride_to_view, &ride_seat_to_view))
+        {
+            // A Stoner will happily stare at a food stall or a bit of scenery, not only a ride.
+            if (!isStoner || !GuestStonerFindThingToStareAt(*this, chosen_edge, &ride_to_view, &ride_seat_to_view))
+                return;
+        }
 
         // Check if there is a peep watching (and if there is place for us)
         for (auto peep : EntityTileList<Peep>({ x, y }))
@@ -5647,13 +5661,26 @@ namespace OpenRCT2
 
         setDestination({ destX, destY }, 3);
 
-        if (currentSeat & 1)
+        if (isStoner)
         {
-            insertNewThought(PeepThoughtType::newRide);
+            Competitive::NoteStonerStareStarted(id);
+            static constexpr PeepThoughtType kStonerThoughts[] = {
+                PeepThoughtType::stonerWhoa,
+                PeepThoughtType::stonerDeep,
+                PeepThoughtType::stonerForever,
+            };
+            insertNewThought(kStonerThoughts[ScenarioRand() % std::size(kStonerThoughts)]);
         }
-        if (currentRide.IsNull())
+        else
         {
-            insertNewThought(PeepThoughtType::scenery);
+            if (currentSeat & 1)
+            {
+                insertNewThought(PeepThoughtType::newRide);
+            }
+            if (currentRide.IsNull())
+            {
+                insertNewThought(PeepThoughtType::scenery);
+            }
         }
     }
 
@@ -6799,6 +6826,56 @@ namespace OpenRCT2
                 return true;
             }
         } while (!(tileElement++)->isLastForTile());
+
+        return false;
+    }
+
+    /**
+     * Competitive "Stoner" fallback for the stop-and-stare search: unlike vanilla guests, a Stoner
+     * will gladly stand and gaze at a food/drink stall or any piece of scenery, not just a ride.
+     * Deterministic (no RNG) - it just looks at the guest's own tile and the one tile in `edge`.
+     */
+    static bool GuestStonerFindThingToStareAt(Guest& guest, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView)
+    {
+        *rideSeatToView = 0;
+        const CoordsXY tiles[2] = {
+            { guest.nextLoc.x, guest.nextLoc.y },
+            { guest.nextLoc.x + CoordsDirectionDelta[edge].x, guest.nextLoc.y + CoordsDirectionDelta[edge].y },
+        };
+
+        for (const auto& tile : tiles)
+        {
+            if (!MapIsLocationValid(tile))
+                continue;
+            TileElement* tileElement = MapGetFirstElementAt(tile);
+            if (tileElement == nullptr)
+                continue;
+            do
+            {
+                if (Network::GetMode() != Network::Mode::none && tileElement->isGhost())
+                    continue;
+                if (guest.nextLoc.z + (6 * kCoordsZStep) < tileElement->getBaseZ()
+                    || tileElement->getClearanceZ() + (1 * kCoordsZStep) < guest.nextLoc.z)
+                    continue;
+
+                if (tileElement->getType() == TileElementType::track)
+                {
+                    auto* ride = GetRide(tileElement->asTrack()->getRideIndex());
+                    if (ride != nullptr && ride->getClassification() == RideClassification::shopOrStall)
+                    {
+                        *rideToView = ride->id;
+                        return true;
+                    }
+                }
+                else if (
+                    tileElement->getType() == TileElementType::smallScenery
+                    || tileElement->getType() == TileElementType::largeScenery)
+                {
+                    *rideToView = RideId::GetNull();
+                    return true;
+                }
+            } while (!(tileElement++)->isLastForTile());
+        }
 
         return false;
     }
