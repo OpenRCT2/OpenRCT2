@@ -311,9 +311,6 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_MAX_SPEED,
         CWIDX_MAX_SPEED_UP,
         CWIDX_MAX_SPEED_DOWN,
-        CWIDX_STARTING_CASH,
-        CWIDX_STARTING_CASH_UP,
-        CWIDX_STARTING_CASH_DOWN,
         CWIDX_VANDAL_ENABLED,
         CWIDX_VANDAL_COST,
         CWIDX_VANDAL_COST_UP,
@@ -353,16 +350,59 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_POISON_POTENCY,
         CWIDX_POISON_POTENCY_UP,
         CWIDX_POISON_POTENCY_DOWN,
+        CWIDX_TOILET_ENABLED,
+        CWIDX_TOILET_COST,
+        CWIDX_TOILET_COST_UP,
+        CWIDX_TOILET_COST_DOWN,
+        CWIDX_TOILET_COOLDOWN,
+        CWIDX_TOILET_COOLDOWN_UP,
+        CWIDX_TOILET_COOLDOWN_DOWN,
+        CWIDX_TOILET_DURATION,
+        CWIDX_TOILET_DURATION_UP,
+        CWIDX_TOILET_DURATION_DOWN,
+        CWIDX_AGITATOR_ENABLED,
+        CWIDX_AGITATOR_COST,
+        CWIDX_AGITATOR_COST_UP,
+        CWIDX_AGITATOR_COST_DOWN,
+        CWIDX_AGITATOR_COOLDOWN,
+        CWIDX_AGITATOR_COOLDOWN_UP,
+        CWIDX_AGITATOR_COOLDOWN_DOWN,
+        CWIDX_AGITATOR_DURATION,
+        CWIDX_AGITATOR_DURATION_UP,
+        CWIDX_AGITATOR_DURATION_DOWN,
+        CWIDX_AGITATOR_POTENCY,
+        CWIDX_AGITATOR_POTENCY_UP,
+        CWIDX_AGITATOR_POTENCY_DOWN,
+        CWIDX_SABOTEUR_ENABLED,
+        CWIDX_SABOTEUR_COST,
+        CWIDX_SABOTEUR_COST_UP,
+        CWIDX_SABOTEUR_COST_DOWN,
+        CWIDX_SABOTEUR_COOLDOWN,
+        CWIDX_SABOTEUR_COOLDOWN_UP,
+        CWIDX_SABOTEUR_COOLDOWN_DOWN,
+        CWIDX_SABOTEUR_DURATION,
+        CWIDX_SABOTEUR_DURATION_UP,
+        CWIDX_SABOTEUR_DURATION_DOWN,
+        CWIDX_HITMAN_ENABLED,
+        CWIDX_HITMAN_COST,
+        CWIDX_HITMAN_COST_UP,
+        CWIDX_HITMAN_COST_DOWN,
+        CWIDX_HITMAN_COOLDOWN,
+        CWIDX_HITMAN_COOLDOWN_UP,
+        CWIDX_HITMAN_COOLDOWN_DOWN,
+        CWIDX_HITMAN_DURATION,
+        CWIDX_HITMAN_DURATION_UP,
+        CWIDX_HITMAN_DURATION_DOWN,
         CWIDX_CREATE_LOBBY,
     };
 
-    static constexpr ScreenSize kCompetitiveWindowSize = { 620, 375 };
+    static constexpr ScreenSize kCompetitiveWindowSize = { 620, 515 };
 
     // clang-format off
     static constexpr auto _competitiveServerStartWidgets = makeWidgets(
         makeWindowShim(STR_START_SERVER, kCompetitiveWindowSize),
-        makeWidget({  3, 17}, {140, 26}, WidgetType::tab,          WindowColour::secondary, kStringIdEmpty),
-        makeWidget({143, 17}, {140, 26}, WidgetType::tab,          WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  3, 17}, {140, 26}, WidgetType::button,       WindowColour::secondary, kStringIdEmpty),
+        makeWidget({143, 17}, {140, 26}, WidgetType::button,       WindowColour::secondary, kStringIdEmpty),
         makeWidget({170, 50}, {440, 13}, WidgetType::textBox,      WindowColour::secondary),
         makeWidget({170, 67}, {440, 13}, WidgetType::textBox,      WindowColour::secondary),
         makeWidget({170, 84}, {120, 13}, WidgetType::textBox,      WindowColour::secondary),
@@ -376,7 +416,6 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({170,157}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({170,174}, {160, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({170,191}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
-        makeHoldableSpinnerWidgets({170,208}, {160, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
 
         makeWidget({  8, 68}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112, 68}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
@@ -393,7 +432,24 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({226,182}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322,182}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({443,182}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({430,350}, {180, 14}, WidgetType::button, WindowColour::secondary, kStringIdEmpty)
+        makeWidget({  8,239}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,239}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,239}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,239}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  8,296}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,296}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,296}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,296}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({443,296}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  8,353}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,353}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,353}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,353}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  8,410}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,410}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,410}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,410}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({430,490}, {180, 14}, WidgetType::button, WindowColour::secondary, kStringIdEmpty)
     );
     // clang-format on
 
@@ -412,13 +468,16 @@ namespace OpenRCT2::Ui::Windows
         std::string _vandalText = "Vandal";
         std::string _misinfoText = "Misinformation";
         std::string _poisonText = "Poisoning";
+        std::string _toiletText = "Toilet bomber";
+        std::string _agitatorText = "Agitator";
+        std::string _saboteurText = "Saboteur";
+        std::string _hitmanText = "Hitman";
         std::string _maxPlayersCaption;
         std::string _victoryCaption;
         std::string _metricCaption;
         std::string _deadlineCaption;
         std::string _targetCaption;
         std::string _maxSpeedCaption;
-        std::string _startingCashCaption;
         std::string _vandalCostCaption;
         std::string _vandalCooldownCaption;
         std::string _vandalDurationCaption;
@@ -431,6 +490,19 @@ namespace OpenRCT2::Ui::Windows
         std::string _poisonCooldownCaption;
         std::string _poisonDurationCaption;
         std::string _poisonPotencyCaption;
+        std::string _toiletCostCaption;
+        std::string _toiletCooldownCaption;
+        std::string _toiletDurationCaption;
+        std::string _agitatorCostCaption;
+        std::string _agitatorCooldownCaption;
+        std::string _agitatorDurationCaption;
+        std::string _agitatorPotencyCaption;
+        std::string _saboteurCostCaption;
+        std::string _saboteurCooldownCaption;
+        std::string _saboteurDurationCaption;
+        std::string _hitmanCostCaption;
+        std::string _hitmanCooldownCaption;
+        std::string _hitmanDurationCaption;
 
     public:
         void onOpen() override
@@ -453,6 +525,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[CWIDX_VANDAL_ENABLED].setString(_vandalText.c_str());
             widgets[CWIDX_MISINFO_ENABLED].setString(_misinfoText.c_str());
             widgets[CWIDX_POISON_ENABLED].setString(_poisonText.c_str());
+            widgets[CWIDX_TOILET_ENABLED].setString(_toiletText.c_str());
+            widgets[CWIDX_AGITATOR_ENABLED].setString(_agitatorText.c_str());
+            widgets[CWIDX_SABOTEUR_ENABLED].setString(_saboteurText.c_str());
+            widgets[CWIDX_HITMAN_ENABLED].setString(_hitmanText.c_str());
             widgets[CWIDX_CREATE_LOBBY].setString(_createText.c_str());
             initScrollWidgets();
             WindowSetResize(*this, kCompetitiveWindowSize, kCompetitiveWindowSize);
@@ -501,6 +577,22 @@ namespace OpenRCT2::Ui::Windows
                     _rules.poison.enabled = !_rules.poison.enabled;
                     invalidate();
                     break;
+                case CWIDX_TOILET_ENABLED:
+                    _rules.toiletBomber.enabled = !_rules.toiletBomber.enabled;
+                    invalidate();
+                    break;
+                case CWIDX_AGITATOR_ENABLED:
+                    _rules.agitator.enabled = !_rules.agitator.enabled;
+                    invalidate();
+                    break;
+                case CWIDX_SABOTEUR_ENABLED:
+                    _rules.saboteur.enabled = !_rules.saboteur.enabled;
+                    invalidate();
+                    break;
+                case CWIDX_HITMAN_ENABLED:
+                    _rules.hitman.enabled = !_rules.hitman.enabled;
+                    invalidate();
+                    break;
                 case CWIDX_CREATE_LOBBY:
                     ChooseScenario();
                     break;
@@ -540,12 +632,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case CWIDX_MAX_SPEED_DOWN:
                     _rules.maxGameSpeed = std::max<uint8_t>(1, _rules.maxGameSpeed - 1);
-                    break;
-                case CWIDX_STARTING_CASH_UP:
-                    _rules.economy.startingCash = std::min<money64>(1000000.00_GBP, _rules.economy.startingCash + 1000.00_GBP);
-                    break;
-                case CWIDX_STARTING_CASH_DOWN:
-                    _rules.economy.startingCash = std::max<money64>(0.00_GBP, _rules.economy.startingCash - 1000.00_GBP);
                     break;
                 default:
                     if (AdjustAbilityRule(widgetIndex))
@@ -615,9 +701,9 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(CWIDX_TAB_MATCH, matchPage);
             setWidgetPressed(CWIDX_TAB_SABOTAGE, !matchPage);
 
-            for (WidgetIndex i = CWIDX_COMPETITION_NAME; i <= CWIDX_STARTING_CASH_DOWN; i++)
+            for (WidgetIndex i = CWIDX_COMPETITION_NAME; i <= CWIDX_MAX_SPEED_DOWN; i++)
                 widgets[i].setVisible(matchPage);
-            for (WidgetIndex i = CWIDX_VANDAL_ENABLED; i <= CWIDX_POISON_POTENCY_DOWN; i++)
+            for (WidgetIndex i = CWIDX_VANDAL_ENABLED; i <= CWIDX_HITMAN_DURATION_DOWN; i++)
                 widgets[i].setVisible(!matchPage);
 
             const bool targetMode = _rules.victoryMode == Competitive::VictoryMode::target;
@@ -629,10 +715,18 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(CWIDX_VANDAL_ENABLED, _rules.vandal.enabled);
             setCheckboxValue(CWIDX_MISINFO_ENABLED, _rules.misinformation.enabled);
             setCheckboxValue(CWIDX_POISON_ENABLED, _rules.poison.enabled);
+            setCheckboxValue(CWIDX_TOILET_ENABLED, _rules.toiletBomber.enabled);
+            setCheckboxValue(CWIDX_AGITATOR_ENABLED, _rules.agitator.enabled);
+            setCheckboxValue(CWIDX_SABOTEUR_ENABLED, _rules.saboteur.enabled);
+            setCheckboxValue(CWIDX_HITMAN_ENABLED, _rules.hitman.enabled);
 
             SetAbilityWidgetsEnabled(CWIDX_VANDAL_COST, CWIDX_VANDAL_POTENCY_DOWN, _rules.vandal.enabled);
             SetAbilityWidgetsEnabled(CWIDX_MISINFO_COST, CWIDX_MISINFO_POTENCY_DOWN, _rules.misinformation.enabled);
             SetAbilityWidgetsEnabled(CWIDX_POISON_COST, CWIDX_POISON_POTENCY_DOWN, _rules.poison.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_TOILET_COST, CWIDX_TOILET_DURATION_DOWN, _rules.toiletBomber.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_AGITATOR_COST, CWIDX_AGITATOR_POTENCY_DOWN, _rules.agitator.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_SABOTEUR_COST, CWIDX_SABOTEUR_DURATION_DOWN, _rules.saboteur.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_HITMAN_COST, CWIDX_HITMAN_DURATION_DOWN, _rules.hitman.enabled);
 
             UpdateCaptions();
         }
@@ -653,10 +747,9 @@ namespace OpenRCT2::Ui::Windows
                 if (_rules.victoryMode == Competitive::VictoryMode::target)
                     DrawLabel(rt, 8, CWIDX_TARGET, "Target", colour);
                 DrawLabel(rt, 8, CWIDX_MAX_SPEED, "Maximum game speed", colour);
-                DrawLabel(rt, 8, CWIDX_STARTING_CASH, "Starting competitive cash", colour);
-
-                drawText(rt, windowPos + ScreenCoordsXY{ 8, 241 }, "Every competitor receives a fresh copy of the selected scenario, paused on its opening day.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 8, 256 }, "Each park then runs on its own clock. Normal guest generation and scenario finances remain local.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 8, 226 }, "Every competitor receives a fresh copy of the selected scenario, paused on its opening day.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 8, 241 }, "Each park then runs on its own clock. Cash is the scenario's actual park cash.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 8, 256 }, "Attack prices use park cash; no-money scenarios use cooldowns without a cash charge.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 8, 271 }, "Competition results use the rule above instead of the scenario objective.", { colour });
             }
             else
@@ -668,8 +761,15 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, windowPos + ScreenCoordsXY{ 10, 88 }, "Angry guest; security-blocked attempts also consume its quota.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,145 }, "Cancels future arrivals at the reverse strength of a half-price entry campaign.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,202 }, "Exact buyers at the selected food/drink stall receive the configured nausea chance.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,231 }, "Cooldown uses exact attacker-local days; duration uses the victim's local days.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,246 }, "Only online, unfinished rivals can be targeted. Failed delivery costs nothing and starts no cooldown.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{443,241 }, "All occupants", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,259 }, "Walks to a selected toilet, kills its current occupants, and destroys the building.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,316 }, "Guests passed once receive a rude-guest thought and the configured happiness penalty.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{443,355 }, "Forced breakdown", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,373 }, "Rides a selected attraction, forces a supported breakdown after exiting, then leaves.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{443,412 }, "One victim", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,430 }, "Photographs and kills one guest, applying the normal single-accident rating consequence.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,454 }, "Cooldown uses attacker-local days; time limit uses victim-local days. Failed delivery is refunded.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,469 }, "Only online, unfinished rivals can be targeted. No-money scenarios ignore action prices.", { colour });
             }
         }
 
@@ -709,8 +809,8 @@ namespace OpenRCT2::Ui::Windows
                     return "Park rating";
                 case Competitive::Metric::guests:
                     return "Guests in park";
-                case Competitive::Metric::competitiveCash:
-                    return "Competitive cash";
+                case Competitive::Metric::cash:
+                    return "Cash";
                 case Competitive::Metric::parkValue:
                     return "Park value";
             }
@@ -732,7 +832,7 @@ namespace OpenRCT2::Ui::Windows
                 Dropdown::MenuLabel(MetricName(Competitive::Metric::points)),
                 Dropdown::MenuLabel(MetricName(Competitive::Metric::rating)),
                 Dropdown::MenuLabel(MetricName(Competitive::Metric::guests)),
-                Dropdown::MenuLabel(MetricName(Competitive::Metric::competitiveCash)),
+                Dropdown::MenuLabel(MetricName(Competitive::Metric::cash)),
                 Dropdown::MenuLabel(MetricName(Competitive::Metric::parkValue)),
             };
             ShowDropdown(CWIDX_METRIC_BUTTON, items);
@@ -763,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
                     minimum = 100;
                     maximum = 1000000;
                     break;
-                case Competitive::Metric::competitiveCash:
+                case Competitive::Metric::cash:
                 case Competitive::Metric::parkValue:
                     step = ToMoney64FromGBP(10000);
                     minimum = ToMoney64FromGBP(1000);
@@ -785,7 +885,7 @@ namespace OpenRCT2::Ui::Windows
                 case Competitive::Metric::guests:
                     _rules.target = 2000;
                     break;
-                case Competitive::Metric::competitiveCash:
+                case Competitive::Metric::cash:
                     _rules.target = ToMoney64FromGBP(100000);
                     break;
                 case Competitive::Metric::parkValue:
@@ -815,6 +915,26 @@ namespace OpenRCT2::Ui::Windows
             {
                 rule = &_rules.poison;
                 first = CWIDX_POISON_COST;
+            }
+            else if (widgetIndex >= CWIDX_TOILET_COST && widgetIndex <= CWIDX_TOILET_DURATION_DOWN)
+            {
+                rule = &_rules.toiletBomber;
+                first = CWIDX_TOILET_COST;
+            }
+            else if (widgetIndex >= CWIDX_AGITATOR_COST && widgetIndex <= CWIDX_AGITATOR_POTENCY_DOWN)
+            {
+                rule = &_rules.agitator;
+                first = CWIDX_AGITATOR_COST;
+            }
+            else if (widgetIndex >= CWIDX_SABOTEUR_COST && widgetIndex <= CWIDX_SABOTEUR_DURATION_DOWN)
+            {
+                rule = &_rules.saboteur;
+                first = CWIDX_SABOTEUR_COST;
+            }
+            else if (widgetIndex >= CWIDX_HITMAN_COST && widgetIndex <= CWIDX_HITMAN_DURATION_DOWN)
+            {
+                rule = &_rules.hitman;
+                first = CWIDX_HITMAN_COST;
             }
             if (rule == nullptr)
                 return false;
@@ -862,12 +982,11 @@ namespace OpenRCT2::Ui::Windows
             _victoryCaption = VictoryName(_rules.victoryMode);
             _metricCaption = MetricName(_rules.metric);
             _deadlineCaption = "Year " + std::to_string(_rules.deadlineYear);
-            if (_rules.metric == Competitive::Metric::competitiveCash || _rules.metric == Competitive::Metric::parkValue)
+            if (_rules.metric == Competitive::Metric::cash || _rules.metric == Competitive::Metric::parkValue)
                 _targetCaption = FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(_rules.target));
             else
                 _targetCaption = std::to_string(_rules.target);
             _maxSpeedCaption = std::to_string(_rules.maxGameSpeed) + "x";
-            _startingCashCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.economy.startingCash);
 
             _vandalCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.vandal.cost);
             _vandalCooldownCaption = CooldownCaption(_rules.vandal.cooldownDays);
@@ -881,6 +1000,19 @@ namespace OpenRCT2::Ui::Windows
             _poisonCooldownCaption = CooldownCaption(_rules.poison.cooldownDays);
             _poisonDurationCaption = std::to_string(_rules.poison.durationDays) + " days";
             _poisonPotencyCaption = std::to_string(_rules.poison.potency) + "% buyers";
+            _toiletCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.toiletBomber.cost);
+            _toiletCooldownCaption = CooldownCaption(_rules.toiletBomber.cooldownDays);
+            _toiletDurationCaption = std::to_string(_rules.toiletBomber.durationDays) + " days max";
+            _agitatorCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.agitator.cost);
+            _agitatorCooldownCaption = CooldownCaption(_rules.agitator.cooldownDays);
+            _agitatorDurationCaption = std::to_string(_rules.agitator.durationDays) + " days";
+            _agitatorPotencyCaption = "-" + std::to_string(_rules.agitator.potency) + " happiness";
+            _saboteurCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.saboteur.cost);
+            _saboteurCooldownCaption = CooldownCaption(_rules.saboteur.cooldownDays);
+            _saboteurDurationCaption = std::to_string(_rules.saboteur.durationDays) + " days max";
+            _hitmanCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.hitman.cost);
+            _hitmanCooldownCaption = CooldownCaption(_rules.hitman.cooldownDays);
+            _hitmanDurationCaption = std::to_string(_rules.hitman.durationDays) + " days max";
 
             widgets[CWIDX_MAX_PLAYERS].setString(_maxPlayersCaption.c_str());
             widgets[CWIDX_VICTORY].setString(_victoryCaption.c_str());
@@ -888,7 +1020,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[CWIDX_DEADLINE].setString(_deadlineCaption.c_str());
             widgets[CWIDX_TARGET].setString(_targetCaption.c_str());
             widgets[CWIDX_MAX_SPEED].setString(_maxSpeedCaption.c_str());
-            widgets[CWIDX_STARTING_CASH].setString(_startingCashCaption.c_str());
             widgets[CWIDX_VANDAL_COST].setString(_vandalCostCaption.c_str());
             widgets[CWIDX_VANDAL_COOLDOWN].setString(_vandalCooldownCaption.c_str());
             widgets[CWIDX_VANDAL_DURATION].setString(_vandalDurationCaption.c_str());
@@ -901,6 +1032,19 @@ namespace OpenRCT2::Ui::Windows
             widgets[CWIDX_POISON_COOLDOWN].setString(_poisonCooldownCaption.c_str());
             widgets[CWIDX_POISON_DURATION].setString(_poisonDurationCaption.c_str());
             widgets[CWIDX_POISON_POTENCY].setString(_poisonPotencyCaption.c_str());
+            widgets[CWIDX_TOILET_COST].setString(_toiletCostCaption.c_str());
+            widgets[CWIDX_TOILET_COOLDOWN].setString(_toiletCooldownCaption.c_str());
+            widgets[CWIDX_TOILET_DURATION].setString(_toiletDurationCaption.c_str());
+            widgets[CWIDX_AGITATOR_COST].setString(_agitatorCostCaption.c_str());
+            widgets[CWIDX_AGITATOR_COOLDOWN].setString(_agitatorCooldownCaption.c_str());
+            widgets[CWIDX_AGITATOR_DURATION].setString(_agitatorDurationCaption.c_str());
+            widgets[CWIDX_AGITATOR_POTENCY].setString(_agitatorPotencyCaption.c_str());
+            widgets[CWIDX_SABOTEUR_COST].setString(_saboteurCostCaption.c_str());
+            widgets[CWIDX_SABOTEUR_COOLDOWN].setString(_saboteurCooldownCaption.c_str());
+            widgets[CWIDX_SABOTEUR_DURATION].setString(_saboteurDurationCaption.c_str());
+            widgets[CWIDX_HITMAN_COST].setString(_hitmanCostCaption.c_str());
+            widgets[CWIDX_HITMAN_COOLDOWN].setString(_hitmanCooldownCaption.c_str());
+            widgets[CWIDX_HITMAN_DURATION].setString(_hitmanDurationCaption.c_str());
         }
 
         void ChooseScenario()

@@ -94,10 +94,8 @@ namespace OpenRCT2::Competitive
         [[nodiscard]] bool ConsumeGuestArrivalCancellation();
         void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
         void OnVandalAttempt(OpenRCT2::Guest& guest);
-        [[nodiscard]] money64 GetAvailableCompetitiveCash() const;
-        [[nodiscard]] money64 GetConstructionSpend() const;
-        [[nodiscard]] bool CanSpendConstruction(money64 cost) const;
-        void RecordConstructionSpend(money64 cost);
+        void OnGuestExitRide(OpenRCT2::Guest& guest, RideId rideId);
+        [[nodiscard]] money64 GetAvailableParkCash() const;
         [[nodiscard]] std::string ExportParkStorage() const;
         [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
 
@@ -117,8 +115,7 @@ namespace OpenRCT2::Competitive
     [[nodiscard]] bool ConsumeGuestArrivalCancellation();
     void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
     void OnVandalAttempt(OpenRCT2::Guest& guest);
-    [[nodiscard]] bool CanSpendConstruction(money64 cost);
-    void RecordConstructionSpend(money64 cost);
+    void OnGuestExitRide(OpenRCT2::Guest& guest, RideId rideId);
     [[nodiscard]] std::string ExportParkStorage();
     [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
     [[nodiscard]] bool IsWatchingPark();

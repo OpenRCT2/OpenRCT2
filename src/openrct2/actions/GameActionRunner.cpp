@@ -165,18 +165,6 @@ namespace OpenRCT2::GameActions
         return false;
     }
 
-    static bool IsCompetitiveConstructionExpenditure(ExpenditureType expenditure)
-    {
-        return expenditure == ExpenditureType::rideConstruction || expenditure == ExpenditureType::landPurchase
-            || expenditure == ExpenditureType::landscaping;
-    }
-
-    static bool IsCompetitiveSpend(const Result& result, CommandFlags flags, bool topLevel)
-    {
-        return topLevel && result.cost > 0 && IsCompetitiveConstructionExpenditure(result.expenditure)
-            && !flags.hasAny(CommandFlag::ghost, CommandFlag::noSpend);
-    }
-
     static bool IsCompetitiveFairPlayAction(GameCommand command)
     {
         switch (command)
@@ -231,13 +219,7 @@ namespace OpenRCT2::GameActions
         if (result.error == Status::ok)
         {
             const auto flags = action->GetFlags();
-            if (IsCompetitiveSpend(result, flags, topLevel) && !Competitive::CanSpendConstruction(result.cost))
-            {
-                result.error = Status::insufficientFunds;
-                result.errorTitle = "Not enough competitive cash";
-                result.errorMessage = "This construction costs more than your available competitive cash.";
-            }
-            else if (!FinanceCheckAffordability(result.cost, flags))
+            if (!FinanceCheckAffordability(result.cost, flags))
             {
                 result.error = Status::insufficientFunds;
                 result.errorTitle = STR_CANT_DO_THIS;
@@ -407,10 +389,6 @@ namespace OpenRCT2::GameActions
                 return result;
 
             // Update money balance
-            if (result.error == Status::ok && IsCompetitiveSpend(result, flags, topLevel))
-            {
-                Competitive::RecordConstructionSpend(result.cost);
-            }
             if (result.error == Status::ok && FinanceCheckMoneyRequired(flags) && result.cost != 0)
             {
                 FinancePayment(result.cost, result.expenditure);

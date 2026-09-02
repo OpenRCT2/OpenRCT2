@@ -62,8 +62,10 @@ TEST(CompetitiveTests, DailyPointsPreservePluginFormula)
 
 TEST(CompetitiveTests, FrozenScoresIgnoreLaterReports)
 {
-    Score score{ .participantId = 1, .competitiveCash = 20000.00_GBP };
-    ParkMetrics frozen{ .localYear = 20, .rating = 900, .guests = 2000, .parkValue = 500000.00_GBP };
+    Score score{ .participantId = 1, .cash = 20000.00_GBP };
+    ParkMetrics frozen{
+        .localYear = 20, .rating = 900, .guests = 2000, .parkValue = 500000.00_GBP, .cash = 75000.00_GBP
+    };
     FreezeScore(score, frozen, 20);
 
     ParkMetrics later{ .localYear = 21, .rating = 999, .guests = 9000, .parkValue = 900000.00_GBP };
@@ -75,25 +77,15 @@ TEST(CompetitiveTests, FrozenScoresIgnoreLaterReports)
     EXPECT_EQ(score.frozenAtYear, 20);
 }
 
-TEST(CompetitiveTests, EconomyReportsAreIdempotent)
+TEST(CompetitiveTests, ScoreTracksActualScenarioCash)
 {
-    MatchRules rules;
-    Score score{ .participantId = 1, .competitiveCash = rules.economy.startingCash };
-    EconomyTotals accepted;
-    ParkMetrics report{
-        .arrivalsGenerated = 10,
-        .constructionSpend = 100.00_GBP,
-        .rideCustomers = 4,
-        .stallCustomers = 2,
-    };
+    Score score{ .participantId = 1 };
+    ParkMetrics report{ .cash = 12345.60_GBP };
 
-    ApplyEconomyDelta(score, accepted, report, rules.economy);
-    const auto afterFirstReport = score.competitiveCash;
-    ApplyEconomyDelta(score, accepted, report, rules.economy);
+    UpdateLiveScore(score, report);
 
-    EXPECT_EQ(score.competitiveCash, afterFirstReport);
-    EXPECT_EQ(score.lifetimeSpend, 100.00_GBP);
-    EXPECT_EQ(score.lifetimeIncome, 40.40_GBP);
+    EXPECT_EQ(score.cash, 12345.60_GBP);
+    EXPECT_EQ(GetMetricValue(score, Metric::cash), 12345.60_GBP);
 }
 
 TEST(CompetitiveTests, WinnerUsesMetricThenPointsThenStableId)
@@ -123,16 +115,22 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     state.hostId = 10;
     state.startLocalDay = 1;
     state.scenario = { "forest.sc6", "Forest Frontiers", "012345", 128, 128, false };
+    state.rules.toiletBomber.cost = 4321.00_GBP;
+    state.rules.agitator.potency = 17;
+    state.rules.saboteur.cooldownDays = 300;
+    state.rules.hitman.durationDays = 80;
     state.participants.push_back(
         { 10, "host-key", "Host Park", Role::host, true, false, false, false, 0, 1, state.scenario });
     state.participants[0].watchHost = "192.0.2.10";
     state.participants[0].watchPort = 12010;
-    state.scores.push_back({ .participantId = 10, .points = 123, .competitiveCash = 19000.00_GBP });
+    state.scores.push_back({ .participantId = 10, .points = 123, .cash = 19000.00_GBP });
     ParkMetrics reportMetrics{ .localDay = 3, .rating = 700, .guests = 300 };
     reportMetrics.openFoodDrinkStalls.push_back({ 7, "Chief Beef" });
-    state.reports.push_back({ 10, reportMetrics, {}, 3 });
+    reportMetrics.openToilets.push_back({ 8, "Restroom 1" });
+    reportMetrics.openRides.push_back({ 9, "Wooden Roller Coaster 1" });
+    state.reports.push_back({ 10, reportMetrics, 3 });
     state.cooldowns.push_back({ 10, Ability::poison, 2 });
-    state.effects.push_back({ 1, Ability::misinformation, 10, 20, -1, true, 1800.00_GBP, 3, 17, 200 });
+    state.effects.push_back({ 1, Ability::misinformation, 10, 20, -1, 42, true, 1800.00_GBP, 3, 17, 200 });
 
     const auto parsed = MatchStateFromJson(ToJson(state));
     ASSERT_TRUE(parsed.has_value());
@@ -144,6 +142,12 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     EXPECT_EQ(parsed->scores.at(0).points, 123);
     EXPECT_EQ(parsed->reports.at(0).lastScoredDay, 3u);
     EXPECT_EQ(parsed->reports.at(0).metrics.openFoodDrinkStalls.at(0).rideId, 7);
+    EXPECT_EQ(parsed->reports.at(0).metrics.openToilets.at(0).rideId, 8);
+    EXPECT_EQ(parsed->reports.at(0).metrics.openRides.at(0).rideId, 9);
+    EXPECT_EQ(parsed->rules.toiletBomber.cost, 4321.00_GBP);
+    EXPECT_EQ(parsed->rules.agitator.potency, 17);
+    EXPECT_EQ(parsed->rules.saboteur.cooldownDays, 300);
+    EXPECT_EQ(parsed->rules.hitman.durationDays, 80);
     EXPECT_EQ(parsed->cooldowns.at(0).ability, Ability::poison);
     EXPECT_EQ(parsed->cooldowns.at(0).availableAtDay, 2u);
     EXPECT_EQ(parsed->effects.at(0).endsAtDay, 17u);

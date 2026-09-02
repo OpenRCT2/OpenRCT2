@@ -119,9 +119,7 @@ namespace OpenRCT2::Competitive
                 { "rating", value.rating },
                 { "guests", value.guests },
                 { "parkValue", value.parkValue },
-                { "competitiveCash", value.competitiveCash },
-                { "lifetimeIncome", value.lifetimeIncome },
-                { "lifetimeSpend", value.lifetimeSpend },
+                { "cash", value.cash },
             };
             result["frozenAtYear"] = value.frozenAtYear.has_value() ? json_t(*value.frozenAtYear) : json_t(nullptr);
             return result;
@@ -139,9 +137,7 @@ namespace OpenRCT2::Competitive
                 .rating = Number<uint16_t>(value, "rating"),
                 .guests = Number<uint32_t>(value, "guests"),
                 .parkValue = Number<money64>(value, "parkValue"),
-                .competitiveCash = Number<money64>(value, "competitiveCash"),
-                .lifetimeIncome = Number<money64>(value, "lifetimeIncome"),
-                .lifetimeSpend = Number<money64>(value, "lifetimeSpend"),
+                .cash = Number<money64>(value, "cash"),
             };
             if (value.contains("frozenAtYear") && value["frozenAtYear"].is_number())
             {
@@ -173,26 +169,24 @@ namespace OpenRCT2::Competitive
             { "maxPlayers", value.maxPlayers },
             { "allowLateJoin", value.allowLateJoin },
             { "maxGameSpeed", value.maxGameSpeed },
-            { "economy",
-              {
-                  { "startingCash", value.economy.startingCash },
-                  { "incomePerArrival", value.economy.incomePerArrival },
-                  { "incomePerRideCustomer", value.economy.incomePerRideCustomer },
-                  { "incomePerStallCustomer", value.economy.incomePerStallCustomer },
-              } },
             { "vandal", AbilityRuleToJson(value.vandal) },
             { "misinformation", AbilityRuleToJson(value.misinformation) },
             { "poison", AbilityRuleToJson(value.poison) },
+            { "toiletBomber", AbilityRuleToJson(value.toiletBomber) },
+            { "agitator", AbilityRuleToJson(value.agitator) },
+            { "saboteur", AbilityRuleToJson(value.saboteur) },
+            { "hitman", AbilityRuleToJson(value.hitman) },
         };
     }
 
     json_t ToJson(const ParkMetrics& value)
     {
-        json_t stalls = json_t::array();
-        for (const auto& stall : value.openFoodDrinkStalls)
-        {
-            stalls.push_back({ { "rideId", stall.rideId }, { "name", stall.name } });
-        }
+        const auto TargetsToJson = [](const auto& targets) {
+            json_t result = json_t::array();
+            for (const auto& target : targets)
+                result.push_back({ { "rideId", target.rideId }, { "name", target.name } });
+            return result;
+        };
         return {
             { "localYear", value.localYear },
             { "monthsElapsed", value.monthsElapsed },
@@ -200,12 +194,11 @@ namespace OpenRCT2::Competitive
             { "rating", value.rating },
             { "guests", value.guests },
             { "parkValue", value.parkValue },
+            { "cash", value.cash },
             { "meanHappiness", value.meanHappiness },
-            { "arrivalsGenerated", value.arrivalsGenerated },
-            { "constructionSpend", value.constructionSpend },
-            { "rideCustomers", value.rideCustomers },
-            { "stallCustomers", value.stallCustomers },
-            { "openFoodDrinkStalls", std::move(stalls) },
+            { "openFoodDrinkStalls", TargetsToJson(value.openFoodDrinkStalls) },
+            { "openToilets", TargetsToJson(value.openToilets) },
+            { "openRides", TargetsToJson(value.openRides) },
         };
     }
 
@@ -217,8 +210,9 @@ namespace OpenRCT2::Competitive
             { "sourceId", value.sourceId },
             { "targetId", value.targetId },
             { "targetRideId", value.targetRideId },
+            { "sourceRequestId", value.sourceRequestId },
             { "delivered", value.delivered },
-            { "reservedCost", value.reservedCost },
+            { "chargedCost", value.chargedCost },
             { "startsAtDay", value.startsAtDay },
             { "endsAtDay", value.endsAtDay },
             { "potency", value.potency },
@@ -243,13 +237,6 @@ namespace OpenRCT2::Competitive
             reports.push_back({
                 { "participantId", report.participantId },
                 { "metrics", ToJson(report.metrics) },
-                { "acceptedEconomy",
-                  {
-                      { "arrivalsGenerated", report.acceptedEconomy.arrivalsGenerated },
-                      { "constructionSpend", report.acceptedEconomy.constructionSpend },
-                      { "rideCustomers", report.acceptedEconomy.rideCustomers },
-                      { "stallCustomers", report.acceptedEconomy.stallCustomers },
-                  } },
                 { "lastScoredDay", report.lastScoredDay },
             });
         }
@@ -322,19 +309,13 @@ namespace OpenRCT2::Competitive
         result.maxPlayers = Number<uint8_t>(value, "maxPlayers", result.maxPlayers);
         result.allowLateJoin = Boolean(value, "allowLateJoin", result.allowLateJoin);
         result.maxGameSpeed = Number<uint8_t>(value, "maxGameSpeed", result.maxGameSpeed);
-        if (value.contains("economy") && value["economy"].is_object())
-        {
-            const auto& economy = value["economy"];
-            result.economy.startingCash = Number<money64>(economy, "startingCash", result.economy.startingCash);
-            result.economy.incomePerArrival = Number<money64>(economy, "incomePerArrival", result.economy.incomePerArrival);
-            result.economy.incomePerRideCustomer = Number<money64>(
-                economy, "incomePerRideCustomer", result.economy.incomePerRideCustomer);
-            result.economy.incomePerStallCustomer = Number<money64>(
-                economy, "incomePerStallCustomer", result.economy.incomePerStallCustomer);
-        }
         result.vandal = AbilityRuleFromJson(value["vandal"], result.vandal);
         result.misinformation = AbilityRuleFromJson(value["misinformation"], result.misinformation);
         result.poison = AbilityRuleFromJson(value["poison"], result.poison);
+        result.toiletBomber = AbilityRuleFromJson(value["toiletBomber"], result.toiletBomber);
+        result.agitator = AbilityRuleFromJson(value["agitator"], result.agitator);
+        result.saboteur = AbilityRuleFromJson(value["saboteur"], result.saboteur);
+        result.hitman = AbilityRuleFromJson(value["hitman"], result.hitman);
 
         if (result.victoryMode > VictoryMode::target || result.metric > Metric::parkValue || result.maxPlayers < 2
             || result.maxPlayers > 32 || result.deadlineYear == 0 || result.maxGameSpeed == 0 || result.maxGameSpeed > 4)
@@ -357,24 +338,25 @@ namespace OpenRCT2::Competitive
             Number<uint16_t>(value, "rating"),
             Number<uint32_t>(value, "guests"),
             Number<money64>(value, "parkValue"),
+            Number<money64>(value, "cash"),
             Number<uint8_t>(value, "meanHappiness"),
-            Number<uint64_t>(value, "arrivalsGenerated"),
-            Number<money64>(value, "constructionSpend"),
-            Number<uint64_t>(value, "rideCustomers"),
-            Number<uint64_t>(value, "stallCustomers"),
         };
-        if (value.contains("openFoodDrinkStalls") && value["openFoodDrinkStalls"].is_array())
-        {
-            for (const auto& item : value["openFoodDrinkStalls"])
+        const auto ReadTargets = [&](const char* key, auto& targets) {
+            if (!value.contains(key) || !value[key].is_array())
+                return;
+            for (const auto& item : value[key])
             {
                 if (!item.is_object())
                     continue;
-                ParkMetrics::Stall stall{ Number<int32_t>(item, "rideId", -1), String(item, "name") };
-                if (stall.rideId >= 0 && !stall.name.empty() && stall.name.size() <= 128)
-                    result.openFoodDrinkStalls.push_back(std::move(stall));
+                ParkMetrics::TargetRide target{ Number<int32_t>(item, "rideId", -1), String(item, "name") };
+                if (target.rideId >= 0 && !target.name.empty() && target.name.size() <= 128)
+                    targets.push_back(std::move(target));
             }
-        }
-        if (result.localYear == 0 || result.rating > 999 || result.localDay == 0 || result.constructionSpend < 0)
+        };
+        ReadTargets("openFoodDrinkStalls", result.openFoodDrinkStalls);
+        ReadTargets("openToilets", result.openToilets);
+        ReadTargets("openRides", result.openRides);
+        if (result.localYear == 0 || result.rating > 999 || result.localDay == 0)
         {
             return std::nullopt;
         }
@@ -391,15 +373,16 @@ namespace OpenRCT2::Competitive
             Number<ParticipantId>(value, "sourceId"),
             Number<ParticipantId>(value, "targetId"),
             Number<int32_t>(value, "targetRideId", -1),
+            Number<uint32_t>(value, "sourceRequestId"),
             Boolean(value, "delivered"),
-            Number<money64>(value, "reservedCost"),
+            Number<money64>(value, "chargedCost"),
             Number<uint32_t>(value, "startsAtDay"),
             Number<uint32_t>(value, "endsAtDay"),
             Number<uint16_t>(value, "potency"),
         };
-        if (effect.id == 0 || effect.ability > Ability::poison || effect.sourceId == kInvalidParticipantId
+        if (effect.id == 0 || effect.ability > Ability::hitman || effect.sourceId == kInvalidParticipantId
             || effect.targetId == kInvalidParticipantId || effect.sourceId == effect.targetId
-            || effect.endsAtDay <= effect.startsAtDay || effect.reservedCost < 0)
+            || effect.endsAtDay <= effect.startsAtDay || effect.chargedCost < 0)
         {
             return std::nullopt;
         }
@@ -466,15 +449,7 @@ namespace OpenRCT2::Competitive
             const auto id = Number<ParticipantId>(item, "participantId");
             if (!metrics.has_value() || id == kInvalidParticipantId)
                 return std::nullopt;
-            ParticipantReport report{ id, std::move(*metrics), {}, Number<uint32_t>(item, "lastScoredDay") };
-            if (item.contains("acceptedEconomy") && item["acceptedEconomy"].is_object())
-            {
-                const auto& economy = item["acceptedEconomy"];
-                report.acceptedEconomy.arrivalsGenerated = Number<uint64_t>(economy, "arrivalsGenerated");
-                report.acceptedEconomy.constructionSpend = Number<money64>(economy, "constructionSpend");
-                report.acceptedEconomy.rideCustomers = Number<uint64_t>(economy, "rideCustomers");
-                report.acceptedEconomy.stallCustomers = Number<uint64_t>(economy, "stallCustomers");
-            }
+            ParticipantReport report{ id, std::move(*metrics), Number<uint32_t>(item, "lastScoredDay") };
             result.reports.push_back(std::move(report));
         }
         if (value.contains("cooldowns") && value["cooldowns"].is_array())
@@ -486,7 +461,7 @@ namespace OpenRCT2::Competitive
                     Number<Ability>(item, "ability", Ability::vandal),
                     Number<uint32_t>(item, "availableAtDay"),
                 };
-                if (cooldown.participantId == kInvalidParticipantId || cooldown.ability > Ability::poison)
+                if (cooldown.participantId == kInvalidParticipantId || cooldown.ability > Ability::hitman)
                     return std::nullopt;
                 result.cooldowns.push_back(cooldown);
             }

@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Competitive
 {
-    constexpr uint16_t kProtocolVersion = 3;
+    constexpr uint16_t kProtocolVersion = 5;
     constexpr uint16_t kDefaultPort = 11755;
 
     struct ActiveEffect
@@ -27,8 +27,9 @@ namespace OpenRCT2::Competitive
         ParticipantId sourceId = kInvalidParticipantId;
         ParticipantId targetId = kInvalidParticipantId;
         int32_t targetRideId = -1;
+        uint32_t sourceRequestId{};
         bool delivered = false;
-        money64 reservedCost{};
+        money64 chargedCost{};
         uint32_t startsAtDay{};
         uint32_t endsAtDay{};
         uint16_t potency{};
@@ -38,7 +39,6 @@ namespace OpenRCT2::Competitive
     {
         ParticipantId participantId = kInvalidParticipantId;
         ParkMetrics metrics{};
-        EconomyTotals acceptedEconomy{};
         uint32_t lastScoredDay{};
     };
 

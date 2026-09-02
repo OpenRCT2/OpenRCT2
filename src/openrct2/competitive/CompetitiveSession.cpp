@@ -11,6 +11,8 @@
 
 #include "CompetitiveProtocol.h"
 
+#include "../actions/GameActionRunner.h"
+#include "../actions/ride/RideDemolishAction.h"
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Date.h"
@@ -27,6 +29,8 @@
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
+#include "../entity/Particle.h"
+#include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../network/Network.h"
 #include "../network/NetworkConnection.h"
@@ -34,6 +38,8 @@
 #include "../network/Socket.h"
 #include "../platform/Platform.h"
 #include "../ride/RideManager.hpp"
+#include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
@@ -102,6 +108,14 @@ namespace OpenRCT2::Competitive
                     return rules.misinformation;
                 case Ability::poison:
                     return rules.poison;
+                case Ability::toiletBomber:
+                    return rules.toiletBomber;
+                case Ability::agitator:
+                    return rules.agitator;
+                case Ability::saboteur:
+                    return rules.saboteur;
+                case Ability::hitman:
+                    return rules.hitman;
                 case Ability::vandal:
                     return rules.vandal;
             }
@@ -118,6 +132,14 @@ namespace OpenRCT2::Competitive
                     return "Misinformation";
                 case Ability::poison:
                     return "Poisoning";
+                case Ability::toiletBomber:
+                    return "Toilet bomber";
+                case Ability::agitator:
+                    return "Agitator";
+                case Ability::saboteur:
+                    return "Saboteur";
+                case Ability::hitman:
+                    return "Hitman";
             }
             return "Rival action";
         }
@@ -130,8 +152,8 @@ namespace OpenRCT2::Competitive
                     return "park rating";
                 case Metric::guests:
                     return "guests";
-                case Metric::competitiveCash:
-                    return "competitive cash";
+                case Metric::cash:
+                    return "cash";
                 case Metric::parkValue:
                     return "park value";
                 case Metric::points:
@@ -215,6 +237,25 @@ namespace OpenRCT2::Competitive
             uint16_t remainingQuota{};
         };
 
+        struct PendingAbilityPayment
+        {
+            Ability ability = Ability::vandal;
+            ParticipantId targetId = kInvalidParticipantId;
+            money64 cost{};
+        };
+
+        struct LocalOperative
+        {
+            uint32_t effectId{};
+            Ability ability = Ability::agitator;
+            EntityId guestId = EntityId::GetNull();
+            int32_t targetRideId = -1;
+            EntityId victimId = EntityId::GetNull();
+            uint8_t stage{};
+            uint32_t triggerAtTick{};
+            std::vector<EntityId> affectedGuests;
+        };
+
         SessionMode mode = SessionMode::none;
         ConnectionStatus status = ConnectionStatus::disconnected;
         MatchState state{};
@@ -234,10 +275,12 @@ namespace OpenRCT2::Competitive
         uint32_t lastReportedDay{};
         bool forcedPause = false;
         bool wasPausedBeforeForcedPause = false;
-        money64 constructionSpend{};
         uint32_t pendingMisinformationCancellations{};
+        uint32_t nextAbilityRequestId = 1;
+        std::unordered_map<uint32_t, PendingAbilityPayment> pendingAbilityPayments;
         std::unordered_map<uint32_t, ActiveEffect> localEffects;
         std::vector<LocalVandal> localVandals;
+        std::vector<LocalOperative> localOperatives;
         bool openWindowAfterRestore = false;
         bool hostLossHandled = false;
         bool startedWatchServer = false;
@@ -334,6 +377,69 @@ namespace OpenRCT2::Competitive
             }
         }
 
+        void ReportLocalMetricsNow()
+        {
+            if (!scenarioLoaded || gLegacyScene != LegacyScene::playing || localParticipantId == kInvalidParticipantId)
+                return;
+            const auto metrics = CollectParkMetrics();
+            if (mode == SessionMode::host)
+            {
+                IngestMetrics(localParticipantId, metrics);
+            }
+            else if (mode == SessionMode::client && serverConnection != nullptr && serverConnection->isValid())
+            {
+                QueueJson(
+                    *serverConnection, Network::Command::competitiveMetrics,
+                    { { "metrics", ToJson(metrics) } });
+            }
+        }
+
+        void ResolveAbilityPayment(
+            ParticipantId sourceId, uint32_t requestId, bool accepted, const std::string& message)
+        {
+            if (requestId == 0)
+                return;
+            const auto notification = accepted || state.scenario.noMoney
+                ? message
+                : message + " Its park-cash cost was refunded.";
+            if (sourceId == localParticipantId)
+            {
+                const auto pending = pendingAbilityPayments.find(requestId);
+                if (pending == pendingAbilityPayments.end())
+                    return;
+                if (!accepted && pending->second.cost > 0 && !state.scenario.noMoney)
+                    FinancePayment(-pending->second.cost, ExpenditureType::marketing);
+                pendingAbilityPayments.erase(pending);
+                ReportLocalMetricsNow();
+                AddLocalNotice(notification);
+                return;
+            }
+            if (auto* peer = FindPeer(sourceId))
+            {
+                QueueJson(
+                    *peer->connection, Network::Command::competitiveEffectAck,
+                    {
+                        { "paymentRequestId", requestId },
+                        { "paymentAccepted", accepted },
+                        { "notification", notification },
+                    });
+            }
+        }
+
+        void HandleAbilityPaymentResult(const json_t& body)
+        {
+            const auto requestId = body.value("paymentRequestId", 0u);
+            if (requestId == 0)
+                return;
+            const auto pending = pendingAbilityPayments.find(requestId);
+            if (pending == pendingAbilityPayments.end())
+                return;
+            if (!body.value("paymentAccepted", false) && pending->second.cost > 0 && !state.scenario.noMoney)
+                FinancePayment(-pending->second.cost, ExpenditureType::marketing);
+            pendingAbilityPayments.erase(pending);
+            ReportLocalMetricsNow();
+        }
+
         bool EnsureLocalWatchServer(std::string& warning)
         {
             if (localRole == Role::spectator || !scenarioLoaded || gLegacyScene != LegacyScene::playing)
@@ -388,7 +494,11 @@ namespace OpenRCT2::Competitive
 
         void SendLocalEffectReply(uint32_t effectId, bool accepted, const std::string& message, bool complete = false)
         {
-            if (mode == SessionMode::client && serverConnection != nullptr && serverConnection->isValid())
+            if (mode == SessionMode::host)
+            {
+                ResolveEffectReply(localParticipantId, effectId, accepted, message, complete);
+            }
+            else if (mode == SessionMode::client && serverConnection != nullptr && serverConnection->isValid())
             {
                 QueueJson(
                     *serverConnection, Network::Command::competitiveEffectAck,
@@ -413,6 +523,46 @@ namespace OpenRCT2::Competitive
                     return true;
             }
             return false;
+        }
+
+        bool IsValidOperativeTarget(Ability ability, int32_t rideId) const
+        {
+            if (rideId < 0 || rideId > std::numeric_limits<RideId::UnderlyingType>::max())
+                return false;
+            const auto* ride = GetRide(RideId::FromUnderlying(static_cast<RideId::UnderlyingType>(rideId)));
+            if (ride == nullptr || ride->status != RideStatus::open)
+                return false;
+            if (ability == Ability::toiletBomber)
+                return ride->getRideTypeDescriptor().specialType == RtdSpecialType::toilet;
+            if (ability == Ability::saboteur)
+                return ride->getClassification() == RideClassification::ride
+                    && !ride->getRideTypeDescriptor().availableBreakdowns.isEmpty();
+            return true;
+        }
+
+        Guest* SpawnOperative(const ActiveEffect& effect, const std::string& sourceName, std::string& error)
+        {
+            auto* guest = Park::GenerateGuest();
+            if (guest == nullptr)
+            {
+                error = "The victim park has no valid guest spawn for the operative.";
+                return nullptr;
+            }
+            guest->setName(std::string(AbilityName(effect.ability)) + " sent by " + sourceName);
+            if (effect.targetRideId >= 0)
+            {
+                guest->guestHeadingToRideId = RideId::FromUnderlying(
+                    static_cast<RideId::UnderlyingType>(effect.targetRideId));
+                guest->guestIsLostCountdown = 200;
+                guest->resetPathfindGoal();
+                guest->cashInPocket = std::max(guest->cashInPocket, 1000.00_GBP);
+                guest->intensity = IntensityRange(0, 15);
+                guest->nauseaTolerance = PeepNauseaTolerance::high;
+            }
+            if (effect.ability == Ability::toiletBomber)
+                guest->toilet = 255;
+            localOperatives.push_back({ effect.id, effect.ability, guest->id, effect.targetRideId });
+            return guest;
         }
 
         bool ApplyLocalEffect(const ActiveEffect& effect, std::string& error)
@@ -472,6 +622,41 @@ namespace OpenRCT2::Competitive
                         News::ItemType::ride, static_cast<uint32_t>(effect.targetRideId));
                     break;
                 }
+                case Ability::toiletBomber:
+                case Ability::saboteur:
+                {
+                    if (!IsValidOperativeTarget(effect.ability, effect.targetRideId))
+                    {
+                        error = effect.ability == Ability::toiletBomber
+                            ? "The selected toilet is no longer open and valid."
+                            : "The selected ride is no longer open or cannot break down.";
+                        return false;
+                    }
+                    auto* guest = SpawnOperative(effect, sourceName, error);
+                    if (guest == nullptr)
+                        return false;
+                    const auto* ride = GetRide(
+                        RideId::FromUnderlying(static_cast<RideId::UnderlyingType>(effect.targetRideId)));
+                    AddLocalNotice(
+                        sourceName + (effect.ability == Ability::toiletBomber ? " sent a toilet bomber towards "
+                                                                            : " sent a saboteur towards ")
+                            + ride->getName() + ". Security does not identify this operative; watch the named guest.",
+                        News::ItemType::peepOnRide, guest->id.ToUnderlying());
+                    break;
+                }
+                case Ability::agitator:
+                case Ability::hitman:
+                {
+                    auto* guest = SpawnOperative(effect, sourceName, error);
+                    if (guest == nullptr)
+                        return false;
+                    AddLocalNotice(
+                        sourceName + (effect.ability == Ability::agitator
+                                ? " sent an agitator. Guests they pass will become less happy and think that another guest was rude."
+                                : " sent a hitman. They will act normally until they encounter a victim and take their photograph."),
+                        News::ItemType::peepOnRide, guest->id.ToUnderlying());
+                    break;
+                }
             }
             localEffects.emplace(effect.id, effect);
             return true;
@@ -493,6 +678,23 @@ namespace OpenRCT2::Competitive
             localVandals.erase(iterator);
         }
 
+        void EndLocalOperative(uint32_t effectId)
+        {
+            const auto iterator = std::find_if(localOperatives.begin(), localOperatives.end(), [&](const auto& operative) {
+                return operative.effectId == effectId;
+            });
+            if (iterator == localOperatives.end())
+                return;
+            if (auto* guest = getGameState().entities.getEntity<Guest>(iterator->guestId))
+            {
+                guest->guestHeadingToRideId = RideId::GetNull();
+                guest->peepFlags.set(PeepFlag::leavingPark);
+                guest->peepFlags.unset(PeepFlag::parkEntranceChosen);
+                guest->resetPathfindGoal();
+            }
+            localOperatives.erase(iterator);
+        }
+
         void CompleteLocalEffect(uint32_t effectId, const std::string& reason)
         {
             const auto iterator = localEffects.find(effectId);
@@ -501,15 +703,203 @@ namespace OpenRCT2::Competitive
             const auto ability = iterator->second.ability;
             if (ability == Ability::vandal)
                 EndLocalVandal(effectId);
+            else if (ability == Ability::toiletBomber || ability == Ability::agitator
+                || ability == Ability::saboteur || ability == Ability::hitman)
+                EndLocalOperative(effectId);
             AddLocalNotice(std::string(AbilityName(ability)) + " effect ended: " + reason);
             localEffects.erase(iterator);
             SendLocalEffectReply(effectId, true, reason, true);
+        }
+
+        bool IsCompetitiveAgent(EntityId guestId) const
+        {
+            return std::any_of(localVandals.begin(), localVandals.end(), [&](const auto& value) {
+                       return value.guestId == guestId;
+                   })
+                || std::any_of(localOperatives.begin(), localOperatives.end(), [&](const auto& value) {
+                       return value.guestId == guestId;
+                   });
+        }
+
+        void ApplySingleAccidentConsequence()
+        {
+            auto& park = getGameState().park;
+            if (park.ratingCasualtyPenalty < 500)
+                park.ratingCasualtyPenalty += 200;
+        }
+
+        void TriggerToiletBomber(LocalOperative& operative, Guest& bomber, std::vector<uint32_t>& completed)
+        {
+            const auto rideId = RideId::FromUnderlying(static_cast<RideId::UnderlyingType>(operative.targetRideId));
+            auto* ride = GetRide(rideId);
+            if (ride == nullptr)
+            {
+                completed.push_back(operative.effectId);
+                return;
+            }
+            const auto rideName = ride->getName();
+
+            std::vector<EntityId> victims;
+            for (auto* guest : EntityList<Guest>())
+            {
+                if (guest->id != bomber.id && !guest->outsideOfPark && guest->state == PeepState::buying
+                    && guest->currentRide == rideId)
+                {
+                    victims.push_back(guest->id);
+                }
+            }
+            for (const auto victimId : victims)
+            {
+                if (auto* victim = getGameState().entities.getEntity<Guest>(victimId))
+                {
+                    ExplosionCloud::create({ victim->x, victim->y, static_cast<int16_t>(victim->z + 16) });
+                    ExplosionFlare::create({ victim->x, victim->y, static_cast<int16_t>(victim->z + 16) });
+                    victim->remove();
+                }
+            }
+            if (!victims.empty())
+                ApplySingleAccidentConsequence();
+
+            const auto explosionLocation = bomber.getLocation();
+            ExplosionCloud::create(explosionLocation + CoordsXYZ{ 0, 0, 16 });
+            ExplosionFlare::create(explosionLocation + CoordsXYZ{ 0, 0, 16 });
+            bomber.remove();
+
+            GameActions::RideDemolishAction action(rideId, GameActions::RideModifyType::demolish);
+            const auto result = GameActions::Execute(&action, getGameState());
+            if (result.error == GameActions::Status::ok && result.cost != 0 && !state.scenario.noMoney)
+                FinancePayment(-result.cost, ExpenditureType::rideConstruction);
+            AddLocalNotice(
+                result.error == GameActions::Status::ok
+                    ? "The toilet bomber destroyed " + rideName + " and caught "
+                        + std::to_string(victims.size()) + (victims.size() == 1 ? " guest inside." : " guests inside.")
+                    : "The toilet bomber reached the target, but OpenRCT2 could not demolish it.");
+            completed.push_back(operative.effectId);
+        }
+
+        void UpdateLocalOperatives()
+        {
+            if (localOperatives.empty())
+                return;
+            const auto currentTicks = getGameState().currentTicks;
+            std::vector<uint32_t> completed;
+            for (auto& operative : localOperatives)
+            {
+                auto* agent = getGameState().entities.getEntity<Guest>(operative.guestId);
+                if (agent == nullptr)
+                {
+                    completed.push_back(operative.effectId);
+                    continue;
+                }
+
+                if (operative.targetRideId >= 0 && agent->state == PeepState::walking
+                    && agent->guestHeadingToRideId.IsNull())
+                {
+                    agent->guestHeadingToRideId = RideId::FromUnderlying(
+                        static_cast<RideId::UnderlyingType>(operative.targetRideId));
+                    agent->guestIsLostCountdown = 200;
+                    agent->resetPathfindGoal();
+                }
+
+                if (operative.ability == Ability::toiletBomber)
+                {
+                    if (agent->state == PeepState::buying
+                        && agent->currentRide.ToUnderlying() == operative.targetRideId)
+                        TriggerToiletBomber(operative, *agent, completed);
+                    continue;
+                }
+                if (operative.ability == Ability::saboteur)
+                    continue;
+                if ((currentTicks & 0x0F) != 0 || agent->x == kLocationNull)
+                    continue;
+
+                if (operative.ability == Ability::agitator)
+                {
+                    const auto effect = localEffects.find(operative.effectId);
+                    if (effect == localEffects.end())
+                        continue;
+                    for (auto* guest : EntityTileList<Guest>({ agent->x, agent->y }))
+                    {
+                        if (guest->id == agent->id || guest->outsideOfPark || guest->x == kLocationNull
+                            || IsCompetitiveAgent(guest->id)
+                            || std::find(operative.affectedGuests.begin(), operative.affectedGuests.end(), guest->id)
+                                != operative.affectedGuests.end())
+                            continue;
+                        if (std::abs(guest->x - agent->x) > 48 || std::abs(guest->y - agent->y) > 48
+                            || std::abs(guest->z - agent->z) > 16)
+                            continue;
+                        guest->insertNewThought(PeepThoughtType::rudeGuest);
+                        guest->happinessTarget = static_cast<uint8_t>(
+                            std::max<int32_t>(0, guest->happinessTarget - effect->second.potency));
+                        guest->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+                        operative.affectedGuests.push_back(guest->id);
+                    }
+                    continue;
+                }
+
+                if (operative.ability == Ability::hitman)
+                {
+                    if (operative.stage == 0)
+                    {
+                        Guest* victim = nullptr;
+                        int32_t bestDistance = std::numeric_limits<int32_t>::max();
+                        for (auto* guest : EntityTileList<Guest>({ agent->x, agent->y }))
+                        {
+                            if (guest->id == agent->id || guest->outsideOfPark || guest->x == kLocationNull
+                                || IsCompetitiveAgent(guest->id)
+                                || guest->peepFlags.has(PeepFlag::leavingPark)
+                                || (guest->state != PeepState::walking && guest->state != PeepState::sitting))
+                                continue;
+                            const auto distance = std::abs(guest->x - agent->x) + std::abs(guest->y - agent->y);
+                            if (distance > 96 || std::abs(guest->z - agent->z) > 16)
+                                continue;
+                            if (distance < bestDistance
+                                || (distance == bestDistance
+                                    && (victim == nullptr
+                                        || guest->id.ToUnderlying() < victim->id.ToUnderlying())))
+                            {
+                                victim = guest;
+                                bestDistance = distance;
+                            }
+                        }
+                        if (victim != nullptr && agent->isActionInterruptableSafely())
+                        {
+                            operative.victimId = victim->id;
+                            operative.stage = 1;
+                            operative.triggerAtTick = currentTicks + 24;
+                            agent->action = PeepActionType::takePhoto;
+                            agent->animationFrameNum = 0;
+                            agent->animationImageIdOffset = 0;
+                            agent->updateCurrentAnimationType();
+                        }
+                    }
+                    else if (currentTicks >= operative.triggerAtTick)
+                    {
+                        auto* victim = getGameState().entities.getEntity<Guest>(operative.victimId);
+                        if (victim == nullptr || (victim->state != PeepState::walking && victim->state != PeepState::sitting))
+                        {
+                            operative.victimId = EntityId::GetNull();
+                            operative.stage = 0;
+                            continue;
+                        }
+                        victim->peepFlags.set(PeepFlag::explode);
+                        ApplySingleAccidentConsequence();
+                        completed.push_back(operative.effectId);
+                    }
+                }
+            }
+            for (const auto effectId : completed)
+            {
+                if (localEffects.contains(effectId))
+                    CompleteLocalEffect(effectId, "the operative completed the assignment and was sent home");
+            }
         }
 
         void UpdateLocalEffects()
         {
             if (localEffects.empty() || gLegacyScene != LegacyScene::playing)
                 return;
+            UpdateLocalOperatives();
             const auto localDay = GetCurrentLocalDay();
             std::vector<uint32_t> expired;
             for (const auto& [effectId, effect] : localEffects)
@@ -666,7 +1056,7 @@ namespace OpenRCT2::Competitive
                 state.participants.push_back(participant);
                 if (requestedRole == Role::player)
                 {
-                    state.scores.push_back({ .participantId = participant.id, .competitiveCash = state.rules.economy.startingCash });
+                    state.scores.push_back({ .participantId = participant.id });
                     state.reports.push_back({ .participantId = participant.id });
                 }
             }
@@ -675,6 +1065,30 @@ namespace OpenRCT2::Competitive
             QueueJson(
                 *peer.connection, Network::Command::competitiveWelcome,
                 { { "participantId", peer.participantId }, { "state", ToJson(state) } });
+            if (body.contains("pendingPayments") && body["pendingPayments"].is_array())
+            {
+                for (const auto& value : body["pendingPayments"])
+                {
+                    if (!value.is_number_unsigned())
+                        continue;
+                    const auto requestId = value.get<uint32_t>();
+                    const auto effect = std::find_if(state.effects.begin(), state.effects.end(), [&](const auto& item) {
+                        return item.sourceId == peer.participantId && item.sourceRequestId == requestId;
+                    });
+                    if (effect != state.effects.end() && !effect->delivered)
+                        continue;
+                    const bool accepted = effect != state.effects.end();
+                    QueueJson(
+                        *peer.connection, Network::Command::competitiveEffectAck,
+                        {
+                            { "paymentRequestId", requestId },
+                            { "paymentAccepted", accepted },
+                            { "notification",
+                              accepted ? std::string("The previously submitted rival action was delivered.")
+                                       : std::string("The previously submitted rival action was not accepted. Its park-cash cost was refunded.") },
+                        });
+                }
+            }
             SendSnapshot();
         }
 
@@ -700,7 +1114,13 @@ namespace OpenRCT2::Competitive
                 UpdateLiveScore(*score, metrics);
                 report->lastScoredDay = metrics.localDay;
             }
-            ApplyEconomyDelta(*score, report->acceptedEconomy, metrics, state.rules.economy);
+            else if (!score->frozenAtYear.has_value())
+            {
+                score->rating = metrics.rating;
+                score->guests = metrics.guests;
+                score->parkValue = metrics.parkValue;
+                score->cash = metrics.cash;
+            }
 
             std::vector<uint32_t> expiredEffects;
             for (const auto& effect : state.effects)
@@ -761,6 +1181,13 @@ namespace OpenRCT2::Competitive
             {
                 report->metrics = *metrics;
             }
+            if (auto* score = FindScore(state, participant->id))
+            {
+                score->rating = metrics->rating;
+                score->guests = metrics->guests;
+                score->parkValue = metrics->parkValue;
+                score->cash = metrics->cash;
+            }
             SendSnapshot();
         }
 
@@ -787,21 +1214,18 @@ namespace OpenRCT2::Competitive
 
             const auto sourceId = iterator->sourceId;
             const auto ability = iterator->ability;
-            auto* sourceScore = FindScore(state, sourceId);
+            const auto requestId = iterator->sourceRequestId;
             if (!accepted)
             {
-                if (sourceScore != nullptr)
-                    sourceScore->competitiveCash += iterator->reservedCost;
                 state.effects.erase(iterator);
-                NotifyParticipant(
-                    sourceId, std::string(AbilityName(ability)) + " could not be delivered; its cost was refunded. " + message);
+                ResolveAbilityPayment(
+                    sourceId, requestId, false,
+                    std::string(AbilityName(ability)) + " could not be delivered. " + message);
                 SendSnapshot();
                 return;
             }
 
             iterator->delivered = true;
-            if (sourceScore != nullptr)
-                sourceScore->lifetimeSpend += iterator->reservedCost;
             const auto* sourceReport = FindReport(state, sourceId);
             const auto currentDay = sourceReport == nullptr ? uint32_t{ 1 } : sourceReport->metrics.localDay;
             const auto availableAtDay = currentDay + GetAbilityRule(state.rules, ability).cooldownDays;
@@ -812,7 +1236,8 @@ namespace OpenRCT2::Competitive
                 state.cooldowns.push_back({ sourceId, ability, availableAtDay });
             else
                 cooldown->availableAtDay = availableAtDay;
-            NotifyParticipant(sourceId, std::string(AbilityName(ability)) + " was delivered successfully.");
+            ResolveAbilityPayment(
+                sourceId, requestId, true, std::string(AbilityName(ability)) + " was delivered successfully.");
             SendSnapshot();
         }
 
@@ -828,7 +1253,9 @@ namespace OpenRCT2::Competitive
                 ResolveEffectReply(targetId, effectId, false, "The rival went offline before acknowledging it.", false);
         }
 
-        bool BeginAbility(ParticipantId sourceId, Ability ability, ParticipantId targetId, int32_t targetRideId, std::string& error)
+        bool BeginAbility(
+            ParticipantId sourceId, Ability ability, ParticipantId targetId, int32_t targetRideId,
+            uint32_t sourceRequestId, money64 chargedCost, std::string& error)
         {
             if (state.phase != Phase::running)
             {
@@ -866,28 +1293,40 @@ namespace OpenRCT2::Competitive
                     + std::to_string(cooldown->availableAtDay) + ".";
                 return false;
             }
-            if (sourceScore->competitiveCash < rule.cost)
+            const auto expectedCost = state.scenario.noMoney ? 0.00_GBP : rule.cost;
+            if (sourceRequestId == 0 || chargedCost != expectedCost)
             {
-                error = "Your park does not have enough competitive cash for this action.";
+                error = "The action's park-cash payment did not match the host's rules.";
                 return false;
             }
+            const std::vector<ParkMetrics::TargetRide>* validTargets = nullptr;
             if (ability == Ability::poison)
+                validTargets = &targetReport->metrics.openFoodDrinkStalls;
+            else if (ability == Ability::toiletBomber)
+                validTargets = &targetReport->metrics.openToilets;
+            else if (ability == Ability::saboteur)
+                validTargets = &targetReport->metrics.openRides;
+            if (validTargets != nullptr)
             {
                 const auto stall = std::find_if(
-                    targetReport->metrics.openFoodDrinkStalls.begin(), targetReport->metrics.openFoodDrinkStalls.end(),
+                    validTargets->begin(), validTargets->end(),
                     [&](const auto& value) { return value.rideId == targetRideId; });
-                if (stall == targetReport->metrics.openFoodDrinkStalls.end())
+                if (stall == validTargets->end())
                 {
-                    error = "Choose an open food or drink stall reported by that rival park.";
+                    error = ability == Ability::poison
+                        ? "Choose an open food or drink stall reported by that rival park."
+                        : ability == Ability::toiletBomber
+                        ? "Choose an open toilet reported by that rival park."
+                        : "Choose an open, breakdown-capable ride reported by that rival park.";
                     return false;
                 }
             }
             const auto duplicate = std::find_if(state.effects.begin(), state.effects.end(), [&](const auto& effect) {
                 if (effect.targetId != targetId || effect.ability != ability)
                     return false;
-                if (ability == Ability::poison)
+                if (ability == Ability::poison || ability == Ability::toiletBomber || ability == Ability::saboteur)
                     return effect.targetRideId == targetRideId;
-                return ability == Ability::misinformation;
+                return ability != Ability::vandal;
             });
             if (duplicate != state.effects.end())
             {
@@ -900,14 +1339,14 @@ namespace OpenRCT2::Competitive
                 ability,
                 sourceId,
                 targetId,
-                ability == Ability::poison ? targetRideId : -1,
+                validTargets != nullptr ? targetRideId : -1,
+                sourceRequestId,
                 false,
-                rule.cost,
+                chargedCost,
                 targetReport->metrics.localDay,
                 targetReport->metrics.localDay + rule.durationDays,
                 rule.potency,
             };
-            sourceScore->competitiveCash -= rule.cost;
             state.effects.push_back(effect);
             SendSnapshot();
 
@@ -977,12 +1416,17 @@ namespace OpenRCT2::Competitive
                             const auto ability = body->value("ability", Ability::vandal);
                             const auto targetId = body->value("targetId", kInvalidParticipantId);
                             const auto targetRideId = body->value("targetRideId", -1);
-                            if (ability > Ability::poison
-                                || !BeginAbility(peer.participantId, ability, targetId, targetRideId, error))
+                            const auto sourceRequestId = body->value("sourceRequestId", 0u);
+                            const auto chargedCost = body->value("chargedCost", 0.00_GBP);
+                            if (ability > Ability::hitman
+                                || !BeginAbility(
+                                    peer.participantId, ability, targetId, targetRideId, sourceRequestId, chargedCost,
+                                    error))
                             {
-                                QueueJson(
-                                    *peer.connection, Network::Command::competitiveEffectAck,
-                                    { { "notification", "Rival action failed: " + (error.empty() ? std::string("Invalid request.") : error) } });
+                                ResolveAbilityPayment(
+                                    peer.participantId, sourceRequestId, false,
+                                    "Rival action failed: "
+                                        + (error.empty() ? std::string("Invalid request.") : error));
                             }
                         }
                     }
@@ -1103,6 +1547,9 @@ namespace OpenRCT2::Competitive
 
         void SendHello()
         {
+            json_t pendingPayments = json_t::array();
+            for (const auto& [requestId, payment] : pendingAbilityPayments)
+                pendingPayments.push_back(requestId);
             QueueJson(
                 *serverConnection, Network::Command::competitiveHello,
                 {
@@ -1110,6 +1557,7 @@ namespace OpenRCT2::Competitive
                     { "role", joinConfiguration.role },
                     { "identityKey", Config::Get().network.competitiveIdentity },
                     { "name", joinConfiguration.playerName },
+                    { "pendingPayments", std::move(pendingPayments) },
                 });
             helloSent = true;
         }
@@ -1186,6 +1634,7 @@ namespace OpenRCT2::Competitive
                     const auto body = ReadJson(packet);
                     if (body.has_value())
                     {
+                        HandleAbilityPaymentResult(*body);
                         const auto notification = body->value("notification", std::string{});
                         if (!notification.empty())
                             AddLocalNotice(notification);
@@ -1357,10 +1806,14 @@ namespace OpenRCT2::Competitive
             metrics.localYear,
             configuration.scenario,
         });
-        _impl->state.scores.push_back(
-            { .participantId = _impl->localParticipantId,
-              .competitiveCash = configuration.rules.economy.startingCash });
-        _impl->state.reports.push_back({ _impl->localParticipantId, metrics, {}, metrics.localDay });
+        _impl->state.scores.push_back({
+            .participantId = _impl->localParticipantId,
+            .rating = metrics.rating,
+            .guests = metrics.guests,
+            .parkValue = metrics.parkValue,
+            .cash = metrics.cash,
+        });
+        _impl->state.reports.push_back({ _impl->localParticipantId, metrics, metrics.localDay });
         _impl->lastReportedDay = metrics.localDay;
         _impl->scenarioLoaded = true;
         _impl->advertiser = Network::CreateServerAdvertiser(
@@ -1406,7 +1859,10 @@ namespace OpenRCT2::Competitive
         for (const auto& [effectId, effect] : _impl->localEffects)
             localEffectIds.push_back(effectId);
         for (const auto effectId : localEffectIds)
+        {
             _impl->EndLocalVandal(effectId);
+            _impl->EndLocalOperative(effectId);
+        }
         _impl->ClearTransport();
         _impl->mode = SessionMode::none;
         _impl->status = ConnectionStatus::disconnected;
@@ -1417,10 +1873,12 @@ namespace OpenRCT2::Competitive
         _impl->joinConfiguration = {};
         _impl->lastError.clear();
         _impl->scenarioLoaded = false;
-        _impl->constructionSpend = 0;
         _impl->pendingMisinformationCancellations = 0;
+        _impl->nextAbilityRequestId = 1;
+        _impl->pendingAbilityPayments.clear();
         _impl->localEffects.clear();
         _impl->localVandals.clear();
+        _impl->localOperatives.clear();
         _impl->openWindowAfterRestore = false;
         _impl->hostLossHandled = false;
         if (_impl->startedWatchServer && Network::GetMode() == Network::Mode::server)
@@ -1556,6 +2014,8 @@ namespace OpenRCT2::Competitive
                 }
             }
         }
+        if (_impl->state.scenario.noMoney && _impl->state.rules.metric == Metric::cash)
+            problems.push_back("Cash cannot be the victory metric in a no-money scenario.");
         return problems;
     }
 
@@ -1588,6 +2048,13 @@ namespace OpenRCT2::Competitive
             participant->scenario = scenario;
             participant->currentYear = metrics.localYear;
             report->metrics = metrics;
+            if (auto* score = FindScore(_impl->state, participant->id))
+            {
+                score->rating = metrics.rating;
+                score->guests = metrics.guests;
+                score->parkValue = metrics.parkValue;
+                score->cash = metrics.cash;
+            }
             _impl->SendSnapshot();
             return true;
         }
@@ -1616,15 +2083,7 @@ namespace OpenRCT2::Competitive
             participant.ready = false;
         }
         for (auto& report : _impl->state.reports)
-        {
-            report.acceptedEconomy = {
-                report.metrics.arrivalsGenerated,
-                report.metrics.constructionSpend,
-                report.metrics.rideCustomers,
-                report.metrics.stallCustomers,
-            };
             report.lastScoredDay = report.metrics.localDay;
-        }
         _impl->SendSnapshot();
         _impl->EnsurePauseState();
         return true;
@@ -1642,7 +2101,15 @@ namespace OpenRCT2::Competitive
             participant.ready = false;
         for (auto& score : _impl->state.scores)
         {
-            score = { .participantId = score.participantId, .competitiveCash = rules.economy.startingCash };
+            const auto participantId = score.participantId;
+            const auto* report = FindReport(_impl->state, participantId);
+            score = {
+                .participantId = participantId,
+                .rating = report == nullptr ? uint16_t{} : report->metrics.rating,
+                .guests = report == nullptr ? uint32_t{} : report->metrics.guests,
+                .parkValue = report == nullptr ? money64{} : report->metrics.parkValue,
+                .cash = report == nullptr ? money64{} : report->metrics.cash,
+            };
         }
         _impl->SendSnapshot();
         return true;
@@ -1650,15 +2117,14 @@ namespace OpenRCT2::Competitive
 
     bool Session::UseAbility(Ability ability, ParticipantId targetId, int32_t targetRideId, std::string& error)
     {
-        if (ability > Ability::poison || _impl->status != ConnectionStatus::online)
+        if (ability > Ability::hitman || _impl->status != ConnectionStatus::online)
         {
             error = "The competition connection is not online.";
             return false;
         }
-        if (_impl->mode == SessionMode::host)
-            return _impl->BeginAbility(_impl->localParticipantId, ability, targetId, targetRideId, error);
-        if (_impl->mode != SessionMode::client || _impl->serverConnection == nullptr
-            || !_impl->serverConnection->isValid())
+        if (_impl->mode != SessionMode::host
+            && (_impl->mode != SessionMode::client || _impl->serverConnection == nullptr
+                || !_impl->serverConnection->isValid()))
         {
             error = "The competition connection is not online.";
             return false;
@@ -1671,9 +2137,69 @@ namespace OpenRCT2::Competitive
             error = "Choose an online, unfinished rival while the competition is running.";
             return false;
         }
+        const auto& rule = GetAbilityRule(_impl->state.rules, ability);
+        if (!rule.enabled)
+        {
+            error = std::string(AbilityName(ability)) + " is disabled by the host's match rules.";
+            return false;
+        }
+        const auto* localReport = FindReport(_impl->state, local->id);
+        const auto cooldown = std::find_if(
+            _impl->state.cooldowns.begin(), _impl->state.cooldowns.end(), [&](const auto& value) {
+                return value.participantId == local->id && value.ability == ability;
+            });
+        if (localReport != nullptr && cooldown != _impl->state.cooldowns.end()
+            && localReport->metrics.localDay < cooldown->availableAtDay)
+        {
+            error = std::string(AbilityName(ability)) + " is on cooldown until your local day "
+                + std::to_string(cooldown->availableAtDay) + ".";
+            return false;
+        }
+        const auto duplicate = std::find_if(
+            _impl->state.effects.begin(), _impl->state.effects.end(), [&](const auto& effect) {
+                if (effect.targetId != targetId || effect.ability != ability)
+                    return false;
+                if (ability == Ability::poison || ability == Ability::toiletBomber || ability == Ability::saboteur)
+                    return effect.targetRideId == targetRideId;
+                return ability != Ability::vandal;
+            });
+        if (duplicate != _impl->state.effects.end())
+        {
+            error = std::string(AbilityName(ability)) + " is already active against that target.";
+            return false;
+        }
+        const auto cost = _impl->state.scenario.noMoney ? 0.00_GBP : rule.cost;
+        if (cost > 0 && getGameState().park.cash < cost)
+        {
+            error = "Your park does not have enough cash for this action.";
+            return false;
+        }
+        auto requestId = _impl->nextAbilityRequestId++;
+        if (requestId == 0)
+            requestId = _impl->nextAbilityRequestId++;
+        _impl->pendingAbilityPayments.emplace(
+            requestId, Impl::PendingAbilityPayment{ ability, targetId, cost });
+        if (cost > 0)
+            FinancePayment(cost, ExpenditureType::marketing);
+        _impl->ReportLocalMetricsNow();
+
+        if (_impl->mode == SessionMode::host)
+        {
+            const auto accepted = _impl->BeginAbility(
+                _impl->localParticipantId, ability, targetId, targetRideId, requestId, cost, error);
+            if (!accepted)
+                _impl->ResolveAbilityPayment(_impl->localParticipantId, requestId, false, error);
+            return accepted;
+        }
         QueueJson(
             *_impl->serverConnection, Network::Command::competitiveAbility,
-            { { "ability", ability }, { "targetId", targetId }, { "targetRideId", targetRideId } });
+            {
+                { "ability", ability },
+                { "targetId", targetId },
+                { "targetRideId", targetRideId },
+                { "sourceRequestId", requestId },
+                { "chargedCost", cost },
+            });
         return true;
     }
 
@@ -1814,54 +2340,38 @@ namespace OpenRCT2::Competitive
         }
     }
 
-    money64 Session::GetAvailableCompetitiveCash() const
+    void Session::OnGuestExitRide(OpenRCT2::Guest& guest, RideId rideId)
     {
-        const auto* score = FindScore(_impl->state, _impl->localParticipantId);
-        const auto* report = FindReport(_impl->state, _impl->localParticipantId);
-        if (score == nullptr || report == nullptr)
-            return 0;
-        const auto unsettledSpend = std::max<money64>(0, _impl->constructionSpend - report->acceptedEconomy.constructionSpend);
-        return std::max<money64>(0, score->competitiveCash - unsettledSpend);
-    }
-
-    money64 Session::GetConstructionSpend() const
-    {
-        return _impl->constructionSpend;
-    }
-
-    bool Session::CanSpendConstruction(money64 cost) const
-    {
-        if (cost <= 0 || _impl->mode == SessionMode::none)
-            return true;
-        const auto* local = GetLocalParticipant();
-        if (local == nullptr || local->role == Role::spectator)
-            return true;
-        if (_impl->state.phase != Phase::running || local->finished || local->forfeited)
-            return false;
-        return cost <= GetAvailableCompetitiveCash();
-    }
-
-    void Session::RecordConstructionSpend(money64 cost)
-    {
-        if (cost <= 0 || _impl->state.phase != Phase::running)
+        const auto iterator = std::find_if(_impl->localOperatives.begin(), _impl->localOperatives.end(), [&](const auto& operative) {
+            return operative.ability == Ability::saboteur && operative.guestId == guest.id
+                && operative.targetRideId == rideId.ToUnderlying();
+        });
+        if (iterator == _impl->localOperatives.end())
             return;
-        const auto* local = GetLocalParticipant();
-        if (local != nullptr && local->role != Role::spectator && !local->finished && !local->forfeited)
+        auto* ride = GetRide(rideId);
+        if (ride == nullptr)
+            return;
+        auto breakdown = Breakdown::none;
+        for (const auto candidate : kAllBreakdownTypes)
         {
-            _impl->constructionSpend += cost;
-            const auto metrics = CollectParkMetrics();
-            if (_impl->mode == SessionMode::host)
+            if (ride->getRideTypeDescriptor().availableBreakdowns.has(candidate))
             {
-                _impl->IngestMetrics(_impl->localParticipantId, metrics);
-            }
-            else if (_impl->mode == SessionMode::client && _impl->serverConnection != nullptr
-                && _impl->serverConnection->isValid())
-            {
-                QueueJson(
-                    *_impl->serverConnection, Network::Command::competitiveMetrics,
-                    { { "metrics", ToJson(metrics) } });
+                breakdown = candidate;
+                break;
             }
         }
+        if (breakdown == Breakdown::none)
+            return;
+        RidePrepareBreakdown(*ride, breakdown);
+        const auto effectId = iterator->effectId;
+        _impl->CompleteLocalEffect(effectId, "the saboteur completed the ride and forced a breakdown");
+    }
+
+    money64 Session::GetAvailableParkCash() const
+    {
+        if (_impl->state.scenario.noMoney || gLegacyScene != LegacyScene::playing)
+            return 0;
+        return getGameState().park.cash;
     }
 
     std::string Session::ExportParkStorage() const
@@ -1884,8 +2394,37 @@ namespace OpenRCT2::Competitive
             });
         }
 
+        json_t pendingPayments = json_t::array();
+        for (const auto& [requestId, payment] : _impl->pendingAbilityPayments)
+        {
+            pendingPayments.push_back({
+                { "requestId", requestId },
+                { "ability", payment.ability },
+                { "targetId", payment.targetId },
+                { "cost", payment.cost },
+            });
+        }
+
+        json_t localOperatives = json_t::array();
+        for (const auto& operative : _impl->localOperatives)
+        {
+            json_t affectedGuests = json_t::array();
+            for (const auto guestId : operative.affectedGuests)
+                affectedGuests.push_back(guestId.ToUnderlying());
+            localOperatives.push_back({
+                { "effectId", operative.effectId },
+                { "ability", operative.ability },
+                { "guestId", operative.guestId.ToUnderlying() },
+                { "targetRideId", operative.targetRideId },
+                { "victimId", operative.victimId.ToUnderlying() },
+                { "stage", operative.stage },
+                { "triggerAtTick", operative.triggerAtTick },
+                { "affectedGuests", std::move(affectedGuests) },
+            });
+        }
+
         return json_t{
-            { "schema", 2 },
+            { "schema", 4 },
             { "protocol", kProtocolVersion },
             { "mode", _impl->mode },
             { "localRole", _impl->localRole },
@@ -1903,10 +2442,12 @@ namespace OpenRCT2::Competitive
                   { "playerName", _impl->joinConfiguration.playerName },
                   { "role", _impl->joinConfiguration.role },
               } },
-            { "constructionSpend", _impl->constructionSpend },
             { "pendingMisinformationCancellations", _impl->pendingMisinformationCancellations },
+            { "nextAbilityRequestId", _impl->nextAbilityRequestId },
+            { "pendingAbilityPayments", std::move(pendingPayments) },
             { "localEffects", std::move(localEffects) },
             { "localVandals", std::move(localVandals) },
+            { "localOperatives", std::move(localOperatives) },
         }.dump();
     }
 
@@ -1915,7 +2456,7 @@ namespace OpenRCT2::Competitive
         if (storage.empty())
             return true;
         const auto body = json_t::parse(storage.begin(), storage.end(), nullptr, false);
-        if (body.is_discarded() || !body.is_object() || body.value("schema", 0) != 2
+        if (body.is_discarded() || !body.is_object() || body.value("schema", 0) != 4
             || body.value("protocol", 0) != kProtocolVersion)
         {
             error = "This park contains unsupported or malformed competitive session data.";
@@ -1993,9 +2534,24 @@ namespace OpenRCT2::Competitive
         _impl->hostConfiguration = restoredHostConfiguration;
         _impl->joinConfiguration = restoredJoinConfiguration;
         _impl->scenarioLoaded = true;
-        _impl->constructionSpend = std::max<money64>(0, body.value("constructionSpend", 0LL));
         _impl->pendingMisinformationCancellations = std::min<uint32_t>(
             1024, body.value("pendingMisinformationCancellations", 0u));
+        _impl->nextAbilityRequestId = std::max<uint32_t>(1, body.value("nextAbilityRequestId", 1u));
+        if (body.contains("pendingAbilityPayments") && body["pendingAbilityPayments"].is_array())
+        {
+            for (const auto& value : body["pendingAbilityPayments"])
+            {
+                if (!value.is_object())
+                    continue;
+                const auto requestId = value.value("requestId", 0u);
+                const auto ability = value.value("ability", Ability::vandal);
+                const auto targetId = value.value("targetId", kInvalidParticipantId);
+                const auto cost = value.value("cost", 0.00_GBP);
+                if (requestId != 0 && ability <= Ability::hitman && targetId != kInvalidParticipantId && cost >= 0)
+                    _impl->pendingAbilityPayments.emplace(
+                        requestId, Impl::PendingAbilityPayment{ ability, targetId, cost });
+            }
+        }
         _impl->lastReportedDay = GetCurrentLocalDay();
         _impl->openWindowAfterRestore = true;
 
@@ -2032,6 +2588,37 @@ namespace OpenRCT2::Competitive
                     _impl->localVandals.push_back({ effectId, guestId, quota });
             }
         }
+        if (body.contains("localOperatives") && body["localOperatives"].is_array())
+        {
+            for (const auto& value : body["localOperatives"])
+            {
+                if (!value.is_object())
+                    continue;
+                Impl::LocalOperative operative;
+                operative.effectId = value.value("effectId", 0u);
+                operative.ability = value.value("ability", Ability::agitator);
+                operative.guestId = EntityId::FromUnderlying(
+                    value.value("guestId", EntityId::GetNull().ToUnderlying()));
+                operative.targetRideId = value.value("targetRideId", -1);
+                operative.victimId = EntityId::FromUnderlying(
+                    value.value("victimId", EntityId::GetNull().ToUnderlying()));
+                operative.stage = value.value("stage", uint8_t{});
+                operative.triggerAtTick = value.value("triggerAtTick", 0u);
+                if (value.contains("affectedGuests") && value["affectedGuests"].is_array())
+                {
+                    for (const auto& guestId : value["affectedGuests"])
+                    {
+                        if (guestId.is_number_unsigned())
+                            operative.affectedGuests.push_back(EntityId::FromUnderlying(guestId.get<uint16_t>()));
+                    }
+                }
+                const auto effect = _impl->localEffects.find(operative.effectId);
+                if (effect != _impl->localEffects.end() && effect->second.ability == operative.ability
+                    && operative.ability >= Ability::toiletBomber && operative.ability <= Ability::hitman
+                    && getGameState().entities.getEntity<Guest>(operative.guestId) != nullptr)
+                    _impl->localOperatives.push_back(std::move(operative));
+            }
+        }
 
         if (_impl->mode == SessionMode::host)
         {
@@ -2048,10 +2635,17 @@ namespace OpenRCT2::Competitive
                     ++iterator;
                     continue;
                 }
-                if (auto* score = FindScore(_impl->state, iterator->sourceId))
-                    score->competitiveCash += iterator->reservedCost;
                 iterator = _impl->state.effects.erase(iterator);
             }
+            if (!_impl->state.scenario.noMoney)
+            {
+                for (const auto& [requestId, payment] : _impl->pendingAbilityPayments)
+                {
+                    if (payment.cost > 0)
+                        FinancePayment(-payment.cost, ExpenditureType::marketing);
+                }
+            }
+            _impl->pendingAbilityPayments.clear();
 
             _impl->listener = Network::CreateTcpSocket();
             try
@@ -2204,16 +2798,17 @@ namespace OpenRCT2::Competitive
             guestCount++;
         }
 
-        uint64_t rideCustomers = 0;
-        uint64_t stallCustomers = 0;
-        std::vector<ParkMetrics::Stall> openFoodDrinkStalls;
+        std::vector<ParkMetrics::TargetRide> openFoodDrinkStalls;
+        std::vector<ParkMetrics::TargetRide> openToilets;
+        std::vector<ParkMetrics::TargetRide> openRides;
         for (const auto& ride : RideManager(gameState))
         {
             if (ride.getClassification() == RideClassification::shopOrStall)
             {
-                stallCustomers += ride.totalCustomers;
                 if (ride.status == RideStatus::open)
                 {
+                    if (ride.getRideTypeDescriptor().specialType == RtdSpecialType::toilet)
+                        openToilets.push_back({ ride.id.ToUnderlying(), ride.getName() });
                     const auto* rideEntry = ride.getRideEntry();
                     const bool sellsFoodOrDrink = rideEntry != nullptr
                         && std::any_of(
@@ -2227,8 +2822,11 @@ namespace OpenRCT2::Competitive
                     }
                 }
             }
-            else if (ride.getClassification() == RideClassification::ride)
-                rideCustomers += ride.totalCustomers;
+            else if (ride.getClassification() == RideClassification::ride && ride.status == RideStatus::open
+                && !ride.getRideTypeDescriptor().availableBreakdowns.isEmpty())
+            {
+                openRides.push_back({ ride.id.ToUnderlying(), ride.getName() });
+            }
         }
 
         ParkMetrics result{
@@ -2238,13 +2836,12 @@ namespace OpenRCT2::Competitive
             gameState.park.rating,
             gameState.park.numGuestsInPark,
             gameState.park.value,
+            gameState.park.flags.has(ParkFlag::noMoney) ? 0.00_GBP : gameState.park.cash,
             static_cast<uint8_t>(guestCount == 0 ? 0 : happinessTotal / guestCount),
-            gameState.park.totalAdmissions,
-            GetSession().GetConstructionSpend(),
-            rideCustomers,
-            stallCustomers,
         };
         result.openFoodDrinkStalls = std::move(openFoodDrinkStalls);
+        result.openToilets = std::move(openToilets);
+        result.openRides = std::move(openRides);
         return result;
     }
 
@@ -2268,14 +2865,9 @@ namespace OpenRCT2::Competitive
         GetSession().OnVandalAttempt(guest);
     }
 
-    bool CanSpendConstruction(money64 cost)
+    void OnGuestExitRide(OpenRCT2::Guest& guest, RideId rideId)
     {
-        return GetSession().CanSpendConstruction(cost);
-    }
-
-    void RecordConstructionSpend(money64 cost)
-    {
-        GetSession().RecordConstructionSpend(cost);
+        GetSession().OnGuestExitRide(guest, rideId);
     }
 
     std::string ExportParkStorage()
@@ -2363,10 +2955,8 @@ namespace OpenRCT2::Competitive
     bool Session::ConsumeGuestArrivalCancellation() { return false; }
     void Session::OnGuestPurchase(OpenRCT2::Guest&, RideId, bool) {}
     void Session::OnVandalAttempt(OpenRCT2::Guest&) {}
-    money64 Session::GetAvailableCompetitiveCash() const { return 0; }
-    money64 Session::GetConstructionSpend() const { return 0; }
-    bool Session::CanSpendConstruction(money64) const { return true; }
-    void Session::RecordConstructionSpend(money64) {}
+    void Session::OnGuestExitRide(OpenRCT2::Guest&, RideId) {}
+    money64 Session::GetAvailableParkCash() const { return 0; }
     std::string Session::ExportParkStorage() const { return {}; }
     bool Session::RestoreParkStorage(std::string_view, std::string& error) { error = _impl->error; return false; }
     bool Session::WatchParticipant(ParticipantId, std::string& error) { error = _impl->error; return false; }
@@ -2381,8 +2971,7 @@ namespace OpenRCT2::Competitive
     bool ConsumeGuestArrivalCancellation() { return false; }
     void OnGuestPurchase(OpenRCT2::Guest&, RideId, bool) {}
     void OnVandalAttempt(OpenRCT2::Guest&) {}
-    bool CanSpendConstruction(money64) { return true; }
-    void RecordConstructionSpend(money64) {}
+    void OnGuestExitRide(OpenRCT2::Guest&, RideId) {}
     std::string ExportParkStorage() { return {}; }
     bool RestoreParkStorage(std::string_view, std::string& error) { error = "Networking is disabled in this build."; return false; }
     bool IsWatchingPark() { return false; }

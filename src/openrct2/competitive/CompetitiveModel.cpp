@@ -72,8 +72,8 @@ namespace OpenRCT2::Competitive
                 return score.rating;
             case Metric::guests:
                 return score.guests;
-            case Metric::competitiveCash:
-                return score.competitiveCash;
+            case Metric::cash:
+                return score.cash;
             case Metric::parkValue:
                 return score.parkValue;
             case Metric::points:
@@ -113,6 +113,7 @@ namespace OpenRCT2::Competitive
         score.rating = metrics.rating;
         score.guests = metrics.guests;
         score.parkValue = metrics.parkValue;
+        score.cash = metrics.cash;
         score.points += CalculateDailyPoints(metrics);
     }
 
@@ -126,42 +127,8 @@ namespace OpenRCT2::Competitive
         score.rating = metrics.rating;
         score.guests = metrics.guests;
         score.parkValue = metrics.parkValue;
+        score.cash = metrics.cash;
         score.frozenAtYear = year;
-    }
-
-    void ApplyEconomyDelta(
-        Score& score, EconomyTotals& acceptedTotals, const ParkMetrics& report, const EconomyRules& rules)
-    {
-        if (score.frozenAtYear.has_value())
-        {
-            return;
-        }
-
-        const auto arrivals = report.arrivalsGenerated > acceptedTotals.arrivalsGenerated
-            ? report.arrivalsGenerated - acceptedTotals.arrivalsGenerated
-            : 0;
-        const auto spend = report.constructionSpend > acceptedTotals.constructionSpend
-            ? report.constructionSpend - acceptedTotals.constructionSpend
-            : 0;
-        const auto rideCustomers = report.rideCustomers > acceptedTotals.rideCustomers
-            ? report.rideCustomers - acceptedTotals.rideCustomers
-            : 0;
-        const auto stallCustomers = report.stallCustomers > acceptedTotals.stallCustomers
-            ? report.stallCustomers - acceptedTotals.stallCustomers
-            : 0;
-
-        const money64 income = static_cast<money64>(arrivals) * rules.incomePerArrival
-            + static_cast<money64>(rideCustomers) * rules.incomePerRideCustomer
-            + static_cast<money64>(stallCustomers) * rules.incomePerStallCustomer;
-
-        score.competitiveCash += income - spend;
-        score.lifetimeIncome += income;
-        score.lifetimeSpend += spend;
-
-        acceptedTotals.arrivalsGenerated = std::max(acceptedTotals.arrivalsGenerated, report.arrivalsGenerated);
-        acceptedTotals.constructionSpend = std::max(acceptedTotals.constructionSpend, report.constructionSpend);
-        acceptedTotals.rideCustomers = std::max(acceptedTotals.rideCustomers, report.rideCustomers);
-        acceptedTotals.stallCustomers = std::max(acceptedTotals.stallCustomers, report.stallCustomers);
     }
 
     std::optional<ParticipantId> ChooseWinner(
@@ -199,4 +166,3 @@ namespace OpenRCT2::Competitive
         return rules.victoryMode == VictoryMode::target && GetMetricValue(score, rules.metric) >= rules.target;
     }
 } // namespace OpenRCT2::Competitive
-

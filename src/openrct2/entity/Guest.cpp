@@ -1773,6 +1773,7 @@ namespace OpenRCT2
 
         ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
         ride.windowInvalidateFlags.set(RideInvalidateFlag::customers);
+        Competitive::OnGuestExitRide(*this, ride.id);
     }
 
     /**

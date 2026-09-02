@@ -1,6 +1,6 @@
 # Historical competitive multiplayer migration inventory
 
-> This is an archived feature inventory from the plugin-to-engine migration. It is not current implementation or user documentation. See [README.md](README.md) for authoritative native behaviour, limitations, and proposed work.
+> This is an archived feature inventory from the plugin-to-engine migration. It is not current implementation or user documentation. See [README.md](README.md) for authoritative native behaviour, limitations, and proposed work. In particular, the plugin's parallel competitive-cash model was deliberately rejected: the native fork uses real park cash, while no-money scenarios use cooldowns without cash charges.
 
 This document is the migration contract from `openrct2-competitive` v0.9.0
 into the native `competitive-multiplayer` OpenRCT2 branch. A feature is not
@@ -84,16 +84,16 @@ Disposition labels:
 
 - [ ] **PRESERVE** Victory mode: highest metric at local deadline.
 - [ ] **PRESERVE** Victory mode: first to target, with local deadline fallback.
-- [ ] **PRESERVE** Ranking/target metrics: points, park rating, guest count,
-  competitive cash, and park value.
-- [ ] **PRESERVE** Configurable deadline year, maximum competing parks, late
-  join, maximum game speed, and competitive starting cash.
+- [ ] **IMPROVE** Ranking/target metrics: points, park rating, guest count,
+  actual scenario cash, and park value.
+- [ ] **IMPROVE** Configurable deadline year, maximum competing parks, late
+  join, and maximum game speed. Scenario cash is not replaced.
 - [ ] **PRESERVE** Host can enable/disable every sabotage type independently.
 - [ ] **PRESERVE** Per-action host controls for cost, source-local-year cooldown,
   potency/quota, and target-local duration.
-- [ ] **PRESERVE** Defaults from v0.9.0 unless playtesting deliberately changes
-  them: Year 20, eight parks, no late join, 1x speed cap, £20,000 competitive
-  starting cash; Vandal £2,500/one year/four items/two months;
+- [ ] **IMPROVE** Starting defaults are Year 20, eight parks, no late join, and
+  a 1x speed cap. There is no separate starting balance. Suggested money-scenario
+  action prices remain Vandal £2,500/one year/four items/two months;
   Misinformation £1,800/one year/two weeks; Poisoning £2,200/one year/seven
   days/25%.
 - [ ] **IMPROVE** Rules use normal currency formatting and controls with clear
@@ -130,9 +130,8 @@ Disposition labels:
 
 ## Scoring and results
 
-- [ ] **PRESERVE** Live score data includes points, rating, guests, park value,
-  competitive cash, lifetime competitive income/spend, local year, and frozen
-  year.
+- [ ] **IMPROVE** Live score data includes points, rating, guests, park value,
+  actual scenario cash, local year, and frozen year.
 - [ ] **PRESERVE** v0.9.0 points are cumulative daily `round(guests *
   meanHappiness / 255)` until frozen.
 - [ ] **IMPROVE** Clearly label cumulative points so they are not mistaken for a
@@ -163,14 +162,12 @@ Disposition labels:
   action-name allowlist and `Player.moneySpent` inference.
 - [ ] **PRESERVE** Demolition refunds are not credited unless the native economy
   implementation can account for them exactly and fairly.
-- [ ] **PRESERVE** Insufficient competitive cash rejects the construction action
-  before execution with a useful error.
-- [ ] **PRESERVE** Native loans, entrance-fee changes, ordinary marketing,
-  research-funding changes, date changes, scenario-setting changes, and cheats
-  cannot distort the competitive ledger while a match is running.
-- [ ] **IMPROVE** Do not overwrite native park cash every tick. Display and use a
-  first-class competitive balance while leaving scenario finances internally
-  coherent unless a rule explicitly replaces them.
+- [x] **SUPERSEDE** Ordinary construction uses the scenario's normal finances;
+  it is never gated by a second competitive currency.
+- [ ] **IMPROVE** Native loans, entrance-fee changes, ordinary marketing, and
+  research-funding changes retain their normal scenario behaviour. Competitive
+  mode blocks cheats and unauthorised scenario/date manipulation.
+- [x] **SUPERSEDE** Real park cash is the only balance in money scenarios.
 - [ ] **PRESERVE** Action costs are reserved before sabotage delivery and commit
   only after the online victim acknowledges receipt; failed delivery refunds the
   reservation and does not begin cooldown.
@@ -238,7 +235,7 @@ Disposition labels:
   controls, and connection/session status where relevant.
 - [ ] **IMPROVE** Connection details are shown as normal game state (connecting,
   online, reconnecting, offline), never as infrastructure jargon.
-- [ ] **PRESERVE** Rival action controls show available competitive cash, action
+- [ ] **IMPROVE** Rival action controls show available park cash, action
   description, cost, cooldown availability, valid online targets, poisonable
   stalls, delivery result, and active effects with end dates.
 - [ ] **PRESERVE** Disabled controls always have an adjacent reason: wrong phase,

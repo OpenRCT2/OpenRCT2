@@ -19,21 +19,21 @@ There is no shared map, entrance ownership, town guest pool, or guest allocation
 
 - Players may use any speed up to the host's configured maximum. No player waits for another player's calendar.
 - Deadline matches snapshot each park's score on that park's own deadline date. Players may continue beyond it while other competitors finish, but later play does not alter the snapshot.
-- Target matches support first to park rating, guests, competitive cash, park value, or cumulative competitive points, with the deadline as a fallback.
+- Target matches support first to park rating, guests, actual scenario cash, park value, or cumulative competitive points, with the deadline as a fallback.
 - The normal scenario objective does not decide the competitive result.
 - The host may forfeit an offline, unfinished park or close the result early when an abandoned player will not return.
 
 ## Economy and fair play
 
-Competitive cash is a separate authoritative match resource. The host configures starting cash and income rates. Native game-action interception accounts for construction spending without replacing a scenario's ordinary money rules; both money and no-money scenarios are supported.
+There is no parallel competitive currency. In money scenarios, the park's real cash pays for both ordinary play and rival actions, and the cash victory metric reads that same balance. In no-money scenarios, rival actions have no cash charge and are governed by their host-configured cooldowns and effect limits. Both money and no-money scenarios are supported.
 
 While an unfinished competitor is in the lobby or a running match, OpenRCT2 cheat state is reset continuously. Cheat, scenario-editing, tile-editing, date-changing, map-resizing, peep-spawn, and ride-rating-freeze actions are rejected, cheat/debug toolbar access is hidden, and the configured speed cap is enforced in the game action itself. This is fair-play enforcement, not cryptographic anti-tamper against a deliberately modified executable.
 
 ## Current rival actions
 
-Every current action has a host-configurable enable switch, competitive-cash cost, exact attacker-local-day cooldown, victim-local duration, and potency. The default cooldown is 256 local days (one RCT year). Cost is reserved by the host, then spent and put on cooldown only after the online victim acknowledges delivery; failed delivery is refunded.
+Every action has a host-configurable enable switch, real park-cash price, exact attacker-local-day cooldown, and victim-local time limit or duration. Strength is configurable where the effect has a variable strength. The real park-cash price is charged when the action is submitted, refunded if delivery fails, and retained only after the online victim acknowledges it. The cooldown begins on that acknowledgement. Prices are ignored in no-money scenarios.
 
-Open the in-park multiplayer window to reach the competition leaderboard. The **Attack rival...** button is visible but disabled in the lobby, where its tooltip explains that attacks begin with the match. During a running match, select an online, unfinished rival in the leaderboard, then choose Vandal, Misinformation, or Poisoning. When no valid rival is selected, the disabled button explains what is required instead of disappearing.
+Open the in-park multiplayer window to reach the competition leaderboard. The **Attack rival...** button is visible but disabled in the lobby, where its tooltip explains that attacks begin with the match. During a running match, select an online, unfinished rival in the leaderboard, then choose from the seven configured actions. When no valid rival is selected, the disabled button explains what is required instead of disappearing.
 
 ### Vandal
 
@@ -48,6 +48,22 @@ The victim is notified of an active campaign. It cancels future ordinary guest a
 The attacker selects an open food or drink stall from the victim's reported park state. Only while that exact stall is poisoned, the native successful-purchase path tests each exact food/drink buyer against the configured percentage. A selected buyer receives maximum nausea and then follows OpenRCT2's normal nausea and vomiting behaviour; there is no delayed forced-vomit timer and no proximity/customer inference. The default is a 25% chance for seven victim-local days.
 
 The purchase hook returns immediately when there are no local effects. Full guest, ride, and stall metrics are collected only when the local day changes, not on every game update.
+
+### Toilet Bomber
+
+The attacker selects an open toilet reported by the victim. A named operative enters normally and heads to that exact toilet. Once inside, ordinary explosion visuals kill every ordinary guest currently using it and the normal ride-demolition path removes the building and cleans its references. Any demolition refund is neutralised, and occupied detonation applies one normal accident-equivalent park-rating consequence.
+
+### Agitator
+
+A named guest otherwise behaves normally. While the effect is active, ordinary guests sharing the agitator's tile are affected at most once: they receive the dedicated “Another guest was rude to me” thought and the host-configured happiness-target penalty. The check and affected-guest tracking exist only while an agitator is active.
+
+### Saboteur
+
+The attacker selects an open ride that supports breakdowns. A named operative visits and rides that exact attraction normally. Its native ride-exit hook schedules a breakdown type supported by the ride, completes the assignment, and sends the operative home.
+
+### Hitman
+
+A named operative behaves normally until an eligible ordinary guest comes close. The hitman uses the handheld guest-camera animation—not an on-ride-photo flash—then marks that exact guest for OpenRCT2's existing explosion effect. Exactly one normal single-accident park-rating consequence is applied and the hitman leaves. Competitive operatives, departing guests, and guests currently on rides are not eligible victims.
 
 ## Disconnects, saves, and the host
 
@@ -69,30 +85,8 @@ Leaderboard-only observers keep their competition-state connection while watchin
 
 The endpoint is a normal direct OpenRCT2 server connection. LAN play works without a relay; internet viewers still require the target's selected watch port to be reachable through its firewall/NAT. Relay support remains useful future work for networks that cannot accept inbound connections.
 
-## Proposed native rival actions
-
-These are specifications for later implementation, not current buttons. They should use the same online-only acknowledgement, refund, cost, exact-day cooldown, duration, and potency controls as existing actions.
-
-### Toilet Bomber
-
-Select a currently open toilet. At detonation, identify occupants from the ride/shop interaction state, create the ordinary explosion effects, remove those occupants, apply one ride-fatality-equivalent casualty event, and demolish the toilet through the normal ride-demolition action so map and ride references are cleaned correctly.
-
-### Agitator
-
-Send an otherwise normal guest. At a bounded interval, only guests sharing its tile are affected, and each victim is affected at most once. They receive a dedicated “Another guest was rude to me” thought and a happiness penalty balanced against the existing crowding penalty. A configurable affected-guest quota and lifetime prevent global guest scans and unbounded work.
-
-### Saboteur
-
-Select a valid open ride that can break down. The agent visits and rides it normally. An exact ride-completion hook then schedules a supported breakdown and sends the agent home. Closing or demolishing the ride before completion must end or reject the action deterministically rather than silently choosing another ride.
-
-### Hitman
-
-The visual cue is the ordinary handheld guest-camera animation: `PeepActionType::takePhoto` / `PeepAnimationType::takePhoto`. It is **not** an on-ride-photo flash. The agent selects a valid ordinary guest deterministically, faces them, performs the camera animation, and at a defined animation frame marks that exact victim for the engine's existing guest explosion effect. The park then receives exactly one on-ride-fatality-equivalent casualty consequence and the Hitman leaves. Competitive agents, guests already leaving, and guests currently on rides are not valid victims.
-
-Costs, cooldowns, quotas, and durations for these proposed actions need balance testing before defaults are fixed.
-
 ## Known remaining work
 
 - Optional relayed discovery/transport for hosts who cannot accept an inbound connection.
 - Live host migration, if a safe authority election and reachable replacement endpoint can be designed.
-- The proposed native rival actions above.
+- Playtesting and balance passes for action prices, cooldowns, strengths, and time limits.

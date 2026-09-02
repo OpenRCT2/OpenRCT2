@@ -177,6 +177,7 @@ namespace OpenRCT2
         niceRideDeprecated = 171, // "Nice ride! But not as good as the Phoenix..."
         excitedDeprecated = 172,  // "I'm so excited - It's an Intamin ride!"
         hereWeAre = 173,          // "...and here we are on X!"
+        rudeGuest = 174,          // "Another guest was rude to me"
 
         none = 255
     };

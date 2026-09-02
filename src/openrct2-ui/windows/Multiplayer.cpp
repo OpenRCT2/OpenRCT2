@@ -199,6 +199,14 @@ namespace OpenRCT2::Ui::Windows
                 return rules.misinformation;
             case Competitive::Ability::poison:
                 return rules.poison;
+            case Competitive::Ability::toiletBomber:
+                return rules.toiletBomber;
+            case Competitive::Ability::agitator:
+                return rules.agitator;
+            case Competitive::Ability::saboteur:
+                return rules.saboteur;
+            case Competitive::Ability::hitman:
+                return rules.hitman;
         }
         return rules.vandal;
     }
@@ -210,36 +218,66 @@ namespace OpenRCT2::Ui::Windows
         CAWIDX_CLOSE,
         CAWIDX_VANDAL,
         CAWIDX_MISINFORMATION,
+        CAWIDX_AGITATOR,
+        CAWIDX_HITMAN,
         CAWIDX_STALL,
         CAWIDX_STALL_DROPDOWN,
         CAWIDX_POISON,
+        CAWIDX_TOILET,
+        CAWIDX_TOILET_DROPDOWN,
+        CAWIDX_TOILET_BOMBER,
+        CAWIDX_RIDE,
+        CAWIDX_RIDE_DROPDOWN,
+        CAWIDX_SABOTEUR,
         CAWIDX_CANCEL,
     };
 
-    static constexpr ScreenSize kCompetitiveActionsWindowSize = { 520, 270 };
+    static constexpr ScreenSize kCompetitiveActionsWindowSize = { 620, 455 };
     static constexpr auto kCompetitiveActionsWidgets = makeWidgets(
         makeWindowShim(kStringIdNone, kCompetitiveActionsWindowSize),
-        makeWidget({ 12, 47 }, { 205, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({ 12, 101 }, { 205, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({ 145, 164 }, { 360, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({ 493, 165 }, { 11, 12 }, WidgetType::button, WindowColour::secondary, STR_DROPDOWN_GLYPH),
-        makeWidget({ 12, 184 }, { 205, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({ 408, 244 }, { 100, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
+        makeWidget({ 12, 47 }, { 190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 12, 87 }, { 190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 12, 127 }, { 190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 12, 167 }, { 190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({112, 213 }, {493, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({593, 214 }, { 11, 12 }, WidgetType::button, WindowColour::secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({ 12, 233 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({112, 278 }, {493, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({593, 279 }, { 11, 12 }, WidgetType::button, WindowColour::secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({ 12, 298 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({112, 343 }, {493, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({593, 344 }, { 11, 12 }, WidgetType::button, WindowColour::secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({ 12, 363 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({508, 430 }, {100, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
 
     class CompetitiveActionsWindow final : public Window
     {
     private:
         Competitive::ParticipantId _targetId = Competitive::kInvalidParticipantId;
-        std::vector<Competitive::ParkMetrics::Stall> _stalls;
+        std::vector<Competitive::ParkMetrics::TargetRide> _stalls;
+        std::vector<Competitive::ParkMetrics::TargetRide> _toilets;
+        std::vector<Competitive::ParkMetrics::TargetRide> _rides;
         int32_t _selectedStall = -1;
+        int32_t _selectedToilet = -1;
+        int32_t _selectedRide = -1;
         std::string _title;
         std::string _vandalLabel;
         std::string _misinformationLabel;
+        std::string _agitatorLabel;
+        std::string _hitmanLabel;
         std::string _poisonLabel;
         std::string _stallLabel;
+        std::string _toiletBomberLabel;
+        std::string _toiletLabel;
+        std::string _saboteurLabel;
+        std::string _rideLabel;
         std::string _vandalProblem;
         std::string _misinformationProblem;
+        std::string _agitatorProblem;
+        std::string _hitmanProblem;
         std::string _poisonProblem;
+        std::string _toiletBomberProblem;
+        std::string _saboteurProblem;
 
         std::string GetProblem(Competitive::Ability ability, int32_t targetRideId) const
         {
@@ -256,8 +294,8 @@ namespace OpenRCT2::Ui::Windows
             const auto& rule = GetCompetitiveAbilityRule(state->rules, ability);
             if (!rule.enabled)
                 return "Disabled in this competition's rules.";
-            if (session.GetAvailableCompetitiveCash() < rule.cost)
-                return "Not enough competitive cash.";
+            if (!state->scenario.noMoney && session.GetAvailableParkCash() < rule.cost)
+                return "Your park does not have enough cash.";
 
             const auto* localReport = Competitive::FindReport(*state, local->id);
             const auto cooldown = std::find_if(state->cooldowns.begin(), state->cooldowns.end(), [&](const auto& value) {
@@ -270,12 +308,25 @@ namespace OpenRCT2::Ui::Windows
             const auto duplicate = std::find_if(state->effects.begin(), state->effects.end(), [&](const auto& effect) {
                 if (effect.targetId != _targetId || effect.ability != ability)
                     return false;
-                return ability != Competitive::Ability::poison || effect.targetRideId == targetRideId;
+                if (ability == Competitive::Ability::poison || ability == Competitive::Ability::toiletBomber
+                    || ability == Competitive::Ability::saboteur)
+                    return effect.targetRideId == targetRideId;
+                return ability != Competitive::Ability::vandal;
             });
             if (duplicate != state->effects.end())
                 return "Already active until rival local day " + std::to_string(duplicate->endsAtDay) + ".";
             if (ability == Competitive::Ability::poison && targetRideId < 0)
                 return _stalls.empty() ? "This rival has no open food or drink stall." : "Choose a target stall first.";
+            if (ability == Competitive::Ability::toiletBomber && targetRideId < 0)
+                return _toilets.empty() ? "This rival has no open toilet." : "Choose a target toilet first.";
+            if (ability == Competitive::Ability::saboteur && targetRideId < 0)
+                return _rides.empty() ? "This rival has no open ride that can break down." : "Choose a target ride first.";
+            if (ability == Competitive::Ability::hitman)
+            {
+                const auto* report = Competitive::FindReport(*state, _targetId);
+                if (report == nullptr || report->metrics.guests == 0)
+                    return "This rival has no guest for the hitman to target.";
+            }
             return {};
         }
 
@@ -290,18 +341,20 @@ namespace OpenRCT2::Ui::Windows
             close();
         }
 
-        void ShowStallDropdown()
+        void ShowTargetDropdown(
+            WidgetIndex widgetIndex, const std::vector<Competitive::ParkMetrics::TargetRide>& targets,
+            int32_t selectedTarget)
         {
-            if (_stalls.empty())
+            if (targets.empty())
                 return;
-            const auto& widget = widgets[CAWIDX_STALL];
+            const auto& widget = widgets[widgetIndex];
             WindowDropdownShowTextCustomWidth(
                 windowPos + ScreenCoordsXY{ widget.left, widget.top }, widget.height(), colours[1], 0,
-                { Dropdown::Flag::autoClose }, static_cast<int32_t>(_stalls.size()), widget.width());
-            for (size_t index = 0; index < _stalls.size(); index++)
+                { Dropdown::Flag::autoClose }, static_cast<int32_t>(targets.size()), widget.width());
+            for (size_t index = 0; index < targets.size(); index++)
             {
-                gDropdown.items[index] = Dropdown::MenuLabel(_stalls[index].name.c_str());
-                gDropdown.items[index].setChecked(static_cast<int32_t>(index) == _selectedStall);
+                gDropdown.items[index] = Dropdown::MenuLabel(targets[index].name.c_str());
+                gDropdown.items[index].setChecked(static_cast<int32_t>(index) == selectedTarget);
             }
         }
 
@@ -311,9 +364,15 @@ namespace OpenRCT2::Ui::Windows
             _targetId = targetId;
             const auto* state = Competitive::GetSession().GetState();
             const auto* report = state == nullptr ? nullptr : Competitive::FindReport(*state, targetId);
-            _stalls = report == nullptr ? std::vector<Competitive::ParkMetrics::Stall>{}
+            _stalls = report == nullptr ? std::vector<Competitive::ParkMetrics::TargetRide>{}
                                         : report->metrics.openFoodDrinkStalls;
+            _toilets = report == nullptr ? std::vector<Competitive::ParkMetrics::TargetRide>{}
+                                         : report->metrics.openToilets;
+            _rides = report == nullptr ? std::vector<Competitive::ParkMetrics::TargetRide>{}
+                                       : report->metrics.openRides;
             _selectedStall = _stalls.empty() ? -1 : 0;
+            _selectedToilet = _toilets.empty() ? -1 : 0;
+            _selectedRide = _rides.empty() ? -1 : 0;
             invalidate();
         }
 
@@ -335,28 +394,71 @@ namespace OpenRCT2::Ui::Windows
             const auto& vandal = state == nullptr ? unavailableRule : state->rules.vandal;
             const auto& misinformation = state == nullptr ? unavailableRule : state->rules.misinformation;
             const auto& poison = state == nullptr ? unavailableRule : state->rules.poison;
-            _vandalLabel = "Send vandal — " + FormatStringID(STR_CURRENCY_FORMAT, vandal.cost);
-            _misinformationLabel = "Run misinformation — " + FormatStringID(STR_CURRENCY_FORMAT, misinformation.cost);
-            _poisonLabel = "Poison selected stall — " + FormatStringID(STR_CURRENCY_FORMAT, poison.cost);
+            const auto& toiletBomber = state == nullptr ? unavailableRule : state->rules.toiletBomber;
+            const auto& agitator = state == nullptr ? unavailableRule : state->rules.agitator;
+            const auto& saboteur = state == nullptr ? unavailableRule : state->rules.saboteur;
+            const auto& hitman = state == nullptr ? unavailableRule : state->rules.hitman;
+            const auto PriceLabel = [state](money64 cost) {
+                return state != nullptr && state->scenario.noMoney
+                    ? std::string(" — no cash charge")
+                    : " — " + FormatStringID(STR_CURRENCY_FORMAT, cost);
+            };
+            _vandalLabel = "Send vandal" + PriceLabel(vandal.cost);
+            _misinformationLabel = "Run misinformation" + PriceLabel(misinformation.cost);
+            _agitatorLabel = "Send agitator" + PriceLabel(agitator.cost);
+            _hitmanLabel = "Send hitman" + PriceLabel(hitman.cost);
+            _poisonLabel = "Poison selected stall" + PriceLabel(poison.cost);
+            _toiletBomberLabel = "Bomb selected toilet" + PriceLabel(toiletBomber.cost);
+            _saboteurLabel = "Sabotage selected ride" + PriceLabel(saboteur.cost);
             _stallLabel = _selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size())
                 ? _stalls[_selectedStall].name
                 : (_stalls.empty() ? "No open food or drink stalls reported" : "Choose a stall");
+            _toiletLabel = _selectedToilet >= 0 && _selectedToilet < static_cast<int32_t>(_toilets.size())
+                ? _toilets[_selectedToilet].name
+                : (_toilets.empty() ? "No open toilets reported" : "Choose a toilet");
+            _rideLabel = _selectedRide >= 0 && _selectedRide < static_cast<int32_t>(_rides.size())
+                ? _rides[_selectedRide].name
+                : (_rides.empty() ? "No open breakdown-capable rides reported" : "Choose a ride");
             widgets[CAWIDX_VANDAL].setString(_vandalLabel.c_str());
             widgets[CAWIDX_MISINFORMATION].setString(_misinformationLabel.c_str());
+            widgets[CAWIDX_AGITATOR].setString(_agitatorLabel.c_str());
+            widgets[CAWIDX_HITMAN].setString(_hitmanLabel.c_str());
             widgets[CAWIDX_POISON].setString(_poisonLabel.c_str());
             widgets[CAWIDX_STALL].setString(_stallLabel.c_str());
+            widgets[CAWIDX_TOILET_BOMBER].setString(_toiletBomberLabel.c_str());
+            widgets[CAWIDX_TOILET].setString(_toiletLabel.c_str());
+            widgets[CAWIDX_SABOTEUR].setString(_saboteurLabel.c_str());
+            widgets[CAWIDX_RIDE].setString(_rideLabel.c_str());
 
             const auto targetRideId = _selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size())
                 ? _stalls[_selectedStall].rideId
                 : -1;
             _vandalProblem = GetProblem(Competitive::Ability::vandal, -1);
             _misinformationProblem = GetProblem(Competitive::Ability::misinformation, -1);
+            _agitatorProblem = GetProblem(Competitive::Ability::agitator, -1);
+            _hitmanProblem = GetProblem(Competitive::Ability::hitman, -1);
             _poisonProblem = GetProblem(Competitive::Ability::poison, targetRideId);
+            const auto targetToiletId = _selectedToilet >= 0 && _selectedToilet < static_cast<int32_t>(_toilets.size())
+                ? _toilets[_selectedToilet].rideId
+                : -1;
+            const auto targetSabotageRideId = _selectedRide >= 0 && _selectedRide < static_cast<int32_t>(_rides.size())
+                ? _rides[_selectedRide].rideId
+                : -1;
+            _toiletBomberProblem = GetProblem(Competitive::Ability::toiletBomber, targetToiletId);
+            _saboteurProblem = GetProblem(Competitive::Ability::saboteur, targetSabotageRideId);
             setWidgetDisabled(CAWIDX_VANDAL, !_vandalProblem.empty());
             setWidgetDisabled(CAWIDX_MISINFORMATION, !_misinformationProblem.empty());
+            setWidgetDisabled(CAWIDX_AGITATOR, !_agitatorProblem.empty());
+            setWidgetDisabled(CAWIDX_HITMAN, !_hitmanProblem.empty());
             setWidgetDisabled(CAWIDX_STALL, _stalls.empty());
             setWidgetDisabled(CAWIDX_STALL_DROPDOWN, _stalls.empty());
             setWidgetDisabled(CAWIDX_POISON, !_poisonProblem.empty());
+            setWidgetDisabled(CAWIDX_TOILET, _toilets.empty());
+            setWidgetDisabled(CAWIDX_TOILET_DROPDOWN, _toilets.empty());
+            setWidgetDisabled(CAWIDX_TOILET_BOMBER, !_toiletBomberProblem.empty());
+            setWidgetDisabled(CAWIDX_RIDE, _rides.empty());
+            setWidgetDisabled(CAWIDX_RIDE_DROPDOWN, _rides.empty());
+            setWidgetDisabled(CAWIDX_SABOTEUR, !_saboteurProblem.empty());
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -373,9 +475,23 @@ namespace OpenRCT2::Ui::Windows
                 case CAWIDX_MISINFORMATION:
                     SendAbility(Competitive::Ability::misinformation, -1);
                     break;
+                case CAWIDX_AGITATOR:
+                    SendAbility(Competitive::Ability::agitator, -1);
+                    break;
+                case CAWIDX_HITMAN:
+                    SendAbility(Competitive::Ability::hitman, -1);
+                    break;
                 case CAWIDX_POISON:
                     if (_selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size()))
                         SendAbility(Competitive::Ability::poison, _stalls[_selectedStall].rideId);
+                    break;
+                case CAWIDX_TOILET_BOMBER:
+                    if (_selectedToilet >= 0 && _selectedToilet < static_cast<int32_t>(_toilets.size()))
+                        SendAbility(Competitive::Ability::toiletBomber, _toilets[_selectedToilet].rideId);
+                    break;
+                case CAWIDX_SABOTEUR:
+                    if (_selectedRide >= 0 && _selectedRide < static_cast<int32_t>(_rides.size()))
+                        SendAbility(Competitive::Ability::saboteur, _rides[_selectedRide].rideId);
                     break;
             }
         }
@@ -383,7 +499,11 @@ namespace OpenRCT2::Ui::Windows
         void onMouseDown(WidgetIndex widgetIndex) override
         {
             if (widgetIndex == CAWIDX_STALL || widgetIndex == CAWIDX_STALL_DROPDOWN)
-                ShowStallDropdown();
+                ShowTargetDropdown(CAWIDX_STALL, _stalls, _selectedStall);
+            else if (widgetIndex == CAWIDX_TOILET || widgetIndex == CAWIDX_TOILET_DROPDOWN)
+                ShowTargetDropdown(CAWIDX_TOILET, _toilets, _selectedToilet);
+            else if (widgetIndex == CAWIDX_RIDE || widgetIndex == CAWIDX_RIDE_DROPDOWN)
+                ShowTargetDropdown(CAWIDX_RIDE, _rides, _selectedRide);
         }
 
         void onDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -394,16 +514,37 @@ namespace OpenRCT2::Ui::Windows
                 _selectedStall = selectedIndex;
                 invalidate();
             }
+            else if ((widgetIndex == CAWIDX_TOILET || widgetIndex == CAWIDX_TOILET_DROPDOWN) && selectedIndex >= 0
+                && selectedIndex < static_cast<int32_t>(_toilets.size()))
+            {
+                _selectedToilet = selectedIndex;
+                invalidate();
+            }
+            else if ((widgetIndex == CAWIDX_RIDE || widgetIndex == CAWIDX_RIDE_DROPDOWN) && selectedIndex >= 0
+                && selectedIndex < static_cast<int32_t>(_rides.size()))
+            {
+                _selectedRide = selectedIndex;
+                invalidate();
+            }
         }
 
         void onDraw(RenderTarget& rt) override
         {
             drawWidgets(rt);
             const auto* state = Competitive::GetSession().GetState();
-            const auto cash = Competitive::GetSession().GetAvailableCompetitiveCash();
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ 12, 27 },
-                "Available competitive cash: " + FormatStringID(STR_CURRENCY_FORMAT, cash), { colours[1] });
+            if (state != nullptr && state->scenario.noMoney)
+            {
+                drawText(
+                    rt, windowPos + ScreenCoordsXY{ 12, 27 },
+                    "No-money scenario: rival actions use cooldowns and do not charge cash.", { colours[1] });
+            }
+            else
+            {
+                const auto cash = Competitive::GetSession().GetAvailableParkCash();
+                drawText(
+                    rt, windowPos + ScreenCoordsXY{ 12, 27 },
+                    "Available park cash: " + FormatStringID(STR_CURRENCY_FORMAT, cash), { colours[1] });
+            }
 
             const auto vandalDescription = _vandalProblem.empty()
                 ? "A named guest uses normal vandal and security behaviour; leaves after "
@@ -419,10 +560,29 @@ namespace OpenRCT2::Ui::Windows
                 ? "For " + std::to_string(state->rules.poison.durationDays) + " target-park days, each exact successful purchase has a "
                     + std::to_string(state->rules.poison.potency) + "% chance to give that buyer maximum nausea."
                 : _poisonProblem;
-            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 225, 48 }, 282, vandalDescription, { colours[1] });
-            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 225, 102 }, 282, misinformationDescription, { colours[1] });
-            drawText(rt, windowPos + ScreenCoordsXY{ 12, 166 }, "Target stall", { colours[1] });
-            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 225, 184 }, 282, poisonDescription, { colours[1] });
+            const auto agitatorDescription = _agitatorProblem.empty()
+                ? "Acts like a normal guest. Each guest passed once gets a rude-guest thought and a "
+                    + std::to_string(state->rules.agitator.potency) + "-point happiness-target penalty."
+                : _agitatorProblem;
+            const auto hitmanDescription = _hitmanProblem.empty()
+                ? "Acts normally until a guest comes close, photographs them with the handheld camera animation, then kills one guest."
+                : _hitmanProblem;
+            const auto toiletDescription = _toiletBomberProblem.empty()
+                ? "Walks to the selected toilet, kills its current occupants, and destroys it without granting a demolition refund."
+                : _toiletBomberProblem;
+            const auto saboteurDescription = _saboteurProblem.empty()
+                ? "Rides the selected attraction normally, forces a supported breakdown after exiting, then leaves."
+                : _saboteurProblem;
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215, 48 }, 393, vandalDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215, 88 }, 393, misinformationDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,128 }, 393, agitatorDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,168 }, 393, hitmanDescription, { colours[1] });
+            drawText(rt, windowPos + ScreenCoordsXY{ 12, 215 }, "Target stall", { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,234 }, 393, poisonDescription, { colours[1] });
+            drawText(rt, windowPos + ScreenCoordsXY{ 12, 280 }, "Target toilet", { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,299 }, 393, toiletDescription, { colours[1] });
+            drawText(rt, windowPos + ScreenCoordsXY{ 12, 345 }, "Target ride", { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,364 }, 393, saboteurDescription, { colours[1] });
         }
     };
 
@@ -544,7 +704,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::competitiveActions);
         auto* window = windowMgr->Create<CompetitiveActionsWindow>(
             WindowClass::competitiveActions, kCompetitiveActionsWindowSize,
-            { WindowFlag::centreScreen, WindowFlag::transparent });
+            { WindowFlag::centreScreen });
         window->SetTarget(targetId);
     }
 
@@ -1616,8 +1776,8 @@ namespace OpenRCT2::Ui::Windows
                     return "Rating";
                 case Competitive::Metric::guests:
                     return "Guests";
-                case Competitive::Metric::competitiveCash:
-                    return "Competitive cash";
+                case Competitive::Metric::cash:
+                    return "Cash";
                 case Competitive::Metric::parkValue:
                     return "Park value";
             }
@@ -1627,7 +1787,7 @@ namespace OpenRCT2::Ui::Windows
         static std::string competitionMetricValue(const Competitive::Score& score, Competitive::Metric metric)
         {
             const auto value = Competitive::GetMetricValue(score, metric);
-            if (metric == Competitive::Metric::competitiveCash || metric == Competitive::Metric::parkValue)
+            if (metric == Competitive::Metric::cash || metric == Competitive::Metric::parkValue)
                 return FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(value));
             return std::to_string(value);
         }
@@ -1645,8 +1805,11 @@ namespace OpenRCT2::Ui::Windows
             const auto* local = Competitive::GetSession().GetLocalParticipant();
             if (local != nullptr && local->role != Competitive::Role::spectator)
             {
-                summary += " — Competitive cash: "
-                    + FormatStringID(STR_CURRENCY_FORMAT, Competitive::GetSession().GetAvailableCompetitiveCash());
+                if (state->scenario.noMoney)
+                    summary += " — No-money scenario";
+                else
+                    summary += " — Park cash: "
+                        + FormatStringID(STR_CURRENCY_FORMAT, Competitive::GetSession().GetAvailableParkCash());
             }
             if (state->phase == Competitive::Phase::finished && state->winnerId.has_value())
             {
@@ -1660,7 +1823,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 std::string target;
-                if (state->rules.metric == Competitive::Metric::competitiveCash
+                if (state->rules.metric == Competitive::Metric::cash
                     || state->rules.metric == Competitive::Metric::parkValue)
                     target = FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(state->rules.target));
                 else

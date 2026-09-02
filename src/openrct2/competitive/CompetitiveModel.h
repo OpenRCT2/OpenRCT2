@@ -49,7 +49,7 @@ namespace OpenRCT2::Competitive
         points,
         rating,
         guests,
-        competitiveCash,
+        cash,
         parkValue,
     };
 
@@ -58,6 +58,10 @@ namespace OpenRCT2::Competitive
         vandal,
         misinformation,
         poison,
+        toiletBomber,
+        agitator,
+        saboteur,
+        hitman,
     };
 
     enum class ParticipantStatus : uint8_t
@@ -91,14 +95,6 @@ namespace OpenRCT2::Competitive
         uint16_t potency{};
     };
 
-    struct EconomyRules
-    {
-        money64 startingCash = 20000.00_GBP;
-        money64 incomePerArrival = 3.00_GBP;
-        money64 incomePerRideCustomer = 2.00_GBP;
-        money64 incomePerStallCustomer = 1.20_GBP;
-    };
-
     struct MatchRules
     {
         VictoryMode victoryMode = VictoryMode::deadline;
@@ -108,10 +104,13 @@ namespace OpenRCT2::Competitive
         uint8_t maxPlayers = 8;
         bool allowLateJoin = false;
         uint8_t maxGameSpeed = 1;
-        EconomyRules economy{};
         AbilityRule vandal{ true, 2500.00_GBP, 256, 64, 4 };
         AbilityRule misinformation{ true, 1800.00_GBP, 256, 14, 200 };
         AbilityRule poison{ true, 2200.00_GBP, 256, 7, 25 };
+        AbilityRule toiletBomber{ true, 5000.00_GBP, 512, 64, 1 };
+        AbilityRule agitator{ true, 2000.00_GBP, 256, 64, 14 };
+        AbilityRule saboteur{ true, 4000.00_GBP, 256, 128, 1 };
+        AbilityRule hitman{ true, 7500.00_GBP, 512, 64, 1 };
     };
 
     struct ParkMetrics
@@ -122,19 +121,18 @@ namespace OpenRCT2::Competitive
         uint16_t rating{};
         uint32_t guests{};
         money64 parkValue{};
+        money64 cash{};
         uint8_t meanHappiness{};
-        uint64_t arrivalsGenerated{};
-        money64 constructionSpend{};
-        uint64_t rideCustomers{};
-        uint64_t stallCustomers{};
-        struct Stall
+        struct TargetRide
         {
             int32_t rideId = -1;
             std::string name;
 
-            bool operator==(const Stall&) const = default;
+            bool operator==(const TargetRide&) const = default;
         };
-        std::vector<Stall> openFoodDrinkStalls;
+        std::vector<TargetRide> openFoodDrinkStalls;
+        std::vector<TargetRide> openToilets;
+        std::vector<TargetRide> openRides;
     };
 
     struct Score
@@ -144,9 +142,7 @@ namespace OpenRCT2::Competitive
         uint16_t rating{};
         uint32_t guests{};
         money64 parkValue{};
-        money64 competitiveCash{};
-        money64 lifetimeIncome{};
-        money64 lifetimeSpend{};
+        money64 cash{};
         std::optional<uint16_t> frozenAtYear{};
     };
 
@@ -167,14 +163,6 @@ namespace OpenRCT2::Competitive
         uint16_t watchPort{};
     };
 
-    struct EconomyTotals
-    {
-        uint64_t arrivalsGenerated{};
-        money64 constructionSpend{};
-        uint64_t rideCustomers{};
-        uint64_t stallCustomers{};
-    };
-
     [[nodiscard]] bool IsSameScenario(const ScenarioIdentity& lhs, const ScenarioIdentity& rhs);
     [[nodiscard]] bool DeadlineReached(uint32_t monthsElapsed, uint16_t deadlineYear);
     [[nodiscard]] bool CanTarget(const Participant& participant);
@@ -185,9 +173,6 @@ namespace OpenRCT2::Competitive
 
     void UpdateLiveScore(Score& score, const ParkMetrics& metrics);
     void FreezeScore(Score& score, const ParkMetrics& metrics, uint16_t year);
-    void ApplyEconomyDelta(
-        Score& score, EconomyTotals& acceptedTotals, const ParkMetrics& report, const EconomyRules& rules);
-
     [[nodiscard]] std::optional<ParticipantId> ChooseWinner(
         const std::vector<Score>& scores, const std::vector<Participant>& participants, Metric metric);
     [[nodiscard]] bool TargetReached(const Score& score, const MatchRules& rules);
