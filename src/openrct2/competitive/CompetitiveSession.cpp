@@ -357,6 +357,7 @@ namespace OpenRCT2::Competitive
         JoinConfiguration joinConfiguration{};
         bool helloSent = false;
         bool scenarioLoaded = false;
+        bool loadingScenario = false; // re-entrancy guard around LoadRequiredScenario's park load
         uint32_t lastHeartbeatAt{};
         uint32_t nextReconnectAt{};
         uint32_t lastReportedDay{};
@@ -2088,6 +2089,17 @@ namespace OpenRCT2::Competitive
                 scenarioLoaded = true;
                 return true;
             }
+            if (loadingScenario)
+                return false;
+            loadingScenario = true;
+            struct LoadingScope
+            {
+                bool& flag;
+                ~LoadingScope()
+                {
+                    flag = false;
+                }
+            } loadingScope{ loadingScenario };
             const auto* repository = GetScenarioRepository();
             const auto* scenario = repository == nullptr ? nullptr : repository->GetByFilename(state.scenario.fileName);
             if (scenario == nullptr)
@@ -2411,6 +2423,13 @@ namespace OpenRCT2::Competitive
         if (!_impl->EnsureLocalWatchServer(watchWarning))
             _impl->AddLocalNotice("Park spectating is unavailable for the host park: " + watchWarning);
         Config::Save();
+        // The caller loads (and hand-pauses) the scenario before StartHost. Record that as a
+        // session-forced pause so StartMatch later unpauses the host exactly like it unpauses the
+        // clients - otherwise EnsurePauseState treats the hand-pause as "the host wanted it paused".
+        if (!GameIsPaused())
+            PauseToggle();
+        _impl->forcedPause = true;
+        _impl->wasPausedBeforeForcedPause = false;
         _impl->EnsurePauseState();
         return true;
     }

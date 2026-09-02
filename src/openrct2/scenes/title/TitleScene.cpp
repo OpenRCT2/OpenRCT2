@@ -16,6 +16,7 @@
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
+#include "../../competitive/CompetitiveSession.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
 #include "../../drawing/Drawing.h"
@@ -103,6 +104,9 @@ void TitleScene::Load()
 
 #ifndef DISABLE_NETWORK
     GetContext().GetNetwork().Close();
+    // Returning to the title (including quitting a match without saving) leaves any competitive
+    // session orphaned; tear it down so it can't keep reconnecting from the menu or crash a rejoin.
+    Competitive::GetSession().Stop();
 #endif
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ContextResetSubsystems();
