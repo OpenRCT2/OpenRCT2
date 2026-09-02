@@ -207,6 +207,14 @@ namespace OpenRCT2::Ui::Windows
                 return rules.saboteur;
             case Competitive::Ability::hitman:
                 return rules.hitman;
+            case Competitive::Ability::researchSabotage:
+                return rules.researchSabotage;
+            case Competitive::Ability::unionDisruption:
+                return rules.unionDisruption;
+            case Competitive::Ability::karens:
+                return rules.karens;
+            case Competitive::Ability::stoners:
+                return rules.stoners;
         }
         return rules.vandal;
     }
@@ -229,10 +237,14 @@ namespace OpenRCT2::Ui::Windows
         CAWIDX_RIDE,
         CAWIDX_RIDE_DROPDOWN,
         CAWIDX_SABOTEUR,
+        CAWIDX_RESEARCH_SABOTAGE,
+        CAWIDX_UNION_DISRUPTION,
+        CAWIDX_KARENS,
+        CAWIDX_STONERS,
         CAWIDX_CANCEL,
     };
 
-    static constexpr ScreenSize kCompetitiveActionsWindowSize = { 620, 455 };
+    static constexpr ScreenSize kCompetitiveActionsWindowSize = { 620, 595 };
     static constexpr auto kCompetitiveActionsWidgets = makeWidgets(
         makeWindowShim(kStringIdNone, kCompetitiveActionsWindowSize),
         makeWidget({ 12, 47 }, { 190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
@@ -248,7 +260,11 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({112, 343 }, {493, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty),
         makeWidget({593, 344 }, { 11, 12 }, WidgetType::button, WindowColour::secondary, STR_DROPDOWN_GLYPH),
         makeWidget({ 12, 363 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({508, 430 }, {100, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
+        makeWidget({ 12, 403 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 12, 443 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 12, 483 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 12, 523 }, {190, 16 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({508, 570 }, {100, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
 
     class CompetitiveActionsWindow final : public Window
     {
@@ -271,6 +287,14 @@ namespace OpenRCT2::Ui::Windows
         std::string _toiletLabel;
         std::string _saboteurLabel;
         std::string _rideLabel;
+        std::string _researchLabel;
+        std::string _unionLabel;
+        std::string _karensLabel;
+        std::string _stonersLabel;
+        std::string _researchProblem;
+        std::string _unionProblem;
+        std::string _karensProblem;
+        std::string _stonersProblem;
         std::string _vandalProblem;
         std::string _misinformationProblem;
         std::string _agitatorProblem;
@@ -305,13 +329,31 @@ namespace OpenRCT2::Ui::Windows
                 && localReport->metrics.localDay < cooldown->availableAtDay)
                 return "On cooldown until your local day " + std::to_string(cooldown->availableAtDay) + ".";
 
+            if (localReport != nullptr && rule.usesPerYear != 0)
+            {
+                uint16_t used = 0;
+                for (const auto& usage : state->usages)
+                {
+                    if (usage.participantId == local->id && usage.ability == ability)
+                    {
+                        used = usage.year == localReport->metrics.localYear ? usage.used : uint16_t{ 0 };
+                        break;
+                    }
+                }
+                if (used >= rule.usesPerYear)
+                    return "No uses left this year (limit " + std::to_string(rule.usesPerYear) + " per year).";
+            }
+
+            // Per-ride actions clash only on the same ride; research sabotage and union disruption
+            // toggle park state and can't stack; everything else is additive and may be piled on.
             const auto duplicate = std::find_if(state->effects.begin(), state->effects.end(), [&](const auto& effect) {
                 if (effect.targetId != _targetId || effect.ability != ability)
                     return false;
                 if (ability == Competitive::Ability::poison || ability == Competitive::Ability::toiletBomber
                     || ability == Competitive::Ability::saboteur)
                     return effect.targetRideId == targetRideId;
-                return ability != Competitive::Ability::vandal;
+                return ability == Competitive::Ability::researchSabotage
+                    || ability == Competitive::Ability::unionDisruption;
             });
             if (duplicate != state->effects.end())
                 return "Already active until rival local day " + std::to_string(duplicate->endsAtDay) + ".";
@@ -410,6 +452,14 @@ namespace OpenRCT2::Ui::Windows
             _poisonLabel = "Poison selected stall" + PriceLabel(poison.cost);
             _toiletBomberLabel = "Bomb selected toilet" + PriceLabel(toiletBomber.cost);
             _saboteurLabel = "Sabotage selected ride" + PriceLabel(saboteur.cost);
+            const auto& researchSabotage = state == nullptr ? unavailableRule : state->rules.researchSabotage;
+            const auto& unionDisruption = state == nullptr ? unavailableRule : state->rules.unionDisruption;
+            const auto& karens = state == nullptr ? unavailableRule : state->rules.karens;
+            const auto& stoners = state == nullptr ? unavailableRule : state->rules.stoners;
+            _researchLabel = "Sabotage rival research" + PriceLabel(researchSabotage.cost);
+            _unionLabel = "Incite union disruption" + PriceLabel(unionDisruption.cost);
+            _karensLabel = "Send group of Karens" + PriceLabel(karens.cost);
+            _stonersLabel = "Send group of Stoners" + PriceLabel(stoners.cost);
             _stallLabel = _selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size())
                 ? _stalls[_selectedStall].name
                 : (_stalls.empty() ? "No open food or drink stalls reported" : "Choose a stall");
@@ -429,6 +479,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[CAWIDX_TOILET].setString(_toiletLabel.c_str());
             widgets[CAWIDX_SABOTEUR].setString(_saboteurLabel.c_str());
             widgets[CAWIDX_RIDE].setString(_rideLabel.c_str());
+            widgets[CAWIDX_RESEARCH_SABOTAGE].setString(_researchLabel.c_str());
+            widgets[CAWIDX_UNION_DISRUPTION].setString(_unionLabel.c_str());
+            widgets[CAWIDX_KARENS].setString(_karensLabel.c_str());
+            widgets[CAWIDX_STONERS].setString(_stonersLabel.c_str());
 
             const auto targetRideId = _selectedStall >= 0 && _selectedStall < static_cast<int32_t>(_stalls.size())
                 ? _stalls[_selectedStall].rideId
@@ -446,6 +500,10 @@ namespace OpenRCT2::Ui::Windows
                 : -1;
             _toiletBomberProblem = GetProblem(Competitive::Ability::toiletBomber, targetToiletId);
             _saboteurProblem = GetProblem(Competitive::Ability::saboteur, targetSabotageRideId);
+            _researchProblem = GetProblem(Competitive::Ability::researchSabotage, -1);
+            _unionProblem = GetProblem(Competitive::Ability::unionDisruption, -1);
+            _karensProblem = GetProblem(Competitive::Ability::karens, -1);
+            _stonersProblem = GetProblem(Competitive::Ability::stoners, -1);
             setWidgetDisabled(CAWIDX_VANDAL, !_vandalProblem.empty());
             setWidgetDisabled(CAWIDX_MISINFORMATION, !_misinformationProblem.empty());
             setWidgetDisabled(CAWIDX_AGITATOR, !_agitatorProblem.empty());
@@ -459,6 +517,10 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(CAWIDX_RIDE, _rides.empty());
             setWidgetDisabled(CAWIDX_RIDE_DROPDOWN, _rides.empty());
             setWidgetDisabled(CAWIDX_SABOTEUR, !_saboteurProblem.empty());
+            setWidgetDisabled(CAWIDX_RESEARCH_SABOTAGE, !_researchProblem.empty());
+            setWidgetDisabled(CAWIDX_UNION_DISRUPTION, !_unionProblem.empty());
+            setWidgetDisabled(CAWIDX_KARENS, !_karensProblem.empty());
+            setWidgetDisabled(CAWIDX_STONERS, !_stonersProblem.empty());
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -492,6 +554,18 @@ namespace OpenRCT2::Ui::Windows
                 case CAWIDX_SABOTEUR:
                     if (_selectedRide >= 0 && _selectedRide < static_cast<int32_t>(_rides.size()))
                         SendAbility(Competitive::Ability::saboteur, _rides[_selectedRide].rideId);
+                    break;
+                case CAWIDX_RESEARCH_SABOTAGE:
+                    SendAbility(Competitive::Ability::researchSabotage, -1);
+                    break;
+                case CAWIDX_UNION_DISRUPTION:
+                    SendAbility(Competitive::Ability::unionDisruption, -1);
+                    break;
+                case CAWIDX_KARENS:
+                    SendAbility(Competitive::Ability::karens, -1);
+                    break;
+                case CAWIDX_STONERS:
+                    SendAbility(Competitive::Ability::stoners, -1);
                     break;
             }
         }
@@ -573,6 +647,22 @@ namespace OpenRCT2::Ui::Windows
             const auto saboteurDescription = _saboteurProblem.empty()
                 ? "Rides the selected attraction normally, forces a supported breakdown after exiting, then leaves."
                 : _saboteurProblem;
+            const auto researchDescription = _researchProblem.empty()
+                ? "For " + std::to_string(state->rules.researchSabotage.durationDays)
+                    + " target-park days, forces the rival's research funding to None, then restores their last setting."
+                : _researchProblem;
+            const auto unionDescription = _unionProblem.empty()
+                ? "For " + std::to_string(state->rules.unionDisruption.durationDays)
+                    + " target-park days, doubles the rival's staff wage payments."
+                : _unionProblem;
+            const auto karensDescription = _karensProblem.empty()
+                ? std::to_string(state->rules.karens.potency)
+                    + " demanding guests arrive at once: high needs, low mood, frequent complaints, and they freeze staff by demanding a manager."
+                : _karensProblem;
+            const auto stonersDescription = _stonersProblem.empty()
+                ? std::to_string(state->rules.stoners.potency)
+                    + " easily-distracted guests arrive at once: hungry, price-insensitive, and constantly stopping to stare at rides."
+                : _stonersProblem;
             drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215, 48 }, 393, vandalDescription, { colours[1] });
             drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215, 88 }, 393, misinformationDescription, { colours[1] });
             drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,128 }, 393, agitatorDescription, { colours[1] });
@@ -583,6 +673,10 @@ namespace OpenRCT2::Ui::Windows
             drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,299 }, 393, toiletDescription, { colours[1] });
             drawText(rt, windowPos + ScreenCoordsXY{ 12, 345 }, "Target ride", { colours[1] });
             drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,364 }, 393, saboteurDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,404 }, 393, researchDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,444 }, 393, unionDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,484 }, 393, karensDescription, { colours[1] });
+            drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215,524 }, 393, stonersDescription, { colours[1] });
         }
     };
 

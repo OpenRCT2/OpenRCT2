@@ -12,7 +12,7 @@
 #include "../localisation/StringIds.h"
 
 // clang-format off
-const StringId kPeepThoughtIds[175] = {
+const StringId kPeepThoughtIds[176] = {
     STR_PEEP_THOUGHT_TYPE_CANT_AFFORD_0,
     STR_PEEP_THOUGHT_TYPE_SPENT_MONEY,
     STR_PEEP_THOUGHT_TYPE_SICK,
@@ -188,5 +188,6 @@ const StringId kPeepThoughtIds[175] = {
     STR_PEEP_THOUGHT_TYPE_EXCITED_DEPRECATED,
     STR_PEEP_THOUGHT_TYPE_HERE_WE_ARE,
     STR_PEEP_THOUGHT_TYPE_RUDE_GUEST,
+    STR_PEEP_THOUGHT_TYPE_SPEAK_TO_MANAGER,
 };
 // clang-format on

@@ -89,13 +89,21 @@ namespace OpenRCT2::Competitive
         [[nodiscard]] bool WatchParticipant(ParticipantId targetId, std::string& error);
         [[nodiscard]] bool Forfeit(ParticipantId participantId, std::string& error);
         [[nodiscard]] bool CloseEarly(std::string& error);
+        // Relay a chat line to every other park in the competition via the coordinator.
+        void SendChat(std::string_view text);
 
         void UpdateGuestGenerationInterference();
         [[nodiscard]] bool ConsumeGuestArrivalCancellation();
         void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
-        void OnVandalAttempt(OpenRCT2::Guest& guest);
+        void OnVandalAttempt(OpenRCT2::Guest& guest, bool succeeded);
         void OnGuestExitRide(OpenRCT2::Guest& guest, RideId rideId);
+        [[nodiscard]] bool IsProtectedAgent(EntityId guestId) const;
+        [[nodiscard]] bool IsProtectedRide(RideId rideId) const;
         [[nodiscard]] money64 GetAvailableParkCash() const;
+        [[nodiscard]] int32_t GetStaffWageMultiplier() const;
+        // 0 = not in a disruptive group, 1 = Karen, 2 = Stoner.
+        [[nodiscard]] uint8_t GetGroupGuestKind(EntityId guestId) const;
+        [[nodiscard]] bool IsStaffDetained(EntityId staffId) const;
         [[nodiscard]] std::string ExportParkStorage() const;
         [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
 
@@ -107,6 +115,12 @@ namespace OpenRCT2::Competitive
     [[nodiscard]] Session& GetSession();
     void Update();
 
+    // Fast, allocation-free gate for the per-entity hooks in the core simulation (pathfinding,
+    // guest AI, finance). It is only true while this park has at least one live rival actor
+    // (vandal, operative, or disruptive guest group), so outside a competition - and in every
+    // non-competitive game - the hooks pay nothing but a bool read.
+    inline bool gLocalActorsActive = false;
+
     [[nodiscard]] ScenarioIdentity GetCurrentScenarioIdentity();
     [[nodiscard]] ScenarioIdentity GetScenarioIdentityForPath(const std::string& path);
     [[nodiscard]] ParkMetrics CollectParkMetrics();
@@ -114,8 +128,15 @@ namespace OpenRCT2::Competitive
     void UpdateGuestGenerationInterference();
     [[nodiscard]] bool ConsumeGuestArrivalCancellation();
     void OnGuestPurchase(OpenRCT2::Guest& guest, RideId rideId, bool isFoodOrDrink);
-    void OnVandalAttempt(OpenRCT2::Guest& guest);
+    void OnVandalAttempt(OpenRCT2::Guest& guest, bool succeeded);
     void OnGuestExitRide(OpenRCT2::Guest& guest, RideId rideId);
+    [[nodiscard]] bool IsProtectedAgent(EntityId guestId);
+    [[nodiscard]] bool IsProtectedRide(RideId rideId);
+    // Multiplier applied to this park's staff wage payments (2 while a union-disruption effect is active, else 1).
+    [[nodiscard]] int32_t GetStaffWageMultiplier();
+    // 0 = not in a disruptive group, 1 = Karen, 2 = Stoner.
+    [[nodiscard]] uint8_t GetGroupGuestKind(EntityId guestId);
+    [[nodiscard]] bool IsStaffDetained(EntityId staffId);
     [[nodiscard]] std::string ExportParkStorage();
     [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
     [[nodiscard]] bool IsWatchingPark();

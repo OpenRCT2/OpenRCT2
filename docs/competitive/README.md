@@ -25,15 +25,26 @@ There is no shared map, entrance ownership, town guest pool, or guest allocation
 
 ## Economy and fair play
 
-There is no parallel competitive currency. In money scenarios, the park's real cash pays for both ordinary play and rival actions, and the cash victory metric reads that same balance. In no-money scenarios, rival actions have no cash charge and are governed by their host-configured cooldowns and effect limits. Both money and no-money scenarios are supported.
+There is no parallel competitive currency. In money scenarios, the park's real cash pays for both ordinary play and rival actions, and the cash victory metric reads that same balance. In no-money scenarios, rival actions have no cash charge and are governed by their host-configured frequency limits (minimum gap and uses per year) and effect limits. Both money and no-money scenarios are supported.
 
 While an unfinished competitor is in the lobby or a running match, OpenRCT2 cheat state is reset continuously. Cheat, scenario-editing, tile-editing, date-changing, map-resizing, peep-spawn, and ride-rating-freeze actions are rejected, cheat/debug toolbar access is hidden, and the configured speed cap is enforced in the game action itself. This is fair-play enforcement, not cryptographic anti-tamper against a deliberately modified executable.
 
 ## Current rival actions
 
-Every action has a host-configurable enable switch, real park-cash price, exact attacker-local-day cooldown, and victim-local time limit or duration. Strength is configurable where the effect has a variable strength. The real park-cash price is charged when the action is submitted, refunded if delivery fails, and retained only after the online victim acknowledges it. The cooldown begins on that acknowledgement. Prices are ignored in no-money scenarios.
+Every action has a host-configurable enable switch and real park-cash price. Actions with a continuous effect (misinformation, poisoning, agitator) also expose a host-set victim-local duration; single-shot operatives (toilet bomber, saboteur, hitman) act once and then leave, so they have only a hidden give-up backstop, not a host knob. Strength is configurable where the effect has a variable strength. The real park-cash price is charged when the action is submitted, refunded if delivery fails, and retained only after the online victim acknowledges it. Prices are ignored in no-money scenarios.
 
-Open the in-park multiplayer window to reach the competition leaderboard. The **Attack rival...** button is visible but disabled in the lobby, where its tooltip explains that attacks begin with the match. During a running match, select an online, unfinished rival in the leaderboard, then choose from the seven configured actions. When no valid rival is selected, the disabled button explains what is required instead of disappearing.
+Each action also has two independent host-configured frequency limits:
+
+- **Minimum gap** — the shortest attacker-local-day wait between two uses of the action. It starts on the victim's acknowledgement of the previous use. Adjusted in whole in-game months (an in-game year is 8 months / 256 competitive days).
+- **Uses per year** — a hard cap on how many times a participant may use the action per attacker-local in-game year. The counter resets when the participant's local year rolls over. Set to unlimited to rely on the minimum gap alone.
+
+Misinformation is the one exception to host-set price and duration: it is always a fixed four-week campaign priced at 1.5x the equivalent four-week half-price-entry marketing campaign.
+
+Every named operative or infiltrating guest sent by a rival action - including the Karen and Stoner group guests - is a "bad actor": it cannot be picked up with the pincers tool and it ignores the victim's no-entry path signs, so no-entry signs cannot be used to fence rival guests out.
+
+Most actions can be piled on: several allied players can each run a vandal, agitator, hitman, misinformation campaign, or Karen/Stoner party against the same rival at once, and stacked misinformation strengths add up. Per-ride actions (poisoning, toilet bomber, saboteur) still clash only on the same ride, and research sabotage and union disruption cannot stack because they toggle a single piece of park state.
+
+Open the in-park multiplayer window to reach the competition leaderboard. The **Attack rival...** button is visible but disabled in the lobby, where its tooltip explains that attacks begin with the match. During a running match, select an online, unfinished rival in the leaderboard, then choose from the configured actions. When no valid rival is selected, the disabled button explains what is required instead of disappearing.
 
 ### Vandal
 
@@ -41,7 +52,7 @@ The victim receives a named angry guest governed by normal path-addition vandali
 
 ### Misinformation
 
-The victim is notified of an active campaign. It cancels future ordinary guest arrivals probabilistically, using a configurable reverse-equivalent of OpenRCT2's half-price-entry campaign strength. It does not move guests between parks, cap a park's natural guest count, or alter other competitors' generation.
+The victim is notified of an active campaign. It cancels future ordinary guest arrivals probabilistically, using a configurable reverse-equivalent of OpenRCT2's half-price-entry campaign strength. It does not move guests between parks, cap a park's natural guest count, or alter other competitors' generation. Its duration is fixed at four weeks and its price is fixed at 1.5x the equivalent four-week half-price-entry campaign; the host controls only the enable switch, strength, and the two frequency limits.
 
 ### Poisoning
 
@@ -51,7 +62,7 @@ The purchase hook returns immediately when there are no local effects. Full gues
 
 ### Toilet Bomber
 
-The attacker selects an open toilet reported by the victim. A named operative enters normally and heads to that exact toilet. Once inside, ordinary explosion visuals kill every ordinary guest currently using it and the normal ride-demolition path removes the building and cleans its references. Any demolition refund is neutralised, and occupied detonation applies one normal accident-equivalent park-rating consequence.
+The attacker selects an open toilet reported by the victim. A named operative enters normally and heads to that exact toilet. It is a suicide bomber: once inside it detonates and dies along with every ordinary guest currently using the toilet, and the normal ride-demolition path removes the building and cleans its references. Any demolition refund is neutralised. The bomber's own death always counts, so one normal accident-equivalent park-rating consequence and a death notice apply on every detonation, empty toilet or not. If the operative never reaches the toilet it gives up and leaves after the hidden backstop with no detonation.
 
 ### Agitator
 
@@ -61,9 +72,29 @@ A named guest otherwise behaves normally. While the effect is active, ordinary g
 
 The attacker selects an open ride that supports breakdowns. A named operative visits and rides that exact attraction normally. Its native ride-exit hook schedules a breakdown type supported by the ride, completes the assignment, and sends the operative home.
 
+### Research sabotage
+
+No operative is sent. The victim's research funding is forced to "None" for the configured duration and the victim is notified. If the victim raises funding while the effect is active it is pushed straight back to None. When the effect ends, funding is restored to whatever level the victim last chose, so no manual reset is needed. Default price GBP 200, once per year, one month.
+
+### Union disruption
+
+No operative is sent. The victim's staff wage payments (weekly wages and the finance graph's staff-cost line) are doubled for the configured duration and the victim is notified. The default duration is deliberately longer than an in-game month so a full month of wages is doubled regardless of when in the month the effect lands. Default price GBP 250, once per year.
+
+### Karens
+
+A coach party (default 20, host-configurable) of guests arrives in the victim's park at once. They spawn with high thirst and toilet need and low mood, and they carry their own umbrella so they never buy one - but low happiness still makes them complain often, including in the rain. While a Karen shares a tile with a staff member, that staff member is frozen in place for about ten seconds ("demanding to speak to a manager") and cannot continue its duties; the Karen gets the matching thought. In every other respect they behave as ordinary guests and leave of their own accord. The action completes once the whole party has left; there is no host-set duration.
+
+### Stoners
+
+A coach party (default 20, host-configurable) of guests arrives at once with high hunger. They ignore prices - they never raise the "I'm not paying that much" thought and are not deterred by low happiness - and they are far more likely than ordinary guests to stop and stare at rides instead of spending. They behave normally otherwise and leave on their own accord, completing the action when the party has gone.
+
 ### Hitman
 
 A named operative behaves normally until an eligible ordinary guest comes close. The hitman uses the handheld guest-camera animation—not an on-ride-photo flash—then marks that exact guest for OpenRCT2's existing explosion effect. Exactly one normal single-accident park-rating consequence is applied and the hitman leaves. Competitive operatives, departing guests, and guests currently on rides are not eligible victims.
+
+## Chat
+
+Because every park is its own instance, ordinary in-park chat would only reach that park's own spectators. Competitive chat is instead relayed through the coordinator: a chat line typed in any competing park (or by an observer) is forwarded to the host and broadcast to every connected park, shown there as a `[Competition]` line. It falls back silently if a park's coordinator link is momentarily down.
 
 ## Disconnects, saves, and the host
 

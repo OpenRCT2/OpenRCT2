@@ -73,6 +73,7 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../core/MemoryStream.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
+    #include "../competitive/CompetitiveSession.h"
     #include "../interface/Chat.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
@@ -4010,6 +4011,13 @@ namespace OpenRCT2::Network
 
     void SendChat(const char* text, const std::vector<uint8_t>& playerIds)
     {
+        // In a competition each park is its own instance; route chat through the coordinator so it
+        // reaches every competing park rather than only this park's spectators.
+        if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+        {
+            Competitive::GetSession().SendChat(text);
+            return;
+        }
         auto& network = GetContext()->GetNetwork();
         if (network.GetMode() == Mode::client)
         {

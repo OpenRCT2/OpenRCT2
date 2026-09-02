@@ -42,6 +42,7 @@ namespace OpenRCT2::Competitive
                 { "enabled", value.enabled },
                 { "cost", value.cost },
                 { "cooldownDays", value.cooldownDays },
+                { "usesPerYear", value.usesPerYear },
                 { "durationDays", value.durationDays },
                 { "potency", value.potency },
             };
@@ -57,6 +58,7 @@ namespace OpenRCT2::Competitive
                 Boolean(value, "enabled", fallback.enabled),
                 Number<money64>(value, "cost", fallback.cost),
                 Number<uint16_t>(value, "cooldownDays", fallback.cooldownDays),
+                Number<uint16_t>(value, "usesPerYear", fallback.usesPerYear),
                 Number<uint16_t>(value, "durationDays", fallback.durationDays),
                 Number<uint16_t>(value, "potency", fallback.potency),
             };
@@ -176,6 +178,10 @@ namespace OpenRCT2::Competitive
             { "agitator", AbilityRuleToJson(value.agitator) },
             { "saboteur", AbilityRuleToJson(value.saboteur) },
             { "hitman", AbilityRuleToJson(value.hitman) },
+            { "researchSabotage", AbilityRuleToJson(value.researchSabotage) },
+            { "karens", AbilityRuleToJson(value.karens) },
+            { "stoners", AbilityRuleToJson(value.stoners) },
+            { "unionDisruption", AbilityRuleToJson(value.unionDisruption) },
         };
     }
 
@@ -249,6 +255,16 @@ namespace OpenRCT2::Competitive
                 { "availableAtDay", cooldown.availableAtDay },
             });
         }
+        json_t usages = json_t::array();
+        for (const auto& usage : value.usages)
+        {
+            usages.push_back({
+                { "participantId", usage.participantId },
+                { "ability", usage.ability },
+                { "year", usage.year },
+                { "used", usage.used },
+            });
+        }
         json_t effects = json_t::array();
         for (const auto& effect : value.effects)
         {
@@ -270,6 +286,7 @@ namespace OpenRCT2::Competitive
             { "scores", std::move(scores) },
             { "reports", std::move(reports) },
             { "cooldowns", std::move(cooldowns) },
+            { "usages", std::move(usages) },
             { "effects", std::move(effects) },
             { "nextEffectId", value.nextEffectId },
             { "closedEarly", value.closedEarly },
@@ -316,6 +333,10 @@ namespace OpenRCT2::Competitive
         result.agitator = AbilityRuleFromJson(value["agitator"], result.agitator);
         result.saboteur = AbilityRuleFromJson(value["saboteur"], result.saboteur);
         result.hitman = AbilityRuleFromJson(value["hitman"], result.hitman);
+        result.researchSabotage = AbilityRuleFromJson(value["researchSabotage"], result.researchSabotage);
+        result.karens = AbilityRuleFromJson(value["karens"], result.karens);
+        result.stoners = AbilityRuleFromJson(value["stoners"], result.stoners);
+        result.unionDisruption = AbilityRuleFromJson(value["unionDisruption"], result.unionDisruption);
 
         if (result.victoryMode > VictoryMode::target || result.metric > Metric::parkValue || result.maxPlayers < 2
             || result.maxPlayers > 32 || result.deadlineYear == 0 || result.maxGameSpeed == 0 || result.maxGameSpeed > 4)
@@ -380,7 +401,7 @@ namespace OpenRCT2::Competitive
             Number<uint32_t>(value, "endsAtDay"),
             Number<uint16_t>(value, "potency"),
         };
-        if (effect.id == 0 || effect.ability > Ability::hitman || effect.sourceId == kInvalidParticipantId
+        if (effect.id == 0 || effect.ability > kLastAbility || effect.sourceId == kInvalidParticipantId
             || effect.targetId == kInvalidParticipantId || effect.sourceId == effect.targetId
             || effect.endsAtDay <= effect.startsAtDay || effect.chargedCost < 0)
         {
@@ -461,9 +482,24 @@ namespace OpenRCT2::Competitive
                     Number<Ability>(item, "ability", Ability::vandal),
                     Number<uint32_t>(item, "availableAtDay"),
                 };
-                if (cooldown.participantId == kInvalidParticipantId || cooldown.ability > Ability::hitman)
+                if (cooldown.participantId == kInvalidParticipantId || cooldown.ability > kLastAbility)
                     return std::nullopt;
                 result.cooldowns.push_back(cooldown);
+            }
+        }
+        if (value.contains("usages") && value["usages"].is_array())
+        {
+            for (const auto& item : value["usages"])
+            {
+                const AbilityUsage usage{
+                    Number<ParticipantId>(item, "participantId"),
+                    Number<Ability>(item, "ability", Ability::vandal),
+                    Number<uint16_t>(item, "year"),
+                    Number<uint16_t>(item, "used"),
+                };
+                if (usage.participantId == kInvalidParticipantId || usage.ability > kLastAbility)
+                    return std::nullopt;
+                result.usages.push_back(usage);
             }
         }
         if (value.contains("effects") && value["effects"].is_array())

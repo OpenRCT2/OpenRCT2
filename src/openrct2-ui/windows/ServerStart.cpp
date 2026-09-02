@@ -324,6 +324,9 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_VANDAL_POTENCY,
         CWIDX_VANDAL_POTENCY_UP,
         CWIDX_VANDAL_POTENCY_DOWN,
+        CWIDX_VANDAL_USESYEAR,
+        CWIDX_VANDAL_USESYEAR_UP,
+        CWIDX_VANDAL_USESYEAR_DOWN,
         CWIDX_MISINFO_ENABLED,
         CWIDX_MISINFO_COST,
         CWIDX_MISINFO_COST_UP,
@@ -337,6 +340,9 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_MISINFO_POTENCY,
         CWIDX_MISINFO_POTENCY_UP,
         CWIDX_MISINFO_POTENCY_DOWN,
+        CWIDX_MISINFO_USESYEAR,
+        CWIDX_MISINFO_USESYEAR_UP,
+        CWIDX_MISINFO_USESYEAR_DOWN,
         CWIDX_POISON_ENABLED,
         CWIDX_POISON_COST,
         CWIDX_POISON_COST_UP,
@@ -350,6 +356,9 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_POISON_POTENCY,
         CWIDX_POISON_POTENCY_UP,
         CWIDX_POISON_POTENCY_DOWN,
+        CWIDX_POISON_USESYEAR,
+        CWIDX_POISON_USESYEAR_UP,
+        CWIDX_POISON_USESYEAR_DOWN,
         CWIDX_TOILET_ENABLED,
         CWIDX_TOILET_COST,
         CWIDX_TOILET_COST_UP,
@@ -360,6 +369,9 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_TOILET_DURATION,
         CWIDX_TOILET_DURATION_UP,
         CWIDX_TOILET_DURATION_DOWN,
+        CWIDX_TOILET_USESYEAR,
+        CWIDX_TOILET_USESYEAR_UP,
+        CWIDX_TOILET_USESYEAR_DOWN,
         CWIDX_AGITATOR_ENABLED,
         CWIDX_AGITATOR_COST,
         CWIDX_AGITATOR_COST_UP,
@@ -373,6 +385,9 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_AGITATOR_POTENCY,
         CWIDX_AGITATOR_POTENCY_UP,
         CWIDX_AGITATOR_POTENCY_DOWN,
+        CWIDX_AGITATOR_USESYEAR,
+        CWIDX_AGITATOR_USESYEAR_UP,
+        CWIDX_AGITATOR_USESYEAR_DOWN,
         CWIDX_SABOTEUR_ENABLED,
         CWIDX_SABOTEUR_COST,
         CWIDX_SABOTEUR_COST_UP,
@@ -383,6 +398,9 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_SABOTEUR_DURATION,
         CWIDX_SABOTEUR_DURATION_UP,
         CWIDX_SABOTEUR_DURATION_DOWN,
+        CWIDX_SABOTEUR_USESYEAR,
+        CWIDX_SABOTEUR_USESYEAR_UP,
+        CWIDX_SABOTEUR_USESYEAR_DOWN,
         CWIDX_HITMAN_ENABLED,
         CWIDX_HITMAN_COST,
         CWIDX_HITMAN_COST_UP,
@@ -393,10 +411,71 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_HITMAN_DURATION,
         CWIDX_HITMAN_DURATION_UP,
         CWIDX_HITMAN_DURATION_DOWN,
+        CWIDX_HITMAN_USESYEAR,
+        CWIDX_HITMAN_USESYEAR_UP,
+        CWIDX_HITMAN_USESYEAR_DOWN,
+        CWIDX_RESEARCH_ENABLED,
+        CWIDX_RESEARCH_COST,
+        CWIDX_RESEARCH_COST_UP,
+        CWIDX_RESEARCH_COST_DOWN,
+        CWIDX_RESEARCH_COOLDOWN,
+        CWIDX_RESEARCH_COOLDOWN_UP,
+        CWIDX_RESEARCH_COOLDOWN_DOWN,
+        CWIDX_RESEARCH_DURATION,
+        CWIDX_RESEARCH_DURATION_UP,
+        CWIDX_RESEARCH_DURATION_DOWN,
+        CWIDX_RESEARCH_USESYEAR,
+        CWIDX_RESEARCH_USESYEAR_UP,
+        CWIDX_RESEARCH_USESYEAR_DOWN,
+        CWIDX_UNION_ENABLED,
+        CWIDX_UNION_COST,
+        CWIDX_UNION_COST_UP,
+        CWIDX_UNION_COST_DOWN,
+        CWIDX_UNION_COOLDOWN,
+        CWIDX_UNION_COOLDOWN_UP,
+        CWIDX_UNION_COOLDOWN_DOWN,
+        CWIDX_UNION_DURATION,
+        CWIDX_UNION_DURATION_UP,
+        CWIDX_UNION_DURATION_DOWN,
+        CWIDX_UNION_USESYEAR,
+        CWIDX_UNION_USESYEAR_UP,
+        CWIDX_UNION_USESYEAR_DOWN,
+        CWIDX_KARENS_ENABLED,
+        CWIDX_KARENS_COST,
+        CWIDX_KARENS_COST_UP,
+        CWIDX_KARENS_COST_DOWN,
+        CWIDX_KARENS_COOLDOWN,
+        CWIDX_KARENS_COOLDOWN_UP,
+        CWIDX_KARENS_COOLDOWN_DOWN,
+        CWIDX_KARENS_DURATION,
+        CWIDX_KARENS_DURATION_UP,
+        CWIDX_KARENS_DURATION_DOWN,
+        CWIDX_KARENS_POTENCY,
+        CWIDX_KARENS_POTENCY_UP,
+        CWIDX_KARENS_POTENCY_DOWN,
+        CWIDX_KARENS_USESYEAR,
+        CWIDX_KARENS_USESYEAR_UP,
+        CWIDX_KARENS_USESYEAR_DOWN,
+        CWIDX_STONERS_ENABLED,
+        CWIDX_STONERS_COST,
+        CWIDX_STONERS_COST_UP,
+        CWIDX_STONERS_COST_DOWN,
+        CWIDX_STONERS_COOLDOWN,
+        CWIDX_STONERS_COOLDOWN_UP,
+        CWIDX_STONERS_COOLDOWN_DOWN,
+        CWIDX_STONERS_DURATION,
+        CWIDX_STONERS_DURATION_UP,
+        CWIDX_STONERS_DURATION_DOWN,
+        CWIDX_STONERS_POTENCY,
+        CWIDX_STONERS_POTENCY_UP,
+        CWIDX_STONERS_POTENCY_DOWN,
+        CWIDX_STONERS_USESYEAR,
+        CWIDX_STONERS_USESYEAR_UP,
+        CWIDX_STONERS_USESYEAR_DOWN,
         CWIDX_CREATE_LOBBY,
     };
 
-    static constexpr ScreenSize kCompetitiveWindowSize = { 620, 515 };
+    static constexpr ScreenSize kCompetitiveWindowSize = { 770, 750 };
 
     // clang-format off
     static constexpr auto _competitiveServerStartWidgets = makeWidgets(
@@ -422,34 +501,63 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({226, 68}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322, 68}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({443, 68}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632, 68}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeWidget({  8,125}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112,125}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({226,125}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322,125}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({443,125}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,125}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeWidget({  8,182}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112,182}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({226,182}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322,182}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({443,182}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,182}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeWidget({  8,239}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112,239}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({226,239}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322,239}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,239}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeWidget({  8,296}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112,296}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({226,296}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322,296}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({443,296}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,296}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeWidget({  8,353}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112,353}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({226,353}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322,353}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,353}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeWidget({  8,410}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112,410}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({226,410}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({322,410}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({430,490}, {180, 14}, WidgetType::button, WindowColour::secondary, kStringIdEmpty)
+        makeHoldableSpinnerWidgets({632,410}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  8,467}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,467}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,467}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,467}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,467}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  8,524}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,524}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,524}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,524}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,524}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  8,581}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,581}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,581}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,581}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({443,581}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,581}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({  8,638}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({112,638}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({226,638}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({322,638}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({443,638}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({632,638}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({430,728}, {180, 14}, WidgetType::button, WindowColour::secondary, kStringIdEmpty)
     );
     // clang-format on
 
@@ -472,12 +580,17 @@ namespace OpenRCT2::Ui::Windows
         std::string _agitatorText = "Agitator";
         std::string _saboteurText = "Saboteur";
         std::string _hitmanText = "Hitman";
+        std::string _researchText = "Research sabotage";
+        std::string _unionText = "Union disruption";
+        std::string _karensText = "Karens";
+        std::string _stonersText = "Stoners";
         std::string _maxPlayersCaption;
         std::string _victoryCaption;
         std::string _metricCaption;
         std::string _deadlineCaption;
         std::string _targetCaption;
         std::string _maxSpeedCaption;
+        std::string _pacingHint;
         std::string _vandalCostCaption;
         std::string _vandalCooldownCaption;
         std::string _vandalDurationCaption;
@@ -503,6 +616,30 @@ namespace OpenRCT2::Ui::Windows
         std::string _hitmanCostCaption;
         std::string _hitmanCooldownCaption;
         std::string _hitmanDurationCaption;
+        std::string _vandalUsesCaption;
+        std::string _misinfoUsesCaption;
+        std::string _poisonUsesCaption;
+        std::string _toiletUsesCaption;
+        std::string _agitatorUsesCaption;
+        std::string _saboteurUsesCaption;
+        std::string _hitmanUsesCaption;
+        std::string _researchCostCaption;
+        std::string _researchCooldownCaption;
+        std::string _researchDurationCaption;
+        std::string _researchUsesCaption;
+        std::string _unionCostCaption;
+        std::string _unionCooldownCaption;
+        std::string _unionDurationCaption;
+        std::string _unionUsesCaption;
+        std::string _karensCostCaption;
+        std::string _karensCooldownCaption;
+        std::string _karensPotencyCaption;
+        std::string _karensUsesCaption;
+        std::string _stonersCostCaption;
+        std::string _stonersCooldownCaption;
+        std::string _stonersPotencyCaption;
+        std::string _stonersUsesCaption;
+        std::string _groupDurationCaption = "leaves freely";
 
     public:
         void onOpen() override
@@ -529,6 +666,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[CWIDX_AGITATOR_ENABLED].setString(_agitatorText.c_str());
             widgets[CWIDX_SABOTEUR_ENABLED].setString(_saboteurText.c_str());
             widgets[CWIDX_HITMAN_ENABLED].setString(_hitmanText.c_str());
+            widgets[CWIDX_RESEARCH_ENABLED].setString(_researchText.c_str());
+            widgets[CWIDX_UNION_ENABLED].setString(_unionText.c_str());
+            widgets[CWIDX_KARENS_ENABLED].setString(_karensText.c_str());
+            widgets[CWIDX_STONERS_ENABLED].setString(_stonersText.c_str());
             widgets[CWIDX_CREATE_LOBBY].setString(_createText.c_str());
             initScrollWidgets();
             WindowSetResize(*this, kCompetitiveWindowSize, kCompetitiveWindowSize);
@@ -593,6 +734,22 @@ namespace OpenRCT2::Ui::Windows
                     _rules.hitman.enabled = !_rules.hitman.enabled;
                     invalidate();
                     break;
+                case CWIDX_RESEARCH_ENABLED:
+                    _rules.researchSabotage.enabled = !_rules.researchSabotage.enabled;
+                    invalidate();
+                    break;
+                case CWIDX_UNION_ENABLED:
+                    _rules.unionDisruption.enabled = !_rules.unionDisruption.enabled;
+                    invalidate();
+                    break;
+                case CWIDX_KARENS_ENABLED:
+                    _rules.karens.enabled = !_rules.karens.enabled;
+                    invalidate();
+                    break;
+                case CWIDX_STONERS_ENABLED:
+                    _rules.stoners.enabled = !_rules.stoners.enabled;
+                    invalidate();
+                    break;
                 case CWIDX_CREATE_LOBBY:
                     ChooseScenario();
                     break;
@@ -633,6 +790,28 @@ namespace OpenRCT2::Ui::Windows
                 case CWIDX_MAX_SPEED_DOWN:
                     _rules.maxGameSpeed = std::max<uint8_t>(1, _rules.maxGameSpeed - 1);
                     break;
+                case CWIDX_VANDAL_USESYEAR_UP: AdjustUsesPerYear(_rules.vandal, 1); break;
+                case CWIDX_VANDAL_USESYEAR_DOWN: AdjustUsesPerYear(_rules.vandal, -1); break;
+                case CWIDX_MISINFO_USESYEAR_UP: AdjustUsesPerYear(_rules.misinformation, 1); break;
+                case CWIDX_MISINFO_USESYEAR_DOWN: AdjustUsesPerYear(_rules.misinformation, -1); break;
+                case CWIDX_POISON_USESYEAR_UP: AdjustUsesPerYear(_rules.poison, 1); break;
+                case CWIDX_POISON_USESYEAR_DOWN: AdjustUsesPerYear(_rules.poison, -1); break;
+                case CWIDX_TOILET_USESYEAR_UP: AdjustUsesPerYear(_rules.toiletBomber, 1); break;
+                case CWIDX_TOILET_USESYEAR_DOWN: AdjustUsesPerYear(_rules.toiletBomber, -1); break;
+                case CWIDX_AGITATOR_USESYEAR_UP: AdjustUsesPerYear(_rules.agitator, 1); break;
+                case CWIDX_AGITATOR_USESYEAR_DOWN: AdjustUsesPerYear(_rules.agitator, -1); break;
+                case CWIDX_SABOTEUR_USESYEAR_UP: AdjustUsesPerYear(_rules.saboteur, 1); break;
+                case CWIDX_SABOTEUR_USESYEAR_DOWN: AdjustUsesPerYear(_rules.saboteur, -1); break;
+                case CWIDX_HITMAN_USESYEAR_UP: AdjustUsesPerYear(_rules.hitman, 1); break;
+                case CWIDX_HITMAN_USESYEAR_DOWN: AdjustUsesPerYear(_rules.hitman, -1); break;
+                case CWIDX_RESEARCH_USESYEAR_UP: AdjustUsesPerYear(_rules.researchSabotage, 1); break;
+                case CWIDX_RESEARCH_USESYEAR_DOWN: AdjustUsesPerYear(_rules.researchSabotage, -1); break;
+                case CWIDX_UNION_USESYEAR_UP: AdjustUsesPerYear(_rules.unionDisruption, 1); break;
+                case CWIDX_UNION_USESYEAR_DOWN: AdjustUsesPerYear(_rules.unionDisruption, -1); break;
+                case CWIDX_KARENS_USESYEAR_UP: AdjustUsesPerYear(_rules.karens, 1); break;
+                case CWIDX_KARENS_USESYEAR_DOWN: AdjustUsesPerYear(_rules.karens, -1); break;
+                case CWIDX_STONERS_USESYEAR_UP: AdjustUsesPerYear(_rules.stoners, 1); break;
+                case CWIDX_STONERS_USESYEAR_DOWN: AdjustUsesPerYear(_rules.stoners, -1); break;
                 default:
                     if (AdjustAbilityRule(widgetIndex))
                         break;
@@ -703,7 +882,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (WidgetIndex i = CWIDX_COMPETITION_NAME; i <= CWIDX_MAX_SPEED_DOWN; i++)
                 widgets[i].setVisible(matchPage);
-            for (WidgetIndex i = CWIDX_VANDAL_ENABLED; i <= CWIDX_HITMAN_DURATION_DOWN; i++)
+            for (WidgetIndex i = CWIDX_VANDAL_ENABLED; i <= CWIDX_STONERS_USESYEAR_DOWN; i++)
                 widgets[i].setVisible(!matchPage);
 
             const bool targetMode = _rules.victoryMode == Competitive::VictoryMode::target;
@@ -719,14 +898,35 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(CWIDX_AGITATOR_ENABLED, _rules.agitator.enabled);
             setCheckboxValue(CWIDX_SABOTEUR_ENABLED, _rules.saboteur.enabled);
             setCheckboxValue(CWIDX_HITMAN_ENABLED, _rules.hitman.enabled);
+            setCheckboxValue(CWIDX_RESEARCH_ENABLED, _rules.researchSabotage.enabled);
+            setCheckboxValue(CWIDX_UNION_ENABLED, _rules.unionDisruption.enabled);
+            setCheckboxValue(CWIDX_KARENS_ENABLED, _rules.karens.enabled);
+            setCheckboxValue(CWIDX_STONERS_ENABLED, _rules.stoners.enabled);
 
-            SetAbilityWidgetsEnabled(CWIDX_VANDAL_COST, CWIDX_VANDAL_POTENCY_DOWN, _rules.vandal.enabled);
-            SetAbilityWidgetsEnabled(CWIDX_MISINFO_COST, CWIDX_MISINFO_POTENCY_DOWN, _rules.misinformation.enabled);
-            SetAbilityWidgetsEnabled(CWIDX_POISON_COST, CWIDX_POISON_POTENCY_DOWN, _rules.poison.enabled);
-            SetAbilityWidgetsEnabled(CWIDX_TOILET_COST, CWIDX_TOILET_DURATION_DOWN, _rules.toiletBomber.enabled);
-            SetAbilityWidgetsEnabled(CWIDX_AGITATOR_COST, CWIDX_AGITATOR_POTENCY_DOWN, _rules.agitator.enabled);
-            SetAbilityWidgetsEnabled(CWIDX_SABOTEUR_COST, CWIDX_SABOTEUR_DURATION_DOWN, _rules.saboteur.enabled);
-            SetAbilityWidgetsEnabled(CWIDX_HITMAN_COST, CWIDX_HITMAN_DURATION_DOWN, _rules.hitman.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_VANDAL_COST, CWIDX_VANDAL_USESYEAR_DOWN, _rules.vandal.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_MISINFO_COST, CWIDX_MISINFO_USESYEAR_DOWN, _rules.misinformation.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_POISON_COST, CWIDX_POISON_USESYEAR_DOWN, _rules.poison.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_TOILET_COST, CWIDX_TOILET_USESYEAR_DOWN, _rules.toiletBomber.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_AGITATOR_COST, CWIDX_AGITATOR_USESYEAR_DOWN, _rules.agitator.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_SABOTEUR_COST, CWIDX_SABOTEUR_USESYEAR_DOWN, _rules.saboteur.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_HITMAN_COST, CWIDX_HITMAN_USESYEAR_DOWN, _rules.hitman.enabled);
+            SetAbilityWidgetsEnabled(
+                CWIDX_RESEARCH_COST, CWIDX_RESEARCH_USESYEAR_DOWN, _rules.researchSabotage.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_UNION_COST, CWIDX_UNION_USESYEAR_DOWN, _rules.unionDisruption.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_KARENS_COST, CWIDX_KARENS_USESYEAR_DOWN, _rules.karens.enabled);
+            SetAbilityWidgetsEnabled(CWIDX_STONERS_COST, CWIDX_STONERS_USESYEAR_DOWN, _rules.stoners.enabled);
+            // Misinformation is a fixed 4-week campaign at a fixed price.
+            setWidgetDisabled(CWIDX_MISINFO_COST_UP, true);
+            setWidgetDisabled(CWIDX_MISINFO_COST_DOWN, true);
+            setWidgetDisabled(CWIDX_MISINFO_DURATION_UP, true);
+            setWidgetDisabled(CWIDX_MISINFO_DURATION_DOWN, true);
+            // Toilet bomber / saboteur / hitman act once then leave: no host-set victim time.
+            for (const auto widget :
+                 { CWIDX_TOILET_DURATION_UP, CWIDX_TOILET_DURATION_DOWN, CWIDX_SABOTEUR_DURATION_UP,
+                   CWIDX_SABOTEUR_DURATION_DOWN, CWIDX_HITMAN_DURATION_UP, CWIDX_HITMAN_DURATION_DOWN,
+                   CWIDX_KARENS_DURATION_UP, CWIDX_KARENS_DURATION_DOWN, CWIDX_STONERS_DURATION_UP,
+                   CWIDX_STONERS_DURATION_DOWN })
+                setWidgetDisabled(widget, true);
 
             UpdateCaptions();
         }
@@ -751,13 +951,15 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, windowPos + ScreenCoordsXY{ 8, 241 }, "Each park then runs on its own clock. Cash is the scenario's actual park cash.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 8, 256 }, "Attack prices use park cash; no-money scenarios use cooldowns without a cash charge.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 8, 271 }, "Competition results use the rule above instead of the scenario objective.", { colour });
+                drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 8, 286 }, 600, _pacingHint, { colour });
             }
             else
             {
                 drawText(rt, windowPos + ScreenCoordsXY{ 112, 51 }, "Cost", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 226, 51 }, "Use cooldown", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 226, 51 }, "Minimum gap", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 322, 51 }, "Victim time", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 443, 51 }, "Effect strength", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 632, 51 }, "Uses per year", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10, 88 }, "Angry guest; security-blocked attempts also consume its quota.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,145 }, "Cancels future arrivals at the reverse strength of a half-price entry campaign.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,202 }, "Exact buyers at the selected food/drink stall receive the configured nausea chance.", { colour });
@@ -768,8 +970,12 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,373 }, "Rides a selected attraction, forces a supported breakdown after exiting, then leaves.", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{443,412 }, "One victim", { colour });
                 drawText(rt, windowPos + ScreenCoordsXY{ 10,430 }, "Photographs and kills one guest, applying the normal single-accident rating consequence.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,454 }, "Cooldown uses attacker-local days; time limit uses victim-local days. Failed delivery is refunded.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,469 }, "Only online, unfinished rivals can be targeted. No-money scenarios ignore action prices.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,487 }, "Forces the rival's research funding to None for the duration, then restores their last setting.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,544 }, "Doubles the rival's staff wage bill for the duration (kept longer than a month so a full month is hit).", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,601 }, "A coach party of demanding guests: high needs, low mood, complain often, and hound staff to speak to a manager.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,658 }, "A coach party of easily-distracted guests: hungry, unbothered by prices, and forever stopping to stare at rides.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,681 }, "Groups leave on their own accord. Minimum gap = shortest wait between uses. Uses per year = hard cap per in-game year.", { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ 10,696 }, "Victim time uses victim-local days. Failed delivery is refunded. No-money scenarios ignore action prices.", { colour });
             }
         }
 
@@ -780,6 +986,22 @@ namespace OpenRCT2::Ui::Windows
         {
             page = newPage;
             invalidate();
+        }
+
+        std::string BuildPacingHint() const
+        {
+            const auto speed = std::max<uint8_t>(1, _rules.maxGameSpeed);
+            const double seconds = _rules.deadlineYear * Competitive::kRealSecondsPerInGameYear / speed;
+            const int32_t totalMinutes = static_cast<int32_t>(seconds / 60.0);
+            const int32_t hours = totalMinutes / 60;
+            const int32_t minutes = totalMinutes % 60;
+            std::string duration;
+            if (hours > 0)
+                duration = std::to_string(hours) + "h " + std::to_string(minutes) + "m";
+            else
+                duration = std::to_string(minutes) + "m";
+            return "Reaching Year " + std::to_string(_rules.deadlineYear) + " takes at least ~" + duration
+                + " of real time at the " + std::to_string(speed) + "x speed cap (longer with pauses and spectating).";
         }
 
         void DrawLabel(Drawing::RenderTarget& rt, int32_t x, WidgetIndex widget, const char* text, ColourWithFlags colour)
@@ -897,6 +1119,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        static void AdjustUsesPerYear(Competitive::AbilityRule& rule, int32_t direction)
+        {
+            rule.usesPerYear = static_cast<uint16_t>(std::clamp<int32_t>(rule.usesPerYear + direction, 1, 64));
+        }
+
         bool AdjustAbilityRule(WidgetIndex widgetIndex)
         {
             Competitive::AbilityRule* rule = nullptr;
@@ -936,6 +1163,26 @@ namespace OpenRCT2::Ui::Windows
                 rule = &_rules.hitman;
                 first = CWIDX_HITMAN_COST;
             }
+            else if (widgetIndex >= CWIDX_RESEARCH_COST && widgetIndex <= CWIDX_RESEARCH_DURATION_DOWN)
+            {
+                rule = &_rules.researchSabotage;
+                first = CWIDX_RESEARCH_COST;
+            }
+            else if (widgetIndex >= CWIDX_UNION_COST && widgetIndex <= CWIDX_UNION_DURATION_DOWN)
+            {
+                rule = &_rules.unionDisruption;
+                first = CWIDX_UNION_COST;
+            }
+            else if (widgetIndex >= CWIDX_KARENS_COST && widgetIndex <= CWIDX_KARENS_POTENCY_DOWN)
+            {
+                rule = &_rules.karens;
+                first = CWIDX_KARENS_COST;
+            }
+            else if (widgetIndex >= CWIDX_STONERS_COST && widgetIndex <= CWIDX_STONERS_POTENCY_DOWN)
+            {
+                rule = &_rules.stoners;
+                first = CWIDX_STONERS_COST;
+            }
             if (rule == nullptr)
                 return false;
 
@@ -945,35 +1192,70 @@ namespace OpenRCT2::Ui::Windows
             const bool decrease = (offset % 3) == 2;
             if (!increase && !decrease)
                 return true;
+            // Misinformation is a fixed 4-week campaign at a fixed price: cost (0) and duration (2) are locked.
+            if (rule == &_rules.misinformation && (field == 0 || field == 2))
+                return true;
+            // Toilet bomber / saboteur / hitman act once then leave; Karens / Stoners leave on their own
+            // accord: their duration (2) is a hidden backstop, not a knob.
+            if (field == 2
+                && (rule == &_rules.toiletBomber || rule == &_rules.saboteur || rule == &_rules.hitman
+                    || rule == &_rules.karens || rule == &_rules.stoners))
+                return true;
             const int32_t direction = increase ? 1 : -1;
             switch (field)
             {
                 case 0:
-                    rule->cost = std::clamp<money64>(rule->cost + (direction * 100.00_GBP), 0.00_GBP, 100000.00_GBP);
+                    rule->cost = std::clamp<money64>(rule->cost + (direction * 50.00_GBP), 0.00_GBP, 100000.00_GBP);
                     break;
                 case 1:
-                    rule->cooldownDays = static_cast<uint16_t>(
-                        std::clamp<int32_t>(rule->cooldownDays + (direction * 7), 0, 4096));
+                    rule->cooldownDays = static_cast<uint16_t>(std::clamp<int32_t>(
+                        rule->cooldownDays + (direction * static_cast<int32_t>(Competitive::kCompetitiveDaysPerMonth)), 0,
+                        2048));
                     break;
                 case 2:
                     rule->durationDays = static_cast<uint16_t>(std::clamp<int32_t>(rule->durationDays + direction, 1, 512));
                     break;
                 case 3:
                 {
-                    const int32_t step = rule == &_rules.misinformation ? 20 : 1;
-                    const int32_t max = rule == &_rules.misinformation ? 2000 : 100;
-                    rule->potency = static_cast<uint16_t>(std::clamp<int32_t>(rule->potency + (direction * step), 1, max));
+                    const bool isGroup = rule == &_rules.karens || rule == &_rules.stoners;
+                    const int32_t step = rule == &_rules.misinformation ? 20 : (isGroup ? 5 : 1);
+                    const int32_t min = isGroup ? 5 : 1;
+                    const int32_t max = rule == &_rules.misinformation ? 2000 : (isGroup ? 40 : 100);
+                    rule->potency = static_cast<uint16_t>(
+                        std::clamp<int32_t>(rule->potency + (direction * step), min, max));
                     break;
                 }
             }
             return true;
         }
 
+        // "Minimum gap" caption: the shortest wait between uses, in attacker-local days.
         static std::string CooldownCaption(uint16_t days)
         {
-            if (days == 256)
-                return "256 days (1 year)";
-            return std::to_string(days) + (days == 1 ? " day" : " days");
+            if (days == 0)
+                return "no minimum";
+            const auto perYear = Competitive::kCompetitiveDaysPerYear;
+            const auto perMonth = Competitive::kCompetitiveDaysPerMonth;
+            std::string suffix;
+            if (days % perYear == 0)
+            {
+                const auto years = days / perYear;
+                suffix = years == 1 ? " (1 year)" : " (" + std::to_string(years) + " years)";
+            }
+            else if (days % perMonth == 0)
+            {
+                const auto months = days / perMonth;
+                suffix = months == 1 ? " (1 month)" : " (" + std::to_string(months) + " months)";
+            }
+            return std::to_string(days) + " days" + suffix;
+        }
+
+        // "Uses per year" caption: the hard cap on uses per in-game year.
+        static std::string UsesPerYearCaption(uint16_t usesPerYear)
+        {
+            if (usesPerYear == 0)
+                return "unlimited";
+            return std::to_string(usesPerYear) + " / year";
         }
 
         void UpdateCaptions()
@@ -987,6 +1269,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 _targetCaption = std::to_string(_rules.target);
             _maxSpeedCaption = std::to_string(_rules.maxGameSpeed) + "x";
+            _pacingHint = BuildPacingHint();
 
             _vandalCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.vandal.cost);
             _vandalCooldownCaption = CooldownCaption(_rules.vandal.cooldownDays);
@@ -994,7 +1277,7 @@ namespace OpenRCT2::Ui::Windows
             _vandalPotencyCaption = std::to_string(_rules.vandal.potency) + " attempts";
             _misinfoCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.misinformation.cost);
             _misinfoCooldownCaption = CooldownCaption(_rules.misinformation.cooldownDays);
-            _misinfoDurationCaption = std::to_string(_rules.misinformation.durationDays) + " days";
+            _misinfoDurationCaption = std::to_string(_rules.misinformation.durationDays / 7) + " weeks (fixed)";
             _misinfoPotencyCaption = std::to_string((_rules.misinformation.potency * 100) / 200) + "% half-price";
             _poisonCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.poison.cost);
             _poisonCooldownCaption = CooldownCaption(_rules.poison.cooldownDays);
@@ -1002,17 +1285,40 @@ namespace OpenRCT2::Ui::Windows
             _poisonPotencyCaption = std::to_string(_rules.poison.potency) + "% buyers";
             _toiletCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.toiletBomber.cost);
             _toiletCooldownCaption = CooldownCaption(_rules.toiletBomber.cooldownDays);
-            _toiletDurationCaption = std::to_string(_rules.toiletBomber.durationDays) + " days max";
+            _toiletDurationCaption = "acts once";
             _agitatorCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.agitator.cost);
             _agitatorCooldownCaption = CooldownCaption(_rules.agitator.cooldownDays);
             _agitatorDurationCaption = std::to_string(_rules.agitator.durationDays) + " days";
             _agitatorPotencyCaption = "-" + std::to_string(_rules.agitator.potency) + " happiness";
             _saboteurCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.saboteur.cost);
             _saboteurCooldownCaption = CooldownCaption(_rules.saboteur.cooldownDays);
-            _saboteurDurationCaption = std::to_string(_rules.saboteur.durationDays) + " days max";
+            _saboteurDurationCaption = "acts once";
             _hitmanCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.hitman.cost);
             _hitmanCooldownCaption = CooldownCaption(_rules.hitman.cooldownDays);
-            _hitmanDurationCaption = std::to_string(_rules.hitman.durationDays) + " days max";
+            _hitmanDurationCaption = "acts once";
+            _researchCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.researchSabotage.cost);
+            _researchCooldownCaption = CooldownCaption(_rules.researchSabotage.cooldownDays);
+            _researchDurationCaption = std::to_string(_rules.researchSabotage.durationDays) + " days";
+            _researchUsesCaption = UsesPerYearCaption(_rules.researchSabotage.usesPerYear);
+            _unionCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.unionDisruption.cost);
+            _unionCooldownCaption = CooldownCaption(_rules.unionDisruption.cooldownDays);
+            _unionDurationCaption = std::to_string(_rules.unionDisruption.durationDays) + " days";
+            _unionUsesCaption = UsesPerYearCaption(_rules.unionDisruption.usesPerYear);
+            _karensCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.karens.cost);
+            _karensCooldownCaption = CooldownCaption(_rules.karens.cooldownDays);
+            _karensPotencyCaption = std::to_string(_rules.karens.potency) + " guests";
+            _karensUsesCaption = UsesPerYearCaption(_rules.karens.usesPerYear);
+            _stonersCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.stoners.cost);
+            _stonersCooldownCaption = CooldownCaption(_rules.stoners.cooldownDays);
+            _stonersPotencyCaption = std::to_string(_rules.stoners.potency) + " guests";
+            _stonersUsesCaption = UsesPerYearCaption(_rules.stoners.usesPerYear);
+            _vandalUsesCaption = UsesPerYearCaption(_rules.vandal.usesPerYear);
+            _misinfoUsesCaption = UsesPerYearCaption(_rules.misinformation.usesPerYear);
+            _poisonUsesCaption = UsesPerYearCaption(_rules.poison.usesPerYear);
+            _toiletUsesCaption = UsesPerYearCaption(_rules.toiletBomber.usesPerYear);
+            _agitatorUsesCaption = UsesPerYearCaption(_rules.agitator.usesPerYear);
+            _saboteurUsesCaption = UsesPerYearCaption(_rules.saboteur.usesPerYear);
+            _hitmanUsesCaption = UsesPerYearCaption(_rules.hitman.usesPerYear);
 
             widgets[CWIDX_MAX_PLAYERS].setString(_maxPlayersCaption.c_str());
             widgets[CWIDX_VICTORY].setString(_victoryCaption.c_str());
@@ -1045,6 +1351,31 @@ namespace OpenRCT2::Ui::Windows
             widgets[CWIDX_HITMAN_COST].setString(_hitmanCostCaption.c_str());
             widgets[CWIDX_HITMAN_COOLDOWN].setString(_hitmanCooldownCaption.c_str());
             widgets[CWIDX_HITMAN_DURATION].setString(_hitmanDurationCaption.c_str());
+            widgets[CWIDX_VANDAL_USESYEAR].setString(_vandalUsesCaption.c_str());
+            widgets[CWIDX_MISINFO_USESYEAR].setString(_misinfoUsesCaption.c_str());
+            widgets[CWIDX_POISON_USESYEAR].setString(_poisonUsesCaption.c_str());
+            widgets[CWIDX_TOILET_USESYEAR].setString(_toiletUsesCaption.c_str());
+            widgets[CWIDX_AGITATOR_USESYEAR].setString(_agitatorUsesCaption.c_str());
+            widgets[CWIDX_SABOTEUR_USESYEAR].setString(_saboteurUsesCaption.c_str());
+            widgets[CWIDX_HITMAN_USESYEAR].setString(_hitmanUsesCaption.c_str());
+            widgets[CWIDX_RESEARCH_COST].setString(_researchCostCaption.c_str());
+            widgets[CWIDX_RESEARCH_COOLDOWN].setString(_researchCooldownCaption.c_str());
+            widgets[CWIDX_RESEARCH_DURATION].setString(_researchDurationCaption.c_str());
+            widgets[CWIDX_RESEARCH_USESYEAR].setString(_researchUsesCaption.c_str());
+            widgets[CWIDX_UNION_COST].setString(_unionCostCaption.c_str());
+            widgets[CWIDX_UNION_COOLDOWN].setString(_unionCooldownCaption.c_str());
+            widgets[CWIDX_UNION_DURATION].setString(_unionDurationCaption.c_str());
+            widgets[CWIDX_UNION_USESYEAR].setString(_unionUsesCaption.c_str());
+            widgets[CWIDX_KARENS_COST].setString(_karensCostCaption.c_str());
+            widgets[CWIDX_KARENS_COOLDOWN].setString(_karensCooldownCaption.c_str());
+            widgets[CWIDX_KARENS_DURATION].setString(_groupDurationCaption.c_str());
+            widgets[CWIDX_KARENS_POTENCY].setString(_karensPotencyCaption.c_str());
+            widgets[CWIDX_KARENS_USESYEAR].setString(_karensUsesCaption.c_str());
+            widgets[CWIDX_STONERS_COST].setString(_stonersCostCaption.c_str());
+            widgets[CWIDX_STONERS_COOLDOWN].setString(_stonersCooldownCaption.c_str());
+            widgets[CWIDX_STONERS_DURATION].setString(_groupDurationCaption.c_str());
+            widgets[CWIDX_STONERS_POTENCY].setString(_stonersPotencyCaption.c_str());
+            widgets[CWIDX_STONERS_USESYEAR].setString(_stonersUsesCaption.c_str());
         }
 
         void ChooseScenario()

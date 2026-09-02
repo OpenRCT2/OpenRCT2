@@ -97,6 +97,7 @@ namespace OpenRCT2::Network
         competitiveHeartbeat,
         competitiveWatchEndpoint,
         competitiveError,
+        competitiveChat,
         max,
         invalid = static_cast<uint32_t>(-1),
     };

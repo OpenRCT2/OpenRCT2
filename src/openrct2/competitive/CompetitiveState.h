@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Competitive
 {
-    constexpr uint16_t kProtocolVersion = 5;
+    constexpr uint16_t kProtocolVersion = 7;
     constexpr uint16_t kDefaultPort = 11755;
 
     struct ActiveEffect
@@ -49,6 +49,16 @@ namespace OpenRCT2::Competitive
         uint32_t availableAtDay{};
     };
 
+    // Tracks how many times a participant has used an ability in a given
+    // attacker-local year, for the per-year usage cap. Reset when the year rolls over.
+    struct AbilityUsage
+    {
+        ParticipantId participantId = kInvalidParticipantId;
+        Ability ability = Ability::vandal;
+        uint16_t year{};
+        uint16_t used{};
+    };
+
     struct MatchState
     {
         uint16_t protocol = kProtocolVersion;
@@ -65,6 +75,7 @@ namespace OpenRCT2::Competitive
         std::vector<Score> scores;
         std::vector<ParticipantReport> reports;
         std::vector<AbilityCooldown> cooldowns;
+        std::vector<AbilityUsage> usages;
         std::vector<ActiveEffect> effects;
         uint32_t nextEffectId = 1;
         std::optional<ParticipantId> winnerId{};

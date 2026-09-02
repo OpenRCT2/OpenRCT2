@@ -429,8 +429,11 @@ namespace OpenRCT2
         { PeepActionType::walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
         { PeepActionType::walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
         { PeepActionType::joy, PEEP_THOUGHT_ACTION_NO_FLAGS },
-        { PeepActionType::walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+        { PeepActionType::walking, PEEP_THOUGHT_ACTION_FLAG_RIDE }, // 173
+        { PeepActionType::shakeHead, PEEP_THOUGHT_ACTION_NO_FLAGS }, // 174 rudeGuest
+        { PeepActionType::shakeHead, PEEP_THOUGHT_ACTION_NO_FLAGS }, // 175 speakToManager (competitive Karen group)
     };
+    static_assert(std::size(PeepThoughtToActionMap) == 176, "PeepThoughtToActionMap must cover every PeepThoughtType");
 
     // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
     static constexpr RideRating_t kNauseaMinimumThresholds[] = {
@@ -1530,9 +1533,13 @@ namespace OpenRCT2
                     }
                     if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(gameState.cheats.ignorePrice))
                     {
-                        // "I'm not paying that much for x"
-                        guest.insertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
-                        return false;
+                        // Competitive "Stoner" group guests don't care about prices and don't complain.
+                        if (!Competitive::gLocalActorsActive || Competitive::GetGroupGuestKind(guest.id) != 2)
+                        {
+                            // "I'm not paying that much for x"
+                            guest.insertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
+                            return false;
+                        }
                     }
                 }
             }
@@ -2212,7 +2219,8 @@ namespace OpenRCT2
             // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
             if ((RideGetPrice(ride) * 40 > guest.toilet) && !getGameState().cheats.ignorePrice)
             {
-                if (peepAtShop)
+                if (peepAtShop
+                    && (!Competitive::gLocalActorsActive || Competitive::GetGroupGuestKind(guest.id) != 2))
                 {
                     guest.insertNewThought(PeepThoughtType::notPaying, ride.id);
                     if (guest.happinessTarget >= 60)
@@ -5532,13 +5540,19 @@ namespace OpenRCT2
         if (nausea > 140)
             return;
 
-        if (happiness < 120)
+        // Competitive "Stoner" group guests are far more likely to stop and stare at rides, and are
+        // not put off by low happiness.
+        const bool isStoner = Competitive::gLocalActorsActive && Competitive::GetGroupGuestKind(id) == 2;
+
+        if (happiness < 120 && !isStoner)
             return;
 
         if (toilet > 140)
             return;
 
         uint16_t chance = hasFoodOrDrink() ? 13107 : 2849;
+        if (isStoner)
+            chance = 45000;
 
         if ((ScenarioRand() & 0xFFFF) > chance)
             return;
@@ -6315,14 +6329,14 @@ namespace OpenRCT2
             {
                 innerPeep->staffVandalsStopped = AddClamp(innerPeep->staffVandalsStopped, 1u);
                 innerPeep->windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
-                Competitive::OnVandalAttempt(guest);
+                Competitive::OnVandalAttempt(guest, false);
                 return;
             }
         }
 
         tileElement->setIsBroken(true);
 
-        Competitive::OnVandalAttempt(guest);
+        Competitive::OnVandalAttempt(guest, true);
 
         MapInvalidateTileZoom1({ guest.nextLoc, tileElement->getBaseZ(), tileElement->getBaseZ() + 32 });
 

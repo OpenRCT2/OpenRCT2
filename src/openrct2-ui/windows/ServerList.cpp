@@ -53,15 +53,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LIST,
         WIDX_FETCH_SERVERS,
         WIDX_ADD_SERVER,
-        WIDX_START_SERVER,
-        WIDX_JOIN,
-        WIDX_SPECTATE
-    };
-
-    enum
-    {
-        WIDX_LIST_REMOVE,
-        WIDX_LIST_SPECTATE
+        WIDX_START_SERVER
     };
 
     enum
@@ -79,9 +71,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({  6, 64}, {589, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
         makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
         makeWidget({112, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_ADD_SERVER                         ), // add server button
-        makeWidget({218, 53}, {121,  14}, WidgetType::button,   WindowColour::secondary, STR_START_SERVER                       ), // start server button
-        makeWidget({344, 53}, {121,  14}, WidgetType::button,   WindowColour::secondary, STR_JOIN_GAME                          ), // join button
-        makeWidget({470, 53}, {121,  14}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty                         )  // spectate button
+        makeWidget({218, 53}, {121,  14}, WidgetType::button,   WindowColour::secondary, STR_START_SERVER                       )  // start server button
     );
     // clang-format on
 
@@ -102,7 +92,6 @@ namespace OpenRCT2::Ui::Windows
         std::string _cooperativeTabText = "Cooperative";
         std::string _competitiveTabText = "Competitive";
         std::string _hostCompetitiveText = "Host competition";
-        std::string _spectateText = "Observe match";
 
     public:
     #pragma region Window Override Events
@@ -113,7 +102,6 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(_serverListWidgets);
             widgets[WIDX_TAB_COOPERATIVE].setString(_cooperativeTabText.c_str());
             widgets[WIDX_TAB_COMPETITIVE].setString(_competitiveTabText.c_str());
-            widgets[WIDX_SPECTATE].setString(_spectateText.c_str());
             widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             initScrollWidgets();
 
@@ -154,6 +142,7 @@ namespace OpenRCT2::Ui::Windows
                     SetPage(1);
                     break;
                 case WIDX_LIST:
+                    JoinSelected();
                     break;
                 case WIDX_FETCH_SERVERS:
                     ServerListFetchServersBegin();
@@ -170,12 +159,6 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ServerStartOpenCompetitive();
                     }
-                    break;
-                case WIDX_JOIN:
-                    JoinSelected(Competitive::Role::player);
-                    break;
-                case WIDX_SPECTATE:
-                    JoinSelected(Competitive::Role::spectator);
                     break;
             }
         }
@@ -197,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
                 switch (selectedIndex)
                 {
                     case DDIDX_JOIN:
-                        JoinSelected(Competitive::Role::player);
+                        JoinSelected();
                         break;
                     case DDIDX_FAVOURITE:
                     {
@@ -537,13 +520,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ADD_SERVER].bottom = buttonBottom;
             widgets[WIDX_START_SERVER].top = buttonTop;
             widgets[WIDX_START_SERVER].bottom = buttonBottom;
-            widgets[WIDX_JOIN].top = buttonTop;
-            widgets[WIDX_JOIN].bottom = buttonBottom;
-            widgets[WIDX_SPECTATE].top = buttonTop;
-            widgets[WIDX_SPECTATE].bottom = buttonBottom;
 
             const bool competitive = page == 1;
-            widgets[WIDX_SPECTATE].setVisible(competitive);
             if (competitive)
                 widgets[WIDX_START_SERVER].setString(_hostCompetitiveText.c_str());
             else
@@ -553,29 +531,19 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_TAB_COMPETITIVE, competitive);
 
             constexpr int32_t buttonGap = 5;
-            const auto buttonCount = competitive ? 5 : 4;
+            constexpr int32_t buttonCount = 3;
             const auto buttonWidth = (width - (2 * margin) - ((buttonCount - 1) * buttonGap)) / buttonCount;
-            std::array<WidgetIndex, 5> buttonIndices = {
-                WIDX_FETCH_SERVERS, WIDX_ADD_SERVER, WIDX_START_SERVER, WIDX_JOIN, WIDX_SPECTATE
+            const std::array<WidgetIndex, buttonCount> buttonIndices = {
+                WIDX_FETCH_SERVERS, WIDX_ADD_SERVER, WIDX_START_SERVER
             };
             int32_t buttonLeft = margin;
-            for (int32_t i = 0; i < buttonCount; i++)
+            for (auto widgetIndex : buttonIndices)
             {
-                auto& widget = widgets[buttonIndices[i]];
+                auto& widget = widgets[widgetIndex];
                 widget.left = buttonLeft;
                 widget.right = buttonLeft + buttonWidth - 1;
                 buttonLeft += buttonWidth + buttonGap;
             }
-
-            const auto* server = GetSelectedServer();
-            const bool compatible = server != nullptr && server->IsVersionValid();
-            bool mayJoin = compatible;
-            if (mayJoin && competitive && server->CompetitionPhase != "lobby" && !server->AllowLateJoin)
-            {
-                mayJoin = false;
-            }
-            setWidgetDisabled(WIDX_JOIN, !mayJoin);
-            setWidgetDisabled(WIDX_SPECTATE, !compatible);
         }
 
         void SetPage(uint8_t newPage)
@@ -649,7 +617,7 @@ namespace OpenRCT2::Ui::Windows
             return { address, static_cast<uint16_t>(port) };
         }
 
-        void JoinSelected(Competitive::Role role)
+        void JoinSelected()
         {
             const auto* server = GetSelectedServer();
             if (server == nullptr)
@@ -680,7 +648,7 @@ namespace OpenRCT2::Ui::Windows
             configuration.host = std::move(host);
             configuration.port = port;
             configuration.playerName = _playerName;
-            configuration.role = role;
+            configuration.role = Competitive::Role::player;
             std::string error;
             if (!Competitive::GetSession().Join(configuration, error))
             {

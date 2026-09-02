@@ -178,6 +178,7 @@ namespace OpenRCT2
         excitedDeprecated = 172,  // "I'm so excited - It's an Intamin ride!"
         hereWeAre = 173,          // "...and here we are on X!"
         rudeGuest = 174,          // "Another guest was rude to me"
+        speakToManager = 175,     // "I'd like to speak to a manager" (competitive Karen group)
 
         none = 255
     };

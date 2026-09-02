@@ -119,6 +119,11 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     state.rules.agitator.potency = 17;
     state.rules.saboteur.cooldownDays = 300;
     state.rules.hitman.durationDays = 80;
+    state.rules.vandal.usesPerYear = 5;
+    state.rules.researchSabotage.durationDays = 30;
+    state.rules.unionDisruption.cost = 275.00_GBP;
+    state.rules.karens.potency = 25;
+    state.rules.stoners.usesPerYear = 3;
     state.participants.push_back(
         { 10, "host-key", "Host Park", Role::host, true, false, false, false, 0, 1, state.scenario });
     state.participants[0].watchHost = "192.0.2.10";
@@ -130,6 +135,7 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     reportMetrics.openRides.push_back({ 9, "Wooden Roller Coaster 1" });
     state.reports.push_back({ 10, reportMetrics, 3 });
     state.cooldowns.push_back({ 10, Ability::poison, 2 });
+    state.usages.push_back({ 10, Ability::vandal, 2, 3 });
     state.effects.push_back({ 1, Ability::misinformation, 10, 20, -1, 42, true, 1800.00_GBP, 3, 17, 200 });
 
     const auto parsed = MatchStateFromJson(ToJson(state));
@@ -148,8 +154,16 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     EXPECT_EQ(parsed->rules.agitator.potency, 17);
     EXPECT_EQ(parsed->rules.saboteur.cooldownDays, 300);
     EXPECT_EQ(parsed->rules.hitman.durationDays, 80);
+    EXPECT_EQ(parsed->rules.vandal.usesPerYear, 5);
+    EXPECT_EQ(parsed->rules.researchSabotage.durationDays, 30);
+    EXPECT_EQ(parsed->rules.unionDisruption.cost, 275.00_GBP);
+    EXPECT_EQ(parsed->rules.karens.potency, 25);
+    EXPECT_EQ(parsed->rules.stoners.usesPerYear, 3);
     EXPECT_EQ(parsed->cooldowns.at(0).ability, Ability::poison);
     EXPECT_EQ(parsed->cooldowns.at(0).availableAtDay, 2u);
+    EXPECT_EQ(parsed->usages.at(0).ability, Ability::vandal);
+    EXPECT_EQ(parsed->usages.at(0).year, 2);
+    EXPECT_EQ(parsed->usages.at(0).used, 3);
     EXPECT_EQ(parsed->effects.at(0).endsAtDay, 17u);
 }
 
