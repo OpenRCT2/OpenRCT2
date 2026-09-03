@@ -12,10 +12,10 @@
     #include "ScObjectManager.h"
 
     #include "../../../Context.h"
+    #include "../../../drawing/Drawing.h"
     #include "../../../object/ObjectList.h"
     #include "../../../ride/RideData.h"
     #include "../../../windows/Intent.h"
-    #include "../../../drawing/Drawing.h"
     #include "ScInstalledObject.hpp"
     #include "ScObject.hpp"
 
