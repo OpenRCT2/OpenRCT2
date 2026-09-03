@@ -51,8 +51,7 @@ namespace OpenRCT2
         uint8_t left, middle, right, any;
         int32_t wheel;
         int32_t old;
-        bool touch, touchIsDouble;
-        uint32_t touchDownTimestamp;
+        bool touch;
     };
 
     struct TextInputSession

@@ -3838,3 +3838,15 @@ STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Can’t change land height here…
+STR_7044    :Centre ride and scenery windows
+STR_7045    :When using a touchscreen, open the ride, scenery and track design windows in the middle of the screen.
+STR_7046    :Vibration feedback
+STR_7047    :Vibrate briefly when something is built or removed, since a touchscreen has no click to feel.
+STR_7048    :Rotate
+STR_7049    :Rotate the object before placing it.
+STR_7050    :Build
+STR_7051    :Build the object where you positioned it.
+STR_7052    :Cancel
+STR_7053    :Discard the object without building it.
+STR_7054    :Touch action bar
+STR_7055    :Demolish everything inside the marked area.
