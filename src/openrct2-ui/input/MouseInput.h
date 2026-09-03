@@ -36,6 +36,11 @@ namespace OpenRCT2
 
     void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 
+    bool InputIsTouchToolHeld();
+    void InputCommitHeldTouchTool();
+    void InputReleaseHeldTouchTool();
+    void InputSetTouchGestureActive(bool active);
+
     void InputScrollViewport(const ScreenCoordsXY& screenCoords);
     void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords);
     void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords, WindowBase* targetWindow);
