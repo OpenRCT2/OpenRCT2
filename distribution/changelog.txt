@@ -1,5 +1,6 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Fix: [#21973] The mouse pointer is misaligned on macOS when the game window is larger than the screen allows, for example after using fullscreen.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
 

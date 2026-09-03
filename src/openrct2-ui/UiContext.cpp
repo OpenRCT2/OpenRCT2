@@ -21,6 +21,7 @@
 #include "title/TitleSequencePlayer.h"
 
 #include <SDL.h>
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <memory>
@@ -76,6 +77,7 @@ private:
     SDL_Window* _window = nullptr;
     int32_t _width = 0;
     int32_t _height = 0;
+    int32_t _mouseYCorrection = 0;
     ScaleQuality _scaleQuality = ScaleQuality::nearestNeighbour;
 
     std::vector<Resolution> _fsResolutions;
@@ -290,6 +292,7 @@ public:
     {
         ScreenCoordsXY cursorPosition;
         SDL_GetMouseState(&cursorPosition.x, &cursorPosition.y);
+        cursorPosition.y -= _mouseYCorrection;
         return cursorPosition;
     }
 
@@ -381,6 +384,16 @@ public:
                                 Config::Get().general.defaultDisplay = displayIndex;
                                 Config::Save();
                             }
+
+                            // macOS can re-clamp the frame on another display without a resize event.
+                            auto correction = _mouseYCorrection;
+                            updateMouseYCorrection();
+                            if (correction != _mouseYCorrection)
+                            {
+                                int32_t width, height;
+                                SDL_GetWindowSize(_window, &width, &height);
+                                OnResize(width, height);
+                            }
                             break;
                         }
                     }
@@ -398,8 +411,7 @@ public:
                     }
                     break;
                 case SDL_MOUSEMOTION:
-                    _cursorState.position = { static_cast<int32_t>(e.motion.x / Config::Get().general.windowScale),
-                                              static_cast<int32_t>(e.motion.y / Config::Get().general.windowScale) };
+                    _cursorState.position = mouseToCanvas(e.motion.x, e.motion.y);
                     break;
                 case SDL_MOUSEWHEEL:
                     if (_inGameConsole.IsOpen())
@@ -415,8 +427,7 @@ public:
                     {
                         break;
                     }
-                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / Config::Get().general.windowScale),
-                                                static_cast<int32_t>(e.button.y / Config::Get().general.windowScale) };
+                    ScreenCoordsXY mousePos = mouseToCanvas(e.button.x, e.button.y);
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
@@ -451,8 +462,7 @@ public:
                     {
                         break;
                     }
-                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / Config::Get().general.windowScale),
-                                                static_cast<int32_t>(e.button.y / Config::Get().general.windowScale) };
+                    ScreenCoordsXY mousePos = mouseToCanvas(e.button.x, e.button.y);
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
@@ -843,11 +853,44 @@ private:
         TriggerResize();
     }
 
+    /**
+     * Points of mouse y to discard: macOS clamps a window that does not fit, SDL keeps reporting
+     * the size it asked for, and its Cocoa backend flips mouse y with that height.
+     */
+    void updateMouseYCorrection()
+    {
+        _mouseYCorrection = 0;
+#ifdef __MACOSX__
+        int windowWidth, windowHeight, drawableWidth, drawableHeight;
+        SDL_GetWindowSize(_window, &windowWidth, &windowHeight);
+        SDL_GetWindowSizeInPixels(_window, &drawableWidth, &drawableHeight);
+        if (windowWidth <= 0 || windowHeight <= 0 || drawableWidth <= 0 || drawableHeight <= 0)
+            return;
+
+        // A clamped axis reads low, so whichever axis macOS left alone gives the scale.
+        auto backingScale = std::round(
+            std::max(static_cast<float>(drawableWidth) / windowWidth, static_cast<float>(drawableHeight) / windowHeight));
+        if (backingScale < 1.0f)
+            return;
+
+        _mouseYCorrection = windowHeight - static_cast<int32_t>(drawableHeight / backingScale);
+#endif
+    }
+
+    ScreenCoordsXY mouseToCanvas(int32_t x, int32_t y) const
+    {
+        auto scale = Config::Get().general.windowScale;
+        return { static_cast<int32_t>(x / scale), static_cast<int32_t>((y - _mouseYCorrection) / scale) };
+    }
+
     void OnResize(int32_t width, int32_t height)
     {
+        updateMouseYCorrection();
+
         // Scale the native window size to the game's canvas size
+        auto contentHeight = height - _mouseYCorrection;
         _width = static_cast<int32_t>(width / Config::Get().general.windowScale);
-        _height = static_cast<int32_t>(height / Config::Get().general.windowScale);
+        _height = static_cast<int32_t>(contentHeight / Config::Get().general.windowScale);
 
         DrawingEngineResize();
 
