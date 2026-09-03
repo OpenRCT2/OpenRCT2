@@ -183,6 +183,15 @@ namespace OpenRCT2::Platform
     {
         return 1;
     }
+
+    void Vibrate([[maybe_unused]] int32_t durationMs)
+    {
+    }
+
+    SafeAreaInsets GetSafeAreaInsets()
+    {
+        return {};
+    }
 #endif
 
     void Sleep(uint32_t ms)
