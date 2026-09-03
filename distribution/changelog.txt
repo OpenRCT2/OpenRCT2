@@ -23,6 +23,7 @@
 - Fix: [#18415] Preview in the Track Designs Manager is not updated after deleting the first design.
 - Fix: [#18782] Dropdowns do not close and become non-functional when mouse is released outside of the game window.
 - Fix: [#21632] [Plugin] Crash when loading custom image larger than 300 by 300 pixels.
+- Fix: [#21973] The mouse pointer is misaligned on macOS when the game window is larger than the screen allows, for example after using fullscreen.
 - Fix: [#22854] Network connections of plugins pile up every time another park is loaded.
 - Fix: [#24520] The close button does not use the sprite font on languages using a TTF font when the enlarged UI is enabled.
 - Fix: [#24610] Graph tabs on Finances window get a little bit longer every time you switch between them.
