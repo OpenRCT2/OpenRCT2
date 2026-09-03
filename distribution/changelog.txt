@@ -47,6 +47,7 @@
 - Fix: [#26996] Scenario patch for Okinawa Coast doesn’t work for CD versions of Wacky Worlds (meaning landscape ownership fixes do not get applied).
 - Fix: [#27004] Windows are moved off-screen when mouse is released outside of the game window.
 - Fix: [#27023] [Plugin] Transparent plugin sprites do not work correctly in software rendering mode.
+- Fix: [#27056] [Plugin] Loading water palettes from plugin would not update the palette correctly.
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
