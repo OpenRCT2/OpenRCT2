@@ -724,17 +724,22 @@ public:
     static ScreenCoordsXY ClampWindowToScreen(
         const ScreenCoordsXY& pos, const ScreenSize screenSize, const ScreenSize windowSize)
     {
+        // Camera cutouts and rounded corners sit inside the drawable area on a phone, so the
+        // outermost pixels are not necessarily visible. Zero on every desktop.
+        const auto insets = GetLogicalSafeAreaInsets();
+
         auto screenPos = pos;
-        if (windowSize.width > screenSize.width || screenPos.x < 0)
-            screenPos.x = 0;
-        else if (screenPos.x + windowSize.width > screenSize.width)
-            screenPos.x = screenSize.width - windowSize.width;
+        if (windowSize.width > screenSize.width || screenPos.x < insets.left)
+            screenPos.x = insets.left;
+        else if (screenPos.x + windowSize.width > screenSize.width - insets.right)
+            screenPos.x = screenSize.width - insets.right - windowSize.width;
 
         auto toolbarAllowance = gLegacyScene == LegacyScene::titleSequence ? 0 : (kTopToolbarHeight + 1);
+        toolbarAllowance = std::max(toolbarAllowance, insets.top);
         if (windowSize.height - toolbarAllowance > screenSize.height || screenPos.y < toolbarAllowance)
             screenPos.y = toolbarAllowance;
-        else if (screenPos.y + windowSize.height - toolbarAllowance > screenSize.height)
-            screenPos.y = screenSize.height + toolbarAllowance - windowSize.height;
+        else if (screenPos.y + windowSize.height - toolbarAllowance > screenSize.height - insets.bottom)
+            screenPos.y = screenSize.height - insets.bottom + toolbarAllowance - windowSize.height;
 
         return screenPos;
     }
@@ -833,8 +838,11 @@ public:
         auto& uiContext = GetContext()->GetUiContext();
         auto screenWidth = uiContext.GetWidth();
         auto screenHeight = uiContext.GetHeight();
-        return ScreenCoordsXY{ (screenWidth - size.width) / 2,
-                               std::max(kTopToolbarHeight + 1, (screenHeight - size.height) / 2) };
+        const auto insets = GetLogicalSafeAreaInsets();
+        const auto safeWidth = screenWidth - insets.left - insets.right;
+        const auto safeHeight = screenHeight - insets.top - insets.bottom;
+        return ScreenCoordsXY{ insets.left + ((safeWidth - size.width) / 2),
+                               std::max(kTopToolbarHeight + 1, insets.top + ((safeHeight - size.height) / 2)) };
     }
 
     WindowBase* Create(

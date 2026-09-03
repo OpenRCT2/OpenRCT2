@@ -83,6 +83,8 @@ namespace OpenRCT2::Ui::Windows
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
     void WindowRelocateWindows(int32_t width, int32_t height);
 
+    void TouchCentreWindow(WindowBase& w);
+
     Platform::SafeAreaInsets GetLogicalSafeAreaInsets();
 
     bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize);

@@ -1097,6 +1097,29 @@ namespace OpenRCT2::Ui::Windows
         };
     }
 
+    /**
+     * Moves a window to the middle of the screen when the touch layout option is on.
+     *
+     * Applied to the windows a player browses rather than glances at -- rides, scenery and track
+     * designs. Cascading from a corner suits a large monitor; on a phone held in two hands the
+     * thing being read belongs in the middle. Small windows keep cascading so they do not bury
+     * each other.
+     */
+    void TouchCentreWindow(WindowBase& w)
+    {
+        if (!Config::Get().interface.touchCentreWindows)
+            return;
+
+        const auto insets = GetLogicalSafeAreaInsets();
+        const auto screenWidth = ContextGetWidth() - insets.left - insets.right;
+        const auto screenHeight = ContextGetHeight() - insets.top - insets.bottom;
+
+        WindowSetPosition(
+            w,
+            { insets.left + ((screenWidth - w.width) / 2),
+              std::max(kTopToolbarHeight + 1, insets.top + ((screenHeight - w.height) / 2)) });
+    }
+
     void MainWindowZoom(bool zoomIn, bool atCursor)
     {
         auto* mainWindow = WindowGetMain();
