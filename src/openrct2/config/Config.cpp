@@ -47,12 +47,18 @@ static constexpr bool kWindowButtonsOnTheLeftDefault = false;
 #endif
 #ifdef __ANDROID__
 static constexpr bool kEnlargedUiDefault = true;
+// Cascading from a corner suits a monitor, not a phone held in two hands.
+static constexpr bool kTouchCentreWindowsDefault = true;
+// A gesture that fires without moving anything visible needs some other sign that it landed.
+static constexpr bool kTouchHapticsDefault = true;
 // Android phones can come with rounded screen corners, making corner buttons harder to access.
 static constexpr bool kToolbarButtonsCentredDefault = true;
 // Android platform code returns a more appropiate default than SDL.
 static constexpr bool kInferDisplayDPIDefault = false;
 #else
 static constexpr bool kEnlargedUiDefault = false;
+static constexpr bool kTouchCentreWindowsDefault = false;
+static constexpr bool kTouchHapticsDefault = false;
 static constexpr bool kToolbarButtonsCentredDefault = false;
 static constexpr bool kInferDisplayDPIDefault = true;
 #endif
@@ -408,6 +414,8 @@ namespace OpenRCT2::Config
             model->windowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
             model->enlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
             model->touchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
+            model->touchCentreWindows = reader->GetBoolean("touch_centre_windows", kTouchCentreWindowsDefault);
+            model->touchHaptics = reader->GetBoolean("touch_haptics", kTouchHapticsDefault);
         }
     }
 
@@ -435,6 +443,8 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("window_buttons_on_the_left", model->windowButtonsOnTheLeft);
         writer->WriteBoolean("enlarged_ui", model->enlargedUi);
         writer->WriteBoolean("touch_enhancements", model->touchEnhancements);
+        writer->WriteBoolean("touch_centre_windows", model->touchCentreWindows);
+        writer->WriteBoolean("touch_haptics", model->touchHaptics);
     }
 
     static void ReadSound(IIniReader* reader)
