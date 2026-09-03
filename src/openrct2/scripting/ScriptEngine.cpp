@@ -842,10 +842,10 @@ std::vector<std::string> ScriptEngine::GetPluginFiles() const
     if (Path::DirectoryExists(base))
     {
         auto pattern = Path::Combine(base, u8"*.js");
-        auto scanner = Path::ScanDirectory(pattern, true);
-        while (scanner->Next())
+        auto scanner = Path::scanDirectory(pattern, true);
+        while (scanner->next())
         {
-            auto path = std::string(scanner->GetPath());
+            auto path = std::string(scanner->getPath());
             if (ShouldLoadScript(path))
             {
                 pluginFiles.push_back(path);
