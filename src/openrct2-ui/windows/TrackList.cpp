@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/TouchSelection.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/ride/Construction.h>
@@ -352,10 +353,19 @@ namespace OpenRCT2::Ui::Windows
                 int32_t i = getListItemFromPosition(screenCoords);
                 if (i != -1)
                 {
+                    if (!_touchSelection.shouldCommit(i))
+                    {
+                        // First tap only previews the design, as hovering would with a mouse.
+                        selectedListItem = i;
+                        invalidate();
+                        return;
+                    }
                     selectFromList(i);
                 }
             }
         }
+
+        TouchTwoStepSelection<int32_t> _touchSelection;
 
         void onScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
@@ -766,7 +776,12 @@ namespace OpenRCT2::Ui::Windows
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
 
-        return windowMgr->Create<TrackListWindow>(WindowClass::trackDesignList, screenPos, kWindowSize, flags, item);
+        auto* window = windowMgr->Create<TrackListWindow>(WindowClass::trackDesignList, screenPos, kWindowSize, flags, item);
+        if (window != nullptr)
+        {
+            TouchCentreWindow(*window);
+        }
+        return window;
     }
 
     void WindowTrackDesignListReloadTracks()
