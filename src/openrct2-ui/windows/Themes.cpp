@@ -32,7 +32,7 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum
+    enum : uint8_t
     {
         WINDOW_THEMES_TAB_SETTINGS,
         WINDOW_THEMES_TAB_MAIN_UI,
@@ -116,42 +116,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Tabs
 
-    // clang-format off
-    static int32_t window_themes_tab_animation_loops[] = {
-        32,
-        32,
-        1,
-        1,
-        64,
-        32,
-        8,
-        14,
-        38,
-    };
-    static int32_t window_themes_tab_animation_divisor[] = {
-        4,
-        4,
-        1,
-        1,
-        4,
-        2,
-        2,
-        2,
-        2,
-    };
-    static int32_t window_themes_tab_sprites[] = {
-        SPR_TAB_PAINT_0,
-        SPR_TAB_KIOSKS_AND_FACILITIES_0,
-        SPR_TAB_PARK_ENTRANCE,
-        SPR_G2_TAB_LAND,
-        SPR_TAB_RIDE_0,
-        SPR_TAB_WRENCH_0,
-        SPR_TAB_GEARS_0,
-        SPR_TAB_STAFF_OPTIONS_0,
-        SPR_TAB_FINANCES_MARKETING_0,
-    };
-
-    static WindowClass window_themes_tab_1_classes[] = {
+    static constexpr std::array kThemesTabMainClasses = std::to_array<WindowClass>({
         WindowClass::topToolbar,
         WindowClass::bottomToolbar,
         WindowClass::parkInfoPanel,
@@ -162,9 +127,9 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::titleExit,
         WindowClass::titleOptions,
         WindowClass::scenarioSelect,
-    };
+    });
 
-    static WindowClass window_themes_tab_2_classes[] = {
+    static constexpr std::array kThemesTabParkClasses = std::to_array<WindowClass>({
         WindowClass::parkInformation,
         WindowClass::editorParkEntrance,
         WindowClass::finances,
@@ -173,9 +138,9 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::map,
         WindowClass::viewport,
         WindowClass::recentNews,
-    };
+    });
 
-    static WindowClass window_themes_tab_3_classes[] = {
+    static constexpr std::array kThemesTabToolsClasses = std::to_array<WindowClass>({
         WindowClass::land,
         WindowClass::water,
         WindowClass::clearScenery,
@@ -188,9 +153,9 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::constructRide,
         WindowClass::trackDesignList,
         WindowClass::patrolArea,
-    };
+    });
 
-    static WindowClass window_themes_tab_4_classes[] = {
+    static constexpr std::array kThemesTabRidesGuestsClasses = std::to_array<WindowClass>({
         WindowClass::ride,
         WindowClass::rideList,
         WindowClass::peep,
@@ -198,18 +163,18 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::staff,
         WindowClass::staffList,
         WindowClass::banner,
-    };
+    });
 
-    static WindowClass window_themes_tab_5_classes[] = {
+    static constexpr std::array kThemesTabEditorsClasses = std::to_array<WindowClass>({
         WindowClass::editorObjectSelection,
         WindowClass::editorInventionList,
         WindowClass::editorScenarioOptions,
         WindowClass::mapgen,
         WindowClass::manageTrackDesign,
         WindowClass::installTrack,
-    };
+    });
 
-    static WindowClass window_themes_tab_6_classes[] = {
+    static constexpr std::array kThemesTabMiscClasses = std::to_array<WindowClass>({
         WindowClass::cheats,
         WindowClass::tileInspector,
         WindowClass::viewClipping,
@@ -227,9 +192,9 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::player,
         WindowClass::chat,
         WindowClass::console,
-    };
+    });
 
-    static WindowClass window_themes_tab_7_classes[] = {
+    static constexpr std::array kThemesTabPromptsClasses = std::to_array<WindowClass>({
         WindowClass::error,
         WindowClass::savePrompt,
         WindowClass::demolishRidePrompt,
@@ -238,18 +203,30 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::loadsaveOverwritePrompt,
         WindowClass::progressWindow,
         WindowClass::networkStatus,
+    });
+
+    struct ThemeTabInfo
+    {
+        uint8_t tabId;
+        WidgetIndex tabWidgetIndex;
+        int32_t baseImageId;
+        int32_t numAnimationFrames;
+        int32_t animationDivisor;
+        std::span<const WindowClass> windowClasses;
     };
 
-    static WindowClass* window_themes_tab_classes[] = {
-        nullptr,
-        window_themes_tab_1_classes,
-        window_themes_tab_2_classes,
-        window_themes_tab_3_classes,
-        window_themes_tab_4_classes,
-        window_themes_tab_5_classes,
-        window_themes_tab_6_classes,
-        window_themes_tab_7_classes,
-    };
+    // clang-format off
+    static constexpr std::array kThemeTabInfo = std::to_array<ThemeTabInfo>({
+        { WINDOW_THEMES_TAB_SETTINGS,     WIDX_THEMES_SETTINGS_TAB,    SPR_TAB_PAINT_0,                  32,  4,  {}                           },
+        { WINDOW_THEMES_TAB_MAIN_UI,      WIDX_THEMES_MAIN_UI_TAB,     SPR_TAB_KIOSKS_AND_FACILITIES_0,  32,  4,  kThemesTabMainClasses        },
+        { WINDOW_THEMES_TAB_PARK,         WIDX_THEMES_PARK_TAB,        SPR_TAB_PARK_ENTRANCE,            1,   1,  kThemesTabParkClasses        },
+        { WINDOW_THEMES_TAB_TOOLS,        WIDX_THEMES_TOOLS_TAB,       SPR_G2_TAB_LAND,                  1,   1,  kThemesTabToolsClasses       },
+        { WINDOW_THEMES_TAB_RIDES_PEEPS,  WIDX_THEMES_RIDE_PEEPS_TAB,  SPR_TAB_RIDE_0,                   64,  4,  kThemesTabRidesGuestsClasses },
+        { WINDOW_THEMES_TAB_EDITORS,      WIDX_THEMES_EDITORS_TAB,     SPR_TAB_WRENCH_0,                 32,  2,  kThemesTabEditorsClasses     },
+        { WINDOW_THEMES_TAB_MISC,         WIDX_THEMES_MISC_TAB,        SPR_TAB_GEARS_0,                  8,   2,  kThemesTabMiscClasses        },
+        { WINDOW_THEMES_TAB_PROMPTS,      WIDX_THEMES_PROMPTS_TAB,     SPR_TAB_STAFF_OPTIONS_0,          14,  2,  kThemesTabPromptsClasses     },
+        { WINDOW_THEMES_TAB_FEATURES,     WIDX_THEMES_FEATURES_TAB,    SPR_TAB_FINANCES_MARKETING_0,     38,  2,  {}                           },
+    });
     // clang-format on
 
 #pragma endregion
@@ -315,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
         void onUpdate() override
         {
             currentFrame++;
-            if (currentFrame >= window_themes_tab_animation_loops[_selectedTab])
+            if (currentFrame >= kThemeTabInfo[_selectedTab].numAnimationFrames)
                 currentFrame = 0;
 
             invalidateWidget(WIDX_THEMES_SETTINGS_TAB + _selectedTab);
@@ -797,7 +774,7 @@ namespace OpenRCT2::Ui::Windows
 
         WindowClass GetWindowClassTabIndex(int32_t index)
         {
-            WindowClass* classes = window_themes_tab_classes[_selectedTab];
+            auto classes = kThemeTabInfo[_selectedTab].windowClasses;
             return classes[index];
         }
 
@@ -862,38 +839,20 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t GetColourSchemeTabCount()
         {
-            switch (_selectedTab)
-            {
-                case 1:
-                    return sizeof(window_themes_tab_1_classes);
-                case 2:
-                    return sizeof(window_themes_tab_2_classes);
-                case 3:
-                    return sizeof(window_themes_tab_3_classes);
-                case 4:
-                    return sizeof(window_themes_tab_4_classes);
-                case 5:
-                    return sizeof(window_themes_tab_5_classes);
-                case 6:
-                    return sizeof(window_themes_tab_6_classes);
-                case 7:
-                    return sizeof(window_themes_tab_7_classes);
-            }
-            return 0;
+            auto& tabInfo = kThemeTabInfo[_selectedTab];
+            return static_cast<int32_t>(tabInfo.windowClasses.size());
         }
 
         void WindowThemesDrawTabImages(RenderTarget& rt)
         {
-            for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
+            for (auto& tabInfo : kThemeTabInfo)
             {
-                int32_t sprite_idx = window_themes_tab_sprites[i];
-                if (_selectedTab == i)
-                    sprite_idx += currentFrame / window_themes_tab_animation_divisor[_selectedTab];
-                GfxDrawSprite(
-                    rt, ImageId(sprite_idx),
-                    windowPos
-                        + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
-                                          widgets[WIDX_THEMES_SETTINGS_TAB + i].top });
+                int32_t sprite_idx = tabInfo.baseImageId;
+                if (_selectedTab == tabInfo.tabId)
+                    sprite_idx += currentFrame / tabInfo.animationDivisor;
+
+                auto& widget = widgets[tabInfo.tabWidgetIndex];
+                GfxDrawSprite(rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
     };
