@@ -15,6 +15,7 @@
     #include "../../../object/ObjectList.h"
     #include "../../../ride/RideData.h"
     #include "../../../windows/Intent.h"
+    #include "../../../drawing/Drawing.h"
     #include "ScInstalledObject.hpp"
     #include "ScObject.hpp"
 
@@ -88,6 +89,7 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
 
         JSValue result = JS_NewArray(ctx);
         int64_t index = 0;
+        bool loadedWater = false;
         for (const auto& descriptor : descriptors)
         {
             auto obj = objectManager.LoadObject(descriptor);
@@ -97,6 +99,9 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
                 auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
                 auto scLoadedObject = CreateScObject(ctx, obj->GetObjectType(), objIndex);
                 JS_SetPropertyInt64(ctx, result, index, scLoadedObject);
+
+                if (obj->GetObjectType() == ObjectType::water)
+                    loadedWater = true;
             }
             else
             {
@@ -105,6 +110,11 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
             index++;
         }
         RefreshResearchedItems();
+        if (loadedWater)
+        {
+            LoadPalette();
+        }
+
         return result;
     }
     else
@@ -133,6 +143,12 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
                     {
                         MarkAsResearched(obj);
                         RefreshResearchedItems();
+
+                        if (obj->GetObjectType() == ObjectType::water)
+                        {
+                            LoadPalette();
+                        }
+
                         auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
                         return CreateScObject(ctx, obj->GetObjectType(), objIndex);
                     }
@@ -145,6 +161,12 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
                 {
                     MarkAsResearched(obj);
                     RefreshResearchedItems();
+
+                    if (obj->GetObjectType() == ObjectType::water)
+                    {
+                        LoadPalette();
+                    }
+
                     auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
                     return CreateScObject(ctx, obj->GetObjectType(), objIndex);
                 }
