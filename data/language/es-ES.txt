@@ -13,7 +13,7 @@ STR_0008    :Monorraíl
 STR_0009    :Mini Montaña Rusa Suspendida
 STR_0010    :Paseo en bote
 STR_0011    :Ratón Loco de Madera
-STR_0012    :Carrera Ciega
+STR_0012    :Carrera de obstáculos
 STR_0013    :Atracción de coches
 STR_0014    :Caída Libre Propulsada
 STR_0015    :Montaña Rusa Bobsleigh
@@ -51,22 +51,22 @@ STR_0049    :Casa Encantada
 STR_0050    :Sala de primeros auxilios
 STR_0051    :Circo
 STR_0052    :Tren fantasma
-STR_0053    :Montaña Rusa de pie Tornado
+STR_0053    :Montaña Rusa Tornado
 STR_0054    :Montaña Rusa de Madera
-STR_0055    :Montaña de fricción lateral
+STR_0055    :Montaña Rusa de fricción lateral
 STR_0056    :Ratón Loco
-STR_0057    :Montaña Rusa Multi-Dimensión
+STR_0057    :Montaña Rusa Multi-Dimensional
 STR_0058    :Atracc. Desconocida (38)
 STR_0059    :Montaña Rusa Volante
 STR_0060    :Atracc. Desconocida (3A)
 STR_0061    :Danza de Virginia
 STR_0062    :Botes de Salpicadura
 STR_0063    :Mini Helicópteros
-STR_0064    :Montaña Rusa Fija
+STR_0064    :Montaña Rusa Recostada
 STR_0065    :Monorraíl suspendido
 STR_0066    :Atracc. Desconocida (40)
 STR_0067    :Montaña Rusa Inversora
-STR_0068    :Mt. Rusa Tornado Medio
+STR_0068    :Montaña Rusa Tornado de corazón
 STR_0069    :Mini Golf
 STR_0070    :Giga montaña Rusa
 STR_0071    :Caída Giratoria
@@ -76,7 +76,7 @@ STR_0074    :Bicis Monorraíl
 STR_0075    :Montaña Rusa Invertida Compacta
 STR_0076    :Montaña Rusa de Agua
 STR_0077    :Montaña Rusa Vertical de Aire
-STR_0078    :Horquilla invertida
+STR_0078    :Montaña Rusa de Horquilla Invertida
 STR_0079    :Alfombra Mágica
 STR_0080    :Viaje Submarino
 STR_0081    :Balsas de Río
@@ -93,18 +93,18 @@ STR_0097    :Montaña Rusa de pie clásica
 STR_0098    :Montaña Rusa acelerada por LSM
 STR_0099    :Montaña Rusa Tornado clásica de madera
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
-STR_0513    :Una montaña rusa en la que los pasajeros permanecen de pie.
+STR_0513    :Una montaña rusa con rizos en la que los pasajeros viajan de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
 STR_0515    :Los pasajeros se sientan en asientos suspendidos bajo la vía y recorren rizos gigantes, giros y grandes caídas.
 STR_0516    :Una montaña rusa más suave para la gente que no tiene el valor de afrontar las grandes montañas rusas.
 STR_0517    :Los pasajeros viajan en trenes diminutos sobre una vía estrecha.
 STR_0518    :Los pasajeros viajan en trenes eléctricos sobre una vía monorriel.
-STR_0519    :Los pasajeros se colocan boca abajo en unos vagones especiales en esta montaña rusa.
-STR_0520    :Una plataforma de muelle donde los pasajeros pueden conducir botes sobre el agua.
+STR_0519    :Los pasajeros viajan en pequeños vagones que cuelgan bajo el raíl único, balanceándose libremente de lado a lado en las curvas.
+STR_0520    :Un embarcadero donde los visitantes pueden navegar en botes por el agua.
 STR_0521    :Una montaña rusa rápida con curvas cerradas y fuertes caídas. La intensidad es muy alta.
 STR_0522    :Una montaña rusa pequeña donde los pasajeros se sientan encima de la vía, sin un vehículo que los rodee.
 STR_0523    :Los pasajeros viajan lentamente en vehículos autopropulsados sobre una vía.
-STR_0524    :Un vagón es lanzado con un neumático a lo alto de una elevada torre de acero, cayendo libremente.
+STR_0524    :Un vagón es impulsado neumáticamente a lo alto de una elevada torre de acero, cayendo libremente.
 STR_0525    :Los pasajeros recorren una vía con giros en vagones tipo bobsleigh guiados únicamente por la curvatura y los peraltes de la vía semicircular.
 STR_0526    :Los pasajeros viajan en una cabina de observación giratoria que se desplaza hacia arriba en una torre alta.
 STR_0527    :Una montaña rusa de acero capaz de rizos verticales.
@@ -116,7 +116,7 @@ STR_0532    :Laberinto construido con setos o muros de 6 pies de altura, por el 
 STR_0533    :Edificio de madera con una escalera interior y un tobogán espiral exterior para usar con esterillas.
 STR_0534    :Los visitantes corren carreras en karts sobre una calle de asfalto.
 STR_0535    :Barcos viajan por un canal de agua, salpicando hasta empapar a los pasajeros.
-STR_0536    :Botes circulares viajan a lo largo de un canal de agua ancho, salpicando a través de cascadas y recorriendo rápidos espumantes.
+STR_0536    :Botes circulares navegan por un ancho canal de agua, atravesando cascadas entre salpicaduras y recorriendo rápidos embravecidos.
 STR_0537    :Los visitantes chocan entre sí en autos de choque.
 STR_0538    :Gran barco pirata que se balancea.
 STR_0539    :El barco está unido a un brazo con un contrapeso en el lado opuesto, y se balancea en giros de hasta 360º.
@@ -140,7 +140,7 @@ STR_0559    :Gran edificio temático con pasillos terroríficos y habitaciones e
 STR_0560    :Un lugar al que los visitantes enfermos pueden ir para recuperarse más rápido.
 STR_0561    :Espectáculo de animales de circo dentro de una carpa.
 STR_0562    :Vagones autopropulsados viajan a lo largo de una pista multinivel pasando por paisajes fantasmagóricos y efectos especiales.
-STR_0563    :Los pasajeros permanecen de pie en unos vagones con sujeciones especiales atravesando caídas y múltiples inversiones.
+STR_0563    :Sentados en trenes cómodos con simples barras de regazo, los pasajeros disfrutan de grandes caídas suaves, curvas retorcidas y mucha sensación de ingravidez sobre las colinas.
 STR_0564    :Esta montaña rusa, construida en madera, es rápida, brusca, ruidosa y ofrece una experiencia ‘fuera de control’ con muchas secciones de ‘ingravidez’.
 STR_0565    :Una montaña rusa de madera con suaves caídas y giros, donde los vagones se mantienen en la vía mediante ruedas laterales de fricción y la gravedad.
 STR_0566    :Los vagones individuales giran en un tramo de vía en estrecho zig-zag con curvas y caídas bruscas.
@@ -159,7 +159,7 @@ STR_0581    :Un anillo de asientos es arrastrado a lo alto de una torre mientras
 STR_0582    :Los visitantes viajan en vehículos aerodeslizadores que controlan libremente.
 STR_0583    :Edificio con habitaciones deformadas y pasillos en ángulo para desorientar a la gente que pasa por él.
 STR_0584    :Bicicletas especiales que viajan sobre un monorraíl, impulsadas por el pedaleo.
-STR_0585    :Los pasajeros se sientan en parejas atravesando rizos e inversiones.
+STR_0585    :Los pasajeros se sientan en parejas de asientos suspendidos bajo la vía, inclinándose y girando a través de inversiones cerradas.
 STR_0586    :Los vagones en forma de bote volante corren por el recorrido de la montaña rusa, con curvas cerradas y caídas pronunciadas, pasando por zonas de agua.
 STR_0587    :Tras un excitante lanzamiento, el vagón corre por una vía vertical hasta el tope y baja vertical por el otro lado.
 STR_0588    :Vagones individuales corren bajo una vía zigzagueante.
@@ -230,7 +230,6 @@ STR_0820    :Nov
 STR_0821    :Dic
 STR_0822    :No se pudo acceder al archivo de datos de gráficos
 STR_0823    :Archivo faltante o inaccesible
-STR_0824    :{BLACK}❌
 STR_0825    :Este nombre ya está usado
 STR_0826    :Demasiados nombres definidos
 STR_0827    :No hay suficiente dinero - se requiere {CURRENCY2DP}
@@ -407,7 +406,7 @@ STR_1031    :¡No se puede construir esto bajo el agua!
 STR_1032    :¡Sólo puede construirse en el agua!
 STR_1033    :¡Sólo puede construirse encima del suelo!
 STR_1034    :¡Sólo puede construirse en el suelo!
-STR_1035    :¡Las autoridades locales prohíben las construcciones altas!
+STR_1035    :¡Las autoridades locales prohíben construir por encima de la altura de los árboles!
 STR_1036    :Cargar Partida
 STR_1037    :Cargar paisaje
 STR_1038    :Convertir partida guardada en escenario
@@ -452,14 +451,14 @@ STR_1076    :Modo tienda de parada
 STR_1077    :Modo rotación
 STR_1078    :Rotación hacia adelante
 STR_1079    :Rotación hacia atrás
-STR_1080    :Película: ”Aviadores emocionados”
-STR_1081    :Película 3D: ”Colas de ratón”
+STR_1080    :Película: “Aviadores emocionados”
+STR_1081    :Película 3D: “Colas de ratón”
 STR_1082    :Modo anillos espaciales
 STR_1083    :Modo principiante
 STR_1084    :Lanzamiento impulsado por MLI
-STR_1085    :Película: ”Pasajeros emocionados”
-STR_1086    :Película 3D: ”Cazadores de tormenta”
-STR_1087    :Película 3D: ”Invasores del espacio”
+STR_1085    :Película: “Pasajeros emocionados”
+STR_1086    :Película 3D: “Cazadores de tormenta”
+STR_1087    :Película 3D: “Invasores del espacio”
 STR_1088    :Modo intenso
 STR_1089    :Modo frenético
 STR_1090    :Modo casa encantada
@@ -675,13 +674,13 @@ STR_1302    :Ruedas
 STR_1303    :{COMMA16} rueda
 STR_1304    :{COMMA16} ruedas
 STR_1305    :Rueda {COMMA16}
-STR_1306    :tono
-STR_1307    :tonos
-STR_1308    :Tono
-STR_1309    :Tonos
-STR_1310    :{COMMA16} tono
-STR_1311    :{COMMA16} tonos
-STR_1312    :Tono {COMMA16}
+STR_1306    :anillo
+STR_1307    :anillos
+STR_1308    :Anillo
+STR_1309    :Anillos
+STR_1310    :{COMMA16} anillo
+STR_1311    :{COMMA16} anillos
+STR_1312    :Anillo {COMMA16}
 STR_1313    :jugador
 STR_1314    :jugadores
 STR_1315    :Jugador
@@ -745,8 +744,8 @@ STR_1373    :Medio Rizo grande (izq)
 STR_1374    :Medio Rizo grande (der)
 STR_1375    :Transferencia superior
 STR_1376    :Transferencia inferior
-STR_1377    :Giro med. alt. (der)
-STR_1378    :Giro med. alt. (izq)
+STR_1377    :Giro de línea de corazón (izq)
+STR_1378    :Giro de línea de corazón (der)
 STR_1379    :Inversor (izq)
 STR_1380    :Inversor (der)
 STR_1381    :Subida en curva (izq)
@@ -777,9 +776,9 @@ STR_1405    :Rotar en Espejo
 STR_1406    :Muestra u oculta el decorado (si se encuentra disponible)
 STR_1407    :{WINDOW_COLOUR_2}Construye esto…
 STR_1408    :{WINDOW_COLOUR_2}Precio: {BLACK}{CURRENCY}
-STR_1409    :Estación
-STR_1410    :Sección vertical
-STR_1411    :{STRINGID} en medio
+STR_1409    :Plataforma de entrada/salida
+STR_1410    :Torre vertical
+STR_1411    :{STRINGID} interfiere
 STR_1412    :{WINDOW_COLOUR_3}Estadísticas no disponibles para este tipo de atracción
 STR_1413    :{WINDOW_COLOUR_3}Las estadísticas comenzarán a registrarse cuando el {STRINGID} salga de la {STRINGID}
 STR_1414    :{BLACK}{DURATION}
@@ -831,10 +830,10 @@ STR_1460    :Pista en forma de ‘U’
 STR_1461    :Pista en forma de ‘O’
 STR_1462    :Demasiado inclinado para las cadenas de elevación.
 STR_1463    :Visitantes
-STR_1464    :Hélice arriba (pequeña)
-STR_1465    :Hélice arriba (grande)
-STR_1466    :Hélice abajo (pequeña)
-STR_1467    :Hélice abajo (grande)
+STR_1464    :Media hélice arriba (pequeña)
+STR_1465    :Media hélice arriba (grande)
+STR_1466    :Media hélice abajo (pequeña)
+STR_1467    :Media hélice abajo (grande)
 STR_1468    :Empleados
 STR_1469    :La atracción debe comenzar y terminar con las estaciones.
 STR_1470    :La estación no es lo suficientemente larga.
@@ -851,7 +850,7 @@ STR_1480    :“No puedo pagar {STRINGID}”
 STR_1481    :“He gastado todo mi dinero”
 STR_1482    :“Me siento mareado”
 STR_1483    :“Me siento muy mareado”
-STR_1484    :“Quiero probar algo más arriesgado que {STRINGID}”
+STR_1484    :“Quiero subir a algo más emocionante que {STRINGID}”
 STR_1485    :“{STRINGID} parece demasiado intenso para mí”
 STR_1486    :“Aún no he acabado mi {STRINGID}”
 STR_1487    :“Con sólo mirar {STRINGID} me marea”
@@ -955,12 +954,12 @@ STR_1584    :“Esta Foto de {STRINGID} es barata”
 STR_1585    :“Esta Foto de {STRINGID} es barata”
 STR_1586    :“Esta Foto de {STRINGID} es barata”
 STR_1587    :“Este Pretzel de {STRINGID} es barato”
-STR_1588    :“Este Chocolate de {STRINGID} es barato”
-STR_1589    :“Este Té de {STRINGID} es barato”
+STR_1588    :“Este Chocolate Caliente de {STRINGID} es barato”
+STR_1589    :“Este Té Helado de {STRINGID} es barato”
 STR_1590    :“Este Pastel de {STRINGID} es barato”
 STR_1591    :“Estas Gafas de {STRINGID} son baratas”
 STR_1592    :“Estos Fideos con carne de {STRINGID} son baratos”
-STR_1593    :“Este Arroz Frito de {STRINGID} es barato”
+STR_1593    :“Estos Fideos de arroz frito de {STRINGID} son baratos”
 STR_1594    :“Esta Sopa Wonton de {STRINGID} es barata”
 STR_1595    :“Esta Sopa de Albóndigas de {STRINGID} es barata”
 STR_1596    :“Este Zumo de {STRINGID} es barato”
@@ -987,12 +986,12 @@ STR_1616    :“No voy a pagar tanto por la Foto de {STRINGID}”
 STR_1617    :“No voy a pagar tanto por la Foto de {STRINGID}”
 STR_1618    :“No voy a pagar tanto por la Foto de {STRINGID}”
 STR_1619    :“No voy a pagar tanto por el Pretzel de {STRINGID}”
-STR_1620    :“No voy a pagar tanto por el Chocolate de {STRINGID}”
-STR_1621    :“No voy a pagar tanto por el Té de {STRINGID}”
+STR_1620    :“No voy a pagar tanto por el Chocolate Caliente de {STRINGID}”
+STR_1621    :“No voy a pagar tanto por el Té Helado de {STRINGID}”
 STR_1622    :“No voy a pagar tanto por el Pastel de {STRINGID}”
 STR_1623    :“No voy a pagar tanto por las Gafas de {STRINGID}”
 STR_1624    :“No voy a pagar tanto por los Fideos de {STRINGID}”
-STR_1625    :“No voy a pagar tanto por el Arroz Frito de {STRINGID}”
+STR_1625    :“No voy a pagar tanto por los Fideos de arroz frito de {STRINGID}”
 STR_1626    :“No voy a pagar tanto por la Sopa Wonton de {STRINGID}”
 STR_1627    :“No voy a pagar tanto por la Sopa de Albóndigas de {STRINGID}”
 STR_1628    :“No voy a pagar tanto por el Zumo de {STRINGID}”
@@ -1032,7 +1031,7 @@ STR_1663    :{WINDOW_COLOUR_2}Náusea:
 STR_1664    :{WINDOW_COLOUR_2}Energía:
 STR_1665    :{WINDOW_COLOUR_2}Hambre:
 STR_1666    :{WINDOW_COLOUR_2}Sed:
-STR_1667    :{WINDOW_COLOUR_2}Vejiga:
+STR_1667    :{WINDOW_COLOUR_2}Necesidad de ir al baño:
 STR_1668    :{WINDOW_COLOUR_2}Satisfacción {BLACK}Desconocida
 STR_1669    :{WINDOW_COLOUR_2}Satisfacción: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Clientes totales: {BLACK}{COMMA32}
@@ -1043,10 +1042,10 @@ STR_1674    :Velocidad de frenos
 STR_1676    :Establecer límite de velocidad para los frenos
 STR_1677    :{WINDOW_COLOUR_2}Popularidad: {BLACK}Desconocida
 STR_1678    :{WINDOW_COLOUR_2}Popularidad: {BLACK}{COMMA16}%
-STR_1679    :Hélice arriba (izq)
-STR_1680    :Hélice arriba (der)
-STR_1681    :Hélice abajo (izq)
-STR_1682    :Hélice abajo (der)
+STR_1679    :Cuarto de hélice arriba (izq)
+STR_1680    :Cuarto de hélice arriba (der)
+STR_1681    :Cuarto de hélice abajo (izq)
+STR_1682    :Cuarto de hélice abajo (der)
 STR_1683    :Tamaño de base 2 × 2
 STR_1684    :Tamaño de base 4 × 4
 STR_1685    :Tamaño de base 2 × 4
@@ -1097,14 +1096,14 @@ STR_1729    :¡El terreno no es propiedad del parque!
 STR_1730    :{RED}Cerrado
 STR_1732    :Construir
 STR_1733    :Modo
-STR_1734    :{WINDOW_COLOUR_2}Numero de vueltas:
-STR_1735    :Numero de vueltas de circuito
-STR_1738    :No se puede cambiar el numero de vueltas…
+STR_1734    :{WINDOW_COLOUR_2}Número de vueltas:
+STR_1735    :Número de vueltas de circuito
+STR_1738    :No se puede cambiar el número de vueltas…
 STR_1739    :Carrera ganada por visitante {INT32}
 STR_1740    :Carrera ganada por {STRINGID}
 STR_1741    :¡Aún sin construir!
-STR_1742    :{WINDOW_COLOUR_2}Máx. visitantes en juego:
-STR_1743    :Numero de visitantes máximo permitido en este juego al mismo tiempo
+STR_1742    :{WINDOW_COLOUR_2}Máx. personas en la atracción:
+STR_1743    :Número máximo de personas permitido en esta atracción al mismo tiempo
 STR_1746    :No puedes cambiar esto…
 STR_1747    :{WINDOW_COLOUR_2}Límite de tiempo:
 STR_1748    :Tiempo límite para el viaje
@@ -1197,7 +1196,7 @@ STR_1854    :{WINDOW_COLOUR_2}Construido: {BLACK}El año pasado
 STR_1855    :{WINDOW_COLOUR_2}Construido: {BLACK}Hace {COMMA16} años
 STR_1856    :{WINDOW_COLOUR_2}Beneficio por ítem: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Pérdidas por ítem: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Coste: {BLACK}{CURRENCY} al mes
+STR_1858    :{WINDOW_COLOUR_2}Coste: {BLACK}{CURRENCY2DP} al mes
 STR_1859    :manitas
 STR_1860    :mecánicos
 STR_1861    :guardias de seguridad
@@ -1370,7 +1369,7 @@ STR_2036    :Camisetas
 STR_2037    :Rosquillas
 STR_2038    :Cafés
 STR_2039    :Tazas vacías
-STR_2040    :Pollos Frito
+STR_2040    :Pollos Fritos
 STR_2041    :Limonadas
 STR_2042    :Cajas vacías
 STR_2043    :Botellas vacías
@@ -1469,7 +1468,7 @@ STR_2141    :Taza de jugo vacía
 STR_2142    :Salchicha Asada
 STR_2143    :Tazón vacío
 STR_2147    :Pretzeles
-STR_2148    :Chocolates Caliente
+STR_2148    :Chocolates Calientes
 STR_2149    :Tés Helados
 STR_2150    :Pasteles
 STR_2151    :Gafas de Sol
@@ -1702,7 +1701,7 @@ STR_2390    :{BLACK}Tener al menos 10 tipos de montañas rusas distintas operand
 STR_2391    :{BLACK}Tener al menos {COMMA32} visitantes en tu parque. ¡No dejes que la valoración baje de 700 en ningún momento!
 STR_2392    :{BLACK}Conseguir unos ingresos mensuales por venta de entradas a atracciones de al menos {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Tener al menos 10 tipos de montañas rusas distintas operando en el parque, cada una con una longitud mínima de {LENGTH}, y un valor de emoción de al menos 7.00
-STR_2394    :{BLACK}Terminar de construir 5 de las montañas rusas no terminadas en este parque, diseñándolas de modo que tengan un valor de emoción de al menos {POP16}{POP16}{COMMA2DP32} cada una
+STR_2394    :{BLACK}Completar la construcción de las 5 montañas rusas incompletas de este parque, diseñándolas de modo que tengan un valor de emoción de al menos {POP16}{POP16}{COMMA2DP32} cada una
 STR_2395    :{BLACK}Devolver el crédito y conseguir un valor del parque de al menos {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}Conseguir unos ingresos mensuales por comida, bebida y otros artículos de al menos {POP16}{POP16}{CURRENCY}
 STR_2397    :Ninguno
@@ -2226,7 +2225,7 @@ STR_3264    :¡No se puede aumentar más!
 STR_3265    :¡No se puede reducir más!
 STR_3266    :Selecciona cómo este parque cobra la entrada y las atracciones
 STR_3267    :Prohibir talar árboles
-STR_3268    :Prohibir la tala de lo árboles altos
+STR_3268    :Prohibir la tala de los árboles altos
 STR_3269    :Prohibir cambios en el terreno
 STR_3270    :Prohibir cualquier cambio en el paisaje
 STR_3271    :Prohibir construcciones altas
@@ -2678,7 +2677,7 @@ STR_5573    :Quitar de favoritos
 STR_5574    :Nombre del servidor:
 STR_5575    :Jugadores máximos:
 STR_5576    :Puerto:
-STR_5577    :Won surcoreano (W)
+STR_5577    :Won surcoreano (₩)
 STR_5578    :Rublo ruso (₽)
 STR_5579    :Factor escala ventana:
 STR_5580    :Corona checa (Kč)
@@ -2686,7 +2685,7 @@ STR_5581    :Mostrar FPS
 STR_5582    :Mantener puntero del ratón en ventana
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
-STR_5585    :Desbloquea los límites operativos de funcionamiento, permitiendo cosas como cadenas elevadoras a {VELOCITY}
+STR_5585    :Desbloquea los límites operativos de funcionamiento, permitiendo elementos como cadenas elevadoras a {VELOCITY}
 STR_5586    :Abrir automáticamente tiendas y puestos
 STR_5587    :Las Tiendas y Puestos se abrirán automáticamente después de su construcción.
 STR_5588    :Jugar con otros jugadores
@@ -2865,11 +2864,11 @@ STR_5801    :Desactivar basura
 STR_5802    :Evita que los visitantes tiren basura o vomiten en los senderos.
 STR_5803    :Rotar el elemento del mapa seleccionado.
 STR_5804    :Silenciar
-STR_5805    :Si se selecciona, tu servidor será añadido a la{NEWLINE}lista de servidores públicos en donde cualquiera puede encontrarlo.
+STR_5805    :Si se selecciona, tu servidor será añadido a la{NEWLINE}lista de servidores públicos donde cualquiera puede encontrarlo.
 STR_5806    :Alternar modo ventana
 STR_5807    :{WINDOW_COLOUR_2}Número de Juegos/Atracciones: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de Tiendas y Puestos: {BLACK}{COMMA16}
-STR_5809    :{WINDOW_COLOUR_2}Número de Quioscos y Otras Facilidades: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Número de Quioscos y Otras Instalaciones: {BLACK}{COMMA16}
 STR_5810    :Desactivar límite de vehículos
 STR_5811    :Si se activa, puedes tener hasta{NEWLINE}255 vagones por tren y 255{NEWLINE}trenes por atracción.
 STR_5812    :Mostrar ventana Multijugador
@@ -2960,7 +2959,7 @@ STR_5905    :Una herramienta de generación de mapa que crea automáticamente un
 STR_5906    :Zoom a la posición del cursor
 STR_5907    :Cuando está activado el zoom se centrará en el cursor en lugar de el centro de la pantalla.
 STR_5908    :Permitir cambios de tipo de vía arbitrarios
-STR_5909    :Permite cambiar el tipo de vía de una atracción libremente. Puede causar un crash.
+STR_5909    :Permite cambiar el tipo de vía de una atracción libremente. Puede causar un cuelgue del juego.
 STR_5910    :Aplicar
 STR_5911    :Ver a través de senderos
 STR_5912    :Alternar vista a través de senderos
@@ -3203,7 +3202,6 @@ STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
 STR_6161    :Alternar líneas de cuadrícula
 STR_6162    :Ratón Giratorio Salvaje
 STR_6163    :Carros con forma de ratón atraviesan giros cerrados y caídas cortas, mientras giran gentilmente para desorientar a los pasajeros.
-STR_6164    :{WHITE}❌
 STR_6165    :Usar sincronización vertical
 STR_6166    :Sincroniza cada cuadro mostrado a la tasa de refresco del monitor, evitando la imagen distorsionada.
 STR_6167    :Avanzado

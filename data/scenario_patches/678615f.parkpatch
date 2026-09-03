@@ -1,0 +1,31 @@
+{
+    "scenario_name": "Volcania",
+    "sha256": "678615f0708fce6e04ddc7f0505c3eefcf7a21f78ff4f44f9109c849a5bdd057",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Volcanic Wooden Roller Coaster"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Volcanic Looping Roller Coaster"
+        },
+        {
+            "id": 2,
+            "operation": "set_name",
+            "name": "Volcanic Inverted Coaster"
+        },
+        {
+            "id": 3,
+            "operation": "set_name",
+            "name": "Volcanic Suspended Coaster"
+        },
+        {
+            "id": 4,
+            "operation": "set_name",
+            "name": "Volcanic Wild Mouse"
+        }
+    ]
+}

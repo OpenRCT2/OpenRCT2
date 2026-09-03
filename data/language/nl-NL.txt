@@ -227,7 +227,6 @@ STR_0820    :nov
 STR_0821    :dec
 STR_0822    :Kan bestand met grafische gegevens niet openen
 STR_0823    :Ontbrekend of ontoegankelijk gegevensbestand
-STR_0824    :{BLACK}❌
 STR_0825    :Gekozen naam is al in gebruik
 STR_0826    :Te veel namen gedefinieerd
 STR_0827    :Onvoldoende geld - {CURRENCY2DP} benodigd
@@ -2676,7 +2675,7 @@ STR_5573    :Verw. uit favorieten
 STR_5574    :Servernaam:
 STR_5575    :Max. aant. spelers:
 STR_5576    :Poort:
-STR_5577    :Zuid-Koreaanse won (W)
+STR_5577    :Zuid-Koreaanse won (₩)
 STR_5578    :Russische roebel (₽)
 STR_5579    :Vergrotingsfactor:
 STR_5580    :Tsjechische kroon (Kč)
@@ -3199,7 +3198,6 @@ STR_6160    :{WINDOW_COLOUR_2}Beschikbare voertuigen: {BLACK}{STRING}
 STR_6161    :Rasterlijnen tonen
 STR_6162    :Draaiende wilde muis
 STR_6163    :Muisvormige karretjes rijden snel door scherpe bochten en korte afdalingen, en draaien daarbij zachtjes rond om de passagiers te desoriënteren.
-STR_6164    :{WHITE}❌
 STR_6165    :Verticale synchronisatie
 STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 STR_6167    :Geavanceerd

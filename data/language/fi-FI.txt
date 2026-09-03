@@ -227,7 +227,6 @@ STR_0820    :mar
 STR_0821    :jou
 STR_0822    :Grafiikkadatatiedostoa ei voi avata
 STR_0823    :Puuttuva tai käyttökelvoton datatiedosto
-STR_0824    :{BLACK}❌
 STR_0825    :Nimi on jo käytössä
 STR_0826    :Liian monta nimeä määritetty
 STR_0827    :Ei varaa - vaatii {CURRENCY2DP}
@@ -2679,7 +2678,7 @@ STR_5573    :Poista suosikeista
 STR_5574    :Palvelimen nimi:
 STR_5575    :Maks. pelaajat:
 STR_5576    :Portti:
-STR_5577    :Etelä-Korean won (W)
+STR_5577    :Etelä-Korean won (₩)
 STR_5578    :Venäjän rupla (₽)
 STR_5579    :Ikkunan skaalaus:
 STR_5580    :Tšekin koruna (Kč)
@@ -3204,7 +3203,6 @@ STR_6160    :{WINDOW_COLOUR_2}Ajoneuvotyypit saatavilla: {BLACK}{STRING}
 STR_6161    :Maastoruudukko -kytkin
 STR_6162    :Pyörivä villihiiri
 STR_6163    :Hiiren muotoiset vaunut kiitävät tiukkojen mutkien ja lyhyiden pudotusten läpi, lempeästi pyörien matkustajien hämmennykseksi
-STR_6164    :{WHITE}❌
 STR_6165    :Pystytahdistus
 STR_6166    :Tahdista jokaisen kuvan piirto näytön virkistystaajuuteen, estäen screen tearing -ilmiön
 STR_6167    :Lisäasetukset

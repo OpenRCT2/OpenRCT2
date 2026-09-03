@@ -117,7 +117,7 @@ namespace OpenRCT2
         if (rideEntry == nullptr)
             return;
 
-        auto* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
+        auto* peep = getGameState().entities.getEntity<Guest>(vehicle->peep[0]);
         if (peep == nullptr)
             return;
 

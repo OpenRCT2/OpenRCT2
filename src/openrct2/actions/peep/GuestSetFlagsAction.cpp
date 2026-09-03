@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetFlagsAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
+        auto* peep = gameState.entities.tryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetFlagsAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
+        auto* peep = gameState.entities.tryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());

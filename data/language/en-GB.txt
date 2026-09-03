@@ -230,7 +230,6 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Unable to access graphic data file
 STR_0823    :Missing or inaccessible data file
-STR_0824    :{BLACK}❌
 STR_0825    :Chosen name in use already
 STR_0826    :Too many names defined
 STR_0827    :Not enough cash - requires {CURRENCY2DP}
@@ -2676,7 +2675,7 @@ STR_5573    :Remove From Favourites
 STR_5574    :Server Name:
 STR_5575    :Max Players:
 STR_5576    :Port:
-STR_5577    :South Korean Won (W)
+STR_5577    :South Korean Won (₩)
 STR_5578    :Russian Rouble (₽)
 STR_5579    :Window scale factor:
 STR_5580    :Czech koruna (Kč)
@@ -3201,7 +3200,6 @@ STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
 STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
 STR_6163    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
-STR_6164    :{WHITE}❌
 STR_6165    :Use vertical sync
 STR_6166    :Synchronises each frame displayed to the monitor’s refresh rate, preventing screen tearing.
 STR_6167    :Advanced
@@ -3839,15 +3837,17 @@ STR_7039    :Ride type
 STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
-STR_7043    :Centre ride and scenery windows
-STR_7044    :When using a touchscreen, open the ride, scenery and track design windows in the middle of the screen.
-STR_7045    :Vibration feedback
-STR_7046    :Vibrate briefly when something is built or removed, since a touchscreen has no click to feel.
-STR_7047    :Rotate
-STR_7048    :Rotate the object before placing it.
-STR_7049    :Build
-STR_7050    :Build the object where you positioned it.
-STR_7051    :Cancel
-STR_7052    :Discard the object without building it.
-STR_7053    :Touch action bar
-STR_7054    :Demolish everything inside the marked area.
+STR_7043    :Can’t change land height here…
+STR_7044    :Centre ride and scenery windows
+STR_7045    :When using a touchscreen, open the ride, scenery and track design windows in the middle of the screen.
+STR_7046    :Vibration feedback
+STR_7047    :Vibrate briefly when something is built or removed, since a touchscreen has no click to feel.
+STR_7048    :Rotate
+STR_7049    :Rotate the object before placing it.
+STR_7050    :Build
+STR_7051    :Build the object where you positioned it.
+STR_7052    :Cancel
+STR_7053    :Discard the object without building it.
+STR_7054    :Touch action bar
+STR_7055    :Demolish everything inside the marked area.
+

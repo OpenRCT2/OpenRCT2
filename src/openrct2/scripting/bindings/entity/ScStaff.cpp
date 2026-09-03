@@ -51,7 +51,7 @@ namespace OpenRCT2::Scripting
     Staff* ScStaff::GetStaff(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<Staff>(id);
+        return getGameState().entities.getEntity<Staff>(id);
     }
 
     JSValue ScStaff::staffType_get(JSContext* ctx, JSValue thisVal)
@@ -606,7 +606,7 @@ namespace OpenRCT2::Scripting
     Staff* ScPatrolArea::GetStaff(JSValue thisVal)
     {
         OpaquePatrolAreaData* data = gScPatrolArea.GetOpaque<OpaquePatrolAreaData*>(thisVal);
-        return getGameState().entities.GetEntity<Staff>(data->staffId);
+        return getGameState().entities.getEntity<Staff>(data->staffId);
     }
 
     void ScPatrolArea::ModifyArea(JSContext* ctx, JSValue thisVal, JSValue coordsOrRange, bool reset)

@@ -40,7 +40,7 @@ namespace OpenRCT2::GameActions
 
     Result BalloonPressAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
+        auto balloon = gameState.entities.tryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
             LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);
@@ -51,7 +51,7 @@ namespace OpenRCT2::GameActions
 
     Result BalloonPressAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto balloon = gameState.entities.TryGetEntity<Balloon>(_spriteIndex);
+        auto balloon = gameState.entities.tryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
             LOG_ERROR("Balloon not found for spriteIndex %u", _spriteIndex);

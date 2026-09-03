@@ -230,7 +230,6 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Nem sikerült hozzáférni a grafikai adatfájlhoz
 STR_0823    :Hiányzó vagy nem elérhető adatfájl
-STR_0824    :{BLACK}❌
 STR_0825    :A választott név már használatban van
 STR_0826    :Túl sok név van megadva
 STR_0827    :Nincs elég pénz - {CURRENCY2DP} kellene
@@ -2675,7 +2674,7 @@ STR_5573    :Eltávolítás a kedvencekből
 STR_5574    :Szerver neve:
 STR_5575    :Max. játékosszám:
 STR_5576    :Port:
-STR_5577    :Dél-koreai von (W)
+STR_5577    :Dél-koreai von (₩)
 STR_5578    :Orosz rubel (₽)
 STR_5579    :Ablak méretezése:
 STR_5580    :Cseh korona (Kč)
@@ -3200,7 +3199,6 @@ STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
 STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vadegér
 STR_6163    :Egér alakú kocsik száguldanak éles kanyarokon és rövid eséseken keresztül, miközben szelíden forognak, hogy összezavarják az utasokat
-STR_6164    :{WHITE}❌
 STR_6165    :Vertikális szinkron
 STR_6166    :A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
 STR_6167    :Haladó
@@ -3830,4 +3828,4 @@ STR_7039    :Játéktípus
 STR_7040    :Útkiegészítők
 STR_7041    :Parkinformációs panel
 STR_7042    :Dátuminformációs panel
-
+STR_7043    :Itt nem lehet megváltoztatni a terep magasságát…

@@ -230,7 +230,6 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Ne eblas atingi dosieron de grafikodatumoj
 STR_0823    :Mankanta aŭ malatingebla datumdosieron
-STR_0824    :{BLACK}❌
 STR_0825    :Elektita nomo estas jam uzata
 STR_0826    :Tro da nomoj difinitaj
 STR_0827    :Ne sufiĉe da mono - tio bezonas {CURRENCY2DP}
@@ -2675,7 +2674,7 @@ STR_5573    :Forigi el preferatoj
 STR_5574    :Servilonomo:
 STR_5575    :Maks. ludantoj:
 STR_5576    :Pordo:
-STR_5577    :Sud-Koreia vono (W)
+STR_5577    :Sud-Koreia vono (₩)
 STR_5578    :Rusa rublo (₽)
 STR_5579    :Skalo de fenestro:
 STR_5580    :Ĉeĥia krono (Kč)
@@ -3200,7 +3199,6 @@ STR_6160    :{WINDOW_COLOUR_2}Veturiloj disponeblaj: {BLACK}{STRING}
 STR_6161    :Baskulilo por montri kradliniojn
 STR_6162    :Turniĝanta Sovaĝa Muso
 STR_6163    :Musoformaj ĉaroj rapidiras trans subitaj anguloj kaj mallongaj malaltiĝoj, milde turniĝante por malorientigi la gastojn
-STR_6164    :{WHITE}❌
 STR_6165    :Uzi vertikalan sinkronigon
 STR_6166    :Sinkronigas ĉiun kadron montritan laŭ la ofteco de ekrano-aktualigo, por preventi ekrano-ŝiron.
 STR_6167    :Altnivela
@@ -3830,3 +3828,4 @@ STR_7039    :Atrakciotipo
 STR_7040    :Adicioj de trotuaro
 STR_7041    :Panelo de parkinformoj
 STR_7042    :Panelo de datoinformoj
+STR_7043    :Ne eblas ŝanĝi altecon de tero ĉi tie…

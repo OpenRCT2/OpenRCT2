@@ -218,7 +218,6 @@ STR_0820    :Kas
 STR_0821    :Ara
 STR_0822    :Bu grafiğe ulaşılamıyor
 STR_0823    :Dosya bulunamadı veya açılamıyor
-STR_0824    :{BLACK}❌
 STR_0825    :Bu isim kullanılmakta
 STR_0826    :Çok fazla isim belirlendi
 STR_0827    :Paranız yersiz - {CURRENCY2DP} lazım
@@ -2663,7 +2662,7 @@ STR_5573    :Favorilerden sil
 STR_5574    :Server ismi:
 STR_5575    :Oyuncu sayısı:
 STR_5576    :Port:
-STR_5577    :Güney Kore Wonu (W)
+STR_5577    :Güney Kore Wonu (₩)
 STR_5578    :Rus Rublesi (₽)
 STR_5579    :Pencere ölçeği:
 STR_5580    :Çek Korunası (Kč)
@@ -3187,7 +3186,6 @@ STR_6160    :{WINDOW_COLOUR_2}Mevcut araçlar/tasarımlar: {BLACK}{STRING}
 STR_6161    :Zemin çizgisi
 STR_6162    :Rotasyonlu Vahşi Fare
 STR_6163    :Tekli vagonlar zikzak bir şeritte keskin virajlardan döner ve dik eğilimlerden iner. Ayrıyeten koltuklar heyecanı arttırmak için rotasyon yapar
-STR_6164    :{WHITE}❌
 STR_6165    :Vertical sync aç/kapat
 STR_6166    :Ekranın yırtılmasını önleyerek monitörün yenileme hızına göre her kareyi senkronize eder.
 STR_6167    :Gelişmiş

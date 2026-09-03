@@ -231,7 +231,6 @@ STR_0820    :nov
 STR_0821    :dec
 STR_0822    :Kan inte komma åt grafikfilen
 STR_0823    :Saknad eller otillgänglig datafil
-STR_0824    :{BLACK}❌
 STR_0825    :Det valda namnet används redan
 STR_0826    :För många namn är definierade
 STR_0827    :Inte tillräckligt med pengar – {CURRENCY2DP} behövs
@@ -2681,7 +2680,7 @@ STR_5573    :Ta bort från favoriter
 STR_5574    :Servernamn:
 STR_5575    :Max antal spelare:
 STR_5576    :Port:
-STR_5577    :Sydkoreansk won (W)
+STR_5577    :Sydkoreansk won (₩)
 STR_5578    :Rysk rubel (₽)
 STR_5579    :Fönsterskalning:
 STR_5580    :Tjeckisk krona (Kč)
@@ -3205,7 +3204,6 @@ STR_6160    :{WINDOW_COLOUR_2}Tillgängliga fordon: {BLACK}{STRING}
 STR_6161    :Växla rutmönster på terräng
 STR_6162    :Snurrande vildmus
 STR_6163    :Musformade vagnar susar förbi snäva kurvor och korta stup medan vagnen försiktigt snurrar för att desorientera passagerarna
-STR_6164    :{WHITE}❌
 STR_6165    :Använd vertikal synk
 STR_6166    :Synkroniserar varje bild som ritas med skärmens uppdateringshastighet, vilket förhindrar så kallad ’screen tearing’.
 STR_6167    :Avancerat

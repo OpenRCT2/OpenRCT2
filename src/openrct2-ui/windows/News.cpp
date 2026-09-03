@@ -535,7 +535,7 @@ namespace OpenRCT2::Ui::Windows
                                 break;
                             }
 
-                            auto peep = getGameState().entities.TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem.assoc));
+                            auto peep = getGameState().entities.tryGetEntity<Peep>(EntityId::FromUnderlying(newsItem.assoc));
                             if (peep == nullptr)
                             {
                                 break;

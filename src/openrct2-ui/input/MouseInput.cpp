@@ -573,8 +573,12 @@ namespace OpenRCT2
     static void InputWindowPositionContinue(
         WindowBase& w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords)
     {
+        // Ensure releasing mouse outside of game window does not move window off-screen on X (Y is clamped by toolbars)
+        ScreenCoordsXY newScreenCoordsInside = newScreenCoords;
+        newScreenCoordsInside.x = std::clamp(newScreenCoordsInside.x, 0, ContextGetWidth() - 1);
+
         int32_t snapProximity = w.flags.has(WindowFlag::noSnapping) ? 0 : Config::Get().general.windowSnapProximity;
-        WindowMoveAndSnap(w, newScreenCoords - lastScreenCoords, snapProximity);
+        WindowMoveAndSnap(w, newScreenCoordsInside - lastScreenCoords, snapProximity);
     }
 
     static void InputWindowPositionEnd(WindowBase& w, const ScreenCoordsXY& screenCoords)
@@ -1404,6 +1408,9 @@ namespace OpenRCT2
         WindowBase* cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
         if (cursor_w == nullptr)
         {
+            if (_inputState == InputState::dropdownActive)
+                WindowDropdownClose();
+
             _inputState = InputState::reset;
             return;
         }
@@ -1548,6 +1555,11 @@ namespace OpenRCT2
                             }
                             cursor_w->onDropdown(cursor_widgetIndex, dropdown_index);
                         }
+                    }
+                    else
+                    {
+                        // Close dropdowns even if mouse is released outside of any window
+                        windowMgr->CloseByClass(WindowClass::dropdown);
                     }
                 }
 

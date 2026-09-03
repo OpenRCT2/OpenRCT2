@@ -433,7 +433,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         Guest* GetGuest()
         {
-            auto guest = getGameState().entities.GetEntity<Guest>(EntityId::FromUnderlying(number));
+            auto guest = getGameState().entities.getEntity<Guest>(EntityId::FromUnderlying(number));
             if (guest == nullptr)
             {
                 close();
@@ -1167,11 +1167,11 @@ namespace OpenRCT2::Ui::Windows
             // Intensity
             {
                 auto ft = Formatter();
-                auto maxIntensity = peep->intensity.GetMaximum();
+                auto maxIntensity = peep->intensity.getMaximum();
                 int32_t string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BELOW;
-                if (peep->intensity.GetMinimum() != 0)
+                if (peep->intensity.getMinimum() != 0)
                 {
-                    ft.Add<uint16_t>(peep->intensity.GetMinimum());
+                    ft.Add<uint16_t>(peep->intensity.getMinimum());
                     ft.Add<uint16_t>(maxIntensity);
                     string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BETWEEN;
                     if (maxIntensity == 15)

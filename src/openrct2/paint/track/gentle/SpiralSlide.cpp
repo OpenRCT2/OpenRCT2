@@ -213,7 +213,7 @@ static void PaintSpiralSlide(
     // Base
     const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
+    if (stationObject != nullptr && !stationObject->Flags.has(StationObjectFlag::noPlatforms))
     {
         auto imageId = session.SupportColours.WithIndex(
             rideEntry->Cars[0].baseImageId + ((direction & 1) ? SpiralSlideBaseB : SpiralSlideBaseA));

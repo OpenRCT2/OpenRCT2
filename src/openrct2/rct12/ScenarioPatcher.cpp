@@ -77,6 +77,7 @@ static const std::string _element_index = "element_index";
 static const std::string _ridesKey = "rides";
 static const std::string _rideIdKey = "id";
 static const std::string _operationKey = "operation";
+static const std::string _nameKey = "name";
 
 // Path fix keys
 static const std::string _pathsKey = "paths";
@@ -561,6 +562,30 @@ static void OpenRide(RideId rideId)
     }
 }
 
+static void renameRide(RideId rideId, u8string_view newName)
+{
+    auto* ride = GetRide(rideId);
+    if (ride == nullptr)
+    {
+        Guard::Assert(false, "Invalid Ride Id for renameRide");
+        return;
+    }
+
+    ride->customName = newName;
+}
+
+static void clearRideName(RideId rideId)
+{
+    auto* ride = GetRide(rideId);
+    if (ride == nullptr)
+    {
+        Guard::Assert(false, "Invalid Ride Id for clearRideName");
+        return;
+    }
+
+    ride->customName.clear();
+}
+
 static void ApplyRideFixes(const json_t& scenarioPatch)
 {
     if (!scenarioPatch.contains(_ridesKey))
@@ -610,6 +635,18 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
         else if (operation == "open_ride")
         {
             OpenRide(rideId);
+        }
+        else if (operation == "set_name")
+        {
+            auto newName = Json::GetString(rideFixes[i][_nameKey]);
+            if (newName.empty())
+                Guard::Assert(false, "Need to specify a new name for ride id %d", rideId);
+            else
+                renameRide(rideId, newName);
+        }
+        else if (operation == "clear_name")
+        {
+            clearRideName(rideId);
         }
         else
         {

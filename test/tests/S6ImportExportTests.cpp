@@ -57,11 +57,11 @@ static void GameInit(bool retainSpatialIndices)
 {
     auto& gameState = getGameState();
     if (!retainSpatialIndices)
-        gameState.entities.ResetEntitySpatialIndices();
+        gameState.entities.resetEntitySpatialIndices();
 
     ResetAllSpriteQuadrantPlacements();
     LoadPalette();
-    EntityTweener::Get().Reset();
+    EntityTweener::get().reset();
     MapAnimations::MarkAllTiles();
     FixInvalidVehicleSpriteSizes();
 

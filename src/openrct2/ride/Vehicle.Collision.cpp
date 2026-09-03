@@ -68,7 +68,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         if (otherVehicleIndex == nullptr)
             return false;
 
-        Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(*otherVehicleIndex);
+        Vehicle* collideVehicle = getGameState().entities.getEntity<Vehicle>(*otherVehicleIndex);
         if (collideVehicle == nullptr)
             return false;
 
@@ -258,8 +258,8 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
  */
 void Vehicle::ReverseReverserCar()
 {
-    Vehicle* previousVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
-    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
+    Vehicle* previousVehicle = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* nextVehicle = getGameState().entities.getEntity<Vehicle>(next_vehicle_on_ride);
     if (previousVehicle == nullptr || nextVehicle == nullptr)
     {
         return;

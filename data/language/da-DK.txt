@@ -230,7 +230,6 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Kan ikke tilgå grafik data fil
 STR_0823    :Manglende eller utilgængelig data fil
-STR_0824    :{BLACK}❌
 STR_0825    :Valgte navn er allerede i brug
 STR_0826    :For mange navne defineret
 STR_0827    :Ikke penge nok - Der kræves {CURRENCY2DP}
@@ -2675,7 +2674,7 @@ STR_5573    :Fjern fra favoritter
 STR_5574    :Server Navn:
 STR_5575    :Max spillere:
 STR_5576    :Port:
-STR_5577    :Syd Koreanske Won (W)
+STR_5577    :Syd Koreanske Won (₩)
 STR_5578    :Russiske Rubler (₽)
 STR_5579    :Vindues skalarings faktor:
 STR_5580    :Tjekkiske koruna (Kč)
@@ -3200,7 +3199,6 @@ STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
 STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus
 STR_6163    :Muse formede biler suser gennem skarpe kurver og korte fald, imens de snurrer lidt rundt for at desorientere gæsterne
-STR_6164    :{WHITE}❌
 STR_6165    :Brug vertikal synk.
 STR_6166    :Synkroniserer hvert billede, som vises, til skærmens opdateringshastighed, hvilket forhindrer, udrivninger i grafikken.
 STR_6167    :Avanceret

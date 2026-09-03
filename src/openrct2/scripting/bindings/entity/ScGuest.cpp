@@ -201,7 +201,7 @@ namespace OpenRCT2::Scripting
     Guest* ScGuest::GetGuest(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<Guest>(id);
+        return getGameState().entities.getEntity<Guest>(id);
     }
 
     JSValue ScGuest::tshirtColour_get(JSContext* ctx, JSValue thisVal)
@@ -433,7 +433,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::minIntensity_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->intensity.GetMinimum() : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->intensity.getMinimum() : 0);
     }
     JSValue ScGuest::minIntensity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -442,7 +442,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->intensity = peep->intensity.WithMinimum(value);
+            peep->intensity = peep->intensity.withMinimum(value);
         }
         return JS_UNDEFINED;
     }
@@ -450,7 +450,7 @@ namespace OpenRCT2::Scripting
     JSValue ScGuest::maxIntensity_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetGuest(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? peep->intensity.GetMaximum() : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? peep->intensity.getMaximum() : 0);
     }
     JSValue ScGuest::maxIntensity_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
     {
@@ -459,7 +459,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetGuest(thisVal);
         if (peep != nullptr)
         {
-            peep->intensity = peep->intensity.WithMaximum(value);
+            peep->intensity = peep->intensity.withMaximum(value);
         }
         return JS_UNDEFINED;
     }

@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma warning(disable : 4706) // assignment within conditional expression
-
 #include "WaterObject.h"
 
 #include "../core/Guard.hpp"

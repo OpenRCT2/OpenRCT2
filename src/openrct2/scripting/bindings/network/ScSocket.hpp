@@ -294,6 +294,10 @@ namespace OpenRCT2::Scripting
             {
                 return JS_ThrowPlainError(ctx, "Socket is already connecting.");
             }
+            else if (data->_plugin && data->_plugin->IsStopping())
+            {
+                return JS_DupValue(ctx, thisVal);
+            }
             else if (!IsLocalhostAddress(host) && !IsOnWhiteList(host))
             {
                 return JS_ThrowPlainError(ctx, "For security reasons, only connecting to localhost is allowed.");
