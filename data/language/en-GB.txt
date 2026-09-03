@@ -3839,3 +3839,7 @@ STR_7039    :Ride type
 STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
+STR_7043    :Centre ride and scenery windows
+STR_7044    :When using a touchscreen, open the ride, scenery and track design windows in the middle of the screen.
+STR_7045    :Vibration feedback
+STR_7046    :Vibrate briefly when something is built or removed, since a touchscreen has no click to feel.
