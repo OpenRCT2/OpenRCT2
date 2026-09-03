@@ -33,6 +33,16 @@ ScUi OpenRCT2::Scripting::gScUi;
 ScViewport OpenRCT2::Scripting::gScViewport;
 
 ScWidget OpenRCT2::Scripting::gScWidget;
+ScButtonWidget OpenRCT2::Scripting::gScButtonWidget;
+ScCheckBoxWidget OpenRCT2::Scripting::gScCheckBoxWidget;
+ScColourPickerWidget OpenRCT2::Scripting::gScColourPickerWidget;
+ScDropdownWidget OpenRCT2::Scripting::gScDropdownWidget;
+ScGroupBoxWidget OpenRCT2::Scripting::gScGroupBoxWidget;
+ScLabelWidget OpenRCT2::Scripting::gScLabelWidget;
+ScListViewWidget OpenRCT2::Scripting::gScListViewWidget;
+ScSpinnerWidget OpenRCT2::Scripting::gScSpinnerWidget;
+ScTextBoxWidget OpenRCT2::Scripting::gScTextBoxWidget;
+ScViewportWidget OpenRCT2::Scripting::gScViewportWidget;
 
 ScTitleSequence OpenRCT2::Scripting::gScTitleSequence;
 ScTitleSequenceManager OpenRCT2::Scripting::gScTitleSequenceManager;
@@ -59,6 +69,16 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     gScViewport.Register(ctx);
 
     gScWidget.Register(ctx);
+    gScButtonWidget.Register(ctx);
+    gScCheckBoxWidget.Register(ctx);
+    gScColourPickerWidget.Register(ctx);
+    gScDropdownWidget.Register(ctx);
+    gScGroupBoxWidget.Register(ctx);
+    gScLabelWidget.Register(ctx);
+    gScListViewWidget.Register(ctx);
+    gScSpinnerWidget.Register(ctx);
+    gScTextBoxWidget.Register(ctx);
+    gScViewportWidget.Register(ctx);
 
     gScTitleSequence.Register(ctx);
     gScTitleSequenceManager.Register(ctx);
@@ -85,6 +105,16 @@ void UiScriptExtensions::Unregister()
     gScViewport.Unregister();
 
     gScWidget.Unregister();
+    gScButtonWidget.Unregister();
+    gScCheckBoxWidget.Unregister();
+    gScColourPickerWidget.Unregister();
+    gScDropdownWidget.Unregister();
+    gScGroupBoxWidget.Unregister();
+    gScLabelWidget.Unregister();
+    gScListViewWidget.Unregister();
+    gScSpinnerWidget.Unregister();
+    gScTextBoxWidget.Unregister();
+    gScViewportWidget.Unregister();
 
     gScTitleSequence.Unregister();
     gScTitleSequenceManager.Unregister();
