@@ -3,6 +3,11 @@
 - Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.
+- Improved: [#6146] Touchscreens can now scroll the view by dragging with one finger and zoom by pinching with two.
+- Improved: [#6146] Touchscreens no longer map any gesture to the right mouse button; use Clear Scenery and the Destroy button instead.
+- Improved: [#6146] Touchscreens now show a bar to confirm or cancel a placement, rather than building as soon as the finger lifts.
+- Improved: [#6146] On touchscreens, tapping a ride, object or track design now shows what it is; a second tap chooses it.
+- Improved: [#6146] Android devices now vibrate briefly when a placement is confirmed.
 - Improved: [#23872] Loading a park outside the game now sets the folder of the load/save window, as loading one in-game does.
 - Improved: [#25362] When dragging footpaths, they will now properly adapt to uneven terrain.
 - Improved: [#26099] The ride type selection cheat has been moved into the ride operations tab.
@@ -11,6 +16,8 @@
 - Improved: [#26862] Add a Liquid Glass app icon for macOS 26 and later.
 - Improved: [#26931] The save prompt now bounces the macOS dock icon, flashes the Windows taskbar button and marks Linux windows urgent when it blocks quitting an unfocused game.
 - Improved: [#26936] Rain is now drawn next to the top toolbar, but only when it is centred.
+- Fix: [#6146] The placement ghost no longer disappears when rotating an object on a touchscreen.
+- Fix: [#17101] Placing rides or scenery on a touchscreen builds at the previous touch location, making accurate placement nearly impossible.
 - Fix: [#18197] Track Designs Manager does not autoload scenery.
 - Fix: [#21632] [Plugin] Crash when loading custom image larger than 300 by 300 pixels.
 - Fix: [#24610] Graph tabs on Finances window get a little bit longer every time you switch between them.
