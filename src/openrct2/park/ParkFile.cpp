@@ -2482,7 +2482,7 @@ namespace OpenRCT2
         std::vector<TileCoordsXY> patrolArea;
         if (cs.getMode() == OrcaStream::Mode::writing && entity.patrolInfo != nullptr)
         {
-            patrolArea = entity.patrolInfo->ToVector();
+            patrolArea = entity.patrolInfo->toVector();
         }
         cs.readWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.readWrite(value); });
         if (cs.getMode() == OrcaStream::Mode::reading)
@@ -2496,8 +2496,8 @@ namespace OpenRCT2
                 if (entity.patrolInfo == nullptr)
                     entity.patrolInfo = new PatrolArea();
                 else
-                    entity.patrolInfo->Clear();
-                entity.patrolInfo->Union(patrolArea);
+                    entity.patrolInfo->clear();
+                entity.patrolInfo->unify(patrolArea);
             }
         }
 

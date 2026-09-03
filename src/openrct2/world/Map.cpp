@@ -2265,11 +2265,11 @@ namespace OpenRCT2
                         auto patrol = staff->patrolInfo;
                         if (patrol != nullptr)
                         {
-                            auto positions = patrol->ToVector();
+                            auto positions = patrol->toVector();
                             for (auto& p : positions)
                                 shiftIfNotNull(p, amount);
-                            patrol->Clear();
-                            patrol->Union(positions);
+                            patrol->clear();
+                            patrol->unify(positions);
                         }
                     }
                 }
