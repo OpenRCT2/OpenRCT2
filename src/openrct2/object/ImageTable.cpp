@@ -405,13 +405,13 @@ namespace OpenRCT2
         {
             // Search recursively for any file with the target name (case insensitive)
             auto filter = Path::Combine(objectsPath, u8"*.dat;*.pob");
-            auto scanner = Path::ScanDirectory(filter, true);
-            while (scanner->Next())
+            auto scanner = Path::scanDirectory(filter, true);
+            while (scanner->next())
             {
-                auto currentName = Path::GetFileName(scanner->GetPathRelative());
+                auto currentName = Path::GetFileName(scanner->getPathRelative());
                 if (String::iequals(currentName, name) || String::iequals(currentName, altName))
                 {
-                    objectPath = scanner->GetPath();
+                    objectPath = scanner->getPath();
                     break;
                 }
             }

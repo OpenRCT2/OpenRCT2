@@ -548,8 +548,8 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     // At first, count how many autosaves there are
     {
-        auto scanner = Path::ScanDirectory(filter, false);
-        while (scanner->Next())
+        auto scanner = Path::scanDirectory(filter, false);
+        while (scanner->next())
         {
             autosavesCount++;
         }
@@ -563,12 +563,12 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     std::vector<u8string> autosaveFiles;
     {
-        auto scanner = Path::ScanDirectory(filter, false);
+        auto scanner = Path::scanDirectory(filter, false);
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            if (scanner->Next())
+            if (scanner->next())
             {
-                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->GetPathRelative()));
+                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->getPathRelative()));
             }
         }
     }

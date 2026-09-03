@@ -585,18 +585,18 @@ namespace OpenRCT2::Ui
             }
 
             auto themesPattern = Path::Combine(GetThemePath(), u8"*.json");
-            auto scanner = Path::ScanDirectory(themesPattern, true);
-            while (scanner->Next())
+            auto scanner = Path::scanDirectory(themesPattern, true);
+            while (scanner->next())
             {
-                const auto& fileInfo = scanner->GetFileInfo();
-                auto name = Path::GetFileNameWithoutExtension(fileInfo.Name);
+                const auto& fileInfo = scanner->getFileInfo();
+                auto name = Path::GetFileNameWithoutExtension(fileInfo.name);
 
                 AvailableTheme theme{};
                 theme.Name = name;
                 theme.Path = GetThemeFileName(name);
                 outThemes->push_back(std::move(theme));
 
-                if (Path::Equals(CurrentThemePath, scanner->GetPath()))
+                if (Path::Equals(CurrentThemePath, scanner->getPath()))
                 {
                     ActiveAvailableThemeIndex = outThemes->size() - 1;
                 }
