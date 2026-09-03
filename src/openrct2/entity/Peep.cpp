@@ -2686,7 +2686,7 @@ namespace OpenRCT2
     void Peep::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
-        if (stream.IsLoading())
+        if (stream.isLoading())
         {
             name = nullptr;
         }
