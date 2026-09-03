@@ -3,12 +3,12 @@
 - Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
 - Feature: [#26827] [Plugin] Add map resize hook to scripting api.
 - Feature: [#26877] Clear Scenery can remove footpath additions or walls separately.
+- Feature: [#26938] [Plugin] Allow getting and setting caret position for textbox while it is in focus.
 - Improved: [#6146] Touchscreens can now scroll the view by dragging with one finger and zoom by pinching with two.
 - Improved: [#6146] Touchscreens no longer map any gesture to the right mouse button; use Clear Scenery and the Destroy button instead.
 - Improved: [#6146] Touchscreens now show a bar to confirm or cancel a placement, rather than building as soon as the finger lifts.
 - Improved: [#6146] On touchscreens, tapping a ride, object or track design now shows what it is; a second tap chooses it.
 - Improved: [#6146] Android devices now vibrate briefly when a placement is confirmed.
-- Feature: [#26938] [Plugin] Allow getting and setting caret position for textbox while it is in focus.
 - Improved: [#16269] Unnamed rides in the original Added Attractions & Loopy Landscapes scenarios now use their official names from Rollercoaster Tycoon Classic.
 - Improved: [#19000] Add sprite font glyph for the Won (₩).
 - Improved: [#21441] Add sprite font glyph for the Hryvnia (₴).
@@ -21,11 +21,11 @@
 - Improved: [#26862] Add a Liquid Glass app icon for macOS 26 and later.
 - Improved: [#26931] The save prompt now bounces the macOS dock icon, flashes the Windows taskbar button and marks Linux windows urgent when it blocks quitting an unfocused game.
 - Improved: [#26936] Rain is now drawn next to the top toolbar, but only when it is centred.
-- Fix: [#6146] The placement ghost no longer disappears when rotating an object on a touchscreen.
-- Fix: [#17101] Placing rides or scenery on a touchscreen builds at the previous touch location, making accurate placement nearly impossible.
 - Improved: [#26996] Ride names in scenarios can now be autopatched.
+- Fix: [#6146] The placement ghost no longer disappears when rotating an object on a touchscreen.
 - Fix: [#7858] Dropdowns do not close when an action by a plugin or another player in multiplayer closes their parent window.
 - Fix: [#15891] Lower case hard sign is drawn as upper case.
+- Fix: [#17101] Placing rides or scenery on a touchscreen builds at the previous touch location, making accurate placement nearly impossible.
 - Fix: [#18197] Track Designs Manager does not autoload scenery.
 - Fix: [#18415] Preview in the Track Designs Manager is not updated after deleting the first design.
 - Fix: [#18782] Dropdowns do not close and become non-functional when mouse is released outside of the game window.
