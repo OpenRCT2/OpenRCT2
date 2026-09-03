@@ -3850,4 +3850,3 @@ STR_7052    :Cancel
 STR_7053    :Discard the object without building it.
 STR_7054    :Touch action bar
 STR_7055    :Demolish everything inside the marked area.
-
