@@ -94,6 +94,7 @@ namespace OpenRCT2
         progressWindow = 137,
         titleVersion = 138,
         editorParkEntrance = 139,
+        touchActionBar = 140,
 
         // Only used for colour schemes
         staff = 220,

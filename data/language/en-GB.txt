@@ -3843,3 +3843,11 @@ STR_7043    :Centre ride and scenery windows
 STR_7044    :When using a touchscreen, open the ride, scenery and track design windows in the middle of the screen.
 STR_7045    :Vibration feedback
 STR_7046    :Vibrate briefly when something is built or removed, since a touchscreen has no click to feel.
+STR_7047    :Rotate
+STR_7048    :Rotate the object before placing it.
+STR_7049    :Build
+STR_7050    :Build the object where you positioned it.
+STR_7051    :Cancel
+STR_7052    :Discard the object without building it.
+STR_7053    :Touch action bar
+STR_7054    :Demolish everything inside the marked area.
