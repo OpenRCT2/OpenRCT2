@@ -10,12 +10,14 @@
 #pragma once
 
 #include "../../core/StringTypes.h"
+#include "../Location.hpp"
 
 namespace OpenRCT2::World::MapGenerator
 {
-    struct Settings;
+    struct MapGenContext;
 
-    bool LoadHeightmapImage(const utf8* path);
-    void UnloadHeightmapImage();
-    void GenerateFromHeightmapImage(Settings* settings);
+    bool loadHeightMapImage(const utf8* path);
+    void unloadHeightMapImage();
+    TileCoordsXY queryHeightMapFromImageDimensions();
+    void generateHeightMapFromImage(MapGenContext& ctx);
 } // namespace OpenRCT2::World::MapGenerator

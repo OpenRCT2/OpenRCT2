@@ -9,6 +9,11 @@
 
 #pragma once
 
+#include "../Location.hpp"
+#include "BaseMap.hpp"
+#include "MapGen.h"
+#include "TileQueue.hpp"
+
 #include <cstdint>
 #include <functional>
 
@@ -16,18 +21,29 @@ struct TileCoordsXY;
 
 namespace OpenRCT2::World::MapGenerator
 {
-    enum
-    {
-        SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
-        SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
-        SLOPE_N_THRESHOLD_FLAGS = (1 << 2),
-        SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
-    };
+    using SmoothFunction = std::function<int32_t(const MapGenContext&, TileCoordsXY)>;
 
-    using SmoothFunction = std::function<int32_t(TileCoordsXY)>;
+    int32_t smoothTileSlopeStrong(const MapGenContext& ctx, TileCoordsXY tileCoords);
+    int32_t smoothTileSlopeWeak(const MapGenContext& ctx, TileCoordsXY tileCoords);
 
-    int32_t smoothTileStrong(TileCoordsXY tileCoords);
-    int32_t smoothTileWeak(TileCoordsXY tileCoords);
+    void smoothBox(HeightMap& heightMap, int32_t iterations);
+    void smoothGaussian(HeightMap& heightMap, float sigma);
+    void sharpen(HeightMap& heightMap, int32_t iterations);
+    void smoothBilateral(HeightMap& heightMap, float sigmaSpace, float sigmaIntensity);
 
-    void smoothMap(TileCoordsXY mapSize, SmoothFunction smoothFunc);
+    void applyHeightMapFilter(MapGenContext& ctx);
+    void applyTileSlopeSmooth(MapGenContext& ctx);
+
+    TileCoordsXY getWorldCoordsOffset(const Settings& settings, int32_t overscanFactor);
+    TileCoordsXY worldCoordsToGenCoords(const MapGenContext& ctx, const TileCoordsXY& worldCoords);
+    TileCoordsXY genCoordsToWorldCoords(const MapGenContext& ctx, const TileCoordsXY& genCoords);
+    bool isInWorldMap(const MapGenContext& ctx, const TileCoordsXY& genCoords);
+
+    uint8_t quantizeHeight(float height);
+
+    void completeDistanceMap(DistanceMap& distanceMap, StableTileQueue& queue);
+    void initZeroDistance(const TileCoordsXY& pos, DistanceMap& distanceMap, StableTileQueue& queue);
+    void computeRiverFlagBasedDistanceMap(
+        const MapGenContext& ctx, DistanceMap& distanceMap, River::RiverFlag flag, bool invert = false);
+
 } // namespace OpenRCT2::World::MapGenerator

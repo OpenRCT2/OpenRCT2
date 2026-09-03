@@ -18,6 +18,11 @@ namespace OpenRCT2
         return squaredMetres * 11;
     }
 
+    int32_t SquaredFeetToSquaredMetres(int32_t squaredFeet)
+    {
+        return squaredFeet / 11;
+    }
+
     int32_t MetresToFeet(int32_t metres)
     {
         // 1 metre = 3.2808399 feet
@@ -45,18 +50,39 @@ namespace OpenRCT2
 
     int32_t BaseZToMetres(int16_t baseZ)
     {
+        // for absolute heights, m=0.75z-10.5
         return (baseZ / 2 - 7) * 1.5;
     }
 
     uint8_t MetresToBaseZ(int16_t metres)
     {
+        // for absolute heights, z=1.33m+10.5
         return ((metres / 1.5) + 7) * 2;
     }
 
-    int32_t HeightUnitsToMetres(int32_t heightUnit)
+    int32_t HeightUnitsToMetres(int32_t heightUnits)
     {
-        // 1 unit = 0.75 metres
-        return (heightUnit * 3) >> 2;
+        // for relative heights, 1 unit = 0.75 metres, m = 0.75h
+        return (heightUnits * 3) / 4;
+    }
+
+    int32_t MetresToHeightUnits(int32_t metres)
+    {
+        // for relative heights, 1 metre = 1.33 units, h = 1.33m
+        return (metres * 4) / 3;
+    }
+
+    int32_t TileUnitsToMetres(int32_t tileUnits)
+    {
+        // ratio based on map area = 10 * tiles -> sqrt(10) -> 3.1622776601683795
+        // 3001/949=3.162276080084299, error=0.0000015801
+        return (tileUnits * 3001) / 949;
+    }
+
+    int32_t MetresToTileUnits(int32_t metres)
+    {
+        // inverse of above
+        return (metres * 949) / 3001;
     }
 
     int32_t ToHumanReadableSpeed(int32_t baseSpeed)

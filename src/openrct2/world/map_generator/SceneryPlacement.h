@@ -9,13 +9,11 @@
 
 #pragma once
 
-#include "../../object/ObjectTypes.h"
+#include "../Location.hpp"
+#include "MapGen.h"
+#include "rule/Rule.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
-    struct Settings;
-
-    ObjectEntryIndex generateSurfaceTextureId(Settings* settings);
-    ObjectEntryIndex generateEdgeTextureId(Settings* settings, ObjectEntryIndex surfaceTextureId);
-    ObjectEntryIndex generateBeachTextureId();
+    void placeScenery(const TileCoordsXY& loc, const Rule::SceneryResult& sceneryResult);
 } // namespace OpenRCT2::World::MapGenerator

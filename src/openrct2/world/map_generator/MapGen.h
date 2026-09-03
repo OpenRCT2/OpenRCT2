@@ -10,50 +10,138 @@
 #pragma once
 
 #include "../Location.hpp"
+#include "BaseMap.hpp"
+#include "SettingsTypes.hpp"
+#include "river/RiverTypes.hpp"
+#include "rule/Rule.h"
+
+#include <optional>
+#include <vector>
 
 namespace OpenRCT2::World::MapGenerator
 {
-    enum class Algorithm : uint8_t
+    std::string randomSeed();
+
+    enum class HeightMapGenerator : uint8_t
     {
-        blank,
-        simplexNoise,
-        heightmapImage,
+        flat,
+        noise,
+        image
+    };
+
+    enum class NoiseAlgorithm : uint8_t
+    {
+        simplex,
+        warped,
+        ridged,
+        voronoi,
+    };
+
+    enum class Bias : uint8_t
+    {
+        none,
+        island,
+        valley,
+        coastal,
+        river, // TODO should probably rename/remove it
+        canyon,
+        mountain,
+        cliff,
+        terrace
+    };
+
+    enum class Filter : uint8_t
+    {
+        none,
+        box,
+        gaussian,
+        sharpen,
+        bilateral,
+        erosion
+    };
+
+    enum class SlopeSmooth : uint8_t
+    {
+        none,
+        weak,
+        strong
+    };
+
+    struct BiasSettings
+    {
+        Bias type = Bias::none;
+        NumericSetting<int32_t, 0, 100, 5> strength = 75;
+        NumericSetting<int32_t, 0, 10> steps = 1;
+    };
+
+    struct NoiseSettings
+    {
+        NoiseAlgorithm algorithm = NoiseAlgorithm::simplex;
+        NumericSetting<int32_t, 0, 1000, 5> baseFrequency = 175;
+        NumericSetting<int32_t, 1, 10> octaves = 6;
+
+        BiasSettings bias{};
+    };
+
+    struct FilterSettings
+    {
+        Filter type = Filter::none;
+        NumericSetting<int32_t, 1, 10> strength = 1;
+    };
+
+    struct MapSize
+    {
+        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> x = 150;
+        NumericSetting<int32_t, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical> y = 150;
     };
 
     struct Settings
     {
-        // Base
-        Algorithm algorithm = Algorithm::blank;
-        TileCoordsXY mapSize{ 150, 150 };
-        int32_t waterLevel = 6;
-        int32_t landTexture = 0;
-        int32_t edgeTexture = 0;
-        int32_t heightmapLow = 14;
-        int32_t heightmapHigh = 60;
-        bool smoothTileEdges = true;
+        HeightMapGenerator generator = HeightMapGenerator::flat;
+        MapSize mapSize{};
 
-        // Features (e.g. tree, rivers, lakes etc.)
-        bool trees = true;
-        int32_t treeToLandRatio = 25;
-        int32_t minTreeAltitude = 10;
-        int32_t maxTreeAltitude = 50;
-        bool beaches = true;
+        std::string seed = randomSeed();
 
-        // Simplex Noise Parameters
-        int32_t simplex_base_freq = 175;
-        int32_t simplex_octaves = 6;
+        NumericSetting<int32_t, kMinimumWaterHeight, kMaximumWaterHeight - 1, 2> waterLevel = 6;
+        NumericSetting<int32_t, kMinimumLandHeight, kMaximumLandHeight - 1, 2> heightmapLow = 14;
+        NumericSetting<int32_t, kMinimumLandHeight, kMaximumLandHeight - 1, 2> heightmapHigh = 60;
 
-        // Height map settings
-        bool smooth_height_map = true;
-        uint32_t smooth_strength = 1;
-        bool normalize_height = true;
+        NoiseSettings noise{};
+
+        bool normalizeHeight = true;
+
+        FilterSettings filter{};
+
+        SlopeSmooth slopeSmooth = SlopeSmooth::weak;
+
+        River::RiverSettings river{};
+
+        Rule::TextureRuleList textureRules{};
+        Rule::SceneryRuleList sceneryRules{};
     };
 
-    class HeightMap;
+    struct DebugSign
+    {
+        TileCoordsXY position;
+        std::string text;
+        Drawing::Colour textColour = Drawing::Colour::white;
+        Drawing::Colour backgroundColour = Drawing::Colour::brightRed;
+    };
 
-    void generate(Settings* settings);
-    void resetSurfaces(Settings* settings);
-    void setWaterLevel(int32_t waterLevel);
-    void setMapHeight(Settings* settings, const HeightMap& heightMap);
+    struct MapGenContext
+    {
+        const Settings& settings;
+        uint32_t seed; // the technical seed used duration map generation, derived from settings.seed
+        TileCoordsXY dimensions;
+        int32_t overscan;
+        TileCoordsXY overscanOffset;
+        HeightMap heightMap;
+        std::optional<River::RiverContext> riverContext; // TODO get rid of the optional? keeps 11 bytes per tile
+    };
 
+    void resetMapGenSettings();
+    Settings& getMapGenSettings();
+
+    void setRandomSeed(Settings& settings);
+    void generate(const Settings& settings);
 } // namespace OpenRCT2::World::MapGenerator
