@@ -544,7 +544,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 
 void TrackDesign::Serialise(DataSerialiser& stream)
 {
-    if (stream.IsLogging())
+    if (stream.isLogging())
     {
         stream << DS_TAG(gameStateData.name);
         // There is too much information logged.

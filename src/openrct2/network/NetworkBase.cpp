@@ -3087,8 +3087,8 @@ namespace OpenRCT2::Network
 
         DataSerialiser stream(false);
         const size_t size = packet.header.size - packet.bytesRead;
-        stream.GetStream().WriteArray(packet.read(size), size);
-        stream.GetStream().SetPosition(0);
+        stream.getStream().WriteArray(packet.read(size), size);
+        stream.getStream().SetPosition(0);
 
         ga->Serialise(stream);
         // Set player to sender, should be 0 if sent from client.
