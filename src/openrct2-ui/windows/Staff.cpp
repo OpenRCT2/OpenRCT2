@@ -35,6 +35,7 @@
 #include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepActionFormat.h>
 #include <openrct2/peep/PeepAnimations.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -559,7 +560,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
             auto ft = Formatter();
-            staff->formatActionTo(ft);
+            formatPeepActionTo(*staff, ft);
             const auto& widget = widgets[WIDX_BTM_LABEL];
             auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
             int32_t widgetWidth = widget.width() - 1;

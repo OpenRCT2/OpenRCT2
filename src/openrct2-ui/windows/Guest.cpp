@@ -39,6 +39,7 @@
 #include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepActionFormat.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
@@ -807,7 +808,7 @@ namespace OpenRCT2::Ui::Windows
 
             {
                 auto ft = Formatter();
-                peep->formatActionTo(ft);
+                formatPeepActionTo(*peep, ft);
                 int32_t textWidth = actionLabelWidget.width() - 1;
                 drawTextEllipsised(rt, screenPos, textWidth, STR_BLACK_STRING, ft, { TextAlignment::centre });
             }

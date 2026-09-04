@@ -26,6 +26,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepActionFormat.h>
 #include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ui/WindowManager.h>
@@ -677,7 +678,7 @@ namespace OpenRCT2::Ui::Windows
 
                             // Action
                             ft = Formatter();
-                            peep->formatActionTo(ft);
+                            formatPeepActionTo(*peep, ft);
                             drawTextEllipsised(rt, { 133, y }, 314, format, ft);
                             break;
                         case GuestViewType::thoughts:
@@ -867,7 +868,7 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 case GuestViewType::actions:
-                    peep.formatActionTo(ft);
+                    formatPeepActionTo(peep, ft);
                     break;
                 case GuestViewType::thoughts:
                 {
