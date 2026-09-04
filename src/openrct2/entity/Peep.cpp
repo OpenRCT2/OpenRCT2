@@ -37,6 +37,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
 #include "../peep/GuestPathfinding.h"
+#include "../peep/PeepActionFormat.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -1278,47 +1279,31 @@ namespace OpenRCT2
         }
     }
 
-    void Peep::formatActionTo(Formatter& ft) const
+    PeepActionDescription Peep::getActionDescription() const
     {
         switch (state)
         {
             case PeepState::falling:
-                ft.Add<StringId>(action == PeepActionType::drowning ? STR_DROWNING : STR_WALKING);
-                break;
+                if (action == PeepActionType::drowning)
+                    return { PeepActionDescriptionType::drowning };
+
+                return { PeepActionDescriptionType::walking };
             case PeepState::one:
-                ft.Add<StringId>(STR_WALKING);
-                break;
+                return { PeepActionDescriptionType::walking };
             case PeepState::onRide:
             case PeepState::leavingRide:
             case PeepState::enteringRide:
             {
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
+                const auto ride = GetRide(currentRide);
+                if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside))
                 {
-                    ft.Add<StringId>(
-                        ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
-                    ride->formatNameTo(ft);
+                    return { PeepActionDescriptionType::inRide, currentRide };
                 }
-                else
-                {
-                    ft.Add<StringId>(STR_ON_RIDE).Add<StringId>(kStringIdNone);
-                }
-                break;
+
+                return { PeepActionDescriptionType::onRide, currentRide };
             }
             case PeepState::buying:
-            {
-                ft.Add<StringId>(STR_AT_RIDE);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::atShop, currentRide };
             case PeepState::walking:
             case PeepState::usingBin:
             {
@@ -1326,135 +1311,68 @@ namespace OpenRCT2
                 {
                     if (!guest->guestHeadingToRideId.IsNull())
                     {
-                        auto ride = GetRide(guest->guestHeadingToRideId);
-                        if (ride != nullptr)
-                        {
-                            ft.Add<StringId>(STR_HEADING_FOR);
-                            ride->formatNameTo(ft);
-                        }
-                    }
-                    else
-                    {
-                        ft.Add<StringId>(peepFlags.has(PeepFlag::leavingPark) ? STR_LEAVING_PARK : STR_WALKING);
+                        return { PeepActionDescriptionType::headingFor, guest->guestHeadingToRideId };
                     }
                 }
-                break;
+
+                if (peepFlags.has(PeepFlag::leavingPark))
+                    return { PeepActionDescriptionType::leavingPark };
+
+                return { PeepActionDescriptionType::walking };
             }
             case PeepState::queuingFront:
             case PeepState::queuing:
-            {
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ft.Add<StringId>(STR_QUEUING_FOR);
-                    ride->formatNameTo(ft);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::queuingFor, currentRide };
             case PeepState::sitting:
-                ft.Add<StringId>(STR_SITTING);
-                break;
+                return { PeepActionDescriptionType::sitting };
             case PeepState::watching:
                 if (!currentRide.IsNull())
                 {
                     auto ride = GetRide(currentRide);
                     if (ride != nullptr)
                     {
-                        ft.Add<StringId>((standingFlags & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
-                        ride->formatNameTo(ft);
+                        auto baseType = (standingFlags & 0x1) ? PeepActionDescriptionType::watchingRideConstruction
+                                                              : PeepActionDescriptionType::watchingRide;
+                        return { baseType, currentRide };
                     }
                 }
-                else
-                {
-                    ft.Add<StringId>((standingFlags & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
-                }
-                break;
+
+                return { (standingFlags & 0x1) ? PeepActionDescriptionType::watchingRideConstructionUnspecific
+                                               : PeepActionDescriptionType::watchingScenery };
             case PeepState::picked:
-                ft.Add<StringId>(STR_SELECT_LOCATION);
-                break;
+                return { PeepActionDescriptionType::pickedUp };
             case PeepState::patrolling:
             case PeepState::enteringPark:
             case PeepState::leavingPark:
-                ft.Add<StringId>(STR_WALKING);
-                break;
+                return { PeepActionDescriptionType::walking };
             case PeepState::mowing:
-                ft.Add<StringId>(STR_MOWING_GRASS);
-                break;
+                return { PeepActionDescriptionType::mowingGrass };
             case PeepState::sweeping:
-                ft.Add<StringId>(STR_SWEEPING_FOOTPATH);
-                break;
+                return { PeepActionDescriptionType::sweepingFootpath };
             case PeepState::watering:
-                ft.Add<StringId>(STR_WATERING_GARDENS);
-                break;
+                return { PeepActionDescriptionType::wateringGardens };
             case PeepState::emptyingBin:
-                ft.Add<StringId>(STR_EMPTYING_LITTER_BIN);
-                break;
+                return { PeepActionDescriptionType::emptyingBin };
             case PeepState::answering:
                 if (subState == 0)
                 {
-                    ft.Add<StringId>(STR_WALKING);
+                    return { PeepActionDescriptionType::walking };
                 }
-                else if (subState == 1)
+                if (subState == 1)
                 {
-                    ft.Add<StringId>(STR_ANSWERING_RADIO_CALL);
+                    return { PeepActionDescriptionType::answeringRadioCall };
                 }
-                else
-                {
-                    ft.Add<StringId>(STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
-                    auto ride = GetRide(currentRide);
-                    if (ride != nullptr)
-                    {
-                        ride->formatNameTo(ft);
-                    }
-                    else
-                    {
-                        ft.Add<StringId>(kStringIdNone);
-                    }
-                }
-                break;
+
+                return { PeepActionDescriptionType::respondingToBreakdownCall, currentRide };
             case PeepState::fixing:
-            {
-                ft.Add<StringId>(STR_FIXING_RIDE);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::fixingRide, currentRide };
             case PeepState::headingToInspection:
-            {
-                ft.Add<StringId>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::headingToInspectRide, currentRide };
             case PeepState::inspecting:
-            {
-                ft.Add<StringId>(STR_INSPECTING_RIDE);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::inspectingRide, currentRide };
         }
+
+        return { PeepActionDescriptionType::walking };
     }
 
     static constexpr StringId kStaffNames[] = {
@@ -1569,13 +1487,13 @@ namespace OpenRCT2
             ft.Add<StringId>(peep->peepFlags.has(PeepFlag::tracking) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
             ft.Add<uint32_t>(GetPeepFaceSpriteSmall(guest));
             guest->formatNameTo(ft);
-            guest->formatActionTo(ft);
+            formatPeepActionTo(*peep, ft);
         }
         else
         {
             ft.Add<StringId>(STR_STAFF_MAP_TIP);
             peep->formatNameTo(ft);
-            peep->formatActionTo(ft);
+            formatPeepActionTo(*peep, ft);
         }
 
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);

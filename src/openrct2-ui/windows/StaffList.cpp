@@ -39,6 +39,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepActionFormat.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>
@@ -412,7 +413,7 @@ namespace OpenRCT2::Ui::Windows
                     drawTextEllipsised(rt, { 0, y }, nameColumnSize, format, ft);
 
                     ft = Formatter();
-                    peep->formatActionTo(ft);
+                    formatPeepActionTo(*peep, ft);
                     drawTextEllipsised(rt, { actionOffset, y }, actionColumnSize, format, ft);
 
                     // True if a patrol path is set for the worker
