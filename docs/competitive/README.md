@@ -145,13 +145,11 @@ The **Public game list** checkbox (host setup) registers the match with a master
 
 The official master server (`servers.openrct2.io`) has a fixed schema for its listing data and currently drops the extra fields a competitive listing needs (`gameMode`, `competitiveProtocol`, `matchId`, etc.) - so a competitive match registered there alone will not show up tagged as competitive on another client's Competitive tab. This branch still registers with it regardless, in the hope upstream eventually preserves those fields.
 
-In the meantime, `tools/competitive-master-server.js` is a minimal, zero-dependency, self-hosted listing server that speaks the same protocol and preserves every field a competitive listing needs. Setting `master_server_url` in `config.ini` does **not** replace the official server - both the host's advertiser and every client's server browser query the official server and the configured one together, merging results. Run it with:
-
-```
-node tools/competitive-master-server.js
-```
+In the meantime, `tools/competitive-master-server.exe` is a minimal, standalone, self-hosted listing server that speaks the same protocol and preserves every field a competitive listing needs. It has no runtime dependencies (no Node/Python install required) - just double-click it and leave the window open while hosting. Setting `master_server_url` in `config.ini` does **not** replace the official server - both the host's advertiser and every client's server browser query the official server and the configured one together, merging results.
 
 It listens on port `8080` by default; forward that too if you want internet clients (not just LAN) to see the listing. Every machine that wants to see or publish to it (both host and joining clients) needs the same `master_server_url` set in their `config.ini`.
+
+`tools/competitive-master-server.js` is an equivalent Node implementation of the same protocol, kept for reference/non-Windows use - the `.exe` (built from `competitive-master-server.cpp` via `tools/build-competitive-master-server.cmd`) is the one meant for end users.
 
 ## Known remaining work
 
