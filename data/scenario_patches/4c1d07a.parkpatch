@@ -1,0 +1,10 @@
+{
+    "scenario_name": "Electric Fields",
+    "sha256": "4c1d07a146b058c9bb49a6b7046ea6abfbe2e887498c6a40f5e14f7d7a39eb68",
+    "rides": [
+        {
+            "id": [ 0, 1 ],
+            "operation": "clear_name"
+        }
+    ]
+}
