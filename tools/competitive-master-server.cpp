@@ -249,20 +249,30 @@ namespace
     }
 } // namespace
 
+namespace
+{
+    // Double-clicked from Explorer, this process's console window closes the instant main()
+    // returns - without this, an early failure (e.g. port already in use) is an invisible flicker.
+    int FailWithPause(const std::string& message)
+    {
+        std::cerr << message << "\n\nPress Enter to close this window...";
+        std::cin.get();
+        return 1;
+    }
+} // namespace
+
 int main()
 {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        std::cerr << "WSAStartup failed\n";
-        return 1;
+        return FailWithPause("WSAStartup failed");
     }
 
     SOCKET listener = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (listener == INVALID_SOCKET)
     {
-        std::cerr << "socket() failed: " << WSAGetLastError() << "\n";
-        return 1;
+        return FailWithPause("socket() failed: " + std::to_string(WSAGetLastError()));
     }
 
     sockaddr_in address{};
@@ -272,14 +282,14 @@ int main()
 
     if (bind(listener, reinterpret_cast<sockaddr*>(&address), sizeof(address)) == SOCKET_ERROR)
     {
-        std::cerr << "bind() failed: " << WSAGetLastError() << " - is port " << kPort << " already in use?\n";
-        return 1;
+        return FailWithPause(
+            "bind() failed: " + std::to_string(WSAGetLastError()) + " - is port " + std::to_string(kPort)
+            + " already in use (perhaps by another copy of this program)?");
     }
 
     if (listen(listener, SOMAXCONN) == SOCKET_ERROR)
     {
-        std::cerr << "listen() failed: " << WSAGetLastError() << "\n";
-        return 1;
+        return FailWithPause("listen() failed: " + std::to_string(WSAGetLastError()));
     }
 
     std::cout << "Competitive master server listening on :" << kPort << "\n";
