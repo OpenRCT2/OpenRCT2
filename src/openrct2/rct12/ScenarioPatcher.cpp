@@ -620,7 +620,18 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
             return;
         }
 
-        RideId rideId = RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey]));
+        std::vector<RideId> rideIds{};
+        if (rideFixes[i][_rideIdKey].is_array())
+        {
+            for (size_t j = 0; j < rideFixes[i][_rideIdKey].size(); j++)
+            {
+                rideIds.push_back(RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey][j])));
+            }
+        }
+        else
+        {
+            rideIds.push_back(RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey])));
+        }
         auto operation = Json::GetString(rideFixes[i][_operationKey]);
 
         if (_dryRun)
@@ -628,29 +639,32 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
             continue;
         }
 
-        if (operation == "swap_entrance_exit")
+        for (auto rideId : rideIds)
         {
-            SwapRideEntranceAndExit(rideId);
-        }
-        else if (operation == "open_ride")
-        {
-            OpenRide(rideId);
-        }
-        else if (operation == "set_name")
-        {
-            auto newName = Json::GetString(rideFixes[i][_nameKey]);
-            if (newName.empty())
-                Guard::Assert(false, "Need to specify a new name for ride id %d", rideId);
+            if (operation == "swap_entrance_exit")
+            {
+                SwapRideEntranceAndExit(rideId);
+            }
+            else if (operation == "open_ride")
+            {
+                OpenRide(rideId);
+            }
+            else if (operation == "set_name")
+            {
+                auto newName = Json::GetString(rideFixes[i][_nameKey]);
+                if (newName.empty())
+                    Guard::Assert(false, "Need to specify a new name for ride id %d", rideId);
+                else
+                    renameRide(rideId, newName);
+            }
+            else if (operation == "clear_name")
+            {
+                clearRideName(rideId);
+            }
             else
-                renameRide(rideId, newName);
-        }
-        else if (operation == "clear_name")
-        {
-            clearRideName(rideId);
-        }
-        else
-        {
-            Guard::Assert(false, "Unsupported ride fix operation");
+            {
+                Guard::Assert(false, "Unsupported ride fix operation");
+            }
         }
     }
 }
