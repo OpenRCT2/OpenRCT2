@@ -71,6 +71,7 @@ namespace OpenRCT2::Network
         std::vector<ServerListEntry> ReadFavourites() const;
         bool WriteFavourites(const std::vector<ServerListEntry>& entries) const;
         std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint) const;
+        std::future<std::vector<ServerListEntry>> FetchOnlineServerListAsync(const std::string& masterServerUrl) const;
 
     public:
         ServerListEntry& GetServer(size_t index);

@@ -132,6 +132,27 @@ Leaderboard-only observers keep their competition-state connection while watchin
 
 The endpoint is a normal direct OpenRCT2 server connection. LAN play works without a relay; internet viewers still require the target's selected watch port to be reachable through its firewall/NAT. Relay support remains useful future work for networks that cannot accept inbound connections.
 
+## Internet play
+
+For a host to be reachable over the internet (not just LAN), forward these on the host's router:
+
+- The lobby port (default `11755`, TCP).
+- The watch/spectate port (fixed default `12000`, TCP) - every solo park's local watch server tries this port first, and only falls back to a small local offset range to avoid collisions when running multiple parks on one dev machine.
+
+### Public game list
+
+The **Public game list** checkbox (host setup) registers the match with a master server so it appears in other players' server browser, using the same registration/heartbeat mechanism as vanilla OpenRCT2 multiplayer.
+
+The official master server (`servers.openrct2.io`) has a fixed schema for its listing data and currently drops the extra fields a competitive listing needs (`gameMode`, `competitiveProtocol`, `matchId`, etc.) - so a competitive match registered there alone will not show up tagged as competitive on another client's Competitive tab. This branch still registers with it regardless, in the hope upstream eventually preserves those fields.
+
+In the meantime, `tools/competitive-master-server.js` is a minimal, zero-dependency, self-hosted listing server that speaks the same protocol and preserves every field a competitive listing needs. Setting `master_server_url` in `config.ini` does **not** replace the official server - both the host's advertiser and every client's server browser query the official server and the configured one together, merging results. Run it with:
+
+```
+node tools/competitive-master-server.js
+```
+
+It listens on port `8080` by default; forward that too if you want internet clients (not just LAN) to see the listing. Every machine that wants to see or publish to it (both host and joining clients) needs the same `master_server_url` set in their `config.ini`.
+
 ## Known remaining work
 
 - Optional relayed discovery/transport for hosts who cannot accept an inbound connection.

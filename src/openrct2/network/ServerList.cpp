@@ -376,18 +376,52 @@ namespace OpenRCT2::Network
     #ifdef DISABLE_HTTP
         return {};
     #else
+        // Always query the official master server, plus a configured masterServerUrl IN ADDITION
+        // (not instead) - see NetworkServerAdvertiser for why a competitive listing needs both.
+        return std::async(std::launch::async, [this] {
+            std::vector<std::string> urls = { kMasterServerURL };
+            const auto& customUrl = Config::Get().network.masterServerUrl;
+            if (!customUrl.empty() && customUrl != kMasterServerURL)
+            {
+                urls.push_back(customUrl);
+            }
+
+            std::vector<std::future<std::vector<ServerListEntry>>> futures;
+            for (const auto& url : urls)
+            {
+                futures.push_back(FetchOnlineServerListAsync(url));
+            }
+
+            std::vector<ServerListEntry> mergedEntries;
+            for (auto& f : futures)
+            {
+                try
+                {
+                    auto entries = f.get();
+                    mergedEntries.insert(mergedEntries.end(), entries.begin(), entries.end());
+                }
+                catch (...)
+                {
+                    // Ignore any exceptions from a particular master server - one being down
+                    // shouldn't hide listings from the other.
+                }
+            }
+            return mergedEntries;
+        });
+    #endif
+    }
+
+    std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync(const std::string& masterServerUrl) const
+    {
+    #ifdef DISABLE_HTTP
+        return {};
+    #else
 
         auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
         auto f = p->get_future();
 
-        std::string masterServerUrl = kMasterServerURL;
-        if (!Config::Get().network.masterServerUrl.empty())
-        {
-            masterServerUrl = Config::Get().network.masterServerUrl;
-        }
-
         Http::Request request;
-        request.url = std::move(masterServerUrl);
+        request.url = masterServerUrl;
         request.method = Http::Method::get;
         request.header["Accept"] = "application/json";
         // Despite DoAsync, the future below is not stored, so it will block the calling thread until the request completes
