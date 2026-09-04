@@ -1157,7 +1157,7 @@ STR_1816    :Select information type to show in guest list
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}All guests
 STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
-STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
+STR_1820    :{WINDOW_COLOUR_2}{STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Guests thinking {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
 STR_1823    :Show guests’ thoughts about this ride/attraction
@@ -3840,3 +3840,17 @@ STR_7046    :Status bar (RCT1 style)
 STR_7047    :Step control (Track Designer)
 STR_7048    :Step control (Scenario Editor)
 STR_7049    :OpenRCT2
+STR_7050    :Guests walking
+STR_7051    :Guests heading for {STRINGID}
+STR_7052    :Guests queuing for {STRINGID}
+STR_7053    :Guests drowning
+STR_7054    :Guests on {STRINGID}
+STR_7055    :Guests in {STRINGID}
+STR_7056    :Guests at {STRINGID}
+STR_7057    :Guests sitting
+STR_7058    :Guests picked up
+STR_7059    :Guests watching {STRINGID}
+STR_7060    :Guests watching construction of {STRINGID}
+STR_7061    :Guests looking at scenery
+STR_7062    :Guests leaving the park
+STR_7063    :Guests watching new ride being constructed
