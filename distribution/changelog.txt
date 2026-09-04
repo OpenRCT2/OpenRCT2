@@ -45,6 +45,7 @@
 - Fix: [#26992] A partial or no car is drawn on the ride vehicle tab if the ride has 0 or fewer cars per train.
 - Fix: [#26996] Correct spelling of some rides in Heide-Park, Diamond Heights and Alton Towers.
 - Fix: [#26996] Scenario patch for Okinawa Coast doesn’t work for CD versions of Wacky Worlds (meaning landscape ownership fixes do not get applied).
+- Fix: [#26998] A crash occurs when generating a `Simplex Height Map` if the width is greater than the height.
 - Fix: [#27004] Windows are moved off-screen when mouse is released outside of the game window.
 - Fix: [#27023] [Plugin] Transparent plugin sprites do not work correctly in software rendering mode.
 
