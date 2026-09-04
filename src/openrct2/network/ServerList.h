@@ -41,6 +41,7 @@ namespace OpenRCT2::Network
         ServerKind Kind = ServerKind::cooperative;
         uint16_t CompetitiveProtocol{};
         std::string CompetitionPhase;
+        std::string MatchId;
         std::string ScenarioName;
         std::string ScenarioFileName;
         std::string ScenarioHash;

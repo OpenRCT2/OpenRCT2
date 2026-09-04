@@ -53,33 +53,86 @@ namespace OpenRCT2::Competitive
         return hasEligibleParticipant;
     }
 
-    int64_t CalculateDailyPoints(const ParkMetrics& metrics)
-    {
-        if (metrics.guests == 0)
-        {
-            return 0;
-        }
-
-        return static_cast<int64_t>(std::llround(
-            static_cast<double>(metrics.guests) * static_cast<double>(metrics.meanHappiness) / 255.0));
-    }
-
     int64_t GetMetricValue(const Score& score, Metric metric)
     {
         switch (metric)
         {
-            case Metric::rating:
+            case Metric::parkRating:
                 return score.rating;
-            case Metric::guests:
+            case Metric::guestHappiness:
+                return score.happiness;
+            case Metric::guestCount:
                 return score.guests;
-            case Metric::cash:
-                return score.cash;
             case Metric::parkValue:
                 return score.parkValue;
-            case Metric::points:
-                return score.points;
+            case Metric::cash:
+                return score.cash;
         }
-        return score.points;
+        return 0;
+    }
+
+    std::optional<Metric> SingleMetric(const MatchRules& rules)
+    {
+        std::optional<Metric> only;
+        for (size_t m = 0; m < kMetricCount; m++)
+        {
+            if (rules.metricWeights[m] == 0)
+                continue;
+            if (only.has_value())
+                return std::nullopt; // more than one weighted metric
+            only = static_cast<Metric>(m);
+        }
+        return only;
+    }
+
+    namespace
+    {
+        bool ScoreIsEligible(const Score& score, const std::vector<Participant>& participants)
+        {
+            const auto p = std::find_if(participants.begin(), participants.end(), [&](const Participant& v) {
+                return v.id == score.participantId;
+            });
+            return p != participants.end() && p->role != Role::spectator && !p->forfeited;
+        }
+    } // namespace
+
+    int64_t ComputeCompositeScore(
+        ParticipantId participantId, const std::vector<Score>& scores, const std::vector<Participant>& participants,
+        const MatchRules& rules)
+    {
+        std::array<double, kMetricCount> maxValue{};
+        const Score* mine = nullptr;
+        for (const auto& score : scores)
+        {
+            if (!ScoreIsEligible(score, participants))
+                continue;
+            if (score.participantId == participantId)
+                mine = &score;
+            for (size_t m = 0; m < kMetricCount; m++)
+            {
+                const auto value = static_cast<double>(GetMetricValue(score, static_cast<Metric>(m)));
+                maxValue[m] = std::max(maxValue[m], value);
+            }
+        }
+        if (mine == nullptr)
+            return 0;
+
+        uint32_t totalWeight = 0;
+        double blended = 0.0;
+        for (size_t m = 0; m < kMetricCount; m++)
+        {
+            const auto weight = rules.metricWeights[m];
+            if (weight == 0)
+                continue;
+            totalWeight += weight;
+            const double value = static_cast<double>(GetMetricValue(*mine, static_cast<Metric>(m)));
+            const double normalised = maxValue[m] <= 0.0 ? 0.0 : std::clamp(value / maxValue[m], 0.0, 1.0);
+            blended += (weight / 100.0) * normalised;
+        }
+        if (totalWeight == 0)
+            return 0;
+        blended *= 100.0 / totalWeight; // tolerate weights that don't sum to exactly 100
+        return static_cast<int64_t>(std::llround(std::clamp(blended, 0.0, 1.0) * 1000.0));
     }
 
     ParticipantStatus GetParticipantStatus(const Participant& participant, Phase phase)
@@ -112,9 +165,9 @@ namespace OpenRCT2::Competitive
 
         score.rating = metrics.rating;
         score.guests = metrics.guests;
+        score.happiness = metrics.meanHappiness;
         score.parkValue = metrics.parkValue;
         score.cash = metrics.cash;
-        score.points += CalculateDailyPoints(metrics);
     }
 
     void FreezeScore(Score& score, const ParkMetrics& metrics, uint16_t year)
@@ -126,43 +179,37 @@ namespace OpenRCT2::Competitive
 
         score.rating = metrics.rating;
         score.guests = metrics.guests;
+        score.happiness = metrics.meanHappiness;
         score.parkValue = metrics.parkValue;
         score.cash = metrics.cash;
         score.frozenAtYear = year;
     }
 
     std::optional<ParticipantId> ChooseWinner(
-        const std::vector<Score>& scores, const std::vector<Participant>& participants, Metric metric)
+        const std::vector<Score>& scores, const std::vector<Participant>& participants, const MatchRules& rules)
     {
-        const Score* winner = nullptr;
+        std::optional<ParticipantId> winner;
+        int64_t bestComposite = -1;
         for (const auto& score : scores)
         {
-            const auto participant = std::find_if(
-                participants.begin(), participants.end(),
-                [&score](const Participant& value) { return value.id == score.participantId; });
-            if (participant == participants.end() || participant->role == Role::spectator || participant->forfeited)
-            {
+            if (!ScoreIsEligible(score, participants))
                 continue;
-            }
-
-            if (winner == nullptr || GetMetricValue(score, metric) > GetMetricValue(*winner, metric)
-                || (GetMetricValue(score, metric) == GetMetricValue(*winner, metric) && score.points > winner->points)
-                || (GetMetricValue(score, metric) == GetMetricValue(*winner, metric) && score.points == winner->points
-                    && score.participantId < winner->participantId))
+            const auto composite = ComputeCompositeScore(score.participantId, scores, participants, rules);
+            if (!winner.has_value() || composite > bestComposite
+                || (composite == bestComposite && score.participantId < *winner))
             {
-                winner = &score;
+                bestComposite = composite;
+                winner = score.participantId;
             }
         }
-
-        if (winner == nullptr)
-        {
-            return std::nullopt;
-        }
-        return winner->participantId;
+        return winner;
     }
 
-    bool TargetReached(const Score& score, const MatchRules& rules)
+    bool TargetReached(
+        ParticipantId participantId, const std::vector<Score>& scores, const std::vector<Participant>& participants,
+        const MatchRules& rules)
     {
-        return rules.victoryMode == VictoryMode::target && GetMetricValue(score, rules.metric) >= rules.target;
+        return rules.victoryMode == VictoryMode::target
+            && ComputeCompositeScore(participantId, scores, participants, rules) >= rules.target;
     }
 } // namespace OpenRCT2::Competitive

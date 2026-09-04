@@ -117,6 +117,7 @@ namespace OpenRCT2::Network
             entry.Kind = ServerKind::competitive;
             entry.CompetitiveProtocol = Json::GetNumber<uint16_t>(server["competitiveProtocol"]);
             entry.CompetitionPhase = Json::GetString(server["phase"]);
+            entry.MatchId = Json::GetString(server["matchId"]);
             entry.ScenarioName = Json::GetString(server["scenarioName"]);
             entry.ScenarioFileName = Json::GetString(server["scenarioFileName"]);
             entry.ScenarioHash = Json::GetString(server["scenarioHash"]);

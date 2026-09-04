@@ -21,6 +21,8 @@
     #include <openrct2/config/Config.h>
     #include <openrct2/competitive/CompetitiveSession.h>
     #include <openrct2/core/String.hpp>
+    #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/drawing/Text.h>
     #include <openrct2/interface/Chat.h>
     #include <openrct2/localisation/Formatting.h>
@@ -298,10 +300,25 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_MAX_PLAYERS_DOWN,
         CWIDX_ADVERTISE,
         CWIDX_LATE_JOIN,
+        CWIDX_ANON_ATTACKS,
+        CWIDX_CUSTOM_DESIGNS,
         CWIDX_VICTORY,
         CWIDX_VICTORY_BUTTON,
-        CWIDX_METRIC,
-        CWIDX_METRIC_BUTTON,
+        CWIDX_W_RATING,
+        CWIDX_W_RATING_UP,
+        CWIDX_W_RATING_DOWN,
+        CWIDX_W_HAPPINESS,
+        CWIDX_W_HAPPINESS_UP,
+        CWIDX_W_HAPPINESS_DOWN,
+        CWIDX_W_GUESTS,
+        CWIDX_W_GUESTS_UP,
+        CWIDX_W_GUESTS_DOWN,
+        CWIDX_W_PARKVALUE,
+        CWIDX_W_PARKVALUE_UP,
+        CWIDX_W_PARKVALUE_DOWN,
+        CWIDX_W_CASH,
+        CWIDX_W_CASH_UP,
+        CWIDX_W_CASH_DOWN,
         CWIDX_DEADLINE,
         CWIDX_DEADLINE_UP,
         CWIDX_DEADLINE_DOWN,
@@ -311,6 +328,15 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_MAX_SPEED,
         CWIDX_MAX_SPEED_UP,
         CWIDX_MAX_SPEED_DOWN,
+        CWIDX_MAX_RIDES,
+        CWIDX_MAX_RIDES_UP,
+        CWIDX_MAX_RIDES_DOWN,
+        CWIDX_MAX_STALLS,
+        CWIDX_MAX_STALLS_UP,
+        CWIDX_MAX_STALLS_DOWN,
+        CWIDX_RTLIMIT,
+        CWIDX_RTLIMIT_UP,
+        CWIDX_RTLIMIT_DOWN,
         CWIDX_VANDAL_ENABLED,
         CWIDX_VANDAL_COST,
         CWIDX_VANDAL_COST_UP,
@@ -475,7 +501,7 @@ namespace OpenRCT2::Ui::Windows
         CWIDX_CREATE_LOBBY,
     };
 
-    static constexpr ScreenSize kCompetitiveWindowSize = { 770, 750 };
+    static constexpr ScreenSize kCompetitiveWindowSize = { 880, 750 };
 
     // clang-format off
     static constexpr auto _competitiveServerStartWidgets = makeWidgets(
@@ -488,13 +514,21 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({170,101}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeWidget({310,101}, {140, 14}, WidgetType::checkbox,     WindowColour::secondary, kStringIdEmpty),
         makeWidget({460,101}, {150, 14}, WidgetType::checkbox,     WindowColour::secondary, kStringIdEmpty),
+        makeWidget({626,101}, {180, 14}, WidgetType::checkbox,     WindowColour::secondary, kStringIdEmpty),
+        makeWidget({626,123}, {200, 14}, WidgetType::checkbox,     WindowColour::secondary, kStringIdEmpty),
         makeWidget({170,123}, {440, 14}, WidgetType::dropdownMenu, WindowColour::secondary),
         makeWidget({598,124}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH),
-        makeWidget({170,140}, {440, 14}, WidgetType::dropdownMenu, WindowColour::secondary),
-        makeWidget({598,141}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH),
-        makeHoldableSpinnerWidgets({170,157}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
-        makeHoldableSpinnerWidgets({170,174}, {160, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
-        makeHoldableSpinnerWidgets({170,191}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,141}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,158}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,175}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,192}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,209}, { 90, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,233}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,250}, {160, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,267}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,284}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,301}, {120, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
+        makeHoldableSpinnerWidgets({170,318}, {160, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
 
         makeWidget({  8, 68}, {100, 14}, WidgetType::checkbox, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({112, 68}, {108, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
@@ -557,7 +591,7 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({322,638}, {115, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({443,638}, {167, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
         makeHoldableSpinnerWidgets({632,638}, {130, 13}, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({430,728}, {180, 14}, WidgetType::button, WindowColour::secondary, kStringIdEmpty)
+        makeWidget({310,728}, {260, 14}, WidgetType::button, WindowColour::secondary, kStringIdEmpty)
     );
     // clang-format on
 
@@ -572,6 +606,8 @@ namespace OpenRCT2::Ui::Windows
         std::string _sabotageTabText = "Sabotage rules";
         std::string _advertiseText = "Public game list";
         std::string _lateJoinText = "Allow late join";
+        std::string _anonAttacksText = "Anonymous attacks";
+        std::string _customDesignsText = "Custom designs only";
         std::string _createText = "Choose scenario and create lobby";
         std::string _vandalText = "Vandal";
         std::string _misinfoText = "Misinformation";
@@ -586,10 +622,13 @@ namespace OpenRCT2::Ui::Windows
         std::string _stonersText = "Stoners";
         std::string _maxPlayersCaption;
         std::string _victoryCaption;
-        std::string _metricCaption;
+        std::array<std::string, Competitive::kMetricCount> _weightCaptions;
+        std::string _rtLimitCaption;
         std::string _deadlineCaption;
         std::string _targetCaption;
         std::string _maxSpeedCaption;
+        std::string _maxRidesCaption;
+        std::string _maxStallsCaption;
         std::string _pacingHint;
         std::string _vandalCostCaption;
         std::string _vandalCooldownCaption;
@@ -659,6 +698,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[CWIDX_PORT].string = const_cast<utf8*>(_port.c_str());
             widgets[CWIDX_ADVERTISE].setString(_advertiseText.c_str());
             widgets[CWIDX_LATE_JOIN].setString(_lateJoinText.c_str());
+            widgets[CWIDX_ANON_ATTACKS].setString(_anonAttacksText.c_str());
+            widgets[CWIDX_CUSTOM_DESIGNS].setString(_customDesignsText.c_str());
             widgets[CWIDX_VANDAL_ENABLED].setString(_vandalText.c_str());
             widgets[CWIDX_MISINFO_ENABLED].setString(_misinfoText.c_str());
             widgets[CWIDX_POISON_ENABLED].setString(_poisonText.c_str());
@@ -698,12 +739,20 @@ namespace OpenRCT2::Ui::Windows
                     WindowStartTextbox(*this, widgetIndex, _port, 6);
                     break;
                 case CWIDX_ADVERTISE:
-                    Config::Get().network.advertise = !Config::Get().network.advertise;
+                    Config::Get().network.competitiveAdvertise = !Config::Get().network.competitiveAdvertise;
                     Config::Save();
                     invalidate();
                     break;
                 case CWIDX_LATE_JOIN:
                     _rules.allowLateJoin = !_rules.allowLateJoin;
+                    invalidate();
+                    break;
+                case CWIDX_ANON_ATTACKS:
+                    _rules.anonymousAttacks = !_rules.anonymousAttacks;
+                    invalidate();
+                    break;
+                case CWIDX_CUSTOM_DESIGNS:
+                    _rules.customDesignsOnly = !_rules.customDesignsOnly;
                     invalidate();
                     break;
                 case CWIDX_VANDAL_ENABLED:
@@ -763,9 +812,18 @@ namespace OpenRCT2::Ui::Windows
                 case CWIDX_VICTORY_BUTTON:
                     ShowVictoryDropdown();
                     return;
-                case CWIDX_METRIC_BUTTON:
-                    ShowMetricDropdown();
-                    return;
+                case CWIDX_W_RATING_UP: AdjustWeight(Competitive::Metric::parkRating, 10); break;
+                case CWIDX_W_RATING_DOWN: AdjustWeight(Competitive::Metric::parkRating, -10); break;
+                case CWIDX_W_HAPPINESS_UP: AdjustWeight(Competitive::Metric::guestHappiness, 10); break;
+                case CWIDX_W_HAPPINESS_DOWN: AdjustWeight(Competitive::Metric::guestHappiness, -10); break;
+                case CWIDX_W_GUESTS_UP: AdjustWeight(Competitive::Metric::guestCount, 10); break;
+                case CWIDX_W_GUESTS_DOWN: AdjustWeight(Competitive::Metric::guestCount, -10); break;
+                case CWIDX_W_PARKVALUE_UP: AdjustWeight(Competitive::Metric::parkValue, 10); break;
+                case CWIDX_W_PARKVALUE_DOWN: AdjustWeight(Competitive::Metric::parkValue, -10); break;
+                case CWIDX_W_CASH_UP: AdjustWeight(Competitive::Metric::cash, 10); break;
+                case CWIDX_W_CASH_DOWN: AdjustWeight(Competitive::Metric::cash, -10); break;
+                case CWIDX_RTLIMIT_UP: AdjustRealTimeLimit(60); break;
+                case CWIDX_RTLIMIT_DOWN: AdjustRealTimeLimit(-60); break;
                 case CWIDX_MAX_PLAYERS_UP:
                     _rules.maxPlayers = std::min<uint8_t>(64, _rules.maxPlayers + 1);
                     break;
@@ -789,6 +847,18 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case CWIDX_MAX_SPEED_DOWN:
                     _rules.maxGameSpeed = std::max<uint8_t>(1, _rules.maxGameSpeed - 1);
+                    break;
+                case CWIDX_MAX_RIDES_UP:
+                    _rules.maxRidesPerType = std::min<uint16_t>(1000, _rules.maxRidesPerType + 1);
+                    break;
+                case CWIDX_MAX_RIDES_DOWN:
+                    _rules.maxRidesPerType = _rules.maxRidesPerType > 0 ? _rules.maxRidesPerType - 1 : 0;
+                    break;
+                case CWIDX_MAX_STALLS_UP:
+                    _rules.maxStallsPerType = std::min<uint16_t>(1000, _rules.maxStallsPerType + 1);
+                    break;
+                case CWIDX_MAX_STALLS_DOWN:
+                    _rules.maxStallsPerType = _rules.maxStallsPerType > 0 ? _rules.maxStallsPerType - 1 : 0;
                     break;
                 case CWIDX_VANDAL_USESYEAR_UP: AdjustUsesPerYear(_rules.vandal, 1); break;
                 case CWIDX_VANDAL_USESYEAR_DOWN: AdjustUsesPerYear(_rules.vandal, -1); break;
@@ -827,11 +897,6 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == CWIDX_VICTORY_BUTTON && dropdownIndex <= 1)
             {
                 _rules.victoryMode = static_cast<Competitive::VictoryMode>(dropdownIndex);
-            }
-            else if (widgetIndex == CWIDX_METRIC_BUTTON && dropdownIndex <= 4)
-            {
-                _rules.metric = static_cast<Competitive::Metric>(dropdownIndex);
-                NormaliseTarget();
             }
             invalidate();
         }
@@ -880,7 +945,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(CWIDX_TAB_MATCH, matchPage);
             setWidgetPressed(CWIDX_TAB_SABOTAGE, !matchPage);
 
-            for (WidgetIndex i = CWIDX_COMPETITION_NAME; i <= CWIDX_MAX_SPEED_DOWN; i++)
+            for (WidgetIndex i = CWIDX_COMPETITION_NAME; i <= CWIDX_RTLIMIT_DOWN; i++)
                 widgets[i].setVisible(matchPage);
             for (WidgetIndex i = CWIDX_VANDAL_ENABLED; i <= CWIDX_STONERS_USESYEAR_DOWN; i++)
                 widgets[i].setVisible(!matchPage);
@@ -889,8 +954,10 @@ namespace OpenRCT2::Ui::Windows
             for (WidgetIndex i = CWIDX_TARGET; i <= CWIDX_TARGET_DOWN; i++)
                 widgets[i].setVisible(matchPage && targetMode);
 
-            setCheckboxValue(CWIDX_ADVERTISE, Config::Get().network.advertise);
+            setCheckboxValue(CWIDX_ADVERTISE, Config::Get().network.competitiveAdvertise);
             setCheckboxValue(CWIDX_LATE_JOIN, _rules.allowLateJoin);
+            setCheckboxValue(CWIDX_ANON_ATTACKS, _rules.anonymousAttacks);
+            setCheckboxValue(CWIDX_CUSTOM_DESIGNS, _rules.customDesignsOnly);
             setCheckboxValue(CWIDX_VANDAL_ENABLED, _rules.vandal.enabled);
             setCheckboxValue(CWIDX_MISINFO_ENABLED, _rules.misinformation.enabled);
             setCheckboxValue(CWIDX_POISON_ENABLED, _rules.poison.enabled);
@@ -935,47 +1002,73 @@ namespace OpenRCT2::Ui::Windows
         {
             drawWidgets(rt);
             auto colour = colours[1];
+
+            // Clip every custom text draw to the window so an over-long line (or a longer
+            // translation) is cut at the edge instead of painting outside and leaving artefacts
+            // behind when the window is moved.
+            Drawing::RenderTarget clippedRT;
+            if (!ClipRenderTarget(clippedRT, rt, windowPos, width, height))
+                return;
+            const int32_t textWidth = width - 20;
+
             if (page == 0)
             {
-                DrawLabel(rt, 8, CWIDX_COMPETITION_NAME, "Competition name", colour);
-                DrawLabel(rt, 8, CWIDX_PLAYER_NAME, "Your park / player name", colour);
-                DrawLabel(rt, 8, CWIDX_PORT, "Competitive port", colour);
-                DrawLabel(rt, 8, CWIDX_MAX_PLAYERS, "Maximum competing parks", colour);
-                DrawLabel(rt, 8, CWIDX_VICTORY, "Victory condition", colour);
-                DrawLabel(rt, 8, CWIDX_METRIC, "Ranking metric", colour);
-                DrawLabel(rt, 8, CWIDX_DEADLINE, _rules.victoryMode == Competitive::VictoryMode::target ? "Fallback deadline year" : "Deadline year", colour);
+                DrawLabel(clippedRT, 8, CWIDX_COMPETITION_NAME, "Competition name", colour);
+                DrawLabel(clippedRT, 8, CWIDX_PLAYER_NAME, "Your park / player name", colour);
+                DrawLabel(clippedRT, 8, CWIDX_PORT, "Competitive port", colour);
+                DrawLabel(clippedRT, 8, CWIDX_MAX_PLAYERS, "Maximum competing parks", colour);
+                DrawLabel(clippedRT, 8, CWIDX_VICTORY, "Victory condition", colour);
+                DrawLabel(clippedRT, 8, CWIDX_W_RATING, "Park rating weight", colour);
+                DrawLabel(clippedRT, 8, CWIDX_W_HAPPINESS, "Guest happiness weight", colour);
+                DrawLabel(clippedRT, 8, CWIDX_W_GUESTS, "Guest count weight", colour);
+                DrawLabel(clippedRT, 8, CWIDX_W_PARKVALUE, "Park value weight", colour);
+                DrawLabel(clippedRT, 8, CWIDX_W_CASH, "Cash weight", colour);
+                {
+                    const auto total = TotalWeight();
+                    const std::string totalText = total == 100
+                        ? "Weights total 100% - the score is a 0-1000 blend of these."
+                        : "Weights total " + std::to_string(total) + "% - must be 100% to start.";
+                    drawText(clippedRT, { 270, widgets[CWIDX_W_RATING].top }, totalText, { colour });
+                }
+                DrawLabel(clippedRT, 8, CWIDX_DEADLINE, _rules.victoryMode == Competitive::VictoryMode::target ? "Fallback deadline year" : "Deadline year", colour);
                 if (_rules.victoryMode == Competitive::VictoryMode::target)
-                    DrawLabel(rt, 8, CWIDX_TARGET, "Target", colour);
-                DrawLabel(rt, 8, CWIDX_MAX_SPEED, "Maximum game speed", colour);
-                drawText(rt, windowPos + ScreenCoordsXY{ 8, 226 }, "Every competitor receives a fresh copy of the selected scenario, paused on its opening day.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 8, 241 }, "Each park then runs on its own clock. Cash is the scenario's actual park cash.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 8, 256 }, "Attack prices use park cash; no-money scenarios use cooldowns without a cash charge.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 8, 271 }, "Competition results use the rule above instead of the scenario objective.", { colour });
-                drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 8, 286 }, 600, _pacingHint, { colour });
+                    DrawLabel(clippedRT, 8, CWIDX_TARGET, "Target score (0-1000)", colour);
+                DrawLabel(clippedRT, 8, CWIDX_MAX_SPEED, "Maximum game speed", colour);
+                DrawLabel(clippedRT, 8, CWIDX_MAX_RIDES, "Max rides of one type per park", colour);
+                DrawLabel(clippedRT, 8, CWIDX_MAX_STALLS, "Max stalls of one type per park", colour);
+                DrawLabel(clippedRT, 8, CWIDX_RTLIMIT, "Real-time limit", colour);
+                drawText(clippedRT, { 340, widgets[CWIDX_RTLIMIT].top }, "0 = off. Ends the match after this much live play.", { colour });
+                drawText(clippedRT, { 300, widgets[CWIDX_MAX_RIDES].top }, "0 = unlimited. Stops cheese like 100 hedge mazes.", { colour });
+                drawText(clippedRT, { 300, widgets[CWIDX_MAX_STALLS].top }, "Toilets, ATMs, first aid and info kiosks are never capped.", { colour });
+                drawTextWrapped(clippedRT, { 8, 345 }, textWidth, "Every competitor receives a fresh copy of the selected scenario, paused on its opening day.", { colour });
+                drawTextWrapped(clippedRT, { 8, 360 }, textWidth, "Each park then runs on its own clock. Cash is the scenario's actual park cash.", { colour });
+                drawTextWrapped(clippedRT, { 8, 375 }, textWidth, "Attack prices use park cash; no-money scenarios use cooldowns without a cash charge.", { colour });
+                drawTextWrapped(clippedRT, { 8, 390 }, textWidth, "Competition results use the rule above instead of the scenario objective.", { colour });
+                drawTextWrapped(clippedRT, { 8, 405 }, textWidth, _pacingHint, { colour });
             }
             else
             {
-                drawText(rt, windowPos + ScreenCoordsXY{ 112, 51 }, "Cost", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 226, 51 }, "Minimum gap", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 322, 51 }, "Victim time", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 443, 51 }, "Effect strength", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 632, 51 }, "Uses per year", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10, 88 }, "Angry guest; security-blocked attempts also consume its quota.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,145 }, "Cancels future arrivals at the reverse strength of a half-price entry campaign.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,202 }, "Exact buyers at the selected food/drink stall receive the configured nausea chance.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{443,241 }, "All occupants", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,259 }, "Walks to a selected toilet, kills its current occupants, and destroys the building.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,316 }, "Guests passed once receive a rude-guest thought and the configured happiness penalty.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{443,355 }, "Forced breakdown", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,373 }, "Rides a selected attraction, forces a supported breakdown after exiting, then leaves.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{443,412 }, "One victim", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,430 }, "Photographs and kills one guest, applying the normal single-accident rating consequence.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,487 }, "Forces the rival's research funding to None for the duration, then restores their last setting.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,544 }, "Doubles the rival's staff wage bill for the duration (kept longer than a month so a full month is hit).", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,601 }, "A coach party of demanding guests: high needs, low mood, complain often, and hound staff to speak to a manager.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,658 }, "A coach party of easily-distracted guests: hungry, unbothered by prices, and forever stopping to stare at rides.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,681 }, "Groups leave on their own accord. Minimum gap = shortest wait between uses. Uses per year = hard cap per in-game year.", { colour });
-                drawText(rt, windowPos + ScreenCoordsXY{ 10,696 }, "Victim time uses victim-local days. Failed delivery is refunded. No-money scenarios ignore action prices.", { colour });
+                drawText(clippedRT, { 112, 51 }, "Cost", { colour });
+                drawText(clippedRT, { 226, 51 }, "Minimum gap", { colour });
+                drawText(clippedRT, { 322, 51 }, "Victim time", { colour });
+                drawText(clippedRT, { 443, 51 }, "Effect strength", { colour });
+                drawText(clippedRT, { 632, 51 }, "Uses per year", { colour });
+                drawTextWrapped(clippedRT, { 10, 88 }, textWidth, "Angry guest; security-blocked attempts also consume its quota.", { colour });
+                drawTextWrapped(clippedRT, { 10, 145 }, textWidth, "Cancels future arrivals at the reverse strength of a half-price entry campaign.", { colour });
+                drawTextWrapped(clippedRT, { 10, 202 }, textWidth, "Exact buyers at the selected food/drink stall receive the configured nausea chance.", { colour });
+                drawText(clippedRT, { 443, 241 }, "All occupants", { colour });
+                drawTextWrapped(clippedRT, { 10, 259 }, textWidth, "Walks to a selected toilet, kills its current occupants, and destroys the building.", { colour });
+                drawTextWrapped(clippedRT, { 10, 316 }, textWidth, "Guests passed once receive a rude-guest thought and the configured happiness penalty.", { colour });
+                drawText(clippedRT, { 443, 355 }, "Forced breakdown", { colour });
+                drawTextWrapped(clippedRT, { 10, 373 }, textWidth, "Rides a selected attraction, forces a supported breakdown after exiting, then leaves.", { colour });
+                drawText(clippedRT, { 443, 412 }, "One victim", { colour });
+                drawTextWrapped(clippedRT, { 10, 430 }, textWidth, "Photographs and kills one guest, applying the normal single-accident rating consequence.", { colour });
+                drawTextWrapped(clippedRT, { 10, 487 }, textWidth, "Forces the rival's research funding to None for the duration, then restores their last setting.", { colour });
+                drawTextWrapped(clippedRT, { 10, 544 }, textWidth, "Doubles the rival's staff wage bill for the duration (kept longer than a month so a full month is hit).", { colour });
+                drawTextWrapped(clippedRT, { 10, 601 }, textWidth, "A coach party of demanding guests: high needs, low mood, complain often, and hound staff to speak to a manager.", { colour });
+                drawTextWrapped(clippedRT, { 10, 653 }, textWidth, "A coach party of easily-distracted guests: hungry, unbothered by prices, and forever stopping to stare at rides.", { colour });
+                drawTextWrapped(clippedRT, { 10, 681 }, textWidth, "Groups leave on their own accord. Minimum gap = shortest wait between uses. Uses per year = hard cap per in-game year.", { colour });
+                drawTextWrapped(clippedRT, { 10, 707 }, textWidth, "Victim time uses victim-local days. Failed delivery is refunded. No-money scenarios ignore action prices.", { colour });
             }
         }
 
@@ -1004,9 +1097,10 @@ namespace OpenRCT2::Ui::Windows
                 + " of real time at the " + std::to_string(speed) + "x speed cap (longer with pauses and spectating).";
         }
 
+        // rt is expected to be a window-origin-clipped target (see onDraw); coords are window-relative.
         void DrawLabel(Drawing::RenderTarget& rt, int32_t x, WidgetIndex widget, const char* text, ColourWithFlags colour)
         {
-            drawText(rt, windowPos + ScreenCoordsXY{ x, widgets[widget].top }, text, { colour });
+            drawText(rt, { x, widgets[widget].top }, text, { colour });
         }
 
         void SetAbilityWidgetsEnabled(WidgetIndex first, WidgetIndex last, bool enabled)
@@ -1017,26 +1111,44 @@ namespace OpenRCT2::Ui::Windows
 
         static const char* VictoryName(Competitive::VictoryMode mode)
         {
-            return mode == Competitive::VictoryMode::deadline ? "Highest metric at each park's local deadline"
-                                                               : "First park to target (deadline fallback)";
+            return mode == Competitive::VictoryMode::deadline ? "Highest score at each park's local deadline"
+                                                               : "First park to target score (deadline fallback)";
         }
 
         static const char* MetricName(Competitive::Metric metric)
         {
             switch (metric)
             {
-                case Competitive::Metric::points:
-                    return "Cumulative competitive points";
-                case Competitive::Metric::rating:
+                case Competitive::Metric::parkRating:
                     return "Park rating";
-                case Competitive::Metric::guests:
-                    return "Guests in park";
-                case Competitive::Metric::cash:
-                    return "Cash";
+                case Competitive::Metric::guestHappiness:
+                    return "Guest happiness";
+                case Competitive::Metric::guestCount:
+                    return "Guest count";
                 case Competitive::Metric::parkValue:
                     return "Park value";
+                case Competitive::Metric::cash:
+                    return "Cash";
             }
-            return "Cumulative competitive points";
+            return "Score";
+        }
+
+        uint32_t TotalWeight() const
+        {
+            uint32_t total = 0;
+            for (const auto weight : _rules.metricWeights)
+                total += weight;
+            return total;
+        }
+
+        std::string RealTimeLimitCaption() const
+        {
+            if (_rules.realTimeLimitSeconds == 0)
+                return "Off";
+            const auto minutes = _rules.realTimeLimitSeconds / 60;
+            if (minutes < 60)
+                return std::to_string(minutes) + " min";
+            return std::to_string(minutes / 60) + "h " + std::to_string(minutes % 60) + "m";
         }
 
         void ShowVictoryDropdown()
@@ -1048,18 +1160,6 @@ namespace OpenRCT2::Ui::Windows
             ShowDropdown(CWIDX_VICTORY_BUTTON, items);
         }
 
-        void ShowMetricDropdown()
-        {
-            std::array<Dropdown::Item, 5> items = {
-                Dropdown::MenuLabel(MetricName(Competitive::Metric::points)),
-                Dropdown::MenuLabel(MetricName(Competitive::Metric::rating)),
-                Dropdown::MenuLabel(MetricName(Competitive::Metric::guests)),
-                Dropdown::MenuLabel(MetricName(Competitive::Metric::cash)),
-                Dropdown::MenuLabel(MetricName(Competitive::Metric::parkValue)),
-            };
-            ShowDropdown(CWIDX_METRIC_BUTTON, items);
-        }
-
         template<size_t TCount> void ShowDropdown(WidgetIndex widgetIndex, const std::array<Dropdown::Item, TCount>& items)
         {
             const auto& widget = widgets[widgetIndex];
@@ -1068,55 +1168,22 @@ namespace OpenRCT2::Ui::Windows
                 widgets[widgetIndex - 1].width());
         }
 
-        void AdjustTarget(int32_t direction)
+        void AdjustWeight(Competitive::Metric metric, int32_t delta)
         {
-            int64_t step = 10000;
-            int64_t minimum = 1000;
-            int64_t maximum = 1000000000;
-            switch (_rules.metric)
-            {
-                case Competitive::Metric::rating:
-                    step = 50;
-                    minimum = 100;
-                    maximum = 999;
-                    break;
-                case Competitive::Metric::guests:
-                    step = 100;
-                    minimum = 100;
-                    maximum = 1000000;
-                    break;
-                case Competitive::Metric::cash:
-                case Competitive::Metric::parkValue:
-                    step = ToMoney64FromGBP(10000);
-                    minimum = ToMoney64FromGBP(1000);
-                    maximum = ToMoney64FromGBP(100000000);
-                    break;
-                case Competitive::Metric::points:
-                    break;
-            }
-            _rules.target = std::clamp(_rules.target + (step * direction), minimum, maximum);
+            auto& weight = _rules.metricWeights[static_cast<size_t>(metric)];
+            weight = static_cast<uint8_t>(std::clamp<int32_t>(weight + delta, 0, 100));
         }
 
-        void NormaliseTarget()
+        void AdjustRealTimeLimit(int32_t deltaSeconds)
         {
-            switch (_rules.metric)
-            {
-                case Competitive::Metric::rating:
-                    _rules.target = 900;
-                    break;
-                case Competitive::Metric::guests:
-                    _rules.target = 2000;
-                    break;
-                case Competitive::Metric::cash:
-                    _rules.target = ToMoney64FromGBP(100000);
-                    break;
-                case Competitive::Metric::parkValue:
-                    _rules.target = ToMoney64FromGBP(500000);
-                    break;
-                case Competitive::Metric::points:
-                    _rules.target = 100000;
-                    break;
-            }
+            const int64_t next = static_cast<int64_t>(_rules.realTimeLimitSeconds) + deltaSeconds;
+            _rules.realTimeLimitSeconds = static_cast<uint32_t>(std::clamp<int64_t>(next, 0, 24 * 60 * 60));
+        }
+
+        // 0..1000 composite-score target.
+        void AdjustTarget(int32_t direction)
+        {
+            _rules.target = std::clamp<int64_t>(_rules.target + 50 * direction, 50, 1000);
         }
 
         static void AdjustUsesPerYear(Competitive::AbilityRule& rule, int32_t direction)
@@ -1262,13 +1329,14 @@ namespace OpenRCT2::Ui::Windows
         {
             _maxPlayersCaption = std::to_string(_rules.maxPlayers);
             _victoryCaption = VictoryName(_rules.victoryMode);
-            _metricCaption = MetricName(_rules.metric);
+            for (size_t m = 0; m < Competitive::kMetricCount; m++)
+                _weightCaptions[m] = std::to_string(_rules.metricWeights[m]) + "%";
+            _rtLimitCaption = RealTimeLimitCaption();
             _deadlineCaption = "Year " + std::to_string(_rules.deadlineYear);
-            if (_rules.metric == Competitive::Metric::cash || _rules.metric == Competitive::Metric::parkValue)
-                _targetCaption = FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(_rules.target));
-            else
-                _targetCaption = std::to_string(_rules.target);
+            _targetCaption = std::to_string(_rules.target) + " / 1000";
             _maxSpeedCaption = std::to_string(_rules.maxGameSpeed) + "x";
+            _maxRidesCaption = _rules.maxRidesPerType == 0 ? "Unlimited" : std::to_string(_rules.maxRidesPerType);
+            _maxStallsCaption = _rules.maxStallsPerType == 0 ? "Unlimited" : std::to_string(_rules.maxStallsPerType);
             _pacingHint = BuildPacingHint();
 
             _vandalCostCaption = FormatStringID(STR_CURRENCY_FORMAT, _rules.vandal.cost);
@@ -1322,10 +1390,19 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[CWIDX_MAX_PLAYERS].setString(_maxPlayersCaption.c_str());
             widgets[CWIDX_VICTORY].setString(_victoryCaption.c_str());
-            widgets[CWIDX_METRIC].setString(_metricCaption.c_str());
+            widgets[CWIDX_W_RATING].setString(_weightCaptions[static_cast<size_t>(Competitive::Metric::parkRating)].c_str());
+            widgets[CWIDX_W_HAPPINESS].setString(
+                _weightCaptions[static_cast<size_t>(Competitive::Metric::guestHappiness)].c_str());
+            widgets[CWIDX_W_GUESTS].setString(_weightCaptions[static_cast<size_t>(Competitive::Metric::guestCount)].c_str());
+            widgets[CWIDX_W_PARKVALUE].setString(
+                _weightCaptions[static_cast<size_t>(Competitive::Metric::parkValue)].c_str());
+            widgets[CWIDX_W_CASH].setString(_weightCaptions[static_cast<size_t>(Competitive::Metric::cash)].c_str());
+            widgets[CWIDX_RTLIMIT].setString(_rtLimitCaption.c_str());
             widgets[CWIDX_DEADLINE].setString(_deadlineCaption.c_str());
             widgets[CWIDX_TARGET].setString(_targetCaption.c_str());
             widgets[CWIDX_MAX_SPEED].setString(_maxSpeedCaption.c_str());
+            widgets[CWIDX_MAX_RIDES].setString(_maxRidesCaption.c_str());
+            widgets[CWIDX_MAX_STALLS].setString(_maxStallsCaption.c_str());
             widgets[CWIDX_VANDAL_COST].setString(_vandalCostCaption.c_str());
             widgets[CWIDX_VANDAL_COOLDOWN].setString(_vandalCooldownCaption.c_str());
             widgets[CWIDX_VANDAL_DURATION].setString(_vandalDurationCaption.c_str());
@@ -1389,6 +1466,11 @@ namespace OpenRCT2::Ui::Windows
             if (!parsedPort.has_value() || parsedPort.value() == 0)
             {
                 ErrorOpen("Cannot create competition", "Enter a valid competitive network port.");
+                return;
+            }
+            if (TotalWeight() != 100)
+            {
+                ErrorOpen("Cannot create competition", "The scoring weights must add up to exactly 100%.");
                 return;
             }
 

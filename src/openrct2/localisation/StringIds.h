@@ -1788,6 +1788,11 @@ enum : StringId
     STR_PEEP_THOUGHT_TYPE_STONER_WHOA = 7050,
     STR_PEEP_THOUGHT_TYPE_STONER_DEEP = 7051,
     STR_PEEP_THOUGHT_TYPE_STONER_FOREVER = 7052,
+    STR_COMPETITIVE_RIDE_TYPE_LIMIT_REACHED = 7053,
+    STR_COMPETITIVE_QUIT_PROMPT_TITLE = 7054,
+    STR_COMPETITIVE_QUIT_PROMPT_LABEL = 7055,
+    STR_COMPETITIVE_QUIT_SUSPEND = 7056,
+    STR_COMPETITIVE_QUIT_FORFEIT = 7057,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

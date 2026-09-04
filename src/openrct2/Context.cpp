@@ -56,6 +56,7 @@
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
 #include "localisation/LocalisationService.h"
+#include "management/NewsItem.h"
 #include "network/DiscordService.h"
 #include "network/Network.h"
 #include "network/NetworkBase.h"
@@ -842,10 +843,28 @@ namespace OpenRCT2
                             _uiContext->GetWindowManager()->ShowError(
                                 "Competition recovery failed", competitiveError);
                         }
+                        else
+                        {
+                            // Tell the player they have loaded a competition park and what is happening,
+                            // rather than reconnecting silently.
+                            const auto& compSession = Competitive::GetSession();
+                            const auto* state = compSession.GetState();
+                            const char* message;
+                            if (state != nullptr && state->phase == Competitive::Phase::finished)
+                                message = "This park belongs to a competition that has finished. Use 'Leave competition' "
+                                          "in the multiplayer window to keep it as an ordinary park.";
+                            else if (compSession.GetMode() == Competitive::SessionMode::host)
+                                message = "Competition host session restored. Other parks can now reconnect.";
+                            else
+                                message = "Reconnecting to your competition. Your park stays paused until the host is "
+                                          "reached.";
+                            News::AddItemToQueue(News::ItemType::blank, message, 0);
+                        }
                     }
                     else if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
                     {
-                        Competitive::GetSession().Stop();
+                        // Loading an unrelated park is not a forfeit - keep the seat.
+                        Competitive::GetSession().Stop(false);
                     }
                 }
                 // This ensures that the newly loaded save reflects the user's

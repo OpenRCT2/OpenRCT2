@@ -509,6 +509,7 @@ namespace OpenRCT2::Config
             model->defaultPassword = reader->GetString("default_password", "");
             model->stayConnected = reader->GetBoolean("stay_connected", true);
             model->advertise = reader->GetBoolean("advertise", true);
+            model->competitiveAdvertise = reader->GetBoolean("competitive_advertise", true);
             model->advertiseAddress = reader->GetString("advertise_address", "");
             model->maxplayers = reader->GetInt32("maxplayers", 16);
             model->serverName = reader->GetString("server_name", "Server");
@@ -537,6 +538,7 @@ namespace OpenRCT2::Config
         writer->WriteString("default_password", model->defaultPassword);
         writer->WriteBoolean("stay_connected", model->stayConnected);
         writer->WriteBoolean("advertise", model->advertise);
+        writer->WriteBoolean("competitive_advertise", model->competitiveAdvertise);
         writer->WriteString("advertise_address", model->advertiseAddress);
         writer->WriteInt32("maxplayers", model->maxplayers);
         writer->WriteString("server_name", model->serverName);

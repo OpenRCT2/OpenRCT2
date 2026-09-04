@@ -11,6 +11,7 @@
 
 #include "../core/Money.hpp"
 
+#include <array>
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -44,14 +45,18 @@ namespace OpenRCT2::Competitive
         target,
     };
 
+    // Genuine vanilla park stats. Hosts assign a percentage weight to each (see
+    // MatchRules::metricWeights); the leader-normalised weighted blend is the competition score.
     enum class Metric : uint8_t
     {
-        points,
-        rating,
-        guests,
-        cash,
+        parkRating,
+        guestHappiness,
+        guestCount,
         parkValue,
+        cash,
     };
+    constexpr size_t kMetricCount = 5;
+    constexpr Metric kLastMetric = Metric::cash;
 
     enum class Ability : uint8_t
     {
@@ -119,12 +124,30 @@ namespace OpenRCT2::Competitive
     struct MatchRules
     {
         VictoryMode victoryMode = VictoryMode::deadline;
-        Metric metric = Metric::points;
-        int64_t target = 100000;
+        // Percentage weight per Metric, indexed by the enum value. Must sum to 100. The weighted,
+        // leader-normalised blend of these is the competition "score" - for ranking, and, in target
+        // mode, compared against `target` (which is then on the 0..1000 composite scale).
+        std::array<uint8_t, kMetricCount> metricWeights = { 100, 0, 0, 0, 0 };
+        int64_t target = 750;
         uint16_t deadlineYear = 20;
+        // Optional wall-clock cap as a secondary match-ender. 0 = off. Only counts real time while
+        // the match is actually live (host playing, not paused, host online); a host pause or
+        // suspend freezes it. When it elapses the match finishes like "End early".
+        uint32_t realTimeLimitSeconds = 0;
         uint8_t maxPlayers = 8;
         bool allowLateJoin = false;
+        // When set, rival-attack alerts and the disruptive-guest names say "A rival" instead of
+        // naming the attacker. (The attacker's own confirmation notices are unaffected.)
+        bool anonymousAttacks = false;
+        // When set, competitors may not place pre-built track designs - every coaster/ride must be
+        // built by hand. A test of design skill for experienced players.
+        bool customDesignsOnly = false;
         uint8_t maxGameSpeed = 1;
+        // Per-park cap on how many rides / stalls of one type may be built. 0 = unlimited.
+        // Stops cheese strategies like "build 100 hedge mazes". Rides and stalls are
+        // counted separately; kiosks/facilities (toilets, ATMs, first aid) are never capped.
+        uint16_t maxRidesPerType = 0;
+        uint16_t maxStallsPerType = 0;
         //          enabled  cost            gap  uses/yr  duration  potency
         AbilityRule vandal{ true, 200.00_GBP, 32, 8, 64, 20 };
         // Misinformation cost/duration are fixed: 4-week campaign at 1.5x the
@@ -175,9 +198,9 @@ namespace OpenRCT2::Competitive
     struct Score
     {
         ParticipantId participantId = kInvalidParticipantId;
-        int64_t points{};
         uint16_t rating{};
         uint32_t guests{};
+        uint8_t happiness{};
         money64 parkValue{};
         money64 cash{};
         std::optional<uint16_t> frozenAtYear{};
@@ -204,13 +227,26 @@ namespace OpenRCT2::Competitive
     [[nodiscard]] bool DeadlineReached(uint32_t monthsElapsed, uint16_t deadlineYear);
     [[nodiscard]] bool CanTarget(const Participant& participant);
     [[nodiscard]] bool CompetitionComplete(const std::vector<Participant>& participants);
-    [[nodiscard]] int64_t CalculateDailyPoints(const ParkMetrics& metrics);
+    // Raw value of a single metric (money in pennies). Used for single-metric display.
     [[nodiscard]] int64_t GetMetricValue(const Score& score, Metric metric);
     [[nodiscard]] ParticipantStatus GetParticipantStatus(const Participant& participant, Phase phase);
 
     void UpdateLiveScore(Score& score, const ParkMetrics& metrics);
     void FreezeScore(Score& score, const ParkMetrics& metrics, uint16_t year);
+
+    // The competition score for one park: each weighted metric normalised to the current leader on
+    // that metric (0..1), blended by weight, scaled to 0..1000. Relative-to-leader, so it must be
+    // computed over the whole current/frozen snapshot. Spectators and forfeited parks are excluded
+    // from the normalisation and always score 0.
+    [[nodiscard]] int64_t ComputeCompositeScore(
+        ParticipantId participantId, const std::vector<Score>& scores, const std::vector<Participant>& participants,
+        const MatchRules& rules);
+    // The single metric when exactly one weight is non-zero, else std::nullopt (a real blend).
+    [[nodiscard]] std::optional<Metric> SingleMetric(const MatchRules& rules);
+
     [[nodiscard]] std::optional<ParticipantId> ChooseWinner(
-        const std::vector<Score>& scores, const std::vector<Participant>& participants, Metric metric);
-    [[nodiscard]] bool TargetReached(const Score& score, const MatchRules& rules);
+        const std::vector<Score>& scores, const std::vector<Participant>& participants, const MatchRules& rules);
+    [[nodiscard]] bool TargetReached(
+        ParticipantId participantId, const std::vector<Score>& scores, const std::vector<Participant>& participants,
+        const MatchRules& rules);
 } // namespace OpenRCT2::Competitive

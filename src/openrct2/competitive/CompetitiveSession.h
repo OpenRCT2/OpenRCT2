@@ -13,6 +13,7 @@
 #include "../Identifiers.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -69,7 +70,12 @@ namespace OpenRCT2::Competitive
 
         [[nodiscard]] bool StartHost(const HostConfiguration& configuration, std::string& error);
         [[nodiscard]] bool Join(const JoinConfiguration& configuration, std::string& error);
-        void Stop();
+        // notifyPeers: when leaving a live session, tell the host/clients so a deliberate
+        // departure is not mistaken for a crash. Internal resets (StartHost/Join/restore) pass false.
+        // forfeit:     permanent - the park is dropped from the result and can never rejoin. When
+        //              false the host keeps the seat so the park can rejoin later (suspend). Only an
+        //              explicit, confirmed "Forfeit" action passes true.
+        void Stop(bool notifyPeers = true, bool forfeit = false);
         void Update();
 
         [[nodiscard]] SessionMode GetMode() const;
@@ -89,6 +95,10 @@ namespace OpenRCT2::Competitive
         [[nodiscard]] bool WatchParticipant(ParticipantId targetId, std::string& error);
         [[nodiscard]] bool Forfeit(ParticipantId participantId, std::string& error);
         [[nodiscard]] bool CloseEarly(std::string& error);
+        // Write a recovery save into saves/competitive-suspend/ and disconnect WITHOUT forfeiting -
+        // the seat is held so the player can reload that save and rejoin while the match runs.
+        // On success, outPath receives the save path. Only valid for a competing (non-spectator) park.
+        [[nodiscard]] bool SuspendAndSave(std::string& outPath, std::string& error);
         // Relay a chat line to every other park in the competition via the coordinator.
         void SendChat(std::string_view text);
 
@@ -149,4 +159,23 @@ namespace OpenRCT2::Competitive
     [[nodiscard]] bool RestoreParkStorage(std::string_view storage, std::string& error);
     [[nodiscard]] bool IsWatchingPark();
     [[nodiscard]] bool ReturnFromWatchedPark(std::string& error);
+
+    // A recovery park written by Session::SuspendAndSave, tracked in the competitive-suspend index
+    // so the competitive server list can offer to reload it instead of a fresh join.
+    struct SuspendedSave
+    {
+        std::string matchId;
+        std::string name; // competition display name
+        std::string host;
+        uint16_t port = 0;
+        Role role = Role::player;
+        std::string savePath;
+    };
+
+    // Every tracked suspended save whose park file still exists, newest first.
+    [[nodiscard]] std::vector<SuspendedSave> ListSuspendedSaves();
+    // The tracked suspended save for exactly this competition, matched on matchId (a per-competition
+    // token). matchId must be non-empty - a host running a different competition, even on the same
+    // address, has a different matchId and must not match.
+    [[nodiscard]] std::optional<SuspendedSave> FindSuspendedSave(std::string_view matchId);
 } // namespace OpenRCT2::Competitive

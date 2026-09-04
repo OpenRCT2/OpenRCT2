@@ -19,9 +19,25 @@ There is no shared map, entrance ownership, town guest pool, or guest allocation
 
 - Players may use any speed up to the host's configured maximum. No player waits for another player's calendar.
 - Deadline matches snapshot each park's score on that park's own deadline date. Players may continue beyond it while other competitors finish, but later play does not alter the snapshot.
-- Target matches support first to park rating, guests, actual scenario cash, park value, or cumulative competitive points, with the deadline as a fallback.
+- Target matches finish when a park first reaches the target score, with the deadline as a fallback.
 - The normal scenario objective does not decide the competitive result.
 - The host may forfeit an offline, unfinished park or close the result early when an abandoned player will not return.
+- **Optional real-time limit.** The host can set a wall-clock cap as a secondary ender. It counts
+  only real time while the match is actually live (host playing, unpaused, connected) - a host pause
+  or suspend freezes it - and when it elapses every unfinished park's score is frozen and the winner
+  calculated, exactly like "close early".
+
+## Scoring
+
+The competition score is a weighted blend of genuine park stats, not a bespoke metric. The host
+assigns a percentage weight (totalling 100%) to any of: **park rating, guest happiness, guest
+count, park value, cash**. Each match, each weighted stat is normalised to the current leader on
+that stat (your value / the best value = 0..1), the normalised values are blended by weight, and
+the result is scaled to a **0-1000 score**. A single stat at 100% is just "highest <stat> wins" and
+the leaderboard shows that stat's raw value instead of a 0-1000 score. Because the score is
+relative to the field, a park's displayed score can fall when a rival pulls ahead. Spectators and
+forfeited parks are excluded from the normalisation and score 0. Ties are broken by the earlier
+(lower) participant id. In target mode, `target` is a score on the same 0-1000 scale.
 
 ## Economy and fair play
 

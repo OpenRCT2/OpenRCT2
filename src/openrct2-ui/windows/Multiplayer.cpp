@@ -12,8 +12,11 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/interface/WindowTypes.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/network/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
@@ -26,6 +29,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/management/NewsItem.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -661,7 +665,7 @@ namespace OpenRCT2::Ui::Windows
                 : _karensProblem;
             const auto stonersDescription = _stonersProblem.empty()
                 ? std::to_string(state->rules.stoners.potency)
-                    + " easily-distracted guests arrive at once: hungry, price-insensitive, and constantly stopping to stare at rides."
+                    + " very laid-back guests arrive at once: hungry, price-insensitive, forever stopping to stare at rides, and trailing sweet-smelling smoke that nearby guests dislike."
                 : _stonersProblem;
             drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215, 48 }, 393, vandalDescription, { colours[1] });
             drawTextWrapped(rt, windowPos + ScreenCoordsXY{ 215, 88 }, 393, misinformationDescription, { colours[1] });
@@ -682,9 +686,9 @@ namespace OpenRCT2::Ui::Windows
 
     enum class CompetitiveHostDecision : uint8_t
     {
-        forfeitPark,
-        closeEarly,
-        leaveCompetition,
+        forfeitPark,     // host: forfeit a named, abandoned rival park
+        closeEarly,      // host: end the running match now and calculate the result
+        leaveCompetition, // local player leaving: choose Suspend or Forfeit
     };
 
     enum CompetitiveHostPromptWidgetIdx : WidgetIndex
@@ -693,23 +697,49 @@ namespace OpenRCT2::Ui::Windows
         CHPWIDX_TITLE,
         CHPWIDX_CLOSE,
         CHPWIDX_CONFIRM,
+        CHPWIDX_CONFIRM2,
         CHPWIDX_CANCEL,
     };
 
-    static constexpr ScreenSize kCompetitiveHostPromptSize = { 380, 130 };
+    static constexpr ScreenSize kCompetitiveHostPromptSize = { 452, 156 };
     static constexpr auto kCompetitiveHostPromptWidgets = makeWidgets(
         makeWindowShim(kStringIdNone, kCompetitiveHostPromptSize),
-        makeWidget({ 50, 104 }, { 130, 14 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
-        makeWidget({ 200, 104 }, { 130, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
+        makeWidget({ 12, 130 }, { 136, 14 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 158, 130 }, { 136, 14 }, WidgetType::button, WindowColour::secondary, kStringIdEmpty),
+        makeWidget({ 304, 130 }, { 136, 14 }, WidgetType::button, WindowColour::secondary, STR_SAVE_PROMPT_CANCEL));
 
     class CompetitiveHostPromptWindow final : public Window
     {
     private:
+        // leaveCompetition = the local player leaving; forfeitPark / closeEarly = host controls.
         CompetitiveHostDecision _decision = CompetitiveHostDecision::closeEarly;
         Competitive::ParticipantId _targetId = Competitive::kInvalidParticipantId;
         std::string _title;
         std::string _message;
         std::string _confirmLabel;
+        std::string _confirm2Label;
+
+        // A leave path finished: dismiss the dialog, close the multiplayer window, and - for a
+        // suspend - return to the title (the saved park is now the authoritative copy). A forfeit or
+        // lobby-leave keeps the now-ordinary park loaded so the player can carry on solo.
+        void finishLeave(bool suspended, const std::string& suspendPath)
+        {
+            close();
+            GetWindowManager()->CloseByClass(WindowClass::multiplayer);
+            if (!suspended)
+                return;
+
+            News::AddItemToQueue(
+                News::ItemType::blank,
+                "Competition suspended - your park was saved. Rejoin it from the competitive server list.", 0);
+            ErrorOpen(
+                "Competition suspended",
+                "Your park was saved to " + suspendPath
+                    + ". To rejoin while the match is still running, open Multiplayer from the title screen, "
+                      "switch to the Competitive tab, and click this competition in the list.");
+            gSavePromptMode = PromptMode::saveBeforeQuit;
+            GameLoadOrQuitNoSavePrompt();
+        }
 
     public:
         void SetDecision(CompetitiveHostDecision decision, Competitive::ParticipantId targetId)
@@ -727,32 +757,73 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            const auto* state = Competitive::GetSession().GetState();
+            const auto& session = Competitive::GetSession();
+            const auto* state = session.GetState();
             const auto* target = state == nullptr ? nullptr : Competitive::FindParticipant(*state, _targetId);
+            _confirm2Label.clear();
+
             if (_decision == CompetitiveHostDecision::forfeitPark)
             {
-                _title = "Confirm park forfeit";
+                _title = "Forfeit an abandoned park";
                 _confirmLabel = "Forfeit park";
                 _message = "Forfeit " + (target == nullptr ? std::string("this park") : target->name)
-                    + "? It will be excluded from the result and cannot rejoin.";
+                    + "? It is dropped from the result and can never rejoin.";
             }
             else if (_decision == CompetitiveHostDecision::closeEarly)
             {
-                _title = "Confirm early result";
-                _confirmLabel = "Calculate result now";
-                _message = "End the competition now? Every unfinished park's current score will be frozen and the winner calculated.";
+                _title = "End the competition early";
+                _confirmLabel = "Calculate result";
+                _message = "End the competition now? Every unfinished park's current score is frozen and the winner "
+                           "calculated.";
+            }
+            else // leaveCompetition
+            {
+                const bool host = session.GetMode() == Competitive::SessionMode::host;
+                const bool running = state != nullptr && state->phase == Competitive::Phase::running;
+                _title = "Leave the competition";
+                if (!running)
+                {
+                    _confirmLabel = host ? "Close lobby" : "Leave lobby";
+                    _message = host
+                        ? "Close the lobby for everyone? Your park becomes an ordinary park."
+                        : "Leave the lobby? Your seat is freed and your park becomes an ordinary park.";
+                }
+                else if (host)
+                {
+                    _confirmLabel = "Suspend all";
+                    _confirm2Label = "End match";
+                    _message = "Suspend saves your host park and pauses the competition for everyone until you reload "
+                               "it. End match stops the competition for everyone, with no result.";
+                }
+                else
+                {
+                    _confirmLabel = "Suspend";
+                    _confirm2Label = "Forfeit";
+                    _message = "Suspend saves your park and keeps your seat - rejoin any time from the competitive "
+                               "server list while the match runs. Forfeit is permanent: your park is dropped from "
+                               "the result and can never rejoin.";
+                }
+            }
+
+            widgets[CHPWIDX_TITLE].setString(_title.c_str());
+            widgets[CHPWIDX_CONFIRM].setString(_confirmLabel.c_str());
+
+            const bool twoActions = !_confirm2Label.empty();
+            widgets[CHPWIDX_CONFIRM2].setVisible(twoActions);
+            if (twoActions)
+            {
+                widgets[CHPWIDX_CONFIRM2].setString(_confirm2Label.c_str());
+                widgets[CHPWIDX_CONFIRM].left = 12;
+                widgets[CHPWIDX_CANCEL].left = 304;
             }
             else
             {
-                const bool host = Competitive::GetSession().GetMode() == Competitive::SessionMode::host;
-                _title = "Confirm leaving competition";
-                _confirmLabel = "Leave competition";
-                _message = host
-                    ? "Leave and close the host session? Connected parks will pause and attempt to reconnect."
-                    : "Leave this competition? Your park will no longer be connected to the match.";
+                widgets[CHPWIDX_CONFIRM].left = 85;
+                widgets[CHPWIDX_CANCEL].left = 231;
             }
-            widgets[CHPWIDX_TITLE].setString(_title.c_str());
-            widgets[CHPWIDX_CONFIRM].setString(_confirmLabel.c_str());
+            widgets[CHPWIDX_CONFIRM].right = widgets[CHPWIDX_CONFIRM].left + 135;
+            widgets[CHPWIDX_CONFIRM2].right = widgets[CHPWIDX_CONFIRM2].left + 135;
+            widgets[CHPWIDX_CANCEL].right = widgets[CHPWIDX_CANCEL].left + 135;
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
@@ -762,19 +833,49 @@ namespace OpenRCT2::Ui::Windows
                 close();
                 return;
             }
-            if (widgetIndex != CHPWIDX_CONFIRM)
-                return;
+
+            auto& session = Competitive::GetSession();
+
             if (_decision == CompetitiveHostDecision::leaveCompetition)
             {
-                Competitive::GetSession().Stop();
-                GetWindowManager()->CloseByClass(WindowClass::multiplayer);
-                close();
+                const auto* state = session.GetState();
+                const bool running = state != nullptr && state->phase == Competitive::Phase::running;
+                const bool host = session.GetMode() == Competitive::SessionMode::host;
+
+                if (widgetIndex == CHPWIDX_CONFIRM2)
+                {
+                    // The permanent option: client Forfeit, or host "End match".
+                    session.Stop(true, true);
+                    finishLeave(false, {});
+                    return;
+                }
+                if (widgetIndex != CHPWIDX_CONFIRM)
+                    return;
+
+                if (!running)
+                {
+                    // Lobby: free the seat (host closing the lobby just ends it for everyone).
+                    session.Stop(true, host);
+                    finishLeave(false, {});
+                    return;
+                }
+
+                // Running match, primary button = Suspend (works for host and client).
+                std::string path;
+                std::string error;
+                if (session.SuspendAndSave(path, error))
+                    finishLeave(true, path);
+                else
+                    ErrorOpen("Could not suspend the competition", error);
                 return;
             }
+
+            if (widgetIndex != CHPWIDX_CONFIRM)
+                return;
+
             std::string error;
-            auto& session = Competitive::GetSession();
             const bool success = _decision == CompetitiveHostDecision::forfeitPark ? session.Forfeit(_targetId, error)
-                                                                                    : session.CloseEarly(error);
+                                                                                  : session.CloseEarly(error);
             if (!success)
             {
                 ErrorOpen("Host action failed", error);
@@ -787,8 +888,8 @@ namespace OpenRCT2::Ui::Windows
         {
             drawWidgets(rt);
             drawTextWrapped(
-                rt, windowPos + ScreenCoordsXY{ kCompetitiveHostPromptSize.width / 2, 42 },
-                kCompetitiveHostPromptSize.width - 30, _message, { colours[1], TextAlignment::centre });
+                rt, windowPos + ScreenCoordsXY{ kCompetitiveHostPromptSize.width / 2, 32 },
+                kCompetitiveHostPromptSize.width - 28, _message, { colours[1], TextAlignment::centre });
         }
     };
 
@@ -802,14 +903,24 @@ namespace OpenRCT2::Ui::Windows
         window->SetTarget(targetId);
     }
 
-    static void CompetitiveHostPromptOpen(CompetitiveHostDecision decision, Competitive::ParticipantId targetId)
+    static CompetitiveHostPromptWindow* CompetitiveHostPromptCreate()
     {
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::competitiveHostPrompt);
-        auto* window = windowMgr->Create<CompetitiveHostPromptWindow>(
-            WindowClass::competitiveHostPrompt, kCompetitiveHostPromptSize,
-            { WindowFlag::centreScreen, WindowFlag::transparent });
-        window->SetDecision(decision, targetId);
+        return windowMgr->Create<CompetitiveHostPromptWindow>(
+            WindowClass::competitiveHostPrompt, kCompetitiveHostPromptSize, { WindowFlag::centreScreen });
+    }
+
+    static void CompetitiveHostPromptOpen(CompetitiveHostDecision decision, Competitive::ParticipantId targetId)
+    {
+        CompetitiveHostPromptCreate()->SetDecision(decision, targetId);
+    }
+
+    WindowBase* CompetitiveLeavePromptOpen()
+    {
+        auto* window = CompetitiveHostPromptCreate();
+        window->SetDecision(CompetitiveHostDecision::leaveCompetition, Competitive::kInvalidParticipantId);
+        return window;
     }
 
     class MultiplayerWindow final : public Window
@@ -827,12 +938,12 @@ namespace OpenRCT2::Ui::Windows
         std::string _yearHeader = "Year";
         std::string _scoreHeader;
         std::string _readyText;
-        std::string _startText = "Start competition";
+        std::string _startText = "Start match";
         std::string _actionsText = "Attack rival...";
         std::string _actionsTooltip = "Select an online, unfinished rival in the leaderboard first.";
         std::string _watchText = "Watch park";
         std::string _hostControlsText = "Host controls";
-        std::string _leaveText = "Leave competition";
+        std::string _leaveText = "Leave";
 
     private:
         const Competitive::Participant* getSelectedCompetitionParticipant() const
@@ -1303,8 +1414,7 @@ namespace OpenRCT2::Ui::Windows
                             break;
                         }
                         case WIDX_COMP_LEAVE:
-                            CompetitiveHostPromptOpen(
-                                CompetitiveHostDecision::leaveCompetition, Competitive::kInvalidParticipantId);
+                            CompetitiveLeavePromptOpen();
                             break;
                     }
                     break;
@@ -1500,15 +1610,16 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COMP_WATCH].setVisible(watchable);
                     widgets[WIDX_COMP_HOST_CONTROLS].setVisible(
                         host && running);
-                    widgets[WIDX_COMP_LEAVE].setVisible(!host || !running);
-                    _actionsText = canAttack ? "Attack " + selected->name + "..." : "Attack rival...";
+                    widgets[WIDX_COMP_LEAVE].setVisible(competitor);
+                    // Keep button captions to a fixed width; the rival's name is in the tooltip.
+                    _actionsText = "Attack rival...";
                     if (lobby)
                         _actionsTooltip = "Competitive attacks become available when the host starts the match.";
                     else if (canAttack)
                         _actionsTooltip = "Send a competitive attack to " + selected->name + ".";
                     else
                         _actionsTooltip = "Select an online, unfinished rival in the leaderboard first.";
-                    _hostControlsText = forfeitEligible ? "Forfeit " + selected->name + "..." : "End early...";
+                    _hostControlsText = forfeitEligible ? "Forfeit park..." : "End early...";
                     widgets[WIDX_COMP_ACTIONS].setString(_actionsText.c_str());
                     widgets[WIDX_COMP_ACTIONS].setTooltip(_actionsTooltip.c_str());
                     widgets[WIDX_COMP_HOST_CONTROLS].setString(_hostControlsText.c_str());
@@ -1518,7 +1629,7 @@ namespace OpenRCT2::Ui::Windows
                     if (state != nullptr)
                     {
                         _competitionTitle = "Competition — " + state->name;
-                        _scoreHeader = competitionMetricName(state->rules.metric);
+                        _scoreHeader = competitionScoreHeader(state->rules);
                     }
                     else
                     {
@@ -1798,16 +1909,12 @@ namespace OpenRCT2::Ui::Windows
                     const auto* rhsParticipant = Competitive::FindParticipant(*state, rhsId);
                     if (lhsParticipant->forfeited != rhsParticipant->forfeited)
                         return !lhsParticipant->forfeited;
-                    const auto* lhsScore = Competitive::FindScore(*state, lhsId);
-                    const auto* rhsScore = Competitive::FindScore(*state, rhsId);
-                    const auto lhsMetric = lhsScore == nullptr ? INT64_MIN : Competitive::GetMetricValue(*lhsScore, state->rules.metric);
-                    const auto rhsMetric = rhsScore == nullptr ? INT64_MIN : Competitive::GetMetricValue(*rhsScore, state->rules.metric);
-                    if (lhsMetric != rhsMetric)
-                        return lhsMetric > rhsMetric;
-                    const auto lhsPoints = lhsScore == nullptr ? INT64_MIN : lhsScore->points;
-                    const auto rhsPoints = rhsScore == nullptr ? INT64_MIN : rhsScore->points;
-                    if (lhsPoints != rhsPoints)
-                        return lhsPoints > rhsPoints;
+                    const auto lhsComposite = Competitive::ComputeCompositeScore(
+                        lhsId, state->scores, state->participants, state->rules);
+                    const auto rhsComposite = Competitive::ComputeCompositeScore(
+                        rhsId, state->scores, state->participants, state->rules);
+                    if (lhsComposite != rhsComposite)
+                        return lhsComposite > rhsComposite;
                     return lhsId < rhsId;
                 });
                 const auto selected = std::find(
@@ -1864,35 +1971,72 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (metric)
             {
-                case Competitive::Metric::points:
-                    return "Points";
-                case Competitive::Metric::rating:
+                case Competitive::Metric::parkRating:
                     return "Rating";
-                case Competitive::Metric::guests:
+                case Competitive::Metric::guestHappiness:
+                    return "Happiness";
+                case Competitive::Metric::guestCount:
                     return "Guests";
-                case Competitive::Metric::cash:
-                    return "Cash";
                 case Competitive::Metric::parkValue:
                     return "Park value";
+                case Competitive::Metric::cash:
+                    return "Cash";
             }
             return "Score";
         }
 
-        static std::string competitionMetricValue(const Competitive::Score& score, Competitive::Metric metric)
+        // Column header: the single metric's name when only one is weighted, else "Score" (0-1000).
+        static std::string competitionScoreHeader(const Competitive::MatchRules& rules)
         {
-            const auto value = Competitive::GetMetricValue(score, metric);
-            if (metric == Competitive::Metric::cash || metric == Competitive::Metric::parkValue)
-                return FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(value));
-            return std::to_string(value);
+            if (const auto only = Competitive::SingleMetric(rules))
+                return competitionMetricName(*only);
+            return "Score /1000";
+        }
+
+        // Human summary of the weighting for the status line.
+        static std::string competitionScoringSummary(const Competitive::MatchRules& rules)
+        {
+            if (const auto only = Competitive::SingleMetric(rules))
+                return competitionMetricName(*only);
+            std::string result;
+            for (size_t m = 0; m < Competitive::kMetricCount; m++)
+            {
+                if (rules.metricWeights[m] == 0)
+                    continue;
+                if (!result.empty())
+                    result += " / ";
+                result += std::to_string(rules.metricWeights[m]) + "% "
+                    + competitionMetricName(static_cast<Competitive::Metric>(m));
+            }
+            return result.empty() ? "score" : result;
+        }
+
+        static std::string competitionScoreValue(
+            Competitive::ParticipantId id, const Competitive::MatchState& state)
+        {
+            if (const auto only = Competitive::SingleMetric(state.rules))
+            {
+                const auto* score = Competitive::FindScore(state, id);
+                const auto value = score == nullptr ? int64_t{ 0 } : Competitive::GetMetricValue(*score, *only);
+                if (*only == Competitive::Metric::cash || *only == Competitive::Metric::parkValue)
+                    return FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(value));
+                return std::to_string(value);
+            }
+            return std::to_string(
+                Competitive::ComputeCompositeScore(id, state.scores, state.participants, state.rules));
         }
 
         void competitionPaint(RenderTarget& rt)
         {
+            RenderTarget clippedRT;
+            if (!ClipRenderTarget(clippedRT, rt, windowPos, width, height))
+                return;
+
             const auto& session = Competitive::GetSession();
             const auto* state = session.GetState();
             if (state == nullptr)
             {
-                drawText(rt, windowPos + ScreenCoordsXY{ 7, 70 }, session.GetStatusText(), { colours[1] });
+                drawTextWrapped(clippedRT, { 7, 70 }, width - 14, session.GetStatusText(), { colours[1] });
                 return;
             }
             std::string summary = std::string(competitionPhaseName(state->phase));
@@ -1912,18 +2056,28 @@ namespace OpenRCT2::Ui::Windows
                     summary += std::string(state->closedEarly ? " (resolved early)" : "") + " — Winner: " + winner->name;
             }
             summary += " — " + state->scenario.name;
+            const auto scoring = competitionScoringSummary(state->rules);
             if (state->rules.victoryMode == Competitive::VictoryMode::deadline)
-                summary += " — highest " + _scoreHeader + " at local Year " + std::to_string(state->rules.deadlineYear);
+                summary += " — best " + scoring + " at local Year " + std::to_string(state->rules.deadlineYear);
             else
+                summary += " — first to a " + std::to_string(state->rules.target) + "/1000 " + scoring + " score";
+            if (state->rules.realTimeLimitSeconds > 0)
             {
-                std::string target;
-                if (state->rules.metric == Competitive::Metric::cash
-                    || state->rules.metric == Competitive::Metric::parkValue)
-                    target = FormatStringID(STR_CURRENCY_FORMAT, static_cast<money64>(state->rules.target));
-                else
-                    target = std::to_string(state->rules.target);
-                summary += " — first to " + target + " " + _scoreHeader;
+                const auto remaining = state->rules.realTimeLimitSeconds > state->liveSecondsElapsed
+                    ? state->rules.realTimeLimitSeconds - state->liveSecondsElapsed
+                    : 0u;
+                const auto seconds = remaining % 60;
+                summary += " — time left " + std::to_string(remaining / 60) + ":"
+                    + (seconds < 10 ? "0" : "") + std::to_string(seconds);
             }
+            if (state->rules.maxRidesPerType > 0)
+                summary += " — max " + std::to_string(state->rules.maxRidesPerType) + " rides/type";
+            if (state->rules.maxStallsPerType > 0)
+                summary += " — max " + std::to_string(state->rules.maxStallsPerType) + " stalls/type";
+            if (state->rules.customDesignsOnly)
+                summary += " — custom designs only";
+            if (state->rules.anonymousAttacks)
+                summary += " — anonymous attacks";
             if (state->phase == Competitive::Phase::lobby
                 && Competitive::GetSession().GetMode() == Competitive::SessionMode::host)
             {
@@ -1931,7 +2085,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!problems.empty())
                     summary = "Cannot start: " + problems.front() + " — " + summary;
             }
-            drawTextEllipsised(rt, windowPos + ScreenCoordsXY{ 6, height - 43 }, width - 12, summary, { colours[1] });
+            drawTextEllipsised(clippedRT, { 6, height - 43 }, width - 12, summary, { colours[1] });
         }
 
         void competitionScrollPaint(RenderTarget& rt) const
@@ -1958,7 +2112,7 @@ namespace OpenRCT2::Ui::Windows
                 drawTextEllipsised(rt, { 45, y }, 214, name, { colour });
                 drawTextEllipsised(rt, { 265, y }, 94, competitionStatusName(*participant, state->phase), { colour });
                 drawText(rt, { 370, y }, std::to_string(participant->currentYear), { colour });
-                drawTextEllipsised(rt, { 425, y }, 185, competitionMetricValue(*score, state->rules.metric), { colour });
+                drawTextEllipsised(rt, { 425, y }, 185, competitionScoreValue(participant->id, *state), { colour });
             }
         }
     };

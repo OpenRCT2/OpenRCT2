@@ -117,9 +117,9 @@ namespace OpenRCT2::Competitive
         {
             json_t result = {
                 { "participantId", value.participantId },
-                { "points", value.points },
                 { "rating", value.rating },
                 { "guests", value.guests },
+                { "happiness", value.happiness },
                 { "parkValue", value.parkValue },
                 { "cash", value.cash },
             };
@@ -135,9 +135,9 @@ namespace OpenRCT2::Competitive
             }
             Score result{
                 .participantId = Number<ParticipantId>(value, "participantId"),
-                .points = Number<int64_t>(value, "points"),
                 .rating = Number<uint16_t>(value, "rating"),
                 .guests = Number<uint32_t>(value, "guests"),
+                .happiness = Number<uint8_t>(value, "happiness"),
                 .parkValue = Number<money64>(value, "parkValue"),
                 .cash = Number<money64>(value, "cash"),
             };
@@ -165,12 +165,17 @@ namespace OpenRCT2::Competitive
     {
         return {
             { "victoryMode", value.victoryMode },
-            { "metric", value.metric },
+            { "metricWeights", value.metricWeights },
             { "target", value.target },
             { "deadlineYear", value.deadlineYear },
+            { "realTimeLimitSeconds", value.realTimeLimitSeconds },
             { "maxPlayers", value.maxPlayers },
             { "allowLateJoin", value.allowLateJoin },
+            { "anonymousAttacks", value.anonymousAttacks },
+            { "customDesignsOnly", value.customDesignsOnly },
             { "maxGameSpeed", value.maxGameSpeed },
+            { "maxRidesPerType", value.maxRidesPerType },
+            { "maxStallsPerType", value.maxStallsPerType },
             { "vandal", AbilityRuleToJson(value.vandal) },
             { "misinformation", AbilityRuleToJson(value.misinformation) },
             { "poison", AbilityRuleToJson(value.poison) },
@@ -290,6 +295,7 @@ namespace OpenRCT2::Competitive
             { "effects", std::move(effects) },
             { "nextEffectId", value.nextEffectId },
             { "closedEarly", value.closedEarly },
+            { "liveSecondsElapsed", value.liveSecondsElapsed },
         };
         result["winnerId"] = value.winnerId.has_value() ? json_t(*value.winnerId) : json_t(nullptr);
         return result;
@@ -320,12 +326,25 @@ namespace OpenRCT2::Competitive
         }
         MatchRules result;
         result.victoryMode = Number<VictoryMode>(value, "victoryMode", result.victoryMode);
-        result.metric = Number<Metric>(value, "metric", result.metric);
+        if (value.contains("metricWeights") && value["metricWeights"].is_array()
+            && value["metricWeights"].size() == kMetricCount)
+        {
+            for (size_t m = 0; m < kMetricCount; m++)
+            {
+                const auto& weight = value["metricWeights"][m];
+                result.metricWeights[m] = weight.is_number_unsigned() ? weight.get<uint8_t>() : uint8_t{ 0 };
+            }
+        }
         result.target = Number<int64_t>(value, "target", result.target);
         result.deadlineYear = Number<uint16_t>(value, "deadlineYear", result.deadlineYear);
+        result.realTimeLimitSeconds = Number<uint32_t>(value, "realTimeLimitSeconds", result.realTimeLimitSeconds);
         result.maxPlayers = Number<uint8_t>(value, "maxPlayers", result.maxPlayers);
         result.allowLateJoin = Boolean(value, "allowLateJoin", result.allowLateJoin);
+        result.anonymousAttacks = Boolean(value, "anonymousAttacks", result.anonymousAttacks);
+        result.customDesignsOnly = Boolean(value, "customDesignsOnly", result.customDesignsOnly);
         result.maxGameSpeed = Number<uint8_t>(value, "maxGameSpeed", result.maxGameSpeed);
+        result.maxRidesPerType = Number<uint16_t>(value, "maxRidesPerType", result.maxRidesPerType);
+        result.maxStallsPerType = Number<uint16_t>(value, "maxStallsPerType", result.maxStallsPerType);
         result.vandal = AbilityRuleFromJson(value["vandal"], result.vandal);
         result.misinformation = AbilityRuleFromJson(value["misinformation"], result.misinformation);
         result.poison = AbilityRuleFromJson(value["poison"], result.poison);
@@ -338,8 +357,14 @@ namespace OpenRCT2::Competitive
         result.stoners = AbilityRuleFromJson(value["stoners"], result.stoners);
         result.unionDisruption = AbilityRuleFromJson(value["unionDisruption"], result.unionDisruption);
 
-        if (result.victoryMode > VictoryMode::target || result.metric > Metric::parkValue || result.maxPlayers < 2
-            || result.maxPlayers > 32 || result.deadlineYear == 0 || result.maxGameSpeed == 0 || result.maxGameSpeed > 4)
+        uint32_t totalWeight = 0;
+        for (const auto weight : result.metricWeights)
+            totalWeight += weight;
+
+        if (result.victoryMode > VictoryMode::target || result.maxPlayers < 2 || result.maxPlayers > 32
+            || result.deadlineYear == 0 || result.maxGameSpeed == 0 || result.maxGameSpeed > 4
+            || result.maxRidesPerType > 1000 || result.maxStallsPerType > 1000
+            || result.realTimeLimitSeconds > 24u * 60u * 60u || totalWeight != 100)
         {
             return std::nullopt;
         }
@@ -436,6 +461,7 @@ namespace OpenRCT2::Competitive
         result.scenario = std::move(*scenario);
         result.nextEffectId = Number<uint32_t>(value, "nextEffectId", 1);
         result.closedEarly = Boolean(value, "closedEarly");
+        result.liveSecondsElapsed = Number<uint32_t>(value, "liveSecondsElapsed", 0);
         if (value.contains("winnerId") && value["winnerId"].is_number_unsigned())
         {
             result.winnerId = value["winnerId"].get<ParticipantId>();

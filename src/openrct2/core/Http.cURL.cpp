@@ -122,6 +122,11 @@ namespace OpenRCT2::Http
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_easy_setopt(curl, CURLOPT_USERAGENT, kOpenRCT2UserAgent);
 
+            // Bound the worst case so a hung/unreachable host can't block the worker thread (and,
+            // via a teardown that waits on it, the main thread) for libcurl's ~300 s default.
+            curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 10L);
+            curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30L);
+
             curl_slist* chunk = nullptr;
             std::shared_ptr<void> __(nullptr, [chunk](...) { curl_slist_free_all(chunk); });
             for (auto header : req.header)

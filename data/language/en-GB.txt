@@ -3847,3 +3847,8 @@ STR_7049    :It smells strongly of weed here!
 STR_7050    :Whoa... heavy.
 STR_7051    :That's, like, really deep if you think about it.
 STR_7052    :I could look at this all day.
+STR_7053    :The competition host limits how many of this ride or stall type each park may build.
+STR_7054    :Leaving the competition
+STR_7055    :Suspend keeps your seat; forfeit is permanent.
+STR_7056    :Suspend
+STR_7057    :Forfeit

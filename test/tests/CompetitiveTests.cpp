@@ -54,12 +54,6 @@ TEST(CompetitiveTests, OfflineAndFinishedParksCannotBeTargeted)
     EXPECT_FALSE(CanTarget(participant));
 }
 
-TEST(CompetitiveTests, DailyPointsPreservePluginFormula)
-{
-    ParkMetrics metrics{ .guests = 500, .meanHappiness = 204 };
-    EXPECT_EQ(CalculateDailyPoints(metrics), 400);
-}
-
 TEST(CompetitiveTests, FrozenScoresIgnoreLaterReports)
 {
     Score score{ .participantId = 1, .cash = 20000.00_GBP };
@@ -88,7 +82,7 @@ TEST(CompetitiveTests, ScoreTracksActualScenarioCash)
     EXPECT_EQ(GetMetricValue(score, Metric::cash), 12345.60_GBP);
 }
 
-TEST(CompetitiveTests, WinnerUsesMetricThenPointsThenStableId)
+TEST(CompetitiveTests, WeightedScoreRanksAndBreaksTiesByStableId)
 {
     std::vector<Participant> participants = {
         { .id = 10, .online = true },
@@ -96,14 +90,22 @@ TEST(CompetitiveTests, WinnerUsesMetricThenPointsThenStableId)
         { .id = 30, .online = true, .forfeited = true },
     };
     std::vector<Score> scores = {
-        { .participantId = 10, .points = 100, .guests = 500 },
-        { .participantId = 20, .points = 200, .guests = 500 },
-        { .participantId = 30, .points = 9999, .guests = 9999 },
+        { .participantId = 10, .guests = 400 },
+        { .participantId = 20, .guests = 500 },
+        { .participantId = 30, .guests = 9999 }, // forfeited: excluded from ranking and normalisation
     };
 
-    EXPECT_EQ(ChooseWinner(scores, participants, Metric::guests), 20);
-    scores[0].points = 200;
-    EXPECT_EQ(ChooseWinner(scores, participants, Metric::guests), 10);
+    MatchRules rules;
+    rules.metricWeights = { 0, 0, 100, 0, 0 }; // 100% guest count
+
+    // 20 leads on guests; the forfeited park's larger count does not count.
+    EXPECT_EQ(ChooseWinner(scores, participants, rules), 20u);
+    EXPECT_EQ(ComputeCompositeScore(20, scores, participants, rules), 1000);
+    EXPECT_EQ(ComputeCompositeScore(10, scores, participants, rules), 800); // 400/500 * 1000
+
+    // Exact tie on the only weighted metric -> lower participant id wins.
+    scores[0].guests = 500;
+    EXPECT_EQ(ChooseWinner(scores, participants, rules), 10u);
 }
 
 TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
@@ -124,11 +126,18 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     state.rules.unionDisruption.cost = 275.00_GBP;
     state.rules.karens.potency = 25;
     state.rules.stoners.usesPerYear = 3;
+    state.rules.maxRidesPerType = 3;
+    state.rules.maxStallsPerType = 5;
+    state.rules.metricWeights = { 20, 40, 40, 0, 0 };
+    state.rules.realTimeLimitSeconds = 900;
+    state.rules.anonymousAttacks = true;
+    state.rules.customDesignsOnly = true;
+    state.liveSecondsElapsed = 120;
     state.participants.push_back(
         { 10, "host-key", "Host Park", Role::host, true, false, false, false, 0, 1, state.scenario });
     state.participants[0].watchHost = "192.0.2.10";
     state.participants[0].watchPort = 12010;
-    state.scores.push_back({ .participantId = 10, .points = 123, .cash = 19000.00_GBP });
+    state.scores.push_back({ .participantId = 10, .happiness = 180, .cash = 19000.00_GBP });
     ParkMetrics reportMetrics{ .localDay = 3, .rating = 700, .guests = 300 };
     reportMetrics.openFoodDrinkStalls.push_back({ 7, "Chief Beef" });
     reportMetrics.openToilets.push_back({ 8, "Restroom 1" });
@@ -145,7 +154,13 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     EXPECT_EQ(parsed->participants.at(0).identityKey, "host-key");
     EXPECT_EQ(parsed->participants.at(0).watchHost, "192.0.2.10");
     EXPECT_EQ(parsed->participants.at(0).watchPort, 12010);
-    EXPECT_EQ(parsed->scores.at(0).points, 123);
+    EXPECT_EQ(parsed->scores.at(0).happiness, 180);
+    EXPECT_EQ(parsed->scores.at(0).cash, 19000.00_GBP);
+    EXPECT_EQ(parsed->rules.metricWeights, state.rules.metricWeights);
+    EXPECT_EQ(parsed->rules.realTimeLimitSeconds, 900u);
+    EXPECT_TRUE(parsed->rules.anonymousAttacks);
+    EXPECT_TRUE(parsed->rules.customDesignsOnly);
+    EXPECT_EQ(parsed->liveSecondsElapsed, 120u);
     EXPECT_EQ(parsed->reports.at(0).lastScoredDay, 3u);
     EXPECT_EQ(parsed->reports.at(0).metrics.openFoodDrinkStalls.at(0).rideId, 7);
     EXPECT_EQ(parsed->reports.at(0).metrics.openToilets.at(0).rideId, 8);
@@ -159,12 +174,30 @@ TEST(CompetitiveTests, MatchProtocolRoundTripsAllAuthoritativeState)
     EXPECT_EQ(parsed->rules.unionDisruption.cost, 275.00_GBP);
     EXPECT_EQ(parsed->rules.karens.potency, 25);
     EXPECT_EQ(parsed->rules.stoners.usesPerYear, 3);
+    EXPECT_EQ(parsed->rules.maxRidesPerType, 3);
+    EXPECT_EQ(parsed->rules.maxStallsPerType, 5);
     EXPECT_EQ(parsed->cooldowns.at(0).ability, Ability::poison);
     EXPECT_EQ(parsed->cooldowns.at(0).availableAtDay, 2u);
     EXPECT_EQ(parsed->usages.at(0).ability, Ability::vandal);
     EXPECT_EQ(parsed->usages.at(0).year, 2);
     EXPECT_EQ(parsed->usages.at(0).used, 3);
     EXPECT_EQ(parsed->effects.at(0).endsAtDay, 17u);
+}
+
+TEST(CompetitiveTests, RideTypeLimitsDefaultToUnlimitedAndRejectOutOfRange)
+{
+    // Absent fields (e.g. from an older host) default to unlimited.
+    auto json = ToJson(MatchRules{});
+    json.erase("maxRidesPerType");
+    json.erase("maxStallsPerType");
+    const auto parsed = MatchRulesFromJson(json);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->maxRidesPerType, 0);
+    EXPECT_EQ(parsed->maxStallsPerType, 0);
+
+    auto tooLarge = ToJson(MatchRules{});
+    tooLarge["maxRidesPerType"] = 5000;
+    EXPECT_FALSE(MatchRulesFromJson(tooLarge).has_value());
 }
 
 TEST(CompetitiveTests, HostSessionRestoresFromNativeParkSave)
@@ -225,4 +258,117 @@ TEST(CompetitiveTests, HostSessionRestoresFromNativeParkSave)
     session.Stop();
     OpenRCT2::Config::Get().network.advertise = advertiseBeforeTest;
     std::filesystem::remove(savePath);
+}
+
+TEST(CompetitiveTests, DeliberateSpectatorLeaveIsClean)
+{
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
+    auto context = OpenRCT2::CreateContext();
+    ASSERT_TRUE(context->Initialise());
+
+    const auto sourcePath = TestData::GetParkPath("small_park_with_ferris_wheel.sv6");
+    ASSERT_TRUE(OpenRCT2::GetContext()->LoadParkFromFile(sourcePath));
+    GameLoadInit();
+
+    auto& host = GetSession();
+    host.Stop();
+    const auto advertiseBeforeTest = OpenRCT2::Config::Get().network.advertise;
+    OpenRCT2::Config::Get().network.advertise = false;
+
+    HostConfiguration configuration;
+    configuration.competitionName = "Leave test";
+    configuration.playerName = "Host Park";
+    configuration.listenAddress = "127.0.0.1";
+    configuration.port = 21757;
+    configuration.scenario = GetScenarioIdentityForPath(sourcePath);
+    std::string error;
+    ASSERT_TRUE(host.StartHost(configuration, error)) << error;
+
+    Session spectator;
+    JoinConfiguration joinConfiguration;
+    joinConfiguration.host = "127.0.0.1";
+    joinConfiguration.port = configuration.port;
+    joinConfiguration.playerName = "Watcher";
+    joinConfiguration.role = Role::spectator;
+    ASSERT_TRUE(spectator.Join(joinConfiguration, error)) << error;
+    for (int32_t attempt = 0; attempt < 500 && !spectator.IsOnline(); attempt++)
+    {
+        host.Update();
+        spectator.Update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    ASSERT_TRUE(spectator.IsOnline());
+    EXPECT_EQ(host.GetState()->participants.size(), 2u);
+
+    // A deliberate leave sends the coordinator a competitiveLeave; the host drops the
+    // spectator seat without disturbing the competing seats.
+    spectator.Stop(true);
+    for (int32_t attempt = 0; attempt < 200 && host.GetState()->participants.size() > 1; attempt++)
+    {
+        host.Update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    EXPECT_EQ(host.GetState()->participants.size(), 1u);
+    EXPECT_EQ(host.GetState()->phase, Phase::lobby);
+
+    host.Stop();
+    OpenRCT2::Config::Get().network.advertise = advertiseBeforeTest;
+}
+
+TEST(CompetitiveTests, HostLeaveTellsClientsAndTearsDownCleanly)
+{
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
+    auto context = OpenRCT2::CreateContext();
+    ASSERT_TRUE(context->Initialise());
+
+    const auto sourcePath = TestData::GetParkPath("small_park_with_ferris_wheel.sv6");
+    ASSERT_TRUE(OpenRCT2::GetContext()->LoadParkFromFile(sourcePath));
+    GameLoadInit();
+
+    auto& host = GetSession();
+    host.Stop();
+    const auto advertiseBeforeTest = OpenRCT2::Config::Get().network.advertise;
+    OpenRCT2::Config::Get().network.advertise = false;
+
+    HostConfiguration configuration;
+    configuration.competitionName = "Host leave test";
+    configuration.playerName = "Host Park";
+    configuration.listenAddress = "127.0.0.1";
+    configuration.port = 21759;
+    configuration.scenario = GetScenarioIdentityForPath(sourcePath);
+    std::string error;
+    ASSERT_TRUE(host.StartHost(configuration, error)) << error;
+
+    Session spectator;
+    JoinConfiguration joinConfiguration;
+    joinConfiguration.host = "127.0.0.1";
+    joinConfiguration.port = configuration.port;
+    joinConfiguration.playerName = "Watcher";
+    joinConfiguration.role = Role::spectator;
+    ASSERT_TRUE(spectator.Join(joinConfiguration, error)) << error;
+    for (int32_t attempt = 0; attempt < 500 && !spectator.IsOnline(); attempt++)
+    {
+        host.Update();
+        spectator.Update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    ASSERT_TRUE(spectator.IsOnline());
+
+    // The host leaves with a connected client - this must broadcast competitiveLeave and tear
+    // the host down without crashing.
+    host.Stop(true);
+    EXPECT_EQ(host.GetState(), nullptr);
+
+    // The client picks up the host-closed message on its next updates and drops its own session.
+    for (int32_t attempt = 0; attempt < 300 && spectator.GetState() != nullptr; attempt++)
+    {
+        spectator.Update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    EXPECT_EQ(spectator.GetState(), nullptr);
+
+    spectator.Stop();
+    OpenRCT2::Config::Get().network.advertise = advertiseBeforeTest;
 }

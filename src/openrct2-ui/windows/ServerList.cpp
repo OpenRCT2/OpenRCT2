@@ -17,6 +17,7 @@
     #include <openrct2-ui/windows/Windows.h>
     #include <openrct2/Context.h>
     #include <openrct2/Diagnostic.h>
+    #include <openrct2/Game.h>
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/competitive/CompetitiveSession.h>
@@ -644,6 +645,23 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [host, port] = ParseAddress(server->Address, Competitive::kDefaultPort);
+
+            // If we have a suspended park for THIS exact competition (same match id), reload that
+            // save - it reconnects us with our park intact. Matching only on host:port would wrongly
+            // load an old park when the host has since started a different competition.
+            if (auto suspended = Competitive::FindSuspendedSave(server->MatchId))
+            {
+                GameNotifyMapChange();
+                if (GetContext()->LoadParkFromFile(suspended->savePath, false, true))
+                {
+                    GameLoadScripts();
+                    GameNotifyMapChanged();
+                    return;
+                }
+                ErrorOpen(
+                    "Could not load your suspended park", "Starting a fresh join to this competition instead.");
+            }
+
             Competitive::JoinConfiguration configuration;
             configuration.host = std::move(host);
             configuration.port = port;

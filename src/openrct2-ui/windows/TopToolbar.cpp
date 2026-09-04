@@ -822,7 +822,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
                         {
-                            Competitive::GetSession().Stop();
+                            CompetitiveLeavePromptOpen();
                         }
                         else
                         {

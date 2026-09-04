@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Competitive
 {
-    constexpr uint16_t kProtocolVersion = 7;
+    constexpr uint16_t kProtocolVersion = 11;
     constexpr uint16_t kDefaultPort = 11755;
 
     struct ActiveEffect
@@ -80,6 +80,9 @@ namespace OpenRCT2::Competitive
         uint32_t nextEffectId = 1;
         std::optional<ParticipantId> winnerId{};
         bool closedEarly = false;
+        // Accumulated real seconds the match has been live (see MatchRules::realTimeLimitSeconds).
+        // Host-authoritative; persisted so a host suspend/resume neither loses nor inflates it.
+        uint32_t liveSecondsElapsed = 0;
     };
 
     [[nodiscard]] Participant* FindParticipant(MatchState& state, ParticipantId id);

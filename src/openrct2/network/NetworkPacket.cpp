@@ -67,6 +67,7 @@ namespace OpenRCT2::Network
             case Command::competitiveWatchEndpoint:
             case Command::competitiveError:
             case Command::competitiveChat:
+            case Command::competitiveLeave:
                 return false;
             default:
                 return true;

@@ -27,6 +27,7 @@
     #include <cstring>
     #include <iterator>
     #include <memory>
+    #include <mutex>
     #include <random>
     #include <string>
 
@@ -49,10 +50,22 @@ namespace OpenRCT2::Network
     class NetworkServerAdvertiser final : public INetworkServerAdvertiser
     {
     private:
+        // Shared between the advertiser and its in-flight HTTP completion lambdas. A lambda holds a
+        // copy, locks the mutex, and bails when 'self' is null - so a completion running on an Http
+        // worker thread can never touch a destroyed advertiser, and beginShutdown() cannot return
+        // while a completion is mid-flight.
+        struct AdvertiserGuard
+        {
+            std::mutex mutex;
+            NetworkServerAdvertiser* self = nullptr;
+        };
+        std::shared_ptr<AdvertiserGuard> _guard = std::make_shared<AdvertiserGuard>();
+
         uint16_t _port;
         std::function<json_t()> _serverInfoProvider;
         std::function<uint32_t()> _playerCountProvider;
         std::function<json_t()> _gameInfoProvider;
+        std::function<bool()> _wanEnabledProvider;
 
         std::unique_ptr<IUdpSocket> _lanListener;
         std::shared_future<void> _currentRequest;
@@ -77,27 +90,37 @@ namespace OpenRCT2::Network
     public:
         explicit NetworkServerAdvertiser(
             uint16_t port, std::function<json_t()> serverInfoProvider = {},
-            std::function<uint32_t()> playerCountProvider = {}, std::function<json_t()> gameInfoProvider = {})
+            std::function<uint32_t()> playerCountProvider = {}, std::function<json_t()> gameInfoProvider = {},
+            std::function<bool()> wanEnabledProvider = {})
         {
+            _guard->self = this;
             _port = port;
             _serverInfoProvider = std::move(serverInfoProvider);
             _playerCountProvider = std::move(playerCountProvider);
             _gameInfoProvider = std::move(gameInfoProvider);
+            _wanEnabledProvider = std::move(wanEnabledProvider);
             _lanListener = CreateUdpSocket();
     #ifndef DISABLE_HTTP
             _key = generateAdvertiseKey();
     #endif
         }
 
-        ~NetworkServerAdvertiser() final
+        void beginShutdown() override
         {
             _lanListener->Close();
-
-            auto currentRequest = _currentRequest;
-            if (currentRequest.valid())
             {
-                currentRequest.wait();
+                std::scoped_lock lock(_guard->mutex);
+                _guard->self = nullptr;
             }
+            // Hand the in-flight request to the process-lifetime reaper so this never blocks.
+    #ifndef DISABLE_HTTP
+            Http::Detach(std::move(_currentRequest));
+    #endif
+        }
+
+        ~NetworkServerAdvertiser() final
+        {
+            beginShutdown(); // idempotent: _currentRequest is a moved-from (invalid) future by now
         }
 
         AdvertiseStatus getStatus() const override
@@ -109,7 +132,8 @@ namespace OpenRCT2::Network
         {
             updateLAN();
     #ifndef DISABLE_HTTP
-            if (Config::Get().network.advertise)
+            const bool wanEnabled = _wanEnabledProvider ? _wanEnabledProvider() : Config::Get().network.advertise;
+            if (wanEnabled)
             {
                 updateWAN();
             }
@@ -208,20 +232,25 @@ namespace OpenRCT2::Network
             request.body = body.dump();
             request.header["Content-Type"] = "application/json";
 
-            _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
+            _currentRequest = Http::DoAsync(request, [guard = _guard](Http::Response response) -> void {
+                                  std::scoped_lock lock(guard->mutex);
+                                  auto* self = guard->self;
+                                  if (self == nullptr)
+                                      return;
+
                                   if (response.status != Http::Status::ok)
                                   {
                                       Console::Error::WriteLine(
                                           "Unable to connect to master server, retrying in %d seconds",
                                           kMasterServerRegisterTime / 1000);
 
-                                      _status = AdvertiseStatus::unregistered;
+                                      self->_status = AdvertiseStatus::unregistered;
                                       return;
                                   }
 
                                   json_t root = Json::FromString(response.body);
                                   root = Json::AsObject(root);
-                                  this->onRegistrationResponse(root);
+                                  self->onRegistrationResponse(root);
                               }).share();
         }
 
@@ -237,22 +266,27 @@ namespace OpenRCT2::Network
 
             _lastHeartbeatTime = Platform::GetTicks();
 
-            _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
+            _currentRequest = Http::DoAsync(request, [guard = _guard](Http::Response response) -> void {
+                                  std::scoped_lock lock(guard->mutex);
+                                  auto* self = guard->self;
+                                  if (self == nullptr)
+                                      return;
+
                                   if (response.status != Http::Status::ok)
                                   {
                                       Console::Error::WriteLine(
                                           "Unable to connect to master server, retrying in %d seconds",
                                           kMasterServerRegisterTime / 1000);
 
-                                      _status = AdvertiseStatus::unregistered;
+                                      self->_status = AdvertiseStatus::unregistered;
                                       // Don't immediately retry advertising, wait for kMasterServerRegisterTime.
-                                      _lastAdvertiseTime = Platform::GetTicks();
+                                      self->_lastAdvertiseTime = Platform::GetTicks();
                                       return;
                                   }
 
                                   json_t root = Json::FromString(response.body);
                                   root = Json::AsObject(root);
-                                  this->onHeartbeatResponse(root);
+                                  self->onHeartbeatResponse(root);
                               }).share();
         }
 
@@ -397,10 +431,11 @@ namespace OpenRCT2::Network
 
     std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(
         uint16_t port, std::function<json_t()> serverInfoProvider, std::function<uint32_t()> playerCountProvider,
-        std::function<json_t()> gameInfoProvider)
+        std::function<json_t()> gameInfoProvider, std::function<bool()> wanEnabledProvider)
     {
         return std::make_unique<NetworkServerAdvertiser>(
-            port, std::move(serverInfoProvider), std::move(playerCountProvider), std::move(gameInfoProvider));
+            port, std::move(serverInfoProvider), std::move(playerCountProvider), std::move(gameInfoProvider),
+            std::move(wanEnabledProvider));
     }
 } // namespace OpenRCT2::Network
 
