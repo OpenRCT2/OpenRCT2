@@ -179,7 +179,11 @@ namespace
                 item["gameMode"] = "competitive";
             servers.push_back(std::move(item));
         }
-        SendJson(client, 200, { { "servers", servers } });
+        // status must be the NUMBER 200 - ServerList.cpp's client parser rejects the response
+        // outright (MasterServerException) if "status" is missing or not a number, regardless of
+        // HTTP status code. The real master server actually sends "status":"ok" (a string) in this
+        // same spot, which fails that same check - not something we can fix from here.
+        SendJson(client, 200, { { "servers", servers }, { "status", 200 } });
     }
 
     void HandlePost(SOCKET client, const std::string& body)
