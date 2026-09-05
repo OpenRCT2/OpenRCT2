@@ -1289,6 +1289,24 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        static ImageId applyPreviewVehicleColour(
+            ImageIndex imageIndex, const CarEntry& carEntry, const VehicleColour& vehicleColour)
+        {
+            imageIndex &= carEntry.tabRotationMask;
+            imageIndex *= carEntry.baseNumFrames;
+            imageIndex += carEntry.baseImageId;
+
+            auto imageId = ImageId(imageIndex);
+            if (carEntry.flags.has(CarEntryFlag::enableBodyColour))
+                imageId = imageId.WithPrimary(vehicleColour.Body);
+            if (carEntry.flags.has(CarEntryFlag::enableTrimColour))
+                imageId = imageId.WithSecondary(vehicleColour.Trim);
+            if (carEntry.flags.has(CarEntryFlag::enableTertiaryColour))
+                imageId = imageId.WithTertiary(vehicleColour.Tertiary);
+
+            return imageId;
+        }
+
         void DrawTabVehicle(RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
@@ -1344,10 +1362,8 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_RIDE_PAGE_VEHICLE)
                     imageIndex += currentFrame;
                 imageIndex = carEntry.spriteByYaw(imageIndex / 2, SpriteGroupType::slopeFlat);
-                imageIndex &= carEntry.tabRotationMask;
-                imageIndex *= carEntry.baseNumFrames;
-                imageIndex += carEntry.baseImageId;
-                auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+
+                auto imageId = applyPreviewVehicleColour(imageIndex, carEntry, vehicleColour);
                 GfxDrawSprite(clipRT, imageId, spriteCoords);
             }
         }
@@ -2916,8 +2932,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         static ImageId getVehiclePreviewImageId(
-            const Ride& ride, const RideObjectEntry& rideEntry, const CarEntry& carEntry, int32_t trainIndex, int32_t carIndex,
-            bool isReversed)
+            const Ride& ride, const CarEntry& carEntry, int32_t trainIndex, int32_t carIndex, bool isReversed)
         {
             int32_t vehicleColourIndex = 0;
 
@@ -2947,11 +2962,7 @@ namespace OpenRCT2::Ui::Windows
                     (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::slopeFlat);
             }
 
-            imageIndex &= carEntry.tabRotationMask;
-            imageIndex *= carEntry.baseNumFrames;
-            imageIndex += carEntry.baseImageId;
-
-            return ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+            return applyPreviewVehicleColour(imageIndex, carEntry, vehicleColour);
         }
 
         struct VehicleDrawInfo
@@ -2980,7 +2991,7 @@ namespace OpenRCT2::Ui::Windows
                 x += dx;
                 y -= dy;
 
-                auto imageId = getVehiclePreviewImageId(ride, rideEntry, carEntry, trainIndex, carIndex, isReversed);
+                auto imageId = getVehiclePreviewImageId(ride, carEntry, trainIndex, carIndex, isReversed);
 
                 out[count++] = VehicleDrawInfo{ .x = static_cast<int16_t>(x),
                                                 .y = static_cast<int16_t>(y),
@@ -5271,10 +5282,8 @@ namespace OpenRCT2::Ui::Windows
             // Draw the coloured spinning vehicle
             // currentFrame represents a SpritePrecision of 64
             ImageIndex imageIndex = carEntry.spriteByYaw(currentFrame / 2, SpriteGroupType::slopeFlat);
-            imageIndex &= carEntry.tabRotationMask;
-            imageIndex *= carEntry.baseNumFrames;
-            imageIndex += carEntry.baseImageId;
-            auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+
+            auto imageId = applyPreviewVehicleColour(imageIndex, carEntry, vehicleColour);
             GfxDrawSprite(rt, imageId, screenCoords);
         }
 
