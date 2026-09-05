@@ -13,6 +13,7 @@
 - Improved: [#26099] The ride type selection cheat has been moved into the ride operations tab.
 - Improved: [#26099] The ride visiblity cheat has been moved into the ride colour/appearance tab.
 - Improved: [#26441, #26958] Change result.position.z of SmallScenery- and WallPlaceAction to match the actual position of the placed tile element.
+- Improved: [#26837] Selecting columns or rows of tiles by holding down Ctrl is now also supported by land paint and water tools.
 - Improved: [#26862] Add a Liquid Glass app icon for macOS 26 and later.
 - Improved: [#26931] The save prompt now bounces the macOS dock icon, flashes the Windows taskbar button and marks Linux windows urgent when it blocks quitting an unfocused game.
 - Improved: [#26936] Rain is now drawn next to the top toolbar, but only when it is centred.
