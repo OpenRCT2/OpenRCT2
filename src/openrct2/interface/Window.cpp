@@ -763,31 +763,27 @@ static constexpr float kWindowScrollLocations[][2] = {
             dateInfoPanel->windowPos.y = height - 32;
         }
 
-        WindowBase* statusBar = windowMgr->FindByClass(WindowClass::gameStatusBar);
-        if (statusBar != nullptr && parkInfoPanel != nullptr && dateInfoPanel != nullptr)
+        auto bottomWidth = std::max(640, width);
+        auto bottomOffset = 0;
+        if (parkInfoPanel != nullptr && dateInfoPanel != nullptr)
         {
-            statusBar->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
-            statusBar->windowPos.x = parkInfoPanel->width;
-            statusBar->windowPos.y = height - 32;
+            bottomWidth -= parkInfoPanel->width + dateInfoPanel->width;
+            bottomOffset = parkInfoPanel->width;
         }
-        else if (statusBar != nullptr)
+
+        WindowBase* statusBar = windowMgr->FindByClass(WindowClass::gameStatusBar);
+        if (statusBar != nullptr)
         {
-            statusBar->width = std::max(640, width);
-            statusBar->windowPos.x = 0;
+            statusBar->width = bottomWidth;
+            statusBar->windowPos.x = bottomOffset;
             statusBar->windowPos.y = height - 32;
         }
 
         WindowBase* newsTicker = windowMgr->FindByClass(WindowClass::newsTicker);
-        if (newsTicker != nullptr && parkInfoPanel != nullptr && dateInfoPanel != nullptr)
+        if (newsTicker != nullptr)
         {
-            newsTicker->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
-            newsTicker->windowPos.x = parkInfoPanel->width;
-            newsTicker->windowPos.y = height - 32;
-        }
-        else if (newsTicker != nullptr)
-        {
-            newsTicker->width = std::max(640, width);
-            newsTicker->windowPos.x = 0;
+            newsTicker->width = bottomWidth;
+            newsTicker->windowPos.x = bottomOffset;
             newsTicker->windowPos.y = height - 32;
         }
     }
