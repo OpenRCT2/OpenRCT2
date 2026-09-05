@@ -776,6 +776,20 @@ static constexpr float kWindowScrollLocations[][2] = {
             statusBar->windowPos.x = 0;
             statusBar->windowPos.y = height - 32;
         }
+
+        WindowBase* newsTicker = windowMgr->FindByClass(WindowClass::newsTicker);
+        if (newsTicker != nullptr && parkInfoPanel != nullptr && dateInfoPanel != nullptr)
+        {
+            newsTicker->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
+            newsTicker->windowPos.x = parkInfoPanel->width;
+            newsTicker->windowPos.y = height - 32;
+        }
+        else if (newsTicker != nullptr)
+        {
+            newsTicker->width = std::max(640, width);
+            newsTicker->windowPos.x = 0;
+            newsTicker->windowPos.y = height - 32;
+        }
     }
 
     static void WindowResizeGuiTitleScreen(const int32_t width, const int32_t height)
