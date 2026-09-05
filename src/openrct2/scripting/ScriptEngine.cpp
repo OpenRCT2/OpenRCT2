@@ -1716,6 +1716,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "rideentranceexitremove", GameCommand::removeRideEntranceOrExit },
     { "ridefreezerating", GameCommand::freezeRideRating },
     { "ridesetappearance", GameCommand::setRideAppearance },
+    { "ridesetbreakdown", GameCommand::setRideBreakdown },
     { "ridesetcolourscheme", GameCommand::setColourScheme },
     { "ridesetname", GameCommand::setRideName },
     { "ridesetprice", GameCommand::setRidePrice },

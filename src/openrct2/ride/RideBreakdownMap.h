@@ -16,6 +16,9 @@
 
 namespace OpenRCT2
 {
+    // The name the plugin API uses for Breakdown::none.
+    static constexpr char kBreakdownNoneName[] = "none";
+
     static const EnumMap<Breakdown> kBreakdownMap(
         { { "safety_cut_out", Breakdown::safetyCutOut },
           { "restraints_stuck_closed", Breakdown::restraintsStuckClosed },
@@ -25,6 +28,6 @@ namespace OpenRCT2
           { "vehicle_malfunction", Breakdown::vehicleMalfunction },
           { "brakes_failure", Breakdown::brakesFailure },
           { "control_failure", Breakdown::controlFailure } });
-}
+} // namespace OpenRCT2
 
 #endif
