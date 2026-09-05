@@ -1,5 +1,6 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
 
 0.5.5 (2026-09-06)
