@@ -17,6 +17,7 @@
 - Fix: [#21576] RCT1 Wooden wild mouse track designs with 2-car trains are not imported correctly.
 - Fix: [#22298] [Plugin] Crash when changing a large scenery element whose object is not loaded.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
+- Fix: [#26222] ‘Follow this on Main View’ follows the invisible first car on ride types that have one, making the view turn too early.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
 - Fix: [#26998] Crash when generating a `Simplex Height Map` with a higher width than height.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
