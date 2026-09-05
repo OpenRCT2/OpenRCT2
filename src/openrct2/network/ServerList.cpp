@@ -224,6 +224,7 @@ namespace OpenRCT2::Network
                     serverInfo.Favourite = true;
                     serverInfo.Players = 0;
                     serverInfo.MaxPlayers = 0;
+                    serverInfo.Kind = static_cast<ServerKind>(fs.ReadValue<uint8_t>());
                     entries.push_back(std::move(serverInfo));
                 }
             }
@@ -272,6 +273,7 @@ namespace OpenRCT2::Network
                 fs.WriteString(entry.Address);
                 fs.WriteString(entry.Name);
                 fs.WriteString(entry.Description);
+                fs.WriteValue<uint8_t>(static_cast<uint8_t>(entry.Kind));
             }
             return true;
         }
