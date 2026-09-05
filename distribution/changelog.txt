@@ -10,6 +10,7 @@
 - Fix: [#12516] Sprites past 65,536 pixels are drawn in the wrong place by the software renderer, most visibly in long scenario lists.
 - Fix: [#15423] Crash when a guest or handyman uses a bin whose path addition object is not loaded.
 - Fix: [#17409] When reading system settings, non-US dollar currencies are not recognised correctly. 
+- Fix: [#18151] Park value and company value are out of date after loading a save.
 - Fix: [#19754, #27109] Some rides in RCT1 saves have a wrong number of cars per train.
 - Fix: [#20882] When setting rides with preservation status in the Scenario Editor, some rides are not shown.
 - Fix: [#21320] RCT1 allows more cars per train on some rides than OpenRCT2.
