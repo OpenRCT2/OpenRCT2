@@ -174,6 +174,8 @@ void ScenarioFailure(GameState_t& gameState)
  */
 void ScenarioSuccess(GameState_t& gameState)
 {
+    // Park::Update only recalculates the company value periodically, so it can be out of date here.
+    gameState.park.companyValue = Park::CalculateCompanyValue(gameState.park);
     auto companyValue = gameState.park.companyValue;
 
     gameState.scenarioCompletedCompanyValue = companyValue;
