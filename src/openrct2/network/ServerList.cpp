@@ -383,8 +383,6 @@ namespace OpenRCT2::Network
         return std::async(std::launch::async, [this] {
             std::vector<std::string> urls = { kMasterServerURL };
             const std::string customUrl = Config::Get().network.masterServerUrl;
-            LOG_INFO("FetchOnlineServerListAsync: configured masterServerUrl = \"%s\" (length %zu)", customUrl.c_str(),
-                customUrl.size());
             if (!customUrl.empty() && customUrl != kMasterServerURL)
             {
                 urls.push_back(customUrl);
@@ -393,29 +391,21 @@ namespace OpenRCT2::Network
             std::vector<std::future<std::vector<ServerListEntry>>> futures;
             for (const auto& url : urls)
             {
-                LOG_INFO("FetchOnlineServerListAsync: querying %s", url.c_str());
                 futures.push_back(FetchOnlineServerListAsync(url));
             }
 
             std::vector<ServerListEntry> mergedEntries;
-            for (size_t i = 0; i < futures.size(); i++)
+            for (auto& f : futures)
             {
                 try
                 {
-                    auto entries = futures[i].get();
-                    LOG_INFO("FetchOnlineServerListAsync: %s returned %zu entr%s", urls[i].c_str(), entries.size(),
-                        entries.size() == 1 ? "y" : "ies");
+                    auto entries = f.get();
                     mergedEntries.insert(mergedEntries.end(), entries.begin(), entries.end());
-                }
-                catch (const std::exception& e)
-                {
-                    // Ignore any exceptions from a particular master server - one being down
-                    // shouldn't hide listings from the other.
-                    LOG_INFO("FetchOnlineServerListAsync: %s failed: %s", urls[i].c_str(), e.what());
                 }
                 catch (...)
                 {
-                    LOG_INFO("FetchOnlineServerListAsync: %s failed with unknown exception", urls[i].c_str());
+                    // Ignore any exceptions from a particular master server - one being down
+                    // shouldn't hide listings from the other.
                 }
             }
             return mergedEntries;
@@ -438,15 +428,10 @@ namespace OpenRCT2::Network
         request.header["Accept"] = "application/json";
         // Despite DoAsync, the future below is not stored, so it will block the calling thread until the request completes
         // TOOD: Review if this is acceptable
-        std::ignore = Http::DoAsync(request, [p, masterServerUrl](Http::Response& response) -> void {
+        std::ignore = Http::DoAsync(request, [p](Http::Response& response) -> void {
             json_t root;
             try
             {
-                LOG_INFO(
-                    "FetchOnlineServerListAsync(%s): HTTP status=%d, body length=%zu, body[0..200]=%.200s",
-                    masterServerUrl.c_str(), static_cast<int>(response.status), response.body.size(),
-                    response.body.c_str());
-
                 if (response.status != Http::Status::ok)
                 {
                     throw MasterServerException(STR_SERVER_LIST_NO_CONNECTION);
