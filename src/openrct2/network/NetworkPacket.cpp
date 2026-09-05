@@ -55,6 +55,19 @@ namespace OpenRCT2::Network
             case Command::scriptsData:
             case Command::mapRequest:
             case Command::heartbeat:
+            case Command::competitiveHello:
+            case Command::competitiveWelcome:
+            case Command::competitiveSnapshot:
+            case Command::competitiveReady:
+            case Command::competitiveMetrics:
+            case Command::competitiveAbility:
+            case Command::competitiveEffectAck:
+            case Command::competitiveControl:
+            case Command::competitiveHeartbeat:
+            case Command::competitiveWatchEndpoint:
+            case Command::competitiveError:
+            case Command::competitiveChat:
+            case Command::competitiveLeave:
                 return false;
             default:
                 return true;

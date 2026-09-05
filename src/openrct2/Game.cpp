@@ -21,6 +21,7 @@
 #include "actions/general/GameSetSpeedAction.h"
 #include "actions/general/LoadOrQuitAction.h"
 #include "audio/Audio.h"
+#include "competitive/CompetitiveSession.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"
@@ -736,6 +737,12 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
+#ifndef DISABLE_NETWORK
+            // Quitting the whole app: resolve any competitive session so the leave is a suspend
+            // (seat kept), never a silent forfeit. A confirmed forfeit has already run its own Stop.
+            if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+                Competitive::GetSession().Stop(false);
+#endif
             getGameState().entities.resetAllEntities();
             GetContext()->Finish();
             break;

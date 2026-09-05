@@ -28,6 +28,7 @@
 #include <openrct2/actions/general/PauseToggleAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/competitive/CompetitiveSession.h>
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -505,6 +506,21 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[5] = Dropdown::MenuLabel(STR_SPEED_HYPER);
             }
 
+            uint8_t competitionSpeedLimit = UINT8_MAX;
+            const auto& competition = Competitive::GetSession();
+            const auto* competitionState = competition.GetState();
+            const auto* localParticipant = competition.GetLocalParticipant();
+            if (competitionState != nullptr && competitionState->phase == Competitive::Phase::running
+                && localParticipant != nullptr && localParticipant->role != Competitive::Role::spectator
+                && !localParticipant->finished && !localParticipant->forfeited)
+            {
+                competitionSpeedLimit = competitionState->rules.maxGameSpeed;
+                for (uint8_t speed = competitionSpeedLimit + 1; speed <= 4; speed++)
+                    gDropdown.items[speed - 1].setDisabled(true);
+                if (num_items == 6 && competitionSpeedLimit < 8)
+                    gDropdown.items[5].setDisabled(true);
+            }
+
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), { Dropdown::Flag::autoClose }, num_items);
@@ -758,14 +774,31 @@ namespace OpenRCT2::Ui::Windows
 
         void initNetworkMenu(Widget& widget)
         {
-            gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER);
-            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
+            const bool competitive = Competitive::GetSession().GetMode() != Competitive::SessionMode::none;
+            const bool watching = Competitive::IsWatchingPark();
+            if (watching)
+            {
+                gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel("Watching rival park");
+                gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel("Return to my park");
+            }
+            else if (competitive)
+            {
+                gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(
+                    Network::GetMode() == Network::Mode::none ? "Competition" : "Multiplayer & competition");
+                gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel("Leave competition");
+            }
+            else
+            {
+                gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER);
+                gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
+            }
 
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(),
                 colours[0].withFlag(ColourFlag::translucent, true), { Dropdown::Flag::autoClose }, TOP_TOOLBAR_NETWORK_COUNT);
 
-            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!Network::IsDesynchronised());
+            gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(
+                !watching && !competitive && !Network::IsDesynchronised());
 
             gDropdown.defaultIndex = DDIDX_MULTIPLAYER;
         }
@@ -781,7 +814,20 @@ namespace OpenRCT2::Ui::Windows
                         ContextOpenWindow(WindowClass::multiplayer);
                         break;
                     case DDIDX_MULTIPLAYER_RECONNECT:
-                        Network::Reconnect();
+                        if (Competitive::IsWatchingPark())
+                        {
+                            std::string error;
+                            if (!Competitive::ReturnFromWatchedPark(error))
+                                GetWindowManager()->ShowError("Cannot return to your park", error);
+                        }
+                        else if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+                        {
+                            CompetitiveLeavePromptOpen();
+                        }
+                        else
+                        {
+                            Network::Reconnect();
+                        }
                         break;
                 }
             }
@@ -1102,6 +1148,19 @@ namespace OpenRCT2::Ui::Windows
 
             const bool hasFinanceButton = !(getGameState().park.flags.has(ParkFlag::noMoney) || !config.toolbarShowFinances);
             widgets[WIDX_FINANCES].setVisible(hasFinanceButton);
+
+            const auto& competition = Competitive::GetSession();
+            const auto* competitionState = competition.GetState();
+            const auto* localParticipant = competition.GetLocalParticipant();
+            const bool activeCompetitor = competitionState != nullptr
+                && competitionState->phase == Competitive::Phase::running && localParticipant != nullptr
+                && localParticipant->role != Competitive::Role::spectator && !localParticipant->finished
+                && !localParticipant->forfeited;
+            if (activeCompetitor)
+            {
+                widgets[WIDX_CHEATS].setHidden();
+                widgets[WIDX_DEBUG].setHidden();
+            }
         }
 
         void ApplyEditorMode()
@@ -1153,7 +1212,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             const auto mode = Network::GetMode();
-            widgets[WIDX_NETWORK].setHidden(mode == Network::Mode::none);
+            const bool competitive = Competitive::GetSession().GetMode() != Competitive::SessionMode::none;
+            widgets[WIDX_NETWORK].setHidden(mode == Network::Mode::none && !competitive);
             widgets[WIDX_CHAT].setHidden(mode == Network::Mode::none);
             widgets[WIDX_PAUSE].setHidden(mode == Network::Mode::client);
             widgets[WIDX_FASTFORWARD].setHidden(mode == Network::Mode::server);
@@ -1429,9 +1489,23 @@ namespace OpenRCT2::Ui::Windows
                 imgId = (Network::IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
                 GfxDrawSprite(rt, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
-                // Draw number of players.
+                // Draw the relevant online park/player count.
+                int32_t onlineCount = Network::GetNumVisiblePlayers();
+                if (Network::GetMode() == Network::Mode::none)
+                {
+                    onlineCount = 0;
+                    const auto* state = Competitive::GetSession().GetState();
+                    if (state != nullptr)
+                    {
+                        for (const auto& participant : state->participants)
+                        {
+                            if (participant.online && participant.role != Competitive::Role::spectator)
+                                onlineCount++;
+                        }
+                    }
+                }
                 auto ft = Formatter();
-                ft.Add<int32_t>(Network::GetNumVisiblePlayers());
+                ft.Add<int32_t>(onlineCount);
                 auto colour = ColourWithFlags{ Drawing::Colour::white }.withFlag(ColourFlag::withOutline, true);
                 drawText(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::right });
             }

@@ -148,10 +148,12 @@ void drawTextEllipsised(
 void drawTextEllipsised(
     RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, u8string_view string, TextPaint textPaint)
 {
-    utf8 buffer[512]{};
-    string.copy(buffer, std::min(string.length(), sizeof(buffer) - 1));
+    utf8 buffer[512];
+    const auto copied = string.copy(buffer, sizeof(buffer) - 1);
+    buffer[copied] = '\0';
     clipString(buffer, width, textPaint.fontStyle);
-    drawText(rt, coords, string, textPaint);
+    // NB: draw the clipped buffer, not the original string, so the text is actually ellipsised.
+    drawText(rt, coords, static_cast<const utf8*>(buffer), textPaint);
 }
 
 int32_t drawTextWrapped(RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, TextPaint textPaint)

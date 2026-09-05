@@ -91,7 +91,9 @@ namespace OpenRCT2
         uint16_t frame;
         uint16_t timeToMove;
 
-        static void create(const CoordsXYZ& coords);
+        // initialFrame lets callers start the puff partway through its animation for a smaller,
+        // shorter-lived wisp; the default 256 is a full-size steam cloud.
+        static void create(const CoordsXYZ& coords, uint16_t initialFrame = 256);
         void update();
         void serialise(DataSerialiser& stream);
     };

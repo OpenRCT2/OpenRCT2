@@ -66,6 +66,7 @@ namespace OpenRCT2
     {
     public:
         std::vector<const ObjectRepositoryItem*> ExportObjectsList;
+        bool ExportCompetitiveSession = true;
 
         void Export(GameState_t& gameState, std::string_view path, int16_t compressionLevel);
         void Export(GameState_t& gameState, IStream& stream, int16_t compressionLevel);

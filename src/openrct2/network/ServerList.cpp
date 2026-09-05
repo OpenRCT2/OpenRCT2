@@ -72,6 +72,11 @@ namespace OpenRCT2::Network
         return Version.empty() || Version == GetVersion();
     }
 
+    bool ServerListEntry::IsCompetitive() const noexcept
+    {
+        return Kind == ServerKind::competitive;
+    }
+
     std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)
     {
         Guard::Assert(server.is_object(), "ServerListEntry::FromJson expects parameter server to be object");
@@ -83,6 +88,7 @@ namespace OpenRCT2::Network
         const auto version = Json::GetString(server["version"]);
         const auto players = Json::GetNumber<uint8_t>(server["players"]);
         const auto maxPlayers = Json::GetNumber<uint8_t>(server["maxPlayers"]);
+        const auto gameMode = Json::GetString(server["gameMode"]);
         std::string ip;
         // if server["ip"] or server["ip"]["v4"] are values, this will throw an exception, so check first
         if (server["ip"].is_object() && server["ip"]["v4"].is_array())
@@ -106,6 +112,18 @@ namespace OpenRCT2::Network
         entry.RequiresPassword = requiresPassword;
         entry.Players = players;
         entry.MaxPlayers = maxPlayers;
+        if (gameMode == "competitive")
+        {
+            entry.Kind = ServerKind::competitive;
+            entry.CompetitiveProtocol = Json::GetNumber<uint16_t>(server["competitiveProtocol"]);
+            entry.CompetitionPhase = Json::GetString(server["phase"]);
+            entry.MatchId = Json::GetString(server["matchId"]);
+            entry.ScenarioName = Json::GetString(server["scenarioName"]);
+            entry.ScenarioFileName = Json::GetString(server["scenarioFileName"]);
+            entry.ScenarioHash = Json::GetString(server["scenarioHash"]);
+            entry.Victory = Json::GetString(server["victory"]);
+            entry.AllowLateJoin = Json::GetBoolean(server["allowLateJoin"]);
+        }
 
         return entry;
     }
@@ -206,6 +224,7 @@ namespace OpenRCT2::Network
                     serverInfo.Favourite = true;
                     serverInfo.Players = 0;
                     serverInfo.MaxPlayers = 0;
+                    serverInfo.Kind = static_cast<ServerKind>(fs.ReadValue<uint8_t>());
                     entries.push_back(std::move(serverInfo));
                 }
             }
@@ -254,6 +273,7 @@ namespace OpenRCT2::Network
                 fs.WriteString(entry.Address);
                 fs.WriteString(entry.Name);
                 fs.WriteString(entry.Description);
+                fs.WriteValue<uint8_t>(static_cast<uint8_t>(entry.Kind));
             }
             return true;
         }
@@ -358,18 +378,52 @@ namespace OpenRCT2::Network
     #ifdef DISABLE_HTTP
         return {};
     #else
+        // Always query the official master server, plus a configured masterServerUrl IN ADDITION
+        // (not instead) - see NetworkServerAdvertiser for why a competitive listing needs both.
+        return std::async(std::launch::async, [this] {
+            std::vector<std::string> urls = { kMasterServerURL };
+            const std::string customUrl = Config::Get().network.masterServerUrl;
+            if (!customUrl.empty() && customUrl != kMasterServerURL)
+            {
+                urls.push_back(customUrl);
+            }
+
+            std::vector<std::future<std::vector<ServerListEntry>>> futures;
+            for (const auto& url : urls)
+            {
+                futures.push_back(FetchOnlineServerListAsync(url));
+            }
+
+            std::vector<ServerListEntry> mergedEntries;
+            for (auto& f : futures)
+            {
+                try
+                {
+                    auto entries = f.get();
+                    mergedEntries.insert(mergedEntries.end(), entries.begin(), entries.end());
+                }
+                catch (...)
+                {
+                    // Ignore any exceptions from a particular master server - one being down
+                    // shouldn't hide listings from the other.
+                }
+            }
+            return mergedEntries;
+        });
+    #endif
+    }
+
+    std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync(const std::string& masterServerUrl) const
+    {
+    #ifdef DISABLE_HTTP
+        return {};
+    #else
 
         auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
         auto f = p->get_future();
 
-        std::string masterServerUrl = kMasterServerURL;
-        if (!Config::Get().network.masterServerUrl.empty())
-        {
-            masterServerUrl = Config::Get().network.masterServerUrl;
-        }
-
         Http::Request request;
-        request.url = std::move(masterServerUrl);
+        request.url = masterServerUrl;
         request.method = Http::Method::get;
         request.header["Accept"] = "application/json";
         // Despite DoAsync, the future below is not stored, so it will block the calling thread until the request completes
@@ -384,41 +438,43 @@ namespace OpenRCT2::Network
                 }
 
                 root = Json::FromString(response.body);
-                if (root.is_object())
+                if (!root.is_object())
                 {
-                    auto jsonStatus = root["status"];
-                    if (!jsonStatus.is_number_integer())
-                    {
-                        throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER);
-                    }
+                    throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER);
+                }
 
-                    auto status = Json::GetNumber<int32_t>(jsonStatus);
-                    if (status != 200)
-                    {
-                        throw MasterServerException(STR_SERVER_LIST_MASTER_SERVER_FAILED);
-                    }
+                auto jsonStatus = root["status"];
+                if (!jsonStatus.is_number_integer())
+                {
+                    throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER);
+                }
 
-                    auto jServers = root["servers"];
-                    if (!jServers.is_array())
-                    {
-                        throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY);
-                    }
+                auto status = Json::GetNumber<int32_t>(jsonStatus);
+                if (status != 200)
+                {
+                    throw MasterServerException(STR_SERVER_LIST_MASTER_SERVER_FAILED);
+                }
 
-                    std::vector<ServerListEntry> entries;
-                    for (auto& jServer : jServers)
+                auto jServers = root["servers"];
+                if (!jServers.is_array())
+                {
+                    throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY);
+                }
+
+                std::vector<ServerListEntry> entries;
+                for (auto& jServer : jServers)
+                {
+                    if (jServer.is_object())
                     {
-                        if (jServer.is_object())
+                        auto entry = ServerListEntry::FromJson(jServer);
+                        if (entry.has_value())
                         {
-                            auto entry = ServerListEntry::FromJson(jServer);
-                            if (entry.has_value())
-                            {
-                                entries.push_back(std::move(*entry));
-                            }
+                            entries.push_back(std::move(*entry));
                         }
                     }
-
-                    p->set_value(entries);
                 }
+
+                p->set_value(entries);
             }
             catch (...)
             {

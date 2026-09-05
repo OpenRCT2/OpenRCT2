@@ -16,6 +16,7 @@
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
+#include "../../competitive/CompetitiveSession.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
 #include "../../drawing/Drawing.h"
@@ -97,13 +98,35 @@ void TitleScene::Load()
         PauseToggle();
     }
 
+#ifndef DISABLE_NETWORK
+    GetContext().GetNetwork().Close();
+    // Returning to the title leaves any competitive session orphaned; tear it down so it can't keep
+    // reconnecting from the menu or crash a rejoin. Every deliberate exit route already resolves the
+    // session before we get here (suspend or a confirmed forfeit). This is only the safety net for a
+    // route that bypassed those prompts: if a live competing park is still loaded, suspend it so the
+    // seat is kept - never a silent forfeit. Must run before gLegacyScene changes: SuspendAndSave
+    // requires LegacyScene::playing.
+    {
+        auto& session = Competitive::GetSession();
+        if (session.GetMode() != Competitive::SessionMode::none)
+        {
+            const auto* local = session.GetLocalParticipant();
+            const bool competing = local != nullptr && local->role != Competitive::Role::spectator
+                && !local->finished && !local->forfeited;
+            std::string suspendPath;
+            std::string suspendError;
+            if (!(competing && gLegacyScene == LegacyScene::playing
+                  && session.SuspendAndSave(suspendPath, suspendError)))
+            {
+                session.Stop(false);
+            }
+        }
+    }
+#endif
+
     gLegacyScene = LegacyScene::titleSequence;
     gScreenAge = 0;
     gCurrentLoadedPath.clear();
-
-#ifndef DISABLE_NETWORK
-    GetContext().GetNetwork().Close();
-#endif
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ContextResetSubsystems();
     ContextOpenWindow(WindowClass::mainWindow);

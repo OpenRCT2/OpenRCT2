@@ -16,6 +16,7 @@
 #include "../actions/GameActionRunner.h"
 #include "../actions/park/ParkSetParameterAction.h"
 #include "../core/String.hpp"
+#include "../competitive/CompetitiveSession.h"
 #include "../entity/EntityList.h"
 #include "../entity/Litter.h"
 #include "../entity/Peep.h"
@@ -214,13 +215,16 @@ namespace OpenRCT2::Park
 
     static void generateGuests(ParkData& park, GameState_t& gameState)
     {
+        Competitive::UpdateGuestGenerationInterference();
+
         // Generate a new guest for some probability
         if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < park.guestGenerationProbability)
         {
             bool difficultGeneration = park.flags.has(ParkFlag::difficultGuestGeneration);
             if (!difficultGeneration || park.suggestedGuestMaximum + 150 >= park.numGuestsInPark)
             {
-                GenerateGuest();
+                if (!Competitive::ConsumeGuestArrivalCancellation())
+                    GenerateGuest();
             }
         }
 

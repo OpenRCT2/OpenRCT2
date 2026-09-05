@@ -27,8 +27,10 @@
     #include <cstring>
     #include <iterator>
     #include <memory>
+    #include <mutex>
     #include <random>
     #include <string>
+    #include <vector>
 
 namespace OpenRCT2::Network
 {
@@ -49,61 +51,117 @@ namespace OpenRCT2::Network
     class NetworkServerAdvertiser final : public INetworkServerAdvertiser
     {
     private:
+        // Shared between the advertiser and its in-flight HTTP completion lambdas. A lambda holds a
+        // copy, locks the mutex, and bails when 'self' is null - so a completion running on an Http
+        // worker thread can never touch a destroyed advertiser, and beginShutdown() cannot return
+        // while a completion is mid-flight.
+        struct AdvertiserGuard
+        {
+            std::mutex mutex;
+            NetworkServerAdvertiser* self = nullptr;
+        };
+        std::shared_ptr<AdvertiserGuard> _guard = std::make_shared<AdvertiserGuard>();
+
         uint16_t _port;
+        std::function<json_t()> _serverInfoProvider;
+        std::function<uint32_t()> _playerCountProvider;
+        std::function<json_t()> _gameInfoProvider;
+        std::function<bool()> _wanEnabledProvider;
 
         std::unique_ptr<IUdpSocket> _lanListener;
-        std::shared_future<void> _currentRequest;
         uint32_t _lastListenTime{};
 
-        AdvertiseStatus _status = AdvertiseStatus::unregistered;
-
     #ifndef DISABLE_HTTP
-        uint32_t _lastAdvertiseTime = 0;
-        uint32_t _lastHeartbeatTime = 0;
-
-        // Our unique token for this server
-        std::string _token;
-
-        // Key received from the master server
-        std::string _key;
-
-        // See https://github.com/OpenRCT2/OpenRCT2/issues/6277 and 4953
-        bool _forceIPv4 = false;
+        // One independent registration/heartbeat cycle per master server. The official server is
+        // always present here so advertising keeps working exactly as before; a configured
+        // masterServerUrl is an ADDITIONAL entry, not a replacement - see docs/competitive/README.md
+        // for why (the official server silently drops the custom fields a competitive listing needs).
+        struct WanEndpoint
+        {
+            std::string url;
+            AdvertiseStatus status = AdvertiseStatus::unregistered;
+            uint32_t lastAdvertiseTime = 0;
+            uint32_t lastHeartbeatTime = 0;
+            std::string token;
+            std::string key = generateAdvertiseKey();
+            bool forceIPv4 = false;
+            std::shared_future<void> currentRequest;
+        };
+        std::vector<WanEndpoint> _wanEndpoints;
     #endif
 
     public:
-        explicit NetworkServerAdvertiser(uint16_t port)
+        explicit NetworkServerAdvertiser(
+            uint16_t port, std::function<json_t()> serverInfoProvider = {},
+            std::function<uint32_t()> playerCountProvider = {}, std::function<json_t()> gameInfoProvider = {},
+            std::function<bool()> wanEnabledProvider = {})
         {
+            _guard->self = this;
             _port = port;
+            _serverInfoProvider = std::move(serverInfoProvider);
+            _playerCountProvider = std::move(playerCountProvider);
+            _gameInfoProvider = std::move(gameInfoProvider);
+            _wanEnabledProvider = std::move(wanEnabledProvider);
             _lanListener = CreateUdpSocket();
     #ifndef DISABLE_HTTP
-            _key = generateAdvertiseKey();
+            _wanEndpoints.push_back(WanEndpoint{ .url = kMasterServerURL });
+            const auto& customUrl = Config::Get().network.masterServerUrl;
+            if (!customUrl.empty() && customUrl != kMasterServerURL)
+            {
+                _wanEndpoints.push_back(WanEndpoint{ .url = customUrl });
+            }
+    #endif
+        }
+
+        void beginShutdown() override
+        {
+            _lanListener->Close();
+            {
+                std::scoped_lock lock(_guard->mutex);
+                _guard->self = nullptr;
+            }
+            // Hand any in-flight requests to the process-lifetime reaper so this never blocks.
+    #ifndef DISABLE_HTTP
+            for (auto& endpoint : _wanEndpoints)
+                Http::Detach(std::move(endpoint.currentRequest));
     #endif
         }
 
         ~NetworkServerAdvertiser() final
         {
-            _lanListener->Close();
-
-            auto currentRequest = _currentRequest;
-            if (currentRequest.valid())
-            {
-                currentRequest.wait();
-            }
+            beginShutdown(); // idempotent: currentRequest futures are moved-from (invalid) by now
         }
 
         AdvertiseStatus getStatus() const override
         {
-            return _status;
+    #ifndef DISABLE_HTTP
+            // Report the best status across every endpoint: registered on any one of them is enough
+            // for callers that just want to know "are we visible somewhere".
+            AdvertiseStatus best = AdvertiseStatus::disabled;
+            for (const auto& endpoint : _wanEndpoints)
+            {
+                if (endpoint.status == AdvertiseStatus::registered)
+                    return AdvertiseStatus::registered;
+                if (endpoint.status == AdvertiseStatus::registering && best != AdvertiseStatus::registered)
+                    best = AdvertiseStatus::registering;
+                else if (best == AdvertiseStatus::disabled)
+                    best = endpoint.status;
+            }
+            return best;
+    #else
+            return AdvertiseStatus::disabled;
+    #endif
         }
 
         void update() override
         {
             updateLAN();
     #ifndef DISABLE_HTTP
-            if (Config::Get().network.advertise)
+            const bool wanEnabled = _wanEnabledProvider ? _wanEnabledProvider() : Config::Get().network.advertise;
+            if (wanEnabled)
             {
-                updateWAN();
+                for (auto& endpoint : _wanEndpoints)
+                    updateWAN(endpoint);
             }
     #endif
         }
@@ -144,30 +202,31 @@ namespace OpenRCT2::Network
 
         json_t getBroadcastJson()
         {
-            json_t root = GetServerInfoAsJson();
+            json_t root = _serverInfoProvider ? _serverInfoProvider() : GetServerInfoAsJson();
             root["port"] = _port;
             return root;
         }
 
     #ifndef DISABLE_HTTP
-        void updateWAN()
+        void updateWAN(WanEndpoint& endpoint)
         {
-            switch (_status)
+            switch (endpoint.status)
             {
                 case AdvertiseStatus::unregistered:
-                    if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + kMasterServerRegisterTime)
+                    if (endpoint.lastAdvertiseTime == 0
+                        || Platform::GetTicks() > endpoint.lastAdvertiseTime + kMasterServerRegisterTime)
                     {
-                        Console::WriteLine("Registering server on master server...");
-                        sendRegistration(_forceIPv4);
+                        Console::WriteLine("Registering server on master server (%s)...", endpoint.url.c_str());
+                        sendRegistration(endpoint);
                     }
                     break;
                 case AdvertiseStatus::registering:
                     // Waiting for registration response.
                     break;
                 case AdvertiseStatus::registered:
-                    if (Platform::GetTicks() > _lastHeartbeatTime + kMasterServerHeartbeatTime)
+                    if (Platform::GetTicks() > endpoint.lastHeartbeatTime + kMasterServerHeartbeatTime)
                     {
-                        sendHeartbeat();
+                        sendHeartbeat(endpoint);
                     }
                     break;
                 // exhaust enum values to satisfy clang
@@ -176,19 +235,19 @@ namespace OpenRCT2::Network
             }
         }
 
-        void sendRegistration(bool forceIPv4)
+        void sendRegistration(WanEndpoint& endpoint)
         {
-            _lastAdvertiseTime = Platform::GetTicks();
-            _status = AdvertiseStatus::registering;
+            endpoint.lastAdvertiseTime = Platform::GetTicks();
+            endpoint.status = AdvertiseStatus::registering;
 
             // Send the registration request
             Http::Request request;
-            request.url = getMasterServerUrl();
+            request.url = endpoint.url;
             request.method = Http::Method::post;
-            request.forceIPv4 = forceIPv4;
+            request.forceIPv4 = endpoint.forceIPv4;
 
             json_t body = {
-                { "key", _key },
+                { "key", endpoint.key },
                 { "port", _port },
             };
 
@@ -200,59 +259,91 @@ namespace OpenRCT2::Network
             request.body = body.dump();
             request.header["Content-Type"] = "application/json";
 
-            _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
-                                  if (response.status != Http::Status::ok)
-                                  {
-                                      Console::Error::WriteLine(
-                                          "Unable to connect to master server, retrying in %d seconds",
-                                          kMasterServerRegisterTime / 1000);
+            endpoint.currentRequest = Http::DoAsync(
+                                           request,
+                                           [guard = _guard, url = endpoint.url](Http::Response response) -> void {
+                                               std::scoped_lock lock(guard->mutex);
+                                               auto* self = guard->self;
+                                               if (self == nullptr)
+                                                   return;
+                                               auto* ep = self->findEndpoint(url);
+                                               if (ep == nullptr)
+                                                   return;
 
-                                      _status = AdvertiseStatus::unregistered;
-                                      return;
-                                  }
+                                               if (response.status != Http::Status::ok)
+                                               {
+                                                   Console::Error::WriteLine(
+                                                       "Unable to connect to master server (%s), retrying in %d seconds",
+                                                       url.c_str(), kMasterServerRegisterTime / 1000);
 
-                                  json_t root = Json::FromString(response.body);
-                                  root = Json::AsObject(root);
-                                  this->onRegistrationResponse(root);
-                              }).share();
+                                                   ep->status = AdvertiseStatus::unregistered;
+                                                   return;
+                                               }
+
+                                               json_t root = Json::FromString(response.body);
+                                               root = Json::AsObject(root);
+                                               self->onRegistrationResponse(*ep, root);
+                                           })
+                                           .share();
         }
 
-        void sendHeartbeat()
+        void sendHeartbeat(WanEndpoint& endpoint)
         {
             Http::Request request;
-            request.url = getMasterServerUrl();
+            request.url = endpoint.url;
             request.method = Http::Method::put;
 
-            json_t body = getHeartbeatJson();
+            json_t body = getHeartbeatJson(endpoint);
             request.body = body.dump();
             request.header["Content-Type"] = "application/json";
 
-            _lastHeartbeatTime = Platform::GetTicks();
+            endpoint.lastHeartbeatTime = Platform::GetTicks();
 
-            _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
-                                  if (response.status != Http::Status::ok)
-                                  {
-                                      Console::Error::WriteLine(
-                                          "Unable to connect to master server, retrying in %d seconds",
-                                          kMasterServerRegisterTime / 1000);
+            endpoint.currentRequest = Http::DoAsync(
+                                           request,
+                                           [guard = _guard, url = endpoint.url](Http::Response response) -> void {
+                                               std::scoped_lock lock(guard->mutex);
+                                               auto* self = guard->self;
+                                               if (self == nullptr)
+                                                   return;
+                                               auto* ep = self->findEndpoint(url);
+                                               if (ep == nullptr)
+                                                   return;
 
-                                      _status = AdvertiseStatus::unregistered;
-                                      // Don't immediately retry advertising, wait for kMasterServerRegisterTime.
-                                      _lastAdvertiseTime = Platform::GetTicks();
-                                      return;
-                                  }
+                                               if (response.status != Http::Status::ok)
+                                               {
+                                                   Console::Error::WriteLine(
+                                                       "Unable to connect to master server (%s), retrying in %d seconds",
+                                                       url.c_str(), kMasterServerRegisterTime / 1000);
 
-                                  json_t root = Json::FromString(response.body);
-                                  root = Json::AsObject(root);
-                                  this->onHeartbeatResponse(root);
-                              }).share();
+                                                   ep->status = AdvertiseStatus::unregistered;
+                                                   // Don't immediately retry advertising, wait for kMasterServerRegisterTime.
+                                                   ep->lastAdvertiseTime = Platform::GetTicks();
+                                                   return;
+                                               }
+
+                                               json_t root = Json::FromString(response.body);
+                                               root = Json::AsObject(root);
+                                               self->onHeartbeatResponse(*ep, root);
+                                           })
+                                           .share();
+        }
+
+        WanEndpoint* findEndpoint(const std::string& url)
+        {
+            for (auto& endpoint : _wanEndpoints)
+            {
+                if (endpoint.url == url)
+                    return &endpoint;
+            }
+            return nullptr;
         }
 
         /**
          * @param jsonRoot must be of JSON type object or null
          * @note jsonRoot is deliberately left non-const: json_t behaviour changes when const
          */
-        void onRegistrationResponse(json_t& jsonRoot)
+        void onRegistrationResponse(WanEndpoint& endpoint, json_t& jsonRoot)
         {
             Guard::Assert(jsonRoot.is_object(), "onRegistrationResponse expects parameter jsonRoot to be object");
 
@@ -260,12 +351,12 @@ namespace OpenRCT2::Network
 
             if (status == MasterServerStatus::ok)
             {
-                Console::WriteLine("Server successfully registered on master server");
+                Console::WriteLine("Server successfully registered on master server (%s)", endpoint.url.c_str());
                 json_t jsonToken = jsonRoot["token"];
                 if (jsonToken.is_string())
                 {
-                    _token = Json::GetString(jsonToken);
-                    _status = AdvertiseStatus::registered;
+                    endpoint.token = Json::GetString(jsonToken);
+                    endpoint.status = AdvertiseStatus::registered;
                 }
             }
             else
@@ -276,18 +367,18 @@ namespace OpenRCT2::Network
                     message = "Invalid response from server";
                 }
                 Console::Error::WriteLine(
-                    "Unable to advertise (%d): %s\n  * Check that you have port forwarded %u\n  * Try setting "
+                    "Unable to advertise on %s (%d): %s\n  * Check that you have port forwarded %u\n  * Try setting "
                     "advertise_address in config.ini",
-                    status, message.c_str(), _port);
+                    endpoint.url.c_str(), status, message.c_str(), _port);
 
                 // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
                 // Master server may not reply correctly if using IPv6, retry forcing IPv4,
                 // don't wait the full timeout.
-                if (!_forceIPv4 && status == MasterServerStatus::internalError)
+                if (!endpoint.forceIPv4 && status == MasterServerStatus::internalError)
                 {
-                    _forceIPv4 = true;
-                    _lastAdvertiseTime = 0;
-                    LOG_INFO("Forcing HTTP(S) over IPv4");
+                    endpoint.forceIPv4 = true;
+                    endpoint.lastAdvertiseTime = 0;
+                    LOG_INFO("Forcing HTTP(S) over IPv4 for %s", endpoint.url.c_str());
                 }
             }
         }
@@ -296,7 +387,7 @@ namespace OpenRCT2::Network
          * @param jsonRoot must be of JSON type object or null
          * @note jsonRoot is deliberately left non-const: json_t behaviour changes when const
          */
-        void onHeartbeatResponse(json_t& jsonRoot)
+        void onHeartbeatResponse(WanEndpoint& endpoint, json_t& jsonRoot)
         {
             Guard::Assert(jsonRoot.is_object(), "onHeartbeatResponse expects parameter jsonRoot to be object");
 
@@ -307,38 +398,45 @@ namespace OpenRCT2::Network
             }
             else if (status == MasterServerStatus::invalidToken)
             {
-                _status = AdvertiseStatus::unregistered;
-                _lastAdvertiseTime = 0;
-                Console::Error::WriteLine("Master server heartbeat failed: Invalid Token");
+                endpoint.status = AdvertiseStatus::unregistered;
+                endpoint.lastAdvertiseTime = 0;
+                Console::Error::WriteLine("Master server heartbeat failed on %s: Invalid Token", endpoint.url.c_str());
             }
         }
 
-        json_t getHeartbeatJson()
+        json_t getHeartbeatJson(WanEndpoint& endpoint)
         {
-            uint32_t numPlayers = GetNumVisiblePlayers();
+            uint32_t numPlayers = _playerCountProvider ? _playerCountProvider() : GetNumVisiblePlayers();
 
             json_t root = {
-                { "token", _token },
+                { "token", endpoint.token },
                 { "players", numPlayers },
             };
 
-            const auto& gameState = getGameState();
-            const auto& date = GetDate();
-            json_t mapSize = { { "x", gameState.mapSize.x - 2 }, { "y", gameState.mapSize.y - 2 } };
-            json_t gameInfo = {
-                { "mapSize", mapSize },
-                { "day", date.GetMonthTicks() },
-                { "month", date.GetMonthsElapsed() },
-                { "guests", gameState.park.numGuestsInPark },
-                { "parkValue", gameState.park.value },
-            };
-
-            if (!gameState.park.flags.has(ParkFlag::noMoney))
+            if (_gameInfoProvider)
             {
-                gameInfo["cash"] = gameState.park.cash;
+                root["gameInfo"] = _gameInfoProvider();
             }
+            else
+            {
+                const auto& gameState = getGameState();
+                const auto& date = GetDate();
+                json_t mapSize = { { "x", gameState.mapSize.x - 2 }, { "y", gameState.mapSize.y - 2 } };
+                json_t gameInfo = {
+                    { "mapSize", mapSize },
+                    { "day", date.GetMonthTicks() },
+                    { "month", date.GetMonthsElapsed() },
+                    { "guests", gameState.park.numGuestsInPark },
+                    { "parkValue", gameState.park.value },
+                };
 
-            root["gameInfo"] = gameInfo;
+                if (!gameState.park.flags.has(ParkFlag::noMoney))
+                {
+                    gameInfo["cash"] = gameState.park.cash;
+                }
+
+                root["gameInfo"] = gameInfo;
+            }
 
             return root;
         }
@@ -363,21 +461,21 @@ namespace OpenRCT2::Network
             return key;
         }
 
-        static std::string getMasterServerUrl()
-        {
-            std::string result = kMasterServerURL;
-            if (!Config::Get().network.masterServerUrl.empty())
-            {
-                result = Config::Get().network.masterServerUrl;
-            }
-            return result;
-        }
     #endif
     };
 
     std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)
     {
         return std::make_unique<NetworkServerAdvertiser>(port);
+    }
+
+    std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(
+        uint16_t port, std::function<json_t()> serverInfoProvider, std::function<uint32_t()> playerCountProvider,
+        std::function<json_t()> gameInfoProvider, std::function<bool()> wanEnabledProvider)
+    {
+        return std::make_unique<NetworkServerAdvertiser>(
+            port, std::move(serverInfoProvider), std::move(playerCountProvider), std::move(gameInfoProvider),
+            std::move(wanEnabledProvider));
     }
 } // namespace OpenRCT2::Network
 

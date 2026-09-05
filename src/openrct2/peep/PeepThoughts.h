@@ -11,4 +11,4 @@
 
 #include "../localisation/StringIdType.h"
 
-extern const StringId kPeepThoughtIds[174];
+extern const StringId kPeepThoughtIds[180];

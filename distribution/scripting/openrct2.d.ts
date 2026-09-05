@@ -517,6 +517,7 @@ declare global {
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
         subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
         subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
+        subscribe(hook: "guest.purchase", callback: (e: GuestPurchaseArgs) => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
@@ -659,6 +660,7 @@ declare global {
         "action.location" |
         "action.query" |
         "guest.generation" |
+        "guest.purchase" |
         "interval.day" |
         "interval.tick" |
         "map.change" |
@@ -1693,6 +1695,22 @@ declare global {
 
     interface GuestGenerationArgs {
         readonly id: number;
+    }
+
+    /** Emitted immediately after a guest successfully purchases an item. */
+    interface GuestPurchaseArgs {
+        /** The exact guest that completed the purchase. */
+        readonly guestId: number;
+        /** The exact ride or stall that sold the item. */
+        readonly rideId: number;
+        /** The internal ShopItem value for the purchased product. */
+        readonly item: number;
+        /** The listed item price in OpenRCT2 money units. */
+        readonly price: number;
+        /** The amount actually paid; zero for vouchers and no-money parks. */
+        readonly amountPaid: number;
+        /** Whether a food/drink voucher paid for this purchase. */
+        readonly usedVoucher: boolean;
     }
 
     type VehicleCrashIntoType = "another_vehicle" | "land" | "water";

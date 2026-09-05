@@ -182,6 +182,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MultiplayerOpen();
     void MultiplayerRefreshList();
 
+    // Competitive in-game "leave the competition" dialog: Suspend (keep seat) / Forfeit (permanent)
+    // / Cancel. Opened from the multiplayer window and the toolbar.
+    WindowBase* CompetitiveLeavePromptOpen();
+
     // NewCampaign
     WindowBase* NewCampaignOpen(int16_t campaignType);
     void WindowCampaignRefreshRides();
@@ -310,6 +314,7 @@ namespace OpenRCT2::Ui::Windows
 
     // ServerStart
     WindowBase* ServerStartOpen();
+    WindowBase* ServerStartOpenCompetitive();
 #endif
 
     // ShortcutKeys

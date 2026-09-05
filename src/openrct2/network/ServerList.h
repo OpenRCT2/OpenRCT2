@@ -21,6 +21,12 @@ namespace OpenRCT2::Network
 {
     struct INetworkEndpoint;
 
+    enum class ServerKind : uint8_t
+    {
+        cooperative,
+        competitive,
+    };
+
     struct ServerListEntry
     {
         std::string Address;
@@ -32,9 +38,19 @@ namespace OpenRCT2::Network
         uint8_t Players{};
         uint8_t MaxPlayers{};
         bool Local{};
+        ServerKind Kind = ServerKind::cooperative;
+        uint16_t CompetitiveProtocol{};
+        std::string CompetitionPhase;
+        std::string MatchId;
+        std::string ScenarioName;
+        std::string ScenarioFileName;
+        std::string ScenarioHash;
+        std::string Victory;
+        bool AllowLateJoin{};
 
         int32_t CompareTo(const ServerListEntry& other) const;
         bool IsVersionValid() const noexcept;
+        bool IsCompetitive() const noexcept;
 
         /**
          * Creates a ServerListEntry object from a JSON object
@@ -55,6 +71,7 @@ namespace OpenRCT2::Network
         std::vector<ServerListEntry> ReadFavourites() const;
         bool WriteFavourites(const std::vector<ServerListEntry>& entries) const;
         std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint) const;
+        std::future<std::vector<ServerListEntry>> FetchOnlineServerListAsync(const std::string& masterServerUrl) const;
 
     public:
         ServerListEntry& GetServer(size_t index);

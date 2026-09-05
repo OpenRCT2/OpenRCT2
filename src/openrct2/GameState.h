@@ -39,6 +39,7 @@ namespace OpenRCT2
         Park::ParkData park{};
         Scenario::Options scenarioOptions;
         std::string pluginStorage;
+        std::string competitiveStorage;
         uint32_t currentTicks{};
         Date date;
 

@@ -13,19 +13,75 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
+#include "../../competitive/CompetitiveSession.h"
+#include "../../competitive/CompetitiveState.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/ObjectLimits.h"
 #include "../../object/ObjectManager.h"
 #include "../../ride/Ride.h"
 #include "../../ride/RideData.h"
+#include "../../ride/RideManager.hpp"
 #include "../../ride/ShopItem.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Park.h"
 
 #include <algorithm>
+#include <optional>
+#include <utility>
 
 namespace OpenRCT2::GameActions
 {
+    // While a competitive match is running, the host may cap how many rides / stalls of a single
+    // type this park can build (0 = unlimited). Returns an error Result if building another ride of
+    // rideType would exceed that cap, or std::nullopt if the creation is allowed.
+    static std::optional<Result> CheckCompetitiveTypeLimit(GameState_t& gameState, ride_type_t rideType)
+    {
+        const auto& competition = Competitive::GetSession();
+        const auto* state = competition.GetState();
+        const auto* localParticipant = competition.GetLocalParticipant();
+        if (state == nullptr || state->phase != Competitive::Phase::running || localParticipant == nullptr
+            || localParticipant->role == Competitive::Role::spectator || localParticipant->finished
+            || localParticipant->forfeited)
+        {
+            return std::nullopt;
+        }
+
+        const auto& rules = state->rules;
+        uint16_t cap = 0;
+        switch (GetRideTypeDescriptor(rideType).Classification)
+        {
+            case RideClassification::ride:
+                cap = rules.maxRidesPerType;
+                break;
+            case RideClassification::shopOrStall:
+                cap = rules.maxStallsPerType;
+                break;
+            case RideClassification::kioskOrFacility:
+                // Toilets, ATMs, first aid and info kiosks are never capped.
+                return std::nullopt;
+        }
+        if (cap == 0)
+        {
+            return std::nullopt;
+        }
+
+        uint16_t existing = 0;
+        for (const auto& ride : RideManager(gameState))
+        {
+            if (ride.type == rideType)
+            {
+                existing++;
+            }
+        }
+        if (existing >= cap)
+        {
+            return Result(
+                Status::disallowed, STR_CANT_CREATE_NEW_RIDE_ATTRACTION,
+                STR_COMPETITIVE_RIDE_TYPE_LIMIT_REACHED);
+        }
+        return std::nullopt;
+    }
+
     RideCreateAction::RideCreateAction(
         ride_type_t rideType, ObjectEntryIndex subType, uint8_t trackColourPreset, uint8_t vehicleColourPreset,
         ObjectEntryIndex entranceObjectIndex, RideInspection inspectionInterval)
@@ -97,6 +153,11 @@ namespace OpenRCT2::GameActions
         {
             LOG_ERROR("Ride entry not found for rideType %d, subType %d", _rideType, _subType);
             return Result(Status::invalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
+        }
+
+        if (auto limitError = CheckCompetitiveTypeLimit(gameState, _rideType); limitError.has_value())
+        {
+            return std::move(limitError.value());
         }
 
         const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;

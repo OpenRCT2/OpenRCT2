@@ -12,6 +12,7 @@
 #include "../../Diagnostic.h"
 #include "../../Game.h"
 #include "../../config/Config.h"
+#include "../../competitive/CompetitiveSession.h"
 #include "../../ui/WindowManager.h"
 
 namespace OpenRCT2::GameActions
@@ -46,6 +47,19 @@ namespace OpenRCT2::GameActions
         {
             LOG_ERROR("Invalid speed %u", _speed);
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+        const auto& competition = Competitive::GetSession();
+        const auto* state = competition.GetState();
+        const auto* local = competition.GetLocalParticipant();
+        if (state != nullptr && state->phase == Competitive::Phase::running && local != nullptr
+            && local->role != Competitive::Role::spectator && !local->finished && !local->forfeited
+            && _speed > state->rules.maxGameSpeed)
+        {
+            Result result;
+            result.error = Status::invalidParameters;
+            result.errorTitle = "Competition speed limit";
+            result.errorMessage = "This competition allows speeds up to " + std::to_string(state->rules.maxGameSpeed) + "x.";
+            return result;
         }
 
         return res;

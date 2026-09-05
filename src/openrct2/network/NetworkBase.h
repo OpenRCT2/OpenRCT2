@@ -29,13 +29,15 @@ namespace OpenRCT2::Network
         NetworkBase(IContext& context);
 
     public: // Uncategorized
-        bool BeginServer(uint16_t port, const std::string& address);
-        bool BeginClient(const std::string& host, uint16_t port);
+        bool BeginServer(
+            uint16_t port, const std::string& address, bool advertise = true, bool spectatorOnly = false);
+        bool BeginClient(const std::string& host, uint16_t port, bool spectator = false);
 
     public: // Common
         bool Init();
         void Close();
         uint32_t GetServerTick() const noexcept;
+        uint16_t GetListeningPort() const noexcept;
         void Update() final;
         void Tick() final;
         void Flush();
@@ -198,6 +200,8 @@ namespace OpenRCT2::Network
         uint8_t default_group = 0;
         bool _closeLock = false;
         bool _requireClose = false;
+        bool _joinAsSpectator = false;
+        bool _spectatorOnlyServer = false;
 
     private: // Server Data
         std::unordered_map<Command, CommandHandler> server_command_handlers;

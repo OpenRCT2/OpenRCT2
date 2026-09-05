@@ -20,8 +20,11 @@
 #include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/actions/park/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/park/ParkSetParameterAction.h>
+#include <openrct2/actions/ride/RideCreateAction.h>
 #include <openrct2/actions/ride/RideSetPriceAction.h>
 #include <openrct2/actions/ride/RideSetStatusAction.h>
+#include <openrct2/competitive/CompetitiveSession.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
@@ -96,6 +99,37 @@ TEST_F(PlayTests, NegativeMarketingCampaignDurationIsRejected)
     const auto result = GameActions::Query(&action, getGameState());
 
     ASSERT_EQ(result.error, GameActions::Status::invalidParameters);
+}
+
+TEST_F(PlayTests, CompetitiveLobbyLocksParkConstruction)
+{
+    const auto parkPath = TestData::GetParkPath("small_park_with_ferris_wheel.sv6");
+    auto context = localStartGame(parkPath);
+    ASSERT_NE(context.get(), nullptr);
+
+    auto& session = Competitive::GetSession();
+    session.Stop();
+    const auto advertiseBefore = Config::Get().network.advertise;
+    Config::Get().network.advertise = false;
+
+    Competitive::HostConfiguration configuration;
+    configuration.competitionName = "Lobby lock test";
+    configuration.playerName = "Host Park";
+    configuration.listenAddress = "127.0.0.1";
+    configuration.port = 21758;
+    configuration.scenario = Competitive::GetScenarioIdentityForPath(parkPath);
+    std::string error;
+    ASSERT_TRUE(session.StartHost(configuration, error)) << error;
+    ASSERT_EQ(session.GetState()->phase, Competitive::Phase::lobby);
+
+    // Building a ride during the lobby must be rejected so nobody enters the match with a head start.
+    GameActions::RideCreateAction action(
+        0 /* ride type */, kObjectEntryIndexNull, 0, 0, kObjectEntryIndexNull, RideInspection::every30Minutes);
+    const auto result = GameActions::Query(&action, getGameState());
+    EXPECT_EQ(result.error, GameActions::Status::disallowed);
+
+    session.Stop();
+    Config::Get().network.advertise = advertiseBefore;
 }
 
 TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
