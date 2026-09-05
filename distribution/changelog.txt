@@ -19,6 +19,7 @@
 - Improved: [#26996] Ride names in scenarios can now be autopatched.
 - Fix: [#7858] Dropdowns do not close when an action by a plugin or another player in multiplayer closes their parent window.
 - Fix: [#15891] Lower case hard sign is drawn as upper case.
+- Fix: [#18151] Company value is not up to date when a scenario is completed shortly after loading a save.
 - Fix: [#18197] Track Designs Manager does not autoload scenery.
 - Fix: [#18415] Preview in the Track Designs Manager is not updated after deleting the first design.
 - Fix: [#18782] Dropdowns do not close and become non-functional when mouse is released outside of the game window.
