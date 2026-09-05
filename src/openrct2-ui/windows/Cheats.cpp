@@ -591,7 +591,7 @@ static StringId window_cheats_page_titles[] = {
                 }
 
                 auto& widget = widgets[WIDX_MONEY_SPINNER];
-                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_CURRENCY2DP, ft, { colour });
             }
             else if (page == WINDOW_CHEATS_PAGE_DATE)
             {

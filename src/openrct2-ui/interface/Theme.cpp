@@ -156,7 +156,8 @@ namespace OpenRCT2::Ui
     {
         // WindowClass                              WindowClassSZ                        WindowName                                        windowColours
         { WindowClass::topToolbar,                  "WC_TOP_TOOLBAR",                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    { opaque(Drawing::Colour::lightBlue),               opaque(Drawing::Colour::darkGreen),               opaque(Drawing::Colour::darkBrown),             opaque(Drawing::Colour::grey)         } },
-        { WindowClass::bottomToolbar,               "WC_BOTTOM_TOOLBAR",                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,                 { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::black),                    opaque(Drawing::Colour::black)                                                        } },
+        { WindowClass::gameStatusBar,               "WC_GAME_STATUS_BAR",                STR_THEMES_WINDOW_GAME_STATUS_BAR,                { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::black),                    opaque(Drawing::Colour::black)                                                        } },
+        { WindowClass::newsTicker,                  "WC_NEWS_TICKER",                    STR_THEMES_WINDOW_NEWS_TICKER,                    { opaque(Drawing::Colour::black),                   opaque(Drawing::Colour::black)                                                                                                           } },
         { WindowClass::parkInfoPanel,               "WC_PARK_INFO_PANEL",                STR_THEMES_WINDOW_PARK_INFO_PANEL,                { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::brightGreen)                                                                                                     } },
         { WindowClass::dateInfoPanel,               "WC_DATE_INFO_PANEL",                STR_THEMES_WINDOW_DATE_INFO_PANEL,                { translucent(Drawing::Colour::darkGreen)                                                                                                                                                    } },
         { WindowClass::ride,                        "WC_RIDE",                           STR_THEMES_WINDOW_RIDE,                           { opaque(Drawing::Colour::grey),                     opaque(Drawing::Colour::bordeauxRed),             opaque(Drawing::Colour::saturatedGreen)                                     } },
@@ -208,8 +209,8 @@ namespace OpenRCT2::Ui
         { WindowClass::landRights,                  "WC_LAND_RIGHTS",                    STR_THEMES_WINDOW_LAND_RIGHTS,                    { opaque(Drawing::Colour::darkYellow),              opaque(Drawing::Colour::darkYellow),              opaque(Drawing::Colour::darkYellow)                                         } },
         { WindowClass::themes,                      "WC_THEMES",                         STR_THEMES_WINDOW_THEMES,                         { opaque(Drawing::Colour::grey),                     opaque(Drawing::Colour::darkGreen),               opaque(Drawing::Colour::darkGreen)                                          } },
         { WindowClass::staff,                       "WC_STAFF",                          STR_THEMES_WINDOW_STAFF,                          { opaque(Drawing::Colour::grey),                     opaque(Drawing::Colour::lightPurple),             opaque(Drawing::Colour::lightPurple)                                        } },
-        { WindowClass::editorTrackBottomToolbar,    "WC_EDITOR_TRACK_BOTTOM_TOOLBAR",    STR_THEMES_WINDOW_BOTTOM_TOOLBAR_TRACK_EDITOR,    { translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue)                                     } },
-        { WindowClass::editorScenarioBottomToolbar, "WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR", STR_THEMES_WINDOW_BOTTOM_TOOLBAR_SCENARIO_EDITOR, { translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::mossGreen)                                     } },
+        { WindowClass::editorStepControlTrack,      "WC_EDITOR_STEP_CONTROL_TRACK",      STR_THEMES_WINDOW_EDITOR_STEP_CONTROL_TRACK,      { translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue)                                     } },
+        { WindowClass::editorStepControlScenario,   "WC_EDITOR_STEP_CONTROL_SCENARIO",   STR_THEMES_WINDOW_EDITOR_STEP_CONTROL_SCENARIO,   { translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::mossGreen)                                     } },
         { WindowClass::tileInspector,               "WC_TILE_INSPECTOR",                 STR_TILE_INSPECTOR_TITLE,                         { opaque(Drawing::Colour::lightBlue),               opaque(Drawing::Colour::lightBlue)                                                                                   } },
         { WindowClass::viewClipping,                "WC_VIEW_CLIPPING",                  STR_VIEW_CLIPPING_TITLE,                          { opaque(Drawing::Colour::darkGreen)                                                                                                                            } },
         { WindowClass::patrolArea,                  "WC_PATROL_AREA",                    STR_SET_PATROL_AREA,                              { opaque(Drawing::Colour::lightPurple),             opaque(Drawing::Colour::lightPurple),             opaque(Drawing::Colour::lightPurple)                                        } },
@@ -232,7 +233,8 @@ namespace OpenRCT2::Ui
 
     static constexpr std::array kPredefinedThemeRCT1Entries = std::to_array<UIThemeWindowEntry>({
         { WindowClass::topToolbar,             { opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),                opaque(Drawing::Colour::grey),     opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
-        { WindowClass::bottomToolbar,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::voidBackground) } },
+        { WindowClass::gameStatusBar,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::grey) } },
+        { WindowClass::newsTicker,             { opaque(Drawing::Colour::voidBackground),   opaque(Drawing::Colour::grey) } },
         { WindowClass::parkInfoPanel,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::yellow) } },
         { WindowClass::dateInfoPanel,          { translucent(Drawing::Colour::grey) } },
         { WindowClass::ride,                   { opaque(Drawing::Colour::bordeauxRed),     opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::saturatedGreen),     opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
@@ -264,7 +266,7 @@ namespace OpenRCT2::Ui
     const UITheme kPredefinedThemeRCT1 = UITheme::CreatePredefined(
         "*RCT1", kPredefinedThemeRCT1Entries,
         UITHEME_FLAG_USE_LIGHTS_RIDE | UITHEME_FLAG_USE_LIGHTS_PARK | UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT
-            | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR | UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
+            | UITHEME_FLAG_USE_GAME_STATUS_BAR | UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
 
     const UITheme kPredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", kPredefinedThemeRCT2Entries, 0);
 
@@ -443,7 +445,7 @@ namespace OpenRCT2::Ui
             { "useLightsRide", (Flags & UITHEME_FLAG_USE_LIGHTS_RIDE) != 0 },
             { "useLightsPark", (Flags & UITHEME_FLAG_USE_LIGHTS_PARK) != 0 },
             { "useAltScenarioSelectFont", (Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) != 0 },
-            { "useFullBottomToolbar", (Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR) != 0 },
+            { "useFullBottomToolbar", (Flags & UITHEME_FLAG_USE_GAME_STATUS_BAR) != 0 },
             { "use3dImageButtons", (Flags & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS) != 0 },
         };
 
@@ -492,7 +494,7 @@ namespace OpenRCT2::Ui
                     { "useLightsRide", UITHEME_FLAG_USE_LIGHTS_RIDE },
                     { "useLightsPark", UITHEME_FLAG_USE_LIGHTS_PARK },
                     { "useAltScenarioSelectFont", UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT },
-                    { "useFullBottomToolbar", UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR },
+                    { "useFullBottomToolbar", UITHEME_FLAG_USE_GAME_STATUS_BAR },
                     { "use3dImageButtons", UITHEME_FLAG_USE_3D_IMAGE_BUTTONS },
                 });
 

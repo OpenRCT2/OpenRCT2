@@ -109,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, 54}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
         makeWidget({ 10, 69}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
         makeWidget({ 10, 84}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
-        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
+        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_GAME_STATUS_BAR                                        ), // rct1 bottom toolbar
         makeWidget({ 10,114}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_USE_3D_IMAGE_BUTTONS                                        )  // use 3D image buttons
     );
     // clang-format on
@@ -153,11 +153,12 @@ namespace OpenRCT2::Ui::Windows
 
     static WindowClass window_themes_tab_1_classes[] = {
         WindowClass::topToolbar,
-        WindowClass::bottomToolbar,
+        WindowClass::gameStatusBar,
+        WindowClass::newsTicker,
         WindowClass::parkInfoPanel,
         WindowClass::dateInfoPanel,
-        WindowClass::editorScenarioBottomToolbar,
-        WindowClass::editorTrackBottomToolbar,
+        WindowClass::editorStepControlScenario,
+        WindowClass::editorStepControlTrack,
         WindowClass::titleMenu,
         WindowClass::titleExit,
         WindowClass::titleOptions,
@@ -362,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
                 setCheckboxValue(WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
                 setCheckboxValue(
                     WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-                setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+                setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR);
                 setCheckboxValue(WIDX_THEMES_USE_3D_IMAGE_BUTTONS, ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
             }
         }
@@ -481,9 +482,17 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
+                        ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_GAME_STATUS_BAR));
                         ThemeSave();
-                        windowMgr->InvalidateAll();
+
+                        if (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR)
+                        {
+                            windowMgr->OpenWindow(WindowClass::gameStatusBar);
+                        }
+                        else
+                        {
+                            windowMgr->CloseByClass(WindowClass::gameStatusBar);
+                        }
                     }
                     break;
                 case WIDX_THEMES_USE_3D_IMAGE_BUTTONS:
