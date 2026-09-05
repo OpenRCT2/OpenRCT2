@@ -25,6 +25,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
+#include <openrct2/scenes/SceneManager.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Drawing;
@@ -268,6 +269,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* newsTickerOpen()
     {
+        // Only show news ticker in-game
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        if (sceneMgr->getActiveScene() != sceneMgr->getGameScene())
+            return nullptr;
+
         // TODO: query ParkInfoPanel, DateInfoPanel
         constexpr auto kPanelWidth = 142;
 
