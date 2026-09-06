@@ -515,6 +515,19 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
+                    setWidgetDisabled(WIDX_GENERAL_GROUP, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_OWN_ALL_LAND, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_REMOVE_PARK_FENCES, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_OPEN_CLOSE_PARK, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_OBJECTIVE_GROUP, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_NEVERENDING_MARKETING, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_FORCE_PARK_RATING, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_PARK_RATING_SPINNER, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_INCREASE_PARK_RATING, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_DECREASE_PARK_RATING, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_WIN_SCENARIO, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_HAVE_FUN, isInTrackDesignerOrManager());
+
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
                     if (gameState.park.flags.has(ParkFlag::parkOpen))
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
@@ -626,12 +639,17 @@ static StringId window_cheats_page_titles[] = {
             }
             else if (page == WINDOW_CHEATS_PAGE_PARK)
             {
+                auto colour = colours[1];
                 auto ft = Formatter();
                 ft.Add<int32_t>(_parkRatingSpinnerValue);
 
+                if (isWidgetDisabled(WIDX_PARK_RATING_SPINNER))
+                {
+                    colour.flags.set(ColourFlag::inset, true);
+                }
+
                 auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
-                drawText(
-                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colours[1] });
+                drawText(rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colour });
             }
             else if (page == WINDOW_CHEATS_PAGE_STAFF)
             {
