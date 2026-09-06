@@ -539,6 +539,16 @@ static StringId window_cheats_page_titles[] = {
                     setCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.cheats.allowSpecialColourSchemes);
                     break;
                 case WINDOW_CHEATS_PAGE_RIDES:
+                    setWidgetDisabled(WIDX_FIX_ALL, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_RENEW_RIDES, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_RESET_CRASH_STATUS, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_10_MINUTE_INSPECTIONS, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_MAKE_DESTRUCTIBLE, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_DISABLE_BRAKES_FAILURE, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_DISABLE_ALL_BREAKDOWNS, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_DISABLE_RIDE_VALUE_AGING, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_IGNORE_RESEARCH_STATUS, isInTrackDesignerOrManager());
+
                     setCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.cheats.unlockOperatingLimits);
                     setCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.cheats.disableBrakesFailure);
                     setCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gameState.cheats.disableAllBreakdowns);
