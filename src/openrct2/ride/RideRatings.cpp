@@ -395,7 +395,7 @@ namespace OpenRCT2
                 {
                     auto entranceIndex = tileElement->asTrack()->getStationIndex();
                     state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                    if (ride->getStation(entranceIndex).Entrance.IsNull())
+                    if (ride->getStation(entranceIndex).entrance.IsNull())
                     {
                         state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                     }
@@ -543,15 +543,15 @@ namespace OpenRCT2
 
         for (auto& station : ride->getStations())
         {
-            if (!station.Start.IsNull())
+            if (!station.start.IsNull())
             {
                 state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (station.Entrance.IsNull())
+                if (station.entrance.IsNull())
                 {
                     state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
 
-                auto location = station.GetStart();
+                auto location = station.getStart();
                 state.Proximity = location;
                 state.ProximityTrackType = TrackElemType::none;
                 state.ProximityStart = location;
@@ -1763,17 +1763,17 @@ namespace OpenRCT2
         const auto& rtd = ride.getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
-            location = ride.getStation().Entrance.ToCoordsXY();
+            location = ride.getStation().entrance.ToCoordsXY();
         }
         else
         {
-            location = ride.getStation(stationIndex).Start;
+            location = ride.getStation(stationIndex).start;
         }
 
         int32_t z = TileElementHeight(location);
 
         // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
-        if (z > ride.getStation(stationIndex).GetBaseZ())
+        if (z > ride.getStation(stationIndex).getBaseZ())
         {
             return 40;
         }
@@ -2100,7 +2100,7 @@ namespace OpenRCT2
 
     static void RideRatingsApplyRequirementLength(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
     {
-        if (ride.getStation().SegmentLength < modifier.threshold)
+        if (ride.getStation().segmentLength < modifier.threshold)
         {
             ratings.excitement /= modifier.excitement;
             ratings.intensity /= modifier.intensity;

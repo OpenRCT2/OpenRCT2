@@ -198,8 +198,8 @@ namespace OpenRCT2::GameActions
         MapInvalidateTileFull(startLoc);
 
         ride->mazeTiles++;
-        ride->getStation().SetBaseZ(trackElement->getBaseZ());
-        ride->getStation().Start = { 0, 0 };
+        ride->getStation().setBaseZ(trackElement->getBaseZ());
+        ride->getStation().start = { 0, 0 };
 
         if (ride->mazeTiles == 1)
         {

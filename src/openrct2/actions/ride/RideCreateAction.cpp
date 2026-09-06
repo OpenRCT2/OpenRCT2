@@ -150,9 +150,9 @@ namespace OpenRCT2::GameActions
 
         // Default initialize all stations.
         RideStation station{};
-        station.Start.SetNull();
-        station.Entrance.SetNull();
-        station.Exit.SetNull();
+        station.start.SetNull();
+        station.entrance.SetNull();
+        station.exit.SetNull();
         std::ranges::fill(ride->getStations(), station);
 
         ride->status = RideStatus::closed;

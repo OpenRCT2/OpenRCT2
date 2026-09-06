@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
         }
 
         const auto& station = ride->getStation(_stationNum);
-        const auto location = _isExit ? station.Exit : station.Entrance;
+        const auto location = _isExit ? station.exit : station.entrance;
 
         if (!location.IsNull())
         {
@@ -103,7 +103,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto z = ride->getStation(_stationNum).GetBaseZ();
+        auto z = ride->getStation(_stationNum).getBaseZ();
         if (!LocationValid(_loc))
         {
             return Result(Status::invalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
@@ -164,7 +164,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto& station = ride->getStation(_stationNum);
-        const auto location = _isExit ? station.Exit : station.Entrance;
+        const auto location = _isExit ? station.exit : station.entrance;
         if (!location.IsNull())
         {
             auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
@@ -178,7 +178,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto z = station.GetBaseZ();
+        auto z = station.getBaseZ();
         if (!GetFlags().has(CommandFlag::allowDuringPaused) && !GetFlags().has(CommandFlag::ghost)
             && !gameState.cheats.disableClearanceChecks)
         {
@@ -212,13 +212,13 @@ namespace OpenRCT2::GameActions
 
         if (_isExit)
         {
-            station.Exit = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
+            station.exit = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
         }
         else
         {
-            station.Entrance = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
-            station.LastPeepInQueue = EntityId::GetNull();
-            station.QueueLength = 0;
+            station.entrance = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
+            station.lastPeepInQueue = EntityId::GetNull();
+            station.queueLength = 0;
 
             MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
         }

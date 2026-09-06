@@ -55,10 +55,10 @@ void Vehicle::UpdateDepartingBoatHire()
         return;
 
     auto& station = curRide->getStation(current_station);
-    station.Depart &= kStationDepartFlag;
+    station.depart &= kStationDepartFlag;
     uint8_t waitingTime = std::max(curRide->minWaitingTime, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
-    station.Depart |= waitingTime;
+    station.depart |= waitingTime;
     UpdateTravellingBoatHireSetup();
 }
 

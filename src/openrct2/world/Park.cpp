@@ -124,7 +124,7 @@ namespace OpenRCT2::Park
                     continue;
                 if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasDataLogging))
                     continue;
-                if (ride.getStation().SegmentLength < (600 << 16))
+                if (ride.getStation().segmentLength < (600 << 16))
                     continue;
                 if (ride.ratings.excitement < RideRating::make(6, 00))
                     continue;

@@ -395,7 +395,7 @@ namespace OpenRCT2::Ui
                     stationIndex = tileElement->asTrack()->getStationIndex().ToUnderlying();
 
                 for (int32_t i = stationIndex; i >= 0; i--)
-                    if (ride->getStations()[i].Start.IsNull())
+                    if (ride->getStations()[i].start.IsNull())
                         stationIndex--;
                 stationIndex++;
                 ft.Add<uint16_t>(stationIndex);

@@ -2051,7 +2051,7 @@ namespace OpenRCT2::PathFinding
         for (const auto& station : ride->getStations())
         {
             // Skip if stationNum has no entrance (so presumably an exit only station)
-            if (station.Entrance.IsNull())
+            if (station.entrance.IsNull())
                 continue;
 
             const auto stationIndex = ride->getStationIndex(&station);
@@ -2059,7 +2059,7 @@ namespace OpenRCT2::PathFinding
             numEntranceStations++;
             entranceStations[stationIndex.ToUnderlying()] = true;
 
-            TileCoordsXYZD entranceLocation = station.Entrance;
+            TileCoordsXYZD entranceLocation = station.entrance;
             auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep.nextLoc });
             if (score < bestScore)
             {
@@ -2081,14 +2081,14 @@ namespace OpenRCT2::PathFinding
         {
             // closestStationNum is always 0 here.
             const auto& closestStation = ride->getStation(closestStationNum);
-            auto entranceXY = TileCoordsXY(closestStation.Start);
+            auto entranceXY = TileCoordsXY(closestStation.start);
             loc.x = entranceXY.x;
             loc.y = entranceXY.y;
-            loc.z = closestStation.Height;
+            loc.z = closestStation.height;
         }
         else
         {
-            TileCoordsXYZD entranceXYZD = ride->getStation(closestStationNum).Entrance;
+            TileCoordsXYZD entranceXYZD = ride->getStation(closestStationNum).entrance;
             loc.x = entranceXYZD.x;
             loc.y = entranceXYZD.y;
             loc.z = entranceXYZD.z;

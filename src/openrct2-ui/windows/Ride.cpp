@@ -1511,7 +1511,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& station : ride->getStations())
             {
-                if (!station.Start.IsNull() && viewSelectionIndex-- == 0)
+                if (!station.start.IsNull() && viewSelectionIndex-- == 0)
                 {
                     const auto stationIndex = ride->getStationIndex(&station);
                     return std::make_optional(stationIndex);
@@ -1559,7 +1559,7 @@ namespace OpenRCT2::Ui::Windows
                 auto stationIndex = GetStationIndexFromViewSelection();
                 if (stationIndex)
                 {
-                    const auto location = ride->getStation(*stationIndex).GetStart();
+                    const auto location = ride->getStation(*stationIndex).getStart();
                     newFocus = Focus(location);
                 }
             }
@@ -2546,21 +2546,21 @@ namespace OpenRCT2::Ui::Windows
             // Entrance / exit
             if (ride->status == RideStatus::closed)
             {
-                if (station.Entrance.IsNull())
+                if (station.entrance.IsNull())
                     stringId = STR_NO_ENTRANCE;
-                else if (station.Exit.IsNull())
+                else if (station.exit.IsNull())
                     stringId = STR_NO_EXIT;
             }
             else
             {
-                if (station.Entrance.IsNull())
+                if (station.entrance.IsNull())
                     stringId = STR_EXIT_ONLY;
             }
             // Queue length
             if (stringId == kStringIdEmpty)
             {
                 stringId = STR_QUEUE_EMPTY;
-                uint16_t queueLength = ride->getStation(*stationIndex).QueueLength;
+                uint16_t queueLength = ride->getStation(*stationIndex).queueLength;
                 if (queueLength == 1)
                     stringId = STR_QUEUE_ONE_PERSON;
                 else if (queueLength > 1)
@@ -6006,7 +6006,7 @@ namespace OpenRCT2::Ui::Windows
                             for (int32_t i = 0; i < std::min<int32_t>(ride->numStations, 4); i++)
                             {
                                 StationIndex stationIndex = StationIndex::FromUnderlying(numTimes);
-                                auto time = ride->getStation(stationIndex).SegmentTime;
+                                auto time = ride->getStation(stationIndex).segmentTime;
                                 if (time != 0)
                                 {
                                     ft.Add<uint16_t>(STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
@@ -6045,7 +6045,7 @@ namespace OpenRCT2::Ui::Windows
                         for (int32_t i = 0; i < std::min<int32_t>(ride->numStations, 4); i++)
                         {
                             StationIndex stationIndex = StationIndex::FromUnderlying(i);
-                            auto length = ride->getStation(stationIndex).SegmentLength;
+                            auto length = ride->getStation(stationIndex).segmentLength;
                             if (length != 0)
                             {
                                 length >>= 16;
@@ -7278,7 +7278,7 @@ namespace OpenRCT2::Ui::Windows
         // View
         for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
         {
-            if (ride.getStations()[i].Start.IsNull())
+            if (ride.getStations()[i].start.IsNull())
             {
                 stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
             }

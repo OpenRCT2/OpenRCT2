@@ -525,10 +525,10 @@ static void SwapRideEntranceAndExit(RideId rideId)
     if (ride != nullptr)
     {
         auto& station = ride->getStation();
-        auto entranceCoords = station.Exit;
-        auto exitCoords = station.Entrance;
-        station.Entrance = entranceCoords;
-        station.Exit = exitCoords;
+        auto entranceCoords = station.exit;
+        auto exitCoords = station.entrance;
+        station.entrance = entranceCoords;
+        station.exit = exitCoords;
 
         auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
         entranceElement->setEntranceType(EntranceType::rideEntrance);

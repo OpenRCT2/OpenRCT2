@@ -270,16 +270,16 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         for (const auto& station : ride.getStations())
         {
-            z = station.GetBaseZ();
+            z = station.getBaseZ();
 
             TileCoordsXYZD location;
             if (i == 0)
             {
-                location = station.Entrance;
+                location = station.entrance;
             }
             else
             {
-                location = station.Exit;
+                location = station.exit;
             }
 
             if (location.IsNull())
@@ -390,7 +390,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
         x = 0;
     }
 
-    auto location = ride.getStation().Entrance;
+    auto location = ride.getStation().entrance;
     if (location.IsNull())
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
@@ -417,7 +417,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     mazeEntrance.isExit = false;
     entranceElements.push_back(mazeEntrance);
 
-    location = ride.getStation().Exit;
+    location = ride.getStation().exit;
     if (location.IsNull())
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };

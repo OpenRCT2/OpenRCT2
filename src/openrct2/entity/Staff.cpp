@@ -634,10 +634,10 @@ namespace OpenRCT2
         if (ride != nullptr && (state == PeepState::answering || state == PeepState::headingToInspection)
             && (ScenarioRand() & 1))
         {
-            auto location = ride->getStation(currentRideStation).Exit;
+            auto location = ride->getStation(currentRideStation).exit;
             if (location.IsNull())
             {
-                location = ride->getStation(currentRideStation).Entrance;
+                location = ride->getStation(currentRideStation).entrance;
             }
 
             direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
@@ -715,10 +715,10 @@ namespace OpenRCT2
         {
             /* Find location of the exit for the target ride station
              * or if the ride has no exit, the entrance. */
-            TileCoordsXYZD location = ride->getStation(currentRideStation).Exit;
+            TileCoordsXYZD location = ride->getStation(currentRideStation).exit;
             if (location.IsNull())
             {
-                location = ride->getStation(currentRideStation).Entrance;
+                location = ride->getStation(currentRideStation).entrance;
 
                 // If no entrance is present either. This is an incorrect state.
                 if (location.IsNull())
@@ -1269,7 +1269,7 @@ namespace OpenRCT2
             return;
         }
 
-        if (ride->getStation(currentRideStation).Exit.IsNull())
+        if (ride->getStation(currentRideStation).exit.IsNull())
         {
             ride->flags.unset(RideFlag::dueInspection);
             setState(PeepState::falling);
@@ -1323,7 +1323,7 @@ namespace OpenRCT2
 
             if (pathingResult & PATHING_RIDE_ENTRANCE)
             {
-                if (!ride->getStation(exitIndex).Exit.IsNull())
+                if (!ride->getStation(exitIndex).exit.IsNull())
                 {
                     return;
                 }
@@ -1343,7 +1343,7 @@ namespace OpenRCT2
         int16_t delta_y = abs(getLocation().y - getDestination().y);
         if (auto loc = updateAction(); loc.has_value())
         {
-            auto newZ = ride->getStation(currentRideStation).GetBaseZ();
+            auto newZ = ride->getStation(currentRideStation).getBaseZ();
             if (delta_y < 20)
             {
                 newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
@@ -1428,7 +1428,7 @@ namespace OpenRCT2
 
             if (pathingResult & PATHING_RIDE_ENTRANCE)
             {
-                if (!ride->getStation(exitIndex).Exit.IsNull())
+                if (!ride->getStation(exitIndex).exit.IsNull())
                 {
                     return;
                 }
@@ -1450,7 +1450,7 @@ namespace OpenRCT2
         int16_t delta_y = abs(y - getDestination().y);
         if (auto loc = updateAction(); loc.has_value())
         {
-            auto newZ = ride->getStation(currentRideStation).GetBaseZ();
+            auto newZ = ride->getStation(currentRideStation).getBaseZ();
             if (delta_y < 20)
             {
                 newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
@@ -2276,7 +2276,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            auto stationPos = ride.getStation(currentRideStation).GetStart();
+            auto stationPos = ride.getStation(currentRideStation).getStart();
             if (stationPos.IsNull())
             {
                 return true;
@@ -2363,7 +2363,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            auto stationPosition = ride.getStation(currentRideStation).GetStart();
+            auto stationPosition = ride.getStation(currentRideStation).getStart();
             if (stationPosition.IsNull())
             {
                 return true;
@@ -2509,10 +2509,10 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            auto stationPosition = ride.getStation(currentRideStation).Exit.ToCoordsXY();
+            auto stationPosition = ride.getStation(currentRideStation).exit.ToCoordsXY();
             if (stationPosition.IsNull())
             {
-                stationPosition = ride.getStation(currentRideStation).Entrance.ToCoordsXY();
+                stationPosition = ride.getStation(currentRideStation).entrance.ToCoordsXY();
 
                 if (stationPosition.IsNull())
                 {
@@ -2589,10 +2589,10 @@ namespace OpenRCT2
     {
         if (!firstRun)
         {
-            auto exitPosition = ride.getStation(currentRideStation).Exit.ToCoordsXY();
+            auto exitPosition = ride.getStation(currentRideStation).exit.ToCoordsXY();
             if (exitPosition.IsNull())
             {
-                exitPosition = ride.getStation(currentRideStation).Entrance.ToCoordsXY();
+                exitPosition = ride.getStation(currentRideStation).entrance.ToCoordsXY();
 
                 if (exitPosition.IsNull())
                 {
@@ -2613,7 +2613,7 @@ namespace OpenRCT2
         int16_t xy_distance;
         if (auto loc = updateAction(xy_distance); loc.has_value())
         {
-            auto stationHeight = ride.getStation(currentRideStation).GetBaseZ();
+            auto stationHeight = ride.getStation(currentRideStation).getBaseZ();
             if (xy_distance >= 16)
             {
                 stationHeight += ride.getRideTypeDescriptor().Heights.PlatformHeight;

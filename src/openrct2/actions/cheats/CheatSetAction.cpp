@@ -717,8 +717,8 @@ namespace OpenRCT2::GameActions
 
             for (auto& station : ride.getStations())
             {
-                station.QueueLength = 0;
-                station.LastPeepInQueue = EntityId::GetNull();
+                station.queueLength = 0;
+                station.lastPeepInQueue = EntityId::GetNull();
             }
 
             for (auto trainIndex : ride.vehicles)

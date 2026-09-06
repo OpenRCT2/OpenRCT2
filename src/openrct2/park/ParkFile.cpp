@@ -1456,18 +1456,18 @@ namespace OpenRCT2
                     // Stations
                     cs.readWrite(ride.numStations);
                     cs.readWriteArray(ride.getStations(), [&cs](RideStation& station) {
-                        cs.readWrite(station.Start);
-                        cs.readWrite(station.Height);
-                        cs.readWrite(station.Length);
-                        cs.readWrite(station.Depart);
-                        cs.readWrite(station.TrainAtStation);
-                        cs.readWrite(station.Entrance);
-                        cs.readWrite(station.Exit);
-                        cs.readWrite(station.SegmentLength);
-                        cs.readWrite(station.SegmentTime);
-                        cs.readWrite(station.QueueTime);
-                        cs.readWrite(station.QueueLength);
-                        cs.readWrite(station.LastPeepInQueue);
+                        cs.readWrite(station.start);
+                        cs.readWrite(station.height);
+                        cs.readWrite(station.length);
+                        cs.readWrite(station.depart);
+                        cs.readWrite(station.trainAtStation);
+                        cs.readWrite(station.entrance);
+                        cs.readWrite(station.exit);
+                        cs.readWrite(station.segmentLength);
+                        cs.readWrite(station.segmentTime);
+                        cs.readWrite(station.queueTime);
+                        cs.readWrite(station.queueLength);
+                        cs.readWrite(station.lastPeepInQueue);
                         return true;
                     });
 

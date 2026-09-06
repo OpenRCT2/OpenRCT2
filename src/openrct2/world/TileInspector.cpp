@@ -239,8 +239,8 @@ namespace OpenRCT2::TileInspector
                     {
                         auto stationIndex = tileElement->asEntrance()->getStationIndex();
                         auto& station = ride->getStation(stationIndex);
-                        auto entrance = station.Entrance;
-                        auto exit = station.Exit;
+                        auto entrance = station.entrance;
+                        auto exit = station.exit;
                         auto entranceType = tileElement->asEntrance()->getEntranceType();
                         uint8_t z = tileElement->baseHeight;
 
@@ -248,13 +248,13 @@ namespace OpenRCT2::TileInspector
                         if (entranceType == EntranceType::rideEntrance && entrance.x == loc.x / kCoordsXYStep
                             && entrance.y == loc.y / kCoordsXYStep && entrance.z == z)
                         {
-                            station.Entrance = { entrance, newRotation };
+                            station.entrance = { entrance, newRotation };
                         }
                         else if (
                             entranceType == EntranceType::rideExit && exit.x == loc.x / kCoordsXYStep
                             && exit.y == loc.y / kCoordsXYStep && exit.z == z)
                         {
-                            station.Exit = { exit, newRotation };
+                            station.exit = { exit, newRotation };
                         }
                     }
                     break;
@@ -469,15 +469,15 @@ namespace OpenRCT2::TileInspector
                     {
                         auto entranceIndex = tileElement->asEntrance()->getStationIndex();
                         auto& station = ride->getStation(entranceIndex);
-                        const auto& entranceLoc = station.Entrance;
-                        const auto& exitLoc = station.Exit;
+                        const auto& entranceLoc = station.entrance;
+                        const auto& exitLoc = station.exit;
                         uint8_t z = tileElement->baseHeight;
 
                         // Make sure this is the correct entrance or exit
                         if (entranceType == EntranceType::rideEntrance && entranceLoc == TileCoordsXYZ{ loc, z })
-                            station.Entrance = { entranceLoc, z + heightOffset, entranceLoc.direction };
+                            station.entrance = { entranceLoc, z + heightOffset, entranceLoc.direction };
                         else if (entranceType == EntranceType::rideExit && exitLoc == TileCoordsXYZ{ loc, z })
-                            station.Exit = { exitLoc, z + heightOffset, exitLoc.direction };
+                            station.exit = { exitLoc, z + heightOffset, exitLoc.direction };
                     }
                 }
             }
@@ -656,10 +656,10 @@ namespace OpenRCT2::TileInspector
             switch (entranceElement->asEntrance()->getEntranceType())
             {
                 case EntranceType::rideEntrance:
-                    station.Entrance = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
+                    station.entrance = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
                     break;
                 case EntranceType::rideExit:
-                    station.Exit = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
+                    station.exit = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
                     break;
                 default:
                     break;

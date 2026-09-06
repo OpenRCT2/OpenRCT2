@@ -457,7 +457,7 @@ namespace OpenRCT2
             return;
 
         const auto& currentStation = curRide->getStation(curRide->currentTestStation);
-        if (!currentStation.Entrance.IsNull())
+        if (!currentStation.entrance.IsNull())
         {
             uint8_t test_segment = curRide->currentTestSegment;
             StationIndex stationIndex = StationIndex::FromUnderlying(test_segment);
@@ -476,13 +476,13 @@ namespace OpenRCT2
             if (curRide->averageSpeedTestTimeout == 0 && absVelocity > 0)
             {
                 curRide->averageSpeed = AddClamp<int32_t>(curRide->averageSpeed, absVelocity);
-                stationForTestSegment.SegmentTime++;
+                stationForTestSegment.segmentTime++;
             }
 
             int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
             if (NumLaps == 0)
             {
-                stationForTestSegment.SegmentLength = AddClamp<int32_t>(stationForTestSegment.SegmentLength, distance);
+                stationForTestSegment.segmentLength = AddClamp<int32_t>(stationForTestSegment.segmentLength, distance);
             }
 
             if (curRide->getRideTypeDescriptor().flags.has(RtdFlag::hasGForces))
@@ -517,7 +517,7 @@ namespace OpenRCT2
         {
             curRide->curTestTrackLocation = curTrackLoc;
 
-            if (currentStation.Entrance.IsNull())
+            if (currentStation.entrance.IsNull())
                 return;
 
             auto trackElemType = GetTrackType();
@@ -705,7 +705,7 @@ namespace OpenRCT2
             }
         }
 
-        if (currentStation.Entrance.IsNull())
+        if (currentStation.entrance.IsNull())
             return;
 
         if (x == kLocationNull)
@@ -919,22 +919,22 @@ namespace OpenRCT2
         auto rideStations = ride.getStations();
         for (int32_t i = ride.numStations - 1; i >= 1; i--)
         {
-            if (rideStations[i - 1].SegmentTime != 0)
+            if (rideStations[i - 1].segmentTime != 0)
                 continue;
 
-            uint16_t oldTime = rideStations[i - 1].SegmentTime;
-            rideStations[i - 1].SegmentTime = rideStations[i].SegmentTime;
-            rideStations[i].SegmentTime = oldTime;
+            uint16_t oldTime = rideStations[i - 1].segmentTime;
+            rideStations[i - 1].segmentTime = rideStations[i].segmentTime;
+            rideStations[i].segmentTime = oldTime;
 
-            int32_t oldLength = rideStations[i - 1].SegmentLength;
-            rideStations[i - 1].SegmentLength = rideStations[i].SegmentLength;
-            rideStations[i].SegmentLength = oldLength;
+            int32_t oldLength = rideStations[i - 1].segmentLength;
+            rideStations[i - 1].segmentLength = rideStations[i].segmentLength;
+            rideStations[i].segmentLength = oldLength;
         }
 
         uint32_t totalTime = 0;
         for (uint8_t i = 0; i < ride.numStations; ++i)
         {
-            totalTime += rideStations[i].SegmentTime;
+            totalTime += rideStations[i].segmentTime;
         }
 
         totalTime = std::max(totalTime, 1u);
@@ -988,8 +988,8 @@ namespace OpenRCT2
         ride.specialTrackElements.clearAll();
         for (auto& station : ride.getStations())
         {
-            station.SegmentLength = 0;
-            station.SegmentTime = 0;
+            station.segmentLength = 0;
+            station.segmentTime = 0;
         }
         ride.totalAirTime = 0;
         ride.currentTestStation = curStation;
@@ -1137,7 +1137,7 @@ namespace OpenRCT2
 
         // This is slightly different to the vanilla function
         auto& currentStation = curRide->getStation(current_station);
-        currentStation.Depart &= kStationDepartFlag;
+        currentStation.depart &= kStationDepartFlag;
         uint8_t waitingTime = 3;
         if (curRide->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -1145,7 +1145,7 @@ namespace OpenRCT2
             waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
         }
 
-        currentStation.Depart |= waitingTime;
+        currentStation.depart |= waitingTime;
     }
 
     /**

@@ -337,8 +337,8 @@ namespace OpenRCT2
     {
         int32_t queueLength = 0;
         for (const auto& station : stations)
-            if (!station.Entrance.IsNull())
-                queueLength += station.QueueLength;
+            if (!station.entrance.IsNull())
+                queueLength += station.queueLength;
         return queueLength;
     }
 
@@ -346,8 +346,8 @@ namespace OpenRCT2
     {
         uint8_t queueTime = 0;
         for (const auto& station : stations)
-            if (!station.Entrance.IsNull())
-                queueTime = std::max(queueTime, station.QueueTime);
+            if (!station.entrance.IsNull())
+                queueTime = std::max(queueTime, station.queueTime);
         return static_cast<int32_t>(queueTime);
     }
 
@@ -355,7 +355,7 @@ namespace OpenRCT2
     {
         Guest* peep;
         Guest* result = nullptr;
-        auto spriteIndex = getStation(stationIndex).LastPeepInQueue;
+        auto spriteIndex = getStation(stationIndex).lastPeepInQueue;
         while ((peep = getGameState().entities.tryGetEntity<Guest>(spriteIndex)) != nullptr)
         {
             spriteIndex = peep->guestNextInQueue;
@@ -369,13 +369,13 @@ namespace OpenRCT2
         uint16_t count = 0;
         Guest* peep;
         auto& station = getStation(stationIndex);
-        auto spriteIndex = station.LastPeepInQueue;
+        auto spriteIndex = station.lastPeepInQueue;
         while ((peep = getGameState().entities.tryGetEntity<Guest>(spriteIndex)) != nullptr)
         {
             spriteIndex = peep->guestNextInQueue;
             count++;
         }
-        station.QueueLength = count;
+        station.queueLength = count;
     }
 
     void Ride::queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
@@ -387,7 +387,7 @@ namespace OpenRCT2
         auto* queueHeadGuest = getQueueHeadGuest(peep->currentRideStation);
         if (queueHeadGuest == nullptr)
         {
-            getStation(peep->currentRideStation).LastPeepInQueue = peep->id;
+            getStation(peep->currentRideStation).lastPeepInQueue = peep->id;
         }
         else
         {
@@ -592,7 +592,7 @@ namespace OpenRCT2
     {
         int32_t totalLength = 0;
         for (int32_t i = 0; i < numStations; i++)
-            totalLength += stations[i].SegmentLength;
+            totalLength += stations[i].segmentLength;
         return totalLength;
     }
 
@@ -600,7 +600,7 @@ namespace OpenRCT2
     {
         int32_t totalTime = 0;
         for (int32_t i = 0; i < numStations; i++)
-            totalTime += stations[i].SegmentTime;
+            totalTime += stations[i].segmentTime;
         return totalTime;
     }
 
@@ -766,7 +766,7 @@ namespace OpenRCT2
         StationIndex::UnderlyingType nullStationsSeen{ 0 };
         for (size_t i = 0; i < in.ToUnderlying(); i++)
         {
-            if (stations[i].Start.IsNull())
+            if (stations[i].start.IsNull())
             {
                 nullStationsSeen++;
             }
@@ -987,10 +987,10 @@ namespace OpenRCT2
         // Invalidate something related to station start
         for (int32_t i = 0; i < Limits::kMaxStationsPerRide; i++)
         {
-            if (ride.stations[i].Start.IsNull())
+            if (ride.stations[i].start.IsNull())
                 continue;
 
-            auto startLoc = ride.stations[i].Start;
+            auto startLoc = ride.stations[i].start;
 
             TileElement* tileElement = RideGetStationStartTrackElement(ride, StationIndex::FromUnderlying(i));
             if (tileElement == nullptr)
@@ -1493,11 +1493,11 @@ namespace OpenRCT2
 
         // Get either exit position or entrance position if there is no exit
         const auto& station = ride.getStation(stationIndex);
-        TileCoordsXYZD location = station.Exit;
+        TileCoordsXYZD location = station.exit;
         if (location.IsNull())
         {
-            location = station.Entrance;
-            if (station.Entrance.IsNull())
+            location = station.entrance;
+            if (station.entrance.IsNull())
                 return nullptr;
         }
 
@@ -1668,7 +1668,7 @@ namespace OpenRCT2
             return;
         }
 
-        CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
+        CoordsXYZ rideCoords = ride.getStation().getStart().ToTileCentre();
 
         const auto sampleRate = RideMusicSampleRate(ride);
 
@@ -1706,7 +1706,7 @@ namespace OpenRCT2
             return;
         }
 
-        CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
+        CoordsXYZ rideCoords = ride.getStation().getStart().ToTileCentre();
 
         int32_t sampleRate = RideMusicSampleRate(ride);
 
@@ -2048,9 +2048,9 @@ namespace OpenRCT2
     {
         for (auto& station : ride.getStations())
         {
-            auto station_start = station.Start;
-            auto entrance = station.Entrance;
-            auto exit = station.Exit;
+            auto station_start = station.start;
+            auto entrance = station.entrance;
+            auto exit = station.exit;
 
             if (station_start.IsNull())
                 continue;
@@ -2083,7 +2083,7 @@ namespace OpenRCT2
 
     static void RideShopConnected(const Ride& ride)
     {
-        auto shopLoc = TileCoordsXY(ride.getStation().Start);
+        auto shopLoc = TileCoordsXY(ride.getStation().start);
         if (shopLoc.IsNull())
             return;
 
@@ -2217,9 +2217,9 @@ namespace OpenRCT2
             // Get the queue length
             int32_t queueLength = 0;
             const auto stationIndex = entranceElement.getStationIndex();
-            if (!ride->getStation(stationIndex).Entrance.IsNull())
+            if (!ride->getStation(stationIndex).entrance.IsNull())
             {
-                queueLength = ride->getStation(stationIndex).QueueLength;
+                queueLength = ride->getStation(stationIndex).queueLength;
             }
 
             auto ft = Formatter();
@@ -2304,7 +2304,7 @@ namespace OpenRCT2
         uint16_t numStations = 0;
         for (const auto& station : ride.getStations())
         {
-            if (!station.Start.IsNull())
+            if (!station.start.IsNull())
             {
                 numStations++;
             }
@@ -2377,22 +2377,22 @@ namespace OpenRCT2
         uint8_t exit = 0;
         for (const auto& station : ride->getStations())
         {
-            if (station.Start.IsNull())
+            if (station.start.IsNull())
                 continue;
 
-            if (!station.Entrance.IsNull())
+            if (!station.entrance.IsNull())
             {
                 entrance = 1;
             }
 
-            if (!station.Exit.IsNull())
+            if (!station.exit.IsNull())
             {
                 exit = 1;
             }
 
             // If station start and no entrance/exit
             // Sets same error message as no entrance
-            if (station.Exit.IsNull() && station.Entrance.IsNull())
+            if (station.exit.IsNull() && station.entrance.IsNull())
             {
                 entrance = 0;
                 break;
@@ -2420,14 +2420,14 @@ namespace OpenRCT2
     {
         for (const auto& station : stations)
         {
-            if (station.Entrance.IsNull())
+            if (station.entrance.IsNull())
                 continue;
 
-            auto mapLocation = station.Entrance.ToCoordsXYZ();
+            auto mapLocation = station.entrance.ToCoordsXYZ();
 
             // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
             // the ride or not.
-            TileElement* tileElement = MapGetFirstElementAt(station.Entrance);
+            TileElement* tileElement = MapGetFirstElementAt(station.entrance);
             if (tileElement != nullptr)
             {
                 do
@@ -2764,13 +2764,13 @@ namespace OpenRCT2
         TileCoordsXYZD* position = positions;
         for (const auto& station : ride.getStations())
         {
-            if (!station.Entrance.IsNull())
+            if (!station.entrance.IsNull())
             {
-                *position++ = station.Entrance;
+                *position++ = station.entrance;
             }
-            if (!station.Exit.IsNull())
+            if (!station.exit.IsNull())
             {
-                *position++ = station.Exit;
+                *position++ = station.exit;
             }
         }
         position->SetNull();
@@ -3386,7 +3386,7 @@ namespace OpenRCT2
         flags.set(RideFlag::onTrack);
         for (int32_t i = 0; i < Limits::kMaxStationsPerRide; i++)
         {
-            stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
+            stations[i].depart = (stations[i].depart & kStationDepartFlag) | 1;
         }
 
         const auto& rtd = getRideTypeDescriptor();
@@ -3523,7 +3523,7 @@ namespace OpenRCT2
     {
         for (const auto& station : ride.getStations())
         {
-            CoordsXYZ trackStart = station.GetStart();
+            CoordsXYZ trackStart = station.getStart();
             if (trackStart.IsNull())
                 continue;
 
@@ -3695,17 +3695,17 @@ namespace OpenRCT2
         const RideStation* incompleteStation = nullptr;
         for (const auto& station : stations)
         {
-            if (station.Start.IsNull())
+            if (station.start.IsNull())
                 continue;
 
-            if (station.Entrance.IsNull())
+            if (station.entrance.IsNull())
             {
                 entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
                 incompleteStation = &station;
                 break;
             }
 
-            if (station.Exit.IsNull())
+            if (station.exit.IsNull())
             {
                 entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
                 incompleteStation = &station;
@@ -3721,7 +3721,7 @@ namespace OpenRCT2
         const auto& rtd = getRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::maze)
         {
-            auto location = incompleteStation->GetStart();
+            auto location = incompleteStation->getStart();
             WindowScrollToLocation(*w, location);
 
             CoordsXYE trackElement;
@@ -3763,7 +3763,7 @@ namespace OpenRCT2
      */
     TrackElement* Ride::getOriginElement(StationIndex stationIndex) const
     {
-        auto stationLoc = getStation(stationIndex).Start;
+        auto stationLoc = getStation(stationIndex).start;
         TileElement* tileElement = MapGetFirstElementAt(stationLoc);
         if (tileElement == nullptr)
             return nullptr;
@@ -4723,11 +4723,11 @@ namespace OpenRCT2
         std::optional<int32_t> result;
         for (const auto& station : ride.getStations())
         {
-            if (!station.Start.IsNull())
+            if (!station.start.IsNull())
             {
-                if (!result.has_value() || station.Length < result.value())
+                if (!result.has_value() || station.length < result.value())
                 {
-                    result = station.Length;
+                    result = station.length;
                 }
             }
         }
@@ -4747,7 +4747,7 @@ namespace OpenRCT2
 
         for (const auto& station : ride.getStations())
         {
-            trackStart = station.GetStart();
+            trackStart = station.getStart();
             if (trackStart.IsNull())
                 continue;
 
@@ -5186,7 +5186,7 @@ namespace OpenRCT2
          * adjacent station on either side. */
         for (const auto& station : ride.getStations())
         {
-            auto stationStart = station.GetStart();
+            auto stationStart = station.getStart();
             if (!stationStart.IsNull())
             {
                 /* Get the map element for the station start. */
@@ -5330,8 +5330,8 @@ namespace OpenRCT2
             for (auto& station : ride.getStations())
             {
                 auto stationIndex = ride.getStationIndex(&station);
-                TileCoordsXYZD entranceLoc = station.Entrance;
-                TileCoordsXYZD exitLoc = station.Exit;
+                TileCoordsXYZD entranceLoc = station.entrance;
+                TileCoordsXYZD exitLoc = station.exit;
                 bool fixEntrance = false;
                 bool fixExit = false;
 
@@ -5347,7 +5347,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        station.Entrance.direction = entranceElement->getDirection();
+                        station.entrance.direction = entranceElement->getDirection();
                     }
                 }
 
@@ -5362,7 +5362,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        station.Exit.direction = entranceElement->getDirection();
+                        station.exit.direction = entranceElement->getDirection();
                     }
                 }
 
@@ -5400,20 +5400,20 @@ namespace OpenRCT2
                                 }
 
                                 // The expected height is where entrances and exit reside in non-hacked parks.
-                                const uint8_t expectedHeight = station.Height;
+                                const uint8_t expectedHeight = station.height;
 
                                 if (fixEntrance && entranceElement->getEntranceType() == EntranceType::rideEntrance)
                                 {
                                     if (alreadyFoundEntrance)
                                     {
-                                        if (station.Entrance.z == expectedHeight)
+                                        if (station.entrance.z == expectedHeight)
                                             continue;
-                                        if (station.Entrance.z > entranceElement->baseHeight)
+                                        if (station.entrance.z > entranceElement->baseHeight)
                                             continue;
                                     }
 
                                     // Found our entrance
-                                    station.Entrance = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
+                                    station.entrance = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
                                     alreadyFoundEntrance = true;
 
                                     LOG_VERBOSE(
@@ -5424,14 +5424,14 @@ namespace OpenRCT2
                                 {
                                     if (alreadyFoundExit)
                                     {
-                                        if (station.Exit.z == expectedHeight)
+                                        if (station.exit.z == expectedHeight)
                                             continue;
-                                        if (station.Exit.z > entranceElement->baseHeight)
+                                        if (station.exit.z > entranceElement->baseHeight)
                                             continue;
                                     }
 
                                     // Found our exit
-                                    station.Exit = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
+                                    station.exit = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
                                     alreadyFoundExit = true;
 
                                     LOG_VERBOSE(
@@ -5445,12 +5445,12 @@ namespace OpenRCT2
 
                 if (fixEntrance && !alreadyFoundEntrance)
                 {
-                    station.Entrance.SetNull();
+                    station.entrance.SetNull();
                     LOG_VERBOSE("Cleared disconnected entrance of ride %d, station %d.", ride.id, stationIndex);
                 }
                 if (fixExit && !alreadyFoundExit)
                 {
-                    station.Exit.SetNull();
+                    station.exit.SetNull();
                     LOG_VERBOSE("Cleared disconnected exit of ride %d, station %d.", ride.id, stationIndex);
                 }
             }
@@ -5634,7 +5634,7 @@ namespace OpenRCT2
 
     ResultWithMessage Ride::changeStatusGetStartElement(StationIndex stationIndex, CoordsXYE& trackElement)
     {
-        auto startLoc = getStation(stationIndex).Start;
+        auto startLoc = getStation(stationIndex).start;
         trackElement.x = startLoc.x;
         trackElement.y = startLoc.y;
         trackElement.element = reinterpret_cast<TileElement*>(getOriginElement(stationIndex));

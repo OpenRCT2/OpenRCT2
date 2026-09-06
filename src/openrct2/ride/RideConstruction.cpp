@@ -403,7 +403,7 @@ namespace OpenRCT2
             }
 
             for (size_t i = 0; i < Limits::kMaxStationsPerRide; i++)
-                stations[i].TrainAtStation = RideStation::kNoTrain;
+                stations[i].trainAtStation = RideStation::kNoTrain;
 
             // Also clean up orphaned vehicles for good measure.
             for (auto* vehicle : TrainManager::View())
@@ -465,7 +465,7 @@ namespace OpenRCT2
         auto exitPosition = CoordsXYZD{ 0, 0, 0, kInvalidDirection };
         if (!stationIndex.IsNull())
         {
-            auto location = getStation(stationIndex).Exit.ToCoordsXYZD();
+            auto location = getStation(stationIndex).exit.ToCoordsXYZD();
             if (!location.IsNull())
             {
                 auto direction = DirectionReverse(location.direction);
@@ -1394,10 +1394,10 @@ namespace OpenRCT2
             // find the stations of the ride to begin stepping over track elements from
             for (const auto& station : stations)
             {
-                if (station.Start.IsNull())
+                if (station.start.IsNull())
                     continue;
 
-                CoordsXYZ location = station.GetStart();
+                CoordsXYZ location = station.getStart();
                 uint8_t direction = kInvalidDirection;
 
                 bool specialTrack = false;
@@ -1500,16 +1500,16 @@ namespace OpenRCT2
         sfl::static_vector<TileCoordsXYZD, kMaxStationLocations> locations;
         for (auto& station : stations)
         {
-            if (!station.Entrance.IsNull())
+            if (!station.entrance.IsNull())
             {
-                locations.push_back(station.Entrance);
-                station.Entrance.SetNull();
+                locations.push_back(station.entrance);
+                station.entrance.SetNull();
             }
 
-            if (!station.Exit.IsNull())
+            if (!station.exit.IsNull())
             {
-                locations.push_back(station.Exit);
-                station.Exit.SetNull();
+                locations.push_back(station.exit);
+                station.exit.SetNull();
             }
         }
 
@@ -1600,20 +1600,20 @@ namespace OpenRCT2
                     if (tileElement->asEntrance()->getEntranceType() == EntranceType::rideExit)
                     {
                         // if the location is already set for this station, big problem!
-                        if (!station.Exit.IsNull())
+                        if (!station.exit.IsNull())
                             break;
                         // set the station's exit location to this one
-                        CoordsXYZD loc = { location, station.GetBaseZ(), tileElement->getDirection() };
-                        station.Exit = TileCoordsXYZD{ loc };
+                        CoordsXYZD loc = { location, station.getBaseZ(), tileElement->getDirection() };
+                        station.exit = TileCoordsXYZD{ loc };
                     }
                     else
                     {
                         // if the location is already set for this station, big problem!
-                        if (!station.Entrance.IsNull())
+                        if (!station.entrance.IsNull())
                             break;
                         // set the station's entrance location to this one
-                        CoordsXYZD loc = { location, station.GetBaseZ(), tileElement->getDirection() };
-                        station.Entrance = TileCoordsXYZD{ loc };
+                        CoordsXYZD loc = { location, station.getBaseZ(), tileElement->getDirection() };
+                        station.entrance = TileCoordsXYZD{ loc };
                     }
                     // set the entrance's StationIndex as this station
                     tileElement->asEntrance()->setStationIndex(stationId);
@@ -1693,15 +1693,15 @@ namespace OpenRCT2
 
         for (auto& station : ride.getStations())
         {
-            if (station.Start.IsNull())
+            if (station.start.IsNull())
             {
                 continue;
             }
-            if (station.Entrance.IsNull())
+            if (station.entrance.IsNull())
             {
                 return { false, STR_ENTRANCE_NOT_YET_BUILT };
             }
-            if (station.Exit.IsNull())
+            if (station.exit.IsNull())
             {
                 return { false, STR_EXIT_NOT_YET_BUILT };
             }

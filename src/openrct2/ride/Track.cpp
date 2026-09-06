@@ -75,10 +75,10 @@ static void ride_remove_station(Ride& ride, const CoordsXYZ& location)
 {
     for (auto& station : ride.getStations())
     {
-        auto stationStart = station.GetStart();
+        auto stationStart = station.getStart();
         if (stationStart == location)
         {
-            station.Start.SetNull();
+            station.start.SetNull();
             ride.numStations--;
             break;
         }
@@ -111,11 +111,11 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
             assert(!stationIndex.IsNull());
 
             auto& station = ride->getStation(stationIndex);
-            station.Start.x = loc.x;
-            station.Start.y = loc.y;
-            station.Height = loc.z / kCoordsZStep;
-            station.Depart = 1;
-            station.Length = 0;
+            station.start.x = loc.x;
+            station.start.y = loc.y;
+            station.height = loc.z / kCoordsZStep;
+            station.depart = 1;
+            station.length = 0;
             ride->numStations++;
         }
         return { true };
@@ -203,10 +203,10 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
                     else
                     {
                         auto& station = ride->getStation(stationIndex);
-                        station.Start = loc;
-                        station.Height = loc.z / kCoordsZStep;
-                        station.Depart = 1;
-                        station.Length = stationLength;
+                        station.start = loc;
+                        station.height = loc.z / kCoordsZStep;
+                        station.depart = 1;
+                        station.length = stationLength;
                         ride->numStations++;
                     }
 
@@ -337,10 +337,10 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                     else
                     {
                         auto& station = ride->getStation(stationIndex);
-                        station.Start = currentLoc;
-                        station.Height = currentLoc.z / kCoordsZStep;
-                        station.Depart = 1;
-                        station.Length = stationLength != 0 ? stationLength : ByteF441D1;
+                        station.start = currentLoc;
+                        station.height = currentLoc.z / kCoordsZStep;
+                        station.depart = 1;
+                        station.length = stationLength != 0 ? stationLength : ByteF441D1;
                         ride->numStations++;
                     }
 

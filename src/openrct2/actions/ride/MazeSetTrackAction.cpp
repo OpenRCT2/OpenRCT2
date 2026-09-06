@@ -247,8 +247,8 @@ namespace OpenRCT2::GameActions
             MapInvalidateTileFull(startLoc);
 
             ride->mazeTiles++;
-            ride->getStation().SetBaseZ(tileElement->getBaseZ());
-            ride->getStation().Start = { 0, 0 };
+            ride->getStation().setBaseZ(tileElement->getBaseZ());
+            ride->getStation().start = { 0, 0 };
 
             if (_initialPlacement && !flags.has(CommandFlag::ghost))
             {

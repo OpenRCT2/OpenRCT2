@@ -1712,10 +1712,10 @@ namespace OpenRCT2
             guest->interactionRideIndex = rideIndex;
 
             auto& station = ride->getStation(stationNum);
-            auto previous_last = station.LastPeepInQueue;
-            station.LastPeepInQueue = guest->id;
+            auto previous_last = station.lastPeepInQueue;
+            station.lastPeepInQueue = guest->id;
             guest->guestNextInQueue = previous_last;
-            station.QueueLength++;
+            station.queueLength++;
 
             guest->currentRide = rideIndex;
             guest->currentRideStation = stationNum;
@@ -2160,10 +2160,10 @@ namespace OpenRCT2
 
                         // Add the peep to the ride queue.
                         auto& station = ride->getStation(stationNum);
-                        auto old_last_peep = station.LastPeepInQueue;
-                        station.LastPeepInQueue = guest->id;
+                        auto old_last_peep = station.lastPeepInQueue;
+                        station.lastPeepInQueue = guest->id;
                         guest->guestNextInQueue = old_last_peep;
-                        station.QueueLength++;
+                        station.queueLength++;
 
                         PeepDecrementNumRiders(guest);
                         guest->currentRide = rideIndex;

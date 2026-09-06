@@ -947,10 +947,10 @@ namespace OpenRCT2
 
             for (const auto& station : ride->getStations())
             {
-                if (station.Entrance.IsNull())
+                if (station.entrance.IsNull())
                     continue;
 
-                TileElement* tileElement = MapGetFirstElementAt(station.Entrance);
+                TileElement* tileElement = MapGetFirstElementAt(station.entrance);
                 if (tileElement != nullptr)
                 {
                     do
@@ -964,7 +964,7 @@ namespace OpenRCT2
 
                         Direction direction = DirectionReverse(tileElement->getDirection());
                         FootpathChainRideQueue(
-                            rideIndex, ride->getStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
+                            rideIndex, ride->getStationIndex(&station), station.entrance.ToCoordsXY(), tileElement, direction);
                     } while (!(tileElement++)->isLastForTile());
                 }
             }
