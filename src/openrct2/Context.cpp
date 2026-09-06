@@ -51,7 +51,6 @@
 #include "drawing/PickupPeep.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
-#include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
@@ -470,7 +469,8 @@ namespace OpenRCT2
                 Audio::gGameSoundsOff = !Config::Get().sound.masterSoundEnabled;
             }
 
-            ChatInit();
+            auto intent = Intent(INTENT_ACTION_INIT_CHAT);
+            _uiContext->GetWindowManager()->BroadcastIntent(intent);
             CopyOriginalUserFilesOver();
 
             if (!gOpenRCT2NoGraphics)
@@ -1411,7 +1411,8 @@ namespace OpenRCT2
             }
 #endif
 
-            ChatUpdate();
+            auto intent = Intent(INTENT_ACTION_UPDATE_CHAT);
+            _uiContext->GetWindowManager()->BroadcastIntent(intent);
 #ifdef ENABLE_SCRIPTING
             if (auto* activeScene = _sceneManager->getActiveScene(); activeScene != _sceneManager->getPreloaderScene())
             {
