@@ -566,6 +566,7 @@ static StringId window_cheats_page_titles[] = {
 
             setWidgetDisabled(WIDX_TAB_2, isInEditorMode());
             setWidgetDisabled(WIDX_TAB_3, isInEditorMode());
+            setWidgetDisabled(WIDX_TAB_4, isInTrackDesignerOrManager());
             if (isInEditorMode())
             {
                 UpdateTabPositions();
