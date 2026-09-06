@@ -1,6 +1,7 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
+- Fix: [#26222] ‘Follow this on Main View’ follows the invisible first car on ride types that have one, making the view turn too early.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
 
 0.5.5 (2026-09-06)

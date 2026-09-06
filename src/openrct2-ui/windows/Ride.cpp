@@ -764,6 +764,24 @@ namespace OpenRCT2::Ui::Windows
             return selectedCarIndex;
         }
 
+        static Vehicle* getFirstVisibleCar(EntityId trainHead)
+        {
+            auto& entities = getGameState().entities;
+            auto* head = entities.getEntity<Vehicle>(trainHead);
+
+            auto* vehicle = head;
+            for (auto remaining = Limits::kMaxCarsPerTrain; vehicle != nullptr && remaining > 0; remaining--)
+            {
+                const auto* carEntry = vehicle->Entry();
+                if (carEntry == nullptr || carEntry->isVisible())
+                    return vehicle;
+
+                vehicle = entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train);
+            }
+
+            return head;
+        }
+
     public:
         RideWindow(const Ride& ride)
         {
@@ -1551,23 +1569,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->numTrains && ride->flags.has(RideFlag::onTrack))
             {
-                auto vehId = ride->vehicles[viewSelectionIndex];
-                const auto* rideEntry = ride->getRideEntry();
-                if (rideEntry != nullptr && rideEntry->TabCar != 0)
+                const auto* vehicle = getFirstVisibleCar(ride->vehicles[viewSelectionIndex]);
+                if (vehicle != nullptr)
                 {
-                    Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(vehId);
-                    if (vehicle == nullptr)
-                    {
-                        vehId = EntityId::GetNull();
-                    }
-                    else if (!vehicle->next_vehicle_on_train.IsNull())
-                    {
-                        vehId = vehicle->next_vehicle_on_train;
-                    }
-                }
-                if (!vehId.IsNull())
-                {
-                    newFocus = Focus(vehId);
+                    newFocus = Focus(vehicle->id);
                 }
             }
             else if (viewSelectionIndex >= ride->numTrains && viewSelectionIndex < (ride->numTrains + ride->numStations))
@@ -2016,12 +2021,11 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_viewIndex <= ride->numTrains)
                         {
-                            Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+                            const auto* vehicle = getFirstVisibleCar(ride->vehicles[_viewIndex - 1]);
                             if (vehicle != nullptr)
                             {
-                                auto headVehicleSpriteIndex = vehicle->id;
                                 WindowBase* w_main = WindowGetMain();
-                                WindowFollowSprite(*w_main, headVehicleSpriteIndex);
+                                WindowFollowSprite(*w_main, vehicle->id);
                             }
                         }
                     }
