@@ -11,6 +11,7 @@
 #include "../interface/InGameConsole.h"
 #include "../scripting/CustomMenu.h"
 
+#include <openrct2-ui/interface/Chat.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -32,7 +33,6 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/Viewport.h>

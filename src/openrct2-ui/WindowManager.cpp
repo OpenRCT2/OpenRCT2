@@ -9,6 +9,7 @@
 
 #include "WindowManager.h"
 
+#include "interface/Chat.h"
 #include "interface/FileBrowser.h"
 #include "interface/Theme.h"
 #include "interface/Window.h"
@@ -582,6 +583,18 @@ public:
             case INTENT_ACTION_REFRESH_PLAYER_LIST:
                 MultiplayerRefreshList();
                 break;
+            case INTENT_ACTION_INIT_CHAT:
+                ChatInit();
+                break;
+            case INTENT_ACTION_UPDATE_CHAT:
+                ChatUpdate();
+                break;
+            case INTENT_ACTION_CHAT_ADD_HISTORY:
+            {
+                auto message = intent.GetStringExtra(INTENT_EXTRA_MESSAGE);
+                ChatAddHistory(message);
+                break;
+            }
             default:
                 break;
         }

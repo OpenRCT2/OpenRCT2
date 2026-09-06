@@ -73,7 +73,6 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../core/MemoryStream.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
-    #include "../interface/Chat.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
     #include "../scenario/Scenario.h"
@@ -103,6 +102,13 @@ namespace OpenRCT2::Network
     static u8string GetKeysDirectory();
     static u8string GetPrivateKeyPath(u8string_view playerName);
     static u8string GetPublicKeyPath(u8string_view playerName, u8string_view hash);
+
+    static void ChatAddHistory(const u8string& text)
+    {
+        auto intent = Intent(INTENT_ACTION_CHAT_ADD_HISTORY);
+        intent.PutExtra(INTENT_EXTRA_MESSAGE, text);
+        ContextBroadcastIntent(&intent);
+    }
 
     NetworkBase::NetworkBase(IContext& context)
         : System(context)
