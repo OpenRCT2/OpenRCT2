@@ -15,7 +15,7 @@
 #include <type_traits>
 
 uint32_t UtilRand();
-float UtilRandNormalDistributed();
+uint8_t UtilRandUniformDistributedByte();
 
 template<typename T>
 constexpr T AddClamp(T value, T valueToAdd)
@@ -42,6 +42,7 @@ constexpr T AddClamp(T value, T valueToAdd)
 
 uint8_t Lerp(uint8_t a, uint8_t b, float t);
 float FLerp(float a, float b, float t);
+float Smoothstep(float edge0, float edge1, float x);
 uint8_t SoftLight(uint8_t a, uint8_t b);
 
 constexpr uint8_t HiByte(uint16_t value)

@@ -1862,7 +1862,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :All research complete
 STR_2684    :Large group of guests arrive
-STR_2685    :Simplex Noise Parameters
+STR_2685    :Noise Parameters
 STR_2686    :Min. land height:
 STR_2687    :Max. land height:
 STR_2688    :Base Frequency:
@@ -3094,7 +3094,7 @@ STR_6043    :Select height map
 STR_6044    :Smooth height map
 STR_6045    :Strength:
 STR_6046    :Normalise height map
-STR_6047    :Smooth tile edges
+STR_6047    :Smooth tile edges:
 STR_6048    :Height map error
 STR_6049    :Error reading PNG
 STR_6050    :Error reading bitmap
@@ -3674,12 +3674,12 @@ STR_6676    :At least one peep names object must be selected
 STR_6677    :Add beaches around water bodies
 STR_6678    :Heightmap source:
 STR_6679    :Flatland
-STR_6680    :Simplex noise
+STR_6680    :Simplex
 STR_6681    :Heightmap file
 STR_6682    :Map Generator - Generator
 STR_6683    :Map Generator - Terrain
 STR_6684    :Map Generator - Water
-STR_6685    :Map Generator - Forests
+STR_6685    :Map Generator - Scenery
 STR_6686    :Tree to land ratio:
 STR_6687    :Min. tree altitude:
 STR_6688    :Max. tree altitude:
@@ -3838,3 +3838,189 @@ STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Can’t change land height here…
+STR_7054    :Simulating erosion
+STR_7055    :Warped
+STR_7056    :None
+STR_7057    :Island
+STR_7058    :Valley
+STR_7059    :Coastal
+STR_7060    :River
+STR_7061    :Canyon
+STR_7062    :Noise bias
+STR_7063    :Type:
+STR_7064    :Strength:
+STR_7065    :Seed
+STR_7066    :Randomize
+STR_7067    :Enter bias strength between {COMMA2DP32} and {COMMA2DP32}
+STR_7068    :{COMMA2DP32}
+STR_7069    :Mountain
+STR_7070    :Cliff
+STR_7079    :Default
+STR_7080    :Map Generator - Land Style
+STR_7081    :New
+STR_7082    :{MOVE_X}{4}✓
+STR_7083    :Rule
+STR_7085    :Land
+STR_7086    :Edge
+STR_7087    :If
+STR_7088    :Then
+STR_7089    :New rule {UINT16}
+STR_7090    :Remove
+STR_7091    :HeightAbsolute
+STR_7092    :HeightRelative
+STR_7093    :Height[source]
+STR_7094    :Height[minued - subtrahend]
+STR_7095    :Distance
+STR_7096    :Noise
+STR_7097    :NormalAngle
+STR_7098    :Random
+STR_7099    :=
+STR_7100    :!=
+STR_7101    :<
+STR_7102    :>
+STR_7103    :<=
+STR_7104    :>=
+STR_7105    :{STRINGID} {STRINGID} {INT32}
+STR_7106    :{STRINGID} {STRINGID} {COMMA2DP32}
+STR_7107    :Small rock patches
+STR_7108    :Medium dirt patches
+STR_7109    :Large grass clumps patches
+STR_7110    :Mountain peaks
+STR_7111    :Mountain peak rock
+STR_7112    :Mountain peak snow
+STR_7113    :Rename
+STR_7114    :Enter rule name
+STR_7115    :Rule name
+STR_7116    :Remove
+STR_7117    :Edit
+STR_7118    :Add ▼
+STR_7119    :For each tile the rules are evaluated top to bottom, applying the land or edge style of the first matching rule independently.
+STR_7120    :Edit condition
+STR_7121    :{STRINGID} {STRINGID} {LENGTH}
+STR_7122    :Seed offset:
+STR_7123    :BlendNoise
+STR_7124    :BlendHeight
+STR_7125    :{STRINGID}[{LENGTH}..{LENGTH}] {STRINGID} {STRINGID}
+STR_7126    :{STRINGID}[{COMMA2DP32}..{COMMA2DP32}] {STRINGID} {STRINGID}
+STR_7127    :Low:
+STR_7128    :High:
+STR_7129    :BlendHeight[Low..High]
+STR_7130    :BlendNoise[Low..High]
+STR_7131    :Enter {STRINGID} [{INT32}..{INT32}]
+STR_7132    :Enter {STRINGID} [{LENGTH}..{LENGTH}]
+STR_7133    :Enter {STRINGID} [{COMMA2DP32}..{COMMA2DP32}]
+STR_7140    :Items
+STR_7141    :Select
+STR_7142    :For each tile the rules are evaluated top to bottom, placing an element from the pool of the first matching rule. If the pool is empty no item is placed.
+STR_7143    :Select scenery
+STR_7144    :{UINT16}x
+STR_7145    :LandStyle
+STR_7146    :in
+STR_7147    :not in
+STR_7148    :{STRINGID} {STRINGID}
+STR_7149    :Cacti
+STR_7150    :Oasis
+STR_7151    :Shrubs
+STR_7152    :Arid
+STR_7153    :Snow covered conifers
+STR_7154    :Conifers
+STR_7155    :Cold
+STR_7156    :Canopy
+STR_7157    :Flowers
+STR_7158    :Ground
+STR_7159    :Rainforest
+STR_7160    :Broad-leaved
+STR_7161    :Mixed
+STR_7162    :Cypresses and pines
+STR_7163    :Mediterranean
+STR_7170    :Ridged
+STR_7171    :Voronoi
+STR_7172    :Transform
+STR_7173    :Type:
+STR_7174    :None
+STR_7175    :Box blur
+STR_7176    :Gaussian blur
+STR_7177    :Bilateral filter
+STR_7178    :Simulate erosion
+STR_7179    :Strength:
+STR_7180    :None
+STR_7181    :Default
+STR_7182    :Aggressive
+STR_7183    :Sharpen
+STR_7184    :Terrace
+STR_7189    :Rivers
+STR_7190    :Generate
+STR_7191    :Catchment threshold
+STR_7192    :Enter catchment threshold between {INT32} and {INT32}
+STR_7200    :Water
+STR_7201    :River
+STR_7202    :Sea
+STR_7203    :Map edge
+STR_7204    :Filled
+STR_7205    :Breached
+STR_7206    :{STRINGID}[{STRINGID}] {STRINGID} {LENGTH}
+STR_7207    :BlendDistance
+STR_7208    :BlendDistance[Low..High]
+STR_7209    :{STRINGID}[{STRINGID},{LENGTH}..{LENGTH}] {STRINGID} {STRINGID}
+STR_7210    :Feature:
+STR_7211    :Width limit
+STR_7212    :Enter width limit between {INT32} and {INT32}
+STR_7213    :Growth exponent
+STR_7214    :Enter growth exponent between {COMMA2DP32} and {COMMA2DP32}
+STR_7215    :Prune threshold
+STR_7216    :Enter prune threshold between {INT32} and {INT32}
+STR_7217    :Breach length
+STR_7218    :Enter breach length between {INT32} and {INT32}
+STR_7219    :Breach depth
+STR_7220    :Enter breach depth between {INT32} and {INT32}
+STR_7221    :Breach length/depth
+STR_7222    :Distance[Feature]
+STR_7223    :Land
+STR_7229    :Reset settings
+STR_7230    :Load settings
+STR_7231    :Save settings
+STR_7232    :...
+STR_7233    :Load map generator settings
+STR_7234    :Save map generator settings
+STR_7235    :Map generator settings file
+STR_7240    :Mode
+STR_7241    :Absolute
+STR_7242    :Relative
+STR_7243    :Minued
+STR_7244    :Subtrahend
+STR_7245    :Tile land
+STR_7246    :Tile water
+STR_7247    :Tile NW land
+STR_7248    :Tile NW water
+STR_7249    :Tile NE land
+STR_7250    :Tile NE water
+STR_7251    :Tile SE land
+STR_7252    :Tile SE water
+STR_7253    :Tile SW land
+STR_7254    :Tile SW water
+STR_7255    :Global min
+STR_7256    :Global max
+STR_7257    :Global water
+STR_7258    :Source
+STR_7260    :Waterfall NW
+STR_7261    :Waterfall NE
+STR_7262    :Waterfall SE
+STR_7263    :Waterfall SW
+STR_7264    :{STRINGID}[{STRINGID}-{STRINGID}] {STRINGID} {LENGTH}
+STR_7265    :{COMMA32}m²
+STR_7266    :{COMMA32}sq.ft.
+STR_7267    :Use value for z-axis scenery repeat
+STR_7268    :NW
+STR_7269    :NE
+STR_7270    :SE
+STR_7271    :SW
+STR_7272    :??
+STR_7273    :Forest floor
+STR_7274    :Fractional aggregation
+STR_7275    :Fractional exponent
+STR_7276    :Enter fractional exponent between {COMMA2DP32} and {COMMA2DP32}
+STR_7277    :Tile clearance
+STR_7278    :Tile NW clearance
+STR_7279    :Tile NE clearance
+STR_7280    :Tile SE clearance
+STR_7281    :Tile SW clearance

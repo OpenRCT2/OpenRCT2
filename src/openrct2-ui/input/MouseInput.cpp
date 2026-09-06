@@ -91,7 +91,7 @@ namespace OpenRCT2
     static void InputViewportDragEnd();
     static void InputScrollBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
     static void InputScrollContinue(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-    static void InputScrollEnd();
+    static void InputScrollEnd(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
     static void InputScrollPartUpdateHThumb(WindowBase& w, WidgetIndex widgetIndex, int32_t x, int32_t scroll_id);
     static void InputScrollPartUpdateHLeft(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id);
     static void InputScrollPartUpdateHRight(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id);
@@ -437,7 +437,7 @@ namespace OpenRCT2
                         InputScrollContinue(*w, widgetIndex, screenCoords);
                         break;
                     case MouseState::leftRelease:
-                        InputScrollEnd();
+                        InputScrollEnd(*w, widgetIndex, screenCoords);
                         break;
                     case MouseState::leftPress:
                     case MouseState::rightPress:
@@ -769,8 +769,27 @@ namespace OpenRCT2
         }
     }
 
-    static void InputScrollEnd()
+    static void InputScrollEnd(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
+        int32_t scroll_part, scroll_id;
+
+        const auto& widget = w.widgets[widgetIndex];
+        if (w.classification != gPressedWidget.windowClassification || w.number != gPressedWidget.windowNumber
+            || widgetIndex != gPressedWidget.widgetIndex)
+        {
+            _inputState = InputState::reset;
+            InvalidateScroll();
+            return;
+        }
+
+        ScreenCoordsXY newScreenCoords;
+        widgetScrollGetPart(w, &widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
+
+        if (scroll_part == SCROLL_PART_VIEW)
+        {
+            w.onScrollMouseUp(scroll_id, newScreenCoords);
+        }
+
         _inputState = InputState::reset;
         InvalidateScroll();
     }

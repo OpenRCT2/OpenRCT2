@@ -99,7 +99,7 @@ public:
             case WindowClass::map:
                 return MapOpen();
             case WindowClass::mapgen:
-                return MapgenOpen();
+                return MapGenOpen();
             case WindowClass::multiplayer:
                 return MultiplayerOpen();
             case WindowClass::constructRide:
@@ -315,6 +315,9 @@ public:
             case WindowClass::null:
                 // Intent does not hold a window class
                 break;
+
+            case WindowClass::mapgen:
+                return MapGenOpen();
 
             default:
                 Guard::Assert(false, "OpenIntent was called for an unhandled window class.");

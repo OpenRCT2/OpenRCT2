@@ -1436,6 +1436,7 @@ namespace OpenRCT2
                     DirId::replayRecordings,
                     DirId::desyncLogs,
                     DirId::crashDumps,
+                    DirId::mapgenSettings,
                 });
         }
 

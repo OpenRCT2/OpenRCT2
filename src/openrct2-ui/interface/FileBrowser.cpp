@@ -169,6 +169,10 @@ namespace OpenRCT2::Ui::FileBrowser
             case LoadSaveType::heightmap:
                 subdir = DirId::heightmaps;
                 break;
+
+            case LoadSaveType::mapgenSettings:
+                subdir = DirId::mapgenSettings;
+                break;
         }
 
         auto& env = GetContext()->GetPlatformEnvironment();
@@ -204,6 +208,9 @@ namespace OpenRCT2::Ui::FileBrowser
 
             case LoadSaveType::heightmap:
                 return "*.bmp;*.png";
+
+            case LoadSaveType::mapgenSettings:
+                return "*.mapgen.json";
 
             default:
                 Guard::Fail("Unsupported load/save directory type.");
@@ -363,6 +370,12 @@ namespace OpenRCT2::Ui::FileBrowser
                         InvokeCallback(ModalResult::ok, pathBuffer);
                         break;
                     }
+                    case (LoadSaveType::mapgenSettings):
+                    {
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        InvokeCallback(ModalResult::ok, pathBuffer);
+                        break;
+                    }
                 }
                 break;
             }
@@ -465,6 +478,13 @@ namespace OpenRCT2::Ui::FileBrowser
                     {
                         break;
                     }
+                    case LoadSaveType::mapgenSettings:
+                    {
+                        // TODO save here
+                        windowMgr->CloseByClass(WindowClass::loadsave);
+                        InvokeCallback(ModalResult::ok, pathBuffer);
+                        break;
+                    }
                 }
                 break;
             }
@@ -490,6 +510,9 @@ namespace OpenRCT2::Ui::FileBrowser
             case LoadSaveType::heightmap:
                 return STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
 
+            case LoadSaveType::mapgenSettings:
+                return isSave ? STR_FILE_DIALOG_TITLE_SAVE_MAPGEN_SETTINGS : STR_FILE_DIALOG_TITLE_LOAD_MAPGEN_SETTINGS;
+
             default:
                 return kStringIdNone;
         }
@@ -513,6 +536,9 @@ namespace OpenRCT2::Ui::FileBrowser
 
             case LoadSaveType::heightmap:
                 return { LanguageGetString(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(type, isSave) };
+
+            case LoadSaveType::mapgenSettings:
+                return { LanguageGetString(STR_OPENRCT2_MAPGEN_SETTINGS_FILE), GetFilterPatternByType(type, isSave) };
 
             default:
                 Guard::Fail("Unsupported load/save directory type.");

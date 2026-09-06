@@ -112,6 +112,7 @@ namespace OpenRCT2
         scenario,
         track,
         heightmap,
+        mapgenSettings
     };
 
     enum class ModalResult : int8_t
