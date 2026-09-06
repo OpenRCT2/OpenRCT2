@@ -177,6 +177,12 @@ namespace OpenRCT2
         niceRideDeprecated = 171, // "Nice ride! But not as good as the Phoenix..."
         excitedDeprecated = 172,  // "I'm so excited - It's an Intamin ride!"
         hereWeAre = 173,          // "...and here we are on X!"
+        rudeGuest = 174,          // "Another guest was rude to me"
+        speakToManager = 175,     // "I'd like to speak to a manager" (competitive Karen group)
+        weedSmell = 176,          // "It smells strongly of weed here!" (near a puffing competitive Stoner)
+        stonerWhoa = 177,         // "Whoa... heavy." (competitive Stoner staring at something)
+        stonerDeep = 178,         // "That's, like, really deep if you think about it."
+        stonerForever = 179,      // "I could look at this all day."
 
         none = 255
     };

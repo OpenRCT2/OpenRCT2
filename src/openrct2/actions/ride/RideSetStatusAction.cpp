@@ -10,6 +10,7 @@
 #include "RideSetStatusAction.h"
 
 #include "../../Diagnostic.h"
+#include "../../competitive/CompetitiveSession.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
@@ -78,6 +79,14 @@ namespace OpenRCT2::GameActions
 
         Formatter ft(res.errorMessageArgs.data());
         ride->formatNameTo(ft);
+
+        if (_status != RideStatus::open && _status != ride->status && Competitive::IsProtectedRide(_rideIndex))
+        {
+            res.error = Status::disallowed;
+            res.errorMessage = STR_COMPETITIVE_RIDE_LOCKED_BY_RIVAL_ACTION;
+            return res;
+        }
+
         if (_status != ride->status)
         {
             if (_status == RideStatus::simulating && ride->flags.has(RideFlag::brokenDown))

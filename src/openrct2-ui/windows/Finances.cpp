@@ -15,6 +15,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/park/ParkSetLoanAction.h>
+#include <openrct2/competitive/CompetitiveSession.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
@@ -25,6 +26,8 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ui/WindowManager.h>
+
+#include <algorithm>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -668,6 +671,17 @@ namespace OpenRCT2::Ui::Windows
         {
             // Count number of active campaigns
             int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().park.marketingCampaigns.size());
+            const auto& competition = Competitive::GetSession();
+            const auto* competitionState = competition.GetState();
+            const auto localId = competition.GetLocalParticipantId();
+            if (competitionState != nullptr)
+            {
+                numActiveCampaigns += static_cast<int32_t>(std::count_if(
+                    competitionState->effects.begin(), competitionState->effects.end(), [localId](const auto& effect) {
+                        return effect.delivered && effect.targetId == localId
+                            && effect.ability == Competitive::Ability::misinformation;
+                    }));
+            }
             int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions
@@ -746,6 +760,33 @@ namespace OpenRCT2::Ui::Windows
                     weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
 
                 screenCoords.y += kListRowHeight;
+            }
+
+            const auto& competition = Competitive::GetSession();
+            const auto* competitionState = competition.GetState();
+            const auto localId = competition.GetLocalParticipantId();
+            const auto& date = GetDate();
+            const auto localDay = date.GetMonthsElapsed() * 32 + static_cast<uint32_t>(date.GetDay()) + 1;
+            if (competitionState != nullptr)
+            {
+                for (const auto& effect : competitionState->effects)
+                {
+                    if (!effect.delivered || effect.targetId != localId
+                        || effect.ability != Competitive::Ability::misinformation)
+                        continue;
+                    noCampaignsActive = 0;
+                    const auto* source = Competitive::FindParticipant(*competitionState, effect.sourceId);
+                    const auto sourceName = source == nullptr ? std::string("a rival park") : source->name;
+                    drawTextEllipsised(
+                        rt, screenCoords + ScreenCoordsXY{ 4, 0 }, 296,
+                        "Misinformation campaign from " + sourceName, { colours[1] });
+                    const auto daysRemaining = effect.endsAtDay > localDay ? effect.endsAtDay - localDay : 0;
+                    drawText(
+                        rt, screenCoords + ScreenCoordsXY{ 304, 0 },
+                        std::to_string(daysRemaining) + (daysRemaining == 1 ? " day remaining" : " days remaining"),
+                        { colours[1] });
+                    screenCoords.y += kListRowHeight;
+                }
             }
 
             if (noCampaignsActive)

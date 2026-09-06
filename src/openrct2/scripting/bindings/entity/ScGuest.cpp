@@ -58,6 +58,7 @@ namespace OpenRCT2::Scripting
             { "not_safe", PeepThoughtType::notSafe },
             { "path_disgusting", PeepThoughtType::pathDisgusting },
             { "crowded", PeepThoughtType::crowded },
+            { "rude_guest", PeepThoughtType::rudeGuest },
             { "vandalism", PeepThoughtType::vandalism },
             { "scenery", PeepThoughtType::scenery },
             { "very_clean", PeepThoughtType::veryClean },

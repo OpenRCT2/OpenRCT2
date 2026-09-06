@@ -17,6 +17,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/competitive/CompetitiveSession.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/ui/UiContext.h>
@@ -81,10 +82,28 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    // A competing (non-spectator) park in a lobby or running match gets a competition-specific
+    // prompt - Suspend (hold the seat, save a recovery park) or Forfeit (leave for good).
+    static bool InLiveCompetition()
+    {
+        const auto& session = OpenRCT2::Competitive::GetSession();
+        const auto* state = session.GetState();
+        if (state == nullptr
+            || (state->phase != OpenRCT2::Competitive::Phase::lobby
+                && state->phase != OpenRCT2::Competitive::Phase::running))
+        {
+            return false;
+        }
+        const auto* local = session.GetLocalParticipant();
+        return local != nullptr && local->role != OpenRCT2::Competitive::Role::spectator && !local->finished
+            && !local->forfeited;
+    }
+
     class SavePromptWindow final : public Window
     {
     private:
         PromptMode _promptMode;
+        bool _competitive = false;
 
     public:
         SavePromptWindow(PromptMode promptMode)
@@ -126,6 +145,15 @@ namespace OpenRCT2::Ui::Windows
                 }
                 widgets[WIDX_TITLE].text = stringId;
                 widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(_promptMode)][1];
+
+                _competitive = InLiveCompetition();
+                if (_competitive)
+                {
+                    widgets[WIDX_TITLE].text = STR_COMPETITIVE_QUIT_PROMPT_TITLE;
+                    widgets[WIDX_LABEL].text = STR_COMPETITIVE_QUIT_PROMPT_LABEL;
+                    widgets[WIDX_SAVE].text = STR_COMPETITIVE_QUIT_SUSPEND;
+                    widgets[WIDX_DONT_SAVE].text = STR_COMPETITIVE_QUIT_FORFEIT;
+                }
             }
         }
 
@@ -156,6 +184,39 @@ namespace OpenRCT2::Ui::Windows
                     case WQIDX_CANCEL:
                         close();
                         break;
+                }
+                return;
+            }
+
+            if (_competitive)
+            {
+                auto& session = OpenRCT2::Competitive::GetSession();
+                switch (widgetIndex)
+                {
+                    case WIDX_SAVE: // Suspend: hold the seat, write a recovery save, then quit.
+                    {
+                        std::string path;
+                        std::string error;
+                        if (session.SuspendAndSave(path, error))
+                        {
+                            // GameLoadOrQuitNoSavePrompt runs the closeSavePrompt action, which
+                            // closes this window - do not close it here as well.
+                            GameLoadOrQuitNoSavePrompt();
+                        }
+                        else
+                        {
+                            GetWindowManager()->ShowError("Could not suspend the competition", error);
+                        }
+                        return;
+                    }
+                    case WIDX_DONT_SAVE: // Forfeit: permanent. This prompt's own text is the warning.
+                        session.Stop(true, true);
+                        GameLoadOrQuitNoSavePrompt();
+                        return;
+                    case WIDX_CLOSE:
+                    case WIDX_CANCEL:
+                        close();
+                        return;
                 }
                 return;
             }
@@ -222,7 +283,9 @@ namespace OpenRCT2::Ui::Windows
              * and game_load_or_quit() are not called by the original binary anymore.
              */
 
-            if (gScreenAge < 3840 && Network::GetMode() == Network::Mode::none)
+            // A competing player must always get the Suspend/Forfeit choice, even with confirmation
+            // prompts off - otherwise an incidental quit silently tears down their competition.
+            if (gScreenAge < 3840 && Network::GetMode() == Network::Mode::none && !InLiveCompetition())
             {
                 GameLoadOrQuitNoSavePrompt();
                 return nullptr;

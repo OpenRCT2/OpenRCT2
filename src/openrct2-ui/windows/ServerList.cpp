@@ -17,8 +17,10 @@
     #include <openrct2-ui/windows/Windows.h>
     #include <openrct2/Context.h>
     #include <openrct2/Diagnostic.h>
+    #include <openrct2/Game.h>
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
+    #include <openrct2/competitive/CompetitiveSession.h>
     #include <openrct2/drawing/ColourMap.h>
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
@@ -34,8 +36,8 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr ScreenSize kMinimumWindowSize = { 500, 288 };
-    static constexpr ScreenSize kMaximumWindowSize = { 1200, 788 };
+    static constexpr ScreenSize kMinimumWindowSize = { 600, 330 };
+    static constexpr ScreenSize kMaximumWindowSize = { 1200, 830 };
     static constexpr ScreenSize kWindowSize = kMinimumWindowSize;
     static constexpr int32_t kItemHeight = (3 + 9 + 3);
 
@@ -46,17 +48,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND,
         WIDX_TITLE,
         WIDX_CLOSE,
+        WIDX_TAB_COOPERATIVE,
+        WIDX_TAB_COMPETITIVE,
         WIDX_PLAYER_NAME_INPUT,
         WIDX_LIST,
         WIDX_FETCH_SERVERS,
         WIDX_ADD_SERVER,
         WIDX_START_SERVER
-    };
-
-    enum
-    {
-        WIDX_LIST_REMOVE,
-        WIDX_LIST_SPECTATE
     };
 
     enum
@@ -68,11 +66,13 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _serverListWidgets = makeWidgets(
         makeWindowShim(STR_SERVER_LIST, kWindowSize),
-        makeWidget({100, 20}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
-        makeWidget({  6, 37}, {489, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
+        makeWidget({  3, 17}, {120,  26}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty                         ), // cooperative tab
+        makeWidget({123, 17}, {120,  26}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty                         ), // competitive tab
+        makeWidget({100, 47}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
+        makeWidget({  6, 64}, {589, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
         makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
         makeWidget({112, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_ADD_SERVER                         ), // add server button
-        makeWidget({218, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_START_SERVER                       )  // start server button
+        makeWidget({218, 53}, {121,  14}, WidgetType::button,   WindowColour::secondary, STR_START_SERVER                       )  // start server button
     );
     // clang-format on
 
@@ -83,12 +83,16 @@ namespace OpenRCT2::Ui::Windows
     private:
         u8string _playerName;
         Network::ServerList _serverList;
+        std::vector<size_t> _visibleServerIndices;
         std::future<std::pair<std::vector<Network::ServerListEntry>, StringId>> _fetchFuture;
         uint32_t _numPlayersOnline = 0;
         StringId _statusText = STR_SERVER_LIST_CONNECTING;
 
         bool _showNetworkVersionTooltip = false;
         std::string _version;
+        std::string _cooperativeTabText = "Cooperative";
+        std::string _competitiveTabText = "Competitive";
+        std::string _hostCompetitiveText = "Host competition";
 
     public:
     #pragma region Window Override Events
@@ -97,6 +101,8 @@ namespace OpenRCT2::Ui::Windows
         {
             _playerName = Config::Get().network.playerName;
             setWidgets(_serverListWidgets);
+            widgets[WIDX_TAB_COOPERATIVE].setString(_cooperativeTabText.c_str());
+            widgets[WIDX_TAB_COMPETITIVE].setString(_competitiveTabText.c_str());
             widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             initScrollWidgets();
 
@@ -108,7 +114,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
-            numListItems = static_cast<uint16_t>(_serverList.GetCount());
+            UpdateVisibleServers();
 
             ServerListFetchServersBegin();
         }
@@ -130,25 +136,15 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PLAYER_NAME_INPUT:
                     WindowStartTextbox(*this, widgetIndex, _playerName, kMaxPlayerNameLength);
                     break;
-                case WIDX_LIST:
-                {
-                    int32_t serverIndex = selectedListItem;
-                    if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
-                    {
-                        const auto& server = _serverList.GetServer(serverIndex);
-                        if (server.IsVersionValid())
-                        {
-                            JoinServer(server.Address);
-                        }
-                        else
-                        {
-                            Formatter ft;
-                            ft.Add<const char*>(server.Version.c_str());
-                            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
-                        }
-                    }
+                case WIDX_TAB_COOPERATIVE:
+                    SetPage(0);
                     break;
-                }
+                case WIDX_TAB_COMPETITIVE:
+                    SetPage(1);
+                    break;
+                case WIDX_LIST:
+                    JoinSelected();
+                    break;
                 case WIDX_FETCH_SERVERS:
                     ServerListFetchServersBegin();
                     break;
@@ -156,7 +152,14 @@ namespace OpenRCT2::Ui::Windows
                     textInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, kStringIdNone, 0, 128);
                     break;
                 case WIDX_START_SERVER:
-                    ContextOpenWindow(WindowClass::serverStart);
+                    if (page == 0)
+                    {
+                        ContextOpenWindow(WindowClass::serverStart);
+                    }
+                    else
+                    {
+                        ServerStartOpenCompetitive();
+                    }
                     break;
             }
         }
@@ -172,27 +175,17 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            auto serverIndex = selectedListItem;
-            if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
+            auto* server = GetSelectedServer();
+            if (server != nullptr)
             {
-                auto& server = _serverList.GetServer(serverIndex);
                 switch (selectedIndex)
                 {
                     case DDIDX_JOIN:
-                        if (server.IsVersionValid())
-                        {
-                            JoinServer(server.Address);
-                        }
-                        else
-                        {
-                            Formatter ft;
-                            ft.Add<const char*>(server.Version.c_str());
-                            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
-                        }
+                        JoinSelected();
                         break;
                     case DDIDX_FAVOURITE:
                     {
-                        server.Favourite = !server.Favourite;
+                        server->Favourite = !server->Favourite;
                         _serverList.WriteFavourites();
                     }
                     break;
@@ -217,16 +210,14 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t serverIndex = selectedListItem;
-            if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
+            const auto* server = GetSelectedServer();
+            if (server != nullptr)
             {
-                const auto& server = _serverList.GetServer(serverIndex);
-
                 const auto& listWidget = widgets[WIDX_LIST];
 
                 std::array<Dropdown::Item, 2> dropdownItems = {
                     Dropdown::PlainMenuLabel(STR_JOIN_GAME),
-                    Dropdown::PlainMenuLabel(server.Favourite ? STR_REMOVE_FROM_FAVOURITES : STR_ADD_TO_FAVOURITES),
+                    Dropdown::PlainMenuLabel(server->Favourite ? STR_REMOVE_FROM_FAVOURITES : STR_ADD_TO_FAVOURITES),
                 };
 
                 auto dropdownPos = ScreenCoordsXY{
@@ -291,8 +282,10 @@ namespace OpenRCT2::Ui::Windows
                     entry.Address = text;
                     entry.Name = text;
                     entry.Favourite = true;
+                    entry.Kind = page == 1 ? Network::ServerKind::competitive : Network::ServerKind::cooperative;
                     _serverList.Add(entry);
                     _serverList.WriteFavourites();
+                    UpdateVisibleServers();
                     invalidate();
                     break;
                 }
@@ -314,12 +307,12 @@ namespace OpenRCT2::Ui::Windows
                 rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME,
                 { Drawing::Colour::white });
 
-            // Draw version number
+            // Keep compatibility information visible without occupying the player-name field.
             std::string version = Network::GetVersion();
             auto ft = Formatter();
             ft.Add<const char*>(version.c_str());
             drawText(
-                rt, windowPos + ScreenCoordsXY{ 324, widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
+                rt, windowPos + ScreenCoordsXY{ 254, 24 }, STR_NETWORK_VERSION, ft,
                 { Drawing::Colour::white });
 
             ft = Formatter();
@@ -342,7 +335,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y >= rt.y + rt.height)
                     continue;
 
-                const auto& serverDetails = _serverList.GetServer(i);
+                const auto& serverDetails = _serverList.GetServer(_visibleServerIndices[i]);
                 bool highlighted = i == selectedListItem;
 
                 // Draw hover highlight
@@ -488,7 +481,6 @@ namespace OpenRCT2::Ui::Windows
                         auto [entries, statusText] = _fetchFuture.get();
                         _serverList.AddOrUpdateRange(entries);
                         _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
-                        _numPlayersOnline = _serverList.GetTotalPlayerCount();
                         _statusText = STR_X_PLAYERS_ONLINE;
                         if (statusText != kStringIdNone)
                         {
@@ -505,6 +497,7 @@ namespace OpenRCT2::Ui::Windows
                         LOG_WARNING("Unable to connect to master server: %s", e.what());
                     }
                     _fetchFuture = {};
+                    UpdateVisibleServers();
                     invalidate();
                 }
             }
@@ -529,7 +522,156 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_START_SERVER].top = buttonTop;
             widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
-            numListItems = static_cast<uint16_t>(_serverList.GetCount());
+            const bool competitive = page == 1;
+            if (competitive)
+                widgets[WIDX_START_SERVER].setString(_hostCompetitiveText.c_str());
+            else
+                widgets[WIDX_START_SERVER].setString(STR_START_SERVER);
+
+            setWidgetPressed(WIDX_TAB_COOPERATIVE, !competitive);
+            setWidgetPressed(WIDX_TAB_COMPETITIVE, competitive);
+
+            constexpr int32_t buttonGap = 5;
+            constexpr int32_t buttonCount = 3;
+            const auto buttonWidth = (width - (2 * margin) - ((buttonCount - 1) * buttonGap)) / buttonCount;
+            const std::array<WidgetIndex, buttonCount> buttonIndices = {
+                WIDX_FETCH_SERVERS, WIDX_ADD_SERVER, WIDX_START_SERVER
+            };
+            int32_t buttonLeft = margin;
+            for (auto widgetIndex : buttonIndices)
+            {
+                auto& widget = widgets[widgetIndex];
+                widget.left = buttonLeft;
+                widget.right = buttonLeft + buttonWidth - 1;
+                buttonLeft += buttonWidth + buttonGap;
+            }
+        }
+
+        void SetPage(uint8_t newPage)
+        {
+            if (page == newPage)
+            {
+                return;
+            }
+            page = newPage;
+            selectedListItem = -1;
+            _showNetworkVersionTooltip = false;
+            UpdateVisibleServers();
+            invalidate();
+        }
+
+        void UpdateVisibleServers()
+        {
+            _visibleServerIndices.clear();
+            _numPlayersOnline = 0;
+            const bool competitive = page == 1;
+            for (size_t i = 0; i < _serverList.GetCount(); i++)
+            {
+                const auto& server = _serverList.GetServer(i);
+                if (server.IsCompetitive() == competitive)
+                {
+                    _visibleServerIndices.push_back(i);
+                    _numPlayersOnline += server.Players;
+                }
+            }
+            numListItems = static_cast<uint16_t>(_visibleServerIndices.size());
+            if (selectedListItem >= numListItems)
+            {
+                selectedListItem = -1;
+            }
+        }
+
+        Network::ServerListEntry* GetSelectedServer()
+        {
+            if (selectedListItem < 0 || selectedListItem >= static_cast<int32_t>(_visibleServerIndices.size()))
+            {
+                return nullptr;
+            }
+            return &_serverList.GetServer(_visibleServerIndices[selectedListItem]);
+        }
+
+        static std::pair<std::string, uint16_t> ParseAddress(std::string address, uint16_t defaultPort)
+        {
+            int32_t port = defaultPort;
+            const auto endBracketIndex = address.find(']');
+            const auto colonIndex = address.find_last_of(':');
+            if (colonIndex != std::string::npos)
+            {
+                const auto dotIndex = address.find('.');
+                if (endBracketIndex != std::string::npos || dotIndex != std::string::npos)
+                {
+                    int32_t parsedPort{};
+                    if (std::sscanf(&address[colonIndex + 1], "%d", &parsedPort) == 1 && parsedPort > 0
+                        && parsedPort <= UINT16_MAX)
+                    {
+                        port = parsedPort;
+                        address = address.substr(0, colonIndex);
+                    }
+                }
+            }
+
+            const auto beginBracketIndex = address.find('[');
+            if (beginBracketIndex != std::string::npos && endBracketIndex != std::string::npos)
+            {
+                address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
+            }
+            return { address, static_cast<uint16_t>(port) };
+        }
+
+        void JoinSelected()
+        {
+            const auto* server = GetSelectedServer();
+            if (server == nullptr)
+            {
+                return;
+            }
+            if (!server->IsVersionValid())
+            {
+                Formatter ft;
+                ft.Add<const char*>(server->Version.c_str());
+                ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
+                return;
+            }
+
+            if (!server->IsCompetitive())
+            {
+                JoinServer(server->Address);
+                return;
+            }
+            if (server->CompetitiveProtocol != 0 && server->CompetitiveProtocol != Competitive::kProtocolVersion)
+            {
+                ErrorOpen("Cannot join competition", "This competition uses an incompatible competitive protocol version.");
+                return;
+            }
+
+            auto [host, port] = ParseAddress(server->Address, Competitive::kDefaultPort);
+
+            // If we have a suspended park for THIS exact competition (same match id), reload that
+            // save - it reconnects us with our park intact. Matching only on host:port would wrongly
+            // load an old park when the host has since started a different competition.
+            if (auto suspended = Competitive::FindSuspendedSave(server->MatchId))
+            {
+                GameNotifyMapChange();
+                if (GetContext()->LoadParkFromFile(suspended->savePath, false, true))
+                {
+                    GameLoadScripts();
+                    GameNotifyMapChanged();
+                    return;
+                }
+                ErrorOpen(
+                    "Could not load your suspended park", "Starting a fresh join to this competition instead.");
+            }
+
+            Competitive::JoinConfiguration configuration;
+            configuration.host = std::move(host);
+            configuration.port = port;
+            configuration.playerName = _playerName;
+            configuration.role = Competitive::Role::player;
+            std::string error;
+            if (!Competitive::GetSession().Join(configuration, error))
+            {
+                ErrorOpen("Cannot join competition", error);
+            }
         }
     };
 

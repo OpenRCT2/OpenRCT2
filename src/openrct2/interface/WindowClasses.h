@@ -96,6 +96,8 @@ namespace OpenRCT2
         editorParkEntrance = 139,
         editorStepController = 140,
         editorStatusLine = 141,
+        competitiveActions = 142,
+        competitiveHostPrompt = 143,
 
         // Only used for colour schemes
         staff = 220,

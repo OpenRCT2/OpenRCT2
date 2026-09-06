@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../competitive/CompetitiveSession.h"
 #include "../core/Guard.hpp"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -51,6 +52,8 @@ namespace OpenRCT2::PathFinding
         int32_t countTilesChecked;
         // TODO: Move them, those are query parameters not really state, but for now its easier to pass it down.
         bool ignoreForeignQueues;
+        // Staff, and competitive "bad actors", ignore no-entry path signs. Resolved once per search.
+        bool ignoreBanners;
         RideId queueRideIndex;
         // A junction history for the peep path finding heuristic search.
         struct
@@ -989,7 +992,7 @@ namespace OpenRCT2::PathFinding
 
             /* Get all the permitted_edges of the map element. */
             Guard::Assert(tileElement->asPath() != nullptr);
-            uint32_t edges = PathGetPermittedEdges(staff != nullptr, tileElement->asPath());
+            uint32_t edges = PathGetPermittedEdges(state.ignoreBanners, tileElement->asPath());
 
             LogPathfinding(
                 &peep, "Path element at %d,%d,%d; Steps: %u; Edges (0123):%d%d%d%d; Reverse: %d", loc.x >> 5, loc.y >> 5, loc.z,
@@ -1229,6 +1232,8 @@ namespace OpenRCT2::PathFinding
         PathFindingState state{};
 
         state.ignoreForeignQueues = ignoreForeignQueues;
+        state.ignoreBanners = peep.is<Staff>()
+            || (Competitive::gLocalActorsActive && Competitive::IsProtectedAgent(peep.id));
         state.queueRideIndex = queueRideIndex;
 
         // The max number of thin junctions searched - a per-search-path limit.
@@ -1285,7 +1290,7 @@ namespace OpenRCT2::PathFinding
             isThin = isThin || PathIsThinJunction(destTileElement->asPath(), loc);
 
             // Collect the permitted edges of ALL matching path elements at this location.
-            permittedEdges |= PathGetPermittedEdges(peep.is<Staff>(), destTileElement->asPath());
+            permittedEdges |= PathGetPermittedEdges(state.ignoreBanners, destTileElement->asPath());
         } while (!(destTileElement++)->isLastForTile());
         // Peep is not on a path.
         if (!found)

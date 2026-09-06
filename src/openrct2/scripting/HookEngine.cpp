@@ -29,6 +29,7 @@ static const EnumMap<HookType> HooksLookupTable(
         { "ride.ratings.calculate", HookType::rideRatingsCalculate },
         { "action.location", HookType::actionLocation },
         { "guest.generation", HookType::guestGeneration },
+        { "guest.purchase", HookType::guestPurchase },
         { "vehicle.crash", HookType::vehicleCrash },
         { "map.change", HookType::mapChange },
         { "map.changed", HookType::mapChanged },
@@ -151,6 +152,7 @@ void HookEngine::Call(
         {
             JSValue member = std::visit(
                 HookValuesToJS{
+                    [ctx](bool v) { return JS_NewBool(ctx, v); },
                     [ctx](int64_t v) { return JS_NewInt64(ctx, v); },
                     [ctx](uint32_t v) { return JS_NewInt64(ctx, v); },
                     [ctx](int32_t v) { return JS_NewInt32(ctx, v); },

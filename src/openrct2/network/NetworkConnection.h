@@ -42,6 +42,7 @@ namespace OpenRCT2::Network
         std::vector<uint8_t> challenge;
         std::vector<const ObjectRepositoryItem*> requestedObjects;
         bool shouldDisconnect = false;
+        bool requestedSpectator = false;
 
         Connection() noexcept;
 

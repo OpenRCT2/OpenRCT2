@@ -176,6 +176,11 @@ namespace OpenRCT2::Http
             if (hSession == nullptr)
                 ThrowWin32Exception("WinHttpOpen");
 
+            // Bound the worst case (WinHttp's default name-resolution timeout is infinite) so a
+            // hung/unreachable host can't block the worker thread - and, via a teardown that waits
+            // on it, the main thread. Values are milliseconds: resolve, connect, send, receive.
+            WinHttpSetTimeouts(hSession, 10000, 10000, 30000, 30000);
+
             auto wHostName = std::wstring(url.lpszHostName, url.dwHostNameLength);
             hConnect = WinHttpConnect(hSession, wHostName.c_str(), url.nPort, 0);
             if (hConnect == nullptr)

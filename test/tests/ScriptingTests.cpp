@@ -33,6 +33,11 @@ protected:
 
 #ifdef ENABLE_SCRIPTING
 
+TEST_F(ScriptingTests, GuestPurchaseHookIsRegistered)
+{
+    EXPECT_EQ(GetHookType("guest.purchase"), HookType::guestPurchase);
+}
+
 TEST_F(ScriptingTests, MultipleSubscribersToSameEventShouldNotCrash)
 {
     auto& scriptEngine = static_cast<ScriptEngine&>(_context->GetScriptEngine());

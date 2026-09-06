@@ -73,6 +73,7 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../core/MemoryStream.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
+    #include "../competitive/CompetitiveSession.h"
     #include "../interface/Chat.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
@@ -161,7 +162,8 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Reconnect()
     {
-        if (status != Status::none)
+        const bool spectator = _joinAsSpectator;
+        if (status != Status::none || mode != Mode::none)
         {
             Close();
         }
@@ -170,12 +172,12 @@ namespace OpenRCT2::Network
             _requireReconnect = true;
             return;
         }
-        BeginClient(_host, _port);
+        BeginClient(_host, _port, spectator);
     }
 
     void NetworkBase::Close()
     {
-        if (status != Status::none)
+        if (status != Status::none || mode != Mode::none)
         {
             // HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
             //      call. This then causes disposed data to be accessed. Therefore, save closing until the
@@ -235,6 +237,7 @@ namespace OpenRCT2::Network
         {
             _listenSocket.reset();
             _advertiser.reset();
+            listening_port = 0;
         }
 
         mode = Mode::none;
@@ -242,7 +245,7 @@ namespace OpenRCT2::Network
         _lastConnectStatus = SocketStatus::closed;
     }
 
-    bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
+    bool NetworkBase::BeginClient(const std::string& host, uint16_t port, bool spectator)
     {
         if (GetMode() != Mode::none)
         {
@@ -254,6 +257,8 @@ namespace OpenRCT2::Network
             return false;
 
         mode = Mode::client;
+        _joinAsSpectator = spectator;
+        _spectatorOnlyServer = false;
 
         LOG_INFO("Connecting to %s:%u", host.c_str(), port);
         _host = host;
@@ -343,13 +348,15 @@ namespace OpenRCT2::Network
         return true;
     }
 
-    bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
+    bool NetworkBase::BeginServer(uint16_t port, const std::string& address, bool advertise, bool spectatorOnly)
     {
         Close();
         if (!Init())
             return false;
 
         mode = Mode::server;
+        _joinAsSpectator = false;
+        _spectatorOnlyServer = spectatorOnly;
 
         _userManager.load();
 
@@ -402,7 +409,8 @@ namespace OpenRCT2::Network
         status = Status::connected;
         listening_port = port;
         _serverState.gamestateSnapshotsEnabled = Config::Get().network.desyncDebugging;
-        _advertiser = CreateServerAdvertiser(listening_port);
+        if (advertise)
+            _advertiser = CreateServerAdvertiser(listening_port);
 
         GameLoadScripts();
         GameNotifyMapChanged();
@@ -413,6 +421,11 @@ namespace OpenRCT2::Network
     Mode NetworkBase::GetMode() const noexcept
     {
         return mode;
+    }
+
+    uint16_t NetworkBase::GetListeningPort() const noexcept
+    {
+        return listening_port;
     }
 
     Status NetworkBase::GetStatus() const noexcept
@@ -1308,6 +1321,7 @@ namespace OpenRCT2::Network
         assert(signature.size() <= static_cast<size_t>(UINT32_MAX));
         packet << static_cast<uint32_t>(signature.size());
         packet.write(signature.data(), signature.size());
+        packet << static_cast<uint8_t>(_joinAsSpectator);
         _serverConnection->authStatus = Auth::requested;
         _serverConnection->queuePacket(std::move(packet));
     }
@@ -2436,6 +2450,29 @@ namespace OpenRCT2::Network
         connection.player = player;
         if (player != nullptr)
         {
+            if (_spectatorOnlyServer || connection.requestedSpectator)
+            {
+                auto spectator = std::find_if(group_list.begin(), group_list.end(), [](const auto& group) {
+                    return group->getName() == "Competitive spectator";
+                });
+                if (spectator == group_list.end())
+                {
+                    auto* group = AddGroup();
+                    if (group != nullptr)
+                    {
+                        group->setName("Competitive spectator");
+                        group->actionsAllowed.fill(0);
+                        group->toggleActionPermission(Permission::chat);
+                        player->group = group->id;
+                    }
+                }
+                else
+                {
+                    (*spectator)->actionsAllowed.fill(0);
+                    (*spectator)->toggleActionPermission(Permission::chat);
+                    player->group = (*spectator)->id;
+                }
+            }
             char text[256];
             const char* player_name = static_cast<const char*>(player->name.c_str());
             FormatStringLegacy(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
@@ -2709,13 +2746,17 @@ namespace OpenRCT2::Network
                     std::vector<uint8_t> signature;
                     signature.resize(sigsize);
 
-                    const uint8_t* signatureData = packet.read(sigsize);
+            const uint8_t* signatureData = packet.read(sigsize);
                     if (signatureData == nullptr)
                     {
                         throw std::runtime_error("Failed to read packet.");
                     }
 
                     std::memcpy(signature.data(), signatureData, sigsize);
+
+                    uint8_t requestedSpectator{};
+                    packet >> requestedSpectator;
+                    connection.requestedSpectator = requestedSpectator != 0;
 
                     auto ms = MemoryStream(pubkey.data(), pubkey.size());
                     if (!connection.key.LoadPublic(&ms))
@@ -2902,6 +2943,7 @@ namespace OpenRCT2::Network
         {
             auto exporter = std::make_unique<ParkFileExporter>();
             exporter->ExportObjectsList = objects;
+            exporter->ExportCompetitiveSession = false;
 
             auto& gameState = getGameState();
             exporter->Export(gameState, *stream, kParkFileNetCompressionLevel);
@@ -3307,14 +3349,24 @@ namespace OpenRCT2::Network
         GetContext()->GetNetwork().ServerClientDisconnected();
     }
 
-    int32_t BeginClient(const std::string& host, int32_t port)
+    int32_t BeginClient(const std::string& host, int32_t port, bool spectator)
     {
-        return GetContext()->GetNetwork().BeginClient(host, port);
+        return GetContext()->GetNetwork().BeginClient(host, port, spectator);
     }
 
-    int32_t BeginServer(int32_t port, const std::string& address)
+    int32_t BeginServer(int32_t port, const std::string& address, bool advertise, bool spectatorOnly)
     {
-        return GetContext()->GetNetwork().BeginServer(port, address);
+        return GetContext()->GetNetwork().BeginServer(port, address, advertise, spectatorOnly);
+    }
+
+    void Close()
+    {
+        GetContext()->GetNetwork().Close();
+    }
+
+    uint16_t GetListeningPort()
+    {
+        return GetContext()->GetNetwork().GetListeningPort();
     }
 
     void Update()
@@ -3959,6 +4011,13 @@ namespace OpenRCT2::Network
 
     void SendChat(const char* text, const std::vector<uint8_t>& playerIds)
     {
+        // In a competition each park is its own instance; route chat through the coordinator so it
+        // reaches every competing park rather than only this park's spectators.
+        if (Competitive::GetSession().GetMode() != Competitive::SessionMode::none)
+        {
+            Competitive::GetSession().SendChat(text);
+            return;
+        }
         auto& network = GetContext()->GetNetwork();
         if (network.GetMode() == Mode::client)
         {
@@ -4179,14 +4238,23 @@ namespace OpenRCT2::Network
     void PostTick()
     {
     }
-    int32_t BeginClient(const std::string& host, int32_t port)
+    int32_t BeginClient(const std::string& host, int32_t port, bool spectator)
     {
+        static_cast<void>(host);
+        static_cast<void>(port);
+        static_cast<void>(spectator);
         return 1;
     }
-    int32_t BeginServer(int32_t port, const std::string& address)
+    int32_t BeginServer(int32_t port, const std::string& address, bool advertise, bool spectatorOnly)
     {
+        static_cast<void>(port);
+        static_cast<void>(address);
+        static_cast<void>(advertise);
+        static_cast<void>(spectatorOnly);
         return 1;
     }
+    void Close() {}
+    uint16_t GetListeningPort() { return 0; }
     int32_t GetNumPlayers()
     {
         return 1;

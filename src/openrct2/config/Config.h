@@ -170,11 +170,15 @@ namespace OpenRCT2::Config
     struct Network
     {
         u8string playerName;
+        u8string competitiveIdentity;
         int32_t defaultPort;
         u8string listenAddress;
         u8string defaultPassword;
         bool stayConnected;
         bool advertise;
+        // Separate "public game list" preference for competitive hosting, so competitions can default
+        // to being listed without changing the co-op multiplayer setting.
+        bool competitiveAdvertise;
         u8string advertiseAddress;
         int32_t maxplayers;
         u8string serverName;

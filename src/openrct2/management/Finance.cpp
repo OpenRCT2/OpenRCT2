@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../GameState.h"
+#include "../competitive/CompetitiveSession.h"
 #include "../OpenRCT2.h"
 #include "../core/EnumUtils.hpp"
 #include "../entity/EntityList.h"
@@ -115,9 +116,11 @@ void FinancePayWages()
         return;
     }
 
+    // A competitive "union disruption" rival action doubles this park's wage bill while active.
+    const auto wageMultiplier = Competitive::GetStaffWageMultiplier();
     for (auto peep : EntityList<Staff>())
     {
-        FinancePayment(GetStaffWage(peep->assignedStaffType) / 4, ExpenditureType::wages);
+        FinancePayment(GetStaffWage(peep->assignedStaffType) / 4 * wageMultiplier, ExpenditureType::wages);
     }
 }
 
@@ -268,10 +271,11 @@ void FinanceUpdateDailyProfit()
 
     if (!park.flags.has(ParkFlag::noMoney))
     {
-        // Staff costs
+        // Staff costs (doubled while a competitive "union disruption" action is active)
+        const auto wageMultiplier = Competitive::GetStaffWageMultiplier();
         for (auto peep : EntityList<Staff>())
         {
-            current_profit -= GetStaffWage(peep->assignedStaffType);
+            current_profit -= GetStaffWage(peep->assignedStaffType) * wageMultiplier;
         }
 
         // Research costs

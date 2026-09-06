@@ -22,6 +22,7 @@
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../competitive/CompetitiveSession.h"
 #include "../drawing/PickupPeep.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
@@ -1280,6 +1281,22 @@ namespace OpenRCT2
 
     void Peep::formatActionTo(Formatter& ft) const
     {
+        // A competitive "Karen" and the staff member she has cornered are frozen face to face; report
+        // what they are doing rather than the "Walking" their underlying state would otherwise show.
+        if (Competitive::gLocalActorsActive)
+        {
+            if (as<Staff>() != nullptr && Competitive::IsStaffDetained(id))
+            {
+                ft.Add<StringId>(STR_COMPETITIVE_STAFF_LISTENING_TO_COMPLAINT);
+                return;
+            }
+            if (as<Guest>() != nullptr && Competitive::IsKarenConfrontingStaff(id))
+            {
+                ft.Add<StringId>(STR_COMPETITIVE_KAREN_DEMANDING_MANAGER);
+                return;
+            }
+        }
+
         switch (state)
         {
             case PeepState::falling:

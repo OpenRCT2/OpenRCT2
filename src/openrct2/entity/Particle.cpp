@@ -203,7 +203,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006734B2
      */
-    void SteamParticle::create(const CoordsXYZ& coords)
+    void SteamParticle::create(const CoordsXYZ& coords, uint16_t initialFrame)
     {
         auto surfaceElement = MapGetSurfaceElementAt(coords);
         if (surfaceElement != nullptr && coords.z > surfaceElement->getBaseZ())
@@ -215,7 +215,7 @@ namespace OpenRCT2
             steam->spriteData.width = 20;
             steam->spriteData.heightMin = 18;
             steam->spriteData.heightMax = 16;
-            steam->frame = 256;
+            steam->frame = initialFrame < 256 ? 256 : initialFrame;
             steam->timeToMove = 0;
             steam->moveTo(coords);
         }

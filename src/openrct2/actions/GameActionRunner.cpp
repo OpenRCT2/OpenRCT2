@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../ReplayManager.h"
+#include "../competitive/CompetitiveSession.h"
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../entity/MoneyEffect.h"
@@ -164,11 +165,69 @@ namespace OpenRCT2::GameActions
         return false;
     }
 
+    static bool IsCompetitiveFairPlayAction(GameCommand command)
+    {
+        switch (command)
+        {
+            case GameCommand::cheat:
+            case GameCommand::modifyTile:
+            case GameCommand::editScenarioOptions:
+            case GameCommand::placePeepSpawn:
+            case GameCommand::setDate:
+            case GameCommand::changeMapSize:
+            case GameCommand::freezeRideRating:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    // While a competition is still in its lobby, a competitor's park must stay exactly as the
+    // scenario shipped it - pre-building before the match starts would be a head start. Only
+    // quitting and toggling pause are allowed until the host begins the match.
+    static bool IsAllowedDuringCompetitiveLobby(GameCommand command)
+    {
+        return command == GameCommand::loadOrQuit || command == GameCommand::togglePause;
+    }
+
     static Result QueryInternal(const GameAction* action, GameState_t& gameState, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
+        const auto& competition = Competitive::GetSession();
+        const auto* competitionState = competition.GetState();
+        const auto* localParticipant = competition.GetLocalParticipant();
+        const bool isActiveCompetitor = topLevel && competitionState != nullptr && localParticipant != nullptr
+            && localParticipant->role != Competitive::Role::spectator && !localParticipant->finished
+            && !localParticipant->forfeited;
+        if (isActiveCompetitor && competitionState->phase == Competitive::Phase::running
+            && !IsCompetitiveFairPlayAction(action->GetType()))
+        {
+            Result result;
+            result.error = Status::disallowed;
+            result.errorTitle = "Unavailable during competition";
+            result.errorMessage = "This editor or cheat action would invalidate the competitive result.";
+            return result;
+        }
+        if (isActiveCompetitor && competitionState->phase == Competitive::Phase::running
+            && competitionState->rules.customDesignsOnly && action->GetType() == GameCommand::placeTrackDesign)
+        {
+            Result result;
+            result.error = Status::disallowed;
+            result.errorTitle = "Custom designs only";
+            result.errorMessage = "This competition does not allow pre-built track designs - build your ride by hand.";
+            return result;
+        }
+        if (isActiveCompetitor && competitionState->phase == Competitive::Phase::lobby
+            && !IsAllowedDuringCompetitiveLobby(action->GetType()))
+        {
+            Result result;
+            result.error = Status::disallowed;
+            result.errorTitle = "Competition hasn't started";
+            result.errorMessage = "Your park is locked until the host begins the match. Nothing you build now would count.";
+            return result;
+        }
         if (topLevel && !CheckActionInPausedMode(gameState, actionFlags))
         {
             Result result = Result();
@@ -186,7 +245,8 @@ namespace OpenRCT2::GameActions
         auto result = action->Query(gameState, park);
         if (result.error == Status::ok)
         {
-            if (!FinanceCheckAffordability(result.cost, action->GetFlags()))
+            const auto flags = action->GetFlags();
+            if (!FinanceCheckAffordability(result.cost, flags))
             {
                 result.error = Status::insufficientFunds;
                 result.errorTitle = STR_CANT_DO_THIS;

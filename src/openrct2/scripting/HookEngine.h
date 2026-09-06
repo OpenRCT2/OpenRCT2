@@ -36,6 +36,7 @@ namespace OpenRCT2::Scripting
         rideRatingsCalculate,
         actionLocation,
         guestGeneration,
+        guestPurchase,
         vehicleCrash,
         mapChange,
         mapChanged,
@@ -49,7 +50,7 @@ namespace OpenRCT2::Scripting
     constexpr size_t kHookTypeCount = static_cast<size_t>(HookType::count);
     HookType GetHookType(const std::string& name);
 
-    using HookValue = std::variant<int32_t, int16_t, uint16_t, std::string>;
+    using HookValue = std::variant<bool, int64_t, int32_t, int16_t, uint16_t, std::string>;
 
     template<class... Ts>
     struct HookValuesToJS : Ts...

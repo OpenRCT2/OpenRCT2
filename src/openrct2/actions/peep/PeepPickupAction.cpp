@@ -12,6 +12,7 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../Input.h"
+#include "../../competitive/CompetitiveSession.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Peep.h"
 #include "../../interface/Window.h"
@@ -76,6 +77,10 @@ namespace OpenRCT2::GameActions
             {
                 res.position = peep->getLocation();
                 if (!peep->canBePickedUp())
+                {
+                    return Result(Status::disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
+                }
+                if (Competitive::IsProtectedAgent(_entityId))
                 {
                     return Result(Status::disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
                 }
