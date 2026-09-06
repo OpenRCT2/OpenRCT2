@@ -569,6 +569,11 @@ static StringId window_cheats_page_titles[] = {
                     setCheckboxValue(WIDX_DISABLE_GRASS_GROWING, gameState.cheats.disableGrassGrowing);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
+                    setWidgetDisabled(WIDX_FREEZE_WEATHER, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_FAUNA_GROUP, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_CREATE_DUCKS, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_REMOVE_DUCKS, isInTrackDesignerOrManager());
+
                     setCheckboxValue(WIDX_FREEZE_WEATHER, gameState.cheats.freezeWeather);
                     break;
             }
