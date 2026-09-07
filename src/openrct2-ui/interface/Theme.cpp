@@ -22,6 +22,7 @@
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/interface/WindowBase.h>
@@ -621,7 +622,7 @@ namespace OpenRCT2::Ui
             CurrentTheme = theme;
             CurrentThemePath.clear();
 
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
         static void LoadTheme(const std::string& path)

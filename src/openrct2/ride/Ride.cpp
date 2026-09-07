@@ -24,7 +24,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
@@ -4453,7 +4453,7 @@ namespace OpenRCT2
         const auto& rtd = ride.getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::spaceRings || rtd.flags.has(RtdFlag::vehicleIsIntegral))
         {
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
         auto& entities = getGameState().entities;

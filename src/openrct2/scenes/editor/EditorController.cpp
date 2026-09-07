@@ -16,7 +16,7 @@
 #include "../../actions/ResultWithMessage.h"
 #include "../../audio/Audio.h"
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../drawing/Palette.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/Guest.h"
@@ -721,7 +721,7 @@ namespace OpenRCT2::Editor
             }
 
             gameState.editorStep = Editor::Step::rollerCoasterDesigner;
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
         else
         {
@@ -731,7 +731,7 @@ namespace OpenRCT2::Editor
             ContextBroadcastIntent(&intent);
 
             gameState.editorStep = Editor::Step::landscapeEditor;
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
     }
 

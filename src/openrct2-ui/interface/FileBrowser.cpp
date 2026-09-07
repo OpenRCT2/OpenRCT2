@@ -19,7 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/interface/WindowTypes.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
@@ -286,7 +286,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         {
                             InvokeCallback(ModalResult::ok, pathBuffer);
                             windowMgr->CloseByClass(WindowClass::loadsave);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                         }
                         else
                         {
@@ -310,7 +310,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         if (editorScene->LoadLandscape(pathBuffer))
                         {
                             gCurrentLoadedPath = pathBuffer;
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                             InvokeCallback(ModalResult::ok, pathBuffer);
                         }
                         else
@@ -381,7 +381,7 @@ namespace OpenRCT2::Ui::FileBrowser
                             gFirstTimeSaving = false;
 
                             windowMgr->CloseByClass(WindowClass::loadsave);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
 
                             InvokeCallback(ModalResult::ok, pathBuffer);
                         }
@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         {
                             gCurrentLoadedPath = pathBuffer;
                             windowMgr->CloseByClass(WindowClass::loadsave);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                             InvokeCallback(ModalResult::ok, pathBuffer);
                         }
                         else

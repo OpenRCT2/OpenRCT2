@@ -10,7 +10,7 @@
 #include "RideSetNameAction.h"
 
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../localisation/StringIds.h"
 #include "../../ride/Ride.h"
@@ -79,7 +79,7 @@ namespace OpenRCT2::GameActions
         }
 
         Drawing::ScrollingText::invalidate();
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
 
         // Refresh windows that display ride name
         auto windowManager = Ui::GetWindowManager();

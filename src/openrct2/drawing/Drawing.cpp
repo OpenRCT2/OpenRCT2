@@ -9,24 +9,19 @@
 
 #include "Drawing.h"
 
-#include "../Context.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../SpriteIds.h"
-#include "../config/Config.h"
 #include "../interface/ScreenCoords.hpp"
 #include "Drawing.Sprite.h"
 #include "FilterPaletteIds.h"
 #include "Font.h"
-#include "NewDrawing.h"
-#include "Palette.h"
+#include "Line.h"
 #include "Rectangle.h"
 #include "RenderTarget.h"
 #include "Text.h"
 
-#include <array>
 #include <cassert>
-#include <cstring>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -379,46 +374,6 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
 };
 // clang-format on
 
-ImageCatalogue ImageId::GetCatalogue() const
-{
-    auto index = GetIndex();
-    if (index >= SPR_TEMP_BEGIN && index < SPR_TEMP_END)
-    {
-        return ImageCatalogue::temporary;
-    }
-    if (index < SPR_RCTC_G1_END)
-    {
-        return ImageCatalogue::g1;
-    }
-    if (index < SPR_G2_END)
-    {
-        return ImageCatalogue::g2;
-    }
-    if (index < SPR_CSG_END)
-    {
-        return ImageCatalogue::csg;
-    }
-    if (index < SPR_IMAGE_LIST_END)
-    {
-        return ImageCatalogue::object;
-    }
-    return ImageCatalogue::unknown;
-}
-
-void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
-{
-    Rectangle::filter(rt, { coords, coords }, palette);
-}
-
-/**
- *
- *  rct2: 0x006ED7E5
- */
-void GfxInvalidateScreen()
-{
-    GfxSetDirtyBlocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
-}
-
 /*
  *
  * rct2: 0x006EE53B
@@ -504,21 +459,6 @@ std::optional<PaletteMap> GetPaletteMapForColour(FilterPaletteID paletteId)
 FilterPaletteID GetGlassPaletteId(Colour c)
 {
     return kGlassPaletteIds[EnumValue(c)];
-}
-
-void RefreshVideo()
-{
-    ContextRecreateWindow();
-    DrawingEngineSetPalette(Drawing::gPalette);
-    GfxInvalidateScreen();
-}
-
-void ToggleWindowedMode()
-{
-    int32_t rt = Config::Get().general.fullscreenMode == 0 ? 2 : 0;
-    ContextSetFullscreenMode(rt);
-    Config::Get().general.fullscreenMode = rt;
-    Config::Save();
 }
 
 void DebugRT(RenderTarget& rt)

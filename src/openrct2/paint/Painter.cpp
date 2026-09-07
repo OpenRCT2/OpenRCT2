@@ -16,6 +16,7 @@
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/NewDrawing.h"
 #include "../drawing/Palette.h"
 #include "../drawing/PickupPeep.h"
 #include "../drawing/Text.h"

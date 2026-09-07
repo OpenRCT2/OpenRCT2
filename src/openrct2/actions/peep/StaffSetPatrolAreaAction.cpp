@@ -11,7 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
 #include "../../entity/Staff.h"
@@ -99,7 +99,7 @@ namespace OpenRCT2::GameActions
                     break;
                 case StaffSetPatrolAreaMode::clearAll:
                     staff->clearPatrolArea();
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
             }
             UpdateConsolidatedPatrolAreas();

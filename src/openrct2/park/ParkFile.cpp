@@ -23,7 +23,7 @@
 #include "../core/OrcaStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
@@ -2776,10 +2776,10 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         Formatter ft;
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 
     if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
     {

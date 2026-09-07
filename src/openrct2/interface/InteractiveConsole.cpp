@@ -32,7 +32,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../drawing/Image.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
@@ -922,7 +922,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
             Config::Get().general.windowScale = std::clamp(newScale, 0.5f, 5.0f);
             Config::Save();
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
             ContextTriggerResize();
             ContextUpdateCursorScale();
             console.Execute("get window_scale");
@@ -1020,7 +1020,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             console.WriteLineError("Invalid variable.");
         }
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
     else
     {
@@ -1114,7 +1114,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
     ContextBroadcastIntent(&ridesIntent);
 
     gWindowUpdateTicks = 0;
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
     console.WriteLine("Object file loaded.");
 }
 

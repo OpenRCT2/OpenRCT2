@@ -17,7 +17,7 @@
 #include "../../core/EnumUtils.hpp"
 #include "../../core/Guard.hpp"
 #include "../../drawing/Colour.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/Duck.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/EntityRegistry.h"
@@ -457,7 +457,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::WaterPlants() const
@@ -473,7 +473,7 @@ namespace OpenRCT2::GameActions
             }
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::FixVandalism() const
@@ -492,7 +492,7 @@ namespace OpenRCT2::GameActions
             it.element->asPath()->setIsBroken(false);
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::RemoveLitter(GameState_t& gameState) const
@@ -519,7 +519,7 @@ namespace OpenRCT2::GameActions
 
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::FixBrokenRides(GameState_t& gameState) const
@@ -766,7 +766,7 @@ namespace OpenRCT2::GameActions
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::ride);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::SetStaffSpeed(uint8_t value) const
@@ -855,6 +855,6 @@ namespace OpenRCT2::GameActions
             }
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 } // namespace OpenRCT2::GameActions

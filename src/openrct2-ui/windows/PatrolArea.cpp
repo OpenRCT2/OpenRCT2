@@ -19,6 +19,7 @@
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -191,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
         {
             HideGridlines();
             ClearPatrolAreaToRender();
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -241,7 +242,7 @@ namespace OpenRCT2::Ui::Windows
             if (PatrolAreaToolIsActive())
             {
                 SetPatrolAreaToRender(_staffId);
-                GfxInvalidateScreen();
+                Drawing::GfxInvalidateScreen();
             }
             else
             {
@@ -249,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ShowGridlines();
                     SetPatrolAreaToRender(_staffId);
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                 }
             }
         }

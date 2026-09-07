@@ -18,7 +18,7 @@
 #include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../drawing/Palette.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Window.h"
@@ -311,7 +311,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
                         Config::Get().interface.currentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;

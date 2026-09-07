@@ -13,7 +13,7 @@
 #include "../../Diagnostic.h"
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../entity/EntityList.h"
 #include "../../management/NewsItem.h"
@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
         windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         Drawing::ScrollingText::invalidate();
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
 
         return res;
     }

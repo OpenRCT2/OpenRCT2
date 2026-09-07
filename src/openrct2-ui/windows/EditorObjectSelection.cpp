@@ -26,6 +26,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Palette.h>
 #include <openrct2/drawing/Rectangle.h>
@@ -487,7 +488,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             objectManager.UnloadObjects({ descriptor });
                             objectManager.LoadObject(descriptor, entryIndex);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                         }
                     }
                     break;

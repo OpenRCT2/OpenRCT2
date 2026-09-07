@@ -12,7 +12,7 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../object/MusicObject.h"
 #include "../../object/ObjectManager.h"
 #include "../../ride/Ride.h"
@@ -237,7 +237,7 @@ namespace OpenRCT2::GameActions
             case RideSetSetting::rideType:
                 ride->type = _value;
                 ride->updateRideTypeForAllPieces();
-                GfxInvalidateScreen();
+                Drawing::GfxInvalidateScreen();
                 break;
         }
 

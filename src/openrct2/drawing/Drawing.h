@@ -48,20 +48,9 @@ extern bool gPaintForceRedraw;
 bool ClipRenderTarget(
     OpenRCT2::Drawing::RenderTarget& dst, OpenRCT2::Drawing::RenderTarget& src, const ScreenCoordsXY& coords, int32_t width,
     int32_t height);
-void GfxSetDirtyBlocks(const ScreenRect& rect);
-void GfxInvalidateScreen();
 
 // other
 void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::Drawing::PaletteIndex paletteIndex);
-void GfxFilterPixel(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, OpenRCT2::Drawing::FilterPaletteID palette);
-
-// line
-void GfxDrawLine(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, OpenRCT2::Drawing::PaletteIndex colour);
-void GfxDrawLineSoftware(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, OpenRCT2::Drawing::PaletteIndex colour);
-void GfxDrawDashedLine(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& screenLine, int32_t dashedLineSegmentLength,
-    OpenRCT2::Drawing::PaletteIndex colour);
 
 // sprite (NewDrawing.cpp functions that use the drawing engine)
 void FASTCALL GfxDrawSprite(OpenRCT2::Drawing::RenderTarget& rt, ImageId image_id, const ScreenCoordsXY& coords);
@@ -75,8 +64,5 @@ void FASTCALL GfxDrawSpriteRawMasked(
 
 std::optional<uint32_t> GetPaletteG1Index(OpenRCT2::Drawing::FilterPaletteID paletteId);
 std::optional<OpenRCT2::Drawing::PaletteMap> GetPaletteMapForColour(OpenRCT2::Drawing::FilterPaletteID paletteId);
-
-void RefreshVideo();
-void ToggleWindowedMode();
 
 void DebugRT(OpenRCT2::Drawing::RenderTarget& rt);

@@ -9,7 +9,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
@@ -111,7 +111,7 @@ void TrackDesignSaveSelectNearbyScenery(RideId rideIndex)
         }
     } while (TileElementIteratorNext(&it));
 
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 /**
@@ -121,7 +121,7 @@ void TrackDesignSaveSelectNearbyScenery(RideId rideIndex)
 void TrackDesignSaveResetScenery()
 {
     TrackDesignSaveInit();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)

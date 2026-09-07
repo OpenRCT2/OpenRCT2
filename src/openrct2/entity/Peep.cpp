@@ -21,7 +21,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../drawing/PickupPeep.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
@@ -2581,7 +2581,7 @@ namespace OpenRCT2
 
         auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
         ContextBroadcastIntent(&intent);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void IncrementGuestsInPark()

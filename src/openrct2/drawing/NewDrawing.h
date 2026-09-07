@@ -17,6 +17,7 @@ namespace OpenRCT2::Drawing
 }
 
 enum class DrawingEngine : int32_t;
+struct ScreenRect;
 
 DrawingEngine drawing_engine_get_type();
 bool DrawingEngineRequiresNewWindow(DrawingEngine srcEngine, DrawingEngine dstEngine);
@@ -30,3 +31,4 @@ OpenRCT2::Drawing::RenderTarget& DrawingEngineGetRT();
 bool DrawingEngineHasDirtyOptimisations();
 void DrawingEngineInvalidateImage(uint32_t image);
 void DrawingEngineSetVSync(bool vsync);
+void GfxSetDirtyBlocks(const ScreenRect& rect);

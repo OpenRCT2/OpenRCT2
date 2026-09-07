@@ -17,6 +17,7 @@
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
+#include "../drawing/Line.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"

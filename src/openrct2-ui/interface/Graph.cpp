@@ -11,7 +11,7 @@
 
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Date.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Line.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>

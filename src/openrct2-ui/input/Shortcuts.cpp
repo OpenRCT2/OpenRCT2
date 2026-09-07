@@ -30,7 +30,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/Viewport.h>
@@ -189,7 +189,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             ContextOpenWindow(WindowClass::editorStepController); // next step
         }
     }
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 static void ShortcutAdjustLand()
@@ -459,7 +459,7 @@ static void ShortcutScaleUp()
 {
     Config::Get().general.windowScale += 0.25f;
     Config::Save();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -469,7 +469,7 @@ static void ShortcutScaleDown()
     Config::Get().general.windowScale -= 0.25f;
     Config::Get().general.windowScale = std::max(0.5f, Config::Get().general.windowScale);
     Config::Save();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -739,7 +739,7 @@ static void ShortcutToggleTransparentWater()
 
     Config::Get().general.transparentWater ^= 1;
     Config::Save();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 #pragma endregion
@@ -805,7 +805,7 @@ void ShortcutManager::registerDefaultShortcuts()
             ChatToggle();
         }
     });
-    registerShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", ToggleWindowedMode);
+    registerShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", Drawing::ToggleWindowedMode);
     registerShortcut(ShortcutId::kInterfaceScaleIncrease, STR_SHORTCUT_SCALE_UP, ShortcutScaleUp);
     registerShortcut(ShortcutId::kInterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, ShortcutScaleDown);
     registerShortcut(ShortcutId::kInterfaceOpenLand, STR_SHORTCUT_ADJUST_LAND, "F1", ShortcutAdjustLand);

@@ -24,7 +24,7 @@
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
 #include "../localisation/Formatter.h"
@@ -204,7 +204,7 @@ namespace OpenRCT2::Network
             scriptEngine.RemoveNetworkPlugins();
     #endif
 
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
 
             _requireClose = false;
         }

@@ -10,7 +10,7 @@
 #include "SignSetNameAction.h"
 
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../localisation/StringIds.h"
 #include "../../world/Banner.h"
@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
         }
 
         Drawing::ScrollingText::invalidate();
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
         return Result();
     }
 } // namespace OpenRCT2::GameActions
