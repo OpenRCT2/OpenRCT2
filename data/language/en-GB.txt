@@ -3839,3 +3839,4 @@ STR_7041    :Park info panel
 STR_7042    :Date info panel
 STR_7043    :Can’t change land height here…
 STR_7044    :Cars per train
+STR_7045    :Enter speed between {VELOCITY} and {VELOCITY}
