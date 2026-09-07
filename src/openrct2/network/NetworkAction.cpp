@@ -240,6 +240,7 @@ namespace OpenRCT2::Network
                 GameCommand::setDate,
                 GameCommand::freezeRideRating,
                 GameCommand::setRideVisibility,
+                GameCommand::setRideBreakdown,
             },
         },
         NetworkAction{

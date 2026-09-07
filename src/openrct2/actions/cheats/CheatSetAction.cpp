@@ -528,21 +528,7 @@ namespace OpenRCT2::GameActions
         {
             if (ride.flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown))
             {
-                auto mechanic = RideGetAssignedMechanic(ride);
-
-                if (mechanic != nullptr)
-                {
-                    if (ride.mechanicStatus == MechanicStatus::fixing)
-                    {
-                        mechanic->rideSubState = PeepRideSubState::approachExit;
-                    }
-                    else if (ride.mechanicStatus == MechanicStatus::calling || ride.mechanicStatus == MechanicStatus::heading)
-                    {
-                        mechanic->removeFromRide();
-                    }
-                }
-
-                RideFixBreakdown(ride, 0);
+                ride.forceFixBreakdown();
                 ride.windowInvalidateFlags.set(RideInvalidateFlag::main, RideInvalidateFlag::list);
             }
         }
