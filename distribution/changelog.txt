@@ -7,6 +7,7 @@
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
 - Fix: [#27056] [Plugin] Loading water palettes from plugin does not update the palette correctly.
+- Fix: [#27084] [Plugin] `PermissionType` for `drag_path_area` is missing.
 - Fix: [#27087] The ‘Update available’ widget is offset incorrectly.
 - Fix: [#27093] Pause and fast forward buttons are shown in multiplayer.
 
