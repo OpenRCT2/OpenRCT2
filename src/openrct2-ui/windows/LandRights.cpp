@@ -485,9 +485,9 @@ namespace OpenRCT2::Ui::Windows
                 state_changed++;
             }
 
-            if (gMapSelectType != MapSelectType::fullLandRights)
+            if (gMapSelectType != MapSelectType::fullTerrainAndWater)
             {
-                gMapSelectType = MapSelectType::fullLandRights;
+                gMapSelectType = MapSelectType::fullTerrainAndWater;
                 state_changed++;
             }
 

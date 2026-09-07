@@ -1131,7 +1131,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType == MapSelectType::fullLandRights)
+            else if (mapSelectionType == MapSelectType::fullTerrainAndWater)
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
